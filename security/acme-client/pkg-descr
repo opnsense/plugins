@@ -13,6 +13,7 @@ Plugin Changelog
 Fixed:
 * fix SFTP buttons not visible (#2712)
 * fix invalid default value when no WAN interface can be found (#2712)
+* fix incompatibility with new gcloud SDK (#2710)
 
 3.6
 
