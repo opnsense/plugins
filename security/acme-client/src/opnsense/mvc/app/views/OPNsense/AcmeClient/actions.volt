@@ -96,7 +96,7 @@ POSSIBILITY OF SUCH DAMAGE.
         (function ($identityType) {
             var identityDiv = makeStatusDiv($identityType);
 
-            makeButton("{{ lang._('Show Identity') }}", "upload_sftp", "btn-info")
+            makeButton("{{ lang._('Show Identity') }}", "configd_upload_sftp", "btn-info")
                 .click(function () {
                     identityDiv.hide();
                     var button = $(this);
@@ -145,7 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {msg: "{{ lang._('Test failed, see details.') }}"},
             ];
 
-            makeButton("{{ lang._('Test Connection') }}", "upload_sftp")
+            makeButton("{{ lang._('Test Connection') }}", "configd_upload_sftp")
                 .click(function () {
                     statusDiv.hide();
                     var button = $(this);
