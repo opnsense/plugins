@@ -362,7 +362,6 @@
                 </http_opn_autodiscovery>
                 <http_opn_interface type="InterfaceField">
                     <Required>N</Required>
-                    <default>wan</default>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
                     </filters>
@@ -404,7 +403,6 @@
                 </tlsalpn_acme_autodiscovery>
                 <tlsalpn_acme_interface type="InterfaceField">
                     <Required>N</Required>
-                    <default>wan</default>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
                     </filters>
