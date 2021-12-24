@@ -39,8 +39,7 @@
         <id>healthcheck.checkport</id>
         <label>Port to check</label>
         <type>text</type>
-        <help><![CDATA[Provide the TCP communication port to use during check, i.e. 80 or 443.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Provide an optional TCP communication port to use during health checks, i.e. 80 or 443. The server port will used for health checks when no port is specified.]]></help>
     </field>
     <field>
         <label>HTTP check options</label>
