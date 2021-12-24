@@ -6,6 +6,14 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.9
+
+Added:
+* add SSL SNI setting to servers and health checks (#2388)
+
+Changed:
+* replace "force SSL" setting with "SSL preferences" in health checks (#2388)
+
 3.8
 
 Added:
