@@ -38,7 +38,7 @@ let TabLogList = Backbone.View.extend({
     },
     mainMenuClick: function () {
         if (this.collection.models[0]) {
-            this.handleElementClick(this.model.get('id'), this.collection.models[0].get('number'));
+            this.handleElementClick(this.model.get('id'), -1);
             $(`#tab_${this.model.get('id')} li`).removeClass('active');
             $(`#subtab_item_${this.model.get('id')}_${this.collection.models[0].get('number')}`).parent().addClass('active');
         }
