@@ -1,0 +1,2 @@
+rc.conf.d:/etc/rc.conf.d/ddclient
+ddclient.conf:/usr/local/etc/ddclient.conf
