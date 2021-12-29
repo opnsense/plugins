@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <DynamicDNS VisibleName="Dynamic DNS" url="/ui/dyndns/" cssClass="fa fa-tags fa-fw"/>
+    </Services>
+</menu>
