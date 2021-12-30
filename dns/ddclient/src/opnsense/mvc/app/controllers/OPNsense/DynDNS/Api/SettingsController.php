@@ -28,20 +28,22 @@
  *
  */
 
-namespace OPNsense\DynDNS;
+namespace OPNsense\DynDNS\Api;
 
-/**
- * Class IndexController
- * @package OPNsense\DynDNS
- */
-class IndexController extends \OPNsense\Base\IndexController
+use OPNsense\Base\ApiMutableModelControllerBase;
+
+class SettingsController extends ApiMutableModelControllerBase
 {
-    public function indexAction()
+    protected static $internalModelName = 'ddclient';
+    protected static $internalModelClass = 'OPNsense\DynDNS\DynDNS';
+
+    public function getAction()
     {
-        // link dialogs
-        $this->view->formDialogAccount = $this->getForm("dialogAccount");
-        $this->view->formSettings = $this->getForm("settings");
-        // choose template
-        $this->view->pick('OPNsense/DynDNS/index');
+        $data = parent::getAction();
+        return [
+            'ddclient' => [
+                'general' => $data['ddclient']['general']
+            ]
+        ];
     }
 }

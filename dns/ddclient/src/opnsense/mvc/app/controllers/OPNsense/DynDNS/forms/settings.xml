@@ -1,0 +1,16 @@
+<form>
+    <field>
+        <id>ddclient.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable ddclient</help>
+    </field>
+    <field>
+        <id>ddclient.general.checkip</id>
+        <label>Check ip method</label>
+        <type>dropdown</type>
+        <help>
+          How to determine the address to uswe for this host
+        </help>
+    </field>
+</form>
