@@ -10,6 +10,28 @@
                 <default>1</default>
                 <Required>Y</Required>
             </enabled>
+            <checkip type="OptionField">
+                <Required>Y</Required>
+                <default>web_dyndns</default>
+                <ValidationMessage>An IP service type is required.</ValidationMessage>
+                <OptionValues>
+                    <web_dyndns>dyndns</web_dyndns>
+                    <web_freedns>freedns</web_freedns>
+                    <web_googledomains>googledomains</web_googledomains>
+                    <web_he>he</web_he>
+                    <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
+                    <web_ip6only_me value="web_ip6only.me">ip4only.me</web_ip6only_me>
+                    <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
+                    <web_ipify_ipv6 value="web_ipify-ipv6">ipify-ipv6</web_ipify_ipv6>
+                    <web_loopia>loopia</web_loopia>
+                    <web_myonlineportal>myonlineportal</web_myonlineportal>
+                    <web_noip_ipv4 value="web_noip-ipv4">noip-ipv4</web_noip_ipv4>
+                    <web_noip_ipv6 value="web_noip-ipv6">noip-ipv6</web_noip_ipv6>
+                    <web_nsupdate_info_ipv4 value="web_nsupdate.info-ipv4">nsupdate.info-ipv4</web_nsupdate_info_ipv4>
+                    <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv4</web_nsupdate_info_ipv6>
+                    <web_zoneedit>zoneedit</web_zoneedit>
+                </OptionValues>
+            </checkip>
         </general>
         <accounts>
             <account type="ArrayField">

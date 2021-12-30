@@ -38,15 +38,29 @@ POSSIBILITY OF SUCH DAMAGE.
                 toggle:'/api/dyndns/accounts/toggle_item/'
             }
         );
+        let data_get_map = {'frm_settings':"/api/dyndns/settings/get"};
+        mapDataToFormUI(data_get_map).done(function(){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('dyndns');
+        });
 
-        $("#reconfigureAct").SimpleActionButton();
-        updateServiceControlUI('dyndns');
+        $("#reconfigureAct").SimpleActionButton({
+          onPreAction: function() {
+              const dfObj = new $.Deferred();
+              saveFormToEndpoint("/api/dyndns/settings/set", 'frm_settings', function(){
+                  dfObj.resolve();
+              });
+              return dfObj;
+          }
+        });
     });
 
 </script>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" id="destinations" href="#tab_destinations">{{ lang._('Accounts') }}</a></li>
+    <li class="active"><a data-toggle="tab" id="destinations" href="#tab_accounts">{{ lang._('Accounts') }}</a></li>
+    <li><a data-toggle="tab" href="#settings" id="settings_tab">{{ lang._('General settings') }}</a></li>
 </ul>
 <div class="tab-content content-box">
     <div id="tab_accounts" class="tab-pane fade in active">
@@ -75,22 +89,29 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
-    <div class="col-md-12">
-        <div id="ddclientChangeMessage" class="alert alert-info" style="display: none" role="alert">
-            {{ lang._('After changing settings, please remember to apply them with the button below') }}
-        </div>
-        <hr/>
-        <button class="btn btn-primary" id="reconfigureAct"
-                data-endpoint='/api/dyndns/service/reconfigure'
-                data-label="{{ lang._('Apply') }}"
-                data-service-widget="dyndns"
-                data-error-title="{{ lang._('Error reconfiguring DynDNS') }}"
-                type="button"
-        ></button>
-        <br/><br/>
+    <div id="settings" class="tab-pane fade in">
+      {{ partial("layout_partials/base_form",['fields':formSettings,'id':'frm_settings'])}}
     </div>
 </div>
 
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <div id="ddclientChangeMessage" class="alert alert-info" style="display: none" role="alert">
+                {{ lang._('After changing settings, please remember to apply them with the button below') }}
+            </div>
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint='/api/dyndns/service/reconfigure'
+                    data-label="{{ lang._('Apply') }}"
+                    data-service-widget="dyndns"
+                    data-error-title="{{ lang._('Error reconfiguring DynDNS') }}"
+                    type="button"
+            ></button>
+            <br/><br/>
+        </div>
+    </div>
+</section>
 
 {# include dialogs #}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccount,'id':'DialogAccount','label':lang._('Edit Account')])}}
