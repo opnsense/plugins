@@ -429,6 +429,7 @@
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
+                        <dns_cpanel>cPanel API</dns_cpanel>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
@@ -1049,6 +1050,15 @@
                 <dns_dynv6_token type="TextField">
                     <Required>N</Required>
                 </dns_dynv6_token>
+                <dns_cpanel_user type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_user>
+                <dns_cpanel_token type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_token>
+                <dns_cpanel_hostname type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_hostname>
             </validation>
         </validations>
         <actions>

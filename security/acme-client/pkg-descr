@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.8
+
+Added:
+* add support for cPanel HTTP API
+
 3.7
 
 Fixed:

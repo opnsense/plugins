@@ -1399,4 +1399,26 @@
         <label>HTTP Token</label>
         <type>password</type>
     </field>
+     <field>
+        <label>cPanel HTTP API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cpanel</style>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_user</id>
+        <label>cPanel Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_token</id>
+        <label>cPanel API Token</label>
+        <type>password</type>
+        <help>Ref: https://docs.cpanel.net/cpanel/security/manage-api-tokens-in-cpanel/</help>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_hostname</id>
+        <label>cPanel Hostname</label>
+        <type>text</type>
+        <help>EX: https://hostname:2083</help>
+    </field>
 </form>
