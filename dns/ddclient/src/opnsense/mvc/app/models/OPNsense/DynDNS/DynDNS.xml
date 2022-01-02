@@ -10,6 +10,16 @@
                 <default>1</default>
                 <Required>Y</Required>
             </enabled>
+            <verbose type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </verbose>
+            <daemon_delay type="IntegerField">
+                <default>300</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+            </daemon_delay>
             <checkip type="OptionField">
                 <Required>Y</Required>
                 <default>web_dyndns</default>
@@ -28,7 +38,7 @@
                     <web_noip_ipv4 value="web_noip-ipv4">noip-ipv4</web_noip_ipv4>
                     <web_noip_ipv6 value="web_noip-ipv6">noip-ipv6</web_noip_ipv6>
                     <web_nsupdate_info_ipv4 value="web_nsupdate.info-ipv4">nsupdate.info-ipv4</web_nsupdate_info_ipv4>
-                    <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv4</web_nsupdate_info_ipv6>
+                    <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv6</web_nsupdate_info_ipv6>
                     <web_zoneedit>zoneedit</web_zoneedit>
                 </OptionValues>
             </checkip>
@@ -43,9 +53,18 @@
                     <Required>Y</Required>
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
+                        <changeip>Changeip</changeip>
+                        <dyndns2>DynDNS.com</dyndns2>
+                        <dnspark>DnsPark</dnspark>
+                        <dslreports1>DslReports</dslreports1>
+                        <duckdns>DuckDNS</duckdns>
+                        <easydns>EasyDNS</easydns>
+                        <googledomains>Google</googledomains>
+                        <namecheap>NameCheap</namecheap>
                         <noip>Noip</noip>
-                        <nsupdatev4>nsupdate (IPv4)</nsupdatev4>
-                        <nsupdatev6>nsupdate (IPv6)</nsupdatev6>
+                        <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
+                        <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
+                        <zoneedit1>Zoneedit</zoneedit1>
                     </OptionValues>
                 </service>
                 <username type="TextField">
@@ -63,6 +82,10 @@
                     <AsList>Y</AsList>
                     <FieldSeparator>,</FieldSeparator>
                 </hostnames>
+                <wildcard type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </wildcard>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
