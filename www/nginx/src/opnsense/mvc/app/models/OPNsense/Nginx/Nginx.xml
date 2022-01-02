@@ -1078,7 +1078,7 @@
     </sni_hostname_upstream_map>
 
     <sni_hostname_upstream_map_item type="ArrayField">
-      <hostname type="HostnameField">
+      <hostname type="TextField">
         <Required>Y</Required>
       </hostname>
       <upstream type="ModelRelationField">
