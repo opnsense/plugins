@@ -68,7 +68,7 @@
                     </OptionValues>
                 </service>
                 <username type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^([a-z0-9\-.@_:+])*$/u</mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
