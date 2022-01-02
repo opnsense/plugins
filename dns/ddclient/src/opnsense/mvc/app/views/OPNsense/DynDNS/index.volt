@@ -54,6 +54,22 @@ POSSIBILITY OF SUCH DAMAGE.
               return dfObj;
           }
         });
+        $('#DialogAccount').on('shown.bs.modal', function (e) {
+            $("#account\\.service").change(function(){
+                let service = $(this).val();
+                $(".optional_setting").each(function(){
+                    let this_item = $(this);
+                    if (this_item.hasClass("service_"+service)) {
+                        this_item.prop( "disabled", false );
+                        this_item.closest("tr").show();
+                    } else {
+                        this_item.closest("tr").hide();
+                        this_item.prop( "disabled", true );
+                    }
+                });
+            });
+            $("#account\\.service").change();
+        });
     });
 
 </script>
