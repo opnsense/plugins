@@ -2637,7 +2637,7 @@
                 <thread_id type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <all>All HAProxy threads </all>
+                        <all>All HAProxy threads</all>
                         <odd>Threads with odd ID</odd>
                         <even>Threads with even ID</even>
                         <x1>Thread 1</x1>
