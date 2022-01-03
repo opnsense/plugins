@@ -27,7 +27,6 @@
 thead.sticky-top th {
     position: sticky;
     top: 80px;
-    background-color: white;
 }
 
 thead.sticky-top tr:first-child th {
@@ -37,7 +36,6 @@ thead.sticky-top tr:first-child th {
 tfoot.sticky-bottom th {
     position: sticky;
     bottom: 50px;
-    background-color: white;
     font-weight: normal;
     font-family: inherit;
 }
