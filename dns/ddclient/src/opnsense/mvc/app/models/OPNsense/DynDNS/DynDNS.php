@@ -34,6 +34,6 @@
   * Class DynDNS
   * @package OPNsense\DynDNS
   */
- class DynDNS extends BaseModel
- {
- }
+class DynDNS extends BaseModel
+{
+}
