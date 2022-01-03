@@ -38,7 +38,6 @@ let LogCategoryList = Backbone.View.extend({
             logview: this.logview
         });
         this.$el.append(logList.$el);
-        files.fetch();
     },
 
     render_global_error_tab: function () {
