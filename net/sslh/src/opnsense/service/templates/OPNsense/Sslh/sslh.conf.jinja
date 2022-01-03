@@ -21,10 +21,6 @@ verbose:{{ '1' if (cfg['verbose'] == '1') else '0' }};
 numeric:{{ 'true' if (cfg['numeric'] == '1') else 'false' }};
 {%      endif -%}
 
-{%      if cfg['transparent'] is defined %}
-transparent:{{ 'true' if (cfg['transparent'] == '1') else 'false' }};
-{%      endif -%}
-
 {%      if cfg['timeout'] is defined %}
 timeout:{{ cfg['timeout'] }};
 {%      endif -%}

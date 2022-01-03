@@ -49,7 +49,6 @@ Here is a table which maps the configurations to command line options, and inclu
 | foreground         | -f, --foreground    | N/A              | N/A           |               |
 | inetd              | -i, --inetd         | N/A              | N/A           |               |
 | numeric            | -n, --numeric       | BooleanField     | N/A           | 2             |
-| transparent        | --transparent       | BooleanField     | N/A           |               |
 | timeout            | -t, --timeout       | IntegerField     | N/A           |               |
 | user               | -u, --user          | N/A              | N/A           |               |
 | pidfile            | -P, --pidfile       | N/A              | N/A           |               |
@@ -166,3 +165,7 @@ There is also the need to consider that some options may only be available/funct
 ## Service Status
 
 The fact that this service can run as different binaries means that under specific circumstances, sometimes the service status can return a status of "not running" even when the service is running. The UI won't offer to stop the service because it thinks it's not running. If the service is configured to run with the one variant, and then the configuration is changed to use the another variant without a service restart (though some error occurring), then the service status will be looking for the new variant when looking at the status, and it will say "not running," but the previous variant will still be running. If there are no errors with saving the configuration, and the service API restarts the service successfully after saving the configuration, then it should be relatively rare occurrence.
+
+## Transparent mode
+
+This function is available using the command line option "-t, --transparent" or through the configuration file using the "transparent" keyword. The documentation describes this as a "Linux only" feature, and the documentation demonstrates using this feature in conjunction with `iptables`. Since FreeBSD doesn't have `iptables` it's probably that this feature won't work. Since there is no provisions for using this feature on FreeBSD, it's been excluded from the this plugin.

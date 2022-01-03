@@ -27,22 +27,6 @@
         <type>select_multiple</type>
     </field>
     <field>
-        <id>settings.transparent</id>
-        <label>Transparent</label>
-        <help><![CDATA[
-            <b>-t, --transparent</b><br>
-            Makes sslh behave as a transparent proxy, i.e. the receiving
-            service sees the original client's IP address.  This works on Linux
-            only and involves iptables settings.  Refer to the README for more
-            information.<br>
-            <br>
-            Default: false
-            ]]>
-        </help>
-        <type>checkbox</type>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>settings.mode</id>
         <label>Mode</label>
         <help><![CDATA[

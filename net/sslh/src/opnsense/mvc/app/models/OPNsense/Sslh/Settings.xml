@@ -10,9 +10,6 @@
             <multiple>Y</multiple>
             <validationmessage>Please enter at least one addres:port combination.</validationmessage>
         </listen_addresses>
-        <transparent type="BooleanField">
-            <required>N</required>
-        </transparent>
         <mode type="OptionField">
             <required>Y</required>
             <default>fork</default>

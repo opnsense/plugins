@@ -44,10 +44,6 @@ The protocol targets each support one ADDRESS:PORT combination.
 
 Several settings are hidden by default, select the "advanced mode" button in the top left to access these settings.
 
-#### Transparent
-
-It's unclear if this functions on FreeBSD. Documentation states that it functions on Linux, and requires iptables configuration which is not available on FreeBSD.
-
 #### Mode
 
 This is also called the sslh "variant", and makes the start up script execute a separate binary, `sslh-fork` or `sslh-select` depending on selection. Each behaves differently, and has different performance.
