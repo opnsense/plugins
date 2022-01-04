@@ -57,7 +57,7 @@
 {% endfor %}
 
 <script>
-    $(document).ready(function() {
+    $(function() {
         // hook into on-show event to extend validation
         $('#{{base_dialog_id}}').on('shown.bs.modal', function (e) {
             $('.nav-tabs a[href="#frm_{{base_dialog_id}}-tab_general"]').tab('show');
