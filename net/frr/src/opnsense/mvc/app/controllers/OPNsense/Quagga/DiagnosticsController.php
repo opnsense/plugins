@@ -29,8 +29,34 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
 {
     public function bgpAction()
     {
-        $this->view->diagnosticsForm = $this->getForm("diagnostics");
-        $this->view->pick('OPNsense/Quagga/diagnosticsbgp');
+        $this->view->tabs = [
+            [
+                'name' => 'routing4',
+                'endpoint' => '/api/quagga/diagnostics/bgproute4',
+                'tabhead' => "IPv4 " . gettext('Routing Table'),
+                'type' => 'bgptable'
+            ],
+            [
+                'name' => 'routing6',
+                'endpoint' => '/api/quagga/diagnostics/bgproute6',
+                'tabhead' => "IPv6 " . gettext('Routing Table'),
+                'type' => 'bgptable'
+            ],
+            [
+                'name' => 'neighbors',
+                'endpoint' => '/api/quagga/diagnostics/bgpneighbors/plain',
+                'tabhead' => gettext('Neighbors'),
+                'type' => 'text'
+            ],
+            [
+                'name' => 'summary',
+                'endpoint' => '/api/quagga/diagnostics/bgpsummary/plain',
+                'tabhead' => gettext('Summary'),
+                'type' => 'text'
+            ]
+            ];
+        $this->view->default_tab = 'routing4';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function ospfAction()
     {
