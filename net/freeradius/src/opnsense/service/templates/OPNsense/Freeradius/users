@@ -31,6 +31,19 @@
        Tunnel-Private-Group-Id = {{ user_list.vlan }},
 {%         endif %}
 {%       endif %}
+{%       if helpers.exists('OPNsense.freeradius.general.exos') and OPNsense.freeradius.general.exos == '1' %}
+{%         if user_list.exos_vlan_untagged is defined and user_list.exos_vlan_tagged is not defined %}
+       Extreme-Netlogin-Extended-VLAN = "U{{ user_list.exos_vlan_untagged }}",
+{%         endif %}
+{%           if user_list.exos_vlan_tagged is defined%}
+       Extreme-Netlogin-Extended-VLAN = "{% if user_list.exos_vlan_untagged is defined -%}
+       U{{ user_list.exos_vlan_untagged }};{% endif -%}
+       {% for exostaggedlist in user_list.exos_vlan_tagged.split(',') %}T{{ exostaggedlist }};{% endfor %}",
+{%           endif %}
+{%         if user_list.exos_policy is defined %}
+       Filter-ID="Enterasys:version=1:mgmt=su:policy={{ user_list.exos_policy }}",
+{%         endif %}
+{%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.wispr') and OPNsense.freeradius.general.wispr == '1' %}
 {%         if user_list.wispr_bw_min_up is defined %}
        WISPr-Bandwidth-Min-Up = {{ user_list.wispr_bw_min_up }},

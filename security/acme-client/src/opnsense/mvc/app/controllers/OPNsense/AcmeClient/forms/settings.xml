@@ -37,6 +37,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>acmeclient.settings.TLSchallengePort</id>
+        <label>Local TLS ALPN Port</label>
+        <type>text</type>
+        <help><![CDATA[The service port when using TLS-ALPN-01 as challenge type. It works similar to the HTTP-01 challenge type. Defaults to port 43581.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>acmeclient.settings.restartTimeout</id>
         <label>Automation Timeout</label>
         <type>text</type>

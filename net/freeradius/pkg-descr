@@ -17,7 +17,8 @@ Plugin Changelog
 
 1.9.17
 
-* Allow user to define Fallback VlAN
+* Added support for Extreme networks EXOS switch Extreme-Netlogin-Extended-VLAN VSA and policy for GEN2 (contributed by Pasi Suominen)
+* Allow setting of minimum TLS version
 
 1.9.16
 

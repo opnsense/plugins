@@ -96,6 +96,7 @@ function dyndns_list()
      */
 
     return array(
+        '1984-hosting' => '1984 Hosting Company',
         '3322' => '3322',
         'all-inkl' => 'All-Inkl',
         'all-inkl-v6' => 'All-Inkl (v6)',
@@ -151,6 +152,7 @@ function dyndns_list()
         'route53-v6' => 'Route 53 (v6)',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
+        'strato-v6' => 'STRATO (v6)',
         'zoneedit' => 'ZoneEdit',
     );
 }

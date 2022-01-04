@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,8 @@ class DnsGcloud extends Base implements LeValidationInterface
         }
 
         // Preparations to run gcloud CLI.
-        $val_id = (string)$this->config->id;
+        // NOTE: Never versions of gcloud SDK no longer allow dots in config names.
+        $val_id = str_replace('.', '-', (string)$this->config->id);
         $gcloud_config = "acme-${val_id}";
         $gcloud_key_file = '/tmp/acme_' . (string)$this->config->dns_service . "_${val_id}.json";
         file_put_contents($gcloud_key_file, (string)$this->config->dns_gcloud_key);
@@ -74,11 +75,11 @@ class DnsGcloud extends Base implements LeValidationInterface
         $proc_env['CLOUDSDK_CORE_PROJECT'] = $gcloud_project;
 
         // Ensure that a working gcloud config exists.
-        LeUtils::run_shell_command("/usr/local/bin/gcloud config configurations create ${gcloud_config}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud config configurations activate ${gcloud_config}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud auth activate-service-account --key-file=${gcloud_key_file}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud config set account ${gcloud_account}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud config set project ${gcloud_project}", $proc_env);
+        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config configurations create ${gcloud_config}", $proc_env);
+        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config configurations activate ${gcloud_config}", $proc_env);
+        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet auth activate-service-account --key-file=${gcloud_key_file}", $proc_env);
+        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config set account ${gcloud_account}", $proc_env);
+        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config set project ${gcloud_project}", $proc_env);
 
         // Save config for acme client.
         $this->acme_env['CLOUDSDK_PYTHON'] = '/usr/local/bin/python3';

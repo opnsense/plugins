@@ -12,6 +12,18 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.4
+
+* Add 5 second timeout to unbound input
+
+1.12.3
+
+* Add insecure_skip_verify as an option for Influx v2 output
+
+1.12.2
+
+* Add insecure_skip_verify as an option for Influx v1 output
+
 1.12.1
 
 * Rename "Wheel Group" to "Run as Root" and set user permissions

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * All rights reserved.
  *
@@ -61,6 +61,9 @@ class LeValidationFactory
                 break;
             case 'http01':
                 $search_name = "http_" . $obj->http_service;
+                break;
+            case 'tlsalpn01':
+                $search_name = "tlsalpn_" . $obj->tlsalpn_service;
                 break;
         }
 
