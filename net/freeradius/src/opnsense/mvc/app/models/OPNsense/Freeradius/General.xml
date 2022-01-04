@@ -24,7 +24,7 @@
                         <ValidationMessage>This field must be set.</ValidationMessage>
                         <type>SetIfConstraint</type>
                         <field>fallbackvlan_enabled</field>
-                        <check>true</check>
+                        <check>checked</check>
                     </check001>
                 </check001>
             </Constraints>
