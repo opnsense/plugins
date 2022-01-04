@@ -14,18 +14,22 @@
         <fallbackvlan_enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>You need to set a proper VLAN ID.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>fallbackvlan_id</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
         </fallbackvlan_enabled>
         <fallbackvlan_id type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>
             <Constraints>
                 <check001>
-                    <check001>
-                        <ValidationMessage>This field must be set.</ValidationMessage>
-                        <type>SetIfConstraint</type>
-                        <field>fallbackvlan_enabled</field>
-                        <check>checked</check>
-                    </check001>
+                    <reference>fallbackvlan_enabled.check001</reference>
                 </check001>
             </Constraints>
         </fallbackvlan_id>
