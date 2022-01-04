@@ -25,6 +25,7 @@
             </Constraints>
         </fallbackvlan_enabled>
         <fallbackvlan_id type="IntegerField">
+            <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>
             <Constraints>
