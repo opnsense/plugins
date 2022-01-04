@@ -74,7 +74,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% case 'text' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function(data, status) {
                         if (status == "success") {
-                            $('#text-{{ tab['name'] }}').text(data['response']);
+                            $('#text-{{ tab['name'] }}').html(data['response']);
                         }
                     });
                     {% break %}
