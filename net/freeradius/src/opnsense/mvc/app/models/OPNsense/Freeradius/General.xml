@@ -25,7 +25,6 @@
             </Constraints>
         </fallbackvlan_enabled>
         <fallbackvlan_id type="IntegerField">
-            <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>
             <Constraints>
@@ -36,6 +35,13 @@
                         <field1>fallbackvlan_enabled</field1>
                     </addFields>
                 </check001>
+                <check002>
+                    <ValidationMessage>MySQL and SQLite can not be combined.</ValidationMessage>
+                    <type>SingleSelectConstraint</type>
+                    <addFields>
+                        <sqlite>fallbackvlan_enabled</sqlite>
+                    </addFields>
+                </check002>
             </Constraints>
         </fallbackvlan_id>
         <ldap_enabled type="BooleanField">
