@@ -351,7 +351,7 @@ class SettingsController extends ApiMutableModelControllerBase
         // Create "hsts" column (disabled/time)
         foreach ($data['rows'] as &$row) {
             if (intval($row['strict_transport_security_time']) > 0) {
-                $row['hsts'] = sprintf("%d %s", intval($row['strict_transport_security_time']), gettext("sec"));
+                $row['hsts'] = sprintf(gettext("%d sec"), intval($row['strict_transport_security_time'])));
             } else {
                 $row['hsts'] = gettext('disabled');
             }
