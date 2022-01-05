@@ -3,24 +3,12 @@
         <id>settings.enabled</id>
         <label>Enable SSLH</label>
         <type>checkbox</type>
-        <help><![CDATA[
-            This will enable the SSLH service.
-            ]]>
-        </help>
+        <help>This will enable the SSLH service.</help>
     </field>
     <field>
         <id>settings.listen_addresses</id>
         <label>Listen Addresses</label>
-        <help><![CDATA[
-            <b>-p, --listen</b>  address:port<br>
-            Interface and port on which to listen, e.g. foobar:443, where
-            foobar is the name of an interface (typically the IP address on
-            which the Internet connection ends up).<br>
-            <br>
-            This can be specified several times to bind sslh to several
-            addresses.
-            ]]>
-        </help>
+        <help>Interface and port on which to listen, e.g. foobar:443, where foobar is the name of an interface (typically the IP address on which the Internet connection ends up). This can be specified several times to bind sslh to several addresses.</help>
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>hostname:443,hostname:1194</hint>
@@ -29,26 +17,14 @@
     <field>
         <id>settings.mode</id>
         <label>Mode</label>
-        <help><![CDATA[
-            Select the mode in which to run sslh:<br>
-            <b>fork</b> - stable but slow performance<br>
-            <b>select</b> - new but high performance
-            ]]>
-        </help>
+        <help>Select the mode in which to run sslh: fork - stable but slow performance | select - new but high performance</help>
         <type>dropdown</type>
         <advanced>true</advanced>
     </field>
     <field>
         <id>settings.timeout</id>
         <label>Timeout</label>
-        <help><![CDATA[
-            <b>-t, --timeout</b> seconds<br>
-            Timeout in seconds before forwarding the connection to the timeout
-            protocol (which should usually be SSH).<br>
-            <br>
-            Default: 2
-            ]]>
-        </help>
+        <help>Timeout in seconds before forwarding the connection to the timeout protocol (which should usually be SSH). Default: 2</help>
         <hint>2</hint>
         <type>text</type>
         <advanced>true</advanced>
@@ -56,99 +32,49 @@
     <field>
         <id>settings.on_timeout</id>
         <label>On Timeout</label>
-        <help><![CDATA[
-            <b>--on-timeout</b> <protocol><br>
-            Name of the protocol to connect to after the timeout period is
-            over. Default is to forward to the first specified protocol. It
-            usually makes sense to specify 'ssh' as the timeout protocol, as
-            the SSH specification does not tell who is supposed to speak first
-            and a large number of SSH clients wait for the server to send its
-            banner.<br>
-            <br>
-            Default: ssh
-            ]]>
-        </help>
+        <help>Name of the protocol to connect to after the timeout period is over. Default is to forward to the first specified protocol. It usually makes sense to specify 'ssh' as the timeout protocol, as the SSH specification does not tell who is supposed to speak first and a large number of SSH clients wait for the server to send its banner. Default: ssh</help>
         <type>dropdown</type>
         <advanced>true</advanced>
     </field>
     <field>
         <id>settings.ssh_target</id>
         <label>SSH Target</label>
-        <help><![CDATA[
-            <b>--ssh</b> address:port<br>
-            Interface and port on which to forward SSH connections, typically
-            localhost:22.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward SSH connections, typically localhost:22.</help>
         <hint>localhost:22</hint>
         <type>text</type>
     </field>
     <field>
         <id>settings.tls_target</id>
         <label>SSL/TLS Target</label>
-        <help><![CDATA[
-            <b>--ssl, --tls</b> address:port<br>
-            Interface and port on which to forward SSL connection, typically
-            localhost:443.<br>
-            <br>
-            Note that you can set sslh to listen on ext_ip:443 and httpd to
-            listen on localhost:443: this allows clients inside your network to
-            just connect directly to httpd.<br>
-            <br>
-            Also, sslh probes for SSLv3 (or TLSv1) handshake and will reject
-            connections from clients requesting SSLv2. This is compliant with
-            RFC6176 which prohibits the usage of SSLv2. If you wish to accept
-            SSLv2, use --anyprot instead.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward SSL connection, typically localhost:443. Note that you can set sslh to listen on ext_ip:443 and httpd to listen on localhost:443: this allows clients inside your network to just connect directly to httpd. Also, sslh probes for SSLv3 (or TLSv1) handshake and will reject connections from clients requesting SSLv2. This is compliant with RFC6176 which prohibits the usage of SSLv2. If you wish to accept SSLv2, use --anyprot instead.</help>
         <hint>localhost:443</hint>
         <type>text</type>
     </field>
     <field>
         <id>settings.openvpn_target</id>
         <label>OpenVPN Target</label>
-        <help><![CDATA[
-            <b>--openvpn</b> address:port<br>
-            Interface and port on which to forward OpenVPN connections,
-            typically localhost:1194.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward OpenVPN connections, typically localhost:1194.</help>
         <hint>localhost:1194</hint>
         <type>text</type>
     </field>
     <field>
         <id>settings.http_target</id>
         <label>HTTP Target</label>
-        <help><![CDATA[
-            <b>--http</b> address:port</br>
-            Interface and port on which to forward HTTP connections, typically
-            localhost:80.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward HTTP connections, typically localhost:80.</help>
         <hint>localhost:80</hint>
         <type>text</type>
     </field>
     <field>
         <id>settings.xmpp_target</id>
         <label>XMPP Target</label>
-        <help><![CDATA[
-            <b>--xmpp</b> address:port<br>
-            Interface and port on which to forward XMPP connections, typically
-            localhost:5222.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward XMPP connections, typically localhost:5222.</help>
         <hint>localhost:5222</hint>
         <type>text</type>
     </field>
     <field>
         <id>settings.tinc_target</id>
         <label>TINC Target</label>
-        <help><![CDATA[
-            <b>--tinc</b> address:port<br>
-            Interface and port on which to forward tinc connections, typically
-            localhost:655.
-            ]]>
-        </help>
+        <help>Interface and port on which to forward tinc connections, typically localhost:655.</help>
         <hint>localhost:655</hint>
         <type>text</type>
     </field>
@@ -156,41 +82,20 @@
         <id>settings.anyprot_target</id>
         <label>Anyprot Target</label>
         <hint></hint>
-        <help><![CDATA[
-            <b>--anyprot</b> address:port<br>
-            Interface and port on which to forward if no other protocol has
-            been found. Because sslh tries protocols in the order specified on
-            the command line, this should be specified last. If no default is
-            specified, sslh will forward unknown protocols to the first
-            protocol specified.
-          ]]>
-        </help>
+        <help>Interface and port on which to forward if no other protocol has been found. Because sslh tries protocols in the order specified on the command line, this should be specified last. If no default is specified, sslh will forward unknown protocols to the first protocol specified.</help>
         <type>text</type>
     </field>
     <field>
         <id>settings.verbose</id>
         <label>Verbose</label>
-        <help><![CDATA[
-            <b>--verbose</b><br>
-            Increase logging verboseness.
-            ]]>
-        </help>
+        <help>Increase logging verboseness.</help>
         <advanced>true</advanced>
         <type>checkbox</type>
     </field>
     <field>
         <id>settings.numeric</id>
         <label>Numeric</label>
-        <help><![CDATA[
-            <b>--numeric</b><br>
-            Do not attempt to resolve hostnames: logs will contain IP
-            addresses. This is mostly useful if the system's DNS is slow and
-            running the sslh-select variant, as DNS requests will hang all
-            connections.<br>
-            <br>
-            Default: false
-            ]]>
-        </help>
+        <help>Do not attempt to resolve hostnames: logs will contain IP addresses. This is mostly useful if the system's DNS is slow and running the sslh-select variant, as DNS requests will hang all connections. Default: false</help>
         <type>checkbox</type>
         <advanced>true</advanced>
     </field>
