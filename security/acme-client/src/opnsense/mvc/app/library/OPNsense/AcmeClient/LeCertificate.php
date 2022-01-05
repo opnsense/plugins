@@ -414,8 +414,31 @@ class LeCertificate extends LeCommon
     {
         $return = false;
 
+        // Try to get issue date from certificate
+        if (is_file($this->cert_file)) {
+            // Read contents from certificate file
+            $cert_content = @file_get_contents($this->cert_file);
+            if ($cert_content != false) {
+                $cert_info = @openssl_x509_parse($cert_content);
+                if (!empty($cert_info['validFrom_time_t'])) {
+                    $last_update = $cert_info['validFrom_time_t'];
+                } else {
+                    LeUtils::log_error('unable to get expiration time from certificate for ' . (string)$this->config->name);
+                    $last_update = 0; // Just assume the cert requires renewal.
+                }
+            } else {
+                LeUtils::log_error('unable to read certificate content from file for ' . (string)$this->config->name);
+                $last_update = 0; // Just assume the cert requires renewal.
+            }
+        } elseif (!empty((string)$this->config->lastUpdate)) {
+            // Fallback to lastUpdate() state, although it may not be correct
+            // if the cert was imported manually after issue/renewal.
+            $last_update = (string)$this->config->lastUpdate;
+        } else {
+            $last_update = 0; // Just assume the cert requires renewal.
+        }
+
         // Collect required information
-        $last_update = !empty((string)$this->config->lastUpdate) ? (string)$this->config->lastUpdate : 0;
         $current_time = new \DateTime();
         $last_update_time = new \DateTime();
         $last_update_time->setTimestamp($last_update);
