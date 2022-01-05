@@ -1413,7 +1413,7 @@
         <id>validation.dns_cpanel_token</id>
         <label>cPanel API Token</label>
         <type>password</type>
-        <help>Ref: https://docs.cpanel.net/cpanel/security/manage-api-tokens-in-cpanel/</help>
+        <help><![CDATA[Please refer to the <a href="https://docs.cpanel.net/cpanel/security/manage-api-tokens-in-cpanel/">cPanel documentation</a> for further information.]]></help>
     </field>
     <field>
         <id>validation.dns_cpanel_hostname</id>
