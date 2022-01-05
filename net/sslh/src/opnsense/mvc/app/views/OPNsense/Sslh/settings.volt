@@ -1,7 +1,7 @@
 {##
  #
  # OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
- # This file is Copyright © 2021 agh1467 <7823088+agh1467@users.noreply.github.com>
+ # This file is Copyright © 2022 agh1467@protonmail.com
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,

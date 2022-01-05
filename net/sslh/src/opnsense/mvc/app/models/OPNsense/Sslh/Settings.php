@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2021 agh1467 <7823088+agh1467@users.noreply.github.com>
+    Copyright (C) 2022 agh1467@protonmail.com
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
