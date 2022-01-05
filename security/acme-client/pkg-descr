@@ -10,8 +10,11 @@ Plugin Changelog
 
 3.8
 
+NOTE: Support for the cPanel API is not functional. It requires
+a new version of acme.sh, which has not been released yet.
+
 Added:
-* add support for cPanel HTTP API
+* add support for cPanel HTTP API (#2731)
 
 3.7
 
