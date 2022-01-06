@@ -73,6 +73,7 @@ abstract class LeCommon
     protected $cert_domainalias;    # AcmeClient certificate object domain alias
     protected $cert_challengealias; # AcmeClient certificate object challenge alias
     protected $cert_keylength;      # Private key length
+    protected $cert_ecc;            # ECC cert?
 
     // Account details
     protected $account_id;          # AcmeClient account object ID
