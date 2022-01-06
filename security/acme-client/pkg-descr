@@ -16,6 +16,13 @@ a new version of acme.sh, which has not been released yet.
 Added:
 * add support for cPanel HTTP API (#2731)
 
+Fixed:
+* fix calculation of renewal date (#2721)
+* properly handle ecc certs in automations (#2723)
+
+Changed:
+* show CA in accounts list
+
 3.7
 
 Fixed:
