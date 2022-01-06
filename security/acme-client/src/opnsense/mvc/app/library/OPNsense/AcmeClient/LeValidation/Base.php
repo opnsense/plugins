@@ -50,7 +50,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      * @param $accountuuid string the UUID of the account object
      * @return bool
      */
-    public function init(string $certid, string $accountuuid)
+    public function init(string $certid, string $accountuuid, bool $certecc = false)
     {
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -97,6 +97,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id));
 
+        // ECC cert
+        $this->cert_ecc = $certecc;
+
         return true;
     }
 
@@ -136,8 +139,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Issue or renew
         $acme_action = $renew == true ? 'renew' : 'issue';
 
-        // Handle special key types
-        if ($this->cert_keylength == 'ec256' || $this->cert_keylength == 'ec384') {
+        // Handle ECC certs
+        if ($this->cert_ecc) {
             if ($renew == true) {
                 // If it's a renew then pass --ecc to acme client to locate the correct cert directory
                 $this->acme_args[] = '--ecc';

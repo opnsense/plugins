@@ -81,6 +81,9 @@ class LeCertificate extends LeCommon
         if ($this->config->keyLength == 'key_ec256' || $this->config->keyLength == 'key_ec384') {
             // Pass --ecc to acme client to locate the correct cert directory
             $this->acme_args[] = '--ecc';
+            $this->cert_ecc = true;
+        } else {
+            $this->cert_ecc = false;
         }
 
         // Store cert filenames
@@ -628,7 +631,7 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account);
+            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
             // Ignore invalid automations.
             if ($automation->prepare()) {
                 $automation->run();
@@ -677,7 +680,7 @@ class LeCertificate extends LeCommon
                 LeUtils::log_error('invalid challenge type for certificate: ' . (string)$this->config->name);
                 return false;
             }
-            if (!$val->init((string)$this->config->id, (string)$this->config->account)) {
+            if (!$val->init((string)$this->config->id, (string)$this->config->account, $this->cert_ecc)) {
                 LeUtils::log_error('failed to initialize validation for certificate: ' . (string)$this->config->name);
                 return false;
             }
