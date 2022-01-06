@@ -291,5 +291,6 @@ $( document ).ready(function() {
         });
     });
 
+    updateServiceControlUI('dnscryptproxy');
 });
 </script>

@@ -82,7 +82,7 @@ if (isset($nginx['http_server'])) {
         $http_servers = array($nginx['http_server']);
     }
     foreach ($http_servers as $http_server) {
-        if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate'])) {
+        if (!empty($http_server['listen_https_address']) && !empty($http_server['certificate'])) {
           // try to find the reference
             $cert = find_cert($http_server['certificate']);
             if (!isset($cert)) {
@@ -127,7 +127,7 @@ if (isset($nginx['stream_server'])) {
         $stream_servers = array($nginx['stream_server']);
     }
     foreach ($stream_servers as $stream_server) {
-        if (!empty($stream_server['listen_port']) && !empty($stream_server['certificate'])) {
+        if (!empty($stream_server['listen_address']) && !empty($stream_server['certificate'])) {
           // try to find the reference
             $cert = find_cert($stream_server['certificate']);
             if (!isset($cert)) {
@@ -283,8 +283,7 @@ foreach ($nginx->errorpage->iterateItems() as $errorpage) {
                 @file_put_contents(ERRORPAGE_DIR . "/$filename", $content);
             }
             chmod(ERRORPAGE_DIR . "/$filename", 0644);
-        }
-        else {
+        } else {
             unset($used_errorpages[array_search($uuid, $used_errorpages)]);
         }
     }

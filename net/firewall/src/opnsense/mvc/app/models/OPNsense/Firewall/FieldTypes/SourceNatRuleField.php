@@ -45,7 +45,7 @@ class SourceNatRuleContainerField extends ContainerField
      */
     public function serialize()
     {
-        $result = array();
+        $result = [];
         $source_mapper = [
             'enabled' => false,
             'source_net' => false,

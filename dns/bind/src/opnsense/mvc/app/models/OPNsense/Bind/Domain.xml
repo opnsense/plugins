@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/domain</mount>
     <description>BIND domain configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <domains>
             <domain type="ArrayField">
@@ -17,9 +17,26 @@
                         <slave>slave</slave>
                     </OptionValues>
                 </type>
-                <masterip type="HostnameField">
+                <masterip type="NetworkField">
                     <Required>N</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
                 </masterip>
+                <transferkeyalgo type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                        <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                        <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                        <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                        <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                        <hmac-md5>HMAC-MD5</hmac-md5>
+                    </OptionValues>
+                </transferkeyalgo>
+                <transferkey type="TextField">
+                    <Required>N</Required>
+                    <default></default>
+                </transferkey>
                 <allownotifyslave type="NetworkField">
                     <Required>N</Required>
                     <FieldSeparator>,</FieldSeparator>

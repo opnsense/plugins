@@ -9,6 +9,11 @@ ensures light use of system resources.
 Plugin Changelog
 ================
 
+1.3
+
+* Added Yearly statistics.
+* Fixed typo leftover from removing weekly statistics.
+
 1.2
 
 * Remove Weekly statistics, unsupported since vnStat v2

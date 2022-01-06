@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -263,7 +263,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     // Add a new HAProxy ACL
                     $acl_uuid = $mdlHAProxy->newAcl(
                         "find_acme_challenge",
-                        "Added by Let's Encrypt plugin",
+                        "Added by ACME Client plugin",
                         "path_beg",
                         "0",
                         array("path_beg" => "/.well-known/acme-challenge/")
@@ -273,7 +273,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     $backend_uuid = $mdlHAProxy->newBackend(
                         "1",
                         "acme_challenge_backend",
-                        "Added by Let's Encrypt plugin",
+                        "Added by ACME Client plugin",
                         "http",
                         "source",
                         "",
@@ -283,7 +283,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     // Add a new HAProxy action
                     $action_uuid = $mdlHAProxy->newAction(
                         "redirect_acme_challenges",
-                        "Added by Let's Encrypt plugin",
+                        "Added by ACME Client plugin",
                         "if",
                         "",
                         "and",
@@ -298,7 +298,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     // Add a new HAProxy server
                     $server_uuid = $mdlHAProxy->newServer(
                         "acme_challenge_host",
-                        "Added by Let's Encrypt plugin",
+                        "Added by ACME Client plugin",
                         "127.0.0.1",
                         $acme_port,
                         "active",

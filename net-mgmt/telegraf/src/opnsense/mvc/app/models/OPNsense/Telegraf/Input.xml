@@ -93,5 +93,8 @@
             <default>0</default>
             <Required>N</Required>
         </intrusion_detection_alerts>
+        <unbound type="BooleanField">
+            <Required>N</Required>
+        </unbound>
     </items>
 </model>

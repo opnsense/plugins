@@ -5,6 +5,15 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.10
+
+* Add option to enable/disable local query logs
+* Add manual disable of specific servers
+
+1.9
+
+* Fix logging due to Phalcon4 update
+
 1.8
 
 * Remove 8 discontinued DNSBL lists and 2 that are not updated any more

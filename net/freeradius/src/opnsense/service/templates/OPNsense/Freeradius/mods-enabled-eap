@@ -4,7 +4,7 @@
 ##
 ##  eap.conf -- Configuration for EAP types (PEAP, TTLS, etc.)
 ##
-##      $Id: 427016c66da92b5aa87ac784e74550c4e723c0cd $
+##        $Id: 239ac4c00c1240f38d21881eec5588a84d1ba0fe $
 
 #######################################################################
 #
@@ -37,7 +37,7 @@ eap {
         #  configurable length of time, entries in the list
         #  expire, and are deleted.
         #
-        timer_expire     = 60
+        timer_expire = 60
 
         #  There are many EAP types, but the server has support
         #  for only a limited subset.  If the server receives
@@ -51,6 +51,7 @@ eap {
         #  If another module is NOT configured to handle the
         #  request, then the request will still end up being
         #  rejected.
+        #
         ignore_unknown_eap_types = no
 
         # Cisco AP1230B firmware 12.2(13)JA1 has a bug.  When given
@@ -59,17 +60,24 @@ eap {
         #
         # We can work around it by configurably adding an extra
         # zero byte.
+        #
         cisco_accounting_username_bug = no
 
-        #
         #  Help prevent DoS attacks by limiting the number of
         #  sessions that the server is tracking.  For simplicity,
         #  this is taken from the "max_requests" directive in
         #  radiusd.conf.
+        #
         max_sessions = ${max_requests}
 
-        # Supported EAP-types
 
+        ############################################################
+        #
+        #  Supported EAP-types
+        #
+
+
+        #  EAP-MD5
         #
         #  We do NOT recommend using EAP-MD5 authentication
         #  for wireless connections.  It is insecure, and does
@@ -78,17 +86,17 @@ eap {
         md5 {
         }
 
-        #
-        # EAP-pwd -- secure password-based authentication
-        #
-#       pwd {
-#               group = 19
 
-                #
-#               server_id = theserver@example.com
+        #  EAP-pwd -- secure password-based authentication
+        #
+        #pwd {
+        #        group = 19
+
+        #        server_id = theserver@example.com
 
                 #  This has the same meaning as for TLS.
-#               fragment_size = 1020
+                #
+        #        fragment_size = 1020
 
                 # The virtual server which determines the
                 # "known good" password for the user.
@@ -96,25 +104,22 @@ eap {
                 # section is processed.  EAP-PWD requests can be
                 # distinguished by having a User-Name, but
                 # no User-Password, CHAP-Password, EAP-Message, etc.
-#               virtual_server = "inner-tunnel"
-#       }
+                #
+        #        virtual_server = "inner-tunnel"
+        #}
 
-        # Cisco LEAP
+
+        #  Cisco LEAP
         #
         #  We do not recommend using LEAP in new deployments.  See:
         #  http://www.securiteam.com/tools/5TP012ACKE.html
         #
-        #  Cisco LEAP uses the MS-CHAP algorithm (but not
-        #  the MS-CHAP attributes) to perform it's authentication.
+        #  As of 3.0.22, LEAP has been removed from the server.
+        #  It is insecure, and no one should be using it.
         #
-        #  As a result, LEAP *requires* access to the plain-text
-        #  User-Password, or the NT-Password attributes.
-        #  'System' authentication is impossible with LEAP.
-        #
-        leap {
-        }
 
-        #  Generic Token Card.
+
+        #  EAP-GTC -- Generic Token Card
         #
         #  Currently, this is only permitted inside of EAP-TTLS,
         #  or EAP-PEAP.  The module "challenges" the user with
@@ -128,7 +133,8 @@ eap {
         gtc {
                 #  The default challenge, which many clients
                 #  ignore..
-                #challenge = "Password: "
+                #
+        #        challenge = "Password: "
 
                 #  The plain-text response which comes back
                 #  is put into a User-Password attribute,
@@ -145,9 +151,11 @@ eap {
                 auth_type = PAP
         }
 
-        ## Common TLS configuration for TLS-based EAP types
+
+        #  Common TLS configuration for TLS-based EAP types
+        #  ------------------------------------------------
         #
-        #  See raddb/certs/README for additional comments
+        #  See raddb/certs/README.md for additional comments
         #  on certificates.
         #
         #  If OpenSSL was not found at the time the server was
@@ -167,14 +175,11 @@ eap {
         #  to install the server, and to perform some simple
         #  tests with EAP-TLS, TTLS, or PEAP.
         #
-        #  See also:
-        #
-        #  http://www.dslreports.com/forum/remark,9286052~mode=flat
-        #
         #  Note that you should NOT use a globally known CA here!
         #  e.g. using a Verisign cert as a "known CA" means that
         #  ANYONE who has a certificate signed by them can
         #  authenticate via EAP-TLS!  This is likely not what you want.
+        #
         tls-config tls-common {
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
@@ -185,22 +190,48 @@ eap {
 {% else %}
                 private_key_password = whatever
                 private_key_file = ${certdir}/server.pem
+
                 #  If Private key & Certificate are located in
                 #  the same file, then private_key_file &
                 #  certificate_file must contain the same file
                 #  name.
                 #
                 #  If ca_file (below) is not used, then the
-                #  certificate_file below MUST include not
-                #  only the server certificate, but ALSO all
-                #  of the CA certificates used to sign the
-                #  server certificate.
+                #  certificate_file below SHOULD also include all of
+                #  the intermediate CA certificates used to sign the
+                #  server certificate, but NOT the root CA.
+                #
+                #  Including the ROOT CA certificate is not useful and
+                #  merely inflates the exchanged data volume during
+                #  the TLS negotiation.
+                #
+                #  This file should contain the server certificate,
+                #  followed by intermediate certificates, in order.
+                #  i.e. If we have a server certificate signed by CA1,
+                #  which is signed by CA2, which is signed by a root
+                #  CA, then the "certificate_file" should contain
+                #  server.pem, followed by CA1.pem, followed by
+                #  CA2.pem.
+                #
+                #  When using "ca_file" or "ca_dir", the
+                #  "certificate_file" should contain only
+                #  "server.pem".  And then you may (or may not) need
+                #  to set "auto_chain", depending on your version of
+                #  OpenSSL.
+                #
+                #  In short, SSL / TLS certificates are complex.
+                #  There are many versions of software, each of which
+                #  behave slightly differently.  It is impossible to
+                #  give advice which will work everywhere.  Instead,
+                #  we give general guidelines.
+                #
                 certificate_file = ${certdir}/server.pem
 {% endif %}
                 #  Trusted Root CA list
                 #
-                #  ALL of the CA's in this list will be trusted
-                #  to issue client certificates for authentication.
+                #  This file can contain multiple CA certificates.
+                #  ALL of the CA's in this list will be trusted to
+                #  issue client certificates for authentication.
                 #
                 #  In general, you should use self-signed
                 #  certificates for 802.1x (EAP) authentication.
@@ -221,41 +252,49 @@ eap {
                 #
                 #  When setting "auto_chain = no", the server certificate
                 #  file MUST include the full certificate chain.
-        #       auto_chain = yes
+                #
+        #        auto_chain = yes
 
+                #  If OpenSSL supports TLS-PSK, then we can use a
+                #  fixed PSK identity and (hex) password.  As of
+                #  3.0.18, these can be used at the same time as the
+                #  certificate configuration, but only for TLS 1.0
+                #  through 1.2.
                 #
-                #  If OpenSSL supports TLS-PSK, then we can use
-                #  a PSK identity and (hex) password.  When the
-                #  following two configuration items are specified,
-                #  then certificate-based configuration items are
-                #  not allowed.  e.g.:
+                #  If PSK and certificates are configured at the same
+                #  time for TLS 1.3, then the server will warn you,
+                #  and will disable TLS 1.3, as it will not work.
                 #
-                #       private_key_password
-                #       private_key_file
-                #       certificate_file
-                #       ca_file
-                #       ca_path
+                #  The work around is to have two modules (or for
+                #  RadSec, two listen sections).  One will have PSK
+                #  configured, and the other will have certificates
+                #  configured.
                 #
-                #  For now, the identity is fixed, and must be the
-                #  same on the client.  The passphrase must be a hex
-                #  value, and can be up to 256 hex digits.
-                #
-                #  Future versions of the server may be able to
-                #  look up the shared key (hexphrase) based on the
-                #  identity.
-                #
-        #       psk_identity = "test"
-        #       psk_hexphrase = "036363823"
+        #        psk_identity = "test"
+        #        psk_hexphrase = "036363823"
 
+                #  Dynamic queries for the PSK.  If TLS-PSK is used,
+                #  and psk_query is set, then you MUST NOT use
+                #  psk_identity or psk_hexphrase.
                 #
+                #  Instead, use a dynamic expansion similar to the one
+                #  below.  It keys off of TLS-PSK-Identity.  It should
+                #  return a of string no more than 512 hex characters.
+                #  That string will be converted to binary, and will
+                #  be used as the dynamic PSK hexphrase.
+                #
+                #  Note that this query is just an example.  You will
+                #  need to customize it for your installation.
+                #
+        #        psk_query = "%{sql:select hex(key) from psk_keys where keyid = '%{TLS-PSK-Identity}'}"
+
                 #  For DH cipher suites to work, you have to
                 #  run OpenSSL to create the DH file first:
                 #
-                #       openssl dhparam -out certs/dh 2048
+                #    openssl dhparam -out certs/dh 2048
                 #
                 dh_file = ${certdir}/dh
 
-                #
                 #  If your system doesn't have /dev/urandom,
                 #  you will need to create this file, and
                 #  periodically change its contents.
@@ -264,9 +303,8 @@ eap {
                 #  write to files in its configuration
                 #  directory.
                 #
-        #       random_file = /dev/urandom
+        #        random_file = /dev/urandom
 
-                #
                 #  This can never exceed the size of a RADIUS
                 #  packet (4096 bytes), and is preferably half
                 #  that, to accommodate other attributes in
@@ -275,7 +313,7 @@ eap {
                 #  In these cases, fragment size should be
                 #  1024 or less.
                 #
-        #       fragment_size = 1024
+        #        fragment_size = 1024
 
                 #  include_length is a flag which is
                 #  by default set to yes If set to
@@ -285,14 +323,14 @@ eap {
                 #  message is included ONLY in the
                 #  First packet of a fragment series.
                 #
-        #       include_length = yes
+        #        include_length = yes
 
 
                 #  Check the Certificate Revocation List
                 #
                 #  1) Copy CA certificates and CRLs to same directory.
                 #  2) Execute 'c_rehash <CA certs&CRLs Directory>'.
-                #    'c_rehash' is OpenSSL's command.
+                #     'c_rehash' is OpenSSL's command.
                 #  3) uncomment the lines below.
                 #  5) Restart radiusd
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
@@ -303,25 +341,38 @@ eap {
         #       check_crl = yes
 {% endif %}
                 # Check if intermediate CAs have been revoked.
-        #       check_all_crl = yes
+        #        check_all_crl = yes
 
                 ca_path = ${cadir}
 
+                # OpenSSL does not reload contents of ca_path dir over time.
+                # That means that if check_crl is enabled and CRLs are loaded
+                # from ca_path dir, at some point CRLs will expire and
+                # RADIUSd will stop authenticating users.
+                # If ca_path_reload_interval is non-zero, it will force OpenSSL
+                # to reload all data from ca_path periodically
                 #
+                # Flush ca_path each hour
+        #        ca_path_reload_interval = 3600
+
+
+                # Accept an expired Certificate Revocation List
+                #
+        #        allow_expired_crl = no
+
                 #  If check_cert_issuer is set, the value will
                 #  be checked against the DN of the issuer in
                 #  the client certificate.  If the values do not
                 #  match, the certificate verification will fail,
                 #  rejecting the user.
                 #
-                #  In 2.1.10 and later, this check can be done
-                #  more generally by checking the value of the
-                #  TLS-Client-Cert-Issuer attribute.  This check
-                #  can be done via any mechanism you choose.
+                #  This check can be done more generally by checking
+                #  the value of the TLS-Client-Cert-Issuer attribute.
+                #  This check can be done via any mechanism you
+                #  choose.
                 #
-        #       check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd"
+        #        check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd"
 
-                #
                 #  If check_cert_cn is set, the value will
                 #  be xlat'ed and checked against the CN
                 #  in the client certificate.  If the values
@@ -332,57 +383,108 @@ eap {
                 #  "check_cert_issuer" is not set, or if
                 #  the check succeeds.
                 #
-                #  In 2.1.10 and later, this check can be done
-                #  more generally by checking the value of the
-                #  TLS-Client-Cert-CN attribute.  This check
-                #  can be done via any mechanism you choose.
+                #  This check can be done more generally by writing
+                #  "unlang" statements to examine the value of the
+                #  TLS-Client-Cert-Common-Name attribute.
                 #
-        #       check_cert_cn = %{User-Name}
-                #
-                # Set this option to specify the allowed
-                # TLS cipher suites.  The format is listed
-                # in "man 1 ciphers".
-                #
-                # For EAP-FAST, use "ALL:!EXPORT:!eNULL:!SSLv2"
+        #        check_cert_cn = %{User-Name}
+
+                #  Set this option to specify the allowed
+                #  TLS cipher suites.  The format is listed
+                #  in "man 1 ciphers".
                 #
                 cipher_list = "DEFAULT"
 
-                # If enabled, OpenSSL will use server cipher list
-                # (possibly defined by cipher_list option above)
-                # for choosing right cipher suite rather than
-                # using client-specified list which is OpenSSl default
-                # behavior. Having it set to yes is a current best practice
-                # for TLS
+                #  If enabled, OpenSSL will use server cipher list
+                #  (possibly defined by cipher_list option above)
+                #  for choosing right cipher suite rather than
+                #  using client-specified list which is OpenSSl default
+                #  behavior.  Setting this to "yes" means that OpenSSL
+                #  will choose the servers ciphers, even if they do not
+                #  best match what the client sends.
+                #
+                #  TLS negotiation is usually good, but can be imperfect.
+                #  This setting allows administrators to "fine tune" it
+                #  if necessary.
+                #
                 cipher_server_preference = no
 
-                # Work-arounds for OpenSSL nonsense
-                # OpenSSL 1.0.1f and 1.0.1g do not calculate
-                # the EAP keys correctly.  The fix is to upgrade
-                # OpenSSL, or disable TLS 1.2 here.
+                #  You can selectively disable TLS versions for
+                #  compatability with old client devices.
                 #
-                #  For EAP-FAST, this MUST be set to "yes".
+                #  If your system has OpenSSL 1.1.0 or greater, do NOT
+                #  use these.  Instead, set tls_min_version and
+                #  tls_max_version.
                 #
-#               disable_tlsv1_2 = no
+#                disable_tlsv1_2 = yes
+#                disable_tlsv1_1 = yes
+#                disable_tlsv1 = yes
 
-                #
 
+                #  Set min / max TLS version.
                 #
+                #  Generally speaking you should NOT use TLS 1.0 or
+                #  TLS 1.1.  They are old, possibly insecure, and
+                #  deprecated.  However, it is sometimes necessary to
+                #  enable it for compatibility with legact systems.
+                #  We recommend replacing those legacy systems, and
+                #  using at least TLS 1.2.
+                #
+                #  Some Debian versions disable older versions of TLS,
+                #  and requires the application to manually enable
+                #  them.
+                #
+                #  If you are running such a distribution, you should
+                #  set these options, otherwise older clients will not
+                #  be able to connect.
+                #
+                #  Allowed values are "1.0", "1.1", "1.2", and "1.3".
+                #
+                #  As of 2021, it is STRONGLY RECOMMENDED to set
+                #
+                #        tls_min_version = "1.2"
+                #
+                #  Older TLS versions are insecure and deprecated.
+                #
+                #  In order to enable TLS 1.0 and TLS 1.1, you may
+                #  also need to update cipher_list below to:
+                #
+                #        cipher_list = "DEFAULT@SECLEVEL=1"
+                #
+                #  The values must be in quotes.
+                #
+                tls_min_version = "{{ OPNsense.freeradius.eap.tls_min_version }}"
+                tls_max_version = "1.2"
+
                 #  Elliptical cryptography configuration
                 #
-                #  Only for OpenSSL >= 0.9.8.f
+                #  This configuration should be one of the following:
                 #
-                ecdh_curve = "prime256v1"
+                #  * a name of the curve to use, e.g. "prime256v1".
+                #
+                #  * a colon separated list of curve NIDs or names.
+                #
+                #  * an empty string, in which case OpenSSL will choose
+                #    the "best" curve for the situation.
+                #
+                #  For supported curve names, please run
+                #
+                #        openssl ecparam -list_curves
+                #
+                ecdh_curve = "{{ OPNsense.freeradius.eap.elliptic_curve }}"
 
-                #
                 #  Session resumption / fast reauthentication
                 #  cache.
                 #
                 #  The cache contains the following information:
                 #
-                #  session Id - unique identifier, managed by SSL
-                #  User-Name  - from the Access-Accept
-                #  Stripped-User-Name - from the Access-Request
-                #  Cached-Session-Policy - from the Access-Accept
+                #   session Id - unique identifier, managed by SSL
+                #   User-Name  - from the Access-Accept
+                #   Stripped-User-Name - from the Access-Request
+                #   Cached-Session-Policy - from the Access-Accept
+                #
+                #  See also the "store" subsection below for
+                #  additional attributes which can be cached.
                 #
                 #  The "Cached-Session-Policy" is the name of a
                 #  policy which should be applied to the cached
@@ -399,10 +501,31 @@ eap {
                 #  You probably also want "use_tunneled_reply = yes"
                 #  when using fast session resumption.
                 #
+                #  You can check if a session has been resumed by
+                #  looking for the existence of the EAP-Session-Resumed
+                #  attribute.  Note that this attribute will *only*
+                #  exist in the "post-auth" section.
+                #
+                #  CAVEATS: The cache is stored and reloaded BEFORE
+                #  the "post-auth" section is run.  This limitation
+                #  makes caching more difficult than it should be.  In
+                #  practice, it means that the first authentication
+                #  session must set the reply attributes before the
+                #  post-auth section is run.
+                #
+                #  When the session is resumed, the attributes are
+                #  restored and placed into the session-state list.
+                #
                 cache {
-                        #
                         #  Enable it.  The default is "no". Deleting the entire "cache"
                         #  subsection also disables caching.
+                        #
+                        #  The session cache requires the use of the
+                        #  "name" and "persist_dir" configuration
+                        #  items, below.
+                        #
+                        #  The internal OpenSSL session cache has been permanently
+                        #  disabled.
                         #
                         #  You can disallow resumption for a particular user by adding the
                         #  following attribute to the control item list:
@@ -414,22 +537,11 @@ eap {
                         #
                         enable = yes
 
-                        #
                         #  Lifetime of the cached entries, in hours. The sessions will be
                         #  deleted/invalidated after this time.
                         #
                         lifetime = 24 # hours
 
-                        #
-                        #  The maximum number of entries in the
-                        #  cache.  Set to "0" for "infinite".
-                        #
-                        #  This could be set to the number of users
-                        #  who are logged in... which can be a LOT.
-                        #
-                        max_entries = 255
-
-                        #
                         #  Internal "name" of the session cache. Used to
                         #  distinguish which TLS context sessions belong to.
                         #
@@ -438,13 +550,17 @@ eap {
                         #  set the "name" if you want to persist sessions (see
                         #  below).
                         #
-                        #name = "EAP module"
+                #        name = "EAP module"
 
-                        #
                         #  Simple directory-based storage of sessions.
                         #  Two files per session will be written, the SSL
                         #  state and the cached VPs. This will persist session
                         #  across server restarts.
+                        #
+                        #  The default directory is ${logdir}, for historical
+                        #  reasons.  You should ${db_dir} instead.  And check
+                        #  the value of db_dir in the main radiusd.conf file.
+                        #  It should not point to ${raddb}
                         #
                         #  The server will need write perms, and the directory
                         #  should be secured from anyone else. You might want
@@ -454,13 +570,27 @@ eap {
                         #
                         #  This feature REQUIRES "name" option be set above.
                         #
-                        #persist_dir = "${logdir}/tlscache"
+                #        persist_dir = "${logdir}/tlscache"
+
+                        #
+                        #  As of 3.0.20, it is possible to partially
+                        #  control which attributes exist in the
+                        #  session cache.  This subsection lists
+                        #  attributes which are taken from the reply,
+                        #  and saved to the on-disk cache.  When the
+                        #  session is resumed, these attributes are
+                        #  added to the "session-state" list.  The
+                        #  default configuration will then take care
+                        #  of copying them to the reply.
+                        #
+                        store {
+                                Tunnel-Private-Group-Id
+                        }
                 }
 
-                #
-                #  As of version 2.1.10, client certificates can be
-                #  validated via an external command.  This allows
-                #  dynamic CRLs or OCSP to be used.
+                #  Client certificates can be validated via an
+                #  external command.  This allows dynamic CRLs or OCSP
+                #  to be used.
                 #
                 #  This configuration is commented out in the
                 #  default configuration.  Uncomment it, and configure
@@ -479,7 +609,8 @@ eap {
                         #  If you want to skip verify on OCSP success,
                         #  uncomment this configuration item, and set it
                         #  to "yes".
-        #               skip_if_ocsp_ok = no
+                        #
+                #        skip_if_ocsp_ok = no
 
                         #  A temporary directory where the client
                         #  certificates are stored.  This directory
@@ -492,7 +623,8 @@ eap {
                         #
                         #  You should also delete all of the files
                         #  in the directory when the server starts.
-        #               tmpdir = /tmp/radiusd
+                        #
+                #        tmpdir = /tmp/radiusd
 
                         #  The command used to verify the client cert.
                         #  We recommend using the OpenSSL command-line
@@ -506,25 +638,24 @@ eap {
                         #  in PEM format.  This file is automatically
                         #  deleted by the server when the command
                         #  returns.
-        #               client = "/path/to/openssl verify -CApath ${..ca_path} %{TLS-Client-Cert-Filename}"
+                        #
+                #        client = "/path/to/openssl verify -CApath ${..ca_path} %{TLS-Client-Cert-Filename}"
                 }
 
-                #
                 #  OCSP Configuration
+                #
                 #  Certificates can be verified against an OCSP
                 #  Responder. This makes it possible to immediately
                 #  revoke certificates without the distribution of
                 #  new Certificate Revocation Lists (CRLs).
                 #
                 ocsp {
-                        #
                         #  Enable it.  The default is "no".
                         #  Deleting the entire "ocsp" subsection
                         #  also disables ocsp checking
                         #
                         enable = no
 
-                        #
                         #  The OCSP Responder URL can be automatically
                         #  extracted from the certificate in question.
                         #  To override the OCSP Responder URL set
@@ -532,13 +663,11 @@ eap {
                         #
                         override_cert_url = yes
 
-                        #
                         #  If the OCSP Responder address is not extracted from
                         #  the certificate, the URL can be defined here.
                         #
                         url = "http://127.0.0.1/ocsp/"
 
-                        #
                         # If the OCSP Responder can not cope with nonce
                         # in the request, then it can be disabled here.
                         #
@@ -552,15 +681,13 @@ eap {
                         # to disable it in the query here.
                         # See http://technet.microsoft.com/en-us/library/cc770413%28WS.10%29.aspx
                         #
-                        # use_nonce = yes
+                #        use_nonce = yes
 
-                        #
                         # Number of seconds before giving up waiting
                         # for OCSP response. 0 uses system default.
                         #
-                        # timeout = 0
+                #        timeout = 0
 
-                        #
                         # Normally an error in querying the OCSP
                         # responder (no response from server, server did
                         # not understand the request, etc) will result in
@@ -574,34 +701,55 @@ eap {
                         # certificates to connect if the OCSP responder
                         # is not available. Use with caution.
                         #
-                        # softfail = no
+                #        softfail = no
                 }
         }
 
-        ## EAP-TLS
+
+        #  EAP-TLS
         #
-        #  As of Version 3.0, the TLS configuration for TLS-based
-        #  EAP types is above in the "tls-config" section.
+        #  The TLS configuration for TLS-based EAP types is held in
+        #  the "tls-config" section, above.
         #
         tls {
-                # Point to the common TLS configuration
+                #  Point to the common TLS configuration
+                #
                 tls = tls-common
 
-                #
-                # As part of checking a client certificate, the EAP-TLS
-                # sets some attributes such as TLS-Client-Cert-CN. This
-                # virtual server has access to these attributes, and can
-                # be used to accept or reject the request.
+                #  As part of checking a client certificate, the EAP-TLS
+                #  sets some attributes such as TLS-Client-Cert-Common-Name. This
+                #  virtual server has access to these attributes, and can
+                #  be used to accept or reject the request.
                 #
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.check_tls_names') and OPNsense.freeradius.eap.check_tls_names == '1' %}
                 virtual_server = check-eap-tls
 {%   endif %}
 {% endif %}
+                #  You can control whether or not EAP-TLS requires a
+                #  client certificate by setting
+                #
+                #        configurable_client_cert = yes
+                #
+                #  Once that setting has been changed, you can then set
+                #
+                #        EAP-TLS-Require-Client-Cert = No
+                #
+                #  in the control items for a request, and the EAP-TLS
+                #  module will not require a client certificate from
+                #  the supplicant.
+                #
+                #  WARNING: This configuration should only be used
+                #  when the users are placed into a "captive portal"
+                #  or "walled garden", where they have limited network
+                #  access.  Otherwise the configuraton will allow
+                #  anyone on the network, without authenticating them!
+                #
+#                configurable_client_cert = no
         }
 
 
-        ## EAP-TTLS
+        #  EAP-TTLS -- Tunneled TLS
         #
         #  The TTLS module implements the EAP-TTLS protocol,
         #  which can be described as EAP inside of Diameter,
@@ -633,6 +781,7 @@ eap {
                 {% else %}
                 default_eap_type = md5
                 {% endif %}
+
                 #  The tunneled authentication request does not usually
                 #  contain useful attributes like 'Calling-Station-Id',
                 #  etc.  These attributes are outside of the tunnel,
@@ -649,16 +798,18 @@ eap {
                 #
                 copy_request_to_tunnel = no
 
+                #  This configuration item is deprecated.  Instead,
+                #  you should use:
                 #
-                #  As of version 3.0.5, this configuration item
-                #  is deprecated.  Instead, you should use
-                #
-                #       update outer.session-state {
-                #               ...
-                #
-                #       }
+                #    update outer.session-state {
+                #      ...
+                #    }
                 #
                 #  This will cache attributes for the final Access-Accept.
+                #
+                #  See "update outer.session-state" in the "post-auth"
+                #  sections of sites-available/default, and of
+                #  sites-available/inner-tunnel
                 #
                 #  The reply attributes sent to the NAS are usually
                 #  based on the name of the user 'outside' of the
@@ -675,15 +826,11 @@ eap {
 {%   else %}
                 use_tunneled_reply = no
 {%   endif %}
-                #
                 #  The inner tunneled request can be sent
                 #  through a virtual server constructed
                 #  specifically for this purpose.
                 #
-                #  If this entry is commented out, the inner
-                #  tunneled request will be sent through
-                #  the virtual server that processed the
-                #  outer requests.
+                #  A virtual server MUST be specified.
                 #
                 virtual_server = "inner-tunnel"
 
@@ -691,23 +838,26 @@ eap {
                 #  same field in the "tls" configuration, above.
                 #  The default value here is "yes".
                 #
-        #       include_length = yes
+        #        include_length = yes
 
+                #  Unlike EAP-TLS, EAP-TTLS does not require a client
+                #  certificate. However, you can require one by setting the
+                #  following option. You can also override this option by
+                #  setting
                 #
-                # Unlike EAP-TLS, EAP-TTLS does not require a client
-                # certificate. However, you can require one by setting the
-                # following option. You can also override this option by
-                # setting
+                #    EAP-TLS-Require-Client-Cert = Yes
                 #
-                #       EAP-TLS-Require-Client-Cert = Yes
+                #  in the control items for a request.
                 #
-                # in the control items for a request.
+                #  Note that the majority of supplicants do not support using a
+                #  client certificate with EAP-TTLS, so this option is unlikely
+                #  to be usable for most people.
                 #
-        #       require_client_cert = yes
+        #        require_client_cert = yes
         }
 
 
-        ## EAP-PEAP
+        #  EAP-PEAP
         #
 
         ##################################################
@@ -720,31 +870,25 @@ eap {
         #  and the client never sends another Access-Request,
         #  then
         #
-        #               STOP!
+        #                STOP!
         #
         #  The server certificate has to have special OID's
         #  in it, or else the Microsoft clients will silently
         #  fail.  See the "scripts/xpextensions" file for
         #  details, and the following page:
         #
-        #       http://support.microsoft.com/kb/814394/en-us
-        #
-        #  For additional Windows XP SP2 issues, see:
-        #
-        #       http://support.microsoft.com/kb/885453/en-us
-        #
+        #        https://support.microsoft.com/en-us/help/814394/
         #
         #  If is still doesn't work, and you're using Samba,
         #  you may be encountering a Samba bug.  See:
         #
-        #       https://bugzilla.samba.org/show_bug.cgi?id=6563
+        #        https://bugzilla.samba.org/show_bug.cgi?id=6563
         #
         #  Note that we do not necessarily agree with their
         #  explanation... but the fix does appear to work.
         #
         ##################################################
 
-        #
         #  The tunneled EAP session needs a default EAP type
         #  which is separate from the one for the non-tunneled
         #  EAP module.  Inside of the TLS/PEAP tunnel, we
@@ -776,16 +920,18 @@ eap {
                 #
                 copy_request_to_tunnel = no
 
+                #  This configuration item is deprecated.  Instead,
+                #  you should use:
                 #
-                #  As of version 3.0.5, this configuration item
-                #  is deprecated.  Instead, you should use
-                #
-                #       update outer.session-state {
-                #               ...
-                #
-                #       }
+                #    update outer.session-state {
+                #      ...
+                #    }
                 #
                 #  This will cache attributes for the final Access-Accept.
+                #
+                #  See "update outer.session-state" in the "post-auth"
+                #  sections of sites-available/default, and of
+                #  sites-available/inner-tunnel
                 #
 {%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
                 use_tunneled_reply = yes
@@ -798,46 +944,49 @@ eap {
                 #  Set this entry to "no" to proxy the tunneled
                 #  EAP-MSCHAP-V2 as normal MSCHAPv2.
                 #
-        #       proxy_tunneled_request_as_eap = yes
-
+                #  This setting can be over-ridden on a packet by
+                #  packet basis by setting
                 #
+                #        &control:Proxy-Tunneled-Request-As-EAP = yes
+                #
+        #        proxy_tunneled_request_as_eap = yes
+
                 #  The inner tunneled request can be sent
                 #  through a virtual server constructed
                 #  specifically for this purpose.
                 #
-                #  If this entry is commented out, the inner
-                #  tunneled request will be sent through
-                #  the virtual server that processed the
-                #  outer requests.
+                #  A virtual server MUST be specified.
                 #
                 virtual_server = "inner-tunnel"
 
-                # This option enables support for MS-SoH
-                # see doc/SoH.txt for more info.
-                # It is disabled by default.
+                #  This option enables support for MS-SoH
+                #  see doc/SoH.txt for more info.
+                #  It is disabled by default.
                 #
-        #       soh = yes
+        #        soh = yes
 
+                #  The SoH reply will be turned into a request which
+                #  can be sent to a specific virtual server:
                 #
-                # The SoH reply will be turned into a request which
-                # can be sent to a specific virtual server:
-                #
-        #       soh_virtual_server = "soh-server"
+        #        soh_virtual_server = "soh-server"
 
+                #  Unlike EAP-TLS, PEAP does not require a client certificate.
+                #  However, you can require one by setting the following
+                #  option. You can also override this option by setting
                 #
-                # Unlike EAP-TLS, PEAP does not require a client certificate.
-                # However, you can require one by setting the following
-                # option. You can also override this option by setting
+                #    EAP-TLS-Require-Client-Cert = Yes
                 #
-                #       EAP-TLS-Require-Client-Cert = Yes
+                #  in the control items for a request.
                 #
-                # in the control items for a request.
+                #  Note that the majority of supplicants do not support using a
+                #  client certificate with PEAP, so this option is unlikely to
+                #  be usable for most people.
                 #
-        #       require_client_cert = yes
+        #        require_client_cert = yes
         }
 
-        #
-        #  This takes no configuration.
+
+        #  EAP-MSCHAPv2
         #
         #  Note that it is the EAP MS-CHAPv2 sub-module, not
         #  the main 'mschap' module.
@@ -851,68 +1000,76 @@ eap {
         #  currently support.
         #
         mschapv2 {
-                #  Prior to version 2.1.11, the module never
-                #  sent the MS-CHAP-Error message to the
-                #  client.  This worked, but it had issues
-                #  when the cached password was wrong.  The
-                #  server *should* send "E=691 R=0" to the
-                #  client, which tells it to prompt the user
-                #  for a new password.
+                #  In earlier versions of the server, this module
+                #  never sent the MS-CHAP-Error message to the client.
+                #  This worked, but it had issues when the cached
+                #  password was wrong.  The server *should* send
+                #  "E=691 R=0" to the client, which tells it to prompt
+                #  the user for a new password.
                 #
-                #  The default is to behave as in 2.1.10 and
-                #  earlier, which is known to work.  If you
-                #  set "send_error = yes", then the error
-                #  message will be sent back to the client.
-                #  This *may* help some clients work better,
-                #  but *may* also cause other clients to stop
-                #  working.
+                #  The default is to use that functionality.  which is
+                #  known to work.  If you set "send_error = yes", then
+                #  the error message will be sent back to the client.
+                #  This *may* help some clients work better, but *may*
+                #  also cause other clients to stop working.
                 #
-#               send_error = no
+        #        send_error = no
 
                 #  Server identifier to send back in the challenge.
                 #  This should generally be the host name of the
                 #  RADIUS server.  Or, some information to uniquely
                 #  identify it.
-#               identity = "FreeRADIUS"
+                #
+        #        identity = "FreeRADIUS"
         }
 
-        ## EAP-FAST
+
+        #  EAP-FAST
         #
         #  The FAST module implements the EAP-FAST protocol
         #
-#       fast {
-                # Point to the common TLS configuration
+        #fast {
+                #  Point to the common TLS configuration
                 #
-                # cipher_list though must include "ADH" for anonymous provisioning.
-                # This is not as straight forward as appending "ADH" alongside
-                # "DEFAULT" as "DEFAULT" contains "!aNULL" so instead it is
-                # recommended "ALL:!EXPORT:!eNULL:!SSLv2" is used
-                #
-#               tls = tls-common
+        #        tls = tls-common
 
-                # PAC lifetime in seconds (default: seven days)
+                #  If 'cipher_list' is set here, it will over-ride the
+                #  'cipher_list' configuration from the 'tls-common'
+                #  configuration.  The EAP-FAST module has it's own
+                #  over-ride for 'cipher_list' because the
+                #  specifications mandata a different set of ciphers
+                #  than are used by the other EAP methods.
                 #
-#               pac_lifetime = 604800
+                #  cipher_list though must include "ADH" for anonymous provisioning.
+                #  This is not as straight forward as appending "ADH" alongside
+                #  "DEFAULT" as "DEFAULT" contains "!aNULL" so instead it is
+                #  recommended "ALL:!EXPORT:!eNULL:!SSLv2" is used
+                #
+        #        cipher_list = "ALL:!EXPORT:!eNULL:!SSLv2"
 
-                # Authority ID of the server
+                #  PAC lifetime in seconds (default: seven days)
                 #
-                # if you are running a cluster of RADIUS servers, you should make
-                # the value chosen here (and for "pac_opaque_key") the same on all
-                # your RADIUS servers.  This value should be unique to your
-                # installation.  We suggest using a domain name.
-                #
-#               authority_identity = "1234"
+        #        pac_lifetime = 604800
 
-                # PAC Opaque encryption key (must be exactly 32 bytes in size)
+                #  Authority ID of the server
                 #
-                # This value MUST be secret, and MUST be generated using
-                # a secure method, such as via 'openssl rand -hex 32'
+                #  If you are running a cluster of RADIUS servers, you should make
+                #  the value chosen here (and for "pac_opaque_key") the same on all
+                #  your RADIUS servers.  This value should be unique to your
+                #  installation.  We suggest using a domain name.
                 #
-#               pac_opaque_key = "0123456789abcdef0123456789ABCDEF"
+        #        authority_identity = "1234"
 
-                # Same as for TTLS, PEAP, etc.
+                #  PAC Opaque encryption key (must be exactly 32 bytes in size)
                 #
-#               virtual_server = inner-tunnel
-#       }
+                #  This value MUST be secret, and MUST be generated using
+                #  a secure method, such as via 'openssl rand -hex 32'
+                #
+        #        pac_opaque_key = "0123456789abcdef0123456789ABCDEF"
+
+                #  Same as for TTLS, PEAP, etc.
+                #
+        #        virtual_server = inner-tunnel
+        #}
 }
 {% endif %}

@@ -1,8 +1,11 @@
 <form>
   <field>
-    <id>streamserver.listen_port</id>
-    <label>Listen Port</label>
-    <type>text</type>
+    <id>streamserver.listen_address</id>
+    <label>Listen Address</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports which can be used in nginx listen directives. To listen on a port on all IPs, use for example "22,[::]:22"</help>
   </field>
   <field>
     <id>streamserver.udp</id>
