@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         {% for tab in tabs %}
-            {% if tab['type'] === 'bgptable' %}
+            {% if tab['type'] in ['bgptable', 'ospftable'] %}
                 /**
                  * initialize bootgrid table for {{ tab['tabhead'] }}
                  */
@@ -70,6 +70,17 @@ POSSIBILITY OF SUCH DAMAGE.
                             $("#details-{{ tab['name'] }}").html(details);
                         }
                     });
+                    {% break %}
+                    {% case 'ospftable' %}
+                        $("#grid-{{ tab['name'] }}").bootgrid('clear');
+
+                        ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
+                            if (status == "success") {
+                                let routes = transformOSPFRoutes(data['response']);
+
+                                $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
+                            }
+                        });
                     {% break %}
                 {% case 'text' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function(data, status) {
@@ -134,6 +145,24 @@ POSSIBILITY OF SUCH DAMAGE.
                         <div class="pull-left" data-toggle="popover">
                             <small id="details-{{ tab['name'] }}"></small>
                         </div>
+                    </div>
+                    {% break %}
+                {% case 'ospftable' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="type" data-formatter="ospf_route_type">{{ lang._('Type') }}</th>
+                                <th data-column-id="network">{{ lang._('Network') }}</th>
+                                <th data-column-id="cost">{{ lang._('Cost') }}</th>
+                                <th data-column-id="area">{{ lang._('Area') }}</th>
+                                <th data-column-id="via">{{ lang._('Via') }}</th>
+                                <th data-column-id="viainterface">{{ lang._('Via interface') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                     {% break %}
                 {% case 'text' %}

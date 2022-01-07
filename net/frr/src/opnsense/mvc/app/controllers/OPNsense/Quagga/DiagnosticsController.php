@@ -60,7 +60,40 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
     }
     public function ospfAction()
     {
-        $this->view->pick('OPNsense/Quagga/diagnosticsospf');
+        $this->view->tabs = [
+            [
+                'name' => 'overview',
+                'endpoint' => '/api/quagga/diagnostics/ospfoverview/plain',
+                'tabhead' => gettext('Overview'),
+                'type' => 'text'
+            ],
+            [
+                'name' => 'routing',
+                'endpoint' => '/api/quagga/diagnostics/ospfroute',
+                'tabhead' => gettext('Routing Table'),
+                'type' => 'ospftable'
+            ],
+            [
+                'name' => 'database',
+                'endpoint' => '/api/quagga/diagnostics/ospfdatabase/plain',
+                'tabhead' => gettext('Database'),
+                'type' => 'text'
+            ],
+            [
+                'name' => 'neighbors',
+                'endpoint' => '/api/quagga/diagnostics/ospfneighbor/plain',
+                'tabhead' => gettext('Neighbors'),
+                'type' => 'text'
+            ],
+            [
+                'name' => 'interfaces',
+                'endpoint' => '/api/quagga/diagnostics/ospfinterface/plain',
+                'tabhead' => gettext('Interfaces'),
+                'type' => 'text'
+            ]
+            ];
+        $this->view->default_tab = 'routing';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function ospfv3Action()
     {
