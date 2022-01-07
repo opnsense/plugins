@@ -38,6 +38,23 @@ let gridopt = {
             } else {
                 return "";
             }
+        },
+        ospf_route_type: function(column, row) {
+            let result = '';
+
+            row[column.id].split(' ').forEach(function(routeType) {
+                let translatedRouteType = translateOSPFTerm(routeType)
+
+                if (translatedRouteType == routeType) {
+                    result += routeType;
+                } else {
+                    result += '<abbr title="' + translatedRouteType + '">' + routeType + '</abbr>';
+                }
+
+                result += ' ';
+            });
+
+            return result;
         }
     }
 };
@@ -85,4 +102,44 @@ function transformBGPDetails(data) {
     }
 
     return html;
+}
+
+/**
+ * OSPF terms and abbreviations - translation table
+ **/
+function translateOSPFTerm(data) {
+    let tr = [];
+
+    // routing table tab
+    tr['N'] = 'Network';
+    tr['R'] = 'Router';
+    tr['IA'] = 'OSPF inter area';
+    tr['N1'] = 'OSPF NSSA external type 1';
+    tr['N2'] = 'OSPF NSSA external type 2';
+    tr['E1'] = 'OSPF external type 1';
+    tr['E2'] = 'OSPF external type 2';
+
+    return ((data in tr) ? tr[data] : data);
+}
+
+/**
+* take the OSPF routes as delivered by the API and transform them into a bootgrid-compatible format
+*/
+function transformOSPFRoutes(data) {
+    let routes = [];
+
+    for(let network in data) {
+        data[network].nexthops.forEach(function(nexthop) {
+            routes.push({
+                type: data[network]['routeType'],
+                network: network,
+                cost: data[network]['cost'],
+                area: data[network]['area'],
+                via: (typeof nexthop['via'] !== 'undefined' ? nexthop['ip'] : 'Directly Attached'),
+                viainterface: (typeof nexthop['via'] !== 'undefined' ? nexthop['via'] : nexthop['directly attached to'])
+            });
+        });
+    }
+
+    return routes;
 }
