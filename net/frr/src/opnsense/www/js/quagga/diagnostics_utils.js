@@ -46,7 +46,7 @@ let gridopt = {
  * take the BGP routes as delivered by the diagnostics API and transform them into a bootgrid-compatible format
  */
  function transformBGPRoutes(data) {
-    let routes = new Array();
+    let routes = [];
 
     for(let network in data) {
         data[network].forEach(function (route) {
