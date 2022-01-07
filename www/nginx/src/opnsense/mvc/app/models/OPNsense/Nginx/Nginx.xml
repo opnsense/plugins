@@ -1198,19 +1198,6 @@
         <Required>Y</Required>
         <default>0</default>
       </strict_transport_security_preload>
-      <hpkp_keys type="CSVListField">
-        <Required>N</Required>
-        <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
-      </hpkp_keys>
-      <hpkp_report_only type="BooleanField">
-        <Required>Y</Required>
-      </hpkp_report_only>
-      <hpkp_time type="IntegerField">
-        <Required>N</Required>
-      </hpkp_time>
-      <hpkp_include_subdomains type="BooleanField">
-        <Required>Y</Required>
-      </hpkp_include_subdomains>
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>

@@ -343,7 +343,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function searchsecurityHeaderAction()
     {
         $data = $this->searchBase('security_header',
-            ['description', 'referrer', 'xssprotection', 'strict_transport_security_time', 'hpkp_keys', 'hpkp_time',
+            ['description', 'referrer', 'xssprotection', 'strict_transport_security_time',
             'enable_csp', 'csp_report_only', 'csp_default_src_enabled', 'csp_script_src_enabled', 'csp_img_src_enabled',
             'csp_style_src_enabled', 'csp_media_src_enabled', 'csp_font_src_enabled', 'csp_frame_src_enabled',
             'csp_frame_ancestors_enabled', 'csp_form_action_enabled']);
@@ -351,19 +351,9 @@ class SettingsController extends ApiMutableModelControllerBase
         // Create "hsts" column (disabled/time)
         foreach ($data['rows'] as &$row) {
             if (intval($row['strict_transport_security_time']) > 0) {
-                $row['hsts'] = sprintf(gettext("%d sec"), intval($row['strict_transport_security_time'])));
+                $row['hsts'] = sprintf(gettext("%d sec"), intval($row['strict_transport_security_time']));
             } else {
                 $row['hsts'] = gettext('disabled');
-            }
-        }
-
-
-        // Create "hpkp" column (enabled/disabled)
-        foreach ($data['rows'] as &$row) {
-            if (!empty($row['hpkp_keys']) && intval($row['hpkp_time']) > 0) {
-                $row['hpkp'] = sprintf("%d %s", intval($row['hpkp_time']), gettext("sec"));
-            } else {
-                $row['hpkp'] = gettext('disabled');
             }
         }
 
