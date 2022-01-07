@@ -486,6 +486,7 @@
                         <dns_porkbun>Porkbun API</dns_porkbun>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
+                        <dns_selfhost>Selfhost API</dns_selfhost>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
@@ -923,6 +924,18 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
+                <dns_selfhost_user type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_user>
+                <dns_selfhost_password type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_password>
+                <dns_selfhost_rid type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid>
+                <dns_selfhost_rid2 type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid2>
                 <dns_servercow_username type="TextField">
                     <Required>N</Required>
                 </dns_servercow_username>
