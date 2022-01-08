@@ -44,15 +44,15 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'neighbors',
-                'endpoint' => '/api/quagga/diagnostics/bgpneighbors/plain',
+                'endpoint' => '/api/quagga/diagnostics/bgpneighbors',
                 'tabhead' => gettext('Neighbors'),
-                'type' => 'text'
+                'type' => 'tree'
             ],
             [
                 'name' => 'summary',
-                'endpoint' => '/api/quagga/diagnostics/bgpsummary/plain',
+                'endpoint' => '/api/quagga/diagnostics/bgpsummary',
                 'tabhead' => gettext('Summary'),
-                'type' => 'text'
+                'type' => 'tree'
             ]
             ];
         $this->view->default_tab = 'routing4';
@@ -63,9 +63,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->tabs = [
             [
                 'name' => 'overview',
-                'endpoint' => '/api/quagga/diagnostics/ospfoverview/plain',
+                'endpoint' => '/api/quagga/diagnostics/ospfoverview',
                 'tabhead' => gettext('Overview'),
-                'type' => 'text'
+                'type' => 'tree'
             ],
             [
                 'name' => 'routing',
@@ -87,9 +87,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'interfaces',
-                'endpoint' => '/api/quagga/diagnostics/ospfinterface/plain',
+                'endpoint' => '/api/quagga/diagnostics/ospfinterface',
                 'tabhead' => gettext('Interfaces'),
-                'type' => 'text'
+                'type' => 'tree'
             ]
             ];
         $this->view->default_tab = 'routing';
