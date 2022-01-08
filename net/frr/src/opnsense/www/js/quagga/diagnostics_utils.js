@@ -143,3 +143,103 @@ function transformOSPFRoutes(data) {
 
     return routes;
 }
+
+/**
+ * tree view: resize widget on window resize
+ */
+function resizeTreeWidget() {
+    let new_height = $(".page-foot").offset().top -
+                     ($(".page-content-head").offset().top + $(".page-content-head").height()) - 160;
+    $(".treewidget").height(new_height);
+    $(".treewidget").css('max-height', new_height + 'px');
+}
+
+/**
+ * tree view: delayed live-search
+ */
+let apply_tree_search_timer = null;
+function treeSearchKeyUp() {
+    let sender = $(this);
+
+    clearTimeout(apply_tree_search_timer);
+    apply_tree_search_timer = setTimeout(function() {
+        let searchTerm = sender.val().toLowerCase();
+        let target = $("#"+sender.attr('for'));
+        let tree = target.tree("getTree");
+        let selected = [];
+        if (tree !== null) {
+            tree.iterate((node) => {
+                let matched = false;
+                if (searchTerm !== "") {
+                    matched = node.name.toLowerCase().includes(searchTerm);
+                    if (!matched && typeof node.value === 'string') {
+                        matched = node.value.toLowerCase().includes(searchTerm);
+                    }
+                }
+                node["selected"] = matched;
+
+                if (matched) {
+                    selected.push(node);
+                    if (node.isFolder()) {
+                        node.is_open = true;
+                    }
+                    let parent = node.parent;
+                    while (parent) {
+                        parent.is_open = true;
+                        parent = parent.parent;
+                    }
+                } else if (node.isFolder()) {
+                    node.is_open = false;
+                }
+
+                return true;
+            });
+            target.tree("refresh");
+            if (selected.length > 0) {
+                target.tree('scrollToNode', selected[0]);
+            }
+        }
+    }, 500);
+}
+
+/**
+ * jqtree expects a list + dict type structure, transform key value store into expected output
+ * https://mbraak.github.io/jqTree/#general
+ */
+ function dict_to_tree(node, path) {
+    // some entries are lists, try use a name for the nodes in that case
+    let node_name_keys = ['name', 'interface-name'];
+    let result = [];
+    if ( path === undefined) {
+        path = "";
+    } else {
+        path = path + ".";
+    }
+    for (let key in node) {
+        if (typeof node[key] === "function") {
+            continue;
+        }
+        let item_path = path + key;
+        if (node[key] instanceof Object) {
+            let node_name = key;
+            for (let idx=0; idx < node_name_keys.length; ++idx) {
+                if (/^(0|[1-9]\d*)$/.test(node_name) && node[key][node_name_keys[idx]] !== undefined) {
+                    node_name = node[key][node_name_keys[idx]];
+                    break;
+                }
+            }
+            result.push({
+                name: node_name,
+                id: item_path,
+                children: dict_to_tree(node[key], item_path)
+            });
+        } else {
+            result.push({
+                name: key,
+                value: node[key],
+                id: item_path
+            });
+        }
+    }
+    return result;
+}

@@ -31,6 +31,18 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script src="{{ cache_safe('/ui/js/quagga/diagnostics_utils.js') }}"></script>
 
+<style>
+    .searchbox {
+      margin: 8px;
+    }
+  
+    .node-selected {
+        font-weight: bolder;
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="{{ cache_safe(theme_file_or_default('/css/jqtree.css', ui_theme|default('opnsense'))) }}">
+  <script src="{{ cache_safe('/ui/js/tree.jquery.min.js') }}"></script>
+
 <script>
     'use strict';
 
@@ -44,6 +56,16 @@ POSSIBILITY OF SUCH DAMAGE.
           $(".tab-icon").removeClass("fa-refresh");
           $("#"+e.target.id).find(".tab-icon").addClass("fa-refresh");
         });
+    
+        /**
+         * resize tree widgets on window resize
+         */
+        $(window).on('resize', resizeTreeWidget);
+
+        /**
+         * delayed search for tree widgets
+         */
+        $(".tree_search").keyup(treeSearchKeyUp);
 
         {% for tab in tabs %}
             {% if tab['type'] in ['bgptable', 'ospftable'] %}
@@ -71,16 +93,62 @@ POSSIBILITY OF SUCH DAMAGE.
                         }
                     });
                     {% break %}
-                    {% case 'ospftable' %}
-                        $("#grid-{{ tab['name'] }}").bootgrid('clear');
+                {% case 'ospftable' %}
+                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
 
-                        ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                            if (status == "success") {
-                                let routes = transformOSPFRoutes(data['response']);
+                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
+                        if (status == "success") {
+                            let routes = transformOSPFRoutes(data['response']);
 
-                                $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
+                            $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
+                        }
+                    });
+                    {% break %}
+                {% case 'tree' %}
+                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
+                        if (status == "success") {
+                            let $tree = $("#tree-{{ tab['name'] }}");
+                            if ($("#tree-{{ tab['name'] }} > ul").length == 0) {
+                                $tree.tree({
+                                    data: dict_to_tree(data['response']),
+                                    autoOpen: false,
+                                    dragAndDrop: false,
+                                    selectable: false,
+                                    closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
+                                    openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
+                                    onCreateLi: function(node, $li) {
+                                        let n_title = $li.find('.jqtree-title');
+                                        n_title.text(n_title.text().replace('&gt;','\>').replace('&lt;','\<'));
+                                        if (node.value !== undefined) {
+                                            $li.find('.jqtree-element').append(
+                                                '&nbsp; <strong>:</strong> &nbsp;' + node.value
+                                            );
+                                        }
+                                        if (node.selected) {
+                                            $li.addClass("node-selected");
+                                        } else {
+                                            $li.removeClass("node-selected");
+                                        }
+                                    }
+                                });
+                                // initial view, collapse first level if there's only one node
+                                if (Object.keys(data['response']).length == 1) {
+                                    for (let key in data['response']) {
+                                        $tree.tree('openNode', $tree.tree('getNodeById', key));
+                                    }
+                                }
+                                //open node on label click
+                                $tree.bind('tree.click', function(e) {
+                                    $tree.tree('toggle', e.node);
+                                });
+                            } else {
+                                let curent_state = $tree.tree('getState');
+                                $tree.tree('loadData', dict_to_tree(data['response']));
+                                $tree.tree('setState', curent_state);
                             }
-                        });
+                        }
+                    });
+                    $(window).trigger('resize');
                     {% break %}
                 {% case 'text' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function(data, status) {
@@ -164,6 +232,18 @@ POSSIBILITY OF SUCH DAMAGE.
                             </tbody>
                         </table>
                     </div>
+                    {% break %}
+                {% case 'tree' %}
+                    <div class="searchbox">
+                        <input
+                            id="search-{{ tab['name'] }}"
+                            type="text"
+                            for="tree-{{tab['name']}}"
+                            class="tree_search"
+                            placeholder="{{ lang._('search') }}"
+                        ></input>
+                    </div>
+                    <div class="treewidget" style="padding: 8px; overflow-y: scroll; height:400px;" id="tree-{{ tab['name'] }}"></div>
                     {% break %}
                 {% case 'text' %}
                     <pre id="text-{{ tab['name'] }}"></pre>
