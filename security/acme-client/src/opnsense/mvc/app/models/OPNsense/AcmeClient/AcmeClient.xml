@@ -1097,6 +1097,7 @@
                     <Required>Y</Required>
                     <OptionValues>
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
+                        <configd_restart_unbound>Restart Unbound</configd_restart_unbound>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
                         <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
