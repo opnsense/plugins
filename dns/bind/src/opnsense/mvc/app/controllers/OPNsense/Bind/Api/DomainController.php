@@ -61,9 +61,14 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
 
-    public function addDomainAction($uuid = null)
+    public function addMasterDomainAction($uuid = null)
     {
-        return $this->addBase('domain', 'domains.domain');
+        return $this->addBase('domain', 'domains.domain', ['type' => 'master']);
+    }
+
+    public function addSlaveDomainAction($uuid = null)
+    {
+        return $this->addBase('domain', 'domains.domain', ['type' => 'slave']);
     }
 
     public function delDomainAction($uuid)
