@@ -33,11 +33,11 @@ Most are standard but some endpoints support maps, which are not
 supported by OPNsense core.
 
 You can detect them simply as they are doing more than just a mapping
-to the *base methods.
+to the \*base methods.
 
 Such mappings work in the way that they catch up the request,
 map the internal data first, and then forward their UUIDs
-to the *base method.
+to the \*base method.
 
 ## The nginx plugin as infrastucture
 
