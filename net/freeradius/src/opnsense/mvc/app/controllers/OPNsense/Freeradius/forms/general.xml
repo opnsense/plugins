@@ -16,14 +16,14 @@
         <label>Enable VLAN fallback assignment</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>This allows you to define a fallback VLAN-Group-ID. Be aware setting this option will send an accepted radius reply even the authentication fails.</help>
+        <help>This allows you to define a fallback VLAN-Group-ID. Warning: Setting this option will send an accepted RADIUS reply even if the authentication attempt fails.</help>
     </field>
     <field>
         <id>general.fallbackvlan_id</id>
-        <label>Fallback VLAN id</label>
+        <label>Fallback VLAN ID</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>Define the Fallback VLAN group id.</help>
+        <help>Define the Fallback VLAN group ID.</help>
     </field>
     <field>
         <id>general.ldap_enabled</id>
