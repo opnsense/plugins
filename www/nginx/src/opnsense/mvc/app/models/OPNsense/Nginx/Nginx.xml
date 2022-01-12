@@ -1194,19 +1194,10 @@
         <Required>Y</Required>
         <default>1</default>
       </strict_transport_security_include_subdomains>
-      <hpkp_keys type="CSVListField">
-        <Required>N</Required>
-        <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
-      </hpkp_keys>
-      <hpkp_report_only type="BooleanField">
+      <strict_transport_security_preload type="BooleanField">
         <Required>Y</Required>
-      </hpkp_report_only>
-      <hpkp_time type="IntegerField">
-        <Required>N</Required>
-      </hpkp_time>
-      <hpkp_include_subdomains type="BooleanField">
-        <Required>Y</Required>
-      </hpkp_include_subdomains>
+        <default>0</default>
+      </strict_transport_security_preload>
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
@@ -1448,6 +1439,76 @@
         <Required>Y</Required>
         <default>0</default>
       </csp_font_src_none>
+      <csp_frame_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_enabled>
+      <csp_frame_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_data_urls>
+      <csp_frame_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_frame_src_http_urls>
+      <csp_frame_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_inline>
+      <csp_frame_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_eval>
+      <csp_frame_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_self>
+      <csp_frame_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_blob>
+      <csp_frame_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_mediastream>
+      <csp_frame_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_filesystem>
+      <csp_frame_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_none>
+      <csp_frame_ancestors_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_enabled>
+      <csp_frame_ancestors_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_data_urls>
+      <csp_frame_ancestors_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_frame_ancestors_http_urls>
+      <csp_frame_ancestors_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_self>
+      <csp_frame_ancestors_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_blob>
+      <csp_frame_ancestors_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_mediastream>
+      <csp_frame_ancestors_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_filesystem>
+      <csp_frame_ancestors_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_none>
       <csp_form_action_enabled type="BooleanField">
         <Required>Y</Required>
         <default>0</default>

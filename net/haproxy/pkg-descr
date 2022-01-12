@@ -11,6 +11,9 @@ Plugin Changelog
 Added:
 * add SSL SNI setting to servers and health checks (#2388)
 
+Fixed:
+* fix custom TCP health checks (#2653)
+
 Changed:
 * replace "force SSL" setting with "SSL preferences" in health checks (#2388)
 * health check port is no longer an advanced option
