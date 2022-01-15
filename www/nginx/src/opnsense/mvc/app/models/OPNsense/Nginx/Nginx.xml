@@ -662,12 +662,6 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </syslog_targets>
-      <listen_http_port type="PortField">
-        <Required>N</Required>
-      </listen_http_port>
-      <listen_https_port type="PortField">
-        <Required>N</Required>
-      </listen_https_port>
       <listen_http_address type="CSVListField">
         <Required>N</Required>
         <multiple>Y</multiple>
@@ -943,9 +937,6 @@
     </http_server>
 
     <stream_server type="ArrayField">
-      <listen_port type="PortField">
-        <Required>N</Required>
-      </listen_port>
       <listen_address type="CSVListField">
         <Required>N</Required>
         <multiple>Y</multiple>
