@@ -186,6 +186,12 @@
       </description>
       <urlpattern type="TextField">
         <Required>Y</Required>
+        <Constraints>
+          <check001>
+            <type>NgxRegexPatternConstraint</type>
+            <matchtype>matchtype</matchtype>
+          </check001>
+        </Constraints>
       </urlpattern>
       <matchtype type="OptionField">
         <OptionValues>
@@ -195,6 +201,11 @@
           <option4 value="^~">Don't check regular expressions on logest prefix match ("^~")</option4>
         </OptionValues>
         <Required>N</Required>
+        <Constraints>
+          <check001>
+            <reference>urlpattern.check001</reference>
+          </check001>
+        </Constraints>
       </matchtype>
       <enable_secrules type="BooleanField">
         <default>0</default>
