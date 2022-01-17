@@ -146,7 +146,7 @@ legacy_html_escape_form_data($a_rfc2136);
                         if (file_exists($filename) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'A')) {
                             echo "IPv4: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 4);
+                                $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 4);
                             } else {
                                 $ipaddr = get_interface_ip($rfc2136['interface']);
                             }
@@ -167,7 +167,7 @@ legacy_html_escape_form_data($a_rfc2136);
                         if (file_exists($filename6) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'AAAA')) {
                             echo "IPv6: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 6);
+                                $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 6);
                             } else {
                                 $ipaddr = get_interface_ipv6($rfc2136['interface']);
                             }
