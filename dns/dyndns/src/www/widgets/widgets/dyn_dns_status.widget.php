@@ -87,15 +87,6 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-        <th colspan="4">
-          <div class="alert alert-warning" role="alert">
-              <strong>
-                  <?=gettext("Please make sure to upgrade to os-ddclient before 21.7 is released as this plugin will be removed from our repository");?>
-              </strong>
-          </div>
-        </th>
-    </tr>
-    <tr>
       <th style="word-break:break-word;"><?=gettext("Interface");?></th>
       <th style="word-break:break-word;"><?=gettext("Service");?></th>
       <th style="word-break:break-word;"><?=gettext("Hostname");?></th>

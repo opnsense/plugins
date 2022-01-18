@@ -110,11 +110,6 @@ legacy_html_escape_form_data($a_dyndns);
     <div class="container-fluid">
       <div class="row">
         <section class="col-xs-12">
-          <div class="alert alert-warning" role="alert">
-              <strong>
-                  <?=gettext("Please make sure to upgrade to os-ddclient before 21.7 is released as this plugin will be removed from our repository");?>
-              </strong>
-          </div>
           <div class="tab-content content-box col-xs-12">
             <form method="post" name="iform" id="iform">
               <div class="table-responsive">
