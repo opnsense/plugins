@@ -1,5 +1,5 @@
 PLUGIN_NAME=		haproxy
-PLUGIN_VERSION=		3.9
+PLUGIN_VERSION=		3.10
 PLUGIN_COMMENT=		Reliable, high performance TCP/HTTP load balancer
 PLUGIN_DEPENDS=		haproxy24
 PLUGIN_MAINTAINER=	opnsense@moov.de
