@@ -49,13 +49,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>haproxy.general.tuning.checkBufferSize</id>
-        <label>Health check buffer size</label>
-        <type>text</type>
-        <help><![CDATA[Change the check buffer size (in bytes). Higher values may help find string or regex patterns in very large pages, though doing so may imply more memory and CPU usage. The default value is 16384.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>haproxy.general.tuning.luaMaxMem</id>
         <label>Maximum RAM per LUA process</label>
         <type>text</type>

@@ -14,6 +14,9 @@ which may result in incompatible changes for some users.
 Changed:
 * upgrade to HAProxy 2.4 release series (#2644)
 
+Removed:
+* remove deprecated option tune.chksize (#2644)
+
 3.9
 
 Added:
