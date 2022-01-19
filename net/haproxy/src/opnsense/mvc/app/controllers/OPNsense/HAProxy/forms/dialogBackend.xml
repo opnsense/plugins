@@ -28,7 +28,7 @@
         <id>backend.algorithm</id>
         <label>Balancing Algorithm</label>
         <type>dropdown</type>
-        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#balance">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#balance">HAProxy documentation</a> for a full description.]]></help>
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
@@ -42,7 +42,7 @@
         <id>backend.proxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>
-        <help><![CDATA[Enforces use of the PROXY protocol over any connection established to the configured servers. The PROXY protocol informs the other end about the layer 3/4 addresses of the incoming connection, so that it can know the client's address or the public address it accessed to, whatever the upper layer protocol. This setting must not be used if the servers are not aware of the PROXY protocol. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#send-proxy">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Enforces use of the PROXY protocol over any connection established to the configured servers. The PROXY protocol informs the other end about the layer 3/4 addresses of the incoming connection, so that it can know the client's address or the public address it accessed to, whatever the upper layer protocol. This setting must not be used if the servers are not aware of the PROXY protocol. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#send-proxy">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -186,7 +186,7 @@
         <id>backend.persistence_cookiemode</id>
         <label>Cookie handling</label>
         <type>dropdown</type>
-        <help><![CDATA[Usually it is better to reuse an existing cookie. In this case HAProxy prefixes the cookie with the required information. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#4.2-cookie">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Usually it is better to reuse an existing cookie. In this case HAProxy prefixes the cookie with the required information. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#4.2-cookie">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.persistence_cookiename</id>
@@ -208,14 +208,14 @@
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
+        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
         <hint>Choose a persistence type.</hint>
     </field>
     <field>
         <id>backend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.stickiness_expire</id>
