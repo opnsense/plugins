@@ -2796,9 +2796,9 @@
                     <Required>N</Required>
                     <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((((udp@|tcp@)?[0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or 192.168.1.1:53.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or tcp@192.168.1.1:53.</ValidationMessage>
                 </nameservers>
                 <parse_resolv_conf type="BooleanField">
                     <default>0</default>
@@ -2825,8 +2825,8 @@
                 </timeout_retry>
                 <accepted_payload_size type="IntegerField">
                     <MinimumValue>0</MinimumValue>
-                    <MaximumValue>8192</MaximumValue>
-                    <ValidationMessage>Should be a number between 0 and 8192</ValidationMessage>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Should be a number between 0 and 65535</ValidationMessage>
                     <Required>N</Required>
                 </accepted_payload_size>
                 <hold_valid type="TextField">
