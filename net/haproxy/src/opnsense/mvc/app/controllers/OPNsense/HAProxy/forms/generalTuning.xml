@@ -27,7 +27,7 @@
         <id>haproxy.general.tuning.maxConnections</id>
         <label>Maximum connections</label>
         <type>text</type>
-        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> Consider raising the settings for kern.maxfiles and kern.maxfilesperproc in <a target="_blank" href="/ui/haproxy#general-settings">System: Settings: Tunables</a>, otherwise HAProxy will fail to open the specified number of connections.</div>]]></help>
+        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> Consider raising the settings for kern.maxfiles and kern.maxfilesperproc in <a target="_blank" href="/system_advanced_sysctl.php">System: Settings: Tunables</a>, otherwise HAProxy will fail to open the specified number of connections.</div>]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.sslServerVerify</id>
