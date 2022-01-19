@@ -109,13 +109,6 @@
                     <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
                     <Required>N</Required>
                 </bufferSize>
-                <checkBufferSize type="IntegerField">
-                    <default>16384</default>
-                    <MinimumValue>1024</MinimumValue>
-                    <MaximumValue>1048576</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
-                    <Required>N</Required>
-                </checkBufferSize>
                 <spreadChecks type="IntegerField">
                     <default>2</default>
                     <MinimumValue>0</MinimumValue>
