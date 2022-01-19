@@ -89,7 +89,7 @@
         <id>action.http_request_redirect</id>
         <label>HTTP Redirect</label>
         <type>text</type>
-        <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. See <a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. See <a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -128,7 +128,7 @@
         <id>action.http_request_add_header_content</id>
         <label>Header Content</label>
         <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it is possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it is possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -145,7 +145,7 @@
         <id>action.http_request_set_header_content</id>
         <label>Header Content</label>
         <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -251,7 +251,7 @@
         <id>action.http_response_add_header_content</id>
         <label>Header Content</label>
         <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -268,7 +268,7 @@
         <id>action.http_response_set_header_content</id>
         <label>Header Content</label>
         <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>
