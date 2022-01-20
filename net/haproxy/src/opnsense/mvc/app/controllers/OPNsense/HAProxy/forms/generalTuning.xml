@@ -27,7 +27,7 @@
         <id>haproxy.general.tuning.maxConnections</id>
         <label>Maximum connections</label>
         <type>text</type>
-        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> HAProxy will not be able to allocate enough memory if you set this value too high. Consider raising the settings for kern.maxfiles and kern.maxfilesperproc if you need to specify a non-default value.</div>]]></help>
+        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> Consider raising the settings for kern.maxfiles and kern.maxfilesperproc in <a target="_blank" href="/system_advanced_sysctl.php">System: Settings: Tunables</a>, otherwise HAProxy will fail to open the specified number of connections.</div>]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.sslServerVerify</id>
@@ -46,13 +46,6 @@
         <label>Buffer size</label>
         <type>text</type>
         <help><![CDATA[Change the buffer size (in bytes). Lower values allow more sessions to coexist in the same amount of RAM, and higher values allow some applications with very large cookies to work. The default value is 16384. <br/><div class="text-info"><b>NOTE:</b> It is strongly recommended not to change this from the default value, as very low values will break some services such as statistics, and values larger than default size will increase memory usage, possibly causing the system to run out of memory.</div>]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>haproxy.general.tuning.checkBufferSize</id>
-        <label>Health check buffer size</label>
-        <type>text</type>
-        <help><![CDATA[Change the check buffer size (in bytes). Higher values may help find string or regex patterns in very large pages, though doing so may imply more memory and CPU usage. The default value is 16384.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

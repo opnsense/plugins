@@ -698,7 +698,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -740,7 +740,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -755,7 +755,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -773,7 +773,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sCache:%s HAProxy's cache which was designed to perform cache on small objects (favicon, css, etc.). This is a minimalist low-maintenance cache which runs in RAM.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sPeers:%s Configure a communication channel between two HAProxy instances. This will propagate entries of any data-types in stick-tables between these HAProxy instances over TCP connections in a multi-master fashion. Useful when aiming for a seamless failover in a HA setup.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#10" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#3.5" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#10" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#3.5" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -790,7 +790,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sE-Mail Alerts:%s It is possible to send email alerts when the state of servers changes. Each configuration can be used in %sBackend Pools%s to send e-mail alerts to the configured recipient.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
