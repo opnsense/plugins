@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf6</mount>
     <description>OSPFv3 Routing configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -19,7 +19,7 @@
         </redistribute>
         <routerid type="TextField">
                 <default></default>
-                <Required>Y</Required>
+                <Required>N</Required>
                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
         </routerid>
         <interfaces>
