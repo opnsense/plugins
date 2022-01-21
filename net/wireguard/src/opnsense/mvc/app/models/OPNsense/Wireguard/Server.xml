@@ -17,7 +17,7 @@
                 </name>
                 <instance type="AutoNumberField">
                     <MinimumValue>0</MinimumValue>
-                    <MaximumValue>19</MaximumValue>
+                    <MaximumValue>99</MaximumValue>
                     <ValidationMessage>Maximum number of instances reached</ValidationMessage>
                     <Required>Y</Required>
                 </instance>
