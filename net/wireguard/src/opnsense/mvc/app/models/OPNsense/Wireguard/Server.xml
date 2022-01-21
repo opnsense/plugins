@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/server</mount>
     <description>Wireguard Server configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <items>
         <servers>
             <server type="ArrayField">
@@ -16,9 +16,6 @@
                     <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, and A-Z</ValidationMessage>
                 </name>
                 <instance type="AutoNumberField">
-                    <MinimumValue>0</MinimumValue>
-                    <MaximumValue>99</MaximumValue>
-                    <ValidationMessage>Maximum number of instances reached</ValidationMessage>
                     <Required>Y</Required>
                 </instance>
                 <pubkey type="TextField">
