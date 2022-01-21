@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.10
+
+* Set maximum number of instances to 100
+
 1.9
 
 * Rename interface label in filter rules (#2577)
