@@ -14,7 +14,6 @@
             <Required>Y</Required>
         </version>
         <networks type="CSVListField">
-            <default></default>
             <Required>N</Required>
             <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
         </networks>
