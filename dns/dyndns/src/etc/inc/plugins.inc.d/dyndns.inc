@@ -187,6 +187,7 @@ function dyndns_configure_client($conf)
         $dnsResourceID = $conf['resourceid'],
         $dnsTTL = $conf['ttl'],
         $dnsResultMatch = "{$conf['resultmatch']}",
+        $dnsResultMatchUseRegex = "{$conf['resultmatch_use_regex']}",
         $dnsRequestIf = "{$conf['requestif']}",
         $dnsID = "{$conf['id']}",
         $dnsVerboseLog = $conf['verboselog'],
