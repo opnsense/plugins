@@ -53,7 +53,7 @@
  *  Oray                        - Last Tested: 26 May 2017
  *  STRATO                      - Last Tested: 08 October 2021
  *  STRATO V6                   - Last Tested: 08 October 2021
- *  SelfHost                    - Last Tested: 26 December 2011
+ *  SelfHost                    - Last Tested: 22 January 2022
  *  StaticCling                 - Last Tested: 27 April 2006
  *  deSEC                       - Last Tested: 09 September 2020
  *  deSEC v6                    - Last Tested: 09 September 2020
@@ -98,6 +98,7 @@ class updatedns
     var $_debugID;
     var $_if;
     var $_dnsResultMatch;
+    var $_dnsResultMatchUseRegex;
     var $_dnsRequestIf;
     var $_dnsRequestIfIP;
     var $_dnsVerboseLog;
@@ -134,6 +135,7 @@ class updatedns
         $dnsResourceID = '',
         $dnsTTL = '',
         $dnsResultMatch = '',
+        $dnsResultMatchUseRegex = false,
         $dnsRequestIf = '',
         $dnsID = '',
         $dnsVerboseLog = false,
@@ -284,6 +286,7 @@ class updatedns
         $this->_checkIP();
         $this->_dnsUpdateURL = $dnsUpdateURL;
         $this->_dnsResultMatch = $dnsResultMatch;
+        $this->_dnsResultMatchUseRegex = $dnsResultMatchUseRegex;
         $this->_dnsRequestIf = dyndns_failover_interface($dnsRequestIf, $this->_useIPv6 ? 'inet6' : 'all');
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost}): running dyndns_failover_interface for {$dnsRequestIf}. found {$this->_dnsRequestIf}");
@@ -1534,14 +1537,23 @@ class updatedns
                     $successful_update = true;
                 } else {
                     $this->_dnsResultMatch = str_replace("%IP%", $this->_dnsIP, $this->_dnsResultMatch);
-                    $matches = preg_split("/(?<!\\\\)\\|/", $this->_dnsResultMatch);
-                    foreach ($matches as $match) {
-                        $match = str_replace("\\|", "|", $match);
-                        if (strcmp($match, trim($data, "\t\n\r")) == 0) {
+                    if($this->_dnsResultMatchUseRegex) {
+                        if($this->_dnsVerboseLog) {
+                            log_error("Dynamic DNS: Result match use RegEx: " .$this->_dnsResultMatch);
+                        }
+                        if(preg_match($this->_dnsResultMatch, $data) == 1) {
                             $successful_update = true;
                         }
+                    } else {
+                        $matches = preg_split("/(?<!\\\\)\\|/", $this->_dnsResultMatch);
+                        foreach ($matches as $match) {
+                            $match = str_replace("\\|", "|", $match);
+                            if (strcmp($match, trim($data, "\t\n\r")) == 0) {
+                                $successful_update = true;
+                            }
+                        }
+                        unset($matches);
                     }
-                    unset($matches);
                 }
                 if ($successful_update == true) {
                     $status = "Dynamic DNS: (Success) IP Address Updated Successfully!";
