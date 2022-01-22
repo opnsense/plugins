@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $id = $_GET['id'];
     }
     $config_copy_fieldnames = array('username', 'password', 'host', 'mx', 'type', 'zoneid','resourceid', 'ttl', 'updateurl',
-                                    'resultmatch', 'requestif', 'descr', 'interface');
+                                    'resultmatch', 'resultmatch_use_regex', 'requestif', 'descr', 'interface');
     foreach ($config_copy_fieldnames as $fieldname) {
         if (isset($id) && isset($a_dyndns[$id][$fieldname])) {
             $pconfig[$fieldname] = $a_dyndns[$id][$fieldname];
@@ -171,6 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $dyndns['updateurl'] = $pconfig['updateurl'];
         // Trim hard-to-type but sometimes returned characters
         $dyndns['resultmatch'] = trim($pconfig['resultmatch'], "\t\n\r");
+        $dyndns['resultmatch_use_regex'] = $pconfig['resultmatch_use_regex'];
         ($dyndns['type'] == "custom" || $dyndns['type'] == "custom-v6") ? $dyndns['requestif'] = $pconfig['requestif'] : $dyndns['requestif'] = $pconfig['interface'];
         $dyndns['descr'] = $pconfig['descr'];
         $dyndns['force'] = isset($pconfig['force']);
@@ -437,6 +438,8 @@ include("head.inc");
                     <td><a id="help_for_resultmatch" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext("Result Match") ?></td>
                     <td>
                       <textarea name="resultmatch" class="formpre" id="resultmatch" cols="65" rows="7"><?= $pconfig['resultmatch'] ?></textarea>
+                      <input name="resultmatch_use_regex" type="checkbox" id="resultmatch_use_regex" value="yes" <?= empty($pconfig['resultmatch_use_regex']) ? '' : 'checked="checked"'  ?> >
+                      <?= gettext("Use RegEx to match the result") ?>
                       <div class="hidden" data-for="help_for_resultmatch">
                         <?= gettext("This field is only used by Custom Dynamic DNS Entries.") ?>
                         <br />
