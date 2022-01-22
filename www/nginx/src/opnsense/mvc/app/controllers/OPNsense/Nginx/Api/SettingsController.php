@@ -342,7 +342,80 @@ class SettingsController extends ApiMutableModelControllerBase
     // http security headers
     public function searchsecurityHeaderAction()
     {
-        return $this->searchBase('security_header', array('description'));
+        $data = $this->searchBase(
+            'security_header',
+            ['description', 'referrer', 'xssprotection', 'strict_transport_security_time',
+            'enable_csp', 'csp_report_only', 'csp_default_src_enabled', 'csp_script_src_enabled', 'csp_img_src_enabled',
+            'csp_style_src_enabled', 'csp_media_src_enabled', 'csp_font_src_enabled', 'csp_frame_src_enabled',
+            'csp_frame_ancestors_enabled',
+            'csp_form_action_enabled']
+        );
+
+        // Create "hsts" column (disabled/time)
+        foreach ($data['rows'] as &$row) {
+            if (intval($row['strict_transport_security_time']) > 0) {
+                $row['hsts'] = sprintf(gettext("%d sec"), intval($row['strict_transport_security_time']));
+            } else {
+                $row['hsts'] = gettext('disabled');
+            }
+        }
+
+        // Create "csp" column (enabled/report only/disabled)
+        foreach ($data['rows'] as &$row) {
+            if ($row['enable_csp']) {
+                if ($row['csp_report_only']) {
+                    $row['csp'] = gettext('report only');
+                } else {
+                    $row['csp'] = gettext('enabled');
+                }
+            } else {
+                $row['csp'] = gettext('disabled');
+            }
+        }
+
+        // Create "csp_details" column
+        foreach ($data['rows'] as &$row) {
+            if ($row['enable_csp']) {
+                $enabled = [];
+                if ($row['csp_default_src_enabled']) {
+                    $enabled[] = gettext("Default Source");
+                }
+                if ($row['csp_script_src_enabled']) {
+                    $enabled[] = gettext("Script Source");
+                }
+                if ($row['csp_img_src_enabled']) {
+                    $enabled[] = gettext("Image Source");
+                }
+                if ($row['csp_style_src_enabled']) {
+                    $enabled[] = gettext("Style Source");
+                }
+                if ($row['csp_media_src_enabled']) {
+                    $enabled[] = gettext("Media Source");
+                }
+                if ($row['csp_font_src_enabled']) {
+                    $enabled[] = gettext("Font Source");
+                }
+                if ($row['csp_frame_src_enabled']) {
+                    $enabled[] = gettext("Frame Source");
+                }
+                if ($row['csp_frame_ancestors_enabled']) {
+                    $enabled[] = gettext("Frame Ancestors");
+                }
+                if ($row['csp_form_action_enabled']) {
+                    $enabled[] = gettext("Form Action");
+                }
+
+                if (count($enabled)) {
+                    $row['csp_details'] = implode(', ', $enabled);
+                } else {
+                    $row['csp_details'] = gettext('none');
+                }
+            } else {
+                $row['csp_details'] = '';
+            }
+        }
+
+        return $data;
     }
 
     public function getsecurityHeaderAction($uuid = null)

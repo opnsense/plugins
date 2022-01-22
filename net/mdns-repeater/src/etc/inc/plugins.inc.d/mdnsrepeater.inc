@@ -28,12 +28,8 @@
 
 function mdnsrepeater_enabled()
 {
-    $mdns_repeater = new \OPNsense\MDNSRepeater\MDNSRepeater();
-    if ((string)$mdns_repeater->enabled == '1') {
-        return true;
-    }
-
-    return false;
+    $model = new \OPNsense\MDNSRepeater\MDNSRepeater();
+    return (string)$model->enabled == '1';
 }
 
 function mdnsrepeater_firewall($fw)
@@ -54,7 +50,7 @@ function mdnsrepeater_services()
     }
 
     $services[] = array(
-        'description' => gettext('MDNS Repeater'),
+        'description' => gettext('mDNS Repeater'),
         'configd' => array(
             'restart' => array('mdnsrepeater restart'),
             'start' => array('mdnsrepeater start'),

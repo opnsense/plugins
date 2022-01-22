@@ -24,7 +24,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <sortable>true</sortable>
-        <help><![CDATA[Add nameservers to this resolver configuration, i.e. 127.0.0.1:53 or 192.168.1.1:53. Use TAB key to complete typing.]]></help>
+        <help><![CDATA[Add nameservers to this resolver configuration. They may be prefixed with either tcp@ or udp@ to use the TCP or UDP protocol respectively. For example 192.168.1.1:53, tcp@192.168.1.1:53 or udp@192.168.1.1:53. Use TAB key to complete typing.]]></help>
         <hint>Enter ip:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -55,7 +55,7 @@
         <id>resolver.accepted_payload_size</id>
         <label>Max DNS answer size</label>
         <type>text</type>
-        <help><![CDATA[Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section. The default is 512 bytes, the maximum allowed is 8192.]]></help>
+        <help><![CDATA[Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section. The default is 512 bytes, the maximum allowed is 8192 for UDP and 65535 for TCP.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
