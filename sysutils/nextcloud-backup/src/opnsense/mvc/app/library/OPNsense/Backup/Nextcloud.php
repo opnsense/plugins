@@ -281,13 +281,13 @@ class Nextcloud extends Base implements IBackupProvider
     public function getInternalUsername($url, $username, $password): string
     {
         try {
-        $xml_response = $this->ocs_request(
-            "$url/ocs/v1.php/cloud/user",
-            $username,
-            $password,
-            "GET",
-            "Cannot get real username"
-        );        
+            $xml_response = $this->ocs_request(
+                "$url/ocs/v1.php/cloud/user",
+                $username,
+                $password,
+                "GET",
+                "Cannot get real username"
+            );        
             $data = $xml_response->data;
             if ($data == null) {
                 return $username; // no data found, return the old username
