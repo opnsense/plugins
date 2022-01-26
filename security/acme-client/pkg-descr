@@ -8,6 +8,29 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.8
+
+NOTE: Support for the cPanel and Selfhost API is not functional. It requires
+a new version of acme.sh, which has not been released yet.
+
+Added:
+* add support for cPanel HTTP API (#2731)
+* add support for Selfhost DNS API (#2746)
+
+Fixed:
+* fix calculation of renewal date (#2721)
+* properly handle ecc certs in automations (#2723)
+
+Changed:
+* show CA in accounts list
+
+3.7
+
+Fixed:
+* fix SFTP buttons not visible (#2712)
+* fix invalid default value when no WAN interface can be found (#2712)
+* fix incompatibility with new gcloud SDK (#2710)
+
 3.6
 
 Added:

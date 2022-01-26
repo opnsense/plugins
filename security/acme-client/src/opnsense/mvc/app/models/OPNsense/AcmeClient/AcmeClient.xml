@@ -362,7 +362,6 @@
                 </http_opn_autodiscovery>
                 <http_opn_interface type="InterfaceField">
                     <Required>N</Required>
-                    <default>wan</default>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
                     </filters>
@@ -404,7 +403,6 @@
                 </tlsalpn_acme_autodiscovery>
                 <tlsalpn_acme_interface type="InterfaceField">
                     <Required>N</Required>
-                    <default>wan</default>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
                     </filters>
@@ -431,6 +429,7 @@
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
+                        <dns_cpanel>cPanel API</dns_cpanel>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
@@ -487,6 +486,7 @@
                         <dns_porkbun>Porkbun API</dns_porkbun>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
+                        <dns_selfhost>Selfhost API</dns_selfhost>
                         <dns_servercow>Servercow API v1</dns_servercow>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
@@ -924,6 +924,18 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
+                <dns_selfhost_user type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_user>
+                <dns_selfhost_password type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_password>
+                <dns_selfhost_rid type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid>
+                <dns_selfhost_rid2 type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid2>
                 <dns_servercow_username type="TextField">
                     <Required>N</Required>
                 </dns_servercow_username>
@@ -1051,6 +1063,15 @@
                 <dns_dynv6_token type="TextField">
                     <Required>N</Required>
                 </dns_dynv6_token>
+                <dns_cpanel_user type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_user>
+                <dns_cpanel_token type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_token>
+                <dns_cpanel_hostname type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_hostname>
             </validation>
         </validations>
         <actions>
