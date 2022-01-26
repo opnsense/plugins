@@ -287,7 +287,7 @@ class Nextcloud extends Base implements IBackupProvider
                 $password,
                 "GET",
                 "Cannot get real username"
-            );        
+            );
             $data = $xml_response->data;
             if ($data == null) {
                 return $username; // no data found, return the old username
