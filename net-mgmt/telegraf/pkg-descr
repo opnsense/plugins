@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.4
+
+* Add 5 second timeout to unbound input
+
 1.12.3
 
 * Add insecure_skip_verify as an option for Influx v2 output
