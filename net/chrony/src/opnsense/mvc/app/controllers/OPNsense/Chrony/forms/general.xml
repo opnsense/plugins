@@ -26,7 +26,7 @@
     <field>
         <id>general.fallbackpeers</id>
         <label>Fallback Peer</label>
-        <style>text</style>
+        <type>text</type>
         <help>Set fallback peer if you use NTS and your system starts with wrong time. Best to only use this for internal trusted peers.</help>
     </field>
     <field>
