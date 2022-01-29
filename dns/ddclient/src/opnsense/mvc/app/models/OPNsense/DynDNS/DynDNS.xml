@@ -54,6 +54,7 @@
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
                         <changeip>Changeip</changeip>
+                        <cloudflare>Cloudflare</cloudflare>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DslReports</dslreports1>
@@ -87,6 +88,10 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </wildcard>
+                <zone type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>N</IpAllowed>
+                </zone>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>

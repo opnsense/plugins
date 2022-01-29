@@ -31,6 +31,13 @@
         <help>add a DNS wildcard CNAME record that points to the configured host.</help>
     </field>
     <field>
+        <id>account.zone</id>
+        <label>Zone</label>
+        <type>text</type>
+        <style>optional_setting service_cloudflare</style>
+        <help>Zone containing the host entry.</help>
+    </field>
+    <field>
         <id>account.hostnames</id>
         <label>Hostname(s)</label>
         <type>select_multiple</type>
