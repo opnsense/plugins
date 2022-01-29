@@ -89,7 +89,7 @@
                     <Required>Y</Required>
                 </wildcard>
                 <zone type="HostnameField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
                 </zone>
                 <description type="TextField">
