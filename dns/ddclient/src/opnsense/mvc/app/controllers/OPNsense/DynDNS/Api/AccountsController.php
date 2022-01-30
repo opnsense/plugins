@@ -41,7 +41,7 @@ class AccountsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             "accounts.account",
-            ['enabled', 'service', 'description', 'username', 'hostnames'],
+            ['enabled', 'service', 'description', 'username', 'hostnames','use_interface','interface'],
             "description"
         );
     }
