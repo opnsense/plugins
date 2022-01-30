@@ -40,8 +40,14 @@
                     <web_nsupdate_info_ipv4 value="web_nsupdate.info-ipv4">nsupdate.info-ipv4</web_nsupdate_info_ipv4>
                     <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv6</web_nsupdate_info_ipv6>
                     <web_zoneedit>zoneedit</web_zoneedit>
+                    <if>Interface</if>
                 </OptionValues>
             </checkip>
+            <interface type="InterfaceField">
+                <Required>N</Required>
+                <multiple>N</multiple>
+                <default>wan</default>
+            </interface>
         </general>
         <accounts>
             <account type="ArrayField">

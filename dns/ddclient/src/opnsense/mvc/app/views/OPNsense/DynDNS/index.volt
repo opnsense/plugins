@@ -70,6 +70,21 @@ POSSIBILITY OF SUCH DAMAGE.
             });
             $("#account\\.service").change();
         });
+
+        $("#ddclient\\.general\\.checkip").change(function(){
+            let checkip = $(this).val();
+            $(".optional_setting").each(function(){
+                let this_item = $(this);
+                if (this_item.hasClass("checkip_"+checkip)) {
+                    this_item.prop( "disabled", false );
+                    this_item.closest("tr").show();
+                } else {
+                    this_item.closest("tr").hide();
+                    this_item.prop( "disabled", true );
+                }
+            });
+        });
+        $("#ddclient\\.general\\.checkip").change();
     });
 
 </script>

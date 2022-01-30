@@ -26,4 +26,10 @@
           How to determine the address to uswe for this host
         </help>
     </field>
+    <field>
+        <id>ddclient.general.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <style>optional_setting checkip_if</style>
+    </field>
 </form>
