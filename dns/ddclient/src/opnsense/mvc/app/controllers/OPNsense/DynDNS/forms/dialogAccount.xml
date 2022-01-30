@@ -46,6 +46,17 @@
         <help>Hostname to update</help>
     </field>
     <field>
+        <id>account.use_interface</id>
+        <label>Use interface IP</label>
+        <type>checkbox</type>
+        <help>Use the IP of a specified interface for the update</help>
+    </field>
+    <field>
+        <id>account.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+    </field>
+    <field>
         <id>account.description</id>
         <label>Description</label>
         <type>text</type>
