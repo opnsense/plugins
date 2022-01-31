@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.apcupsd.general.Enabled') and OPNsense.apcupsd.general.Enabled == "1" %}
+apcupsd_enable="YES"
+{% else %}
+apcupsd_enable="NO"
+{% endif %}
