@@ -13,6 +13,7 @@
  *    - _detectChange()
  *    - _debug()
  *    - _checkIP()
+ *    - _check_rfc1918
  * +----------------------------------------------------+
  *  1984 Hosting Company        - Last Tested: 03 August 2020
  *  3322                        - Last Tested: 26 May 2017
@@ -394,6 +395,11 @@ class updatedns
         if ($this->_dnsVerboseLog) {
             log_error("Dynamic DNS ({$this->_dnsHost} via {$this->_dnsServiceList[$this->_dnsService]}): _update() starting.");
         }
+
+		if( $this->check_rfc1918($this->_dnsIP) == 0 ) {		
+			log_error("Dynamic DNS. Update address {$this->_dnsIP} is within RFC1918 - Rejecting");
+            return;
+		}
 
         if ($this->_dnsService != 'ods' and $this->_dnsService != 'route53' and $this->_dnsService != 'route53-v6') {
             $ch = curl_init();
@@ -2039,4 +2045,29 @@ class updatedns
 
         return $ip_address;
     }
+	
+	function check_rfc1918($ip_address) 
+	{
+		$this_address = ip2long($ip_address);
+	
+		$r10Start = ip2long('10.0.0.0');
+		$r10End = ip2long('10.255.255.255');
+		
+		$r172Start = ip2long('172.16.0.0');
+		$r172End = ip2long('172.16.255.255');
+		
+		$r192Start = ip2long('192.168.0.0');
+		$r192End = ip2long('192.168.255.255');
+
+		$is_valid = 1;
+		
+		if ( $this_address >= $r10Start and $this_address <= r10End ||
+			/* OK so far as r10 */
+			 $this_address >= $r172Start and $this_address <= r172End ||
+				/* OK so far as r172 */
+		     $this_address >= $r192Start and $this_address <= r192End) {                 
+                 $is_valid = 0;
+        }
+		return $is_valid;
+	}
 }
