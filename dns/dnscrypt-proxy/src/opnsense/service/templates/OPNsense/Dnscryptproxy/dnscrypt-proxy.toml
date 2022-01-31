@@ -5,7 +5,7 @@ server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.s
 {%   endif %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.disabled_serverlist') and OPNsense.dnscryptproxy.general.disabled_serverlist != '' %}
-disabled_server_names = ['{{OPNsense.dnscryptproxy.general.disabled_serverlist}}']
+disabled_server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.disabled_serverlist.split(','))) + "'" }}]
 {%   endif %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
