@@ -67,10 +67,7 @@ if ($mdns_repeater_carp_enabled) {
             $backend->configdRun('mdnsrepeater start');
             break;
         case 'BACKUP':
-            if (file_exists('/var/run/mdns-repeater.CARP_MASTER')) {
-                unlink('/var/run/mdns-repeater.CARP_MASTER');
-            }
-
+            @unlink('/var/run/mdns-repeater.CARP_MASTER');
             $backend->configdRun('mdnsrepeater stop');
             break;
     }
