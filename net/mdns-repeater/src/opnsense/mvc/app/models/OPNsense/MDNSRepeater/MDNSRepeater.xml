@@ -1,12 +1,16 @@
 <model>
   <mount>//OPNsense/MDNSRepeater</mount>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>mdns-repeater settings</description>
   <items>
     <enabled type="BooleanField">
       <default>0</default>
       <Required>Y</Required>
     </enabled>
+    <enablecarp type="BooleanField">
+      <default>0</default>
+      <Required>Y</Required>
+    </enablecarp>
     <interfaces type="InterfaceField">
       <default>lan</default>
       <Required>Y</Required>
