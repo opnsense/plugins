@@ -2,6 +2,15 @@ mdns-repeater is a Multicast DNS repeater. Multicast DNS uses the 224.0.0.251
 address, which is "administratively scoped" and does not leave the subnet.
 
 This program re-broadcast mDNS packets from one interface to other interfaces.
+It can be used to bridge zeroconf devices to work properly across the two subnets.
 
-It can be used to bridge zeroconf devices to work properly across the two
-subnets.
+Plugin Changelog
+================
+
+1.1
+
+* CARP support (contributed by Markus Reiter)
+
+1.0
+
+* Initial release

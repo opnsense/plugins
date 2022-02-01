@@ -54,6 +54,7 @@
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
                         <changeip>Changeip</changeip>
+                        <cloudflare>Cloudflare</cloudflare>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DslReports</dslreports1>
@@ -64,12 +65,13 @@
                         <noip>Noip</noip>
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
+                        <strato>STRATO</strato>
                         <zoneedit1>Zoneedit</zoneedit1>
                     </OptionValues>
                 </service>
                 <username type="TextField">
-                    <Required>Y</Required>
-                    <mask>/^([a-z0-9\-.@_:+])*$/u</mask>
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9\-.@_:+])*$/u</mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
@@ -86,6 +88,10 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </wildcard>
+                <zone type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>N</IpAllowed>
+                </zone>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>

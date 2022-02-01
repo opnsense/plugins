@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 Deciso B.V.
+ * Copyright (C) 2021 Axelrtgs
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- namespace OPNsense\DynDNS;
+namespace OPNsense\AcmeClient\LeValidation;
 
- use OPNsense\Base\BaseModel;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
- /**
-  * Class DynDNS
-  * @package OPNsense\DynDNS
-  */
-class DynDNS extends BaseModel
+/**
+ * CF DNS API
+ * @package OPNsense\AcmeClient
+ */
+class DnsCpanel extends Base implements LeValidationInterface
 {
+    public function prepare()
+    {
+        # https://github.com/acmesh-official/acme.sh/wiki/dnsapi#136-use-cpanel-dns-systems
+        $this->acme_env['cPanel_Username'] = (string)$this->config->dns_cpanel_user;
+        $this->acme_env['cPanel_Apitoken'] = (string)$this->config->dns_cpanel_token;
+        $this->acme_env['cPanel_Hostname'] = (string)$this->config->dns_cpanel_hostname;
+    }
 }

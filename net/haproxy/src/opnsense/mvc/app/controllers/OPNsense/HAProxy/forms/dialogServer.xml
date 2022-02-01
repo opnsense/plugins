@@ -109,6 +109,12 @@
         <help><![CDATA[Enable or disable SSL communication with this server.]]></help>
     </field>
     <field>
+        <id>server.sslSNI</id>
+        <label>SSL SNI</label>
+        <type>text</type>
+        <help><![CDATA[The host name sent in the SNI TLS extension to the server.]]></help>
+    </field>
+    <field>
         <id>server.sslVerify</id>
         <label>Verify SSL Certificate</label>
         <type>checkbox</type>
@@ -119,7 +125,7 @@
         <label>SSL Verify CA</label>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help><![CDATA[These CAs will be used to verify server's certificate. <br/>To import additional CAs, go to <a href="/system_certmanager.php">Certificate Manager</a>.]]></help>
+        <help><![CDATA[The selected CAs will be used to verify the server certificate. When nothing is selected, the system-wide CA certificate bundle will be used. <br/>To import additional CAs, go to <a href="/system_camanager.php">Authority Manager</a>.]]></help>
         <hint>Type CA name or choose from list.</hint>
     </field>
     <field>

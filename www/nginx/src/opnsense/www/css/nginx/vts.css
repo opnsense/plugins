@@ -24,7 +24,9 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 */
-
+#update {
+    margin-bottom: 1em;
+}
 #monitor h1 {
     margin: .5em 0 0 0;
 }
@@ -38,15 +40,10 @@
     font-size: .8em;
     margin: .5em 0;
     border-collapse: collapse;
-    border-bottom: 1px #DED solid;
 }
 #monitor thead th {
     font-size: 1em;
     padding: .1em .3em;
-    border: .2em solid #FFF;
-}
-#monitor tbody tr.odd {
-    background: #F5F5F5;
 }
 #monitor tbody th {
     text-align: left;
@@ -58,11 +55,6 @@
 #monitor tbody td.key {
     font-size: 1em;
     padding: .1em .3em;
-    border: .2em solid #FFF;
-}
-#monitor div.update {
-    margin-top: 32px;
-    color: #696969;
 }
 /* from https://www.flag-sprites.com */
 .flag {

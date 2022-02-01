@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2018 David Harrigan
- *    Copyright (C) 2017 Deciso B.V.
+ *    Copyright (C) 2021 Frank Wall
  *
  *    All rights reserved.
  *
@@ -29,10 +28,23 @@
  *
  */
 
-namespace OPNsense\NodeExporter;
+namespace OPNsense\HAProxy\Migrations;
 
-use OPNsense\Base\BaseModel;
+use OPNsense\Base\BaseModelMigration;
 
-class General extends BaseModel
+class M3_5_0 extends BaseModelMigration
 {
+    public function run($model)
+    {
+        foreach ($model->getNodeByReference('healthchecks.healthcheck')->iterateItems() as $healthcheck) {
+            switch ((string)$healthcheck->force_ssl) {
+                case '0':
+                    $healthcheck->ssl = 'nopref';
+                    break;
+                case '1':
+                    $healthcheck->ssl = 'ssl';
+                    break;
+            }
+        }
+    }
 }

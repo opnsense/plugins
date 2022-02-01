@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 Deciso B.V.
+ * Copyright (C) 2022 Marvo2011
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- namespace OPNsense\DynDNS;
+namespace OPNsense\AcmeClient\LeValidation;
 
- use OPNsense\Base\BaseModel;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
- /**
-  * Class DynDNS
-  * @package OPNsense\DynDNS
-  */
-class DynDNS extends BaseModel
+/**
+ * Selfhost API
+ * @package OPNsense\AcmeClient
+ */
+class DnsSelfhost extends Base implements LeValidationInterface
 {
+    public function prepare()
+    {
+        $this->acme_env['SELFHOSTDNS_USERNAME'] = (string)$this->config->dns_selfhost_user;
+        $this->acme_env['SELFHOSTDNS_PASSWORD'] = (string)$this->config->dns_selfhost_password;
+        $this->acme_env['SELFHOSTDNS_RID'] = (string)$this->config->dns_selfhost_rid;
+        $this->acme_env['SELFHOSTDNS_RID2'] = (string)$this->config->dns_selfhost_rid2;
+    }
 }

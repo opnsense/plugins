@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.4.0</version>
+    <version>3.6.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -109,13 +109,6 @@
                     <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
                     <Required>N</Required>
                 </bufferSize>
-                <checkBufferSize type="IntegerField">
-                    <default>16384</default>
-                    <MinimumValue>1024</MinimumValue>
-                    <MaximumValue>1048576</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
-                    <Required>N</Required>
-                </checkBufferSize>
                 <spreadChecks type="IntegerField">
                     <default>2</default>
                     <MinimumValue>0</MinimumValue>
@@ -1304,6 +1297,11 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </ssl>
+                <sslSNI type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </sslSNI>
                 <sslVerify type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -1406,6 +1404,22 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </interval>
+                <ssl type="OptionField">
+                    <Required>N</Required>
+                    <default>nopref</default>
+                    <OptionValues>
+                        <nopref>Use server settings</nopref>
+                        <ssl>Force SSL for health checks</ssl>
+                        <sslsni>Force SSL+SNI for health checks</sslsni>
+                        <nossl>Force no SSL for health checks</nossl>
+                    </OptionValues>
+                </ssl>
+                <sslSNI type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </sslSNI >
+                <!-- XXX: old value, required for model migration to 3.5.0 -->
                 <force_ssl type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>
@@ -2616,7 +2630,7 @@
                 <thread_id type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <all>All HAProxy threads </all>
+                        <all>All HAProxy threads</all>
                         <odd>Threads with odd ID</odd>
                         <even>Threads with even ID</even>
                         <x1>Thread 1</x1>
@@ -2782,9 +2796,9 @@
                     <Required>N</Required>
                     <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((((udp@|tcp@)?[0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or 192.168.1.1:53.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or tcp@192.168.1.1:53.</ValidationMessage>
                 </nameservers>
                 <parse_resolv_conf type="BooleanField">
                     <default>0</default>
@@ -2811,8 +2825,8 @@
                 </timeout_retry>
                 <accepted_payload_size type="IntegerField">
                     <MinimumValue>0</MinimumValue>
-                    <MaximumValue>8192</MaximumValue>
-                    <ValidationMessage>Should be a number between 0 and 8192</ValidationMessage>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Should be a number between 0 and 65535</ValidationMessage>
                     <Required>N</Required>
                 </accepted_payload_size>
                 <hold_valid type="TextField">

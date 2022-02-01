@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/openconnect/general</mount>
     <description>Openconnect configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -16,8 +16,8 @@
         <user type="TextField">
             <default>user</default>
             <Required>Y</Required>
-            <mask>/^[a-zA-Z0-9.\@_-]{1,32}$/</mask>
-            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9._-@ and it has to be 1-32 characters long.</ValidationMessage>
+            <mask>/^[a-zA-Z0-9.\@_-]{1,64}$/</mask>
+            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9._-@ and it has to be 1-64 characters long.</ValidationMessage>
         </user>
         <password type="TextField">
             <default>password</default>
