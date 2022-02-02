@@ -12,62 +12,10 @@ WWW: http://www.apcupsd.org/
 Plugin Changelog
 ================
 
-1.2.2
-
-* Widget: add status update date
-* Widget: parse and format status update date and battery date
-* Status API: convert N/A to null
-* Status API: convert date fields to RFC3339/ISO8601 format
-
-1.2.1
-
-* Widget: fix configuration page link
-* Widget: limit the labels column width
-* Widget: colorize the status and self test values
-* Widget: describe the self test value when not OK
-* Actions: add 2 seconds sleep to apcupsd start/restart commands to prevent status race condition
-* Change text case APCUPSD to Apcupsd or apcupsd
-* PHP PSR-12 compliance
-
-1.2
-
-* Breaking: apcupsd start/stop is now handled automatically
-* Breaking: renamed configd action startService to start
-* Breaking: renamed configd action stopService to stop
-* Breaking: renamed configd action restartService to restart
-* Breaking: renamed configd action statusService to status
-* Breaking: renamed configd action getNisStatus to upsstatus
-* Add /etc/rc.conf.d/apcupsd template so it's not required to configure apcupsd service manually
-* Settings: simplified UI for service control
-* Settings: enable netserver by default, changed type to checkbox and moved in standard settings (non advanced)
-* Settings: add all supported apcupsd cable options
-* Status: auto refresh page every 5 seconds and check if service is enabled
-* Changed menu item icon to battery-full icon
-* Implement dashboard widget
-
-1.1.4
-
-* Fixed up errors with default setting for DEVICE not allowing a blank string when used with USB + added help info on default for serial
-* cleanup and rearrangement for move to official opnsense repo
-
-1.1.3
-
-* Fixed up errors with getting the service status and config values not saving to apcupsd.conf
-
-1.1.2
-
-* Changed the way the values for configuration are saved and read
-
-1.1.1
-
-* Moved actions_apcupsd.conf to the correct directory
-* Cleanup old directories
-* Update pkg_descr
-
-1.1
-
-* Some small changes incl. code cleanup and adding more parameters
-
 1.0
 
-* Initial release
+Initial release
+
+* Apcupsd service control and configuration
+* UPS status page
+* Dashboard widget
