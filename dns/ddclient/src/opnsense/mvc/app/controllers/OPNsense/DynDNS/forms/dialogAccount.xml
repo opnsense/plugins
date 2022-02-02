@@ -34,7 +34,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_cloudflare</style>
+        <style>optional_setting service_cloudflare service_gandi</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
