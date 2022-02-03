@@ -14,6 +14,7 @@ Plugin Changelog
 1.26
 
 * Fix Model migration errors
+* Add BGP password authentication
 
 1.25
 

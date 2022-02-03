@@ -57,6 +57,12 @@
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
+                        <password type="TextField">
+                                <Required>N</Required>
+                        </password>
+                        <localip type="NetworkField">
+                                <Required>N</Required>
+                        </localip>
                         <updatesource type="InterfaceField">
                                 <default></default>
                                 <Required>N</Required>
