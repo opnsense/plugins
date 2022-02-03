@@ -1,0 +1,68 @@
+#!/usr/local/bin/python3
+"""
+    Copyright (c) 2022 Ad Schellevis <ad@opnsense.org>
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+
+"""
+import os
+import subprocess
+import tempfile
+from configparser import ConfigParser
+
+if __name__ == '__main__':
+    frr_sad = {}
+    frr_sa_database = "/usr/local/etc/frr/sa_policies.conf"
+    # stage 1, read required FRR policies
+    if os.path.exists(frr_sa_database):
+        cnf = ConfigParser()
+        cnf.read(frr_sa_database)
+        for section in cnf.sections():
+            if cnf.has_option(section, 'src') and cnf.has_option(section, 'dst'):
+                policy_key = "%s %s" % (cnf.get(section, 'src'), cnf.get(section, 'dst'))
+                frr_sad[policy_key] = {}
+                for prop in cnf.items(section):
+                    frr_sad[policy_key][prop[0]] = prop[1]
+
+    # stage 2, red current installed policies which seems to originate from FRR
+    registered_policies = []
+    current_policy = None
+    for line in subprocess.run(["/sbin/setkey", "-D"], capture_output=True, text=True).stdout.split('\n'):
+        parts = line.strip().split()
+        if not line.startswith('\t') and len(parts) > 1:
+            current_policy = {"src": parts[0], "dst": parts[1]}
+        elif len(parts) > 2 and parts[0] == 'A:' and parts[1] == 'tcp-md5':
+            # Let's assume we're the only ones registering these types of entries
+            registered_policies.append(current_policy)
+
+    # flush changes to temp file and load with setkey
+    temp_filename = None
+    with tempfile.NamedTemporaryFile(mode='wt', delete=False) as fo:
+        temp_filename = fo.name
+        for policy in registered_policies:
+            fo.write("delete -4 %(src)s %(dst)s tcp 0x1000;\n" % policy)
+        for new_policy in frr_sad:
+            fo.write('add -4 %(src)s %(dst)s %(protocol)s %(spi)s -A %(aalgo)s "%(key)s";\n' % frr_sad[new_policy])
+
+    if temp_filename:
+        subprocess.run(["/sbin/setkey", "-f", fo.name], capture_output=True, text=True)

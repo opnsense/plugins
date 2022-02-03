@@ -18,3 +18,6 @@ chown -R $user:$group /var/run/frr
 # logfile (if used)
 touch /var/log/frr.log
 chown $user:$group /var/log/frr.log
+
+# register Security Associations
+/usr/local/opnsense/scripts/frr/register_sas
