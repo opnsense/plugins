@@ -70,6 +70,26 @@
         <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
     </field>
     <field>
+        <id>general.filteraaaav4</id>
+        <label>Enable filter-aaaa on IPv4 Clients</label>
+        <type>checkbox</type>
+        <help>This will filter AAAA records on IPv4 Clients</help>
+    </field>
+    <field>
+        <id>general.filteraaaav6</id>
+        <label>Enable filter-aaaa on IPv6 Clients</label>
+        <type>checkbox</type>
+        <help>This will filter AAAA records on IPv6 Clients</help>
+    </field>
+    <field>
+        <id>general.filteraaaaacl</id>
+        <label>ACl for filter-aaaa</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Specifies a list of client addresses for which AAAA filtering is to be applied.</help>
+    </field>
+    <field>
         <id>general.logsize</id>
         <label>Logsize in MB</label>
         <type>text</type>
