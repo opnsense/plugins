@@ -82,53 +82,53 @@
                 <Required>N</Required>
             </NetserverPort>
             <OnBatteryDelay type="IntegerField">
-              <default>6</default>
-              <Required>Y</Required>
-              <MinimumValue>0</MinimumValue>
-              <MaximumValue>60</MaximumValue>
-              <ValidationMessage>OnBattery Delay must be between 1 and 60.</ValidationMessage>
+                <default>6</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>60</MaximumValue>
+                <ValidationMessage>OnBattery Delay must be between 1 and 60.</ValidationMessage>
             </OnBatteryDelay>
             <BatteryLevel type="IntegerField">
-              <default>5</default>
-              <Required>Y</Required>
-              <MinimumValue>1</MinimumValue>
-              <MaximumValue>99</MaximumValue>
-              <ValidationMessage>Battery Level must be between 1 and 99 percent.</ValidationMessage>
+                <default>5</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>99</MaximumValue>
+                <ValidationMessage>Battery Level must be between 1 and 99 percent.</ValidationMessage>
             </BatteryLevel>
             <Minutes type="IntegerField">
-              <default>3</default>
-              <Required>Y</Required>
-              <MinimumValue>1</MinimumValue>
-              <MaximumValue>60</MaximumValue>
-              <ValidationMessage>Remaining runtime must be between 1 and 60 minutes.</ValidationMessage>
+                <default>3</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>60</MaximumValue>
+                <ValidationMessage>Remaining runtime must be between 1 and 60 minutes.</ValidationMessage>
             </Minutes>
             <Timeout type="IntegerField">
-              <default>0</default>
-              <Required>Y</Required>
-              <MinimumValue>0</MinimumValue>
-              <MaximumValue>360</MaximumValue>
-              <ValidationMessage>Remaining runtime must be between 1 and 360 seconds.</ValidationMessage>
+                <default>0</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Remaining runtime must be between 1 and 360 seconds.</ValidationMessage>
             </Timeout>
             <Annoy type="IntegerField">
-              <default>300</default>
-              <Required>Y</Required>
-              <MinimumValue>10</MinimumValue>
-              <MaximumValue>360</MaximumValue>
-              <ValidationMessage>Annoy time must be between 10 and 360 seconds.</ValidationMessage>
+                <default>300</default>
+                <Required>Y</Required>
+                <MinimumValue>10</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Annoy time must be between 10 and 360 seconds.</ValidationMessage>
             </Annoy>
             <AnnoyDelay type="IntegerField">
-              <default>60</default>
-              <Required>Y</Required>
-              <MinimumValue>10</MinimumValue>
-              <MaximumValue>360</MaximumValue>
-              <ValidationMessage>Annoy delay time must be between 10 and 360 seconds.</ValidationMessage>
+                <default>60</default>
+                <Required>Y</Required>
+                <MinimumValue>10</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Annoy delay time must be between 10 and 360 seconds.</ValidationMessage>
             </AnnoyDelay>
             <KillDelay type="IntegerField">
-              <default>0</default>
-              <Required>Y</Required>
-              <MinimumValue>0</MinimumValue>
-              <MaximumValue>360</MaximumValue>
-              <ValidationMessage>Kill delay time must be between 0 and 360 seconds.</ValidationMessage>
+                <default>0</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Kill delay time must be between 0 and 360 seconds.</ValidationMessage>
             </KillDelay>
             <UPSClass type="OptionField">
                 <default>standalone</default>
@@ -139,7 +139,7 @@
                     <sharemaster>sharemaster</sharemaster>
                 </OptionValues>
             </UPSClass>
-           <UPSMode type="OptionField">
+            <UPSMode type="OptionField">
                 <default>disable</default>
                 <Required>Y</Required>
                 <OptionValues>
@@ -147,7 +147,7 @@
                     <share>share</share>
                 </OptionValues>
             </UPSMode>
-           <NoLogon type="OptionField">
+            <NoLogon type="OptionField">
                 <default>disable</default>
                 <Required>Y</Required>
                 <OptionValues>
