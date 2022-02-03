@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.21
+
+* Add support for filter AAAA in DNS responses when A is present (contributed by Zane Chua)
+
 1.20
 
 * Separate tables for master and slave zones in UI (contributed by Patrick M. Hausen and Manuel Faux)
