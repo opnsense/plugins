@@ -23,7 +23,7 @@
         <label>Check ip method</label>
         <type>dropdown</type>
         <help>
-          How to determine the address to uswe for this host
+            How to determine the address to use for this host
         </help>
     </field>
 </form>
