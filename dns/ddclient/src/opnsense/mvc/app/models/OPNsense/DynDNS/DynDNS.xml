@@ -75,8 +75,21 @@
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
                         <strato>STRATO</strato>
                         <zoneedit1>Zoneedit</zoneedit1>
+                        <custom>Custom</custom>
                     </OptionValues>
                 </service>
+                <protocol type="OptionField">
+                    <Required>N</Required>
+                    <ValidationMessage>A protocol type is required.</ValidationMessage>
+                    <OptionValues>
+                        <dyndns1>DynDns1</dyndns1>
+                        <dyndns2>DynDns2</dyndns2>
+                    </OptionValues>
+                </protocol>
+                <server type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>N</IpAllowed>
+                </server>
                 <username type="TextField">
                     <Required>N</Required>
                     <mask>/^([a-zA-Z0-9\-.@_:+])*$/u</mask>
