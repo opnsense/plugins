@@ -22,8 +22,6 @@
         <id>ddclient.general.checkip</id>
         <label>Check ip method</label>
         <type>dropdown</type>
-        <help>
-            How to determine the address to use for this host
-        </help>
+        <help>How to determine the address to use for this host</help>
     </field>
 </form>
