@@ -67,6 +67,8 @@
                         <duckdns>DuckDNS</duckdns>
                         <easydns>EasyDNS</easydns>
                         <googledomains>Google</googledomains>
+                        <he-net>HE.net</he-net>
+                        <he-net-tunnel>HE.net TunnelBroker</he-net-tunnel>
                         <namecheap>NameCheap</namecheap>
                         <noip>Noip</noip>
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
