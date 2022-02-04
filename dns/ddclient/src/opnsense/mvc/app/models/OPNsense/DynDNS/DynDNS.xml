@@ -40,8 +40,14 @@
                     <web_nsupdate_info_ipv4 value="web_nsupdate.info-ipv4">nsupdate.info-ipv4</web_nsupdate_info_ipv4>
                     <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv6</web_nsupdate_info_ipv6>
                     <web_zoneedit>zoneedit</web_zoneedit>
+                    <if>Interface</if>
                 </OptionValues>
             </checkip>
+            <interface type="InterfaceField">
+                <Required>N</Required>
+                <multiple>N</multiple>
+                <default>wan</default>
+            </interface>
         </general>
         <accounts>
             <account type="ArrayField">
@@ -107,6 +113,15 @@
                     <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
                 </zone>
+                <use_interface type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </use_interface>
+                <interface type="InterfaceField">
+                    <Required>N</Required>
+                    <multiple>N</multiple>
+                    <default>wan</default>
+                </interface>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>

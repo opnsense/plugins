@@ -41,14 +41,18 @@ class AccountsController extends ApiMutableModelControllerBase
     {
         $result = $this->searchBase(
             "accounts.account",
-            ['enabled', 'service', 'description', 'username', 'hostnames', 'protocol'],
+            ['enabled', 'service', 'description', 'username', 'hostnames', 'use_interface', 'interface', 'protocol'],
             "description"
         );
         foreach ($result['rows'] as &$row) {
+            if ($row['use_interface'] == "0") {
+                $row['interface'] = "";
+            }
+            unset($row['use_interface']);
+            
             if ($row['service'] == 'Custom') {
                 $row['service'] = 'Custom ('.$row['protocol'].')';
             }
-
             unset($row['protocol']);
         }
         return $result;
