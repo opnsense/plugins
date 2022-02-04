@@ -39,11 +39,19 @@ class AccountsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase(
+        $result = $this->searchBase(
             "accounts.account",
-            ['enabled', 'service', 'description', 'username', 'hostnames'],
+            ['enabled', 'service', 'description', 'username', 'hostnames', 'protocol'],
             "description"
         );
+        foreach ($result['rows'] as &$row) {
+            if ($row['service'] == 'Custom') {
+                $row['service'] = 'Custom ('.$row['protocol'].')';
+            }
+
+            unset($row['protocol']);
+        }
+        return $result;
     }
 
     public function setItemAction($uuid)
