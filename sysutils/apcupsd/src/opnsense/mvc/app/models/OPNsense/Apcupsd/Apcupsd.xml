@@ -82,28 +82,28 @@
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>60</MaximumValue>
-                <ValidationMessage>OnBattery Delay must be between 1 and 60.</ValidationMessage>
+                <ValidationMessage>On battery delay must be between 1 and 60.</ValidationMessage>
             </OnBatteryDelay>
             <BatteryLevel type="IntegerField">
                 <default>5</default>
                 <Required>Y</Required>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>99</MaximumValue>
-                <ValidationMessage>Battery Level must be between 1 and 99 percent.</ValidationMessage>
+                <ValidationMessage>Battery level must be between 1 and 99 percent.</ValidationMessage>
             </BatteryLevel>
             <Minutes type="IntegerField">
                 <default>3</default>
                 <Required>Y</Required>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>60</MaximumValue>
-                <ValidationMessage>Remaining runtime must be between 1 and 60 minutes.</ValidationMessage>
+                <ValidationMessage>Remaining battery minutes must be between 1 and 60 minutes.</ValidationMessage>
             </Minutes>
             <Timeout type="IntegerField">
                 <default>0</default>
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>360</MaximumValue>
-                <ValidationMessage>Remaining runtime must be between 1 and 360 seconds.</ValidationMessage>
+                <ValidationMessage>Timeout must be between 1 and 360 seconds.</ValidationMessage>
             </Timeout>
             <Annoy type="IntegerField">
                 <default>300</default>

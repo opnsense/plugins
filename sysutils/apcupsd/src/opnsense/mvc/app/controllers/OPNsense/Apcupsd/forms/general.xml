@@ -7,101 +7,131 @@
     </field>
     <field>
         <id>apcupsd.general.UPSName</id>
-        <label>UPS name</label>
+        <label>UPS Name</label>
         <type>text</type>
         <help>
             Specify a name for the UPS for log files, status reports etc.,
             between 1 and 99 characters in length.
         </help>
+        <hint>Name of the UPS for log files, status reports etc.</hint>
     </field>
     <field>
         <id>apcupsd.general.UPSCable</id>
-        <label>UPS cable type</label>
+        <label>UPS Cable Type</label>
         <type>dropdown</type>
-        <help>Defines the type of cable connecting the UPS to the server.</help>
-        <hint>Choose cable type.</hint>
+        <help>Select the type of cable connecting the UPS to the server.</help>
     </field>
     <field>
         <id>apcupsd.general.UPSType</id>
         <label>UPS Type</label>
         <type>dropdown</type>
-        <help>Corresponds to the type of UPS in use.</help>
-        <hint>You will also need to select the UPS Device.</hint>
+        <help>Select the type of UPS in use. You may also need to specify the UPS device below.</help>
     </field>
     <field>
         <id>apcupsd.general.Device</id>
         <label>UPS Device</label>
         <type>text</type>
-        <help><![CDATA[Which port is the UPS connected to. Leave blank for USB UPSes.<br>Default: /dev/cuaU0]]></help>
-        <hint>Specify an appropriate port or address. default: /dev/cuaU0</hint>
+        <help>
+            <![CDATA[
+            Specify the device path for the selected type of UPS:<br>
+            usb: leave blank for auto-detection<br>
+            apcsmart or dumb: /dev/tty** (serial connection)<br>
+            net: host:port (remote apcupsd network information server)<br>
+            snmp: host:port:vendor:community<br>
+            pcnet: ipaddr:username:passphrase (SmartSlot card)
+            ]]>
+        </help>
+        <hint>Path or address, leave blank for USB</hint>
     </field>
     <field>
         <id>apcupsd.general.Netserver</id>
         <label>Netserver</label>
         <type>checkbox</type>
-        <help>Sets the state of the network information server.</help>
-        <hint>A network information server is available to retrieve the STATUS and EVENT data over the network.</hint>
+        <help>Enables the network information server which is required to obtain the current status information
+        from the local or remote UPS</help>
     </field>
     <field>
         <id>apcupsd.general.NetserverAddress</id>
-        <label>Netserver IP address</label>
+        <label>Netserver IP Address</label>
         <type>text</type>
         <hint>127.0.0.1 is the default</hint>
         <help>
             <![CDATA[
-            IP address on which the Netserver will listen for incoming connections.<br>
+            IP address on which the net information server will listen for incoming connections.<br>
             Default address is 127.0.0.1 which means only local machine connections are accepted.
             ]]>
         </help>
     </field>
     <field>
         <id>apcupsd.general.NetserverPort</id>
-        <label>Netserver port</label>
+        <label>Netserver Port</label>
         <type>text</type>
-        <help>Network port used to send STATUS and EVENT data over the network.</help>
+        <help>Network port used to send status and event data over the network.</help>
         <hint>Port 3551 is the default as registered with the IANA.</hint>
     </field>
     <field>
         <id>apcupsd.general.Polltime</id>
         <label>Polltime</label>
         <type>text</type>
-        <help>Interval, in seconds, at which apcupsd polls the UPS for the current state.</help>
-        <hint>This setting applies to both directly attached units - type: apcsmart, usb, dumb, and networked units - type: net, snmp.</hint>
+        <help>
+            <![CDATA[
+            The rate in seconds that the daemon polls the UPS for status.
+            This rate is automatically set to 1 second when the UPS goes on battery and reset to the specified value
+            when the utility power returns.<br>
+            A low setting will improve the daemon's responsiveness to certain events at the cost of higher CPU
+            utilisation.<br>
+            The default of 60 is appropriate for most situations.
+            ]]>
+        </help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.OnBatteryDelay</id>
-        <label>OnBattery Delay</label>
+        <label>OnBattery Event Delay</label>
         <type>text</type>
-        <help>Time in seconds from when a power failure is detected until we react to it with an on battery event (Default: 6).</help>
-        <hint>This means that, apccontrol will be called with the powerout argument immediately when a power failure is detected.  However, the onbattery argument is passed to apccontrol only after the ONBATTERYDELAY time.  If you don't want to be annoyed by short powerfailures, make sure that apccontrol powerout does nothing.</hint>
+        <help>
+            The number of seconds from when a power failure is detected until apcupsd reacts with an onbattery event.
+            (Default is 6).
+        </help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.BatteryLevel</id>
-        <label>Battery Level</label>
+        <label>Battery Level Shutdown (%)</label>
         <type>text</type>
-        <help>If during a power failure, the remaining battery percentage (as reported by the UPS) is below or equal to BATTERYLEVEL,  apcupsd will initiate a system shutdown.</help>
+        <help>Apcupsd will shutdown the system during a power failure when the remaining battery charge falls below the
+            specified percentage. (Default is 5).</help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.Minutes</id>
-        <label>Minutes</label>
+        <label>Battery Minutes Shutdown</label>
         <type>text</type>
-        <help>If during a power failure, the remaining runtime in minutes (as calculated internally by the UPS) is below or equal to MINUTES,apcupsd, will initiate a system shutdown.</help>
+        <help>
+            Apcupsd will shutdown the system during a power failure when the remaining runtime on batteries as
+            internally calculated by the UPS falls below the specified minutes. (Default is 3)
+        </help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.Timeout</id>
-        <label>Minutes</label>
+        <label>Battery Timeout Shutdown</label>
         <type>text</type>
-        <help>If during a power failure, the UPS has run on batteries for TIMEOUT many seconds or longer, apcupsd will initiate a system shutdown. A value of 0 disables this timer.</help>
-        <hint>Note, if you have a Smart UPS, you will most likely want to disable this timer by setting it to zero. That way, your UPS will continue on batteries until either the PERCENT charge remaing drops to or below BATTERYLEVEL, or the remaining battery runtime drops to or below MINUTES.  Of course, if you are testing, setting this to 60 causes a quick system shutdown if you pull the power plug. If you have an older dumb UPS, you will want to set this to less than the time you know you can run on batteries.</hint>
+        <help>
+            <![CDATA[
+            After a power failure occurs, apcupsd will shutdown the system after the specified number of seconds
+            have expired.<br>
+            For a Smart-UPS, this should normally be set to zero so that the shutdown time will be determined by the
+            battery level or remaining runtime.<br>
+            It is also useful for testing apcupsd because you can force a rapid shutdown by setting a small value
+            (eg. 60) and turning off the power to the UPS.
+            ]]>
+        </help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.Annoy</id>
-        <label>Annoy</label>
+        <label>Annoy Time</label>
         <type>text</type>
         <help>Time in seconds between annoying users to signoff prior to system shutdown. 0 disables.</help>
         <advanced>true</advanced>
@@ -117,9 +147,17 @@
         <id>apcupsd.general.KillDelay</id>
         <label>Kill Delay</label>
         <type>text</type>
-        <help>If KILLDELAY is non-zero, apcupsd will continue running after a shutdown has been requested, and after the specified time in seconds attempt to kill the power.
-
-            This is for use on systems where apcupsd cannot regain control after a shutdown.</help>
+        <help>
+            <![CDATA[
+            Specifies the number of seconds for which apcupsd will continue running after a shutdown has been
+            requested.<br>
+            After the specified time, apcupsd will attempt to put the UPS into hibernate mode and kill the power to
+            the computer.<br>
+            This is for use on operating systems where apcupsd cannot regain control after a shutdown (eg. FreeBSD)
+            to issue an apcupsd --killpower command.<br>
+            Setting the delay to 0 disables it.
+            ]]>
+        </help>
         <advanced>true</advanced>
     </field>
     <field>
