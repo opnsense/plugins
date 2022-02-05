@@ -60,7 +60,7 @@
                 <default>/dev/cuaU0</default>
             </Device>
             <Polltime type="IntegerField">
-                <Required>N</Required>
+                <Required>Y</Required>
                 <default>60</default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
