@@ -54,22 +54,48 @@ POSSIBILITY OF SUCH DAMAGE.
               return dfObj;
           }
         });
-        $('#DialogAccount').on('shown.bs.modal', function (e) {
-            $("#account\\.service").change(function(){
-                let service = $(this).val();
-                $(".optional_setting").each(function(){
-                    let this_item = $(this);
-                    if (this_item.hasClass("service_"+service)) {
-                        this_item.prop( "disabled", false );
-                        this_item.closest("tr").show();
-                    } else {
-                        this_item.closest("tr").hide();
-                        this_item.prop( "disabled", true );
-                    }
-                });
+        $("#account\\.service").change(function(){
+            let service = $(this).val();
+            $("#frm_DialogAccount .optional_setting").each(function(){
+                let this_item = $(this);
+                if (this_item.hasClass("service_"+service)) {
+                    this_item.prop( "disabled", false );
+                    this_item.closest("tr").show();
+                } else {
+                    this_item.closest("tr").hide();
+                    this_item.prop( "disabled", true );
+                }
             });
-            $("#account\\.service").change();
         });
+        $("#account\\.use_interface").change(function(){
+            if ($(this).is(':checked')) {
+                $("#account\\.interface").prop( "disabled", false );
+                $("#account\\.interface").closest("tr").show();
+            } else {
+                $("#account\\.interface").closest("tr").hide();
+                $("#account\\.interface").prop( "disabled", true );
+            }
+            $('#account\\.interface').selectpicker('refresh');
+        });
+        $('#DialogAccount').on('shown.bs.modal', function (e) {
+            $("#account\\.service").change();
+            $("#account\\.use_interface").change();
+        });
+
+        $("#ddclient\\.general\\.checkip").change(function(){
+            let checkip = $(this).val();
+            $("#frm_settings .optional_setting").each(function(){
+                let this_item = $(this);
+                if (this_item.hasClass("checkip_"+checkip)) {
+                    this_item.prop( "disabled", false );
+                    this_item.closest("tr").show();
+                } else {
+                    this_item.closest("tr").hide();
+                    this_item.prop( "disabled", true );
+                }
+            });
+        });
+        $("#ddclient\\.general\\.checkip").change();
     });
 
 </script>
@@ -88,6 +114,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="service" data-type="string">{{ lang._('Service') }}</th>
                 <th data-column-id="username" data-type="string">{{ lang._('Username') }}</th>
+                <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
