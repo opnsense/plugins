@@ -9,8 +9,10 @@
         <id>apcupsd.general.UPSName</id>
         <label>UPS name</label>
         <type>text</type>
-        <help>Use this to give your UPS a name in logfiles.</help>
-        <hint>Must be less than 8 characters in length.</hint>
+        <help>
+            Specify a name for the UPS for log files, status reports etc.,
+            between 1 and 99 characters in length.
+        </help>
     </field>
     <field>
         <id>apcupsd.general.UPSCable</id>

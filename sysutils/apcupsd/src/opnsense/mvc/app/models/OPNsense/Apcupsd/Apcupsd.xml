@@ -3,17 +3,18 @@
     <version>0.0.2</version>
     <description>APC UPS configuration</description>
     <items>
-        <!-- Container -->
         <general>
-            <!-- field -->
             <Enabled type="BooleanField">
                 <default>0</default>
                 <Required>Y</Required>
             </Enabled>
             <UPSName type="TextField">
-                <default>Firewall_UPS</default>
-                <Required>Y</Required>
-                <ValidationMessage>A name for the UPS is required.</ValidationMessage>
+                <Required>N</Required>
+                <mask>/^([0-9a-zA-Z._\- ]){1,99}$/</mask>
+                <ValidationMessage>
+                    The name should be 1 to 99 characters and contain only alphanumeric characters,
+                    dashes, underscores, dot or space.
+                </ValidationMessage>
             </UPSName>
             <UPSCable type="OptionField">
                 <default>smart</default>
