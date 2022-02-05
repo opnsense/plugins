@@ -73,13 +73,9 @@
                 <default>127.0.0.1</default>
                 <Required>Y</Required>
             </NetserverAddress>
-            <NetserverPort type="IntegerField">
+            <NetserverPort type="PortField">
                 <default>3551</default>
-                <Required>N</Required>
-                <MinimumValue>1</MinimumValue>
-                <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>Netserver port needs to be an value between 1 and 65535.</ValidationMessage>
-                <Required>N</Required>
+                <Required>Y</Required>
             </NetserverPort>
             <OnBatteryDelay type="IntegerField">
                 <default>6</default>
