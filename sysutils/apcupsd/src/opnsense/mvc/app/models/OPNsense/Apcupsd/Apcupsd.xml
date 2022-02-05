@@ -70,7 +70,7 @@
                 <Required>Y</Required>
             </Netserver>
             <NetserverAddress type="NetworkField">
-                <default>0.0.0.0</default>
+                <default>127.0.0.1</default>
                 <Required>Y</Required>
             </NetserverAddress>
             <NetserverPort type="IntegerField">

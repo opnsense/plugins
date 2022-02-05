@@ -46,8 +46,13 @@
         <id>apcupsd.general.NetserverAddress</id>
         <label>Netserver IP address</label>
         <type>text</type>
-        <help>IP address on which the Netserver will listen for incoming connections.</help>
-        <hint>Default address is 0.0.0.0 which means any incoming connection will be serviced.</hint>
+        <hint>127.0.0.1 is the default</hint>
+        <help>
+            <![CDATA[
+            IP address on which the Netserver will listen for incoming connections.<br>
+            Default address is 127.0.0.1 which means only local machine connections are accepted.
+            ]]>
+        </help>
     </field>
     <field>
         <id>apcupsd.general.NetserverPort</id>
