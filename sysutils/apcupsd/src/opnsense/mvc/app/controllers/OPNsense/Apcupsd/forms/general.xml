@@ -44,32 +44,6 @@
         <hint>Path or address, leave blank for USB</hint>
     </field>
     <field>
-        <id>apcupsd.general.Netserver</id>
-        <label>Netserver</label>
-        <type>checkbox</type>
-        <help>Enables the network information server which is required to obtain the current status information
-        from the local or remote UPS</help>
-    </field>
-    <field>
-        <id>apcupsd.general.NetserverAddress</id>
-        <label>Netserver IP Address</label>
-        <type>text</type>
-        <hint>127.0.0.1 is the default</hint>
-        <help>
-            <![CDATA[
-            IP address on which the net information server will listen for incoming connections.<br>
-            Default address is 127.0.0.1 which means only local machine connections are accepted.
-            ]]>
-        </help>
-    </field>
-    <field>
-        <id>apcupsd.general.NetserverPort</id>
-        <label>Netserver Port</label>
-        <type>text</type>
-        <help>Network port used to send status and event data over the network.</help>
-        <hint>Port 3551 is the default as registered with the IANA.</hint>
-    </field>
-    <field>
         <id>apcupsd.general.Polltime</id>
         <label>Polltime</label>
         <type>text</type>
@@ -83,17 +57,6 @@
             The default of 60 is appropriate for most situations.
             ]]>
         </help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>apcupsd.general.OnBatteryDelay</id>
-        <label>OnBattery Event Delay</label>
-        <type>text</type>
-        <help>
-            The number of seconds from when a power failure is detected until apcupsd reacts with an onbattery event.
-            (Default is 6).
-        </help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.BatteryLevel</id>
@@ -101,7 +64,6 @@
         <type>text</type>
         <help>Apcupsd will shutdown the system during a power failure when the remaining battery charge falls below the
             specified percentage. (Default is 5).</help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.Minutes</id>
@@ -111,7 +73,6 @@
             Apcupsd will shutdown the system during a power failure when the remaining runtime on batteries as
             internally calculated by the UPS falls below the specified minutes. (Default is 3)
         </help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>apcupsd.general.Timeout</id>
@@ -126,6 +87,15 @@
             It is also useful for testing apcupsd because you can force a rapid shutdown by setting a small value
             (eg. 60) and turning off the power to the UPS.
             ]]>
+        </help>
+    </field>
+    <field>
+        <id>apcupsd.general.OnBatteryDelay</id>
+        <label>OnBattery Event Delay</label>
+        <type>text</type>
+        <help>
+            The number of seconds from when a power failure is detected until apcupsd reacts with an onbattery event.
+            (Default is 6).
         </help>
         <advanced>true</advanced>
     </field>
@@ -158,6 +128,35 @@
             Setting the delay to 0 disables it.
             ]]>
         </help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>apcupsd.general.Netserver</id>
+        <label>Netserver</label>
+        <type>checkbox</type>
+        <help>Enables the network information server which is required to obtain the current status information
+            from the local or remote UPS.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>apcupsd.general.NetserverAddress</id>
+        <label>Netserver IP Address</label>
+        <type>text</type>
+        <hint>127.0.0.1 is the default</hint>
+        <help>
+            <![CDATA[
+            IP address on which the net information server will listen for incoming connections.<br>
+            Default address is 127.0.0.1 which means only local machine connections are accepted.
+            ]]>
+        </help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>apcupsd.general.NetserverPort</id>
+        <label>Netserver Port</label>
+        <type>text</type>
+        <help>Network port used to send status and event data over the network.</help>
+        <hint>Port 3551 is the default as registered with the IANA.</hint>
         <advanced>true</advanced>
     </field>
     <field>
