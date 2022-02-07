@@ -6614,3 +6614,14 @@ ul.jqtree-tree .jqtree-title {
 #reports-tab {
     border-bottom: 1px solid #191919;
 }
+
+/* Screen reader only content; conceal visibility
+   https://webaim.org/techniques/css/invisiblecontent/ */
+.SROC {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}

@@ -7839,3 +7839,14 @@ div.Tokenize ul.TokensContainer li.Token a.Close {
 .phase1_tr td {
   background-color: #282828 !important;
 }
+
+/* Screen reader only content; conceal visibility
+   https://webaim.org/techniques/css/invisiblecontent/ */
+.SROC {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
