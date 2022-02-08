@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>
         Dynamic DNS client
     </description>
@@ -14,6 +14,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </verbose>
+            <force_ssl type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </force_ssl>
             <daemon_delay type="IntegerField">
                 <default>300</default>
                 <Required>Y</Required>
