@@ -14,6 +14,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </verbose>
+            <force_ssl type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </force_ssl>
             <daemon_delay type="IntegerField">
                 <default>300</default>
                 <Required>Y</Required>
