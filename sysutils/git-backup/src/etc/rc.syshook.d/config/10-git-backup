@@ -26,7 +26,6 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-
 if len(sys.argv) > 1:
     commit_msg =  "unknown change"
     try:
@@ -67,9 +66,15 @@ if len(sys.argv) > 1:
             except AttributeError:
                 pass
 
+        if metadata['./system/hostname'] == 'localhost':
+            config_filename = 'config.xml'
+        else:
+            config_filename = f'{metadata['./system/hostname']}_config.xml'
+
         # snapshot provided config.xml into git staging and commit with extracted data
         os.chdir('/conf/backup/git/')
-        subprocess.run(['cp', sys.argv[1], '/conf/backup/git/config.xml'])
-        subprocess.run(['/usr/local/bin/git', 'add', 'config.xml'])
+        subprocess.run(['cp', sys.argv[1], f'/conf/backup/git/{config_filename}.xml'])
+        subprocess.run(['/usr/local/bin/git', 'pull'])
+        subprocess.run(['/usr/local/bin/git', 'add', f'{config_filename}.xml'])
         message = "%s @ %s (%s)" % (metadata['./revision/description'], revdate, metadata['./revision/username'])
         subprocess.run(['/usr/local/bin/git', 'commit', '--author', "%s<%s>" % (fullname, user_email), '-m', message])
