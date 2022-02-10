@@ -65,6 +65,7 @@
                     <OptionValues>
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
+                        <dns-o-matic>DNS-O-Matic</dns-o-matic>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DslReports</dslreports1>
