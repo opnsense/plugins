@@ -345,8 +345,9 @@
                     <th data-column-id="root" data-type="string" data-sortable="true" data-visible="false">{{ lang._('File System Root') }}</th>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
                     <th data-column-id="https_only" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
-                    <th data-column-id="listen_http_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
-                    <th data-column-id="listen_https_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
+                    <th data-column-id="listen_http_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Address') }}</th>
+                    <th data-column-id="listen_https_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Address') }}</th>
+                    <th data-column-id="default_server" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Default') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -369,7 +370,7 @@
                 <tr>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
                     <th data-column-id="udp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('UDP') }}</th>
-                    <th data-column-id="listen_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="listen_address" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Address') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -477,6 +478,11 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="referrer" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Referrer') }}</th>
+                    <th data-column-id="xssprotection" data-type="string" data-sortable="true" data-visible="true">{{ lang._('XSS Protection') }}</th>
+                    <th data-column-id="hsts" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HSTS') }}</th>
+                    <th data-column-id="csp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('CSP') }}</th>
+                    <th data-column-id="csp_details" data-type="string" data-sortable="true" data-visible="false">{{ lang._('CSP Rules') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -690,7 +696,7 @@
 {{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
-{{ partial("layout_partials/base_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
+{{ partial("OPNsense/Nginx/tabbed_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}

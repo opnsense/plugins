@@ -56,6 +56,8 @@ VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 .if exists(${VERSIONBIN})
 _PLUGIN_ABI!=	${VERSIONBIN} -a
 PLUGIN_ABI?=	${_PLUGIN_ABI}
+.else
+PLUGIN_ABI?=	22.1
 .endif
 
 PHPBIN=		${LOCALBASE}/bin/php
@@ -72,9 +74,6 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-.if !empty(DEVABI)
-PLUGIN_ABI=	${DEVABI}
-.endif
 
 .for REPLACEMENT in ABI PHP PYTHON
 . if empty(PLUGIN_${REPLACEMENT})

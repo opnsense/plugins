@@ -39,7 +39,6 @@ use OPNsense\Zerotier\Zerotier;
 
 class NetworkController extends ApiMutableModelControllerBase
 {
-
     protected static $internalModelName = 'Zerotier';
     protected static $internalModelClass = '\OPNsense\Zerotier\Zerotier';
 

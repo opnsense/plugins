@@ -7,7 +7,7 @@
     <version url="https://opnsense.emergingthreats.net/api/v1/ruleset/version"/>
     <files>
         <file url="inline::rules/telemetry_sids.txt" required="true">telemetry_sids.txt</file>
-        <file url="https://opnsense-staging.emergingthreats.net/api/v1/ruleset/version" required="true">telemetry_version.json</file>
+        <file url="https://opnsense.emergingthreats.net/api/v1/ruleset/version" required="true">telemetry_version.json</file>
         <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">botcc.portgrouped.rules</file>
         <file description="botcc" url="inline::rules/botcc.rules">botcc.rules</file>
         <file description="ciarmy" url="inline::rules/ciarmy.rules">ciarmy.rules</file>

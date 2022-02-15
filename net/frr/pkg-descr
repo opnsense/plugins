@@ -11,9 +11,29 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.27
+
+* Add BGP password authentication
+
+1.26
+
+* Fix Model migration errors
+
+1.25
+
+* Add "All" option to next-hop-self command (#2673)
+
+1.24
+
+* Add AS-Override (#2517)
+
 1.23
 
 * Add route-reflector-client to BGP neighbor config
+* bugfix: BGP Prefix List "IP version" field appears to be ineffective (#2602)
+* feature: IPv6 link-local neighbors require an interface to be specified (#2604)
+* feature: multiprotocol BGP sessions are not supported (#2606)
+* bugfix: Multiple BGP peers causes config generation error (#2623)
 
 1.22
 

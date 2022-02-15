@@ -77,11 +77,20 @@ POSSIBILITY OF SUCH DAMAGE.
                 } else {
                 }
             });
+            $("#validation\\.tlsalpn_service").change(function(){
+                var service_id = 'table_tlsalpn_' + $(this).val();
+                $(".table_tlsalpn").hide();
+                if ($("#validation\\.method").val() == 'tlsalpn01') {
+                    $("."+service_id).show();
+                } else {
+                }
+            });
             $("#validation\\.method").change(function(){
                 $(".method_table").hide();
                 $(".method_table_"+$(this).val()).show();
                 $("#validation\\.dns_service").change();
                 $("#validation\\.http_service").change();
+                $("#validation\\.tlsalpn_service").change();
             });
             $("#validation\\.method").change();
 
@@ -103,7 +112,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <p>{{ lang._('As defined by the ACME standard, Certificate Authorities (CAs) must validate that you control a domain name. This is done by using "challenges". The following challenge types are supported:') }}</p>
             <ul>
               <li>{{ lang._('%sDNS-01:%s This is the most reliable challenge type and thus highly recommended when using this plugin. It requires that you control the DNS for your domain name and that your DNS provider is supported both %sby acme.sh%s and this plugin.') | format('<b>', '</b>', '<a href="https://github.com/acmesh-official/acme.sh/wiki/dnsapi" target="_blank">', '</a>') }}</li>
-              <li>{{ lang._("%sHTTP-01:%s This challenge type usually requires manual configuration and is not recommended. The DNS name used in the certificate must point to the OPNsense host where the ACME Client plugin is running on. The integrated web service will try to guess the correct settings for your setup, but this may not always work out-of-the-box. Furthermore this challenge type cannot be used to create %swildcard certificates with Let's Encrypt%s.") | format('<b>', '</b>', '<a href="https://letsencrypt.org/docs/challenge-types/#http-01-challenge" target="_blank">', '</a>') }}</li>
+              <li>{{ lang._("%sHTTP-01:%s This challenge type usually requires manual configuration and is not recommended. The DNS name used in the certificate must point to the OPNsense host where the ACME Client plugin is running on. The integrated web service will try to guess the correct settings for your setup, but this may not always work out-of-the-box. Furthermore this challenge type cannot be used to validate %swildcard certificates with Let's Encrypt%s.") | format('<b>', '</b>', '<a href="https://letsencrypt.org/docs/challenge-types/#http-01-challenge" target="_blank">', '</a>') }}</li>
+              <li>{{ lang._("%sTLS-ALPN-01:%s This works similar to the HTTP-01 challenge type and has the same requirements. It works if port 80 is unavailable. Other challenge types should be preferred. This challenge type cannot be used to validate %swildcard certificates with Let's Encrypt%s.") | format('<b>', '</b>', '<a href="https://letsencrypt.org/docs/challenge-types/#tls-alpn-01" target="_blank">', '</a>') }}</li>
             </ul>
             <p>{{ lang._('When experiencing issues with a challenge type, try setting the log level to "debug". Please provide full logs when %sreporting issues%s for a challenge type. You should also consider to ask the Certificate Authority for support, if you choose to use a commercial CA.') | format('<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}</p>
         </div>

@@ -1,0 +1,22 @@
+ddclient is a Perl client used to update dynamic DNS entries for
+accounts on many dynamic DNS services.
+
+WWW: https://github.com/ddclient/ddclient
+
+Plugin Changelog
+================
+
+1.1
+
+* Add spdyn, inwx and dns-o-matic (contributed by Rene Schuster)
+* Add Hurricane Electric provider (contributed by Netboy3)
+* Add option to force SSL, on by default (contributed by Robin Mueller)
+* Add Cloudflare and custom service (contributed by Robin Mueller)
+* Add STRATO provider (contributed by Alex Mi)
+* Add use interface as IP source
+* Fix ip6only.me (contributed by Robin Mueller)
+* Fix uppercase use in usernames
+
+1.0
+
+* Initial release
