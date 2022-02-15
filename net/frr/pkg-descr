@@ -11,10 +11,13 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.27
+
+* Add BGP password authentication
+
 1.26
 
 * Fix Model migration errors
-* Add BGP password authentication
 
 1.25
 
