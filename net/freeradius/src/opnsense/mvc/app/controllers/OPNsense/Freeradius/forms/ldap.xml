@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>ldap.innertunnel</id>
+        <label>Inner-Tunnel LDAP</label>
+        <type>checkbox</type>
+        <help>This enables LDAP authentication in inner-tunnel configuration. This is needed for protocols requiring encrypted authentication like 802.1X.</help>
+    </field>
+    <field>
         <id>ldap.protocol</id>
         <label>Protocol Type</label>
         <type>dropdown</type>
