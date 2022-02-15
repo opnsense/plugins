@@ -8,8 +8,7 @@ Plugin Changelog
 1.11
 
 * Fix DNSBL update due to FreeBSD13 upgrade (sed syntax)
-* Fix "manual disable of specific servers" when more than one server is
-  specified (contributed by Evgeny Grin (karlson2k))
+* Fix "manual disable of specific servers" when more than one server is specified (contributed by Evgeny Grin (karlson2k))
 
 1.10
 
