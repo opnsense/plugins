@@ -46,7 +46,7 @@ listen {
 #
 #  Make *sure* that 'preprocess' comes before any realm if you
 #  need to setup hints for the remote radius server
-authorize { 
+authorize {
         #
         #  Take a User-Name, and perform some checks on it, for spaces and other
         #  invalid characters.  If the User-Name appears invalid, reject the
