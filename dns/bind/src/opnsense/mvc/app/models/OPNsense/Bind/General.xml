@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -56,6 +56,19 @@
             <Required>N</Required>
             <asList>Y</asList>
         </forwarders>
+        <filteraaaav4 type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </filteraaaav4>
+        <filteraaaav6 type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </filteraaaav6>
+        <filteraaaaacl type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+            <asList>Y</asList>
+        </filteraaaaacl>
         <logsize type="IntegerField">
             <default>5</default>
             <Required>Y</Required>

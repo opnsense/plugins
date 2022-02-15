@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.21
+
+* Add support for filter AAAA in DNS responses when A is present (contributed by Zane Chua)
+
 1.20
 
 * Allow signed zone transfers (contributed by Michael Newton)
