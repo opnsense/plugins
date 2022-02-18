@@ -50,7 +50,7 @@ class AccountsController extends ApiMutableModelControllerBase
             }
             unset($row['use_interface']);
             if ($row['service'] == 'Custom') {
-                $row['service'] = 'Custom ('.$row['protocol'].')';
+                $row['service'] = 'Custom (' . $row['protocol'] . ')';
             }
             unset($row['protocol']);
         }
