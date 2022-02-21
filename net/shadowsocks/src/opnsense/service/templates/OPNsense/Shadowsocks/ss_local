@@ -4,3 +4,9 @@ ss_local_flags=""
 {% else %}
 ss_local_enable="NO"
 {% endif %}
+{% if helpers.exists('OPNsense.shadowsocks.local.plugin') %}
+ss_local_plugin="{{ OPNsense.shadowsocks.local.plugin }}"
+{% endif %}
+{% if helpers.exists('OPNsense.shadowsocks.local.plugin_opts') %}
+ss_local_plugin_opts="{{ OPNsense.shadowsocks.local.plugin_opts }}"
+{% endif %}

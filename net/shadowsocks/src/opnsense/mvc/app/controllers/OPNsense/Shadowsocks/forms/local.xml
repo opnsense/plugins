@@ -41,4 +41,16 @@
         <type>dropdown</type>
         <help>Choose the cipher to use for encryption.</help>
     </field>
+    <field>
+        <id>local.plugin</id>
+        <label>Plugin</label>
+        <type>text</type>
+        <help>Input a SIP003 plugin name for shadowsocks. Please manually install it before start ss-local.</help>
+    </field>
+    <field>
+        <id>local.plugin_opts</id>
+        <label>Plugin Opts</label>
+        <type>text</type>
+        <help>Plugin options.</help>
+    </field>
 </form>

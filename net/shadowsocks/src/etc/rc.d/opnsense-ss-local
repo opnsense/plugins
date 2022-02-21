@@ -27,6 +27,14 @@ command="/usr/local/bin/ss-local"
 pidfile="/var/run/ss-local.pid"
 required_files="${ss_local_config}"
 
-command_args="-f $pidfile -c $ss_local_config"
+if [ ! -z "${ss_local_plugin}" ]; then
+  ss_local_plugin_args="--plugin ${ss_local_plugin}"
+fi
+
+if [ ! -z "${ss_local_plugin}" ] && [ ! -z "${ss_local_plugin_opts}" ]; then
+   ss_local_plugin_args="${ss_local_plugin_args} --plugin-opts '${ss_local_plugin_opts}'"
+fi
+
+command_args="-f $pidfile -c $ss_local_config ${ss_local_plugin_args}"
 
 run_rc_command "$1"
