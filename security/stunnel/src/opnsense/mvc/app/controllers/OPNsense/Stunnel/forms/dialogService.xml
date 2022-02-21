@@ -42,6 +42,12 @@
         <help><![CDATA[Select a certificate to use for this service.]]></help>
     </field>
     <field>
+        <id>service.chainIntermediateCAs</id>
+        <label>Chain intermediate CAs</label>
+        <type>checkbox</type>
+        <help><![CDATA[Bundle the selected certificate with its intermediate certificate authorities together to form a certificate chain.]]></help>
+    </field>
+    <field>
         <id>service.cacert</id>
         <label>CA to validate connections to</label>
         <type>select_multiple</type>
