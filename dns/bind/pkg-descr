@@ -8,6 +8,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.23
+
+* Add support for sending logging categories to local syslog.
+
 1.22
 
 * Fix DNS Blacklist download
