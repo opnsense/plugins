@@ -120,6 +120,12 @@
         <help>Default is "No". Set to "Auto" to use the static trust anchor configuration by the system.</help>
     </field>
     <field>
+        <id>general.syslog</id>
+        <label>Enable Syslog</label>
+        <type>select_multiple</type>
+        <help>Select which logging channels to send to syslog.</help>
+    </field>
+    <field>
         <id>general.hidehostname</id>
         <label>Hide Hostname</label>
         <type>checkbox</type>
