@@ -1061,6 +1061,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Transip</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <id>validation.dns_transip_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
