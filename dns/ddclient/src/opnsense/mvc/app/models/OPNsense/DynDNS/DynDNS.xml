@@ -65,16 +65,20 @@
                     <OptionValues>
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
+                        <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DslReports</dslreports1>
                         <duckdns>DuckDNS</duckdns>
+                        <dynu>Dynu</dynu>
                         <easydns>EasyDNS</easydns>
+                        <freedns>FreeDNS</freedns>
                         <googledomains>Google</googledomains>
                         <he-net>HE.net</he-net>
                         <he-net-tunnel>HE.net TunnelBroker</he-net-tunnel>
                         <inwx>INWX</inwx>
+                        <loopia>Loopia</loopia>
                         <namecheap>NameCheap</namecheap>
                         <noip>Noip</noip>
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
@@ -109,6 +113,9 @@
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>Y</ZoneRootAllowed>
                     <AsList>Y</AsList>
                     <FieldSeparator>,</FieldSeparator>
                 </hostnames>

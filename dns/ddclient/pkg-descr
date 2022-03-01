@@ -6,6 +6,12 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.2
+
+* Add Loopia (contributed by Johan Lilja)
+* Add DNS Made Easy, FreeDNS and Dynu (contributed by Rene Schuster)
+* Add root zone and wildcard support
+
 1.1
 
 * Add spdyn, inwx and dns-o-matic (contributed by Rene Schuster)
