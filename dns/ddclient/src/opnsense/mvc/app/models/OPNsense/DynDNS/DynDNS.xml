@@ -111,6 +111,9 @@
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>Y</ZoneRootAllowed>
                     <AsList>Y</AsList>
                     <FieldSeparator>,</FieldSeparator>
                 </hostnames>
