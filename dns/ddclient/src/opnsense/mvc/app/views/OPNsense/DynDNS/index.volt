@@ -67,19 +67,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
         });
-        $("#account\\.use_interface").change(function(){
-            if ($(this).is(':checked')) {
-                $("#account\\.interface").prop( "disabled", false );
-                $("#account\\.interface").closest("tr").show();
-            } else {
-                $("#account\\.interface").closest("tr").hide();
-                $("#account\\.interface").prop( "disabled", true );
-            }
-            $('#account\\.interface').selectpicker('refresh');
-        });
         $('#DialogAccount').on('shown.bs.modal', function (e) {
             $("#account\\.service").change();
-            $("#account\\.use_interface").change();
         });
 
         $("#ddclient\\.general\\.checkip").change(function(){

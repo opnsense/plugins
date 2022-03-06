@@ -60,14 +60,28 @@
         <help>Hostname to update</help>
     </field>
     <field>
-        <id>account.use_interface</id>
-        <label>Use interface IP</label>
-        <type>checkbox</type>
-        <help>Use the IP of a specified interface for the update</help>
+        <id>account.checkip</id>
+        <label>Check ip method</label>
+        <type>dropdown</type>
+        <help>How to determine the address to use for this host</help>
+    </field>
+    <field>
+        <id>account.checkipscheme</id>
+        <label>Check ip scheme</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>How to contact the remote service to check the public IP</help>
+    </field>
+    <field>
+        <id>account.checkipversion</id>
+        <label>Check ip version</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Type of IP to search for in the response from the checkip service</help>
     </field>
     <field>
         <id>account.interface</id>
-        <label>Interface</label>
+        <label>Interface to monitor</label>
         <type>dropdown</type>
     </field>
     <field>
