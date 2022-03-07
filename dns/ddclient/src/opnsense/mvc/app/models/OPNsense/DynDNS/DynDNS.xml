@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>
         Dynamic DNS client
     </description>
