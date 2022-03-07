@@ -47,8 +47,8 @@ class M1_2_0 extends BaseModelMigration
             return;
         }
 
-        $globalsettings = $config->OPNsense->DynDNS->general;
-        $accounts = $config->OPNsense->DynDNS->accounts;
+        $globalsettings = $model->OPNsense->DynDNS->general;
+        $accounts = $model->OPNsense->DynDNS->accounts;
 
         foreach ($accounts as $account) {
             // migrate checkip value into each account as it was previously a global setting
