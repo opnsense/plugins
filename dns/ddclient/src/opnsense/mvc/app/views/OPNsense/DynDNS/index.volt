@@ -102,6 +102,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="service" data-type="string">{{ lang._('Service') }}</th>
+                <th data-column-id="hostnames" data-type="string">{{ lang._('Hostnames') }}</th>
                 <th data-column-id="username" data-type="string">{{ lang._('Username') }}</th>
                 <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
