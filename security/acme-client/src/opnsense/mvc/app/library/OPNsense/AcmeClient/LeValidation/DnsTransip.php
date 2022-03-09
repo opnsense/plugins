@@ -41,7 +41,7 @@ class DnsTransip extends Base implements LeValidationInterface
     {
         $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
         $secret_key_filename = "${configdir}/secret.key";
-        $secret_key_data = (string)$this->config->dns_transip_token . "\n";
+        $secret_key_data = (string)$this->config->dns_transip_key . "\n";
         file_put_contents($secret_key_filename, $secret_key_data);
 
         // Add env variables
