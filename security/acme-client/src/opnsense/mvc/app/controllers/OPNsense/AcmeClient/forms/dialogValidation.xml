@@ -1071,8 +1071,8 @@
         <type>text</type>
 	<help>Your TransIP username.</help>
     <field>
-        <id>validation.dns_transip_token</id>
-        <label>API Token</label>
+        <id>validation.dns_transip_key</id>
+        <label>API Key</label>
         <type>text</type>
 	<help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
