@@ -946,9 +946,9 @@
                 <dns_transip_username type="TextField">
                     <Required>N</Required>
                 </dns_transip_username>
-                <dns_transip_token type="TextField">
+                <dns_transip_key type="TextField">
                     <Required>N</Required>
-                </dns_transip_token>
+                </dns_transip_key>
                 <dns_uno_key type="TextField">
                     <Required>N</Required>
                 </dns_uno_key>
