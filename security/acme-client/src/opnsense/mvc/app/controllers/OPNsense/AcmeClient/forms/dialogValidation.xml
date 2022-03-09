@@ -1066,6 +1066,10 @@
         <style>table_dns table_dns_transip</style>
     </field>
     <field>
+        <id>validation.dns_transip_username</id>
+        <label>Username</label>
+        <type>text</type>
+    <field>
         <id>validation.dns_transip_token</id>
         <label>API Token</label>
         <type>text</type>
