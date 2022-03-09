@@ -943,6 +943,9 @@
                 <dns_servercow_password type="TextField">
                     <Required>N</Required>
                 </dns_servercow_password>
+                <dns_transip_username type="TextField">
+                    <Required>N</Required>
+                </dns_transip_username>
                 <dns_transip_token type="TextField">
                     <Required>N</Required>
                 </dns_transip_token>
