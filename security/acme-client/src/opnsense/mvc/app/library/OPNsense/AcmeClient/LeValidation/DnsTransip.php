@@ -46,6 +46,6 @@ class DnsTransip extends Base implements LeValidationInterface
 
         // Add env variables
         $this->acme_env['TRANSIP_Username'] = (string)$this->config->dns_transip_username;
-	$this->acme_env['TRANSIP_Key_File'] = $secret_key_filename;                
+        $this->acme_env['TRANSIP_Key_File'] = $secret_key_filename;
     }
 }
