@@ -11,6 +11,18 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.27
+
+* Add BGP password authentication
+
+1.26
+
+* Fix Model migration errors
+
+1.25
+
+* Add "All" option to next-hop-self command (#2673)
+
 1.24
 
 * Add AS-Override (#2517)

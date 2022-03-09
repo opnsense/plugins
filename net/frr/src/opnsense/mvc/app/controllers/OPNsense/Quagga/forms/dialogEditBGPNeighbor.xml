@@ -23,6 +23,20 @@
     <help>Neighbor AS.</help>
   </field>
   <field>
+    <id>neighbor.password</id>
+    <label>BGP MD5 Password</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Set a password for BGP authentication.</help>
+  </field>
+  <field>
+    <id>neighbor.localip</id>
+    <label>Local Initiater IP</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Set the local IP connecting to the neighbor. This is only required for BGP authentication.</help>
+  </field>
+  <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>select_multiple</type>
@@ -39,6 +53,12 @@
     <id>neighbor.nexthopself</id>
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.nexthopselfall</id>
+    <label>Next-Hop-Self All</label>
+    <type>checkbox</type>
+    <help>Add the parameter "all" after next-hop-self command.</help>
   </field>
   <field>
     <id>neighbor.multihop</id>

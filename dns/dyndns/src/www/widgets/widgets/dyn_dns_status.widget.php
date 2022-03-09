@@ -48,14 +48,14 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
         $filename = dyndns_cache_file($dyndns, 4);
         $fdata = '';
         if (!empty($dyndns['enable']) && file_exists($filename)) {
-            $ipaddr = get_dyndns_ip(dyndns_failover_interface($dyndns['interface'], 'all'), 4);
+            $ipaddr = get_dyndns_ip_address(dyndns_failover_interface($dyndns['interface'], 'all'), 4);
             $fdata = @file_get_contents($filename);
         }
 
         $filename_v6 = dyndns_cache_file($dyndns, 6);
         $fdata6 = '';
         if (!empty($dyndns['enable']) && file_exists($filename_v6)) {
-            $ipv6addr = get_dyndns_ip(dyndns_failover_interface($dyndns['interface'], 'inet6'), 6);
+            $ipv6addr = get_dyndns_ip_address(dyndns_failover_interface($dyndns['interface'], 'inet6'), 6);
             $fdata6 = @file_get_contents($filename_v6);
         }
 
@@ -86,6 +86,15 @@ if (!empty($_REQUEST['getdyndnsstatus'])) {
 
 <table class="table table-striped table-condensed">
   <thead>
+    <tr>
+        <th colspan="4">
+          <div class="alert alert-warning" role="alert">
+              <strong>
+                  <?=gettext("Please make sure to upgrade to os-ddclient before 22.7 is released as this plugin will be removed from our repository");?>
+              </strong>
+          </div>
+        </th>
+    </tr>
     <tr>
       <th style="word-break:break-word;"><?=gettext("Interface");?></th>
       <th style="word-break:break-word;"><?=gettext("Service");?></th>

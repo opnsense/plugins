@@ -46,7 +46,7 @@
             <Required>Y</Required>
         </check_tls_names>
         <tls_min_version type="OptionField">
-            <default>Option1</default>
+            <default>1.0</default>
             <Required>Y</Required>
             <multiple>N</multiple>
             <OptionValues>

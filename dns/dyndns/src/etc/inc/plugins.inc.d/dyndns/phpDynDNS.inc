@@ -1265,8 +1265,8 @@ class updatedns
                         'Authorization: sso-key ' . $this->_dnsUser . ':' . $this->_dnsPass
                 ));
                 curl_setopt($ch, CURLOPT_URL, $url);
-
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
+                curl_setopt($ch, CURLOPT_INTERFACE, $this->_dnsRequestIf);
                 break;
             case 'desec':
                 /*
@@ -1499,7 +1499,8 @@ class updatedns
                 }
                 break;
             case 'namecheap':
-                $tmp = str_replace("^M", "", $data);
+                /* technically this is wrong but proves a point about the document being broken remotely */
+                $tmp = preg_replace('/(\<\?xml[^?]+?encoding=.?)utf-16([^?]+?\?\>)/i', '$1utf-8$2', $data);
                 $ncresponse = simplexml_load_string($tmp);
                 if (preg_match("/internal server error/i", $data)) {
                     $status = "Dynamic DNS: (Error) Server side error.";
@@ -2021,7 +2022,7 @@ class updatedns
 
     function _checkIP()
     {
-        $ip_address = get_dyndns_ip($this->_if, $this->_useIPv6 ? 6 : 4);
+        $ip_address = get_dyndns_ip_address($this->_if, $this->_useIPv6 ? 6 : 4);
         if (!is_ipaddr($ip_address)) {
             if ($this->_dnsVerboseLog) {
                 log_error("Dynamic DNS ({$this->_dnsHost}): IP address could not be extracted");

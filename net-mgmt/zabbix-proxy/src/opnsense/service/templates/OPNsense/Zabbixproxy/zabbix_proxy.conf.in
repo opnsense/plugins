@@ -71,6 +71,9 @@ HistoryIndexCacheSize={{ OPNsense.zabbixproxy.general.historyindexcachesize }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.timeout') and OPNsense.zabbixproxy.general.timeout != '' %}
 Timeout={{ OPNsense.zabbixproxy.general.timeout }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.statsip') and OPNsense.zabbixproxy.general.statsip != '' %}
+StatsAllowedIP={{ OPNsense.zabbixproxy.general.statsip }}
+{% endif %}
 FpingLocation=/usr/local/sbin/fping
 Fping6Location=/usr/local/sbin/fping6
 {% if helpers.exists('OPNsense.zabbixproxy.general.encryption') and OPNsense.zabbixproxy.general.encryption == '1' %}

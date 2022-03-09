@@ -1,14 +1,20 @@
 <form>
-   <field>
-      <id>mdnsrepeater.enabled</id>
-      <label>Enabled</label>
-      <type>checkbox</type>
-      <help>Enable the repeater.</help>
-   </field>
-   <field>
-      <id>mdnsrepeater.interfaces</id>
-      <label>Listen Interfaces</label>
-      <type>select_multiple</type>
-      <help>At least two interfaces must be selected.</help>
-   </field>
+  <field>
+    <id>mdnsrepeater.enabled</id>
+    <label>Enable</label>
+    <type>checkbox</type>
+    <help>Enable the repeater.</help>
+  </field>
+  <field>
+    <id>mdnsrepeater.enablecarp</id>
+    <label>Enable CARP Failover</label>
+    <type>checkbox</type>
+    <help>This will activate the repeater service only on the master device.</help>
+  </field>
+  <field>
+    <id>mdnsrepeater.interfaces</id>
+    <label>Listen Interfaces</label>
+    <type>select_multiple</type>
+    <help>At least two interfaces must be selected.</help>
+  </field>
 </form>

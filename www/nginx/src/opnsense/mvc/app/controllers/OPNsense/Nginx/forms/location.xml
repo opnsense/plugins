@@ -290,7 +290,7 @@
     <label>Proxy Send Timeout</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Enter a custom timout between data it sent to the client after which the connection is closed. </help>
+    <help>Enter a custom timout between data it sent to the client after which the connection is closed.</help>
   </field>
   <field>
     <id>location.proxy_buffering</id>

@@ -53,7 +53,7 @@ function miniupnpd_services()
 
     $pconfig = array();
     $pconfig['name'] = 'miniupnpd';
-    $pconfig['description'] = gettext('Univeral Plug and Play');
+    $pconfig['description'] = gettext('Universal Plug and Play');
     $pconfig['php']['restart'] = array('miniupnpd_stop', 'miniupnpd_start');
     $pconfig['php']['start'] = array('miniupnpd_start');
     $pconfig['php']['stop'] = array('miniupnpd_stop');

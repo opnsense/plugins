@@ -79,6 +79,42 @@
         <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
     <field>
+        <label>TLS-ALPN-01</label>
+        <type>header</type>
+        <style>method_table method_table_tlsalpn01</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_service</id>
+        <label>TLS-ALPN Service</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <label>acme.sh TLS Web Server</label>
+        <type>header</type>
+        <style>table_tlsalpn table_tlsalpn_acme</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_autodiscovery</id>
+        <label>IP Auto-Discovery</label>
+        <type>checkbox</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose this option to let OPNsense try to auto-discover these IP addresses. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_ipaddresses</id>
+        <label>IP Addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <hint>Enter IP addresses here. Finish each with TAB.</hint>
+    </field>
+    <field>
         <label>DNS-01</label>
         <type>header</type>
         <style>method_table method_table_dns01</style>
@@ -983,6 +1019,33 @@
         <type>text</type>
     </field>
     <field>
+        <label>Selfhost</label>
+        <type>header</type>
+        <style>table_dns table_dns_selfhost</style>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_rid</id>
+        <label>rid</label>
+        <type>text</type>
+        <help>Please create the TXT Record with Subdomain _acme-challenge first, than you can get the ID from the edit page.</help>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_rid2</id>
+        <label>rid2</label>
+        <type>text</type>
+        <help>Please create a second TXT Record with Subdomain _acme-challenge (needed to support ACME v2).</help>
+    </field>
+    <field>
         <label>Servercow</label>
         <type>header</type>
         <style>table_dns table_dns_servercow</style>
@@ -1352,5 +1415,37 @@
         <id>validation.dns_porkbun_secret</id>
         <label>Secret API Key</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>dynv6 HTTP API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dynv6</style>
+    </field>
+    <field>
+        <id>validation.dns_dynv6_token</id>
+        <label>HTTP Token</label>
+        <type>password</type>
+    </field>
+     <field>
+        <label>cPanel HTTP API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cpanel</style>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_user</id>
+        <label>cPanel Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_token</id>
+        <label>cPanel API Token</label>
+        <type>password</type>
+        <help><![CDATA[Please refer to the <a href="https://docs.cpanel.net/cpanel/security/manage-api-tokens-in-cpanel/">cPanel documentation</a> for further information.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_hostname</id>
+        <label>cPanel Hostname</label>
+        <type>text</type>
+        <help>EX: https://hostname:2083</help>
     </field>
 </form>

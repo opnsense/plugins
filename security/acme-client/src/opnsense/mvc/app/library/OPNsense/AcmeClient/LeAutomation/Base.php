@@ -47,7 +47,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      * Initialize LeAutomation object by adding the required configuration.
      * @return boolean
      */
-    public function init(string $certid, string $certname, string $accountuuid)
+    public function init(string $certid, string $certname, string $accountuuid, bool $certecc = false)
     {
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -78,6 +78,13 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
 
         // Main domain for acme
         $this->acme_args[] = LeUtils::execSafe('--domain %s', $certname);
+
+        // ECC cert
+        $this->cert_ecc = $certecc;
+        if ($this->cert_ecc) {
+            // Pass --ecc to acme client to locate the correct cert directory
+            $this->acme_args[] = '--ecc';
+        }
 
         return true;
     }
@@ -143,9 +150,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             return false;
         }
 
-        // Check validation result
+        // Check result
         if ($result) {
-            LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getMethod() . ')');
+            LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getType() . ')');
             return false;
         }
 

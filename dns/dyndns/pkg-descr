@@ -6,6 +6,7 @@ Plugin Changelog
 1.27
 
 * Add missing digitalocean-v6 switch case (contributed by zarcjap)
+* Fix GoDaddy IPv6 update (contributed by Team Rebellion)
 
 1.26
 

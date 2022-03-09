@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,8 @@ class HttpOpnsense extends Base implements LeValidationInterface
 {
     public function prepare()
     {
+        $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
+
         // Get configured HTTP port for local lighttpd server.
         $configObj = Config::getInstance()->object();
         $local_http_port = $configObj->OPNsense->AcmeClient->settings->challengePort;
