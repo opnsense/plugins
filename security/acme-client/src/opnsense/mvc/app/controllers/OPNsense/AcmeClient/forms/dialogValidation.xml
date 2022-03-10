@@ -1076,6 +1076,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>Simply.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_simply</style>
+    </field>
+    <field>
+        <id>validation.dns_simply_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_simply_account_name</id>
+        <label>Account Name</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Vscale</label>
         <type>header</type>
         <style>table_dns table_dns_vscale</style>
