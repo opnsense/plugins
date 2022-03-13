@@ -67,19 +67,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
         });
-        $("#account\\.use_interface").change(function(){
-            if ($(this).is(':checked')) {
-                $("#account\\.interface").prop( "disabled", false );
-                $("#account\\.interface").closest("tr").show();
-            } else {
-                $("#account\\.interface").closest("tr").hide();
-                $("#account\\.interface").prop( "disabled", true );
-            }
-            $('#account\\.interface').selectpicker('refresh');
-        });
         $('#DialogAccount').on('shown.bs.modal', function (e) {
             $("#account\\.service").change();
-            $("#account\\.use_interface").change();
         });
 
         $("#ddclient\\.general\\.checkip").change(function(){
@@ -113,6 +102,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="service" data-type="string">{{ lang._('Service') }}</th>
+                <th data-column-id="hostnames" data-type="string">{{ lang._('Hostnames') }}</th>
                 <th data-column-id="username" data-type="string">{{ lang._('Username') }}</th>
                 <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
