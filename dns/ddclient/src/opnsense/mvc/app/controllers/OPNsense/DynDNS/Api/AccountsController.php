@@ -45,10 +45,6 @@ class AccountsController extends ApiMutableModelControllerBase
             "description"
         );
         foreach ($result['rows'] as &$row) {
-            if ($row['use_interface'] == "0") {
-                $row['interface'] = "";
-            }
-            unset($row['use_interface']);
             if ($row['service'] == 'Custom') {
                 $row['service'] = 'Custom (' . $row['protocol'] . ')';
             }
