@@ -9,7 +9,7 @@ Plugin Changelog
 1.3
 
 * Add checkip settings per account using selected source interface when provided
-* Add OVH DynHost to the DynDNS providers
+* Add OVH DynHost to the DynDNS providers (contributed by toxic0berliner)
 
 1.2
 
