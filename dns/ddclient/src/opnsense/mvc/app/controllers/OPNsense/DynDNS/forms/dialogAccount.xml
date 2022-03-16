@@ -60,14 +60,20 @@
         <help>Hostname to update</help>
     </field>
     <field>
-        <id>account.use_interface</id>
-        <label>Use interface IP</label>
+        <id>account.checkip</id>
+        <label>Check ip method</label>
+        <type>dropdown</type>
+        <help>How to determine the address to use for this host</help>
+    </field>
+    <field>
+        <id>account.force_ssl</id>
+        <label>Force SSL</label>
         <type>checkbox</type>
-        <help>Use the IP of a specified interface for the update</help>
+        <help>Force update using HTTPS</help>
     </field>
     <field>
         <id>account.interface</id>
-        <label>Interface</label>
+        <label>Interface to monitor</label>
         <type>dropdown</type>
     </field>
     <field>
