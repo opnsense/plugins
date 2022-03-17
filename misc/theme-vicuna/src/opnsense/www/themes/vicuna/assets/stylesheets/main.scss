@@ -7291,12 +7291,13 @@ a.label {
 }
 
 .label-info {
-  background-color: #B0CDDB;
+  background-color: #21303a;
+  border: 1px solid #191919;
 
   &[href] {
     &:hover, &:focus {
       background-color: #8db7cb;
-      border-color: #191919;
+      border: 1px solid #191919;
     }
   }
 }
@@ -8915,9 +8916,13 @@ button.close {
   font-size: 14px;
   font-weight: normal;
   line-height: 18px;
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #ebebeb;
+  background-color: #19252d;
+  border-bottom: 1px solid #181919;
   border-radius: 5px 5px 0 0;
+
+  > a:hover {
+    text-decoration: none;
+  }
 }
 
 .popover-content {
