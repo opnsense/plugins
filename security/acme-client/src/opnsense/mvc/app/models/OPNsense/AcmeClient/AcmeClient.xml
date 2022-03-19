@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -985,9 +985,13 @@
                 <dns_acmedns_subdomain type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_subdomain>
+                <!-- old value, should be removed in next major release -->
                 <dns_acmedns_updateurl type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmedns_baseurl type="TextField">
+                    <Required>N</Required>
+                </dns_acmedns_baseurl>
                 <dns_acmeproxy_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_acmeproxy_endpoint>
