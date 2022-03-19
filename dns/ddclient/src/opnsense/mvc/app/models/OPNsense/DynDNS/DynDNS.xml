@@ -14,6 +14,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </verbose>
+            <allowipv6 type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </allowipv6>
             <daemon_delay type="IntegerField">
                 <default>300</default>
                 <Required>Y</Required>
