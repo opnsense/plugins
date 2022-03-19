@@ -86,13 +86,6 @@ const COMMANDS = [
     ],
 ];
 
-const STATIC_OPTIONS = <<<TXT
--h, --help          Print commandline help
---log               Enable log to stdout (instead of syslog)
---automation-id     Read options from the action specified by id or uuid
---no-error          Always exit with 0 (original exit codes are still logged)
-TXT;
-
 const EXAMPLES = <<<TXT
 - Show the public key used to communicate with the SFTP server
   ./upload_sftp.php --log --identity-type=ecdsa show-identity
@@ -150,9 +143,9 @@ use OPNsense\AcmeClient\Utils;
 // Implementing logic
 function commandShowIdentity(array &$options): int
 {
-    $identity_type = trim(($options["identity-type"] ?: SSHKeys::DEFAULT_IDENTITY_TYPE));
-    $source_ip = trim(($options["source-ip"] ?: ""));
-    $host = trim(($options["host"] ?: ""));
+    $identity_type = trim(($options["identity-type"] ?? "")) ?: SSHKeys::DEFAULT_IDENTITY_TYPE;
+    $source_ip = trim(($options["source-ip"] ?? ""));
+    $host = trim(($options["host"] ?? ""));
 
     $keys = new SSHKeys(configPath());
     if (($id_file = $keys->getIdentity($identity_type)) && is_readable($id_file)) {
@@ -190,7 +183,7 @@ function commandTestConnection(array &$options): int
 
         $uploader = new SftpUploader($sftp);
 
-        $chgrp = $options["chgrp"] ?: false;
+        $chgrp = ($options["chgrp"] ?? "") ?: false;
         $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
         $filename = $uploader->addContent("upload-test", "", 0, $chmod, $chgrp);
 
@@ -275,7 +268,7 @@ function uploadCertificatesToHost(array $options): int
     $sftp = connectWithServer($options, $error);
     if ($sftp === null) {
         Utils::log()->error("Aborting after connect failure.");
-        return $error["connect_failed"]
+        return ($error["connect_failed"] ?? false)
             ? EXITCODE_ERROR
             : EXITCODE_ERROR_NO_PERMISSION;
     }
@@ -321,10 +314,10 @@ function uploadCertificatesToHost(array $options): int
 
 function connectWithServer(array $options, &$error): ?SftpClient
 {
-    $identity_type = trim(($options["identity-type"] ?: SSHKeys::DEFAULT_IDENTITY_TYPE));
-    $host = trim(($options["host"] ?: ""));
-    $host_key = ($options["host-key"] ?: "");
-    $port = $options["port"] ?: 22;
+    $identity_type = trim(($options["identity-type"] ?? "")) ?: SSHKeys::DEFAULT_IDENTITY_TYPE;
+    $host = trim(($options["host"] ?? ""));
+    $host_key = ($options["host-key"] ?? "");
+    $port = $options["port"] ?? 22;
     $username = $options["user"];
 
     $sftp = new SftpClient(configPath(), $identity_type);
@@ -336,7 +329,7 @@ function connectWithServer(array $options, &$error): ?SftpClient
     }
 
     // Apply start path (if one was specified, defaults to home dir)
-    if (($remote_path = $options["remote-path"])) {
+    if (!empty($remote_path = ($options["remote-path"] ?? ""))) {
         if ($err = $sftp->cd($remote_path)->lastError()) {
             $error = $err;
             $error["change_home_dir_failed"] = true;
@@ -350,55 +343,7 @@ function connectWithServer(array $options, &$error): ?SftpClient
 
 function help()
 {
-    echo ABOUT . PHP_EOL
-        . "Usage: " . basename($GLOBALS["argv"][0]) . " [options] [--command=]COMMAND" . PHP_EOL
-        . PHP_EOL . STATIC_OPTIONS . PHP_EOL;
-
-    foreach (COMMANDS as $name => $cmd) {
-        echo PHP_EOL . "COMMAND \"$name\" {$cmd["description"]}" . PHP_EOL . "Options:" . PHP_EOL;
-        foreach ($cmd["options"] as $option) {
-            $option = preg_replace(['/^([^:]+)$/', '/(.+)::$/', '/(.+):$/'], ['[$1]', '[$1=value]', '$1=value'], "--$option");
-            echo "         $option" . PHP_EOL;
-        }
-    }
-
-    echo PHP_EOL . "Examples:" . PHP_EOL
-        . str_replace('/\r\n|\n|\r/g', PHP_EOL, EXAMPLES)
-        . PHP_EOL . PHP_EOL;
-}
-
-function getCommand()
-{
-    $default = null;
-    $command = null;
-    $parsed_args = getopt("", ["command::"]);
-    foreach (COMMANDS as $name => $cmd) {
-        if (in_array($name, $GLOBALS["argv"]) || $parsed_args["command"] === $name) {
-            $command = $cmd;
-        }
-        if ($cmd["default"] === true) {
-            $default = $cmd;
-        }
-    }
-
-    return $command ?: $default;
-}
-
-function getActionById($automation_id)
-{
-    $config = OPNsense\Core\Config::getInstance()->object();
-    $client = $config->OPNsense->AcmeClient;
-
-    foreach ($client->actions->children() as $action) {
-        if (
-            $automation_id === (string)$action->attributes()["uuid"]
-            || $automation_id === (string)$action->id
-        ) {
-            return $action;
-        }
-    }
-
-    return null;
+    Utils::printCLIHelp(ABOUT, EXAMPLES, COMMANDS);
 }
 
 function getOptionsById($automation_id, $silent = false)
@@ -407,7 +352,7 @@ function getOptionsById($automation_id, $silent = false)
         Utils::log()->info("Reading options from automation: $automation_id");
     }
 
-    if (is_object($action = getActionById($automation_id))) {
+    if (is_object($action = Utils::getAutomationActionById($automation_id))) {
         if ($action->enabled && "configd_upload_sftp" === (string)$action->type) {
             return [
                 "host" => trim((string)$action->sftp_host),
@@ -439,7 +384,7 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
 {
     $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
     $chmod_key = isset($options["chmod-key"]) ? ($options["chmod-key"] ?: DEFAULT_KEY_MODE) : false;
-    $chgrp = $options["chgrp"] ?: false;
+    $chgrp = ($options["chgrp"] ?? "") ?: false;
 
     if (isset($options["certificates"])) {
         $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
@@ -571,7 +516,7 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
     return $result;
 }
 
-function exportCertificates(array $cert_refids)
+function exportCertificates(array $cert_refids): array
 {
     $result = [];
     $config = OPNsense\Core\Config::getInstance()->object();
@@ -597,70 +542,10 @@ function exportCertificates(array $cert_refids)
 
 function configPath(): string
 {
-    static $paths = [
-        '/var/etc/acme-client',
-        __DIR__
-    ];
-    foreach ($paths as $path) {
-        if (is_dir($path)) {
-            return $path . DIRECTORY_SEPARATOR . 'sftp-config';
-        }
+    if (($path = Utils::configPath())) {
+        return $path . DIRECTORY_SEPARATOR . "sftp-config";
     }
     die("Failed detecting config path");
-}
-
-function main()
-{
-    global $argv;
-    $command = getCommand();
-    $options = ["help", "log", "no-error"];
-
-    $has_automation_id = preg_match('/--automation-id=\S+/', join(" ", $argv));
-    if ($has_automation_id) {
-        $options = array_merge($options, ["automation-id:", "certificates::"]);
-    } else {
-        $options = array_merge($options, $command["options"]);
-    }
-
-    $index = 0;
-    if ($options = getopt("h", $options, $index)) {
-        if (isset($options["h"]) || isset($options["help"])) {
-            help();
-        } else {
-            if (isset($options["log"])) {
-                Utils::log(true)->info("Logging to stdout enabled");
-            }
-
-            $options = array_filter($options, function ($value) {
-                return !is_string($value)
-                    || (!empty($value = trim($value)) && $value !== "__default_value");
-            });
-
-            if (isset($options["automation-id"])) {
-                $options = array_merge(getOptionsById($options["automation-id"]), $options);
-            }
-
-            if (is_callable($runner = $command["implementation"])) {
-                $code = $runner($options);
-
-                if ($code != EXITCODE_SUCCESS) {
-                    Utils::log()->error("Command execution failed, exit code $code. Last input was: " . json_encode($options, JSON_UNESCAPED_SLASHES));
-                }
-
-                exit(isset($options["no-error"]) ? EXITCODE_SUCCESS : $code);
-            } else {
-                exit(EXITCODE_ERROR_UNKNOWN_COMMAND);
-            }
-        }
-    } else {
-        if (count($argv) < 2) {
-            help();
-        } else {
-            $cmd = join(" ", $argv);
-            Utils::log()->error("Parsing of '$cmd' failed at argument '{$argv[$index]}'");
-        }
-        exit(1);
-    }
 }
 
 function requireThat($expression, $message)
@@ -674,4 +559,10 @@ function requireThat($expression, $message)
 }
 
 // Running the main script
-main();
+Utils::runCLIMain(
+    "help",
+    "getOptionsById",
+    COMMANDS,
+    EXITCODE_SUCCESS,
+    EXITCODE_ERROR_UNKNOWN_COMMAND
+);

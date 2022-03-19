@@ -101,6 +101,32 @@ class ActionsController extends ApiMutableModelControllerBase
         return ["status" => "unavailable"];
     }
 
+    public function sshGetIdentityAction()
+    {
+        $result = ["status" => "unavailable"];
+
+        if ($response = $this->callBackend(["show-remote-ssh-identity"], ["remote_ssh_identity_type", "remote_ssh_host"])) {
+            $result["status"] = "ok";
+            $result["identity"] = $response;
+        }
+
+        return $result;
+    }
+
+    public function sshTestConnectionAction()
+    {
+        if (
+            $response = $this->callBackend(
+                ["test-remote-ssh-connection"],
+                ["remote_ssh_host", "remote_ssh_host_key", "remote_ssh_port", "remote_ssh_user", "remote_ssh_identity_type"]
+            )
+        ) {
+            return $response;
+        }
+
+        return ["status" => "unavailable"];
+    }
+
     private function callBackend(array $command, array $arguments = [])
     {
         if ($this->request->isPost()) {

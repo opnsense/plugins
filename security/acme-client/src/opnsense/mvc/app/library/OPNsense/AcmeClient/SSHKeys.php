@@ -122,7 +122,7 @@ class SSHKeys
 
 
         // Check our current known_host file
-        $addKeyInfo = function (array &$key_list) {
+        $addKeyInfo = function (array $key_list) {
             foreach ($key_list as &$item) {
                 $item["key_info"] = self::getHostKeyInfo($item["host_key"]);
             }
@@ -182,7 +182,7 @@ class SSHKeys
             if (
                 empty($remote_host_keys)
                 && $query_error
-                && $query_error["connection_refused"]
+                && ($query_error["connection_refused"] ?? false)
                 && !$host_key
                 && self::ALTERNATE_DEFAULT_KEY_TYPE != self::DEFAULT_KEY_TYPE
             ) {
@@ -451,7 +451,7 @@ class SSHKeys
     {
         Utils::requireThat(in_array($identity_type, self::IDENTITY_TYPES), "Identity type '$identity_type' unknown.");
 
-        list($key_type, $key_size) = explode('_', $identity_type, 2);
+        list($key_type, $key_size) = explode('_', "{$identity_type}_", 2);
         if (!$key_size && self::DEFAULT_IDENTITY_KEY_BITS[$key_type] > 0) {
             $key_size = self::DEFAULT_IDENTITY_KEY_BITS[$key_type];
         }

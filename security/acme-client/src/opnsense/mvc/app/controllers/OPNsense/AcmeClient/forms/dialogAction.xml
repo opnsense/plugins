@@ -145,6 +145,49 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_configd_remote_ssh</style>
+    </field>
+    <field>
+        <id>action.remote_ssh_host</id>
+        <label>SSH Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the SSH server.</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_port</id>
+        <label>SSH Port</label>
+        <type>text</type>
+        <help>SSH server port. Leave blank to use default "22".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.remote_ssh_key</id>
+        <label>Host Key</label>
+        <type>text</type>
+        <help>SSH server host key, formatted as in 'known_hosts'.
+              Leave blank to auto accept host key on first connect (not as secure as specifying it).</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the SSH server.</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_identity_type</id>
+        <label>Identity Type</label>
+        <type>dropdown</type>
+        <help>The type of identify to present to the SSH server for authorization. Select 'none' to use default "ECDSA".</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_command</id>
+        <label>Command</label>
+        <type>text</type>
+        <help>The command to execute on the SSH server.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_configd_generic</style>
     </field>
     <field>
