@@ -1113,6 +1113,7 @@
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
                         <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
+                        <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
@@ -1205,6 +1206,43 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_fullchain>
+                <remote_ssh_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </remote_ssh_host>
+                <remote_ssh_host_key type="TextField">
+                    <Required>N</Required>
+                    <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
+                         Reference: https://stackoverflow.com/a/475217 -->
+                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
+                </remote_ssh_host_key>
+                <remote_ssh_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>49151</MaximumValue>
+                    <default>22</default>
+                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                </remote_ssh_port>
+                <remote_ssh_user type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </remote_ssh_user>
+                <remote_ssh_identity_type type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ecdsa>ECDSA</ecdsa>
+                        <rsa>RSA</rsa>
+                        <ed25519>ed25519</ed25519>
+                    </OptionValues>
+                </remote_ssh_identity_type>
+                <remote_ssh_command type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a shell command between 1 and 1024 characters.</ValidationMessage>
+                </remote_ssh_command>
                 <!-- old value, should be removed in next major release -->
                 <configd type="ConfigdActionsField">
                     <filters>
