@@ -303,7 +303,7 @@
         <label>Password</label>
         <type>password</type>
     </field>
-	<field>
+    <field>
         <label>DDNSS API</label>
         <type>header</type>
         <style>table_dns table_dns_ddnss</style>
@@ -1069,12 +1069,13 @@
         <id>validation.dns_transip_username</id>
         <label>Username</label>
         <type>text</type>
-	<help>Your TransIP username.</help>
+        <help>Your TransIP username.</help>
+    </field>
     <field>
         <id>validation.dns_transip_key</id>
         <label>API Key</label>
         <type>text</type>
-	<help>Requires the whole key file in a format that is compatible with TransIP.</help>
+        <help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
     <field>
         <label>UnoEuro</label>
