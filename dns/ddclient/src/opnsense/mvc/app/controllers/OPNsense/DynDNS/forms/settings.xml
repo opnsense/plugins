@@ -13,6 +13,13 @@
         <help>Enable verbose logging</help>
     </field>
     <field>
+        <id>ddclient.general.allowipv6</id>
+        <label>Allow IPv6</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Allow IPv6 for updates</help>
+    </field>
+    <field>
         <id>ddclient.general.daemon_delay</id>
         <label>Interval</label>
         <type>text</type>

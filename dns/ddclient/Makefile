@@ -1,5 +1,5 @@
 PLUGIN_NAME=		ddclient
-PLUGIN_VERSION=		1.3
+PLUGIN_VERSION=		1.4
 PLUGIN_DEPENDS=		ddclient
 PLUGIN_COMMENT=		Dynamic DNS client
 PLUGIN_MAINTAINER=	ad@opnsense.org
