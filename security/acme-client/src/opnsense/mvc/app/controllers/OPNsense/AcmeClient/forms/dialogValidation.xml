@@ -1061,6 +1061,22 @@
         <type>password</type>
     </field>
     <field>
+        <label>Transip</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <id>validation.dns_transip_username</id>
+        <label>Username</label>
+        <type>text</type>
+	<help>Your TransIP username.</help>
+    <field>
+        <id>validation.dns_transip_key</id>
+        <label>API Key</label>
+        <type>text</type>
+	<help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
