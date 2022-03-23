@@ -9,6 +9,7 @@ Plugin Changelog
 1.4
 
 * Add advanced general setting to allow updates via IPv6
+* Enforce SSL on global level with account setting
 
 1.3
 
