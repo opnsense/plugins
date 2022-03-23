@@ -270,6 +270,7 @@
                         </actions>
                     </Model>
                     <ValidationMessage>Related automation not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </restartActions>
