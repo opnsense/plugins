@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2021 Frank Wall
+ *    Copyright (C) 2022 Juergen Kellerer
  *
  *    All rights reserved.
  *
