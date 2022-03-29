@@ -18,12 +18,24 @@
         <help>Enable NTS in client mode. This will add another layer of security for peers when OPNsense is the client. Every server in Peers has to support NTS.</help>
     </field>
     <field>
+        <id>general.ntsnocert</id>
+        <label>NTS Disable Certcheck</label>
+        <type>checkbox</type>
+        <help>If you run NTS mode you can enable this option in order to ignore wrong time in certificates for the first check. This helps if your system starts with wrong time.</help>
+    </field>
+    <field>
         <id>general.peers</id>
         <label>NTP Peers</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Set as many NTP peers you need.</help>
+    </field>
+    <field>
+        <id>general.fallbackpeers</id>
+        <label>Fallback Peer</label>
+        <type>text</type>
+        <help>Set fallback peer if you use NTS and your system starts with wrong time. Best to only use this for internal trusted peers.</help>
     </field>
     <field>
         <id>general.allowednetworks</id>

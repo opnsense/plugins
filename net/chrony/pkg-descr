@@ -4,6 +4,11 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.5
+
+* Allow adding a fallback NTP when using NTS
+* Add option for nocerttimecheck if system starts with wrong time and only NTS allowed
+
 1.4
 
 * Adjust timeouts and retries for chronyc
