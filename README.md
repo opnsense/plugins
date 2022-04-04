@@ -43,10 +43,10 @@ emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - dark grey
+misc/theme-cicada -- The cicada theme - dark grey onyx
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
-misc/theme-vicuna -- The vicuna theme - dark anthrazit
+misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
 net/firewall -- Firewall API supplemental package
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
