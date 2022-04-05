@@ -52,6 +52,17 @@
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Cost must be between 0 and 4294967295.</ValidationMessage>
                         </cost>
+                        <cost_demoted type="IntegerField">
+                                <default>65535</default>
+                                <MinimumValue>1</MinimumValue>
+                                <Required>N</Required>
+                                <MaximumValue>65535</MaximumValue>
+                                <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
+                        </cost_demoted>
+                        <carp_depend_on type="VirtualIPField">
+                            <type>carp</type>
+                            <Required>N</Required>
+                        </carp_depend_on>
                         <hellointerval type="IntegerField">
                                 <default></default>
                                 <MinimumValue>0</MinimumValue>

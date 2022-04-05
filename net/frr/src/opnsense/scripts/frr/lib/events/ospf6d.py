@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2020 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2022 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -30,12 +30,12 @@ from configparser import ConfigParser
 from ..base import BaseEventHandler
 
 
-class OspfdEventHandler(BaseEventHandler):
-    _config = '/usr/local/etc/frr/ospfd_carp.conf'
+class Ospf6dEventHandler(BaseEventHandler):
+    _config = '/usr/local/etc/frr/ospf6d_carp.conf'
 
     @property
     def should_run(self):
-        return self.vtysh.is_running('ospfd')
+        return self.vtysh.is_running('ospf6d')
 
     def _read_config(self):
         result = dict()
@@ -57,7 +57,20 @@ class OspfdEventHandler(BaseEventHandler):
 
     def execute(self):
         if os.path.isfile(self._config):
-            ospf_interfaces = self.vtysh.execute('show ip ospf interface json')
+            # parse ospf6 interface data, keep structure similar to what ospf offers when using json output
+            ospf_interfaces = {
+                'interfaces': {}
+            }
+            this_interface = None
+            for line in self.vtysh.execute('show ipv6 ospf6 interface', translate=None).decode().split('\n'):
+                if len(line) > 0 and line[0] != ' ':
+                    this_interface  = line.split()[0]
+                    ospf_interfaces['interfaces'][this_interface] = {}
+                elif this_interface is not None:
+                    if line.find('Area ID') > 0 and line.split()[-1].isdigit():
+                        # Area ID X.X.X.X, Cost XXXX
+                        ospf_interfaces['interfaces'][this_interface]['cost'] = int(line.split()[-1])
+
             config_interfaces = self._read_config()
             for intf in config_interfaces:
                 if 'interfaces' in ospf_interfaces and intf in ospf_interfaces['interfaces']:
@@ -65,30 +78,30 @@ class OspfdEventHandler(BaseEventHandler):
                     is_intf_master = self.ifstatus.address_status(config_interfaces[intf]['carp_depend_on']) == 'master'
                     is_ospf_dem = ospf_intf_cost == config_interfaces[intf]['demoted_cost']
                     if is_intf_master and is_ospf_dem:
-                        # promote ospf interface
+                        # promote ospf6 interface
                         conf_cost = config_interfaces[intf]['default_cost']
                         if conf_cost is None:
                             syslog.syslog(
-                                syslog.LOG_NOTICE, 'ospfd promote interface %s (no default cost configured).' % intf
+                                syslog.LOG_NOTICE, 'ospf6d promote interface %s (no default cost configured).' % intf
                             )
                             self.vtysh.execute(
-                                ['interface %s' % intf, 'no ip ospf cost'], translate=None, configure=True
+                                ['interface %s' % intf, 'no ipv6 ospf6 cost'], translate=None, configure=True
                             )
                         elif conf_cost != ospf_intf_cost:
                             syslog.syslog(
-                                syslog.LOG_NOTICE, 'ospfd promote interface %s (cost %d).' % (intf, conf_cost)
+                                syslog.LOG_NOTICE, 'ospf6d promote interface %s (cost %d).' % (intf, conf_cost)
                             )
                             self.vtysh.execute(
-                                ['interface %s' % intf, 'ip ospf cost %d' % conf_cost],
+                                ['interface %s' % intf, 'ipv6 ospf6 cost %d' % conf_cost],
                                 translate=None, configure=True
                             )
                     elif not is_intf_master and not is_ospf_dem:
-                        # demote ospf interface
+                        # demote ospf6 interface
                         conf_cost = config_interfaces[intf]['demoted_cost']
                         syslog.syslog(
-                            syslog.LOG_NOTICE, 'ospfd demote interface %s (cost %d).' % (intf, conf_cost)
+                            syslog.LOG_NOTICE, 'ospf6d demote interface %s (cost %d).' % (intf, conf_cost)
                         )
                         self.vtysh.execute(
-                            ['interface %s' % intf, 'ip ospf cost %d' % conf_cost],
+                            ['interface %s' % intf, 'ipv6 ospf6 cost %d' % conf_cost],
                             translate=None, configure=True
                         )
