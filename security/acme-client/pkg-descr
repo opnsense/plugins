@@ -8,6 +8,15 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.9
+
+Added:
+* add support for Transip DNS API ( #2871)
+* execution order of automations can be changed (#2833)
+
+Fixed:
+* fix the use of a self hosted ACME-DNS service (#2898)
+
 3.8
 
 NOTE: Support for the cPanel and Selfhost API is not functional. It requires

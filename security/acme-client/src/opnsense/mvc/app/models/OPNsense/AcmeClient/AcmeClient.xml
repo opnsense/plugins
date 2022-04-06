@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -270,6 +270,7 @@
                         </actions>
                     </Model>
                     <ValidationMessage>Related automation not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </restartActions>
@@ -488,6 +489,7 @@
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_selfhost>Selfhost API</dns_selfhost>
                         <dns_servercow>Servercow API v1</dns_servercow>
+                        <dns_transip>Transip API</dns_transip>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
@@ -942,6 +944,12 @@
                 <dns_servercow_password type="TextField">
                     <Required>N</Required>
                 </dns_servercow_password>
+                <dns_transip_username type="TextField">
+                    <Required>N</Required>
+                </dns_transip_username>
+                <dns_transip_key type="TextField">
+                    <Required>N</Required>
+                </dns_transip_key>
                 <dns_uno_key type="TextField">
                     <Required>N</Required>
                 </dns_uno_key>
@@ -978,9 +986,13 @@
                 <dns_acmedns_subdomain type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_subdomain>
+                <!-- old value, should be removed in next major release -->
                 <dns_acmedns_updateurl type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmedns_baseurl type="TextField">
+                    <Required>N</Required>
+                </dns_acmedns_baseurl>
                 <dns_acmeproxy_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_acmeproxy_endpoint>

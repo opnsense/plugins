@@ -303,7 +303,7 @@
         <label>Password</label>
         <type>password</type>
     </field>
-	<field>
+    <field>
         <label>DDNSS API</label>
         <type>header</type>
         <style>table_dns table_dns_ddnss</style>
@@ -1061,6 +1061,23 @@
         <type>password</type>
     </field>
     <field>
+        <label>Transip</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <id>validation.dns_transip_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Your TransIP username.</help>
+    </field>
+    <field>
+        <id>validation.dns_transip_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
@@ -1187,10 +1204,10 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_acmedns_updateurl</id>
-        <label>Update URL</label>
+        <id>validation.dns_acmedns_baseurl</id>
+        <label>ACME DNS URL</label>
         <type>text</type>
-        <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+        <help>Specify the custom ACME DNS URL, i.e. https://auth.acme-dns.io:443 (optional)</help>
     </field>
     <field>
         <label>Acmeproxy</label>
