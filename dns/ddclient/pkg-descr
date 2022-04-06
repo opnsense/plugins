@@ -6,6 +6,11 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.5
+
+* Add service control, XMLRPC registration and syslog target
+* Add Servercow support (contributed by FreddleSpl0it)
+
 1.4
 
 * Add advanced general setting to allow updates via IPv6
