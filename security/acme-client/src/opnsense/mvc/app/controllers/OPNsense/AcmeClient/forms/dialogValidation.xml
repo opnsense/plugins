@@ -1066,6 +1066,10 @@
         <style>table_dns table_dns_transip</style>
     </field>
     <field>
+        <label>NOTE: A DNS sleep time of at least 300 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    <field>
         <id>validation.dns_transip_username</id>
         <label>Username</label>
         <type>text</type>
@@ -1074,7 +1078,7 @@
     <field>
         <id>validation.dns_transip_key</id>
         <label>API Key</label>
-        <type>text</type>
+        <type>textbox</type>
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
     <field>
