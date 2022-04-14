@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+      <CrowdSec cssClass="fa fa-globe fa-fw">
+        <Settings order="1" url="/ui/crowdsec/general/index"/>
+        <Overview order="2" url="/ui/crowdsec/overview"/>
+      </CrowdSec>
+    </Services>
+</menu>
