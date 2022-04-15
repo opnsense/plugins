@@ -3,6 +3,9 @@
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxymode') and OPNsense.zabbixproxy.general.proxymode == '1' %}
 ProxyMode=1
 {% else %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.remotecommands') and OPNsense.zabbixproxy.general.remotecommands == '1' %}
+EnableRemoteCommands=1
+{% else %}
 ProxyMode=0
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.server') and OPNsense.zabbixproxy.general.server != '' %}

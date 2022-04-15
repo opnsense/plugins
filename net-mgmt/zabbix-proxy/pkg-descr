@@ -11,6 +11,8 @@ WWW: https://www.zabbix.com/
 
 Plugin Changelog
 ----------------
+1.8
+* Add EnableRemoteCommands
 
 1.7
 
