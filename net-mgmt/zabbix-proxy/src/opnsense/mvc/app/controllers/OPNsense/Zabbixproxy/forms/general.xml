@@ -12,6 +12,12 @@
         <help>Active (default) or passive mode, only switch to passive if you know what you are doing.</help>
     </field>
     <field>
+        <id>general.remotecommands</id>
+        <label>Enable Remote Commands</label>
+        <type>checkbox</type>
+    <help>Enable Remote Commands on Proxy.</help>
+    </field>
+    <field>
         <id>general.server</id>
         <label>Server</label>
         <type>text</type>
