@@ -3,16 +3,25 @@
   <!-- agent_enabled -->
   <field>
     <id>general.agent_enabled</id>
-    <label>Enable CrowdSec Agent</label>
+    <label>Enable CrowdSec (IDS)</label>
     <type>checkbox</type>
-    <help>Enable/disable the CrowdSec Agent. Keep this enabled to detect
+    <help>Enable/disable the CrowdSec agent. Keep this enabled to detect
       attacks and receive alerts from the CrowSec central service.</help>
+  </field>
+
+  <!-- lapi_enabled -->
+  <field>
+    <id>general.lapi_enabled</id>
+    <label>Enable LAPI</label>
+    <type>checkbox</type>
+    <help>Enable/disable the CrowdSec Local API. Keep this enabled unless you
+      connect to a LAPI on another machine</help>
   </field>
 
   <!-- firewall_bouncer_enabled -->
   <field>
     <id>general.firewall_bouncer_enabled</id>
-    <label>Enable CrowdSec Firewall Bouncer</label>
+    <label>Enable Firewall Bouncer (IPS)</label>
     <type>checkbox</type>
     <help>Enable/disable the firewall bouncer. Keep this enabled to block
       packets from the attacking IP addresses.</help>
@@ -65,24 +74,6 @@
     <help>Enable log collection for CrowdSec's block rules.</help>
   </field>
 
-  <!-- crowdsec_flags -->
-  <field>
-    <id>general.crowdsec_flags</id>
-    <label>Additional flags for crowdsec</label>
-    <type>text</type>
-    <help>Custom command-line options for the "crowdsec" command. Ex:
-      "-no-api" to disable LAPI, "-no-cs" to disable the agent.</help>
-  </field>
-
-  <!-- crowdsec_firewall_flags -->
-  <field>
-    <id>general.crowdsec_firewall_flags</id>
-    <label>Additional flags for crowdsec-firewall-bouncer</label>
-    <type>text</type>
-    <help>Custom command-line options for the "crowdsec-firewall-bouncer"
-      command. Ex: "-v" for verbose logs.</help>
-  </field>
-
   <!-- rules_tag -->
   <field>
     <id>general.rules_tag</id>
@@ -90,6 +81,15 @@
     <type>text</type>
     <help>Add a tag to packets that are dropped by CrowdSec rules for
       diagnostic purposes.</help>
+  </field>
+
+  <!-- crowdsec_firewall_verbose -->
+  <field>
+    <id>general.crowdsec_firewall_verbose</id>
+    <label>Verbose log for firewall bouncer</label>
+    <type>checkbox</type>
+    <help>Verbose /var/log/crowdsec/crowdsec-firewall-bouncer.log. Enable this
+      for debugging.</help>
   </field>
 
 </form>

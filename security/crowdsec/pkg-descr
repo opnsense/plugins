@@ -10,7 +10,10 @@ Plugin Changelog
 
 1.0.0
 
-* First published release
+* first published release
+* added options `lapi_enabled`, `crowdsec_firewall_verbose`
+* removed options `crowdsec_flags`, `crowdsec_firewall_flags`
+* changed default for `agent_enabled`, `firewall_bouncer_enabled` to 1
 
 0.1
 
