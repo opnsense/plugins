@@ -70,7 +70,7 @@ function stunnel_refresh_crls()
 {
     $stunnel = new OPNsense\Stunnel\Stunnel();
     $configObj = OPNsense\Core\Config::getInstance()->object();
-    foreach ($stunnel->services->service->__items as $service) {
+    foreach ($stunnel->services->service->iterateItems() as $service) {
         if (!empty((string)$service->enabled) && !empty((string)$service->enableCRL)) {
             foreach (explode(",", (string)$service->cacert) as $cacert) {
                 $this_ca = null;
