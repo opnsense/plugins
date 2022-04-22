@@ -46,13 +46,19 @@
         <id>domain.transferkeyalgo</id>
         <label>Transfer Key Algorithm</label>
         <type>dropdown</type>
-        <help>Set the authentication algorithm for the TSIG key.</help>
+        <help>Set the authentication algorithm for the TSIG key used to transfer domain data from the master server.</help>
+    </field>
+    <field>
+        <id>domain.transferkeyname</id>
+        <label>Transfer Key Name</label>
+        <type>text</type>
+        <help>The name of the TSIG key, which must match the value on the master server.</help>
     </field>
     <field>
         <id>domain.transferkey</id>
         <label>Transfer Key</label>
         <type>text</type>
-        <help>The TSIG key used to transfer domain data from the master server.</help>
+        <help>The base64-encoded TSIG key.</help>
     </field>
     <field>
         <id>domain.allownotifyslave</id>

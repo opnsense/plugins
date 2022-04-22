@@ -33,6 +33,10 @@
                         <hmac-md5>HMAC-MD5</hmac-md5>
                     </OptionValues>
                 </transferkeyalgo>
+                <transferkeyname type="TextField">
+                    <Required>N</Required>
+                    <default></default>
+                </transferkeyname>
                 <transferkey type="TextField">
                     <Required>N</Required>
                     <default></default>
