@@ -1068,7 +1068,6 @@
     <field>
         <label>NOTE: A DNS sleep time of at least 300 is recommended.</label>
         <type>header</type>
-        <style>table_dns table_dns_transip</style>
     <field>
         <id>validation.dns_transip_username</id>
         <label>Username</label>
