@@ -101,7 +101,6 @@ $(document).ready(function() {
     content = _.template($('#routestpl').html())(data['response']);
     $('#routing').html(content);
     $('#routing table').bootgrid({
-      converters: dataconverters,
       formatters: dataformatters
     });
   });
@@ -110,7 +109,6 @@ $(document).ready(function() {
     content = _.template($('#routestpl').html())(data['response']);
     $('#routing6').html(content);
     $('#routing6 table').bootgrid({
-      converters: dataconverters,
       formatters: dataformatters
     });
   });

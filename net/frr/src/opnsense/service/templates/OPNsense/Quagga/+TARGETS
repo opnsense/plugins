@@ -3,6 +3,7 @@ bgpd.conf:/usr/local/etc/frr/bgpd.conf
 ospfd.conf:/usr/local/etc/frr/ospfd.conf
 ospfd_carp.conf:/usr/local/etc/frr/ospfd_carp.conf
 ospf6d.conf:/usr/local/etc/frr/ospf6d.conf
+ospf6d_carp.conf:/usr/local/etc/frr/ospf6d_carp.conf
 ripd.conf:/usr/local/etc/frr/ripd.conf
 sa_policies.conf:/usr/local/etc/frr/sa_policies.conf
 frr:/etc/rc.conf.d/frr

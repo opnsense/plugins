@@ -37,7 +37,7 @@ $base_path = "/usr/local/etc/stunnel/certs";
 $stunnel = new Stunnel();
 $configObj = Config::getInstance()->object();
 $all_certs = [];
-foreach ($stunnel->services->service->__items as $service) {
+foreach ($stunnel->services->service->iterateItems() as $service) {
     if (!empty((string)$service->enabled)) {
         $this_uuid = $service->getAttributes()['uuid'];
         $srv_certid = (string)$service->servercert;
