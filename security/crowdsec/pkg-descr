@@ -8,7 +8,7 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
-1.0.0
+0.2
 
 * first published release
 * added options `lapi_enabled`, `crowdsec_firewall_verbose`

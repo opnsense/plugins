@@ -1,5 +1,5 @@
 PLUGIN_NAME=		crowdsec
-PLUGIN_VERSION=		1.0.0
+PLUGIN_VERSION=		0.2
 #PLUGIN_REVISION=	1
 PLUGIN_DEPENDS=		crowdsec crowdsec-firewall-bouncer
 PLUGIN_COMMENT=		Lightweight and collaborative security engine
