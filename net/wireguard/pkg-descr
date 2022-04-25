@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.11
+
+* Add script for renewal of stale connections because DNS changed
+
 1.10
 
 * Remove instance limit
