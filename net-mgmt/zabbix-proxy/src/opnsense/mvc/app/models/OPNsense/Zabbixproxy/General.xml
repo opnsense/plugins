@@ -11,6 +11,10 @@
             <default>0</default>
             <Required>Y</Required>
         </proxymode>
+        <remotecommands type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </remotecommands>
         <server type="TextField">
             <default></default>
             <Required>N</Required>
