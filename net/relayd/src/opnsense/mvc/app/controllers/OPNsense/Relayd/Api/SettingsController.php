@@ -333,19 +333,19 @@ class SettingsController extends ApiMutableModelControllerBase
             $fields = array();
             switch ($nodeType) {
                 case 'host':
-                    $fields = array('enabled', 'name', 'address');
+                    $fields = ['enabled', 'name', 'address'];
                     break;
                 case 'tablecheck':
-                    $fields = array('name', 'type');
+                    $fields = ['name', 'type'];
                     break;
                 case 'table':
-                    $fields = array('enabled', 'name');
+                    $fields = ['enabled', 'name'];
                     break;
                 case 'protocol':
-                    $fields = array('name', 'type');
+                    $fields = ['name', 'type'];
                     break;
                 case 'virtualserver':
-                    $fields = array('enabled', 'name', 'type');
+                    $fields = ['enabled', 'name', 'type', 'listen_address', 'listen_startport', 'listen_endport'];
                     break;
             }
             $result = $grid->fetchBindRequest($this->request, $fields);
