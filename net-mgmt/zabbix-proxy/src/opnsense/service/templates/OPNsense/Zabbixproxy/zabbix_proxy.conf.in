@@ -7,7 +7,7 @@ ProxyMode=0
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.remotecommands') and OPNsense.zabbixproxy.general.remotecommands == '1' %}
 EnableRemoteCommands=1
-{% else %}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.server') and OPNsense.zabbixproxy.general.server != '' %}
 Server={{ OPNsense.zabbixproxy.general.server }}
 {% endif %}
