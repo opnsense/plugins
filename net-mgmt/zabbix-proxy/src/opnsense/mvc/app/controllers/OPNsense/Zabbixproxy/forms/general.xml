@@ -104,28 +104,16 @@
         <help>Activate SNMP Trapper, needs to be activated also in NET-SNMP</help>
     </field>
     <field>
-        <id>general.snmptrapperstarter</id>
-        <label>SNMP Starter Trappers</label>
-        <type>text</type>
-        <help>SNMP Starter Trappers, default is 5</help>
-    </field>
-    <field>
         <id>general.snmptrapperfile</id>
         <label>SNMP trapper file position</label>
         <type>text</type>
         <help>Default is /tmp/zabbix_traps.tmp</help>
     </field>
     <field>
-        <id>general.snmptrappertimeout</id>
-        <label>Timeout of SNMP Trapper</label>
+        <id>general.trappertimeout</id>
+        <label>Timeout of Trappers</label>
         <type>text</type>
         <help>Default is 300</help>
-    </field>
-    <field>
-        <id>general.startvmwarecollectors</id>
-        <label>Start VMware Collectors</label>
-        <type>text</type>
-        <help>Number of pre-forked instances of VMware Collectors.</help>
     </field>
     <field>
         <id>general.starthttppollers</id>
