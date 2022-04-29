@@ -64,7 +64,7 @@ StartSNMPTrapper=1
 StartSNMPTrapper=0
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.snmptrapperfile') and OPNsense.zabbixproxy.general.snmptrapper == '1' %}
-StartTrappers={{ OPNsense.zabbixproxy.general.snmptrapperfile }}
+SNMPTrapperFile={{ OPNsense.zabbixproxy.general.snmptrapperfile }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.trappertimeout') and OPNsense.zabbixproxy.general.trappertimout != '' %}
 TrapperTimeout={{ OPNsense.zabbixproxy.general.trappertimeout }}
