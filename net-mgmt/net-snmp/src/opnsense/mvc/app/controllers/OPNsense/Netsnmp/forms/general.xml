@@ -49,4 +49,16 @@
         <allownew>true</allownew>
         <help>Set the IP addresses the service should listen to.</help>
     </field>
+    <field>
+        <id>general.trapenabled</id>
+        <label>Enable SNMP Trap Service</label>
+        <type>checkbox</type>
+        <help>This will activate the snmpd trap service.</help>
+    </field>
+    <field>
+        <id>general.trapzabbix</id>
+        <label>Configure SNMP Trap Service for Zabbix Proxy</label>
+        <type>checkbox</type>
+        <help>This will configure SNMP Trap Service for Zabbix Proxy use</help>
+    </field>
 </form>
