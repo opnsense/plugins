@@ -74,11 +74,11 @@
         </snmptrapper>
         <snmptrapperfile type="TextField">
             <default>/tmp/zabbix_traps.tmp</default>
-            <Required>Y</Required>
+            <Required>N</Required>
         </snmptrapperfile>
         <trappertimeout type="IntegerField">
             <default>300</default>
-            <Required>Y</Required>
+            <Required>N</Required>
         </trappertimeout>
         <starthttppollers type="IntegerField">
             <default>1</default>
