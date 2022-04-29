@@ -1,0 +1,2 @@
+snmptrapd_enable="YES"
+snmptrapd_flags="-On -p /var/run/snmptrapd.pid"
