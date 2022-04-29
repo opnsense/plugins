@@ -53,3 +53,34 @@ function netsnmp_services()
 
     return $services;
 }
+
+
+
+
+function netsnmp_trap_enabled()
+{
+    $model = new \OPNsense\Netsnmp\General();
+    return (string)$model->trapenabled == '1';
+}
+
+function netsnmp_trap_services()
+{
+    $services_trap = array();
+
+    if (!netsnmp_trap_enabled()) {
+        return $services_trap;
+    }
+
+    $services_trap[] = array(
+        'description' => gettext('Net-SNMP Trap Daemon'),
+        'configd' => array(
+            'restart' => array('netsnmp trap restart'),
+            'start' => array('netsnmp trap start'),
+            'stop' => array('netsnmp trap stop'),
+        ),
+        'name' => 'snmpd trap',
+        'pidfile' => '/var/run/snmptrapd.pid'
+    );
+
+    return $services;
+}
