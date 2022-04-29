@@ -39,7 +39,7 @@ class ServicesController extends ApiMutableModelControllerBase
     {
         // hook service enable status on enabled tunnels
         $this->getModel()->general->enabled = "0";
-        foreach ($this->getModel()->services->service->__items as $service) {
+        foreach ($this->getModel()->services->service->iterateItems() as $service) {
             if ((string)$service->enabled == "1") {
                 $this->getModel()->general->enabled = "1";
                 break;

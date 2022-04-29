@@ -7,9 +7,16 @@ makes it applicable to a wide variety of use cases including connecting
 hosts/VMs/containers to the network, advertising network services, LAN
 switching and routing, Internet access routers, and Internet peering.
 
+WWW: https://frrouting.org/
 
 Plugin Changelog
 ================
+
+1.28
+
+* OSPF6 Interface change networktype and interfacename to dropdown in stead of multi select
+* Diagnostics / BGP - fix search in grid, should only use a formatter for presentation purposes
+* Add ospf6 carp demotion event handler
 
 1.27
 
@@ -124,6 +131,3 @@ Plugin Changelog
 1.8
 
 * Add area range in OSPF config
-
-
-WWW: https://frrouting.org/
