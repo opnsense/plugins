@@ -67,10 +67,4 @@
         <type>text</type>
         <help>Insert SNMPD Trap flags, for Zabbix Proxy use: -On -p /var/run/snmptrapd.pid</help>
     </field>
-    <field>
-        <id>general.trapzabbix</id>
-        <label>Configure SNMP Trap Service for Zabbix Proxy</label>
-        <type>checkbox</type>
-        <help>This will configure SNMP Trap Service for Zabbix Proxy use</help>
-    </field>
 </form>
