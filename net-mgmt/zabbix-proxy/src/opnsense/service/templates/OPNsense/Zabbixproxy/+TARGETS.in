@@ -1,4 +1,4 @@
 zabbix_proxy:/etc/rc.conf.d/zabbix_proxy
+snmptrapd.conf:/usr/local/etc/snmp/snmptrapd.conf
 zabbix_proxy.conf:/usr/local/etc/%%PLUGIN_VARIANT%%/zabbix_proxy.conf
 zabbix_proxy.psk:/usr/local/etc/%%PLUGIN_VARIANT%%/zabbix_proxy.psk
-snmptrapd.conf:/usr/local/etc/snmp/snmptrapd.conf
