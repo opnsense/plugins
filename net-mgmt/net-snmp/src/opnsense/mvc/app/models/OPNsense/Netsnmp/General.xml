@@ -48,9 +48,5 @@
             <default></default>
             <Required>N</Required>
         </snmptrapdflags>
-        <trapzabbix type="BooleanField">
-            <default>0</default>
-            <Required>Y</Required>
-        </trapzabbix>
     </items>
 </model>
