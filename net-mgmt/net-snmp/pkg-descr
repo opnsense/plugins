@@ -10,6 +10,9 @@ WWW: http://www.net-snmp.org
 
 Plugin Changelog
 ----------------
+1.6
+
+* Add support for snmptrapper in Zabbix-Proxy.
 
 1.5
 
