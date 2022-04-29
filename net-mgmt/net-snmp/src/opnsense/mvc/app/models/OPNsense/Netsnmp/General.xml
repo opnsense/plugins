@@ -36,7 +36,15 @@
             <Required>N</Required>
             <asList>Y</asList>
         </listen>
+        <listen type="snmpdflags">
+            <default>0</default>
+            <Required>Y</Required>
+        </listen>
         <listen type="trapenabled">
+            <default>0</default>
+            <Required>Y</Required>
+        </listen>
+        <listen type="snmptrapdflags">
             <default>0</default>
             <Required>Y</Required>
         </listen>
