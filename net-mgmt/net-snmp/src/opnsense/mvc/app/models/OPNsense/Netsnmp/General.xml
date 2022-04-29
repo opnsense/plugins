@@ -36,5 +36,13 @@
             <Required>N</Required>
             <asList>Y</asList>
         </listen>
+        <listen type="trapenabled">
+            <default>0</default>
+            <Required>Y</Required>
+        </listen>
+        <listen type="trapzabbix">
+            <default>0</default>
+            <Required>Y</Required>
+        </listen>
     </items>
 </model>
