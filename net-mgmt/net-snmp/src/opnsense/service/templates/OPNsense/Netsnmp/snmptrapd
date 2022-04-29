@@ -1,2 +1,8 @@
+{% if helpers.exists('OPNsense.netsnmp.general.trapenabled') and OPNsense.netsnmp.general.enabled == '1' %}
 snmptrapd_enable="YES"
-snmptrapd_flags="-On -p /var/run/snmptrapd.pid"
+{% else %}
+snmptrapd_enable="NO"
+{% endif %}
+{% if helpers.exists('OPNsense.netsnmp.general.snmptrapdflags') and OPNsense.netsnmp.general.snmptrapdflags != '' %}
+snmptrapdflags="{{ OPNsense.netsnmp.general.snmptrapdflags }}"
+{% endif %}
