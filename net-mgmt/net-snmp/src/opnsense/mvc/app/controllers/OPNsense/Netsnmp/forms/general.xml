@@ -49,4 +49,22 @@
         <allownew>true</allownew>
         <help>Set the IP addresses the service should listen to.</help>
     </field>
+    <field>
+        <id>general.snmpdflags</id>
+        <label>Insert snmpdflags</label>
+        <type>text</type>
+        <help>Insert SNMPD flags, for Zabbix Proxy use: -x tcp:localhost:705 127.0.0.1:161</help>
+    </field>
+    <field>
+        <id>general.trapenabled</id>
+        <label>Enable SNMP Trap Service</label>
+        <type>checkbox</type>
+        <help>This will activate the snmpd trap service.</help>
+    </field>
+    <field>
+        <id>general.snmptrapdflags</id>
+        <label>Insert snmptrapdflags</label>
+        <type>text</type>
+        <help>Insert SNMPD Trap flags, for Zabbix Proxy use: -On -p /var/run/snmptrapd.pid</help>
+    </field>
 </form>
