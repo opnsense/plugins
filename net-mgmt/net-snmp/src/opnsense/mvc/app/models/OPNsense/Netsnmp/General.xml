@@ -36,5 +36,17 @@
             <Required>N</Required>
             <asList>Y</asList>
         </listen>
+        <snmpdflags type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </snmpdflags>
+        <trapenabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </trapenabled>
+        <snmptrapdflags type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </snmptrapdflags>
     </items>
 </model>
