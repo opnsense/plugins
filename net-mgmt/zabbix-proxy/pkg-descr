@@ -11,6 +11,9 @@ WWW: https://www.zabbix.com/
 
 Plugin Changelog
 ----------------
+1.9
+
+* Add SNMP Trapper
 
 1.8
 
