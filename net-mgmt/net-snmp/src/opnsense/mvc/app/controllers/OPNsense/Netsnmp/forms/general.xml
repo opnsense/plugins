@@ -47,7 +47,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP addresses the service should listen to.</help>
+        <help>Set the IP addresses the service should listen to. For Zabbix Proxy use LAN IP.</help>
     </field>
     <field>
         <id>general.snmpdflags</id>
