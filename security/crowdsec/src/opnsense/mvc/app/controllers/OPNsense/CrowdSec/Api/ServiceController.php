@@ -10,7 +10,7 @@ use OPNsense\Core\Backend;
 
 /**
  * Class ServiceController
- * @package OPNsense\Cron
+ * @package OPNsense\CrowdSec
  */
 class ServiceController extends ApiControllerBase
 {
