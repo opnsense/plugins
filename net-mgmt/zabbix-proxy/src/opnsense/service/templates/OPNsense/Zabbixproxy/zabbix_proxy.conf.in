@@ -58,6 +58,17 @@ StartDiscoverers={{ OPNsense.zabbixproxy.general.startdiscoverers }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.startvmwarecollectors') and OPNsense.zabbixproxy.general.startvmwarecollectors != '' %}
 StartVMwareCollectors={{ OPNsense.zabbixproxy.general.startvmwarecollectors }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.snmptrapper') and OPNsense.zabbixproxy.general.snmptrapper == '1' %}
+StartSNMPTrapper=1
+{% else %}
+StartSNMPTrapper=0
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.snmptrapperfile') and OPNsense.zabbixproxy.general.snmptrapper == '1' %}
+SNMPTrapperFile={{ OPNsense.zabbixproxy.general.snmptrapperfile }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.trappertimeout') and OPNsense.zabbixproxy.general.trappertimout != '' %}
+TrapperTimeout={{ OPNsense.zabbixproxy.general.trappertimeout }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.starthttppollers') and OPNsense.zabbixproxy.general.starthttppollers != '' %}
 StartHTTPPollers={{ OPNsense.zabbixproxy.general.starthttppollers }}
 {% endif %}
