@@ -10,6 +10,9 @@ Plugin Changelog
 
 3.10
 
+Added:
+* new automation: run remote commands via SSH (#2757)
+
 Fixed:
 * unable to configure key in TransIP API (#2924)
 
