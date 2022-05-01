@@ -92,17 +92,21 @@ POSSIBILITY OF SUCH DAMAGE.
                 .hide();
         }
 
-        // SFTP - Identity show button
-        (function ($identityType) {
+        // SFTP/SSH - Identity show button
+        [
+            {selector: '#action\\.sftp_identity_type', group: "configd_upload_sftp", action: "sftpGetIdentity"},
+            {selector: '#action\\.remote_ssh_identity_type', group: "configd_remote_ssh", action: "sshGetIdentity"},
+        ].forEach(function(config) {
+            var $identityType = $(config.selector);
             var identityDiv = makeStatusDiv($identityType);
 
-            makeButton("{{ lang._('Show Identity') }}", "configd_upload_sftp", "btn-info")
+            makeButton("{{ lang._('Show Identity') }}", config.group, "btn-info")
                 .click(function () {
                     identityDiv.hide();
                     var button = $(this);
                     button.prop('disabled', true).find(".fa-spinner").show();
 
-                    ajaxCall("/api/acmeclient/actions/sftpGetIdentity", getFormData("DialogAction").action, function (data, status) {
+                    ajaxCall("/api/acmeclient/actions/" + config.action, getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
                         if (status === "success" && data.status === "ok") {
@@ -117,10 +121,15 @@ POSSIBILITY OF SUCH DAMAGE.
             $identityType.change(function() {
                 identityDiv.hide();
             });
-        })($('#action\\.sftp_identity_type'));
+        });
 
-        // SFTP - Connection test button
-        (function ($user) {
+        // SFTP/SSH - Connection test button
+        [
+            {selector: '#action\\.sftp_user', group: "configd_upload_sftp", action: "sftpTestConnection", success: "{{ lang._('Connection and upload test succeeded.') }}"},
+            {selector: '#action\\.remote_ssh_user', group: "configd_remote_ssh", action: "sshTestConnection", success: "{{ lang._('Connection test succeeded.') }}"},
+        ].forEach(function(config) {
+            var $user = $(config.selector);
+
             var statusDiv = makeStatusDiv($user, 'alert-success').html(
                 '<div class="message"></div>'
                 + '<div class="detail-enabler" style="cursor: pointer"><i class="fa fa-plus-square"></i></div>'
@@ -145,13 +154,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 {msg: "{{ lang._('Test failed, see details.') }}"},
             ];
 
-            makeButton("{{ lang._('Test Connection') }}", "configd_upload_sftp")
+            makeButton("{{ lang._('Test Connection') }}", config.group)
                 .click(function () {
                     statusDiv.hide();
                     var button = $(this);
                     button.prop('disabled', true).find(".fa-spinner").show();
 
-                    ajaxCall("/api/acmeclient/actions/sftpTestConnection", getFormData("DialogAction").action, function (data, status) {
+                    ajaxCall("/api/acmeclient/actions/" + config.action, getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
                         var message = "",
@@ -161,7 +170,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         if (status === "success") {
                             if (data.success === true) {
                                 statusClass = "alert-success";
-                                message = "{{ lang._('Connection and upload test succeeded.') }}"
+                                message = config.success
                             } else {
                                 detail = JSON.stringify(data, null, '  ').replace(/\\"/g, "'");
 
@@ -188,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         statusDiv.removeClass("alert-success alert-warning").addClass(statusClass).show();
                     });
                 });
-        })($('#action\\.sftp_user'));
+        });
 
         // Eagerly hiding method tables to avoid contents popping up when opening the dialog for the first time.
         $(".method_table").hide();
