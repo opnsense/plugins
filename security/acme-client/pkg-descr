@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.10
+
+Fixed:
+* unable to configure key in TransIP API (#2924)
+
 3.9
 
 Added:
