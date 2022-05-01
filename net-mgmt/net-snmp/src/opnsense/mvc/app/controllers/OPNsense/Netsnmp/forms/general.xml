@@ -47,13 +47,13 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP addresses the service should listen to. For Zabbix Proxy use LAN IP.</help>
+        <help>Set the IP addresses the service should listen to.</help>
     </field>
     <field>
         <id>general.snmpdflags</id>
         <label>Insert snmpdflags</label>
         <type>text</type>
-        <help>Insert SNMPD flags, for Zabbix Proxy use: -x tcp:localhost:705 127.0.0.1:161</help>
+        <help>Insert SNMPD flags.</help>
     </field>
     <field>
         <id>general.trapenabled</id>
@@ -65,6 +65,6 @@
         <id>general.snmptrapdflags</id>
         <label>Insert snmptrapdflags</label>
         <type>text</type>
-        <help>Insert SNMPD Trap flags, for Zabbix Proxy use: -On -p /var/run/snmptrapd.pid</help>
+        <help>Insert SNMPD Trap flags.</help>
     </field>
 </form>
