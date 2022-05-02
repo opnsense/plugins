@@ -14,10 +14,12 @@ Plugin Changelog
 
 1.12
 
+Added:
 * Plugin variant for Zabbix Agent 6.0
 
 1.11
 
+Added:
 * Add description to restart action to allow restart via cron
 
 1.10
