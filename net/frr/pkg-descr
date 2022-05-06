@@ -17,6 +17,7 @@ Plugin Changelog
 * OSPF6 Interface change networktype and interfacename to dropdown in stead of multi select
 * Diagnostics / BGP - fix search in grid, should only use a formatter for presentation purposes
 * Add ospf6 carp demotion event handler
+* Allow BGP prefix-list number up to 10000 instead of 99
 
 1.27
 
