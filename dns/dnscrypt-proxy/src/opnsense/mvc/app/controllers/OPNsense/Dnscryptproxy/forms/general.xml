@@ -185,6 +185,6 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Set a list of relays. Will be used for relaying to all configured servers.]]></help>
+        <help><![CDATA[Set a list of <a href="https://github.com/DNSCrypt/dnscrypt-resolvers#list-of-dnscrypt-relays">relays</a>. Will be used for relaying to all configured servers.]]></help>
     </field>
 </form>
