@@ -4,6 +4,7 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 
 Plugin Changelog
 ================
+
 1.11
 
 * Support specifying relays for anonymous DNS
