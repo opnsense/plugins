@@ -5,9 +5,15 @@
     </field>
     <field>
         <id>haproxy.general.defaults.maxConnections</id>
-        <label>Max. Connections</label>
+        <label>Maximum Connections (Public Services)</label>
         <type>text</type>
-        <help><![CDATA[Set the maximum number of concurrent connections for this frontend.]]></help>
+        <help><![CDATA[Set the maximum number of concurrent connections for public services.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.defaults.maxConnectionsServers</id>
+        <label>Maximum Connections (Servers)</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum number of concurrent connections for servers.]]></help>
     </field>
     <field>
         <id>haproxy.general.defaults.timeoutClient</id>

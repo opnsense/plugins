@@ -12,6 +12,19 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.8
+
+* Add EnableRemoteCommands (#2948)
+
+1.7
+
+* Add StatsIP field to allow retrieving statistics (#2697)
+
+1.6
+
+* Fix upgrade path by using a new db file for each version (#1943)
+* Add plugin variant for Zabbix Proxy 5.4
+
 1.5
 
 * Add log file to web GUI (contributed by Starkstromkonsument)

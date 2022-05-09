@@ -4,9 +4,30 @@ one computer can find another computer on the basis of its name.
 The BIND software distribution contains all of the software
 necessary for asking and answering name service questions.
 
+WWW: https://www.isc.org
 
 Plugin Changelog
 ================
+
+1.23
+
+* Avoid errors with repeated primary servers and keys (contributed by Michael Newton)
+
+1.22
+
+* Fix DNS Blacklist download
+
+1.21
+
+* Add support for filter AAAA in DNS responses when A is present (contributed by Zane Chua)
+
+1.20
+
+* Allow signed zone transfers (contributed by Michael Newton)
+
+1.19
+
+* Add support for "Query Source [IP|IPv6]" options.
 
 1.18
 
@@ -100,6 +121,3 @@ Plugin Changelog
 1.0
 
 * Initial release
-
-
-WWW: https://www.isc.org

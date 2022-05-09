@@ -101,7 +101,30 @@ POSSIBILITY OF SUCH DAMAGE.
             'get':    '/api/relayd/settings/get/' + element + '/',
             'set':    '/api/relayd/settings/set/' + element + '/',
             'add':    '/api/relayd/settings/set/' + element + '/',
-            'del':    '/api/relayd/settings/del/' + element + '/'
+            'del':    '/api/relayd/settings/del/' + element + '/',
+            options: {
+                formatters: {
+                    'listen_port': function (column, row) {
+                        if (row.listen_endport) {
+                            return row.listen_startport + ":" + row.listen_endport;
+                        } else {
+                            return row.listen_startport;
+                        }
+                    },
+                    'commands': function (column, row) {
+                        return '<button type="button" class="btn btn-xs btn-default command-edit bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-pencil"></span></button> ' +
+                            '<button type="button" class="btn btn-xs btn-default command-copy bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-clone"></span></button>' +
+                            '<button type="button" class="btn btn-xs btn-default command-delete bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-trash-o"></span></button>';
+                    },
+                    'rowtoggle': function (column, row) {
+                        if (parseInt(row[column.id], 2) === 1) {
+                            return '<span style="cursor: pointer;" class="fa fa-fw fa-check-square-o command-toggle bootgrid-tooltip" data-value="1" data-row-id="' + row.uuid + '"></span>';
+                        } else {
+                            return '<span style="cursor: pointer;" class="fa fa-fw fa-square-o command-toggle bootgrid-tooltip" data-value="0" data-row-id="' + row.uuid + '"></span>';
+                        }
+                    },
+                }
+            }
          };
          if (['virtualserver', 'host', 'table'].includes(element)) {
             endpoints['toggle'] = '/api/relayd/settings/toggle/' + element + '/';
@@ -342,6 +365,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                <th data-column-id="listen_address" data-type="string">{{ lang._('Adress') }}</th>
+                <th data-column-id="listen_startport" data-formatter="listen_port" data-type="string">{{ lang._('Port') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Edit') }} | {{ lang._('Delete') }}</th>
             </tr>

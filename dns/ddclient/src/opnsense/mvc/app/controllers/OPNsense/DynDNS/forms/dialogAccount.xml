@@ -1,0 +1,85 @@
+<form>
+    <field>
+        <id>account.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this virtual server</help>
+    </field>
+    <field>
+        <id>account.service</id>
+        <label>Service</label>
+        <type>dropdown</type>
+        <help>Select the service to use.</help>
+    </field>
+    <field>
+        <id>account.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Select the protocol to use.</help>
+        <style>optional_setting service_custom</style>
+    </field>
+    <field>
+        <id>account.server</id>
+        <label>Server</label>
+        <type>text</type>
+        <help>DynDNS Server</help>
+        <style>optional_setting service_custom</style>
+    </field>
+    <field>
+        <id>account.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Username or login to use</help>
+    </field>
+    <field>
+        <id>account.password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>Password associated with this account</help>
+    </field>
+    <field>
+        <id>account.wildcard</id>
+        <label>Wildcard</label>
+        <type>checkbox</type>
+        <style>optional_setting service_dyndns2 service_easydns service_custom</style>
+        <help>add a DNS wildcard CNAME record that points to the configured host.</help>
+    </field>
+    <field>
+        <id>account.zone</id>
+        <label>Zone</label>
+        <type>text</type>
+        <style>optional_setting service_cloudflare</style>
+        <help>Zone containing the host entry.</help>
+    </field>
+    <field>
+        <id>account.hostnames</id>
+        <label>Hostname(s)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Hostname to update</help>
+    </field>
+    <field>
+        <id>account.checkip</id>
+        <label>Check ip method</label>
+        <type>dropdown</type>
+        <help>How to determine the address to use for this host</help>
+    </field>
+    <field>
+        <id>account.force_ssl</id>
+        <label>Force SSL</label>
+        <type>checkbox</type>
+        <help>Force update using HTTPS, please note setting this option will enforce https updates on all accounts
+        as ddclient only supports SSL=yes on a global level (the check ip service may still use HTTP on other services)</help>
+    </field>
+    <field>
+        <id>account.interface</id>
+        <label>Interface to monitor</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>account.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

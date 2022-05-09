@@ -40,7 +40,6 @@ use OPNsense\Backup\GitSettings;
  */
 class Git extends Base implements IBackupProvider
 {
-
     /**
      * @inheritdoc
      */

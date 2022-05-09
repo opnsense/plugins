@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.2.0</version>
+    <version>3.6.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -67,9 +67,9 @@
                     <Required>Y</Required>
                 </root>
                 <maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </maxConnections>
                 <nbproc type="IntegerField">
@@ -109,13 +109,6 @@
                     <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
                     <Required>N</Required>
                 </bufferSize>
-                <checkBufferSize type="IntegerField">
-                    <default>16384</default>
-                    <MinimumValue>1024</MinimumValue>
-                    <MaximumValue>1048576</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1024 and 1048576.</ValidationMessage>
-                    <Required>N</Required>
-                </checkBufferSize>
                 <spreadChecks type="IntegerField">
                     <default>2</default>
                     <MinimumValue>0</MinimumValue>
@@ -194,11 +187,17 @@
             </tuning>
             <defaults>
                 <maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </maxConnections>
+                <maxConnectionsServers type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnectionsServers>
                 <timeoutClient type="TextField">
                     <default>30s</default>
                     <mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</mask>
@@ -427,9 +426,9 @@
                 <bind type="CSVListField">
                     <Required>Y</Required>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080 or www.example.com:443. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080, www.example.com:443 or unix@socket-name. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
                 <bindOptions type="TextField">
                     <Required>N</Required>
@@ -598,9 +597,9 @@
                     <Required>N</Required>
                 </basicAuthGroups>
                 <tuning_maxConnections type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>500000</MaximumValue>
-                    <ValidationMessage>Please specify a value between 1 and 500000.</ValidationMessage>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
                     <Required>N</Required>
                 </tuning_maxConnections>
                 <tuning_timeoutClient type="TextField">
@@ -1251,6 +1250,7 @@
                     <OptionValues>
                         <static>static</static>
                         <template>template</template>
+                        <unix>unix socket</unix>
                     </OptionValues>
                 </type>
                 <serviceName type="TextField">
@@ -1297,6 +1297,11 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </ssl>
+                <sslSNI type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </sslSNI>
                 <sslVerify type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -1317,6 +1322,12 @@
                     <Type>cert</Type>
                     <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
                 </sslClientCertificate>
+                <maxConnections type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </maxConnections>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>256</MaximumValue>
@@ -1342,6 +1353,21 @@
                 <advanced type="TextField">
                     <Required>N</Required>
                 </advanced>
+                <unix_socket type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>frontends.frontend</items>
+                            <display>name</display>
+                            <filters>
+                                <bind>/unix@/</bind>
+                            </filters>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related frontend item not found</ValidationMessage>
+                    <Required>N</Required>
+                    <Multiple>N</Multiple>
+                </unix_socket>
             </server>
         </servers>
         <healthchecks>
@@ -1378,6 +1404,22 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>Y</Required>
                 </interval>
+                <ssl type="OptionField">
+                    <Required>N</Required>
+                    <default>nopref</default>
+                    <OptionValues>
+                        <nopref>Use server settings</nopref>
+                        <ssl>Force SSL for health checks</ssl>
+                        <sslsni>Force SSL+SNI for health checks</sslsni>
+                        <nossl>Force no SSL for health checks</nossl>
+                    </OptionValues>
+                </ssl>
+                <sslSNI type="TextField">
+                    <mask>/^([0-9a-zA-Z._\-]){1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </sslSNI >
+                <!-- XXX: old value, required for model migration to 3.5.0 -->
                 <force_ssl type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>
@@ -2364,6 +2406,18 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
+                <preload type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </preload>
+                <filename_scheme type="OptionField">
+                    <Required>Y</Required>
+                    <default>id</default>
+                    <OptionValues>
+                        <id>Use a random ID for the filename [default]</id>
+                        <name>Use the specified name as filename</name>
+                    </OptionValues>
+                </filename_scheme>
                 <content type="TextField">
                     <Required>Y</Required>
                 </content>
@@ -2576,7 +2630,7 @@
                 <thread_id type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <all>All HAProxy threads </all>
+                        <all>All HAProxy threads</all>
                         <odd>Threads with odd ID</odd>
                         <even>Threads with even ID</even>
                         <x1>Thread 1</x1>
@@ -2742,9 +2796,9 @@
                     <Required>N</Required>
                     <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
-                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <mask>/^((((udp@|tcp@)?[0-9a-zA-Z._\-\*:\[\]]+:[0-9]+(-[0-9]+)?)([,]){0,1}))*/u</mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or 192.168.1.1:53.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid nameserver address, i.e. 127.0.0.1:53, [::1]:53 or tcp@192.168.1.1:53.</ValidationMessage>
                 </nameservers>
                 <parse_resolv_conf type="BooleanField">
                     <default>0</default>
@@ -2771,8 +2825,8 @@
                 </timeout_retry>
                 <accepted_payload_size type="IntegerField">
                     <MinimumValue>0</MinimumValue>
-                    <MaximumValue>8192</MaximumValue>
-                    <ValidationMessage>Should be a number between 0 and 8192</ValidationMessage>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Should be a number between 0 and 65535</ValidationMessage>
                     <Required>N</Required>
                 </accepted_payload_size>
                 <hold_valid type="TextField">

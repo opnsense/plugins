@@ -5,7 +5,11 @@
       <Banned url="/ui/nginx/index/ban" order="20"/>
       <TLSFingerprints VisibleName="TLS Fingerprints" url="/ui/nginx/index/tls_handshakes" order="30"/>
       <VTS VisibleName="Traffic Statistic" url="/ui/nginx/index/vts" order="90"/>
-      <Logs url="/ui/nginx/index/logs" order="100"/>
+      <HTTPAccessLogs VisibleName="Logs / HTTP Access" url="/ui/nginx/logs/accesses" order="100"/>
+      <HTTPErrorLogs VisibleName="Logs / HTTP Error" url="/ui/nginx/logs/errors" order="110"/>
+      <StreamAccessLogs VisibleName="Logs / Stream Access" url="/ui/nginx/logs/stream_accesses" order="120"/>
+      <StreamErrorLogs VisibleName="Logs / Stream Error" url="/ui/nginx/logs/stream_errors" order="130"/>
+      <ErrorLogs VisibleName="Logs / Global Error" url="/ui/nginx/logs" order="140"/>
     </Nginx>
   </Services>
 </menu>

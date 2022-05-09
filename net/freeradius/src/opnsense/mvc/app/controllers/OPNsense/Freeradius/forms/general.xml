@@ -12,6 +12,20 @@
         <help>This allows you to dynamically assign VLANs on your physical switch ports.</help>
     </field>
     <field>
+        <id>general.fallbackvlan_enabled</id>
+        <label>Enable VLAN fallback assignment</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>This allows you to define a fallback VLAN-Group-ID. Warning: Setting this option will send an accepted RADIUS reply even if the authentication attempt fails.</help>
+    </field>
+    <field>
+        <id>general.fallbackvlan_id</id>
+        <label>Fallback VLAN ID</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Define the Fallback VLAN group ID.</help>
+    </field>
+    <field>
         <id>general.ldap_enabled</id>
         <label>Enable LDAP</label>
         <type>checkbox</type>

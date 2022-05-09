@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/zabbixproxy/general</mount>
     <description>Zabbix Proxy configuration</description>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -11,6 +11,10 @@
             <default>0</default>
             <Required>Y</Required>
         </proxymode>
+        <remotecommands type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </remotecommands>
         <server type="TextField">
             <default></default>
             <Required>N</Required>
@@ -96,6 +100,12 @@
         <datasenderfrequency type="IntegerField">
             <Required>N</Required>
         </datasenderfrequency>
+        <statsip type="NetworkField">
+            <default></default>
+            <FieldSeparator>,</FieldSeparator>
+            <asList>Y</asList>
+            <Required>N</Required>
+        </statsip>
         <encryption type="BooleanField">
             <default>0</default>
             <Required>Y</Required>

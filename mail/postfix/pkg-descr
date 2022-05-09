@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.21
+
+* Add static link to root certficiates
+
 1.20
 
 * Make 'delay_warning_time' configurable in the UI

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/general</mount>
     <description>FreeRADIUS configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -11,6 +11,28 @@
             <default>0</default>
             <Required>N</Required>
         </vlanassign>
+        <fallbackvlan_enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <reference>fallbackvlan_id.check001</reference>
+                </check001>
+            </Constraints>
+        </fallbackvlan_enabled>
+        <fallbackvlan_id type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>4096</MaximumValue>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>You need to set a propper VLAN ID.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>fallbackvlan_enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </fallbackvlan_id>
         <ldap_enabled type="BooleanField">
             <default>0</default>
             <Required>N</Required>

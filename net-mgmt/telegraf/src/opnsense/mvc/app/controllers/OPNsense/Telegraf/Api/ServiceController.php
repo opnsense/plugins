@@ -39,7 +39,6 @@ use OPNsense\Telegraf\General;
  */
 class ServiceController extends ApiControllerBase
 {
-
     /**
      * start telegraf service (in background)
      * @return array

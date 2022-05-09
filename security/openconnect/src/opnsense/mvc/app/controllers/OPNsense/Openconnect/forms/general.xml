@@ -49,7 +49,7 @@
     </field>
     <field>
         <id>general.protocol</id>
-        <label>Protocl</label>
+        <label>Protocol</label>
         <type>dropdown</type>
         <help>Select the protocol to use.</help>
     </field>

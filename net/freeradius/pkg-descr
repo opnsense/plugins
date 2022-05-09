@@ -15,9 +15,18 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.19
+
+* Allow to use LDAP in inner-tunnel (needed for LDAP authentication within 802.1X)
+
+1.9.18
+
+* Added support for fallback VLAN
+
 1.9.17
 
 * Added support for Extreme networks EXOS switch Extreme-Netlogin-Extended-VLAN VSA and policy for GEN2 (contributed by Pasi Suominen)
+* Allow setting of minimum TLS version
 
 1.9.16
 

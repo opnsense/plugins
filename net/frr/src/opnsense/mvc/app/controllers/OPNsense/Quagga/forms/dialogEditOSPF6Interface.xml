@@ -7,7 +7,7 @@
   <field>
     <id>interface.interfacename</id>
     <label>Interface</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Select an interface where this settings apply to.</help>
   </field>
   <field>
@@ -25,6 +25,18 @@
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
+  </field>
+  <field>
+    <id>interface.cost_demoted</id>
+    <label>Cost (when demoted)</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>interface.carp_depend_on</id>
+    <label>Depend on (carp)</label>
+    <type>dropdown</type>
+    <help>The carp VHID to depend on, when this virtual address is not in master state,
+      the interface cost will be set to the demoted cost (specified above).</help>
   </field>
   <field>
     <id>interface.hellointerval</id>
@@ -54,6 +66,6 @@
   <field>
     <id>interface.networktype</id>
     <label>Network Type</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
   </field>
 </form>

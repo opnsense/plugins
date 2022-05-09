@@ -15,6 +15,6 @@
         <id>mapfile.content</id>
         <label>Content</label>
         <type>textbox</type>
-        <help><![CDATA[Paste the content of your map file here. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#map">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Paste the content of your map file here. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#map">HAProxy documentation</a> for a full description.]]></help>
     </field>
 </form>

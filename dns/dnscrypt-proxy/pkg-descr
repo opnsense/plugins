@@ -5,9 +5,14 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
-1.11
+1.12
 
 * Support specifying relays for anonymous DNS
+
+1.11
+
+* Fix DNSBL update due to FreeBSD13 upgrade (sed syntax)
+* Fix "manual disable of specific servers" when more than one server is specified (contributed by Evgeny Grin (karlson2k))
 
 1.10
 
