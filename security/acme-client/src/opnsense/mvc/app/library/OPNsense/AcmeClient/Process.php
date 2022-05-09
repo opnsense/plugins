@@ -115,21 +115,49 @@ class Process
         }
     }
 
-    public function get($timeout = 5, $max_length = 8192, $ending = PHP_EOL)
+    private $linesBuffer = [];
+
+    private function nextBufferedLine()
     {
-        $readables = array_filter($this->outputs, function ($stream) {
-            return is_resource($stream) && !feof($stream);
-        });
+        return empty($this->linesBuffer)
+            ? false
+            : array_shift($this->linesBuffer);
+    }
 
-        $micros = intval(($timeout - floor($timeout)) * 1000000);
-        $can_read = !empty($readables) && stream_select($readables, $w = [], $e = [], $timeout, $micros);
-        $stream = array_reduce(($can_read ? $readables : []), function ($a, $b) {
-            return is_resource($a) && !feof($a) ? $a : $b;
-        }, null);
+    /**
+     * Returns one line from stdout or stdin as it gets available. May return 'false' when no line became available
+     * within the specified $timeout or when another stream events occurred that returned no new content.
+     * @param $timeout float timeout in seconds
+     * @param $max_length int max length of a single line
+     * @return false|string One line of stdout/err (merged) or false when no new line exists.
+     */
+    public function get($timeout = 5, $max_length = 64 * 1024)
+    {
+        if (($line = $this->nextBufferedLine()) !== false) {
+            return $line;
+        }
 
-        return is_resource($stream)
-            ? stream_get_line($stream, $max_length, $ending)
-            : false;
+        $readables = array_filter($this->outputs, fn($stream) => is_resource($stream) && !feof($stream));
+        $micros = intval(($timeout - floor($timeout)) * 1000000) + 100;
+        $timeout = floor($timeout);
+        $__ = null;
+
+        $can_read = !empty($readables)
+            && stream_select($readables, $__, $__, $timeout, $micros) !== false;
+
+        if ($can_read) {
+            foreach ($readables as $stream) {
+                $content = fread($stream, $max_length);
+                if ($content !== false) {
+                    array_push($this->linesBuffer, ...preg_split('/\r\n|\n|\r/', $content));
+                    if (empty($this->linesBuffer[-1])) {
+                        array_pop($this->linesBuffer); // remove trailing empty newline
+                    }
+                }
+            }
+        }
+
+        return $this->nextBufferedLine();
     }
 
     public function put($data, $append = PHP_EOL)
