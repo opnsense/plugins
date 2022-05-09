@@ -5,6 +5,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.12
+
+* Support specifying relays for anonymous DNS
+
 1.11
 
 * Fix DNSBL update due to FreeBSD13 upgrade (sed syntax)
