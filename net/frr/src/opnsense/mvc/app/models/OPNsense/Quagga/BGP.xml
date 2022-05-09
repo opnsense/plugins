@@ -240,7 +240,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                                 <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MaximumValue>10000</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
                                 <default></default>
