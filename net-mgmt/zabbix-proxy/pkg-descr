@@ -12,13 +12,10 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
-1.9
-
-* Add plugin variant for Zabbix Proxy 6.0
-
 1.8
 
 * Add EnableRemoteCommands (#2948)
+* Add plugin variant for Zabbix Proxy 6.0
 
 1.7
 
