@@ -179,4 +179,12 @@
         <allownew>true</allownew>
         <help><![CDATA[Exclude servers from automatic selection. Add any specific server names here if you do not want to use them for any reason.]]></help>
     </field>
+    <field>
+        <id>general.relaylist</id>
+        <label>Relay List</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Set a list of <a href="https://github.com/DNSCrypt/dnscrypt-resolvers#list-of-dnscrypt-relays">relays</a>. Will be used for relaying to all configured servers.]]></help>
+    </field>
 </form>

@@ -147,5 +147,8 @@
             <FieldSeparator>,</FieldSeparator>
             <asList>Y</asList>
         </disabled_serverlist>
+        <relaylist type="CSVListField">
+            <Required>N</Required>
+        </relaylist>
     </items>
 </model>
