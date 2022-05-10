@@ -92,7 +92,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
-sysutils/boot-delay -- Apply a persistent 10 second boot delay
+sysutils/boot-delay -- Apply a persistent 10 second boot delay (pending removal)
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
@@ -112,7 +112,7 @@ www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
 www/web-proxy-sso -- Kerberos authentication module
-www/web-proxy-useracl -- Group and user ACL for the web proxy
+www/web-proxy-useracl -- Group and user ACL for the web proxy (pending removal)
 ```
 
 A brief description of how to use the plugins repository
