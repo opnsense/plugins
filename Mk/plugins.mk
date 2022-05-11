@@ -272,7 +272,7 @@ upgrade: upgrade-check package
 		${PKG} delete -fy ${NAME}; \
 	fi
 .endfor
-	@${PKG} add ${PKGDIR}/*.txz
+	@${PKG} add ${PKGDIR}/*.pkg
 
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
