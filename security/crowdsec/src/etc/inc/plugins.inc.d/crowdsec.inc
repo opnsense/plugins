@@ -7,7 +7,8 @@ use OPNsense\Core\Config;
 use OPNsense\Firewall\Alias;
 use OPNsense\Firewall\Plugin;
 
-function add_alias_if_not_exist($name, $description, $proto) {
+function add_alias_if_not_exist($name, $description, $proto)
+{
     $model = new Alias();
 
     if ($model->getByName($name) != null) {
@@ -40,7 +41,7 @@ function crowdsec_firewall(Plugin $fw)
     $rules_tag = "";
     if (isset($general['rules_tag'])) {
         $rules_tag = $general['rules_tag'];
-    };
+    }
 
     add_alias_if_not_exist('crowdsec_blacklists', 'CrowdSec (IPv4)', 'IPv4');
 

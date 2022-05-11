@@ -15,4 +15,3 @@ if service crowdsec enabled; then
         service crowdsec restart >/dev/null 2>&1 || :
     fi
 fi
-
