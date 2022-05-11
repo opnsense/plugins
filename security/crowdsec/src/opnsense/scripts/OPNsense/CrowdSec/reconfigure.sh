@@ -30,4 +30,3 @@ fi
 rm -f /usr/local/etc/crowdsec/opnsense-settings.json
 
 echo "OK"
-

@@ -29,17 +29,17 @@
 
 const ABOUT = <<<TXT
 
-   This script implements remote command execution using SSH. It reuses 
-   identities and "known_hosts" management from SFTP, located inside the 
+   This script implements remote command execution using SSH. It reuses
+   identities and "known_hosts" management from SFTP, located inside the
    local configuration folder (see "upload_sftp.php" for details).
 
    Primary purpose is to support the creation of automation tasks that trigger
-   actions after a certificate has been uploaded (requires that actions can 
+   actions after a certificate has been uploaded (requires that actions can
    have an execution order).
-    
+
    In addition to automations, all operations can also be triggered manually
    using simple CLI commands.
-   
+
    See: EXAMPLES & actions_acmeclient.conf
 
 TXT;

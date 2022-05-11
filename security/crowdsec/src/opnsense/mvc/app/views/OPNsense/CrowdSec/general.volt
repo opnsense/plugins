@@ -59,7 +59,7 @@
         CrowdSec Central API
         (meaning <a href="https://docs.crowdsec.net/docs/concepts/">timestamp, scenario, attacking IP</a>).</p>
 
-        <p>Other attack behaviors can be recognized on the OPNsense server and its plugins, or 
+        <p>Other attack behaviors can be recognized on the OPNsense server and its plugins, or
         <a href="https://doc.crowdsec.net/docs/next/user_guides/multiserver_setup">any other agent</a>
         connected to the same LAPI node. Other types of remediation are possible (ex. captcha test for scraping attempts).</p>
 
@@ -87,7 +87,7 @@
             <li>
                 The parsers, scenarios and all objects from the <a href="https://hub.crowdsec.net/">CrowdSec Hub</a>
                 are periodically upgraded. The
-                <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd">crowdsecurity/freebsd</a> and 
+                <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd">crowdsecurity/freebsd</a> and
                 <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/opnsense">crowdsecurity/opnsense</a>
                 collections are installed by default.
             </li>
@@ -139,4 +139,3 @@
         </div>
     </div>
 </div>
-

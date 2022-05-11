@@ -8,4 +8,3 @@
 mkdir -p -m 0700 /usr/local/etc/crowdsec/opnsense
 
 configctl crowdsec reconfigure
-

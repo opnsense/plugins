@@ -3,4 +3,3 @@
 # https://docs.opnsense.org/development/backend/autorun.html
 
 /usr/local/opnsense/scripts/OPNsense/CrowdSec/hub-upgrade.sh
-

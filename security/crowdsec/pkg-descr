@@ -46,4 +46,3 @@ Plugin Changelog
 
 * fixed an issue that prevented the bouncer from banning IPs on opnsense
 * fixed support for notification plugins
-
