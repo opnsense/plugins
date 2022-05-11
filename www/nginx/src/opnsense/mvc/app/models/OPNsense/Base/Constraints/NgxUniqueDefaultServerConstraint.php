@@ -39,7 +39,7 @@ use Phalcon\Messages\Message;
  */
 class NgxUniqueDefaultServerConstraint extends BaseConstraint
 {
-    public function validate(\Phalcon\Validation $validator, $attribute): bool
+    public function validate($validator, $attribute): bool
     {
         $node = $this->getOption('node');
         if ($node) {
