@@ -1,15 +1,15 @@
-This plugin adds a proprietary repository to install Sensei, a plugin
-for OPNsense, complementing the firewall with state of the art
+This plugin adds a proprietary repository to install Zenarmor (previously Sensei),
+a plugin for OPNsense, complementing the firewall with state of the art
 next generation firewall features.
 
 You will need to install os-sensei plugin after installing this repo plugin.
 
-Sensei features:
+Zenarmor for OPNsense features:
 
 * Application Control
 * Advanced Network Analytics
+* Auto-blocking based on Real-time Cloud Threat Intelligence
 * All-ports Full TLS Inspection
-* Cloud Threat Intelligence
 * Web Security & Web Filtering
 * User based filtering
 * Policy based filtering
