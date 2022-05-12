@@ -47,6 +47,9 @@
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
       </server_names_hash_max_size>
+      <headers_more_enable type="BooleanField">
+        <Required>N</Required>
+      </headers_more_enable>
     </http>
 
     <userlist type="ArrayField">
