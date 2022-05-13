@@ -65,7 +65,7 @@ net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
-net/vnstat -- vnStat is a console-based network traffic monitor
+net/vnstat -- Network traffic monitor
 net/wireguard -- WireGuard VPN service
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
@@ -108,7 +108,7 @@ sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor repository for Sensei (Next Generation Firewall Extensions)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
