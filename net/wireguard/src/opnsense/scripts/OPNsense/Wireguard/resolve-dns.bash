@@ -16,8 +16,7 @@ INTERFACE="${BASH_REMATCH[1]}"
 
 process_peer() {
         [[ $PEER_SECTION -ne 1 || -z $PUBLIC_KEY || -z $ENDPOINT ]] && return 0
-        [[ $(wg show "$INTERFACE" latest-handshakes) =~ ${PUBLIC_KEY//+/\\+}\   ([0-9]+) ]
-] || return 0
+        [[ $(wg show "$INTERFACE" latest-handshakes) =~ ${PUBLIC_KEY//+/\\+}\   ([0-9]+) ]] || return 0
         (( ($EPOCHSECONDS - ${BASH_REMATCH[1]}) > 135 )) || return 0
         wg set "$INTERFACE" peer "$PUBLIC_KEY" endpoint "$ENDPOINT"
         reset_peer_section
@@ -33,8 +32,7 @@ reset_peer_section
 while read -r line || [[ -n $line ]]; do
         stripped="${line%%\#*}"
         key="${stripped%%=*}"; key="${key##*([[:space:]])}"; key="${key%%*([[:space:]])}"
-        value="${stripped#*=}"; value="${value##*([[:space:]])}"; value="${value%%*([[:spa
-ce:]])}"
+        value="${stripped#*=}"; value="${value##*([[:space:]])}"; value="${value%%*([[:space:]])}"
         [[ $key == "["* ]] && { process_peer; reset_peer_section; }
         [[ $key == "[Peer]" ]] && PEER_SECTION=1
         if [[ $PEER_SECTION -eq 1 ]]; then
