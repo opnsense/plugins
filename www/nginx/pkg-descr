@@ -12,6 +12,7 @@ Plugin Changelog
 
 1.27
 
+* add support for custom configuration in stream server (contributed by Fabio Castagnino)
 * add headers_more support (contributed by kulikov-a)
 
 1.26
