@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.29
+
+* Add disable-connected-check option
+
 1.28
 
 * OSPF6 Interface change networktype and interfacename to dropdown in stead of multi select
