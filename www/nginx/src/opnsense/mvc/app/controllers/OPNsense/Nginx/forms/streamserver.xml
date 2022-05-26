@@ -26,13 +26,20 @@
     <help>If you enable the proxy protocol, a downstream proxy can send the client IP and port before the real traffic is set.</help>
   </field>
   <field>
-    <id>httpserver.trusted_proxies</id>
+    <id>streamserver.trusted_proxies</id>
     <label>Trusted Proxies</label>
     <allownew>true</allownew>
     <style>tokenize</style>
     <type>select_multiple</type>
     <advanced>true</advanced>
     <help>Enter a list of IP addresses or CIDR networks which are allowed to override the source IP address using the specified header.</help>
+  </field>
+  <field>
+    <id>streamserver.proxy_responses</id>
+    <label>Proxy Responses (UDP)</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Due to the nature of UDP, nginx cannot know, when the communication ends and this helps as it tells nginx the number of datagrams the communication is expected to last on server side and it is expected to be closed afterwards. If you enter 0, it is expected, that the server never responds to a datagram. If nginx gets a datagram, it will still get forwarded to the client. Setting this option might be useful in (mostly) unidirectional communication as well.</help>
   </field>
   <field>
     <id>streamserver.certificate</id>

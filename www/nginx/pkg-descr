@@ -13,6 +13,7 @@ Plugin Changelog
 1.28
 
 * add support for connect-src and worker-src in content security policy
+* add support for proxy_responses property in streams
 
 1.27
 
