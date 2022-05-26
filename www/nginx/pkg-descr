@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.28
+
+* add support for connect-src and worker-src in content security policy
+
 1.27
 
 * add support for custom configuration in stream server (contributed by Fabio Castagnino)
