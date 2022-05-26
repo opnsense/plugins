@@ -1059,6 +1059,10 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <proxy_responses type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_responses>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
