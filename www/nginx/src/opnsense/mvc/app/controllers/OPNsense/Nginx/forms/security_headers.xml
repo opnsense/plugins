@@ -617,6 +617,97 @@
       <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
     </field>
   </tab>
+  <tab id="connect_src" description="Websockets">
+    <field>
+      <type>header</type>
+      <label>Content Security Policy: Connect Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
+    </field>
+    <field>
+      <id>security_header.csp_connect_src_enabled</id>
+      <label>Enable</label>
+      <type>checkbox</type>
+      <help>If checked, this part of the CSP is enabled.</help>
+    </field>
+    <field>
+      <id>security_header.csp_connect_src_http_urls</id>
+      <label>Enable HTTP(S) URLs</label>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <style>tokenize</style>
+      <help>Allow connecting to websockets. You can use wildcards here like wss://*.exmaple.com.</help>
+    </field>
+    <field>
+      <id>security_header.csp_connect_src_none</id>
+      <label>Forbid Explicitly</label>
+      <type>checkbox</type>
+      <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+    </field>
+  </tab>
+  <tab id="worker_src" description="Worker">
+    <field>
+      <type>header</type>
+      <label>Content Security Policy: Worker Source</label>
+      <hint><![CDATA[The setting <em>Content Security Policy: Enable</em> on the <em>General</em> tab needs to be enabled to activate this header.]]></hint>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_enabled</id>
+      <label>Enable</label>
+      <type>checkbox</type>
+      <help>If checked, this part of the CSP is enabled.</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_data_urls</id>
+      <label>Enable Data URLs</label>
+      <help>Data URLs are used to embed files into HTML (for example images written directly into the src attribute).</help>
+      <type>checkbox</type>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_http_urls</id>
+      <label>Enable HTTP(S) URLs</label>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <style>tokenize</style>
+      <help>Allow loading files over HTTP(S) allows downloading of content over other domains or CDNs.
+        You can use wildcards here like https://*.exmaple.com.</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_inline</id>
+      <label>Enable Inline Scripting</label>
+      <type>checkbox</type>
+      <help>Checking this directive allows to use scripts or styles directly embedded in in the HTML content.
+        Examples are the script and the style tags.</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_eval</id>
+      <label>Enable Eval</label>
+      <type>checkbox</type>
+      <help>Checking this box allows functions like eval or createFunction in JS, or style attributes for CSS.</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_self</id>
+      <label>Enable Same Origin (recommended)</label>
+      <type>checkbox</type>
+      <help>Allows everything from the same site (path can differ, but host, protocol and port need to be the same).</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_blob</id>
+      <label>Enable Blobs</label>
+      <type>checkbox</type>
+      <help>Allows to use blobs as a data source. This usually is content, which is somehow generated in JavaScript.</help>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_filesystem</id>
+      <label>Enable File System URLs</label>
+      <type>checkbox</type>
+    </field>
+    <field>
+      <id>security_header.csp_worker_src_none</id>
+      <label>Forbid Explicitly</label>
+      <type>checkbox</type>
+      <help>If this checkbox is checked, all other settings for this directive are ignored and everything will be forbidden.</help>
+    </field>
+  </tab>
   <tab id="form-action" description="Form">
     <field>
       <type>header</type>
