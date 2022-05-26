@@ -14,6 +14,7 @@ Plugin Changelog
 
 * add support for connect-src and worker-src in content security policy
 * add support for proxy_responses property in streams
+* bugfix: trusted proxies field is now correctly named which makes it usable
 
 1.27
 
