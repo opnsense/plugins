@@ -96,7 +96,8 @@ class ServiceController extends ApiMutableServiceControllerBase
         return $status;
     }
 
-    private function tryParseDateTime($dateTimeString) {
+    private function tryParseDateTime($dateTimeString)
+    {
         $formats = [
             'Y-m-d H:i:s P', // 2021-12-27 17:51:42 +0100
             'D M d H:i:s T Y' // Sat Sep 16 17:13:00 CEST 2000
@@ -110,7 +111,8 @@ class ServiceController extends ApiMutableServiceControllerBase
         return $dateTimeString;
     }
 
-    private function tryParseDate($dateString) {
+    private function tryParseDate($dateString)
+    {
         $formats = [
             'Y-m-d', // 2021-12-27
             'm/d/y', // 12/27/21
