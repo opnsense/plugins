@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.6
+
+* Add Gandi support (contributed by Neozlag)
+
 1.5
 
 * Add service control, XMLRPC registration and syslog target
