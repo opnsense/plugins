@@ -128,6 +128,10 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </asoverride>
+                        <disable_connected_check type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </disable_connected_check>
                         <linkedPrefixlistIn type="ModelRelationField">
                                 <Model>
                                         <template>
