@@ -91,6 +91,7 @@ security/softether -- Cross-platform Multi-protocol VPN Program (development onl
 security/stunnel -- Stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
+sysutils/apcupsd -- APCUPSD - APC UPS daemon (development only)
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/boot-delay -- Apply a persistent 10 second boot delay
