@@ -197,6 +197,11 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
 
+    public function toggleCommunitylistAction($uuid)
+    {
+        return $this->toggleBase('communitylists.communitylist', $uuid);
+    }
+
     public function toggleNeighborAction($uuid)
     {
         return $this->toggleBase('neighbors.neighbor', $uuid);
