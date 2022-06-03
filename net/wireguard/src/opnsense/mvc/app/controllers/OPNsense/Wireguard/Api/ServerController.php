@@ -59,8 +59,8 @@ class ServerController extends ApiMutableModelControllerBase
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
                 $keyspub = $backend->configdpRun("wireguard genkey", 'public');
-                $node->privkey = $keyspriv;
-                $node->pubkey = $keyspub;
+                $node->privkey = trim($keyspriv);
+                $node->pubkey = trim($keyspub);
             }
             return $this->validateAndSave($node, 'server');
         }
@@ -84,8 +84,8 @@ class ServerController extends ApiMutableModelControllerBase
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
                 $keyspub = $backend->configdpRun("wireguard genkey", 'public');
-                $node->privkey = $keyspriv;
-                $node->pubkey = $keyspub;
+                $node->privkey = trim($keyspriv);
+                $node->pubkey = trim($keyspub);
             }
             return $this->validateAndSave($node, 'server');
         }

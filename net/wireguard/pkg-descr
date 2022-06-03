@@ -16,6 +16,11 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.11
+
+* Add script for renewal of Wireguard DNS-based entries for stale connections (#2956)
+* Trim whitespace around new public and private keys in config (#2982)
+
 1.10
 
 * Remove instance limit
