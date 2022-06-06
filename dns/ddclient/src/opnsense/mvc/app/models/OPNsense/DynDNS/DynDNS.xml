@@ -26,7 +26,7 @@
             </daemon_delay>
         </general>
         <accounts>
-            <account type="ArrayField">
+            <account type=".\AccountField">
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
