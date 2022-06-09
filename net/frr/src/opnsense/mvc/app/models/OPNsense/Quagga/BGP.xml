@@ -60,6 +60,12 @@
                         <password type="TextField">
                                 <Required>N</Required>
                         </password>
+                        <weight type="IntegerField">
+                                <default></default>
+                                <Required>N</Required>
+                                <MinimumValue>0</MinimumValue>
+                                <MaximumValue>65535</MaximumValue>
+                        </weight>
                         <localip type="NetworkField">
                                 <Required>N</Required>
                         </localip>

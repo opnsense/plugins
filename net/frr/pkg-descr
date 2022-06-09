@@ -14,7 +14,7 @@ Plugin Changelog
 
 1.29
 
-* Add disable-connected-check option
+* Add disable-connected-check option and BGP weight option
 
 1.28
 
