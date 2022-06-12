@@ -4,3 +4,6 @@ snmpd_enable="YES"
 {% else %}
 snmpd_enable="NO"
 {% endif %}
+{% if helpers.exists('OPNsense.netsnmp.general.snmpdflags') and OPNsense.netsnmp.general.snmpdflags != '' %}
+snmpd_flags="{{ OPNsense.netsnmp.general.snmpdflags }}"
+{% endif %}
