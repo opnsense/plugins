@@ -98,6 +98,24 @@
         <help>Number of pre-forked instances of VMware Collectors.</help>
     </field>
     <field>
+        <id>general.snmptrapper</id>
+        <label>Activate SNMP trapper</label>
+        <type>checkbox</type>
+        <help>Activate SNMP Trapper, needs to be activated also in NET-SNMP</help>
+    </field>
+    <field>
+        <id>general.snmptrapperfile</id>
+        <label>SNMP trapper file position</label>
+        <type>text</type>
+        <help>Default is /tmp/zabbix_traps.tmp</help>
+    </field>
+    <field>
+        <id>general.trappertimeout</id>
+        <label>Timeout of Trappers</label>
+        <type>text</type>
+        <help>Default is 300</help>
+    </field>
+    <field>
         <id>general.starthttppollers</id>
         <label>Start HTTP Pollers</label>
         <type>text</type>

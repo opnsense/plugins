@@ -68,6 +68,18 @@
         <startvmwarecollectors type="IntegerField">
             <Required>N</Required>
         </startvmwarecollectors>
+        <snmptrapper type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </snmptrapper>
+        <snmptrapperfile type="TextField">
+            <default>/tmp/zabbix_traps.tmp</default>
+            <Required>N</Required>
+        </snmptrapperfile>
+        <trappertimeout type="IntegerField">
+            <default>300</default>
+            <Required>N</Required>
+        </trappertimeout>
         <starthttppollers type="IntegerField">
             <default>1</default>
             <Required>N</Required>
