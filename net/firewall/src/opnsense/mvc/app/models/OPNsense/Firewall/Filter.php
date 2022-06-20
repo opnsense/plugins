@@ -113,12 +113,12 @@ class Filter extends BaseModel
     {
         $filename = Config::getInstance()->getBackupFilename($revision);
         if ($filename) {
-            // fiddle with the dom, copy OPNsense->Firewall->FilterRule from backup to current config
+            // fiddle with the dom, copy OPNsense->Firewall->Filter from backup to current config
             $sourcexml = simplexml_load_file($filename);
-            if ($sourcexml->OPNsense->Firewall->FilterRule) {
-                $sourcedom = dom_import_simplexml($sourcexml->OPNsense->Firewall->FilterRule);
+            if ($sourcexml->OPNsense->Firewall->Filter) {
+                $sourcedom = dom_import_simplexml($sourcexml->OPNsense->Firewall->Filter);
                 $targetxml = Config::getInstance()->object();
-                $targetdom = dom_import_simplexml($targetxml->OPNsense->Firewall->FilterRule);
+                $targetdom = dom_import_simplexml($targetxml->OPNsense->Firewall->Filter);
                 $node = $targetdom->ownerDocument->importNode($sourcedom, true);
                 $targetdom->parentNode->replaceChild($node, $targetdom);
                 Config::getInstance()->save();
