@@ -1,0 +1,40 @@
+<form>
+    <field>
+        <id>homeserverpool.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the home server pool.</help>
+    </field>
+    <field>
+        <id>homeserverpool.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name of Home Server Pool</help>
+    </field>
+    <field>
+        <id>homeserverpool.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Set the type of pool</help>
+    </field>
+    <field>
+        <id>homeserverpool.virtualserver</id>
+        <label>Virtual Server</label>
+        <type>text</type>
+        <help>A virtual_server may be specified here.</help>
+    </field>
+    <field>
+        <id>homeserverpool.homeservers</id>
+        <label>Home Servers</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>The home servers.</help>
+    </field>
+    <field>
+        <id>homeserverpool.fallback</id>
+        <label>Fallback</label>
+        <type>text</type>
+        <help>If ALL home servers are dead, then this "fallback" home server is used.</help>
+    </field>
+</form>

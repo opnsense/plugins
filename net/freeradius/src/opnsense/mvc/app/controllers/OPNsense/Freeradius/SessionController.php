@@ -1,7 +1,6 @@
 <?php
 
 /*
- * Copyright (C) 2015-2017 Deciso B.V.
  * Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
@@ -27,13 +26,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Freeradius\Api;
+namespace OPNsense\Freeradius;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Core\Config;
-
-class LdapController extends ApiMutableModelControllerBase
+class SessionController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'ldap';
-    protected static $internalModelClass = '\OPNsense\Freeradius\Ldap';
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Freeradius/session');
+    }
 }

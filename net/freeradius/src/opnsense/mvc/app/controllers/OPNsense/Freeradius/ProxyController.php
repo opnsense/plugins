@@ -1,12 +1,11 @@
 <?php
 
 /*
- * Copyright (C) 2015-2017 Deciso B.V.
- * Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
- * All rights reserved.
+ *  Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+ *  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
@@ -27,13 +26,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Freeradius\Api;
+namespace OPNsense\Freeradius;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Core\Config;
-
-class LdapController extends ApiMutableModelControllerBase
+class ProxyController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'ldap';
-    protected static $internalModelClass = '\OPNsense\Freeradius\Ldap';
+    public function indexAction()
+    {
+        $this->view->formDialogEditFreeRADIUSHomeserver = $this->getForm("dialogEditFreeRADIUSHomeserver");
+        $this->view->formDialogEditFreeRADIUSHomeserverpool = $this->getForm("dialogEditFreeRADIUSHomeserverpool");
+        $this->view->formDialogEditFreeRADIUSRealm = $this->getForm("dialogEditFreeRADIUSRealm");
+        $this->view->pick('OPNsense/Freeradius/proxy');
+    }
 }

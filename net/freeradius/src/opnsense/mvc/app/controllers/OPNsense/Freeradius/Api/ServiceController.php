@@ -143,4 +143,12 @@ class ServiceController extends ApiControllerBase
             return array("status" => "failed");
         }
     }
+    /**
+     * sessions freeradius service
+     * @return array
+     */
+    public function realtimesessionsAction()
+    {
+    return (new Backend())->configdRun("freeradius realtimesessions");
+    }
 }

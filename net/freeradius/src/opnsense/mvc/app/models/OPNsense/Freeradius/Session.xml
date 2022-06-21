@@ -1,0 +1,8 @@
+<model>
+    <mount>//OPNsense/freeradius/session</mount>
+    <description>
+        Status of connections
+    </description>
+    <items>
+    </items>
+</model>

@@ -15,5 +15,5 @@ for FILE in ${RADIUS_FILES}; do
 	touch ${FILE}
 	chmod 700 ${FILE}
 done
-
+sqlite3 /usr/local/etc/raddb/freeradius.db "ALTER TABLE radacct ADD COLUMN clientshortname varchar(45)"
 /usr/local/opnsense/scripts/Freeradius/generate_certs.php

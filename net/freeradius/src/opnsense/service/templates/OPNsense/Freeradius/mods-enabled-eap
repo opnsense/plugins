@@ -776,8 +776,8 @@ eap {
                 #  EAP conversation, then this configuration entry is
                 #  ignored.
                 #
-                {% if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_type == 'ttls-gtc' %}
-                default_eap_type = gtc
+                {% if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_ttls_type != '' %}
+                default_eap_type = {{ OPNsense.freeradius.eap.default_eap_ttls_type }}
                 {% else %}
                 default_eap_type = md5
                 {% endif %}
@@ -824,7 +824,11 @@ eap {
 {%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
                 use_tunneled_reply = yes
 {%   else %}
+{%       if helpers.exists('OPNsense.freeradius.general.innertooutuser') and OPNsense.freeradius.general.innertooutuser == '1' %}
+                use_tunneled_reply = yes
+{%       else %}
                 use_tunneled_reply = no
+{%       endif %}
 {%   endif %}
                 #  The inner tunneled request can be sent
                 #  through a virtual server constructed
@@ -933,7 +937,7 @@ eap {
                 #  sections of sites-available/default, and of
                 #  sites-available/inner-tunnel
                 #
-{%   if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
+{%   if ('OPNsense.freeradius.general.innertooutuser' == '1') or OPNsense.freeradius.general.vlanassign == '1' %}
                 use_tunneled_reply = yes
 {%   else %}
                 use_tunneled_reply = no

@@ -15,6 +15,15 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.20
+
+* Allow to select cert from cert manager for LDAP autentication
+* Fixed EAP TTLS types for GTC
+* Inserted new menu and options to control proxy sets from OPNSense
+* Inserted option to set inner-tunnel user to outer-tunnel user when anonimous identity is set
+* New action realtimesessions to see realtime sessions when using sqlite3
+
+
 1.9.19
 
 * Allow to use LDAP in inner-tunnel (needed for LDAP authentication within 802.1X)

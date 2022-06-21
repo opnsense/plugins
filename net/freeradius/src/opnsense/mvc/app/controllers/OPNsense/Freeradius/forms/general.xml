@@ -145,4 +145,18 @@
         <advanced>true</advanced>
         <help>Set database name of remote MySQL server.</help>
     </field>
+    <field>
+        <id>general.proxyfallback</id>
+        <label>Default Fallback Proxy</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Fallback for proxy server. Default disabled.</help>
+    </field>
+    <field>
+        <id>general.innertooutuser</id>
+        <label>Default Inner user to outer user</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Set Inner user of anonymous TTLS as outer user to see users in logs and databases instead of anonymous identity.</help>
+    </field>
 </form>

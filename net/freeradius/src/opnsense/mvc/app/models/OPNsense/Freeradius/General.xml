@@ -148,5 +148,13 @@
             <default>radius</default>
             <Required>Y</Required>
         </mysqldb>
+        <fallback type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </fallback>
+        <innertooutuser type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </innertooutuser>
     </items>
 </model>

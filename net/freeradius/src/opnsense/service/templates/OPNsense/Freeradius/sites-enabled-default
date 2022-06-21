@@ -133,6 +133,11 @@ post-auth {
         update {
                 &reply: += &session-state:
         }
+{% if helpers.exists('OPNsense.freeradius.general.innertooutuser') and OPNsense.freeradius.general.innertooutuser == '1' %}
+        update session-state {
+            &Tmp-String-1 := "accept"
+        }
+{% endif %}
         -sql
         exec
         remove_reply_message_if_eap
