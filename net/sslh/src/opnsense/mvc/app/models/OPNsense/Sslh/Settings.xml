@@ -7,8 +7,8 @@
         </enabled>
         <listen_addresses type="CSVListField">
             <required>Y</required>
-            <multiple>Y</multiple>
-            <validationmessage>Please enter at least one addres:port combination.</validationmessage>
+            <default>localhost:443</default>
+            <validationmessage>Please enter at least one hostname/IP:port combination.</validationmessage>
         </listen_addresses>
         <mode type="OptionField">
             <required>Y</required>

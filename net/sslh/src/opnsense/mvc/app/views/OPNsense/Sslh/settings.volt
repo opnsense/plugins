@@ -36,7 +36,6 @@
  # this_form    array   the form XML in an array
  #}
 
-<!-- Settings Tab -->
 <div class="tab-content content-box tab-content">
     <div id="settings" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">

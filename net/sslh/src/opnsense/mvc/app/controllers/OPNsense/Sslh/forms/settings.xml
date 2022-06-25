@@ -8,10 +8,9 @@
     <field>
         <id>settings.listen_addresses</id>
         <label>Listen Addresses</label>
-        <help>Interface and port on which to listen, e.g. foobar:443, where foobar is the name of an interface (typically the IP address on which the Internet connection ends up). This can be specified several times to bind sslh to several addresses.</help>
+        <help>Hostname (or IP address) and port combination on which to listen, e.g. localhost:443, 10.5.0.1:443 (typically these resolve to-, or specify, a WAN IP address). This can be defined multiple times to bind sslh to several addresses.</help>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <hint>hostname:443,hostname:1194</hint>
         <type>select_multiple</type>
     </field>
     <field>
@@ -73,8 +72,8 @@
     </field>
     <field>
         <id>settings.tinc_target</id>
-        <label>TINC Target</label>
-        <help>Interface and port on which to forward tinc connections, typically localhost:655.</help>
+        <label>Tinc Target</label>
+        <help>Interface and port on which to forward Tinc connections, typically localhost:655.</help>
         <hint>localhost:655</hint>
         <type>text</type>
     </field>

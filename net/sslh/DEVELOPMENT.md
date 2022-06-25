@@ -54,7 +54,7 @@ Here is a table which maps the configurations to command line options, and inclu
 | pidfile            | -P, --pidfile       | N/A              | N/A           |               |
 | chroot             | -C, --chroot        | N/A              | N/A           |               |
 | on_timeout         | --on-timeout        | OptionField      | ssh           |               |
-| listen             | -p, --listen        | CSVListField     | N/A           | hostname:port |
+| listen             | -p, --listen        | CSVListField     | localhost:443 |               |
 | protocols          | --ssl, --tls<br>--ssh<br>--openvpn<br>--http<br>--xmpp<br>--tinc<br>--anyprot | TextField | N/A  | localhost:443<br>localhost:22<br>localhost:1194<br>localhost:80<br>localhost:5222<br>localhost:655 |
 
 Here are some non-configuration options which have representation in the model:

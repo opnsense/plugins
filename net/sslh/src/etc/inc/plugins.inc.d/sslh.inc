@@ -27,7 +27,7 @@
 */
 
 /**
- * Function to add plugin to the services page of OPNsense.
+ * Function to register the plugin's service with OPNsense.
  *
  * This adds the service to the System: Diagnostics: Services page at
  * http://<opnsense>/status_services.php
@@ -43,8 +43,7 @@ function sslh_services()
 
     // Create an array to be processed by www/status_services.php
     $service = array();
-    // Load the plugin configuraiton file as an array for use below.
-    $conf = parse_ini_file('/usr/local/opnsense/service/conf/sslh.conf', true);
+
     // Load in our settings to get the enabled state of the plugin.
     $settings = new \OPNsense\Sslh\Settings();
 
@@ -54,20 +53,16 @@ function sslh_services()
         return $services;
     }
 
-    $configd_name = $conf['plugin']['configd_name'];
+    $configd_name = 'sslh';
     $service[] = array(
-        'name' => $conf['plugin']['name'],                  // Service column
-        'description' => gettext($conf['plugin']['label']), // Description column
-        'configd' => array(                                 // Status column
+        'name' => 'sslh',                   // Service column
+        'description' => gettext('SSLH'),   // Description column
+        'configd' => array(                 // Status column
             'restart' => array($configd_name . ' restart'),
             'start' => array($configd_name . ' start'),
             'stop' => array($configd_name . ' stop'),
         ),
-        // 'pidfile' is used by etc/inc/util.inc:service_status(),
-        // and displays service state in status column. If undefined,
-        // the 'name' as defined above is used in is_process_running()
-        // which must match the process name of the service in order to be found.
-        'pidfile' => $conf['plugin']['pidfile'],
+        'pidfile' => '/var/run/sslh.pid'
     );
 
     return $service;
