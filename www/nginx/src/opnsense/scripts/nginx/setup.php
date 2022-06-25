@@ -304,7 +304,7 @@ foreach ($nginx->tls_fingerprint->iterateItems() as $tls_fingerprint) {
     if ((string)$tls_fingerprint->trusted == '1') {
         $ciphers = explode(':', (string)$tls_fingerprint->ciphers);
         if (!empty((string)$tls_fingerprint->curves)) {
-            $curves = explode(':', (string)$tls_fingerprint->ciphers);
+            $curves = explode(':', (string)$tls_fingerprint->curves);
         } else {
             $curves = array();
         }
