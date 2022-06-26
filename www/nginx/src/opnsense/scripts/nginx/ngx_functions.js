@@ -4,7 +4,7 @@ var tls_fingerprints = JSON.parse(fs.readFileSync('/usr/local/etc/nginx/tls_fing
 const GREASE = ["0x0a0a", "0x1a1a", "0x2a2a", "0x3a3a", "0x4a4a", "0x5a5a", "0x6a6a", "0x7a7a", "0x8a8a", "0x9a9a", "0xaaaa", "0xbaba", "0xcaca", "0xdada", "0xeaea", "0xfafa"];
 
 function check_cipher_array(r, browser_ciphers, fingerprint_ciphers, result) {
-  if (result.status.indexOf('Intercepted') !== -1) {
+  if (result.status.includes('Intercepted')) {
     return;
   }
   if (browser_ciphers.length > fingerprint_ciphers.length) {
