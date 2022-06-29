@@ -74,7 +74,6 @@
             <Required>N</Required>
         </ping6>
         <ping6_count type="IntegerField">
-            <default>4</default>
             <Required>N</Required>
         </ping6_count>
         <ping6_hosts type="CSVListField">
