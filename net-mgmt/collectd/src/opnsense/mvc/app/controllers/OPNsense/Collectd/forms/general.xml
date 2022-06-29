@@ -191,4 +191,16 @@
         <type>checkbox</type>
         <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
     </field>
+    <field>
+        <id>general.p_tcpconns</id>
+        <label>Enable tcpconns plugin</label>
+        <type>checkbox</type>
+        <help>The tcpconns plugin lists a summary of all tcp connections.</help>
+    </field>
+    <field>
+        <id>general.p_ipstats</id>
+        <label>Enable ipstats plugin</label>
+        <type>checkbox</type>
+        <help>The ipstats plugin lists multiple interface stats.</help>
+    </field>
 </form>

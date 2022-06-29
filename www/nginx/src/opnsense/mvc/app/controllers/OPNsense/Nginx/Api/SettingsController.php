@@ -233,7 +233,7 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('http_server', array(
             'servername', 'locations', 'root', 'https_only', 'certificate',
-            'listen_http_port', 'listen_https_port'
+            'listen_http_address', 'listen_https_address', 'default_server'
         ));
     }
 
@@ -261,7 +261,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // stream server
     public function searchstreamserverAction()
     {
-        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_port'));
+        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_address'));
     }
 
     public function getstreamserverAction($uuid = null)
@@ -340,34 +340,107 @@ class SettingsController extends ApiMutableModelControllerBase
     }
 
     // http security headers
-    public function searchsecurity_headerAction()
+    public function searchsecurityHeaderAction()
     {
-        return $this->searchBase('security_header', array('description'));
+        $data = $this->searchBase(
+            'security_header',
+            ['description', 'referrer', 'xssprotection', 'strict_transport_security_time',
+            'enable_csp', 'csp_report_only', 'csp_default_src_enabled', 'csp_script_src_enabled', 'csp_img_src_enabled',
+            'csp_style_src_enabled', 'csp_media_src_enabled', 'csp_font_src_enabled', 'csp_frame_src_enabled',
+            'csp_frame_ancestors_enabled',
+            'csp_form_action_enabled']
+        );
+
+        // Create "hsts" column (disabled/time)
+        foreach ($data['rows'] as &$row) {
+            if (intval($row['strict_transport_security_time']) > 0) {
+                $row['hsts'] = sprintf(gettext("%d sec"), intval($row['strict_transport_security_time']));
+            } else {
+                $row['hsts'] = gettext('disabled');
+            }
+        }
+
+        // Create "csp" column (enabled/report only/disabled)
+        foreach ($data['rows'] as &$row) {
+            if ($row['enable_csp']) {
+                if ($row['csp_report_only']) {
+                    $row['csp'] = gettext('report only');
+                } else {
+                    $row['csp'] = gettext('enabled');
+                }
+            } else {
+                $row['csp'] = gettext('disabled');
+            }
+        }
+
+        // Create "csp_details" column
+        foreach ($data['rows'] as &$row) {
+            if ($row['enable_csp']) {
+                $enabled = [];
+                if ($row['csp_default_src_enabled']) {
+                    $enabled[] = gettext("Default Source");
+                }
+                if ($row['csp_script_src_enabled']) {
+                    $enabled[] = gettext("Script Source");
+                }
+                if ($row['csp_img_src_enabled']) {
+                    $enabled[] = gettext("Image Source");
+                }
+                if ($row['csp_style_src_enabled']) {
+                    $enabled[] = gettext("Style Source");
+                }
+                if ($row['csp_media_src_enabled']) {
+                    $enabled[] = gettext("Media Source");
+                }
+                if ($row['csp_font_src_enabled']) {
+                    $enabled[] = gettext("Font Source");
+                }
+                if ($row['csp_frame_src_enabled']) {
+                    $enabled[] = gettext("Frame Source");
+                }
+                if ($row['csp_frame_ancestors_enabled']) {
+                    $enabled[] = gettext("Frame Ancestors");
+                }
+                if ($row['csp_form_action_enabled']) {
+                    $enabled[] = gettext("Form Action");
+                }
+
+                if (count($enabled)) {
+                    $row['csp_details'] = implode(', ', $enabled);
+                } else {
+                    $row['csp_details'] = gettext('none');
+                }
+            } else {
+                $row['csp_details'] = '';
+            }
+        }
+
+        return $data;
     }
 
-    public function getsecurity_headerAction($uuid = null)
+    public function getsecurityHeaderAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('security_header', 'security_header', $uuid);
     }
 
-    public function addsecurity_headerAction()
+    public function addsecurityHeaderAction()
     {
         return $this->addBase('security_header', 'security_header');
     }
 
-    public function delsecurity_headerAction($uuid)
+    public function delsecurityHeaderAction($uuid)
     {
         return $this->delBase('security_header', $uuid);
     }
 
-    public function setsecurity_headerAction($uuid)
+    public function setsecurityHeaderAction($uuid)
     {
         return $this->setBase('security_header', 'security_header', $uuid);
     }
 
     // access limit zone headers
-    public function searchlimit_zoneAction()
+    public function searchlimitZoneAction()
     {
         return $this->searchBase(
             'limit_zone',
@@ -375,23 +448,23 @@ class SettingsController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getlimit_zoneAction($uuid = null)
+    public function getlimitZoneAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('limit_zone', 'limit_zone', $uuid);
     }
 
-    public function addlimit_zoneAction()
+    public function addlimitZoneAction()
     {
         return $this->addBase('limit_zone', 'limit_zone');
     }
 
-    public function dellimit_zoneAction($uuid)
+    public function dellimitZoneAction($uuid)
     {
         return $this->delBase('limit_zone', $uuid);
     }
 
-    public function setlimit_zoneAction($uuid)
+    public function setlimitZoneAction($uuid)
     {
         return $this->setBase('limit_zone', 'limit_zone', $uuid);
     }
@@ -433,34 +506,34 @@ class SettingsController extends ApiMutableModelControllerBase
     }
 
     // TLS fingerprints for MITM detection
-    public function searchtls_fingerprintAction()
+    public function searchtlsFingerprintAction()
     {
         return $this->searchBase('tls_fingerprint', array('description'));
     }
 
-    public function gettls_fingerprintAction($uuid = null)
+    public function gettlsFingerprintAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('tls_fingerprint', 'tls_fingerprint', $uuid);
     }
 
-    public function addtls_fingerprintAction()
+    public function addtlsFingerprintAction()
     {
         return $this->addBase('tls_fingerprint', 'tls_fingerprint');
     }
 
-    public function deltls_fingerprintAction($uuid)
+    public function deltlsFingerprintAction($uuid)
     {
         return $this->delBase('tls_fingerprint', $uuid);
     }
 
-    public function settls_fingerprintAction($uuid)
+    public function settlsFingerprintAction($uuid)
     {
         return $this->setBase('tls_fingerprint', 'tls_fingerprint', $uuid);
     }
 
     // limit_request_connection
-    public function searchlimit_request_connectionAction()
+    public function searchlimitRequestConnectionAction()
     {
         return $this->searchBase(
             'limit_request_connection',
@@ -468,28 +541,28 @@ class SettingsController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getlimit_request_connectionAction($uuid = null)
+    public function getlimitRequestConnectionAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('limit_request_connection', 'limit_request_connection', $uuid);
     }
 
-    public function addlimit_request_connectionAction()
+    public function addlimitRequestConnectionAction()
     {
         return $this->addBase('limit_request_connection', 'limit_request_connection');
     }
 
-    public function dellimit_request_connectionAction($uuid)
+    public function dellimitRequestConnectionAction($uuid)
     {
         return $this->delBase('limit_request_connection', $uuid);
     }
 
-    public function setlimit_request_connectionAction($uuid)
+    public function setlimitRequestConnectionAction($uuid)
     {
         return $this->setBase('limit_request_connection', 'limit_request_connection', $uuid);
     }
     // cache path
-    public function searchcache_pathAction()
+    public function searchcachePathAction()
     {
         return $this->searchBase(
             'cache_path',
@@ -497,23 +570,23 @@ class SettingsController extends ApiMutableModelControllerBase
         );
     }
 
-    public function getcache_pathAction($uuid = null)
+    public function getcachePathAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('cache_path', 'cache_path', $uuid);
     }
 
-    public function addcache_pathAction()
+    public function addcachePathAction()
     {
         return $this->addBase('cache_path', 'cache_path');
     }
 
-    public function delcache_pathAction($uuid)
+    public function delcachePathAction($uuid)
     {
         return $this->delBase('cache_path', $uuid);
     }
 
-    public function setcache_pathAction($uuid)
+    public function setcachePathAction($uuid)
     {
         return $this->setBase('cache_path', 'cache_path', $uuid);
     }
@@ -719,28 +792,28 @@ class SettingsController extends ApiMutableModelControllerBase
         }
     }
     // SYSLOG targets
-    public function searchsyslog_targetAction()
+    public function searchsyslogTargetAction()
     {
         return $this->searchBase('syslog_target', array('description', 'host', 'facility', 'severity'));
     }
 
-    public function getsyslog_targetAction($uuid = null)
+    public function getsyslogTargetAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('syslog_target', 'syslog_target', $uuid);
     }
 
-    public function addsyslog_targetAction()
+    public function addsyslogTargetAction()
     {
         return $this->addBase('syslog_target', 'syslog_target');
     }
 
-    public function delsyslog_targetAction($uuid)
+    public function delsyslogTargetAction($uuid)
     {
         return $this->delBase('syslog_target', $uuid);
     }
 
-    public function setsyslog_targetAction($uuid)
+    public function setsyslogTargetAction($uuid)
     {
         return $this->setBase('syslog_target', 'syslog_target', $uuid);
     }

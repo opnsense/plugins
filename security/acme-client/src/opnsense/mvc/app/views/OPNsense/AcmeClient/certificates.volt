@@ -2,7 +2,7 @@
 
 (Partially duplicates code from opnsense_bootgrid_plugin.js.)
 
-Copyright (C) 2017-2020 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 Copyright (C) 2015 Deciso B.V.
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
@@ -49,6 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
             revoke:'/api/acmeclient/certificates/revoke/',
             removekey:'/api/acmeclient/certificates/removekey/',
             automation:'/api/acmeclient/certificates/automation/',
+            import:'/api/acmeclient/certificates/import/',
         };
 
         var gridopt = {
@@ -59,13 +60,14 @@ POSSIBILITY OF SUCH DAMAGE.
             url: '/api/acmeclient/certificates/search',
             formatters: {
                 "commands": function (column, row) {
-                    return "<button type=\"button\" title=\"{{ lang._('edit certificate') }}\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                        "<button type=\"button\" title=\"{{ lang._('copy certificate') }}\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                        "<button type=\"button\" title=\"{{ lang._('issue or renew certificate') }}\" class=\"btn btn-xs btn-default command-sign\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
-                        "<button type=\"button\" title=\"{{ lang._('run automations') }}\" class=\"btn btn-xs btn-default command-automation\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
-                        "<button type=\"button\" title=\"{{ lang._('revoke certificate') }}\" class=\"btn btn-xs btn-default command-revoke\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
-                        "<button type=\"button\" title=\"{{ lang._('reset certificate') }}\" class=\"btn btn-xs btn-default command-removekey\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
-                        "<button type=\"button\" title=\"{{ lang._('remove certificate') }}\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                    return "<button type=\"button\" title=\"{{ lang._('Edit certificate') }}\" class=\"btn btn-xs btn-default command-edit bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
+                        "<button type=\"button\" title=\"{{ lang._('Copy certificate') }}\" class=\"btn btn-xs btn-default command-copy bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Issue or renew certificate') }}\" class=\"btn btn-xs btn-default command-sign bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-repeat\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('(Re-) Import certificate') }}\" class=\"btn btn-xs btn-default command-import bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-certificate\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Run automations') }}\" class=\"btn btn-xs btn-default command-automation bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-paper-plane\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Revoke certificate') }}\" class=\"btn btn-xs btn-default command-revoke bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-power-off\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Reset certificate') }}\" class=\"btn btn-xs btn-default command-removekey bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-history\"></span></button>" +
+                        "<button type=\"button\" title=\"{{ lang._('Remove certificate') }}\" class=\"btn btn-xs btn-default command-delete bootgrid-tooltip\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
                 },
                 "rowtoggle": function (column, row) {
                     if (parseInt(row[column.id], 2) == 1) {
@@ -140,6 +142,9 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         var grid_certificates = $("#grid-certificates").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
         {
+            // toggle all rendered tooltips (once for all)
+            $('.bootgrid-tooltip').tooltip();
+
             // scale footer on resize
             $(this).find("tfoot td:first-child").attr('colspan',$(this).find("th").length - 1);
             $(this).find('tr[data-row-id]').each(function(){
@@ -209,7 +214,6 @@ POSSIBILITY OF SUCH DAMAGE.
          * copy actions for items from opnsense_bootgrid_plugin.js
          */
         grid_certificates.on("loaded.rs.jquery.bootgrid", function(){
-
             // edit dialog id to use
             var editDlg = $(this).attr('data-editDialog');
             var gridId = $(this).attr('id');
@@ -395,6 +399,25 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
+            // import certificate into trust storage
+            grid_certificates.find(".command-import").on("click", function(e)
+            {
+                if (gridParams['import'] != undefined) {
+                    var uuid=$(this).data("row-id");
+                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                        '{{ lang._('(Re-) import the selected certificate and associated CA certificates into the trust storage?') }}',
+                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['import'] + uuid,
+                            sendData={},callback=function(data,status){
+                                // reload grid after sign
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+                } else {
+                    console.log("[grid] action import missing")
+                }
+            });
+
         });
 
         // Hide options that are irrelevant in this context.
@@ -429,12 +452,28 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#certificates">{{ lang._('Certificates') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="certificates-introduction" href="#subtab_certificates-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="certificates-tab" href="#certificates"><b>{{ lang._('Certificates') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="certificates" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_certificates-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Certificates') }}</h1>
+            <p>{{ lang._('This plugin supports an unlimited number of certificates. However, the CA may restrict the number of certificates per week or implement other rate-limits. Retrying a failed validation many times in a row may also cause further attempts to fail due to rate-limits. The CA documentation should contain further information.') }}</p>
+            <p>{{ lang._('The following principles apply when managing certificates with this plugin:') }}</p>
+            <ul>
+              <li>{{ lang._('Certificates must be %svalidated%s by the CA before they can be used. This process runs in the background and may take several minutes to complete. The progress can be monitored by using the %slog files%s.') | format('<b>', '</b>', '<a href="/ui/acmeclient/logs">', '</a>') }}</li>
+              <li>{{ lang._('Certificates are stored in the %sOPNsense certificate storage%s. When a CA has completed the validation of a certificate request, the resulting certificate is then automatically imported into the OPNsense certificate storage. The same applies when renewing certificates, the existing entry in the OPNsense certificate storage will automatically be updated.') | format('<a href="/system_certmanager.php">', '</a>') }}</li>
+              <li>{{ lang._('When removing a certificate from the plugin, the certificate in the %sOPNsense certificate storage%s is %sNOT removed%s, because it may still be used by a core application or another plugin. Obsolete certificates should be manually removed from the OPNsense certificate storage. Note that when creating a new certificate with the same name, a new certificated will be imported into the OPNsense certificate storage (instead of updating the existing entry).') | format('<a href="/system_certmanager.php">', '</a>', '<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._('When experiencing issues, try setting the log level to "debug" on the %ssettings%s page.') | format('<a href="/ui/acmeclient#settings">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="certificates" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
         <table id="grid-certificates" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCertificate">
             <thead>
             <tr>
@@ -443,9 +482,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="altNames" data-type="string">{{ lang._('Multi-Domain (SAN)') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="lastUpdate" data-type="string" data-formatter="certdate">{{ lang._('Issue/Renewal Date') }}</th>
-                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last Acme Status') }}</th>
-                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last Acme Run') }}</th>
-                <th data-column-id="commands" data-width="11em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="statusCode" data-type="string" data-formatter="acmestatus">{{ lang._('Last ACME Status') }}</th>
+                <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Last ACME Run') }}</th>
+                <th data-column-id="commands" data-width="13em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
             </tr>
             </thead>
@@ -461,15 +500,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="col-md-12">
-        <hr/>
-        <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew Certificates Now') }}</b><i id="signallcertsAct_progress" class=""></i></button>
-        <br/>
-    </div>
-    <div class="col-md-12">
-        {{ lang._('Use the Issue/Renew button to let the acme client automatically issue any new certificate and renew existing certificates (only if required). If you want to only issue/renew or revoke a single certificate, use the buttons in the Commands column. This will forcefully issue/renew the certificate, even if it is not required.') }} <b>{{ lang._('The process may take some time and thus will run in the background, you will not get any notification in the GUI. Use the log file to monitor the progress and to see error messages.') }}</b>
-        <br/><br/>
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="signallcertsAct" type="button"><b>{{ lang._('Issue/Renew All Certificates') }}</b><i id="signallcertsAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
     </div>
 </div>
 

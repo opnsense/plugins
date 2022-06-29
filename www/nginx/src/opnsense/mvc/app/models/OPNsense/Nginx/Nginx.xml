@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.20.1</version>
+  <version>1.28.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -47,6 +47,9 @@
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
       </server_names_hash_max_size>
+      <headers_more_enable type="BooleanField">
+        <Required>N</Required>
+      </headers_more_enable>
     </http>
 
     <userlist type="ArrayField">
@@ -662,14 +665,34 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </syslog_targets>
-      <listen_http_port type="PortField">
+      <listen_http_address type="CSVListField">
         <Required>N</Required>
-        <default>80</default>
-      </listen_http_port>
-      <listen_https_port type="PortField">
+        <multiple>Y</multiple>
+        <default>80,[::]:80</default>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+        <Constraints>
+          <check001>
+            <type>NgxUniqueDefaultServerConstraint</type>
+          </check001>
+        </Constraints>
+      </listen_http_address>
+      <listen_https_address type="CSVListField">
         <Required>N</Required>
-        <default>443</default>
-      </listen_https_port>
+        <multiple>Y</multiple>
+        <default>443,[::]:443</default>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+      </listen_https_address>
+      <default_server type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+        <Constraints>
+          <check001>
+            <type>NgxUniqueDefaultServerConstraint</type>
+          </check001>
+        </Constraints>
+      </default_server>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -773,6 +796,29 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <tls_protocols type="OptionField">
+        <multiple>Y</multiple>
+        <Sorted>Y</Sorted>
+        <OptionValues>
+          <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
+          <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>TLSv1.2,TLSv1.3</default>
+      </tls_protocols>
+      <tls_ciphers type="TextField">
+        <default>ECDHE-ECDSA-CAMELLIA256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CAMELLIA256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-CAMELLIA128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-CAMELLIA128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CAMELLIA256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CAMELLIA256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-CAMELLIA128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+        <Required>N</Required>
+        <mask>/^((((!|\+|-)?[A-Z][A-Z\d\+-]+)|(@STRENGTH)):?)*$/i</mask>
+      </tls_ciphers>
+      <tls_ecdh_curve type="TextField">
+        <Required>N</Required>
+        <mask>/^(([A-Z\d-]+):?)*$/i</mask>
+      </tls_ecdh_curve>
+      <tls_prefer_server_ciphers type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </tls_prefer_server_ciphers>
       <ocsp_stapling type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -894,16 +940,12 @@
     </http_server>
 
     <stream_server type="ArrayField">
-      <listen_port type="PortField">
+      <listen_address type="CSVListField">
         <Required>N</Required>
-        <default>80</default>
-        <Constraints>
-          <check001>
-            <ValidationMessage>You can only use one server at this port.</ValidationMessage>
-            <type>UniqueConstraint</type>
-          </check001>
-        </Constraints>
-      </listen_port>
+        <multiple>Y</multiple>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+      </listen_address>
       <syslog_targets type="ModelRelationField">
         <Model>
           <template>
@@ -1017,6 +1059,10 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <proxy_responses type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_responses>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
@@ -1155,19 +1201,10 @@
         <Required>Y</Required>
         <default>1</default>
       </strict_transport_security_include_subdomains>
-      <hpkp_keys type="CSVListField">
-        <Required>N</Required>
-        <mask>/[a-z0-9\+\/=]+(,[a-z0-9\+\/=]+)*/i</mask>
-      </hpkp_keys>
-      <hpkp_report_only type="BooleanField">
+      <strict_transport_security_preload type="BooleanField">
         <Required>Y</Required>
-      </hpkp_report_only>
-      <hpkp_time type="IntegerField">
-        <Required>N</Required>
-      </hpkp_time>
-      <hpkp_include_subdomains type="BooleanField">
-        <Required>Y</Required>
-      </hpkp_include_subdomains>
+        <default>0</default>
+      </strict_transport_security_preload>
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
@@ -1409,6 +1446,122 @@
         <Required>Y</Required>
         <default>0</default>
       </csp_font_src_none>
+      <csp_frame_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_enabled>
+      <csp_frame_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_data_urls>
+      <csp_frame_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_frame_src_http_urls>
+      <csp_frame_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_inline>
+      <csp_frame_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_eval>
+      <csp_frame_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_self>
+      <csp_frame_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_blob>
+      <csp_frame_src_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_mediastream>
+      <csp_frame_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_filesystem>
+      <csp_frame_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_src_none>
+      <csp_frame_ancestors_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_enabled>
+      <csp_frame_ancestors_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_data_urls>
+      <csp_frame_ancestors_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_frame_ancestors_http_urls>
+      <csp_frame_ancestors_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_self>
+      <csp_frame_ancestors_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_blob>
+      <csp_frame_ancestors_mediastream type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_mediastream>
+      <csp_frame_ancestors_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_filesystem>
+      <csp_frame_ancestors_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_frame_ancestors_none>
+      <csp_connect_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_connect_src_enabled>
+      <csp_connect_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_connect_src_http_urls>
+      <csp_connect_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_connect_src_none>
+      <csp_worker_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_enabled>
+      <csp_worker_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_data_urls>
+      <csp_worker_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_worker_src_http_urls>
+      <csp_worker_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_inline>
+      <csp_worker_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_eval>
+      <csp_worker_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_self>
+      <csp_worker_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_blob>
+      <csp_worker_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_filesystem>
+      <csp_worker_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_none>
       <csp_form_action_enabled type="BooleanField">
         <Required>Y</Required>
         <default>0</default>

@@ -35,8 +35,9 @@ virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
 sender_bcc_maps = hash:/usr/local/etc/postfix/senderbcc
 recipient_bcc_maps = hash:/usr/local/etc/postfix/recipientbcc
 sender_canonical_maps = regexp:/usr/local/etc/postfix/sendercanonical
-header_checks = regexp:/usr/local/etc/postfix/header_checks_receiving
-smtp_header_checks = regexp:/usr/local/etc/postfix/header_checks_delivering
+header_checks = pcre:/usr/local/etc/postfix/header_checks_receiving
+smtp_header_checks = pcre:/usr/local/etc/postfix/header_checks_delivering
+smtp_tls_CAfile = /etc/ssl/cert.pem
 ##########################
 # END SYSTEM DEFAULTS
 ##########################
@@ -118,6 +119,8 @@ smtpd_tls_cert_file = /usr/local/etc/postfix/cert_opn.pem
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.ca') and OPNsense.postfix.general.ca != '' %}
 smtpd_tls_CAfile = /usr/local/etc/postfix/ca_opn.pem
+{% else %}
+smtpd_tls_CAfile = /etc/ssl/cert.pem
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.tls_server_compatibility') %}
 {% if OPNsense.postfix.general.tls_server_compatibility == 'modern' %}
@@ -224,6 +227,10 @@ relay_recipient_maps = hash:/usr/local/etc/postfix/recipient_access
 
 {% if smtpd_recipient_restrictions|length >= 1 %}
 smtpd_recipient_restrictions = {{ smtpd_recipient_restrictions | join(', ') }}
+{% endif %}
+
+{% if helpers.exists('OPNsense.postfix.general.delay_warning_time') and OPNsense.postfix.general.delay_warning_time != '0' %}
+delay_warning_time = {{ OPNsense.postfix.general.delay_warning_time }}h
 {% endif %}
 
 smtpd_helo_required = yes

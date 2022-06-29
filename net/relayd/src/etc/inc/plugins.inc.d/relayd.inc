@@ -83,9 +83,11 @@ function relayd_xmlrpc_sync()
 
 function relayd_syslog()
 {
-    $logfacilities = array();
+    $logfacilities = [];
 
-    $logfacilities['relayd'] = array('facility' => array('relayd'), 'remote' => 'relayd');
+    $logfacilities['relayd'] = [
+        'facility' => ['relayd']
+    ];
 
     return $logfacilities;
 }

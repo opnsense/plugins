@@ -6,6 +6,12 @@
         <help>Enable this rule</help>
     </field>
     <field>
+        <id>rule.nonat</id>
+        <label>Do not NAT</label>
+        <type>checkbox</type>
+        <help>Enabling this option will disable NAT for traffic matching this rule and stop processing Outbound NAT rules.</help>
+    </field>
+    <field>
         <id>rule.sequence</id>
         <label>Sequence</label>
         <type>text</type>

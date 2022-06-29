@@ -27,6 +27,10 @@
             <default></default>
             <Required>N</Required>
         </influx_password>
+        <influx_insecure_skip_verify type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </influx_insecure_skip_verify>
         <graphite_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>
@@ -109,6 +113,10 @@
             <default></default>
             <Required>N</Required>
         </influx_v2_bucket>
+        <influx_v2_insecure_skip_verify type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </influx_v2_insecure_skip_verify>
         <datadog_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>

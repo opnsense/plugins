@@ -47,3 +47,5 @@ function check_intercept(r) {
     }
     return tls_result.status;
 }
+
+export default { check_intercept };

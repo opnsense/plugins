@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2021 Frank Wall
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ function acmeclient_services()
     }
 
     $services[] = array(
-        'description' => gettext('Let\'s Encrypt client'),
+        'description' => gettext('ACME client'),
         'pidfile' => '/var/run/lighttpd-acme-challenge.pid',
         'configd' => array(
             'restart' => array('acme-http-challenge restart'),

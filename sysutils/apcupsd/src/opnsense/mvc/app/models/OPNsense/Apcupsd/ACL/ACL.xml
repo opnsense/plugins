@@ -1,0 +1,9 @@
+<acl>
+    <page-services-apcupsd>
+        <name>Services: Apcupsd System Monitoring page</name>
+        <patterns>
+            <pattern>ui/apcupsd/*</pattern>
+            <pattern>api/apcupsd/*</pattern>
+        </patterns>
+    </page-services-apcupsd>
+</acl>

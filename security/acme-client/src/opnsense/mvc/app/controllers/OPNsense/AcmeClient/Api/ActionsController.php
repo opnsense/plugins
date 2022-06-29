@@ -72,7 +72,7 @@ class ActionsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('actions.action', array('enabled', 'name', 'description'), 'name');
+        return $this->searchBase('actions.action', array('enabled', 'name', 'type', 'description'), 'name');
     }
 
     public function sftpGetIdentityAction()
@@ -93,6 +93,32 @@ class ActionsController extends ApiMutableModelControllerBase
             $response = $this->callBackend(
                 ["test-sftp-connection"],
                 ["sftp_host", "sftp_host_key", "sftp_port", "sftp_user", "sftp_identity_type", "sftp_remote_path", "sftp_chmod", "sftp_chgrp"]
+            )
+        ) {
+            return $response;
+        }
+
+        return ["status" => "unavailable"];
+    }
+
+    public function sshGetIdentityAction()
+    {
+        $result = ["status" => "unavailable"];
+
+        if ($response = $this->callBackend(["show-remote-ssh-identity"], ["remote_ssh_identity_type", "remote_ssh_host"])) {
+            $result["status"] = "ok";
+            $result["identity"] = $response;
+        }
+
+        return $result;
+    }
+
+    public function sshTestConnectionAction()
+    {
+        if (
+            $response = $this->callBackend(
+                ["test-remote-ssh-connection"],
+                ["remote_ssh_host", "remote_ssh_host_key", "remote_ssh_port", "remote_ssh_user", "remote_ssh_identity_type"]
             )
         ) {
             return $response;

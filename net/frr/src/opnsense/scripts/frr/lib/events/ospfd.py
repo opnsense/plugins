@@ -59,8 +59,6 @@ class OspfdEventHandler(BaseEventHandler):
         if os.path.isfile(self._config):
             ospf_interfaces = self.vtysh.execute('show ip ospf interface json')
             config_interfaces = self._read_config()
-            cnf = ConfigParser()
-            cnf.read(self._config)
             for intf in config_interfaces:
                 if 'interfaces' in ospf_interfaces and intf in ospf_interfaces['interfaces']:
                     ospf_intf_cost = ospf_interfaces['interfaces'][intf]['cost']

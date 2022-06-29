@@ -42,6 +42,6 @@ class DnsAcmedns extends Base implements LeValidationInterface
         $this->acme_env['ACMEDNS_USERNAME'] = (string)$this->config->dns_acmedns_user;
         $this->acme_env['ACMEDNS_PASSWORD'] = (string)$this->config->dns_acmedns_password;
         $this->acme_env['ACMEDNS_SUBDOMAIN'] = (string)$this->config->dns_acmedns_subdomain;
-        $this->acme_env['ACMEDNS_UPDATE_URL'] = (string)$this->config->dns_acmedns_updateurl;
+        $this->acme_env['ACMEDNS_BASE_URL'] = (string)$this->config->dns_acmedns_baseurl;
     }
 }

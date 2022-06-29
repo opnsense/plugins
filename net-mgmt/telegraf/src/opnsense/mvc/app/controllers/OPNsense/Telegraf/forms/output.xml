@@ -36,6 +36,12 @@
         <help>Set the password for authentication.</help>
     </field>
     <field>
+        <id>output.influx_insecure_skip_verify</id>
+        <label>Disable SSL verification</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
         <id>output.influx_v2_enable</id>
         <label>Enable Influx v2 Output</label>
         <type>checkbox</type>
@@ -64,6 +70,12 @@
         <label>Influx v2 Bucket</label>
         <type>text</type>
         <help>Set the name of the bucket in Influx v2.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_insecure_skip_verify</id>
+        <label>Disable SSL verification v2</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
     </field>
     <field>
         <id>output.graphite_enable</id>

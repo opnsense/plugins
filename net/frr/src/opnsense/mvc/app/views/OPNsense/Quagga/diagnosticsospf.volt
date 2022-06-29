@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </tr>
       <tr>
         <td>{{ lang._('ASBR') }}</td>
-        <td><%= checkmark(asbrRouter == "injectingExternalRoutingInformation") %></td>
+        <td><%= checkmark(typeof asbrRouter != 'undefined' && asbrRouter == "injectingExternalRoutingInformation") %></td>
       </tr>
       <tr>
         <td>{{ lang._('Router ID') }}</td>

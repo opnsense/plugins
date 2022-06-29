@@ -189,9 +189,9 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
             $ldap_ip_esc = escapeshellarg($ldap_ip);
             $resolv_reverse = chop(shell_exec("drill -x {$ldap_ip_esc} | grep -A 1 'ANSWER SECTION' | tail -n 1 | awk '{print \$5}'"));
             if (empty($resolv_reverse)) {
-                $dns_ldap_reverse_resolution["message"] = gettext('LDAP server IP reverse lookup error. ');
+                $dns_ldap_reverse_resolution["message"] = gettext('LDAP server IP reverse lookup error.');
             } elseif (!empty($ldap_fqdn) && $resolv_reverse != "{$ldap_fqdn}.") {
-                $dns_ldap_reverse_resolution["message"] = gettext('LDAP server reverse DNS lookup is not equal to LDAP server FQDN. ');
+                $dns_ldap_reverse_resolution["message"] = gettext('LDAP server reverse DNS lookup is not equal to LDAP server FQDN.');
             } else {
                 $dns_ldap_reverse_resolution["status"] = "ok";
                 $ldap_fqdn = substr($resolv_reverse, 0, strlen($resolv_reverse) - 1);
@@ -208,9 +208,9 @@ class ServiceController extends \OPNsense\Proxy\Api\ServiceController
             $ldap_fqdn_esc = escapeshellarg($ldap_fqdn);
             $resolv = chop(shell_exec("drill {$ldap_fqdn_esc} | grep -A 1 'ANSWER SECTION' | tail -n 1 | awk '{print \$5}'"));
             if (empty($resolv)) {
-                $dns_ldap_resolution["message"] = gettext('LDAP server DNS lookup error. ');
+                $dns_ldap_resolution["message"] = gettext('LDAP server DNS lookup error.');
             } elseif (!empty($ldap_ip) && $resolv != $ldap_ip) {
-                $dns_ldap_resolution["message"] = gettext('LDAP server DNS lookup is not equal to LDAP IP. ');
+                $dns_ldap_resolution["message"] = gettext('LDAP server DNS lookup is not equal to LDAP IP.');
             } else {
                 $dns_ldap_resolution["status"] = "ok";
                 if (empty($ldap_ip)) {

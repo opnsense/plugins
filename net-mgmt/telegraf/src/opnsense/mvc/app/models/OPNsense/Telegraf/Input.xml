@@ -63,6 +63,9 @@
             <default>0</default>
             <Required>N</Required>
         </ping>
+        <ping_count type="IntegerField">
+            <Required>N</Required>
+        </ping_count>
         <ping_hosts type="CSVListField">
             <Required>N</Required>
         </ping_hosts>
@@ -70,6 +73,9 @@
             <default>0</default>
             <Required>N</Required>
         </ping6>
+        <ping6_count type="IntegerField">
+            <Required>N</Required>
+        </ping6_count>
         <ping6_hosts type="CSVListField">
             <Required>N</Required>
         </ping6_hosts>
@@ -93,5 +99,8 @@
             <default>0</default>
             <Required>N</Required>
         </intrusion_detection_alerts>
+        <unbound type="BooleanField">
+            <Required>N</Required>
+        </unbound>
     </items>
 </model>

@@ -1,8 +1,7 @@
 <model>
     <mount>//OPNsense/puppetagent</mount>
-    <description>
-        Manage Puppet Agent service
-    </description>
+    <version>1.0.0</version>
+    <description>Manage Puppet Agent service</description>
     <items>
         <!-- container -->
         <general>
