@@ -87,16 +87,16 @@
             <BatteryLevel type="IntegerField">
                 <default>5</default>
                 <Required>Y</Required>
-                <MinimumValue>1</MinimumValue>
+                <MinimumValue>-1</MinimumValue>
                 <MaximumValue>99</MaximumValue>
-                <ValidationMessage>Battery level must be between 1 and 99 percent.</ValidationMessage>
+                <ValidationMessage>Battery level must be between -1 and 99 percent.</ValidationMessage>
             </BatteryLevel>
             <Minutes type="IntegerField">
                 <default>3</default>
                 <Required>Y</Required>
-                <MinimumValue>1</MinimumValue>
+                <MinimumValue>-1</MinimumValue>
                 <MaximumValue>60</MaximumValue>
-                <ValidationMessage>Remaining battery minutes must be between 1 and 60 minutes.</ValidationMessage>
+                <ValidationMessage>Remaining battery minutes must be between -1 and 60 minutes.</ValidationMessage>
             </Minutes>
             <Timeout type="IntegerField">
                 <default>0</default>
