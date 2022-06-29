@@ -10785,3 +10785,13 @@ ul.jqtree-tree {
 #reports-tab {
   border-bottom: 1px solid #191919;
 }
+
+router-view {
+  .text-success.m-r-5 {
+    color: #fff !important;
+  }
+
+  .text-danger.m-r-5 {
+    color: #000 !important;
+  }
+}
