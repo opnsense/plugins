@@ -29,8 +29,11 @@ tayga_start()
         sleep 1
         ifconfig nat64 inet ${tayga_v4destination}/32 ${tayga_v4address}
         ifconfig nat64 inet6 ${tayga_v6destination}/128
-        route -6 add ${tayga_v6prefix} -interface nat64
+        ifconfig nat64 group tayga
         route -4 add ${tayga_v4pool} -interface nat64
+        if [ "$tayga_v6routedisabled" != "YES" ]; then
+            route -6 add ${tayga_v6prefix} -interface nat64
+        fi
 }
 
 tayga_stop()
