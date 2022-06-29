@@ -123,12 +123,12 @@
         <id>general.smtpclient_security</id>
         <label>SMTP Client Security</label>
         <type>dropdown</type>
-        <help><![CDATA[ 
+        <help><![CDATA[
             <ul>
                 <li>'none' will disable TLS for sending mail.</li>
                 <li>'may' will use TLS when offered (Opportunistic TLS)</li>
                 <li>'encrypt' will enforce TLS on all connections. Please do not use this for Internet wide communication as not every server supports TLS yet.</li>
-                <li>'dane' will enforce TLS if a TLSA-Record is published (Opportunistic DANE, RFC 7672). DNSSEC-capable resolver is required.</li> 
+                <li>'dane' will enforce TLS if a TLSA-Record is published (Opportunistic DANE, RFC 7672). DNSSEC-capable resolver is required.</li>
             </ul> ]]></help>
     </field>
     <field>
