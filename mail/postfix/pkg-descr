@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.23
+
+* Add support for Opportunistic DANE as SMTP client security level
+
 1.22
 
 * Switch table format of header_checks from regexp_table to pcre_table (contributed by Starkstromkonsument)

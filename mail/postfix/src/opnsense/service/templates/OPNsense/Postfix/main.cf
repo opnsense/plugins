@@ -89,6 +89,9 @@ smtp_tls_wrappermode = yes
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
+{% if OPNsense.postfix.general.smtpclient_security == 'dane' %}
+smtp_dns_support_level = dnssec
+{% endif %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
 smtp_tls_loglevel = 1
 {% endif %}
