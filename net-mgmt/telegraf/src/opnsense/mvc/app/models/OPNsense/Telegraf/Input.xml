@@ -64,7 +64,6 @@
             <Required>N</Required>
         </ping>
         <ping_count type="IntegerField">
-            <default>4</default>
             <Required>N</Required>
         </ping_count>
         <ping_hosts type="CSVListField">
