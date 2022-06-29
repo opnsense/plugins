@@ -103,7 +103,7 @@
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>360</MaximumValue>
-                <ValidationMessage>Timeout must be between 1 and 360 seconds.</ValidationMessage>
+                <ValidationMessage>Timeout must be between 0 and 360 seconds.</ValidationMessage>
             </Timeout>
             <Annoy type="IntegerField">
                 <default>300</default>
