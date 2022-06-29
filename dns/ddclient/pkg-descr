@@ -6,6 +6,11 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.8
+
+* Add a force action (also available via cron)
+* Fix expected permission on ddclient.conf
+
 1.7
 
 * Add current ip address and updated timestamp to search api and grid
