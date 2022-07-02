@@ -23,7 +23,7 @@ Plugin Changelog
 
 1.20
 
-* Separate tables for master and slave zones in UI (contributed by Patrick M. Hausen and Manuel Faux)
+* Allow signed zone transfers (contributed by Michael Newton)
 
 1.19
 
