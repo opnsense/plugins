@@ -24,6 +24,10 @@
         <help>Define an ACL where you allow which client are allowed to query this zone.</help>
     </field>
     <field>
+        <label>Master Configuration</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>domain.masterip</id>
         <label>Master IP</label>
         <style>tokenize</style>
