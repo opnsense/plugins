@@ -42,17 +42,6 @@
         <help><![CDATA[Select a certificate to use for this service.]]></help>
     </field>
     <field>
-        <id>service.chainIntermediateCAs</id>
-        <label>Chain intermediate CAs</label>
-        <type>checkbox</type>
-        <advanced>true</advanced>
-        <help><![CDATA[
-          Bundle the selected certificate with its intermediate certificate authorities together to form a certificate chain.
-          If you plan to use PKI to identify clients, you usually don't want to enable this as it expands the trust chain to all
-          certificates created by any of the parent certificates.
-          ]]></help>
-    </field>
-    <field>
         <id>service.cacert</id>
         <label>CA to validate connections to</label>
         <type>select_multiple</type>
