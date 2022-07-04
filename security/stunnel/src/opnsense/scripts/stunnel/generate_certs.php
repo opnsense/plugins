@@ -28,6 +28,8 @@
  */
 
 require_once('plugins.inc');
+require_once('config.inc');
+require_once('certs.inc');
 require_once("legacy_bindings.inc");
 
 use OPNsense\Stunnel\Stunnel;
@@ -43,8 +45,15 @@ foreach ($stunnel->services->service->iterateItems() as $service) {
         $srv_certid = (string)$service->servercert;
         foreach ($configObj->cert as $cert) {
             if ($srv_certid == (string)$cert->refid) {
-                $all_certs["{$base_path}/{$this_uuid}.crt"] =
-                    base64_decode((string)$cert->crt) . "\n" . base64_decode((string)$cert->prv);
+                $all_certs["{$base_path}/{$this_uuid}.crt"] = base64_decode((string)$cert->crt);
+                if (!empty((string)$service->chainIntermediateCAs)) {
+                    $certArr = (array)$cert;
+                    $chain = ca_chain($certArr);
+                    if (!empty($chain)) {
+                        $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . $chain;
+                    }
+                }
+                $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . base64_decode((string)$cert->prv);
             }
         }
         if (!empty((string)$service->cacert)) {
