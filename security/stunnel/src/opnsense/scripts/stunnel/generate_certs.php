@@ -46,12 +46,10 @@ foreach ($stunnel->services->service->iterateItems() as $service) {
         foreach ($configObj->cert as $cert) {
             if ($srv_certid == (string)$cert->refid) {
                 $all_certs["{$base_path}/{$this_uuid}.crt"] = base64_decode((string)$cert->crt);
-                if (!empty((string)$service->chainIntermediateCAs)) {
-                    $certArr = (array)$cert;
-                    $chain = ca_chain($certArr);
-                    if (!empty($chain)) {
-                        $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . $chain;
-                    }
+                $certArr = (array)$cert;
+                $chain = ca_chain($certArr);
+                if (!empty($chain)) {
+                    $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . $chain;
                 }
                 $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . base64_decode((string)$cert->prv);
             }
