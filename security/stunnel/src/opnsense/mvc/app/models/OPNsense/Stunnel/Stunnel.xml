@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <description>
         Stunnel TLS encryption proxy
     </description>
@@ -81,6 +81,10 @@
                     <Type>cert</Type>
                     <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </servercert>
+                <chainIntermediateCAs type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </chainIntermediateCAs>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
