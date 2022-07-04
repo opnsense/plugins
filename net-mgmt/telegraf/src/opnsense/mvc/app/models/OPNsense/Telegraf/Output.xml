@@ -70,6 +70,12 @@
         <elastic_url type="TextField">
             <Required>N</Required>
         </elastic_url>
+        <elastic_username type="TextField">
+            <Required>N</Required>
+        </elastic_username>
+        <elastic_password type="TextField">
+            <Required>N</Required>
+        </elastic_password>
         <elastic_timeout type="IntegerField">
             <default>5</default>
             <Required>N</Required>
