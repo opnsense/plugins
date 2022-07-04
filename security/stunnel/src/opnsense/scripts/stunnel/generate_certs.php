@@ -50,7 +50,7 @@ foreach ($stunnel->services->service->iterateItems() as $service) {
                     $certArr = (array)$cert;
                     $chain = ca_chain($certArr);
                     if (!empty($chain)) {
-                        $all_certs["{$base_path}/{$this_uuid}.crt"] .= $chain;
+                        $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . $chain;
                     }
                 }
                 $all_certs["{$base_path}/{$this_uuid}.crt"] .= "\n" . base64_decode((string)$cert->prv);
