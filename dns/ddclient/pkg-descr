@@ -8,7 +8,7 @@ Plugin Changelog
 
 1.8
 
-* Add a force action (also available via cron)
+* Add a force action available via cron
 * Fix expected permission on ddclient.conf
 * Make service status and stop more reliable
 * Time out checkip script after 10 seconds
