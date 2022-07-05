@@ -49,6 +49,8 @@
 
 <div class="content-box tab-content">
     <div id="introduction" class="tab-pane fade in active">
+        <h1>Introduction</h1>
+
         <p>This plugin installs a CrowdSec agent/<a href="https://doc.crowdsec.net/docs/next/local_api/intro">LAPI</a>
         node, and a <a href="https://docs.crowdsec.net/docs/bouncers/firewall/">Firewall Bouncer</a>.</p>
 
@@ -63,8 +65,15 @@
         <a href="https://doc.crowdsec.net/docs/next/user_guides/multiserver_setup">any other agent</a>
         connected to the same LAPI node. Other types of remediation are possible (ex. captcha test for scraping attempts).</p>
 
+	We recommend you to <a href="https://app.crowdsec.net/">register to the Console</a>. This helps you manage your instances,
+	and us to have better overall metrics.
+
         <p>Please refer to the <a href="https://crowdsec.net/blog/category/tutorial/">tutorials</a> to explore
         the possibilities.</p>
+
+        <p>For the latest plugin documentation, including how to use it with an external LAPI, see <a
+        href="https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_opnsense">Install
+        CrowdSec (OPNsense)</a></p>
 
         <p>A few remarks:</p>
 
@@ -85,8 +94,7 @@
                 like you would on vanilla freebsd, the plugin takes care of that.
             </li>
             <li>
-                The parsers, scenarios and all objects from the <a href="https://hub.crowdsec.net/">CrowdSec Hub</a>
-                are periodically upgraded. The
+                The parsers, scenarios and all plugins from the Hub are periodically upgraded. The
                 <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/freebsd">crowdsecurity/freebsd</a> and
                 <a href="https://hub.crowdsec.net/author/crowdsecurity/collections/opnsense">crowdsecurity/opnsense</a>
                 collections are installed by default.
@@ -94,10 +102,7 @@
         </ul>
 
         <div>
-            <a class="btn btn-default btn-info" href="https://doc.crowdsec.net/">
-                crowdsec.net
-            </a>
-            <a class="btn btn-default btn-info" href="https://doc.crowdsec.net/">
+            <a class="btn btn-default btn-info" href="https://doc.crowdsec.net/docs/intro">
                 Documentation
             </a>
             <a class="btn btn-default btn-info" href="https://crowdsec.net/blog/">
@@ -110,6 +115,53 @@
                 CrowdSec Hub
             </a>
         </div>
+
+        <h1>Installation</h1>
+
+	<div class="well" style="font-weight: bold">
+	    <span style="color:red; font-weight: bold">⚠</span>
+	    If you are using a RAM filesystem for /var
+	    (verify <a href="/system_advanced_misc.php"><code>Settings > Miscellaneous > Disk/Memory Settings</code></a>)
+  	    you need to disable it before proceeding, because Crowdsec keeps a (small) persistent database.
+	    <span style="color:red; font-weight: bold">⚠</span>
+	</div>
+
+        <p>
+            On the Settings tab, you can expose CrowdSec to the LAN for other servers by changing `LAPI listen address`.
+            Otherwise, leave the defualt value.
+        </p>
+
+        <p>
+            Select the first three checkboxes: IDS, LAPI and IPS. Click Apply. If you need to restart, you can do so
+            from the <a href="/status_services.php">System > Diagnostics > Services</a> page.
+        </p>
+
+        <h1>Test the plugin</h1>
+
+        <p>
+            A quick way to test that everything is working correctly is to
+            execute the following command.
+        </p>
+
+        <p>
+            Your ssh session should freeze and you should be kicked out from
+            the firewall. You will not be able to connect to it (from the same
+            IP address) for two minutes.
+        </p>
+
+        <p>
+            It might be a good idea to have a secondary IP from which you can
+            connect, should anything go wrong.
+	</p>
+
+	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i </code></pre>
+
+	<p>
+	    This is a more secure way to test than attempting to brute-force
+	    yourself: the default ban period is 4 hours, and Crowdsec reads the
+	    logs from the beginning, so it could ban you even if you failed ssh
+	    login 10 times in 30 seconds two hours before installing it.
+	</p>
 
         <div>
             <a class="btn btn-default btn-info" href="https://github.com/crowdsecurity/crowdsec">
