@@ -12,6 +12,12 @@
         <help>Active (default) or passive mode, only switch to passive if you know what you are doing.</help>
     </field>
     <field>
+        <id>general.remotecommands</id>
+        <label>Enable Remote Commands</label>
+        <type>checkbox</type>
+    <help>Enable Remote Commands on Proxy.</help>
+    </field>
+    <field>
         <id>general.server</id>
         <label>Server</label>
         <type>text</type>
@@ -138,6 +144,14 @@
         <label>Data Sender Frequency</label>
         <type>text</type>
         <help>Specifies the time how often the proxy will send collected data to the server (in seconds).</help>
+    </field>
+    <field>
+        <id>general.statsip</id>
+        <label>Stats Allowed IP</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>IP address of host allowed to retrieve proxy statistics.</help>
     </field>
     <field>
         <id>general.encryption</id>

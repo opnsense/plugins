@@ -53,6 +53,12 @@
                 <type>text</type>
                 <advanced>true</advanced>
             </field>
+            <field>
+                <id>nginx.http.headers_more_enable</id>
+                <label>Enable Headers More module</label>
+                <type>checkbox</type>
+                <help>Enhanced version of the standard headers module. Allows to add, set, or clear any output or input header.</help>
+            </field>
         </subtab>
         <subtab id="nginx-general-webgui" description="GUI Settings">
             <field>

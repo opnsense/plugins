@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# need to temporarily stop the bouncer to remove all the rules
+service crowdsec_firewall stop >/dev/null 2>&1 | :
+
+# the rest of the cleanup is done in the post-deinstall script, otherwise
+# the plugin recreates the objects during "filter reload".

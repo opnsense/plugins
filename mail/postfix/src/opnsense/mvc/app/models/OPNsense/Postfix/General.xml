@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/postfix/general</mount>
     <description>Postfix configuration</description>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -98,6 +98,7 @@
                 <none>none</none>
                 <may>may</may>
                 <encrypt>encrypt</encrypt>
+                <dane>dane</dane>
             </OptionValues>
         </smtpclient_security>
         <relayhost type="TextField">

@@ -317,6 +317,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
         });
 
+        // hook into on-show event for dialog to extend layout.
+        $('#DialogAccount').on('shown.bs.modal', function (e) {
+            // hide options that are irrelevant for the selected CA
+            $("#account\\.ca").change(function(){
+                $(".ca_options").hide();
+                $(".ca_options_"+$(this).val()).show();
+            });
+            $("#account\\.ca").change();
+        })
+
     });
 
 </script>
@@ -349,6 +359,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="email" data-type="string">{{ lang._('E-Mail') }}</th>
+                <th data-column-id="ca" data-type="string">{{ lang._('CA') }}</th>
                 <th data-column-id="statusCode" data-type="string" data-formatter="accountstatus">{{ lang._('Status') }}</th>
                 <th data-column-id="statusLastUpdate" data-type="string" data-formatter="acmestatusdate">{{ lang._('Registration Date') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>

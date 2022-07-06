@@ -6,6 +6,12 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.elliptic_curve</id>
+        <label>Elliptic Curve</label>
+        <type>dropdown</type>
+        <help>Set the Elliptical cryptography configuration.</help>
+    </field>
+    <field>
         <id>eap.enable_client_cert</id>
         <label>Use own certificates</label>
         <type>checkbox</type>
@@ -34,5 +40,11 @@
         <label>Check TLS Common-Name</label>
         <type>checkbox</type>
         <help>Checks that the username given by the user matches the Common-Name of the certificate.</help>
+    </field>
+    <field>
+        <id>eap.tls_min_version</id>
+        <label>TLS Minimum Version</label>
+        <type>dropdown</type>
+        <help>Set minimum TLS version. Please be aware that every version below 1.2 is considered as insecure.</help>
     </field>
 </form>

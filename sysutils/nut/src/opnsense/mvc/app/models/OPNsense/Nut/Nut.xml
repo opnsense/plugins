@@ -111,6 +111,10 @@
         <default></default>
         <Required>N</Required>
       </address>
+      <port type="PortField">
+        <default>3493</default>
+        <Required>N</Required>
+      </port>
       <user type="TextField">
         <Required>N</Required>
       </user>

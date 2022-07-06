@@ -5,6 +5,11 @@ ProxyMode=1
 {% else %}
 ProxyMode=0
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.remotecommands') and OPNsense.zabbixproxy.general.remotecommands == '1' %}
+EnableRemoteCommands=1
+{% else %}
+EnableRemoteCommands=0
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.server') and OPNsense.zabbixproxy.general.server != '' %}
 Server={{ OPNsense.zabbixproxy.general.server }}
 {% endif %}
@@ -22,7 +27,7 @@ SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
 LogFile=/var/log/zabbix/zabbix_proxy.log
 PidFile=/var/run/zabbix/zabbix_proxy.pid
-DBName=/var/db/zabbix/zabbix_proxy.db
+DBName=/var/db/zabbix/%%PLUGIN_VARIANT%%_proxy.db
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxyofflinebuffer') and OPNsense.zabbixproxy.general.proxyofflinebuffer != '' %}
 ProxyOfflineBuffer={{ OPNsense.zabbixproxy.general.proxyofflinebuffer }}
 {% endif %}
@@ -70,6 +75,9 @@ HistoryIndexCacheSize={{ OPNsense.zabbixproxy.general.historyindexcachesize }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.timeout') and OPNsense.zabbixproxy.general.timeout != '' %}
 Timeout={{ OPNsense.zabbixproxy.general.timeout }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.statsip') and OPNsense.zabbixproxy.general.statsip != '' %}
+StatsAllowedIP={{ OPNsense.zabbixproxy.general.statsip }}
 {% endif %}
 FpingLocation=/usr/local/sbin/fping
 Fping6Location=/usr/local/sbin/fping6

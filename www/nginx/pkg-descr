@@ -10,6 +10,35 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.28
+
+* add support for connect-src and worker-src in content security policy
+* add support for proxy_responses property in streams
+* bugfix: trusted proxies field is now correctly named which makes it usable
+
+1.27
+
+* add support for custom configuration in stream server (contributed by Fabio Castagnino)
+* add headers_more support (contributed by kulikov-a)
+
+1.26
+
+* Enhancement of security headers (contributed by Manuel Faux)
+* Add Frame-Ancestors, add "preload", removed deprecated HPKP
+* Performance enhancements for log display
+* Fixed display of vts and logs for non-default styles
+
+1.25
+
+* Reworked logging frontent to support filtering and historic view (contributed by Manuel Faux)
+
+1.24
+
+* Change all Listen Port directives to Listen Address and migrate the Port data to Addresses
+* Add default_server option to HTTP Server
+* Replace stop action by the reload option in reconfigureForceRestart (#2450)
+* Add server ssl_protocols, ssl_ciphers, ssl_prefer_server_ciphers directives to GUI
+
 1.23
 
 * Add custom error pages on a per HTTP server basis (contributed by 8191)

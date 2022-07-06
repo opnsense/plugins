@@ -81,6 +81,9 @@ class LeCertificate extends LeCommon
         if ($this->config->keyLength == 'key_ec256' || $this->config->keyLength == 'key_ec384') {
             // Pass --ecc to acme client to locate the correct cert directory
             $this->acme_args[] = '--ecc';
+            $this->cert_ecc = true;
+        } else {
+            $this->cert_ecc = false;
         }
 
         // Store cert filenames
@@ -159,7 +162,7 @@ class LeCertificate extends LeCommon
         foreach (Config::getInstance()->object()->ca as $cacrt) {
             $cacrt_subject = cert_get_subject($cacrt->crt, true);
             $cacrt_issuer = cert_get_issuer($cacrt->crt, true);
-            if (($ca_subject == $cacrt_subject) and ($ca_issuer == $cacrt_issuer)) {
+            if (($ca_subject === $cacrt_subject) and ($ca_issuer === $cacrt_issuer)) {
                 // Use old refid instead of generating a new one
                 $ca['refid'] = (string)$cacrt->refid;
                 $ca_found = true;
@@ -256,6 +259,12 @@ class LeCertificate extends LeCommon
 
         // Prepare certificate for import
         cert_import($cert, $cert_content, $key_content);
+
+        // Overwrite caref in order to use the correct CA (GH #2550).
+        // This is required because cert_import() uses lookup_ca_by_subject()
+        // to find a matching CA. If multiple CAs are using the same name, the
+        // first CA wins, but it may still be the wrong CA.
+        $cert['caref'] = (string)$ca['refid'];
 
         // Check if cert was found in config
         if ($cert_found == true) {
@@ -408,8 +417,31 @@ class LeCertificate extends LeCommon
     {
         $return = false;
 
+        // Try to get issue date from certificate
+        if (is_file($this->cert_file)) {
+            // Read contents from certificate file
+            $cert_content = @file_get_contents($this->cert_file);
+            if ($cert_content != false) {
+                $cert_info = @openssl_x509_parse($cert_content);
+                if (!empty($cert_info['validFrom_time_t'])) {
+                    $last_update = $cert_info['validFrom_time_t'];
+                } else {
+                    LeUtils::log_error('unable to get expiration time from certificate for ' . (string)$this->config->name);
+                    $last_update = 0; // Just assume the cert requires renewal.
+                }
+            } else {
+                LeUtils::log_error('unable to read certificate content from file for ' . (string)$this->config->name);
+                $last_update = 0; // Just assume the cert requires renewal.
+            }
+        } elseif (!empty((string)$this->config->lastUpdate)) {
+            // Fallback to lastUpdate() state, although it may not be correct
+            // if the cert was imported manually after issue/renewal.
+            $last_update = (string)$this->config->lastUpdate;
+        } else {
+            $last_update = 0; // Just assume the cert requires renewal.
+        }
+
         // Collect required information
-        $last_update = !empty((string)$this->config->lastUpdate) ? (string)$this->config->lastUpdate : 0;
         $current_time = new \DateTime();
         $last_update_time = new \DateTime();
         $last_update_time->setTimestamp($last_update);
@@ -599,7 +631,7 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            $automation->init($this->getId(), (string)$this->config->account);
+            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
             // Ignore invalid automations.
             if ($automation->prepare()) {
                 $automation->run();
@@ -648,7 +680,7 @@ class LeCertificate extends LeCommon
                 LeUtils::log_error('invalid challenge type for certificate: ' . (string)$this->config->name);
                 return false;
             }
-            if (!$val->init((string)$this->config->id, (string)$this->config->account)) {
+            if (!$val->init((string)$this->config->id, (string)$this->config->account, $this->cert_ecc)) {
                 LeUtils::log_error('failed to initialize validation for certificate: ' . (string)$this->config->name);
                 return false;
             }

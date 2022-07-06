@@ -35,6 +35,18 @@
             <default>1</default>
             <Required>N</Required>
         </diskio>
+       <internet_speed type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </internet_speed>
+        <internet_speed_file type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </internet_speed_file>
+        <internet_speed_interval type="IntegerField">
+            <default>360</default>
+            <Required>N</Required>
+        </internet_speed_interval>
         <mem type="BooleanField">
             <default>1</default>
             <Required>N</Required>
@@ -63,6 +75,9 @@
             <default>0</default>
             <Required>N</Required>
         </ping>
+        <ping_count type="IntegerField">
+            <Required>N</Required>
+        </ping_count>
         <ping_hosts type="CSVListField">
             <Required>N</Required>
         </ping_hosts>
@@ -70,6 +85,9 @@
             <default>0</default>
             <Required>N</Required>
         </ping6>
+        <ping6_count type="IntegerField">
+            <Required>N</Required>
+        </ping6_count>
         <ping6_hosts type="CSVListField">
             <Required>N</Required>
         </ping6_hosts>

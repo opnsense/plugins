@@ -49,14 +49,14 @@ if (!empty($_REQUEST['getrfc2136status'])) {
         $filename = rfc2136_cache_file($rfc2136, 4);
         $fdata = '';
         if (!empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'A') && file_exists($filename)) {
-            $ipaddr = get_dyndns_ip($rfc2136['interface'], 4);
+            $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 4);
             $fdata = @file_get_contents($filename);
         }
 
         $filename_v6 = rfc2136_cache_file($rfc2136, 6);
         $fdata6 = '';
         if (!empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'AAAA') && file_exists($filename_v6)) {
-            $ipv6addr = get_dyndns_ip($rfc2136['interface'], 6);
+            $ipv6addr = get_rfc2136_ip_address($rfc2136['interface'], 6);
             $fdata6 = @file_get_contents($filename_v6);
         }
 

@@ -8,6 +8,106 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.11
+
+Fixed:
+* Add missing <style> field for TransIP (#2981)
+
+3.10
+
+Added:
+* new automation: run remote commands via SSH (#2757)
+
+Fixed:
+* unable to configure key in TransIP API (#2924)
+
+3.9
+
+Added:
+* add support for Transip DNS API ( #2871)
+* execution order of automations can be changed (#2833)
+
+Fixed:
+* fix the use of a self hosted ACME-DNS service (#2898)
+
+3.8
+
+NOTE: Support for the cPanel and Selfhost API is not functional. It requires
+a new version of acme.sh, which has not been released yet.
+
+Added:
+* add support for cPanel HTTP API (#2731)
+* add support for Selfhost DNS API (#2746)
+
+Fixed:
+* fix calculation of renewal date (#2721)
+* properly handle ecc certs in automations (#2723)
+
+Changed:
+* show CA in accounts list
+
+3.7
+
+Fixed:
+* fix SFTP buttons not visible (#2712)
+* fix invalid default value when no WAN interface can be found (#2712)
+* fix incompatibility with new gcloud SDK (#2710)
+
+3.6
+
+Added:
+* new automation: update local Unifi keystore (#2664)
+* add support for dynv6 HTTP API (#2678)
+* add support for TLS-ALPN-01 challenge type (#2661)
+
+Fixed:
+* fix SFTP upload (#2671)
+* fix PHP error when acme.sh deploy hook returns an error (#2674)
+* fix path for storing pf config files when using HTTP-01
+
+3.5
+
+Added:
+* new automation: cert upload to Synology DSM (#2236)
+* new automation: cert upload to FRITZ!Box router
+
+Fixed:
+* fix logging when clog is disabled (#2555)
+
+Changed:
+* refactor code to support acme.sh deploy hooks
+
+3.4
+
+Changed:
+* rename "Linode Cloud API" to "Linode API (v4)" (#2609)
+* rename "Linode API" to "Linode API (v3 / Deprecated)" (#2609)
+
+3.3
+
+Added:
+* add support for custom ACME CAs (#2529)
+* add support for Porkbun API (#2561)
+
+Fixed:
+* fix ACME Client reset (#2562)
+
+Changed:
+* change default Challenge Type from HTTP-01 to DNS-01
+
+3.2
+
+Added:
+* add button to (re-) import a certificate into the trust storage
+
+Fixed:
+* associate certificates with the correct CA when multiple CAs use the same name (#2550)
+
+3.1
+
+Changed:
+* rename "LE Account" to "ACME Account" in certificate dialog (#2526)
+
 3.0
 
 Added:

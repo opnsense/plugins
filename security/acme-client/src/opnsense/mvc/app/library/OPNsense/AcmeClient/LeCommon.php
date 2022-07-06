@@ -41,11 +41,14 @@ abstract class LeCommon
     public const ACME_BASE_ACCOUNT_DIR = '/var/etc/acme-client/accounts';
     public const ACME_BASE_CERT_DIR = '/var/etc/acme-client/certs';
     public const ACME_BASE_CONFIG_DIR = '/var/etc/acme-client/configs';
+    public const ACME_CMD = '/usr/local/sbin/acme.sh';
     public const ACME_HOME_DIR = '/var/etc/acme-client/home';
 
     // Defaults for acme.sh
     public const ACME_ACCOUNT_KEY_LENGTH = 4096;
     public const ACME_ENV_PATH = '/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin';
+    public const ACME_SCRIPT_HOME = '/usr/local/share/examples/acme.sh';
+    public const ACME_WEBROOT = '/var/etc/acme-client/challenges';
 
     // Filenames for certs, configs, ...
     public const ACME_CERT_DIR = '/var/etc/acme-client/certs/%s/';
@@ -70,6 +73,7 @@ abstract class LeCommon
     protected $cert_domainalias;    # AcmeClient certificate object domain alias
     protected $cert_challengealias; # AcmeClient certificate object challenge alias
     protected $cert_keylength;      # Private key length
+    protected $cert_ecc;            # ECC cert?
 
     // Account details
     protected $account_id;          # AcmeClient account object ID
@@ -84,6 +88,7 @@ abstract class LeCommon
     protected $config;              # AcmeClient config object
     protected $debug;               # Debug logging (bool)
     protected $ca;                  # ACME CA
+    protected $custom_ca;           # Custom ACME CA URL
     protected $ca_compat;           # ACME CA for compat with old LE CA names
     protected $force;               # Force operation
     protected $model;               # AcmeClient model object
@@ -154,8 +159,22 @@ abstract class LeCommon
         $acme_ca = (string)$obj->ca;
         $this->ca = $acme_ca;
 
+        // Extract custom ACME CA URL
+        $acme_custom_ca = (string)$obj->custom_ca;
+        $this->custom_ca = $acme_custom_ca;
+
         // Add CA to acme arguments
-        $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_ca);
+        if ($acme_ca == "custom") {
+            // Custom CA
+            if (empty($acme_custom_ca) || ($acme_custom_ca == null)) {
+                LeUtils::log_error("custom CA must not be empty.");
+                return false;
+            }
+            $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_custom_ca);
+        } else {
+            // Normal CAs
+            $this->acme_args[] = LeUtils::execSafe('--server %s', $acme_ca);
+        }
 
         // Evaluate how the CA should be represented in filenames.
         // This is a compatibility layer. It ensures that old files that

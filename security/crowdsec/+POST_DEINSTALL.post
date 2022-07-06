@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# Removing the plugin from the web interface will autoremove the dependencies
+# too, and here we have to delete the files in rc.conf.d (because they are
+# generated from templates when the configuration is saved, and the package
+# system did not keep track of them).
+
+# But.. If the plugin is removed from the command line (which does not happen
+# outside of testing conditions), the crowdsec and bouncer services will not be
+# removed. However, since we deleted the files that enabled these services,
+# they will be disabled at the next reboot.
+
+rm -f /etc/rc.conf.d/crowdsec \
+      /etc/rc.conf.d/crowdsec_firewall \
+      /etc/rc.conf.d/oscrowdsec
+
+
+# Remove aliases and with them, the rules. We don't have plugin files
+# anymore so we do that on the fly.
+
+/usr/local/bin/php <<'EOT'
+<?php
+
+@include_once("config.inc");
+@include_once("certs.inc");
+@include_once("util.inc");
+
+use OPNsense\Firewall\Alias;
+use OPNsense\Core\Config;
+
+function removeAlias($name)
+{
+    $model = new Alias();
+    foreach ($model->aliases->alias->iterateItems() as $index => $alias) {
+        if (strval($alias->name) == $name) {
+            if ($model->aliases->alias->del($index)) {
+                $model->serializeToConfig();
+                Config::getInstance()->save();
+            }
+        }
+    }
+}
+
+removeAlias('crowdsec_blacklists');
+removeAlias('crowdsec6_blacklists');
+EOT
+
+
+# apply the configuration changes to the packet filter
+configctl filter reload

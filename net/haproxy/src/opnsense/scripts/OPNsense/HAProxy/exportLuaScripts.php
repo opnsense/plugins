@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2016 Frank Wall
+ * Copyright (C) 2016-2021 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * All rights reserved.
  *
@@ -46,12 +46,17 @@ if (isset($configObj->OPNsense->HAProxy->luas)) {
         }
         $lua_name = (string)$lua->name;
         $lua_id = (string)$lua->id;
-        if ($lua_id != "") {
-            $lua_content = htmlspecialchars_decode(str_replace("\r", "", (string)$lua->content));
-            $lua_filename = $export_path . $lua_id . ".lua";
-            file_put_contents($lua_filename, $lua_content);
-            chmod($lua_filename, 0600);
-            echo "lua script exported to " . $lua_filename . "\n";
+        $lua_filename_scheme = (string)$lua->filename_scheme;
+        if ($lua_filename_scheme != '' and $lua_filename_scheme === 'name') {
+            $_name_alnum = preg_replace("/[^A-Za-z0-9]/", '', $lua_name);
+            $lua_filename = $export_path . $_name_alnum . '.lua';
+        } else {
+            $lua_filename = $export_path . $lua_id . '.lua';
         }
+        $lua_content = htmlspecialchars_decode(str_replace("\r", "", (string)$lua->content));
+        file_put_contents($lua_filename, $lua_content);
+        chmod($lua_filename, 0600);
+        chown($lua_filename, 'www');
+        echo "lua script exported to " . $lua_filename . "\n";
     }
 }

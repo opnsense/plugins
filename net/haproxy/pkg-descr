@@ -6,6 +6,81 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.10
+
+WARNING: This release switches to the HAProxy 2.4 release series,
+which may result in incompatible changes for some users.
+
+Added:
+* add support for DNS resolution over TCP (#2644)
+
+Changed:
+* upgrade to HAProxy 2.4 release series (#2644)
+* disable strict-limits for safekeeping (#2644)
+
+Removed:
+* remove deprecated option tune.chksize (#2644)
+
+3.9
+
+Added:
+* add SSL SNI setting to servers and health checks (#2388)
+
+Fixed:
+* fix custom TCP health checks (#2653)
+
+Changed:
+* replace "force SSL" setting with "SSL preferences" in health checks (#2388)
+* health check port is no longer an advanced option
+
+3.8
+
+Added:
+* add support for unix sockets (#2040)
+* add "max connections" option to servers (#2641)
+
+Changed:
+* allow setting "max connections" to "0" (unlimited)
+* raise maximum value for "max connections" to 10000000
+
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
+* show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
+* fix syntax error in template (#2619)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+* show "apply" and "test syntax" buttons on introduction pages
+
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
+* support "monitor-uri" and "monitor fail" in rules (#2387)
+* add new option "case-sensitive" to conditions (#2576)
+
+Fixed:
+* no haproxy.conf after restoring a config backup (#2474)
+
+Changed:
+* deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
+* allow retries to be set to "0" (#2585)
+
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
 3.4
 
 Fixed:
@@ -57,6 +132,7 @@ Fixed:
 * prevent the deletion of items that are still referenced elsewhere (core/#1897)
 
 Changed:
+* upgrade to HAProxy 2.2 release series (#2092)
 * change default SSL version to TLSv1.2 (ssl-min-ver)
 * remove weak ciphers from (default) SSL settings
 * remove default SSL bind options that would conflict with ssl-min-ver

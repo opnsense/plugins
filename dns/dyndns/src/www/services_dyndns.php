@@ -110,6 +110,11 @@ legacy_html_escape_form_data($a_dyndns);
     <div class="container-fluid">
       <div class="row">
         <section class="col-xs-12">
+          <div class="alert alert-warning" role="alert">
+              <strong>
+                  <?=gettext("Please make sure to upgrade to os-ddclient before 22.7 is released as this plugin will be removed from our repository");?>
+              </strong>
+          </div>
           <div class="tab-content content-box col-xs-12">
             <form method="post" name="iform" id="iform">
               <div class="table-responsive">
@@ -146,14 +151,14 @@ legacy_html_escape_form_data($a_dyndns);
                       $filename = dyndns_cache_file($dyndns, 4);
                       $fdata = '';
                       if (file_exists($filename) && !empty($dyndns['enable'])) {
-                          $ipaddr = get_dyndns_ip(dyndns_failover_interface($dyndns['interface'], 'all'), 4);
+                          $ipaddr = get_dyndns_ip_address(dyndns_failover_interface($dyndns['interface'], 'all'), 4);
                           $fdata = @file_get_contents($filename);
                       }
 
                       $filename_v6 = dyndns_cache_file($dyndns, 6);
                       $fdata6 = '';
                       if (file_exists($filename_v6) && !empty($dyndns['enable'])) {
-                          $ipv6addr = get_dyndns_ip(dyndns_failover_interface($dyndns['interface'], 'inet6'), 6);
+                          $ipv6addr = get_dyndns_ip_address(dyndns_failover_interface($dyndns['interface'], 'inet6'), 6);
                           $fdata6 = @file_get_contents($filename_v6);
                       }
 

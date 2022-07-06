@@ -74,7 +74,7 @@ class AccountsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('accounts.account', array('enabled', 'name', 'email', 'statusCode', 'statusLastUpdate'), 'name');
+        return $this->searchBase('accounts.account', array('enabled', 'name', 'email', 'ca', 'statusCode', 'statusLastUpdate'), 'name');
     }
 
     /**

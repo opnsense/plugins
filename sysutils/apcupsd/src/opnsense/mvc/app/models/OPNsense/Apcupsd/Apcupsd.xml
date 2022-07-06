@@ -1,0 +1,159 @@
+<model>
+    <mount>//OPNsense/apcupsd</mount>
+    <version>0.0.2</version>
+    <description>APC UPS configuration</description>
+    <items>
+        <general>
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+            <UPSName type="TextField">
+                <Required>N</Required>
+                <mask>/^([0-9a-zA-Z._\- ]){1,99}$/</mask>
+                <ValidationMessage>
+                    The name should be 1 to 99 characters and contain only alphanumeric characters,
+                    dashes, underscores, dot or space.
+                </ValidationMessage>
+            </UPSName>
+            <UPSCable type="OptionField">
+                <default>smart</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <option value="simple">Simple</option>
+                    <option value="smart">Smart</option>
+                    <option value="ether">Ether</option>
+                    <option value="usb">USB</option>
+                    <option value="940-0020B">940-0020B</option>
+                    <option value="940-0020C">940-0020C</option>
+                    <option value="940-0023A">940-0023A</option>
+                    <option value="940-0024B">940-0024B</option>
+                    <option value="940-0024C">940-0024C</option>
+                    <option value="940-0024G">940-0024G</option>
+                    <option value="940-0095A">940-0095A</option>
+                    <option value="940-0095B">940-0095B</option>
+                    <option value="940-0095C">940-0095C</option>
+                    <option value="940-0119A">940-0119A</option>
+                    <option value="940-0127A">940-0127A</option>
+                    <option value="940-0128A">940-0128A</option>
+                    <option value="940-0625A">940-0625A</option>
+                    <option value="940-1524C">940-1524C</option>
+                    <option value="MAM-04-02-2000">MAM-04-02-2000</option>
+                </OptionValues>
+            </UPSCable>
+            <UPSType type="OptionField">
+                <default>apcsmart</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <apcsmart>apcsmart</apcsmart>
+                    <usb>usb</usb>
+                    <net>net</net>
+                    <snmp>snmp</snmp>
+                    <netsnmp>netsnmp</netsnmp>
+                    <dumb>dumb</dumb>
+                    <pcnet>pcnet</pcnet>
+                    <modbus>modbus</modbus>
+                </OptionValues>
+            </UPSType>
+            <Device type="TextField">
+                <Required>N</Required>
+            </Device>
+            <Polltime type="IntegerField">
+                <Required>Y</Required>
+                <default>60</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <ValidationMessage>Polltime must be between 1 and 86400.</ValidationMessage>
+            </Polltime>
+            <Netserver type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </Netserver>
+            <NetserverAddress type="NetworkField">
+                <default>127.0.0.1</default>
+                <Required>Y</Required>
+            </NetserverAddress>
+            <NetserverPort type="PortField">
+                <default>3551</default>
+                <Required>Y</Required>
+            </NetserverPort>
+            <OnBatteryDelay type="IntegerField">
+                <default>6</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>60</MaximumValue>
+                <ValidationMessage>On battery delay must be between 1 and 60.</ValidationMessage>
+            </OnBatteryDelay>
+            <BatteryLevel type="IntegerField">
+                <default>5</default>
+                <Required>Y</Required>
+                <MinimumValue>-1</MinimumValue>
+                <MaximumValue>99</MaximumValue>
+                <ValidationMessage>Battery level must be between -1 and 99 percent.</ValidationMessage>
+            </BatteryLevel>
+            <Minutes type="IntegerField">
+                <default>3</default>
+                <Required>Y</Required>
+                <MinimumValue>-1</MinimumValue>
+                <MaximumValue>60</MaximumValue>
+                <ValidationMessage>Remaining battery minutes must be between -1 and 60 minutes.</ValidationMessage>
+            </Minutes>
+            <Timeout type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Timeout must be between 0 and 360 seconds.</ValidationMessage>
+            </Timeout>
+            <Annoy type="IntegerField">
+                <default>300</default>
+                <Required>Y</Required>
+                <MinimumValue>10</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Annoy time must be between 10 and 360 seconds.</ValidationMessage>
+            </Annoy>
+            <AnnoyDelay type="IntegerField">
+                <default>60</default>
+                <Required>Y</Required>
+                <MinimumValue>10</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Annoy delay time must be between 10 and 360 seconds.</ValidationMessage>
+            </AnnoyDelay>
+            <KillDelay type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>360</MaximumValue>
+                <ValidationMessage>Kill delay time must be between 0 and 360 seconds.</ValidationMessage>
+            </KillDelay>
+            <UPSClass type="OptionField">
+                <default>standalone</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <standalone>standalone</standalone>
+                    <shareslave>shareslave</shareslave>
+                    <sharemaster>sharemaster</sharemaster>
+                </OptionValues>
+            </UPSClass>
+            <UPSMode type="OptionField">
+                <default>disable</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <disable>disable</disable>
+                    <share>share</share>
+                </OptionValues>
+            </UPSMode>
+            <NoLogon type="OptionField">
+                <default>disable</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <disable>disable</disable>
+                    <timeout>timeout</timeout>
+                    <percent>percent</percent>
+                    <minutes>minutes</minutes>
+                    <always>always</always>
+                </OptionValues>
+            </NoLogon>
+        </general>
+    </items>
+</model>

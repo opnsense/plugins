@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.0.0</version>
+    <version>3.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -34,12 +34,18 @@
                     <stg>Staging Environment</stg>
                 </OptionValues>
             </environment>
-            <challengePort type="IntegerField">
+            <challengePort type="PortField">
                 <default>43580</default>
                 <MinimumValue>1024</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
                 <Required>Y</Required>
             </challengePort>
+            <TLSchallengePort type="PortField">
+                <default>43581</default>
+                <MinimumValue>1024</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <Required>Y</Required>
+            </TLSchallengePort>
             <restartTimeout type="IntegerField">
                 <default>600</default>
                 <MinimumValue>10</MinimumValue>
@@ -146,8 +152,14 @@
                         <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
                         <sslcom>SSL.com</sslcom>
                         <zerossl>ZeroSSL</zerossl>
+                        <custom>Custom CA URL</custom>
                     </OptionValues>
                 </ca>
+                <custom_ca type="TextField">
+                    <Required>N</Required>
+                    <mask>/^https?:\/\/.*[^\/]$/</mask>
+                    <ValidationMessage>The URL must be a valid ACME endpoint without a trailing slash.</ValidationMessage>
+                </custom_ca>
                 <eab_kid type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,8192}$/u</mask>
@@ -258,6 +270,7 @@
                         </actions>
                     </Model>
                     <ValidationMessage>Related automation not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </restartActions>
@@ -329,10 +342,11 @@
                 </description>
                 <method type="OptionField">
                     <Required>Y</Required>
-                    <default>http01</default>
+                    <default>dns01</default>
                     <OptionValues>
                         <http01>HTTP-01</http01>
                         <dns01>DNS-01</dns01>
+                        <tlsalpn01>TLS-ALPN-01</tlsalpn01>
                     </OptionValues>
                 </method>
                 <http_service type="OptionField">
@@ -349,7 +363,6 @@
                 </http_opn_autodiscovery>
                 <http_opn_interface type="InterfaceField">
                     <Required>N</Required>
-                    <default>wan</default>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
                     </filters>
@@ -378,9 +391,30 @@
                     <multiple>Y</multiple>
                     <Required>N</Required>
                 </http_haproxyFrontends>
+                <tlsalpn_service type="OptionField">
+                    <Required>Y</Required>
+                    <default>acme</default>
+                    <OptionValues>
+                        <acme>acme.sh TLS Web Server (automatic port forward)</acme>
+                    </OptionValues>
+                </tlsalpn_service>
+                <tlsalpn_acme_autodiscovery type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </tlsalpn_acme_autodiscovery>
+                <tlsalpn_acme_interface type="InterfaceField">
+                    <Required>N</Required>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </tlsalpn_acme_interface>
+                <tlsalpn_acme_ipaddresses type="CSVListField">
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                </tlsalpn_acme_ipaddresses>
                 <dns_service type="OptionField">
                     <Required>Y</Required>
-                    <default>dns_nsupdate</default>
+                    <default>dns_freedns</default>
                     <OptionValues>
                         <dns_1984hosting>1984Hosting API</dns_1984hosting>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
@@ -396,6 +430,7 @@
                         <dns_cf>CloudFlare.com API</dns_cf>
                         <dns_cx>CloudXNS.com API</dns_cx>
                         <dns_cn>Core-Networks API</dns_cn>
+                        <dns_cpanel>cPanel API</dns_cpanel>
                         <dns_cyon>cyon.ch API</dns_cyon>
                         <dns_ddnss>DDNSS API</dns_ddnss>
                         <dns_desec>deSEC.io API</dns_desec>
@@ -411,6 +446,7 @@
                         <dns_duckdns>DuckDNS API</dns_duckdns>
                         <dns_dyn>Dyn Managed DNS API</dns_dyn>
                         <dns_dynu>Dynu API</dns_dynu>
+                        <dns_dynv6>dynv6 HTTP API</dns_dynv6>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS API</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS API</dns_gandi_livedns>
@@ -431,8 +467,8 @@
                         <dns_knot>Knot (knsupdate) DNS API</dns_knot>
                         <dns_leaseweb>LeaseWeb API</dns_leaseweb>
                         <dns_lexicon>lexicon DNS API</dns_lexicon>
-                        <dns_linode>Linode API</dns_linode>
-                        <dns_linode_v4>Linode Cloud API</dns_linode_v4>
+                        <dns_linode>Linode API (v3 / Deprecated)</dns_linode>
+                        <dns_linode_v4>Linode API (v4)</dns_linode_v4>
                         <dns_loopia>Loopia API</dns_loopia>
                         <dns_lua>LuaDNS.com API</dns_lua>
                         <dns_miab>MailinaBox API</dns_miab>
@@ -448,9 +484,12 @@
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove API</dns_ovh>
                         <dns_pdns>PowerDNS.com API</dns_pdns>
                         <dns_pleskxml>Plesk XML API</dns_pleskxml>
+                        <dns_porkbun>Porkbun API</dns_porkbun>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
+                        <dns_selfhost>Selfhost API</dns_selfhost>
                         <dns_servercow>Servercow API v1</dns_servercow>
+                        <dns_transip>Transip API</dns_transip>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
                         <dns_vscale>Vscale API</dns_vscale>
@@ -878,15 +917,39 @@
                 <dns_pdns_token type="TextField">
                     <Required>N</Required>
                 </dns_pdns_token>
+                <dns_porkbun_key type="TextField">
+                    <Required>N</Required>
+                </dns_porkbun_key>
+                <dns_porkbun_secret type="TextField">
+                    <Required>N</Required>
+                </dns_porkbun_secret>
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
+                <dns_selfhost_user type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_user>
+                <dns_selfhost_password type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_password>
+                <dns_selfhost_rid type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid>
+                <dns_selfhost_rid2 type="TextField">
+                    <Required>N</Required>
+                </dns_selfhost_rid2>
                 <dns_servercow_username type="TextField">
                     <Required>N</Required>
                 </dns_servercow_username>
                 <dns_servercow_password type="TextField">
                     <Required>N</Required>
                 </dns_servercow_password>
+                <dns_transip_username type="TextField">
+                    <Required>N</Required>
+                </dns_transip_username>
+                <dns_transip_key type="TextField">
+                    <Required>N</Required>
+                </dns_transip_key>
                 <dns_uno_key type="TextField">
                     <Required>N</Required>
                 </dns_uno_key>
@@ -923,9 +986,13 @@
                 <dns_acmedns_subdomain type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_subdomain>
+                <!-- old value, should be removed in next major release -->
                 <dns_acmedns_updateurl type="TextField">
                     <Required>N</Required>
                 </dns_acmedns_updateurl>
+                <dns_acmedns_baseurl type="TextField">
+                    <Required>N</Required>
+                </dns_acmedns_baseurl>
                 <dns_acmeproxy_endpoint type="TextField">
                     <Required>N</Required>
                 </dns_acmeproxy_endpoint>
@@ -1005,6 +1072,18 @@
                 <dns_zone_key type="TextField">
                     <Required>N</Required>
                 </dns_zone_key>
+                <dns_dynv6_token type="TextField">
+                    <Required>N</Required>
+                </dns_dynv6_token>
+                <dns_cpanel_user type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_user>
+                <dns_cpanel_token type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_token>
+                <dns_cpanel_hostname type="TextField">
+                    <Required>N</Required>
+                </dns_cpanel_hostname>
             </validation>
         </validations>
         <actions>
@@ -1029,12 +1108,16 @@
                 <type type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <restart_gui>Restart OPNsense Web UI</restart_gui>
-                        <restart_haproxy>Restart HAProxy (OPNsense plugin)</restart_haproxy>
-                        <restart_nginx>Restart Nginx (OPNsense plugin)</restart_nginx>
-                        <upload_highwinds>Upload certificate to Highwinds CDN</upload_highwinds>
-                        <upload_sftp>Upload certificate via SFTP</upload_sftp>
-                        <configd>System or Plugin Command</configd>
+                        <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
+                        <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
+                        <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
+                        <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
+                        <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
+                        <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
+                        <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
+                        <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
+                        <acme_unifi>Update local Unifi keystore</acme_unifi>
+                        <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
                 <highwinds_account_hash type="TextField">
@@ -1123,6 +1206,44 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_fullchain>
+                <remote_ssh_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </remote_ssh_host>
+                <remote_ssh_host_key type="TextField">
+                    <Required>N</Required>
+                    <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
+                         Reference: https://stackoverflow.com/a/475217 -->
+                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
+                </remote_ssh_host_key>
+                <remote_ssh_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>49151</MaximumValue>
+                    <default>22</default>
+                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                </remote_ssh_port>
+                <remote_ssh_user type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,128}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+                </remote_ssh_user>
+                <remote_ssh_identity_type type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ecdsa>ECDSA</ecdsa>
+                        <rsa>RSA</rsa>
+                        <ed25519>ed25519</ed25519>
+                    </OptionValues>
+                </remote_ssh_identity_type>
+                <remote_ssh_command type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a shell command between 1 and 1024 characters.</ValidationMessage>
+                </remote_ssh_command>
+                <!-- old value, should be removed in next major release -->
                 <configd type="ConfigdActionsField">
                     <filters>
                         <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
@@ -1130,6 +1251,66 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd>
+                <configd_generic_command type="ConfigdActionsField">
+                    <filters>
+                        <description>/^(?!.*(Let\'s\ Encrypt|acme|[fF]irmware))([\S\s]{1,255})/</description>
+                    </filters>
+                    <ValidationMessage>Select a command from the list.</ValidationMessage>
+                    <Required>N</Required>
+                </configd_generic_command>
+                <acme_synology_dsm_hostname type="HostnameField">
+                    <default></default>
+                    <Required>N</Required>
+                </acme_synology_dsm_hostname>
+                <acme_synology_dsm_port type="PortField">
+                    <default>5000</default>
+                    <Required>N</Required>
+                </acme_synology_dsm_port>
+                <acme_synology_dsm_scheme type="OptionField">
+                    <default>http</default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <http>HTTP [default]</http>
+                        <https>HTTPS</https>
+                    </OptionValues>
+                </acme_synology_dsm_scheme>
+                <acme_synology_dsm_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_username>
+                <acme_synology_dsm_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_password>
+                <acme_synology_dsm_create type="BooleanField">
+                    <default>1</default>
+                </acme_synology_dsm_create>
+                <acme_synology_dsm_deviceid type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_deviceid>
+                <acme_fritzbox_url type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_url>
+                <acme_fritzbox_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_username>
+                <acme_fritzbox_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_fritzbox_password>
+                <acme_unifi_keystore type="TextField">
+                    <default>/usr/local/share/java/unifi/data/keystore</default>
+                    <Required>N</Required>
+                </acme_unifi_keystore>
             </action>
         </actions>
     </items>

@@ -236,9 +236,9 @@ class SftpUploader
                 // Preparing upload
                 $username = $connection["user"];
                 $remote_filename = basename((empty($file["target"]) ? $local_file : $file["target"]));
-                $remote_file = $remote_files[$remote_filename] ?: ["type" => "-", "owner" => $username];
+                $remote_file = $remote_files[$remote_filename] ?? ["type" => "-", "owner" => $username];
                 $remote_is_file = $remote_file["type"] === "-";
-                $remote_is_readonly = preg_match('/^[^wW]+$/', $remote_file["permissions"] ?: "");
+                $remote_is_readonly = preg_match('/^[^wW]+$/', $remote_file["permissions"] ?? "");
 
                 // Check if a folder/socket/symlink, etc is in the way
                 if (!$remote_is_file) {
@@ -246,10 +246,10 @@ class SftpUploader
                     return self::UPLOAD_ERROR_NO_OVERWRITE;
                 }
 
-                $chgrp = $file["group"] ?: "";
+                $chgrp = $file["group"] ?? "";
                 $chgrp = preg_match('/^\d+$/', $chgrp) ? (string)$chgrp : false;
 
-                $chmod = $file["mode"] ?: "";
+                $chmod = $file["mode"] ?? "";
                 $chmod = preg_match('/^0\d{3}$/', $chmod) ? (string)$chmod : false;
 
 
@@ -347,7 +347,7 @@ class SftpUploader
                         Utils::log()->error("Failed uploading test file to detect ownership. Next uploads may fail as well.", $error);
                     } else {
                         // Get owner of the test file
-                        $file_info = $this->sftp->ls()[$remote_test_file] ?: ["owner" => -1];
+                        $file_info = $this->sftp->ls()[$remote_test_file] ?? ["owner" => -1];
                         // Cleanup
                         $this->sftp->rm($remote_test_file);
                         $this->sftp->clearError();
@@ -370,7 +370,7 @@ class SftpUploader
         if (
             isset($this->pending_files[$file])
             && is_array($existing = $this->pending_files[$file])
-            && $existing["delete_source"] === true
+            && ($existing["delete_source"] ?? false) === true
         ) {
             unlink($existing["source"]);
         }
@@ -408,7 +408,7 @@ class SftpUploader
         }
 
         $index = $this->temporary_files_index;
-        if ($index <= 0 || !is_array($shared_temporary_files[$index])) {
+        if ($index <= 0 || !is_array($shared_temporary_files[$index] ?? null)) {
             $index = $this->temporary_files_index = ++$shared_temporary_files_index_sequence;
             $shared_temporary_files[$index] = [];
         }
