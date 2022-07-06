@@ -152,8 +152,8 @@
                         <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
                         <sslcom>SSL.com</sslcom>
                         <zerossl>ZeroSSL</zerossl>
-                        <google>ZeroSSL</google>
-                        <googletest>ZeroSSL</googletest>
+                        <google>Google</google>
+                        <googletest>Google Test CA</googletest>
                         <custom>Custom CA URL</custom>
                     </OptionValues>
                 </ca>
