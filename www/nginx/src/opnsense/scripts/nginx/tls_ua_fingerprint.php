@@ -33,6 +33,8 @@ function parse_line($line)
 {
     // ignore GREASE cipher suite values when compiling a browser fingerprint (see rfc8701)
     $GREASE = array("0x0a0a", "0x1a1a", "0x2a2a", "0x3a3a", "0x4a4a", "0x5a5a", "0x6a6a", "0x7a7a", "0x8a8a", "0x9a9a", "0xaaaa", "0xbaba", "0xcaca", "0xdada", "0xeaea", "0xfafa");
+    // ignore SCSV cipher suite values when compiling a browser fingerprint (see rfc5746 and rfc7507)
+    $SCSV = array("TLS_EMPTY_RENEGOTIATION_INFO_SCSV", "TLS_FALLBACK_SCSV");
     $tmp = explode('"', trim($line));
     $fp = array(
         'ua' => $tmp[1],
@@ -40,9 +42,9 @@ function parse_line($line)
         'curves' => $tmp[5] == '-' ? '' : $tmp[5],
         'count' => 1
     );
-    // exclude GREASE suits from fingerprint
+    // exclude GREASE and SCSV suits from fingerprint
     $fp_ciphers = explode(':', $fp['ciphers']);
-    $fp_ciphers = array_diff($fp_ciphers, $GREASE);
+    $fp_ciphers = array_diff($fp_ciphers, $GREASE, $SCSV);
     $fp['ciphers'] = implode(':', $fp_ciphers);
     $fp_curves = explode(':', $fp['curves']);
     $fp_curves = array_diff($fp_curves, $GREASE);
