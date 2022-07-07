@@ -12,9 +12,7 @@ WWW: http://www.apcupsd.org/
 Plugin Changelog
 ================
 
-1.0
-
-Initial release
+1.0 (initial release)
 
 * Apcupsd service control and configuration
 * UPS status page

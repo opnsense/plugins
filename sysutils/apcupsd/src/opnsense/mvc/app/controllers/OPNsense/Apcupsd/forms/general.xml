@@ -62,8 +62,10 @@
         <id>apcupsd.general.BatteryLevel</id>
         <label>Battery Level Shutdown (%)</label>
         <type>text</type>
-        <help>Apcupsd will shutdown the system during a power failure when the remaining battery charge falls below the
-            specified percentage. (Default is 5).</help>
+        <help>
+            Apcupsd will shutdown the system during a power failure when the remaining battery charge falls below the
+            specified percentage. Set to -1 to disable. (Default is 5).
+        </help>
     </field>
     <field>
         <id>apcupsd.general.Minutes</id>
@@ -71,7 +73,7 @@
         <type>text</type>
         <help>
             Apcupsd will shutdown the system during a power failure when the remaining runtime on batteries as
-            internally calculated by the UPS falls below the specified minutes. (Default is 3)
+            internally calculated by the UPS falls below the specified minutes. Set to -1 to disable. (Default is 3)
         </help>
     </field>
     <field>

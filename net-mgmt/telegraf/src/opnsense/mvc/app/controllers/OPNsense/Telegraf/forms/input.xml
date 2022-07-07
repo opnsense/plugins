@@ -50,6 +50,24 @@
         <help>Read metrics about disk IO by device.</help>
     </field>
     <field>
+        <id>input.internet_speed</id>
+        <label>Internet Speed Test</label>
+        <type>checkbox</type>
+        <help>Enable the collection of data about the internet speed on the system.</help>
+    </field>
+    <field>
+        <id>input.internet_speed_file</id>
+        <label>Internet Speed File Download</label>
+        <type>checkbox</type>
+        <help>Enable the file download speed test.</help>
+    </field>
+    <field>
+        <id>input.internet_speed_interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <help>Default internet speed test interval in seconds.</help>
+    </field>
+    <field>
         <id>input.mem</id>
         <label>Memory</label>
         <type>checkbox</type>
@@ -92,6 +110,12 @@
         <help>Ping Hosts using IPv4 and measure the metrics.</help>
     </field>
     <field>
+        <id>input.ping_count</id>
+        <label>Ping Count (IPv4)</label>
+        <type>text</type>
+        <help>Number of ping packets to send per interval. Corresponds to the "-c" option of the ping command.</help>
+    </field>
+    <field>
         <id>input.ping_hosts</id>
         <label>Ping Hosts (IPv4)</label>
         <type>select_multiple</type>
@@ -104,6 +128,12 @@
         <label>Ping (IPv6)</label>
         <type>checkbox</type>
         <help>Ping Hosts using IPv6 and measure the metrics.</help>
+    </field>
+    <field>
+        <id>input.ping6_count</id>
+        <label>Ping Count (IPv6)</label>
+        <type>text</type>
+        <help>Number of ping packets to send per interval. Corresponds to the "-c" option of the ping command.</help>
     </field>
     <field>
         <id>input.ping6_hosts</id>
