@@ -12,7 +12,6 @@ Plugin Changelog
 
 * first non-devel release
 * changed service restart to reload on hub update; fixed "service oscrowdsec status"
-* note about ramfs in /var
 
 0.2
 

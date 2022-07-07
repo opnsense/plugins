@@ -118,14 +118,6 @@
 
         <h1>Installation</h1>
 
-	<div class="well" style="font-weight: bold">
-	    <span style="color:red; font-weight: bold">⚠</span>
-	    If you are using a RAM filesystem for /var
-	    (verify <a href="/system_advanced_misc.php"><code>Settings > Miscellaneous > Disk/Memory Settings</code></a>)
-  	    you need to disable it before proceeding, because Crowdsec keeps a (small) persistent database.
-	    <span style="color:red; font-weight: bold">⚠</span>
-	</div>
-
         <p>
             On the Settings tab, you can expose CrowdSec to the LAN for other servers by changing `LAPI listen address`.
             Otherwise, leave the defualt value.
