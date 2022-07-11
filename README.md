@@ -94,7 +94,6 @@ security/tor -- The Onion Router
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
-sysutils/boot-delay -- Apply a persistent 10 second boot delay (pending removal)
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
