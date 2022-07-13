@@ -7,4 +7,3 @@
 
 # shellcheck disable=SC2174
 mkdir -p -m 0700 /usr/local/etc/crowdsec/opnsense
-
