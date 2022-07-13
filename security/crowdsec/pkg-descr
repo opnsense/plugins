@@ -8,6 +8,11 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0
+
+* first non-devel release
+* changed service restart to reload on hub update; fixed "service oscrowdsec status"
+
 0.2
 
 * first published release
