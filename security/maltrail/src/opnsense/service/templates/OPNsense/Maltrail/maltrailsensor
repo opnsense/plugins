@@ -4,4 +4,3 @@ maltrailsensor_enable="YES"
 {% else %}
 maltrailsensor_enable="NO"
 {% endif %}
-maltrailsensor_var_mfs="/var/log/maltrail"
