@@ -271,10 +271,10 @@ class SettingsController extends ApiMutableModelControllerBase
 
                     // Add a new HAProxy backend
                     $backend_uuid = $mdlHAProxy->newBackend(
-                        "1",
                         "acme_challenge_backend",
                         "http",
                         "source",
+                        "1",
                         "Added by ACME Client plugin",
                         "",
                         ""

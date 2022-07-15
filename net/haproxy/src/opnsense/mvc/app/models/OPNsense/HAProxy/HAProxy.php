@@ -218,23 +218,23 @@ class HAProxy extends BaseModel
 
     /**
      * create a new backend
-     * @param string $enabled
      * @param string $name
      * @param string $mode
      * @param string $algorithm
+     * @param string $enabled
      * @param string $description
      * @param string $linkedServers
      * @param string $linkedActions
      * @return string
      */
-    public function newBackend($enabled = "0", $name, $mode, $algorithm, $description = "", $linkedServers = "", $linkedActions = "")
+    public function newBackend($name, $mode, $algorithm, $enabled = "0", $description = "", $linkedServers = "", $linkedActions = "")
     {
         $backend = $this->backends->backend->Add();
         $uuid = $backend->getAttributes()['uuid'];
-        $backend->enabled = $enabled;
         $backend->name = $name;
         $backend->mode = $mode;
         $backend->algorithm = $algorithm;
+        $backend->enabled = $enabled;
         $backend->description = $description;
         $backend->linkedServers = $linkedServers;
         $backend->linkedActions = $linkedActions;
