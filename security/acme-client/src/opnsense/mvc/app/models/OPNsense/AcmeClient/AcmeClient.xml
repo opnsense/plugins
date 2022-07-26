@@ -419,6 +419,7 @@
                         <dns_1984hosting>1984Hosting API</dns_1984hosting>
                         <dns_acmedns>ACME DNS API</dns_acmedns>
                         <dns_acmeproxy>Acmeproxy API</dns_acmeproxy>
+                        <dns_active24>Active24 API</dns_active24>
                         <dns_ad>Alwaysdata.com API</dns_ad>
                         <dns_ali>aliyun.com API</dns_ali>
                         <dns_kas>All-Inkl.com domain API</dns_kas>
@@ -507,6 +508,9 @@
                     <ValidationMessage>Please specify a value between 1 and 84600.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
+                <dns_active24_token type="TextField">
+                    <Required>N</Required>
+                </dns_active24_token>
                 <dns_ad_key type="TextField">
                     <Required>N</Required>
                 </dns_ad_key>
