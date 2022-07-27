@@ -1160,9 +1160,9 @@
                 <sftp_port type="IntegerField">
                     <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
-                    <MaximumValue>49151</MaximumValue>
+                    <MaximumValue>65535</MaximumValue>
                     <default>22</default>
-                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                    <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
                 </sftp_port>
                 <sftp_user type="TextField">
                     <Required>N</Required>
@@ -1236,9 +1236,9 @@
                 <remote_ssh_port type="IntegerField">
                     <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
-                    <MaximumValue>49151</MaximumValue>
+                    <MaximumValue>65535</MaximumValue>
                     <default>22</default>
-                    <ValidationMessage>Should be a valid port number between 1 and 49151.</ValidationMessage>
+                    <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
                 </remote_ssh_port>
                 <remote_ssh_user type="TextField">
                     <Required>N</Required>

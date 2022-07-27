@@ -21,6 +21,7 @@ Fixed:
 
 Changed:
 * simplyfi DNS service names
+* relax port number restriction in SSH/SFTP automations (#3005)
 
 3.11
 
