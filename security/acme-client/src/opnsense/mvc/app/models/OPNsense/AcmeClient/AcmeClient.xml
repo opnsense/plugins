@@ -1129,6 +1129,7 @@
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
+                        <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
@@ -1325,6 +1326,20 @@
                     <default>/usr/local/share/java/unifi/data/keystore</default>
                     <Required>N</Required>
                 </acme_unifi_keystore>
+                <acme_vault_url type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_vault_url>
+                <acme_vault_prefix type="TextField">
+                    <default>acme</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_vault_prefix>
+                <acme_vault_kvv2 type="BooleanField">
+                    <default>1</default>
+                </acme_vault_kvv2>
             </action>
         </actions>
     </items>

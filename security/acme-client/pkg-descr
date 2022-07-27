@@ -11,9 +11,10 @@ Plugin Changelog
 3.12
 
 Added:
-* Add Simply.com DNS API (#2888)
-* Add Active24 challenge type (#3049)
-* Add support for Zone ID in Cloudflare challenge type (#2973)
+* add Simply.com DNS API (#2888)
+* add Active24 challenge type (#3049)
+* add support for Zone ID in Cloudflare challenge type (#2973)
+* new automation: upload certificate to Vault (#2796)
 
 Fixed:
 * Re-order function parameters due to PHP8 deprecation notice (#3043)
