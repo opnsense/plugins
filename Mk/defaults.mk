@@ -57,7 +57,7 @@ VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 _PLUGIN_ABI!=	${VERSIONBIN} -a
 PLUGIN_ABI?=	${_PLUGIN_ABI}
 .else
-PLUGIN_ABI?=	22.1
+PLUGIN_ABI?=	22.7
 .endif
 
 PHPBIN=		${LOCALBASE}/bin/php

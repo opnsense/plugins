@@ -6,6 +6,36 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.8
+
+* Add a force action available via cron
+* Fix expected permission on ddclient.conf
+* Make service status and stop more reliable
+* Time out checkip script after 10 seconds
+
+1.7
+
+* Add current ip address and updated timestamp to search api and grid
+
+1.6
+
+* Add Gandi support (contributed by Neozlag)
+
+1.5
+
+* Add service control, XMLRPC registration and syslog target
+* Add Servercow support (contributed by FreddleSpl0it)
+
+1.4
+
+* Add advanced general setting to allow updates via IPv6
+* Enforce SSL on global level with account setting
+
+1.3
+
+* Add checkip settings per account using selected source interface when provided
+* Add OVH DynHost to the DynDNS providers (contributed by toxic0berliner)
+
 1.2
 
 * Add Loopia (contributed by Johan Lilja)

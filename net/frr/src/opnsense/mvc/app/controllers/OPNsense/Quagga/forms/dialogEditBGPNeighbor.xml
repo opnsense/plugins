@@ -30,6 +30,13 @@
     <help>Set a password for BGP authentication.</help>
   </field>
   <field>
+    <id>neighbor.weight</id>
+    <label>Weight</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify a default weight value for the neighbor’s routes.</help>
+  </field>
+  <field>
     <id>neighbor.localip</id>
     <label>Local Initiater IP</label>
     <type>text</type>
@@ -63,6 +70,10 @@
   <field>
     <id>neighbor.multihop</id>
     <label>Multi-Hop</label>
+    <help>
+      Specifying ebgp-multihop allows sessions with eBGP neighbors to establish when they are multiple hops away.
+      When the neighbor is not directly connected and this knob is not enabled, the session will not establish.
+    </help>
     <type>checkbox</type>
   </field>
   <field>
@@ -113,7 +124,13 @@
     <id>neighbor.asoverride</id>
     <label>Enable AS-Override</label>
     <type>checkbox</type>
-	<help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
+    <help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
+  </field>
+  <field>
+    <id>neighbor.disable_connected_check</id>
+    <label>Disable Connected Check</label>
+    <type>checkbox</type>
+    <help>Allow peerings between directly connected eBGP peers using loopback addresses.</help>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistIn</id>

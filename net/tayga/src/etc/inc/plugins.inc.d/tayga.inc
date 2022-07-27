@@ -70,9 +70,9 @@ function tayga_interfaces()
         return $interfaces;
     }
     $oic = array('enable' => true);
-    $oic['if'] = 'nat64';
+    $oic['if'] = 'tayga';
     $oic['descr'] = 'Tayga';
-    $oic['type'] = 'none';
+    $oic['type'] = 'group';
     $oic['virtual'] = true;
     $oic['networks'] = array();
     $interfaces['tayga'] = $oic;

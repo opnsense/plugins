@@ -13,28 +13,16 @@
         <help>Enable verbose logging</help>
     </field>
     <field>
-        <id>ddclient.general.force_ssl</id>
-        <label>Force SSL</label>
+        <id>ddclient.general.allowipv6</id>
+        <label>Allow IPv6</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>Force update using HTTPS</help>
+        <help>Allow IPv6 for updates</help>
     </field>
     <field>
         <id>ddclient.general.daemon_delay</id>
         <label>Interval</label>
         <type>text</type>
         <help>Interval in seconds to check for address changes</help>
-    </field>
-    <field>
-        <id>ddclient.general.checkip</id>
-        <label>Check ip method</label>
-        <type>dropdown</type>
-        <help>How to determine the address to use for this host</help>
-    </field>
-    <field>
-        <id>ddclient.general.interface</id>
-        <label>Interface</label>
-        <type>dropdown</type>
-        <style>optional_setting checkip_if</style>
     </field>
 </form>

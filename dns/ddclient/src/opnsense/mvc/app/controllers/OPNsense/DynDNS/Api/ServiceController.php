@@ -41,9 +41,4 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceTemplate = 'OPNsense/ddclient';
     protected static $internalServiceName = 'ddclient';
-
-    protected function reconfigureForceRestart()
-    {
-        return 0;
-    }
 }

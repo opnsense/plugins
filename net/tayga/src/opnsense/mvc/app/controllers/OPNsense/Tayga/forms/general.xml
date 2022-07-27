@@ -41,4 +41,10 @@
         <type>text</type>
         <help>IPv6 hosts which send traffic through Tayga will be dynamically assigned an IPv4 address from this pool. Can be any size, but each IPv6 host requires one address.</help>
     </field>
+    <field>
+        <id>general.v6routedisabled</id>
+        <label>Custom IPv6 Routing</label>
+        <type>checkbox</type>
+        <help>This is an advanced setting for selective routing scenarios. It will prevent installing the route which routes the IPv6 Prefix to Tayga. This requires assigning and locking the nat64 interface, enabling dynamic gateway policy, configuring a dynamic IPv6 gateway and adding custom routes.</help>
+    </field>
 </form>

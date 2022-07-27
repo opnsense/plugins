@@ -43,10 +43,10 @@ emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - dark grey
+misc/theme-cicada -- The cicada theme - dark grey onyx
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
-misc/theme-vicuna -- The vicuna theme - dark anthrazit
+misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
 net/firewall -- Firewall API supplemental package
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
@@ -65,7 +65,7 @@ net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
-net/vnstat -- vnStat is a console-based network traffic monitor
+net/vnstat -- Network traffic monitor
 net/wireguard -- WireGuard VPN service
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
@@ -79,6 +79,7 @@ net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
 security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
+security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
@@ -90,9 +91,9 @@ security/softether -- Cross-platform Multi-protocol VPN Program (development onl
 security/stunnel -- Stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
+sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
-sysutils/boot-delay -- Apply a persistent 10 second boot delay
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
@@ -107,12 +108,11 @@ sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor repository for Sensei (Next Generation Firewall Extensions)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
 www/web-proxy-sso -- Kerberos authentication module
-www/web-proxy-useracl -- Group and user ACL for the web proxy
 ```
 
 A brief description of how to use the plugins repository

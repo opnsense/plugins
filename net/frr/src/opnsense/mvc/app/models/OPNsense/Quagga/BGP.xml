@@ -60,6 +60,12 @@
                         <password type="TextField">
                                 <Required>N</Required>
                         </password>
+                        <weight type="IntegerField">
+                                <default></default>
+                                <Required>N</Required>
+                                <MinimumValue>0</MinimumValue>
+                                <MaximumValue>65535</MaximumValue>
+                        </weight>
                         <localip type="NetworkField">
                                 <Required>N</Required>
                         </localip>
@@ -128,6 +134,10 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </asoverride>
+                        <disable_connected_check type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </disable_connected_check>
                         <linkedPrefixlistIn type="ModelRelationField">
                                 <Model>
                                         <template>
@@ -240,7 +250,7 @@
                                 <default></default>
                                 <Required>Y</Required>
                                 <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MaximumValue>10000</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
                                 <default></default>

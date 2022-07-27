@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.26.0</version>
+  <version>1.28.0</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -47,6 +47,9 @@
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
       </server_names_hash_max_size>
+      <headers_more_enable type="BooleanField">
+        <Required>N</Required>
+      </headers_more_enable>
     </http>
 
     <userlist type="ArrayField">
@@ -1056,6 +1059,10 @@
         <Required>N</Required>
         <multiple>N</multiple>
       </ip_acl>
+      <proxy_responses type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_responses>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
@@ -1509,6 +1516,52 @@
         <Required>Y</Required>
         <default>0</default>
       </csp_frame_ancestors_none>
+      <csp_connect_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_connect_src_enabled>
+      <csp_connect_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_connect_src_http_urls>
+      <csp_connect_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_connect_src_none>
+      <csp_worker_src_enabled type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_enabled>
+      <csp_worker_src_data_urls type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_data_urls>
+      <csp_worker_src_http_urls type="CSVListField">
+        <Required>N</Required>
+      </csp_worker_src_http_urls>
+      <csp_worker_src_inline type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_inline>
+      <csp_worker_src_eval type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_eval>
+      <csp_worker_src_self type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_self>
+      <csp_worker_src_blob type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_blob>
+      <csp_worker_src_filesystem type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_filesystem>
+      <csp_worker_src_none type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_worker_src_none>
       <csp_form_action_enabled type="BooleanField">
         <Required>Y</Required>
         <default>0</default>

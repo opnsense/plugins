@@ -131,6 +131,16 @@
         <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
     </field>
     <field>
+        <label>Active24</label>
+        <type>header</type>
+        <style>table_dns table_dns_active24</style>
+    </field>
+    <field>
+        <id>validation.dns_active24_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Alwaysdata</label>
         <type>header</type>
         <style>table_dns table_dns_ad</style>
@@ -303,7 +313,7 @@
         <label>Password</label>
         <type>password</type>
     </field>
-	<field>
+    <field>
         <label>DDNSS API</label>
         <type>header</type>
         <style>table_dns table_dns_ddnss</style>
@@ -1061,6 +1071,28 @@
         <type>password</type>
     </field>
     <field>
+        <label>Transip</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 300 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <id>validation.dns_transip_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Your TransIP username.</help>
+    </field>
+    <field>
+        <id>validation.dns_transip_key</id>
+        <label>API Key</label>
+        <type>textbox</type>
+        <help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
@@ -1202,10 +1234,10 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_acmedns_updateurl</id>
-        <label>Update URL</label>
+        <id>validation.dns_acmedns_baseurl</id>
+        <label>ACME DNS URL</label>
         <type>text</type>
-        <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+        <help>Specify the custom ACME DNS URL, i.e. https://auth.acme-dns.io:443 (optional)</help>
     </field>
     <field>
         <label>Acmeproxy</label>

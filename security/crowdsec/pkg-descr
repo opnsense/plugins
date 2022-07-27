@@ -1,0 +1,53 @@
+Crowdsec is an open-source, lightweight software, detecting peers with
+aggressive behaviors to prevent them from accessing your systems. Its user
+friendly design and assistance offers a low technical barrier of entry and
+nevertheless a high security gain.
+
+WWW: https://crowdsec.net/
+
+Plugin Changelog
+================
+
+1.0
+
+* first non-devel release
+* changed service restart to reload on hub update; fixed "service oscrowdsec status"
+
+0.2
+
+* first published release
+* added options `lapi_enabled`, `crowdsec_firewall_verbose`
+* removed options `crowdsec_flags`, `crowdsec_firewall_flags`
+* changed default for `agent_enabled`, `firewall_bouncer_enabled` to 1
+
+0.1
+
+* fixed packet tags with ipv6
+* custom `crowdsec_flags`, `crosdsec_firewall_flags`
+
+0.0.9
+
+* fixed the javascript, 0.0.8 had a syntax error
+* new option: rules_tag
+* new option: lapi_manual_configuration
+* ipv4/ipv6 validation with regexp
+
+0.0.8
+
+* crowdsec update 1.3.2
+* configurable `rules_log` and LAPI address/port
+
+0.0.7
+
+* automated removal of Alias objects when the plugin is uninstalled
+
+0.0.6
+
+* crowdsec update 1.3.1.r1
+* bouncer update to 0.0.23.r1
+* automated creation of Alias and Rule objects
+
+0.0.5
+
+* fixed an issue that prevented the bouncer from banning IPs on opnsense
+* fixed support for notification plugins

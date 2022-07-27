@@ -173,7 +173,7 @@ class SftpClient
 
             $this->process = null;
 
-            if ($this->failed_status && $this->failed_status["connection_closed"]) {
+            if ($this->failed_status && ($this->failed_status["connection_closed"] ?? false)) {
                 $this->clearError();
             }
         }

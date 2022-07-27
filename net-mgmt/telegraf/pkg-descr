@@ -12,6 +12,12 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.5
+
+* Add support for basic HTTP Authentication agains Elasticsearch (contributed by psychogun)
+* Add internet speed input plugin (contributed by rare-magma)
+* Allow to specify ping count (Kacper Michajlow)
+
 1.12.4
 
 * Add 5 second timeout to unbound input
