@@ -490,6 +490,7 @@
                         <dns_selectel>selectel.com / selectel.ru domain API</dns_selectel>
                         <dns_selfhost>Selfhost API</dns_selfhost>
                         <dns_servercow>Servercow API v1</dns_servercow>
+                        <dns_simply>Simply.com API</dns_simply>
                         <dns_transip>Transip API</dns_transip>
                         <dns_unoeuro>UnoEuro API</dns_unoeuro>
                         <dns_variomedia>Variomedia.de API</dns_variomedia>
@@ -948,6 +949,12 @@
                 <dns_servercow_password type="TextField">
                     <Required>N</Required>
                 </dns_servercow_password>
+                <dns_simply_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_simply_api_key>
+                <dns_simply_account_name type="TextField">
+                    <Required>N</Required>
+                </dns_simply_account_name>
                 <dns_transip_username type="TextField">
                     <Required>N</Required>
                 </dns_transip_username>
