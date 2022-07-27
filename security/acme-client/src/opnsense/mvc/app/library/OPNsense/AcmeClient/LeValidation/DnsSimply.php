@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2022 Nikolaj Brinch Jørgensen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
