@@ -18,6 +18,9 @@ Added:
 Fixed:
 * Re-order function parameters due to PHP8 deprecation notice (#3043)
 
+Changed:
+* simplyfi DNS service names
+
 3.11
 
 Fixed:
