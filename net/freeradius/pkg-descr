@@ -15,6 +15,10 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.20
+
+* Remove TTLS-GTC from Default EAP Type (#2421)
+
 1.9.19
 
 * Allow to use LDAP in inner-tunnel (needed for LDAP authentication within 802.1X)
