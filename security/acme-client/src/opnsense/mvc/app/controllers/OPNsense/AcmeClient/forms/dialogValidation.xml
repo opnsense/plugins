@@ -131,6 +131,16 @@
         <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
     </field>
     <field>
+        <label>Active24</label>
+        <type>header</type>
+        <style>table_dns table_dns_active24</style>
+    </field>
+    <field>
+        <id>validation.dns_active24_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Alwaysdata</label>
         <type>header</type>
         <style>table_dns table_dns_ad</style>
