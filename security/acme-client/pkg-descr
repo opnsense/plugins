@@ -13,6 +13,7 @@ Plugin Changelog
 Added:
 * Add Simply.com DNS API (#2888)
 * Add Active24 challenge type (#3049)
+* Add support for Zone ID in Cloudflare challenge type (#2973)
 
 Fixed:
 * Re-order function parameters due to PHP8 deprecation notice (#3043)

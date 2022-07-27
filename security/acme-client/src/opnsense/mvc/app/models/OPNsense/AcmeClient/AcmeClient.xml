@@ -560,6 +560,9 @@
                 <dns_cf_account_id type="TextField">
                     <Required>N</Required>
                 </dns_cf_account_id>
+                <dns_cf_zone_id type="TextField">
+                    <Required>N</Required>
+                </dns_cf_zone_id>
                 <dns_cloudns_auth_id type="TextField">
                     <Required>N</Required>
                 </dns_cloudns_auth_id>
