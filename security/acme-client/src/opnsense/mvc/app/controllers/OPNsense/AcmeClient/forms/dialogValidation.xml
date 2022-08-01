@@ -264,6 +264,12 @@
         <help>The token needs "Read" access to Zone.Zone and "Edit" access to Zone.DNS across all zones from an account.</help>
     </field>
     <field>
+        <id>validation.dns_cf_zone_id</id>
+        <label>CF Zone ID (Optional)</label>
+        <type>text</type>
+        <help>Note that specifying a Zone ID will limit this configuration to a single domain.</help>
+    </field>
+    <field>
         <label>ClouDNS</label>
         <type>header</type>
         <style>table_dns table_dns_cloudns</style>
