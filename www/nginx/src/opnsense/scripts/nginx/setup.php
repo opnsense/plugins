@@ -228,7 +228,7 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         foreach ($users as $user) {
             $user_node = $nginx->getNodeByReference("credential." . $user);
             $username = (string)$user_node->username;
-            $password = crypt((string)$user_node->password);
+            $password = crypt((string)$user_node->password, '$6$');
             fwrite($file, $username . ':' . $password . "\n");
         }
     } finally {
