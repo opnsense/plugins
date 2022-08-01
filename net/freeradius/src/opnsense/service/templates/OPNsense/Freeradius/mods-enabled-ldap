@@ -148,7 +148,7 @@ ldap {
 
         }
         tls {
-		{%     if helpers.exists('OPNsense.freeradius.ldap.ldapstarttls') and OPNsense.freeradius.ldap.ldapstarttls == '1' %}
+	{%     if helpers.exists('OPNsense.freeradius.ldap.ldapstarttls') and OPNsense.freeradius.ldap.ldapstarttls == '1' %}
                 start_tls = yes
         {%     else %}
                 start_tls = no
