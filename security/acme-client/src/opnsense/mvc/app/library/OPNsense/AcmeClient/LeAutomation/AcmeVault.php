@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2022 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,28 +26,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeValidation;
+namespace OPNsense\AcmeClient\LeAutomation;
 
-use OPNsense\AcmeClient\LeValidationInterface;
-use OPNsense\Core\Config;
+use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * CF DNS API
+ * Run acme.sh deploy hook vault 
  * @package OPNsense\AcmeClient
  */
-class DnsCf extends Base implements LeValidationInterface
+class AcmeVault extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        // Global API key (insecure)
-        $this->acme_env['CF_Key'] = (string)$this->config->dns_cf_key;
-        $this->acme_env['CF_Email'] = (string)$this->config->dns_cf_email;
-        // Restricted API token (recommended)
-        $this->acme_env['CF_Token'] = (string)$this->config->dns_cf_token;
-        $this->acme_env['CF_Account_ID'] = (string)$this->config->dns_cf_account_id;
-        // Optional Zone ID
-        if (!empty((string)$this->config->dns_cf_zone_id)) {
-            $this->acme_env['CF_Zone_ID'] = (string)$this->config->dns_cf_zone_id;
+        $this->acme_env['VAULT_ADDR'] = (string)$this->config->acme_vault_url;
+        if (!empty((string)$this->config->acme_vault_prefix)) {
+            $this->acme_env['VAULT_PREFIX'] = (string)$this->config->acme_vault_prefix;
         }
+        if ((string)$this->config->acme_vault_kvv2 == 1) {
+            $this->acme_env['VAULT_KV_V2'] = 1;
+        }
+        $this->acme_args[] = '--deploy-hook vault';
+        return true;
     }
 }

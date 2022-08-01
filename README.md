@@ -79,7 +79,7 @@ net-mgmt/zabbix-agent -- Zabbix monitoring agent
 net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
 security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
-security/crowdsec -- Lightweight and collaborative security engine (development only)
+security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
@@ -91,10 +91,9 @@ security/softether -- Cross-platform Multi-protocol VPN Program (development onl
 security/stunnel -- Stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
-sysutils/apcupsd -- APCUPSD - APC UPS daemon (development only)
+sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)
-sysutils/boot-delay -- Apply a persistent 10 second boot delay (pending removal)
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
@@ -114,7 +113,6 @@ www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
 www/web-proxy-sso -- Kerberos authentication module
-www/web-proxy-useracl -- Group and user ACL for the web proxy (pending removal)
 ```
 
 A brief description of how to use the plugins repository

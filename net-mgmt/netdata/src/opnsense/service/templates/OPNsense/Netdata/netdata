@@ -4,4 +4,3 @@ netdata_enable="YES"
 {% else %}
 netdata_enable="NO"
 {% endif %}
-netdata_var_mfs="/var/cache/netdata /var/db/netdata /var/log/netdata"

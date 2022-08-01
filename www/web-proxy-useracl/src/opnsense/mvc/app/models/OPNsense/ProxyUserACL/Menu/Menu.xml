@@ -1,7 +1,0 @@
-<menu>
-    <Services>
-        <WebProxy>
-            <ProxyUserACL VisibleName="Groups and Users" order="30" url="/ui/proxyuseracl"/>
-        </WebProxy>
-    </Services>
-</menu>
