@@ -4,4 +4,3 @@ clamav_clamd_enable="YES"
 {% else %}
 clamav_clamd_enable="NO"
 {% endif %}
-clamav_clamd_var_mfs="/var/db/clamav"

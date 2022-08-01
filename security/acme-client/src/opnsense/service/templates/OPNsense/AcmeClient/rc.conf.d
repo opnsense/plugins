@@ -6,4 +6,3 @@ acme_http_challenge_var_script="/usr/local/opnsense/scripts/OPNsense/AcmeClient/
 {% else %}
 acme_http_challenge_enable=NO
 {% endif %}
-acme_http_challenge_var_mfs="/var/etc/acme-client"
