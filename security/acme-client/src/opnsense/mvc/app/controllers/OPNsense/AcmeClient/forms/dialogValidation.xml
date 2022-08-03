@@ -1099,6 +1099,21 @@
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
     <field>
+        <label>united-domains Reselling</label>
+        <type>header</type>
+        <style>table_dns table_dns_udr</style>
+    </field>
+    <field>
+        <id>validation.dns_udr_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_udr_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
