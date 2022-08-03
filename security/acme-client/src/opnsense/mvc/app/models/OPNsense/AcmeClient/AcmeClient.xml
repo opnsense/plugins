@@ -492,6 +492,7 @@
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
                         <dns_transip>Transip</dns_transip>
+                        <dns_udr>united-domains Reselling</dns_udr>
                         <dns_unoeuro>UnoEuro</dns_unoeuro>
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
@@ -964,6 +965,12 @@
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_udr_user type="TextField">
+                    <Required>N</Required>
+                </dns_udr_user>
+                <dns_udr_password type="TextField">
+                    <Required>N</Required>
+                </dns_udr_password>
                 <dns_uno_key type="TextField">
                     <Required>N</Required>
                 </dns_uno_key>
