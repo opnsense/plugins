@@ -13,6 +13,7 @@ Plugin Changelog
 Added:
 * add Simply.com DNS API (#2888)
 * add Active24 challenge type (#3049)
+* add united-domains Reselling challenge type (#3066)
 * add support for Zone ID in Cloudflare challenge type (#2973)
 * new automation: upload certificate to Vault (#2796)
 
