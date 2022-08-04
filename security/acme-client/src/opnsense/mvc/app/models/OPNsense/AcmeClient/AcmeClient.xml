@@ -1073,9 +1073,10 @@
                 </dns_kas_authdata>
                 <dns_kas_authtype type="OptionField">
                     <Required>N</Required>
-                    <default>sha1</default>
+                    <default>plain</default>
                     <OptionValues>
-                        <sha1>SHA1</sha1>
+                        <plain>plain</plain>
+                        <sha1>SHA1 (deprecated in December 2022)</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
                 <dns_desec_token type="TextField">
