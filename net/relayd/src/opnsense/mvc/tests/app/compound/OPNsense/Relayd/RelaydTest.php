@@ -40,7 +40,7 @@ class RelaydTest extends \PHPUnit\Framework\TestCase
     // holds the SettingsController object
     protected static $setRelayd;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$setRelayd = new \OPNsense\Relayd\Api\SettingsController();
     }
