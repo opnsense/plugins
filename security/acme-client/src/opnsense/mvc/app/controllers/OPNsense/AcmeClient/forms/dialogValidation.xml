@@ -1395,7 +1395,7 @@
     <field>
         <id>validation.dns_kas_authdata</id>
         <label>KAS Authdata</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <id>validation.dns_kas_authtype</id>
