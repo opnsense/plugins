@@ -4,4 +4,3 @@ maltrailserver_enable="YES"
 {% else %}
 maltrailserver_enable="NO"
 {% endif %}
-maltrailserver_var_mfs="/var/log/maltrail"
