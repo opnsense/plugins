@@ -10,6 +10,14 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.29
+
+* fixed a typo in the trusted tls fingerprints db creation part of setup.php
+* rfc5746, rfc7507 and rfc8701 are taken into account on compiling and comparing tls fingerprints
+* the reason for scoring the connection as intercepted is added to the X-TLS-Client-Intercepted header. check backend settings if using this feature
+* http_post hook added to be able to map global variables
+* PHP 8 compatibility: change crypt() to password_hash()
+
 1.28
 
 * add support for connect-src and worker-src in content security policy
