@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2022 Nikolaj Brinch Jørgensen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,22 +32,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * CF DNS API
+ * simply DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsCf extends Base implements LeValidationInterface
+class DnsSimply extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        // Global API key (insecure)
-        $this->acme_env['CF_Key'] = (string)$this->config->dns_cf_key;
-        $this->acme_env['CF_Email'] = (string)$this->config->dns_cf_email;
-        // Restricted API token (recommended)
-        $this->acme_env['CF_Token'] = (string)$this->config->dns_cf_token;
-        $this->acme_env['CF_Account_ID'] = (string)$this->config->dns_cf_account_id;
-        // Optional Zone ID
-        if (!empty((string)$this->config->dns_cf_zone_id)) {
-            $this->acme_env['CF_Zone_ID'] = (string)$this->config->dns_cf_zone_id;
-        }
+        $this->acme_env['SIMPLY_ApiKey'] = (string)$this->config->dns_simply_api_key;
+        $this->acme_env['SIMPLY_AccountName'] = (string)$this->config->dns_simply_account_name;
     }
 }

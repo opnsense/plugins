@@ -131,6 +131,16 @@
         <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
     </field>
     <field>
+        <label>Active24</label>
+        <type>header</type>
+        <style>table_dns table_dns_active24</style>
+    </field>
+    <field>
+        <id>validation.dns_active24_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Alwaysdata</label>
         <type>header</type>
         <style>table_dns table_dns_ad</style>
@@ -252,6 +262,12 @@
         <label>CF API Token</label>
         <type>password</type>
         <help>The token needs "Read" access to Zone.Zone and "Edit" access to Zone.DNS across all zones from an account.</help>
+    </field>
+    <field>
+        <id>validation.dns_cf_zone_id</id>
+        <label>CF Zone ID (Optional)</label>
+        <type>text</type>
+        <help>Note that specifying a Zone ID will limit this configuration to a single domain.</help>
     </field>
     <field>
         <label>ClouDNS</label>
@@ -1083,6 +1099,21 @@
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
     <field>
+        <label>united-domains Reselling</label>
+        <type>header</type>
+        <style>table_dns table_dns_udr</style>
+    </field>
+    <field>
+        <id>validation.dns_udr_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_udr_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>UnoEuro</label>
         <type>header</type>
         <style>table_dns table_dns_unoeuro</style>
@@ -1095,6 +1126,21 @@
     <field>
         <id>validation.dns_uno_user</id>
         <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Simply.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_simply</style>
+    </field>
+    <field>
+        <id>validation.dns_simply_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_simply_account_name</id>
+        <label>Account Name</label>
         <type>text</type>
     </field>
     <field>
