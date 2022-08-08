@@ -31,7 +31,7 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Run acme.sh deploy hook vault 
+ * Run acme.sh deploy hook vault
  * @package OPNsense\AcmeClient
  */
 class AcmeVault extends Base implements LeAutomationInterface
