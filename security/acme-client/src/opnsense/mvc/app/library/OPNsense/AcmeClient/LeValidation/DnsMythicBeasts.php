@@ -35,7 +35,7 @@ use OPNsense\Core\Config;
  * Mythic Beasts API
  * @package OPNsense\AcmeClient
  */
-class DnsMythicbeasts extends Base implements LeValidationInterface
+class DnsMythicBeasts extends Base implements LeValidationInterface
 {
     public function prepare()
     {
