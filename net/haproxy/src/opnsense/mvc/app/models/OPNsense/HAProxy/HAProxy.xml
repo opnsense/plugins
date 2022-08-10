@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.6.0</version>
+    <version>3.7.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
