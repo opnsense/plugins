@@ -80,7 +80,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         switch ((string)$this->config->method) {
             case 'dns01':
                 $this->acme_args[] = LeUtils::execSafe('--dns %s', (string)$this->config->dns_service);
-                $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
+                if (! (string)$this->config->dns_sleep == '0') {
+                    $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
+                }
                 break;
             case 'http01':
                 $this->acme_args[] = '--webroot ' . self::ACME_WEBROOT;
