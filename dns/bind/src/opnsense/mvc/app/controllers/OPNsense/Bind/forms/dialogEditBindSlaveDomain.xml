@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this zone.</help>
+    </field>
+    <field>
+        <id>domain.domainname</id>
+        <label>Zone Name</label>
+        <type>text</type>
+        <help>Set the name for this zone. Both forward and reverse zones may be specified, i.e. example.com or 0.168.192.in-addr.arpa.</help>
+    </field>
+    <field>
+        <id>domain.allowtransfer</id>
+        <label>Allow Transfer</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which server can retrieve this zone.</help>
+    </field>
+    <field>
+        <id>domain.allowquery</id>
+        <label>Allow Query</label>
+        <type>dropdown</type>
+        <help>Define an ACL where you allow which client are allowed to query this zone.</help>
+    </field>
+    <field>
+        <id>domain.masterip</id>
+        <label>Master IP</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IP address of master server when using slave mode.</help>
+    </field>
+    <field>
+        <id>domain.transferkeyalgo</id>
+        <label>Transfer Key Algorithm</label>
+        <type>dropdown</type>
+        <help>Set the authentication algorithm for the TSIG key.</help>
+    </field>
+    <field>
+        <id>domain.transferkey</id>
+        <label>Transfer Key</label>
+        <type>text</type>
+        <help>The TSIG key used to transfer domain data from the master server.</help>
+    </field>
+    <field>
+        <id>domain.allownotifyslave</id>
+        <label>Allow Notfiy</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>A list of allowed IP addresses to receive notifies from.</help>
+    </field>
+</form>
