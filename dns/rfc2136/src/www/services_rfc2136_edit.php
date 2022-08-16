@@ -216,7 +216,7 @@ include("head.inc");
                     <td>
                       <input name="keydata" type="text" id="keydata" size="70" value="<?=htmlspecialchars($pconfig['keydata']);?>" />
                       <div class="hidden" data-for="help_for_keydata">
-                        <?=gettext("Paste an HMAC-MD5 key here.");?>
+                        <?=gettext("Paste an TSIG domain key here.");?>
                       </div>
                     </td>
                   </tr>
