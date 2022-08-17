@@ -819,6 +819,21 @@
         <help>MailinaBox Server FQDN</help>
     </field>
     <field>
+        <label>Mythic Beasts</label>
+        <type>header</type>
+        <style>table_dns table_dns_mythic_beasts</style>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_secret</id>
+        <label>Secret</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Namecheap</label>
         <type>header</type>
         <style>table_dns table_dns_namecheap</style>
@@ -1395,7 +1410,7 @@
     <field>
         <id>validation.dns_kas_authdata</id>
         <label>KAS Authdata</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <id>validation.dns_kas_authtype</id>
