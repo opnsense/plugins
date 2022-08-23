@@ -353,8 +353,8 @@
                                                 <display>name</display>
                                         </template>
                                 </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <ValidationMessage>Related item PrefixList not found</ValidationMessage>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match2>
                         <match3 type="ModelRelationField">
@@ -365,8 +365,8 @@
                                                 <display>number</display>
                                         </template>
                                 </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <ValidationMessage>Related item CommunityList not found</ValidationMessage>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match3>
                         <set type="TextField">
