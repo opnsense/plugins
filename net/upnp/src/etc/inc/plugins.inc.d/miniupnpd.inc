@@ -226,6 +226,18 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "min_lifetime=120\n";
             $config_text .= "max_lifetime=86400\n";
 
+            /* configure STUN server if needed */
+            if (!empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_stun_host=" . ( $upnp_config['stun_host'] );
+                $config_text .= "ext_stun_port=" . ( isset ($upnp_config['stun_port'] ) ? $upnp_config['stun_port'] : 3478 )
+            }
+
+            /* configure ext_ip if needed */
+            / * TODO check IP address is valid */
+            if(empty($upnp_config['stun_host'] && !empty($upnp_config['ext_ip']))) {
+                $config_text .= "ext_ip=" . $upnp_config['ext_ip'];
+            }
+
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
