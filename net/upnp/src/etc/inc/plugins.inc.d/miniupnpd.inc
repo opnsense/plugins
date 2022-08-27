@@ -150,7 +150,12 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    $config_text .= "listening_ip={$if}\n";
+                    if(!isset($upnp_config['overridesubnet'])) {
+                        $config_text .= "listening_ip={$if}\n";
+                    }
+                    if(isset($upnp_config['overridesubnet'])) {
+                        $config_text .= "listening_ip={$if}{$upnp_config['overridesubnet']}\n";
+                    }
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
                         $ifaces_active = $iface;
@@ -167,7 +172,7 @@ function miniupnpd_configure_do($verbose = false)
 
         if (!empty($ifaces_active)) {
             /* override wan ip address, common for carp, etc */
-            if (!empty($upnp_config['overridewanip'])) {
+            if (!empty($upnp_config['overridewanip']) && empty($upnp_config['stun_host'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
             /* set upload and download bitrates */
@@ -227,15 +232,10 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "max_lifetime=86400\n";
 
             /* configure STUN server if needed */
-            if (!empty($upnp_config['stun_host'])) {
-                $config_text .= "ext_stun_host=" . ( $upnp_config['stun_host'] );
-                $config_text .= "ext_stun_port=" . ( isset ($upnp_config['stun_port'] ) ? $upnp_config['stun_port'] : 3478 )
-            }
-
-            /* configure ext_ip if needed */
-            / * TODO check IP address is valid */
-            if(empty($upnp_config['stun_host'] && !empty($upnp_config['ext_ip']))) {
-                $config_text .= "ext_ip=" . $upnp_config['ext_ip'];
+            /* TODO block STUN use if ext_ip defined, or vice-versa */
+            if (!empty($upnp_config['stun_host']) && empty($upnp_config['overridewanip'])) {
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']);
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478");
             }
 
             /* write out the configuration */
