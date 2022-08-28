@@ -264,11 +264,12 @@ include("head.inc");
                     </tr>
 
                     <tr>
-                        <td><a id="help_for_override_subnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?gettext("Override interface subnet");?></td>
+                        <td><a id="help_for_override_subnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
                         <td>
-                            <select name="overridesubnet" class="dropdown" id="overridesubnet">
+                            <select name="overridesubnet" class="selectpicker" id="overridesubnet">
+                                <option value="">Interface default</option>
 <?php
-                                for ($i = 32; $i >= 16; $i--) { ?>
+                                for ($i = 32; $i >= 1; $i--) { ?>
                                     <option value="/<?=$i;?>">/<?=$i;?></option>
 <?php
                                 }?>
