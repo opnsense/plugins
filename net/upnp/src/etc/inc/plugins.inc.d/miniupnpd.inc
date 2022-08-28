@@ -150,11 +150,10 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    if(!isset($upnp_config['overridesubnet'])) {
-                        $config_text .= "listening_ip={$if}\n";
-                    }
                     if(isset($upnp_config['overridesubnet'])) {
                         $config_text .= "listening_ip={$if}{$upnp_config['overridesubnet']}\n";
+                    } else {
+                        $config_text .= "listening_ip={$if}\n";
                     }
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
@@ -232,7 +231,6 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "max_lifetime=86400\n";
 
             /* configure STUN server if needed */
-            /* TODO block STUN use if ext_ip defined, or vice-versa */
             if (!empty($upnp_config['stun_host']) && empty($upnp_config['overridewanip'])) {
                 $config_text .= "ext_perform_stun=yes\n";
                 $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) ."\n";
