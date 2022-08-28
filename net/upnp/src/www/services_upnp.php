@@ -267,10 +267,10 @@ include("head.inc");
                         <td><a id="help_for_override_subnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
                         <td>
                             <select name="overridesubnet" class="selectpicker" id="overridesubnet">
-                                <option value="">Interface default</option>
+                                <option value="" <?=!empty($pconfig['overridesubnet']) ? "selected=\"selected\"" : "";?>>Interface default</option>
 <?php
                                 for ($i = 32; $i >= 1; $i--) { ?>
-                                    <option value="/<?=$i;?>">/<?=$i;?></option>
+                                    <option value="/<?=$i;?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == "/".$i ? "selected=\"selected\"" : "";?>>/<?=$i;?></option>
 <?php
                                 }?>
                             </select>
@@ -293,9 +293,9 @@ include("head.inc");
                     <tr>
                         <td><a id="help_for_stun_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Specify STUN port");?></td>
                         <td>
-                            <input name="stun_port" type="text" value="<?=$pconfig['stun_port'];?>" />
+                            <input name="stun_port" type="text" value="<?=empty($pconfig['stun_port']) ? "3478" : $pconfig['stun_port'];?>" />
                             <div class="hidden" data-for="help_for_stun_port">
-                                <?=gettext("STUN server port used to predict external WAN IP.");?>
+                                <?=gettext("STUN server port used to predict external WAN IP. Defaults to 3478 if not set.");?>
                             </div>
                         </td>
                     </tr>

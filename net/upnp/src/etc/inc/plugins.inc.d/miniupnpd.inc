@@ -232,6 +232,9 @@ function miniupnpd_configure_do($verbose = false)
 
             /* configure STUN server if needed */
             if (!empty($upnp_config['stun_host']) && empty($upnp_config['overridewanip'])) {
+                if(empty($upnp_config['stun_port'])) {
+                    $upnp_config['stun_port'] == '3478';
+                }
                 $config_text .= "ext_perform_stun=yes\n";
                 $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) ."\n";
                 $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
