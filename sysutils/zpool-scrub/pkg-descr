@@ -1,0 +1,1 @@
+Begins a ZFS pool scrub. The scrub examines all data in the specified pool to verify that it checksums correctly.
