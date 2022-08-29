@@ -9,9 +9,11 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                <name type="HostnameField">
+                <name type="TextField">
                     <default></default>
                     <Required>Y</Required>
+                    <mask>/^(.){1,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </name>
                 <pubkey type="Base64Field">
                     <Required>Y</Required>
