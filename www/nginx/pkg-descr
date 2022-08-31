@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.30
+
+* add support for autoblock TTL
+
 1.29
 
 * fixed a typo in the trusted tls fingerprints db creation part of setup.php
