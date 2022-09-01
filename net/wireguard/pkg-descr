@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.12
+
+* Adjust validation for naming local instance and endpoints
+
 1.11
 
 * Add script for renewal of Wireguard DNS-based entries for stale connections (#2956)
