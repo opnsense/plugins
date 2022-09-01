@@ -318,3 +318,5 @@ file_put_contents(
     empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
 );
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
+
+passthru('/usr/local/etc/rc.d/php-fpm start');
