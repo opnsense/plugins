@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
-frr_var_script="/usr/local/opnsense/scripts/quagga/setup.sh"
+frr_setup="/usr/local/opnsense/scripts/quagga/setup.sh"
 frr_enable="YES"
 {% if helpers.exists('OPNsense.quagga.general.enablecarp') and OPNsense.quagga.general.enablecarp == '1' %}
 start_precmd="ifconfig | grep 'carp: MASTER'"
