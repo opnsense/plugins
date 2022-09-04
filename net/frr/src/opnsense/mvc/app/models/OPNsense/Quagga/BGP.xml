@@ -205,8 +205,8 @@
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MinimumValue>0</MinimumValue>
+                                <MaximumValue>4294967295</MaximumValue>
                         </number>
                         <action type="OptionField">
                                 <default></default>
@@ -249,8 +249,8 @@
                         <seqnumber type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>10000</MaximumValue>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4294967294</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
                                 <default></default>
@@ -330,8 +330,8 @@
                         <id type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>65535</MaximumValue>
                         </id>
                         <match type="ModelRelationField">
                                 <Model>
