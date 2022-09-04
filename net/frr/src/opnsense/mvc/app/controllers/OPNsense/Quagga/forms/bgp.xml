@@ -31,13 +31,20 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Select the network to advertise, you have to set a Null route via System -> Routes</help>
+        <help>Defines which networks, which are connected to this router, will be advertised over BGP. To announce all defined networks, Network Import-Check can be disabled in advanced settings if required.</help>
+    </field>
+    <field>
+        <id>bgp.networkimportcheck</id>
+        <label>Network Import-Check</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>When enabled (default), BGP only announces networks set at 'Network' if they are present in the routers routing table (alternatively, you can also set a null-route via System -> Routes). If disabled, all configured networks will be announced.</help>
     </field>
     <field>
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
-        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
+        <help>Select other routing sources, which should be redistributed to the other nodes.></help>
         <hint>Type or select a route source.</hint>
     </field>
 </form>
