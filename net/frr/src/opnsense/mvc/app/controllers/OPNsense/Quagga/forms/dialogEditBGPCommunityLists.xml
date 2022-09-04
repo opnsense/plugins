@@ -26,7 +26,7 @@
   <field>
     <id>communitylist.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
