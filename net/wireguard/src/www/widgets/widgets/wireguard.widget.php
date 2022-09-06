@@ -33,12 +33,14 @@ require_once("widgets/include/wireguard.inc");
 $data = trim(configd_run('wireguard showhandshake'));
 
 $empty = strlen($data) == 0;
+foreach($config['OPNsense']['wireguard']['client']['clients']['client'] as $c) $pubkey_to_name[$c['pubkey']] = $c['name'];
 ?>
 
 <table class="table table-striped table-condensed">
     <thead>
         <tr>
             <th><?= gettext("Interface") ?></th>
+            <th><?= gettext("Name") ?></th>
             <th><?= gettext("Endpoint") ?></th>
             <th><?= gettext("Latest Handshake") ?></th>
         </tr>
@@ -61,6 +63,7 @@ $empty = strlen($data) == 0;
 
     <tr>
         <td><?= $item[0] ?></td>
+        <td><?= $pubkey_to_name[$item[1]] ?></td>
         <td><?= gettext(substr($item[1], 0, 10)) ?>...</td>
         <td><?= $latest ?></td>
     </tr>
