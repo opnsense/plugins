@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.maltrail.server.enabled') and OPNsense.maltrail.server.enabled == '1' %}
-maltrailserver_var_script="/usr/local/opnsense/scripts/OPNsense/Maltrail/setup.sh"
+maltrailserver_setup="/usr/local/opnsense/scripts/OPNsense/Maltrail/setup.sh"
 maltrailserver_enable="YES"
 {% else %}
 maltrailserver_enable="NO"
