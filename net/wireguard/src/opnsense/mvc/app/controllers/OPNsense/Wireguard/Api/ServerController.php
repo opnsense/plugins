@@ -38,7 +38,12 @@ class ServerController extends ApiMutableModelControllerBase
 
     public function searchServerAction()
     {
-        return $this->searchBase('servers.server', array("enabled", "name", "networks", "pubkey", "port", "tunneladdress"));
+        $search = $this->searchBase('servers.server', array("enabled", "instance", "peers", "name", "networks", "pubkey", "port", "tunneladdress"));
+        // prepend "wg" to all instance IDs to use as interface name
+        foreach ($search["rows"] as $key => $server) {
+            $search["rows"][$key]["interface"] = "wg" . $server["instance"];
+        }
+        return $search;
     }
 
     public function getServerAction($uuid = null)

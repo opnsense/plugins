@@ -79,8 +79,10 @@
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="interface" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
                     <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Tunnel Address') }}</th>
+                    <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="peers" data-type="string" data-visible="true">{{ lang._('Peers') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -89,7 +91,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td colspan="8"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
