@@ -21,7 +21,7 @@
         <id>client.psk</id>
         <label>Shared Secret</label>
         <type>text</type>
-        <help>Shared secret (PSK) for this peer.</help>
+        <help>Shared secret (PSK) for this peer. You can generate a key using "wg genpsk" on a client with WireGuard installed.</help>
     </field>
     <field>
         <id>client.tunneladdress</id>
@@ -45,8 +45,8 @@
     </field>
     <field>
         <id>client.keepalive</id>
-        <label>Keepalive</label>
+        <label>Keepalive (seconds)</label>
         <type>text</type>
-        <help>Set persistent keepalive interval.</help>
+        <help>Set persistent keepalive interval in seconds.</help>
     </field>
 </form>

@@ -136,7 +136,8 @@ $( document ).ready(function() {
     });
 
     $("#grid-clients").UIBootgrid(
-        {   'search':'/api/wireguard/client/searchClient',
+        {
+            'search':'/api/wireguard/client/searchClient',
             'get':'/api/wireguard/client/getClient/',
             'set':'/api/wireguard/client/setClient/',
             'add':'/api/wireguard/client/addClient/',
@@ -146,7 +147,8 @@ $( document ).ready(function() {
     );
 
     $("#grid-servers").UIBootgrid(
-        {   'search':'/api/wireguard/server/searchServer',
+        {
+            'search':'/api/wireguard/server/searchServer',
             'get':'/api/wireguard/server/getServer/',
             'set':'/api/wireguard/server/setServer/',
             'add':'/api/wireguard/server/addServer/',

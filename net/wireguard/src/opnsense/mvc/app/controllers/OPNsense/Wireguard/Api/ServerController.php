@@ -40,11 +40,13 @@ class ServerController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('servers.server', array("enabled", "name", "networks", "pubkey", "port", "tunneladdress"));
     }
+
     public function getServerAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('server', 'servers.server', $uuid);
     }
+
     public function addServerAction($uuid = null)
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
@@ -66,10 +68,12 @@ class ServerController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
+
     public function delServerAction($uuid)
     {
         return $this->delBase('servers.server', $uuid);
     }
+
     public function setServerAction($uuid = null)
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
@@ -91,6 +95,7 @@ class ServerController extends ApiMutableModelControllerBase
         }
         return array("result" => "failed");
     }
+
     public function toggleServerAction($uuid)
     {
         return $this->toggleBase('servers.server', $uuid);
