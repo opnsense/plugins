@@ -30,7 +30,7 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Interfaces') }}</a></li>
     <li><a data-toggle="tab" href="#clients">{{ lang._('Peers') }}</a></li>
-    <li><a data-toggle="tab" href="#showconf">{{ lang._('Show Configuration') }}</a></li>
+    <li><a data-toggle="tab" href="#showconf">{{ lang._('Status') }}</a></li>
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
@@ -113,7 +113,7 @@
     </div>
 </div>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardClient,'id':'dialogEditWireguardClient','label':lang._('Edit Endpoint')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardClient,'id':'dialogEditWireguardClient','label':lang._('Edit Peer')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardServer,'id':'dialogEditWireguardServer','label':lang._('Edit Local Configuration')])}}
 
 <script>
@@ -159,6 +159,10 @@ $( document ).ready(function() {
             'toggle':'/api/wireguard/server/toggleServer/'
         }
     );
+
+    // Call update funcs once when page loaded
+    update_showconf();
+    update_showhandshake();
 
     // Call function update_neighbor with a auto-refresh of 5 seconds
     setInterval(update_showconf, 5000);
