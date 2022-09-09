@@ -59,6 +59,12 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
 $(window).on("load", function() {
     function wgGenerateRow(name, interface, peerName, latestHandshake, status)
     {
+
+        // More user friendly naming
+        if (latestHandshake === "0000-00-00 00:00:00+00:00") {
+            latestHandshake = "<?= gettext("Never connected") ?>";
+        }
+
         var tr = ''
         +'<tr>'
         +'    <td>' + name + '</td>'
