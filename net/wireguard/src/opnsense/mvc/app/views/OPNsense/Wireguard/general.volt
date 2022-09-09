@@ -28,8 +28,8 @@
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#servers">{{ lang._('Interfaces') }}</a></li>
-    <li><a data-toggle="tab" href="#clients">{{ lang._('Peers') }}</a></li>
+    <li><a data-toggle="tab" href="#servers">{{ lang._('Local') }}</a></li>
+    <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
     <li><a data-toggle="tab" href="#showconf">{{ lang._('Status') }}</a></li>
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
@@ -50,8 +50,8 @@
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="serveraddress" data-type="string" data-visible="true">{{ lang._('Peer Address') }}</th>
-                    <th data-column-id="serverport" data-type="string" data-visible="true">{{ lang._('Peer Port') }}</th>
+                    <th data-column-id="serveraddress" data-type="string" data-visible="true">{{ lang._('Endpoint Address') }}</th>
+                    <th data-column-id="serverport" data-type="string" data-visible="true">{{ lang._('Endpoint Port') }}</th>
                     <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Allowed IPs') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
