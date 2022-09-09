@@ -40,7 +40,7 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
         <tr>
             <th><?= gettext("Name") ?></th>
             <th><?= gettext("Interface") ?></th>
-            <th><?= gettext("Peer") ?></th>
+            <th><?= gettext("Endpoint") ?></th>
             <th><?= gettext("Latest Handshake") ?></th>
         </tr>
     </thead>
