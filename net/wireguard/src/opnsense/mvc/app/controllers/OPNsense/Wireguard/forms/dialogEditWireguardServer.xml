@@ -61,10 +61,10 @@
     </field>
     <field>
         <id>server.peers</id>
-        <label>Peers</label>
+        <label>Endpoint</label>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>List of peers for this server.</help>
+        <help>List of endpoint for this server. (Also known as Peer)</help>
     </field>
     <field>
         <id>server.disableroutes</id>
