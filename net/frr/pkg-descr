@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.30
+
+* Allow specifying multiple PrefixLists and CommunityLists (contributed by Patrik Kernstock)
+
 1.29
 
 * Add disable-connected-check option and BGP weight option

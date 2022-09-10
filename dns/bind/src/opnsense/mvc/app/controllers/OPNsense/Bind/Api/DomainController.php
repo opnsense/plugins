@@ -39,12 +39,28 @@ class DomainController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'domain';
     protected static $internalModelClass = '\OPNsense\Bind\Domain';
 
-    public function searchDomainAction()
+    public function searchMasterDomainAction()
     {
-        return $this->searchBase('domains.domain', array(
-            "enabled", "type", "masterip", "domainname", "allowtransfer", "allowquery", "ttl",
-            "refresh", "retry", "expire", "negative", "mailadmin", "dnsserver"
-        ));
+        return $this->searchBase(
+            'domains.domain',
+            [   "enabled", "type", "domainname", "ttl", "refresh", "retry", "expire", "negative" ],
+            "domainname",
+            function ($record) {
+                return $record->type->getNodeData()["master"]["selected"] === 1;
+            }
+        );
+    }
+
+    public function searchSlaveDomainAction()
+    {
+        return $this->searchBase(
+            'domains.domain',
+            [   "enabled", "type", "domainname", "masterip" ],
+            "domainname",
+            function ($record) {
+                return $record->type->getNodeData()["slave"]["selected"] === 1;
+            }
+        );
     }
 
     public function getDomainAction($uuid = null)
@@ -53,9 +69,14 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
 
-    public function addDomainAction($uuid = null)
+    public function addMasterDomainAction($uuid = null)
     {
-        return $this->addBase('domain', 'domains.domain');
+        return $this->addBase('domain', 'domains.domain', ['type' => 'master']);
+    }
+
+    public function addSlaveDomainAction($uuid = null)
+    {
+        return $this->addBase('domain', 'domains.domain', ['type' => 'slave']);
     }
 
     public function delDomainAction($uuid)

@@ -59,3 +59,8 @@ function zerotier_services()
 
     return $services;
 }
+
+function zerotier_devices()
+{
+    return [['pattern' => '^zt', 'volatile' => true]];
+}

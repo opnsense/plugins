@@ -16,7 +16,7 @@ Plugin Changelog
 * rfc5746, rfc7507 and rfc8701 are taken into account on compiling and comparing tls fingerprints
 * the reason for scoring the connection as intercepted is added to the X-TLS-Client-Intercepted header. check backend settings if using this feature
 * http_post hook added to be able to map global variables
-* PHP 8 compatibility for crypt() call
+* PHP 8 compatibility: change crypt() to password_hash()
 
 1.28
 

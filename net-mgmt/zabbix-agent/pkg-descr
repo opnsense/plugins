@@ -12,6 +12,14 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.13
+
+Added:
+* Plugin variant for Zabbix Agent 6.2
+
+Removed:
+* Plugin variant for Zabbix Agent 5.4
+
 1.12
 
 Added:
