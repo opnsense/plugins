@@ -53,7 +53,6 @@ function openconnect_services()
     return $services;
 }
 
-
 function openconnect_interfaces()
 {
     $interfaces = array();
@@ -81,4 +80,9 @@ function openconnect_xmlrpc_sync()
     $result['description'] = gettext('OpenConnect');
     $result['services'] = ['openconnect'];
     return array($result);
+}
+
+function openconnect_devices()
+{
+    return [['pattern' => '^ocvpn', 'volatile' => true]];
 }

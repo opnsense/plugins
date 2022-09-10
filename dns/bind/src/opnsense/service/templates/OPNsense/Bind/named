@@ -1,5 +1,4 @@
 {% if helpers.exists('OPNsense.bind.general.enabled') and OPNsense.bind.general.enabled == '1' %}
-named_var_script="/usr/local/opnsense/scripts/OPNsense/Bind/setup.sh"
 {% if helpers.exists('OPNsense.bind.general.disablev6') and OPNsense.bind.general.disablev6 == '1' %}
 named_flags="-4"
 {% endif %}
@@ -8,6 +7,7 @@ named_flags="-4"
 named_dnsbl="{{ OPNsense.bind.dnsbl.type }}"
 {% endif %}
 {% endif %}
+named_setup="/usr/local/opnsense/scripts/OPNsense/Bind/setup.sh"
 named_enable="YES"
 {% else %}
 named_enable="NO"

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2022 Frank Wall
+ * Copyright (C) 2022 Jan Winkler
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,26 +26,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Run acme.sh deploy hook vault
+ * udr API
  * @package OPNsense\AcmeClient
  */
-class AcmeVault extends Base implements LeAutomationInterface
+class DnsUdr extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['VAULT_ADDR'] = (string)$this->config->acme_vault_url;
-        if (!empty((string)$this->config->acme_vault_prefix)) {
-            $this->acme_env['VAULT_PREFIX'] = (string)$this->config->acme_vault_prefix;
-        }
-        if ((string)$this->config->acme_vault_kvv2 == 1) {
-            $this->acme_env['VAULT_KV_V2'] = 1;
-        }
-        $this->acme_args[] = '--deploy-hook vault';
-        return true;
+        $this->acme_env['UDR_USER'] = (string)$this->config->dns_udr_user;
+        $this->acme_env['UDR_PASS'] = (string)$this->config->dns_udr_password;
     }
 }

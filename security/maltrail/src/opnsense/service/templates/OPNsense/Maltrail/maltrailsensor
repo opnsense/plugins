@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.maltrail.sensor.enabled') and OPNsense.maltrail.sensor.enabled == '1' %}
-maltrailsensor_var_script="/usr/local/opnsense/scripts/OPNsense/Maltrail/setup.sh"
+maltrailsensor_setup="/usr/local/opnsense/scripts/OPNsense/Maltrail/setup.sh"
 maltrailsensor_enable="YES"
 {% else %}
 maltrailsensor_enable="NO"

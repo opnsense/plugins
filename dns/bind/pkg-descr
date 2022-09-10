@@ -9,6 +9,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.24
+
+* Separate tables for master and slave zones in UI (contributed by Patrick M. Hausen and Manuel Faux)
+
 1.23
 
 * Avoid errors with repeated primary servers and keys (contributed by Michael Newton)

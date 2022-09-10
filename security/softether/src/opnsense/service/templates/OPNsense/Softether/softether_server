@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.softether.general.enabled') and OPNsense.softether.general.enabled == '1' %}
-softether_server_var_script="/usr/local/opnsense/scripts/OPNsense/Softether/setup.sh"
+softether_server_setup="/usr/local/opnsense/scripts/OPNsense/Softether/setup.sh"
 softether_server_enable="YES"
 {% if helpers.exists('OPNsense.softether.general.enablecarp') and OPNsense.softether.general.enablecarp == '1' %}
 required_files="/var/run/softether/CARP_MASTER"

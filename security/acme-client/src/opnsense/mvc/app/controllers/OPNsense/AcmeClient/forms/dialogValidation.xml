@@ -819,6 +819,21 @@
         <help>MailinaBox Server FQDN</help>
     </field>
     <field>
+        <label>Mythic Beasts</label>
+        <type>header</type>
+        <style>table_dns table_dns_mythic_beasts</style>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_secret</id>
+        <label>Secret</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Namecheap</label>
         <type>header</type>
         <style>table_dns table_dns_namecheap</style>
@@ -1097,6 +1112,21 @@
         <label>API Key</label>
         <type>textbox</type>
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
+        <label>united-domains Reselling</label>
+        <type>header</type>
+        <style>table_dns table_dns_udr</style>
+    </field>
+    <field>
+        <id>validation.dns_udr_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_udr_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>UnoEuro</label>
@@ -1380,7 +1410,7 @@
     <field>
         <id>validation.dns_kas_authdata</id>
         <label>KAS Authdata</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <id>validation.dns_kas_authtype</id>

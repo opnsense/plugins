@@ -153,3 +153,11 @@ rebase:
 	@git checkout stable/${PLUGIN_ABI}
 	@git rebase -i
 	@git checkout master
+
+log:
+	@git log --stat -p stable/${PLUGIN_ABI}
+
+push:
+	@git checkout stable/${PLUGIN_ABI}
+	@git push
+	@git checkout master

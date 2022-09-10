@@ -473,6 +473,7 @@
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
                         <dns_namesilo>Namesilo.com</dns_namesilo>
@@ -492,6 +493,7 @@
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
                         <dns_transip>Transip</dns_transip>
+                        <dns_udr>united-domains Reselling</dns_udr>
                         <dns_unoeuro>UnoEuro</dns_unoeuro>
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
@@ -831,6 +833,12 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_mythic_beasts_key type="TextField">
+                    <Required>N</Required>
+                </dns_mythic_beasts_key>
+                <dns_mythic_beasts_secret type="TextField">
+                    <Required>N</Required>
+                </dns_mythic_beasts_secret>
                 <dns_namecheap_user type="TextField">
                     <Required>N</Required>
                 </dns_namecheap_user>
@@ -964,6 +972,12 @@
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_udr_user type="TextField">
+                    <Required>N</Required>
+                </dns_udr_user>
+                <dns_udr_password type="TextField">
+                    <Required>N</Required>
+                </dns_udr_password>
                 <dns_uno_key type="TextField">
                     <Required>N</Required>
                 </dns_uno_key>
@@ -1066,9 +1080,10 @@
                 </dns_kas_authdata>
                 <dns_kas_authtype type="OptionField">
                     <Required>N</Required>
-                    <default>sha1</default>
+                    <default>plain</default>
                     <OptionValues>
-                        <sha1>SHA1</sha1>
+                        <plain>plain</plain>
+                        <sha1>SHA1 (deprecated in December 2022)</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
                 <dns_desec_token type="TextField">
