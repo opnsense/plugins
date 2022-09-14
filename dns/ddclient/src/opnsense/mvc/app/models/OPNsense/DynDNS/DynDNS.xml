@@ -78,7 +78,7 @@
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
-                    <mask>/^([a-zA-Z0-9\-.@_:+])*$/u</mask>
+                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
