@@ -8,6 +8,10 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.1
+
+* fixed live logs
+
 1.0
 
 * first non-devel release
