@@ -48,6 +48,9 @@
  *  Linode                      - Last Tested: 25 February 2020
  *  Linode v6                   - Last Tested: 25 February 2020
  *  Namecheap                   - Last Tested: 31 August 2010
+ *  Njal.la                     - Last Tested:
+ *  Njal.la v6                  - Last Tested:
+ *  Njal.la v4 + v6             - Last Tested:
  *  No-IP                       - Last Tested: 15 May 2020
  *  ODS                         - Last Tested: 02 August 2005
  *  Oray                        - Last Tested: 26 May 2017
@@ -166,9 +169,15 @@ class updatedns
                     $this->_error(5);
                 }
                 break;
+            case 'desec':
+            case 'desec-v4-v6':
+            case 'desec-v6':
             case 'linode':
             case 'linode-v6':
             case 'namecheap':
+            case 'njalla':
+            case 'njalla-v4-v6':
+            case 'njalla-v6':
             case '1984-hosting':
                 if (!$dnsPass) {
                     $this->_error(4);
@@ -227,15 +236,6 @@ class updatedns
                     $this->_error(9);
                 }
                 break;
-            case 'desec':
-            case 'desec-v4-v6':
-            case 'desec-v6':
-                if (!$dnsPass) {
-                    $this->_error(4);
-                } elseif (!$dnsHost) {
-                    $this->_error(5);
-                }
-                break;
             default:
                 if (!$dnsUser) {
                     $this->_error(3);
@@ -255,6 +255,8 @@ class updatedns
             case 'custom-v6':
             case 'desec-v4-v6':
             case 'desec-v6':
+            case 'njalla-v4-v6':
+            case 'njalla-v6':
             case 'digitalocean-v6':
             case 'dynv6-v6':
             case 'godaddy-v6':
@@ -352,6 +354,9 @@ class updatedns
                 case 'linode-v6':
                 case 'loopia':
                 case 'namecheap':
+                case 'njalla':
+                case 'njalla-v4-v6':
+                case 'njalla-v6':
                 case 'noip':
                 case 'noip-free':
                 case 'ods':
@@ -1313,6 +1318,50 @@ class updatedns
                 curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsHost . ':' . $this->_dnsPass);
                 curl_setopt($ch, CURLOPT_URL, $server . $url);
                 break;
+            case 'njalla':
+                /*
+                * https://njal.la/docs/ddns/
+                * dnsHost should be the domain
+                * dnsPass should be the token
+                */
+                $server = "https://njal.la/update/";
+                if ($this->_dnsIP) {
+                    $url = '?h=' . $this->_dnsHost . '&k=' . $this->_dnsPass . '&a=' . $this->_dnsIP;
+                } else {
+                    $url = '?h=' . $this->_dnsHost . '&k=' . $this->_dnsPass . '&auto';
+                }
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
+            case 'njalla-v4-v6':
+                /*
+                * https://njal.la/docs/ddns/
+                * dnsHost should be the domain
+                * dnsPass should be the token
+                */
+                // temporarily disable useIPv6 to get IPv4 Address
+                $this->_useIPv6 = false;
+                $ipv4 = $this->_checkIP();
+                $this->_useIPv6 = true;
+
+                $server = "https://njal.la/update/";
+                $url = '?h=' . $this->_dnsHost . '&k=' . $this->_dnsPass . '&a=' . $ipv4 . '&aaaa=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
+            case 'njalla-v6':
+                /*
+                * https://njal.la/docs/ddns/
+                * dnsHost should be the domain
+                * dnsPass should be the token
+                */
+                $server = "https://njal.la/update/";
+                $url = '?h=' . $this->_dnsHost . '&k=' . $this->_dnsPass . '&aaaa=' . $this->_dnsIP;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+                curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V6);
+                curl_setopt($ch, CURLOPT_URL, $server . $url);
+                break;
             default:
                 break;
         }
@@ -1823,7 +1872,7 @@ class updatedns
                 } elseif ($http_code == 404) {
                     $status = 'Dynamic DNS: (Error) Resource not found';
                 } else {
-                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    $status = "Dynamic DNS: (Error) Response not handled check the following: {$data}";
                     log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
                     $this->_debug("Unknown HTTP status: " . $http_code);
                 }
@@ -1845,7 +1894,22 @@ class updatedns
                     $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
                     $successful_update = true;
                 } else {
-                    $status = "Dynamic DNS: (Error) Repsonse not handled check the following: {$data}";
+                    $status = "Dynamic DNS: (Error) Response not handled, check the following: {$data}";
+                    log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
+                    $this->_debug("Unknown HTTP status: " . $http_code);
+                }
+                break;
+            case 'njalla':
+            case 'njalla-v4-v6':
+            case 'njalla-v6':
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if ($http_code == 200 && preg_match('/good/i', $data)) {
+                    $status = 'Dynamic DNS: (Success) IP Address Updated Successfully!';
+                    $successful_update = true;
+                } elseif ($http_code == 401 && preg_match('/invalid host or key/i', $data)) {
+                    $status = 'Dynamic DNS: (Error) Access to the resource is denied. Invalid host name or key.';
+                } else {
+                    $status = "Dynamic DNS: (Error) Response not handled, check the following: {$data}";
                     log_error("Dynamic DNS: HTTP status: {$http_code} PAYLOAD: {$data}");
                     $this->_debug("Unknown HTTP status: " . $http_code);
                 }
