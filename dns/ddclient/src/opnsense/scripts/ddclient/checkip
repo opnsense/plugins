@@ -72,7 +72,7 @@ if __name__ == '__main__':
     inputargs = parser.parse_args()
 
     # use curl to fetch data, so we can optionally use "--interface"
-    params = ['/usr/local/bin/curl', '-m', '10']
+    params = ['/usr/local/bin/curl', '-m', '30']
     if inputargs.interface.strip() != "":
         params.append("--interface")
         params.append(inputargs.interface)
