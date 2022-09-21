@@ -111,6 +111,7 @@
                         <web_freedns>freedns</web_freedns>
                         <web_googledomains>googledomains</web_googledomains>
                         <web_he>he</web_he>
+                        <web_icanhazip value="icanhazip">icanhazip</web_icanhazip>
                         <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
                         <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
                         <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>

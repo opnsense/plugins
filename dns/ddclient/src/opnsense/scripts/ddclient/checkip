@@ -35,6 +35,7 @@ service_list = {
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
   'googledomains': '%s://domains.google.com/checkip',
   'he': '%s://checkip.dns.he.net/',
+  'icanhazip': '%s://icanhazip.com/',
   'ip4only.me': '%s://ip4only.me/api/',
   'ip6only.me': '%s://ip6only.me/api/',
   'ipify-ipv4': '%s://api.ipify.org/',
