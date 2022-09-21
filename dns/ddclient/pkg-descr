@@ -13,6 +13,7 @@ Plugin Changelog
 * Make service status and stop more reliable
 * Time out checkip script after 10 seconds
 * allow % characters in usernames (rev 2)
+* add icanhazip.com as a checkip provider (rev 3)
 
 1.7
 
