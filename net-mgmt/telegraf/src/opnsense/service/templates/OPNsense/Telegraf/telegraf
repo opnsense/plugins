@@ -6,6 +6,7 @@ telegraf_group="wheel"
 telegraf_var_script="/usr/local/opnsense/scripts/OPNsense/Telegraf/setup.sh"
 telegraf_enable="YES"
 telegraf_confdir="/usr/local/etc/telegraf.d"
+telegraf_flags=""
 {% else %}
 telegraf_enable="NO"
 {% endif %}
