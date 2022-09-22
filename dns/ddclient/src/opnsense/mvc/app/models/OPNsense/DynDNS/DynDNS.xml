@@ -126,6 +126,12 @@
                         <if>Interface</if>
                     </OptionValues>
                 </checkip>
+                <checkip_timeout type="IntegerField">
+                    <default>10</default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </checkip_timeout>
                 <force_ssl type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>

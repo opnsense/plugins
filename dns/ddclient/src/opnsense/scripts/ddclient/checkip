@@ -70,10 +70,11 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--service', help='service name', choices=service_list.keys(), required=True)
     parser.add_argument('-i', '--interface', help='interface', type=str, default='')
     parser.add_argument('-t', '--tls', help='enforce tls', choices=['0', '1'], default='0')
+    parser.add_argument('--timeout', help='timeout', type=str, default='10')
     inputargs = parser.parse_args()
 
     # use curl to fetch data, so we can optionally use "--interface"
-    params = ['/usr/local/bin/curl', '-m', '10']
+    params = ['/usr/local/bin/curl', '-m', inputargs.timeout]
     if inputargs.interface.strip() != "":
         params.append("--interface")
         params.append(inputargs.interface)

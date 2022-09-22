@@ -66,6 +66,12 @@
         <help>How to determine the address to use for this host</help>
     </field>
     <field>
+        <id>account.checkip_timeout</id>
+        <label>Check ip timeout</label>
+        <type>text</type>
+        <help>How long to wait before the checkip process times out</help>
+    </field>
+    <field>
         <id>account.force_ssl</id>
         <label>Force SSL</label>
         <type>checkbox</type>
