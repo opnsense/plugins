@@ -18,6 +18,17 @@
         <server type="TextField">
             <Required>N</Required>
         </server>
+      <serverport type="TextField">
+            <Required>N</Required>
+        </serverport>
+        <ldapcert type="CertificateField">
+            <Type>cert</Type>
+            <Required>N</Required>
+        </ldapcert>
+        <ldapstarttls type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </ldapstarttls>
         <identity type="TextField">
             <Required>N</Required>
         </identity>
