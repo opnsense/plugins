@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.28.0</version>
+  <version>1.30</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -8,6 +8,11 @@
         <default>0</default>
         <Required>Y</Required>
       </enabled>
+      <ban_ttl type="IntegerField">
+        <default>0</default>
+        <MinimumValue>0</MinimumValue>
+        <Required>Y</Required>
+      </ban_ttl>
     </general>
 
     <webgui>
