@@ -68,7 +68,7 @@ class Git extends Base implements IBackupProvider
            ],
            [
              "name" => "privkey",
-             "type" => "textarea",
+             "type" => "passwordarea",
              "label" => gettext("SSH private key"),
              "help" => gettext("When provided, ssh based authentication will be used."),
              "value" => null

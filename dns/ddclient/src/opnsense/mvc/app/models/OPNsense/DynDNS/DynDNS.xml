@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <description>
         Dynamic DNS client
     </description>
@@ -78,7 +78,7 @@
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
-                    <mask>/^([a-zA-Z0-9\-.@_:+])*$/u</mask>
+                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
@@ -111,6 +111,7 @@
                         <web_freedns>freedns</web_freedns>
                         <web_googledomains>googledomains</web_googledomains>
                         <web_he>he</web_he>
+                        <web_icanhazip>icanhazip</web_icanhazip>
                         <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
                         <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
                         <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
@@ -125,6 +126,12 @@
                         <if>Interface</if>
                     </OptionValues>
                 </checkip>
+                <checkip_timeout type="IntegerField">
+                    <default>10</default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </checkip_timeout>
                 <force_ssl type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -136,7 +143,7 @@
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^(.){1,255}$/u</mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
             </account>
