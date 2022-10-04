@@ -6,6 +6,12 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.9
+
+* Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
+* Configurable checkip (contributed by Christian Schulze)
+* Allow % characters in usernames
+
 1.8
 
 * Add a force action available via cron
