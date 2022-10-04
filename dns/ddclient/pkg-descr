@@ -8,7 +8,8 @@ Plugin Changelog
 
 1.9
 
-* Add icanhazip.com as a checkip provider
+* Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
+* Configurable checkip (contributed by Christian Schulze)
 * Allow % characters in usernames
 
 1.8
