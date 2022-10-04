@@ -43,7 +43,7 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("crowdsec crowdsec-status");
 
-        $status = "unkown";
+        $status = "unknown";
         if (strpos($response, "not running") > 0) {
             $status = "stopped";
         } elseif (strpos($response, "is running") > 0) {
