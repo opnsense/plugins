@@ -11,6 +11,9 @@ Plugin Changelog
 Added:
 * add support for req.ssl_hello_type (#2311)
 
+Fixed:
+* fix unix sockets in chrooted environment (#3093)
+
 3.11
 
 Added:
