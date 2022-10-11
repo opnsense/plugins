@@ -1599,6 +1599,7 @@
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
+                        <ssl_hello_type>SSL Hello Type</ssl_hello_type>
                         <src>Source IP matches specified IP</src>
                         <src_is_local>Source IP is local</src_is_local>
                         <src_port>Source IP: TCP source port</src_port>
@@ -1764,6 +1765,15 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </ssl_c_ca_commonname>
+                <ssl_hello_type type="OptionField">
+                    <Required>N</Required>
+                    <default>x1</default>
+                    <OptionValues>
+                        <x0>0 - no client hello</x0>
+                        <x1>1 - client hello</x1>
+                        <x2>2 - server hello</x2>
+                    </OptionValues>
+                </ssl_hello_type>
                 <src type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
