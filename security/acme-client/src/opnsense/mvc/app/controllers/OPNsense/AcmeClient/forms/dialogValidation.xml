@@ -128,8 +128,7 @@
         <id>validation.dns_sleep</id>
         <label>DNS Sleep Time</label>
         <type>text</type>
-        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.
-            For public DNS validation each 10 seconds up to 20 minutes, instead of fixed DNS sleep time set value to 0.</help>
+        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 0 seconds, which causes Acme Client to check public DNS services every 10 seconds for up to 20 minutes. If set to a non-zero value, a fixed DNS sleep time will be used and the local DNS servers will be queried instead. A DNS sleep time of 120 seconds or more is recommended for some DNS APIs.</help>
         <hint>0 for public DNS check or 1-84600s</hint>
     </field>
     <field>

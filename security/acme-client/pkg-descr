@@ -14,9 +14,13 @@ https://github.com/acmesh-official/acme.sh/wiki/dnsapi2#151-use-selfhost-dns-api
 
 Added:
 * add support for Google CA (#3029)
+* add support for querying public DNS services (#3079)
 
 Fixed:
 * fix Selfhost DNS API (#3122)
+
+Changed:
+* change default DNS sleep time to 0 (3079)
 
 3.13
 
