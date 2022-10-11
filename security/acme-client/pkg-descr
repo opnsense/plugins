@@ -9,9 +9,14 @@ Plugin Changelog
 ================
 
 3.14
+NOTE: Users of Selfhost need to manually fix their configuration, see
+https://github.com/acmesh-official/acme.sh/wiki/dnsapi2#151-use-selfhost-dns-api
 
 Added:
 * add support for Google CA (#3029)
+
+Fixed:
+* fix Selfhost DNS API (#3122)
 
 3.13
 
@@ -28,7 +33,7 @@ Added:
 * new automation: upload certificate to Vault (#2796)
 
 Fixed:
-* Re-order function parameters due to PHP8 deprecation notice (#3043)
+* re-order function parameters due to PHP8 deprecation notice (#3043)
 
 Changed:
 * simplyfi DNS service names
@@ -37,7 +42,7 @@ Changed:
 3.11
 
 Fixed:
-* Add missing <style> field for TransIP (#2981)
+* add missing <style> field for TransIP (#2981)
 
 3.10
 
