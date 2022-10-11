@@ -15,6 +15,9 @@ Fixed:
 * fix unix sockets in chrooted environment (#3093)
 * fix peers by automatically configuring the local peer (#3114)
 
+Changed:
+* update HAProxy documentation URLs
+
 3.11
 
 Added:
