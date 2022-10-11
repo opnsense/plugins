@@ -148,6 +148,8 @@
                     <OptionValues>
                         <buypass>Buypass</buypass>
                         <buypass_test>Buypass Test CA</buypass_test>
+                        <google>Google</google>
+                        <google_test>Google Test CA</google_test>
                         <letsencrypt>Let's Encrypt [default]</letsencrypt>
                         <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
                         <sslcom>SSL.com</sslcom>

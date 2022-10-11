@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.14
+
+Added:
+* add support for Google CA (#3029)
+
 3.13
 
 Added:
