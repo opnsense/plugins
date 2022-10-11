@@ -1065,16 +1065,10 @@
         <type>password</type>
     </field>
     <field>
-        <id>validation.dns_selfhost_rid</id>
-        <label>rid</label>
-        <type>text</type>
-        <help>Please create the TXT Record with Subdomain _acme-challenge first, than you can get the ID from the edit page.</help>
-    </field>
-    <field>
-        <id>validation.dns_selfhost_rid2</id>
-        <label>rid2</label>
-        <type>text</type>
-        <help>Please create a second TXT Record with Subdomain _acme-challenge (needed to support ACME v2).</help>
+        <id>validation.dns_selfhost_map</id>
+        <label>RID Mapping</label>
+        <type>textbox</type>
+        <help>Please create the TXT Record with Subdomain _acme-challenge first, than you can get the ID from the edit page. Up to two RIDs per fulldomain are supported but at least one must be set, e.g. _acme-challenge.domain.net:RID:RI>
     </field>
     <field>
         <label>Servercow</label>
