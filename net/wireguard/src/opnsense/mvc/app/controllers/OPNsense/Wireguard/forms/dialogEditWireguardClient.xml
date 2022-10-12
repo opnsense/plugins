@@ -45,7 +45,7 @@
     </field>
     <field>
         <id>client.keepalive</id>
-        <label>Keepalive (seconds)</label>
+        <label>Keepalive Interval</label>
         <type>text</type>
         <help>Set persistent keepalive interval in seconds.</help>
     </field>
