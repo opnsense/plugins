@@ -15,12 +15,12 @@
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
+    <help>Route-map name to match and set your patterns, it will be enabled via the neighbor configuration.</help>
   </field>
   <field>
     <id>routemap.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
