@@ -92,7 +92,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="8"></td>
+                    <td colspan="7"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
