@@ -3,7 +3,7 @@
     <id>prefixlist.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
+    <help>If this Prefix-List should be enabled.</help>
   </field>
     <field>
     <id>prefixlist.description</id>
@@ -27,7 +27,7 @@
     <id>prefixlist.seqnumber</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL sequence number (10-10000)</help>
+    <help>The ACL sequence number (1-4294967294)</help>
   </field>
   <field>
     <id>prefixlist.action</id>
