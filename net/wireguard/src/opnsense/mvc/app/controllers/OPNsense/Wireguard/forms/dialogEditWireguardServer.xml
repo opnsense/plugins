@@ -15,19 +15,19 @@
         <id>server.instance</id>
         <label>Instance</label>
         <type>info</type>
-        <help>Set the instance number needed for interface calculation. It has to be unique for each instance.</help>
+        <help>This is the instance number to give the wg interface a unique name (wgX).</help>
     </field>
     <field>
         <id>server.pubkey</id>
         <label>Public Key</label>
         <type>text</type>
-        <help>Public key of this instance. After saving you will see here your public key.</help>
+        <help>Public key of this instance. You can specify your own one, or a key will be generated after saving.</help>
     </field>
     <field>
         <id>server.privkey</id>
         <label>Private Key</label>
         <type>text</type>
-        <help>Private key of this instance. After saving you will see here your private key, please keep it safe.</help>
+        <help>Private key of this instance. You can specify your own one, or a key will be generated after saving. Please keep this key safe.</help>
     </field>
     <field>
         <id>server.port</id>
