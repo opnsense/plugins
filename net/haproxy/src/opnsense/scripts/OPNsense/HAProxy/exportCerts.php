@@ -71,7 +71,6 @@ foreach ($configNodes as $key => $value) {
                                         // CRLs require special export
                                         if ($type == 'crl') {
                                             $crl =& lookup_crl($cert_refid);
-                                            crl_update($crl);
                                             $pem_content = base64_decode($crl['text']);
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
