@@ -41,6 +41,7 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
             <th><?= gettext("Name") ?></th>
             <th><?= gettext("Interface") ?></th>
             <th><?= gettext("Endpoint") ?></th>
+            <th><?= gettext("Public Key") ?></th>
             <th><?= gettext("Latest Handshake") ?></th>
         </tr>
     </thead>
@@ -48,7 +49,7 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
 
     <?php if (!$enabled): ?>
     <tr>
-        <td colspan="4"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
+        <td colspan="5"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
     </tr>
     <?php endif; ?>
 
@@ -57,13 +58,14 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
 
 <script>
 $(window).on("load", function() {
-    function wgGenerateRow(name, interface, peerName, latestHandshake, status)
+    function wgGenerateRow(name, interface, peerName, publicKey, latestHandshake, status)
     {
         var tr = ''
         +'<tr>'
         +'    <td>' + name + '</td>'
         +'    <td>' + interface + '</td>'
         +'    <td>' + peerName  + '</td>'
+        +'    <td>' + publicKey  + '</td>'
         +'    <td>' + latestHandshake + '</td>'
         +'</tr>';
 
@@ -87,6 +89,7 @@ $(window).on("load", function() {
                 obj.name,
                 obj.interface,
                 peer.name,
+                peer.publicKey,
                 peer.lastHandshake,
                 status
             );

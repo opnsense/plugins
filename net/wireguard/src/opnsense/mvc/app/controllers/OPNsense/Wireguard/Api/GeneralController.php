@@ -56,6 +56,7 @@ class GeneralController extends ApiMutableModelControllerBase
             $peers[$peerUuid] = [
                 "name"      => (string)  $client->name,
                 "enabled"   => (integer) $client->enabled,
+                "publicKey" => (string)  $client->pubkey,
             ];
         }
 
