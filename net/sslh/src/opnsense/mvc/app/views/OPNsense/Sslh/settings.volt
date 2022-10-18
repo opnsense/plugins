@@ -1,7 +1,6 @@
-{##
- #
- # OPNsense® is Copyright © 2014 – 2018 by Deciso B.V.
- # This file is Copyright © 2022 agh1467@protonmail.com
+{#
+ # Copyright (c) 2014-2018 Deciso B.V.
+ # Copyright (c) 2022 agh1467 <agh1467@protonmail.com>
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -24,9 +23,9 @@
  # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  # POSSIBILITY OF SUCH DAMAGE.
-#}
+ #}
 
-{##
+{#
  # This is the template for the settings page.
  #
  # This is the main page for this plugin.

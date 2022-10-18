@@ -1,7 +1,7 @@
 <?php
 
 /*
-    Copyright (C) 2022 agh1467@protonmail.com
+    Copyright (C) 2022 agh1467 <agh1467@protonmail.com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -46,19 +46,16 @@ class SettingsController extends \OPNsense\Base\IndexController
      */
     public function indexAction()
     {
-
-    // Set environment variables for within the Volt templates.
-    $this->view->setVars(
-        [
+        // Set environment variables for within the Volt templates.
+        $this->view->setVars([
             'plugin_name' => 'sslh',
             'api_name' => 'sslh',
             'this_form' => $this->getForm('settings'),
             // controllers/OPNsense/Sslh/forms/settings.xml
-        ]
-    );
+        ]);
 
-    // pick the template as the next view to render
-    $this->view->pick('OPNsense/Sslh/settings');
-    // views/OPNsense/Sslh/settings.volt
+        // pick the template as the next view to render
+        $this->view->pick('OPNsense/Sslh/settings');
+        // views/OPNsense/Sslh/settings.volt
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2022 agh1467@protonmail.com
+ *    Copyright (C) 2022 agh1467 <agh1467@protonmail.com>
  *
  *    All rights reserved.
  *
@@ -73,5 +73,4 @@ class ServiceController extends ApiMutableServiceControllerBase
      * @var string $internalServiceName
      */
     protected static $internalServiceName = 'sslh';
-
 }
