@@ -41,7 +41,7 @@ function miniupnpd_firewall($fw)
 
     $fw->registerAnchor('miniupnpd', 'rdr');
     $fw->registerAnchor('miniupnpd', 'fw');
-    $fw->registerAnchor('miniupnpd', 'nat');
+    $fw->registerAnchor('miniupnpd', 'nat', '', 'head');
     $fw->registerAnchor('miniupnpd', 'binat');
 }
 
