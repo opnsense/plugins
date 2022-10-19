@@ -1,0 +1,2 @@
+sslh.jinja:/etc/rc.conf.d/sslh
+sslh.conf.jinja:/usr/local/etc/sslh.conf
