@@ -35,8 +35,8 @@ virtual_alias_maps = hash:/usr/local/etc/postfix/virtual
 sender_bcc_maps = hash:/usr/local/etc/postfix/senderbcc
 recipient_bcc_maps = hash:/usr/local/etc/postfix/recipientbcc
 sender_canonical_maps = regexp:/usr/local/etc/postfix/sendercanonical
-header_checks = regexp:/usr/local/etc/postfix/header_checks_receiving
-smtp_header_checks = regexp:/usr/local/etc/postfix/header_checks_delivering
+header_checks = pcre:/usr/local/etc/postfix/header_checks_receiving
+smtp_header_checks = pcre:/usr/local/etc/postfix/header_checks_delivering
 smtp_tls_CAfile = /etc/ssl/cert.pem
 ##########################
 # END SYSTEM DEFAULTS
@@ -89,6 +89,9 @@ smtp_tls_wrappermode = yes
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.smtpclient_security') and OPNsense.postfix.general.smtpclient_security != '' %}
+{% if OPNsense.postfix.general.smtpclient_security == 'dane' %}
+smtp_dns_support_level = dnssec
+{% endif %}
 smtp_tls_security_level = {{ OPNsense.postfix.general.smtpclient_security }}
 smtp_tls_loglevel = 1
 {% endif %}
@@ -124,11 +127,11 @@ smtpd_tls_CAfile = /etc/ssl/cert.pem
 smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1, !TLSv1.2
 {% elif OPNsense.postfix.general.tls_server_compatibility == 'intermediate' %}
 smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
-smtpd_tls_dh1024_param_file = /usr/local/etc/dh-parameters.2048
+smtpd_tls_dh1024_param_file = /usr/local/opnsense/data/OPNsense/Postfix/dh-parameters.2048.rfc7919
 smtpd_tls_mandatory_ciphers = medium
 {% elif OPNsense.postfix.general.tls_server_compatibility == 'old' %}
 smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
-smtpd_tls_dh1024_param_file = /usr/local/etc/dh-parameters.2048
+smtpd_tls_dh1024_param_file = /usr/local/opnsense/data/OPNsense/Postfix/dh-parameters.2048.rfc7919
 smtpd_tls_mandatory_ciphers = low
 {% endif %}
 smtpd_tls_protocols = $smtpd_tls_mandatory_protocols
@@ -154,6 +157,7 @@ relayhost = {{ OPNsense.postfix.general.relayhost }}
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/usr/local/etc/postfix/smtp_auth
 smtp_sasl_security_options =
+smtp_sasl_mechanism_filter = !gssapi, !external, static:all
 {% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.permit_sasl_authenticated') and OPNsense.postfix.general.permit_sasl_authenticated == '1' %}

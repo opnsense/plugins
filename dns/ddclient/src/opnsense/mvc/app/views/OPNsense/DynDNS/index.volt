@@ -105,6 +105,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="hostnames" data-type="string">{{ lang._('Hostnames') }}</th>
                 <th data-column-id="username" data-type="string">{{ lang._('Username') }}</th>
                 <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
+                <th data-column-id="current_ip" data-type="string">{{ lang._('Current IP') }}</th>
+                <th data-column-id="current_mtime" data-type="string">{{ lang._('Updated') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>

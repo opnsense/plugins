@@ -40,8 +40,8 @@
         </hash>
         <group type="TextField">
             <Required>N</Required>
-            <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
-            <ValidationMessage>Please provide a valid group name. Allowed characters are a-zA-Z0-9._- and it has to be 1-64 characters long.</ValidationMessage>
+            <mask>/^[() a-zA-Z0-9._-]{1,64}$/</mask>
+            <ValidationMessage>Please provide a valid group name. Allowed are at most 64 characters from a-zA-Z0-9._-() and space.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>

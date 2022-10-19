@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <Apcupsd cssClass="fa fa-battery-full fa-fw">
+            <Settings url="/ui/apcupsd" />
+            <Status url="/ui/apcupsd/status" />
+        </Apcupsd>
+    </Services>
+</menu>

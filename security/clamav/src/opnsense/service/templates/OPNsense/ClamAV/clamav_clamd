@@ -1,7 +1,6 @@
 {% if helpers.exists('OPNsense.clamav.general.enabled') and OPNsense.clamav.general.enabled == '1' %}
-clamav_clamd_var_script="/usr/local/opnsense/scripts/OPNsense/ClamAV/setup.sh"
+clamav_clamd_setup="/usr/local/opnsense/scripts/OPNsense/ClamAV/setup.sh"
 clamav_clamd_enable="YES"
 {% else %}
 clamav_clamd_enable="NO"
 {% endif %}
-clamav_clamd_var_mfs="/var/db/clamav"

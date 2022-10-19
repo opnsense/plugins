@@ -8,7 +8,9 @@ Plugin Changelog
 
 1.4.3
 
+
 * Add support for one-time password generation
+* Permit additional characters in group name
 
 1.4.2
 

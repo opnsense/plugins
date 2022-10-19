@@ -38,13 +38,20 @@ class ServerController extends ApiMutableModelControllerBase
 
     public function searchServerAction()
     {
-        return $this->searchBase('servers.server', array("enabled", "name", "networks", "pubkey", "port", "tunneladdress"));
+        $search = $this->searchBase('servers.server', array("enabled", "instance", "peers", "name", "networks", "pubkey", "port", "tunneladdress"));
+        // prepend "wg" to all instance IDs to use as interface name
+        foreach ($search["rows"] as $key => $server) {
+            $search["rows"][$key]["interface"] = "wg" . $server["instance"];
+        }
+        return $search;
     }
+
     public function getServerAction($uuid = null)
     {
         $this->sessionClose();
         return $this->getBase('server', 'servers.server', $uuid);
     }
+
     public function addServerAction($uuid = null)
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
@@ -59,17 +66,19 @@ class ServerController extends ApiMutableModelControllerBase
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
                 $keyspub = $backend->configdpRun("wireguard genkey", 'public');
-                $node->privkey = $keyspriv;
-                $node->pubkey = $keyspub;
+                $node->privkey = trim($keyspriv);
+                $node->pubkey = trim($keyspub);
             }
             return $this->validateAndSave($node, 'server');
         }
         return array("result" => "failed");
     }
+
     public function delServerAction($uuid)
     {
         return $this->delBase('servers.server', $uuid);
     }
+
     public function setServerAction($uuid = null)
     {
         if ($this->request->isPost() && $this->request->hasPost("server")) {
@@ -84,13 +93,14 @@ class ServerController extends ApiMutableModelControllerBase
                 $backend = new Backend();
                 $keyspriv = $backend->configdpRun("wireguard genkey", 'private');
                 $keyspub = $backend->configdpRun("wireguard genkey", 'public');
-                $node->privkey = $keyspriv;
-                $node->pubkey = $keyspub;
+                $node->privkey = trim($keyspriv);
+                $node->pubkey = trim($keyspub);
             }
             return $this->validateAndSave($node, 'server');
         }
         return array("result" => "failed");
     }
+
     public function toggleServerAction($uuid)
     {
         return $this->toggleBase('servers.server', $uuid);

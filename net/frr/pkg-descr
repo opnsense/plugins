@@ -12,6 +12,18 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.31
+
+* Set no bgp default ipv4-unicast (contributed by vnxme)
+
+1.30
+
+* Allow specifying multiple PrefixLists and CommunityLists (contributed by Patrik Kernstock)
+
+1.29
+
+* Add disable-connected-check option and BGP weight option
+
 1.28
 
 * OSPF6 Interface change networktype and interfacename to dropdown in stead of multi select

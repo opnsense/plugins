@@ -4,4 +4,3 @@ chronyd_enable="YES"
 {% else %}
 chronyd_enable="NO"
 {% endif %}
-chronyd_var_mfs="/var/db/chronyd /var/run/chronyd"

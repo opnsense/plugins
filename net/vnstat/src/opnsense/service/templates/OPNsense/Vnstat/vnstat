@@ -12,4 +12,3 @@ vnstat_additional_ifaces="{{ interfaces|join(' ') }}"
 {% else %}
 vnstat_enable="NO"
 {% endif %}
-vnstat_var_mfs="/var/lib/vnstat"

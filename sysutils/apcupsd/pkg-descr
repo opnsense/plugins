@@ -1,0 +1,19 @@
+Apcupsd, short for APC UPS daemon, can be used for controlling all APC UPS models.
+It can monitor and log the current power and battery status, perform automatic
+shutdown, and can run in network mode in order to power down other hosts on a LAN.
+
+This plugin allows you to configure an APC UPS for use with OPNsense using the
+Apcupsd project. The setup page allows you to set the most common options for
+connecting your UPS to your OPNsense router and a status page for the UPS
+status. It also includes support to act as an APC Netserver.
+
+WWW: http://www.apcupsd.org/
+
+Plugin Changelog
+================
+
+1.0 (initial release)
+
+* Apcupsd service control and configuration
+* UPS status page
+* Dashboard widget

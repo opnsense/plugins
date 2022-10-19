@@ -6,6 +6,15 @@ is completely different.
 Plugin Changelog
 ================
 
+1.23
+
+* Add support for Opportunistic DANE as SMTP client security level
+* Disable defunct GSSAPI authentication (contributed by Patrick M. Hausen)
+
+1.22
+
+* Switch table format of header_checks from regexp_table to pcre_table (contributed by Starkstromkonsument)
+
 1.21
 
 * Add static link to root certficiates

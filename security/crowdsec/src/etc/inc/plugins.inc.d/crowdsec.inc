@@ -53,13 +53,12 @@ function crowdsec_firewall(Plugin $fw)
             'ipprotocol' => 'inet',
             'descr'      => 'CrowdSec (IPv4)',
             'from'       => '$crowdsec_blacklists',     # $ to reference an alias
+            'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
             'tag'        => $rules_tag,
-            'label'      => 'blocked by crowdsec',
             'quick'      => true
-        ),
-        null
+        )
     );
 
     add_alias_if_not_exist('crowdsec6_blacklists', 'CrowdSec (IPv6)', 'IPv6');
@@ -70,13 +69,12 @@ function crowdsec_firewall(Plugin $fw)
             'ipprotocol' => 'inet6',
             'descr'      => 'CrowdSec (IPv6)',
             'from'       => '$crowdsec6_blacklists',    # $ to reference an alias
+            'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
             'tag'        => $rules_tag,
-            'label'      => 'blocked by crowdsec',
             'quick'      => true
-        ),
-        null
+        )
     );
 }
 

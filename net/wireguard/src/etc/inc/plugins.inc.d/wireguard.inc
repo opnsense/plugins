@@ -78,3 +78,8 @@ function wireguard_xmlrpc_sync()
     $result['services'] = ['wireguard-go'];
     return array($result);
 }
+
+function wireguard_devices()
+{
+    return [['pattern' => '^wg', 'volatile' => true]];
+}

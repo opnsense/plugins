@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.11
+
+Added:
+* add support for cache parameter (#2908)
+
 3.10
 
 WARNING: This release switches to the HAProxy 2.4 release series,

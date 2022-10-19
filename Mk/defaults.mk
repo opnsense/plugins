@@ -57,7 +57,7 @@ VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 _PLUGIN_ABI!=	${VERSIONBIN} -a
 PLUGIN_ABI?=	${_PLUGIN_ABI}
 .else
-PLUGIN_ABI?=	22.1
+PLUGIN_ABI?=	22.7
 .endif
 
 PHPBIN=		${LOCALBASE}/bin/php
@@ -152,4 +152,12 @@ master:
 rebase:
 	@git checkout stable/${PLUGIN_ABI}
 	@git rebase -i
+	@git checkout master
+
+log:
+	@git log --stat -p stable/${PLUGIN_ABI}
+
+push:
+	@git checkout stable/${PLUGIN_ABI}
+	@git push
 	@git checkout master

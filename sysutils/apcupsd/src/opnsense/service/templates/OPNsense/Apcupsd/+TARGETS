@@ -1,0 +1,2 @@
+apcupsd:/etc/rc.conf.d/apcupsd
+apcupsd.conf:/usr/local/etc/apcupsd/apcupsd.conf

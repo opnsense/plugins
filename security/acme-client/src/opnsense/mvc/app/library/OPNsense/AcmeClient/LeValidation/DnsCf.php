@@ -45,5 +45,9 @@ class DnsCf extends Base implements LeValidationInterface
         // Restricted API token (recommended)
         $this->acme_env['CF_Token'] = (string)$this->config->dns_cf_token;
         $this->acme_env['CF_Account_ID'] = (string)$this->config->dns_cf_account_id;
+        // Optional Zone ID
+        if (!empty((string)$this->config->dns_cf_zone_id)) {
+            $this->acme_env['CF_Zone_ID'] = (string)$this->config->dns_cf_zone_id;
+        }
     }
 }

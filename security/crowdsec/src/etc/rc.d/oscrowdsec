@@ -8,6 +8,7 @@
 # BEFORE:  DAEMON
 # KEYWORD: shutdown
 
+# shellcheck disable=SC1091
 . /etc/rc.subr
 
 name="oscrowdsec"
@@ -15,7 +16,7 @@ rcvar="oscrowdsec_enable"
 
 load_rc_config $name
 
-: ${oscrowdsec_enable="NO"}
+: "${oscrowdsec_enable="NO"}"
 
 
 oscrowdsec_start () {
@@ -36,13 +37,6 @@ oscrowdsec_start () {
     else
         service crowdsec_firewall stop || :
     fi
-
-# XXX should complain if they were not stopped?
-#    service crowdsec status
-#    if [ $? -eq 0 ]; then
-#       debug "oscrowdsec_start: crowdsec is still running"
-#       return 0
-#    fi
 }
 
 oscrowdsec_stop () {
@@ -50,8 +44,6 @@ oscrowdsec_stop () {
 
     service crowdsec stop || :
     service crowdsec_firewall stop || :
-
-    # XXX should complain if they were running and have not been stopped?
 }
 
 oscrowdsec_restart () {
@@ -61,23 +53,28 @@ oscrowdsec_restart () {
 
 oscrowdsec_status () {
     # return error if at least one program is not running
-    ret=0
+    service crowdsec status
+    ret=$?
 
-    if service crowdsec status; then
-        ret=$?
-    fi
-
-    if service crowdsec_firewall status; then
-        if [ $ret -eq 0 ]; then
-            ret=$?
-        fi
+    if ! service crowdsec_firewall status; then
+        ret=1
     fi
     return $ret
 }
 
 oscrowdsec_reload () {
-    # Here we take it easy. the bouncer does not even support reload
-    oscrowdsec_restart
+    if service crowdsec enabled; then
+      if service crowdsec status >/dev/null 2>&1; then
+          service crowdsec reload
+      else
+          service crowdsec restart
+      fi
+    fi
+
+    if service crowdsec_firewall enabled; then
+      # the bouncer does not support reload
+      service crowdsec_firewall restart
+    fi
 }
 
 case $1 in
