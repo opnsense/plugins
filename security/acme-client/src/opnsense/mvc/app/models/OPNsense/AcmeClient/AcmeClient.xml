@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -148,6 +148,8 @@
                     <OptionValues>
                         <buypass>Buypass</buypass>
                         <buypass_test>Buypass Test CA</buypass_test>
+                        <google>Google</google>
+                        <google_test>Google Test CA</google_test>
                         <letsencrypt>Let's Encrypt [default]</letsencrypt>
                         <letsencrypt_test>Let's Encrypt Test CA</letsencrypt_test>
                         <sslcom>SSL.com</sslcom>
@@ -507,7 +509,7 @@
                 <dns_sleep type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>84600</MaximumValue>
-                    <default>120</default>
+                    <default>0</default>
                     <ValidationMessage>Please specify a value between 0 and 84600 seconds.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>

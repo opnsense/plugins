@@ -150,6 +150,33 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             return false;
         }
 
+        // acme.sh records the last used deploy hook and would automatically
+        // use it on the next run. This information must be removed from the
+        // configuration file. Otherwise it would be impossible to disable
+        // or remove a deploy hook from the GUI.
+        foreach (glob(self::ACME_HOME_DIR . '/*/*.conf') as $filename) {
+            // Skip openssl config files.
+            if (preg_match('/.*.csr.conf/i', $filename)) {
+                continue;
+            }
+
+            // Read contents from file.
+            $contents = file_get_contents($filename);
+
+            // Check if deploy hook string can be found.
+            if (strpos($contents, self::ACME_DEPLOY_HOOK_STRING) !== false) {
+                // Replace the whole line with an empty string.
+                $contents = preg_replace('(' . self::ACME_DEPLOY_HOOK_STRING . '.*)', '', $contents);
+
+                // Write changes to the file.
+                if (!file_put_contents($filename, $contents)) {
+                    LeUtils::log_error('clearing recorded deploy hook from acme.sh failed (' . $filename . ')');
+                } else {
+                    LeUtils::log_debug('cleared recorded deploy deploy hook from acme.sh (' . $filename . ')', $this->debug);
+                }
+            }
+        }
+
         // Check result
         if ($result) {
             LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getType() . ')');
