@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.7.0</version>
+    <version>3.8.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -376,6 +376,24 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <prometheus_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </prometheus_enabled>
+                <prometheus_bind type="CSVListField">
+                    <default>*:8404</default>
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 10.0.0.1:8404 or haproxy.example.com:8404.</ValidationMessage>
+                </prometheus_bind>
+                <prometheus_path type="TextField">
+                    <default>/metrics</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,2048}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 2048 characters.</ValidationMessage>
+                </prometheus_path>
             </stats>
             <cache>
                 <enabled type="BooleanField">
@@ -777,6 +795,16 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </forwardFor>
+                <prometheus_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </prometheus_enabled>
+                <prometheus_path type="TextField">
+                    <default>/metrics</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,2048}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 2048 characters.</ValidationMessage>
+                </prometheus_path>
                 <connectionBehaviour type="OptionField">
                     <Required>Y</Required>
                     <default>http-keep-alive</default>
