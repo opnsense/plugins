@@ -34,11 +34,11 @@ require_once('plugins.inc.d/dyndns/r53.inc');
 
 function dyndns_configure()
 {
-    return array(
-        'bootup' => array('dyndns_configure_do'),
-        'local' => array('dyndns_configure_do'),
-        'newwanip' => array('dyndns_configure_do:2'),
-    );
+    return [
+        'bootup' => ['dyndns_configure_do'],
+        'local' => ['dyndns_configure_do'],
+        'newwanip' => ['dyndns_configure_do:2'],
+    ];
 }
 
 function dyndns_enabled()
@@ -58,19 +58,15 @@ function dyndns_enabled()
 
 function dyndns_services()
 {
-    global $config;
-
-    $services = array();
+    $services = [];
 
     if (dyndns_enabled()) {
-        $services[] = array(
+        $services[] = [
             'description' => gettext('Dynamic DNS'),
-            'configd' => array(
-                'restart' => array('dyndns reload'),
-            ),
+            'configd' => [ 'restart' => ['dyndns reload'] ],
             'nocheck' => true,
             'name' => 'dyndns',
-        );
+        ];
     }
 
     return $services;
@@ -78,10 +74,10 @@ function dyndns_services()
 
 function dyndns_cron()
 {
-    $jobs = array();
+    $jobs = [];
 
     if (dyndns_enabled()) {
-        $jobs[]['autocron'] = array('/usr/local/etc/rc.dyndns', '11', '1');
+        $jobs[]['autocron'] = ['/usr/local/etc/rc.dyndns', '11', '1'];
     }
 
     return $jobs;
@@ -95,7 +91,7 @@ function dyndns_list()
      * https://github.com/openwrt/packages/blob/master/net/ddns-scripts/files/services
      */
 
-    return array(
+    return [
         '1984-hosting' => '1984 Hosting Company',
         '3322' => '3322',
         'all-inkl' => 'All-Inkl',
@@ -154,7 +150,7 @@ function dyndns_list()
         'strato' => 'STRATO',
         'strato-v6' => 'STRATO (v6)',
         'zoneedit' => 'ZoneEdit',
-    );
+    ];
 }
 
 function dyndns_cache_file($conf, $ipver = 4)
@@ -206,10 +202,7 @@ function dyndns_configure_do($verbose = false, $int = '')
     $dyndnscfg = $config['dyndnses']['dyndns'];
     $gwgroups = return_gateway_groups_array();
 
-    if ($verbose) {
-        echo 'Configuring dynamic DNS clients...';
-        flush();
-    }
+    service_log('Configuring dynamic DNS clients...', $verbose);
 
     foreach ($dyndnscfg as $dyndns) {
         if ((empty($int)) || ($int == $dyndns['interface']) || (is_array($gwgroups[$dyndns['interface']]))) {
@@ -221,9 +214,7 @@ function dyndns_configure_do($verbose = false, $int = '')
         }
     }
 
-    if ($verbose) {
-        echo "done.\n";
-    }
+    service_log("done.\n", $verbose);
 }
 
 function dyndns_failover_interface($interface, $family = 'all')
