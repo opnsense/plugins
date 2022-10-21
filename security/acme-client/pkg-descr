@@ -18,9 +18,11 @@ Added:
 
 Fixed:
 * fix Selfhost DNS API (#3122)
+* fix invalid cert state due to deploy error (#3120)
 
 Changed:
-* change default DNS sleep time to 0 (3079)
+* change default DNS sleep time to 0 (#3079)
+* remove saved deploy hook from acme.sh config files (#3120)
 
 3.13
 

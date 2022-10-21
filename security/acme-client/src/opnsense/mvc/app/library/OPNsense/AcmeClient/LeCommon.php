@@ -59,6 +59,9 @@ abstract class LeCommon
     public const ACME_KEY_DIR = '/var/etc/acme-client/keys/%s/';
     public const ACME_KEY_FILE = '/var/etc/acme-client/keys/%s/private.key';
 
+    // acme.sh internals
+    public const ACME_DEPLOY_HOOK_STRING = 'Le_DeployHook=';
+
     // Runtime parameters for acme.sh
     protected $acme_args = array(); # command line arguments to be passed to acme.sh
     protected $acme_env = array();  # environment variables to be used when running acme.sh
