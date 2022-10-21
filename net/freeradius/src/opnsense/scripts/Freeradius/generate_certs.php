@@ -111,7 +111,7 @@ if (isset($configObj->OPNsense->freeradius)) {
                 }
             }
         }
-       $cert_refid = (string)$find_cert->ldapcert;
+        $cert_refid = (string)$find_cert->ldapcert;
         // if eap has a certificate attached, search for its contents
         if ($cert_refid != "") {
             foreach ($configObj->cert as $ldapcert) {
