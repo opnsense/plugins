@@ -6,6 +6,18 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.12
+
+Added:
+* add support for req.ssl_hello_type (#2311)
+
+Fixed:
+* fix unix sockets in chrooted environment (#3093)
+* fix peers by automatically configuring the local peer (#3114)
+
+Changed:
+* update HAProxy documentation URLs
+
 3.11
 
 Added:
