@@ -212,6 +212,20 @@
         <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
     </field>
     <field>
+        <id>frontend.prometheus_enabled</id>
+        <label>Prometheus Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's Prometheus exporter.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.prometheus_path</id>
+        <label>Prometheus Path</label>
+        <type>text</type>
+        <help><![CDATA[The path where the Prometheus exporter can be accessed.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Basic Authentication</label>
         <type>header</type>
         <style>mode_table table_http</style>

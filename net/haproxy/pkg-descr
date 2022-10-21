@@ -10,6 +10,7 @@ Plugin Changelog
 
 Added:
 * add support for req.ssl_hello_type (#2311)
+* add support for Prometheus exporter (#2764)
 
 Fixed:
 * fix unix sockets in chrooted environment (#3093)
