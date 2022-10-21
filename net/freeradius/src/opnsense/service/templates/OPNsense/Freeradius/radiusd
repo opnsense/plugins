@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
-radiusd_var_script="/usr/local/opnsense/scripts/Freeradius/setup.sh"
+radiusd_setup="/usr/local/opnsense/scripts/Freeradius/setup.sh"
 radiusd_enable="YES"
 {% else %}
 radiusd_enable="NO"
