@@ -55,7 +55,7 @@ class GeneralController extends ApiMutableModelControllerBase
             $peers_uuid_pubkey[$peerUuid] = (string) $client->pubkey;
             $peers[$peerUuid] = [
                 "name"      => (string)  $client->name,
-                "enabled"   => (integer) $client->enabled,
+                "enabled"   => (int) $client->enabled,
                 "publicKey" => (string)  $client->pubkey,
             ];
         }
@@ -64,14 +64,16 @@ class GeneralController extends ApiMutableModelControllerBase
         $status = [];
         $peer_pubkey_reference = [];
         foreach ($config->server->servers->server as $server) {
-            if ($server->enabled != "1") continue;
+            if ($server->enabled != "1") {
+                continue;
+            }
 
             // build basic server array
-            $interface = "wg".$server->instance;
+            $interface = "wg" . $server->instance;
             $status[$interface] = [
-                "instance"  => (integer) $server->instance,
+                "instance"  => (int) $server->instance,
                 "interface" => (string)  $interface,
-                "enabled"   => (integer) $server->enabled,
+                "enabled"   => (int) $server->enabled,
                 "name"      => (string)  $server->name,
                 "peers"     => [],
             ];
@@ -89,7 +91,8 @@ class GeneralController extends ApiMutableModelControllerBase
                         $peers[$peerUuid],
                         [
                             "lastHandshake" => "0000-00-00 00:00:00+00:00",
-                        ]);
+                        ]
+                    );
                 }
             }
         }
