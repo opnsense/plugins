@@ -3,7 +3,7 @@
 telegraf_user="root"
 telegraf_group="wheel"
 {%   endif %}
-telegraf_var_script="/usr/local/opnsense/scripts/OPNsense/Telegraf/setup.sh"
+telegraf_setup="/usr/local/opnsense/scripts/OPNsense/Telegraf/setup.sh"
 telegraf_enable="YES"
 telegraf_confdir="/usr/local/etc/telegraf.d"
 {% else %}
