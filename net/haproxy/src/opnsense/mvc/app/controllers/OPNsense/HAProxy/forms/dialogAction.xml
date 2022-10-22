@@ -448,4 +448,26 @@
         <type>dropdown</type>
         <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file.]]></help>
     </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_fcgi_pass_header</style>
+    </field>
+    <field>
+        <id>action.fcgi_pass_header</id>
+        <label>Header Name</label>
+        <type>text</type>
+        <help><![CDATA[Specify the name of a request header which will be passed to the FastCGI application. Most request headers are already available to the FastCGI application, prefixed with "HTTP_". Thus, this directive is only required to pass headers that are purposefully omitted. Currently, the headers "Authorization", "Proxy-Authorization" and hop-by-hop headers are omitted.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_fcgi_set_param</style>
+    </field>
+    <field>
+        <id>action.fcgi_set_param</id>
+        <label>Parameter</label>
+        <type>text</type>
+        <help><![CDATA[Set a FastCGI parameter that should be passed to the application. Its value must follow HAProxy's <a href="http://docs.haproxy.org/2.4/configuration.html#8.2.4">Custom Log format rules</a>. With this directive, it is possible to overwrite the value of default FastCGI parameters.]]></help>
+    </field>
 </form>

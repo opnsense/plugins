@@ -11,6 +11,8 @@ Plugin Changelog
 Added:
 * add support for req.ssl_hello_type (#2311)
 * add support for Prometheus exporter (#2764)
+* add support for FastCGI applications (#2769)
+* add server option to override the multiplexer protocol
 
 Fixed:
 * fix unix sockets in chrooted environment (#3093)
