@@ -55,6 +55,12 @@
         <hint>Type server name or choose from list.</hint>
     </field>
     <field>
+        <id>backend.linkedFcgi</id>
+        <label>FastCGI Application</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the FastCGI application that should be used for all servers in this backend.]]></help>
+    </field>
+    <field>
         <id>backend.linkedResolver</id>
         <label>Resolver</label>
         <type>dropdown</type>
