@@ -9,6 +9,7 @@ Plugin Changelog
 ================
 
 3.14
+
 NOTE: Users of Selfhost need to manually fix their configuration, see
 https://github.com/acmesh-official/acme.sh/wiki/dnsapi2#151-use-selfhost-dns-api
 
