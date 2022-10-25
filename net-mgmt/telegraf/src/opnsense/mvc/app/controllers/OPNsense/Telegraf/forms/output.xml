@@ -81,7 +81,7 @@
         <id>output.influx_v2_timeout</id>
         <label>Timeout</label>
         <type>text</type>
-        <help>Flush timeout for the v2 Telegraf output, formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended). Increase if you get timeout errors.</help>
+        <help>Flush timeout for the v2 Telegraf output (in seconds), formatted as a string. If not provided, will default to 5. 0 means no timeout (not recommended). Increase if you get timeout errors.</help>
     </field>
     <field>
         <id>output.graphite_enable</id>
