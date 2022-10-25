@@ -255,7 +255,7 @@
     <label>TLS SNI Forwarding</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>Check this box, if you want the client SNI header to be used instead of your backend hostname. This settings overrides the configured hostname in the upstream configuration.</help>
+    <help>Check this box, if you want the client SNI header ($ssl_server_name) to be used as $proxy_ssl_name. Can be overriden in the upstream's hostname configuration.</help>
   </field>
   <field>
     <id>location.proxy_buffer_size</id>

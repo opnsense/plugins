@@ -40,7 +40,7 @@
   <field>
     <id>upstream.tls_name_override</id>
     <label>TLS: Servername override</label>
-    <help>Use another hostname for SNI and certificate validation.</help>
+    <help>Use another hostname for SNI and certificate validation as $proxy_ssl_name.</help>
     <type>text</type>
   </field>
   <field>
