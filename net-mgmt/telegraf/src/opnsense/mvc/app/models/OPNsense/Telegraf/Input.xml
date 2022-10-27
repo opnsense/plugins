@@ -118,7 +118,6 @@
             <Required>N</Required>
         </apcupsd>
         <apcupsd_server type="TextField">
-            <default>127.0.0.1</default>
             <Required>N</Required>
         </apcupsd_server>
     </items>
