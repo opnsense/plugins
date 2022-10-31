@@ -7,9 +7,12 @@
 #
 
 filenames:
- # ssh
- - /var/log/audit/*.log
- # web admin
- - /var/log/lighttpd/*.log
+  # DO NOT EDIT - to add new datasources (log locations),
+  # create new files in /usr/local/etc/crowdsec/acquis.d/
+  #
+  # collection: crowdsecurity/sshd
+  - /var/log/audit/latest.log
+  # collection: crowdsecurity/opnsense-gui (web admin)
+  - /var/log/lighttpd/latest.log
 labels:
   type: syslog
