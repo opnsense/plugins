@@ -15,6 +15,9 @@ Plugin Changelog
 1.31
 
 * Set no bgp default ipv4-unicast (contributed by vnxme)
+* Increase artifical BGP GUI ID limits (contributed by Patrik Kernstock)
+* Add BGP Network Import-Check (contributed by Patrik Kernstock)
+* Assorted GUI fixes (contributed by Patrik Kernstock)
 
 1.30
 
