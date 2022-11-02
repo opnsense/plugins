@@ -162,6 +162,18 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-fcgis").UIBootgrid(
+            {   search:'/api/haproxy/settings/searchFcgis',
+                get:'/api/haproxy/settings/getFcgi/',
+                set:'/api/haproxy/settings/setFcgi/',
+                add:'/api/haproxy/settings/addFcgi/',
+                del:'/api/haproxy/settings/delFcgi/',
+                options: {
+                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
         $("#grid-errorfiles").UIBootgrid(
             {   search:'/api/haproxy/settings/searchErrorfiles',
                 get:'/api/haproxy/settings/getErrorfile/',
@@ -676,6 +688,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-advanced-introduction">{{ lang._('Introduction') }}</a></li>
             {% endif %}
             <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
+            <li><a data-toggle="tab" href="#fcgis">{{ lang._('FastCGI Applications') }}</a></li>
             <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
             <li><a data-toggle="tab" href="#mapfiles">{{ lang._('Map Files') }}</a></li>
             <li><a data-toggle="tab" href="#cpus">{{ lang._('CPU Affinity Rules') }}</a></li>
@@ -698,7 +711,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.4/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -740,7 +753,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/2.4/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -755,7 +768,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/2.4/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -773,7 +786,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sCache:%s HAProxy's cache which was designed to perform cache on small objects (favicon, css, etc.). This is a minimalist low-maintenance cache which runs in RAM.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sPeers:%s Configure a communication channel between two HAProxy instances. This will propagate entries of any data-types in stick-tables between these HAProxy instances over TCP connections in a multi-master fashion. Useful when aiming for a seamless failover in a HA setup.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#10" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#3.5" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://docs.haproxy.org/2.4/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.4/configuration.html#10" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.4/configuration.html#3.5" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -784,13 +797,14 @@ POSSIBILITY OF SUCH DAMAGE.
             <p>{{ lang._("Most of the time these features are not required, but in certain situations they will be handy:") }}</p>
             <ul>
               <li>{{ lang._("%sError Messages:%s Return a custom message instead of errors generated by HAProxy. Useful to overwrite HAProxy's internal error messages. The message must represent the full HTTP response and include required HTTP headers.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("%sFastCGI Applications:%s HAProxy can be configured to send requests to FastCGI applications. After configuring a FastCGI application, it needs to be enabled in a %sBackend Pool%s.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sLua scripts:%s Include your own Lua code/scripts to extend HAProxy's functionality. The Lua code can be used in certain %sRules%s, for example.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sMap Files:%s A map allows to map a data in input to an other one on output. For example, this makes it possible to map a large number of domains to backend pools without using the GUI. Map files need to be used in %sRules%s, otherwise they are ignored.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sCPU Affinity Rules:%s This feature makes it possible to bind HAProxy's processes/threads to a specific CPU (or a CPU set). Furthermore it is possible to select CPU Affinity Rules in %sPublic Services%s to restrict them to a certain set of processes/threads/CPUs.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sE-Mail Alerts:%s It is possible to send email alerts when the state of servers changes. Each configuration can be used in %sBackend Pools%s to send e-mail alerts to the configured recipient.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.4/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://docs.haproxy.org/2.4/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.4/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.4/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.4/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.4/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.4/configuration.html#process" target="_blank">', '</a>','<a href="http://docs.haproxy.org/2.4/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -1010,6 +1024,31 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="luaid" data-type="number"  data-visible="false">{{ lang._('Lua Script ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Lua Script Name') }}</th>
+                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="fcgis" class="tab-pane fade">
+        <table id="grid-fcgis" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFcgi" data-editAlert="haproxyChangeMessage">
+            <thead>
+            <tr>
+                <th data-column-id="fcgiid" data-type="number"  data-visible="false">{{ lang._('FastCGI ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('FastCGI Application Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -1264,6 +1303,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogGroup,'id':'DialogGroup','label':lang._('Edit Group')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error Message')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogFcgi,'id':'DialogFcgi','label':lang._('Edit FastCGI Application')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogMapfile,'id':'DialogMapfile','label':lang._('Edit Map File')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCpu,'id':'DialogCpu','label':lang._('Edit CPU Affinity Rule')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogResolver,'id':'DialogResolver','label':lang._('Edit Resolver')])}}

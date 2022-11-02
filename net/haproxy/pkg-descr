@@ -6,6 +6,21 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+3.12
+
+Added:
+* add support for req.ssl_hello_type (#2311)
+* add support for Prometheus exporter (#2764)
+* add support for FastCGI applications (#2769)
+* add server option to override the multiplexer protocol
+
+Fixed:
+* fix unix sockets in chrooted environment (#3093)
+* fix peers by automatically configuring the local peer (#3114)
+
+Changed:
+* update HAProxy documentation URLs
+
 3.11
 
 Added:
