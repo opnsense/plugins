@@ -46,7 +46,7 @@
   <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
   </field>
   <field>

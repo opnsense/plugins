@@ -15,7 +15,7 @@
     <id>communitylist.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>Set the number of your Community-List. 1-99 are stardard lists while 100-500 are expanded lists.</help>
+    <help>Set the number of your Community-List. 1-99 are standard lists while 100-500 are expanded lists.</help>
   </field>
   <field>
     <id>communitylist.seqnumber</id>
@@ -26,7 +26,7 @@
   <field>
     <id>communitylist.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
