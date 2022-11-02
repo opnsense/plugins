@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.tor.general.enabled') and OPNsense.tor.general.enabled == '1' %}
-tor_var_script="/usr/local/opnsense/scripts/tor/setup.sh"
+tor_setup="/usr/local/opnsense/scripts/tor/setup.sh"
 tor_enable="YES"
 {% else %}
 tor_enable="NO"
