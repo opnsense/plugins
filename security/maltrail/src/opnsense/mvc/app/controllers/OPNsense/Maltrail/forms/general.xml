@@ -6,6 +6,12 @@
         <help>Whether to enable or disable the usage or heuristic detection.</help>
     </field>
     <field>
+        <id>general.checkhostheader</id>
+        <label>Check Hostheaders</label>
+        <type>checkbox</type>
+        <help>Check values in Host header (along with standard non-HTTP checks) for malicious DNS trails.</help>
+    </field>
+    <field>
         <id>general.updateperiod</id>
         <label>Update Period</label>
         <type>text</type>
