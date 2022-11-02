@@ -6,6 +6,11 @@ the Juniper SSL VPN which is now known as Pulse Connect Secure.
 Plugin Changelog
 ================
 
+1.4.3
+
+* Add support for one-time password generation
+* Permit additional characters in group name
+
 1.4.2
 
 * Allow usernames up to 64 characters
