@@ -37,7 +37,7 @@ elif pgrep -qF ${PIDFILE} 2> /dev/null; then
 elif [ -z "${COMMAND}" ]; then
 	echo "missing"
 else
-       daemon -f -p ${PIDFILE} freshclam --quiet
+       daemon -f -p ${PIDFILE} /usr/local/etc/rc.d/clamav-freshclam restart
        echo "starting"
 fi
 
