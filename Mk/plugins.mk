@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2022 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -345,7 +345,7 @@ sweep: check
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
 revision:
-	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
+	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 
