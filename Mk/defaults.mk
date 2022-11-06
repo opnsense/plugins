@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2022 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -121,8 +121,12 @@ ensure-stable:
 		git config branch.stable/${PLUGIN_ABI}.remote origin; \
 	fi
 
+diff_ARGS?= 	.
+
 diff: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
+
+mfc_ARGS?=	.
 
 mfc: ensure-stable
 .for MFC in ${mfc_ARGS}
@@ -130,9 +134,9 @@ mfc: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
 	@git checkout stable/${PLUGIN_ABI}
 	@git apply /tmp/mfc.diff
-	@git add ${.CURDIR}
+	@git add ${.CURDIR}/${MFC}
 	@if ! git diff --quiet HEAD; then \
-		git commit -m "${MFC}: sync with master"; \
+		git commit -m "${MFC:S/^.$/${PLUGIN_DIR}/}: sync with master"; \
 	fi
 .else
 	@git checkout stable/${PLUGIN_ABI}

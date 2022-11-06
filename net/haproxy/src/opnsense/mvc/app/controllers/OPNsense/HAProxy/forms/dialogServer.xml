@@ -96,6 +96,13 @@
         <help><![CDATA[Sets the operation mode to use for this server.]]></help>
     </field>
     <field>
+        <id>server.multiplexer_protocol</id>
+        <label>Multiplexer Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[Forces the multiplexer's protocol to use for the outgoing connections to this server. It must be compatible with the mode of the backend (TCP or HTTP). It must also be usable on the backend side. Idea behind this option is to bypass the selection of the best multiplexer's protocol for all connections established to this server. Use only when strictly necessary.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>server.resolvePrefer</id>
         <label>Prefer IP Family</label>
         <type>dropdown</type>

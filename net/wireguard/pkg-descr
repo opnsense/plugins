@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.13
+
+* Reworked widget and assorted cleanups (contributed by Patrik Kernstock)
+
 1.12
 
 * Adjust validation for naming local instance and endpoints

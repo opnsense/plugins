@@ -48,6 +48,18 @@
         <help>Select the client certificate to use.</help>
     </field>
     <field>
+        <id>general.tokenmode</id>
+        <label>Token Mode</label>
+        <type>dropdown</type>
+        <help>Use a one-time password generation mode.</help>
+    </field>
+    <field>
+        <id>general.tokensecret</id>
+        <label>Token Secret</label>
+        <type>text</type>
+        <help>Enter a secret to use with one-time password generation.</help>
+    </field>
+    <field>
         <id>general.protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>

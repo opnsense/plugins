@@ -3,7 +3,7 @@
     <id>aspath.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
+    <help>If this AS-Path list should be enabled.</help>
   </field>
   <field>
     <id>aspath.description</id>
@@ -15,12 +15,12 @@
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL rule number (10-99); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
+    <help>The ACL rule number (0-4294967294); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
   </field>
   <field>
     <id>aspath.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>

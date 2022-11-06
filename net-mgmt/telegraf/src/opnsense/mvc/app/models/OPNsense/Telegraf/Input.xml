@@ -114,5 +114,11 @@
         <unbound type="BooleanField">
             <Required>N</Required>
         </unbound>
+        <apcupsd type="BooleanField">
+            <Required>N</Required>
+        </apcupsd>
+        <apcupsd_server type="TextField">
+            <Required>N</Required>
+        </apcupsd_server>
     </items>
 </model>

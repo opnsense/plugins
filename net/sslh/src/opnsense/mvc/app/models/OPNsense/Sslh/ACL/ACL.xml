@@ -1,0 +1,9 @@
+<acl>
+   <page-services-sslh>
+      <name>Services: SSLH</name>
+      <patterns>
+         <pattern>ui/sslh/*</pattern>
+         <pattern>api/sslh/*</pattern>
+      </patterns>
+  </page-services-sslh>
+</acl>

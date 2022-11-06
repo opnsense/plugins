@@ -261,7 +261,7 @@ $banned_ips = (function () {
     $alias_ips = [];
     $ban_ttl = intval((string)$model->general->ban_ttl);
     if ($ban_ttl && ($ban_ttl > 0)) {
-        $min_timestamp = time() - 60*$ban_ttl;
+        $min_timestamp = time() - 60 * $ban_ttl;
     }
     $change_required = false;
     foreach ($model->ban->iterateItems() as $id => $entry) {

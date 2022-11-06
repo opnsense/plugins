@@ -149,9 +149,6 @@ class ServiceController extends ApiControllerBase
             // generate template
             $backend->configdRun('template reload OPNsense/AcmeClient');
 
-            // now setup the environment
-            $backend->configdRun("acmeclient setup");
-
             // (res)start daemon
             if ($mdlAcme->settings->enabled->__toString() == 1) {
                 if ($runStatus['status'] == "running" && !$force_restart) {
@@ -177,8 +174,6 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         // first generate template based on current configuration
         $backend->configdRun('template reload OPNsense/AcmeClient');
-        // now setup the environment
-        $backend->configdRun("acmeclient setup");
         // finally run the syntax check
         $response = $backend->configdRun("acmeclient configtest");
         return array("result" => $response);
@@ -192,8 +187,6 @@ class ServiceController extends ApiControllerBase
     public function signallcertsAction()
     {
         $backend = new Backend();
-        // first setup the environment
-        $backend->configdRun("acmeclient setup");
         // run the command
         $response = $backend->configdRun("acmeclient sign-all-certs");
         return array("result" => $response);

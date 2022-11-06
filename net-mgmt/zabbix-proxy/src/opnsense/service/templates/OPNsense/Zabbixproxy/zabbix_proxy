@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.zabbixproxy.general.enabled') and OPNsense.zabbixproxy.general.enabled == '1' %}
-zabbix_proxy_var_script="/usr/local/opnsense/scripts/OPNsense/Zabbixproxy/setup.sh"
+zabbix_proxy_setup="/usr/local/opnsense/scripts/OPNsense/Zabbixproxy/setup.sh"
 zabbix_proxy_enable="YES"
 {% else %}
 zabbix_proxy_enable="NO"

@@ -179,4 +179,16 @@
         <type>checkbox</type>
         <help>Enable the collection of Unbound metrics.</help>
     </field>
+    <field>
+        <id>input.apcupsd</id>
+        <label>Apcupsd</label>
+        <type>checkbox</type>
+        <help>Enable the collection of apcupsd metrics.</help>
+    </field>
+    <field>
+        <id>input.apcupsd_server</id>
+        <label>Apcupsd Netserver IP Address</label>
+        <type>text</type>
+        <help>IP address or hostname of the apcupsd net information server. Default address is 127.0.0.1</help>
+    </field>
 </form>
