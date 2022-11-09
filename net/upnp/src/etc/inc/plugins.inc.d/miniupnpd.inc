@@ -150,7 +150,7 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    if(isset($upnp_config['overridesubnet'])) {
+                    if (isset($upnp_config['overridesubnet'])) {
                         $config_text .= "listening_ip={$if}{$upnp_config['overridesubnet']}\n";
                     } else {
                         $config_text .= "listening_ip={$if}\n";
