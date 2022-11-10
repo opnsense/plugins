@@ -11,6 +11,9 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 
 Plugin Changelog
 ================
+1.12.6
+
+* Add Influx v2 flush timeout
 
 1.12.6
 
