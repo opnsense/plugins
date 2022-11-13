@@ -123,10 +123,10 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         /* write private key file
            this is dumb - public and private keys are the same for HMAC-MD5,
            but nsupdate insists on having both */
-        $fd = fopen("/var/etc/K{$i}{$keyname}+157+00000.private", "w");
+        $fd = fopen("/var/etc/K{$i}{$keyname}+160+00000.private", "w");
         $privkey = <<<EOD
 Private-key-format: v1.2
-Algorithm: 157 (HMAC)
+Algorithm: 160 (HMAC)
 Key: {$dnsupdate['keydata']}
 
 EOD;
@@ -145,8 +145,8 @@ EOD;
             $proto = 2;
         }
 
-        $fd = fopen("/var/etc/K{$i}{$keyname}+157+00000.key", "w");
-        fwrite($fd, "{$keyname} IN KEY {$flags} {$proto} 157 {$dnsupdate['keydata']}\n");
+        $fd = fopen("/var/etc/K{$i}{$keyname}+160+00000.key", "w");
+        fwrite($fd, "{$keyname} IN KEY {$flags} {$proto} 160 {$dnsupdate['keydata']}\n");
         fclose($fd);
 
         /* generate update instructions */
@@ -218,7 +218,7 @@ EOD;
             @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
             unset($upinst);
             /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -k /var/etc/K{$i}{$keyname}+157+00000.key";
+            $cmd = "/usr/local/bin/nsupdate -k /var/etc/K{$i}{$keyname}+160+00000.key";
             if (isset($dnsupdate['usetcp'])) {
                 $cmd .= " -v";
             }
