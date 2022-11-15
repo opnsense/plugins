@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>realm.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the proxy config.</help>
+    </field>
+    <field>
+        <id>realm.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name of Realm</help>
+    </field>
+    <field>
+        <id>realm.auth_pool</id>
+        <label>Authentication Pool</label>
+        <type>text</type>
+        <help>Should point to a "home_server_pool" that was defined.</help>
+    </field>
+    <field>
+        <id>realm.acct_pool</id>
+        <label>Accounting Pool</label>
+        <type>text</type>
+        <help>If used, should point to a "home_server_pool" that was defined.</help>
+    </field>
+    <field>
+        <id>realm.nostrip</id>
+        <label>No Strip</label>
+        <type>checkbox</type>
+        <help>Normally, when an incoming User-Name is matched against the realm, the realm name is "stripped" off, and the "stripped" user name is used to perform matches.</help>
+    </field>
+</form>

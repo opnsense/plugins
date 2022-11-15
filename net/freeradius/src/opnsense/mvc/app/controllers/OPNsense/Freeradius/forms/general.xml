@@ -145,4 +145,11 @@
         <advanced>true</advanced>
         <help>Set database name of remote MySQL server.</help>
     </field>
+    <field>
+        <id>general.fallbackproxy</id>
+        <label>Default Fallback Proxy</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Fallback for proxy server. Default disabled.</help>
+    </field>
 </form>
