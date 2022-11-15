@@ -14,6 +14,10 @@ The server is fast, feature-rich, modular, and scalable.
 
 Plugin Changelog
 ================
+1.9.23
+
+* Fix TTLS-GTC and LDAP PAP-GTC
+
 1.9.22
 
 * Add Proxy configuration page: HomeServer, HomeServerPool, Realm
