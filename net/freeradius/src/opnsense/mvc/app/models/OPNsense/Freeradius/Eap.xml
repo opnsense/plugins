@@ -9,6 +9,7 @@
             <multiple>N</multiple>
             <OptionValues>
                 <md5>MD5</md5>
+                <gtc>GTC</gtc>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
                 <tls>TLS</tls>
