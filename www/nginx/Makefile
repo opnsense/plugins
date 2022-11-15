@@ -1,5 +1,5 @@
 PLUGIN_NAME=		nginx
-PLUGIN_VERSION=		1.30
+PLUGIN_VERSION=		1.31
 PLUGIN_COMMENT=		Nginx HTTP server and reverse proxy
 PLUGIN_DEPENDS=		nginx
 PLUGIN_MAINTAINER=	franz.fabian.94@gmail.com
