@@ -5,7 +5,6 @@ namespace OPNsense\Freeradius;
 use OPNsense\Base\BaseModel;
 use OPNsense\Core\Backend;
 
-
 class Proxy extends BaseModel
 {
     /**
