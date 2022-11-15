@@ -182,7 +182,7 @@ $( document ).ready(function() {
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="type" data-type="dropdown">{{ lang._('Type') }}</th>
-                <th data-column-id="virtualserver" data-type="string">{{ lang._('Virtual Server') }}</th>       
+                <th data-column-id="virtualserver" data-type="string">{{ lang._('Virtual Server') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
         </tr>
             </thead>
@@ -198,7 +198,7 @@ $( document ).ready(function() {
             </tr>
             </tfoot>
         </table>
-    </div>        
+    </div>
 
     <div id="realms" class="tab-pane fade in">
         <!-- tab page "realms" -->
