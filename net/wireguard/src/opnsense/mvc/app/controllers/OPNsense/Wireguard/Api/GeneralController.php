@@ -84,6 +84,10 @@ class GeneralController extends ApiMutableModelControllerBase
                 $serverPeers = explode(",", (string) $server->peers);
                 // iteriate over each peer uuid
                 foreach ($serverPeers as $peerUuid) {
+                    // skipping removed peer that is still referenced in server
+                    if (!isset($peers[$peerUuid])) {
+                        continue;
+                    }
                     // remember interface and pubkey <> peer-uuid reference for referencing handshake logic below
                     $peer_pubkey_reference[$interface][$peers_uuid_pubkey[$peerUuid]] = $peerUuid;
                     // merge peer info and initial values for handshake data
