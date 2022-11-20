@@ -35,6 +35,7 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Nginx\Nginx';
     protected static $internalModelName = 'nginx';
+    protected static $internalModelUseSafeDelete = true;
 
     // download rules
     public function downloadrulesAction()

@@ -10,6 +10,22 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.32
+
+* add support for resetting timed out connections and 444 responses (reset_timedout_connection)
+* add option to change autoban response code to 444 (NGX_HTTP_CLOSE)
+* add ssl_reject_handshake directive support
+* add error log severity level support for HTTP and Stream servers
+* add logging of possible errors causes to the setup script
+* $internalModelUseSafeDelete enabled in API Settings controller to check item references before delete
+* minor style adjustments for IP ACL and SNI Based Routing forms
+* fix: add the PROXY protocol for the HTTPS listener too, if it is set for the server
+* fix: set Stream server outbound PROXY protocol based on Upstream settings
+* fix: set Trusted Proxies (set_real_ip_from) for Stream server only with PROXY protocol enabled
+  WARNING: set_real_ip_from directive is temporary disabled due to ngx_stream_realip module missing
+* fix: do not include commented out core rules in naxsi policies when importing
+* fix: fixed a typo in setting the proxy_ssl_session_reuse directive value (thanks to Sigurd Våg Aaknes)
+
 1.31
 
 * Allow dynamic proxy_ssl_name (contributed by Mike Reiche)

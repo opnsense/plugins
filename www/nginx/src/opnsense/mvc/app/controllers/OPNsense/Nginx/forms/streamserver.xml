@@ -64,6 +64,14 @@
     <type>dropdown</type>
   </field>
   <field>
+    <id>streamserver.error_log_level</id>
+    <label>Error Log Level</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help>Select Error Log Level. Log levels are listed in the order of increasing verbosity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>streamserver.route_field</id>
     <label>Route With</label>
     <type>dropdown</type>
