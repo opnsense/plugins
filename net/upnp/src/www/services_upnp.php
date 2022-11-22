@@ -106,7 +106,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $input_errors[] = gettext('You must specify a valid ip address in the \'Override WAN address\' field');
     }
     if(!empty($pconfig['overridewanip']) && !empty($pconfig['stun_host'])) {
-        $input_errors[] = gettext('You cannot override the WAN IP if you have a STUN host set');
+        $input_errors[] = gettext('You cannot override the WAN IP if you have a STUN host set.');
+    }
+    if(!empty($pconfig['stun_host']) && !is_addr($pconfig['stun_host']) && !is_hostname($pconfig['stun_host'])) {
+      $input_errors[] = gettext('The STUN host must be a valid IP address or hostname.');
+    }
+    if(!empty($pconfig['stun_port']) && !is_port($pconfig['stun_port'])) {
+      $input_errors[] = gettext('STUN port must contain a valid port number.');
     }
     if(!empty($pconfig['overridesubnet']) && count($pconfig['iface_array']) > 1) {
         $input_errors[] = gettext('You can only override the interface subnet when one LAN interface is selected');
