@@ -78,6 +78,12 @@
         <help>This will skip chain and host verification.</help>
     </field>
     <field>
+        <id>output.influx_v2_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Flush timeout for the v2 Telegraf output in seconds, formatted as a string. If not provided, will default to 5. 0 means no timeout, but is not recommended. Increase if you get timeout errors.</help>
+    </field>
+    <field>
         <id>output.graphite_enable</id>
         <label>Enable Graphite Output</label>
         <type>checkbox</type>

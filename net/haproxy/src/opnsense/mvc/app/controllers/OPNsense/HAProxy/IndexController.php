@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016 Frank Wall
+ *    Copyright (C) 2016-2022 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *    All rights reserved.
  *
@@ -49,6 +49,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogBackend = $this->getForm("dialogBackend");
         $this->view->formDialogCpu = $this->getForm("dialogCpu");
         $this->view->formDialogErrorfile = $this->getForm("dialogErrorfile");
+        $this->view->formDialogFcgi = $this->getForm("dialogFcgi");
         $this->view->formDialogFrontend = $this->getForm("dialogFrontend");
         $this->view->formDialogGroup = $this->getForm("dialogGroup");
         $this->view->formDialogHealthcheck = $this->getForm("dialogHealthcheck");

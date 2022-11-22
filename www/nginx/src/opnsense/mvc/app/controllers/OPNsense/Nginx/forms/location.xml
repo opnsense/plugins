@@ -255,7 +255,7 @@
     <label>TLS SNI Forwarding</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>Check this box, if you want the client SNI header to be used instead of your backend hostname. This settings overrides the configured hostname in the upstream configuration.</help>
+    <help>Check this box, if you want to passthrough the hostname you get from the downstream to the upstream connection. Can be overriden in the upstream's hostname configuration. Please note, that TLS server certificates are validated against this servername. If the server name passed by the client leads to different processing on the upstream server (i.e. different virtual host is choosen), this may cause security leaks.</help>
   </field>
   <field>
     <id>location.proxy_buffer_size</id>

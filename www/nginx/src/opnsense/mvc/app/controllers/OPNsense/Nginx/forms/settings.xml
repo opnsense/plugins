@@ -7,6 +7,13 @@
                 <type>checkbox</type>
                 <help>Enable configured services.</help>
             </field>
+            <field>
+                <id>nginx.general.ban_ttl</id>
+                <label>Autoblock TTL (minutes)</label>
+                <type>text</type>
+                <help>Set autoblock lifetime in minutes. Set to 0 for infinite.</help>
+                <advanced>true</advanced>
+            </field>
         </subtab>
         <subtab id="nginx-http-global" description="Global HTTP Settings">
              <field>

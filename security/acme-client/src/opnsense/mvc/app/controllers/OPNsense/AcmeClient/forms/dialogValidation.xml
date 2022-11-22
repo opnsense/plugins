@@ -126,9 +126,10 @@
     </field>
     <field>
         <id>validation.dns_sleep</id>
-        <label>Sleep Time</label>
+        <label>DNS Sleep Time</label>
         <type>text</type>
-        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
+        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 0 seconds, which causes Acme Client to check public DNS services every 10 seconds for up to 20 minutes. If set to a non-zero value, a fixed DNS sleep time will be used and the local DNS servers will be queried instead. A DNS sleep time of 120 seconds or more is recommended for some DNS APIs.</help>
+        <hint>0 for public DNS check or 1-84600s</hint>
     </field>
     <field>
         <label>Active24</label>
@@ -1065,16 +1066,10 @@
         <type>password</type>
     </field>
     <field>
-        <id>validation.dns_selfhost_rid</id>
-        <label>rid</label>
-        <type>text</type>
-        <help>Please create the TXT Record with Subdomain _acme-challenge first, than you can get the ID from the edit page.</help>
-    </field>
-    <field>
-        <id>validation.dns_selfhost_rid2</id>
-        <label>rid2</label>
-        <type>text</type>
-        <help>Please create a second TXT Record with Subdomain _acme-challenge (needed to support ACME v2).</help>
+        <id>validation.dns_selfhost_map</id>
+        <label>RID Mapping</label>
+        <type>textbox</type>
+        <help>Please create the TXT record with subdomain _acme-challenge first, than you can get the ID from the edit page. Up to two RIDs per fulldomain are supported but at least one must be set, e.g. _acme-challenge.domain.net:RID:RID2</help>
     </field>
     <field>
         <label>Servercow</label>

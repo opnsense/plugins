@@ -18,6 +18,24 @@
         <help>Set the hostname or IP address to connect to.</help>
     </field>
     <field>
+        <id>ldap.serverport</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <help>Set the port to connect</help>
+    </field>
+    <field>
+        <id>ldap.ldapcert</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help>Certificate to use to connect</help>
+    </field>
+    <field>
+        <id>ldap.ldapstarttls</id>
+        <label>Start TLS</label>
+        <type>checkbox</type>
+        <help>Start TLS</help>
+    </field>
+    <field>
         <id>ldap.identity</id>
         <label>Bind User</label>
         <type>text</type>

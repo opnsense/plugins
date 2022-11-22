@@ -5,7 +5,7 @@
     </field>
     <field>
         <id>haproxy.general.stats.enabled</id>
-        <label>Stats enabled</label>
+        <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable HAProxy's statistics page.]]></help>
     </field>
@@ -56,5 +56,30 @@
         <type>textbox</type>
         <help><![CDATA[These lines will be added to the statistics settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Prometheus Exporter</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.stats.prometheus_enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's Prometheus exporter.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.stats.prometheus_bind</id>
+        <label>Listen addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Configure listen addresses for the prometheus exporter, i.e. 10.0.0.1:8404 or haproxy.example.com:8404. Use TAB key to complete typing a listen address.]]></help>
+        <hint>Enter address:port here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>haproxy.general.stats.prometheus_path</id>
+        <label>Path</label>
+        <type>text</type>
+        <help><![CDATA[The path where the Prometheus exporter can be accessed.]]></help>
     </field>
 </form>

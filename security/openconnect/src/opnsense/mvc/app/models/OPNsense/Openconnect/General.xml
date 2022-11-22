@@ -40,13 +40,25 @@
         </hash>
         <group type="TextField">
             <Required>N</Required>
-            <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
-            <ValidationMessage>Please provide a valid group name. Allowed characters are a-zA-Z0-9._- and it has to be 1-64 characters long.</ValidationMessage>
+            <mask>/^[() a-zA-Z0-9._-]{1,64}$/</mask>
+            <ValidationMessage>Please provide a valid group name. Allowed are at most 64 characters from a-zA-Z0-9._-() and space.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
         </clientcertificate>
+        <tokenmode type="OptionField">
+            <Required>N</Required>
+            <OptionValues>
+                <rsa>RSA SecurID</rsa>
+                <totp>TOTP</totp>
+                <hotp>HOTP</hotp>
+                <oidc>OpenIDConnect</oidc>
+            </OptionValues>
+        </tokenmode>
+        <tokensecret type="TextField">
+            <Required>N</Required>
+        </tokensecret>
         <protocol type="OptionField">
             <default>anyconnect</default>
             <multiple>N</multiple>

@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.chrony.general.enabled') and OPNsense.chrony.general.enabled == '1' %}
-chronyd_var_script="/usr/local/opnsense/scripts/OPNsense/Chrony/setup.sh"
+chronyd_setup="/usr/local/opnsense/scripts/OPNsense/Chrony/setup.sh"
 chronyd_enable="YES"
 {% else %}
 chronyd_enable="NO"

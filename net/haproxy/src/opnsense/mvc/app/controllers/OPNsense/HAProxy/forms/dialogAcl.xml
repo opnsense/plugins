@@ -281,6 +281,17 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_ssl_hello_type</style>
+    </field>
+    <field>
+        <id>acl.ssl_hello_type</id>
+        <label>SSL Hello Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[An integer value containing the type of the SSL hello message found in the request buffer if the buffer contains data that parse as a complete SSL (v3 or superior) client hello message.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_src</style>
     </field>
     <field>

@@ -30,7 +30,7 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Local') }}</a></li>
     <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
-    <li><a data-toggle="tab" href="#showconf">{{ lang._('List Configuration') }}</a></li>
+    <li><a data-toggle="tab" href="#showconf">{{ lang._('Status') }}</a></li>
     <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
@@ -51,6 +51,7 @@
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="serveraddress" data-type="string" data-visible="true">{{ lang._('Endpoint Address') }}</th>
+                    <th data-column-id="serverport" data-type="string" data-visible="true">{{ lang._('Endpoint Port') }}</th>
                     <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Allowed IPs') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
@@ -60,7 +61,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td colspan="6"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
@@ -79,8 +80,10 @@
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="interface" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
                     <th data-column-id="tunneladdress" data-type="string" data-visible="true">{{ lang._('Tunnel Address') }}</th>
+                    <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="peers" data-type="string" data-visible="true">{{ lang._('Endpoints') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
@@ -89,7 +92,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td colspan="7"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     </td>
@@ -136,7 +139,8 @@ $( document ).ready(function() {
     });
 
     $("#grid-clients").UIBootgrid(
-        {   'search':'/api/wireguard/client/searchClient',
+        {
+            'search':'/api/wireguard/client/searchClient',
             'get':'/api/wireguard/client/getClient/',
             'set':'/api/wireguard/client/setClient/',
             'add':'/api/wireguard/client/addClient/',
@@ -146,7 +150,8 @@ $( document ).ready(function() {
     );
 
     $("#grid-servers").UIBootgrid(
-        {   'search':'/api/wireguard/server/searchServer',
+        {
+            'search':'/api/wireguard/server/searchServer',
             'get':'/api/wireguard/server/getServer/',
             'set':'/api/wireguard/server/setServer/',
             'add':'/api/wireguard/server/addServer/',
@@ -154,6 +159,10 @@ $( document ).ready(function() {
             'toggle':'/api/wireguard/server/toggleServer/'
         }
     );
+
+    // Call update funcs once when page loaded
+    update_showconf();
+    update_showhandshake();
 
     // Call function update_neighbor with a auto-refresh of 5 seconds
     setInterval(update_showconf, 5000);

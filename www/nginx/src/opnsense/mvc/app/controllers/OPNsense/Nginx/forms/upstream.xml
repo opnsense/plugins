@@ -40,7 +40,7 @@
   <field>
     <id>upstream.tls_name_override</id>
     <label>TLS: Servername override</label>
-    <help>Use another hostname for SNI and certificate validation.</help>
+    <help>Force a specific hostname for the backend connection instead of passing the hostname from the downstream connection to the upstream connection.</help>
     <type>text</type>
   </field>
   <field>

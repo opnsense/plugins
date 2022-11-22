@@ -3,6 +3,7 @@
 /*
  * Copyright (C) 2020 Deciso B.V.
  * Copyright (C) 2020 D. Domig
+ * Copyright (C) 2022 Patrik Kernstock <patrik@kernstock.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,50 +31,92 @@
 require_once("guiconfig.inc");
 require_once("widgets/include/wireguard.inc");
 
-$data = trim(configd_run('wireguard showhandshake'));
+$enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? true : false);
 
-$empty = strlen($data) == 0;
 ?>
 
 <table class="table table-striped table-condensed">
     <thead>
         <tr>
+            <th><?= gettext("Name") ?></th>
             <th><?= gettext("Interface") ?></th>
             <th><?= gettext("Endpoint") ?></th>
+            <th><?= gettext("Public Key") ?></th>
             <th><?= gettext("Latest Handshake") ?></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="wg-table-tbody">
 
-<?php if (!$empty):
-    $handshakes = explode("\n", $data);
-
-    foreach ($handshakes as $handshake):
-        $item = explode("\t", $handshake);
-
-        $epoch = $item[2];
-        $latest = "-";
-        if ($epoch > 0):
-            $dt = new DateTime("@$epoch");
-            $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
-            $latest = $dt->format(gettext("Y-m-d H:i:sP"));
-        endif; ?>
-
+    <?php if (!$enabled): ?>
     <tr>
-        <td><?= $item[0] ?></td>
-        <td><?= gettext(substr($item[1], 0, 10)) ?>...</td>
-        <td><?= $latest ?></td>
+        <td colspan="5"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
     </tr>
-
-    <?php endforeach; ?>
-
-<?php else: ?>
-
-    <tr>
-        <td colspan="3"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
-    </tr>
-
-<?php endif; ?>
+    <?php endif; ?>
 
     </tbody>
 </table>
+
+<script>
+$(window).on("load", function() {
+    function wgGenerateRow(name, interface, peerName, publicKey, latestHandshake, status)
+    {
+        publicKeyShort = publicKey.slice(0, 19) + '...';
+
+        var tr = ''
+        +'<tr>'
+        +'    <td>' + name + '</td>'
+        +'    <td>' + interface + '</td>'
+        +'    <td>' + peerName  + '</td>'
+        +'    <td title="' + publicKey + '">' + publicKeyShort  + '</td>'
+        +'    <td>' + latestHandshake + '</td>'
+        +'</tr>';
+
+        return tr;
+    }
+
+    function wgUpdateStatusIf(obj)
+    {
+        // check if at least one peer is set. If not, ignore it.
+        if (Object.keys(obj.peers).length == 0) {
+            return '';
+        }
+
+        // generate row based on data
+        row = '';
+        for (var peerId in obj.peers) {
+            var peer = obj.peers[peerId];
+
+            // generate table row
+            row += wgGenerateRow(
+                obj.name,
+                obj.interface,
+                peer.name,
+                peer.publicKey,
+                peer.lastHandshake,
+                status
+            );
+        }
+
+        return row;
+    }
+
+    function wgUpdateStatus()
+    {
+        var table = '';
+        ajaxGet("/api/wireguard/general/getStatus", {}, function(data, status) {
+            if (status === 'success') {
+                for (var interface in data.items) {
+                    table += wgUpdateStatusIf(data.items[interface]);
+                }
+            }
+            // update table accordingly
+            document.getElementById("wg-table-tbody").innerHTML = table;
+            setTimeout(wgUpdateStatus, 10000);
+        });
+    };
+
+    <?php if ($enabled): ?>
+    wgUpdateStatus();
+    <?php endif; ?>
+});
+</script>

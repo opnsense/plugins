@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2022 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -78,6 +78,10 @@ PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
 PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
 .endfor
 PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.endif
+
+.if !empty(PLUGIN_NAME)
+PLUGIN_DIR?=		${.CURDIR:S/\// /g:[-2]}/${.CURDIR:S/\// /g:[-1]}
 .endif
 
 PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
@@ -345,7 +349,7 @@ sweep: check
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
 revision:
-	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
+	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 

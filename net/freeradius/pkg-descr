@@ -15,6 +15,14 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.22
+
+* Add Proxy configuration page: HomeServer, HomeServerPool, Realm
+
+1.9.21
+
+* Add Certificate, StartTLS and Server port for LDAP Connection
+
 1.9.20
 
 * Remove TTLS-GTC from Default EAP Type (#2421)
