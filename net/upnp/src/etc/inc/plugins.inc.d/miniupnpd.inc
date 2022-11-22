@@ -171,6 +171,14 @@ function miniupnpd_configure_do($verbose = false)
             if (!empty($upnp_config['overridewanip']) && empty($upnp_config['stun_host'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
+                
+            /* configure STUN server if needed */
+            if (empty($upnp_config['overridewanip']) && !empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) ."\n";
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
+            }
+
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
                 $download = $upnp_config['download'] * 1000;
@@ -226,13 +234,6 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "clean_ruleset_interval=600\n";
             $config_text .= "min_lifetime=120\n";
             $config_text .= "max_lifetime=86400\n";
-
-            /* configure STUN server if needed */
-            if (!empty($upnp_config['stun_host']) && empty($upnp_config['overridewanip'])) {
-                $config_text .= "ext_perform_stun=yes\n";
-                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) ."\n";
-                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
-            }
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
