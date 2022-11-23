@@ -599,6 +599,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
+<style>
+    textarea#mapfile\.content {
+        white-space: pre;
+    }
+</style>
+
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     {# manually add tabs #}
     <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
