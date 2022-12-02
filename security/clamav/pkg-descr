@@ -9,6 +9,11 @@ database updates.
 Plugin Changelog
 ================
 
+1.8
+
+* Use syslog for logging
+* ClamAV verbose logging option added
+
 1.7
 
 * Allow addition of external signatures
