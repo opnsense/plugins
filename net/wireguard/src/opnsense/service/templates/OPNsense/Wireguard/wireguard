@@ -10,13 +10,6 @@ wireguard_enable="YES"
 {%     endfor %}
 {%   endif %}
 wireguard_interfaces="{{ activeservers | join(' ') }}"
-start_postcmd=opnsense_postcmd
-opnsense_postcmd()
-{
-	for interface in ${wireguard_interfaces}; do
-		ifconfig ${interface} group wireguard
-	done
-}
 {% else %}
 wireguard_enable="NO"
 {% endif %}

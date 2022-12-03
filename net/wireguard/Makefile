@@ -1,6 +1,6 @@
 PLUGIN_NAME=		wireguard
 PLUGIN_VERSION=		1.13
-PLUGIN_REVISION=	2
+PLUGIN_REVISION=	3
 PLUGIN_COMMENT=		WireGuard VPN service
 PLUGIN_DEPENDS=		wireguard-tools
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
