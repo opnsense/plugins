@@ -2,8 +2,7 @@
     <Services>
         <ClamAV cssClass="fa fa-stethoscope">
             <Configuration order="10" url="/ui/clamav/general/index"/>
-            <LogFile VisibleName="Log / Clamd" order="20" url="/ui/diagnostics/log/clamav/clamd"/>
-            <LogFile VisibleName="Log / Freshclam" order="30" url="/ui/diagnostics/log/clamav/freshclam"/>
+            <LogFile VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/clamd"/>
         </ClamAV>
     </Services>
 </menu>
