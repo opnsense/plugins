@@ -57,7 +57,7 @@ def extract_address(txt):
     """
     for regexp in [r'[^a-fA-F0-9\:]', r'[^F0-9\.]']:
         for line in re.sub(regexp, ' ', txt).split():
-            if line.count('.') == 3 or line.count(':') > 4:
+            if line.count('.') == 3 or line.count(':') >= 2:
                 try:
                     ipaddress.ip_address(line)
                     return line
