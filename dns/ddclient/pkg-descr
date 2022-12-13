@@ -11,6 +11,7 @@ Plugin Changelog
 * Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
 * Configurable checkip (contributed by Christian Schulze)
 * Allow % characters in usernames
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
 
 1.8
 
