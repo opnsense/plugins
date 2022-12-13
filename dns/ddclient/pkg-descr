@@ -23,6 +23,7 @@ Plugin Changelog
 * Add sitelutions support (contributed by Luca Schoeneberg)
 * Add woima support (contributed by Luca Schoeneberg)
 * Add Yandex support (contributed by Luca Schoeneberg)
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
 
 1.9
 
