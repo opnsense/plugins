@@ -147,7 +147,11 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    $config_text .= "listening_ip={$if}\n";
+                    if (isset($upnp_config['overridesubnet'])) {
+                        $config_text .= "listening_ip={$if}{$upnp_config['overridesubnet']}\n";
+                    } else {
+                        $config_text .= "listening_ip={$if}\n";
+                    }
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
                         $ifaces_active = $iface;
@@ -164,9 +168,17 @@ function miniupnpd_configure_do($verbose = false)
 
         if (!empty($ifaces_active)) {
             /* override wan ip address, common for carp, etc */
-            if (!empty($upnp_config['overridewanip'])) {
+            if (!empty($upnp_config['overridewanip']) && empty($upnp_config['stun_host'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
+                
+            /* configure STUN server if needed */
+            if (empty($upnp_config['overridewanip']) && !empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) ."\n";
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
+            }
+
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
                 $download = $upnp_config['download'] * 1000;

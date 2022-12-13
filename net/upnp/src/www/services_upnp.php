@@ -68,8 +68,9 @@ function miniupnpd_validate_port($port)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig = array();
 
-    $copy_fields = array('enable', 'enable_upnp', 'enable_natpmp', 'ext_iface', 'iface_array', 'download',
-                         'upload', 'overridewanip', 'logpackets', 'sysuptime', 'permdefault');
+    $copy_fields = array('enable', 'enable_upnp', 'enable_natpmp', 'ext_iface', 'iface_array', 'stun_host',
+        'stun_port', 'overridesubnet', 'download', 'upload', 'overridewanip', 'logpackets', 'sysuptime',
+        'permdefault');
 
     foreach (miniupnpd_permuser_list() as $permuser) {
         $copy_fields[] = $permuser;
@@ -103,6 +104,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     if (!empty($pconfig['overridewanip']) && !is_ipaddr($pconfig['overridewanip'])) {
         $input_errors[] = gettext('You must specify a valid ip address in the \'Override WAN address\' field');
+    }
+    if (!empty($pconfig['overridewanip']) && !empty($pconfig['stun_host'])) {
+        $input_errors[] = gettext('You cannot override the WAN IP if you have a STUN host set.');
+    }
+    if (!empty($pconfig['stun_host']) && !is_addr($pconfig['stun_host']) && !is_hostname($pconfig['stun_host'])) {
+        $input_errors[] = gettext('The STUN host must be a valid IP address or hostname.');
+    }
+    if (!empty($pconfig['stun_port']) && !is_port($pconfig['stun_port'])) {
+        $input_errors[] = gettext('STUN port must contain a valid port number.');
+    }
+    if (!empty($pconfig['overridesubnet']) && count($pconfig['iface_array']) > 1) {
+        $input_errors[] = gettext('You can only override the interface subnet when one LAN interface is selected');
     }
     if ((!empty($pconfig['download']) && empty($pconfig['upload'])) || (!empty($pconfig['upload']) && empty($pconfig['download']))) {
         $input_errors[] = gettext('You must fill in both \'Maximum Download Speed\' and \'Maximum Upload Speed\' fields');
@@ -146,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // text field types
-        foreach (array('ext_iface', 'download', 'upload', 'overridewanip') as $fieldname) {
+        foreach (array('ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port') as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
@@ -255,6 +268,44 @@ include("head.inc");
                        </div>
                       </td>
                     </tr>
+
+                    <tr>
+                        <td><a id="help_for_override_subnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
+                        <td>
+                            <select name="overridesubnet" class="selectpicker" id="overridesubnet">
+                                <option value="" <?=!empty($pconfig['overridesubnet']) ? "selected=\"selected\"" : "";?>>Interface default</option>
+<?php
+                                for ($i = 32; $i >= 1; $i--) { ?>
+                                    <option value="/<?=$i;?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == "/".$i ? "selected=\"selected\"" : "";?>>/<?=$i;?></option>
+<?php
+                                }?>
+                            </select>
+                            <div class="hidden" data-for="help_for_override_subnet">
+                                <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting UPNP traffic across networks.");?>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><a id="help_for_stun_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Specify STUN server");?></td>
+                        <td>
+                            <input name="stun_host" type="text" value="<?=$pconfig['stun_host'];?>" />
+                            <div class="hidden" data-for="help_for_stun_host">
+                                <?=gettext("STUN server used to predict external WAN IP.");?>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><a id="help_for_stun_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Specify STUN port");?></td>
+                        <td>
+                            <input name="stun_port" type="text" value="<?=empty($pconfig['stun_port']) ? "3478" : $pconfig['stun_port'];?>" />
+                            <div class="hidden" data-for="help_for_stun_port">
+                                <?=gettext("STUN server port used to predict external WAN IP. Defaults to 3478 if not set.");?>
+                            </div>
+                        </td>
+                    </tr>
+
                     <tr>
                       <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Download Speed");?></td>
                       <td>
