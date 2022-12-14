@@ -600,7 +600,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </script>
 
 <style>
-    textarea#mapfile\.content {
+    textarea {
         white-space: pre;
     }
 </style>
