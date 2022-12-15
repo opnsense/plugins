@@ -125,9 +125,10 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
            but nsupdate insists on having both */
         $fd = fopen("/var/etc/K{$i}{$keyname}+157+00000.private", "w");
         $privkey = <<<EOD
-Private-key-format: v1.2
-Algorithm: 157 (HMAC)
-Key: {$dnsupdate['keydata']}
+key "{$keyname}" {
+	algorithm hmac-md5;
+	secret "{$dnsupdate['keydata']}";
+};
 
 EOD;
         fwrite($fd, $privkey);
