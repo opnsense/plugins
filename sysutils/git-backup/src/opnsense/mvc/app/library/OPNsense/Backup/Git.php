@@ -68,7 +68,7 @@ class Git extends Base implements IBackupProvider
            ],
            [
              "name" => "privkey",
-             "type" => "textarea",
+             "type" => "passwordarea",
              "label" => gettext("SSH private key"),
              "help" => gettext("When provided, ssh based authentication will be used."),
              "value" => null
@@ -159,10 +159,10 @@ class Git extends Base implements IBackupProvider
         } else {
             $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
         }
-        exec("cd {$targetdir} && git remote remove origin");
-        exec("cd {$targetdir} && git remote add origin " . escapeshellarg($url));
+        exec("cd {$targetdir} && {$git} remote remove origin");
+        exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
         $pushtxt = shell_exec(
-            "(cd {$targetdir} && git push origin " . escapeshellarg("master:{$mdl->branch}") .
+            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("master:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
         );
         if (strpos($pushtxt, '__exit_ok__')) {

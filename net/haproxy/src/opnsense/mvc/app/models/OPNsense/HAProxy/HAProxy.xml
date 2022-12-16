@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.6.0</version>
+    <version>3.8.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -376,6 +376,24 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <prometheus_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </prometheus_enabled>
+                <prometheus_bind type="CSVListField">
+                    <default>*:8404</default>
+                    <Required>N</Required>
+                    <multiple>Y</multiple>
+                    <mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 10.0.0.1:8404 or haproxy.example.com:8404.</ValidationMessage>
+                </prometheus_bind>
+                <prometheus_path type="TextField">
+                    <default>/metrics</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,2048}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 2048 characters.</ValidationMessage>
+                </prometheus_path>
             </stats>
             <cache>
                 <enabled type="BooleanField">
@@ -402,6 +420,16 @@
                     <Required>N</Required>
                     <ValidationMessage>Please specify a value between 1 and 2146435072.</ValidationMessage>
                 </maxObjectSize>
+                <processVary type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </processVary>
+                <maxSecondaryEntries type="IntegerField">
+                    <default>10</default>
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>Please specify a positive integer value.</ValidationMessage>
+                </maxSecondaryEntries>
             </cache>
         </general>
         <frontends>
@@ -767,6 +795,16 @@
                     <default>0</default>
                     <Required>Y</Required>
                 </forwardFor>
+                <prometheus_enabled type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </prometheus_enabled>
+                <prometheus_path type="TextField">
+                    <default>/metrics</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,2048}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 2048 characters.</ValidationMessage>
+                </prometheus_path>
                 <connectionBehaviour type="OptionField">
                     <Required>Y</Required>
                     <default>http-keep-alive</default>
@@ -873,6 +911,18 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedServers>
+                <linkedFcgi type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>fcgis.fcgi</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related fcgi item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </linkedFcgi>
                 <linkedResolver type="ModelRelationField">
                     <Model>
                         <template>
@@ -1244,6 +1294,16 @@
                         <disabled>disabled</disabled>
                     </OptionValues>
                 </mode>
+                <multiplexer_protocol type="OptionField">
+                    <Required>N</Required>
+                    <default>unspecified</default>
+                    <OptionValues>
+                        <unspecified>auto-selection [recommended]</unspecified>
+                        <fcgi>FastCGI</fcgi>
+                        <h2>HTTP/2</h2>
+                        <h1>HTTP/1.1</h1>
+                    </OptionValues>
+                </multiplexer_protocol>
                 <type type="OptionField">
                     <Required>Y</Required>
                     <default>static</default>
@@ -1589,6 +1649,7 @@
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
+                        <ssl_hello_type>SSL Hello Type</ssl_hello_type>
                         <src>Source IP matches specified IP</src>
                         <src_is_local>Source IP is local</src_is_local>
                         <src_port>Source IP: TCP source port</src_port>
@@ -1754,6 +1815,15 @@
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
                 </ssl_c_ca_commonname>
+                <ssl_hello_type type="OptionField">
+                    <Required>N</Required>
+                    <default>x1</default>
+                    <OptionValues>
+                        <x0>0 - no client hello</x0>
+                        <x1>1 - client hello</x1>
+                        <x2>2 - server hello</x2>
+                    </OptionValues>
+                </ssl_hello_type>
                 <src type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
@@ -2090,6 +2160,8 @@
                         <use_backend>Use specified Backend Pool</use_backend>
                         <use_server>Override server in Backend Pool</use_server>
                         <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
+                        <fcgi_pass_header>FastCGI pass-header</fcgi_pass_header>
+                        <fcgi_set_param>FastCGI set-param</fcgi_set_param>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
@@ -2154,6 +2226,16 @@
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </use_server>
+                <fcgi_pass_header type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </fcgi_pass_header>
+                <fcgi_set_param type="TextField">
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </fcgi_set_param>
                 <http_request_auth type="TextField">
                     <mask>/^.{1,4096}$/u</mask>
                     <Required>N</Required>
@@ -2423,6 +2505,80 @@
                 </content>
             </lua>
         </luas>
+        <fcgis>
+            <fcgi type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <mask>/^.{1,255}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </description>
+                <docroot type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </docroot>
+                <index type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </index>
+                <path_info type="TextField">
+                    <mask>/^.{1,4096}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </path_info>
+                <log_stderr type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </log_stderr>
+                <keep_conn type="BooleanField">
+                    <default>1</default>
+                    <Required>N</Required>
+                </keep_conn>
+                <get_values type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </get_values>
+                <mpxs_conns type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </mpxs_conns>
+                <max_reqs type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 100000.</ValidationMessage>
+                    <Required>N</Required>
+                </max_reqs>
+                <linkedActions type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>actions.action</items>
+                            <display>name</display>
+                            <filters>
+                                <type>/fcgi/</type>
+                            </filters>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related action item not found</ValidationMessage>
+                    <Sorted>Y</Sorted>
+                    <multiple>Y</multiple>
+                    <Required>N</Required>
+                </linkedActions>
+            </fcgi>
+        </fcgis>
         <errorfiles>
             <errorfile type="ArrayField">
                 <id type="UniqueIdField">

@@ -41,7 +41,7 @@ class M1_24_0 extends BaseModelMigration
     {
         $cfgObj = Config::getInstance()->object();
         $ports = array();
-        foreach ($cfgObj->OPNsense->Nginx->http_server as $cfg_http_server) {
+        foreach ($cfgObj->OPNsense->Nginx->http_server ?? [] as $cfg_http_server) {
             $uuid = (string)$cfg_http_server->attributes()['uuid'];
             $ports['http_port'] = (isset($cfg_http_server->listen_http_port) && $cfg_http_server->listen_http_port != '') ? $cfg_http_server->listen_http_port : null;
             $ports['https_port'] = (isset($cfg_http_server->listen_https_port) && $cfg_http_server->listen_https_port != '') ? $cfg_http_server->listen_https_port : null;
@@ -49,7 +49,7 @@ class M1_24_0 extends BaseModelMigration
             $http_server->listen_http_address = (isset($ports['http_port'])) ? $ports['http_port'] . ',[::]:' . $ports['http_port'] : null;
             $http_server->listen_https_address = (isset($ports['https_port'])) ? $ports['https_port'] . ',[::]:' . $ports['https_port'] : null;
         }
-        foreach ($cfgObj->OPNsense->Nginx->stream_server as $cfg_stream_server) {
+        foreach ($cfgObj->OPNsense->Nginx->stream_server ?? [] as $cfg_stream_server) {
             $uuid = (string)$cfg_stream_server->attributes()['uuid'];
             $port = (isset($cfg_stream_server->listen_port) && $cfg_stream_server->listen_port != '') ? $cfg_stream_server->listen_port : null;
             $server = $model->getNodeByReference('stream_server.' . $uuid);

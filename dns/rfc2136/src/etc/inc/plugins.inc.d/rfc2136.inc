@@ -1,41 +1,41 @@
 <?php
 
 /*
-    Copyright (C) 2014-2017 Franco Fichtner <franco@opnsense.org>
-    Copyright (C) 2010 Ermal Luçi
-    Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
-    Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-*/
+ * Copyright (C) 2014-2017 Franco Fichtner <franco@opnsense.org>
+ * Copyright (C) 2010 Ermal Luçi
+ * Copyright (C) 2005-2006 Colin Smith <ethethlay@gmail.com>
+ * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 function rfc2136_configure()
 {
-    return array(
-        'bootup' => array('rfc2136_configure_do'),
-        'local' => array('rfc2136_configure_do'),
-        'newwanip' => array('rfc2136_configure_do:2'),
-    );
+    return [
+        'bootup' => ['rfc2136_configure_do'],
+        'local' => ['rfc2136_configure_do'],
+        'newwanip' => ['rfc2136_configure_do:2'],
+    ];
 }
 
 function rfc2136_enabled()
@@ -55,19 +55,15 @@ function rfc2136_enabled()
 
 function rfc2136_services()
 {
-    global $config;
-
-    $services = array();
+    $services = [];
 
     if (rfc2136_enabled()) {
-        $services[] = array(
+        $services[] = [
             'description' => gettext('RFC 2136'),
-            'configd' => array(
-                'restart' => array('rfc2136 reload'),
-            ),
+            'configd' => [ 'restart' => ['rfc2136 reload'] ],
             'nocheck' => true,
             'name' => 'rfc2136',
-        );
+        ];
     }
 
     return $services;
@@ -75,10 +71,10 @@ function rfc2136_services()
 
 function rfc2136_cron()
 {
-    $jobs = array();
+    $jobs = [];
 
     if (rfc2136_enabled()) {
-        $jobs[]['autocron'] = array('/usr/local/etc/rc.rfc2136', '16', '1');
+        $jobs[]['autocron'] = ['/usr/local/etc/rc.rfc2136', '16', '1'];
     }
 
     return $jobs;
@@ -99,10 +95,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         return;
     }
 
-    if ($verbose) {
-        echo 'Configuring RFC 2136 clients...';
-        flush();
-    }
+    service_log('Configuring RFC 2136 clients...', $verbose);
 
     foreach ($config['dnsupdates']['dnsupdate'] as $i => $dnsupdate) {
         if (!isset($dnsupdate['enable'])) {
@@ -125,13 +118,6 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         /* trailing dot */
         if (substr($hostname, -1) != ".") {
             $hostname .= ".";
-        }
-
-        /* declare key algorithm
-           define default for migration from version without algorithm configuration */
-        $keyalgo = $dnsupdate['keyalgo'];
-        if (empty($keyalgo)) {
-            $keyalgo = 'hmac-md5';
         }
         
         /* write nsupdate key file
@@ -158,7 +144,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             if (file_exists($cacheFile)) {
                 list($cachedipv4, $cacheTimev4) = explode('|', file_get_contents($cacheFile));
             } else {
-                list($cachedipv4, $cacheTimev4) = array('', '');
+                list($cachedipv4, $cacheTimev4) = ['', ''];
             }
             if (isset($dnsupdate['usepublicip'])) {
                 $wanip = get_rfc2136_ip_address($dnsupdate['interface'], 4);
@@ -185,7 +171,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             if (file_exists($cacheFile6)) {
                 list($cachedipv6, $cacheTimev6) = explode('|', file_get_contents($cacheFile6));
             } else {
-                list($cachedipv6, $cacheTimev6) = array('', '');
+                list($cachedipv6, $cacheTimev6) = ['', ''];
             }
             if (isset($dnsupdate['usepublicip'])) {
                 $wanipv6 = get_rfc2136_ip_address($dnsupdate['interface'], 6);
@@ -223,9 +209,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         }
     }
 
-    if ($verbose) {
-        echo "done.\n";
-    }
+    service_log("done.\n", $verbose);
 }
 
 function get_rfc2136_ip_address($int, $ipver = 4)

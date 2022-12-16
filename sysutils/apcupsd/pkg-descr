@@ -12,6 +12,10 @@ WWW: http://www.apcupsd.org/
 Plugin Changelog
 ================
 
+1.1
+
+* Add log view
+
 1.0 (initial release)
 
 * Apcupsd service control and configuration

@@ -1,0 +1,6 @@
+<menu>
+    <Services>
+        <Sslh cssClass="fa fa-lock fa-fw" url="/ui/sslh/settings">
+        </Sslh>
+    </Services>
+</menu>

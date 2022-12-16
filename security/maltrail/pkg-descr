@@ -11,6 +11,14 @@ WWW: https://github.com/stamparm/maltrail
 Changelog
 ---------
 
+1.10
+
+* Add CHECK_HOST_DOMAINS option
+
+1.9
+
+* Remove MFS support for /var/log/
+
 1.8
 
 * Add firewall alias "BlocklistMaltrail" that points to the built-in ip block list

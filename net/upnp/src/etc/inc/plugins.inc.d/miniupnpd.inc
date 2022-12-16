@@ -41,22 +41,24 @@ function miniupnpd_firewall($fw)
 
     $fw->registerAnchor('miniupnpd', 'rdr');
     $fw->registerAnchor('miniupnpd', 'fw');
+    $fw->registerAnchor('miniupnpd', 'nat', 0, 'head');
+    $fw->registerAnchor('miniupnpd', 'binat');
 }
 
 function miniupnpd_services()
 {
-    $services = array();
+    $services = [];
 
     if (!miniupnpd_enabled()) {
         return $services;
     }
 
-    $pconfig = array();
+    $pconfig = [];
     $pconfig['name'] = 'miniupnpd';
     $pconfig['description'] = gettext('Universal Plug and Play');
-    $pconfig['php']['restart'] = array('miniupnpd_stop', 'miniupnpd_start');
-    $pconfig['php']['start'] = array('miniupnpd_start');
-    $pconfig['php']['stop'] = array('miniupnpd_stop');
+    $pconfig['php']['restart'] = ['miniupnpd_stop', 'miniupnpd_start'];
+    $pconfig['php']['start'] = ['miniupnpd_start'];
+    $pconfig['php']['stop'] = ['miniupnpd_stop'];
     $pconfig['pidfile'] = '/var/run/miniupnpd.pid';
     $services[] = $pconfig;
 
@@ -85,7 +87,7 @@ function miniupnpd_stop()
 
 function miniupnpd_configure()
 {
-    return array('bootup' => array('miniupnpd_configure_do'));
+    return ['bootup' => ['miniupnpd_configure_do']];
 }
 
 function miniupnpd_uuid()
@@ -98,7 +100,7 @@ function miniupnpd_uuid()
 
 function miniupnpd_permuser_list()
 {
-    $ret = array();
+    $ret = [];
     $count = 8;
 
     for ($i = 1; $i <= $count; $i++) {
@@ -118,18 +120,13 @@ function miniupnpd_configure_do($verbose = false)
         return;
     }
 
-    if ($verbose) {
-        echo 'Starting UPnP service...';
-        flush();
-    }
+    service_log('Starting UPnP service...', $verbose);
 
     $upnp_config = $config['installedpackages']['miniupnpd']['config'][0];
 
     $ext_ifname = get_real_interface($upnp_config['ext_iface']);
     if ($ext_ifname == $upnp_config['ext_iface']) {
-        if ($verbose) {
-            echo "failed.\n";
-        }
+        service_log("failed.\n", $verbose);
         return;
     }
 
@@ -150,7 +147,11 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    $config_text .= "listening_ip={$if}\n";
+                    $config_text .= "listening_ip={$if}";
+                    if (!empty($upnp_config['overridesubnet'])) {
+                        $config_text .= "/{$upnp_config['overridesubnet']}";
+                    }
+                    $config_text .= "\n";
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
                         $ifaces_active = $iface;
@@ -170,6 +171,14 @@ function miniupnpd_configure_do($verbose = false)
             if (!empty($upnp_config['overridewanip'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
+
+            /* configure STUN server if needed */
+            if (!empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) . "\n";
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
+            }
+
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
                 $download = $upnp_config['download'] * 1000;
@@ -234,7 +243,5 @@ function miniupnpd_configure_do($verbose = false)
         }
     }
 
-    if ($verbose) {
-        echo "done.\n";
-    }
+    service_log("done.\n", $verbose);
 }

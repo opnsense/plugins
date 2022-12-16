@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <description>
         Dynamic DNS client
     </description>
@@ -35,32 +35,46 @@
                     <Required>Y</Required>
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
+                        <hosting1984>1984</hosting1984>
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
-                        <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
+                        <cloudns>ClouDNS</cloudns>
+                        <dinahosting>dinahosting</dinahosting>
+                        <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
+                        <dnsexit>DNSExit</dnsexit>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
-                        <dslreports1>DslReports</dslreports1>
-                        <duckdns>DuckDNS</duckdns>
+                        <dslreports1>DSLReports</dslreports1>
+                        <dondominio>DonDominio</dondominio>
+                        <duckdns>Duck DNS</duckdns>
                         <dynu>Dynu</dynu>
-                        <easydns>EasyDNS</easydns>
+                        <easydns>easyDNS</easydns>
                         <freedns>FreeDNS</freedns>
+                        <freemyip>freeMyIP</freemyip>
+                        <gandi>gandi.net</gandi>
+                        <godaddy>GoDaddy</godaddy>
                         <googledomains>Google</googledomains>
-                        <gandi>Gandi.net</gandi>
                         <he-net>HE.net</he-net>
                         <he-net-tunnel>HE.net TunnelBroker</he-net-tunnel>
+                        <hetzner>Hetzner DNS Console</hetzner>
                         <inwx>INWX</inwx>
+                        <keysystems>Key-Systems</keysystems>
                         <loopia>Loopia</loopia>
                         <namecheap>NameCheap</namecheap>
-                        <noip>Noip</noip>
+                        <nfsn>NearlyFreeSpeech.net</nfsn>
+                        <njalla>Njalla</njalla>
+                        <noip>no-ip</noip>
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
+                        <ovh>OVHcloud DynHost</ovh>
                         <servercow>Servercow</servercow>
+                        <sitelutions>Sitelutions</sitelutions>
                         <spdyn>spDYN</spdyn>
                         <strato>STRATO</strato>
+                        <woima>Woima</woima>
+                        <yandex>Yandex</yandex>
                         <zoneedit1>Zoneedit</zoneedit1>
-                        <ovh>OVH DynHost</ovh>
                         <custom>Custom</custom>
                     </OptionValues>
                 </service>
@@ -78,7 +92,7 @@
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
-                    <mask>/^([a-zA-Z0-9\-.@_:+])*$/u</mask>
+                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
@@ -111,6 +125,7 @@
                         <web_freedns>freedns</web_freedns>
                         <web_googledomains>googledomains</web_googledomains>
                         <web_he>he</web_he>
+                        <web_icanhazip>icanhazip</web_icanhazip>
                         <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
                         <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
                         <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
@@ -125,6 +140,12 @@
                         <if>Interface</if>
                     </OptionValues>
                 </checkip>
+                <checkip_timeout type="IntegerField">
+                    <default>10</default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </checkip_timeout>
                 <force_ssl type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -136,7 +157,7 @@
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <mask>/^(.){1,255}$/u</mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
             </account>

@@ -123,6 +123,10 @@
             <default>0</default>
             <Required>N</Required>
         </influx_v2_insecure_skip_verify>
+        <influx_v2_timeout type="IntegerField">
+            <default>5</default>
+            <Required>N</Required>
+        </influx_v2_timeout>
         <datadog_enable type="BooleanField">
             <default>0</default>
             <Required>N</Required>

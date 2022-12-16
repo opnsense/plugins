@@ -8,6 +8,11 @@
       <Lease VisibleName="DHCP Leases" url="/ui/freeradius/lease/index" order="36"/>
       <EAP url="/ui/freeradius/eap/index" order="40"/>
       <LDAP url="/ui/freeradius/ldap/index" order="50"/>
+      <Proxy url="/ui/freeradius/proxy/index" order="60">
+        <Homeservers url="/ui/freeradius#homeservers"/>
+        <Homeserverpools url="/ui/freeradius#homeserverpools"/>
+        <Realms url="/ui/freeradius#realms"/>
+      </Proxy>
       <LogFile VisibleName="Log File" order="80" url="/ui/diagnostics/log/core/radius"/>
     </FreeRADIUS>
   </Services>

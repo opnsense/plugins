@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.tayga.general.enabled') and OPNsense.tayga.general.enabled == '1' %}
-tayga_var_script="/usr/local/opnsense/scripts/OPNsense/Tayga/setup.sh"
+tayga_script="/usr/local/opnsense/scripts/OPNsense/Tayga/setup.sh"
 tayga_enable="YES"
 tayga_v4address={{ OPNsense.tayga.general.v4address }}
 tayga_v4destination={{ OPNsense.tayga.general.v4destination }}

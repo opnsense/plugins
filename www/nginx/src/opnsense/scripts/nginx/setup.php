@@ -228,7 +228,7 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         foreach ($users as $user) {
             $user_node = $nginx->getNodeByReference("credential." . $user);
             $username = (string)$user_node->username;
-            $password = crypt((string)$user_node->password);
+            $password = password_hash((string)$user_node->password, PASSWORD_DEFAULT);
             fwrite($file, $username . ':' . $password . "\n");
         }
     } finally {
@@ -304,7 +304,7 @@ foreach ($nginx->tls_fingerprint->iterateItems() as $tls_fingerprint) {
     if ((string)$tls_fingerprint->trusted == '1') {
         $ciphers = explode(':', (string)$tls_fingerprint->ciphers);
         if (!empty((string)$tls_fingerprint->curves)) {
-            $curves = explode(':', (string)$tls_fingerprint->ciphers);
+            $curves = explode(':', (string)$tls_fingerprint->curves);
         } else {
             $curves = array();
         }
@@ -318,3 +318,5 @@ file_put_contents(
     empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
 );
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
+
+passthru('/usr/local/etc/rc.d/php-fpm start');

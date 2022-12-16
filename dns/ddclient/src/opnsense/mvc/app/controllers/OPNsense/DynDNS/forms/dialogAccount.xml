@@ -41,14 +41,14 @@
         <id>account.wildcard</id>
         <label>Wildcard</label>
         <type>checkbox</type>
-        <style>optional_setting service_dyndns2 service_easydns service_custom</style>
+        <style>optional_setting service_dyndns2 service_woima service_cloudflare service_easydns service_custom</style>
         <help>add a DNS wildcard CNAME record that points to the configured host.</help>
     </field>
     <field>
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_cloudflare</style>
+        <style>optional_setting service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -64,6 +64,12 @@
         <label>Check ip method</label>
         <type>dropdown</type>
         <help>How to determine the address to use for this host</help>
+    </field>
+    <field>
+        <id>account.checkip_timeout</id>
+        <label>Check ip timeout</label>
+        <type>text</type>
+        <help>How long to wait before the checkip process times out</help>
     </field>
     <field>
         <id>account.force_ssl</id>

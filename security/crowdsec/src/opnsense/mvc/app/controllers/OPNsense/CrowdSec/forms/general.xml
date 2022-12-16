@@ -15,7 +15,7 @@
     <label>Enable LAPI</label>
     <type>checkbox</type>
     <help>Enable/disable the CrowdSec Local API. Keep this enabled unless you
-      connect to a LAPI on another machine</help>
+      connect to a LAPI on another machine.</help>
   </field>
 
   <!-- firewall_bouncer_enabled -->

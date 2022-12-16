@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -21,6 +21,10 @@
             <default>0</default>
             <Required>Y</Required>
         </graceful>
+        <networkimportcheck type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </networkimportcheck>
         <networks type="CSVListField">
             <default></default>
             <Required>N</Required>
@@ -205,8 +209,8 @@
                         <number type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MinimumValue>0</MinimumValue>
+                                <MaximumValue>4294967295</MaximumValue>
                         </number>
                         <action type="OptionField">
                                 <default></default>
@@ -249,8 +253,8 @@
                         <seqnumber type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>10000</MaximumValue>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4294967294</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
                                 <default></default>
@@ -330,8 +334,8 @@
                         <id type="IntegerField">
                                 <default></default>
                                 <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>65535</MaximumValue>
                         </id>
                         <match type="ModelRelationField">
                                 <Model>
@@ -353,8 +357,8 @@
                                                 <display>name</display>
                                         </template>
                                 </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <ValidationMessage>Related item PrefixList not found</ValidationMessage>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match2>
                         <match3 type="ModelRelationField">
@@ -365,8 +369,8 @@
                                                 <display>number</display>
                                         </template>
                                 </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
+                                <ValidationMessage>Related item CommunityList not found</ValidationMessage>
+                                <Multiple>Y</Multiple>
                                 <Required>N</Required>
                         </match3>
                         <set type="TextField">

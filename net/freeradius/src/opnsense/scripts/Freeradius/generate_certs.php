@@ -41,6 +41,9 @@ $cert_pem_content = '';
 $ca_pem_filename = '/usr/local/etc/raddb/certs/ca_opn.pem';
 $ca_pem_content = '';
 
+$ldapcert_pem_filename = '/usr/local/etc/raddb/certs/cert_ldap.pem';
+$ldapcert_pem_content = '';
+
 // traverse Freeradius plugin for certficiates
 $configObj = Config::getInstance()->object();
 if (isset($configObj->OPNsense->freeradius)) {
@@ -108,6 +111,34 @@ if (isset($configObj->OPNsense->freeradius)) {
                 }
             }
         }
+        $cert_refid = (string)$find_cert->ldapcert;
+        // if eap has a certificate attached, search for its contents
+        if ($cert_refid != "") {
+            foreach ($configObj->cert as $ldapcert) {
+                if ($cert_refid == (string)$ldapcert->refid) {
+                    // generate cert pem file
+                    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+                        "\r",
+                        "",
+                        base64_decode((string)$ldapcert->crt)
+                    )));
+
+                    $pem_content .= "\n";
+                    $pem_content .= trim(str_replace(
+                        "\n\n",
+                        "\n",
+                        str_replace("\r", "", base64_decode((string)$ldapcert->prv))
+                    ));
+                    $pem_content .= "\n";
+                    $ldapcert_pem_content .= $pem_content;
+                    // generate ca pem file
+                    if (!empty($ldapcert->caref)) {
+                        $ldapcert = (array)$ldapcert;
+                        $ldapcert_pem_content .= ca_chain($ldapcert);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -118,3 +149,7 @@ echo "Certificates generated $cert_pem_filename\n";
 file_put_contents($ca_pem_filename, $ca_pem_content);
 chmod($ca_pem_filename, 0600);
 echo "Certificates generated $ca_pem_filename\n";
+
+file_put_contents($ldapcert_pem_filename, $ldapcert_pem_content);
+chmod($ldapcert_pem_filename, 0600);
+echo "Certificates generated $ldapcert_pem_filename\n";

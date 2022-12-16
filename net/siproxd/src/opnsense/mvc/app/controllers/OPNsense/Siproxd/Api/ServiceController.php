@@ -46,7 +46,7 @@ class ServiceController extends ApiControllerBase
     public function showregistrationsAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun("siproxd show-registrations");
+        $response = $backend->configdRun('siproxd registrations');
         return array("response" => $response);
     }
 

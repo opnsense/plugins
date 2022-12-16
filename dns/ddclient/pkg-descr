@@ -6,6 +6,31 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.10
+
+* Update to ddclient 3.10.0
+* Add 1984 support (contributed by Luca Schoeneberg)
+* Add ClouDNS support (contributed by Luca Schoeneberg)
+* Add Dinahosting support (contributed by Luca Schoeneberg)
+* Add DNSExit support (contributed by Luca Schoeneberg)
+* Add DonDominio support (contributed by Luca Schoeneberg)
+* Add Freemyip support (contributed by Luca Schoeneberg)
+* Add godaddy support (contributed by Luca Schoeneberg)
+* Add Hetzner support (contributed by Luca Schoeneberg)
+* Add Key-Systems support (contributed by Luca Schoeneberg)
+* Add NearlyFreeSpeech.NET support (contributed by Luca Schoeneberg)
+* Add Njal.la support (contributed by satrapes)
+* Add sitelutions support (contributed by Luca Schoeneberg)
+* Add woima support (contributed by Luca Schoeneberg)
+* Add Yandex support (contributed by Luca Schoeneberg)
+
+1.9
+
+* Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
+* Configurable checkip (contributed by Christian Schulze)
+* Allow % characters in usernames
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
+
 1.8
 
 * Add a force action available via cron
