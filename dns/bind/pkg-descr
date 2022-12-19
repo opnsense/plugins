@@ -9,6 +9,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.26
+
+* Revamp the logging page with proper columns (contributed by Robbert Rijkse)
+
 1.25
 
 * Update base to BIND 9.18
