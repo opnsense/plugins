@@ -11,6 +11,7 @@ Plugin Changelog
 
 1.25
 
+* Cleanup/Fix the Master/Slave domain dialogs (contributed by Robbert Rijkse and Michael Newton)
 * Revamp the logging page with proper columns (contributed by Robbert Rijkse)
 * Update base to BIND 9.18
 
