@@ -11,6 +11,7 @@ Plugin Changelog
 
 1.25
 
+* Revamp the logging page with proper columns (contributed by Robbert Rijkse)
 * Update base to BIND 9.18
 
 1.24
