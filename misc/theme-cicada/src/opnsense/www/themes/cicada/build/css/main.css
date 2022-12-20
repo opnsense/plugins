@@ -3013,7 +3013,7 @@ select[multiple].input-lg,
 
 .btn-info {
   color: #fff;
-  background-color: #00370b;
+  background-color: #226808;
   border-color: #191919; }
   .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     color: #fff;
@@ -6654,4 +6654,8 @@ border: 1px solid #191919 !important;
 
 .table-custom-categories {
   border: 1px solid #181818 !important;
+}
+
+#introduction a.btn-info {
+  color: #FFF !important;
 }

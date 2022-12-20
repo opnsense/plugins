@@ -5109,7 +5109,7 @@ fieldset[disabled] .btn-success {
 
 .btn-info {
   color: #fff;
-  background-color: #00370b;
+  background-color: #226808;
   border-color: #191919;
 
   &:hover, &:focus, &:active, &.active {
@@ -10804,4 +10804,8 @@ router-view {
 
 .table-custom-categories {
   border: 1px solid #181818 !important;
+}
+
+#introduction a.btn-info {
+  color: #FFF !important;
 }
