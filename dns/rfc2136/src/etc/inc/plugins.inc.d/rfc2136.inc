@@ -120,35 +120,16 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             $hostname .= ".";
         }
 
-        /* write private key file
-           this is dumb - public and private keys are the same for HMAC-MD5,
-           but nsupdate insists on having both */
-        $fd = fopen("/var/etc/K{$i}{$keyname}+157+00000.private", "w");
-        $privkey = <<<EOD
-key "{$keyname}" {
-	algorithm hmac-md5;
-	secret "{$dnsupdate['keydata']}";
-};
+        $keyfile = "/var/etc/nsupdatekey{$i}";
+        $keyfill = [
+            "key \"{$keyname}\" {",
+            "\talgorithm hmac-md5;",
+            "\tsecret \"{$dnsupdate['keydata']}\";",
+            "};",
+            '' /* end of file */
+        ];
 
-EOD;
-        fwrite($fd, $privkey);
-        fclose($fd);
-
-        /* write public key file */
-        if ($dnsupdate['keytype'] == "zone") {
-            $flags = 257;
-            $proto = 3;
-        } elseif ($dnsupdate['keytype'] == "host") {
-            $flags = 513;
-            $proto = 3;
-        } elseif ($dnsupdate['keytype'] == "user") {
-            $flags = 0;
-            $proto = 2;
-        }
-
-        $fd = fopen("/var/etc/K{$i}{$keyname}+157+00000.key", "w");
-        fwrite($fd, "{$keyname} IN KEY {$flags} {$proto} 157 {$dnsupdate['keydata']}\n");
-        fclose($fd);
+        file_put_contents($keyfile, implode(PHP_EOL, $keyfill));
 
         /* generate update instructions */
         $upinst = "";
@@ -219,7 +200,7 @@ EOD;
             @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
             unset($upinst);
             /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -k /var/etc/K{$i}{$keyname}+157+00000.key";
+            $cmd = "/usr/local/bin/nsupdate -k {$keyfile}";
             if (isset($dnsupdate['usetcp'])) {
                 $cmd .= " -v";
             }
