@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['ttl'] = isset($id) &&!empty($a_rfc2136[$id]['ttl']) ? $a_rfc2136[$id]['ttl'] : 60;
     $pconfig['keydata'] = isset($id) &&!empty($a_rfc2136[$id]['keydata']) ? $a_rfc2136[$id]['keydata'] : null;
     $pconfig['keyname'] = isset($id) &&!empty($a_rfc2136[$id]['keyname']) ? $a_rfc2136[$id]['keyname'] : null;
-    $pconfig['keytype'] = isset($id) &&!empty($a_rfc2136[$id]['keytype']) ? $a_rfc2136[$id]['keytype'] : "zone";
     $pconfig['server'] = isset($id) &&!empty($a_rfc2136[$id]['server']) ? $a_rfc2136[$id]['server'] : null;
     $pconfig['interface'] = isset($id) &&!empty($a_rfc2136[$id]['interface']) ? $a_rfc2136[$id]['interface'] : null;
     $pconfig['descr'] = isset($id) &&!empty($a_rfc2136[$id]['descr']) ? $a_rfc2136[$id]['descr'] : null;
@@ -88,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $rfc2136['host'] = $pconfig['host'];
         $rfc2136['ttl'] = $pconfig['ttl'];
         $rfc2136['keyname'] = $pconfig['keyname'];
-        $rfc2136['keytype'] = $pconfig['keytype'];
         $rfc2136['keydata'] = $pconfig['keydata'];
         $rfc2136['server'] = $pconfig['server'];
         $rfc2136['usetcp'] = !empty($pconfig['usetcp']);
@@ -195,14 +193,6 @@ include("head.inc");
                       <div class="hidden" data-for="help_for_keyname">
                         <?=gettext("This must match the setting on the DNS server.");?>
                       </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key type");?> </td>
-                    <td>
-                      <input name="keytype" type="radio" value="zone" <?= $pconfig['keytype'] == "zone" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Zone");?> &nbsp;
-                      <input name="keytype" type="radio" value="host" <?= $pconfig['keytype'] == "host" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Host");?> &nbsp;
-                      <input name="keytype" type="radio" value="user" <?= $pconfig['keytype'] == "user" ? "checked=\"checked\"" :""; ?> /> <?=gettext("User");?>
                     </td>
                   </tr>
                   <tr>

@@ -27,7 +27,7 @@ SOCKSPort [{{ interface_ip }}]:{{ OPNsense.tor.general.socks_listen_port|default
 {%     endif %}
 {%     if helpers.exists('virtualip') %}
 {%       for intf_item in helpers.toList('virtualip.vip') %}
-{%         if intf_item.interface == listen_interface and intf_item.type == 'single' %}
+{%         if intf_item.interface == listen_interface and intf_item.mode in ['carp', 'ipalias'] %}
 {%           if intf_item.subnet.find(':') > -1 %}
 # {{ listen_interface }}: IPv6 VIP
 SOCKSPort [{{ intf_item.subnet }}]:{{ OPNsense.tor.general.socks_listen_port|default('9050') }}
