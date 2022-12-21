@@ -27,21 +27,36 @@
 
 RESULT=
 
-for DEV in $(sysctl -n kern.disks); do
-    IDENT=$(/usr/sbin/diskinfo -s ${DEV})
+OIFS="$IFS"
+IFS=$'\n' # use newline separator to get the whole smartctl device string
+C=0
+# Operate only devices that smartctl can handle. 
+# This creates variables DEVICE_1 ... DEVICE_<number of devices>.
+for I in $(/usr/local/sbin/smartctl --scan | /usr/bin/awk -F# '{print $1}'); do
+   C=$(expr $C + 1)
+   eval DEVICE_${C}="\$I";
+done
+IFS="$OIFS" # restore the previous IFS settings
 
-    if [ "${DEV#nvd}" != "${DEV}" ]; then
-        # the disk formerly know as nvdX
-        DEV="nvme${DEV#nvd}"
-    fi
 
-    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
+for I in $(/usr/bin/seq 1 $C); do
+   eval DEV="\$DEVICE_$I"
 
-    if [ -n "${RESULT}" ]; then
-        RESULT="${RESULT},";
-    fi
+   STATE=$(/usr/local/sbin/smartctl -jH  ${DEV})
 
-    RESULT="${RESULT}{\"device\":\"${DEV}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
+   # If there is no valid state, skip it
+   if [ $? -ne 0 ]; then
+      continue;
+   fi
+
+   if [ -n "${RESULT}" ]; then
+      RESULT="${RESULT},";
+   fi
+   # get a valid identifier for the device, the serial number
+   IDENT=$(/usr/local/sbin/smartctl -a  ${DEV} | /usr/bin/awk '/^Serial number:/{print $3}')
+
+   RESULT="${RESULT}{\"device\":\"${DEV##*-d}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
+
 done
 
 echo "[${RESULT}]"
