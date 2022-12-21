@@ -21,7 +21,7 @@
     <type>checkbox</type>
   </field>
   <field>
-    <id>httpserver.ssl_reject_handshake</id>
+    <id>httpserver.tls_reject_handshake</id>
     <label>Reject SSL Handshake</label>
     <type>checkbox</type>
     <help>If enabled, TLS handshakes for this server will be rejected.</help>
