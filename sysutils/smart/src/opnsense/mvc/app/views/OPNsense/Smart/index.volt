@@ -143,7 +143,7 @@
 		    </td>
 		</tr>
 		<tr>
-		    <td><label for="device1">{{ lang._('Device: /dev/') }}</label></td>
+		    <td><label for="device1">{{ lang._('Device: ') }}</label></td>
 		    <td >
 			<select id="device1" name="device" class="form-control">
 			</select>
@@ -179,7 +179,7 @@
                     </td>
                 </tr>
 		<tr>
-                    <td><label for="device2">{{ lang._('Device: /dev/') }}</label></td>
+                    <td><label for="device2">{{ lang._('Device: ') }}</label></td>
                     <td>
 			<select id="device2" name="device" class="form-control">
 			</select>
@@ -213,7 +213,7 @@
                     </td>
 		</tr>
 		<tr>
-                    <td><label for="device3">{{ lang._('Device: /dev/') }}</label></td>
+                    <td><label for="device3">{{ lang._('Device: ') }}</label></td>
                     <td >
 			<select id="device3" name="device" class="form-control">
 			</select>
@@ -238,7 +238,7 @@
                     <th colspan="2" style="vertical-align:top" class="listtopic">{{ lang._('Abort tests') }}</th>
                 </tr>
 		<tr>
-                    <td><label for="device4">{{ lang._('Device: /dev/') }}</label></td>
+                    <td><label for="device4">{{ lang._('Device: ') }}</label></td>
                     <td >
 			<select id="device4" name="device" class="form-control">
 			</select>
