@@ -25,6 +25,17 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+# get the tempdir, because there is no environment variable
+TMPFILE=$(/usr/bin/mktemp)
+CACHEFILE="$(dirname $TMPFILE)/smart.json"
+rm -f $TMPFILE
+
+printout()
+{
+   cat ${CACHEFILE}
+   exit
+}
+
 RESULT=
 
 OIFS="$IFS"
@@ -37,6 +48,12 @@ for I in $(/usr/local/sbin/smartctl --scan | /usr/bin/awk -F# '{print $1}'); do
    eval DEVICE_${C}="\$I";
 done
 IFS="$OIFS" # restore the previous IFS settings
+
+# Delete expired cache file
+/usr/bin/find ${CACHEFILE}  -type f -mmin +5  -delete 2>/dev/null
+
+# If there is a cache file, use it.
+[ -f "${CACHEFILE}" ] && printout
 
 
 for I in $(/usr/bin/seq 1 $C); do
