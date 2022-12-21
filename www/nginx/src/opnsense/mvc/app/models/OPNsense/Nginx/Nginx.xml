@@ -714,7 +714,7 @@
       <tls_reject_handshake type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
-      </ssl_reject_handshake>
+      </tls_reject_handshake>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
