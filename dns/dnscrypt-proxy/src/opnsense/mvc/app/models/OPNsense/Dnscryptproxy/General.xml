@@ -140,12 +140,11 @@
             <default>1</default>
             <Required>Y</Required>
         </query_logs>
-        <disabled_serverlist type="TextField">
-            <mask>/^([a-z0-9.,\-]{1,70})$/</mask>
+        <disabled_serverlist type="CSVListField">
+            <mask>/^[A-Za-z0-9\._\-]{1,70}(,[A-Za-z0-9\._\-]{1,70})*$/</mask>
             <default></default>
             <Required>N</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <ValidationMessage>Please use valid server names.</ValidationMessage>
         </disabled_serverlist>
         <relaylist type="CSVListField">
             <Required>N</Required>
