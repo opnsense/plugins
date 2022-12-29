@@ -37,6 +37,18 @@ class AclController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'acl';
     protected static $internalModelClass = '\OPNsense\Bind\Acl';
 
+    function nameInUse($name, $excludeUUID = null)
+    {
+        # Loops through all the Acls and ensure the name doesn't exist
+        foreach ($this->searchBase('acls.acl', array("name"))["rows"] as $existingAcl) {
+            if ($existingAcl["name"] == $name && $existingAcl["uuid"] != $excludeUUID) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function searchAclAction()
     {
         return $this->searchBase('acls.acl', array("enabled", "name", "networks"));
@@ -48,7 +60,20 @@ class AclController extends ApiMutableModelControllerBase
     }
     public function addAclAction()
     {
-        return $this->addBase('acl', 'acls.acl');
+        if ($this->request->isPost() && $this->request->hasPost("acl")) {
+            if ($this->nameInUse($this->request->getPost("acl")["name"])) {
+                return array(
+                    "result" => "failed",
+                    "validations" => array(
+                        "acl.name" => "Access Control List with this name already exists.",
+                    )
+                );
+            }
+
+            return $this->addBase('acl', 'acls.acl');
+        }
+
+        return array("result" => "failed");
     }
     public function delAclAction($uuid)
     {
@@ -56,7 +81,20 @@ class AclController extends ApiMutableModelControllerBase
     }
     public function setAclAction($uuid)
     {
-        return $this->setBase('acl', 'acls.acl', $uuid);
+        if ($this->request->isPost() && $this->request->hasPost("acl")) {
+            if ($this->nameInUse($this->request->getPost("acl")["name"],$uuid)) {
+                return array(
+                    "result" => "failed",
+                    "validations" => array(
+                        "acl.name" => "Access Control List with this name already exists.",
+                    )
+                );
+            }
+
+            return $this->setBase('acl', 'acls.acl', $uuid);
+        }
+
+        return array("result" => "failed");
     }
     public function toggleAclAction($uuid)
     {
