@@ -9,6 +9,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.26
+
+* Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
+
 1.25
 
 * Cleanup/Fix the Master/Slave domain dialogs (contributed by Robbert Rijkse)
