@@ -2,7 +2,7 @@
 {%   if helpers.exists('OPNsense.bind.domain.domains.domain') %}
 {%     for domaindb in helpers.toList('OPNsense.bind.domain.domains.domain') %}
 {%       if TARGET_FILTERS['OPNsense.bind.domain.domains.domain.' ~ loop.index0] or TARGET_FILTERS['OPNsense.bind.domain.domains.domain'] %}
-{%         if domaindb.enabled == '1' and domaindb.type == 'master' %}
+{%         if domaindb.enabled == '1' and domaindb.type == 'primary' %}
 $TTL {{ domaindb.ttl }}
 @       IN      SOA    {{ domaindb.dnsserver }}. {{ domaindb.mailadmin|replace('@', '.') }}. ( {{ domaindb.serial|trim }} {{ domaindb.refresh }} {{ domaindb.retry }} {{ domaindb.expire }} {{ domaindb.negative }} )
 {%           for record in helpers.sortDictList(OPNsense.bind.record.records.record, 'name', 'type' ) %}
