@@ -2,19 +2,14 @@
 
 /*
     Copyright (C) 2018 Smart-Soft
-
     All rights reserved.
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -38,7 +33,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
 
-        $devices = preg_split("/[\s]+/", trim($backend->configdRun("smart list")));
+        $devices = preg_split("/\\n/", trim($backend->configdRun("smart list")));
 
         return $devices;
     }
@@ -71,7 +66,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $params = array($mode, $type, "/dev/" . $device);
+            $params = array($mode, $type, $device );
 
             $output = $backend->configdpRun("smart", $params);
             if ($mode == 'info_json') {
@@ -102,7 +97,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("log", $type, "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("log", $type, $device));
 
             return array("output" => $output);
         }
@@ -128,7 +123,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("test", $type, "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("test", $type, $device));
 
             return array("output" => $output);
         }
@@ -147,7 +142,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("abort", "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("abort", $device));
 
             return array("output" => $output);
         }
