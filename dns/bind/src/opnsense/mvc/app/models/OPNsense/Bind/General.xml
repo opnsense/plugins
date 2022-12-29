@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -143,5 +143,21 @@
             <Required>Y</Required>
             <asList>Y</asList>
         </ratelimitexcept>
+        <rndcalgo type="OptionField">
+            <Required>Y</Required>
+            <default>hmac-sha256</default>
+            <OptionValues>
+                <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                <hmac-md5>HMAC-MD5</hmac-md5>
+            </OptionValues>
+        </rndcalgo>
+        <rndcsecret type="TextField">
+            <Required>Y</Required>
+            <default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</default>
+        </rndcsecret>
     </items>
 </model>
