@@ -38,7 +38,7 @@ class ServiceController extends ApiControllerBase
     {
         $backend = new Backend();
 
-        $devices = preg_split("/[\s]+/", trim($backend->configdRun("smart list")));
+        $devices = preg_split("/\\n/", trim($backend->configdRun("smart list")));
 
         return $devices;
     }
@@ -71,7 +71,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $params = array($mode, $type, "/dev/" . $device);
+            $params = array($mode, $type, $device );
 
             $output = $backend->configdpRun("smart", $params);
             if ($mode == 'info_json') {
@@ -102,7 +102,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("log", $type, "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("log", $type, $device));
 
             return array("output" => $output);
         }
@@ -128,7 +128,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("test", $type, "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("test", $type, $device));
 
             return array("output" => $output);
         }
@@ -147,7 +147,7 @@ class ServiceController extends ApiControllerBase
 
             $backend = new Backend();
 
-            $output = $backend->configdpRun("smart", array("abort", "/dev/" . $device));
+            $output = $backend->configdpRun("smart", array("abort", $device));
 
             return array("output" => $output);
         }
