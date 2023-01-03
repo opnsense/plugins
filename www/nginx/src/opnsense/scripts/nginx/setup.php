@@ -75,7 +75,7 @@ if (!isset($config['OPNsense']['Nginx'])) {
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
 $nginx = $config['OPNsense']['Nginx'];
-openlog("configd.py", LOG_ODELAY, LOG_USER);
+openlog("nginx", LOG_ODELAY, LOG_USER);
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
         $http_servers = $nginx['http_server'];

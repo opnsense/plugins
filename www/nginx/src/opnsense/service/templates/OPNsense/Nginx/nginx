@@ -1,2 +1,2 @@
-nginx_setup="/usr/local/opnsense/scripts/nginx/setup.php"
+nginx_setup="/usr/local/opnsense/scripts/nginx/setup.php; nginx -t -q 2>&1 | logger -t nginx -p user.emerg"
 nginx_enable="YES"
