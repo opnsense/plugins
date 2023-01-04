@@ -7,12 +7,15 @@ Plugin Changelog
 ================
 
 Changed:
-* update URLs to HAProxy 2.6 documentation
+* rename frontend option "Type" to "Connection Mode" (#3026)
+* update URLs to HAProxy 2.6 documentation (#3026)
+* migrate options "http-tunnel" and "forceclose" to "http-keep-alive" (#3026)
 
 Removed:
-* remove Processes/nbproc option (use Threads/nbthread instead)
-* remove "Process ID" from CPU Affinity settings (now always 1)
-* remove "bind-process" option (replaced by the "process" bind keyword)
+* remove Processes/nbproc option (use Threads/nbthread instead) (#3026)
+* remove "Process ID" from CPU Affinity settings (now always 1) (#3026)
+* remove "bind-process" option (replaced by the "process" bind keyword) (#3026)
+* remove options "http-tunnel" and "forceclose" from "Connection Mode" (#3026)
 
 3.12
 

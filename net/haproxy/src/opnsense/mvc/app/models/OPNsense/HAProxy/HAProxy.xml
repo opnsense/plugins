@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>3.8.0</version>
+    <version>4.0.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -803,10 +803,8 @@
                     <default>http-keep-alive</default>
                     <OptionValues>
                         <http-keep-alive>http-keep-alive [default]</http-keep-alive>
-                        <http-tunnel>http-tunnel</http-tunnel>
                         <httpclose>httpclose</httpclose>
                         <http-server-close>http-server-close</http-server-close>
-                        <forceclose>forceclose</forceclose>
                     </OptionValues>
                 </connectionBehaviour>
                 <customOptions type="TextField">

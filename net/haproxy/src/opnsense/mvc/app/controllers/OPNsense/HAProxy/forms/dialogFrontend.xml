@@ -226,6 +226,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>frontend.connectionBehaviour</id>
+        <label>Connection Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"httpclose"</b> configures HAProxy to close connections with the server and the client as soon as the request and the response are received. It will also check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Basic Authentication</label>
         <type>header</type>
         <style>mode_table table_http</style>
@@ -425,13 +432,6 @@
     <field>
         <label>Advanced settings</label>
         <type>header</type>
-    </field>
-    <field>
-        <id>frontend.connectionBehaviour</id>
-        <label>Type</label>
-        <type>dropdown</type>
-        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"http-tunnel"</b> disables any HTTP processing past the first request and the first response. Option <b>"httpclose"</b> configures HAProxy to work in HTTP tunnel mode and check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side. With Option <b>"forceclose"</b> HAProxy will actively close the outgoing server channel as soon as the server has finished to respond and release some resources earlier.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>frontend.customOptions</id>
