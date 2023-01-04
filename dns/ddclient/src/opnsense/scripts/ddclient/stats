@@ -29,10 +29,17 @@
 import os
 import json
 
-filename = "/var/tmp/ddclient.cache"
+filename = '/var/tmp/ddclient.cache'
+filename_new = '/var/tmp/ddclient_opn.status'
 
 result = {"hosts": {}}
-if os.path.isfile(filename):
+
+# both ddclient and "opnsense" ddclient exist, only use old when currently in use
+if os.path.isfile(filename) and os.path.isfile(filename_new):
+    if os.path.getmtime(filename) < os.path.getmtime(filename_new):
+        filename = None
+
+if filename is not None and os.path.isfile(filename):
     with open(filename, "r") as fhandle:
         for idx, row in enumerate(fhandle):
             if idx == 0:
@@ -49,5 +56,10 @@ if os.path.isfile(filename):
                         record[parts[0]] = parts[1]
                 if 'host' in record:
                     result['hosts'][record['host']] = record
+elif os.path.isfile(filename_new):
+    # output will look completely different when our implementation is used, the model knows how to parse this
+    # (see AccountField.php)
+    with open(filename_new) as f:
+        result = json.load(f)
 
 print(json.dumps(result))

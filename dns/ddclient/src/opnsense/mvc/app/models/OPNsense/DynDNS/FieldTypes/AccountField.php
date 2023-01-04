@@ -47,8 +47,11 @@ class AccountField extends ArrayField
         $current_ip->setInternalIsVirtual();
         $current_mtime = new TextField();
         $current_mtime->setInternalIsVirtual();
-
-        if (!empty((string)$node->hostnames)) {
+        if (isset(self::$current_stats[$node->getAttribute('uuid')])) {
+            $stats = self::$current_stats[$node->getAttribute('uuid')];
+            $current_ip->setValue($stats['ip']);
+            $current_mtime->setValue(date('c', $stats['mtime']));
+        } elseif (!empty((string)$node->hostnames)) {
             foreach (explode(",", (string)$node->hostnames) as $hostname) {
                 if (!empty(self::$current_stats[$hostname]) && !empty(self::$current_stats[$hostname]['ip'])) {
                     $stats = self::$current_stats[$hostname];
@@ -69,6 +72,8 @@ class AccountField extends ArrayField
             $stats = json_decode((new Backend())->configdRun('ddclient statistics'), true);
             if (!empty($stats) && !empty($stats['hosts'])) {
                 self::$current_stats = $stats['hosts'];
+            } elseif (!empty($stats)) {
+                self::$current_stats = $stats;
             }
         }
         foreach ($this->internalChildnodes as $node) {

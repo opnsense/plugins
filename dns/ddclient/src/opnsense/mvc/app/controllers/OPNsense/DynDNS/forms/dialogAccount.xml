@@ -26,6 +26,12 @@
         <style>optional_setting service_custom</style>
     </field>
     <field>
+        <id>account.resourceId</id>
+        <label>resourceId</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>account.username</id>
         <label>Username</label>
         <type>text</type>

@@ -1,2 +1,4 @@
 rc.conf.d:/etc/rc.conf.d/ddclient
+ddclient_opn.rc.conf.d:/etc/rc.conf.d/ddclient_opn
 ddclient.conf:/usr/local/etc/ddclient.conf
+ddclient.json:/usr/local/etc/ddclient.json
