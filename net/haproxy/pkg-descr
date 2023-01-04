@@ -9,6 +9,11 @@ Plugin Changelog
 Changed:
 * update URLs to HAProxy 2.6 documentation
 
+Removed:
+* remove Processes/nbproc option (use Threads/nbthread instead)
+* remove "Process ID" from CPU Affinity settings (now always 1)
+* remove "bind-process" option (replaced by the "process" bind keyword)
+
 3.12
 
 Added:

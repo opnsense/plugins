@@ -1131,7 +1131,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="cpuid" data-type="number"  data-visible="false">{{ lang._('CPU Rule ID') }}</th>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                <th data-column-id="process_id" data-type="string">{{ lang._('Process ID') }}</th>
                 <th data-column-id="thread_id" data-type="string">{{ lang._('Thread ID') }}</th>
                 <th data-column-id="cpu_id" data-type="string">{{ lang._('CPU ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
