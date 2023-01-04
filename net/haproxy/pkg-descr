@@ -6,12 +6,14 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.0
+
 Added:
 * add new option "Gradual connection close time" (close-spread-time) (#3026)
 
 Changed:
+* upgrade to HAProxy 2.6 release series (#3026)
 * rename frontend option "Type" to "Connection Mode" (#3026)
-* update URLs to HAProxy 2.6 documentation (#3026)
 * migrate options "http-tunnel" and "forceclose" to "http-keep-alive" (#3026)
 
 Removed:
