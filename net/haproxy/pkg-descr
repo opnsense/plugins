@@ -9,7 +9,8 @@ Plugin Changelog
 4.0
 
 Added:
-* add new option "Gradual connection close time" (close-spread-time) (#3026)
+* add new service option "Gradual connection close time" (close-spread-time) (#3026)
+* add new frontend option "shards" (#3026)
 
 Changed:
 * upgrade to HAProxy 2.6 release series (#3026)

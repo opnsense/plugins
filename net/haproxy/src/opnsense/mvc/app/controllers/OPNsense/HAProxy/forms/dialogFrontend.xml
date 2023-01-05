@@ -298,6 +298,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>frontend.tuning_shards</id>
+        <label>Shards</label>
+        <type>text</type>
+        <help><![CDATA[This option automatically creates the specified number of listeners for every IP:port combination and evenly distributes them among available threads. This can sometimes be useful when using very large thread counts where the in-kernel locking on a single socket starts to cause a significant overhead.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Logging Options</label>
         <type>header</type>
     </field>
