@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $id = $_GET['id'];
     }
     $pconfig = array();
-    foreach (array('ifname', 'threshold', 'type', 'address', 'descr') as $fieldname) {
+    foreach (array('ifname', 'threshold', 'type', 'address', 'whitelist', 'descr') as $fieldname) {
         if (isset($id) && isset($a_igmpproxy[$id][$fieldname])) {
             $pconfig[$fieldname] = $a_igmpproxy[$id][$fieldname];
         } else {
@@ -52,6 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $parts = explode('/', $entry);
         $pconfig['networks_network'][] = $parts[0];
         $pconfig['networks_mask'][] = $parts[1];
+    }
+    foreach (explode(" ", $pconfig['whitelist']) as $entry) {
+        $parts = explode('/', $entry);
+        $pconfig['whitelists_network'][] = $parts[0];
+        $pconfig['whitelists_mask'][] = $parts[1];
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['id']) && !empty($a_igmpproxy[$_POST['id']])) {
@@ -76,12 +81,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
         }
     }
+    $pconfig['whitelist'] = "";
+    foreach ($pconfig['whitelists_network'] as $idx => $value) {
+        if (!empty($value) && !empty($pconfig['whitelists_mask'][$idx])) {
+            $pconfig['whitelist'] .= " " . $value . "/" . $pconfig['whitelists_mask'][$idx];
+        }
+    }
+    $pconfig['whitelist'] = trim($pconfig['whitelist']);
+    if ($pconfig['type'] == "upstream") {
+        foreach ($a_igmpproxy as $pid => $proxyentry) {
+            if (isset($id) && $id == $pid) {
+                continue;
+            }
+            if ($proxyentry['type'] == "upstream" && $proxyentry['ifname'] != $pconfig['interface']) {
+                $input_errors[] = gettext("Only one 'upstream' interface can be configured.");
+            }
+        }
+    }
     if (count($input_errors) == 0) {
         $igmpentry = array();
         $igmpentry['ifname'] = $pconfig['ifname'];
         $igmpentry['threshold'] = $pconfig['threshold'];
         $igmpentry['type'] = $pconfig['type'];
         $igmpentry['address'] = $pconfig['address'];
+        $igmpentry['whitelist'] = $pconfig['whitelist'];
         $igmpentry['descr'] = $pconfig['descr'];
 
         if (isset($id)) {
@@ -108,7 +131,7 @@ include("head.inc");
       /**
        *  Aliases
        */
-      function removeRow() {
+      function removeRowNetwork() {
           if ( $('#networks_table > tbody > tr').length == 1 ) {
               $('#networks_table > tbody > tr:last > td > input').each(function(){
                 $(this).val("");
@@ -117,8 +140,17 @@ include("head.inc");
               $(this).parent().parent().remove();
           }
       }
-      // add new detail record
-      $("#addNew").click(function(){
+      function removeRowWhitelist() {
+          if ( $('#whitelists_table > tbody > tr').length == 1 ) {
+              $('#whitelists_table > tbody > tr:last > td > input').each(function(){
+                $(this).val("");
+              });
+          } else {
+              $(this).parent().parent().remove();
+          }
+      }
+      // add new network record
+      $("#addNewNetwork").click(function(){
           // copy last row and reset values
           $('#networks_table > tbody').append('<tr>'+$('#networks_table > tbody > tr:last').html()+'</tr>');
           $('#networks_table > tbody > tr:last > td > input').each(function(){
@@ -126,15 +158,34 @@ include("head.inc");
           });
           //  link network / cidr
           var item_cnt = $('#networks_table > tbody > tr').length;
-          $('#networks_table > tbody > tr:last > td:eq(1) > input').attr('id', 'network_n'+item_cnt);
+          $('#networks_table > tbody > tr:last > td:eq(1) > input').attr('networkid', 'network_n'+item_cnt);
           $('#networks_table > tbody > tr:last > td:eq(2) > select').data('network-id', 'network_n'+item_cnt);
-          $(".act-removerow").click(removeRow);
+          $(".act-removerownetwork").click(removeRowNetwork);
           // hookin ipv4/v6 for new item
           hook_ipv4v6('ipv4v6net', 'network-id');
       });
-      $(".act-removerow").click(removeRow);
+      $(".act-removerownetwork").click(removeRowNetwork);
       // hook in, ipv4/ipv6 selector events
       hook_ipv4v6('ipv4v6net', 'network-id');
+
+      // add new whitelist record
+      $("#addNewWhitelist").click(function(){
+          // copy last row and reset values
+          $('#whitelists_table > tbody').append('<tr>'+$('#whitelists_table > tbody > tr:last').html()+'</tr>');
+          $('#whitelists_table > tbody > tr:last > td > input').each(function(){
+            $(this).val("");
+          });
+          //  link network / cidr
+          var item_cnt = $('#whitelists_table > tbody > tr').length;
+          $('#whitelists_table > tbody > tr:last > td:eq(1) > input').attr('whitelistid', 'whitelist_n'+item_cnt);
+          $('#whitelists_table > tbody > tr:last > td:eq(2) > select').data('whitelist-id', 'network_n'+item_cnt);
+          $(".act-removerowwhitelist").click(removeRowWhitelist);
+          // hookin ipv4/v6 for new item
+          hook_ipv4v6('ipv4v6net', 'whitelist-id');
+      });
+      $(".act-removerowwhitelist").click(removeRowWhitelist);
+      // hook in, ipv4/ipv6 selector events
+      hook_ipv4v6('ipv4v6net', 'whitelist-id');
     });
   </script>
 
@@ -227,13 +278,13 @@ include("head.inc");
                         foreach($pconfig['networks_network'] as $item_idx => $network):?>
                           <tr>
                             <td>
-                              <div style="cursor:pointer;" class="act-removerow btn btn-default btn-xs" alt="remove"><i class="fa fa-minus fa-fw"></i></div>
+                              <div style="cursor:pointer;" class="act-removerownetwork btn btn-default btn-xs" alt="remove"><i class="fa fa-minus fa-fw"></i></div>
                             </td>
                             <td>
                               <input name="networks_network[]" type="text" id="network_<?=$item_idx;?>" value="<?=$network;?>" />
                             </td>
                             <td>
-                              <select name="networks_mask[]" data-network-id="network_<?=$item_idx;?>" class="selectpicker ipv4v6net" id="mask<?=$item_idx;?>" data-length="3" data-width="auto">
+                              <select name="networks_mask[]" data-network-id="network_<?=$item_idx;?>" class="selectpicker ipv4v6net" id="networkmask<?=$item_idx;?>" data-length="3" data-width="auto">
 <?php
                                 for ($i = 128; $i > 0; $i--):?>
                                 <option value="<?=$i;?>" <?= $pconfig['networks_mask'][$item_idx] == $i ?  "selected=\"selected\"" : ""?>>
@@ -250,7 +301,57 @@ include("head.inc");
                         <tfoot>
                           <tr>
                             <td colspan="4">
-                              <div id="addNew" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><i class="fa fa-plus fa-fw"></i></div>
+                              <div id="addNewNetwork" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><i class="fa fa-plus fa-fw"></i></div>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Whitelist(s)");?></td>
+                    <td>
+                      <table class="table table-striped table-condensed" id="whitelists_table">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th><?=gettext("Network"); ?></th>
+                            <th><?=gettext("CIDR"); ?></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+<?php
+                        if (count($pconfig['whitelists_network']) == 0 ) {
+                            $pconfig['whitelists_network'][] = "";
+                            $pconfig['whitelists_mask'][] = "";
+                        }
+                        foreach($pconfig['whitelists_network'] as $item_idx => $network):?>
+                          <tr>
+                            <td>
+                              <div style="cursor:pointer;" class="act-removerowwhitelist btn btn-default btn-xs" alt="remove"><i class="fa fa-minus fa-fw"></i></div>
+                            </td>
+                            <td>
+                              <input name="whitelists_network[]" type="text" id="whitelist_<?=$item_idx;?>" value="<?=$network;?>" />
+                            </td>
+                            <td>
+                              <select name="whitelists_mask[]" data-whitelist-id="whitelist_<?=$item_idx;?>" class="selectpicker ipv4v6net" id="whitelistmask<?=$item_idx;?>" data-length="3" data-width="auto">
+<?php
+                                for ($i = 128; $i > 0; $i--):?>
+                                <option value="<?=$i;?>" <?= $pconfig['whitelists_mask'][$item_idx] == $i ?  "selected=\"selected\"" : ""?>>
+                                  <?=$i;?>
+                                </option>
+<?php
+                                endfor;?>
+                              </select>
+                            </td>
+                          </tr>
+<?php
+                        endforeach;?>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="4">
+                              <div id="addNewWhitelist" style="cursor:pointer;" class="btn btn-default btn-xs" alt="add"><i class="fa fa-plus fa-fw"></i></div>
                             </td>
                           </tr>
                         </tfoot>

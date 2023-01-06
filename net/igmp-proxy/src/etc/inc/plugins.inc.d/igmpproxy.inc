@@ -100,7 +100,14 @@ EOD;
             foreach ($item as $iww) {
                 $igmpconf .= "altnet {$iww}\n";
             }
-        }
+	}
+	if ($igmpcf['whitelist'] <> "") {
+	    $item = explode(" ", $igmpcf['whitelist']);
+	    foreach ($item as $iww) {
+		$igmpconf .= "whitelist {$iww}\n";
+	    }
+	}
+
         $igmpconf .= "\n";
     }
     foreach ($iflist as $ifn => $unused) {
