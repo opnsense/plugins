@@ -75,16 +75,14 @@ from . import BaseAccount
 
 
 class Azure(BaseAccount):
-    _services = {
-        'azure': 'management.azure.com/subscriptions'
-    }
+    _services = ['azure']
 
     def __init__(self, account: dict):
         super().__init__(account)
 
     @staticmethod
     def known_services():
-        return  Azure._services.keys()
+        return  Azure._services
 
     def match(account):
         if account.get('service') in Azure._services:
