@@ -172,15 +172,23 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             /**
-             * initial data fetch
+             * perform initial data fetch via event handler (only once if the tab wasn't active before)
+             * rationale:
+             *     prefetching all tabs by click()-ing on all refresh buttons leads
+             *     to UI quirks that would require even more code to work around.
              */
-            $("#refresh-{{ tab['name'] }}").click();
+            $("a[id='{{ tab['name'] }}_tab']").on("shown.bs.tab", function (event) {
+                if(!event.target.initialDataFetchComplete) {
+                    $("#refresh-{{ tab['name'] }}").click();
+                    event.target.initialDataFetchComplete = true;
+                }
+            });
         {% endfor %}
 
         /**
-         * reset view to default tab
+         * activate the default tab
          */
-        $('a[href="#{{ default_tab }}"]').click();
+        $("a[id='{{ default_tab }}_tab']").click();
     });
 </script>
 
@@ -197,7 +205,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="content-box tab-content" style="padding-bottom: 1.5em;">
     {% for tab in tabs %}
-        <div id="{{ tab['name'] }}" class="tab-pane fade in{% if loop.first %} active{% endif %}">
+        <div id="{{ tab['name'] }}" class="tab-pane fade">
             {% switch tab['type'] %}
                 {% case 'bgptable' %}
                     <div class="col-sm-12">
