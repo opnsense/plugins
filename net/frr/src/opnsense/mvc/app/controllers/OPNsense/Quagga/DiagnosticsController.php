@@ -81,9 +81,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'neighbors',
-                'endpoint' => '/api/quagga/diagnostics/ospfneighbor/plain',
+                'endpoint' => '/api/quagga/diagnostics/ospfneighbor',
                 'tabhead' => gettext('Neighbors'),
-                'type' => 'text'
+                'type' => 'ospfneighbors'
             ],
             [
                 'name' => 'interfaces',

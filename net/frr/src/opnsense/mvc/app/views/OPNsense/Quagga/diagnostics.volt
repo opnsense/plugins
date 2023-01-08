@@ -104,6 +104,17 @@ POSSIBILITY OF SUCH DAMAGE.
                         }
                     });
                     {% break %}
+                {% case 'ospfneighbors' %}
+                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
+
+                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
+                        if (status == "success") {
+                            let neighbors = transformOSPFNeighbors(data['response']['neighbors']);
+
+                            $("#grid-{{ tab['name'] }}").bootgrid('append', neighbors);
+                        }
+                    });
+                    {% break %}
                 {% case 'tree' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
                         if (status == "success") {
@@ -226,6 +237,27 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="area">{{ lang._('Area') }}</th>
                                 <th data-column-id="via">{{ lang._('Via') }}</th>
                                 <th data-column-id="viainterface">{{ lang._('Via interface') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% break %}
+                {% case 'ospfneighbors' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="neighborid">{{ lang._('Neighbor ID') }}</th>
+                                <th data-column-id="priority">{{ lang._('Priority') }}</th>
+                                <th data-column-id="state">{{ lang._('State') }}</th>
+                                <th data-column-id="deadTimeMsecs">{{ lang._('Dead Time') }} &lsqb;ms&rsqb;</th>
+                                <th data-column-id="address">{{ lang._('Address') }}</th>
+                                <th data-column-id="ifaceName">{{ lang._('Interface') }}</th>
+                                <th data-column-id="retransmitCounter">{{ lang._('Retransmit Counter') }}</th>
+                                <th data-column-id="requestCounter">{{ lang._('Request Counter') }}</th>
+                                <th data-column-id="dbSummaryCounter">{{ lang._('DB Summary Counter') }}</th>
                             </tr>
                             </thead>
                             <tbody>

@@ -145,6 +145,23 @@ function transformOSPFRoutes(data) {
 }
 
 /**
+* take the OSPF neighbors as delivered by the API and transform them into a bootgrid-compatible format
+*/
+function transformOSPFNeighbors(data) {
+    let neighbors = [];
+
+    for(let neighborId in data) {
+        data[neighborId].forEach(function(neighbor) {
+            let transformedNeighbor = neighbor;
+            transformedNeighbor['neighborid'] = neighborId;
+            neighbors.push(transformedNeighbor);
+        });
+    }
+
+    return neighbors;
+}
+
+/**
  * tree view: resize widget on window resize
  */
 function resizeTreeWidget() {
