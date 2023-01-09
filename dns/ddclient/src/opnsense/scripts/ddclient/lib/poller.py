@@ -75,7 +75,7 @@ class Poller:
         self._status_filename = status_filename
         self._accounts = {}
         self._general_settings = {}
-        syslog.openlog('ddclient', logoption=syslog.LOG_DAEMON, facility=syslog.LOG_LOCAL4)
+        syslog.openlog('ddclient', facility=syslog.LOG_LOCAL4)
         self.startup()
         self.run()
 

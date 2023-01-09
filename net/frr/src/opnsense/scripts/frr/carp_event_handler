@@ -31,7 +31,7 @@ import lib.events
 from lib import InterfaceStatus, VtySH
 
 if __name__ == '__main__':
-    syslog.openlog('frr_carp', logoption=syslog.LOG_DAEMON, facility=syslog.LOG_LOCAL1)
+    syslog.openlog('frr_carp', facility=syslog.LOG_LOCAL1)
     syslog.syslog(syslog.LOG_NOTICE, 'FRR received carp configuration event.')
     ifstatus = InterfaceStatus()
     vtysh = VtySH()
