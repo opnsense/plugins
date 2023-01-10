@@ -92,7 +92,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="ttl" data-type="string" data-visible="true">{{ lang._('TTL') }}</th>
                     <th data-column-id="refresh" data-type="string" data-visible="true">{{ lang._('Refresh') }}</th>
@@ -161,7 +160,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <thead>
                 <tr>
                     <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="masterip" data-type="string" data-visible="true">{{ lang._('Master IPs') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
