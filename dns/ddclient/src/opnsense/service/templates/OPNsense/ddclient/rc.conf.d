@@ -1,4 +1,4 @@
-{% if not helpers.empty('OPNsense.DynDNS.general.enabled') %}
+{% if not helpers.empty('OPNsense.DynDNS.general.enabled') and OPNsense.DynDNS.general.backend|default('ddclient') == 'ddclient' %}
 ddclient_enable="YES"
 ddclient_flags="-daemon {{OPNsense.DynDNS.general.daemon_delay|default('300')}}"
 {% else %}

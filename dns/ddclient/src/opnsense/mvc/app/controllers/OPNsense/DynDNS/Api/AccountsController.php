@@ -31,6 +31,7 @@
 namespace OPNsense\DynDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class AccountsController extends ApiMutableModelControllerBase
 {

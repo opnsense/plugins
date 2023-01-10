@@ -11,8 +11,9 @@ Plugin Changelog
 
 1.25
 
-* Add UI for RNDC Key configuration (contributed by Robbert Rijkse)
+* Cleanup/Fix the Master/Slave domain dialogs (contributed by Robbert Rijkse)
 * Revamp the logging page with proper columns (contributed by Robbert Rijkse)
+* Add UI for RNDC Key configuration (contributed by Robbert Rijkse)
 * Update base to BIND 9.18
 
 1.24

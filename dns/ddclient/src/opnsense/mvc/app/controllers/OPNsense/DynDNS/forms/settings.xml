@@ -25,4 +25,10 @@
         <type>text</type>
         <help>Interval in seconds to check for address changes</help>
     </field>
+    <field>
+        <id>ddclient.general.backend</id>
+        <label>Backend</label>
+        <type>dropdown</type>
+        <help>Select the backend to use.</help>
+    </field>
 </form>
