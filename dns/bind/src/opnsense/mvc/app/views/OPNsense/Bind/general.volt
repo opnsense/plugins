@@ -331,7 +331,7 @@ $( document ).ready(function() {
 
     $("#saveAct_acl").click(function(){
         saveFormToEndpoint(url="/api/bind/acl/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
+            $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
                 updateServiceControlUI('bind');
                 $("#saveAct_acl_progress").removeClass("fa fa-spinner fa-pulse");
@@ -340,10 +340,12 @@ $( document ).ready(function() {
     });
 
     $("#saveRestartAct_rndckey").click(function(){
-        $("#saveRestartAct_rndckey_progress").addClass("fa fa-spinner fa-pulse");
-        ajaxCall("/api/bind/service/restart", {}, function(data,status) {
-            updateServiceControlUI('bind');
-            $("#saveRestartAct_rndckey_progress").removeClass("fa fa-spinner fa-pulse");
+        saveFormToEndpoint(url="/api/bind/general/set", formid='frm_general_settings',callback_ok=function(){
+            $("#saveRestartAct_rndckey_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall("/api/bind/service/restart", {}, function(data,status) {
+                updateServiceControlUI('bind');
+                $("#saveRestartAct_rndckey_progress").removeClass("fa fa-spinner fa-pulse");
+            });
         });
     });
     $(".saveAct_domain").click(function(){
