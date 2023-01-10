@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
+    <li><a data-toggle="tab" href="#keys">{{ lang._('Keys') }}</a></li>
     <li><a data-toggle="tab" href="#master-domains">{{ lang._('Master Zones') }}</a></li>
     <li><a data-toggle="tab" href="#slave-domains">{{ lang._('Slave Zones') }}</a></li>
 </ul>
@@ -81,6 +82,21 @@ POSSIBILITY OF SUCH DAMAGE.
         <div class="col-md-12">
             <hr />
             <button class="btn btn-primary" id="saveAct_acl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_acl_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
+     <div id="keys" class="tab-pane fade in">
+        <div class="content-box">
+            <div class="col-md-12">
+                <h2>{{ lang._('RNDC Key') }}</h2>
+            </div>
+            {{ partial("layout_partials/base_form",['fields':rndcKeyForm,'id':'frm_general_settings'])}}
+        </div>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary" id="saveRestartAct_rndckey" type="button"><b>{{ lang._('Save & Restart') }}</b> <i id="saveRestartAct_rndckey_progress"></i></button>
+            <br />
+            <b>Note:</b> Bind will be restarted when you Save, this is required when the RNDC key changes.
             <br /><br />
         </div>
     </div>
@@ -323,6 +339,13 @@ $( document ).ready(function() {
         });
     });
 
+    $("#saveRestartAct_rndckey").click(function(){
+        $("#saveRestartAct_rndckey_progress").addClass("fa fa-spinner fa-pulse");
+        ajaxCall("/api/bind/service/restart", {}, function(data,status) {
+            updateServiceControlUI('bind');
+            $("#saveRestartAct_rndckey_progress").removeClass("fa fa-spinner fa-pulse");
+        });
+    });
     $(".saveAct_domain").click(function(){
         $(".saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall("/api/bind/service/reconfigure", {}, function(data,status) {
