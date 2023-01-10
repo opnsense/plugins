@@ -112,7 +112,7 @@ legacy_html_escape_form_data($a_dyndns);
         <section class="col-xs-12">
           <div class="alert alert-warning" role="alert">
               <strong>
-                  <?=gettext("Please make sure to upgrade to os-ddclient before 22.7 is released as this plugin will be removed from our repository");?>
+                  <?=gettext("Please make sure to upgrade to os-ddclient before 23.7 is released as this plugin will be removed from our repository");?>
               </strong>
           </div>
           <div class="tab-content content-box col-xs-12">
