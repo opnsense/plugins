@@ -42,11 +42,11 @@ class DomainController extends ApiMutableModelControllerBase
     # These are here for backwards compatability, should be removed after a bit.
     public function searchMasterDomainAction()
     {
-        return seachPrimaryDomainAction()
+        return seachPrimaryDomainAction();
     }
     public function searchSlaveDomainAction()
     {
-        return seachSecondaryDomainAction()
+        return seachSecondaryDomainAction();
     }
 
     public function searchPrimaryDomainAction()
