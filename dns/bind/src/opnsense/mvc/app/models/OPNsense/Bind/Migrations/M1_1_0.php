@@ -32,8 +32,9 @@ namespace OPNsense\Bind\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
+use OPNsense\Bind\Domain;
 
-class Domain1_1_0 extends BaseModelMigration
+class M1_1_0 extends BaseModelMigration
 {
     /**
     * Migrate older keys into new model
@@ -41,37 +42,39 @@ class Domain1_1_0 extends BaseModelMigration
     */
     public function run($model)
     {
-        $config = Config::getInstance()->object();
+        if ($model instanceof Domain) {
+            $config = Config::getInstance()->object();
 
-        # Checks to see if there is a bind config section, otherwise skips the rest of the migration
-        if (empty($config->OPNsense->bind)) {
-            return;
-        }
-
-        $bindConfig = $config->OPNsense->bind;
-        # Loops through the domains in the config
-        foreach ($bindConfig->domain->domains->domain as $domain) {
-            $domainModel = $model->getNodeByReference('domains.domain.' . $domain->attributes()["uuid"]);
-
-            # Migrates the domain type
-            if ($domain->type == "master") {
-                $domainModel->type->setValue("primary");
-            } else {
-                $domainModel->type->setValue("secondary");
+            # Checks to see if there is a bind config section, otherwise skips the rest of the migration
+            if (empty($config->OPNsense->bind)) {
+                return;
             }
 
-            # Migrates the Master IP to Primary IP field
-            if (!empty($domain->masterip)) {
-                $domainModel->primaryip->setValue($domain->masterip);
-            }
+            $bindConfig = $config->OPNsense->bind;
+            # Loops through the domains in the config
+            foreach ($bindConfig->domain->domains->domain as $domain) {
+                $domainModel = $model->getNodeByReference('domains.domain.' . $domain->attributes()["uuid"]);
 
-            # Migrates the AllowNotify Slave to AllowNotify Secondary field
-            if (!empty($domain->allownotifyslave)) {
-                $domainModel->allownotifysecondary->setValue($domain->allownotifyslave);
+                # Migrates the domain type
+                if ($domain->type == "master") {
+                    $domainModel->type->setValue("primary");
+                } else {
+                    $domainModel->type->setValue("secondary");
+                }
+
+                # Migrates the Master IP to Primary IP field
+                if (!empty($domain->masterip)) {
+                    $domainModel->primaryip->setValue($domain->masterip);
+                }
+
+                # Migrates the AllowNotify Slave to AllowNotify Secondary field
+                if (!empty($domain->allownotifyslave)) {
+                    $domainModel->allownotifysecondary->setValue($domain->allownotifyslave);
+                }
             }
-        }
  
-        parent::run($model);
+            parent::run($model);
+        }
     }
 }
 
