@@ -40,7 +40,6 @@
 */
 function sslh_services()
 {
-
     // Create an array to be processed by www/status_services.php
     $service = array();
 
@@ -50,7 +49,7 @@ function sslh_services()
     // Only show the plugin if it's enabled.
     if (! ((string) $settings->enabled == '1')) {
         // return empty array if not enabled
-        return $services;
+        return $service;
     }
 
     $configd_name = 'sslh';
