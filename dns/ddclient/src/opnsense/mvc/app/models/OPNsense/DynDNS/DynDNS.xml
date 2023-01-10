@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <description>
         Dynamic DNS client
     </description>
@@ -24,6 +24,15 @@
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
             </daemon_delay>
+            <backend type="OptionField">
+                <Required>Y</Required>
+                <default>ddclient</default>
+                <ValidationMessage>A backend is required.</ValidationMessage>
+                <OptionValues>
+                    <ddclient>ddclient</ddclient>
+                    <opnsense>OPNsense</opnsense>
+                </OptionValues>
+            </backend>
         </general>
         <accounts>
             <account type=".\AccountField">
@@ -31,7 +40,7 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                <service type="OptionField">
+                <service type=".\ServiceField">
                     <Required>Y</Required>
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
@@ -99,6 +108,11 @@
                     <Required>Y</Required>
                     <mask>/^[^\n]*$/</mask>
                 </password>
+                <resourceId type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[^\n]*$/</mask>
+                    <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
+                </resourceId>
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
@@ -116,7 +130,7 @@
                     <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
                 </zone>
-                <checkip type="OptionField">
+                <checkip type=".\CheckipField">
                     <Required>Y</Required>
                     <default>web_dyndns</default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
@@ -153,7 +167,6 @@
                 <interface type="InterfaceField">
                     <Required>N</Required>
                     <multiple>N</multiple>
-                    <default>wan</default>
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>

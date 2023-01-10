@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 """
-    Copyright (c) 2022 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,25 @@
     POSSIBILITY OF SUCH DAMAGE.
 """
 import argparse
-from lib import checkip_service_list, checkip
+import sys
+import json
+from lib import AccountFactory, Poller
+sys.path.insert(0, "/usr/local/opnsense/site-python")
+from daemonize import Daemonize
 
 
 if __name__ == '__main__':
     # handle parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--service', help='service name', choices=checkip_service_list.keys(), required=True)
-    parser.add_argument('-i', '--interface', help='interface', type=str, default='')
-    parser.add_argument('-t', '--tls', help='enforce tls', choices=['0', '1'], default='1')
-    parser.add_argument('--timeout', help='timeout', type=str, default='10')
+    parser.add_argument('-c', '--config', help='config file [json]', default='/usr/local/etc/ddclient.json')
+    parser.add_argument('-s', '--status', help='status output file [json]', default='/var/tmp/ddclient_opn.status')
+    parser.add_argument('-f', '--foreground', help='run (log) in foreground', default=False, action='store_true')
+    parser.add_argument('-l', '--list', help='list known services and exit', default=False, action='store_true')
+    parser.add_argument('-p', '--pid', help='pid file location', default='/var/run/ddclient_opn.pid')
     inputargs = parser.parse_args()
-
-    proto = 'http' if inputargs.tls == "0" else 'https'
-    interface = inputargs.interface if inputargs.interface.strip() != "" else None
-    print(checkip(inputargs.service, proto, inputargs.timeout, interface))
+    if inputargs.list:
+        print(json.dumps(AccountFactory().known_services()))
+    else:
+        cmd = lambda : Poller(inputargs.config, inputargs.status)
+        daemon = Daemonize(app="ddclient", pid=inputargs.pid, action=cmd, foreground=inputargs.foreground)
+        daemon.start()

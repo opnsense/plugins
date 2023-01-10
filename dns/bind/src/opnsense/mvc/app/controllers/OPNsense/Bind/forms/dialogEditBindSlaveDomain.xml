@@ -47,7 +47,7 @@
         <id>domain.transferkey</id>
         <label>Transfer Key</label>
         <type>text</type>
-        <help>The base64-encoded TSIG key.</help>
+        <help>The TSIG key used to transfer domain data from the master server in Base64 encoding.</help>
     </field>
     <field>
         <id>domain.allownotifyslave</id>
@@ -55,6 +55,6 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>A list of allowed IP addresses to receive notifies from (in addition to the master server.)</help>
+        <help>A list of allowed IP addresses to receive notifies from (in addition to the master server).</help>
     </field>
 </form>

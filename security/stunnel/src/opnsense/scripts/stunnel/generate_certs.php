@@ -27,6 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once('util.inc');
 require_once('plugins.inc');
 require_once('config.inc');
 require_once('certs.inc');

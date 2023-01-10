@@ -52,6 +52,9 @@ POSSIBILITY OF SUCH DAMAGE.
                   dfObj.resolve();
               });
               return dfObj;
+          },
+          onAction: function(data, status) {
+              updateServiceControlUI('dyndns');
           }
         });
         $("#account\\.service").change(function(){
