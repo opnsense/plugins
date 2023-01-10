@@ -42,25 +42,11 @@ class DomainController extends ApiMutableModelControllerBase
     # These are here for backwards compatability, should be removed after a bit.
     public function searchMasterDomainAction()
     {
-        return $this->searchBase(
-            'domains.domain',
-            [   "enabled", "type", "domainname", "ttl", "refresh", "retry", "expire", "negative" ],
-            "domainname",
-            function ($record) {
-                return $record->type->getNodeData()["primary"]["selected"] === 1;
-            }
-        );
+        return seachPrimaryDomainAction()
     }
     public function searchSlaveDomainAction()
     {
-        return $this->searchBase(
-            'domains.domain',
-            [   "enabled", "type", "domainname", "primaryip" ],
-            "domainname",
-            function ($record) {
-                return $record->type->getNodeData()["secondary"]["selected"] === 1;
-            }
-        );
+        return seachSecondaryDomainAction()
     }
 
     public function searchPrimaryDomainAction()
