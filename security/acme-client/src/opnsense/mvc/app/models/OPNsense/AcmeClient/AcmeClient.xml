@@ -283,7 +283,7 @@
                 <renewInterval type="IntegerField">
                     <Required>Y</Required>
                     <MinimumValue>1</MinimumValue>
-                    <MaximumValue>60</MaximumValue>
+                    <MaximumValue>5000</MaximumValue>
                     <default>60</default>
                 </renewInterval>
                 <aliasmode type="OptionField">
