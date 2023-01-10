@@ -346,8 +346,6 @@ $( document ).ready(function() {
             $("#saveRestartAct_rndckey_progress").removeClass("fa fa-spinner fa-pulse");
         });
     });
-
-
     $(".saveAct_domain").click(function(){
         $(".saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall("/api/bind/service/reconfigure", {}, function(data,status) {
