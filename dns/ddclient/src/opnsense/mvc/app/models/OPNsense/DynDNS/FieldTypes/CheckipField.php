@@ -31,7 +31,6 @@ namespace OPNsense\DynDNS\FieldTypes;
 use OPNsense\Base\FieldTypes\BaseListField;
 use OPNsense\Core\Backend;
 
-
 class CheckipField extends BaseListField
 {
     private static $internalCacheOptionList = [];
