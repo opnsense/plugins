@@ -39,26 +39,36 @@ class DomainController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'domain';
     protected static $internalModelClass = '\OPNsense\Bind\Domain';
 
+    # These are here for backwards compatability, should be removed after a bit.
     public function searchMasterDomainAction()
+    {
+        return seachPrimaryDomainAction();
+    }
+    public function searchSlaveDomainAction()
+    {
+        return seachSecondaryDomainAction();
+    }
+
+    public function searchPrimaryDomainAction()
     {
         return $this->searchBase(
             'domains.domain',
             [   "enabled", "type", "domainname", "ttl", "refresh", "retry", "expire", "negative" ],
             "domainname",
             function ($record) {
-                return $record->type->getNodeData()["master"]["selected"] === 1;
+                return $record->type->getNodeData()["primary"]["selected"] === 1;
             }
         );
     }
 
-    public function searchSlaveDomainAction()
+    public function searchSecondaryDomainAction()
     {
         return $this->searchBase(
             'domains.domain',
-            [   "enabled", "type", "domainname", "masterip" ],
+            [   "enabled", "type", "domainname", "primaryip" ],
             "domainname",
             function ($record) {
-                return $record->type->getNodeData()["slave"]["selected"] === 1;
+                return $record->type->getNodeData()["secondary"]["selected"] === 1;
             }
         );
     }
@@ -69,14 +79,14 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
 
-    public function addMasterDomainAction($uuid = null)
+    public function addPrimaryDomainAction($uuid = null)
     {
-        return $this->addBase('domain', 'domains.domain', ['type' => 'master']);
+        return $this->addBase('domain', 'domains.domain', ['type' => 'primary']);
     }
 
-    public function addSlaveDomainAction($uuid = null)
+    public function addSecondaryDomainAction($uuid = null)
     {
-        return $this->addBase('domain', 'domains.domain', ['type' => 'slave']);
+        return $this->addBase('domain', 'domains.domain', ['type' => 'secondary']);
     }
 
     public function delDomainAction($uuid)
