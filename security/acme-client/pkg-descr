@@ -8,6 +8,14 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.15
+
+Added:
+* add online.net DNS API (#3213)
+
+Changed:
+* increase max value for certificate renewal interval (#3219)
+
 3.14
 
 NOTE: Users of Selfhost need to manually fix their configuration, see
