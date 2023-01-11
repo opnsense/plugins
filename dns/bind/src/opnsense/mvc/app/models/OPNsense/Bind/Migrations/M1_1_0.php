@@ -72,9 +72,8 @@ class M1_1_0 extends BaseModelMigration
                     $domainModel->allownotifysecondary->setValue($domain->allownotifyslave);
                 }
             }
- 
+
             parent::run($model);
         }
     }
 }
-
