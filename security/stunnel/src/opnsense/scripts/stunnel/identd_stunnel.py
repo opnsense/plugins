@@ -200,7 +200,7 @@ if __name__ == '__main__':
     parser.add_argument('--foreground', help='run in forground', default=False, action='store_true')
     inputargs = parser.parse_args()
 
-    syslog.openlog('identd_stunnel', logoption=syslog.LOG_DAEMON, facility=syslog.LOG_LOCAL4)
+    syslog.openlog('identd_stunnel', facility=syslog.LOG_LOCAL4)
 
     if inputargs.foreground:
         run_listener()
