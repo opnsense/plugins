@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -91,7 +91,7 @@
                     <display>name</display>
                 </template>
             </Model>
-            <Multiple>N</Multiple>
+            <Multiple>Y</Multiple>
             <Required>N</Required>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
@@ -103,9 +103,20 @@
                     <display>name</display>
                 </template>
             </Model>
-            <Multiple>N</Multiple>
+            <Multiple>Y</Multiple>
             <Required>N</Required>
         </allowtransfer>
+        <allowquery type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+            <Required>N</Required>
+        </allowquery>
         <dnssecvalidation type="OptionField">
             <OptionValues>
                 <no>No</no>
