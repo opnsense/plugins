@@ -11,7 +11,9 @@ Plugin Changelog
 
 1.26
 
+* Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)
 * Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
+* Add PR record type (contributed by Robbert Rijkse)
 
 1.25
 
