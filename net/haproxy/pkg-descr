@@ -17,6 +17,7 @@ Changed:
 * rename frontend option "Type" to "Connection Mode" (#3026)
 * migrate options "http-tunnel" and "forceclose" to "http-keep-alive" (#3026)
 * replace "process" with "threads" bind keyword for CPU Affinity (#3026)
+* no longer duplicate global defaults in backends/frontends (#2642)
 
 Removed:
 * remove Processes/nbproc option (use Threads/nbthread instead) (#3026)
