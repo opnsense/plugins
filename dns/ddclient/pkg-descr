@@ -6,6 +6,12 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.11
+
+* Add Python backend support for custom ddclient-like implementation using the same input
+* Add AzureDNS backende using OAuth 2.0
+* Add dyndns2 backend using said API
+
 1.10
 
 * Update to ddclient 3.10.0
