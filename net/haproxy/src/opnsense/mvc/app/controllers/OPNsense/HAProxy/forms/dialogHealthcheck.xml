@@ -96,7 +96,7 @@
         <id>healthcheck.http_value</id>
         <label>Value</label>
         <type>text</type>
-        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+        <help><![CDATA[Specify a value to match with the expression.]]></help>
     </field>
     <field>
         <label>Custom TCP check</label>
@@ -112,7 +112,7 @@
         <id>healthcheck.tcp_sendValue</id>
         <label>Send data</label>
         <type>text</type>
-        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+        <help><![CDATA[Specify a value to match with the expression.]]></help>
     </field>
     <field>
         <id>healthcheck.tcp_matchType</id>
