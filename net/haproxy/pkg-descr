@@ -6,6 +6,25 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.0
+
+Added:
+* add new service option "Gradual connection close time" (close-spread-time) (#3026)
+* add new frontend option "shards" (#3026)
+
+Changed:
+* upgrade to HAProxy 2.6 release series (#3026)
+* rename frontend option "Type" to "Connection Mode" (#3026)
+* migrate options "http-tunnel" and "forceclose" to "http-keep-alive" (#3026)
+* replace "process" with "threads" bind keyword for CPU Affinity (#3026)
+* no longer duplicate global defaults in backends/frontends (#2642)
+
+Removed:
+* remove Processes/nbproc option (use Threads/nbthread instead) (#3026)
+* remove "Process ID" from CPU Affinity settings (now always 1) (#3026)
+* remove "bind-process" option (replaced by the "threads" bind keyword) (#3026)
+* remove options "http-tunnel" and "forceclose" from "Connection Mode" (#3026)
+
 3.12
 
 Added:

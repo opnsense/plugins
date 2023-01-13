@@ -343,7 +343,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchCpusAction()
     {
-        return $this->searchBase('cpus.cpu', array('enabled', 'name', 'process_id', 'thread_id', 'cpu_id'), 'name');
+        return $this->searchBase('cpus.cpu', array('enabled', 'name', 'thread_id', 'cpu_id'), 'name');
     }
 
     public function getGroupAction($uuid = null)
