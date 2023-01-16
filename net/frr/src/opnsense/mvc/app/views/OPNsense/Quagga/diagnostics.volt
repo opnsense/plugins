@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $(".tree_search").keyup(treeSearchKeyUp);
 
         {% for tab in tabs %}
-            {% if tab['type'] in ['generalroutetable', 'bgproutetable', 'ospfroutetable'] %}
+            {% if tab['type'] in ['generalroutetable', 'bgproutetable', 'ospfroutetable', 'ospfneighbors'] %}
                 /**
                  * initialize bootgrid table for {{ tab['tabhead'] }}
                  */
@@ -276,9 +276,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>
                             <tr>
-                                <th data-column-id="type" data-formatter="ospf_route_type">{{ lang._('Type') }}</th>
+                                <th data-column-id="type" data-searchable="false" data-formatter="ospf_route_type" data-sortable="false">{{ lang._('Type') }}</th>
                                 <th data-column-id="network">{{ lang._('Network') }}</th>
-                                <th data-column-id="cost">{{ lang._('Cost') }}</th>
+                                <th data-column-id="cost" data-searchable="false">{{ lang._('Cost') }}</th>
                                 <th data-column-id="area">{{ lang._('Area') }}</th>
                                 <th data-column-id="via">{{ lang._('Via') }}</th>
                                 <th data-column-id="viainterface">{{ lang._('Via interface') }}</th>
@@ -295,14 +295,14 @@ POSSIBILITY OF SUCH DAMAGE.
                             <thead>
                             <tr>
                                 <th data-column-id="neighborid">{{ lang._('Neighbor ID') }}</th>
-                                <th data-column-id="priority">{{ lang._('Priority') }}</th>
+                                <th data-column-id="priority" data-searchable="false">{{ lang._('Priority') }}</th>
                                 <th data-column-id="state">{{ lang._('State') }}</th>
-                                <th data-column-id="deadTimeMsecs">{{ lang._('Dead Time') }} &lsqb;ms&rsqb;</th>
+                                <th data-column-id="deadTimeMsecs" data-searchable="false">{{ lang._('Dead Time') }} &lsqb;ms&rsqb;</th>
                                 <th data-column-id="address">{{ lang._('Address') }}</th>
                                 <th data-column-id="ifaceName">{{ lang._('Interface') }}</th>
-                                <th data-column-id="retransmitCounter">{{ lang._('Retransmit Counter') }}</th>
-                                <th data-column-id="requestCounter">{{ lang._('Request Counter') }}</th>
-                                <th data-column-id="dbSummaryCounter">{{ lang._('DB Summary Counter') }}</th>
+                                <th data-column-id="retransmitCounter" data-searchable="false">{{ lang._('Retransmit Counter') }}</th>
+                                <th data-column-id="requestCounter" data-searchable="false">{{ lang._('Request Counter') }}</th>
+                                <th data-column-id="dbSummaryCounter" data-searchable="false">{{ lang._('DB Summary Counter') }}</th>
                             </tr>
                             </thead>
                             <tbody>
