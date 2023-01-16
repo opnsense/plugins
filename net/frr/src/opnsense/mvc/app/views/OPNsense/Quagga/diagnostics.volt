@@ -82,6 +82,8 @@ POSSIBILITY OF SUCH DAMAGE.
             {% switch tab['type'] %}
                 {% case 'generalroutetable' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
+                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
+                    $("#grid-{{ tab['name'] }}").bootgrid('search');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
                         if (status == "success") {
@@ -93,6 +95,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% break %}
                 {% case 'bgproutetable' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
+                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
+                    $("#grid-{{ tab['name'] }}").bootgrid('search');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
                         if (status == "success") {
@@ -106,6 +110,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% break %}
                 {% case 'ospfroutetable' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
+                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
+                    $("#grid-{{ tab['name'] }}").bootgrid('search');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
                         if (status == "success") {
@@ -117,6 +123,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% break %}
                 {% case 'ospfneighbors' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
+                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
+                    $("#grid-{{ tab['name'] }}").bootgrid('search');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
                         if (status == "success") {
