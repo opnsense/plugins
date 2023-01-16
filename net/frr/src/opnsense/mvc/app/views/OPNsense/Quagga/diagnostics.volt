@@ -1,7 +1,7 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2022 by Deciso B.V.
-Copyright (C) 2022 Marc Leuser
+OPNsense® is Copyright © 2014 – 2023 by Deciso B.V.
+Copyright (C) 2023 Marc Bartelt
 Copyright (C) 2017 Fabian Franz
 Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
