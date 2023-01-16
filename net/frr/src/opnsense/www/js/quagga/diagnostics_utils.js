@@ -32,11 +32,11 @@
  */
 let gridopt = {
     formatters: {
-        boolean: function (column, row) {
+        boolean: function(column, row) {
             if (row[column.id]) {
-                return "<span class=\"fa fa-fw fa-check\" data-value=\"1\" data-row-id=\"" + row.uuid + "\"></span>";
+                return '<span class="fa fa-fw fa-check" data-value="1" data-row-id="' + row.uuid + '"></span>';
             } else {
-                return "";
+                return '';
             }
         },
         ospf_route_type: function(column, row) {
@@ -45,7 +45,7 @@ let gridopt = {
             row[column.id].split(' ').forEach(function(routeType) {
                 let translatedRouteType = translateOSPFTerm(routeType)
 
-                if (translatedRouteType == routeType) {
+                if (translatedRouteType === routeType) {
                     result += routeType;
                 } else {
                     result += '<abbr title="' + translatedRouteType + '">' + routeType + '</abbr>';
@@ -60,9 +60,9 @@ let gridopt = {
             let result = row.code;
             let protocol = translateZebraCode(row.code);
         
-            if(typeof(protocol) != "string") result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr> ';
-            if(row.selected) result += '<abbr title="Selected">&gt;</abbr> ';
-            if(row.installed) result += '<abbr title="FIB">&ast;</abbr>';
+            if(typeof(protocol) !== 'string') result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr>';
+            if(row.selected) result += ' <abbr title="Selected">&gt;</abbr>';
+            if(row.installed) result += ' <abbr title="FIB">&ast;</abbr>';
         
             return result;
         }
@@ -101,8 +101,8 @@ function transformGeneralRoutes(data) {
                     network: route['prefix'],
                     ad: route['distance'],
                     metric: route['metric'],
-                    interface: (typeof(nexthop['interfaceName']) != "undefined" ? nexthop['interfaceName'] : ''),
-                    via: (typeof(nexthop['ip']) != "undefined" ? nexthop['ip'] : 'Directly Attached'),
+                    interface: (typeof(nexthop['interfaceName']) !== 'undefined' ? nexthop['interfaceName'] : ''),
+                    via: (typeof(nexthop['ip']) !== 'undefined' ? nexthop['ip'] : 'Directly Attached'),
                     time: route['uptime']
                 });
             });
@@ -187,7 +187,7 @@ function transformOSPFRoutes(data) {
                 type: data[network]['routeType'],
                 network: network,
                 cost: data[network]['cost'],
-                area: data[network]['area'],
+                area: (typeof data[network]['area'] !== 'undefined' ? data[network]['area'] : ''),
                 via: (typeof nexthop['via'] !== 'undefined' ? nexthop['ip'] : 'Directly Attached'),
                 viainterface: (typeof nexthop['via'] !== 'undefined' ? nexthop['via'] : nexthop['directly attached to'])
             });
