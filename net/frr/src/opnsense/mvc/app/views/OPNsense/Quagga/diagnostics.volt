@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $(".tree_search").keyup(treeSearchKeyUp);
 
         {% for tab in tabs %}
-            {% if tab['type'] in ['bgptable', 'ospftable'] %}
+            {% if tab['type'] in ['generalroutetable', 'bgproutetable', 'ospfroutetable'] %}
                 /**
                  * initialize bootgrid table for {{ tab['tabhead'] }}
                  */
@@ -80,7 +80,18 @@ POSSIBILITY OF SUCH DAMAGE.
              */
             $("#refresh-{{ tab['name'] }}").click(function () { 
             {% switch tab['type'] %}
-                {% case 'bgptable' %}
+                {% case 'generalroutetable' %}
+                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
+
+                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
+                        if (status == "success") {
+                            let routes = transformGeneralRoutes(data['response']);
+
+                            $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
+                        }
+                    });
+                    {% break %}
+                {% case 'bgproutetable' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
@@ -93,7 +104,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         }
                     });
                     {% break %}
-                {% case 'ospftable' %}
+                {% case 'ospfroutetable' %}
                     $("#grid-{{ tab['name'] }}").bootgrid('clear');
 
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
@@ -207,7 +218,33 @@ POSSIBILITY OF SUCH DAMAGE.
     {% for tab in tabs %}
         <div id="{{ tab['name'] }}" class="tab-pane fade">
             {% switch tab['type'] %}
-                {% case 'bgptable' %}
+                {% case 'generalroutetable' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="code" data-searchable="false" data-formatter="general_route_code" data-sortable="false">{{ lang._('Code') }}</th>
+                                <th data-column-id="selected" data-searchable="false" data-visible="false" data-sortable="false">{{ lang._('Selected') }}</th>
+                                <th data-column-id="installed" data-searchable="false" data-visible="false" data-sortable="false">{{ lang._('Installed') }}</th>
+                                <th data-column-id="network">{{ lang._('Network') }}</th>
+                                <th data-column-id="ad" data-searchable="false">{{ lang._('Administrative Distance') }}</th>
+                                <th data-column-id="metric" data-searchable="false">{{ lang._('Metric') }}</th>
+                                <th data-column-id="interface">{{ lang._('Interface') }}</th>
+                                <th data-column-id="via">{{ lang._('Via') }}</th>
+                                <th data-column-id="time" data-searchable="false">{{ lang._('Time') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="pull-left" data-toggle="popover">
+                            <small id="details-{{ tab['name'] }}"></small>
+                        </div>
+                    </div>
+                    {% break %}
+                {% case 'bgproutetable' %}
                     <div class="col-sm-12">
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>
@@ -234,7 +271,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         </div>
                     </div>
                     {% break %}
-                {% case 'ospftable' %}
+                {% case 'ospfroutetable' %}
                     <div class="col-sm-12">
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>

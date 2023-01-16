@@ -34,13 +34,13 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'name' => 'routing4',
                 'endpoint' => '/api/quagga/diagnostics/bgproute4',
                 'tabhead' => "IPv4 " . gettext('Routing Table'),
-                'type' => 'bgptable'
+                'type' => 'bgproutetable'
             ],
             [
                 'name' => 'routing6',
                 'endpoint' => '/api/quagga/diagnostics/bgproute6',
                 'tabhead' => "IPv6 " . gettext('Routing Table'),
-                'type' => 'bgptable'
+                'type' => 'bgproutetable'
             ],
             [
                 'name' => 'neighbors',
@@ -54,7 +54,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'tabhead' => gettext('Summary'),
                 'type' => 'tree'
             ]
-            ];
+        ];
         $this->view->default_tab = 'routing4';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
@@ -71,7 +71,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'name' => 'routing',
                 'endpoint' => '/api/quagga/diagnostics/ospfroute',
                 'tabhead' => gettext('Routing Table'),
-                'type' => 'ospftable'
+                'type' => 'ospfroutetable'
             ],
             [
                 'name' => 'database',
@@ -91,7 +91,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'tabhead' => gettext('Interfaces'),
                 'type' => 'tree'
             ]
-            ];
+        ];
         $this->view->default_tab = 'routing';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
@@ -101,6 +101,27 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
     }
     public function generalAction()
     {
-        $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
+        $this->view->tabs = [
+            [
+                'name' => 'routing4',
+                'endpoint' => '/api/quagga/diagnostics/generalroute4',
+                'tabhead' => gettext('IPv4 Routes'),
+                'type' => 'generalroutetable'
+            ],
+            [
+                'name' => 'routing6',
+                'endpoint' => '/api/quagga/diagnostics/generalroute6',
+                'tabhead' => gettext('IPv6 Routes'),
+                'type' => 'generalroutetable'
+            ],
+            [
+                'name' => 'runningconfig',
+                'endpoint' => '/api/quagga/diagnostics/generalrunningconfig/plain',
+                'tabhead' => gettext('Running Configuration'),
+                'type' => 'text'
+            ]
+        ];
+        $this->view->default_tab = 'routing4';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
 }

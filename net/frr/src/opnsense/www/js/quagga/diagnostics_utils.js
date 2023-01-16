@@ -55,9 +55,62 @@ let gridopt = {
             });
 
             return result;
+        },
+        general_route_code: function(column, row) {
+            let result = row.code;
+            let protocol = translateZebraCode(row.code);
+        
+            if(typeof(protocol) != "string") result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr> ';
+            if(row.selected) result += '<abbr title="Selected">&gt;</abbr> ';
+            if(row.installed) result += '<abbr title="FIB">&ast;</abbr>';
+        
+            return result;
         }
     }
 };
+
+/**
+ * zebra route codes - translation table
+ */
+function translateZebraCode(data) {
+    let tr = [];
+  
+    // routing table tab
+    tr['kernel'] = {short: 'K', long: 'Kernel'};
+    tr['connected'] = {short: 'C', long: 'Connected'};
+    tr['bgp'] = {short: 'B', long: 'BGP'};
+    tr['ospf'] = {short: 'O', long: 'OSPF'};
+    tr['ospf6'] = {short: 'O', long: 'OSPFv3'};
+  
+    return ((data in tr) ? tr[data] : data);
+}
+
+/**
+ * take the general routes as delivered by the diagnostics API and transform them into a bootgrid-compatible format
+ */
+function transformGeneralRoutes(data) {
+    let routes = [];
+
+    for(let network in data) {
+        data[network].forEach(function (route) {
+            route.nexthops.forEach(function (nexthop) {
+                routes.push({
+                    code: route['protocol'],
+                    selected: route['selected'],
+                    installed: route['installed'],
+                    network: route['prefix'],
+                    ad: route['distance'],
+                    metric: route['metric'],
+                    interface: (typeof(nexthop['interfaceName']) != "undefined" ? nexthop['interfaceName'] : ''),
+                    via: (typeof(nexthop['ip']) != "undefined" ? nexthop['ip'] : 'Directly Attached'),
+                    time: route['uptime']
+                });
+            });
+        });
+    }
+
+    return routes;
+}
 
 /**
  * take the BGP routes as delivered by the diagnostics API and transform them into a bootgrid-compatible format
