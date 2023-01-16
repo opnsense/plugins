@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2015-2022 Deciso B.V.
- * Copyright (C) 2022 Marc Leuser
+ * Copyright (C) 2023 Marc Bartelt
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
