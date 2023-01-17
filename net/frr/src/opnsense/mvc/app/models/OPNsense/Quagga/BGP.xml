@@ -142,6 +142,15 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </disable_connected_check>
+                        <attributeunchanged type="OptionField">
+                                <default></default>
+                                <Required>N</Required>
+                                <OptionValues>
+                                        <as-path>as-path</as-path>
+                                        <next-hop>next-hop</next-hop>
+                                        <med>med</med>
+                                </OptionValues>
+                        </attributeunchanged>
                         <linkedPrefixlistIn type="ModelRelationField">
                                 <Model>
                                         <template>
