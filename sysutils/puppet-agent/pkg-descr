@@ -9,6 +9,8 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+1.1
+
 Added:
 * add new options runinterval and runtimeout
 * add new option usecacheonfailure
