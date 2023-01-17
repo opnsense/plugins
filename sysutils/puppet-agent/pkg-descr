@@ -11,6 +11,7 @@ Plugin Changelog
 
 Added:
 * add new options runinterval and runtimeout
+* add new option usecacheonfailure
 
 Changed:
 * add default values for Puppet Server + Environment

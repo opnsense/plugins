@@ -30,6 +30,10 @@
                 <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
                 <Required>Y</Required>
             </RunTimeout>
+            <UseCacheOnFailure type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </UseCacheOnFailure>
         </general>
     </items>
 </model>

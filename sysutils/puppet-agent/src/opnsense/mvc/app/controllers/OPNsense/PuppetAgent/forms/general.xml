@@ -29,4 +29,10 @@
         <type>text</type>
         <help>The maximum amount of time an agent run is allowed to take. Enter a number followed by one of the supported suffixes: "y" (years), "d" (days), "h" (hours), "m" (minutes), "s" (seconds).</help>
     </field>
+    <field>
+        <id>puppetagent.general.UseCacheOnFailure</id>
+        <label>Use Cache On Failure</label>
+        <type>checkbox</type>
+        <help>Whether to use the cached configuration when the remote configuration will not compile.</help>
+    </field>
 </form>
