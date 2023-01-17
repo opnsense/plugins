@@ -3,19 +3,19 @@
         <id>puppetagent.general.Enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable Puppet Agent</help>
+        <help>Enable the Puppet Agent service.</help>
     </field>
     <field>
         <id>puppetagent.general.FQDN</id>
         <label>Puppet Server FQDN</label>
         <type>text</type>
-        <help>Change Puppet Server FQDN</help>
+        <help>The primary Puppet Server to which the Puppet Agent should connect.</help>
     </field>
     <field>
         <id>puppetagent.general.Environment</id>
         <label>Puppet Environment</label>
         <type>text</type>
-        <help>Change Puppet Agent Environment</help>
+        <help>The environment in which Puppet is running.</help>
     </field>
     <field>
         <id>puppetagent.general.RunInterval</id>
