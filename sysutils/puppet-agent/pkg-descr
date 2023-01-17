@@ -9,6 +9,9 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+Added:
+* add new options runinterval and runtimeout
+
 Changed:
 * add default values for Puppet Server + Environment
 

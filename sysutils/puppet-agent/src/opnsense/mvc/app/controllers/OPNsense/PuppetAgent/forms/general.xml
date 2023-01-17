@@ -17,4 +17,16 @@
         <type>text</type>
         <help>Change Puppet Agent Environment</help>
     </field>
+    <field>
+        <id>puppetagent.general.RunInterval</id>
+        <label>Run Interval</label>
+        <type>text</type>
+        <help>How often Puppet Agent applies the catalog. Enter a number followed by one of the supported suffixes: "y" (years), "d" (days), "h" (hours), "m" (minutes), "s" (seconds).</help>
+    </field>
+    <field>
+        <id>puppetagent.general.RunTimeout</id>
+        <label>Run Timeout</label>
+        <type>text</type>
+        <help>The maximum amount of time an agent run is allowed to take. Enter a number followed by one of the supported suffixes: "y" (years), "d" (days), "h" (hours), "m" (minutes), "s" (seconds).</help>
+    </field>
 </form>

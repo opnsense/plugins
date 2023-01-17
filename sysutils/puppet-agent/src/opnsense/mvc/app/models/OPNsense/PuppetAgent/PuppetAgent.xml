@@ -18,6 +18,18 @@
                 <mask>/^.{1,100}$/u</mask>
                 <ValidationMessage>Should be a string between 1 and 100 characters.</ValidationMessage>
             </Environment>
+            <RunInterval type="TextField">
+                <default>30m</default>
+                <mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
+                <Required>Y</Required>
+            </RunInterval>
+            <RunTimeout type="TextField">
+                <default>1h</default>
+                <mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
+                <Required>Y</Required>
+            </RunTimeout>
         </general>
     </items>
 </model>
