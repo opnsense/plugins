@@ -15,6 +15,7 @@ Added:
 
 Changed:
 * add default values for Puppet Server + Environment
+* don't wipe puppet.conf if service is disabled
 
 1.0
 
