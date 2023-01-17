@@ -9,6 +9,9 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+Changed:
+* add default values for Puppet Server + Environment
+
 1.0
 
 Added:
