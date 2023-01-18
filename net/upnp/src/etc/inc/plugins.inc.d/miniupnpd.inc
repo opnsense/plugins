@@ -159,10 +159,10 @@ function miniupnpd_configure_do($verbose = false)
                         $ifaces_active .= ", {$iface}";
                     }
                 } else {
-                    log_error("miniupnpd: Interface {$iface} has no ip address, ignoring");
+                    log_msg("miniupnpd: Interface {$iface} has no ip address, ignoring", LOG_WARING);
                 }
             } else {
-                log_error("miniupnpd: Could not resolve real interface for {$iface}");
+                log_msg("miniupnpd: Could not resolve real interface for {$iface}", LOG_ERR);
             }
         }
 
@@ -238,7 +238,8 @@ function miniupnpd_configure_do($verbose = false)
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
-            log_error("miniupnpd: Starting service on interface: {$ifaces_active}");
+            log_msg("miniupnpd: Starting service on interface: {$ifaces_active}");
+
             miniupnpd_start();
         }
     }
