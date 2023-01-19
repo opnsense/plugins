@@ -21,7 +21,7 @@
             });
         });
 
-        if(window.location.hash != "") {
+        if(window.location.hash !== "") {
             $('a[href="' + window.location.hash + '"]').click()
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
