@@ -6,6 +6,7 @@ necessary for asking and answering name service questions.
 
 WWW: https://www.isc.org
 
+
 Plugin Changelog
 ================
 
@@ -13,14 +14,14 @@ Plugin Changelog
 
 * Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)
 * Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
-* Add PR record type (contributed by Robbert Rijkse)
 
 1.25
 
 * Ensure you can only add one ACL with the same name (contributed by Robbert Rijkse)
 * Cleanup/Fix the Master/Slave domain dialogs (contributed by Robbert Rijkse)
 * Revamp the logging page with proper columns (contributed by Robbert Rijkse)
-* Add UI for RNDC Key configuration (contributed by Robbert Rijkse)
+* Add RNDC key configuration (contributed by Robbert Rijkse)
+* Add PR record type (contributed by Robbert Rijkse)
 * Update base to BIND 9.18
 
 1.24
