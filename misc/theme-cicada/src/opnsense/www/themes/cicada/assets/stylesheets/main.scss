@@ -10667,12 +10667,12 @@ ul.jqtree-tree {
 router-view {
   .text-success.m-r-5 {
     font-weight: bold;
-    color: #fff;
+    color: #fff !important;
   }
 
   .text-danger.m-r-5 {
     font-weight: bold;
-    color: #000;
+    color: #000 !important;
   }
 }
 

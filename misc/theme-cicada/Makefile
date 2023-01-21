@@ -1,5 +1,5 @@
 PLUGIN_NAME=		theme-cicada
-PLUGIN_VERSION=		1.31
+PLUGIN_VERSION=		1.32
 PLUGIN_COMMENT=		The cicada theme - dark grey onyx
 PLUGIN_MAINTAINER=	rene@team-rebellion.net
 PLUGIN_NO_ABI=		yes
