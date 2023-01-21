@@ -6640,12 +6640,12 @@ ul.jqtree-tree .jqtree-title {
 
 router-view .text-success.m-r-5 {
   font-weight: bold;
-  color: #fff;
+  color: #fff !important;
 }
 
 router-view .text-danger.m-r-5 {
   font-weight: bold;
-  color: #000;
+  color: #000 !important;
 }
 
 .bootstrap-tagsinput {
