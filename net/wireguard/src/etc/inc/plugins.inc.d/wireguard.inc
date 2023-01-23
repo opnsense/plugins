@@ -26,6 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+use OPNsense\Core\Backend;
+
 function wireguard_enabled()
 {
     $model = new \OPNsense\Wireguard\General();
@@ -37,6 +39,12 @@ function wireguard_services()
     $services = array();
 
     if (!wireguard_enabled()) {
+        return $services;
+    }
+
+    // If kmod file exists, we won't return the go-based service.
+    $kmod = trim((new Backend())->configdRun("wireguard status_kmod"));
+    if ($kmod === "true") {
         return $services;
     }
 
