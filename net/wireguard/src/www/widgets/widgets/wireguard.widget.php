@@ -33,23 +33,87 @@ require_once("widgets/include/wireguard.inc");
 
 $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? true : false);
 
+$wg_widget_columns_all = [
+    'name'          => gettext("Name"),
+    'interface'     => gettext("Interface"),
+    'peerName'      => gettext("Peer"),
+    'peerPublicKey' => gettext("Public Key"),
+    'lastHandshake' => gettext("Latest Handshake"),
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $wg_widget = $config['widgets']['wireguard'];
+    $wg_widget_truncPublicKey = !empty($wg_widget['truncate_publickey']) ? $wg_widget['truncate_publickey'] : 19;
+    $wg_widget_columns = !empty($wg_widget['column_filter']) ? explode(',', $wg_widget['column_filter']) : [];
+
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $wg_widget_settings = $_POST;
+
+    if (!empty($wg_widget_settings['column_filter'])) {
+        $config['widgets']['wireguard']['column_filter'] = implode(',', $wg_widget_settings['column_filter']);
+    } elseif (isset($config['widgets']['wireguard']['column_filter'])) {
+        unset($config['widgets']['wireguard']['column_filter']);
+    }
+
+    if (!empty($wg_widget_settings['truncate_publickey'])) {
+        if (is_numeric($wg_widget_settings['truncate_publickey']) && $wg_widget_settings['truncate_publickey'] < 40 && $wg_widget_settings['truncate_publickey'] > 0)
+            $config['widgets']['wireguard']['truncate_publickey'] = $wg_widget_settings['truncate_publickey'];
+    } elseif (isset($config['widgets']['wireguard']['truncate_publickey'])) {
+        unset($config['widgets']['wireguard']['truncate_publickey']);
+    }
+
+    write_config("Saved WireGuard Widget Filter via Dashboard");
+    header(url_safe('Location: /index.php'));
+    exit;
+}
+
 ?>
 
-<table class="table table-striped table-condensed">
+<div id="wireguard-settings" class="widgetconfigdiv" style="display:none;">
+    <form action="/widgets/widgets/wireguard.widget.php" method="post" name="iformd">
+        <table class="table table-condensed">
+            <tr>
+                <td><?= gettext("Shorten public key to characters (max 40)") ?>:</td>
+                <td><input type="number" id="truncate_publickey" name="truncate_publickey" value="<?= $wg_widget_truncPublicKey ?>"></td>
+            </tr>
+            <tr>
+                <td><?= gettext("Hide columns") ?>:</td>
+                <td>
+                    <select id="column_filter" name="column_filter[]" multiple="multiple" class="selectpicker_widget">
+                        <?php foreach ($wg_widget_columns_all as $c_id => $c_name): ?>
+                            <option value="<?= $c_id ?>" <?= in_array($c_id, $wg_widget_columns) ? 'selected="selected"' : '' ?>><?= html_safe($c_name) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="submitd" name="submitd" type="submit" class="btn btn-primary" value="yes"><?= gettext('Save') ?></button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<table id="wg-widget-table" class="table table-striped table-condensed">
     <thead>
         <tr>
-            <th><?= gettext("Name") ?></th>
-            <th><?= gettext("Interface") ?></th>
-            <th><?= gettext("Endpoint") ?></th>
-            <th><?= gettext("Public Key") ?></th>
-            <th><?= gettext("Latest Handshake") ?></th>
+            <?php
+            foreach ($wg_widget_columns_all as $c_id => $c_name) {
+                if (!in_array($c_id, $wg_widget_columns)) {
+                    echo '<th data-id="'.$c_id.'">'.html_safe($c_name).'</th>';
+                }
+            }
+            ?>
         </tr>
     </thead>
     <tbody id="wg-table-tbody">
 
     <?php if (!$enabled): ?>
     <tr>
-        <td colspan="5"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
+        <td colspan="<?= count($wg_widget_columns_all) ?>">
+            <?= gettext("No WireGuard instance defined or enabled.") ?>
+        </td>
     </tr>
     <?php endif; ?>
 
@@ -58,18 +122,30 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
 
 <script>
 $(window).on("load", function() {
-    function wgGenerateRow(name, interface, peerName, publicKey, latestHandshake, status)
-    {
-        publicKeyShort = publicKey.slice(0, 19) + '...';
+    $("#wireguard-configure").removeClass("disabled");
 
-        var tr = ''
-        +'<tr>'
-        +'    <td>' + name + '</td>'
-        +'    <td>' + interface + '</td>'
-        +'    <td>' + peerName  + '</td>'
-        +'    <td title="' + publicKey + '">' + publicKeyShort  + '</td>'
-        +'    <td>' + latestHandshake + '</td>'
-        +'</tr>';
+    function wgGenerateRow(data)
+    {
+        var hideColumns = '<?= implode(",", $wg_widget_columns) ?>'.split(',');
+
+        var tr = '<tr>';
+        for (var column in data) {
+            // skip column if hidden
+            if (hideColumns.includes(column)) {
+                continue;
+            }
+            // set default values to display
+            title = '';
+            value = data[column];
+            // if it's the peerPublicKey, we do special formatting
+            if (column === "peerPublicKey") {
+                title = data[column]
+                value = data[column].slice(0, <?= $wg_widget_truncPublicKey ?>) + '...';
+            }
+            // building column
+            tr += '    <td title="' + title + '">' + value + '</td>';
+        }
+        tr += '</tr>';
 
         return tr;
     }
@@ -87,14 +163,13 @@ $(window).on("load", function() {
             var peer = obj.peers[peerId];
 
             // generate table row
-            row += wgGenerateRow(
-                obj.name,
-                obj.interface,
-                peer.name,
-                peer.publicKey,
-                peer.lastHandshake,
-                status
-            );
+            row += wgGenerateRow({
+                name: obj.name,
+                interface: obj.interface,
+                peerName: peer.name,
+                peerPublicKey: peer.publicKey,
+                lastHandshake: peer.lastHandshake
+            });
         }
 
         return row;
