@@ -43,7 +43,7 @@ $wg_widget_columns_all = [
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $wg_widget = $config['widgets']['wireguard'];
-    $wg_widget_truncPublicKey = !empty($wg_widget['truncate_publickey']) ? $wg_widget['truncate_publickey'] : 19;
+    $wg_widget_truncPublicKey = (isset($wg_widget['truncate_publickey'])) ? $wg_widget['truncate_publickey'] : 19;
     $wg_widget_columns = !empty($wg_widget['column_filter']) ? explode(',', $wg_widget['column_filter']) : [];
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         unset($config['widgets']['wireguard']['column_filter']);
     }
 
-    if (!empty($wg_widget_settings['truncate_publickey'])) {
-        if (is_numeric($wg_widget_settings['truncate_publickey']) && $wg_widget_settings['truncate_publickey'] < 40 && $wg_widget_settings['truncate_publickey'] > 0)
-            $config['widgets']['wireguard']['truncate_publickey'] = $wg_widget_settings['truncate_publickey'];
-    } elseif (isset($config['widgets']['wireguard']['truncate_publickey'])) {
+    if ($wg_widget_settings['truncate_publickey'] !== false) {
+        if (is_numeric($wg_widget_settings['truncate_publickey']) && $wg_widget_settings['truncate_publickey'] <= 44 && $wg_widget_settings['truncate_publickey'] >= 0)
+            $config['widgets']['wireguard']['truncate_publickey'] = (int) $wg_widget_settings['truncate_publickey'];
+    } elseif ($config['widgets']['wireguard']['truncate_publickey'] === false) {
         unset($config['widgets']['wireguard']['truncate_publickey']);
     }
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <form action="/widgets/widgets/wireguard.widget.php" method="post" name="iformd">
         <table class="table table-condensed">
             <tr>
-                <td><?= gettext("Shorten public key to characters (max 40)") ?>:</td>
+                <td><?= gettext("Shorten public key to characters (max 40, 0 = disabled)") ?>:</td>
                 <td><input type="number" id="truncate_publickey" name="truncate_publickey" value="<?= $wg_widget_truncPublicKey ?>"></td>
             </tr>
             <tr>
@@ -127,6 +127,7 @@ $(window).on("load", function() {
     function wgGenerateRow(data)
     {
         var hideColumns = '<?= implode(",", $wg_widget_columns) ?>'.split(',');
+        var truncatePeerPublicKey = <?= $wg_widget_truncPublicKey ?>;
 
         var tr = '<tr>';
         for (var column in data) {
@@ -138,9 +139,9 @@ $(window).on("load", function() {
             title = '';
             value = data[column];
             // if it's the peerPublicKey, we do special formatting
-            if (column === "peerPublicKey") {
-                title = data[column]
-                value = data[column].slice(0, <?= $wg_widget_truncPublicKey ?>) + '...';
+            if (column === "peerPublicKey" && truncatePeerPublicKey > 0 && truncatePeerPublicKey < 44) {
+                title = data[column];
+                value = data[column].slice(0, truncatePeerPublicKey) + '...';
             }
             // building column
             tr += '    <td title="' + title + '">' + value + '</td>';
