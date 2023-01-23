@@ -33,6 +33,7 @@ require_once("widgets/include/wireguard.inc");
 
 $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? true : false);
 
+// All WG Widget Columns to display. (ID<>User-facing name)
 $wg_widget_columns_all = [
     'name'          => gettext("Name"),
     'interface'     => gettext("Interface"),
@@ -41,20 +42,24 @@ $wg_widget_columns_all = [
     'lastHandshake' => gettext("Latest Handshake"),
 ];
 
+// Retrieve the current settings and fallback to default if not set
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $wg_widget = $config['widgets']['wireguard'];
     $wg_widget_truncPublicKey = (isset($wg_widget['truncate_publickey'])) ? $wg_widget['truncate_publickey'] : 19;
     $wg_widget_columns = !empty($wg_widget['column_filter']) ? explode(',', $wg_widget['column_filter']) : [];
 
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Used when changes were submitted, and if POST is because changes to WG widget
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["wg_widget_save"])) {
     $wg_widget_settings = $_POST;
 
+    // set the columns we filter/hide
     if (!empty($wg_widget_settings['column_filter'])) {
         $config['widgets']['wireguard']['column_filter'] = implode(',', $wg_widget_settings['column_filter']);
     } elseif (isset($config['widgets']['wireguard']['column_filter'])) {
         unset($config['widgets']['wireguard']['column_filter']);
     }
 
+    // set to how many characters we truncate the key
     if ($wg_widget_settings['truncate_publickey'] !== false) {
         if (is_numeric($wg_widget_settings['truncate_publickey']) && $wg_widget_settings['truncate_publickey'] <= 44 && $wg_widget_settings['truncate_publickey'] >= 0)
             $config['widgets']['wireguard']['truncate_publickey'] = (int) $wg_widget_settings['truncate_publickey'];
@@ -88,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </tr>
             <tr>
                 <td colspan="2">
+                    <input type="hidden" name="wg_widget_save" value="1">
                     <button id="submitd" name="submitd" type="submit" class="btn btn-primary" value="yes"><?= gettext('Save') ?></button>
                 </td>
             </tr>
