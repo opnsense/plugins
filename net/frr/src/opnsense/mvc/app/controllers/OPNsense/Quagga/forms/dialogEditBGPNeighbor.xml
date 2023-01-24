@@ -133,6 +133,13 @@
     <help>Allow peerings between directly connected eBGP peers using loopback addresses.</help>
   </field>
   <field>
+    <id>neighbor.attributeunchanged</id>
+    <label>Attribute Unchanged</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[This specifies attributes to be left unchanged when sending advertisements to a peer. Read more at <a href="https://docs.frrouting.org/en/latest/bgp.html#clicmd-neighbor-PEER-attribute-unchanged-as-path-next-hop-med">FRR documentation</a>.]]></help>
+  </field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
