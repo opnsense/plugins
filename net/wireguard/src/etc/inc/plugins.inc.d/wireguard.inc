@@ -34,49 +34,66 @@ function wireguard_enabled()
 
 function wireguard_services()
 {
-    $services = array();
+    $services = [];
 
     if (!wireguard_enabled()) {
         return $services;
     }
 
-    $services[] = array(
+    $service = [
         'description' => gettext('WireGuard VPN'),
-        'configd' => array(
-            'restart' => array('wireguard restart'),
-            'start' => array('wireguard start'),
-            'stop' => array('wireguard stop'),
-        ),
-        'name' => 'wireguard-go'
-    );
+        'configd' => [
+            'restart' => ['wireguard restart'],
+            'start' => ['wireguard start'],
+            'stop' => ['wireguard stop'],
+        ],
+        'name' => 'wireguard-go',
+    ];
+
+    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
+        $service['name'] = 'wireguard';
+        $service['nocheck'] = true;
+    }
+
+    $services[] = $service;
 
     return $services;
 }
 
 function wireguard_interfaces()
 {
-    $interfaces = array();
+    $interfaces = [];
+
     if (!wireguard_enabled()) {
         return $interfaces;
     }
-    $oic = array('enable' => true);
-    $oic['if'] = 'wireguard';
-    $oic['descr'] = gettext('WireGuard (Group)');
-    $oic['type'] = 'group';
-    $oic['virtual'] = true;
-    $oic['networks'] = array();
-    $interfaces['wireguard'] = $oic;
+
+    $interfaces['wireguard'] = [
+        'descr' => gettext('WireGuard (Group)'),
+        'if' => 'wireguard',
+        'virtual' => true,
+        'enable' => true,
+        'type' => 'group',
+        'networks' => [],
+    ];
+
     return $interfaces;
 }
 
 function wireguard_xmlrpc_sync()
 {
-    $result = array();
+    $result = [];
+
     $result['id'] = 'wireguard';
     $result['section'] = 'OPNsense.wireguard';
     $result['description'] = gettext('WireGuard');
     $result['services'] = ['wireguard-go'];
-    return array($result);
+
+    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
+        $result['services'] = ['wireguard'];
+    }
+
+    return [$result];
 }
 
 function wireguard_devices()
