@@ -50,7 +50,7 @@ class AccountField extends ArrayField
         if (isset(self::$current_stats[$node->getAttribute('uuid')])) {
             $stats = self::$current_stats[$node->getAttribute('uuid')];
             $current_ip->setValue($stats['ip']);
-            $current_mtime->setValue(date('c', $stats['mtime']));
+            $current_mtime->setValue(date('c', (int)$stats['mtime']));
         } elseif (!empty((string)$node->hostnames)) {
             foreach (explode(",", (string)$node->hostnames) as $hostname) {
                 if (!empty(self::$current_stats[$hostname]) && !empty(self::$current_stats[$hostname]['ip'])) {
