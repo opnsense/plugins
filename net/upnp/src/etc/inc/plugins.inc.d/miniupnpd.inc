@@ -159,7 +159,7 @@ function miniupnpd_configure_do($verbose = false)
                         $ifaces_active .= ", {$iface}";
                     }
                 } else {
-                    log_msg("miniupnpd: Interface {$iface} has no ip address, ignoring", LOG_WARING);
+                    log_msg("miniupnpd: Interface {$iface} has no ip address, ignoring", LOG_WARNING);
                 }
             } else {
                 log_msg("miniupnpd: Could not resolve real interface for {$iface}", LOG_ERR);
