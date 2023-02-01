@@ -45,7 +45,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     /**
      * hook group interface registration on reconfigure
-     * @return array
+     * @return bool
      */
     protected function invokeInterfaceRegistration()
     {
