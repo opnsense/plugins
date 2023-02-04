@@ -1,6 +1,9 @@
 {% if helpers.exists('OPNsense.wireguard.general.enabled') and OPNsense.wireguard.general.enabled == '1' %}
 wireguard_setup="/usr/local/opnsense/scripts/OPNsense/Wireguard/setup.sh"
 wireguard_enable="YES"
+{% if helpers.exists('OPNsense.wireguard.general.enablecarp') and OPNsense.wireguard.general.enablecarp == '1' %}
+required_files="/var/run/wireguard.CARP_MASTER"
+{% endif %}
 {%   if helpers.exists('OPNsense.wireguard.server.servers.server') %}
 {%   set activeservers=[] %}
 {%     for servers in helpers.toList('OPNsense.wireguard.server.servers.server') %}

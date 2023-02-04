@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+1.14
+
+* Added CARP awareness
+
 1.13
 
 * Reworked widget and assorted cleanups (contributed by Patrik Kernstock)
