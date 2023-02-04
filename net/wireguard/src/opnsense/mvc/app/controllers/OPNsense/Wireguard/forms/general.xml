@@ -3,7 +3,7 @@
         <id>general.enabled</id>
         <label>Enable WireGuard</label>
         <type>checkbox</type>
-        <help>This will activate WireGuard and start all enabled instances. CARP aware will only start Wireguard when the firewall is a CARP MASTER.</help>
+        <help>This will activate WireGuard and start all enabled instances.</help>
     </field>
     <field>
        <id>general.enablecarp</id>
