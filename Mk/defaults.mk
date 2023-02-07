@@ -39,18 +39,6 @@ GITVERSION=	${SCRIPTSDIR}/version.sh
 _PLUGIN_ARCH!=	uname -p
 PLUGIN_ARCH?=	${_PLUGIN_ARCH}
 
-OPENSSL?=	${LOCALBASE}/bin/openssl
-
-.if ! defined(PLUGIN_FLAVOUR)
-.if exists(${OPENSSL})
-_PLUGIN_FLAVOUR!=	${OPENSSL} version
-PLUGIN_FLAVOUR?=	${_PLUGIN_FLAVOUR:[1]}
-.else
-.warning "Detected 'Base' flavour is not currently supported"
-PLUGIN_FLAVOUR?=	Base
-.endif
-.endif
-
 VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 
 .if exists(${VERSIONBIN})
@@ -83,7 +71,6 @@ PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
-		PLUGIN_FLAVOUR \
 		PLUGIN_HASH \
 		PLUGIN_MAINTAINER \
 		PLUGIN_NAME \
