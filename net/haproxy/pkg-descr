@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.1
+
+Fixed:
+* fix SSL preferences in health checks (#3221)
+
 4.0
 
 Added:
