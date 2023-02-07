@@ -6,6 +6,11 @@ WWW: http://wiki.qemu.org/Main_Page
 Plugin Changelog
 ================
 
+1.2
+
+Changed:
+* switch to most recent version of qemu guest agent
+
 1.1
 
 Fixed:
