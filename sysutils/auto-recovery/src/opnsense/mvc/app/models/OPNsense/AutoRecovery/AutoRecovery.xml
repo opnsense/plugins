@@ -1,0 +1,37 @@
+<model>
+    <mount>//OPNsense/AutoRecovery</mount>
+    <version>1.0.0</version>
+    <description>A configuration rollback functionality for OPNsense</description>
+    <items>
+        <general>
+            <countdown type="IntegerField">
+                <default>10</default>
+                <MinimumValue>1</MinimumValue>
+                <!-- max value is 7 days -->
+                <MaximumValue>10080</MaximumValue>
+                <ValidationMessage>Please specify a value between 1 and 10080 minutes.</ValidationMessage>
+                <Required>Y</Required>
+            </countdown>
+            <action type="OptionField">
+                <Required>Y</Required>
+                <default>restore_reboot</default>
+                <OptionValues>
+                    <restore_reboot>Restore config and reboot [default]</restore_reboot>
+                    <restore_reload>Restore config and restart all services</restore_reload>
+                    <restore_configd>Restore config and run system command</restore_configd>
+                    <restore>Restore config</restore>
+                    <reboot>Reboot OPNsense</reboot>
+                    <configd>Run system command</configd>
+                    <noop>Do nothing (for testing purpose)</noop>
+                </OptionValues>
+            </action>
+            <configd_command type="ConfigdActionsField">
+                <filters>
+                    <description>/(.){1,255}/</description>
+                </filters>
+                <ValidationMessage>Select a command from the list.</ValidationMessage>
+                <Required>N</Required>
+            </configd_command>
+        </general>
+    </items>
+</model>

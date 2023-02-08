@@ -1,0 +1,9 @@
+<acl>
+    <page-user-autorecovery>
+        <name>System: Auto Recovery</name>
+        <patterns>
+            <pattern>ui/autorecovery/*</pattern>
+            <pattern>api/autorecovery/*</pattern>
+        </patterns>
+    </page-user-autorecovery>
+</acl>

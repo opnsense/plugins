@@ -1,0 +1,29 @@
+<form>
+    <field>
+        <label>Configuration</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>autorecovery.general.countdown</id>
+        <label>Countdown in minutes</label>
+        <type>text</type>
+        <help>The number of minutes to wait before starting recovery procedures.</help>
+    </field>
+    <field>
+        <id>autorecovery.general.action</id>
+        <label>Recovery action</label>
+        <type>dropdown</type>
+        <help>The recovery action that should be performed.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>table_configd</style>
+    </field>
+    <field>
+        <id>autorecovery.general.configd_command</id>
+        <label>System Command</label>
+        <type>dropdown</type>
+        <help>Select a pre-defined system command which should be run.</help>
+    </field>
+</form>

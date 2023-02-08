@@ -1,0 +1,5 @@
+<menu>
+    <System>
+        <AutoRecovery VisibleName="Auto Recovery" cssClass="fa fa-history fa-fw" url="/ui/autorecovery"/>
+    </System>
+</menu>

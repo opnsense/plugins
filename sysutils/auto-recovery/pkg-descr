@@ -1,0 +1,9 @@
+Set a timer to perform a rollback to a previous configuration state.
+It is a safety net when making critical configuration on a remote device.
+
+Plugin Changelog
+================
+
+1.0
+
+* initial release
