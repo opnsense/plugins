@@ -44,12 +44,12 @@ if ($wireguard_carp_enabled) {
     $type = !empty($argv[2]) ? $argv[2] : '';
 
     if ($type != 'MASTER' && $type != 'BACKUP') {
-        log_error("Carp '$type' event unknown from source '{$subsystem}'");
+        log_msg("Carp '$type' event unknown from source '{$subsystem}'");
         exit(1);
     }
 
     if (!strstr($subsystem, '@')) {
-        log_error("Carp '$type' event triggered from wrong source '{$subsystem}'");
+        log_msg("Carp '$type' event triggered from wrong source '{$subsystem}'");
         exit(1);
     }
 
@@ -57,13 +57,13 @@ if ($wireguard_carp_enabled) {
 
     switch ($type) {
         case 'MASTER':
-            log_error("Enabling WireGuard due to CARP event '$type'");
+            log_msg("Enabling WireGuard due to CARP event '$type'");
             touch('/var/run/wireguard.CARP_MASTER');
             $backend->configdRun('wireguard start');
             configd_run('wireguard start');
             break;
         case 'BACKUP':
-            log_error("Disabling WireGuard due to CARP event '$type'");
+            log_msg("Disabling WireGuard due to CARP event '$type'");
             @unlink('/var/run/wireguard.CARP_MASTER');
             $backend->configdRun('wireguard stop');
             break;
