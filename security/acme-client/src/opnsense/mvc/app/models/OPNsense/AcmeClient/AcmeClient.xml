@@ -450,6 +450,7 @@
                         <dns_dyn>Dyn Managed</dns_dyn>
                         <dns_dynu>Dynu</dns_dynu>
                         <dns_dynv6>dynv6</dns_dynv6>
+                        <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
@@ -1042,6 +1043,12 @@
                 <dns_schlundtech_password type="TextField">
                     <Required>N</Required>
                 </dns_schlundtech_password>
+                <dns_easydns_apikey type="TextField">
+                    <Required>N</Required>
+                </dns_easydns_apikey>
+                <dns_easydns_apitoken type="TextField">
+                    <Required>N</Required>
+                </dns_easydns_apitoken>
                 <dns_euserv_user type="TextField">
                     <Required>N</Required>
                 </dns_euserv_user>
