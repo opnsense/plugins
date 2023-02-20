@@ -153,11 +153,13 @@ include("head.inc");
                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface to monitor");?></td>
                    <td>
                      <select name="interface" class="selectpicker" id="requestif">
-                        <?php foreach (get_configured_interface_with_descr() as $if => $ifdesc):?>
+<?php
+                        foreach (get_configured_interface_with_descr() as $if => $ifdesc):?>
                         <option value="<?=$if;?>" <?=$pconfig['interface'] == $if ? "selected=\"selected\"" : "";?>>
                           <?=htmlspecialchars($ifdesc);?>
                         </option>
-                        <?php endforeach;?>
+<?php
+                        endforeach;?>
                       </select>
                     </td>
                   </tr>
@@ -200,9 +202,11 @@ include("head.inc");
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key algorithm");?></td>
                     <td>
                       <select name="keyalgo" class="selectpicker">
-                        <?php foreach ($nsukeyalgos as $nsukeyalgo): ?>
+<?php
+                        foreach ($nsukeyalgos as $nsukeyalgo): ?>
                         <option value="<?=$nsukeyalgo;?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? "selected=\"selected\"" :""; ?>><?=gettext($nsukeyalgo);?></option>
-                        <?php endforeach;?>
+<?php
+                        endforeach;?>
                       </select>
                     </td>
                   </tr>
