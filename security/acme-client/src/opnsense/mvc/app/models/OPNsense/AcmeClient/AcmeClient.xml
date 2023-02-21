@@ -1147,6 +1147,7 @@
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
+                        <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
@@ -1340,6 +1341,21 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_password>
+                <acme_panos_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_username>
+                <acme_panos_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_password>
+                <acme_panos_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_host>
                 <acme_unifi_keystore type="TextField">
                     <default>/usr/local/share/java/unifi/data/keystore</default>
                     <Required>N</Required>

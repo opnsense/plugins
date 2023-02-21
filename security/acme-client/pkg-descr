@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+3.16
+
+Added:
+* new automation: deploy certificates on Palo Alto Networks Firewall (#3289)
+
 3.15
 
 Added:
