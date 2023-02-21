@@ -201,11 +201,9 @@ include("head.inc");
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key algorithm");?></td>
                     <td>
                       <select name="keyalgo" class="selectpicker">
-<?php
-                        foreach ($nsukeyalgos as $nsukeyalgo): ?>
-                        <option value="<?=$nsukeyalgo;?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? "selected=\"selected\"" :""; ?>><?=gettext($nsukeyalgo);?></option>
-<?php
-                        endforeach;?>
+<?php foreach ($nsukeyalgos as $nsukeyalgo): ?>
+                        <option value="<?=$nsukeyalgo;?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? 'selected="selected"' : '' ?>><?= gettext($nsukeyalgo) ?></option>
+<?php endforeach ?>
                       </select>
                     </td>
                   </tr>
