@@ -1,1 +1,8 @@
 Support for RFC-2136 based dynamic DNS updates using Bind
+
+Plugin Changelog
+================
+
+1.8
+
+* Add support for choosing hash algorithm used by nsupdate command

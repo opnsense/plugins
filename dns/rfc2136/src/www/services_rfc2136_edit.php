@@ -33,6 +33,8 @@ require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
 $a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
+$nsukeyalgos = array("hmac-md5", "hmac-sha1", "hmac-sha224", "hmac-sha256", "hmac-sha384", "hmac-sha512");
+$nsukeyalgodefault = "hmac-sha512";
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_rfc2136[$_GET['id']])) {
@@ -49,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['ttl'] = isset($id) &&!empty($a_rfc2136[$id]['ttl']) ? $a_rfc2136[$id]['ttl'] : 60;
     $pconfig['keydata'] = isset($id) &&!empty($a_rfc2136[$id]['keydata']) ? $a_rfc2136[$id]['keydata'] : null;
     $pconfig['keyname'] = isset($id) &&!empty($a_rfc2136[$id]['keyname']) ? $a_rfc2136[$id]['keyname'] : null;
+    $pconfig['keyalgo'] = isset($id) &&!empty($a_rfc2136[$id]['keyalgo']) ? $a_rfc2136[$id]['keyalgo'] : $nsukeyalgodefault;
     $pconfig['server'] = isset($id) &&!empty($a_rfc2136[$id]['server']) ? $a_rfc2136[$id]['server'] : null;
     $pconfig['interface'] = isset($id) &&!empty($a_rfc2136[$id]['interface']) ? $a_rfc2136[$id]['interface'] : null;
     $pconfig['descr'] = isset($id) &&!empty($a_rfc2136[$id]['descr']) ? $a_rfc2136[$id]['descr'] : null;
@@ -88,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $rfc2136['ttl'] = $pconfig['ttl'];
         $rfc2136['keyname'] = $pconfig['keyname'];
         $rfc2136['keydata'] = $pconfig['keydata'];
+        $rfc2136['keyalgo'] = $pconfig['keyalgo'];
         $rfc2136['server'] = $pconfig['server'];
         $rfc2136['usetcp'] = !empty($pconfig['usetcp']);
         $rfc2136['usepublicip'] = !empty($pconfig['usepublicip']);
@@ -149,14 +153,12 @@ include("head.inc");
                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface to monitor");?></td>
                    <td>
                      <select name="interface" class="selectpicker" id="requestif">
- <?php
-                      foreach (get_configured_interface_with_descr() as $if => $ifdesc):?>
+<?php foreach (get_configured_interface_with_descr() as $if => $ifdesc): ?>
                         <option value="<?=$if;?>" <?=$pconfig['interface'] == $if ? "selected=\"selected\"" : "";?>>
                           <?=htmlspecialchars($ifdesc);?>
                         </option>
-
 <?php
-                      endforeach;?>
+                        endforeach;?>
                       </select>
                     </td>
                   </tr>
@@ -196,11 +198,21 @@ include("head.inc");
                     </td>
                   </tr>
                   <tr>
+                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key algorithm");?></td>
+                    <td>
+                      <select name="keyalgo" class="selectpicker">
+<?php foreach ($nsukeyalgos as $nsukeyalgo): ?>
+                        <option value="<?=$nsukeyalgo;?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? 'selected="selected"' : '' ?>><?= gettext($nsukeyalgo) ?></option>
+<?php endforeach ?>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
                     <td><a id="help_for_keydata" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Key");?></td>
                     <td>
                       <input name="keydata" type="text" id="keydata" size="70" value="<?=htmlspecialchars($pconfig['keydata']);?>" />
                       <div class="hidden" data-for="help_for_keydata">
-                        <?=gettext("Paste an HMAC-MD5 key here.");?>
+                        <?=gettext("Paste an TSIG domain key here.");?>
                       </div>
                     </td>
                   </tr>

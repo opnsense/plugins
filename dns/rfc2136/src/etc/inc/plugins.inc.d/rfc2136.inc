@@ -123,7 +123,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         $keyfile = "/var/etc/nsupdatekey{$i}";
         $keyfill = [
             "key \"{$keyname}\" {",
-            "\talgorithm hmac-md5;",
+            "\talgorithm {$dnsupdate['keyalgo']};",
             "\tsecret \"{$dnsupdate['keydata']}\";",
             "};",
             '' /* end of file */
