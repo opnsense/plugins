@@ -465,6 +465,7 @@
                         <dns_inwx>INWX XMLRPC</dns_inwx>
                         <dns_ionos>IONOS domain</dns_ionos>
                         <dns_ispconfig>ISPConfig 3.1+</dns_ispconfig>
+                        <dns_jd>JD Cloud</dns_jd>
                         <dns_joker>Joker</dns_joker>
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
@@ -708,6 +709,15 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_ispconfig_insecure>
+                <dns_jd_id type="TextField">
+                    <Required>N</Required>
+                </dns_jd_id>
+                <dns_jd_region type="TextField">
+                    <Required>N</Required>
+                </dns_jd_region>
+                <dns_jd_secret type="TextField">
+                    <Required>N</Required>
+                </dns_jd_secret>
                 <dns_joker_username type="TextField">
                     <Required>N</Required>
                 </dns_joker_username>

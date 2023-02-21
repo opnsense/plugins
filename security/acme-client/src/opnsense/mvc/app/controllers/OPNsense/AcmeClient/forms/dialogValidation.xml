@@ -645,6 +645,26 @@
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
     </field>
     <field>
+        <label>JD Cloud</label>
+        <type>header</type>
+        <style>table_dns table_dns_jd</style>
+    </field>
+    <field>
+        <id>validation.dns_jd_id</id>
+        <label>API key id</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_region</id>
+        <label>JD Cloud region</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_secret</id>
+        <label>API key secret</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Joker</label>
         <type>header</type>
         <style>table_dns table_dns_joker</style>
