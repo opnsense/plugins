@@ -33,8 +33,15 @@ require_once("interfaces.inc");
 require_once("plugins.inc.d/rfc2136.inc");
 
 $a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
-$nsukeyalgos = array("hmac-md5", "hmac-sha1", "hmac-sha224", "hmac-sha256", "hmac-sha384", "hmac-sha512");
-$nsukeyalgodefault = "hmac-sha512";
+
+$nsukeyalgos = [
+    'hmac-md5' => 'MD5',
+    'hmac-sha1' => 'SHA-1',
+    'hmac-sha224' => 'SHA-244',
+    'hmac-sha256' => 'SHA-256',
+    'hmac-sha384' => 'SHA-384',
+    'hmac-sha512' => 'SHA-512',
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_rfc2136[$_GET['id']])) {
@@ -51,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['ttl'] = isset($id) &&!empty($a_rfc2136[$id]['ttl']) ? $a_rfc2136[$id]['ttl'] : 60;
     $pconfig['keydata'] = isset($id) &&!empty($a_rfc2136[$id]['keydata']) ? $a_rfc2136[$id]['keydata'] : null;
     $pconfig['keyname'] = isset($id) &&!empty($a_rfc2136[$id]['keyname']) ? $a_rfc2136[$id]['keyname'] : null;
-    $pconfig['keyalgo'] = isset($id) &&!empty($a_rfc2136[$id]['keyalgo']) ? $a_rfc2136[$id]['keyalgo'] : $nsukeyalgodefault;
+    $pconfig['keyalgo'] = isset($id) &&!empty($a_rfc2136[$id]['keyalgo']) ? $a_rfc2136[$id]['keyalgo'] : null;
     $pconfig['server'] = isset($id) &&!empty($a_rfc2136[$id]['server']) ? $a_rfc2136[$id]['server'] : null;
     $pconfig['interface'] = isset($id) &&!empty($a_rfc2136[$id]['interface']) ? $a_rfc2136[$id]['interface'] : null;
     $pconfig['descr'] = isset($id) &&!empty($a_rfc2136[$id]['descr']) ? $a_rfc2136[$id]['descr'] : null;
@@ -82,6 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     if (!empty($pconfig['keyname']) && !is_domain($pconfig['keyname'])) {
         $input_errors[] = gettext("The DNS update key name contains invalid characters.");
+    }
+    if (!in_array($pconfig['keyalgo'] , array_keys($nsukeyalgos))) {
+        $input_errors[] = gettext('The DNS update key algorith is invalid.');
     }
 
     if (count($input_errors) == 0) {
@@ -157,8 +167,7 @@ include("head.inc");
                         <option value="<?=$if;?>" <?=$pconfig['interface'] == $if ? "selected=\"selected\"" : "";?>>
                           <?=htmlspecialchars($ifdesc);?>
                         </option>
-<?php
-                        endforeach;?>
+<?php endforeach ?>
                       </select>
                     </td>
                   </tr>
@@ -201,8 +210,8 @@ include("head.inc");
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key algorithm");?></td>
                     <td>
                       <select name="keyalgo" class="selectpicker">
-<?php foreach ($nsukeyalgos as $nsukeyalgo): ?>
-                        <option value="<?=$nsukeyalgo;?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? 'selected="selected"' : '' ?>><?= gettext($nsukeyalgo) ?></option>
+<?php foreach ($nsukeyalgos as $nsukeyalgo => $label): ?>
+                        <option value="<?= html_safe($nsukeyalgo) ?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? 'selected="selected"' : '' ?>><?= html_safe($label) ?></option>
 <?php endforeach ?>
                       </select>
                     </td>
