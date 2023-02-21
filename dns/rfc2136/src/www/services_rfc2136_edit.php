@@ -153,8 +153,7 @@ include("head.inc");
                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface to monitor");?></td>
                    <td>
                      <select name="interface" class="selectpicker" id="requestif">
-<?php
-                        foreach (get_configured_interface_with_descr() as $if => $ifdesc):?>
+<?php foreach (get_configured_interface_with_descr() as $if => $ifdesc): ?>
                         <option value="<?=$if;?>" <?=$pconfig['interface'] == $if ? "selected=\"selected\"" : "";?>>
                           <?=htmlspecialchars($ifdesc);?>
                         </option>
