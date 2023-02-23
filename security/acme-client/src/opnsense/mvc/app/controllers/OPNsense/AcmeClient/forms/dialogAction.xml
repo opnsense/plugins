@@ -237,6 +237,12 @@
         <help>If Synology DSM has OTP enabled, then the device ID has to be provided so that no OTP is required when running the automation.</help>
     </field>
     <field>
+        <id>action.acme_synology_dsm_totp</id>
+        <label>TOTP secret key</label>
+        <type>password</type>
+        <help>Instead of provide the device ID, You can provide the TOTP secret key so that the action script authenticates by itself. You can acquire the TOTP secret key only once while issuing an OTP.</help>
+    </field>
+    <field>
         <id>action.acme_synology_dsm_create</id>
         <label>Create certificates</label>
         <type>checkbox</type>
