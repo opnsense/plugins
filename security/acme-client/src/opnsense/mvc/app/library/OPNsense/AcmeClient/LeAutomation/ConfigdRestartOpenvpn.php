@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2020-2021 Frank Wall
- * Copyright (C) 2022 Han Boetes
+ * Copyright (C) 2023 Han Boetes
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ class ConfigdRestartOpenvpn extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $this->command = 'openvpn restart';
+        $this->command = 'openvpn reload';
         return true;
     }
 }
