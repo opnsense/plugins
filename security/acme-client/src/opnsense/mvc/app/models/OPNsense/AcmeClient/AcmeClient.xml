@@ -1153,6 +1153,7 @@
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
+                        <configd_restart_openvpn>Restart OpenVPN</configd_restart_openvpn>
                         <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>

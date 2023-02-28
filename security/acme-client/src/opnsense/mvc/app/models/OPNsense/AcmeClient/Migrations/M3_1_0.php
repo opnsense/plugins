@@ -59,6 +59,9 @@ class M3_1_0 extends BaseModelMigration
                 case 'restart_nginx':
                     $new_type = 'configd_restart_nginx';
                     break;
+                case 'restart_openvpn':
+                    $new_type = 'configd_restart_openvpn';
+                    break;
                 case 'upload_highwinds':
                     $new_type = 'configd_upload_highwinds';
                     break;
