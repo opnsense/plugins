@@ -1,7 +1,6 @@
 {# SPDX-License-Identifier: MIT #}
 {# SPDX-FileCopyrightText: © 2021 CrowdSec <info@crowdsec.net> #}
 
-
 <script>
     $( document ).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/crowdsec/general/get"};
@@ -22,7 +21,7 @@
             });
         });
 
-        if(window.location.hash != "") {
+        if(window.location.hash !== "") {
             $('a[href="' + window.location.hash + '"]').click()
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {

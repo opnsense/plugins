@@ -6,4 +6,4 @@
 SHELL=/bin/sh
 PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 #minute	hour	mday	month	wday	who	command
-0	1,13	*	*	*	root	/usr/local/opnsense/scripts/OPNsense/CrowdSec/hub-upgrade.sh
+0	1	*	*	*	root	(sleep $(jot -r 1 1 60); /usr/local/opnsense/scripts/OPNsense/CrowdSec/hub-upgrade.sh)

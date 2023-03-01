@@ -8,6 +8,12 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.2
+
+* updated cron job (reload only when there are updates), added small random delay
+* limit log collection to latest.log (requires 22.7+)
+* some javascript lint
+
 1.0.1
 
 * fixed live logs
