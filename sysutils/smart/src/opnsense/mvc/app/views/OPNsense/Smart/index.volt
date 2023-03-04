@@ -32,9 +32,9 @@
  // Highlights the words "PASSED", "FAILED", and "WARNING".
  function add_colors(text) {
      return text
-	 .replace(/PASSED/g, '<span class="text-success">{{ lang._('PASSED') }}</span>')
-	 .replace(/FAILED/g, '<span class="text-danger">{{ lang._('FAILED') }}</span>')
-	 .replace(/WARNING/g, '<span class="text-warning">{{ lang._('WARNING') }}</span>');
+	 .replace(/\bPASSED\b/g, '<span class="text-success">{{ lang._('PASSED') }}</span>')
+	 .replace(/\bFAILED\b/g, '<span class="text-danger">{{ lang._('FAILED') }}</span>')
+	 .replace(/\bWARNING\b/g, '<span class="text-warning">{{ lang._('WARNING') }}</span>');
  };
 
  // Appends options to select device.
