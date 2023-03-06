@@ -266,6 +266,26 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_acme_panos</style>
+    </field>
+    <field>
+        <id>action.acme_panos_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.acme_panos_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_panos_host</id>
+        <label>Host</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_acme_unifi</style>
     </field>
     <field>
