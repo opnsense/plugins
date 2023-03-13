@@ -8,7 +8,7 @@
             <Required>Y</Required>
         </enabled>
         <asnumber type="IntegerField">
-            <default></default>
+            <default>65551</default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967295</MaximumValue>
