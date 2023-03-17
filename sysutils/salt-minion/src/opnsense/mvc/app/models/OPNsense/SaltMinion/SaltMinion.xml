@@ -1,0 +1,518 @@
+<model>
+    <mount>//OPNsense/saltminion</mount>
+    <version>0.1</version>
+    <description>Manage Salt Minion service</description>
+    <items>
+        <general>
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+            <master type="TextField">
+                <default>salt</default>
+                <Required>Y</Required>
+            </master>
+            <default_include type="TextField">
+                <default>minion.d/*.conf</default>
+                <Required>Y</Required>
+            </default_include>
+            <proxy_host type="TextField">
+                <default>''</default>
+                <Required>Y</Required>
+            </proxy_host>
+            <proxy_port type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+            </proxy_port>
+            <proxy_username type="TextField">
+                <default>''</default>
+                <Required>Y</Required>
+            </proxy_username>
+            <proxy_password type="TextField">
+                <default>''</default>
+                <Required>Y</Required>
+            </proxy_password>
+            <no_proxy type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </no_proxy>
+            <random_master type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </random_master>
+            <master_type type="TextField">
+                <default>str</default>
+                <Required>Y</Required>
+            </master_type>
+            <master_alive_interval type="IntegerField">
+                <default>30</default>
+                <Required>Y</Required>
+            </master_alive_interval>
+            <master_failback type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </master_failback>
+            <master_failback_interval type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+            </master_failback_interval>
+            <ipv6 type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </ipv6>
+            <retry_dns type="IntegerField">
+                <default>30</default>
+                <Required>Y</Required>
+            </retry_dns>
+            <retry_dns_count type="IntegerField">
+                <default>3</default>
+                <Required>Y</Required>
+            </retry_dns_count>
+            <master_port type="IntegerField">
+                <default>4506</default>
+                <Required>Y</Required>
+            </master_port>
+            <user type="TextField">
+                <default>root</default>
+                <Required>Y</Required>
+            </user>
+            <sudo_user type="TextField">
+                <default>root</default>
+                <Required>Y</Required>
+            </sudo_user>
+            <pidfile type="TextField">
+                <default>/var/run/salt-minion.pid</default>
+                <Required>Y</Required>
+            </pidfile>
+            <root_dir type="TextField">
+                <default>/</default>
+                <Required>Y</Required>
+            </root_dir>
+            <minion_id_caching type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </minion_id_caching>
+            <minion_id_lowercase type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </minion_id_lowercase>
+            <cachedir type="TextField">
+                <default>/var/cache/salt/minion</default>
+                <Required>Y</Required>
+            </cachedir>
+            <verify_env type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </verify_env>
+            <cache_jobs type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </cache_jobs>
+            <sock_dir type="TextField">
+                <default>/var/run/salt/minion</default>
+                <Required>Y</Required>
+            </sock_dir>
+            <enable_fqdns_grains type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enable_fqdns_grains>
+            <enable_gpu_grains type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enable_gpu_grains>
+            <output type="TextField">
+                <default>nested</default>
+                <Required>Y</Required>
+            </output>
+            <outputter_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </outputter_dirs>
+            <color type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </color>
+            <strip_colors type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </strip_colors>
+            <backup_mode type="TextField">
+                <default>minion</default>
+                <Required>Y</Required>
+            </backup_mode>
+            <acceptance_wait_time type="IntegerField">
+                <default>10</default>
+                <Required>Y</Required>
+            </acceptance_wait_time>
+            <acceptance_wait_time_max type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+            </acceptance_wait_time_max>
+            <rejected_retry type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </rejected_retry>
+            <random_reauth_delay type="IntegerField">
+                <default>60</default>
+                <Required>Y</Required>
+            </random_reauth_delay>
+            <random_startup_delay type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+            </random_startup_delay>
+            <auth_timeout type="IntegerField">
+                <default>60</default>
+                <Required>Y</Required>
+            </auth_timeout>
+            <auth_tries type="IntegerField">
+                <default>7</default>
+                <Required>Y</Required>
+            </auth_tries>
+            <master_tries type="IntegerField">
+                <default>1</default>
+                <Required>Y</Required>
+            </master_tries>
+            <auth_safemode type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </auth_safemode>
+            <ping_interval type="IntegerField">
+                <default>0</default>
+                <Required>Y</Required>
+            </ping_interval>
+            <recon_default type="IntegerField">
+                <default>1000</default>
+                <Required>Y</Required>
+            </recon_default>
+            <recon_max type="IntegerField">
+                <default>59000</default>
+                <Required>Y</Required>
+            </recon_max>
+            <recon_randomize type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </recon_randomize>
+            <recon_default type="IntegerField">
+                <default>100</default>
+                <Required>Y</Required>
+            </recon_default>
+            <recon_max type="IntegerField">
+                <default>5000</default>
+                <Required>Y</Required>
+            </recon_max>
+            <recon_randomize type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </recon_randomize>
+            <loop_interval type="IntegerField">
+                <default>1</default>
+                <Required>Y</Required>
+            </loop_interval>
+            <pub_ret type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </pub_ret>
+            <grains_deep_merge type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </grains_deep_merge>
+            <grains_refresh_every type="IntegerField">
+                <default>1</default>
+                <Required>Y</Required>
+            </grains_refresh_every>
+            <grains_refresh_pre_exec type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </grains_refresh_pre_exec>
+            <grains_cache type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </grains_cache>
+            <minion_pillar_cache type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </minion_pillar_cache>
+            <grains_cache_expiration type="IntegerField">
+                <default>300</default>
+                <Required>Y</Required>
+            </grains_cache_expiration>
+            <mine_enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </mine_enabled>
+            <mine_return_job type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </mine_return_job>
+            <mine_interval type="IntegerField">
+                <default>60</default>
+                <Required>Y</Required>
+            </mine_interval>
+            <ipc_mode type="TextField">
+                <default>ipc</default>
+                <Required>Y</Required>
+            </ipc_mode>
+            <tcp_pub_port type="IntegerField">
+                <default>4510</default>
+                <Required>Y</Required>
+            </tcp_pub_port>
+            <tcp_pull_port type="IntegerField">
+                <default>4511</default>
+                <Required>Y</Required>
+            </tcp_pull_port>
+            <max_event_size type="IntegerField">
+                <default>1048576</default>
+                <Required>Y</Required>
+            </max_event_size>
+            <enable_legacy_startup_events type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enable_legacy_startup_events>
+            <master_alive_interval type="IntegerField">
+                <default>30</default>
+                <Required>Y</Required>
+            </master_alive_interval>
+            <syndic_finger type="TextField">
+                <default></default>
+                <Required>Y</Required>
+            </syndic_finger>
+            <disable_returners type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </disable_returners>
+            <module_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </module_dirs>
+            <returner_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </returner_dirs>
+            <states_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </states_dirs>
+            <render_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </render_dirs>
+            <utils_dirs type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </utils_dirs>
+            <cython_enable type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </cython_enable>
+            <modules_max_memory type="IntegerField">
+                <default>-1</default>
+                <Required>Y</Required>
+            </modules_max_memory>
+            <renderer type="TextField">
+                <default>jinja|yaml</default>
+                <Required>Y</Required>
+            </renderer>
+            <failhard type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </failhard>
+            <autoload_dynamic_modules type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </autoload_dynamic_modules>
+            <clean_dynamic_modules type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </clean_dynamic_modules>
+            <saltenv type="TextField">
+                <default>None</default>
+                <Required>Y</Required>
+            </saltenv>
+            <pillarenv type="TextField">
+                <default>None</default>
+                <Required>Y</Required>
+            </pillarenv>
+            <pillarenv_from_saltenv type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </pillarenv_from_saltenv>
+            <pillar_raise_on_missing type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </pillar_raise_on_missing>
+            <state_top type="TextField">
+                <default>top.sls</default>
+                <Required>Y</Required>
+            </state_top>
+            <startup_states type="TextField">
+                <default></default>
+                <Required>Y</Required>
+            </startup_states>
+            <top_file type="TextField">
+                <default></default>
+                <Required>Y</Required>
+            </top_file>
+            <state_aggregate type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </state_aggregate>
+            <file_client type="TextField">
+                <default>remote</default>
+                <Required>Y</Required>
+            </file_client>
+            <fileserver_followsymlinks type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </fileserver_followsymlinks>
+            <fileserver_ignoresymlinks type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </fileserver_ignoresymlinks>
+            <hash_type type="TextField">
+                <default>sha256</default>
+                <Required>Y</Required>
+            </hash_type>
+            <gpg_decrypt_must_succeed type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </gpg_decrypt_must_succeed>
+            <file_recv_max_size type="IntegerField">
+                <default>100</default>
+                <Required>Y</Required>
+            </file_recv_max_size>
+            <open_mode type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </open_mode>
+            <keysize type="IntegerField">
+                <default>2048</default>
+                <Required>Y</Required>
+            </keysize>
+            <permissive_pki_access type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </permissive_pki_access>
+            <state_verbose type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </state_verbose>
+            <state_output type="TextField">
+                <default>full</default>
+                <Required>Y</Required>
+            </state_output>
+            <state_output_diff type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </state_output_diff>
+            <state_output_profile type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </state_output_profile>
+            <state_output_pct type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </state_output_pct>
+            <state_compress_ids type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </state_compress_ids>
+            <master_finger type="TextField">
+                <default></default>
+                <Required>Y</Required>
+            </master_finger>
+            <reactor type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </reactor>
+            <reactor_refresh_interval type="IntegerField">
+                <default>60</default>
+                <Required>Y</Required>
+            </reactor_refresh_interval>
+            <reactor_worker_threads type="IntegerField">
+                <default>10</default>
+                <Required>Y</Required>
+            </reactor_worker_threads>
+            <reactor_worker_hwm type="IntegerField">
+                <default>10000</default>
+                <Required>Y</Required>
+            </reactor_worker_hwm>
+            <multiprocessing type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </multiprocessing>
+            <process_count_max type="IntegerField">
+                <default>-1</default>
+                <Required>Y</Required>
+            </process_count_max>
+            <log_file type="TextField">
+                <default>/var/log/salt/minion</default>
+                <Required>Y</Required>
+            </log_file>
+            <log_file_rotate type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </log_file>
+            <log_level type="TextField">
+                <default>warning</default>
+                <Required>Y</Required>
+            </log_level>
+            <log_level_logfile type="TextField">
+                <default>warning</default>
+                <Required>Y</Required>
+            </log_level_logfile>
+            <log_datefmt type="TextField">
+                <default>%H:%M:%S</default>
+                <Required>Y</Required>
+            </log_datefmt>
+            <log_datefmt_logfile type="TextField">
+                <default>%Y-%m-%d %H:%M:%S</default>
+                <Required>Y</Required>
+            </log_datefmt_logfile>
+            <log_fmt_console type="TextField">
+                <default>[%(levelname)-8s] %(message)s</default>
+                <Required>Y</Required>
+            </log_fmt_console>
+            <log_fmt_logfile type="TextField">
+                <default>%(asctime)s,%(msecs)03d [%(name)-17s][%(levelname)-8s] %(message)s</default>
+                <Required>Y</Required>
+            </log_fmt_logfile>
+            <log_granular_levels type="TextField">
+                <default>{}</default>
+                <Required>Y</Required>
+            </log_granular_levels>
+            <zmq_monitor type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </zmq_monitor>
+            <tcp_authentication_retries type="IntegerField">
+                <default>5</default>
+                <Required>Y</Required>
+            </tcp_authentication_retries>
+            <test type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </test>
+            <update_url type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </update_url>
+            <update_restart_services type="TextField">
+                <default>[]</default>
+                <Required>Y</Required>
+            </update_restart_services>
+            <tcp_keepalive type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </tcp_keepalive>
+            <tcp_keepalive_idle type="IntegerField">
+                <default>300</default>
+                <Required>Y</Required>
+            </tcp_keepalive_idle>
+            <win_repo_cachefile type="TextField">
+                <default>salt://win/repo/winrepo.p</default>
+                <Required>Y</Required>
+            </win_repo_cachefile>
+        </general>
+    </items>
+</model>
+

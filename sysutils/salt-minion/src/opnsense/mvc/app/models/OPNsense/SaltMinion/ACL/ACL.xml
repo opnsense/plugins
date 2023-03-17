@@ -1,0 +1,9 @@
+<acl>
+    <page-user-saltminion>
+        <name>Services: Salt Minion</name>
+        <patterns>
+            <pattern>ui/saltminion/*</pattern>
+            <pattern>api/saltminion/*</pattern>
+        </patterns>
+    </page-user-saltminion>
+</acl>

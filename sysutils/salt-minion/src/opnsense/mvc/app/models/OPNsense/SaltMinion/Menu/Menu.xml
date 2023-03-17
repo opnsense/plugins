@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <SaltMinion VisibleName="SaltMinion" cssClass="fa fa-certificate fa-fw">
+            <Settings order="10" url="/ui/saltminion"/>
+            <Logs order="20" url="/ui/diagnostics/log/core/salt-minion"/>
+      </SaltMinion>
+    </Services>
+</menu>

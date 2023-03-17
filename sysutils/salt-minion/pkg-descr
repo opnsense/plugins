@@ -1,0 +1,11 @@
+Salt is a powerful remote execution and state manager that can be
+used to administer servers in a fast and efficient way.
+
+WWW:  https://docs.saltproject.io/en/latest/ref/configuration/minion.html
+
+Plugin Changelog
+================
+
+0.1
+
+* Initial release

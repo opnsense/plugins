@@ -1,0 +1,3 @@
+salt_minion:/usr/local/etc/salt/minion
+newsyslog.conf:/etc/newsyslog.conf.d/salt-minion
+rc.conf.d:/etc/rc.conf.d/salt_minion
