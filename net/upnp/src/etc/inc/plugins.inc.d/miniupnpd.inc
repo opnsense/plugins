@@ -80,7 +80,8 @@ function miniupnpd_start()
 
 function miniupnpd_stop()
 {
-    killbypid('/var/run/miniupnpd.pid', 'TERM', true);
+    killbypid('/var/run/miniupnpd.pid');
+
     mwexec('/sbin/pfctl -aminiupnpd -Fr 2>&1 >/dev/null');
     mwexec('/sbin/pfctl -aminiupnpd -Fn 2>&1 >/dev/null');
 }
