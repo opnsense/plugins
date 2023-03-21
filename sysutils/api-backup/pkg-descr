@@ -1,1 +1,12 @@
 Provide the functionality to download the config.xml
+
+Plugin Changelog
+================
+
+1.1
+
+* add json download functionality
+
+1.0
+
+* initial release
