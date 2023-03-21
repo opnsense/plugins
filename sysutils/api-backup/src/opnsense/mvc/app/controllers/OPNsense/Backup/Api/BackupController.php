@@ -40,7 +40,7 @@ class BackupController extends ApiControllerBase
      * @param string $format set to 'json' to get a base64 encoded config backup
      * @return array|mixed
      */
-    public function downloadAction($format='plain')
+    public function downloadAction($format = 'plain')
     {
         $data = file_get_contents(self::CONFIG_XML);
         $status = $data === false ? 'error' : 'success';
