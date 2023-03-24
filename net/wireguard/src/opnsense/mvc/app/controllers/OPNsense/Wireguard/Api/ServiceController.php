@@ -73,4 +73,16 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("wireguard showhandshake");
         return array("response" => $response);
     }
+
+    /**
+     * reload wireguard config
+     * @return array
+     */
+    public function reloadAction()
+    {
+        $backend = new Backend();
+        $backend->configdRun("template reload OPNsense/Wireguard");
+        $response = $backend->configdRun("wireguard reload");
+        return array("response" => $response);
+    }
 }
