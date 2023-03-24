@@ -78,6 +78,10 @@ function bind_xmlrpc_sync()
 
 function bind_configure_do($verbose)
 {
+    service_log('Starting BIND...', $verbose);
+
     configd_run('template reload OPNsense/Bind');
     configd_run('bind restart');
+
+    service_log("done.\n", $verbose);
 }
