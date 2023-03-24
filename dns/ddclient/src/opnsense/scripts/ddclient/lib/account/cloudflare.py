@@ -57,7 +57,7 @@ class Cloudflare(BaseAccount):
             recordType = None
             if str(self.current_address).find(':') > 1:
                 #IPv6
-                recordType = "AAA"
+                recordType = "AAAA"
             else:
                 #IPv4
                 recordType = "A"
