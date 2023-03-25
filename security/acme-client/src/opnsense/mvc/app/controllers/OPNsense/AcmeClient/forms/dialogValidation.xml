@@ -1556,4 +1556,19 @@
         <type>text</type>
         <help>EX: https://hostname:2083</help>
     </field>
+    <field>
+        <label>regru</label>
+        <type>header</type>
+        <style>table_dns table_dns_regru</style>
+    </field>
+    <field>
+        <id>validation.dns_regru_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_regru_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
 </form>
