@@ -51,8 +51,8 @@ function dnscryptproxy_services()
     $ports = [];
 
     foreach (explode(',', (string)$model->listen_addresses) as $addrport) {
-        if (preg_match('/^(?:(\[.+\]:)|([\d\.]+:))[\d]+$/', $addrport, $matches)) {
-            $ports[$matches[1]] = 1;
+        if (preg_match('/^(\[.+\]|[\d\.]+):([\d]+)$/', $addrport, $matches)) {
+            $ports[$matches[2]] = 1;
         }
     }
 
