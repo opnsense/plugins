@@ -64,6 +64,7 @@
                     <td colspan="6"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button type="button" class="btn btn-xs reload_btn btn-primary bootgrid-tooltip" id="reloadAct_client" title="{{ lang._('Reload') }}"><span class="fa fa-refresh" id="reloadAct_client_progress"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -182,6 +183,15 @@ $( document ).ready(function() {
         $("#saveAct_client_progress").addClass("fa fa-spinner fa-pulse");
             ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
                 $("#saveAct_client_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#reloadAct_client").click(function(){
+        saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
+        $("#reloadAct_client_progress").addClass("fa-spin");
+            ajaxCall(url="/api/wireguard/service/reload", sendData={}, callback=function(data,status) {
+                $("#reloadAct_client_progress").removeClass("fa-spin");
             });
         });
     });
