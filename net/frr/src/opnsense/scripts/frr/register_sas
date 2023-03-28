@@ -60,9 +60,9 @@ if __name__ == '__main__':
     with tempfile.NamedTemporaryFile(mode='wt', delete=False) as fo:
         temp_filename = fo.name
         for policy in registered_policies:
-            fo.write("delete -4 %(src)s %(dst)s tcp 0x1000;\n" % policy)
+            fo.write("delete -n %(src)s %(dst)s tcp 0x1000;\n" % policy)
         for new_policy in frr_sad:
-            fo.write('add -4 %(src)s %(dst)s %(protocol)s %(spi)s -A %(aalgo)s "%(key)s";\n' % frr_sad[new_policy])
+            fo.write('add -n %(src)s %(dst)s %(protocol)s %(spi)s -A %(aalgo)s "%(key)s";\n' % frr_sad[new_policy])
 
     if temp_filename:
         subprocess.run(["/sbin/setkey", "-f", fo.name], capture_output=True, text=True)
