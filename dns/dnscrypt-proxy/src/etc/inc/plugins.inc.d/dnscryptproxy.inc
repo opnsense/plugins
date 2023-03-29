@@ -68,7 +68,7 @@ function dnscryptproxy_services()
 
     $services[] = [
         /* the port may still be something other than 53, but it's safe to register a conflict for it */
-        'ports' => array_keys(array_intersect_key($localhost4, $localhost6)),
+        'dns_ports' => array_keys(array_intersect_key($localhost4, $localhost6)),
         'description' => gettext('DNSCrypt-Proxy'),
         'configd' => [
             'restart' => ['dnscryptproxy restart'],

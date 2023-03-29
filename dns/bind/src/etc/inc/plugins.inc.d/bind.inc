@@ -63,7 +63,7 @@ function bind_services()
 
     $services[] = [
         /* the port may still be something other than 53, but it's safe to register a conflict for it */
-        'ports' => ($localhost4 && $localhost6 ? [(string)$model->port] : []),
+        'dns_ports' => ($localhost4 && $localhost6 ? [(string)$model->port] : []),
         'description' => gettext('BIND Daemon'),
         'configd' => [
             'restart' => ['bind restart'],
