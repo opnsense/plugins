@@ -31,6 +31,7 @@ const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
 require_once('config.inc');
 require_once('certs.inc');
+require_once('util.inc');
 use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
@@ -329,6 +330,14 @@ file_put_contents(
     empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
 );
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
+
+// test config and exit early if it not good
+$conf_test_errors = shell_safe('nginx -t -q 2>&1');
+if (!empty($conf_test_errors)) {
+    syslog(LOG_EMERG, $conf_test_errors);
+    closelog();
+    exit(1);
+}
 
 closelog();
 passthru('/usr/local/etc/rc.d/php-fpm start');
