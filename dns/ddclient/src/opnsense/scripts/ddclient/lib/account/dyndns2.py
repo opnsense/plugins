@@ -53,7 +53,7 @@ class DynDNS2(BaseAccount):
 
     @staticmethod
     def known_services():
-        return  DynDNS2._services.keys()
+        return  list(DynDNS2._services.keys()) + ['custom']
 
     def match(account):
         if account.get('service') in DynDNS2._services or (
