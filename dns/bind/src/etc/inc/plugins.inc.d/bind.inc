@@ -49,9 +49,22 @@ function bind_services()
 
     $model = new \OPNsense\Bind\General();
 
+    /* DNS service is eligable for core use when both 127.0.0.1 and ::1 are set */
+    $localhost4 = false;
+    $localhost6 = false;
+
+    foreach (explode(',', (string)$model->listenv4) as $addr) {
+        $localhost4 |= $addr === '127.0.0.1';
+    }
+
+    foreach (explode(',', (string)$model->listenv6) as $addr) {
+        $localhost6 |= $addr === '::1';
+    }
+
     $services[] = [
+        /* the port may still be something other than 53, but it's safe to register a conflict for it */
+        'ports' => ($localhost4 && $localhost6 ? [(string)$model->port] : []),
         'description' => gettext('BIND Daemon'),
-        'ports' => [(string)$model->port],
         'configd' => [
             'restart' => ['bind restart'],
             'start' => ['bind start'],
