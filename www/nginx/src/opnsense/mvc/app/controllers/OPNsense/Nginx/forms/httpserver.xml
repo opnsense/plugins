@@ -21,6 +21,13 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>httpserver.tls_reject_handshake</id>
+    <label>Reject SSL Handshake</label>
+    <type>checkbox</type>
+    <help>If enabled, TLS handshakes for this server will be rejected.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.syslog_targets</id>
     <label>SYSLOG targets</label>
     <type>select_multiple</type>
@@ -126,6 +133,14 @@
     <id>httpserver.access_log_format</id>
     <label>Access Log Format</label>
     <type>dropdown</type>
+  </field>
+  <field>
+    <id>httpserver.error_log_level</id>
+    <label>Error Log Level</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help>Select Error Log Level. Log levels are listed in the order of increasing verbosity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
+    <advanced>true</advanced>
   </field>
   <field>
     <id>httpserver.enable_acme_support</id>

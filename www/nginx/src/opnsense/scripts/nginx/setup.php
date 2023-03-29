@@ -31,6 +31,7 @@ const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
 require_once('config.inc');
 require_once('certs.inc');
+require_once('util.inc');
 use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
@@ -75,6 +76,7 @@ if (!isset($config['OPNsense']['Nginx'])) {
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
 $nginx = $config['OPNsense']['Nginx'];
+openlog("nginx", LOG_ODELAY, LOG_USER);
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
         $http_servers = $nginx['http_server'];
@@ -84,8 +86,10 @@ if (isset($nginx['http_server'])) {
     foreach ($http_servers as $http_server) {
         if (!empty($http_server['listen_https_address']) && !empty($http_server['certificate'])) {
           // try to find the reference
+            $hostname = explode(',', $http_server['servername'])[0];
             $cert = find_cert($http_server['certificate']);
             if (!isset($cert)) {
+                syslog(LOG_ERR, "NGINX setup: Certificate is set but not found in config for server {$hostname}.");
                 continue;
             }
             $chain = [];
@@ -94,8 +98,9 @@ if (isset($nginx['http_server'])) {
                 foreach ($ca_chain as $entry) {
                     $chain[] = base64_decode($entry['crt']);
                 }
+            } else {
+                syslog(LOG_WARNING, "NGINX setup: Certificate chain is empty for server {$hostname}.");
             }
-            $hostname = explode(',', $http_server['servername'])[0];
             export_pem_file(
                 KEY_DIRECTORY . $hostname . '.pem',
                 $cert['crt'],
@@ -131,6 +136,7 @@ if (isset($nginx['stream_server'])) {
           // try to find the reference
             $cert = find_cert($stream_server['certificate']);
             if (!isset($cert)) {
+                syslog(LOG_ERR, "NGINX setup: Certificate is set but not found in config for stream server {$stream_server['listen_address']}.");
                 continue;
             }
             $chain = [];
@@ -139,6 +145,8 @@ if (isset($nginx['stream_server'])) {
                 foreach ($ca_chain as $entry) {
                     $chain[] = base64_decode($entry['crt']);
                 }
+            } else {
+                syslog(LOG_WARNING, "NGINX setup: Certificate chain is empty for stream server {$stream_server['listen_address']}.");
             }
             export_pem_file(
                 KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '.pem',
@@ -194,6 +202,8 @@ if (isset($nginx['upstream'])) {
                         KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.key',
                         $cert['prv']
                     );
+                } else {
+                    syslog(LOG_ERR, "NGINX setup: Client certificate is set but not found in config for upstream {$upstream['description']}.");
                 }
             }
             if (!empty($upstream['tls_trusted_certificate'])) {
@@ -203,6 +213,8 @@ if (isset($nginx['upstream'])) {
                     $ca = find_ca($caref);
                     if (isset($ca)) {
                         $cas[] = base64_decode($ca['crt']);
+                    } else {
+                        syslog(LOG_ERR, "NGINX setup: Trusted CA certificate is set but not found in config for upstream {$upstream['description']}.");
                     }
                 }
                 export_pem_file(
@@ -319,4 +331,13 @@ file_put_contents(
 );
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
 
+// test config and exit early if it not good
+$conf_test_errors = shell_safe('nginx -t -q 2>&1');
+if (!empty($conf_test_errors)) {
+    syslog(LOG_EMERG, $conf_test_errors);
+    closelog();
+    exit(1);
+}
+
+closelog();
 passthru('/usr/local/etc/rc.d/php-fpm start');

@@ -73,6 +73,10 @@
     #frm_ipacl_dlg .col-md-5 {
         width: 25%;
     }
+    #row_snihostname\.data .row,
+    #row_ipacl\.data .row {
+        padding-top: 5px;
+    }
     #row_snihostname\.data .row div,
     #row_ipacl\.data .row div {
         padding: 0;
@@ -80,6 +84,9 @@
     #sni_hostname_mapdlg .bootstrap-select,
     #frm_ipacl_dlg .bootstrap-select {
         width: 100% !important;
+    }
+    .filter-option {
+        padding: inherit !important;
     }
 
 </style>
