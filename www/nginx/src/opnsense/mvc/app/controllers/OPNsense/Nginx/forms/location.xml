@@ -321,6 +321,13 @@
     <help>If you enable this option, nginx will not terminate the connection to the backend server if the client connection is terminated.</help>
   </field>
   <field>
+    <id>location.proxy_add_port_to_header</id>
+    <label>Add Server Port to Host Header</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>If you enable this option, nginx will add $server_port to Host and X-Forwarded-Host Header.</help>
+  </field>
+  <field>
     <id>location.errorpages</id>
     <label>Error Pages</label>
     <style>selectpicker</style>

@@ -469,6 +469,10 @@
         <Required>N</Required>
         <minValue>1</minValue>
       </proxy_send_timeout>
+      <proxy_add_port_to_header type="BooleanField">
+        <Required>y</Required>
+        <default>0</default>
+      </proxy_add_port_to_header>
       <http2_push_preload type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
