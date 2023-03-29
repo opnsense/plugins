@@ -50,13 +50,25 @@ function dnscryptproxy_services()
     $model = new \OPNsense\Dnscryptproxy\General();
     $ports = [];
 
+    /*
+     * DNS service is eligable for core use when both 127.0.0.1 and ::1 are set.
+     * In order to provide dual stack ports we need to intersect the resulting
+     * ports for each address family.
+     */
+    $localhost4 = [];
+    $localhost6 = [];
+
     foreach (explode(',', (string)$model->listen_addresses) as $addrport) {
-        if (preg_match('/^(\[.+\]|[\d\.]+):([\d]+)$/', $addrport, $matches)) {
-            $ports[$matches[2]] = 1;
+        if (preg_match('/^127\.0\.0\.1:([\d]+)$/', $addrport, $matches)) {
+            $localhost4[$matches[1]] = 1;
+        } elseif (preg_match('/^\[::1\]:([\d]+)$/', $addrport, $matches)) {
+            $localhost6[$matches[1]] = 1;
         }
     }
 
     $services[] = [
+        /* the port may still be something other than 53, but it's safe to register a conflict for it */
+        'ports' => array_keys(array_intersect_key($localhost4, $localhost6)),
         'description' => gettext('DNSCrypt-Proxy'),
         'configd' => [
             'restart' => ['dnscryptproxy restart'],
@@ -64,7 +76,6 @@ function dnscryptproxy_services()
             'stop' => ['dnscryptproxy stop'],
         ],
         'pid' => '/var/run/dnscrypt-proxy.pid',
-        'ports' => array_keys($ports),
         'name' => 'dnscrypt-proxy',
     ];
 
