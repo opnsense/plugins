@@ -69,14 +69,21 @@ function find_ca($refid)
 if (!isset($config['OPNsense']['Nginx'])) {
     die("nginx is not configured");
 }
+openlog("nginx", LOG_ODELAY, LOG_USER);
+syslog(LOG_DEBUG, "NGINX setup routine started.");
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
 @mkdir("/var/log/nginx", 0750, true);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
+// unlink VTS socket if nginx didn't
+$vts_socket = '/var/run/nginx_status.sock';
+if (!isvalidpid('/var/run/nginx.pid') && file_exists($vts_socket)) {
+    syslog(LOG_WARNING, "NGINX setup: nginx not running but VTS socket exists. Unlinking.");
+    @unlink($vts_socket);
+}
 $nginx = $config['OPNsense']['Nginx'];
-openlog("nginx", LOG_ODELAY, LOG_USER);
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
         $http_servers = $nginx['http_server'];
@@ -255,6 +262,7 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
 // create directories for cache
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
+    @chgrp((string)$cache_path->path, GROUP_OWNER);
 }
 
 // create custom error pages
@@ -339,5 +347,6 @@ if (!empty($conf_test_errors)) {
     exit(1);
 }
 
+syslog(LOG_DEBUG, "NGINX setup routine completed.");
 closelog();
 passthru('/usr/local/etc/rc.d/php-fpm start');
