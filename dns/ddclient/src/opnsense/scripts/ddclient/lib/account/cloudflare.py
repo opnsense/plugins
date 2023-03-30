@@ -1,5 +1,6 @@
 """
     Copyright (c) 2023 Thomas Cekal <thomas@cekal.org>
+    Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -23,9 +24,9 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 """
+import json
 import syslog
 import requests
-from requests.auth import HTTPBasicAuth
 from . import BaseAccount
 
 
@@ -44,15 +45,10 @@ class Cloudflare(BaseAccount):
         return  Cloudflare._services.keys()
 
     def match(account):
-        if account.get('service') in Cloudflare._services:
-            return True
-        else:
-            return False
+        return account.get('service') in Cloudflare._services
 
     def execute(self):
         if super().execute():
-            proto = 'https' if self.settings.get('force_ssl', False) else 'http'
-
             # IPv4/IPv6
             recordType = None
             if str(self.current_address).find(':') > 1:
@@ -61,14 +57,9 @@ class Cloudflare(BaseAccount):
             else:
                 #IPv4
                 recordType = "A"
-            if self.is_verbose:
-                syslog.syslog(
-                    syslog.LOG_NOTICE,
-                    "Account %s record type (IPv4/v6): %s" % (self.description, recordType)
-                )
-            
+
             # get ZoneID
-            url = "%s://%s/client/v4/zones" % (proto, self._services[self.settings.get('service')])
+            url = "https://%s/client/v4/zones" % self._services[self.settings.get('service')]
             req_opts = {
                 'url': url,
                 'params': {
@@ -88,13 +79,13 @@ class Cloudflare(BaseAccount):
             if 'success' not in payload:
                 syslog.syslog(
                         syslog.LOG_ERR,
-                        "Account %s error parsing JSON response [ZoneID] %s" % (self.description, payload)
+                        "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
                     )
                 return
-            if not bool(payload['success']):
+            if str(payload.get('success', 'false')).lower() != 'true':
                 syslog.syslog(
                     syslog.LOG_ERR,
-                    "Account %s error receiving ZoneID [%s - %s]" % (self.description, payload['errors'][0]['code'], payload['errors'][0]['message'])
+                    "Account %s error receiving ZoneID [%s]" % (self.description, json.dumps(payload.get('errors', {})))
                 )
                 return
 
@@ -122,13 +113,15 @@ class Cloudflare(BaseAccount):
             if 'success' not in payload:
                 syslog.syslog(
                         syslog.LOG_ERR,
-                        "Account %s error parsing JSON response [RecordID] %s" % (self.description, payload)
+                        "Account %s error parsing JSON response [RecordID] %s" % (self.description, response.text)
                     )
                 return
-            if not bool(payload['success']):
+            if str(payload.get('success', 'false')).lower() != 'true':
                 syslog.syslog(
                     syslog.LOG_ERR,
-                    "Account %s error receiving RecordID [%s - %s]" % (self.description, payload['errors'][0]['code'], payload['errors'][0]['message'])
+                    "Account %s error receiving RecordID [%s]" % (
+                        self.description, json.dumps(payload.get('errors', {}))
+                    )
                 )
                 return
 
@@ -157,13 +150,17 @@ class Cloudflare(BaseAccount):
             if 'success' not in payload:
                 syslog.syslog(
                         syslog.LOG_ERR,
-                        "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, payload)
+                        "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
                 return
-            if bool(payload['success']):
+            if str(payload.get('success', 'false')).lower() == 'true':
                 syslog.syslog(
                     syslog.LOG_NOTICE,
-                    "Account %s set new ip %s [%s]" % (self.description, self.current_address, payload['result']['content'])
+                    "Account %s set new ip %s [%s]" % (
+                        self.description,
+                        self.current_address,
+                        payload.get('result', {}).get('content', '')
+                    )
                 )
 
                 self.update_state(address=self.current_address)
@@ -171,10 +168,8 @@ class Cloudflare(BaseAccount):
             else:
                 syslog.syslog(
                     syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%s - %s]" % (
-                        self.description, self.current_address, payload['errors'][0]['code'], payload['errors'][0]['message']
-                    )
+                    "Account %s failed to set new ip %s [%s]" % (self.description, self.current_address, response.text)
                 )
-            
+
 
         return False
