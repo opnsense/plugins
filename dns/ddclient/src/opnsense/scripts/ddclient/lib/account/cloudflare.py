@@ -82,7 +82,7 @@ class Cloudflare(BaseAccount):
                         "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
                     )
                 return
-            if str(payload.get('success', 'false')).lower() != 'true':
+            if not payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error receiving ZoneID [%s]" % (self.description, json.dumps(payload.get('errors', {})))
@@ -116,7 +116,7 @@ class Cloudflare(BaseAccount):
                         "Account %s error parsing JSON response [RecordID] %s" % (self.description, response.text)
                     )
                 return
-            if str(payload.get('success', 'false')).lower() != 'true':
+            if not payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error receiving RecordID [%s]" % (
@@ -153,7 +153,7 @@ class Cloudflare(BaseAccount):
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
                 return
-            if str(payload.get('success', 'false')).lower() == 'true':
+            if payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
                     "Account %s set new ip %s [%s]" % (
