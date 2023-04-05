@@ -14,5 +14,7 @@ filenames:
   - /var/log/audit/latest.log
   # collection: crowdsecurity/opnsense-gui (web admin)
   - /var/log/lighttpd/latest.log
+  # collection: firewallservices/pf
+  - /var/log/filter/latest.log
 labels:
   type: syslog
