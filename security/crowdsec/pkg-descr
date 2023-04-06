@@ -8,6 +8,12 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.3
+
+* acquire filter logs for the firewallservices/pf collection (port scans).
+  If you already added it manually, you can remove it now to avoid counting
+  the events twice.
+
 1.0.2
 
 * updated cron job (reload only when there are updates), added small random delay
