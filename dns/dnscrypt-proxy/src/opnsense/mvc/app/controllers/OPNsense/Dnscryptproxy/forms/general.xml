@@ -11,7 +11,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP address and port combinations this service should listen on, e.g 127.0.0.1:5353 and/or [::1]:5353</help>
+        <help>Set the IP address/port combinations this service should listen on.</help>
     </field>
     <field>
         <id>general.allowprivileged</id>

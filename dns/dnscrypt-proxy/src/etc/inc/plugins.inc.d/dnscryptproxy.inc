@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2023 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +52,7 @@ function dnscryptproxy_services()
     $ports = [];
 
     /*
-     * DNS service is eligable for core use when both 127.0.0.1 and ::1 are set.
+     * DNS service is eligable for core use when both 0.0.0.0 and :: are set.
      * In order to provide dual stack ports we need to intersect the resulting
      * ports for each address family.
      */
@@ -59,9 +60,9 @@ function dnscryptproxy_services()
     $localhost6 = [];
 
     foreach (explode(',', (string)$model->listen_addresses) as $addrport) {
-        if (preg_match('/^127\.0\.0\.1:([\d]+)$/', $addrport, $matches)) {
+        if (preg_match('/^0\.0\.0\.0:([\d]+)$/', $addrport, $matches)) {
             $localhost4[$matches[1]] = 1;
-        } elseif (preg_match('/^\[::1\]:([\d]+)$/', $addrport, $matches)) {
+        } elseif (preg_match('/^\[::\]:([\d]+)$/', $addrport, $matches)) {
             $localhost6[$matches[1]] = 1;
         }
     }
