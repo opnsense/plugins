@@ -15,6 +15,7 @@ Plugin Changelog
 * Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)
 * Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
 * Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0/:: for new users
 
 1.25
 

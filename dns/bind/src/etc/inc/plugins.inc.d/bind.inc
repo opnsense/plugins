@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2023 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,21 +50,21 @@ function bind_services()
 
     $model = new \OPNsense\Bind\General();
 
-    /* DNS service is eligable for core use when both 127.0.0.1 and ::1 are set */
-    $localhost4 = false;
-    $localhost6 = false;
+    /* DNS service is eligable for core use when both 0.0.0.0 and :: are set */
+    $any4 = false;
+    $any6 = false;
 
     foreach (explode(',', (string)$model->listenv4) as $addr) {
-        $localhost4 |= $addr === '127.0.0.1';
+        $any4 |= $addr === '0.0.0.0';
     }
 
     foreach (explode(',', (string)$model->listenv6) as $addr) {
-        $localhost6 |= $addr === '::1';
+        $any6 |= $addr === '::';
     }
 
     $services[] = [
         /* the port may still be something other than 53, but it's safe to register a conflict for it */
-        'dns_ports' => ($localhost4 && $localhost6 ? [(string)$model->port] : []),
+        'dns_ports' => ($any4 && $any6 ? [(string)$model->port] : []),
         'description' => gettext('BIND Daemon'),
         'configd' => [
             'restart' => ['bind restart'],
