@@ -6,7 +6,7 @@
         <help>This will activate the Maltrail server. You can use this service to also collect data from remote Maltrail sensors.</help>
     </field>
     <field>
-        <id>general.adminpassword</id>
+        <id>server.adminpassword</id>
         <label>SHA256 Admin Password</label>
         <type>text</type>
         <help>Set the SHA256 password for user admin here. For ways to generate it, please consult the plugin documentation.</help>
