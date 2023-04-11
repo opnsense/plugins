@@ -6,6 +6,38 @@
         <help>This will activate the Sensor. Do not forget to enable the local server mode or send the logs to a remote server.</help>
     </field>
     <field>
+        <id>general.heuristics</id>
+        <label>Use Heuristics</label>
+        <type>checkbox</type>
+        <help>Whether to enable or disable the usage or heuristic detection.</help>
+    </field>
+    <field>
+        <id>general.checkhostheader</id>
+        <label>Check Hostheaders</label>
+        <type>checkbox</type>
+        <help>Check values in Host header (along with standard non-HTTP checks) for malicious DNS trails.</help>
+    </field>
+    <field>
+        <id>general.updateperiod</id>
+        <label>Update Period</label>
+        <type>text</type>
+        <help>Time in seconds how often to refresh trails.</help>
+    </field>
+    <field>
+        <id>general.monitorinterface</id>
+        <label>Monitor Interface</label>
+        <type>select_multiple</type>
+        <help>List of interface to listen on, none means listen on all interfaces.</help>
+    </field>
+    <field>
+        <id>general.whitelist</id>
+        <label>Whitelist</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Here you can whitelist IP addresses or domains.</help>
+    </field>
+    <field>
         <id>sensor.captureall</id>
         <label>Capture All</label>
         <type>checkbox</type>
