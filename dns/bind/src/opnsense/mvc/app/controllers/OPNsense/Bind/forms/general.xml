@@ -110,8 +110,14 @@
     <field>
         <id>general.allowtransfer</id>
         <label>Allow Transfer</label>
-        <type>dropdown</type>
-        <help>Define an ACL where you allow which server can retrieve zones.</help>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which server can retrieve zones.</help>
+    </field>
+    <field>
+        <id>general.allowquery</id>
+        <label>Allow Query</label>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which client are allowed to query this server.</help>
     </field>
     <field>
         <id>general.dnssecvalidation</id>

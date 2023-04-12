@@ -10,6 +10,13 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.26
+
+* Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)
+* Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
+* Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0/:: for new users
+
 1.25
 
 * Ensure you can only add one ACL with the same name (contributed by Robbert Rijkse)
