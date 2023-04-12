@@ -6,6 +6,11 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.12
+
+* Add cloudflare implementation for Python backend (contributed by Thomas Cekal)
+* Allow custom target hostname for dyndns2 protocol in Python backend
+
 1.11
 
 * Add Python backend support for custom ddclient-like implementation using the same input
