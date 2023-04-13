@@ -153,6 +153,11 @@
                         <web_zoneedit>zoneedit</web_zoneedit>
                         <if>Interface</if>
                     </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <reference>interface.check001</reference>
+                        </check001>
+                    </Constraints>
                 </checkip>
                 <checkip_timeout type="IntegerField">
                     <default>10</default>
@@ -167,6 +172,14 @@
                 <interface type="InterfaceField">
                     <Required>N</Required>
                     <multiple>N</multiple>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>An interface is required for the selected check method</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>checkip</field>
+                            <check>if</check>
+                        </check001>
+                    </Constraints>
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
