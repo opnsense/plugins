@@ -9,6 +9,7 @@ Plugin Changelog
 
 1.5
 
-* enable STUN and allow LAN subnet override (contributed by Tawmu)
-* add missing firewall anchors (contributed by Tawmu)
-* switch to miniupnpd 2.3.1
+* Enable STUN and allow LAN subnet override (contributed by Tawmu)
+* Add missing firewall anchors (contributed by Tawmu)
+* Allow subnet mask 0 in rules (contributed by Reiko Asakura)
+* Switch to miniupnpd 2.3.1
