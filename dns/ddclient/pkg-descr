@@ -10,6 +10,8 @@ Plugin Changelog
 
 * Add cloudflare implementation for Python backend (contributed by Thomas Cekal)
 * Allow custom target hostname for dyndns2 protocol in Python backend
+* Adjust for missing ipv6= option including upstream patches for use=/usev4=/usev6=
+* Require a selected interface through validation when interface check method is used
 
 1.11
 
