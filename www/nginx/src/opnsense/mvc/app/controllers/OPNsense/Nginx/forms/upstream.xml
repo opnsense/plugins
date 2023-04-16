@@ -31,7 +31,7 @@
     <help>Add this port value to the Host header. Not used by default.</help>
   </field>
   <field>
-    <id>upstream.x_forwarded_host_use_original_host_header</id>
+    <id>upstream.x_forwarded_host_verbatim</id>
     <label>XFH: Use original Host header</label>
     <help>Use Host header value from the client request ($http_host) for X-Forwarded-Host header. $host variable is used by default. Enabling this may cause incorrect behavior in case of malicious requests such as incorrect hostnames being logged or invalid redirects being performed.</help>
     <advanced>true</advanced>
