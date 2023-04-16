@@ -124,10 +124,10 @@
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
       </host_port>
-      <xfh_unchanged type="BooleanField">
+      <x_forwarded_host_use_original_host_header type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
-      </xfh_unchanged>
+      </x_forwarded_host_use_original_host_header>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
