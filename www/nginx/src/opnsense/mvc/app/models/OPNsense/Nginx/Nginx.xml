@@ -124,7 +124,7 @@
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
       </host_port>
-      <x_forwarded_host_use_original_host_header type="BooleanField">
+      <x_forwarded_host_verbatim type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
       </x_forwarded_host_use_original_host_header>
