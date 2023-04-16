@@ -33,7 +33,7 @@
   <field>
     <id>upstream.xfh_unchanged</id>
     <label>XFH unchanged</label>
-    <help>Use Host header value from the client request ($http_host) for X-Forwarded-Host header. $host variable is used by default.</help>
+    <help>Use Host header value from the client request ($http_host) for X-Forwarded-Host header. $host variable is used by default. Enabling this may cause incorrect behavior in case of malicious requests such as incorrect hostnames being logged or invalid redirects being performed.</help>
     <advanced>true</advanced>
     <type>checkbox</type>
   </field>
