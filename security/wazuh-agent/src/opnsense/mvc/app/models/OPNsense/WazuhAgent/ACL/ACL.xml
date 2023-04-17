@@ -1,0 +1,9 @@
+<acl>
+    <page-user-wazuhagent>
+        <name>Wazuh Agent</name>
+        <patterns>
+            <pattern>ui/wazuhagent/*</pattern>
+            <pattern>api/wazuhagent/*</pattern>
+        </patterns>
+    </page-user-wazuhagent>
+</acl>

@@ -1,0 +1,43 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable Wazuh Agent]]></help>
+    </field>
+    <field>
+        <id>general.manager</id>
+        <label>Manager Address</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>general.remoteCommands</id>
+        <label>Remote Commands</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help><![CDATA[<div class="text-info"><b>Enable remote commands from Wazuh Manager</b> - <a href="https://documentation.wazuh.com/current/user-manual/capabilities/command-monitoring/how-it-works.html" class="badge badge-light" target="_blank" >Info</a></div>]]></help>
+    </field>
+    <field>
+        <id>general.activeResponse</id>
+        <label>Active Response</label>
+        <type>checkbox</type>
+        <help><![CDATA[<div class="text-info">Enable Active Response - add offensor(s) IP address(es) to the <b class="text-primary">virusprot</b> firewall alias - <a href="https://documentation.wazuh.com/current/user-manual/capabilities/active-response/index.html" class="badge badge-primary" target="_blank" >Info</a></div>
+        <br/>
+        <div class="alert alert-info">
+            <b>Default enabled log files:</b><br/>
+            <b class="text-primary">active-responses.log:</b> Wazuh Agent active responses<br/>
+            <b class="text-primary">filter.log:</b> Firewall logs</b><br/>
+            <b class="text-primary text-wrap">lighttpd.log:</b> WebGUI logs <b> - <a href="/system_advanced_admin.php">Requires - Enable access log option</b></a><br/>
+            <b class="text-primary">sshd.log:</b> SSH logs</b><br/>
+            <br/>
+            <a class="btn btn-default btn-primary" href="https://help-cloudfence.eu.helpdocs.com/opnsense-support/opnsense-wazuh-plugin" target="_blank"> <i class="fa fa-book"></i> Documentation</a>
+        </div>
+        ]]></help>
+    </field>
+    <field>
+        <id>general.key</id>
+        <label>Agent Key/Password</label>
+        <type>text</type>
+        <help><![CDATA[Wazuh Agent key or password exported from Manager - Automatically detected.]]></help>
+    </field>
+</form>

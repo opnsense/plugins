@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.wazuhagent.general.enabled') and OPNsense.wazuhagent.general.enabled|default("0") == "1" %}
+wazuh_agent_enable="YES"
+{% else %}
+wazuh_agent_enable="NO"
+{% endif %}

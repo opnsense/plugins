@@ -1,0 +1,121 @@
+#!/bin/sh
+#     Copyright (c) 2023 Cloudfence - Julio Camargo
+#    All rights reserved.
+#
+#    Redistribution and use in source and binary forms, with or without
+#    modification, are permitted provided that the following conditions are met:
+#
+#    1. Redistributions of source code must retain the above copyright notice,
+#     this list of conditions and the following disclaimer.
+#
+#    2. Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#
+#    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+#    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+#    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+#    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+#    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+#    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+#    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+#    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+#    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+#    POSSIBILITY OF SUCH DAMAGE.
+
+log_file="/var/ossec/logs/active-responses.log"
+log_ar_fe="/var/log/wazuhagent/arfe.log"
+ar_tmp_file="/tmp/wazuh_agent_ar.cache"
+jq=$(which jq)
+jq_cmd="$jq -r"
+pf_table="virusprot"
+pfctl=$(which pfctl)
+# Receive json from stdin
+read input_msg
+
+# extract fields
+json=$(echo "$input_msg")
+action=$(echo "$input_msg" | $jq_cmd '.command')
+alert=$(echo "$json" | $jq_cmd '.parameters.alert')
+rule_id=$(echo $alert | $jq_cmd '.rule.id')
+rule_descr=$(echo $alert | $jq_cmd '.rule.description')
+srcip=$(echo $alert | $jq_cmd '.data.srcip')
+#mitre_tec=$(echo $alert| $jq_cmd '.rule.mitre.technique[]')
+
+log(){
+   local msg="$1"
+   echo "$(date '+%Y/%m/%d %H:%M:%S') $msg" >> ${log_file}
+}
+
+# build and send message with keys
+control_msg() {
+   local key_srcip=$1
+   keys_msg='{"version": 1,"origin":{"name": '"${0}"',"module":"active-response"},"command":"check_keys","parameters":{"keys":'"${key_srcip}"'}})'
+   log "$keys_msg"
+   #send to stdout
+   echo "$keys_msg"
+}
+
+register_action(){
+   # date action srcip rule_descr[rule_id]
+   echo "$(date -u +"%Y-%m-%dT%H:%M:%S%z")  $action $srcip ${rule_descr}[${rule_id}]" >> ${log_ar_fe}
+   log "$0 $action $srcip $rule_descr $rule_id"
+   log "$json"
+   # file used by widget
+   case $action in
+      add)
+      # to avoid duplicated values
+      sed -i '' "/${srcip}/d" ${ar_tmp_file}
+      echo "$srcip" >> ${ar_tmp_file}
+      ;;
+      delete)
+      sed -i '' "/${srcip}/d" ${ar_tmp_file}
+      ;;
+      abort)
+      log "$0 $action"
+      sed -i '' "/${srcip}/d" ${ar_tmp_file}
+      ;;
+      continue)
+      log "$0 $action"
+      ;;
+      *)
+      log "Action $action invalid"
+      ;;
+   esac
+}
+
+#block srcip in the defined table
+pf_add(){
+   $pfctl -t "$pf_table" -T add "$srcip"
+   $pfctl -k "$srcip"
+   # register action
+   control_msg "$srcip"
+   register_action "$action"
+}
+
+# as a stateful AR script we need to clean the block after the time-window defined in the rule 
+pf_del(){
+   $pfctl -t "$pf_table" -T del "$srcip"
+   # register action
+   control_msg "$srcip"
+   register_action "$action"
+}
+
+case $action in
+   add)
+   pf_add "$srcip"
+   ;;
+   delete)
+   pf_del "$srcip"
+   ;;
+   abort)
+   log "$0 $action"
+   pf_del "$srcip"
+   ;;
+   continue)
+   log "$0 $action"
+   ;;
+   *)
+   log "Action $action invalid"
+   ;;
+esac

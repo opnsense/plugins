@@ -1,0 +1,10 @@
+<menu>
+  <Services>
+    <WazuhAgent VisibleName="Wazuh Agent" cssClass="fa fa-shield fa-fw">
+      <General order="10" url="/ui/wazuhagent/general/index" />
+      <Agent VisibleName="Log - Agent" order="20" url="/ui/diagnostics/log/wazuhagent/ossec" />
+      <AR VisibleName="Log - Active Responses" order="20" url="/ui/diagnostics/log/wazuhagent/arfe" />
+      <Support order="50" url="https://cloudfence.eu.teamwork.com/support/#/tickets/new" IsExternal="Y" />
+    </WazuhAgent>
+  </Services>
+</menu>

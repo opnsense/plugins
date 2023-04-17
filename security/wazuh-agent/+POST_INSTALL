@@ -1,0 +1,7 @@
+chmod +x /usr/local/opnsense/scripts/OPNsense/WazuhAgent/*
+cp -f /usr/local/opnsense/scripts/OPNsense/WazuhAgent/opnsense-pf /var/ossec/active-response/bin/
+chmod 750 /var/ossec/active-response/bin/opnsense-pf
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload configd
+service configd restart

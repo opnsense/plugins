@@ -1,0 +1,5 @@
+# reload menus
+/usr/local/etc/rc.configure_plugins
+# reload template
+configctl template reload OPNsense/WazuhAgent
+
