@@ -8,6 +8,11 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.4
+
+* Add force_inotify option to aquire logs when /var/log is in RAM, otherwise
+  a restart of the service is required after a reboot.
+
 1.0.3
 
 * acquire filter logs for the firewallservices/pf collection (port scans).

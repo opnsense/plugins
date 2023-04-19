@@ -20,8 +20,6 @@ Plugin Changelog
 * migrate general error log to syslog
 * $internalModelUseSafeDelete enabled in API Settings controller to check item references before delete
 * minor style adjustments for IP ACL and SNI Based Routing forms
-* allow to set the port value for upstream Host header
-* allow to use the unchanged Host header value for XFH header
 * handle possible remaining vts socket after nginx start failure
 * add uuid columns to the grids and a button to copy its value to clipboard
 * add Cache Path columns naming
