@@ -22,6 +22,6 @@
     <label>Flag</label>
     <type>dropdown</type>
     <style>selectpicker</style>
-    <help>Stop rule processing (break) and perform (internal) redirect (last). Return a moved permanently status code (301) or a teporary redirect (302).</help>
+    <help>Stop rule processing (break) or perform (internal) redirect (last). Return a moved permanently status code (301) or a temporary redirect (302).</help>
   </field>
 </form>
