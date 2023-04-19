@@ -20,6 +20,9 @@ Plugin Changelog
 * migrate general error log to syslog
 * $internalModelUseSafeDelete enabled in API Settings controller to check item references before delete
 * minor style adjustments for IP ACL and SNI Based Routing forms
+* handle possible remaining vts socket after nginx start failure
+* add uuid columns to the grids and a button to copy its value to clipboard
+* add Cache Path columns naming
 * fix: add the PROXY protocol for the HTTPS listener too, if it is set for the server
 * fix: set Stream server outbound PROXY protocol based on Upstream settings
 * fix: set Trusted Proxies (set_real_ip_from) for Stream server only with PROXY protocol enabled
