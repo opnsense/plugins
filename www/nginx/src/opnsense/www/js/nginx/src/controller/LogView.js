@@ -1,29 +1,21 @@
-import accessLogLine from '../templates/AccessLogLine.html';
-import streamAccessLogLine from '../templates/StreamAccessLogLine.html';
-import errorLogLine from '../templates/ErrorLogLine.html';
+import LogLine from '../templates/LogLine.html';
 import logViewer from '../templates/logviewer.html';
 import LogLinesCollection from "../models/LogLinesCollection";
 import noDataAvailable from '../templates/noDataAvailable.html';
-
 
 const LogViewLine = Backbone.View.extend({
     tagName: 'tr',
     initialize: function (data) {
         this.type = data.type;
+        this.log_fields = data.log_fields; 
     },
 
     render: function () {
-        this.$el.html(this.get_template()({model: this.model}));
+        this.$el.html(this.get_template()({log_fields: this.log_fields, model: this.model}));
     },
 
     get_template: function() {
-        if (this.type === 'accesses') {
-            return accessLogLine;
-        } else if (this.type === 'stream_accesses') {
-            return streamAccessLogLine;
-        } else {
-            return errorLogLine;
-        }
+        return LogLine;
     },
 });
 
@@ -39,6 +31,7 @@ const LogView = Backbone.View.extend({
         "click #paging_forward": "page_forward",
         "click #paging_last": "page_last",
         "change #entrycount": "change_entry_count",
+        "click .ngx-dropdown-item": "toggle_column",
     },
     page_entry_count: 100,
     filter_delay: -1,
@@ -52,10 +45,47 @@ const LogView = Backbone.View.extend({
     },
 
     render: function() {
+        // set logline fields
+        // all the field are visible by default
+        // users choice is stored in browser localStorage
+        this.logFields = [];
+        let uid = this.collection.uuid;
+        let type = this.type;
+        if (type == 'accesses') {
+            this.logFields.push({id: "time", header: "Time", visible: true},
+                                {id: "remote_ip", header: "Remote IP", visible: true},
+                                {id: "username", header: "Username", visible: true},
+                                {id: "status", header: "Status", visible: true},
+                                {id: "size", header: "Size", visible: true},
+                                {id: "referer", header: "Referer", visible: true},
+                                {id: "user_agent", header: "User Agent", visible: true},
+                                {id: "forwarded_for", header: "Forwarded For", visible: true},
+                                {id: "request_line", header: "Request Line", visible: true});
+        } else if (type === 'errors' || type === 'stream_errors') {
+            this.logFields.push({id: "date", header: "Date", visible: true},
+                                {id: "time", header: "Time", visible: true},
+                                {id: "severity", header: "Severity", visible: true},
+                                {id: "number", header: "Number", visible: true},
+                                {id: "message", header: "Message", visible: true});
+        } else {
+            this.logFields.push({id: "time", header: "Time", visible: true},
+                                {id: "remote_ip", header: "Remote IP", visible: true},
+                                {id: "status", header: "Status", visible: true},
+                                {id: "bytes_sent", header: "Bytes Sent", visible: true},
+                                {id: "bytes_received", header: "Bytes Rcvd", visible: true},
+                                {id: "session_time", header: "Session Time", visible: true});
+        }
+        this.logFields.forEach(function (field) {
+            let hidden = localStorage.getItem('visibleColumns[' + type + '][' + uid + '][' + field.id + ']') === 'false';
+            if (hidden) {
+                field.visible = false;
+            }
+        });
+        // fields is ready
         let tbody = this.$('tbody');
         if (tbody.length < 1) {
             if (this.collection.length !== 0) {
-                this.$el.html(logViewer({log_type: this.type, model: this.collection.filter_model}));
+                this.$el.html(logViewer({log_type: this.type, log_fields: this.logFields, model: this.collection.filter_model}));
                 tbody = this.$('tbody');
             } else {
                 this.$el.html(noDataAvailable);
@@ -99,7 +129,7 @@ const LogView = Backbone.View.extend({
     },
 
     render_one: function(parent_element, model) {
-        const logline = new LogViewLine({type: this.type, model: model});
+        const logline = new LogViewLine({type: this.type, log_fields: this.logFields, model: model});
         logline.render();
         parent_element.append(logline.$el);
     },
@@ -160,6 +190,19 @@ const LogView = Backbone.View.extend({
     change_entry_count: function (event) {
         this.page_entry_count = event.target.value;
         this.current_page = 0;
+        this.update();
+    },
+
+    toggle_column: function (event) {
+        event.stopPropagation();
+        let uid = this.collection.uuid;
+        let type = this.type;
+        let field = $(event.currentTarget).find('input').prop('value');
+        let ishidden = localStorage.getItem('visibleColumns[' + type + '][' + uid + '][' + field + ']') === 'false';
+        // toggle visibility
+        localStorage.setItem('visibleColumns[' + type + '][' + uid + '][' + field + ']', ishidden);
+        // reset table as we need new th
+        this.$('table').html('');
         this.update();
     }
 });
