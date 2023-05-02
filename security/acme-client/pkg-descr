@@ -7,6 +7,10 @@ WWW: https://github.com/acmesh-official/acme.sh
 
 Plugin Changelog
 ================
+3.17
+
+Added:
+* add DNS.net DNS API (#3399)
 
 3.16
 
