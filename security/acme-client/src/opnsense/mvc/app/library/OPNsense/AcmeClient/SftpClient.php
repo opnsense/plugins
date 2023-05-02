@@ -199,17 +199,28 @@ class SftpClient
         $this->processAvailableInput();
         $this->process->put("ls -la");
 
-        $regex = '/^([bcdlsp\-][rwx\-]{9}[+@]?)\s+[0-9]+\s+([^\s]+)\s+([^\s]+)\s+([0-9]+)\s+(\w+\s+[0-9]+\s+[0-9:]+)\s+(.+)$/';
+        $regex = '/^'
+            . '(?P<type>[?bcCdDlMnpPs\-])'
+            . '(?P<permissions>([rw\-]{2}[sStTx\-]){3})'
+            . '(?P<acl>[^\s])?' . '\s+'
+            . '(?P<links>[^\s]+)' . '\s+'
+            . '(?P<owner>[^\s]+)' . '\s+'
+            . '(?P<group>[^\s]+)' . '\s+'
+            . '(?P<size>[^\s]+)' . '\s+'
+            . '(?P<mtime>\w+\s+[0-9]+\s+[0-9:]+)' . '\s+'
+            . '(?P<filename>.+)' . '\s*'
+            . '$/';
+
         $this->processAvailableInput(self::COMMAND_REPLY_TIMEOUT, 2, function ($line) use (&$files, $regex) {
             if (preg_match($regex, $line, $matches)) {
-                $filename = trim(stripcslashes($matches[6])); // decodes octal UTF-8 sequences
+                $filename = trim(stripcslashes($matches["filename"])); // decodes octal UTF-8 sequences
                 $files[$filename] = [
-                    "type" => $matches[1][0],
-                    "permissions" => $matches[1],
-                    "owner" => $matches[2],
-                    "group" => $matches[3],
-                    "size" => intval($matches[4]),
-                    "mtime" => strtotime($matches[5])
+                    "type" => $matches["type"],
+                    "permissions" => $matches["permissions"],
+                    "owner" => stripcslashes($matches["owner"]),
+                    "group" => stripcslashes($matches["group"]),
+                    "size" => intval($matches["size"]),
+                    "mtime" => strtotime($matches["mtime"])
                 ];
                 return true;
             }
