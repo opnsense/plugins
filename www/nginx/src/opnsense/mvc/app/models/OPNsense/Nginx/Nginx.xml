@@ -120,6 +120,14 @@
         <BlankDesc>Weighted Round Robin</BlankDesc>
         <Required>N</Required>
       </load_balancing_algorithm>
+      <host_port type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </host_port>
+      <x_forwarded_host_verbatim type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </x_forwarded_host_verbatim>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
