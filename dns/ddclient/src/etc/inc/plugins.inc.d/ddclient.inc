@@ -30,39 +30,46 @@
 function ddclient_services()
 {
     $services = [];
+
     $mdl = new \OPNsense\DynDNS\DynDNS();
     if ($mdl->general->enabled == '1') {
-        $services[] = [
+        $service = [
             'description' => gettext('ddclient'),
             'configd' => [
-                'restart' => array('ddclient restart'),
-                'start' => array('ddclient start'),
-                'stop' => array('ddclient stop'),
+                'restart' => ['ddclient restart'],
+                'start' => ['ddclient start'],
+                'stop' => ['ddclient stop'],
             ],
             'name' => 'ddclient',
-            'pidfile' => '/var/run/ddclient.pid',
         ];
+        $service['pidfile'] = (string)$mdl->general->backend != 'opnsense' ? '/var/run/ddclient.pid' : '/var/run/ddclient_opn.pid';
+        $services[] = $service;
     }
+
     return $services;
 }
 
 function ddclient_xmlrpc_sync()
 {
-    $result = array();
-    $result[] = array(
+    $result = [];
+
+    $result[] = [
         'description' => gettext('ddclient'),
         'section' => 'OPNsense.DynDNS',
-        'id' => 'ddclient',
         'services' => ['ddclient'],
-    );
+        'id' => 'ddclient',
+    ];
+
     return $result;
 }
 
 function ddclient_syslog()
 {
-    $logfacilities = array();
-    $logfacilities['ddclient'] = array(
-        'facility' => ['ddclient']
-    );
+    $logfacilities = [];
+
+    $logfacilities['ddclient'] = [
+        'facility' => ['ddclient'],
+    ];
+
     return $logfacilities;
 }

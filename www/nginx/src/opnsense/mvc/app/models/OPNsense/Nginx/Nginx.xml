@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.30</version>
+  <version>1.32</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -41,6 +41,10 @@
         <default>60</default>
         <Required>N</Required>
       </keepalive_timeout>
+      <reset_timedout type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </reset_timedout>
       <default_type type="TextField">
         <Required>N</Required>
       </default_type>
@@ -52,6 +56,15 @@
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
       </server_names_hash_max_size>
+      <ban_response type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <http_403 value="403">403 Forbidden</http_403>
+          <http_444 value="444">444 Terminate Connection</http_444>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>403</default>
+      </ban_response>
       <headers_more_enable type="BooleanField">
         <Required>N</Required>
       </headers_more_enable>
@@ -698,6 +711,10 @@
           </check001>
         </Constraints>
       </default_server>
+      <tls_reject_handshake type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </tls_reject_handshake>
       <proxy_protocol type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -786,6 +803,20 @@
         </OptionValues>
         <Required>Y</Required>
       </access_log_format>
+      <error_log_level type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <emerg value="emerg">Emergency</emerg>
+          <alert value="alert">Alert</alert>
+          <crit value="crit">Critical</crit>
+          <error value="error">Error (default)</error>
+          <warn value="warn">Warning</warn>
+          <notice value="notice">Notice</notice>
+          <info value="info">Informational</info>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>error</default>
+      </error_log_level>
       <enable_acme_support type="BooleanField">
         <Required>Y</Required>
         <default>1</default>
@@ -1004,6 +1035,20 @@
         </OptionValues>
         <Required>Y</Required>
       </access_log_format>
+      <error_log_level type="OptionField">
+        <multiple>N</multiple>
+        <OptionValues>
+          <emerg value="emerg">Emergency</emerg>
+          <alert value="alert">Alert</alert>
+          <crit value="crit">Critical</crit>
+          <error value="error">Error</error>
+          <warn value="warn">Warning</warn>
+          <notice value="notice">Notice</notice>
+          <info value="info">Informational (default)</info>
+        </OptionValues>
+        <Required>Y</Required>
+        <default>info</default>
+      </error_log_level>
       <route_field type="OptionField">
         <default>upstream</default>
         <OptionValues>
