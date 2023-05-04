@@ -124,7 +124,7 @@
 
         <p>
             Select the first three checkboxes: IDS, LAPI and IPS. Click Apply. If you need to restart, you can do so
-            from the <a href="/status_services.php">System > Diagnostics > Services</a> page.
+            from the <a href="/ui/core/service">System > Diagnostics > Services</a> page.
         </p>
 
         <h1>Test the plugin</h1>
