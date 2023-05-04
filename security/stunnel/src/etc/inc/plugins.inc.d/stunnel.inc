@@ -94,24 +94,14 @@ function stunnel_refresh_crls()
                         proc_close($process);
                     }
                     if ($ca_hash) {
-                        $crlres = openssl_crl_new($ca_crt, 0, 9999);
                         if (!empty($configObj->crl)) {
                             foreach ($configObj->crl as $crl) {
-                                if ($crl->caref == $cacert && !empty((string)$crl->cert)) {
-                                    foreach ($crl->cert as $cert) {
-                                        openssl_crl_revoke_cert(
-                                            $crlres,
-                                            base64_decode((string)$cert->crt),
-                                            (string)$cert->revoke_time,
-                                            (string)$cert->reason
-                                        );
-                                    }
+                                if ($crl->caref == $cacert && !empty((string)$crl->text)) {
+                                    file_put_contents("/var/run/stunnel/certs/{$ca_hash}.r0", (string)$crl->text);
+                                    break;
                                 }
                             }
                         }
-                        $crl_text = "";
-                        openssl_crl_export($crlres, $crl_text, $ca_key);
-                        file_put_contents("/var/run/stunnel/certs/{$ca_hash}.r0", $crl_text);
                     }
                 }
             }
