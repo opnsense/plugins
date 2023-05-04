@@ -27,7 +27,10 @@
 thead.sticky-top th {
     position: sticky;
     top: 50px;
-    background: white;
+}
+
+tr.filter > th {
+    padding: 10px 10px 10px 10px !important;
 }
 
 thead.sticky-top tr:first-child th {
@@ -39,6 +42,7 @@ tfoot.sticky-bottom th {
     bottom: 50px;
     font-weight: normal;
     font-family: inherit;
+    padding: 10px 10px 10px 10px !important;
 }
 
 td.referer, td.request_line {

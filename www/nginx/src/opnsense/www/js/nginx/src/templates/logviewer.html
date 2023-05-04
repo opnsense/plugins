@@ -1,10 +1,7 @@
-<% log_fields_vis = log_fields.filter(function (field) { %>
-<%     return field.visible === true; %>
-<% }); %>
 <table class="table table-striped">
     <thead class="sticky-top">
         <tr class="filter">
-            <% log_fields_vis.forEach(function(field) { %>
+            <% log_fields_visible.forEach( (field) => { %>
             <th class="active">
                 <div class="form-group" style="margin-bottom: unset;">
                     <label for="<%= _.escape(field.id) %>"><%= _.escape(field.header) %></label>
@@ -21,9 +18,8 @@
             <th class="text-nowrap active" colspan="100">
                 <div class="btn-group dropup"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="dropdown-text"><span class="icon glyphicon glyphicon-th-list"></span></span> <span class="caret"></span></button>
                    <ul class="dropdown-menu">
-                       <% log_fields.forEach(function(field) { %>
-                       <%     ischecked = field.visible === true ? 'checked="checked"' : ''; %>
-                       <li><label class="ngx-dropdown-item"><input type="checkbox" class="option" value="<%= _.escape(field.id) %>" <%= ischecked %>/> <%= _.escape(field.header) %></label></li>
+                       <% log_fields.forEach( (field) => { %>
+                       <li><label class="ngx-dropdown-item"><input type="checkbox" class="option" value="<%= _.escape(field.id) %>" <%= field.visible === true ? 'checked="checked"' : '' %>/> <%= _.escape(field.header) %></label></li>
                        <% }) %>
                    </ul>
                 </div>

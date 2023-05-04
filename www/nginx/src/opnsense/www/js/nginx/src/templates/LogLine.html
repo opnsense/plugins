@@ -1,6 +1,3 @@
-<% log_fields_vis = log_fields.filter(function(field) { %>
-<%     return field.visible === true; %>
-<% }); %>
-<% log_fields_vis.forEach(function(field) { %>
+<% log_fields_visible.forEach( (field) => { %>
 <td class="<%= _.escape(field.id) %>"><%= model.escape(field.id) %></td>
 <% }) %>
