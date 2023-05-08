@@ -368,6 +368,21 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
+        <label>DNS.Services</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsservices</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Domain-Offensive LetsEncrypt</label>
         <type>header</type>
         <style>table_dns table_dns_doapi</style>
