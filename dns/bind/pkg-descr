@@ -16,6 +16,7 @@ Plugin Changelog
 * Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
 * Add necessary hooks to allow the plugin to be used as a standalone core DNS server
 * Changed default listening addresses to 0.0.0.0/:: for new users and interally translate these to "any"
+* Prevent using a port being used by another DNS service
 
 1.25
 
