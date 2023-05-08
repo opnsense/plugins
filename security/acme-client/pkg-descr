@@ -11,6 +11,7 @@ Plugin Changelog
 3.16
 
 Added:
+* add RegRu DNS API
 * add JD Cloud DNS API (#3315)
 * new automation: deploy certificates on Palo Alto Networks Firewall (#3289)
 
