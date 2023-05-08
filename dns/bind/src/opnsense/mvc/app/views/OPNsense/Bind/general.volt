@@ -1,6 +1,6 @@
 {#
  #
- # Copyright (c) 2014-2029 Deciso B.V.
+ # Copyright (c) 2014-2019 Deciso B.V.
  # Copyright (c) 2018-2019 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
  #

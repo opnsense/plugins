@@ -40,23 +40,23 @@ class DomainController extends ApiMutableModelControllerBase
     /* XXX backwards-compatibility for 22.7 and below */
     public function searchMasterDomainAction()
     {
-        return seachPrimaryDomainAction();
+        return $this->searchPrimaryDomainAction();
     }
 
     /* XXX backwards-compatibility for 22.7 and below */
     public function searchSlaveDomainAction()
     {
-        return seachSecondaryDomainAction();
+        return $this->searchSecondaryDomainAction();
     }
 
     public function searchPrimaryDomainAction()
     {
         return $this->searchBase(
             'domains.domain',
-            [   "enabled", "type", "domainname", "ttl", "refresh", "retry", "expire", "negative" ],
-            "domainname",
+            [ 'enabled', 'type', 'domainname', 'ttl', 'refresh', 'retry', 'expire', 'negative' ],
+            'domainname',
             function ($record) {
-                return $record->type->getNodeData()["primary"]["selected"] === 1;
+                return $record->type->getNodeData()['primary']['selected'] === 1;
             }
         );
     }
@@ -65,10 +65,10 @@ class DomainController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'domains.domain',
-            [   "enabled", "type", "domainname", "primaryip" ],
-            "domainname",
+            [ 'enabled', 'type', 'domainname', 'primaryip' ],
+            'domainname',
             function ($record) {
-                return $record->type->getNodeData()["secondary"]["selected"] === 1;
+                return $record->type->getNodeData()['secondary']['selected'] === 1;
             }
         );
     }
