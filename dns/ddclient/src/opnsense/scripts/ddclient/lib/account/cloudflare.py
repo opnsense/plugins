@@ -81,13 +81,13 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
                     )
-                return
+                return False
             if not payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error receiving ZoneID [%s]" % (self.description, json.dumps(payload.get('errors', {})))
                 )
-                return
+                return False
 
             zone_id = payload['result'][0]['id']
             if self.is_verbose:
@@ -123,9 +123,18 @@ class Cloudflare(BaseAccount):
                         self.description, json.dumps(payload.get('errors', {}))
                     )
                 )
-                return
+                return False
+
+            if len(payload['result']) == 0:
+                syslog.syslog(
+                    syslog.LOG_ERR, "Account %s error locating hostname %s [%s]" % (
+                        self.description, self.settings.get('hostnames'), recordType
+                    )
+                )
+                return False
 
             record_id = payload['result'][0]['id']
+            proxied = payload['result'][0]['proxied']
             if self.is_verbose:
                 syslog.syslog(
                     syslog.LOG_NOTICE,
@@ -138,7 +147,8 @@ class Cloudflare(BaseAccount):
                 'json': {
                     'type': recordType,
                     'name': self.settings.get('hostnames'),
-                    'content': str(self.current_address)
+                    'content': str(self.current_address),
+                    'proxied': proxied
                 },
                 'headers': req_opts['headers']
             }
@@ -152,7 +162,7 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
-                return
+                return False
             if payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
