@@ -32,13 +32,13 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->tabs = [
             [
                 'name' => 'routing4',
-                'endpoint' => '/api/quagga/diagnostics/bgproute4',
+                'endpoint' => '/api/quagga/diagnostics/search_bgproute4',
                 'tabhead' => "IPv4 " . gettext('Routing Table'),
                 'type' => 'bgproutetable'
             ],
             [
                 'name' => 'routing6',
-                'endpoint' => '/api/quagga/diagnostics/bgproute6',
+                'endpoint' => '/api/quagga/diagnostics/search_bgproute6',
                 'tabhead' => "IPv6 " . gettext('Routing Table'),
                 'type' => 'bgproutetable'
             ],
@@ -69,7 +69,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'routing',
-                'endpoint' => '/api/quagga/diagnostics/ospfroute',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfroute',
                 'tabhead' => gettext('Routing Table'),
                 'type' => 'ospfroutetable'
             ],
@@ -81,7 +81,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'neighbors',
-                'endpoint' => '/api/quagga/diagnostics/ospfneighbor',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfneighbor',
                 'tabhead' => gettext('Neighbors'),
                 'type' => 'ospfneighbors'
             ],
@@ -104,13 +104,13 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->tabs = [
             [
                 'name' => 'routing4',
-                'endpoint' => '/api/quagga/diagnostics/generalroute4',
+                'endpoint' => '/api/quagga/diagnostics/search_generalroute4',
                 'tabhead' => gettext('IPv4 Routes'),
                 'type' => 'generalroutetable'
             ],
             [
                 'name' => 'routing6',
-                'endpoint' => '/api/quagga/diagnostics/generalroute6',
+                'endpoint' => '/api/quagga/diagnostics/search_generalroute6',
                 'tabhead' => gettext('IPv6 Routes'),
                 'type' => 'generalroutetable'
             ],

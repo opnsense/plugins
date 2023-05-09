@@ -59,11 +59,11 @@ let gridopt = {
         general_route_code: function(column, row) {
             let result = row.code;
             let protocol = translateZebraCode(row.code);
-        
+
             if(typeof(protocol) !== 'string') result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr>';
             if(row.selected) result += ' <abbr title="Selected">&gt;</abbr>';
             if(row.installed) result += ' <abbr title="FIB">&ast;</abbr>';
-        
+
             return result;
         }
     }
@@ -74,88 +74,18 @@ let gridopt = {
  */
 function translateZebraCode(data) {
     let tr = [];
-  
+
     // routing table tab
     tr['kernel'] = {short: 'K', long: 'Kernel'};
     tr['connected'] = {short: 'C', long: 'Connected'};
     tr['bgp'] = {short: 'B', long: 'BGP'};
     tr['ospf'] = {short: 'O', long: 'OSPF'};
     tr['ospf6'] = {short: 'O', long: 'OSPFv3'};
-  
+
     return ((data in tr) ? tr[data] : data);
 }
 
-/**
- * take the general routes as delivered by the diagnostics API and transform them into a bootgrid-compatible format
- */
-function transformGeneralRoutes(data) {
-    let routes = [];
 
-    for(let network in data) {
-        data[network].forEach(function (route) {
-            route.nexthops.forEach(function (nexthop) {
-                routes.push({
-                    code: route['protocol'],
-                    selected: route['selected'],
-                    installed: route['installed'],
-                    network: route['prefix'],
-                    ad: route['distance'],
-                    metric: route['metric'],
-                    interface: (typeof(nexthop['interfaceName']) !== 'undefined' ? nexthop['interfaceName'] : ''),
-                    via: (typeof(nexthop['ip']) !== 'undefined' ? nexthop['ip'] : 'Directly Attached'),
-                    time: route['uptime']
-                });
-            });
-        });
-    }
-
-    return routes;
-}
-
-/**
- * take the BGP routes as delivered by the diagnostics API and transform them into a bootgrid-compatible format
- */
- function transformBGPRoutes(data) {
-    let routes = [];
-
-    for(let network in data) {
-        data[network].forEach(function (route) {
-            route.nexthops.forEach(function (nexthop) {
-                routes.push({
-                    valid: route['valid'],
-                    best: route['bestpath'],
-                    internal: (route['pathFrom'] === 'internal'),
-                    network: network,
-                    nexthop: nexthop['ip'],
-                    metric: route['metric'],
-                    locprf: route['locPrf'],
-                    weight: route['weight'],
-                    path: (route['path'] === '' ? 'Internal' : route['path']),
-                    origin: route['origin']
-                });
-            });
-        });
-    }
-
-    return routes;
-}
-
-/**
- * take the diagnostics API's output and transform it into a printable HTML format (skip routes)
- */
-function transformBGPDetails(data) {
-    let html = '';
-
-    for(let key in data) {
-        if (key === 'routes') {
-            continue;
-        }
-
-        html += key + ": " + data[key] + "<br>";
-    }
-
-    return html;
-}
 
 /**
  * OSPF terms and abbreviations - translation table
@@ -175,44 +105,6 @@ function translateOSPFTerm(data) {
     return ((data in tr) ? tr[data] : data);
 }
 
-/**
-* take the OSPF routes as delivered by the API and transform them into a bootgrid-compatible format
-*/
-function transformOSPFRoutes(data) {
-    let routes = [];
-
-    for(let network in data) {
-        data[network].nexthops.forEach(function(nexthop) {
-            routes.push({
-                type: data[network]['routeType'],
-                network: network,
-                cost: data[network]['cost'],
-                area: (typeof data[network]['area'] !== 'undefined' ? data[network]['area'] : ''),
-                via: (typeof nexthop['via'] !== 'undefined' ? nexthop['ip'] : 'Directly Attached'),
-                viainterface: (typeof nexthop['via'] !== 'undefined' ? nexthop['via'] : nexthop['directly attached to'])
-            });
-        });
-    }
-
-    return routes;
-}
-
-/**
-* take the OSPF neighbors as delivered by the API and transform them into a bootgrid-compatible format
-*/
-function transformOSPFNeighbors(data) {
-    let neighbors = [];
-
-    for(let neighborId in data) {
-        data[neighborId].forEach(function(neighbor) {
-            let transformedNeighbor = neighbor;
-            transformedNeighbor['neighborid'] = neighborId;
-            neighbors.push(transformedNeighbor);
-        });
-    }
-
-    return neighbors;
-}
 
 /**
  * tree view: resize widget on window resize

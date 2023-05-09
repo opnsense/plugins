@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
     .searchbox {
       margin: 8px;
     }
-  
+
     .node-selected {
         font-weight: bolder;
     }
@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
           $(".tab-icon").removeClass("fa-refresh");
           $("#"+e.target.id).find(".tab-icon").addClass("fa-refresh");
         });
-    
+
         /**
          * resize tree widgets on window resize
          */
@@ -67,72 +67,27 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         $(".tree_search").keyup(treeSearchKeyUp);
 
-        {% for tab in tabs %}
-            {% if tab['type'] in ['generalroutetable', 'bgproutetable', 'ospfroutetable', 'ospfneighbors'] %}
-                /**
-                 * initialize bootgrid table for {{ tab['tabhead'] }}
-                 */
-                $("#grid-{{ tab['name'] }}").bootgrid(gridopt);
-            {% endif %}
+        let all_grids = [];
 
+        {% for tab in tabs %}
             /**
              * register refresh event handler for {{ tab['tabhead'] }}
              */
-            $("#refresh-{{ tab['name'] }}").click(function () { 
+            $("#refresh-{{ tab['name'] }}").click(function () {
             {% switch tab['type'] %}
                 {% case 'generalroutetable' %}
-                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
-                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
-                    $("#grid-{{ tab['name'] }}").bootgrid('search');
-
-                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                        if (status == "success") {
-                            let routes = transformGeneralRoutes(data['response']);
-
-                            $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
-                        }
-                    });
-                    {% break %}
                 {% case 'bgproutetable' %}
-                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
-                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
-                    $("#grid-{{ tab['name'] }}").bootgrid('search');
-
-                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                        if (status == "success") {
-                            let routes = transformBGPRoutes(data['response']['routes']);
-                            let details = transformBGPDetails(data['response']);
-
-                            $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
-                            $("#details-{{ tab['name'] }}").html(details);
-                        }
-                    });
-                    {% break %}
                 {% case 'ospfroutetable' %}
-                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
-                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
-                    $("#grid-{{ tab['name'] }}").bootgrid('search');
-
-                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                        if (status == "success") {
-                            let routes = transformOSPFRoutes(data['response']);
-
-                            $("#grid-{{ tab['name'] }}").bootgrid('append', routes);
-                        }
-                    });
-                    {% break %}
                 {% case 'ospfneighbors' %}
-                    $("#grid-{{ tab['name'] }}").bootgrid('clear');
-                    $("#grid-{{ tab['name'] }}").bootgrid('sort');
-                    $("#grid-{{ tab['name'] }}").bootgrid('search');
-
-                    ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                        if (status == "success") {
-                            let neighbors = transformOSPFNeighbors(data['response']['neighbors']);
-
-                            $("#grid-{{ tab['name'] }}").bootgrid('append', neighbors);
-                        }
-                    });
+                    if (all_grids["{{ tab['name'] }}"] === undefined) {
+                        /**
+                         * initialize bootgrid table for {{ tab['tabhead'] }}
+                         */
+                        gridopt['search'] = "{{ tab['endpoint'] }}";
+                        all_grids["{{ tab['name'] }}"] = $("#grid-{{ tab['name'] }}").UIBootgrid(gridopt);
+                    } else {
+                        all_grids["{{ tab['name'] }}"].bootgrid('reload');
+                    }
                     {% break %}
                 {% case 'tree' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
@@ -191,16 +146,10 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             /**
-             * perform initial data fetch via event handler (only once if the tab wasn't active before)
-             * rationale:
-             *     prefetching all tabs by click()-ing on all refresh buttons leads
-             *     to UI quirks that would require even more code to work around.
+             * perform data fetch via event handler
              */
             $("a[id='{{ tab['name'] }}_tab']").on("shown.bs.tab", function (event) {
-                if(!event.target.initialDataFetchComplete) {
-                    $("#refresh-{{ tab['name'] }}").click();
-                    event.target.initialDataFetchComplete = true;
-                }
+                $("#refresh-{{ tab['name'] }}").click();
             });
         {% endfor %}
 
@@ -231,15 +180,15 @@ POSSIBILITY OF SUCH DAMAGE.
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>
                             <tr>
-                                <th data-column-id="code" data-searchable="false" data-formatter="general_route_code" data-sortable="false">{{ lang._('Code') }}</th>
+                                <th data-column-id="protocol" data-searchable="false" data-formatter="general_route_code" data-sortable="false">{{ lang._('Code') }}</th>
                                 <th data-column-id="selected" data-searchable="false" data-visible="false" data-sortable="false">{{ lang._('Selected') }}</th>
                                 <th data-column-id="installed" data-searchable="false" data-visible="false" data-sortable="false">{{ lang._('Installed') }}</th>
-                                <th data-column-id="network">{{ lang._('Network') }}</th>
-                                <th data-column-id="ad" data-searchable="false">{{ lang._('Administrative Distance') }}</th>
+                                <th data-column-id="prefix">{{ lang._('Network') }}</th>
+                                <th data-column-id="distance" data-searchable="false">{{ lang._('Administrative Distance') }}</th>
                                 <th data-column-id="metric" data-searchable="false">{{ lang._('Metric') }}</th>
-                                <th data-column-id="interface">{{ lang._('Interface') }}</th>
+                                <th data-column-id="interfaceName">{{ lang._('Interface') }}</th>
                                 <th data-column-id="via">{{ lang._('Via') }}</th>
-                                <th data-column-id="time" data-searchable="false">{{ lang._('Time') }}</th>
+                                <th data-column-id="uptime" data-searchable="false">{{ lang._('Time') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -257,13 +206,21 @@ POSSIBILITY OF SUCH DAMAGE.
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>
                             <tr>
+                                <!-- generic bgp statistics-->
+                                <th data-column-id="vrfId" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('vrfId') }}</th>
+                                <th data-column-id="vrfName" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('vrfName') }}</th>
+                                <th data-column-id="tableVersion" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('tableVersion') }}</th>
+                                <th data-column-id="routerId" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('routerId') }}</th>
+                                <th data-column-id="defaultLocPrf" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('defaultLocPrf') }}</th>
+                                <th data-column-id="localAS" data-searchable="false" data-visible="false" data-width="25%">{{ lang._('localAS') }}</th>
+                                <!-- nexthop -->
                                 <th data-column-id="valid" data-searchable="false" data-formatter="boolean" data-width="4%" data-sortable="false">{{ lang._('Valid') }}</th>
-                                <th data-column-id="best" data-searchable="false" data-formatter="boolean" data-width="4%" data-sortable="false">{{ lang._('Best') }}</th>
+                                <th data-column-id="bestpath" data-searchable="false" data-formatter="boolean" data-width="4%" data-sortable="false">{{ lang._('Best') }}</th>
                                 <th data-column-id="internal" data-searchable="false" data-formatter="boolean" data-width="5%" data-sortable="false">{{ lang._('Internal') }}</th>
                                 <th data-column-id="network" data-width="15%">{{ lang._('Network') }}</th>
-                                <th data-column-id="nexthop" data-width="25%">{{ lang._('Next Hop') }}</th>
+                                <th data-column-id="ip" data-width="25%">{{ lang._('Next Hop') }}</th>
                                 <th data-column-id="metric" data-searchable="false" data-width="5%">{{ lang._('Metric') }}</th>
-                                <th data-column-id="locprf" data-searchable="false" data-width="5%">{{ lang._('LocPrf') }}</th>
+                                <th data-column-id="locPrf" data-searchable="false" data-width="5%">{{ lang._('LocPrf') }}</th>
                                 <th data-column-id="weight" data-searchable="false" data-width="6%">{{ lang._('Weight') }}</th>
                                 <th data-column-id="path" data-width="21%">{{ lang._('Path') }}</th>
                                 <th data-column-id="origin" data-width="10%">{{ lang._('Origin') }}</th>

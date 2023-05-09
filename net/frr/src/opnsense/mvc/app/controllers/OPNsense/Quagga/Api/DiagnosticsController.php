@@ -43,9 +43,10 @@ class DiagnosticsController extends ApiControllerBase
 {
     private function getInformation(string $daemon, string $name, string $format): array
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("quagga diagnostics " . $daemon . "_" . $name . ($format === "json" ? "_json" : ""));
-        return array("response" => ($format === "json" ? json_decode($response) : $response));
+        $response = (new Backend())->configdRun(
+            "quagga diagnostics " . $daemon . "_" . $name . ($format === "json" ? "_json" : "")
+        );
+        return ["response" => ($format === "json" ? json_decode($response ?? '', true) : $response)];
     }
 
     public function generalrunningconfigAction(): array
@@ -69,9 +70,33 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("general", "route4", $format);
     }
 
+    public function searchGeneralroute4Action(): array
+    {
+        $records = [];
+        foreach($this->getInformation("general", "route4", "json")['response'] as $route) {
+            foreach ($route as $nexthop) {
+                $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
+                $records[] = $nexthop;
+            }
+        }
+        return $this->searchRecordsetBase($records);
+    }
+
     public function generalroute6Action($format = "json"): array
     {
         return $this->getInformation("general", "route6", $format);
+    }
+
+    public function searchGeneralroute6Action(): array
+    {
+        $records = [];
+        foreach($this->getInformation("general", "route6", "json")['response'] as $route) {
+            foreach ($route as $nexthop) {
+                $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
+                $records[] = $nexthop;
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 
     public function bgprouteAction($format = "json"): array
@@ -84,9 +109,53 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("bgp", "route4", $format);
     }
 
+    public function searchBgproute4Action(): array
+    {
+        $records = [];
+        $payload = $this->getInformation("bgp", "route4", "json")['response'];
+        $baserecord = [];
+        foreach ($payload as $key => $value) {
+            if (!is_array($value)) {
+                $baserecord[$key] = $value;
+            }
+        }
+        if (!empty($payload['routes'])) {
+            foreach ($payload['routes'] as $route) {
+                foreach ($route as $nexthop) {
+                    $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
+                    $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
+                    $records[] = array_merge($baserecord, $nexthop);
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
+    }
+
     public function bgproute6Action($format = "json"): array
     {
         return $this->getInformation("bgp", "route6", $format);
+    }
+
+    public function searchBgproute6Action(): array
+    {
+        $records = [];
+        $payload = $this->getInformation("bgp", "route6", "json")['response'];
+        $baserecord = [];
+        foreach ($payload as $key => $value) {
+            if (!is_array($value)) {
+                $baserecord[$key] = $value;
+            }
+        }
+        if (!empty($payload['routes'])) {
+            foreach ($payload['routes'] as $route) {
+                foreach ($route as $nexthop) {
+                    $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
+                    $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
+                    $records[] = array_merge($baserecord, $nexthop);
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 
     public function bgpsummaryAction($format = "json"): array
@@ -109,9 +178,47 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("ospf", "neighbor", $format);
     }
 
+    public function searchOspfneighborAction(): array
+    {
+        $records = [];
+        $payload = $this->getInformation("ospf", "neighbor", "json")['response'];
+        if (!empty($payload['neighbors'])) {
+            foreach ($payload['neighbors'] as $neighborid => $neighbor) {
+                foreach ($neighbor as $item) {
+                    $item['neighborid'] = $neighborid;
+                    $records[] = $item;
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
+    }
+
     public function ospfrouteAction($format = "json"): array
     {
         return $this->getInformation("ospf", "route", $format);
+    }
+
+    public function searchOspfrouteAction(): array
+    {
+        $records = [];
+        $payload = $this->getInformation("ospf", "route", "json")['response'];
+        foreach($payload as $net => $network) {
+            if (empty($network['nexthops'])) {
+                continue;
+            }
+            foreach ($network['nexthops'] as $nexthop) {
+                $records[] = [
+                    'type' => $network['routeType'],
+                    'network' => $net,
+                    'cost' => $network['cost'],
+                    'area' => $network['area'] ?? '',
+                    'via' => !empty($nexthop['via']) ? $nexthop['ip'] : 'Directly Attached',
+                    'viainterface' => !empty($nexthop['via']) ? $nexthop['via'] : $nexthop['directly attached to'],
+                ];
+            }
+        }
+
+        return $this->searchRecordsetBase($records);
     }
 
     public function ospfdatabaseAction($format = "json"): array
