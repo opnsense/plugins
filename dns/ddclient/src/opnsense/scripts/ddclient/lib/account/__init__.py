@@ -128,6 +128,5 @@ class BaseAccount:
             # if current address doesn't equal the current state, propagate the fact
             return True
         else:
-            # unmodified, keep track of last access timestamp
-            self._last_accessed = time.time()
+            # unmodified, poller keeps track of last access timestamp
             return False
