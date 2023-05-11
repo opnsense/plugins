@@ -60,16 +60,24 @@ class Cloudflare(BaseAccount):
 
             # get ZoneID
             url = "https://%s/client/v4/zones" % self._services[self.settings.get('service')]
+            
+            # get appropiate headers
+            headers = {
+                'User-Agent': 'OPNsense-dyndns'
+            }
+            
+            if self.settings.get('username') == 'token':
+                headers["Authorization"] = "Bearer " + self.settings.get('password')
+            else:
+                headers["X-Auth-Email"] = self.settings.get('username')
+                headers["X-Auth-Key"] = self.settings.get('password')
+            
             req_opts = {
                 'url': url,
                 'params': {
                     'name': self.settings.get('zone')
                 },
-                'headers': {
-                    'User-Agent': 'OPNsense-dyndns',
-                    'X-Auth-Email': self.settings.get('username'),
-                    'X-Auth-Key': self.settings.get('password')
-                }
+                'headers': headers
             }
             response = requests.get(**req_opts)
             try:
