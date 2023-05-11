@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: icapeg
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=icapeg
+
+rcvar=${name}_enable
+pidfile=/var/run/${name}.pid
+command="/usr/sbin/daemon"
+command_args="-c -f -r -P ${pidfile} ${name}"
+
+load_rc_config $name
+
+: ${icapeg_enable="YES"}
+
+run_rc_command $1

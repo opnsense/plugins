@@ -1,0 +1,77 @@
+<model>
+    <mount>//OPNsense/icapeg/clamav</mount>
+    <description>ICAPeg Clamav configuration</description>
+    <version>0.1.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <req_mode type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </req_mode>
+        <resp_mode type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </resp_mode>
+        <shadow_service type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </shadow_service>
+        <preview_enabled type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </preview_enabled>
+        <preview_bytes type="IntegerField">
+            <default>1024</default>
+            <Required>Y</Required>
+        </preview_bytes>
+        <process_extensions type="CSVListField">
+            <default>txt,pdf,exe,zip,docx,doc</default>
+            <Required>Y</Required>
+        </process_extensions>
+        <timeout type="IntegerField">
+            <default>300</default>
+            <Required>Y</Required>
+        </timeout>
+        <fail_threshold type="IntegerField">
+            <default>2</default>
+            <Required>Y</Required>
+        </fail_threshold>
+        <max_filesize type="IntegerField">
+            <default>0</default>
+            <Required>Y</Required>
+        </max_filesize>
+        <return_original_if_max_file_size_exceeded type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </return_original_if_max_file_size_exceeded>
+        <return_400_if_file_ext_rejected type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </return_400_if_file_ext_rejected>
+        <verify_server_cert type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </verify_server_cert>
+        <bypass_on_api_error type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </bypass_on_api_error>
+        <http_exception_response_code type="IntegerField">
+            <default>403</default>
+            <Required>Y</Required>
+            <MinimumValue>100</MinimumValue>
+            <MaximumValue>599</MaximumValue>
+        </http_exception_response_code>
+        <http_exception_has_body type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </http_exception_has_body>
+        <exception_page type="TextField">
+            <default>/usr/local/share/icapeg/exception-page.html</default>
+            <Required>Y</Required>
+        </exception_page>
+    </items>
+</model>

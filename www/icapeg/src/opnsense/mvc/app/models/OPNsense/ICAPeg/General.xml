@@ -1,0 +1,42 @@
+<model>
+    <mount>//OPNsense/icapeg/general</mount>
+    <description>ICAPeg gerneal configuration</description>
+    <version>0.1.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </enabled>
+        <port type="PortField">
+            <default>1024</default>
+            <Required>Y</Required>
+        </port>
+        <log_level type="OptionField">
+            <default>info</default>
+            <Required>Y</Required>
+            <ValidationMessage>A log level is required.</ValidationMessage>
+            <OptionValues>
+                <debug>Debug</debug>
+                <info>Info</info>
+                <error>Error</error>
+                <fatal>Fatal</fatal>
+            </OptionValues>
+        </log_level>
+        <write_logs_to_stdout type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </write_logs_to_stdout>
+        <debugging_headers type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </debugging_headers>
+        <web_server_host type="HostnameField">
+            <default>127.0.0.1</default>
+            <Required>Y</Required>
+            <IpAllowed>Y</IpAllowed>
+            <HostWildcardAllowed>N</HostWildcardAllowed>
+            <FqdnWildcardAllowed>N</FqdnWildcardAllowed>
+            <ZoneRootAllowed>N</ZoneRootAllowed>
+        </web_server_host>
+    </items>
+</model>

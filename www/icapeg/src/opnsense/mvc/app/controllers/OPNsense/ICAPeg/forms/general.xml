@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this ICAP server</help>
+    </field>
+    <field>
+        <id>general.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Select the service to use.</help>
+    </field>
+    <field>
+        <id>general.log_level</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help>Select the debug level to use.</help>
+    </field>
+    <field>
+        <id>general.write_logs_to_stdout</id>
+        <label>Print Logs</label>
+        <type>checkbox</type>
+        <help>Write Logs to stdout</help>
+    </field>
+    <field>
+        <id>general.debugging_headers</id>
+        <label>Debugging Headers</label>
+        <type>checkbox</type>
+        <help>Enable Debugging Headers</help>
+    </field>
+    <field>
+        <id>general.web_server_host</id>
+        <label>Web Serer Host</label>
+        <type>text</type>
+        <help>Web Serer Host</help>
+    </field>
+</form>

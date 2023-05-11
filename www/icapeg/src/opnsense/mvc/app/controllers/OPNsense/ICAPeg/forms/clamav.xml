@@ -1,0 +1,110 @@
+<form>
+    <field>
+        <id>clamav.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this ICAP server</help>
+    </field>
+    <field>
+        <id>clamav.req_mode</id>
+        <label>Enable request mode</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to apply ICAPeg in Request mode</help>
+    </field>
+    <field>
+        <id>clamav.resp_mode</id>
+        <label>Enable response mode</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to apply ICAPeg in Request mode</help>
+    </field>
+    <field>
+        <id>clamav.shadow_service</id>
+        <label>Enable shadow service</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to add debugging headers to ICAPeg-Shadow-Service</help>
+    </field>
+    <field>
+        <id>clamav.preview_enabled</id>
+        <label>Preview Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to enable Preview bytes on files</help>
+    </field>
+    <field>
+        <id>clamav.preview_bytes</id>
+        <label>Preview Bytes</label>
+        <type>text</type>
+        <help>preview bytes</help>
+    </field>
+    <field>
+        <id>clamav.process_extensions</id>
+        <label>process_extensions</label>
+        <type>select_multiple</type>
+        <help>Choose for which Options. Everything except the ones in bypass, 
+                unknown = system couldn't find out the type of the file
+        </help>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>clamav.timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Time in seconds,the time upto which the server will wait for clamav to scan the results.
+                ICAP will return 408 - Request timeout
+        </help>
+    </field>
+    <field>
+        <id>clamav.fail_threshold</id>
+        <label>Fail_threshold</label>
+        <type>text</type>
+        <help></help>
+    </field>
+    <field>
+        <id>clamav.max_filesize</id>
+        <label>Maximum file size</label>
+        <type>text</type>
+        <help>write 0 for unlimited file size</help>
+    </field>
+    <field>
+        <id>clamav.return_original_if_max_file_size_exceeded</id>
+        <label>Return original</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to return original if max file size exceeded</help>
+    </field>
+    <field>
+        <id>clamav.return_400_if_file_ext_rejected</id>
+        <label>Return 400</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to return 400 if max file size exceeded</help>
+    </field>
+    <field>
+        <id>clamav.verify_server_cert</id>
+        <label>Verify Server Cert</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to enable Server Cert</help>
+    </field>
+    <field>
+        <id>clamav.bypass_on_api_error</id>
+        <label>Bypass On Api Error</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to Bypass On Api Error</help>
+    </field>
+    <field>
+        <id>clamav.http_exception_response_code</id>
+        <label>Http Exception Response Code</label>
+        <type>text</type>
+        <help>http_exception_response_code</help>
+    </field>
+    <field>
+        <id>clamav.http_exception_has_body</id>
+        <label>Http Exception has Body</label>
+        <type>checkbox</type>
+        <help>Enable this feature if you want to enable Http Exception has Body</help>
+    </field>
+    <field>
+        <id>clamav.exception_page</id>
+        <label>Exception Page</label>
+        <type>text</type>
+        <help>exception_page</help>
+    </field>
+</form>

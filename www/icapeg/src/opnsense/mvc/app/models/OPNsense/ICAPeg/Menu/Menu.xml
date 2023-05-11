@@ -1,0 +1,9 @@
+<menu>
+  <Services>
+    <ICAPeg VisibleName="ICAP EG" cssClass="fa fa-ambulance">
+      <General url="/ui/icapeg/general/index" order="10"/>
+      <Clhashlookup url="/ui/icapeg/clhashlookup/index" order="20"/>
+      <Clamav url="/ui/icapeg/clamav/index" order="30"/>
+    </ICAPeg>
+  </Services>
+</menu>

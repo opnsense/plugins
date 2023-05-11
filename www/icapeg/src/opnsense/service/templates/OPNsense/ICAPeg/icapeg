@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.icapeg.general.enabled') and OPNsense.icapeg.general.enabled == '1' %}
+icapeg_enable="YES"
+{% else %}
+icapeg_enable="NO"
+{% endif %}

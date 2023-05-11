@@ -112,6 +112,7 @@ sysutils/xen -- Xen guest utilities
 vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
+www/icapeg -- ICAP server implementation with Multi vendor support
 www/nginx -- Nginx HTTP server and reverse proxy
 www/web-proxy-sso -- Kerberos authentication module
 ```

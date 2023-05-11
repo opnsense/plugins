@@ -1,0 +1,9 @@
+<acl>
+   <page-services-icapeg>
+      <name>Services: ICAPeg</name>
+      <patterns>
+         <pattern>ui/icapeg/*</pattern>
+         <pattern>api/icapeg/*</pattern>
+      </patterns>
+   </page-services-icapeg>
+</acl>

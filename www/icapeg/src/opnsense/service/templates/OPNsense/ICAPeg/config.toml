@@ -1,0 +1,142 @@
+title = "ICAP Configuration File"
+
+[app]
+port = {{ OPNsense.icapeg.general.port }}
+log_level = {{ OPNsense.icapeg.general.log_level }}
+{% if helpers.exists('OPNsense.icapeg.general.write_logs_to_stdout') and OPNsense.icapeg.general.write_logs_to_stdout == '1' %}
+write_logs_to_console = true
+{% else %}
+write_logs_to_console = false
+{% endif %}
+services = ["clhashlookup"{% if helpers.exists('OPNsense.icapeg.clamav.enabled') and OPNsense.icapeg.clamav.enabled == '1' %}, "clamav"{% endif %}]
+{% if helpers.exists('OPNsense.icapeg.general.debugging_headers') and OPNsense.icapeg.general.debugging_headers == '1' %}
+debugging_headers = true
+{% else %}
+debugging_headers = false
+{% endif %}
+web_server_host = "{{ OPNsense.icapeg.general.web_server_host }}:8081"
+web_server_endpoint = "/service/message"
+
+[clhashlookup]
+vendor = "clhashlookup"
+service_caption = "cl-hashlookup"
+service_tag = "cl-hashlookup ICAP"
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.req_mode') and OPNsense.icapeg.clhashlookup.req_mode == '1' %}
+req_mode = true
+{% else %}
+req_mode = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.resp_mode') and OPNsense.icapeg.clhashlookup.resp_mode == '1' %}
+resp_mode = true
+{% else %}
+resp_mode = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.shadow_service') and OPNsense.icapeg.clhashlookup.shadow_service == '1' %}
+shadow_service = true
+{% else %}
+shadow_service = false
+{% endif %}
+preview_bytes = "{{ OPNsense.icapeg.clhashlookup.preview_bytes }}"
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.preview_enabled') and OPNsense.icapeg.clhashlookup.preview_enabled == '1' %}
+preview_enabled = true
+{% else %}
+preview_enabled = false
+{% endif %}
+bypass_extensions = ["*"]
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.process_extensions') and OPNsense.icapeg.clhashlookup.process_extensions != '' %}
+process_extensions = [{% for item in OPNsense.icapeg.clhashlookup.process_extensions.split(',') %}"{{ item|trim }}"{{ ", " if not loop.last else "" }}{% endfor %}]
+{% endif %}
+reject_extensions = []
+scan_url = "{{ OPNsense.icapeg.clhashlookup.scan_url }}"
+timeout = {{ OPNsense.icapeg.clhashlookup.timeout }}
+fail_threshold = {{ OPNsense.icapeg.clhashlookup.fail_threshold }}
+max_filesize = {{ OPNsense.icapeg.clhashlookup.max_filesize }}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.return_original_if_max_file_size_exceeded') and OPNsense.icapeg.clhashlookup.return_original_if_max_file_size_exceeded == '1' %}
+return_original_if_max_file_size_exceeded = true
+{% else %}
+return_original_if_max_file_size_exceeded = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.return_400_if_file_ext_rejected') and OPNsense.icapeg.clhashlookup.return_400_if_file_ext_rejected == '1' %}
+return_400_if_file_ext_rejected = true
+{% else %}
+return_400_if_file_ext_rejected = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.verify_server_cert') and OPNsense.icapeg.clhashlookup.verify_server_cert == '1' %}
+verify_server_cert = true
+{% else %}
+verify_server_cert = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.bypass_on_api_error') and OPNsense.icapeg.clhashlookup.bypass_on_api_error == '1' %}
+bypass_on_api_error = true
+{% else %}
+bypass_on_api_error = false
+{% endif %}
+http_exception_response_code = {{ OPNsense.icapeg.clhashlookup.http_exception_response_code }}
+{% if helpers.exists('OPNsense.icapeg.clhashlookup.http_exception_has_body') and OPNsense.icapeg.clhashlookup.http_exception_has_body == '1' %}
+http_exception_has_body = true
+{% else %}
+http_exception_has_body = false
+{% endif %}
+exception_page = {{ OPNsense.icapeg.clhashlookup.exception_page }}
+
+[clamav]
+vendor = "clamav"
+service_caption = "clamav service"
+service_tag = "CLAMAV ICAP"
+{% if helpers.exists('OPNsense.icapeg.clamav.req_mode') and OPNsense.icapeg.clamav.req_mode == '1' %}
+req_mode = true
+{% else %}
+req_mode = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clamav.resp_mode') and OPNsense.icapeg.clamav.resp_mode == '1' %}
+resp_mode = true
+{% else %}
+resp_mode = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clamav.shadow_service') and OPNsense.icapeg.clamav.shadow_service == '1' %}
+shadow_service = true
+{% else %}
+shadow_service = false
+{% endif %}
+preview_bytes = "{{ OPNsense.icapeg.clamav.preview_bytes }}"
+{% if helpers.exists('OPNsense.icapeg.clamav.preview_enabled') and OPNsense.icapeg.clamav.preview_enabled == '1' %}
+preview_enabled = true
+{% else %}
+preview_enabled = false
+{% endif %}
+bypass_extensions = ["*"]
+{% if helpers.exists('OPNsense.icapeg.clamav.process_extensions') and OPNsense.icapeg.clamav.process_extensions != '' %}
+process_extensions = [{% for item in OPNsense.icapeg.clamav.process_extensions.split(',') %}"{{ item|trim }}"{{ ", " if not loop.last else "" }}{% endfor %}]
+{% endif %}
+reject_extensions = []
+socket_path = "/var/run/clamav/clamd.sock"
+timeout = {{ OPNsense.icapeg.clamav.timeout }}
+fail_threshold = {{ OPNsense.icapeg.clamav.fail_threshold }}
+max_filesize = {{ OPNsense.icapeg.clamav.max_filesize }}
+{% if helpers.exists('OPNsense.icapeg.clamav.return_original_if_max_file_size_exceeded') and OPNsense.icapeg.clamav.return_original_if_max_file_size_exceeded == '1' %}
+return_original_if_max_file_size_exceeded = true
+{% else %}
+return_original_if_max_file_size_exceeded = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clamav.return_400_if_file_ext_rejected') and OPNsense.icapeg.clamav.return_400_if_file_ext_rejected == '1' %}
+return_400_if_file_ext_rejected = true
+{% else %}
+return_400_if_file_ext_rejected = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clamav.verify_server_cert') and OPNsense.icapeg.clamav.verify_server_cert == '1' %}
+verify_server_cert = true
+{% else %}
+verify_server_cert = false
+{% endif %}
+{% if helpers.exists('OPNsense.icapeg.clamav.bypass_on_api_error') and OPNsense.icapeg.clamav.bypass_on_api_error == '1' %}
+bypass_on_api_error = true
+{% else %}
+bypass_on_api_error = false
+{% endif %}
+http_exception_response_code = {{ OPNsense.icapeg.clamav.http_exception_response_code }}
+{% if helpers.exists('OPNsense.icapeg.clamav.http_exception_has_body') and OPNsense.icapeg.clamav.http_exception_has_body == '1' %}
+http_exception_has_body = true
+{% else %}
+http_exception_has_body = false
+{% endif %}
+exception_page = {{ OPNsense.icapeg.clamav.exception_page }}
