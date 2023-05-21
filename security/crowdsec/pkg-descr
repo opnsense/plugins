@@ -8,6 +8,10 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.5
+
+* fix ban example
+
 1.0.4
 
 * Add force_inotify option to aquire logs when /var/log is in RAM, otherwise

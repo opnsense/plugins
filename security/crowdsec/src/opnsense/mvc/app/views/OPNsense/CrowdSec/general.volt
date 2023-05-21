@@ -145,7 +145,7 @@
             connect, should anything go wrong.
 	</p>
 
-	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i </code></pre>
+	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i &lt;your_ip_address&gt;</code></pre>
 
 	<p>
 	    This is a more secure way to test than attempting to brute-force
