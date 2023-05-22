@@ -1,44 +1,44 @@
 <form>
-  <field>
-    <id>prefixlist.enabled</id>
-    <label>Enabled</label>
-    <type>checkbox</type>
-    <help>If this Prefix-List should be enabled.</help>
-  </field>
     <field>
-    <id>prefixlist.description</id>
-    <label>Description</label>
-    <type>text</type>
-    <help>Add an optional description for this Prefix-List.</help>
-  </field>
-  <field>
-    <id>prefixlist.name</id>
-    <label>Name</label>
-    <type>text</type>
-    <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
-  </field>
-  <field>
-    <id>prefixlist.version</id>
-    <label>IP Version</label>
-    <type>dropdown</type>
-    <help>Set the IP version to use.</help>
-  </field>
-  <field>
-    <id>prefixlist.seqnumber</id>
-    <label>Number</label>
-    <type>text</type>
-    <help>The ACL sequence number (1-4294967294)</help>
-  </field>
-  <field>
-    <id>prefixlist.action</id>
-    <label>Action</label>
-    <type>dropdown</type>
-    <help>Set permit for match or deny to negate the rule.</help>
-  </field>
-  <field>
-    <id>prefixlist.network</id>
-    <label>Network</label>
-    <type>text</type>
-    <help>The network pattern you want to match. You can also add "ge" or "le" additions after the network statement. It's not validated so please be careful!</help>
-  </field>
+        <id>prefixlist.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>If this Prefix-List should be enabled.</help>
+    </field>
+        <field>
+        <id>prefixlist.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Add an optional description for this Prefix-List.</help>
+    </field>
+    <field>
+        <id>prefixlist.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
+    </field>
+    <field>
+        <id>prefixlist.version</id>
+        <label>IP Version</label>
+        <type>dropdown</type>
+        <help>Set the IP version to use.</help>
+    </field>
+    <field>
+        <id>prefixlist.seqnumber</id>
+        <label>Number</label>
+        <type>text</type>
+        <help>The ACL sequence number (1-4294967294)</help>
+    </field>
+    <field>
+        <id>prefixlist.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>Set permit for match or deny to negate the rule.</help>
+    </field>
+    <field>
+        <id>prefixlist.network</id>
+        <label>Network</label>
+        <type>text</type>
+        <help>The network pattern you want to match. You can also add "ge" or "le" additions after the network statement. It's not validated so please be careful!</help>
+    </field>
 </form>
