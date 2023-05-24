@@ -37,14 +37,6 @@ function radsecproxy_enabled()
 
 function radsecproxy_syslog()
 {
-    // $syslogconf = array();
-
-    // $syslogconf['radsecproxy'] = array(
-    //     'facility' => array('radsecproxy'),
-    // );
-
-    // return $syslogconf;
-
     $logfacilities = array();
     $logfacilities['radsecproxy'] = array(
         'facility' => array('LOG_DAEMON'),
@@ -66,7 +58,7 @@ function radsecproxy_services()
                 'stop' => array('radsecproxy stop'),
             ),
             'name' => 'radsecproxy',
-            'pidfile' => '/var/run/radsecproxy/radsecproxy.pid'
+            'pidfile' => '/var/run/radsecproxy.pid'
         );
     }
     return $services;
