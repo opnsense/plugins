@@ -440,6 +440,7 @@
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
+                        <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com</dns_me>
                         <dns_dp>DNSPod.cn</dns_dp>
@@ -491,6 +492,7 @@
                         <dns_pdns>PowerDNS.com</dns_pdns>
                         <dns_pleskxml>Plesk</dns_pleskxml>
                         <dns_porkbun>Porkbun</dns_porkbun>
+                        <dns_regru>RegRu</dns_regru>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
                         <dns_selfhost>Selfhost</dns_selfhost>
@@ -606,6 +608,12 @@
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
+                <dns_dnsservices_user type="TextField">
+                    <Required>N</Required>
+                </dns_dnsservices_user>
+                <dns_dnsservices_password type="TextField">
+                    <Required>N</Required>
+                </dns_dnsservices_password>
                 <dns_doapi_token type="TextField">
                     <Required>N</Required>
                 </dns_doapi_token>
@@ -1126,6 +1134,12 @@
                 <dns_cpanel_hostname type="TextField">
                     <Required>N</Required>
                 </dns_cpanel_hostname>
+                <dns_regru_username type="TextField">
+                    <Required>N</Required>
+                </dns_regru_username>
+                <dns_regru_password type="TextField">
+                    <Required>N</Required>
+                </dns_regru_password>
             </validation>
         </validations>
         <actions>
