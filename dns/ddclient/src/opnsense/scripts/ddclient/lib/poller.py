@@ -151,6 +151,9 @@ class Poller:
                             if self.is_verbose:
                                 syslog.syslog(syslog.LOG_NOTICE, "Account %s changed" % acc.description)
                             needs_flush = True
+                        else:
+                            # update last accessed timestamp
+                            acc.update_state(None)
                     except Exception as e:
                         # fatal exception, update atime so we're not going to retry too soon
                         acc.update_state(None)

@@ -60,16 +60,23 @@ class Cloudflare(BaseAccount):
 
             # get ZoneID
             url = "https://%s/client/v4/zones" % self._services[self.settings.get('service')]
+
+            headers = {
+                'User-Agent': 'OPNsense-dyndns'
+            }
+            # switch between bearer and email/key authentication
+            if self.settings.get('username', '').find('@') == -1:
+                headers["Authorization"] = "Bearer " + self.settings.get('password')
+            else:
+                headers["X-Auth-Email"] = self.settings.get('username')
+                headers["X-Auth-Key"] = self.settings.get('password')
+
             req_opts = {
                 'url': url,
                 'params': {
                     'name': self.settings.get('zone')
                 },
-                'headers': {
-                    'User-Agent': 'OPNsense-dyndns',
-                    'X-Auth-Email': self.settings.get('username'),
-                    'X-Auth-Key': self.settings.get('password')
-                }
+                'headers': headers
             }
             response = requests.get(**req_opts)
             try:
@@ -81,13 +88,13 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
                     )
-                return
+                return False
             if not payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error receiving ZoneID [%s]" % (self.description, json.dumps(payload.get('errors', {})))
                 )
-                return
+                return False
 
             zone_id = payload['result'][0]['id']
             if self.is_verbose:
@@ -123,9 +130,18 @@ class Cloudflare(BaseAccount):
                         self.description, json.dumps(payload.get('errors', {}))
                     )
                 )
-                return
+                return False
+
+            if len(payload['result']) == 0:
+                syslog.syslog(
+                    syslog.LOG_ERR, "Account %s error locating hostname %s [%s]" % (
+                        self.description, self.settings.get('hostnames'), recordType
+                    )
+                )
+                return False
 
             record_id = payload['result'][0]['id']
+            proxied = payload['result'][0]['proxied']
             if self.is_verbose:
                 syslog.syslog(
                     syslog.LOG_NOTICE,
@@ -138,7 +154,8 @@ class Cloudflare(BaseAccount):
                 'json': {
                     'type': recordType,
                     'name': self.settings.get('hostnames'),
-                    'content': str(self.current_address)
+                    'content': str(self.current_address),
+                    'proxied': proxied
                 },
                 'headers': req_opts['headers']
             }
@@ -152,7 +169,7 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
-                return
+                return False
             if payload.get('success', False):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
