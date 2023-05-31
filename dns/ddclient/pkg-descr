@@ -13,6 +13,7 @@ Plugin Changelog
 * Use API token for cloudflare Python backend if available (contributed by juantxorena)
 * Read proxied attribute from cloudflare hostname and send it back to prevent it being removed
 * Move accounting of "last accessed timestamp" to poller in Python backend
+* Change if= use to proper ifv4=/ifv6= use (contributed by Rhys Barrie)
 
 1.12
 
