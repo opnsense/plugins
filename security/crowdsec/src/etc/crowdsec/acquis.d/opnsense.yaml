@@ -24,5 +24,9 @@ filenames:
 # but the option works with both.
 force_inotify: true
 
+# this option is required from crowdsec v1.5.0 to follow
+# changes in symlinks
+poll_without_inotify: true
+
 labels:
   type: syslog

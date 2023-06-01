@@ -1,3 +1,6 @@
 #!/bin/sh
 
 configctl crowdsec reconfigure
+
+# apply new configuration immediately, don't wait for hub updates
+service crowdsec reload >/dev/null 2>&1 || :
