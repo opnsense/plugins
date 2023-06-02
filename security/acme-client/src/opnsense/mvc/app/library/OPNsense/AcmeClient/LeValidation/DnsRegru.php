@@ -35,11 +35,11 @@
   * RegRu DNS API
   * @package OPNsense\AcmeClient
   */
- class DnsRegru extends Base implements LeValidationInterface
- {
-     public function prepare()
-     {
-         $this->acme_env['REGRU_API_Username'] = (string)$this->config->dns_regru_username;
-         $this->acme_env['REGRU_API_Password'] = (string)$this->config->dns_regru_password;
-     }
- }
+class DnsRegru extends Base implements LeValidationInterface
+{
+    public function prepare()
+    {
+        $this->acme_env['REGRU_API_Username'] = (string)$this->config->dns_regru_username;
+        $this->acme_env['REGRU_API_Password'] = (string)$this->config->dns_regru_password;
+    }
+}
