@@ -1,64 +1,64 @@
 <form>
+  <field>
+    <id>routemap.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <help>Enable / Disable</help>
+  </field>
+  <field>
+    <id>routemap.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Add an optional description for this route-map.</help>
+  </field>
+  <field>
+    <id>routemap.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Route-map name to match and set your patterns, it will be enabled via the neighbor configuration.</help>
+  </field>
+  <field>
+    <id>routemap.action</id>
+    <label>Action</label>
+    <type>dropdown</type>
+    <help>Set permit for match or deny to negate the rule.</help>
+  </field>
+  <field>
+    <id>routemap.id</id>
+    <label>ID</label>
+    <type>text</type>
+    <help>Route-map ID between 1 and 65535. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
+  </field>
+  <field>
+    <id>routemap.match</id>
+    <label>AS-Path List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the AS-Path List.</help>
+  </field>
+  <field>
+    <id>routemap.match2</id>
+    <label>Prefix List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the Prefix List.</help>
+  </field>
+  <field>
+    <id>routemap.match3</id>
+    <label>Community List</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Select the Community List.</help>
+  </field>
     <field>
-        <id>routemap.enabled</id>
-        <label>Enabled</label>
-        <type>checkbox</type>
-        <help>Enable / Disable</help>
-    </field>
-    <field>
-        <id>routemap.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help>Add an optional description for this route-map.</help>
-    </field>
-    <field>
-        <id>routemap.name</id>
-        <label>Name</label>
-        <type>text</type>
-        <help>Route-map name to match and set your patterns, it will be enabled via the neighbor configuration.</help>
-    </field>
-    <field>
-        <id>routemap.action</id>
-        <label>Action</label>
-        <type>dropdown</type>
-        <help>Set permit for match or deny to negate the rule.</help>
-    </field>
-    <field>
-        <id>routemap.id</id>
-        <label>ID</label>
-        <type>text</type>
-        <help>Route-map ID between 1 and 65535. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
-    </field>
-    <field>
-        <id>routemap.match</id>
-        <label>AS-Path List</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help>Select the AS-Path List.</help>
-    </field>
-    <field>
-        <id>routemap.match2</id>
-        <label>Prefix List</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help>Select the Prefix List.</help>
-    </field>
-    <field>
-        <id>routemap.match3</id>
-        <label>Community List</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help>Select the Community List.</help>
-    </field>
-        <field>
-        <id>routemap.set</id>
-        <label>Set</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
-    </field>
+    <id>routemap.set</id>
+    <label>Set</label>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <allownew>true</allownew>
+    <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
+  </field>
 </form>
