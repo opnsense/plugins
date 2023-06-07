@@ -1,9 +1,12 @@
 PLUGIN_NAME=		zabbix-proxy
 PLUGIN_VERSION=		1.9
-PLUGIN_REVISION=	2
+PLUGIN_REVISION=	
 PLUGIN_COMMENT=		Zabbix monitoring proxy
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
-PLUGIN_VARIANTS=	zabbix62 zabbix6 zabbix5 zabbix4
+PLUGIN_VARIANTS=	zabbix64 zabbix62 zabbix6 zabbix5 zabbix4
+
+zabbix64_NAME=		zabbix64-proxy
+zabbix64_DEPENDS=	zabbix64-proxy
 
 zabbix62_NAME=		zabbix62-proxy
 zabbix62_DEPENDS=	zabbix62-proxy
