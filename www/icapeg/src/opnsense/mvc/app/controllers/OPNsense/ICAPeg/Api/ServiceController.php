@@ -42,8 +42,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             $this->sessionClose();
-            $backend = new Backend();
-            $backend->configdRun("template reload OPNsense/ICAPeg");
+            (new Backend())->configdRun("template reload OPNsense/ICAPeg");
             return array("status" => "ok");
         } else {
             return array("status" => "failed");
@@ -52,8 +51,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function checkclamavAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("firmware plugin clamav");
+        $response = (new Backend())->configdRun("firmware plugin clamav");
         return $response;
     }
 }

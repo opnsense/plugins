@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    $( document ).ready(function() {
+    $(function() {
         var data_get_map = {'frm_general_settings':"/api/icapeg/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
@@ -60,4 +60,3 @@
         });
     });
 </script>
-   
