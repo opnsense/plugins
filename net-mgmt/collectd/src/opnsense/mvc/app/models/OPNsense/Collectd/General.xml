@@ -141,5 +141,19 @@
             <default>0</default>
             <Required>N</Required>
         </p_ipstats>
+	<p_exec type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_exec>
+	<p_exec_user type="TextField">
+            <default>daemon</default>
+            <Required>N</Required>
+	    <mask>/^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$/</mask>
+        </p_exec_user>
+	<p_exec_script type="TextField">
+            <default></default>
+            <Required>N</Required>
+	    <mask>/^\/[^\0]+$/u</mask> <!-- enforce absolute path -->
+        </p_exec_script>
     </items>
 </model>

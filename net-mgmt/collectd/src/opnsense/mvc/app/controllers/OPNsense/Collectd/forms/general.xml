@@ -150,10 +150,34 @@
         <help>The DF plugin collects file system usage information, i. e. basically how much space on a mounted partition is used and how much is available.</help>
     </field>
     <field>
+        <id>general.p_exec</id>
+        <label>Enable exec plugin</label>
+        <type>checkbox</type>
+        <help>The exec plugin executes programs and reads values that are printed to STDOUT by that program.</help>
+    </field>
+    <field>
+        <id>general.p_exec_user</id>
+        <label>Exec plugin user</label>
+        <type>text</type>
+	<help>The user to execute the program as. Unix username, as found in /etc/passwd, or configured in System, Access, Users.</help>
+    </field>
+    <field>
+        <id>general.p_exec_script</id>
+        <label>Exec plugin program</label>
+        <type>text</type>
+        <help>Absolute path to a program to execute. See collectd documentation for details of output format.</help>
+    </field>
+    <field>
         <id>general.p_interface_enable</id>
         <label>Enable interface plugin</label>
         <type>checkbox</type>
         <help>The Interface plugin collects information about the traffic, packets per second and errors of interfaces.</help>
+    </field>
+    <field>
+        <id>general.p_ipstats</id>
+        <label>Enable ipstats plugin</label>
+        <type>checkbox</type>
+        <help>The ipstats plugin lists multiple interface stats.</help>
     </field>
     <field>
         <id>general.p_load_enable</id>
@@ -168,16 +192,22 @@
         <help>The Memory plugin collects physical memory utilization (used, buffered, cached and free).</help>
     </field>
     <field>
+        <id>general.p_processes_enable</id>
+        <label>Enable processes plugin</label>
+        <type>checkbox</type>
+        <help>The Processes plugin collects the number of processes, grouped by their state (e. g. running, sleeping, zombies, etc.).</help>
+    </field>
+    <field>
         <id>general.p_swap_enable</id>
         <label>Enable swap plugin</label>
         <type>checkbox</type>
         <help>The Swap plugin collects swap space utilization (used and free).</help>
     </field>
     <field>
-        <id>general.p_processes_enable</id>
-        <label>Enable processes plugin</label>
+        <id>general.p_tcpconns</id>
+        <label>Enable tcpconns plugin</label>
         <type>checkbox</type>
-        <help>The Processes plugin collects the number of processes, grouped by their state (e. g. running, sleeping, zombies, etc.).</help>
+        <help>The tcpconns plugin lists a summary of all tcp connections.</help>
     </field>
     <field>
         <id>general.p_uptime_enable</id>
@@ -190,17 +220,5 @@
         <label>Enable users plugin</label>
         <type>checkbox</type>
         <help>The Users plugin counts the number of users currently logged into the system (SSH).</help>
-    </field>
-    <field>
-        <id>general.p_tcpconns</id>
-        <label>Enable tcpconns plugin</label>
-        <type>checkbox</type>
-        <help>The tcpconns plugin lists a summary of all tcp connections.</help>
-    </field>
-    <field>
-        <id>general.p_ipstats</id>
-        <label>Enable ipstats plugin</label>
-        <type>checkbox</type>
-        <help>The ipstats plugin lists multiple interface stats.</help>
     </field>
 </form>
