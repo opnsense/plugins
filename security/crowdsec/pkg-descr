@@ -8,6 +8,11 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.6
+
+ * default acquis.d/opnsense.yaml to "poll_without_inotify=true" which is now required
+   to acquire content from symlinks.
+
 1.0.5
 
 * fix ban example
