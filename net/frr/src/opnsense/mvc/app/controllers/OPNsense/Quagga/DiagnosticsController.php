@@ -32,6 +32,10 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->diagnosticsForm = $this->getForm("diagnostics");
         $this->view->pick('OPNsense/Quagga/diagnosticsbgp');
     }
+    public function bfdAction()
+    {
+        $this->view->pick('OPNsense/Quagga/diagnosticsbfd');
+    }
     public function ospfAction()
     {
         $this->view->pick('OPNsense/Quagga/diagnosticsospf');
