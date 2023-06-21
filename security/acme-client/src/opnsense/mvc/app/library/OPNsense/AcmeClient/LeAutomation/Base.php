@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -47,7 +47,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      * Initialize LeAutomation object by adding the required configuration.
      * @return boolean
      */
-    public function init(string $certid, string $accountuuid)
+    public function init(string $certid, string $certname, string $accountuuid, bool $certecc = false)
     {
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -60,11 +60,31 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->account_id = (string)$account->id;
         $this->account_uuid = (string)$account->uuid;
 
+        // Teach acme.sh about DNS API hook location
+        $this->acme_env['_SCRIPT_HOME'] = self::ACME_SCRIPT_HOME;
+
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
+
+        // Store acme filenames
+        $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--certpath %s', sprintf(self::ACME_CERT_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
+        $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id));
+
+        // Main domain for acme
+        $this->acme_args[] = LeUtils::execSafe('--domain %s', $certname);
+
+        // ECC cert
+        $this->cert_ecc = $certecc;
+        if ($this->cert_ecc) {
+            // Pass --ecc to acme client to locate the correct cert directory
+            $this->acme_args[] = '--ecc';
+        }
 
         return true;
     }
@@ -80,7 +100,99 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
             return true; // not an error
         }
 
-        LeUtils::log('running automation: ' . $this->config->name);
+        // The prefix determines which automation flavour is being used.
+        if (preg_match('/acme.*/i', $this->getType())) {
+            $this->runAcme();
+        } elseif (preg_match('/configd_.*/i', $this->getType())) {
+            $this->runConfigd();
+        } else {
+            LeUtils::log_error('unsupported automation flavour: ' . $this->getType());
+            return false;
+        }
+    }
+
+    /**
+     * run acme.sh deploy hooks commands
+     * @return boolean
+     */
+    public function runAcme()
+    {
+        LeUtils::log('running automation (acme.sh): ' . $this->config->name);
+
+        // Preparation to run acme client
+        $proc_env = $this->acme_env; // env variables for proc_open()
+        $proc_env['PATH'] = $this::ACME_ENV_PATH;
+        $proc_desc = array(  // descriptor array for proc_open()
+            0 => array("pipe", "r"), // stdin
+            1 => array("pipe", "w"), // stdout
+            2 => array("pipe", "w")  // stderr
+        );
+        $proc_pipes = array();
+
+        // Run acme client
+        $acmecmd = self::ACME_CMD
+          . ' '
+          . '--deploy '
+          . implode(' ', $this->acme_args);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
+
+        // Make sure the resource could be setup properly
+        if (is_resource($proc)) {
+            // Close all pipes
+            fclose($proc_pipes[0]);
+            fclose($proc_pipes[1]);
+            fclose($proc_pipes[2]);
+            // Get exit code
+            $result = proc_close($proc);
+        } else {
+            LeUtils::log_error('unable to start acme client process');
+            return false;
+        }
+
+        // acme.sh records the last used deploy hook and would automatically
+        // use it on the next run. This information must be removed from the
+        // configuration file. Otherwise it would be impossible to disable
+        // or remove a deploy hook from the GUI.
+        foreach (glob(self::ACME_HOME_DIR . '/*/*.conf') as $filename) {
+            // Skip openssl config files.
+            if (preg_match('/.*.csr.conf/i', $filename)) {
+                continue;
+            }
+
+            // Read contents from file.
+            $contents = file_get_contents($filename);
+
+            // Check if deploy hook string can be found.
+            if (strpos($contents, self::ACME_DEPLOY_HOOK_STRING) !== false) {
+                // Replace the whole line with an empty string.
+                $contents = preg_replace('(' . self::ACME_DEPLOY_HOOK_STRING . '.*)', '', $contents);
+
+                // Write changes to the file.
+                if (!file_put_contents($filename, $contents)) {
+                    LeUtils::log_error('clearing recorded deploy hook from acme.sh failed (' . $filename . ')');
+                } else {
+                    LeUtils::log_debug('cleared recorded deploy deploy hook from acme.sh (' . $filename . ')', $this->debug);
+                }
+            }
+        }
+
+        // Check result
+        if ($result) {
+            LeUtils::log_error('running acme.sh deploy hook failed (' . $this->getType() . ')');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * run configd commands
+     * @return boolean
+     */
+    public function runConfigd()
+    {
+        LeUtils::log('running automation (configd): ' . $this->config->name);
         $backend = new \OPNsense\Core\Backend();
         $response = $backend->configdRun((string)$this->command, $this->command_args);
         return true;

@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: oscrowdsec
+# REQUIRE: NETWORKING syslogd
+# BEFORE:  DAEMON
+# KEYWORD: shutdown
+
+# shellcheck disable=SC1091
+. /etc/rc.subr
+
+name="oscrowdsec"
+rcvar="oscrowdsec_enable"
+
+load_rc_config $name
+
+: "${oscrowdsec_enable="NO"}"
+
+
+oscrowdsec_start () {
+    #
+    # Start, or stop the services according to the plugin's configuration.
+    # When starting -> error if the services are already running
+    # When stopping -> no error
+    #
+
+    if service crowdsec enabled; then
+        service crowdsec start
+    else
+        service crowdsec stop || :
+    fi
+
+    if service crowdsec_firewall enabled; then
+        service crowdsec_firewall start
+    else
+        service crowdsec_firewall stop || :
+    fi
+}
+
+oscrowdsec_stop () {
+    # Always stop the services, enabled or not, running or not. No errors.
+
+    service crowdsec stop || :
+    service crowdsec_firewall stop || :
+}
+
+oscrowdsec_restart () {
+    oscrowdsec_stop || :
+    oscrowdsec_start
+}
+
+oscrowdsec_status () {
+    # return error if at least one program is not running
+    service crowdsec status
+    ret=$?
+
+    if ! service crowdsec_firewall status; then
+        ret=1
+    fi
+    return $ret
+}
+
+oscrowdsec_reload () {
+    if service crowdsec enabled; then
+      if service crowdsec status >/dev/null 2>&1; then
+          service crowdsec reload
+      else
+          service crowdsec restart
+      fi
+    fi
+
+    if service crowdsec_firewall enabled; then
+      # the bouncer does not support reload
+      service crowdsec_firewall restart
+    fi
+}
+
+case $1 in
+   start)
+      oscrowdsec_start
+      exit $?
+      ;;
+   stop)
+      oscrowdsec_stop
+      exit $?
+      ;;
+   restart)
+      oscrowdsec_restart
+      exit $?
+      ;;
+   status)
+      oscrowdsec_status
+      exit $?
+      ;;
+   reload)
+      oscrowdsec_reload
+      exit $?
+      ;;
+esac

@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
-frr_var_script="/usr/local/opnsense/scripts/quagga/setup.sh"
+frr_setup="/usr/local/opnsense/scripts/quagga/setup.sh"
 frr_enable="YES"
 {% if helpers.exists('OPNsense.quagga.general.enablecarp') and OPNsense.quagga.general.enablecarp == '1' %}
 start_precmd="ifconfig | grep 'carp: MASTER'"
@@ -12,7 +12,10 @@ if helpers.exists('OPNsense.quagga.bgp.enabled') and OPNsense.quagga.bgp.enabled
 if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.enabled == '1' %} ospf6d{% endif %}{%
 if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{%
 if helpers.exists('OPNsense.quagga.isis.enabled') and OPNsense.quagga.isis.enabled == '1' %} isisd{% endif %}"
-frr_carp_demote="{% if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}"
+frr_carp_demote="{%
+    if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}{%
+    if not helpers.empty('OPNsense.quagga.ospf6.carp_demote') %} ospf6d{% endif
+%}"
 start_postcmd="/usr/local/opnsense/scripts/frr/carp_event_handler"
 {% else %}
 frr_enable="NO"

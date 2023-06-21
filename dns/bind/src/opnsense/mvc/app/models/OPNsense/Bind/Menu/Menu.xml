@@ -1,10 +1,8 @@
 <menu>
   <Services>
     <BIND cssClass="fa fa-tags">
-      <Configuration url="/ui/bind/general/index" order="10"/>
-      <GeneralLog VisibleName="Log / General" order="20" url="/ui/diagnostics/log/named/named"/>
-      <QueryLog VisibleName="Log / Queries" order="30"  url="/ui/diagnostics/log/named/query"/>
-      <BlockedLog VisibleName="Log / Blocked" order="40" url="/ui/diagnostics/log/named/rpz"/>
+      <Configuration url="/ui/bind/general/index"/>
+      <LogFiles VisibleName="Log Files" url="/ui/bind/logs"/>
     </BIND>
   </Services>
 </menu>

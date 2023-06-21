@@ -1,0 +1,77 @@
+<form>
+    <field>
+        <id>fcgi.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this FastCGI application.</help>
+    </field>
+    <field>
+        <id>fcgi.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this FastCGI application.</help>
+    </field>
+    <field>
+        <id>fcgi.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Description for this FastCGI application.</help>
+    </field>
+    <field>
+        <id>fcgi.docroot</id>
+        <label>Docroot</label>
+        <type>text</type>
+        <help><![CDATA[Define the document root on the remote host. It will be used to build the default value of FastCGI parameters SCRIPT_FILENAME and PATH_TRANSLATED. It is a mandatory setting.]]></help>
+    </field>
+    <field>
+        <id>fcgi.index</id>
+        <label>Index</label>
+        <type>text</type>
+        <help><![CDATA[Define the script name that will be appended after an URI that ends with a slash ("/") to set the default value of the FastCGI parameter SCRIPT_NAME. It is an optional setting.]]></help>
+    </field>
+    <field>
+        <id>fcgi.path_info</id>
+        <label>Path Info</label>
+        <type>text</type>
+        <help><![CDATA[Define a regular expression to extract the script-name and the path-info from the URL-decoded path, see <a href="http://docs.haproxy.org/2.6/configuration.html#10.1.1-path-info">HAProxy's documentation</a> for further details and examples.]]></help>
+    </field>
+    <field>
+        <id>fcgi.log_stderr</id>
+        <label>STDERR Logging</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable logging of STDERR messages reported by the FastCGI application. It is an optional setting. By default STDERR messages are ignored.]]></help>
+    </field>
+    <field>
+        <id>fcgi.keep_conn</id>
+        <label>Keep Connection Open</label>
+        <type>checkbox</type>
+        <help><![CDATA[Instruct the FastCGI application to keep the connection open after sending a response. If disabled, the FastCGI application closes the connection after responding to a request.]]></help>
+    </field>
+    <field>
+        <id>fcgi.get_values</id>
+        <label>Connection Management</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable the retrieval of variables about connection management from the FastCGI application by sending the record FCGI_GET_VALUES on connection establishment. Some FastCGI applications do not support this feature and others close the connection immediately after sending their response. As a result, this option is disabled by default.]]></help>
+    </field>
+    <field>
+        <id>fcgi.mpxs_conns</id>
+        <label>Connection Multiplexing</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable the support for connection multiplexing. This option may be overwritten if the variable FCGI_MPXS_CONNS is retrieved during connection establishment.]]></help>
+    </field>
+    <field>
+        <id>fcgi.max_reqs</id>
+        <label>Maximum Concurrent Requests</label>
+        <type>text</type>
+        <help><![CDATA[Define the maximum number of concurrent requests this application will accept. This option may be overwritten if the variable FCGI_MAX_REQS is retrieved during connection establishment. Furthermore, if the application does not support connection multiplexing, this option will be ignored.]]></help>
+    </field>
+    <field>
+        <id>fcgi.linkedActions</id>
+        <label>Select Rules</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <sortable>true</sortable>
+        <help><![CDATA[Choose rules to be included in this FastCGI application. Only FastCGI rules are supported.]]></help>
+        <hint>Choose rules.</hint>
+    </field>
+</form>

@@ -1,13 +1,31 @@
 <form>
   <field>
-    <id>httpserver.listen_http_port</id>
-    <label>HTTP Listen Port</label>
-    <type>text</type>
+    <id>httpserver.listen_http_address</id>
+    <label>HTTP Listen Address</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports which can be used in nginx listen directives. To listen on a port on all IPs, use for example "80,[::]:80"</help>
   </field>
   <field>
-    <id>httpserver.listen_https_port</id>
-    <label>HTTPS Listen Port</label>
-    <type>text</type>
+    <id>httpserver.listen_https_address</id>
+    <label>HTTPS Listen Address</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports which can be used in nginx listen directives. To listen on a port on all IPs, use for example "443,[::]:443"</help>
+  </field>
+  <field>
+    <id>httpserver.default_server</id>
+    <label>Default Server</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>httpserver.tls_reject_handshake</id>
+    <label>Reject SSL Handshake</label>
+    <type>checkbox</type>
+    <help>If enabled, TLS handshakes for this server will be rejected.</help>
+    <advanced>true</advanced>
   </field>
   <field>
     <id>httpserver.syslog_targets</id>
@@ -117,6 +135,14 @@
     <type>dropdown</type>
   </field>
   <field>
+    <id>httpserver.error_log_level</id>
+    <label>Error Log Level</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help>Select Error Log Level. Log levels are listed in the order of increasing verbosity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.enable_acme_support</id>
     <label>Enable Let's Encrypt Plugin Support</label>
     <type>checkbox</type>
@@ -131,6 +157,35 @@
     <label>HTTPS Only</label>
     <type>checkbox</type>
     <help>If you check this box, a TLS encrypted connection is enforced.</help>
+  </field>
+  <field>
+    <id>httpserver.tls_protocols</id>
+    <label>TLS Protocols</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enable specified protocols. Default: TLSv1.2 TLSv1.3. TLSv1 and TLSv1.1 are insecure and excluded from GUI.</help>
+  </field>
+  <field>
+    <id>httpserver.tls_ciphers</id>
+    <label>TLS Ciphers</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify enabled ciphers in the TLS library cipher string format. Example: ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256. NGINX default (empty field): HIGH:!aNULL:!MD5.</help>
+  </field>
+  <field>
+    <id>httpserver.tls_ecdh_curve</id>
+    <label>ECDH curve</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify a curve(s) for ECDHE ciphers. NGINX default (empty field): auto.</help>
+  </field>
+  <field>
+    <id>httpserver.tls_prefer_server_ciphers</id>
+    <label>Prefer server ciphers</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Prefers server ciphers over client ciphers.</help>
   </field>
   <field>
     <id>httpserver.ocsp_stapling</id>
@@ -236,5 +291,12 @@
     <type>select_multiple</type>
     <style>selectpicker</style>
     <help>If you choose multiple limits, the strictest will be used.</help>
+  </field>
+  <field>
+    <id>httpserver.errorpages</id>
+    <label>Error Pages</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+    <help>Select custom error pages to display instead of the default builtin error pages. If at least one error page is selected here, all default error pages will be disabled.</help>
   </field>
 </form>

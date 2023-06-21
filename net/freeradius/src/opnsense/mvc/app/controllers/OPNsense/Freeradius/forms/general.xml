@@ -12,10 +12,30 @@
         <help>This allows you to dynamically assign VLANs on your physical switch ports.</help>
     </field>
     <field>
+        <id>general.fallbackvlan_enabled</id>
+        <label>Enable VLAN fallback assignment</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>This allows you to define a fallback VLAN-Group-ID. Warning: Setting this option will send an accepted RADIUS reply even if the authentication attempt fails.</help>
+    </field>
+    <field>
+        <id>general.fallbackvlan_id</id>
+        <label>Fallback VLAN ID</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Define the Fallback VLAN group ID.</help>
+    </field>
+    <field>
         <id>general.ldap_enabled</id>
         <label>Enable LDAP</label>
         <type>checkbox</type>
         <help>This allows you to bind to an external LDAP server. Be aware that FreeRADIUS will not start if there is no further configuration.</help>
+    </field>
+    <field>
+        <id>general.exos</id>
+        <label>Enable EXOS attributes</label>
+        <type>checkbox</type>
+        <help>This enables the EXOS VLAN and policy attributes assignment via users tab.</help>
     </field>
     <field>
         <id>general.wispr</id>
@@ -124,5 +144,12 @@
         <type>text</type>
         <advanced>true</advanced>
         <help>Set database name of remote MySQL server.</help>
+    </field>
+    <field>
+        <id>general.fallbackproxy</id>
+        <label>Default Fallback Proxy</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Fallback for proxy server. Default disabled.</help>
     </field>
 </form>

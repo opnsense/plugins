@@ -11,3 +11,10 @@ of creating own "plugins" (graphs).
 This is the node part. It is used on all machines Munin shall watch.
 
 WWW: http://munin-monitoring.org/
+
+Plugin Changelog
+----------------
+
+1.1
+
+* Remove MFS support for /var/log

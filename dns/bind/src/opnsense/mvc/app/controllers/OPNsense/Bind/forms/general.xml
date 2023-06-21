@@ -34,6 +34,20 @@
         <help>Set the port the service should listen to.</help>
     </field>
     <field>
+        <id>general.querysource</id>
+        <label>Query Source IP</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv4 address used as a source for outbound queries.</help>
+    </field>
+    <field>
+        <id>general.querysourcev6</id>
+        <label>Query Source IPv6</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify the IPv6 address used as a source for outbound queries.</help>
+    </field>
+    <field>
         <id>general.transfersource</id>
         <label>Transfer Source IP</label>
         <type>text</type>
@@ -45,7 +59,7 @@
         <label>Transfer Source IPv6</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>This determines which local address is bound to IPv6 TCP connections used to fetch zones transferred inbound by the server.</help>
+        <help>Specify the IPv6 address used as a source for zone transfers.</help>
     </field>
     <field>
         <id>general.forwarders</id>
@@ -54,6 +68,26 @@
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
+    </field>
+    <field>
+        <id>general.filteraaaav4</id>
+        <label>Enable filter-aaaa on IPv4 Clients</label>
+        <type>checkbox</type>
+        <help>This will filter AAAA records on IPv4 Clients</help>
+    </field>
+    <field>
+        <id>general.filteraaaav6</id>
+        <label>Enable filter-aaaa on IPv6 Clients</label>
+        <type>checkbox</type>
+        <help>This will filter AAAA records on IPv6 Clients</help>
+    </field>
+    <field>
+        <id>general.filteraaaaacl</id>
+        <label>ACL for filter-aaaa</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Specifies a list of client addresses for which AAAA filtering is to be applied.</help>
     </field>
     <field>
         <id>general.logsize</id>
@@ -76,8 +110,14 @@
     <field>
         <id>general.allowtransfer</id>
         <label>Allow Transfer</label>
-        <type>dropdown</type>
-        <help>Define an ACL where you allow which server can retrieve zones.</help>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which server can retrieve zones.</help>
+    </field>
+    <field>
+        <id>general.allowquery</id>
+        <label>Allow Query</label>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which client are allowed to query this server.</help>
     </field>
     <field>
         <id>general.dnssecvalidation</id>
@@ -128,5 +168,24 @@
         <allownew>true</allownew>
         <advanced>true</advanced>
         <help>Except a list of IPs from rate-limiting like ::1</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>RNDC Key</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.rndcalgo</id>
+        <label>Algorithm</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Set the authentication algorithm for the RNDC key. This requires a restart of the Bind Service.</help>
+    </field>
+    <field>
+        <id>general.rndcsecret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
 </form>

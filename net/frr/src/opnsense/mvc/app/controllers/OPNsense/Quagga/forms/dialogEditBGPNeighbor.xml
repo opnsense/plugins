@@ -23,10 +23,38 @@
     <help>Neighbor AS.</help>
   </field>
   <field>
+    <id>neighbor.password</id>
+    <label>BGP MD5 Password</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Set a password for BGP authentication.</help>
+  </field>
+  <field>
+    <id>neighbor.weight</id>
+    <label>Weight</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Specify a default weight value for the neighbor’s routes.</help>
+  </field>
+  <field>
+    <id>neighbor.localip</id>
+    <label>Local Initiater IP</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Set the local IP connecting to the neighbor. This is only required for BGP authentication.</help>
+  </field>
+  <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
-    <type>select_multiple</type>
-    <help>Physical name of the interface facing the peer</help>
+    <type>dropdown</type>
+    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+  </field>
+  <field>
+    <id>neighbor.linklocalinterface</id>
+    <label>IPv6 link-local interface</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Interface to use for IPv6 link-local neighbours. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERinterfaceIFNAME">FRR documentation</a> for more information.]]></help>
   </field>
   <field>
     <id>neighbor.nexthopself</id>
@@ -34,8 +62,30 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>neighbor.nexthopselfall</id>
+    <label>Next-Hop-Self All</label>
+    <type>checkbox</type>
+    <help>Add the parameter "all" after next-hop-self command.</help>
+  </field>
+  <field>
     <id>neighbor.multihop</id>
     <label>Multi-Hop</label>
+    <help>
+      Specifying ebgp-multihop allows sessions with eBGP neighbors to establish when they are multiple hops away.
+      When the neighbor is not directly connected and this knob is not enabled, the session will not establish.
+    </help>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.multiprotocol</id>
+    <label>Multi-Protocol</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Is this neighbour multiprotocol capable per <a href="https://datatracker.ietf.org/doc/html/rfc2283.html">RFC 2283</a>]]></help>
+  </field>
+  <field>
+    <id>neighbor.rrclient</id>
+    <label>Route Reflector Client</label>
     <type>checkbox</type>
   </field>
   <field>
@@ -69,6 +119,25 @@
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+  </field>
+  <field>
+    <id>neighbor.asoverride</id>
+    <label>Enable AS-Override</label>
+    <type>checkbox</type>
+    <help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
+  </field>
+  <field>
+    <id>neighbor.disable_connected_check</id>
+    <label>Disable Connected Check</label>
+    <type>checkbox</type>
+    <help>Allow peerings between directly connected eBGP peers using loopback addresses.</help>
+  </field>
+  <field>
+    <id>neighbor.attributeunchanged</id>
+    <label>Attribute Unchanged</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[This specifies attributes to be left unchanged when sending advertisements to a peer. Read more at <a href="https://docs.frrouting.org/en/latest/bgp.html#clicmd-neighbor-PEER-attribute-unchanged-as-path-next-hop-med">FRR documentation</a>.]]></help>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistIn</id>

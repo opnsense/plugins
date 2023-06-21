@@ -3,3 +3,13 @@ supposed to be run on your gateway machine to allow client systems to redirect
 ports and punch holes in the firewall.
 
 WWW: http://miniupnp.free.fr/
+
+Plugin Changelog
+================
+
+1.5
+
+* Enable STUN and allow LAN subnet override (contributed by Tawmu)
+* Add missing firewall anchors (contributed by Tawmu)
+* Allow subnet mask 0 in rules (contributed by Reiko Asakura)
+* Switch to miniupnpd 2.3.1

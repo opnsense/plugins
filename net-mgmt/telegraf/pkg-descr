@@ -12,6 +12,45 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.7
+
+* Add Influx v2 flush timeout
+
+1.12.6
+
+* Add apcupsd input
+
+1.12.5
+
+* Add support for basic HTTP Authentication agains Elasticsearch (contributed by psychogun)
+* Add internet speed input plugin (contributed by rare-magma)
+* Allow to specify ping count (Kacper Michajlow)
+
+1.12.4
+
+* Add 5 second timeout to unbound input
+
+1.12.3
+
+* Add insecure_skip_verify as an option for Influx v2 output
+
+1.12.2
+
+* Add insecure_skip_verify as an option for Influx v1 output
+
+1.12.1
+
+* Rename "Wheel Group" to "Run as Root" and set user permissions
+
+1.12.0
+
+* Allow to start telegraf with wheel group permissions
+* Add Unbound input
+
+1.11.0
+
+* Set telegraf.d as additional config include
+
 1.10.1
 
 * Fix Suricata input controller being the output section and incorrect statement

@@ -6,6 +6,16 @@
         <help>This will activate the OSPFv3 service if routing protocols are enabled in "General".</help>
     </field>
     <field>
+      <id>ospf6.carp_demote</id>
+      <label>CARP demote</label>
+      <type>checkbox</type>
+      <help>
+            Register CARP status monitor, when no neighbors are found, consider this node less attractive.
+            This feature needs syslog enabled using "Debugging" logging to catch all relevant status events.
+            This option is not compatible with "Enable CARP Failover".
+      </help>
+    </field>
+    <field>
         <id>ospf6.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>

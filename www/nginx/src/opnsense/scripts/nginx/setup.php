@@ -31,6 +31,7 @@ const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
 require_once('config.inc');
 require_once('certs.inc');
+require_once('util.inc');
 use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
@@ -68,12 +69,20 @@ function find_ca($refid)
 if (!isset($config['OPNsense']['Nginx'])) {
     die("nginx is not configured");
 }
+openlog("nginx", LOG_ODELAY, LOG_USER);
+syslog(LOG_DEBUG, "NGINX setup routine started.");
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
 @mkdir("/var/log/nginx", 0750, true);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
+// unlink VTS socket if nginx didn't
+$vts_socket = '/var/run/nginx_status.sock';
+if (!isvalidpid('/var/run/nginx.pid') && file_exists($vts_socket)) {
+    syslog(LOG_WARNING, "NGINX setup: nginx not running but VTS socket exists. Unlinking.");
+    @unlink($vts_socket);
+}
 $nginx = $config['OPNsense']['Nginx'];
 if (isset($nginx['http_server'])) {
     if (is_array($nginx['http_server']) && !isset($nginx['http_server']['servername'])) {
@@ -82,10 +91,12 @@ if (isset($nginx['http_server'])) {
         $http_servers = array($nginx['http_server']);
     }
     foreach ($http_servers as $http_server) {
-        if (!empty($http_server['listen_https_port']) && !empty($http_server['certificate'])) {
+        if (!empty($http_server['listen_https_address']) && !empty($http_server['certificate'])) {
           // try to find the reference
+            $hostname = explode(',', $http_server['servername'])[0];
             $cert = find_cert($http_server['certificate']);
             if (!isset($cert)) {
+                syslog(LOG_ERR, "NGINX setup: Certificate is set but not found in config for server {$hostname}.");
                 continue;
             }
             $chain = [];
@@ -94,8 +105,9 @@ if (isset($nginx['http_server'])) {
                 foreach ($ca_chain as $entry) {
                     $chain[] = base64_decode($entry['crt']);
                 }
+            } else {
+                syslog(LOG_WARNING, "NGINX setup: Certificate chain is empty for server {$hostname}.");
             }
-            $hostname = explode(',', $http_server['servername'])[0];
             export_pem_file(
                 KEY_DIRECTORY . $hostname . '.pem',
                 $cert['crt'],
@@ -127,10 +139,11 @@ if (isset($nginx['stream_server'])) {
         $stream_servers = array($nginx['stream_server']);
     }
     foreach ($stream_servers as $stream_server) {
-        if (!empty($stream_server['listen_port']) && !empty($stream_server['certificate'])) {
+        if (!empty($stream_server['listen_address']) && !empty($stream_server['certificate'])) {
           // try to find the reference
             $cert = find_cert($stream_server['certificate']);
             if (!isset($cert)) {
+                syslog(LOG_ERR, "NGINX setup: Certificate is set but not found in config for stream server {$stream_server['listen_address']}.");
                 continue;
             }
             $chain = [];
@@ -139,6 +152,8 @@ if (isset($nginx['stream_server'])) {
                 foreach ($ca_chain as $entry) {
                     $chain[] = base64_decode($entry['crt']);
                 }
+            } else {
+                syslog(LOG_WARNING, "NGINX setup: Certificate chain is empty for stream server {$stream_server['listen_address']}.");
             }
             export_pem_file(
                 KEY_DIRECTORY . $stream_server['@attributes']['uuid'] . '.pem',
@@ -194,6 +209,8 @@ if (isset($nginx['upstream'])) {
                         KEY_DIRECTORY . $upstream['tls_client_certificate'] . '.key',
                         $cert['prv']
                     );
+                } else {
+                    syslog(LOG_ERR, "NGINX setup: Client certificate is set but not found in config for upstream {$upstream['description']}.");
                 }
             }
             if (!empty($upstream['tls_trusted_certificate'])) {
@@ -203,6 +220,8 @@ if (isset($nginx['upstream'])) {
                     $ca = find_ca($caref);
                     if (isset($ca)) {
                         $cas[] = base64_decode($ca['crt']);
+                    } else {
+                        syslog(LOG_ERR, "NGINX setup: Trusted CA certificate is set but not found in config for upstream {$upstream['description']}.");
                     }
                 }
                 export_pem_file(
@@ -228,7 +247,7 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         foreach ($users as $user) {
             $user_node = $nginx->getNodeByReference("credential." . $user);
             $username = (string)$user_node->username;
-            $password = crypt((string)$user_node->password);
+            $password = password_hash((string)$user_node->password, PASSWORD_DEFAULT);
             fwrite($file, $username . ':' . $password . "\n");
         }
     } finally {
@@ -239,9 +258,64 @@ foreach ($nginx->userlist->iterateItems() as $user_list) {
         unset($file);
     }
 }
+
 // create directories for cache
 foreach ($nginx->cache_path->iterateItems() as $cache_path) {
     @mkdir((string)$cache_path->path, 0755, true);
+    @chgrp((string)$cache_path->path, GROUP_OWNER);
+}
+
+// create custom error pages
+const ERRORPAGE_DIR = '/usr/local/etc/nginx/views';
+@mkdir(ERRORPAGE_DIR, 0755, true);
+$used_errorpages = array();
+// search used error pages in http servers and locations
+foreach (array($nginx->http_server, $nginx->location) as $entity) {
+    foreach ($entity->iterateItems() as $element) {
+        $pages = explode(',', $element->errorpages);
+        foreach ($pages as $page) {
+            $page = str_replace('-', '', $page);
+            if (!in_array($page, $used_errorpages)) {
+                $used_errorpages[] = $page;
+            }
+        }
+    }
+}
+// search used WAF error pages
+foreach ($nginx->location->iterateItems() as $location) {
+    if ($location->secrules_errorpage != '') {
+        $page = str_replace('-', '', $location->secrules_errorpage);
+        if (!in_array($page, $used_errorpages)) {
+            $used_errorpages[] = $page;
+        }
+    }
+}
+// create/update error pages
+foreach ($nginx->errorpage->iterateItems() as $errorpage) {
+    $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);
+    if (in_array($uuid, $used_errorpages)) {
+        $filename = "error_$uuid.html";
+        $content = base64_decode((string)$errorpage->pagecontent);
+        // Does error page have a content?
+        if (strlen($content) > 0) {
+            $fs_hash = @hash_file("sha1", ERRORPAGE_DIR . "/$filename");
+            if ($fs_hash !== hash("sha1", $content)) {
+                @file_put_contents(ERRORPAGE_DIR . "/$filename", $content);
+            }
+            chmod(ERRORPAGE_DIR . "/$filename", 0644);
+        } else {
+            unset($used_errorpages[array_search($uuid, $used_errorpages)]);
+        }
+    }
+}
+// delete unused (old) error pages
+$dir = new \DirectoryIterator(ERRORPAGE_DIR);
+foreach ($dir as $file) {
+    if ($file->isFile() && strpos($file->getFilename(), 'error_') === 0) {
+        if (!in_array(substr($file->getFilename(), 6, 32), $used_errorpages)) {
+            @unlink($file->getPathname());
+        }
+    }
 }
 
 // export TLS fingerprint database for MitM detection
@@ -250,7 +324,7 @@ foreach ($nginx->tls_fingerprint->iterateItems() as $tls_fingerprint) {
     if ((string)$tls_fingerprint->trusted == '1') {
         $ciphers = explode(':', (string)$tls_fingerprint->ciphers);
         if (!empty((string)$tls_fingerprint->curves)) {
-            $curves = explode(':', (string)$tls_fingerprint->ciphers);
+            $curves = explode(':', (string)$tls_fingerprint->curves);
         } else {
             $curves = array();
         }
@@ -264,3 +338,15 @@ file_put_contents(
     empty($tls_fingerprint_database) ? '{}' :  json_encode($tls_fingerprint_database)
 );
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
+
+// test config and exit early if it not good
+$conf_test_errors = shell_safe('nginx -t -q 2>&1');
+if (!empty($conf_test_errors)) {
+    syslog(LOG_EMERG, $conf_test_errors);
+    closelog();
+    exit(1);
+}
+
+syslog(LOG_DEBUG, "NGINX setup routine completed.");
+closelog();
+passthru('/usr/local/etc/rc.d/php-fpm start');

@@ -1,0 +1,95 @@
+<form>
+
+  <!-- agent_enabled -->
+  <field>
+    <id>general.agent_enabled</id>
+    <label>Enable CrowdSec (IDS)</label>
+    <type>checkbox</type>
+    <help>Enable/disable the CrowdSec agent. Keep this enabled to detect
+      attacks and receive alerts from the CrowSec central service.</help>
+  </field>
+
+  <!-- lapi_enabled -->
+  <field>
+    <id>general.lapi_enabled</id>
+    <label>Enable LAPI</label>
+    <type>checkbox</type>
+    <help>Enable/disable the CrowdSec Local API. Keep this enabled unless you
+      connect to a LAPI on another machine.</help>
+  </field>
+
+  <!-- firewall_bouncer_enabled -->
+  <field>
+    <id>general.firewall_bouncer_enabled</id>
+    <label>Enable Firewall Bouncer (IPS)</label>
+    <type>checkbox</type>
+    <help>Enable/disable the firewall bouncer. Keep this enabled to block
+      packets from the attacking IP addresses.</help>
+  </field>
+
+  <!-- lapi_manual_configuration -->
+  <field>
+    <id>general.lapi_manual_configuration</id>
+    <label>Manual LAPI configuration</label>
+    <type>checkbox</type>
+    <help>Avoid overwriting LAPI settings for config.yaml,
+      local_api_credentials.yaml, crowdsec-firewall-bouncer.yaml. The next
+      two configuration options (lapi_listen_address, lapi_listen_port) will
+      be ignored. Allows unsupported configurations like linking together
+      multiple opnsense instances or connecting to an existing crowdsec
+      multi-server setup.</help>
+  </field>
+
+  <!-- lapi_listen_address -->
+  <field>
+    <id>general.lapi_listen_address</id>
+    <label>LAPI listen address</label>
+    <type>text</type>
+    <help>Where to listen for LAPI connections: IP address. The default value
+      is 127.0.0.1. You can change it to a LAN address to connect from other
+      agents/machines and bouncers.
+
+      This is written in /usr/local/etc/crowdsec/config.yaml,
+      local_api_credentials.yaml and bouncers/crowdsec-firewall-bouncer.yaml.
+      To enable TLS, add the certificate information to config.yaml and change
+      http to https in the other two files. Comments in YAML will not be
+      preserved.</help>
+  </field>
+
+  <!-- lapi_listen_port -->
+  <field>
+    <id>general.lapi_listen_port</id>
+    <label>LAPI listen port</label>
+    <type>text</type>
+    <help>Where to listen for LAPI connections: port. The default value is
+      8080, but you can change it to avoid conflicts with existing
+      services.</help>
+  </field>
+
+  <!-- rules_log -->
+  <field>
+    <id>general.rules_log</id>
+    <label>Enable log for rules</label>
+    <type>checkbox</type>
+    <help>Enable log collection for CrowdSec's block rules.</help>
+  </field>
+
+  <!-- rules_tag -->
+  <field>
+    <id>general.rules_tag</id>
+    <label>Tag for matched packets</label>
+    <type>text</type>
+    <help>Add a tag to packets that are dropped by CrowdSec rules for
+      diagnostic purposes.</help>
+  </field>
+
+  <!-- crowdsec_firewall_verbose -->
+  <field>
+    <id>general.crowdsec_firewall_verbose</id>
+    <label>Verbose log for firewall bouncer</label>
+    <type>checkbox</type>
+    <help>Verbose /var/log/crowdsec/crowdsec-firewall-bouncer.log. Enable this
+      for debugging.</help>
+  </field>
+
+</form>

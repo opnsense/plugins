@@ -1,5 +1,21 @@
 QEMU Guest Agent for FreeBSD
 
 Port homepage https://github.com/aborche/qemu-guest-agent
-
 WWW: http://wiki.qemu.org/Main_Page
+
+Plugin Changelog
+================
+
+1.2
+
+Changed:
+* switch to most recent version of qemu guest agent
+
+1.1
+
+Fixed:
+* fix service startup by loading required kernel module (#2405)
+
+1.0
+
+* Initial release

@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
+        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443 or unix@socket-name. Use TAB key to complete typing a listen address.]]></help>
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -212,6 +212,27 @@
         <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
     </field>
     <field>
+        <id>frontend.prometheus_enabled</id>
+        <label>Prometheus Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's Prometheus exporter.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.prometheus_path</id>
+        <label>Prometheus Path</label>
+        <type>text</type>
+        <help><![CDATA[The path where the Prometheus exporter can be accessed.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.connectionBehaviour</id>
+        <label>Connection Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"httpclose"</b> configures HAProxy to close connections with the server and the client as soon as the request and the response are received. It will also check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>Basic Authentication</label>
         <type>header</type>
         <style>mode_table table_http</style>
@@ -242,7 +263,7 @@
     </field>
     <field>
         <id>frontend.tuning_maxConnections</id>
-        <label>Max. Connections</label>
+        <label>Maximum Connections</label>
         <type>text</type>
         <help><![CDATA[Set the maximum number of concurrent connections for this Public Service.]]></help>
     </field>
@@ -274,6 +295,13 @@
         <allownew>true</allownew>
         <help><![CDATA[Choose CPU affinity rules that should be applied to this Public Service.]]></help>
         <hint>Choose CPU affinity rules.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.tuning_shards</id>
+        <label>Shards</label>
+        <type>text</type>
+        <help><![CDATA[This option automatically creates the specified number of listeners for every IP:port combination and evenly distributes them among available threads. This can sometimes be useful when using very large thread counts where the in-kernel locking on a single socket starts to cause a significant overhead.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -322,14 +350,14 @@
         <id>frontend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://docs.haproxy.org/2.6/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
         <hint>Choose a stick-table type.</hint>
     </field>
     <field>
         <id>frontend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://docs.haproxy.org/2.6/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>frontend.stickiness_expire</id>
@@ -356,7 +384,7 @@
         <id>frontend.stickiness_counter_key</id>
         <label>Sticky counter key</label>
         <type>text</type>
-        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://docs.haproxy.org/2.6/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -411,13 +439,6 @@
     <field>
         <label>Advanced settings</label>
         <type>header</type>
-    </field>
-    <field>
-        <id>frontend.connectionBehaviour</id>
-        <label>Type</label>
-        <type>dropdown</type>
-        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"http-tunnel"</b> disables any HTTP processing past the first request and the first response. Option <b>"httpclose"</b> configures HAProxy to work in HTTP tunnel mode and check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side. With Option <b>"forceclose"</b> HAProxy will actively close the outgoing server channel as soon as the server has finished to respond and release some resources earlier.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>frontend.customOptions</id>

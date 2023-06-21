@@ -15,9 +15,56 @@ The server is fast, feature-rich, modular, and scalable.
 Plugin Changelog
 ================
 
+1.9.22
+
+* Add Proxy configuration page: HomeServer, HomeServerPool, Realm
+
+1.9.21
+
+* Add Certificate, StartTLS and Server port for LDAP Connection
+
+1.9.20
+
+* Remove TTLS-GTC from Default EAP Type (#2421)
+
+1.9.19
+
+* Allow to use LDAP in inner-tunnel (needed for LDAP authentication within 802.1X)
+
+1.9.18
+
+* Added support for fallback VLAN
+
+1.9.17
+
+* Added support for Extreme networks EXOS switch Extreme-Netlogin-Extended-VLAN VSA and policy for GEN2 (contributed by Pasi Suominen)
+* Allow setting of minimum TLS version
+
+1.9.16
+
+* Allow user to choose Elliptic Curve in EAP
+* Allow client secrets starting with hash sign
+
+1.9.15
+
+* Fixed validation of CIDR for client network ranges
+
+1.9.14
+
+* Updates comments in mods-enabled-eap to match upstream version 3.0.22
+* Set TLS minimum version to 1.0 for compatibility with older EAP clients
+
+1.9.13
+
+* Remove LEAP section from configuration
+
+1.9.12
+
+* Fix leading space in freeradius logformat (contributed by nan0)
+
 1.9.11
 
-Add IPv6 support to client IP
+* Add IPv6 support to client IP
 
 1.9.10
 

@@ -18,23 +18,28 @@
         <help><![CDATA[Select type of health check.]]></help>
     </field>
     <field>
+        <id>healthcheck.ssl</id>
+        <label>SSL preferences</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option forces encryption of all health checks over SSL, regardless of whether the server uses SSL or not for the normal traffic.]]></help>
+    </field>
+    <field>
+        <id>healthcheck.sslSNI</id>
+        <label>SSL SNI</label>
+        <type>text</type>
+        <help><![CDATA[The host name sent in the SNI TLS extension to the server. Overrides the server's SNI setting for health checks.]]></help>
+    </field>
+    <field>
         <id>healthcheck.interval</id>
         <label>Check interval</label>
         <type>text</type>
         <help><![CDATA[Select interval (in milliseconds) between two consecutive health checks. This value can be overriden in backend pool and real server configuration.]]></help>
     </field>
     <field>
-        <id>healthcheck.force_ssl</id>
-        <label>Force SSL</label>
-        <type>checkbox</type>
-        <help><![CDATA[This option forces encryption of all health checks over SSL, regardless of whether the server uses SSL or not for the normal traffic.]]></help>
-    </field>
-    <field>
         <id>healthcheck.checkport</id>
         <label>Port to check</label>
         <type>text</type>
-        <help><![CDATA[Provide the TCP communication port to use during check, i.e. 80 or 443.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Provide an optional TCP communication port to use during health checks, i.e. 80 or 443. The server port will used for health checks when no port is specified.]]></help>
     </field>
     <field>
         <label>HTTP check options</label>
@@ -91,7 +96,7 @@
         <id>healthcheck.http_value</id>
         <label>Value</label>
         <type>text</type>
-        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+        <help><![CDATA[Specify a value to match with the expression.]]></help>
     </field>
     <field>
         <label>Custom TCP check</label>
@@ -107,7 +112,7 @@
         <id>healthcheck.tcp_sendValue</id>
         <label>Send data</label>
         <type>text</type>
-        <help><![CDATA[Specify a value to match with the expression. <br/><div class="text-info"><b>NOTE:</b> It is important to note that the responses will be limited to a certain size defined by the global "tune.chksize" option, which defaults to 16384 bytes.</div>]]></help>
+        <help><![CDATA[Specify a value to match with the expression.]]></help>
     </field>
     <field>
         <id>healthcheck.tcp_matchType</id>

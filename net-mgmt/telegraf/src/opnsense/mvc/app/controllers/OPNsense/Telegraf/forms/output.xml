@@ -36,6 +36,12 @@
         <help>Set the password for authentication.</help>
     </field>
     <field>
+        <id>output.influx_insecure_skip_verify</id>
+        <label>Disable SSL verification</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
         <id>output.influx_v2_enable</id>
         <label>Enable Influx v2 Output</label>
         <type>checkbox</type>
@@ -64,6 +70,18 @@
         <label>Influx v2 Bucket</label>
         <type>text</type>
         <help>Set the name of the bucket in Influx v2.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_insecure_skip_verify</id>
+        <label>Disable SSL verification v2</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
+        <id>output.influx_v2_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Flush timeout for the v2 Telegraf output in seconds, formatted as a string. If not provided, will default to 5. 0 means no timeout, but is not recommended. Increase if you get timeout errors.</help>
     </field>
     <field>
         <id>output.graphite_enable</id>
@@ -130,6 +148,18 @@
         <label>Elasticsearch URL</label>
         <type>text</type>
         <help>Set the URL where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <id>output.elastic_username</id>
+        <label>Elasticsearch Username</label>
+        <type>text</type>
+        <help>Optional HTTP basic authentication details for Elasticsearch.</help>
+    </field>
+        <field>
+        <id>output.elastic_password</id>
+        <label>Elasticsearch Password</label>
+        <type>text</type>
+        <help>Optional HTTP basic authentication details for Elasticsearch.</help>
     </field>
     <field>
         <id>output.elastic_timeout</id>

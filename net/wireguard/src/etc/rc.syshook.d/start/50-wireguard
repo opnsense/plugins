@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# reconfigure routing for wireguard
-/usr/local/etc/rc.routing_configure
+# start again to fix problems with failed name resolution (no need to restart)
+configctl -dq wireguard start

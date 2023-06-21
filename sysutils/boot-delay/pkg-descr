@@ -1,4 +1,0 @@
-This plugin simply adds 10 seconds to the bootup process in order to
-wait for e.g. USB drivers / devices to become ready.  The behaviour
-matches the initial installer media behaviour, which is normally
-removed after the first successful boot.

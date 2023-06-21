@@ -36,6 +36,14 @@
     <help>Enable learning mode means nothing is blocked but logged.</help>
   </field>
   <field>
+    <id>location.secrules_errorpage</id>
+    <label>Violation Error Page</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <help>Select a custom error page to display instead of the default builtin error pages for security rule violations. Only the page content itself is used. Status code rewriting and redirection is not supported.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>location.xss_block_score</id>
     <label>Block XSS Score</label>
     <type>text</type>
@@ -247,7 +255,7 @@
     <label>TLS SNI Forwarding</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>Check this box, if you want the client SNI header to be used instead of your backend hostname. This settings overrides the configured hostname in the upstream configuration.</help>
+    <help>Check this box, if you want to passthrough the hostname you get from the downstream to the upstream connection. Can be overriden in the upstream's hostname configuration. Please note, that TLS server certificates are validated against this servername. If the server name passed by the client leads to different processing on the upstream server (i.e. different virtual host is choosen), this may cause security leaks.</help>
   </field>
   <field>
     <id>location.proxy_buffer_size</id>
@@ -282,7 +290,7 @@
     <label>Proxy Send Timeout</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Enter a custom timout between data it sent to the client after which the connection is closed. </help>
+    <help>Enter a custom timout between data it sent to the client after which the connection is closed.</help>
   </field>
   <field>
     <id>location.proxy_buffering</id>
@@ -311,5 +319,12 @@
     <type>checkbox</type>
     <advanced>true</advanced>
     <help>If you enable this option, nginx will not terminate the connection to the backend server if the client connection is terminated.</help>
+  </field>
+  <field>
+    <id>location.errorpages</id>
+    <label>Error Pages</label>
+    <style>selectpicker</style>
+    <type>select_multiple</type>
+    <help>Select custom error pages to display instead of the default builtin error pages. Selection will override error pages configured on HTTP server.</help>
   </field>
 </form>

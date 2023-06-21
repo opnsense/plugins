@@ -1,6 +1,6 @@
 {% if helpers.exists('OPNsense.HAProxy.general.enabled') and OPNsense.HAProxy.general.enabled|default("0") == "1" %}
 haproxy_enable=YES
-haproxy_var_script="/usr/local/opnsense/scripts/OPNsense/HAProxy/setup.sh"
+haproxy_setup="/usr/local/opnsense/scripts/OPNsense/HAProxy/setup.sh"
 haproxy_pidfile="/var/run/haproxy.pid"
 haproxy_config="/usr/local/etc/haproxy.conf"
 {% if helpers.exists('OPNsense.HAProxy.general.storeOcsp') and OPNsense.HAProxy.general.storeOcsp|default("0") == "1" %}

@@ -73,6 +73,10 @@
     #frm_ipacl_dlg .col-md-5 {
         width: 25%;
     }
+    #row_snihostname\.data .row,
+    #row_ipacl\.data .row {
+        padding-top: 5px;
+    }
     #row_snihostname\.data .row div,
     #row_ipacl\.data .row div {
         padding: 0;
@@ -80,6 +84,9 @@
     #sni_hostname_mapdlg .bootstrap-select,
     #frm_ipacl_dlg .bootstrap-select {
         width: 100% !important;
+    }
+    .filter-option {
+        padding: inherit !important;
     }
 
 </style>
@@ -123,6 +130,9 @@
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-errorpages" href="#subtab_nginx-http-errorpages">{{ lang._('Error Pages')}}</a>
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-tls-fingerprint" href="#subtab_nginx-http-tls-fingerprint">{{ lang._('TLS Fingerprint (Advanced)')}}</a>
@@ -213,17 +223,18 @@
         <table id="grid-location" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="locationdlg">
             <thead>
             <tr>
-                <th data-column-id="description" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="urlpattern" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Pattern') }}</th>
-                <th data-column-id="path_prefix" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('URL Path Prefix') }}</th>
-                <th data-column-id="matchtype" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Match Type') }}</th>
-                <th data-column-id="upstream" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('Upstream') }}</th>
-                <th data-column-id="waf_status" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('WAF Status') }}</th>
-                <th data-column-id="xss_block_score" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('XSS Score') }}</th>
-                <th data-column-id="sqli_block_score" data-type="string" data-sortable="true"  data-visible="false">{{ lang._('SQLi Score') }}</th>
-                <th data-column-id="custom_policy" data-type="string" data-width="50%" data-sortable="true"  data-visible="false">{{ lang._('WAF Policies') }}</th>
-                <th data-column-id="force_https" data-type="boolean" data-width="10em" data-sortable="true"  data-visible="true">{{ lang._('Force HTTPS') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="urlpattern" data-type="string" data-sortable="true" data-visible="true">{{ lang._('URL Pattern') }}</th>
+                <th data-column-id="path_prefix" data-type="string" data-sortable="true" data-visible="true">{{ lang._('URL Path Prefix') }}</th>
+                <th data-column-id="matchtype" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Match Type') }}</th>
+                <th data-column-id="upstream" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Upstream') }}</th>
+                <th data-column-id="waf_status" data-type="string" data-sortable="true" data-visible="true">{{ lang._('WAF Status') }}</th>
+                <th data-column-id="xss_block_score" data-type="string" data-sortable="true" data-visible="false">{{ lang._('XSS Score') }}</th>
+                <th data-column-id="sqli_block_score" data-type="string" data-sortable="true" data-visible="false">{{ lang._('SQLi Score') }}</th>
+                <th data-column-id="custom_policy" data-type="string" data-width="50%" data-sortable="true" data-visible="false">{{ lang._('WAF Policies') }}</th>
+                <th data-column-id="force_https" data-type="numeric" data-width="10em" data-sortable="true" data-visible="true" data-formatter="boolean">{{ lang._('Force HTTPS') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -244,11 +255,12 @@
         <table id="grid-upstreamserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamserverdlg">
             <thead>
             <tr>
-                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="server" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Server') }}</th>
-                <th data-column-id="port" data-type="string" data-sortable="true"  data-visible="true">{{ lang._('Port') }}</th>
-                <th data-column-id="priority" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Priority') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="description" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="server" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Server') }}</th>
+                <th data-column-id="port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
+                <th data-column-id="priority" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Priority') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -270,11 +282,12 @@
         <table id="grid-upstream" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="upstreamdlg">
             <thead>
             <tr>
-                <th data-column-id="description" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Description') }}</th>
-                <th data-column-id="serverentries" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Servers') }}</th>
-                <th data-column-id="load_balancing_algorithm" data-type="string" data-sortable="false"  data-visible="false">{{ lang._('Load Balancing') }}</th>
-                <th data-column-id="tls_enable" data-type="boolean" data-width="12em" data-sortable="false"  data-visible="true">{{ lang._('TLS Enabled') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="description" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Description') }}</th>
+                <th data-column-id="serverentries" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Servers') }}</th>
+                <th data-column-id="load_balancing_algorithm" data-type="string" data-sortable="false" data-visible="false">{{ lang._('Load Balancing') }}</th>
+                <th data-column-id="tls_enable" data-type="numeric" data-width="12em" data-sortable="false" data-visible="true" data-formatter="boolean">{{ lang._('TLS Enabled') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -294,8 +307,8 @@
         <table id="grid-credential" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="credentialdlg">
             <thead>
             <tr>
-                <th data-column-id="username" data-type="string" data-sortable="false"  data-visible="true">{{ lang._('Username') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="username" data-type="string" data-sortable="false" data-visible="true">{{ lang._('Username') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -317,7 +330,7 @@
             <tr>
                 <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
                 <th data-column-id="users" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Users') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -337,14 +350,16 @@
         <table id="grid-httpserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="httpserverdlg">
             <thead>
                 <tr>
+                    <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="servername" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Servername') }}</th>
                     <th data-column-id="locations" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Locations') }}</th>
                     <th data-column-id="root" data-type="string" data-sortable="true" data-visible="false">{{ lang._('File System Root') }}</th>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
-                    <th data-column-id="https_only" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Only') }}</th>
-                    <th data-column-id="listen_http_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Port') }}</th>
-                    <th data-column-id="listen_https_port" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Port') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="https_only" data-type="numeric" data-width="7em" data-sortable="true" data-visible="true" data-formatter="boolean">{{ lang._('HTTPS Only') }}</th>
+                    <th data-column-id="listen_http_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTP Address') }}</th>
+                    <th data-column-id="listen_https_address" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('HTTPS Address') }}</th>
+                    <th data-column-id="default_server" data-type="numeric" data-width="7em" data-sortable="true" data-visible="true" data-formatter="boolean">{{ lang._('Default') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -364,10 +379,11 @@
         <table id="grid-streamserver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="streamserverdlg">
             <thead>
                 <tr>
+                    <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
                     <th data-column-id="certificate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Certificate') }}</th>
-                    <th data-column-id="udp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('UDP') }}</th>
-                    <th data-column-id="listen_port" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Port') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="udp" data-type="numeric" data-sortable="true" data-visible="true" data-formatter="boolean">{{ lang._('UDP') }}</th>
+                    <th data-column-id="listen_address" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Address') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -388,10 +404,10 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="source" data-type="boolean" data-sortable="true" data-visible="true">{{ lang._('Source URL') }}</th>
+                    <th data-column-id="source" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Source URL') }}</th>
                     <th data-column-id="destination" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Destination URL') }}</th>
                     <th data-column-id="flag" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Flag') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -422,11 +438,11 @@
             <thead>
                 <tr>
                     <th data-column-id="name" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="operator" data-type="boolean" data-width="12em" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
+                    <th data-column-id="operator" data-type="string" data-width="12em" data-sortable="true" data-visible="true">{{ lang._('Operator') }}</th>
                     <th data-column-id="value" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Value') }}</th>
                     <th data-column-id="naxsi_rules" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Rules') }}</th>
                     <th data-column-id="action" data-type="string" data-width="12em" data-sortable="true" data-visible="true">{{ lang._('Action') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -446,14 +462,14 @@
         <table id="grid-naxsirule" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="naxsiruledlg">
             <thead>
                 <tr>
+                    <th data-column-id="identifier" data-type="numeric" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('ID') }}</th>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="ruletype" data-type="boolean" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
+                    <th data-column-id="ruletype" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Rule Type') }}</th>
                     <th data-column-id="match_type" data-type="string" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Match Type') }}</th>
-                    <th data-column-id="identifier" data-type="string" data-sortable="true" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="score" data-type="integer" data-width=7em" data-sortable="true" data-visible="true">{{ lang._('Score') }}</th>
+                    <th data-column-id="score" data-type="numeric" data-width="7em" data-sortable="true" data-visible="true">{{ lang._('Score') }}</th>
                     <th data-column-id="match_value" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Value') }}</th>
                     <th data-column-id="message" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Message') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -474,7 +490,12 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="referrer" data-type="string" data-sortable="true" data-visible="false">{{ lang._('Referrer') }}</th>
+                    <th data-column-id="xssprotection" data-type="string" data-sortable="true" data-visible="true">{{ lang._('XSS Protection') }}</th>
+                    <th data-column-id="hsts" data-type="string" data-sortable="true" data-visible="true">{{ lang._('HSTS') }}</th>
+                    <th data-column-id="csp" data-type="string" data-sortable="true" data-visible="true">{{ lang._('CSP') }}</th>
+                    <th data-column-id="csp_details" data-type="string" data-sortable="true" data-visible="false">{{ lang._('CSP Rules') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -495,10 +516,10 @@
             <thead>
                 <tr>
                     <th data-column-id="path" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Path') }}</th>
-                    <th data-column-id="size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="inactive" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="max_size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="size" data-type="numeric" data-sortable="true" data-visible="true">{{ lang._('Size') }}</th>
+                    <th data-column-id="inactive" data-type="numeric" data-sortable="true" data-visible="true">{{ lang._('Inactive') }}</th>
+                    <th data-column-id="max_size" data-type="numeric" data-sortable="true" data-visible="true">{{ lang._('Max Size') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -523,7 +544,7 @@
                     <th data-column-id="size" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Size') }}</th>
                     <th data-column-id="rate" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Rate') }}</th>
                     <th data-column-id="rate_unit" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Rate Unit') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -548,7 +569,7 @@
                     <th data-column-id="connection_count" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Connection Count') }}</th>
                     <th data-column-id="burst" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Burst') }}</th>
                     <th data-column-id="nodelay" data-type="string" data-sortable="true" data-visible="true">{{ lang._('No Delay') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -569,7 +590,7 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -590,7 +611,7 @@
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -606,12 +627,35 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-errorpages" class="tab-pane fade">
+        <table id="grid-errorpage" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="errorpage_dlg">
+            <thead>
+                <tr>
+                    <th data-column-id="name" data-width="15%" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="statuscodes" data-type="string" data-formatter="statuscodes" data-sortable="false" data-visible="true">{{ lang._('Status Codes') }}</th>
+                    <th data-column-id="response" data-width="13em" data-type="string" data-formatter="response" data-sortable="true">{{ lang._('Response') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-http-tls-fingerprint" class="tab-pane fade">
         <table id="grid-tls_fingerprint" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="tls_fingerprint_dlg">
             <thead>
                 <tr>
                     <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -635,7 +679,7 @@
                     <th data-column-id="host" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Host') }}</th>
                     <th data-column-id="facility" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Facility') }}</th>
                     <th data-column-id="severity" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Severity') }}</th>
-                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -664,11 +708,12 @@
 {{ partial("layout_partials/base_dialog",['fields': httprewrite,'id':'httprewritedlg', 'label':lang._('Edit URL Rewrite')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_custom_policy,'id':'custompolicydlg', 'label':lang._('Edit WAF Policy')]) }}
 {{ partial("layout_partials/base_dialog",['fields': naxsi_rule,'id':'naxsiruledlg', 'label':lang._('Edit Naxsi Rule')]) }}
-{{ partial("layout_partials/base_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
+{{ partial("OPNsense/Nginx/tabbed_dialog",['fields': security_headers,'id':'security_headersdlg', 'label':lang._('Edit Security Headers')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
 {{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
+{{ partial("layout_partials/base_dialog",['fields': errorpage,'id':'errorpage_dlg', 'label':lang._('Edit Error Page')]) }}
 {{ partial("layout_partials/base_dialog",['fields': tls_fingerprint,'id':'tls_fingerprint_dlg', 'label':lang._('Edit TLS Fingerprint')]) }}
 {{ partial("layout_partials/base_dialog",['fields': syslog_target,'id':'syslog_target_dlg', 'label':lang._('Edit SYSLOG Target')]) }}

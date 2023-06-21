@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2017-2019 Frank Wall
+Copyright (C) 2017-2021 Frank Wall
 OPNsense® is Copyright © 2014-2015 by Deciso B.V.
 All rights reserved.
 
@@ -92,17 +92,21 @@ POSSIBILITY OF SUCH DAMAGE.
                 .hide();
         }
 
-        // SFTP - Identity show button
-        (function ($identityType) {
+        // SFTP/SSH - Identity show button
+        [
+            {selector: '#action\\.sftp_identity_type', group: "configd_upload_sftp", action: "sftpGetIdentity"},
+            {selector: '#action\\.remote_ssh_identity_type', group: "configd_remote_ssh", action: "sshGetIdentity"},
+        ].forEach(function(config) {
+            var $identityType = $(config.selector);
             var identityDiv = makeStatusDiv($identityType);
 
-            makeButton("{{ lang._('Show Identity') }}", "upload_sftp", "btn-info")
+            makeButton("{{ lang._('Show Identity') }}", config.group, "btn-info")
                 .click(function () {
                     identityDiv.hide();
                     var button = $(this);
                     button.prop('disabled', true).find(".fa-spinner").show();
 
-                    ajaxCall("/api/acmeclient/actions/sftpGetIdentity", getFormData("DialogAction").action, function (data, status) {
+                    ajaxCall("/api/acmeclient/actions/" + config.action, getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
                         if (status === "success" && data.status === "ok") {
@@ -117,10 +121,15 @@ POSSIBILITY OF SUCH DAMAGE.
             $identityType.change(function() {
                 identityDiv.hide();
             });
-        })($('#action\\.sftp_identity_type'));
+        });
 
-        // SFTP - Connection test button
-        (function ($user) {
+        // SFTP/SSH - Connection test button
+        [
+            {selector: '#action\\.sftp_user', group: "configd_upload_sftp", action: "sftpTestConnection", success: "{{ lang._('Connection and upload test succeeded.') }}"},
+            {selector: '#action\\.remote_ssh_user', group: "configd_remote_ssh", action: "sshTestConnection", success: "{{ lang._('Connection test succeeded.') }}"},
+        ].forEach(function(config) {
+            var $user = $(config.selector);
+
             var statusDiv = makeStatusDiv($user, 'alert-success').html(
                 '<div class="message"></div>'
                 + '<div class="detail-enabler" style="cursor: pointer"><i class="fa fa-plus-square"></i></div>'
@@ -145,13 +154,13 @@ POSSIBILITY OF SUCH DAMAGE.
                 {msg: "{{ lang._('Test failed, see details.') }}"},
             ];
 
-            makeButton("{{ lang._('Test Connection') }}", "upload_sftp")
+            makeButton("{{ lang._('Test Connection') }}", config.group)
                 .click(function () {
                     statusDiv.hide();
                     var button = $(this);
                     button.prop('disabled', true).find(".fa-spinner").show();
 
-                    ajaxCall("/api/acmeclient/actions/sftpTestConnection", getFormData("DialogAction").action, function (data, status) {
+                    ajaxCall("/api/acmeclient/actions/" + config.action, getFormData("DialogAction").action, function (data, status) {
                         button.prop('disabled', false).find(".fa-spinner").hide();
 
                         var message = "",
@@ -161,7 +170,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         if (status === "success") {
                             if (data.success === true) {
                                 statusClass = "alert-success";
-                                message = "{{ lang._('Connection and upload test succeeded.') }}"
+                                message = config.success
                             } else {
                                 detail = JSON.stringify(data, null, '  ').replace(/\\"/g, "'");
 
@@ -188,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         statusDiv.removeClass("alert-success alert-warning").addClass(statusClass).show();
                     });
                 });
-        })($('#action\\.sftp_user'));
+        });
 
         // Eagerly hiding method tables to avoid contents popping up when opening the dialog for the first time.
         $(".method_table").hide();
@@ -196,17 +205,33 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#actions">{{ lang._('Automation') }}</a></li>
+<ul class="nav nav-tabs" role="tablist" id="maintabs">
+    <li {% if showIntro|default('0')=='1' %}class="active"{% endif %}><a data-toggle="tab" id="actions-introduction" href="#subtab_actions-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    <li {% if showIntro|default('0')=='0' %}class="active"{% endif %}><a data-toggle="tab" id="actions-tab" href="#actions"><b>{{ lang._('Automations') }}</b></a></li>
 </ul>
 
-<div class="tab-content content-box tab-content">
-    <div id="actions" class="tab-pane fade in active">
+<div class="content-box tab-content">
+
+    <div id="subtab_actions-introduction" class="tab-pane fade {% if showIntro|default('0')=='1' %}in active{% endif %}">
+        <div class="col-md-12">
+            <h1>{{ lang._('Automations') }}</h1>
+            <p>{{ lang._('Automations are a completely optional feature, but they can make life much easier, especially when using short-lived certificates. Typically use-cases include:') }}</p>
+            <ul>
+              <li>{{ lang._("%sRestart a service%s when a certificate was renewed to ensure that the newest certificate is being used. This is especially useful when using an ACME certificate for the OPNsense WebGUI or in combination with the HAProxy or NGINX plugins. Any OPNsense core service or plugin service may be restarted.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("Copy a certificate to one or more other hosts using the %sSFTP/SSH protocol%s. This way OPNsense can be used as a central authority for ACME certificates and secrets for DNS providers can be kept on a secure device.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("Deploy a certificate to an external service, for example a %sCDN%s provider.") | format('<b>', '</b>') }}</li>
+            </ul>
+            <p>{{ lang._("This plugin can theoretically utilize most of %sacme.sh's webhooks%s. However, not all webhooks are currently implemented. Feel free to submit a %sfeature request%s if support for a acme.sh webhook should be added to the plugin.") | format('<a href="https://github.com/acmesh-official/acme.sh/wiki/deployhooks">', '</a>', '<a href="https://github.com/opnsense/plugins/issues">', '</a>') }}</p>
+        </div>
+    </div>
+
+    <div id="actions" class="tab-pane fade {% if showIntro|default('0')=='0' %}in active{% endif %}">
         <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="type" data-type="string">{{ lang._('Command') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
@@ -225,6 +250,7 @@ POSSIBILITY OF SUCH DAMAGE.
             </tfoot>
         </table>
     </div>
+
 </div>
 
 {# include dialogs #}

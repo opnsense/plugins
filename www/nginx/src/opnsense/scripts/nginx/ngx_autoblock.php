@@ -166,12 +166,9 @@ function create_work_files($include_tls_handshake)
                 @touch($target);
                 $work_files[] = $target;
             } else {
-                log_error("Failed renaming '$source' to '$target'. Skipping source for next run.");
+                log_msg("Failed renaming '$source' to '$target'. Skipping source for next run.");
             }
         }
-    } else {
-        //Concurrent invocation. Can be silently ignored since no work files are collected.
-        //log_error("Skipping processing. Missing: " . join(", ", array_diff(array_keys($mapping), $existing_sources)));
     }
 
     reopen_logs();
@@ -259,8 +256,19 @@ $banned_ips = (function () {
     // Reading stored banned IPs from config
     $model = new Nginx();
     $alias_ips = [];
-    foreach ($model->ban->iterateItems() as $entry) {
-        $alias_ips[] = (string)$entry->ip;
+    $ban_ttl = intval((string)$model->general->ban_ttl);
+    if ($ban_ttl && ($ban_ttl > 0)) {
+        $min_timestamp = time() - 60 * $ban_ttl;
+    }
+    $change_required = false;
+    foreach ($model->ban->iterateItems() as $id => $entry) {
+        if ($min_timestamp && (intval((string)$entry->time) < $min_timestamp)) {
+            // Delete expired records from config
+            $model->ban->Del($id);
+            $change_required = true;
+        } else {
+            $alias_ips[] = (string)$entry->ip;
+        }
     }
 
     // Collecting all new IPs from ban file not yet in $alias_ips.
@@ -284,8 +292,7 @@ $banned_ips = (function () {
     })();
 
     // Transfering new IPs into $alias_ips and store them permanently.
-    $new_and_alias_ips = (function () use ($model, $new_ips, $alias_ips) {
-        $change_required = false;
+    $new_and_alias_ips = (function () use ($model, $new_ips, $alias_ips, $change_required) {
 
         foreach ($new_ips as $new_ip) {
             $alias_ips[] = $new_ip;

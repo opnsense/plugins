@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Firewall/Filter</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <migration_prefix>MFP</migration_prefix>
     <description>
         OPNsense firewall filter rules
@@ -112,6 +112,10 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
+                <nonat type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </nonat>
                 <sequence type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>99999</MaximumValue>

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -50,7 +50,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      * @param $accountuuid string the UUID of the account object
      * @return bool
      */
-    public function init(string $certid, string $accountuuid)
+    public function init(string $certid, string $accountuuid, bool $certecc = false)
     {
         // Get config object
         $this->loadConfig(self::CONFIG_PATH, $this->uuid);
@@ -68,22 +68,27 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->account_uuid = (string)$account->getUuid();
 
         // Teach acme.sh about DNS API hook location
-        $this->acme_env['_SCRIPT_HOME'] = '/usr/local/share/examples/acme.sh';
+        $this->acme_env['_SCRIPT_HOME'] = self::ACME_SCRIPT_HOME;
 
         // Set log level
         $this->setLoglevel();
 
-        // Set Let's Encrypt environment
-        $this->setEnvironment();
+        // Set ACME CA
+        $this->setCa($accountuuid);
 
         // Store acme hook
         switch ((string)$this->config->method) {
             case 'dns01':
                 $this->acme_args[] = LeUtils::execSafe('--dns %s', (string)$this->config->dns_service);
-                $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
+                if (! (string)$this->config->dns_sleep == '0') {
+                    $this->acme_args[] = LeUtils::execSafe('--dnssleep %s', (string)$this->config->dns_sleep);
+                }
                 break;
             case 'http01':
-                $this->acme_args[] = '--webroot /var/etc/acme-client/challenges';
+                $this->acme_args[] = '--webroot ' . self::ACME_WEBROOT;
+                break;
+            case 'tlsalpn01':
+                $this->acme_args[] = '--alpn';
                 break;
         }
 
@@ -93,6 +98,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--fullchainpath %s', sprintf(self::ACME_FULLCHAIN_FILE, $this->cert_id));
+
+        // ECC cert
+        $this->cert_ecc = $certecc;
 
         return true;
     }
@@ -133,16 +141,16 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Issue or renew
         $acme_action = $renew == true ? 'renew' : 'issue';
 
-        // Handle special key types
-        if ($this->cert_keylength == 'ec256' || $this->cert_keylength == 'ec384') {
+        // Handle ECC certs
+        if ($this->cert_ecc) {
             if ($renew == true) {
                 // If it's a renew then pass --ecc to acme client to locate the correct cert directory
                 $this->acme_args[] = '--ecc';
             }
         }
 
-        // Use individual account config for each environment
-        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->environment;
+        // Use individual account config for each CA
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
@@ -159,7 +167,8 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // NOTE: We "export" certificates to our own directory, so we don't have to deal
         // with domain names in filesystem, but instead can use the ID of our certObj, which
         // will never change.
-        $acmecmd = '/usr/local/sbin/acme.sh '
+        $acmecmd = self::ACME_CMD
+          . ' '
           . "--${acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);

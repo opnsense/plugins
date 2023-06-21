@@ -6,6 +6,25 @@ the Juniper SSL VPN which is now known as Pulse Connect Secure.
 Plugin Changelog
 ================
 
+1.4.4
+
+* Improve compatibility via useragent="AnyConnect"
+* Register interfaces on reconfigure
+* Ignore server-side DNS servers
+
+1.4.3
+
+* Add support for one-time password generation
+* Permit additional characters in group name
+
+1.4.2
+
+* Allow usernames up to 64 characters
+
+1.4.1
+
+* Allow selection of different protocols
+
 1.4.0
 
 * Add "pin-sha256" certificate hash

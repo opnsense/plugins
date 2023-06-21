@@ -4,7 +4,9 @@ ldap {
 {%     if helpers.exists('OPNsense.freeradius.ldap.server') and OPNsense.freeradius.ldap.server != '' %}
         server = '{{ OPNsense.freeradius.ldap.protocol }}://{{ OPNsense.freeradius.ldap.server }}'
 {%     endif %}
-
+{%     if helpers.exists('OPNsense.freeradius.ldap.serverport') and OPNsense.freeradius.ldap.serverport != '' %}
+        port = '{{ OPNsense.freeradius.ldap.serverport }}'
+{%     endif %}
 {%     if helpers.exists('OPNsense.freeradius.ldap.identity') and OPNsense.freeradius.ldap.identity != '' %}
         identity = '{{ OPNsense.freeradius.ldap.identity }}'
 {%     endif %}
@@ -146,7 +148,16 @@ ldap {
 
         }
         tls {
+	{%     if helpers.exists('OPNsense.freeradius.ldap.ldapstarttls') and OPNsense.freeradius.ldap.ldapstarttls == '1' %}
+                start_tls = yes
+        {%     else %}
+                start_tls = no
+        {%     endif %}
                 require_cert    = 'allow'
+        {%     if helpers.exists('OPNsense.freeradius.ldap.ldapcert') and OPNsense.freeradius.ldap.ldapcert != '' %}
+                certificate_file = ${certdir}/cert_ldap.pem
+                private_key_file = ${certdir}/cert_ldap.pem
+        {%     endif %}
         }
         pool {
                 start = ${thread[pool].start_servers}

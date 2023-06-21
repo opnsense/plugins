@@ -1,5 +1,5 @@
 <% let count = 0; %><table class="table table-striped">
-    <thead>
+    <thead class="sticky-top">
         <tr>
             <% if (log_type === 'errors' || log_type === 'stream_errors') {
             count = 5; %>
@@ -31,41 +31,47 @@
         </tr>
         <tr class="filter">
             <% if (log_type === 'errors' || log_type === 'stream_errors') { %>
-            <td><input type="text" value="<%= model.escape('date') %>" name="date" /></td>
-            <td><input type="text" value="<%= model.escape('time') %>" name="time" /></td>
-            <td><input type="text" value="<%= model.escape('severity') %>" name="severity" /></td>
-            <td><input type="text" value="<%= model.escape('number') %>" name="number" /></td>
-            <td><input type="text" value="<%= model.escape('message') %>" name="message" /></td>
+            <th class="active"><input type="text" value="<%= model.escape('date') %>" name="date" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('severity') %>" name="severity" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('number') %>" name="number" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('message') %>" name="message" /></th>
             <% } else if (log_type === 'accesses') { %>
-            <td><input type="text" value="<%= model.escape('time') %>" name="time" /></td>
-            <td><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></td>
-            <td><input type="text" value="<%= model.escape('username') %>" name="username" /></td>
-            <td><input type="text" value="<%= model.escape('status') %>" name="status" /></td>
-            <td><input type="text" value="<%= model.escape('size') %>" name="size" /></td>
-            <td><input type="text" value="<%= model.escape('http_referer') %>" name="http_referer" /></td>
-            <td><input type="text" value="<%= model.escape('user_agent') %>" name="user_agent" /></td>
-            <td><input type="text" value="<%= model.escape('forwarded_for') %>" name="forwarded_for" /></td>
-            <td><input type="text" value="<%= model.escape('request_line') %>" name="request_line" /></td>
+            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('username') %>" name="username" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('status') %>" name="status" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('size') %>" name="size" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('http_referer') %>" name="http_referer" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('user_agent') %>" name="user_agent" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('forwarded_for') %>" name="forwarded_for" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('request_line') %>" name="request_line" /></th>
             <% } else { %>
-            <td><input type="text" value="<%= model.escape('time') %>" name="time" /></td>
-            <td><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></td>
-            <td><input type="text" value="<%= model.escape('status') %>" name="status" /></td>
-            <td><input type="text" value="<%= model.escape('bytes_sent') %>" name="bytes_sent" /></td>
-            <td><input type="text" value="<%= model.escape('bytes_received') %>" name="bytes_received" /></td>
-            <td><input type="text" value="<%= model.escape('session_time') %>" name="session_time" /></td>
+            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('status') %>" name="status" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('bytes_sent') %>" name="bytes_sent" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('bytes_received') %>" name="bytes_received" /></th>
+            <th class="active"><input type="text" value="<%= model.escape('session_time') %>" name="session_time" /></th>
             <% } %>
         </tr>
     </thead>
     <tbody>
     </tbody>
-    <tfoot>
+    <tfoot class="sticky-bottom">
         <tr>
-            <td>
-                <button class="btn btn-primary" id="paging_back"><i class="fa fa-backward" aria-hidden="true"></i></button>
-                <button class="btn btn-primary" id="paging_forward"><i class="fa fa-forward " aria-hidden="true"></i></button>
-            </td>
-            <td colspan="3">
-                Entries per page:
+            <th class="text-nowrap active">
+                <button class="btn btn-primary" id="paging_first" title="First Page"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_back" title="Previous Page"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="refresh" title="Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_forward" title="Next Page"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+                <button class="btn btn-primary" id="paging_last" title="Last Page"><i class="fa fa-fast-forward " aria-hidden="true"></i></button>
+            </th>
+            <th class="active">
+                Page <span id="currentpage">1</span>/<span id="pagecount">0</span>
+            </th>
+            <th class="active" colspan="2">
+                <label for="entrycount"><span id="entrycountdisplay">100</span> lines per page</label>
                 <input type="range" list="tickmarks" min="5" max="1000" step="5" id="entrycount" value="100" />
                 <datalist id="tickmarks">
                     <option value="5" label="5">
@@ -80,8 +86,8 @@
                     <option value="900">
                     <option value="1000" label="1000">
                 </datalist>
-            </td>
-            <td colspan="<%= count - 3 %>"></td>
+            </th>
+            <th class="active" colspan="<%= count - 4 %>">Found lines: <span id="resultcount">0</span>/<span id="totalcount">0</span></th>
         </tr>
     </tfoot>
 </table>

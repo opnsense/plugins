@@ -3,7 +3,7 @@
     <id>prefixlist.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
+    <help>If this Prefix-List should be enabled.</help>
   </field>
     <field>
     <id>prefixlist.description</id>
@@ -20,19 +20,19 @@
   <field>
     <id>prefixlist.version</id>
     <label>IP Version</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set the IP version to use.</help>
   </field>
   <field>
     <id>prefixlist.seqnumber</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL sequence number (10-99)</help>
+    <help>The ACL sequence number (1-4294967294)</help>
   </field>
   <field>
     <id>prefixlist.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>

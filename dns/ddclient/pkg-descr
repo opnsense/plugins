@@ -1,0 +1,105 @@
+ddclient is a Perl client used to update dynamic DNS entries for
+accounts on many dynamic DNS services.
+
+WWW: https://github.com/ddclient/ddclient
+
+Plugin Changelog
+================
+
+1.13
+
+* Fix not returning IP address as a string in Python backend (contributed by Sean Kelly)
+* Fix PID file handling for Python backend
+* Use API token for cloudflare Python backend if available (contributed by juantxorena)
+* Read proxied attribute from cloudflare hostname and send it back to prevent it being removed
+* Move accounting of "last accessed timestamp" to poller in Python backend
+* Change if= use to proper ifv4=/ifv6= use (contributed by Rhys Barrie)
+
+1.12
+
+* Add cloudflare implementation for Python backend (contributed by Thomas Cekal)
+* Allow custom target hostname for dyndns2 protocol in Python backend
+* Adjust for missing ipv6= option including upstream patches for use=/usev4=/usev6=
+* Require a selected interface through validation when interface check method is used
+
+1.11
+
+* Add Python backend support for custom ddclient-like implementation using the same input
+* Add AzureDNS backende using OAuth 2.0
+* Add dyndns2 backend using said API
+
+1.10
+
+* Update to ddclient 3.10.0
+* Add 1984 support (contributed by Luca Schoeneberg)
+* Add ClouDNS support (contributed by Luca Schoeneberg)
+* Add Dinahosting support (contributed by Luca Schoeneberg)
+* Add DNSExit support (contributed by Luca Schoeneberg)
+* Add DonDominio support (contributed by Luca Schoeneberg)
+* Add Freemyip support (contributed by Luca Schoeneberg)
+* Add godaddy support (contributed by Luca Schoeneberg)
+* Add Hetzner support (contributed by Luca Schoeneberg)
+* Add Key-Systems support (contributed by Luca Schoeneberg)
+* Add NearlyFreeSpeech.NET support (contributed by Luca Schoeneberg)
+* Add Njal.la support (contributed by satrapes)
+* Add sitelutions support (contributed by Luca Schoeneberg)
+* Add woima support (contributed by Luca Schoeneberg)
+* Add Yandex support (contributed by Luca Schoeneberg)
+
+1.9
+
+* Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
+* Configurable checkip (contributed by Christian Schulze)
+* Allow % characters in usernames
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
+
+1.8
+
+* Add a force action available via cron
+* Fix expected permission on ddclient.conf
+* Make service status and stop more reliable
+* Time out checkip script after 10 seconds
+
+1.7
+
+* Add current ip address and updated timestamp to search api and grid
+
+1.6
+
+* Add Gandi support (contributed by Neozlag)
+
+1.5
+
+* Add service control, XMLRPC registration and syslog target
+* Add Servercow support (contributed by FreddleSpl0it)
+
+1.4
+
+* Add advanced general setting to allow updates via IPv6
+* Enforce SSL on global level with account setting
+
+1.3
+
+* Add checkip settings per account using selected source interface when provided
+* Add OVH DynHost to the DynDNS providers (contributed by toxic0berliner)
+
+1.2
+
+* Add Loopia (contributed by Johan Lilja)
+* Add DNS Made Easy, FreeDNS and Dynu (contributed by Rene Schuster)
+* Add root zone and wildcard support
+
+1.1
+
+* Add spdyn, inwx and dns-o-matic (contributed by Rene Schuster)
+* Add Hurricane Electric provider (contributed by Netboy3)
+* Add option to force SSL, on by default (contributed by Robin Mueller)
+* Add Cloudflare and custom service (contributed by Robin Mueller)
+* Add STRATO provider (contributed by Alex Mi)
+* Add use interface as IP source
+* Fix ip6only.me (contributed by Robin Mueller)
+* Fix uppercase use in usernames
+
+1.0
+
+* Initial release

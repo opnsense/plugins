@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/collectd/general</mount>
     <description>Collectd configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -133,5 +133,13 @@
             <default>1</default>
             <Required>N</Required>
         </p_users_enable>
+        <p_tcpconns type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_tcpconns>
+        <p_ipstats type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </p_ipstats>
     </items>
 </model>

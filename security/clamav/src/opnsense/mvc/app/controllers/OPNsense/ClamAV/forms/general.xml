@@ -160,10 +160,16 @@
         <help>Number of files to be scanned within an archive, a document, or any other container file.</help>
     </field>
     <field>
+        <id>general.logverbose</id>
+        <label>ClamAV log verbose</label>
+        <type>checkbox</type>
+        <help>Enable ClamAV verbose logging.</help>
+    </field>
+    <field>
         <id>general.fc_logverbose</id>
         <label>Freshclam log verbose</label>
         <type>checkbox</type>
-        <help>Enable verbose logging.</help>
+        <help>Enable Freshclam verbose logging.</help>
     </field>
     <field>
         <id>general.fc_databasemirror</id>

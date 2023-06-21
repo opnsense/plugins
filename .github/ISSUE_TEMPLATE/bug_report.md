@@ -10,11 +10,9 @@ assignees: ''
 **Important notices**
 Before you add a new report, we ask you kindly to acknowledge the following:
 
-[-] I have read the contributing guide lines at https://github.com/opnsense/plugins/blob/master/CONTRIBUTING.md
-
-[-] I have searched the existing issues and I'm convinced that mine is new.
-
-[-] The title contains the plugin to which this issue belongs
+- [ ] I have read the contributing guide lines at https://github.com/opnsense/plugins/blob/master/CONTRIBUTING.md
+- [ ] I have searched the existing issues, open and closed, and I'm convinced that mine is new.
+- [ ] The title contains the plugin to which this issue belongs
 
 **Describe the bug**
 A clear and concise description of what the bug is, including last known working version (if any).

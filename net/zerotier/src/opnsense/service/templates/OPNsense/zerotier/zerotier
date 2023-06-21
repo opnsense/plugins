@@ -6,4 +6,3 @@ zerotier_enable="YES"
 {% else %}
 zerotier_enable="NO"
 {% endif %}
-zerotier_var_mfs="/var/db/zerotier-one"

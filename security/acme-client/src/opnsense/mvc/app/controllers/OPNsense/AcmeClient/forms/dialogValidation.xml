@@ -21,7 +21,7 @@
         <id>validation.method</id>
         <label>Challenge Type</label>
         <type>dropdown</type>
-        <help>Set the Let's Encrypt challenge type. You'll have to add configuration for the selected challenge type below.</help>
+        <help>Set the ACME challenge type. You'll have to add configuration for the selected challenge type below.</help>
     </field>
     <field>
         <label>HTTP-01</label>
@@ -48,7 +48,7 @@
         <id>validation.http_opn_interface</id>
         <label>Interface</label>
         <type>dropdown</type>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
     </field>
     <field>
         <id>validation.http_opn_ipaddresses</id>
@@ -56,7 +56,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the Let's Encrypt validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
         <hint>Enter IP addresses here. Finish each with TAB.</hint>
     </field>
     <field>
@@ -79,6 +79,42 @@
         <help>Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed.</help>
     </field>
     <field>
+        <label>TLS-ALPN-01</label>
+        <type>header</type>
+        <style>method_table method_table_tlsalpn01</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_service</id>
+        <label>TLS-ALPN Service</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <label>acme.sh TLS Web Server</label>
+        <type>header</type>
+        <style>table_tlsalpn table_tlsalpn_acme</style>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_autodiscovery</id>
+        <label>IP Auto-Discovery</label>
+        <type>checkbox</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose this option to let OPNsense try to auto-discover these IP addresses. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to an official IP address. Choose the interface where this IP address is currently configured. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with this IP address.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+    </field>
+    <field>
+        <id>validation.tlsalpn_acme_ipaddresses</id>
+        <label>IP Addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[The FQDN's used in your certificate must currently point to one or more official IP addresses. Enter the all of these IP addresses here. OPNsense will automatically create a temporary port forward to allow the ACME validation to succeed. This will lead to a short downtime of the service that is normally used with these IP addresses.<br/><div class="text-info"><b>NOTE:</b>This will ONLY work if the official IP addresses are LOCALLY configured on your OPNsense firewall.</div>]]></help>
+        <hint>Enter IP addresses here. Finish each with TAB.</hint>
+    </field>
+    <field>
         <label>DNS-01</label>
         <type>header</type>
         <style>method_table method_table_dns01</style>
@@ -90,9 +126,20 @@
     </field>
     <field>
         <id>validation.dns_sleep</id>
-        <label>Sleep Time</label>
+        <label>DNS Sleep Time</label>
         <type>text</type>
-        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 120 seconds.</help>
+        <help>The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 0 seconds, which causes Acme Client to check public DNS services every 10 seconds for up to 20 minutes. If set to a non-zero value, a fixed DNS sleep time will be used and the local DNS servers will be queried instead. A DNS sleep time of 120 seconds or more is recommended for some DNS APIs.</help>
+        <hint>0 for public DNS check or 1-84600s</hint>
+    </field>
+    <field>
+        <label>Active24</label>
+        <type>header</type>
+        <style>table_dns table_dns_active24</style>
+    </field>
+    <field>
+        <id>validation.dns_active24_token</id>
+        <label>Token</label>
+        <type>text</type>
     </field>
     <field>
         <label>Alwaysdata</label>
@@ -218,6 +265,12 @@
         <help>The token needs "Read" access to Zone.Zone and "Edit" access to Zone.DNS across all zones from an account.</help>
     </field>
     <field>
+        <id>validation.dns_cf_zone_id</id>
+        <label>CF Zone ID (Optional)</label>
+        <type>text</type>
+        <help>Note that specifying a Zone ID will limit this configuration to a single domain.</help>
+    </field>
+    <field>
         <label>ClouDNS</label>
         <type>header</type>
         <style>table_dns table_dns_cloudns</style>
@@ -268,6 +321,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>DDNSS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ddnss</style>
+    </field>
+    <field>
+        <id>validation.dns_ddnss_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>DirectAdmin</label>
         <type>header</type>
         <style>table_dns table_dns_da</style>
@@ -305,6 +368,21 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
+        <label>DNS.Services</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsservices</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Domain-Offensive LetsEncrypt</label>
         <type>header</type>
         <style>table_dns table_dns_doapi</style>
@@ -327,6 +405,21 @@
     <field>
         <id>validation.dns_do_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Domeneshop DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_domeneshop</style>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_token</id>
+        <label>Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_domeneshop_secret</id>
+        <label>Secret</label>
         <type>password</type>
     </field>
     <field>
@@ -526,6 +619,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>IONOS domain API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ionos</style>
+    </field>
+    <field>
+        <id>validation.dns_ionos_prefix</id>
+        <label>Prefix</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_ionos_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
@@ -550,6 +658,26 @@
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
+    </field>
+    <field>
+        <label>JD Cloud</label>
+        <type>header</type>
+        <style>table_dns table_dns_jd</style>
+    </field>
+    <field>
+        <id>validation.dns_jd_id</id>
+        <label>API key id</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_region</id>
+        <label>JD Cloud region</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_secret</id>
+        <label>API key secret</label>
+        <type>text</type>
     </field>
     <field>
         <label>Joker</label>
@@ -624,7 +752,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode</label>
+        <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -639,7 +767,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode Cloud API</label>
+        <label>Linode API (v4)</label>
         <type>header</type>
         <style>table_dns table_dns_linode_v4</style>
     </field>
@@ -727,6 +855,21 @@
         <help>MailinaBox Server FQDN</help>
     </field>
     <field>
+        <label>Mythic Beasts</label>
+        <type>header</type>
+        <style>table_dns table_dns_mythic_beasts</style>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mythic_beasts_secret</id>
+        <label>Secret</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Namecheap</label>
         <type>header</type>
         <style>table_dns table_dns_namecheap</style>
@@ -803,6 +946,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Njalla</label>
+        <type>header</type>
+        <style>table_dns table_dns_njalla</style>
+    </field>
+    <field>
+        <id>validation.dns_njalla_token</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>NS1.com</label>
         <type>header</type>
         <style>table_dns table_dns_nsone</style>
@@ -833,6 +986,16 @@
         <label>Zone</label>
         <type>text</type>
         <help>Optionally set the name of the hosted zone (e.g. example.com) as some DNS Providers require, like dyn.com's 'Standard DNS'.</help>
+    </field>
+    <field>
+        <label>online.net</label>
+        <type>header</type>
+        <style>table_dns table_dns_online</style>
+    </field>
+    <field>
+        <id>validation.dns_online_key</id>
+        <label>API key</label>
+        <type>text</type>
     </field>
     <field>
         <label>opnsense</label>
@@ -933,6 +1096,27 @@
         <type>text</type>
     </field>
     <field>
+        <label>Selfhost</label>
+        <type>header</type>
+        <style>table_dns table_dns_selfhost</style>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_selfhost_map</id>
+        <label>RID Mapping</label>
+        <type>textbox</type>
+        <help>Please create the TXT record with subdomain _acme-challenge first, than you can get the ID from the edit page. Up to two RIDs per fulldomain are supported but at least one must be set, e.g. _acme-challenge.domain.net:RID:RID2</help>
+    </field>
+    <field>
         <label>Servercow</label>
         <type>header</type>
         <style>table_dns table_dns_servercow</style>
@@ -944,6 +1128,43 @@
     </field>
     <field>
         <id>validation.dns_servercow_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Transip</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <label>NOTE: A DNS sleep time of at least 300 is recommended.</label>
+        <type>header</type>
+        <style>table_dns table_dns_transip</style>
+    </field>
+    <field>
+        <id>validation.dns_transip_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Your TransIP username.</help>
+    </field>
+    <field>
+        <id>validation.dns_transip_key</id>
+        <label>API Key</label>
+        <type>textbox</type>
+        <help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
+        <label>united-domains Reselling</label>
+        <type>header</type>
+        <style>table_dns table_dns_udr</style>
+    </field>
+    <field>
+        <id>validation.dns_udr_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_udr_password</id>
         <label>Password</label>
         <type>password</type>
     </field>
@@ -960,6 +1181,21 @@
     <field>
         <id>validation.dns_uno_user</id>
         <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Simply.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_simply</style>
+    </field>
+    <field>
+        <id>validation.dns_simply_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_simply_account_name</id>
+        <label>Account Name</label>
         <type>text</type>
     </field>
     <field>
@@ -1074,10 +1310,10 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_acmedns_updateurl</id>
-        <label>Update URL</label>
+        <id>validation.dns_acmedns_baseurl</id>
+        <label>ACME DNS URL</label>
         <type>text</type>
-        <help>Specify the custom ACME DNS Update URL, i.e. https://auth.acme-dns.io/update (optional)</help>
+        <help>Specify the custom ACME DNS URL, i.e. https://auth.acme-dns.io:443 (optional)</help>
     </field>
     <field>
         <label>Acmeproxy</label>
@@ -1214,7 +1450,7 @@
     <field>
         <id>validation.dns_kas_authdata</id>
         <label>KAS Authdata</label>
-        <type>text</type>
+        <type>password</type>
     </field>
     <field>
         <id>validation.dns_kas_authtype</id>
@@ -1260,6 +1496,94 @@
     <field>
         <id>validation.dns_infomaniak_token</id>
         <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Zone.eu API</label>
+        <type>header</type>
+        <style>table_dns table_dns_zone</style>
+    </field>
+    <field>
+        <id>validation.dns_zone_username</id>
+        <label>Zone Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zone_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help>Can be generated under ZoneID account management</help>
+    </field>
+    <field>
+        <label>Nederhost API</label>
+        <type>header</type>
+        <style>table_dns table_dns_nederhost</style>
+    </field>
+    <field>
+        <id>validation.dns_nederhost_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Porkbun API</label>
+        <type>header</type>
+        <style>table_dns table_dns_porkbun</style>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_porkbun_secret</id>
+        <label>Secret API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>dynv6 HTTP API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dynv6</style>
+    </field>
+    <field>
+        <id>validation.dns_dynv6_token</id>
+        <label>HTTP Token</label>
+        <type>password</type>
+    </field>
+     <field>
+        <label>cPanel HTTP API</label>
+        <type>header</type>
+        <style>table_dns table_dns_cpanel</style>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_user</id>
+        <label>cPanel Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_token</id>
+        <label>cPanel API Token</label>
+        <type>password</type>
+        <help><![CDATA[Please refer to the <a href="https://docs.cpanel.net/cpanel/security/manage-api-tokens-in-cpanel/">cPanel documentation</a> for further information.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_cpanel_hostname</id>
+        <label>cPanel Hostname</label>
+        <type>text</type>
+        <help>EX: https://hostname:2083</help>
+    </field>
+    <field>
+        <label>regru</label>
+        <type>header</type>
+        <style>table_dns table_dns_regru</style>
+    </field>
+    <field>
+        <id>validation.dns_regru_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_regru_password</id>
+        <label>Password</label>
         <type>password</type>
     </field>
 </form>

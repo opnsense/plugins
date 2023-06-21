@@ -1,6 +1,6 @@
 {% if helpers.exists('OPNsense.vnstat.general.enabled') and OPNsense.vnstat.general.enabled == '1' %}
 {% from 'OPNsense/Macros/interface.macro' import physical_interface %}
-vnstat_var_script="/usr/local/opnsense/scripts/OPNsense/Vnstat/setup.sh"
+vnstat_setup="/usr/local/opnsense/scripts/OPNsense/Vnstat/setup.sh"
 vnstat_enable="YES"
 {%   if helpers.exists('OPNsense.vnstat.general.interface') and OPNsense.vnstat.general.interface != '' %}
 {%     set interfaces = [] %}
@@ -12,4 +12,3 @@ vnstat_additional_ifaces="{{ interfaces|join(' ') }}"
 {% else %}
 vnstat_enable="NO"
 {% endif %}
-vnstat_var_mfs="/var/lib/vnstat"

@@ -7,6 +7,13 @@
                 <type>checkbox</type>
                 <help>Enable configured services.</help>
             </field>
+            <field>
+                <id>nginx.general.ban_ttl</id>
+                <label>Autoblock TTL (minutes)</label>
+                <type>text</type>
+                <help>Set autoblock lifetime in minutes. Set to 0 for infinite.</help>
+                <advanced>true</advanced>
+            </field>
         </subtab>
         <subtab id="nginx-http-global" description="Global HTTP Settings">
              <field>
@@ -36,6 +43,12 @@
                 <help>After this idle time, the client gets disconnected.</help>
             </field>
             <field>
+                <id>nginx.http.reset_timedout</id>
+                <label>Reset Timed Out Connections</label>
+                <type>checkbox</type>
+                <help>Reset timed out connections and connections closed with the non-standard code 444. When the socket is closed, TCP RST is sent to the client, and all memory occupied by this socket is released. This helps avoid keeping an already closed socket with filled buffers in a FIN_WAIT1 state for a long time.</help>
+            </field>
+            <field>
                 <id>nginx.http.default_type</id>
                 <label>Default MIME-Type</label>
                 <type>text</type>
@@ -52,6 +65,20 @@
                 <label>Server Names Hash Max Size</label>
                 <type>text</type>
                 <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.ban_response</id>
+                <label>Autoban Response Code</label>
+                <style>selectpicker</style>
+                <type>dropdown</type>
+                <help>Select a response code for auto-blocking requests (bot user-agent or honeypot location). The default code is 403. 444 is a special response code that closes the connection without a response to the client.</help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.headers_more_enable</id>
+                <label>Enable Headers More module</label>
+                <type>checkbox</type>
+                <help>Enhanced version of the standard headers module. Allows to add, set, or clear any output or input header.</help>
             </field>
         </subtab>
         <subtab id="nginx-general-webgui" description="GUI Settings">

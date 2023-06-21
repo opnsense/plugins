@@ -5,6 +5,30 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.13
+
+* Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0 for new users
+* Prevent using a port being used by another DNS service
+
+1.12
+
+* Support specifying relays for anonymous DNS
+
+1.11
+
+* Fix DNSBL update due to FreeBSD13 upgrade (sed syntax)
+* Fix "manual disable of specific servers" when more than one server is specified (contributed by Evgeny Grin (karlson2k))
+
+1.10
+
+* Add option to enable/disable local query logs
+* Add manual disable of specific servers
+
+1.9
+
+* Fix logging due to Phalcon4 update
+
 1.8
 
 * Remove 8 discontinued DNSBL lists and 2 that are not updated any more

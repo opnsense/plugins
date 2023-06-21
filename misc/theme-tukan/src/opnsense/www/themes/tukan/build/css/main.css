@@ -6512,7 +6512,6 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 }
 
 .modal-side {
-  margin: 62px 10px 10px 10px;
   background-color: #f0f0f0 !important;
 }
 
@@ -6543,4 +6542,8 @@ label.btn.au-target {
 
 #reports-tab {
     border-bottom: 1px solid #a5a5a5;
+}
+
+.top-list .list-group-item {
+    background-color: #fff;
 }

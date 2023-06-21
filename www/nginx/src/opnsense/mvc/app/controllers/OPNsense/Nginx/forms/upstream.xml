@@ -24,6 +24,20 @@
     <help>If you enable the proxy protocol, an upstream proxy or server will get the client IP and the server port before the real traffic is sent.</help>
   </field>
   <field>
+    <id>upstream.host_port</id>
+    <label>Host header port</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Add this port value to the Host header. Not used by default.</help>
+  </field>
+  <field>
+    <id>upstream.x_forwarded_host_verbatim</id>
+    <label>XFH: Use original Host header</label>
+    <help>Use Host header value from the client request ($http_host) for X-Forwarded-Host header. $host variable is used by default. Enabling this may cause incorrect behavior in case of malicious requests such as incorrect hostnames being logged or invalid redirects being performed.</help>
+    <advanced>true</advanced>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>upstream.tls_enable</id>
     <label>Enable TLS (HTTPS)</label>
     <help>Use TLS (HTTPS) to connect to the server.</help>
@@ -40,7 +54,7 @@
   <field>
     <id>upstream.tls_name_override</id>
     <label>TLS: Servername override</label>
-    <help>Use another hostname for SNI and certificate validation.</help>
+    <help>Force a specific hostname for the backend connection instead of passing the hostname from the downstream connection to the upstream connection.</help>
     <type>text</type>
   </field>
   <field>

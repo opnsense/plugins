@@ -1,0 +1,67 @@
+<model>
+    <mount>//OPNsense/sslh</mount>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <required>Y</required>
+            <default>0</default>
+        </enabled>
+        <listen_addresses type="CSVListField">
+            <required>Y</required>
+            <default>localhost:443</default>
+            <validationmessage>Please enter at least one hostname/IP:port combination.</validationmessage>
+        </listen_addresses>
+        <mode type="OptionField">
+            <required>Y</required>
+            <default>fork</default>
+            <Multiple>N</Multiple>
+            <OptionValues>
+                <option value="fork">fork</option>
+                <option value="select">select</option>
+            </OptionValues>
+        </mode>
+        <timeout type="IntegerField">
+            <required>N</required>
+        </timeout>
+        <tls_target type="TextField">
+            <required>N</required>
+        </tls_target>
+        <ssh_target type="TextField">
+            <required>N</required>
+        </ssh_target>
+        <openvpn_target type="TextField">
+            <required>N</required>
+        </openvpn_target>
+        <http_target type="TextField">
+            <required>N</required>
+        </http_target>
+        <xmpp_target type="TextField">
+            <required>N</required>
+        </xmpp_target>
+        <tinc_target type="TextField">
+            <required>N</required>
+        </tinc_target>
+        <anyprot_target type="TextField">
+            <required>N</required>
+        </anyprot_target>
+        <on_timeout type="OptionField">
+            <required>Y</required>
+            <default>ssh</default>
+            <Multiple>N</Multiple>
+            <OptionValues>
+                <option value="ssh">SSH</option>
+                <option value="openvpn">OpenVPN</option>
+                <option value="xmpp">XMPP</option>
+                <option value="http">HTTP</option>
+                <option value="tls">TLS</option>
+                <option value="anyprot">Anyprot</option>
+            </OptionValues>
+        </on_timeout>
+        <verbose type="BooleanField">
+            <required>N</required>
+        </verbose>
+        <numeric type="BooleanField">
+            <required>N</required>
+        </numeric>
+    </items>
+</model>

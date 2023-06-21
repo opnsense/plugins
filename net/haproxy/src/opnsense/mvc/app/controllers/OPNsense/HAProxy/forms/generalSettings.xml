@@ -16,6 +16,18 @@
         <help><![CDATA[Enable HAProxy's graceful stop mode. In this mode HAProxy will continue to process existing connections until they close. Note that this may severely slow down HAProxy's shutdown, depending on the configured timeout values. If graceful stop mode is not enabled, HAProxy will use the hard stop mode where it immediately quits and all established connections are closed. Hard stop mode is recommended.]]></help>
     </field>
     <field>
+        <id>haproxy.general.hardStopAfter</id>
+        <label>Graceful stop timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum time allowed to perform a clean graceful stop. HAProxy will terminate all open connections when the timeout is reached. This may be used to ensure that the instance will quit even if connections remain opened. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.closeSpreadTime</id>
+        <label>Gradual connection close time</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a time window during which connection closing will be spread during a soft-stop operation. Idle connections will all be closed at once if this option is not set, which may cause reconnecting clients to rush against the process. For best results, it should set lower than the "Graceful stop timout" option. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+    </field>
+    <field>
         <id>haproxy.general.seamlessReload</id>
         <label>Seamless reload</label>
         <type>checkbox</type>

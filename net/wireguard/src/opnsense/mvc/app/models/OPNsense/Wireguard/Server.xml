@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/wireguard/server</mount>
     <description>Wireguard Server configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.4</version>
     <items>
         <servers>
             <server type="ArrayField">
@@ -12,13 +12,10 @@
                 <name type="TextField">
                     <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z]){1,32}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, and A-Z</ValidationMessage>
+                    <mask>/^([0-9a-zA-Z._\-]){1,64}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 64 characters. Allowed characters are alphanumeric characters, dash and underscores.</ValidationMessage>
                 </name>
                 <instance type="AutoNumberField">
-                    <MinimumValue>0</MinimumValue>
-                    <MaximumValue>19</MaximumValue>
-                    <ValidationMessage>Maximum number of instances reached</ValidationMessage>
                     <Required>Y</Required>
                 </instance>
                 <pubkey type="TextField">

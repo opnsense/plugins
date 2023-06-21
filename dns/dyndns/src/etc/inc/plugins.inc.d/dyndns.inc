@@ -34,11 +34,11 @@ require_once('plugins.inc.d/dyndns/r53.inc');
 
 function dyndns_configure()
 {
-    return array(
-        'bootup' => array('dyndns_configure_do'),
-        'local' => array('dyndns_configure_do'),
-        'newwanip' => array('dyndns_configure_do:2'),
-    );
+    return [
+        'bootup' => ['dyndns_configure_do'],
+        'local' => ['dyndns_configure_do'],
+        'newwanip' => ['dyndns_configure_do:2'],
+    ];
 }
 
 function dyndns_enabled()
@@ -58,19 +58,15 @@ function dyndns_enabled()
 
 function dyndns_services()
 {
-    global $config;
-
-    $services = array();
+    $services = [];
 
     if (dyndns_enabled()) {
-        $services[] = array(
+        $services[] = [
             'description' => gettext('Dynamic DNS'),
-            'configd' => array(
-                'restart' => array('dyndns reload'),
-            ),
+            'configd' => [ 'restart' => ['dyndns reload'] ],
             'nocheck' => true,
             'name' => 'dyndns',
-        );
+        ];
     }
 
     return $services;
@@ -78,10 +74,10 @@ function dyndns_services()
 
 function dyndns_cron()
 {
-    $jobs = array();
+    $jobs = [];
 
     if (dyndns_enabled()) {
-        $jobs[]['autocron'] = array('/usr/local/etc/rc.dyndns', '11', '1');
+        $jobs[]['autocron'] = ['/usr/local/etc/rc.dyndns', '11', '1'];
     }
 
     return $jobs;
@@ -95,7 +91,8 @@ function dyndns_list()
      * https://github.com/openwrt/packages/blob/master/net/ddns-scripts/files/services
      */
 
-    return array(
+    return [
+        '1984-hosting' => '1984 Hosting Company',
         '3322' => '3322',
         'all-inkl' => 'All-Inkl',
         'all-inkl-v6' => 'All-Inkl (v6)',
@@ -151,8 +148,9 @@ function dyndns_list()
         'route53-v6' => 'Route 53 (v6)',
         'selfhost' => 'SelfHost',
         'strato' => 'STRATO',
+        'strato-v6' => 'STRATO (v6)',
         'zoneedit' => 'ZoneEdit',
-    );
+    ];
 }
 
 function dyndns_cache_file($conf, $ipver = 4)
@@ -204,10 +202,7 @@ function dyndns_configure_do($verbose = false, $int = '')
     $dyndnscfg = $config['dyndnses']['dyndns'];
     $gwgroups = return_gateway_groups_array();
 
-    if ($verbose) {
-        echo 'Configuring dynamic DNS clients...';
-        flush();
-    }
+    service_log('Configuring dynamic DNS clients...', $verbose);
 
     foreach ($dyndnscfg as $dyndns) {
         if ((empty($int)) || ($int == $dyndns['interface']) || (is_array($gwgroups[$dyndns['interface']]))) {
@@ -219,9 +214,7 @@ function dyndns_configure_do($verbose = false, $int = '')
         }
     }
 
-    if ($verbose) {
-        echo "done.\n";
-    }
+    service_log("done.\n", $verbose);
 }
 
 function dyndns_failover_interface($interface, $family = 'all')
@@ -246,4 +239,43 @@ function dyndns_failover_interface($interface, $family = 'all')
 
     /* fall through to get real interface the hard way */
     return get_real_interface($interface, $family);
+}
+
+
+function get_dyndns_ip_address($int, $ipver = 4)
+{
+    $ip_address = $ipver == 6 ? get_interface_ipv6($int) : get_interface_ip($int);
+    if (empty($ip_address)) {
+        log_error("Aborted IPv{$ipver} detection: no address for {$int}");
+        return 'down';
+    }
+
+    if ($ipver != 6 && is_private_ip($ip_address)) {
+        /* Chinese alternative is http://ip.3322.net/ */
+        $hosttocheck = 'http://checkip.dyndns.org';
+        $ip_ch = curl_init($hosttocheck);
+        curl_setopt($ip_ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ip_ch, CURLOPT_INTERFACE, $ip_address);
+        curl_setopt($ip_ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ip_ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ip_ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        $ip_result = curl_exec($ip_ch);
+        if ($ip_result !== false) {
+            preg_match('=<body>Current IP Address: (.*)</body>=siU', $ip_result, $matches);
+            $ip_address = trim($matches[1]);
+        } else {
+            log_error('Aborted IPv4 detection: ' . curl_error($ip_ch));
+            $ip_address = '';
+        }
+        curl_close($ip_ch);
+    } elseif ($ipver == 6 && is_linklocal($ip_address)) {
+        log_error('Aborted IPv6 detection: cannot bind to link-local address');
+        $ip_address = '';
+    }
+
+    if (($ipver == 6 && !is_ipaddrv6($ip_address)) || ($ipver != 6 && !is_ipaddrv4($ip_address))) {
+        return 'down';
+    }
+
+    return $ip_address;
 }

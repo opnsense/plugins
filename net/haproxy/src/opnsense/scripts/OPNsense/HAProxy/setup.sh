@@ -5,7 +5,7 @@ if [ -f /etc/rc.conf.d/haproxy ]; then
 fi
 
 # NOTE: Keep /var/haproxy on this list, see GH issue opnsense/plugins #39.
-HAPROXY_DIRS="/var/haproxy /var/haproxy/var/run /tmp/haproxy /tmp/haproxy/ssl /tmp/haproxy/lua /tmp/haproxy/errorfiles /tmp/haproxy/mapfiles"
+HAPROXY_DIRS="/var/haproxy /var/haproxy/sockets /var/haproxy/var/run /tmp/haproxy /tmp/haproxy/ssl /tmp/haproxy/lua /tmp/haproxy/errorfiles /tmp/haproxy/mapfiles /tmp/haproxy/sockets"
 
 for directory in ${HAPROXY_DIRS}; do
     mkdir -p ${directory}

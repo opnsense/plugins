@@ -1,0 +1,192 @@
+<model>
+    <mount>//OPNsense/DynDNS</mount>
+    <version>1.5.1</version>
+    <description>
+        Dynamic DNS client
+    </description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <verbose type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </verbose>
+            <allowipv6 type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </allowipv6>
+            <daemon_delay type="IntegerField">
+                <default>300</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+            </daemon_delay>
+            <backend type="OptionField">
+                <Required>Y</Required>
+                <default>ddclient</default>
+                <ValidationMessage>A backend is required.</ValidationMessage>
+                <OptionValues>
+                    <ddclient>ddclient</ddclient>
+                    <opnsense>OPNsense</opnsense>
+                </OptionValues>
+            </backend>
+        </general>
+        <accounts>
+            <account type=".\AccountField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <service type=".\ServiceField">
+                    <Required>Y</Required>
+                    <ValidationMessage>A service type is required.</ValidationMessage>
+                    <OptionValues>
+                        <hosting1984>1984</hosting1984>
+                        <changeip>Changeip</changeip>
+                        <cloudflare>Cloudflare</cloudflare>
+                        <cloudns>ClouDNS</cloudns>
+                        <dinahosting>dinahosting</dinahosting>
+                        <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
+                        <dns-o-matic>DNS-O-Matic</dns-o-matic>
+                        <dnsexit>DNSExit</dnsexit>
+                        <dyndns2>DynDNS.com</dyndns2>
+                        <dnspark>DnsPark</dnspark>
+                        <dslreports1>DSLReports</dslreports1>
+                        <dondominio>DonDominio</dondominio>
+                        <duckdns>Duck DNS</duckdns>
+                        <dynu>Dynu</dynu>
+                        <easydns>easyDNS</easydns>
+                        <freedns>FreeDNS</freedns>
+                        <freemyip>freeMyIP</freemyip>
+                        <gandi>gandi.net</gandi>
+                        <godaddy>GoDaddy</godaddy>
+                        <googledomains>Google</googledomains>
+                        <he-net>HE.net</he-net>
+                        <he-net-tunnel>HE.net TunnelBroker</he-net-tunnel>
+                        <hetzner>Hetzner DNS Console</hetzner>
+                        <inwx>INWX</inwx>
+                        <keysystems>Key-Systems</keysystems>
+                        <loopia>Loopia</loopia>
+                        <namecheap>NameCheap</namecheap>
+                        <nfsn>NearlyFreeSpeech.net</nfsn>
+                        <njalla>Njalla</njalla>
+                        <noip>no-ip</noip>
+                        <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
+                        <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
+                        <ovh>OVHcloud DynHost</ovh>
+                        <servercow>Servercow</servercow>
+                        <sitelutions>Sitelutions</sitelutions>
+                        <spdyn>spDYN</spdyn>
+                        <strato>STRATO</strato>
+                        <woima>Woima</woima>
+                        <yandex>Yandex</yandex>
+                        <zoneedit1>Zoneedit</zoneedit1>
+                        <custom>Custom</custom>
+                    </OptionValues>
+                </service>
+                <protocol type="OptionField">
+                    <Required>N</Required>
+                    <ValidationMessage>A protocol type is required.</ValidationMessage>
+                    <OptionValues>
+                        <dyndns1>DynDns1</dyndns1>
+                        <dyndns2>DynDns2</dyndns2>
+                    </OptionValues>
+                </protocol>
+                <server type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>N</IpAllowed>
+                </server>
+                <username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
+                    <ValidationMessage>The username contains invalid characters.</ValidationMessage>
+                </username>
+                <password type="UpdateOnlyTextField">
+                    <Required>Y</Required>
+                    <mask>/^[^\n]*$/</mask>
+                </password>
+                <resourceId type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[^\n]*$/</mask>
+                    <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
+                </resourceId>
+                <hostnames type="HostnameField">
+                    <Required>Y</Required>
+                    <IpAllowed>N</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>Y</ZoneRootAllowed>
+                    <AsList>Y</AsList>
+                    <FieldSeparator>,</FieldSeparator>
+                </hostnames>
+                <wildcard type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </wildcard>
+                <zone type="HostnameField">
+                    <Required>N</Required>
+                    <IpAllowed>N</IpAllowed>
+                </zone>
+                <checkip type=".\CheckipField">
+                    <Required>Y</Required>
+                    <default>web_dyndns</default>
+                    <ValidationMessage>An IP service type is required.</ValidationMessage>
+                    <OptionValues>
+                        <web_dyndns>dyndns</web_dyndns>
+                        <web_freedns>freedns</web_freedns>
+                        <web_googledomains>googledomains</web_googledomains>
+                        <web_he>he</web_he>
+                        <web_icanhazip>icanhazip</web_icanhazip>
+                        <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
+                        <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
+                        <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
+                        <web_ipify_ipv6 value="web_ipify-ipv6">ipify-ipv6</web_ipify_ipv6>
+                        <web_loopia>loopia</web_loopia>
+                        <web_myonlineportal>myonlineportal</web_myonlineportal>
+                        <web_noip_ipv4 value="web_noip-ipv4">noip-ipv4</web_noip_ipv4>
+                        <web_noip_ipv6 value="web_noip-ipv6">noip-ipv6</web_noip_ipv6>
+                        <web_nsupdate_info_ipv4 value="web_nsupdate.info-ipv4">nsupdate.info-ipv4</web_nsupdate_info_ipv4>
+                        <web_nsupdate_info_ipv6 value="web_nsupdate.info-ipv6">nsupdate.info-ipv6</web_nsupdate_info_ipv6>
+                        <web_zoneedit>zoneedit</web_zoneedit>
+                        <if>Interface</if>
+                    </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <reference>interface.check001</reference>
+                        </check001>
+                    </Constraints>
+                </checkip>
+                <checkip_timeout type="IntegerField">
+                    <default>10</default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </checkip_timeout>
+                <force_ssl type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </force_ssl>
+                <interface type="InterfaceField">
+                    <Required>N</Required>
+                    <multiple>N</multiple>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>An interface is required for the selected check method</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>checkip</field>
+                            <check>if</check>
+                        </check001>
+                    </Constraints>
+                </interface>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(.){1,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </account>
+        </accounts>
+    </items>
+</model>

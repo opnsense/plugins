@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.7</version>
+    <version>1.0.10</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -16,17 +16,27 @@
             <Required>Y</Required>
         </enablerpz>
         <listenv4 type="NetworkField">
-            <default>127.0.0.1</default>
+            <default>0.0.0.0</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv4>
         <listenv6 type="NetworkField">
-            <default>::1</default>
+            <default>::</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv6>
+        <querysource type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv4</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </querysource>
+        <querysourcev6 type="NetworkField">
+            <Required>N</Required>
+            <AddressFamily>ipv6</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </querysourcev6>
         <transfersource type="NetworkField">
             <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
@@ -46,6 +56,19 @@
             <Required>N</Required>
             <asList>Y</asList>
         </forwarders>
+        <filteraaaav4 type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </filteraaaav4>
+        <filteraaaav6 type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </filteraaaav6>
+        <filteraaaaacl type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
+            <asList>Y</asList>
+        </filteraaaaacl>
         <logsize type="IntegerField">
             <default>5</default>
             <Required>Y</Required>
@@ -68,7 +91,7 @@
                     <display>name</display>
                 </template>
             </Model>
-            <Multiple>N</Multiple>
+            <Multiple>Y</Multiple>
             <Required>N</Required>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
@@ -80,9 +103,20 @@
                     <display>name</display>
                 </template>
             </Model>
-            <Multiple>N</Multiple>
+            <Multiple>Y</Multiple>
             <Required>N</Required>
         </allowtransfer>
+        <allowquery type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+            <Required>N</Required>
+        </allowquery>
         <dnssecvalidation type="OptionField">
             <OptionValues>
                 <no>No</no>
@@ -115,10 +149,26 @@
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </ratelimitcount>
         <ratelimitexcept type="NetworkField">
-            <default>127.0.0.1,::1</default>
+            <default>0.0.0.0,::</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>
         </ratelimitexcept>
+        <rndcalgo type="OptionField">
+            <Required>Y</Required>
+            <default>hmac-sha256</default>
+            <OptionValues>
+                <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                <hmac-md5>HMAC-MD5</hmac-md5>
+            </OptionValues>
+        </rndcalgo>
+        <rndcsecret type="Base64Field">
+            <Required>Y</Required>
+            <default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</default>
+        </rndcsecret>
     </items>
 </model>

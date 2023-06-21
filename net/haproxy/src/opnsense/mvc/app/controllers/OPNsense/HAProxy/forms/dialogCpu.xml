@@ -12,12 +12,6 @@
         <help>Choose a name for this CPU affinity rule.</help>
     </field>
     <field>
-        <id>cpu.process_id</id>
-        <label>Process ID</label>
-        <type>dropdown</type>
-        <help>Process ID that should bind to a specific CPU set. Any process IDs above nbproc are ignored.</help>
-    </field>
-    <field>
         <id>cpu.thread_id</id>
         <label>Thread ID</label>
         <type>dropdown</type>

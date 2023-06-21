@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2022 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -44,6 +44,7 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
 PLUGIN_WWW?=		https://opnsense.org/
+PLUGIN_TIER?=		3
 PLUGIN_REVISION?=	0
 
 PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
@@ -65,6 +66,25 @@ PLUGIN_DEVEL?=		yes
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
 
+.if !empty(PLUGIN_VARIANTS)
+PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
+.endif
+
+.if !empty(PLUGIN_VARIANT)
+PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
+.if empty(PLUGIN_NAME)
+.error Plugin variant '${PLUGIN_VARIANT}' does not exist
+.endif
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
+PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
+.endfor
+PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.endif
+
+.if !empty(PLUGIN_NAME)
+PLUGIN_DIR?=		${.CURDIR:S/\// /g:[-2]}/${.CURDIR:S/\// /g:[-1]}
+.endif
+
 PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
 			${PLUGIN_PREFIX}${PLUGIN_NAME}
 .for CONFLICT in ${PLUGIN_CONFLICTS}
@@ -73,22 +93,18 @@ PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
 .endfor
 
 .if "${PLUGIN_DEVEL}" != ""
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX}
+PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
 .else
-PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}
+PLUGIN_PKGSUFFIX=	# empty
 .endif
+
+PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
 .else
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}
 .endif
-
-name: check
-	@echo ${PLUGIN_PKGNAME}
-
-depends: check
-	@echo ${PLUGIN_DEPENDS}
 
 manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
@@ -102,8 +118,8 @@ manifest: check
 	@echo "licenselogic: \"single\""
 	@echo "licenses: [ \"BSD2CLAUSE\" ]"
 .if defined(PLUGIN_NO_ABI)
-	@echo "arch: `pkg config abi | tr '[:upper:]' '[:lower:]' | cut -d: -f1`:*:*"
-	@echo "abi: `pkg config abi | cut -d: -f1`:*:*"
+	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
+	@echo "abi: \"${OSABIPREFIX}:*:*\""
 .endif
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
@@ -116,6 +132,9 @@ manifest: check
 	done
 	@echo "}"
 .endif
+	@if [ -f ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME} ]; then \
+	    echo "annotations $$(cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME})"; \
+	fi
 
 scripts: check scripts-pre scripts-auto scripts-manual scripts-post
 
@@ -240,14 +259,14 @@ package: check
 .for DEP in ${PLUGIN_DEPENDS}
 	@if ! ${PKG} info ${DEP} > /dev/null; then ${PKG} install -yA ${DEP}; fi
 .endfor
-	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
-	@${MAKE} DESTDIR=${WRKSRC} metadata
-	@echo " done"
 	@echo -n ">>> Staging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
 	@${MAKE} DESTDIR=${WRKSRC} install
 	@echo " done"
 	@echo ">>> Generated version info for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
 	@cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME}
+	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
+	@${MAKE} DESTDIR=${WRKSRC} metadata
+	@echo " done"
 	@echo ">>> Packaging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
@@ -261,7 +280,7 @@ upgrade: upgrade-check package
 		${PKG} delete -fy ${NAME}; \
 	fi
 .endfor
-	@${PKG} add ${PKGDIR}/*.txz
+	@${PKG} add ${PKGDIR}/*.pkg
 
 mount: check
 	mount_unionfs ${.CURDIR}/src ${DESTDIR}${LOCALBASE}
@@ -303,14 +322,20 @@ lint-exec: check
 .endif
 .endfor
 
+LINTBIN?=	${.CURDIR}/../../../core/contrib/parallel-lint/parallel-lint
+
 lint-php: check
+.if exists(${LINTBIN})
+	@if [ -d ${.CURDIR}/src ]; then ${LINTBIN} src; fi
+.else
 	@find ${.CURDIR}/src \
 	    ! -name "*.xml" ! -name "*.xml.sample" ! -name "*.eot" \
 	    ! -name "*.svg" ! -name "*.woff" ! -name "*.woff2" \
 	    ! -name "*.otf" ! -name "*.png" ! -name "*.js" ! -name "*.md" \
 	    ! -name "*.scss" ! -name "*.py" ! -name "*.ttf" ! -name "*.txz" \
-	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" \
+	    ! -name "*.tgz" ! -name "*.xml.dist" ! -name "*.sh" ! -name "bootstrap80.php" \
 	    -type f -print0 | xargs -0 -n1 php -l
+.endif
 
 lint: lint-desc lint-shell lint-xml lint-exec lint-php
 
@@ -328,7 +353,7 @@ sweep: check
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
 revision:
-	@${SCRIPTSDIR}/revbump.sh ${.CURDIR}
+	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 STYLEDIRS?=	src/etc/inc src/opnsense
 

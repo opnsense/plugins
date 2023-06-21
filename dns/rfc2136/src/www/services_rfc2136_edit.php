@@ -34,6 +34,15 @@ require_once("plugins.inc.d/rfc2136.inc");
 
 $a_rfc2136 = &config_read_array('dnsupdates', 'dnsupdate');
 
+$nsukeyalgos = [
+    'hmac-md5' => 'MD5',
+    'hmac-sha1' => 'SHA-1',
+    'hmac-sha224' => 'SHA-244',
+    'hmac-sha256' => 'SHA-256',
+    'hmac-sha384' => 'SHA-384',
+    'hmac-sha512' => 'SHA-512',
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id']) && !empty($a_rfc2136[$_GET['id']])) {
         $id = $_GET['id'];
@@ -49,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig['ttl'] = isset($id) &&!empty($a_rfc2136[$id]['ttl']) ? $a_rfc2136[$id]['ttl'] : 60;
     $pconfig['keydata'] = isset($id) &&!empty($a_rfc2136[$id]['keydata']) ? $a_rfc2136[$id]['keydata'] : null;
     $pconfig['keyname'] = isset($id) &&!empty($a_rfc2136[$id]['keyname']) ? $a_rfc2136[$id]['keyname'] : null;
-    $pconfig['keytype'] = isset($id) &&!empty($a_rfc2136[$id]['keytype']) ? $a_rfc2136[$id]['keytype'] : "zone";
+    $pconfig['keyalgo'] = isset($id) &&!empty($a_rfc2136[$id]['keyalgo']) ? $a_rfc2136[$id]['keyalgo'] : null;
     $pconfig['server'] = isset($id) &&!empty($a_rfc2136[$id]['server']) ? $a_rfc2136[$id]['server'] : null;
     $pconfig['interface'] = isset($id) &&!empty($a_rfc2136[$id]['interface']) ? $a_rfc2136[$id]['interface'] : null;
     $pconfig['descr'] = isset($id) &&!empty($a_rfc2136[$id]['descr']) ? $a_rfc2136[$id]['descr'] : null;
@@ -81,6 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($pconfig['keyname']) && !is_domain($pconfig['keyname'])) {
         $input_errors[] = gettext("The DNS update key name contains invalid characters.");
     }
+    if (!in_array($pconfig['keyalgo'] , array_keys($nsukeyalgos))) {
+        $input_errors[] = gettext('The DNS update key algorith is invalid.');
+    }
 
     if (count($input_errors) == 0) {
         $rfc2136 = array();
@@ -88,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $rfc2136['host'] = $pconfig['host'];
         $rfc2136['ttl'] = $pconfig['ttl'];
         $rfc2136['keyname'] = $pconfig['keyname'];
-        $rfc2136['keytype'] = $pconfig['keytype'];
         $rfc2136['keydata'] = $pconfig['keydata'];
+        $rfc2136['keyalgo'] = $pconfig['keyalgo'];
         $rfc2136['server'] = $pconfig['server'];
         $rfc2136['usetcp'] = !empty($pconfig['usetcp']);
         $rfc2136['usepublicip'] = !empty($pconfig['usepublicip']);
@@ -151,14 +163,11 @@ include("head.inc");
                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Interface to monitor");?></td>
                    <td>
                      <select name="interface" class="selectpicker" id="requestif">
- <?php
-                      foreach (get_configured_interface_with_descr() as $if => $ifdesc):?>
+<?php foreach (get_configured_interface_with_descr() as $if => $ifdesc): ?>
                         <option value="<?=$if;?>" <?=$pconfig['interface'] == $if ? "selected=\"selected\"" : "";?>>
                           <?=htmlspecialchars($ifdesc);?>
                         </option>
-
-<?php
-                      endforeach;?>
+<?php endforeach ?>
                       </select>
                     </td>
                   </tr>
@@ -198,11 +207,13 @@ include("head.inc");
                     </td>
                   </tr>
                   <tr>
-                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key type");?> </td>
+                    <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Key algorithm");?></td>
                     <td>
-                      <input name="keytype" type="radio" value="zone" <?= $pconfig['keytype'] == "zone" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Zone");?> &nbsp;
-                      <input name="keytype" type="radio" value="host" <?= $pconfig['keytype'] == "host" ? "checked=\"checked\"" :""; ?> /> <?=gettext("Host");?> &nbsp;
-                      <input name="keytype" type="radio" value="user" <?= $pconfig['keytype'] == "user" ? "checked=\"checked\"" :""; ?> /> <?=gettext("User");?>
+                      <select name="keyalgo" class="selectpicker">
+<?php foreach ($nsukeyalgos as $nsukeyalgo => $label): ?>
+                        <option value="<?= html_safe($nsukeyalgo) ?>" <?= $pconfig['keyalgo'] == $nsukeyalgo ? 'selected="selected"' : '' ?>><?= html_safe($label) ?></option>
+<?php endforeach ?>
+                      </select>
                     </td>
                   </tr>
                   <tr>
@@ -210,14 +221,14 @@ include("head.inc");
                     <td>
                       <input name="keydata" type="text" id="keydata" size="70" value="<?=htmlspecialchars($pconfig['keydata']);?>" />
                       <div class="hidden" data-for="help_for_keydata">
-                        <?=gettext("Paste an HMAC-MD5 key here.");?>
+                        <?=gettext("Paste an TSIG domain key here.");?>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Server");?></td>
                     <td>
-                      <input name="server" type="text" class="formfld" id="server" size="30" value="<?=$pconfig['server'];?>" />
+                      <input name="server" type="text" id="server" size="30" value="<?=$pconfig['server'];?>" />
                     </td>
                   </tr>
                   <tr>
