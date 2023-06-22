@@ -79,14 +79,20 @@ function init_grids() {
                 'set': '/api/nginx/settings/set' + element + '/',
                 'add': '/api/nginx/settings/add' + element + '/',
                 'del': '/api/nginx/settings/del' + element + '/',
+                'commands': {
+                   copy_uuid: {
+                       method: function(e) { navigator.clipboard.writeText($(this).data("row-id")); }
+                    }
+                },
                 'options': {
                     selection: false,
                     multiSelect: false,
                     formatters: {
                         "commands": function (column, row) {
-                            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
-                                "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
-                                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-trash-o\"></span></button>";
+                            return "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-edit\" data-row-id=\"" + row.uuid + "\" title=\"Edit\"><span class=\"fa fa-fw fa-pencil\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-copy_uuid\" data-row-id=\"" + row.uuid + "\" title=\"Copy UUID to clipboard\"><span class=\"fa fa-fw fa-clipboard\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-copy\" data-row-id=\"" + row.uuid + "\" title=\"Clone\"><span class=\"fa fa-fw fa-clone\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-delete\" data-row-id=\"" + row.uuid + "\" title=\"Delete\"><span class=\"fa fa-fw fa-trash-o\"></span></button>";
                         },
                         "response": function (column, row) {
                             return ((row.response == "none") ? "unchanged" : row.response);

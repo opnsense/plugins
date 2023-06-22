@@ -6,11 +6,52 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.13
+
+* Fix not returning IP address as a string in Python backend (contributed by Sean Kelly)
+* Fix PID file handling for Python backend
+* Use API token for cloudflare Python backend if available (contributed by juantxorena)
+* Read proxied attribute from cloudflare hostname and send it back to prevent it being removed
+* Move accounting of "last accessed timestamp" to poller in Python backend
+* Change if= use to proper ifv4=/ifv6= use (contributed by Rhys Barrie)
+
+1.12
+
+* Add cloudflare implementation for Python backend (contributed by Thomas Cekal)
+* Allow custom target hostname for dyndns2 protocol in Python backend
+* Adjust for missing ipv6= option including upstream patches for use=/usev4=/usev6=
+* Require a selected interface through validation when interface check method is used
+
+1.11
+
+* Add Python backend support for custom ddclient-like implementation using the same input
+* Add AzureDNS backende using OAuth 2.0
+* Add dyndns2 backend using said API
+
+1.10
+
+* Update to ddclient 3.10.0
+* Add 1984 support (contributed by Luca Schoeneberg)
+* Add ClouDNS support (contributed by Luca Schoeneberg)
+* Add Dinahosting support (contributed by Luca Schoeneberg)
+* Add DNSExit support (contributed by Luca Schoeneberg)
+* Add DonDominio support (contributed by Luca Schoeneberg)
+* Add Freemyip support (contributed by Luca Schoeneberg)
+* Add godaddy support (contributed by Luca Schoeneberg)
+* Add Hetzner support (contributed by Luca Schoeneberg)
+* Add Key-Systems support (contributed by Luca Schoeneberg)
+* Add NearlyFreeSpeech.NET support (contributed by Luca Schoeneberg)
+* Add Njal.la support (contributed by satrapes)
+* Add sitelutions support (contributed by Luca Schoeneberg)
+* Add woima support (contributed by Luca Schoeneberg)
+* Add Yandex support (contributed by Luca Schoeneberg)
+
 1.9
 
 * Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
 * Configurable checkip (contributed by Christian Schulze)
 * Allow % characters in usernames
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
 
 1.8
 

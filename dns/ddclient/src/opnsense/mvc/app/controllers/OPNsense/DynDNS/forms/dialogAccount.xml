@@ -6,6 +6,11 @@
         <help>Enable this virtual server</help>
     </field>
     <field>
+        <id>account.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
         <id>account.service</id>
         <label>Service</label>
         <type>dropdown</type>
@@ -26,6 +31,12 @@
         <style>optional_setting service_custom</style>
     </field>
     <field>
+        <id>account.resourceId</id>
+        <label>resourceId</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>account.username</id>
         <label>Username</label>
         <type>text</type>
@@ -41,14 +52,14 @@
         <id>account.wildcard</id>
         <label>Wildcard</label>
         <type>checkbox</type>
-        <style>optional_setting service_dyndns2 service_easydns service_custom</style>
+        <style>optional_setting service_dyndns2 service_woima service_cloudflare service_easydns service_custom</style>
         <help>add a DNS wildcard CNAME record that points to the configured host.</help>
     </field>
     <field>
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_cloudflare</style>
+        <style>optional_setting service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -66,6 +77,11 @@
         <help>How to determine the address to use for this host</help>
     </field>
     <field>
+        <id>account.interface</id>
+        <label>Interface to monitor</label>
+        <type>dropdown</type>
+    </field>
+    <field>
         <id>account.checkip_timeout</id>
         <label>Check ip timeout</label>
         <type>text</type>
@@ -77,15 +93,5 @@
         <type>checkbox</type>
         <help>Force update using HTTPS, please note setting this option will enforce https updates on all accounts
         as ddclient only supports SSL=yes on a global level (the check ip service may still use HTTP on other services)</help>
-    </field>
-    <field>
-        <id>account.interface</id>
-        <label>Interface to monitor</label>
-        <type>dropdown</type>
-    </field>
-    <field>
-        <id>account.description</id>
-        <label>Description</label>
-        <type>text</type>
     </field>
 </form>

@@ -15,7 +15,7 @@
         <id>acmeclient.settings.haproxyIntegration</id>
         <label>HAProxy Integration</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable automatic integration with the OPNsense HAProxy plugin. <b>Requires that the OPNsense HAProxy plugin is installed.</b> This will automatically add the required backend, server, action and ACL for you. You just need to select your HAProxy frontend when configuration the certificate or challenge type. <div class="text-info"><b>NOTE:</b>This will only work for HTTP-01 validation and HAProxy frontends running in <i>http</i> mode; TCP frontends are not supported.</div>]]></help>
+        <help><![CDATA[Enable automatic integration with the OPNsense HAProxy plugin. <b>Requires that the OPNsense HAProxy plugin is installed.</b> This will automatically add the required backend, server, action and ACL for you. You just need to select your HAProxy frontend when configuring the certificate or challenge type. <div class="text-info"><b>NOTE:</b>This will only work for HTTP-01 validation and HAProxy frontends running in <i>http</i> mode; TCP frontends are not supported.</div>]]></help>
     </field>
     <field>
         <id>acmeclient.settings.logLevel</id>

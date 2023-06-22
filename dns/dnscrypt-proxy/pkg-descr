@@ -5,6 +5,12 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.13
+
+* Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0 for new users
+* Prevent using a port being used by another DNS service
+
 1.12
 
 * Support specifying relays for anonymous DNS

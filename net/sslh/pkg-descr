@@ -11,9 +11,8 @@ Changelog
 
 ================
 
-0.1
+1.0
 
-  * Initial Version
-  * Includes setting listen addresses, and protocol targets.
-  * Includes some other advanced settings
-  * Service start/stop/restart control
+* Includes setting listen addresses, and protocol targets
+* Includes some other advanced settings
+* Service start/stop/restart control

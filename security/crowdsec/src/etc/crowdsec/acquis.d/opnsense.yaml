@@ -7,9 +7,26 @@
 #
 
 filenames:
- # ssh
- - /var/log/audit/*.log
- # web admin
- - /var/log/lighttpd/*.log
+  # DO NOT EDIT - to add new datasources (log locations),
+  # create new files in /usr/local/etc/crowdsec/acquis.d/
+
+  # collection: crowdsecurity/sshd
+  - /var/log/audit/latest.log
+  # collection: crowdsecurity/opnsense-gui (web admin)
+  - /var/log/lighttpd/latest.log
+  # collection: firewallservices/pf
+  - /var/log/filter/latest.log
+
+# When OPNsense is configured with /var/log in a RAM disk,
+# the log directories are created after crowdsec is run.
+# We force crowdsec to watch over directory creation as well
+# as file creation. FreeBSD has kqueue instead of inotify
+# but the option works with both.
+force_inotify: true
+
+# this option is required from crowdsec v1.5.0 to follow
+# changes in symlinks
+poll_without_inotify: true
+
 labels:
   type: syslog

@@ -80,7 +80,8 @@ function miniupnpd_start()
 
 function miniupnpd_stop()
 {
-    killbypid('/var/run/miniupnpd.pid', 'TERM', true);
+    killbypid('/var/run/miniupnpd.pid');
+
     mwexec('/sbin/pfctl -aminiupnpd -Fr 2>&1 >/dev/null');
     mwexec('/sbin/pfctl -aminiupnpd -Fn 2>&1 >/dev/null');
 }
@@ -147,7 +148,11 @@ function miniupnpd_configure_do($verbose = false)
             if ($if != $iface) {
                 $addr = get_interface_ip($iface);
                 if (!empty($addr)) {
-                    $config_text .= "listening_ip={$if}\n";
+                    $config_text .= "listening_ip={$if}";
+                    if (!empty($upnp_config['overridesubnet'])) {
+                        $config_text .= "/{$upnp_config['overridesubnet']}";
+                    }
+                    $config_text .= "\n";
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
                         $ifaces_active = $iface;
@@ -155,10 +160,10 @@ function miniupnpd_configure_do($verbose = false)
                         $ifaces_active .= ", {$iface}";
                     }
                 } else {
-                    log_error("miniupnpd: Interface {$iface} has no ip address, ignoring");
+                    log_msg("miniupnpd: Interface {$iface} has no ip address, ignoring", LOG_WARNING);
                 }
             } else {
-                log_error("miniupnpd: Could not resolve real interface for {$iface}");
+                log_msg("miniupnpd: Could not resolve real interface for {$iface}", LOG_ERR);
             }
         }
 
@@ -167,6 +172,14 @@ function miniupnpd_configure_do($verbose = false)
             if (!empty($upnp_config['overridewanip'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
+
+            /* configure STUN server if needed */
+            if (!empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) . "\n";
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
+            }
+
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
                 $download = $upnp_config['download'] * 1000;
@@ -226,10 +239,11 @@ function miniupnpd_configure_do($verbose = false)
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
-            log_error("miniupnpd: Starting service on interface: {$ifaces_active}");
+            log_msg("miniupnpd: Starting service on interface: {$ifaces_active}");
+
             miniupnpd_start();
         }
     }
 
-    service_verbose("done.\n", $verbose);
+    service_log("done.\n", $verbose);
 }

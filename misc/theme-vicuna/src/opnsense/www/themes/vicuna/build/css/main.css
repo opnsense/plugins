@@ -2999,12 +2999,12 @@ select[multiple].input-lg,
 
 .btn-info {
   color: #fff;
-  background-color: #B0CDDB;
-  border-color: #9ec2d3; }
+  background-color: #226808;
+  border-color: #191919; }
   .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     color: #fff;
-    background-color: #8db7cb;
-    border-color: #74a7c0; }
+    background-color: #dd630d;
+    border-color: #191919; }
 
   .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     background-image: none; }
@@ -6517,7 +6517,6 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 }
 
 .modal-side {
-  margin: 62px 10px 10px 10px;
   background-color: #1a262d !important;
 }
 
@@ -6598,4 +6597,26 @@ ul.jqtree-tree .jqtree-title {
 
 #reports-tab {
     border-bottom: 1px solid #191919;
+}
+
+router-view .text-success.m-r-5 {
+  font-weight: bold;
+  color: #fff;
+}
+
+router-view .text-danger.m-r-5 {
+  font-weight: bold;
+  color: #000;
+}
+
+.bootstrap-tagsinput {
+border: 1px solid #191919 !important;
+}
+
+.table-custom-categories {
+  border: 1px solid #181818 !important;
+}
+
+#introduction a.btn-info {
+  color: #FFF !important;
 }

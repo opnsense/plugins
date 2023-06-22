@@ -9,6 +9,16 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+1.1
+
+Added:
+* add new options runinterval and runtimeout
+* add new option usecacheonfailure
+
+Changed:
+* add default values for Puppet Server + Environment
+* don't wipe puppet.conf if service is disabled
+
 1.0
 
 Added:

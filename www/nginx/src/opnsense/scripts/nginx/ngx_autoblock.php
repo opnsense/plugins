@@ -166,12 +166,9 @@ function create_work_files($include_tls_handshake)
                 @touch($target);
                 $work_files[] = $target;
             } else {
-                log_error("Failed renaming '$source' to '$target'. Skipping source for next run.");
+                log_msg("Failed renaming '$source' to '$target'. Skipping source for next run.");
             }
         }
-    } else {
-        //Concurrent invocation. Can be silently ignored since no work files are collected.
-        //log_error("Skipping processing. Missing: " . join(", ", array_diff(array_keys($mapping), $existing_sources)));
     }
 
     reopen_logs();

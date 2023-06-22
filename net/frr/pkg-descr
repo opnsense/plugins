@@ -12,6 +12,14 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.33
+
+* Allow both IPv4 and IPv6 in BGP via setkey (contributed by as8net)
+
+1.32
+
+* Add attribute-unchanged option (contributed by Patrik Kernstock)
+
 1.31
 
 * Set no bgp default ipv4-unicast (contributed by vnxme)

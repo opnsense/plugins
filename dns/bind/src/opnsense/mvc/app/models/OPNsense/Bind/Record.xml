@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/record</mount>
     <description>BIND record configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <records>
             <record type="ArrayField">
@@ -36,6 +36,7 @@
                         <MX>MX</MX>
                         <NS>NS</NS>
                         <PTR>PTR</PTR>
+                        <RP>RP</RP>
                         <RRSIG>RRSIG</RRSIG>
                         <SRV>SRV</SRV>
                         <TLSA>TLSA</TLSA>

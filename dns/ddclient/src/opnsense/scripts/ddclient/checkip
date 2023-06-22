@@ -26,61 +26,18 @@
     POSSIBILITY OF SUCH DAMAGE.
 """
 import argparse
-import subprocess
-import re
-import ipaddress
+from lib import checkip_service_list, checkip
 
-service_list = {
-  'dyndns': '%s://checkip.dyndns.org/',
-  'freedns': '%s://freedns.afraid.org/dynamic/check.php',
-  'googledomains': '%s://domains.google.com/checkip',
-  'he': '%s://checkip.dns.he.net/',
-  'icanhazip': '%s://icanhazip.com/',
-  'ip4only.me': '%s://ip4only.me/api/',
-  'ip6only.me': '%s://ip6only.me/api/',
-  'ipify-ipv4': '%s://api.ipify.org/',
-  'ipify-ipv6': '%s://api6.ipify.org/',
-  'loopia': '%s://dns.loopia.se/checkip/checkip.php',
-  'myonlineportal': '%s://myonlineportal.net/checkip',
-  'noip-ipv4': '%s://ip1.dynupdate.no-ip.com/',
-  'noip-ipv6': '%s://ip1.dynupdate6.no-ip.com/',
-  'nsupdate.info-ipv4': '%s://ipv4.nsupdate.info/myip',
-  'nsupdate.info-ipv6': '%s://ipv6.nsupdate.info/myip',
-  'zoneedit': '%s://dynamic.zoneedit.com/checkip.html'
-}
-
-
-def extract_address(txt):
-    """ Extract first IPv4 or IPv6 address from provided string
-        :param txt: text blob
-        :return: str
-    """
-    for regexp in [r'[^a-fA-F0-9\:]', r'[^F0-9\.]']:
-        for line in re.sub(regexp, ' ', txt).split():
-            if line.count('.') == 3 or line.count(':') > 4:
-                try:
-                    ipaddress.ip_address(line)
-                    return line
-                except ValueError:
-                    pass
 
 if __name__ == '__main__':
     # handle parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--service', help='service name', choices=service_list.keys(), required=True)
+    parser.add_argument('-s', '--service', help='service name', choices=checkip_service_list.keys(), required=True)
     parser.add_argument('-i', '--interface', help='interface', type=str, default='')
-    parser.add_argument('-t', '--tls', help='enforce tls', choices=['0', '1'], default='0')
+    parser.add_argument('-t', '--tls', help='enforce tls', choices=['0', '1'], default='1')
     parser.add_argument('--timeout', help='timeout', type=str, default='10')
     inputargs = parser.parse_args()
 
-    # use curl to fetch data, so we can optionally use "--interface"
-    params = ['/usr/local/bin/curl', '-m', inputargs.timeout]
-    if inputargs.interface.strip() != "":
-        params.append("--interface")
-        params.append(inputargs.interface)
-
     proto = 'http' if inputargs.tls == "0" else 'https'
-    params.append(service_list[inputargs.service] % proto)
-
-    result = subprocess.run(params, capture_output=True, text=True).stdout
-    print (extract_address(result))
+    interface = inputargs.interface if inputargs.interface.strip() != "" else None
+    print(checkip(inputargs.service, proto, inputargs.timeout, interface))

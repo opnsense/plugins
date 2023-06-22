@@ -35,8 +35,8 @@ class GeneralController extends \OPNsense\Base\IndexController
         $this->view->generalForm = $this->getForm("general");
         $this->view->dnsblForm = $this->getForm("dnsbl");
         $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
-        $this->view->formDialogEditBindMasterDomain = $this->getForm("dialogEditBindMasterDomain");
-        $this->view->formDialogEditBindSlaveDomain = $this->getForm("dialogEditBindSlaveDomain");
+        $this->view->formDialogEditBindPrimaryDomain = $this->getForm("dialogEditBindPrimaryDomain");
+        $this->view->formDialogEditBindSecondaryDomain = $this->getForm("dialogEditBindSecondaryDomain");
         $this->view->formDialogEditBindRecord = $this->getForm("dialogEditBindRecord");
         $this->view->pick('OPNsense/Bind/general');
     }

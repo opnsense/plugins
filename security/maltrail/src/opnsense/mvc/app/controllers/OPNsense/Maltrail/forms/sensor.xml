@@ -27,7 +27,7 @@
         <id>sensor.remoteport</id>
         <label>Remote Port</label>
         <type>text</type>
-        <help>Port of the logging server. Leave empty when sensor and server run on the same system.</help>
+        <help>Port of the logging server.</help>
     </field>
     <field>
         <id>sensor.syslogserver</id>

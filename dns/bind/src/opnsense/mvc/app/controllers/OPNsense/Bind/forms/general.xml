@@ -83,7 +83,7 @@
     </field>
     <field>
         <id>general.filteraaaaacl</id>
-        <label>ACl for filter-aaaa</label>
+        <label>ACL for filter-aaaa</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
@@ -110,8 +110,14 @@
     <field>
         <id>general.allowtransfer</id>
         <label>Allow Transfer</label>
-        <type>dropdown</type>
-        <help>Define an ACL where you allow which server can retrieve zones.</help>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which server can retrieve zones.</help>
+    </field>
+    <field>
+        <id>general.allowquery</id>
+        <label>Allow Query</label>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which client are allowed to query this server.</help>
     </field>
     <field>
         <id>general.dnssecvalidation</id>
@@ -162,5 +168,24 @@
         <allownew>true</allownew>
         <advanced>true</advanced>
         <help>Except a list of IPs from rate-limiting like ::1</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>RNDC Key</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.rndcalgo</id>
+        <label>Algorithm</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Set the authentication algorithm for the RNDC key. This requires a restart of the Bind Service.</help>
+    </field>
+    <field>
+        <id>general.rndcsecret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
 </form>

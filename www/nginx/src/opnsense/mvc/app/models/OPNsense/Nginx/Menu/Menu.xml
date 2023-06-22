@@ -9,7 +9,7 @@
       <HTTPErrorLogs VisibleName="Logs / HTTP Error" url="/ui/nginx/logs/errors" order="110"/>
       <StreamAccessLogs VisibleName="Logs / Stream Access" url="/ui/nginx/logs/stream_accesses" order="120"/>
       <StreamErrorLogs VisibleName="Logs / Stream Error" url="/ui/nginx/logs/stream_errors" order="130"/>
-      <ErrorLogs VisibleName="Logs / Global Error" url="/ui/nginx/logs" order="140"/>
+      <LogFile VisibleName="Log File" order="140" url="/ui/diagnostics/log/core/nginx"/>
     </Nginx>
   </Services>
 </menu>

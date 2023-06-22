@@ -30,18 +30,16 @@
  * Function to register the plugin's service with OPNsense.
  *
  * This adds the service to the System: Diagnostics: Services page at
- * http://<opnsense>/status_services.php
+ * http://<opnsense>/ui/core/service
  *
  * The suffix "_services" allows this function to be picked up by
  * etc/inc/plugins.inc:plugins_services() and be included in the
- * $services array to be processed by status_services.php.
+ * $services array to be processed by /ui/core/service.
  *
  * @return array the array of attributes for this service
 */
 function sslh_services()
 {
-
-    // Create an array to be processed by www/status_services.php
     $service = array();
 
     // Load in our settings to get the enabled state of the plugin.
@@ -50,7 +48,7 @@ function sslh_services()
     // Only show the plugin if it's enabled.
     if (! ((string) $settings->enabled == '1')) {
         // return empty array if not enabled
-        return $services;
+        return $service;
     }
 
     $configd_name = 'sslh';

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/domain</mount>
     <description>BIND domain configuration</description>
-    <version>1.0.1</version>
+    <version>1.1.1</version>
     <items>
         <domains>
             <domain type="ArrayField">
@@ -10,18 +10,18 @@
                     <Required>Y</Required>
                 </enabled>
                 <type type="OptionField">
-                    <default>master</default>
+                    <default>primary</default>
                     <Required>Y</Required>
                     <OptionValues>
-                        <master>master</master>
-                        <slave>slave</slave>
+                        <primary>primary</primary>
+                        <secondary>secondary</secondary>
                     </OptionValues>
                 </type>
-                <masterip type="NetworkField">
+                <primaryip type="NetworkField">
                     <Required>N</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <asList>Y</asList>
-                </masterip>
+                </primaryip>
                 <transferkeyalgo type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
@@ -41,11 +41,11 @@
                     <Required>N</Required>
                     <default></default>
                 </transferkey>
-                <allownotifyslave type="NetworkField">
+                <allownotifysecondary type="NetworkField">
                     <Required>N</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <asList>Y</asList>
-                </allownotifyslave>
+                </allownotifysecondary>
                 <domainname type="TextField">
                     <default></default>
                     <Required>Y</Required>
@@ -58,7 +58,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <Multiple>N</Multiple>
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </allowtransfer>
                 <allowquery type="ModelRelationField">
@@ -69,7 +69,7 @@
                             <display>name</display>
                         </template>
                     </Model>
-                    <Multiple>N</Multiple>
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </allowquery>
                 <serial type="TextField">

@@ -36,4 +36,13 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Openconnect';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'openconnect';
+
+    /**
+     * hook group interface registration on reconfigure
+     * @return bool
+     */
+    protected function invokeInterfaceRegistration()
+    {
+        return true;
+    }
 }

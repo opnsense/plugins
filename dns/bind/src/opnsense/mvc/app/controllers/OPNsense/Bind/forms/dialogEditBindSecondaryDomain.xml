@@ -14,41 +14,47 @@
     <field>
         <id>domain.allowtransfer</id>
         <label>Allow Transfer</label>
-        <type>dropdown</type>
-        <help>Define an ACL where you allow which server can retrieve this zone.</help>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which server can retrieve this zone.</help>
     </field>
     <field>
         <id>domain.allowquery</id>
         <label>Allow Query</label>
-        <type>dropdown</type>
-        <help>Define an ACL where you allow which client are allowed to query this zone.</help>
+        <type>select_multiple</type>
+        <help>Define the ACLs where you allow which client are allowed to query this zone.</help>
     </field>
     <field>
-        <id>domain.masterip</id>
-        <label>Master IP</label>
+        <id>domain.primaryip</id>
+        <label>Primary IP</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP address of master server when using slave mode.</help>
+        <help>Set the IP address of primary server.</help>
     </field>
     <field>
         <id>domain.transferkeyalgo</id>
         <label>Transfer Key Algorithm</label>
         <type>dropdown</type>
-        <help>Set the authentication algorithm for the TSIG key.</help>
+        <help>Set the authentication algorithm for the TSIG key used to transfer domain data from the primary server.</help>
+    </field>
+    <field>
+        <id>domain.transferkeyname</id>
+        <label>Transfer Key Name</label>
+        <type>text</type>
+        <help>The name of the TSIG key, which must match the value on the primary server.</help>
     </field>
     <field>
         <id>domain.transferkey</id>
         <label>Transfer Key</label>
         <type>text</type>
-        <help>The TSIG key used to transfer domain data from the master server.</help>
+        <help>The TSIG key used to transfer domain data from the master server in Base64 encoding.</help>
     </field>
     <field>
-        <id>domain.allownotifyslave</id>
+        <id>domain.allownotifysecondary</id>
         <label>Allow Notfiy</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>A list of allowed IP addresses to receive notifies from.</help>
+        <help>A list of allowed IP addresses to receive notifies from (in addition to the primary server.)</help>
     </field>
 </form>

@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <description>
         Dynamic DNS client
     </description>
@@ -24,6 +24,15 @@
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
             </daemon_delay>
+            <backend type="OptionField">
+                <Required>Y</Required>
+                <default>ddclient</default>
+                <ValidationMessage>A backend is required.</ValidationMessage>
+                <OptionValues>
+                    <ddclient>ddclient</ddclient>
+                    <opnsense>OPNsense</opnsense>
+                </OptionValues>
+            </backend>
         </general>
         <accounts>
             <account type=".\AccountField">
@@ -31,36 +40,50 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </enabled>
-                <service type="OptionField">
+                <service type=".\ServiceField">
                     <Required>Y</Required>
                     <ValidationMessage>A service type is required.</ValidationMessage>
                     <OptionValues>
+                        <hosting1984>1984</hosting1984>
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
-                        <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
+                        <cloudns>ClouDNS</cloudns>
+                        <dinahosting>dinahosting</dinahosting>
+                        <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
+                        <dnsexit>DNSExit</dnsexit>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
-                        <dslreports1>DslReports</dslreports1>
-                        <duckdns>DuckDNS</duckdns>
+                        <dslreports1>DSLReports</dslreports1>
+                        <dondominio>DonDominio</dondominio>
+                        <duckdns>Duck DNS</duckdns>
                         <dynu>Dynu</dynu>
-                        <easydns>EasyDNS</easydns>
+                        <easydns>easyDNS</easydns>
                         <freedns>FreeDNS</freedns>
+                        <freemyip>freeMyIP</freemyip>
+                        <gandi>gandi.net</gandi>
+                        <godaddy>GoDaddy</godaddy>
                         <googledomains>Google</googledomains>
-                        <gandi>Gandi.net</gandi>
                         <he-net>HE.net</he-net>
                         <he-net-tunnel>HE.net TunnelBroker</he-net-tunnel>
+                        <hetzner>Hetzner DNS Console</hetzner>
                         <inwx>INWX</inwx>
+                        <keysystems>Key-Systems</keysystems>
                         <loopia>Loopia</loopia>
                         <namecheap>NameCheap</namecheap>
-                        <noip>Noip</noip>
+                        <nfsn>NearlyFreeSpeech.net</nfsn>
+                        <njalla>Njalla</njalla>
+                        <noip>no-ip</noip>
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
+                        <ovh>OVHcloud DynHost</ovh>
                         <servercow>Servercow</servercow>
+                        <sitelutions>Sitelutions</sitelutions>
                         <spdyn>spDYN</spdyn>
                         <strato>STRATO</strato>
+                        <woima>Woima</woima>
+                        <yandex>Yandex</yandex>
                         <zoneedit1>Zoneedit</zoneedit1>
-                        <ovh>OVH DynHost</ovh>
                         <custom>Custom</custom>
                     </OptionValues>
                 </service>
@@ -85,6 +108,11 @@
                     <Required>Y</Required>
                     <mask>/^[^\n]*$/</mask>
                 </password>
+                <resourceId type="TextField">
+                    <Required>N</Required>
+                    <mask>/^[^\n]*$/</mask>
+                    <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
+                </resourceId>
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
@@ -102,7 +130,7 @@
                     <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
                 </zone>
-                <checkip type="OptionField">
+                <checkip type=".\CheckipField">
                     <Required>Y</Required>
                     <default>web_dyndns</default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
@@ -125,6 +153,11 @@
                         <web_zoneedit>zoneedit</web_zoneedit>
                         <if>Interface</if>
                     </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <reference>interface.check001</reference>
+                        </check001>
+                    </Constraints>
                 </checkip>
                 <checkip_timeout type="IntegerField">
                     <default>10</default>
@@ -139,7 +172,14 @@
                 <interface type="InterfaceField">
                     <Required>N</Required>
                     <multiple>N</multiple>
-                    <default>wan</default>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>An interface is required for the selected check method</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>checkip</field>
+                            <check>if</check>
+                        </check001>
+                    </Constraints>
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
