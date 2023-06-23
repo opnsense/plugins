@@ -83,8 +83,48 @@ POSSIBILITY OF SUCH DAMAGE.
                         /**
                          * initialize bootgrid table for {{ tab['tabhead'] }}
                          */
-                        gridopt['search'] = "{{ tab['endpoint'] }}";
+                        gridopt = {
+                            search: "{{ tab['endpoint'] }}",
+                            options:{
+                                formatters : {
+                                    general_route_code: function(column, row){
+                                        let protocols = {
+                                            'kernel' : {short: 'K', long: '{{ lang._('Kernel') }}'},
+                                            'connected': {short: 'C', long: '{{ lang._('Connected') }}'},
+                                            'bgp': {short: 'B', long: '{{ lang._('BGP') }}'},
+                                            'ospf': {short: 'O', long: '{{ lang._('OSPF') }}'},
+                                            'ospf6': {short: 'O', long: '{{ lang._('OSPFv3') }}'}
+                                        };
+                                        let field = $("<div/>");
+                                        if (protocols[row.protocol] !== undefined) {
+                                            let tmp = protocols[row.protocol];
+                                            field.append($("<abbr>").text(tmp.short).attr('title', tmp.long));
+                                        }
+                                        if(row.selected) {
+                                            field.append($("<abbr>").html("&gt;").attr('title', "{{ lang._('Selected') }}"));
+                                        }
+                                        if(row.installed) {
+                                            field.append($("<abbr>").html("&ast;").attr('title', "{{ lang._('FIB') }}"));
+                                        }
+                                        return field.html();
+                                    },
+                                    boolean: function (column, row) {
+                                        if (row[column.id]) {
+                                            return "<span class=\"fa fa-check\" data-value=\"1\" data-row-id=\"" + row.uuid + "\"></span>";
+                                        } else {
+                                            return "<span class=\"fa fa-times\" data-value=\"0\" data-row-id=\"" + row.uuid + "\"></span>";
+                                        }
+                                    },
+                                    origin: function(column, row) {
+                                        return (row[column.id] === 'incomplete' ? '<abbr title="{{ lang._('Incomplete') }}">&quest;</abbr>' : row[column.id]);
+                                    }
+                                }
+                            }
+                        };
                         all_grids["{{ tab['name'] }}"] = $("#grid-{{ tab['name'] }}").UIBootgrid(gridopt);
+                        all_grids["{{ tab['name'] }}"].on("loaded.rs.jquery.bootgrid", function (e) {
+                            $("abbr").tooltip();
+                        });
                     } else {
                         all_grids["{{ tab['name'] }}"].bootgrid('reload');
                     }
@@ -187,6 +227,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="distance" data-searchable="false">{{ lang._('Administrative Distance') }}</th>
                                 <th data-column-id="metric" data-searchable="false">{{ lang._('Metric') }}</th>
                                 <th data-column-id="interfaceName">{{ lang._('Interface') }}</th>
+                                <th data-column-id="interfaceDescr">{{ lang._('Interface name') }}</th>
                                 <th data-column-id="via">{{ lang._('Via') }}</th>
                                 <th data-column-id="uptime" data-searchable="false">{{ lang._('Time') }}</th>
                             </tr>
@@ -223,7 +264,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="locPrf" data-searchable="false" data-width="5%">{{ lang._('LocPrf') }}</th>
                                 <th data-column-id="weight" data-searchable="false" data-width="6%">{{ lang._('Weight') }}</th>
                                 <th data-column-id="path" data-width="21%">{{ lang._('Path') }}</th>
-                                <th data-column-id="origin" data-width="10%">{{ lang._('Origin') }}</th>
+                                <th data-column-id="origin" data-width="10%" data-formatter="origin">{{ lang._('Origin') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -247,6 +288,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="area">{{ lang._('Area') }}</th>
                                 <th data-column-id="via">{{ lang._('Via') }}</th>
                                 <th data-column-id="viainterface">{{ lang._('Via interface') }}</th>
+                                <th data-column-id="viainterfaceDescr">{{ lang._('Via interface name') }}</th>
                             </tr>
                             </thead>
                             <tbody>

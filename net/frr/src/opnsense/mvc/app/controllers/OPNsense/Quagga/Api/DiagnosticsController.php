@@ -41,6 +41,21 @@ use OPNsense\Core\Config;
  */
 class DiagnosticsController extends ApiControllerBase
 {
+    private $allifnames = [];
+
+    public function initialize()
+    {
+        parent::initialize();
+        foreach (Config::getInstance()->object()->interfaces->children() as $key => $node) {
+            $this->allifnames[(string)$node->if] = !empty((string)$node->descr) ? (string)$node->descr : $key;
+        }
+    }
+
+    public function getIfDesc($ifname)
+    {
+           return !empty($this->allifnames[$ifname]) ? $this->allifnames[$ifname] : '';
+    }
+
     private function getInformation(string $daemon, string $name, string $format): array
     {
         $response = (new Backend())->configdRun(
@@ -54,6 +69,9 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("general", "running-config", "plain");
     }
 
+    /**
+     * XXX: unused, deprecate in next major?
+     */
     public function generalrouteAction($format = "json"): array
     {
         $routes4 = $this->getInformation("general", "route4", $format)['response'];
@@ -73,10 +91,15 @@ class DiagnosticsController extends ApiControllerBase
     public function searchGeneralroute4Action(): array
     {
         $records = [];
-        foreach($this->getInformation("general", "route4", "json")['response'] as $route) {
-            foreach ($route as $nexthop) {
-                $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
-                $records[] = $nexthop;
+        foreach($this->getInformation("general", "route4", "json")['response'] as $routes) {
+            foreach ($routes as $route) {
+                foreach ($route['nexthops'] as $nexthop) {
+                    $nexthop = array_merge($route, $nexthop);
+                    unset($nexthop['nexthops']);
+                    $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
+                    $nexthop['interfaceDescr'] = $this->getIfDesc($nexthop['interfaceName'] ?? '');
+                    $records[] = $nexthop;
+                }
             }
         }
         return $this->searchRecordsetBase($records);
@@ -90,10 +113,15 @@ class DiagnosticsController extends ApiControllerBase
     public function searchGeneralroute6Action(): array
     {
         $records = [];
-        foreach($this->getInformation("general", "route6", "json")['response'] as $route) {
-            foreach ($route as $nexthop) {
-                $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
-                $records[] = $nexthop;
+        foreach($this->getInformation("general", "route6", "json")['response'] as $routes) {
+            foreach ($routes as $route) {
+                foreach ($route['nexthops'] as $nexthop) {
+                    $nexthop = array_merge($route, $nexthop);
+                    unset($nexthop['nexthops']);
+                    $nexthop['via'] = !empty($nexthop['ip']) ? $nexthop['ip'] : 'Directly Attached';
+                    $nexthop['interfaceDescr'] = $this->getIfDesc($nexthop['interfaceName'] ?? '');
+                    $records[] = $nexthop;
+                }
             }
         }
         return $this->searchRecordsetBase($records);
@@ -120,11 +148,15 @@ class DiagnosticsController extends ApiControllerBase
             }
         }
         if (!empty($payload['routes'])) {
-            foreach ($payload['routes'] as $route) {
-                foreach ($route as $nexthop) {
-                    $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
-                    $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
-                    $records[] = array_merge($baserecord, $nexthop);
+            foreach ($payload['routes'] as $routes) {
+                foreach ($routes as $route) {
+                    foreach ($route['nexthops'] as $nexthop) {
+                        $nexthop = array_merge($route, $nexthop);
+                        unset($nexthop['nexthops']);
+                        $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
+                        $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
+                        $records[] = array_merge($baserecord, $nexthop);
+                    }
                 }
             }
         }
@@ -147,11 +179,15 @@ class DiagnosticsController extends ApiControllerBase
             }
         }
         if (!empty($payload['routes'])) {
-            foreach ($payload['routes'] as $route) {
-                foreach ($route as $nexthop) {
-                    $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
-                    $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
-                    $records[] = array_merge($baserecord, $nexthop);
+            foreach ($payload['routes'] as $routes) {
+                foreach ($routes as $route) {
+                    foreach ($route['nexthops'] as $nexthop) {
+                        $nexthop = array_merge($route, $nexthop);
+                        unset($nexthop['nexthops']);
+                        $nexthop['internal'] = !empty($nexthop['pathFrom']) && $nexthop['pathFrom'] == 'internal';
+                        $nexthop['path'] = !empty($nexthop['path']) ? $nexthop['path'] : 'Internal';
+                        $records[] = array_merge($baserecord, $nexthop);
+                    }
                 }
             }
         }
@@ -214,6 +250,7 @@ class DiagnosticsController extends ApiControllerBase
                     'area' => $network['area'] ?? '',
                     'via' => !empty($nexthop['via']) ? $nexthop['ip'] : 'Directly Attached',
                     'viainterface' => !empty($nexthop['via']) ? $nexthop['via'] : $nexthop['directly attached to'],
+                    'viainterfaceDescr' =>  $this->getIfDesc($nexthop['via'] ?? $nexthop['directly attached to']),
                 ];
             }
         }
