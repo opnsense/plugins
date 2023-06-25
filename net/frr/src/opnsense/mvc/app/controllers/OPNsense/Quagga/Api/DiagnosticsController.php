@@ -312,4 +312,20 @@ class DiagnosticsController extends ApiControllerBase
     {
         return $this->getInformation("ospfv3", "interface", $format);
     }
+
+
+    public function bfdsummaryAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "summary", $format);
+    }
+
+    public function bfdneighborsAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "neighbors", $format);
+    }
+
+    public function bfdcountersAction($format = "json"): array
+    {
+        return $this->getInformation("bfd", "counters", $format);
+    }
 }
