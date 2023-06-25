@@ -3,6 +3,7 @@
 OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
 Copyright (C) 2017 Fabian Franz
 Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+Copyright (C) 2023 Mark Stitson <mark@stitson.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
