@@ -237,7 +237,7 @@ class DiagnosticsController extends ApiControllerBase
     public function searchOspfneighborAction(): array
     {
         $records = [];
-        $payload = $this->getInformation("ospf", "neighbor", "json")['response'];
+        $payload = $this->getInformation("ospf", "neighbor", "json");
         if (!empty($payload['neighbors'])) {
             foreach ($payload['neighbors'] as $neighborid => $neighbor) {
                 foreach ($neighbor as $item) {
@@ -321,11 +321,37 @@ class DiagnosticsController extends ApiControllerBase
 
     public function bfdneighborsAction($format = "json"): array
     {
-        return $this->getInformation("bfd", "neighbors", $format);
+	# FRR does not return a nice JSON object for BFD neighbors/counters
+        if ($format != "json") {
+	    return $this->getInformation("bfd", "neighbors", $format);
+	} else {
+            $records = [];
+            $payload = $this->getInformation("bfd", "neighbors", $format)['response'];
+            if (!empty($payload)) {
+                foreach ($payload as $peer) {
+		        $peerid = $peer['peer'];
+                        $records[$peerid] = $peer;
+                    }
+                }
+            return  ["response" => $records ];
+	}
     }
 
     public function bfdcountersAction($format = "json"): array
     {
-        return $this->getInformation("bfd", "counters", $format);
+	# FRR does not return a nice JSON object for BFD neighbors/counters
+        if ($format != "json") {
+	    return $this->getInformation("bfd", "counters", $format);
+	} else {
+            $records = [];
+            $payload = $this->getInformation("bfd", "counters", $format)['response'];
+            if (!empty($payload)) {
+                foreach ($payload as $peer) {
+		        $peerid = $peer['peer'];
+                        $records[$peerid] = $peer;
+                    }
+                }
+            return  ["response" => $records ];
+	}
     }
 }
