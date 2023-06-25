@@ -159,7 +159,7 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("bfd", "neighbors", $format);
     }
 
-    public function bfdicountersAction($format = "json"): array
+    public function bfdcountersAction($format = "json"): array
     {
         return $this->getInformation("bfd", "counters", $format);
     }
