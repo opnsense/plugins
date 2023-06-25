@@ -160,7 +160,17 @@ class DiagnosticsController extends ApiControllerBase
                 }
             }
         }
-        return $this->searchRecordsetBase($records);
+        $result = $this->searchRecordsetBase($records);
+        if (!empty($baserecord)) {
+            $result['subtitle'] = sprintf(
+                '%s : %s , %s : %s',
+                gettext('routerId'),
+                $baserecord['routerId'],
+                gettext('localAS'),
+                $baserecord['localAS']
+            );
+        }
+        return $result;
     }
 
     public function bgproute6Action($format = "json"): array
