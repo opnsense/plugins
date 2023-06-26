@@ -100,9 +100,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->tabs = [
             [
                 'name' => 'summary',
-                'endpoint' => '/api/quagga/diagnostics/bfdsummary/plain',
+                'endpoint' => '/api/quagga/diagnostics/bfdsummary',
                 'tabhead' => gettext('Summary'),
-                'type' => 'text'
+                'type' => 'tree'
             ],
             [
                 'name' => 'neighbors',

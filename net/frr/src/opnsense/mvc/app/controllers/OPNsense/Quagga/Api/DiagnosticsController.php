@@ -313,45 +313,35 @@ class DiagnosticsController extends ApiControllerBase
         return $this->getInformation("ospfv3", "interface", $format);
     }
 
-
-    public function bfdsummaryAction($format = "json"): array
+    private function bfdTreeFetch($topic)
     {
-        return $this->getInformation("bfd", "summary", $format);
+        $records = [];
+        $payload = $this->getInformation("bfd", $topic, "json")['response'];
+        if (!empty($payload)) {
+            foreach ($payload as $peer) {
+                if (isset($peer['id'])) {
+                    $peerid = $peer['id'] . ' / ' .  $peer['peer'];
+                } else {
+                    $peerid = $peer['peer'];
+                }
+                $records[$peerid] = $peer;
+            }
+        }
+        return  ["response" => $records];
     }
 
-    public function bfdneighborsAction($format = "json"): array
+    public function bfdsummaryAction(): array
     {
-	# FRR does not return a nice JSON object for BFD neighbors/counters
-        if ($format != "json") {
-	    return $this->getInformation("bfd", "neighbors", $format);
-	} else {
-            $records = [];
-            $payload = $this->getInformation("bfd", "neighbors", $format)['response'];
-            if (!empty($payload)) {
-                foreach ($payload as $peer) {
-		        $peerid = $peer['peer'];
-                        $records[$peerid] = $peer;
-                    }
-                }
-            return  ["response" => $records ];
-	}
+        return $this->bfdTreeFetch('summary');
     }
 
-    public function bfdcountersAction($format = "json"): array
+    public function bfdneighborsAction(): array
     {
-	# FRR does not return a nice JSON object for BFD neighbors/counters
-        if ($format != "json") {
-	    return $this->getInformation("bfd", "counters", $format);
-	} else {
-            $records = [];
-            $payload = $this->getInformation("bfd", "counters", $format)['response'];
-            if (!empty($payload)) {
-                foreach ($payload as $peer) {
-		        $peerid = $peer['peer'];
-                        $records[$peerid] = $peer;
-                    }
-                }
-            return  ["response" => $records ];
-	}
+        return $this->bfdTreeFetch('neighbors');
+    }
+
+    public function bfdcountersAction(): array
+    {
+        return $this->bfdTreeFetch('counters');
     }
 }
