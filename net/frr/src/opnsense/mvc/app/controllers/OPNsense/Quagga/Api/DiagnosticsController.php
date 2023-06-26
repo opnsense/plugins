@@ -319,11 +319,7 @@ class DiagnosticsController extends ApiControllerBase
         $payload = $this->getInformation("bfd", $topic, "json")['response'];
         if (!empty($payload)) {
             foreach ($payload as $peer) {
-                if (isset($peer['id'])) {
-                    $peerid = $peer['id'] . ' / ' .  $peer['peer'];
-                } else {
-                    $peerid = $peer['peer'];
-                }
+                $peerid = $peer['peer'];
                 $records[$peerid] = $peer;
             }
         }
@@ -332,7 +328,19 @@ class DiagnosticsController extends ApiControllerBase
 
     public function bfdsummaryAction(): array
     {
-        return $this->bfdTreeFetch('summary');
+        $records = [];
+        foreach (explode("\n", $this->getInformation("bfd", "summary", "plain")['response']) as $line) {
+            $parts = preg_split('/\s+/', $line);
+            if (count($parts) == 4 && filter_var($parts[0], FILTER_VALIDATE_INT) !== false) {
+                $records[] = [
+                    'id' => $parts[0],
+                    'local' => $parts[1],
+                    'peer' => $parts[2],
+                    'status' => $parts[3]
+                ];
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 
     public function bfdneighborsAction(): array

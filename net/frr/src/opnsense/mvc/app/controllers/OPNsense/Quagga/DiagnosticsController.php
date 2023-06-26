@@ -102,7 +102,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'name' => 'summary',
                 'endpoint' => '/api/quagga/diagnostics/bfdsummary',
                 'tabhead' => gettext('Summary'),
-                'type' => 'tree'
+                'type' => 'bfdsummary'
             ],
             [
                 'name' => 'neighbors',

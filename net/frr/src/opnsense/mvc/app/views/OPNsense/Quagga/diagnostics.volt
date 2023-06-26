@@ -86,6 +86,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% case 'bgproutetable' %}
                 {% case 'ospfroutetable' %}
                 {% case 'ospfneighbors' %}
+                {% case 'bfdsummary' %}
                     if (all_grids["{{ tab['name'] }}"] === undefined) {
                         /**
                          * initialize bootgrid table for {{ tab['tabhead'] }}
@@ -313,6 +314,22 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="retransmitCounter" data-searchable="false">{{ lang._('Retransmit Counter') }}</th>
                                 <th data-column-id="requestCounter" data-searchable="false">{{ lang._('Request Counter') }}</th>
                                 <th data-column-id="dbSummaryCounter" data-searchable="false">{{ lang._('DB Summary Counter') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% break %}
+                {% case 'bfdsummary' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="id">{{ lang._('SessionId') }}</th>
+                                <th data-column-id="local" data-searchable="false">{{ lang._('LocalAddress') }}</th>
+                                <th data-column-id="peer">{{ lang._('PeerAddress') }}</th>
+                                <th data-column-id="status" data-searchable="false">{{ lang._('Status') }}</th>
                             </tr>
                             </thead>
                             <tbody>
