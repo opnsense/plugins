@@ -29,12 +29,71 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
 {
     public function bgpAction()
     {
-        $this->view->diagnosticsForm = $this->getForm("diagnostics");
-        $this->view->pick('OPNsense/Quagga/diagnosticsbgp');
+        $this->view->tabs = [
+            [
+                'name' => 'routing4',
+                'endpoint' => '/api/quagga/diagnostics/search_bgproute4',
+                'tabhead' => "IPv4 " . gettext('Routing Table'),
+                'type' => 'bgproutetable'
+            ],
+            [
+                'name' => 'routing6',
+                'endpoint' => '/api/quagga/diagnostics/search_bgproute6',
+                'tabhead' => "IPv6 " . gettext('Routing Table'),
+                'type' => 'bgproutetable'
+            ],
+            [
+                'name' => 'neighbors',
+                'endpoint' => '/api/quagga/diagnostics/bgpneighbors',
+                'tabhead' => gettext('Neighbors'),
+                'type' => 'tree'
+            ],
+            [
+                'name' => 'summary',
+                'endpoint' => '/api/quagga/diagnostics/bgpsummary',
+                'tabhead' => gettext('Summary'),
+                'type' => 'tree'
+            ]
+        ];
+        $this->view->default_tab = 'routing4';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function ospfAction()
     {
-        $this->view->pick('OPNsense/Quagga/diagnosticsospf');
+        $this->view->tabs = [
+            [
+                'name' => 'overview',
+                'endpoint' => '/api/quagga/diagnostics/ospfoverview',
+                'tabhead' => gettext('Overview'),
+                'type' => 'tree'
+            ],
+            [
+                'name' => 'routing',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfroute',
+                'tabhead' => gettext('Routing Table'),
+                'type' => 'ospfroutetable'
+            ],
+            [
+                'name' => 'database',
+                'endpoint' => '/api/quagga/diagnostics/ospfdatabase/plain',
+                'tabhead' => gettext('Database'),
+                'type' => 'text'
+            ],
+            [
+                'name' => 'neighbors',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfneighbor',
+                'tabhead' => gettext('Neighbors'),
+                'type' => 'ospfneighbors'
+            ],
+            [
+                'name' => 'interfaces',
+                'endpoint' => '/api/quagga/diagnostics/ospfinterface',
+                'tabhead' => gettext('Interfaces'),
+                'type' => 'tree'
+            ]
+        ];
+        $this->view->default_tab = 'routing';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function ospfv3Action()
     {
@@ -42,6 +101,27 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
     }
     public function generalAction()
     {
-        $this->view->pick('OPNsense/Quagga/diagnosticsgeneral');
+        $this->view->tabs = [
+            [
+                'name' => 'routing4',
+                'endpoint' => '/api/quagga/diagnostics/search_generalroute4',
+                'tabhead' => gettext('IPv4 Routes'),
+                'type' => 'generalroutetable'
+            ],
+            [
+                'name' => 'routing6',
+                'endpoint' => '/api/quagga/diagnostics/search_generalroute6',
+                'tabhead' => gettext('IPv6 Routes'),
+                'type' => 'generalroutetable'
+            ],
+            [
+                'name' => 'runningconfig',
+                'endpoint' => '/api/quagga/diagnostics/generalrunningconfig/plain',
+                'tabhead' => gettext('Running Configuration'),
+                'type' => 'text'
+            ]
+        ];
+        $this->view->default_tab = 'routing4';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
 }

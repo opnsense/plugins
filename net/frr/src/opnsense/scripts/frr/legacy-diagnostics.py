@@ -404,7 +404,8 @@ class OSPFv3(Daemon):
                     self.myre.search(r'SPF algorithm last executed (.*)', line) or \
                     self.myre.search(r'Last SPF duration (.*)', line) or \
                     self.myre.search(r'SPF last executed (.*)', line) or \
-                    self.myre.search(r'Number of Area scoped LSAs is (.*)', line):
+                    self.myre.search(r'Number of Area scoped LSAs is (.*)', line) or \
+                    self.myre.search(r'Adjacency changes are logged', line):
                 # skip these lines
                 pass
             else:
