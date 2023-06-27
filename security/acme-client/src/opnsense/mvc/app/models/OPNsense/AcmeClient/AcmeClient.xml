@@ -1174,6 +1174,7 @@
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
+                        <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
@@ -1380,6 +1381,25 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_host>
+                <acme_truenas_apikey type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_apikey>
+                <acme_truenas_hostname type="HostnameField">
+                    <default>localhost</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_hostname>
+                <acme_truenas_scheme type="OptionField">
+                    <default>http</default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <http>HTTP [default]</http>
+                        <https>HTTPS</https>
+                    </OptionValues>
+                </acme_truenas_scheme>
                 <acme_unifi_keystore type="TextField">
                     <default>/usr/local/share/java/unifi/data/keystore</default>
                     <Required>N</Required>
