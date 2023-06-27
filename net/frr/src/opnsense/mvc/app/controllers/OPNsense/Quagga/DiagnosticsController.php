@@ -95,6 +95,31 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
         $this->view->default_tab = 'routing';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
+    public function bfdAction()
+    {
+        $this->view->tabs = [
+            [
+                'name' => 'summary',
+                'endpoint' => '/api/quagga/diagnostics/bfdsummary',
+                'tabhead' => gettext('Summary'),
+                'type' => 'bfdsummary'
+            ],
+            [
+                'name' => 'neighbors',
+                'endpoint' => '/api/quagga/diagnostics/bfdneighbors',
+                'tabhead' => gettext('Neighbors'),
+                'type' => 'tree'
+            ],
+            [
+                'name' => 'counters',
+                'endpoint' => '/api/quagga/diagnostics/bfdcounters',
+                'tabhead' => gettext('Counters'),
+                'type' => 'tree'
+            ]
+	];
+        $this->view->default_tab = 'summary';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
+    }
     public function ospfv3Action()
     {
         $this->view->pick('OPNsense/Quagga/diagnosticsospfv3');

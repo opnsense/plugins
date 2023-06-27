@@ -237,7 +237,7 @@ class DiagnosticsController extends ApiControllerBase
     public function searchOspfneighborAction(): array
     {
         $records = [];
-        $payload = $this->getInformation("ospf", "neighbor", "json")['response'];
+        $payload = $this->getInformation("ospf", "neighbor", "json");
         if (!empty($payload['neighbors'])) {
             foreach ($payload['neighbors'] as $neighborid => $neighbor) {
                 foreach ($neighbor as $item) {
@@ -311,5 +311,45 @@ class DiagnosticsController extends ApiControllerBase
     public function ospfv3interfaceAction($format = "json"): array
     {
         return $this->getInformation("ospfv3", "interface", $format);
+    }
+
+    private function bfdTreeFetch($topic)
+    {
+        $records = [];
+        $payload = $this->getInformation("bfd", $topic, "json")['response'];
+        if (!empty($payload)) {
+            foreach ($payload as $peer) {
+                $peerid = $peer['peer'];
+                $records[$peerid] = $peer;
+            }
+        }
+        return  ["response" => $records];
+    }
+
+    public function bfdsummaryAction(): array
+    {
+        $records = [];
+        foreach (explode("\n", $this->getInformation("bfd", "summary", "plain")['response']) as $line) {
+            $parts = preg_split('/\s+/', trim($line));
+            if (count($parts) == 4 && filter_var($parts[0], FILTER_VALIDATE_INT) !== false) {
+                $records[] = [
+                    'id' => $parts[0],
+                    'local' => $parts[1],
+                    'peer' => $parts[2],
+                    'status' => $parts[3]
+                ];
+            }
+        }
+        return $this->searchRecordsetBase($records);
+    }
+
+    public function bfdneighborsAction(): array
+    {
+        return $this->bfdTreeFetch('neighbors');
+    }
+
+    public function bfdcountersAction(): array
+    {
+        return $this->bfdTreeFetch('counters');
     }
 }
