@@ -330,7 +330,7 @@ class DiagnosticsController extends ApiControllerBase
     {
         $records = [];
         foreach (explode("\n", $this->getInformation("bfd", "summary", "plain")['response']) as $line) {
-            $parts = preg_split('/\s+/', $line);
+            $parts = preg_split('/\s+/', trim($line));
             if (count($parts) == 4 && filter_var($parts[0], FILTER_VALIDATE_INT) !== false) {
                 $records[] = [
                     'id' => $parts[0],
