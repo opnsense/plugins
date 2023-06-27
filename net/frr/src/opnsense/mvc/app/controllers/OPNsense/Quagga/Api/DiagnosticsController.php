@@ -91,7 +91,7 @@ class DiagnosticsController extends ApiControllerBase
     public function searchGeneralroute4Action(): array
     {
         $records = [];
-        foreach($this->getInformation("general", "route4", "json")['response'] as $routes) {
+        foreach ($this->getInformation('general', 'route4', 'json')['response'] as $routes) {
             foreach ($routes as $route) {
                 foreach ($route['nexthops'] as $nexthop) {
                     $nexthop = array_merge($route, $nexthop);
@@ -113,7 +113,7 @@ class DiagnosticsController extends ApiControllerBase
     public function searchGeneralroute6Action(): array
     {
         $records = [];
-        foreach($this->getInformation("general", "route6", "json")['response'] as $routes) {
+        foreach ($this->getInformation('general', 'route6', 'json')['response'] as $routes) {
             foreach ($routes as $route) {
                 foreach ($route['nexthops'] as $nexthop) {
                     $nexthop = array_merge($route, $nexthop);
@@ -258,7 +258,7 @@ class DiagnosticsController extends ApiControllerBase
     {
         $records = [];
         $payload = $this->getInformation("ospf", "route", "json")['response'];
-        foreach($payload as $net => $network) {
+        foreach ($payload as $net => $network) {
             if (empty($network['nexthops'])) {
                 continue;
             }
