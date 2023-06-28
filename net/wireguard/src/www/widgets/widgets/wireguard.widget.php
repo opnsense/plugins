@@ -60,14 +60,12 @@ $enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? tru
 $(window).on("load", function() {
     function wgGenerateRow(name, interface, peerName, publicKey, latestHandshake, status)
     {
-        publicKeyShort = publicKey.slice(0, 19) + '...';
-
         var tr = ''
         +'<tr>'
         +'    <td>' + name + '</td>'
         +'    <td>' + interface + '</td>'
         +'    <td>' + peerName  + '</td>'
-        +'    <td title="' + publicKey + '">' + publicKeyShort  + '</td>'
+        +'    <td style="overflow: hidden; text-overflow: ellipsis;" title="' + publicKey + '">' + publicKey  + '</td>'
         +'    <td>' + latestHandshake + '</td>'
         +'</tr>';
 
