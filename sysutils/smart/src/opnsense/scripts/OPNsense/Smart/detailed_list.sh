@@ -27,21 +27,15 @@
 
 RESULT=
 
-for DEV in $(sysctl -n kern.disks); do
+for DEV in $(smartctl --scan | awk '{ print $1 }'); do
     IDENT=$(/usr/sbin/diskinfo -s ${DEV})
-
-    if [ "${DEV#nvd}" != "${DEV}" ]; then
-        # the disk formerly know as nvdX
-        DEV="nvme${DEV#nvd}"
-    fi
-
-    STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
+    STATE=$(/usr/local/sbin/smartctl -jH ${DEV})
 
     if [ -n "${RESULT}" ]; then
         RESULT="${RESULT},";
     fi
 
-    RESULT="${RESULT}{\"device\":\"${DEV}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
+    RESULT="${RESULT}{\"device\":\"${DEV##/dev/}\",\"ident\":\"${IDENT}\",\"state\":${STATE}}";
 done
 
 echo "[${RESULT}]"
