@@ -8,6 +8,32 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.6
+
+ * default acquis.d/opnsense.yaml to "poll_without_inotify=true" which is now required
+   to acquire content from symlinks.
+
+1.0.5
+
+* fix ban example
+
+1.0.4
+
+* Add force_inotify option to aquire logs when /var/log is in RAM, otherwise
+  a restart of the service is required after a reboot.
+
+1.0.3
+
+* acquire filter logs for the firewallservices/pf collection (port scans).
+  If you already added it manually, you can remove it now to avoid counting
+  the events twice.
+
+1.0.2
+
+* updated cron job (reload only when there are updates), added small random delay
+* limit log collection to latest.log (requires 22.7+)
+* some javascript lint
+
 1.0.1
 
 * fixed live logs

@@ -6529,7 +6529,6 @@ input[type="checkbox"].checkbox-switch:checked + i::before, input[type="checkbox
 }
 
 .modal-side {
-  margin: 62px 10px 10px 10px;
   background-color: #3a3a3a !important;
 }
 

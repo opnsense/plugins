@@ -1,7 +1,6 @@
 {# SPDX-License-Identifier: MIT #}
 {# SPDX-FileCopyrightText: © 2021 CrowdSec <info@crowdsec.net> #}
 
-
 <script>
     $( document ).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/crowdsec/general/get"};
@@ -22,7 +21,7 @@
             });
         });
 
-        if(window.location.hash != "") {
+        if(window.location.hash !== "") {
             $('a[href="' + window.location.hash + '"]').click()
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -79,6 +78,11 @@
 
         <ul>
             <li>
+                New acquisition files go under <code>/usr/local/etc/crowdsec/acquis.d</code>. See opnsense.yaml for details.
+                The option <code>poll_without_inotify: true</code> is required if the acquitision targets are symlinks (which
+                is the case for most opnsense logs).
+            </li>
+            <li>
                 If your OPNsense is &lt;22.1, you must check "Disable circular logs" in the Settings menu for the
                 ssh and web-auth parsers to work. If you upgrade to 22.1, it will be done automatically.
                 See <a href="https://github.com/crowdsecurity/opnsense-plugin-crowdsec/blob/main/src/etc/crowdsec/acquis.d/opnsense.yaml">acquis.d/opnsense.yaml</a>
@@ -125,7 +129,7 @@
 
         <p>
             Select the first three checkboxes: IDS, LAPI and IPS. Click Apply. If you need to restart, you can do so
-            from the <a href="/status_services.php">System > Diagnostics > Services</a> page.
+            from the <a href="/ui/core/service">System > Diagnostics > Services</a> page.
         </p>
 
         <h1>Test the plugin</h1>
@@ -146,7 +150,7 @@
             connect, should anything go wrong.
 	</p>
 
-	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i </code></pre>
+	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i &lt;your_ip_address&gt;</code></pre>
 
 	<p>
 	    This is a more secure way to test than attempting to brute-force

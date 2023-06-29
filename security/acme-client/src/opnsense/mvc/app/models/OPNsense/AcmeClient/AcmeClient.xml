@@ -440,6 +440,7 @@
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
+                        <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com</dns_me>
                         <dns_dp>DNSPod.cn</dns_dp>
@@ -465,6 +466,7 @@
                         <dns_inwx>INWX XMLRPC</dns_inwx>
                         <dns_ionos>IONOS domain</dns_ionos>
                         <dns_ispconfig>ISPConfig 3.1+</dns_ispconfig>
+                        <dns_jd>JD Cloud</dns_jd>
                         <dns_joker>Joker</dns_joker>
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
@@ -490,6 +492,7 @@
                         <dns_pdns>PowerDNS.com</dns_pdns>
                         <dns_pleskxml>Plesk</dns_pleskxml>
                         <dns_porkbun>Porkbun</dns_porkbun>
+                        <dns_regru>RegRu</dns_regru>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
                         <dns_selfhost>Selfhost</dns_selfhost>
@@ -605,6 +608,12 @@
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
+                <dns_dnsservices_user type="TextField">
+                    <Required>N</Required>
+                </dns_dnsservices_user>
+                <dns_dnsservices_password type="TextField">
+                    <Required>N</Required>
+                </dns_dnsservices_password>
                 <dns_doapi_token type="TextField">
                     <Required>N</Required>
                 </dns_doapi_token>
@@ -708,6 +717,15 @@
                     <Required>N</Required>
                     <default>1</default>
                 </dns_ispconfig_insecure>
+                <dns_jd_id type="TextField">
+                    <Required>N</Required>
+                </dns_jd_id>
+                <dns_jd_region type="TextField">
+                    <Required>N</Required>
+                </dns_jd_region>
+                <dns_jd_secret type="TextField">
+                    <Required>N</Required>
+                </dns_jd_secret>
                 <dns_joker_username type="TextField">
                     <Required>N</Required>
                 </dns_joker_username>
@@ -1116,6 +1134,12 @@
                 <dns_cpanel_hostname type="TextField">
                     <Required>N</Required>
                 </dns_cpanel_hostname>
+                <dns_regru_username type="TextField">
+                    <Required>N</Required>
+                </dns_regru_username>
+                <dns_regru_password type="TextField">
+                    <Required>N</Required>
+                </dns_regru_password>
             </validation>
         </validations>
         <actions>
@@ -1147,8 +1171,10 @@
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
+                        <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
+                        <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
@@ -1340,6 +1366,40 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_password>
+                <acme_panos_username type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_username>
+                <acme_panos_password type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_password>
+                <acme_panos_host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_panos_host>
+                <acme_truenas_apikey type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_apikey>
+                <acme_truenas_hostname type="HostnameField">
+                    <default>localhost</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_hostname>
+                <acme_truenas_scheme type="OptionField">
+                    <default>http</default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <http>HTTP [default]</http>
+                        <https>HTTPS</https>
+                    </OptionValues>
+                </acme_truenas_scheme>
                 <acme_unifi_keystore type="TextField">
                     <default>/usr/local/share/java/unifi/data/keystore</default>
                     <Required>N</Required>

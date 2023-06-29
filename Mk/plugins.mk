@@ -132,6 +132,9 @@ manifest: check
 	done
 	@echo "}"
 .endif
+	@if [ -f ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME} ]; then \
+	    echo "annotations $$(cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME})"; \
+	fi
 
 scripts: check scripts-pre scripts-auto scripts-manual scripts-post
 
@@ -256,14 +259,14 @@ package: check
 .for DEP in ${PLUGIN_DEPENDS}
 	@if ! ${PKG} info ${DEP} > /dev/null; then ${PKG} install -yA ${DEP}; fi
 .endfor
-	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
-	@${MAKE} DESTDIR=${WRKSRC} metadata
-	@echo " done"
 	@echo -n ">>> Staging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
 	@${MAKE} DESTDIR=${WRKSRC} install
 	@echo " done"
 	@echo ">>> Generated version info for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
 	@cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME}
+	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
+	@${MAKE} DESTDIR=${WRKSRC} metadata
+	@echo " done"
 	@echo ">>> Packaging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
 	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}

@@ -91,7 +91,7 @@ def checkip(service, proto='https', timeout='10', interface=None):
                     try:
                         address = ipaddress.ip_address(parts[1])
                         if address.is_global:
-                            return address
+                            return str(address)
                     except ValueError:
                         continue
     else:

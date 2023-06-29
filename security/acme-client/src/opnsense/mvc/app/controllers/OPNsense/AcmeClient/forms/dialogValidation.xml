@@ -368,6 +368,21 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
+        <label>DNS.Services</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsservices</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Domain-Offensive LetsEncrypt</label>
         <type>header</type>
         <style>table_dns table_dns_doapi</style>
@@ -643,6 +658,26 @@
         <label>Disable SSL Verification</label>
         <type>checkbox</type>
         <help>Uncheck this box if you have a valid SSL certificate for your ISPConfig installation.</help>
+    </field>
+    <field>
+        <label>JD Cloud</label>
+        <type>header</type>
+        <style>table_dns table_dns_jd</style>
+    </field>
+    <field>
+        <id>validation.dns_jd_id</id>
+        <label>API key id</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_region</id>
+        <label>JD Cloud region</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_jd_secret</id>
+        <label>API key secret</label>
+        <type>text</type>
     </field>
     <field>
         <label>Joker</label>
@@ -1535,5 +1570,20 @@
         <label>cPanel Hostname</label>
         <type>text</type>
         <help>EX: https://hostname:2083</help>
+    </field>
+    <field>
+        <label>regru</label>
+        <type>header</type>
+        <style>table_dns table_dns_regru</style>
+    </field>
+    <field>
+        <id>validation.dns_regru_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_regru_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
 </form>

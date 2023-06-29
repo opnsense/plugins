@@ -2,7 +2,6 @@
     "product_abi": "%%PLUGIN_ABI%%",
     "product_arch": "%%PLUGIN_ARCH%%",
     "product_email": "%%PLUGIN_MAINTAINER%%",
-    "product_flavour": "%%PLUGIN_FLAVOUR%%",
     "product_hash": "%%PLUGIN_HASH%%",
     "product_id": "%%PLUGIN_PKGNAME%%",
     "product_name": "%%PLUGIN_NAME%%",

@@ -16,13 +16,13 @@
             <Required>Y</Required>
         </enablerpz>
         <listenv4 type="NetworkField">
-            <default>127.0.0.1</default>
+            <default>0.0.0.0</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>
         </listenv4>
         <listenv6 type="NetworkField">
-            <default>::1</default>
+            <default>::</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>
@@ -149,7 +149,7 @@
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </ratelimitcount>
         <ratelimitexcept type="NetworkField">
-            <default>127.0.0.1,::1</default>
+            <default>0.0.0.0,::</default>
             <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <asList>Y</asList>

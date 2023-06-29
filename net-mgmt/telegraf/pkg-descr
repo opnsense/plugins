@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.8
+
+* bug: fix InfluxDB v2 template to remove erroneous `timeout` value (issue #3265, contributed by Gavin Chappell)
+
 1.12.7
 
 * Add Influx v2 flush timeout

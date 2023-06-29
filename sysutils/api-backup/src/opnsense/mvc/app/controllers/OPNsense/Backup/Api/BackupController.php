@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2023 Frank Wall
  * Copyright (C) 2018 Fabian Franz
  * All rights reserved.
  *
@@ -34,17 +35,56 @@ class BackupController extends ApiControllerBase
 {
     const CONFIG_XML = '/conf/config.xml';
 
-    public function downloadAction()
+    /**
+     * download system config
+     * @param string $format set to 'json' to get a base64 encoded config backup
+     * @return array|mixed
+     */
+    public function downloadAction($format = 'plain')
     {
-        $this->response->setStatusCode(200, "OK");
-        $this->response->setContentType('application/xml', 'UTF-8');
-        $this->response->setHeader("Content-Disposition", "attachment; filename=\"config.xml\"");
         $data = file_get_contents(self::CONFIG_XML);
-        $this->response->setContent($data);
+        $status = $data === false ? 'error' : 'success';
+
+        if ($format == 'json') {
+            $response = array(
+              'status' => $status,
+              'filename' => 'config.xml',
+              'filetype' => 'application/xml',
+              'content' => base64_encode($data),
+            );
+            return $response;
+        } else {
+            $this->response->setStatusCode(200, "OK");
+            $this->response->setContentType('application/xml', 'UTF-8');
+            $this->response->setHeader("Content-Disposition", "attachment; filename=\"config.xml\"");
+            $data = file_get_contents(self::CONFIG_XML);
+            $this->response->setContent($data);
+        }
     }
 
+    /**
+     * process API results, serialize return data to json.
+     * @param $dispatcher
+     * @return string json data
+     */
     public function afterExecuteRoute($dispatcher)
     {
-        $this->response->send();
+        // check if reponse headers are already set
+        if ($this->response->getHeaders()->get("Status") != null) {
+            // Headers already set, send unmodified response.
+        } else {
+            // process response, serialize to json object
+            $data = $dispatcher->getReturnedValue();
+            if (is_array($data)) {
+                $this->response->setContentType('application/json', 'UTF-8');
+                if ($this->isExternalClient()) {
+                    $this->response->setContent(json_encode($data));
+                } else {
+                    $this->response->setContent(htmlspecialchars(json_encode($data), ENT_NOQUOTES));
+                }
+            }
+        }
+
+        return $this->response->send();
     }
 }

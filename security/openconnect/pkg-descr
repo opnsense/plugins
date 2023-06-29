@@ -9,6 +9,8 @@ Plugin Changelog
 1.4.4
 
 * Improve compatibility via useragent="AnyConnect"
+* Register interfaces on reconfigure
+* Ignore server-side DNS servers
 
 1.4.3
 

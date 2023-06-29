@@ -100,8 +100,13 @@ function save_to_model($data)
         $policy->action = 'BLOCK';
         // create new values for policy
         $rule_list = [];
+        $dis_rules = [];
         foreach ($rules as $rule) {
             $rule_mdl = $model->naxsi_rule->Add();
+            // exclude commented rules from policy
+            if (str_starts_with($rule['rule'], '#')) {
+                $dis_rules[] = (string)$rule_mdl->getAttributes()["uuid"];
+            }
             $rule_mdl->description = $rule['message'];
             $rule_mdl->message = $rule['message'];
             $rule_mdl->ruletype = 'main';
@@ -160,9 +165,8 @@ function save_to_model($data)
             }
             $rule_list[] = $rule_mdl->getAttributes()["uuid"];
         }
-        $policy->naxsi_rules = implode(',', $rule_list);
+        $policy->naxsi_rules = implode(',', array_diff($rule_list, $dis_rules));
     }
-
     $val_result = $model->performValidation(false);
     if (count($val_result) !== 0) {
         print_r($val_result);
