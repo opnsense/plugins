@@ -25,6 +25,10 @@
             <default>1</default>
             <Required>Y</Required>
         </networkimportcheck>
+        <logneighborchanges type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </logneighborchanges>
         <networks type="CSVListField">
             <default></default>
             <Required>N</Required>
