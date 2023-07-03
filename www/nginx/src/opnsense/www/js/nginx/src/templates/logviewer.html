@@ -28,7 +28,7 @@
                 <button class="btn btn-primary" id="refresh" title="Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="paging_forward" title="Next Page"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="paging_last" title="Last Page"><i class="fa fa-fast-forward " aria-hidden="true"></i></button>
-                &nbsp;&nbsp;Page <span id="currentpage">1</span>/<span id="pagecount">0</span>
+                <span style="padding-left: 10px;">Page </span><span id="currentpage">1</span>/<span id="pagecount">0</span>
                 <div style="float: right; display: flex;">
                     <label for="entrycount"><span id="entrycountdisplay">100</span> lines per page</label><input type="range" list="tickmarks" min="5" max="1000" step="5" id="entrycount" value="100" style="width: 200px;" />
                     <datalist id="tickmarks">
@@ -45,7 +45,7 @@
                         <option value="1000" label="1000">
                     </datalist>
                 </div>
-                &nbsp;&nbsp;Found lines: <span id="resultcount">0</span>/<span id="totalcount">0</span>
+                <span style="padding-left: 10px;">Found lines: </span><span id="resultcount">0</span>/<span id="totalcount">0</span>
             </th>
         </tr>
     </tfoot>
