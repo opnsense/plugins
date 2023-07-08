@@ -75,7 +75,6 @@ POSSIBILITY OF SUCH DAMAGE.
         $(".tree_search").keyup(treeSearchKeyUp);
 
         let all_grids = [];
-
         {% for tab in tabs %}
             /**
              * register refresh event handler for {{ tab['tabhead'] }}
@@ -85,13 +84,15 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% case 'generalroutetable' %}
                 {% case 'bgproutetable' %}
                 {% case 'ospfroutetable' %}
+                {% case 'ospfv3routetable' %}
+                {% case 'ospfv3databasetable' %}
                 {% case 'ospfneighbors' %}
                 {% case 'bfdsummary' %}
                     if (all_grids["{{ tab['name'] }}"] === undefined) {
                         /**
                          * initialize bootgrid table for {{ tab['tabhead'] }}
                          */
-                        gridopt = {
+                        let gridopt = {
                             search: "{{ tab['endpoint'] }}",
                             options:{
                                 formatters : {
@@ -116,6 +117,61 @@ POSSIBILITY OF SUCH DAMAGE.
                                         }
                                         return field.html();
                                     },
+                                    ospf_route_type: function(column, row) {
+                                        let ospf_route_types = {
+                                            'N': "{{ lang._('Network') }}",
+                                            'IA': "{{ lang._('OSPF inter area') }}",
+                                            'N1': "{{ lang._('OSPF NSSA external type 1') }}",
+                                            'N2': "{{ lang._('OSPF NSSA external type 2') }}",
+                                            'E1': "{{ lang._('OSPF external type 1') }}",
+                                            'E2': "{{ lang._('OSPF external type 2') }}",
+                                        };
+                                        let field = $("<div/>");
+                                        row[column.id].split(' ').forEach(function(routeType) {
+                                            if (ospf_route_types[routeType] !== undefined) {
+                                                field.append($("<abbr>").text(routeType).attr('title', ospf_route_types[routeType]));
+                                            } else {
+                                                field.append($("<abbr>").text(routeType));
+                                            }
+                                            field.append('&nbsp;');
+                                        });
+
+                                        return field.html();
+                                    },
+                                    ospf6_dest_type: function(column, row){
+                                        let ospf6_dest_types = {
+                                            '?': "{{ lang._('Unknown') }}",
+                                            'R': "{{ lang._('Router') }}",
+                                            'N': "{{ lang._('Network') }}",
+                                            'D': "{{ lang._('Discard') }}",
+                                            'L': "{{ lang._('Linkstate') }}",
+                                            'A': "{{ lang._('AddressRange') }}",
+                                        };
+                                        let field = $("<div/>");
+                                        if (ospf6_dest_types[row[column.id]] !== undefined) {
+                                            field.append($("<abbr>").text(row[column.id]).attr('title', ospf6_dest_types[row[column.id]]));
+                                        } else {
+                                            field.append($("<abbr>").text(row[column.id]));
+                                        }
+
+                                        return field.html();
+                                    },
+                                    ospf6_path_type: function(column, row){
+                                        let ospf6_path_types = {
+                                            '??': "{{ lang._('UnknownRoute') }}",
+                                            'IA': "{{ lang._('IntraArea') }}",
+                                            'IE': "{{ lang._('InterArea') }}",
+                                            'E1': "{{ lang._('External1') }}",
+                                            'E2': "{{ lang._('External2') }}",
+                                        };
+                                        let field = $("<div/>");
+                                        if (ospf6_path_types[row[column.id]] !== undefined) {
+                                            field.append($("<abbr>").text(row[column.id]).attr('title', ospf6_path_types[row[column.id]]));
+                                        } else {
+                                            field.append($("<abbr>").text(row[column.id]));
+                                        }
+                                        return field.html();
+                                    },
                                     boolean: function (column, row) {
                                         if (row[column.id]) {
                                             return "<span class=\"fa fa-check\" data-value=\"1\" data-row-id=\"" + row.uuid + "\"></span>";
@@ -133,7 +189,6 @@ POSSIBILITY OF SUCH DAMAGE.
                                         $("#page_frr_subtitle").append('<i class="fa fa-fw fa-chevron-right" aria-hidden="true"></i>');
                                         $("#page_frr_subtitle").append($("<span/>").text(data.subtitle));
                                     }
-                                    console.log(data);
                                     return data;
                                 }
                             }
@@ -300,6 +355,26 @@ POSSIBILITY OF SUCH DAMAGE.
                         </table>
                     </div>
                     {% break %}
+                {% case 'ospfv3routetable' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="destinationType" data-width="5em" data-formatter="ospf6_dest_type" data-sortable="false">{{ lang._('Type') }}</th>
+                                <th data-column-id="isBestRoute" data-width="5em" data-formatter="boolean" data-searchable="false" data-sortable="false">{{ lang._('Best') }}</th>
+                                <th data-column-id="pathType" data-formatter="ospf6_path_type">{{ lang._('Path type') }}</th>
+                                <th data-column-id="network">{{ lang._('Network') }}</th>
+                                <th data-column-id="nextHop" data-type="string">{{ lang._('nextHop') }}</th>
+                                <th data-column-id="interfaceName" data-type="string">{{ lang._('Interface') }}</th>
+                                <th data-column-id="interfaceDescr">{{ lang._('interface name') }}</th>
+                                <th data-column-id="duration" data-type="string">{{ lang._('Time') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% break %}
                 {% case 'ospfneighbors' %}
                     <div class="col-sm-12">
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
@@ -314,6 +389,28 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="retransmitCounter" data-searchable="false">{{ lang._('Retransmit Counter') }}</th>
                                 <th data-column-id="requestCounter" data-searchable="false">{{ lang._('Request Counter') }}</th>
                                 <th data-column-id="dbSummaryCounter" data-searchable="false">{{ lang._('DB Summary Counter') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% break %}
+                {% case 'ospfv3databasetable' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="dbname">{{ lang._('Database') }}</th>
+                                <th data-column-id="areaId">{{ lang._('Area') }}</th>
+                                <th data-column-id="interface">{{ lang._('Interface') }}</th>
+                                <th data-column-id="interfaceDescr">{{ lang._('interface name') }}</th>
+                                <th data-column-id="type">{{ lang._('Type') }}</th>
+                                <th data-column-id="lsId">{{ lang._('LS ID') }}</th>
+                                <th data-column-id="advRouter">{{ lang._('Advertising Router') }}</th>
+                                <th data-column-id="age">{{ lang._('Age') }}</th>
+                                <th data-column-id="seqNum">{{ lang._('Sequence Number') }}</th>
+                                <th data-column-id="payload">{{ lang._('Payload') }}</th>
                             </tr>
                             </thead>
                             <tbody>

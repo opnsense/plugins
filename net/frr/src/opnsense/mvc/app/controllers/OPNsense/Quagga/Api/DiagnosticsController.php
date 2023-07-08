@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *    Copyright (C) 2023 Deciso B.V.
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  *
@@ -56,42 +57,21 @@ class DiagnosticsController extends ApiControllerBase
            return !empty($this->allifnames[$ifname]) ? $this->allifnames[$ifname] : '';
     }
 
-    private function getInformation(string $daemon, string $name, string $format): array
+    private function configdJson($daemon, $name)
     {
-        $response = (new Backend())->configdRun(
-            "quagga diagnostics " . $daemon . "_" . $name . ($format === "json" ? "_json" : "")
-        );
-        return ["response" => ($format === "json" ? json_decode($response ?? '', true) : $response)];
+        $response = (new Backend())->configdpRun('quagga', ['diagnostics', $daemon . "_" . $name, 'json']);
+        return json_decode($response ?? '', true) ?? [];
     }
 
     public function generalrunningconfigAction(): array
     {
-        return $this->getInformation("general", "running-config", "plain");
-    }
-
-    /**
-     * XXX: unused, deprecate in next major?
-     */
-    public function generalrouteAction($format = "json"): array
-    {
-        $routes4 = $this->getInformation("general", "route4", $format)['response'];
-        $routes6 = $this->getInformation("general", "route6", $format)['response'];
-        if ($format === "json") {
-            return array("response" => array("ipv4" => $routes4, "ipv6" => $routes6));
-        } else {
-            return array("response" => $routes4 . $routes6);
-        }
-    }
-
-    public function generalroute4Action($format = "json"): array
-    {
-        return $this->getInformation("general", "route4", $format);
+        return ["response" => (new Backend())->configdpRun('quagga diagnostics general_running-config')];
     }
 
     public function searchGeneralroute4Action(): array
     {
         $records = [];
-        foreach ($this->getInformation('general', 'route4', 'json')['response'] as $routes) {
+        foreach ($this->configdJson('general', 'route4') as $routes) {
             foreach ($routes as $route) {
                 foreach ($route['nexthops'] as $nexthop) {
                     $nexthop = array_merge($route, $nexthop);
@@ -103,17 +83,12 @@ class DiagnosticsController extends ApiControllerBase
             }
         }
         return $this->searchRecordsetBase($records);
-    }
-
-    public function generalroute6Action($format = "json"): array
-    {
-        return $this->getInformation("general", "route6", $format);
     }
 
     public function searchGeneralroute6Action(): array
     {
         $records = [];
-        foreach ($this->getInformation('general', 'route6', 'json')['response'] as $routes) {
+        foreach ($this->configdJson('general', 'route6') as $routes) {
             foreach ($routes as $route) {
                 foreach ($route['nexthops'] as $nexthop) {
                     $nexthop = array_merge($route, $nexthop);
@@ -127,20 +102,10 @@ class DiagnosticsController extends ApiControllerBase
         return $this->searchRecordsetBase($records);
     }
 
-    public function bgprouteAction($format = "json"): array
-    {
-        return $this->getInformation("bgp", "route", $format);
-    }
-
-    public function bgproute4Action($format = "json"): array
-    {
-        return $this->getInformation("bgp", "route4", $format);
-    }
-
     public function searchBgproute4Action(): array
     {
         $records = [];
-        $payload = $this->getInformation("bgp", "route4", "json")['response'];
+        $payload = $this->configdJson("bgp", "route4");
         $baserecord = [];
         foreach ($payload as $key => $value) {
             if (!is_array($value)) {
@@ -171,17 +136,12 @@ class DiagnosticsController extends ApiControllerBase
             );
         }
         return $result;
-    }
-
-    public function bgproute6Action($format = "json"): array
-    {
-        return $this->getInformation("bgp", "route6", $format);
     }
 
     public function searchBgproute6Action(): array
     {
         $records = [];
-        $payload = $this->getInformation("bgp", "route6", "json")['response'];
+        $payload = $this->configdJson("bgp", "route6");
         $baserecord = [];
         foreach ($payload as $key => $value) {
             if (!is_array($value)) {
@@ -214,30 +174,25 @@ class DiagnosticsController extends ApiControllerBase
         return $result;
     }
 
-    public function bgpsummaryAction($format = "json"): array
+    public function bgpsummaryAction(): array
     {
-        return $this->getInformation("bgp", "summary", $format);
+        return ['response' => $this->configdJson("bgp", "summary")];
     }
 
-    public function bgpneighborsAction($format = "json"): array
+    public function bgpneighborsAction(): array
     {
-        return $this->getInformation("bgp", "neighbors", $format);
+        return ['response' => $this->configdJson("bgp", "neighbors")];
     }
 
-    public function ospfoverviewAction($format = "json"): array
+    public function ospfoverviewAction(): array
     {
-        return $this->getInformation("ospf", "overview", $format);
-    }
-
-    public function ospfneighborAction($format = "json"): array
-    {
-        return $this->getInformation("ospf", "neighbor", $format);
+        return ['response' => $this->configdJson("ospf", "overview")];
     }
 
     public function searchOspfneighborAction(): array
     {
         $records = [];
-        $payload = $this->getInformation("ospf", "neighbor", "json");
+        $payload = $this->configdJson("ospf", "neighbor");
         if (!empty($payload['neighbors'])) {
             foreach ($payload['neighbors'] as $neighborid => $neighbor) {
                 foreach ($neighbor as $item) {
@@ -249,15 +204,10 @@ class DiagnosticsController extends ApiControllerBase
         return $this->searchRecordsetBase($records);
     }
 
-    public function ospfrouteAction($format = "json"): array
-    {
-        return $this->getInformation("ospf", "route", $format);
-    }
-
     public function searchOspfrouteAction(): array
     {
         $records = [];
-        $payload = $this->getInformation("ospf", "route", "json")['response'];
+        $payload = $this->configdJson('ospf', 'route');
         foreach ($payload as $net => $network) {
             if (empty($network['nexthops'])) {
                 continue;
@@ -269,8 +219,8 @@ class DiagnosticsController extends ApiControllerBase
                     'cost' => $network['cost'],
                     'area' => $network['area'] ?? '',
                     'via' => !empty($nexthop['via']) ? $nexthop['ip'] : 'Directly Attached',
-                    'viainterface' => !empty($nexthop['via']) ? $nexthop['via'] : $nexthop['directly attached to'],
-                    'viainterfaceDescr' =>  $this->getIfDesc($nexthop['via'] ?? $nexthop['directly attached to']),
+                    'viainterface' => !empty($nexthop['via']) ? $nexthop['via'] : $nexthop['directlyAttachedTo'],
+                    'viainterfaceDescr' =>  $this->getIfDesc($nexthop['via'] ?? $nexthop['directlyAttachedTo']),
                 ];
             }
         }
@@ -278,45 +228,69 @@ class DiagnosticsController extends ApiControllerBase
         return $this->searchRecordsetBase($records);
     }
 
-    public function ospfdatabaseAction($format = "json"): array
+    public function ospfdatabaseAction(): array
     {
-        return $this->getInformation("ospf", "database", $format);
+        return ['response' => $this->configdJson("ospf", "database")];
     }
 
-    public function ospfinterfaceAction($format = "json"): array
+    public function ospfinterfaceAction(): array
     {
-        return $this->getInformation("ospf", "interface", $format);
+        return ['response' => $this->configdJson("ospf", "interface")];
     }
 
-    public function ospfv3overviewAction($format = "json"): array
+    public function ospfv3interfaceAction(): array
     {
-        return $this->getInformation("ospfv3", "overview", $format);
+        return ['response' => $this->configdJson("ospfv3", "interface")];
     }
 
-    public function ospfv3neighborAction($format = "json"): array
+    public function ospfv3overviewAction(): array
     {
-        return $this->getInformation("ospfv3", "neighbor", $format);
+        return ['response' => $this->configdJson("ospfv3", "overview")];
     }
 
-    public function ospfv3routeAction($format = "json"): array
+    public function searchOspfv3routeAction($format = "json"): array
     {
-        return $this->getInformation("ospfv3", "route", $format);
+        $records = [];
+        $payload = $this->configdJson("ospfv3", "route");
+        if (!empty($payload['routes'])) {
+            foreach ($payload['routes'] as $net => $route) {
+                if (!empty($route['nextHops'])) {
+                    foreach ($route['nextHops'] as $nexthop) {
+                        $record = array_merge($route, $nexthop);
+                        $record['network'] = $net;
+                        $record['interfaceDescr'] = $this->getIfDesc($record['interfaceName']);
+                        $records[] = $record;
+                    }
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 
-    public function ospfv3databaseAction($format = "json"): array
+    public function searchOspfv3databaseAction(): array
     {
-        return $this->getInformation("ospfv3", "database", $format);
-    }
-
-    public function ospfv3interfaceAction($format = "json"): array
-    {
-        return $this->getInformation("ospfv3", "interface", $format);
+        $records = [];
+        $payload = $this->configdJson("ospfv3", "database") ;
+        foreach ($payload as $dbname => $database) {
+            foreach ($database as $topic) {
+                if (!empty($topic['lsa'])) {
+                    foreach ($topic['lsa'] as $record) {
+                        $record['dbname'] = $dbname;
+                        $record['interface'] = $topic['interface'] ?? '';
+                        $record['interfaceDescr'] = $this->getIfDesc($topic['interface'] ?? null);
+                        $record['areaId'] = $topic['areaId'] ?? '';
+                        $records[] = $record;
+                    }
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 
     private function bfdTreeFetch($topic)
     {
         $records = [];
-        $payload = $this->getInformation("bfd", $topic, "json")['response'];
+        $payload = $this->configdJson("bfd", $topic);
         if (!empty($payload)) {
             foreach ($payload as $peer) {
                 $peerid = $peer['peer'];
@@ -329,7 +303,8 @@ class DiagnosticsController extends ApiControllerBase
     public function bfdsummaryAction(): array
     {
         $records = [];
-        foreach (explode("\n", $this->getInformation("bfd", "summary", "plain")['response']) as $line) {
+        $payload = (new Backend())->configdpRun('quagga diagnostics bfd_summary');
+        foreach (explode("\n", $payload) as $line) {
             $parts = preg_split('/\s+/', trim($line));
             if (count($parts) == 4 && filter_var($parts[0], FILTER_VALIDATE_INT) !== false) {
                 $records[] = [
