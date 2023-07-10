@@ -75,9 +75,9 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
             ],
             [
                 'name' => 'database',
-                'endpoint' => '/api/quagga/diagnostics/ospfdatabase/plain',
+                'endpoint' => '/api/quagga/diagnostics/ospfdatabase',
                 'tabhead' => gettext('Database'),
-                'type' => 'text'
+                'type' => 'tree'
             ],
             [
                 'name' => 'neighbors',
@@ -116,13 +116,41 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'tabhead' => gettext('Counters'),
                 'type' => 'tree'
             ]
-	];
+	    ];
         $this->view->default_tab = 'summary';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function ospfv3Action()
     {
-        $this->view->pick('OPNsense/Quagga/diagnosticsospfv3');
+        $this->view->tabs = [
+            [
+                'name' => 'overview',
+                'endpoint' => '/api/quagga/diagnostics/ospfv3overview',
+                'tabhead' => gettext('Overview'),
+                'type' => 'tree'
+
+            ],
+            [
+                'name' => 'routing',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfv3route',
+                'tabhead' => gettext('Routing'),
+                'type' => 'ospfv3routetable'
+            ],
+            [
+                'name' => 'database',
+                'endpoint' => '/api/quagga/diagnostics/search_ospfv3database',
+                'tabhead' => gettext('Database'),
+                'type' => 'ospfv3databasetable'
+            ],
+            [
+                'name' => 'interface',
+                'endpoint' => '/api/quagga/diagnostics/ospfv3interface',
+                'tabhead' => gettext('Interface'),
+                'type' => 'tree'
+            ]
+	    ];
+        $this->view->default_tab = 'overview';
+        $this->view->pick('OPNsense/Quagga/diagnostics');
     }
     public function generalAction()
     {

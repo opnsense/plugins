@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Deciso B.V.
+ * Copyright (C) 2015-2023 Deciso B.V.
  * Copyright (C) 2023 Marc Bartelt
  * All rights reserved.
  *
@@ -26,85 +26,6 @@
  */
 
 'use strict';
-
-/**
- * shared options for bootgrid tables
- */
-let gridopt = {
-    formatters: {
-        boolean: function(column, row) {
-            if (row[column.id]) {
-                return '<span class="fa fa-fw fa-check" data-value="1" data-row-id="' + row.uuid + '"></span>';
-            } else {
-                return '';
-            }
-        },
-        ospf_route_type: function(column, row) {
-            let result = '';
-
-            row[column.id].split(' ').forEach(function(routeType) {
-                let translatedRouteType = translateOSPFTerm(routeType)
-
-                if (translatedRouteType === routeType) {
-                    result += routeType;
-                } else {
-                    result += '<abbr title="' + translatedRouteType + '">' + routeType + '</abbr>';
-                }
-
-                result += ' ';
-            });
-
-            return result;
-        },
-        general_route_code: function(column, row) {
-            let result = row.code;
-            let protocol = translateZebraCode(row.code);
-
-            if(typeof(protocol) !== 'string') result = '<abbr title="' + protocol['long'] + '">' + protocol['short'] + '</abbr>';
-            if(row.selected) result += ' <abbr title="Selected">&gt;</abbr>';
-            if(row.installed) result += ' <abbr title="FIB">&ast;</abbr>';
-
-            return result;
-        }
-    }
-};
-
-/**
- * zebra route codes - translation table
- */
-function translateZebraCode(data) {
-    let tr = [];
-
-    // routing table tab
-    tr['kernel'] = {short: 'K', long: 'Kernel'};
-    tr['connected'] = {short: 'C', long: 'Connected'};
-    tr['bgp'] = {short: 'B', long: 'BGP'};
-    tr['ospf'] = {short: 'O', long: 'OSPF'};
-    tr['ospf6'] = {short: 'O', long: 'OSPFv3'};
-
-    return ((data in tr) ? tr[data] : data);
-}
-
-
-
-/**
- * OSPF terms and abbreviations - translation table
- **/
-function translateOSPFTerm(data) {
-    let tr = [];
-
-    // routing table tab
-    tr['N'] = 'Network';
-    tr['R'] = 'Router';
-    tr['IA'] = 'OSPF inter area';
-    tr['N1'] = 'OSPF NSSA external type 1';
-    tr['N2'] = 'OSPF NSSA external type 2';
-    tr['E1'] = 'OSPF external type 1';
-    tr['E2'] = 'OSPF external type 2';
-
-    return ((data in tr) ? tr[data] : data);
-}
-
 
 /**
  * tree view: resize widget on window resize
