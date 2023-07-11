@@ -557,6 +557,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>Google Domains</label>
+        <type>header</type>
+        <style>table_dns table_dns_googledomains</style>
+    </field>
+    <field>
+        <id>validation.dns_googledomains_access_token</id>
+        <label>Access Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_googledomains_zone</id>
+        <label>Zone</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>hosting.de</label>
         <type>header</type>
         <style>table_dns table_dns_hostingde</style>
