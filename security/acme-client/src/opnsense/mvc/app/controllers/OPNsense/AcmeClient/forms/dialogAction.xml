@@ -286,6 +286,35 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_acme_proxmoxve</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_user</id>
+        <label>Proxmox VE user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_realm</id>
+        <label>Proxmox VE realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenid</id>
+        <label>Proxmox VE token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenkey</id>
+        <label>Proxmox VE token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
