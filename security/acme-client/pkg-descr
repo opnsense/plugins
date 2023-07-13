@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * add support for TrueNAS deployhook (#3421)
+* add support for Proxmox VE deployhook (#3422)
 
 3.17
 
