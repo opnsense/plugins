@@ -649,6 +649,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>IPv64.net API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ipv64</style>
+    </field>
+    <field>
+        <id>validation.dns_ipv64_token</id>
+        <label>IPv64.net API Token</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>IPSConfig</label>
         <type>header</type>
         <style>table_dns table_dns_ispconfig</style>
