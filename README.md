@@ -37,7 +37,6 @@ devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
 dns/ddclient -- Dynamic DNS client
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
-dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
