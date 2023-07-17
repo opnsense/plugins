@@ -1179,6 +1179,7 @@
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
+                        <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
@@ -1388,6 +1389,30 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_host>
+                <acme_proxmoxve_user type="TextField">
+                    <default>root</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_user>
+                <acme_proxmoxve_realm type="TextField">
+                    <default>pam</default>
+                    <Required>N</Required>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_realm>
+                <acme_proxmoxve_tokenid type="TextField">
+                    <default>acme</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_tokenid>
+                <acme_proxmoxve_tokenkey type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_tokenkey>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
