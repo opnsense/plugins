@@ -270,7 +270,7 @@ class DiagnosticsController extends ApiControllerBase
     public function searchOspfv3databaseAction(): array
     {
         $records = [];
-        $payload = $this->configdJson("ospfv3", "database") ;
+        $payload = $this->configdJson("ospfv3", "database");
         foreach ($payload as $dbname => $database) {
             foreach ($database as $topic) {
                 if (!empty($topic['lsa'])) {

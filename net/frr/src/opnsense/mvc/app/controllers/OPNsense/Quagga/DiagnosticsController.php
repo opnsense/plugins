@@ -116,7 +116,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'tabhead' => gettext('Counters'),
                 'type' => 'tree'
             ]
-	    ];
+        ];
         $this->view->default_tab = 'summary';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
@@ -148,7 +148,7 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'tabhead' => gettext('Interface'),
                 'type' => 'tree'
             ]
-	    ];
+        ];
         $this->view->default_tab = 'overview';
         $this->view->pick('OPNsense/Quagga/diagnostics');
     }
