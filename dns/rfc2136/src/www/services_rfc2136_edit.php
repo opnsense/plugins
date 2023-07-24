@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($pconfig['ttl']) && !is_numericint($pconfig['ttl'])) {
         $input_errors[] = gettext("The DNS update TTL must be an integer.");
     }
-    if (!empty($pconfig['keyname']) && !is_domain($pconfig['keyname'])) {
+    if (!empty($pconfig['keyname']) && !is_domain(preg_replace('/\.$/', '', $pconfig['keyname']))) {
         $input_errors[] = gettext("The DNS update key name contains invalid characters.");
     }
     if (!in_array($pconfig['keyalgo'] , array_keys($nsukeyalgos))) {
