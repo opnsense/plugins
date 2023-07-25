@@ -27,7 +27,7 @@
         <id>account.server</id>
         <label>Server</label>
         <type>text</type>
-        <help>DynDNS Server</help>
+        <help>DynDNS Server. For POST Request protocol type type the full url like api.example.com/2/ddns?domain=test.example.com&hostname=__HOSTNAME__&myip=__MYIP__. The placeholders are replaced with values from check ip method and the hostnames field</help>
         <style>optional_setting service_custom</style>
     </field>
     <field>
