@@ -93,6 +93,7 @@
                     <OptionValues>
                         <dyndns1>DynDns1</dyndns1>
                         <dyndns2>DynDns2</dyndns2>
+                        <postapi>POST Request</postapi>
                     </OptionValues>
                 </protocol>
                 <server type="HostnameField">
