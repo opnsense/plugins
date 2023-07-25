@@ -57,7 +57,7 @@ class DynDNS2(BaseAccount):
 
     def match(account):
         if account.get('service') in DynDNS2._services or (
-            account.get('server') is not None and account.get('protocol') in ['dyndns2', 'dyndns1']
+            account.get('server') is not None and account.get('protocol') in ['dyndns2', 'dyndns1', 'postapi']
         ):
             return True
         else:
@@ -65,25 +65,37 @@ class DynDNS2(BaseAccount):
 
     def execute(self):
         if super().execute():
+            protocol = self._account.get('protocol')
             proto = 'https' if self.settings.get('force_ssl', False) else 'http'
             if self.settings.get('service') in self._services:
                 url = "%s://%s/nic/update" % (proto, self._services[self.settings.get('service')])
+            elif protocol == 'postapi':
+                url = "%s://%s" % (proto, self.settings.get('server'))
             else:
                 url = "%s://%s/nic/update" % (proto, self.settings.get('server'))
 
             req_opts = {
-                'url': url,
-                'params': {
-                    'hostname': self.settings.get('hostnames'),
+                    'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
+                    'headers': {
+                        'User-Agent': 'OPNsense-dyndns'
+                    }
+                }
+            hostnames = self.settings.get('hostnames')
+
+            if protocol == 'postapi':
+                for hostname in hostnames:
+                    url_replaced = url.replace('__HOSTNAME__', hostname).replace('__MYIP__', self.current_address)
+                    req_opts['url'] = url_replaced
+                    req = requests.post(**req_opts)
+            else:
+                req_opts['params'] = {
+                    'hostname': hostnames,
                     'myip': self.current_address,
                     'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
-                },
-                'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
-                'headers': {
-                    'User-Agent': 'OPNsense-dyndns'
                 }
-            }
-            req = requests.get(**req_opts)
+                req_opts['url'] = url
+                req = requests.get(**req_opts)
+
             if req.status_code == 200:
                 if self.is_verbose:
                     syslog.syslog(
