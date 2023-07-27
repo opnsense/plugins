@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Firewall/Filter</mount>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <migration_prefix>MFP</migration_prefix>
     <description>
         OPNsense firewall filter rules
@@ -33,7 +33,7 @@
                     <Required>Y</Required>
                 </quick>
                 <interface type="InterfaceField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <multiple>Y</multiple>
                     <default>lan</default>
                     <AllowDynamic>Y</AllowDynamic>
