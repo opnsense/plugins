@@ -84,6 +84,7 @@ class Azure(BaseAccount):
     def known_services():
         return  Azure._services
 
+    @staticmethod
     def match(account):
         return account.get('service') in Azure._services
 
