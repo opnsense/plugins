@@ -47,6 +47,10 @@ class General extends BaseModel
                 if (empty($service['dns_ports'])) {
                     continue;
                 }
+                if (!is_array($service['dns_ports'])) {
+                    syslog(LOG_ERR, sprintf('Service %s (%s) reported a faulty "dns_ports" entry.', $service['description'], $service['name']));
+                    continue;
+                }
                 if ($service['name'] != 'named' && in_array((string)$this->port, $service['dns_ports'])) {
                     $messages->appendMessage(new Message(
                         sprintf(gettext('%s is currently using this port.'), $service['description']),
