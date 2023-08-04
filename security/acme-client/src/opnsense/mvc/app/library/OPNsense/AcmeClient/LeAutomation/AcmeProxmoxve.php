@@ -39,6 +39,9 @@ class AcmeProxmoxve extends Base implements LeAutomationInterface
     public function prepare()
     {
         $this->acme_env['DEPLOY_PROXMOXVE_USER'] = (string)$this->config->acme_proxmoxve_user;
+        $this->acme_env['DEPLOY_PROXMOXVE_SERVER'] = (string)$this->config->acme_proxmoxve_server;
+        $this->acme_env['DEPLOY_PROXMOXVE_SERVER_PORT'] = (string)$this->config->acme_proxmoxve_port;
+        $this->acme_env['DEPLOY_PROXMOXVE_NODE_NAME'] = (string)$this->config->acme_proxmoxve_nodename;
         $this->acme_env['DEPLOY_PROXMOXVE_USER_REALM'] = (string)$this->config->acme_proxmoxve_realm;
         $this->acme_env['DEPLOY_PROXMOXVE_API_TOKEN_NAME'] = (string)$this->config->acme_proxmoxve_tokenid;
         $this->acme_env['DEPLOY_PROXMOXVE_API_TOKEN_KEY'] = (string)$this->config->acme_proxmoxve_tokenkey;

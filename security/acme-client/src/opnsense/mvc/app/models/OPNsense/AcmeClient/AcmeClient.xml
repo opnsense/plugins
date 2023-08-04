@@ -1395,9 +1395,22 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_user>
+                <acme_proxmoxve_server type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_server>
+                <acme_proxmoxve_port type="PortField">
+                    <default>8006</default>
+                    <Required>N</Required>
+                </acme_proxmoxve_port>
+                <acme_proxmoxve_nodename type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_nodename>
                 <acme_proxmoxve_realm type="TextField">
                     <default>pam</default>
-                    <Required>N</Required>
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>

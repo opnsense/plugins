@@ -13,6 +13,7 @@ Plugin Changelog
 Added:
 * add support for TrueNAS deployhook (#3421)
 * add support for Proxmox VE deployhook (#3422)
+* add server,port and node name values for Proxmox VE deployhook (#3516)
 * add Google Domains DNS API
 
 3.17

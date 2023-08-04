@@ -295,6 +295,24 @@
         <help>The user who owns the API key. Defaults to root.</help>
     </field>
     <field>
+        <id>action.acme_proxmoxve_server</id>
+        <label>Proxmox VE server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox ve node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_port</id>
+        <label>Proxmox VE server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8006.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_nodename</id>
+        <label>Proxmox VE node name</label>
+        <type>text</type>
+        <help>The name of the node we will be connecting to.</help>
+    </field>
+    <field>
         <id>action.acme_proxmoxve_realm</id>
         <label>Proxmox VE realm</label>
         <type>text</type>
