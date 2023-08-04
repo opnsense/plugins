@@ -15,6 +15,7 @@ Added:
 * add support for Proxmox VE deployhook (#3422)
 * add server,port and node name values for Proxmox VE deployhook (#3516)
 * add Google Domains DNS API
+* add IPv64.net DNS API
 
 3.17
 

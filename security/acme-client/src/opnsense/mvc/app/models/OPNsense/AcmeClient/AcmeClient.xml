@@ -466,6 +466,7 @@
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
                         <dns_inwx>INWX XMLRPC</dns_inwx>
                         <dns_ionos>IONOS domain</dns_ionos>
+                        <dns_ipv64>IPv64.net</dns_ipv64>
                         <dns_ispconfig>ISPConfig 3.1+</dns_ispconfig>
                         <dns_jd>JD Cloud</dns_jd>
                         <dns_joker>Joker</dns_joker>
@@ -711,6 +712,9 @@
                 <dns_ionos_secret type="TextField">
                     <Required>N</Required>
                 </dns_ionos_secret>
+                <dns_ipv64_token type="TextField">
+                    <Required>N</Required>
+                </dns_ipv64_token>
                 <dns_ispconfig_user type="TextField">
                     <Required>N</Required>
                 </dns_ispconfig_user>
