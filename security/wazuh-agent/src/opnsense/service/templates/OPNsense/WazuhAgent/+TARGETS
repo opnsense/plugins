@@ -1,0 +1,6 @@
+ossec.conf:/var/ossec/etc/ossec.conf
+local_internal_options.conf:/var/ossec/etc/local_internal_options.conf
+rc.conf.d:/etc/rc.conf.d/wazuh_agent
+syslog-ng-wazuh-agent.conf:/usr/local/etc/syslog-ng.conf.d/syslog-ng-wazuh-agent.conf
+newsyslog.conf:/etc/newsyslog.conf.d/wazuh-agent.conf
+opnsense-fw.conf:/var/ossec/etc/opnsense-fw.conf
