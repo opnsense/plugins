@@ -29,7 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script src="{{ cache_safe('/ui/js/quagga/diagnostics_utils.js') }}"></script>
+<script src="{{ cache_safe('/ui/js/frr/diagnostics_utils.js') }}"></script>
 
 <style>
     .searchbox {
