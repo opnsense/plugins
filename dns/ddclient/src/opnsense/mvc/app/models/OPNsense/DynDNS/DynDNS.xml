@@ -93,11 +93,11 @@
                     <OptionValues>
                         <dyndns1>DynDns1</dyndns1>
                         <dyndns2>DynDns2</dyndns2>
+                        <post>custom POST</post>
                     </OptionValues>
                 </protocol>
-                <server type="HostnameField">
+                <server type="TextField">
                     <Required>N</Required>
-                    <IpAllowed>N</IpAllowed>
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
@@ -105,7 +105,7 @@
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^[^\n]*$/</mask>
                 </password>
                 <resourceId type="TextField">

@@ -120,6 +120,7 @@ class BaseAccount:
             interface = self.settings['interface'] if self.settings.get('interface' ,'').strip() != '' else None
         )
 
+
         if self._current_address != '' and (
                 self._state.get('ip') is None or
                 self._current_address != self._state.get('ip') or

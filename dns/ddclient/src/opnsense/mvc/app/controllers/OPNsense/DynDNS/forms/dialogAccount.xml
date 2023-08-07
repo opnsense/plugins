@@ -27,7 +27,10 @@
         <id>account.server</id>
         <label>Server</label>
         <type>text</type>
-        <help>DynDNS Server</help>
+        <help>DynDNS Server hostname or uri to use (depending on the protocol).
+         When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
+         and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
+         </help>
         <style>optional_setting service_custom</style>
     </field>
     <field>
