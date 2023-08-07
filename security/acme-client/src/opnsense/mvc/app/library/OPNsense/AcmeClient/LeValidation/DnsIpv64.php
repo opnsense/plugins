@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2023 Jan Winkler
+ * Copyright (C) 2023 Oliver Hartl
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,26 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Run acme.sh deploy hook proxmoxve
+ * IPv64.net API
  * @package OPNsense\AcmeClient
  */
-class AcmeProxmoxve extends Base implements LeAutomationInterface
+class DnsIpv64 extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['DEPLOY_PROXMOXVE_USER'] = (string)$this->config->acme_proxmoxve_user;
-        $this->acme_env['DEPLOY_PROXMOXVE_SERVER'] = (string)$this->config->acme_proxmoxve_server;
-        $this->acme_env['DEPLOY_PROXMOXVE_SERVER_PORT'] = (string)$this->config->acme_proxmoxve_port;
-        $this->acme_env['DEPLOY_PROXMOXVE_NODE_NAME'] = (string)$this->config->acme_proxmoxve_nodename;
-        $this->acme_env['DEPLOY_PROXMOXVE_USER_REALM'] = (string)$this->config->acme_proxmoxve_realm;
-        $this->acme_env['DEPLOY_PROXMOXVE_API_TOKEN_NAME'] = (string)$this->config->acme_proxmoxve_tokenid;
-        $this->acme_env['DEPLOY_PROXMOXVE_API_TOKEN_KEY'] = (string)$this->config->acme_proxmoxve_tokenkey;
-        $this->acme_args[] = '--deploy-hook proxmoxve';
-        return true;
+        $this->acme_env['IPv64_Token'] = (string)$this->config->dns_ipv64_token;
     }
 }
