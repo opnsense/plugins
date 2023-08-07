@@ -1,5 +1,7 @@
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
-zebra_setup="/usr/local/opnsense/scripts/quagga/setup.sh"
+# XXX rc.d/frr splits up defunct "frr" service into frr_daemons
+# and we always start "zebra" so for now this works:
+zebra_setup="/usr/local/opnsense/scripts/frr/setup.sh"
 frr_enable="YES"
 {% if helpers.exists('OPNsense.quagga.general.enablecarp') and OPNsense.quagga.general.enablecarp == '1' %}
 start_precmd="ifconfig | grep 'carp: MASTER'"
@@ -16,13 +18,21 @@ frr_carp_demote="{%
     if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}{%
     if not helpers.empty('OPNsense.quagga.ospf6.carp_demote') %} ospf6d{% endif
 %}"
-start_postcmd="/usr/local/opnsense/scripts/frr/carp_event_handler"
-{% else %}
-frr_enable="NO"
-{% endif %}
+start_postcmd='
+	# XXX rc.d/frr declares its own post command we need to hook first
+	start_postcmd
+	# XXX rc.d/frr iterates through daemons so we need to hook last one
+	if [ "${frr_daemons}" != "${frr_daemons% ${name}}" ]; then
+		echo "Starting CARP event handler now"
+		/usr/local/opnsense/scripts/frr/carp_event_handler
+	fi
+'
 {% if OPNsense.quagga.general.enablesnmp == '1' %}
 zebra_flags="${zebra_flags} -M snmp"
 bgpd_flags="${bgpd_flags} -M snmp"
 ospf_flags="${ospf_flags} -M snmp"
 ospf6_flags="${ospf6_flags} -M snmp"
+{% endif %}
+{% else %}
+frr_enable="NO"
 {% endif %}
