@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.14
+
+* Add "post" protocol in custom service type
+
 1.13
 
 * Fix not returning IP address as a string in Python backend (contributed by Sean Kelly)
