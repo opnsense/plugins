@@ -9,6 +9,7 @@ Plugin Changelog
 1.14
 
 * Add "post" protocol in custom service type
+* Add DNSExit API and regfish.de support
 
 1.13
 
