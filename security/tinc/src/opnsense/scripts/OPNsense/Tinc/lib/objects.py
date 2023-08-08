@@ -82,10 +82,7 @@ class Network(NetwConfObject):
         return self._payload['mode']
 
     def get_debuglevel(self):
-        if len(self._payload['debuglevel']) > 1:
-            return self._payload['debuglevel'][1]
-        else:
-            return '0'
+        return self._payload['debuglevel'][1] if len(self._payload['debuglevel']) > 1 else '0'
 
     def set_hosts(self, hosts):
         for host in hosts:
@@ -95,16 +92,10 @@ class Network(NetwConfObject):
             self._hosts.append(hostObj)
 
     def set_PMTUDiscovery(self, value):
-        if value.text != '1':
-            self._payload['PMTUDiscovery'] = 'no'
-        else:
-            self._payload['PMTUDiscovery'] = 'yes'
+        self._payload['PMTUDiscovery'] = 'no' if value.text != '1' else 'yes'
 
     def set_StrictSubnets(self, value):
-        if value.text != '1':
-            self._payload['StrictSubnets'] = 'no'
-        else:
-            self._payload['StrictSubnets'] = 'yes'
+        self._payload['StrictSubnets'] = 'no' if value.text != '1' else 'yes'
 
     def config_text(self):
         result = list()
