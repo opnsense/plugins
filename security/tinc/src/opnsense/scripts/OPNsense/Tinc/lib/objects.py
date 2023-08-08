@@ -69,6 +69,7 @@ class Network(NetwConfObject):
         self._payload['debuglevel'] = 'd0'
         self._payload['mode'] = 'switch'
         self._payload['PMTUDiscovery'] = 'yes'
+        self._payload['StrictSubnets'] = 'no'
         self._hosts = list()
 
     def get_id(self):
@@ -99,6 +100,12 @@ class Network(NetwConfObject):
         else:
             self._payload['PMTUDiscovery'] = 'yes'
 
+    def set_StrictSubnets(self, value):
+        if value.text != '1':
+            self._payload['StrictSubnets'] = 'no'
+        else:
+            self._payload['StrictSubnets'] = 'yes'
+
     def config_text(self):
         result = list()
         result.append('AddressFamily=any')
@@ -106,6 +113,7 @@ class Network(NetwConfObject):
         result.append('PMTUDiscovery=%(PMTUDiscovery)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
         result.append('PingTimeout=%(pingtimeout)s' % self._payload)
+        result.append('StrictSubnets=%(StrictSubnets)s' % self._payload)
         for host in self._hosts:
             if host.connect_to_this_host():
                 result.append('ConnectTo = %s' % (host.get_hostname(),))
