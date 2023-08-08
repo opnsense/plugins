@@ -51,7 +51,8 @@
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
-                        <dnsexit>DNSExit</dnsexit>
+                        <dnsexit2>DNSExit API</dnsexit2>
+                        <dnsexit>DNSExit Legacy</dnsexit>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DSLReports</dslreports1>
@@ -77,6 +78,7 @@
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
                         <ovh>OVHcloud DynHost</ovh>
+                        <regfishde>regfish.de</regfishde>
                         <servercow>Servercow</servercow>
                         <sitelutions>Sitelutions</sitelutions>
                         <spdyn>spDYN</spdyn>
