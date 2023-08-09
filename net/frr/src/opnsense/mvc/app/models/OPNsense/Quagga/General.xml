@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/general</mount>
     <description>Quagga Routing configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -43,5 +43,9 @@
                 <debugging>Debugging</debugging>
             </OptionValues>
         </sysloglevel>
+        <fwrules type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </fwrules>
     </items>
 </model>
