@@ -78,6 +78,9 @@ class Network(NetwConfObject):
     def get_local_address(self):
         return self._payload['intaddress']
 
+    def get_local_hostname(self):
+        return self._payload['hostname']
+
     def get_mode(self):
         return self._payload['mode']
 
@@ -115,6 +118,9 @@ class Network(NetwConfObject):
     def filename(self):
         return self.get_basepath() + '/tinc.conf'
 
+    def hostname(self):
+        return self._payload['hostname']
+
     def privkey(self):
         return {'filename': self.get_basepath() + '/rsa_key.priv', 'content': self._payload['privkey']}
 
@@ -144,6 +150,14 @@ class Host(NetwConfObject):
             return
         yield from self._payload['subnet'].split(',')
 
+    def get_routes(self):
+        result = list()
+        for sub in self.get_subnets():
+            if "/32" not in sub:
+                result.append(sub)
+        if result:
+            return result
+
     def config_text(self):
         result = list()
         for address in self.get_addresses():
@@ -157,3 +171,6 @@ class Host(NetwConfObject):
 
     def filename(self):
         return '%s/hosts/%s' % (self.get_basepath(), self._payload['hostname'])
+
+    def hostname(self):
+        return self._payload['hostname']
