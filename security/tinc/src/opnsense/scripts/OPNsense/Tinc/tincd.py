@@ -62,6 +62,7 @@ def read_config(config_filename):
 def deploy(config_filename):
     interfaces = subprocess.run(['/sbin/ifconfig','-l'], capture_output=True, text=True).stdout.split()
     networks = read_config(config_filename)
+    routes = list()
     # remove previous configuration
     os.system('rm -rf /usr/local/etc/tinc')
     for network in networks:
@@ -89,11 +90,17 @@ def deploy(config_filename):
         interface_network = ipaddress.ip_network(interface_address, False)
         interface_family = "inet6" if interface_network.version == 6 else "inet"
         interface_configd = "newipv6" if interface_network.version == 6 else "newip"
+        localhost = network.get_local_hostname()
+        for conf_obj in network.all():
+            if conf_obj.hostname() != localhost and conf_obj.get_routes():
+                routes.extend(conf_obj.get_routes())
 
         if_up = list()
         if_up.append("#!/bin/sh")
         if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, pipes.quote(interface_address)))
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
+        for route in routes:
+            if_up.append("route add %s -iface %s" % (route, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
