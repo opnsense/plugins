@@ -101,7 +101,7 @@ def deploy(config_filename):
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         for route in routes:
             ipver = "-inet6" if ":" in route else "-inet"
-                if_up.append("route add %s %s -iface %s" % (ipver, route, interface_name))
+            if_up.append("route add %s %s -iface %s" % (ipver, route, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
