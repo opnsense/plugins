@@ -153,7 +153,7 @@ class Host(NetwConfObject):
     def get_routes(self):
         result = list()
         for sub in self.get_subnets():
-            if "/32" not in sub:
+            if not ("/32" in sub or "/128" in sub):
                 result.append(sub)
         if result:
             return result
