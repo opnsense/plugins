@@ -77,7 +77,7 @@
         <id>account.ttl</id>
         <label>TTL</label>
         <type>text</type>
-        <style>optional_setting service_aws</style>
+        <style>optional_setting service_aws service_netcup</style>
         <help>Time to Live for the DNS entry</help>
     </field>
     <field>
