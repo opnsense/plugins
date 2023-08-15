@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.4</version>
+   <version>1.0.5</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -113,7 +113,7 @@
             <OptionValues>
                <icmp>ICMP</icmp>
                <tcp>TCP</tcp>
-               <ssl>SSL</ssl>
+               <tls>TLS</tls>
                <send>SEND</send>
                <script>SCRIPT</script>
                <http>HTTP</http>
