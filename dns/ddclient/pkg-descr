@@ -9,7 +9,8 @@ Plugin Changelog
 1.14
 
 * Add "post" protocol in custom service type
-* Add DNSExit API and regfish.de support
+* Add DNSExit API and regfish.de support to ddclient backend
+* Add desec to OPNsense backend (contributed by Clemens Hardewig)
 
 1.13
 
