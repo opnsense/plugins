@@ -8,7 +8,7 @@ Plugin Changelog
 
 1.15
 
-* Add AWS Route53 to OPNsense backend (contributed by Greg Glockner)
+* Add AWS Route53 and DuckDNS to OPNsense backend (contributed by Greg Glockner)
 
 1.14
 
