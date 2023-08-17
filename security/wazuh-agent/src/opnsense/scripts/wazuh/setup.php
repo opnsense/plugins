@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?php
+
 /**
  *    Copyright (C) 2023 Deciso B.V.
  *
@@ -58,4 +59,4 @@ if (!empty((string)$mdl->auth->password)) {
 mkdir("/var/log/wazuhagent/ossec/", 0700, true);
 mkdir("/var/log/wazuhagent/activeresponses/", 0700, true);
 @symlink("/var/ossec/logs/ossec.log", "/var/log/wazuhagent/ossec/ossec_99991231.log");
-@symlink( "/var/ossec/logs/active-responses.log", "/var/log/wazuhagent/activeresponses/activeresponses_99991231.log");
+@symlink("/var/ossec/logs/active-responses.log", "/var/log/wazuhagent/activeresponses/activeresponses_99991231.log");
