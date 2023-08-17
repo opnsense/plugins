@@ -43,7 +43,7 @@ smtp_tls_CAfile = /etc/ssl/cert.pem
 ##########################
 
 {% if helpers.exists('OPNsense.postfix.general.myhostname') and OPNsense.postfix.general.myhostname != '' %}
-myhostname = {{ OPNsense.postfix.general.myhostname }}
+myhostname = {{ OPNsense.postfix.general.myhostname }}.{{ OPNsense.postfix.general.mydomain }}
 {% else %}
 myhostname = {{ system.hostname }}.{{ system.domain }}
 {% endif %}
