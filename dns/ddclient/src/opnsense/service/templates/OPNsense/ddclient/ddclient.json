@@ -24,6 +24,7 @@
           "checkip": "{{ account.checkip }}",
           "checkip_timeout": {{ account.checkip_timeout }},
           "force_ssl": {{ "true" if account.force_ssl  == '1' else "false"}},
+          "ttl": "{{ account.ttl }}",
           "interface": "{%if account.interface %}{{physical_interface(account.interface)}}{% endif%}",
           "description": "{{ account.description }}"
       }{{ "," if not loop.last else ""}}

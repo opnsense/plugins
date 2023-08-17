@@ -10,10 +10,6 @@ import boto3
 from . import BaseAccount
 
 
-## TODO:
-## - TTL as parameter
-## - Require the resource value
-
 class AWS(BaseAccount):
     _services = ['aws']
 
@@ -39,7 +35,6 @@ class AWS(BaseAccount):
                     f"No address found for {self.description}"
                 )
                 return False
-            TTL = "300" # placeholder
             client = boto3.client('route53',
                                   aws_access_key_id = self.settings.get('username'),
                                   aws_secret_access_key = self.settings.get('password'))
@@ -48,6 +43,7 @@ class AWS(BaseAccount):
                 addrType = 'AAAA'
             else:
                 addrType = 'A'
+            TTL = self.settings.get('ttl')
             changeBatch = {
                 'Changes': [{
                     'Action': 'UPSERT',
@@ -61,7 +57,7 @@ class AWS(BaseAccount):
             }
             try:
                 response = client.change_resource_record_sets(
-                    HostedZoneId = self.settings.get('resourceId', ''),
+                    HostedZoneId = self.settings.get('zone'),
                     ChangeBatch = changeBatch)
             except Exception as e:
                 syslog.syslog(syslog.LOG_ERR, str(e))
