@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.15
+
+* Add AWS Route53 to OPNsense backend (contributed by Greg Glockner)
+
 1.14
 
 * Add "post" protocol in custom service type
