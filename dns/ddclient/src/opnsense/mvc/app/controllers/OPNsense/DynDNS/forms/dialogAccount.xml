@@ -62,7 +62,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
+        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -72,6 +72,13 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help>Hostname to update</help>
+    </field>
+    <field>
+        <id>account.ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <style>optional_setting service_aws</style>
+        <help>Time to Live for the DNS entry</help>
     </field>
     <field>
         <id>account.checkip</id>

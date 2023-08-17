@@ -171,6 +171,12 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </force_ssl>
+                <ttl type="IntegerField">
+                    <default>300</default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>604800</MaximumValue>
+                </ttl>
                 <interface type="InterfaceField">
                     <Required>N</Required>
                     <multiple>N</multiple>
