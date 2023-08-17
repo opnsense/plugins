@@ -65,7 +65,7 @@ class DynDNS2(BaseAccount):
     def execute(self):
         if super().execute():
             protocol = self.settings.get('protocol', None)
-            if protocol in [ 'post', 'get' ]:
+            if protocol in [ 'get', 'post' ]:
                 url = self.settings.get('server')
                 url = url.replace('__MYIP__', self.current_address)
                 url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
