@@ -33,6 +33,15 @@
         </help>
     </field>
     <field>
+        <id>network.StrictSubnets</id>
+        <label>StrictSubnets</label>
+        <type>checkbox</type>
+        <help>When this option is enabled tinc will only use Subnet statements which are present in the host config files in the local /etc/tinc/netname/hosts/ directory.
+          Subnets learned via connections to other nodes and which are not present in the local host config files are ignored.
+        </help>
+        <advanced>true</advanced>
+    </field>
+    <field>
       <id>network.cipher</id>
       <label>Cipher</label>
       <type>dropdown</type>

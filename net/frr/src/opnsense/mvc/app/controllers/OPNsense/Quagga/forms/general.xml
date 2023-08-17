@@ -36,4 +36,12 @@
         <type>dropdown</type>
         <help>This is the detail level of the log. A higher level means more data is logged.</help>
     </field>
+    <field>
+        <id>general.fwrules</id>
+        <label>Firewall rules</label>
+        <type>checkbox</type>
+        <help>Enable automatically created firewall rules, when additional policies are needed, disable this and define
+        your own custom policies in the Firewall section.
+        </help>
+    </field>
 </form>
