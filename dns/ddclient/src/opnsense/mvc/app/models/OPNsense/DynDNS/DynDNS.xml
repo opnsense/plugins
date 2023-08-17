@@ -97,6 +97,7 @@
                         <dyndns2>DynDns2</dyndns2>
                         <get>Custom GET</get>
                         <post>Custom POST</post>
+                        <put>Custom PUT</put>
                     </OptionValues>
                 </protocol>
                 <server type="TextField">
