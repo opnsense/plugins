@@ -27,7 +27,7 @@
     Usage:
       AWS access key: username
       AWS secret key: password
-      Route53 Hosted Zone ID: resource ID (use advanced settings)
+      Route53 Hosted Zone ID: zone
 """
 import syslog
 import boto3
