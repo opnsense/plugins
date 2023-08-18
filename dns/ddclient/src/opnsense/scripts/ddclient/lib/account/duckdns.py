@@ -23,73 +23,58 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
     ----------------------------------------------------------------------------------------------------
-    AWS Route53 DNS provider
-    Usage:
-      AWS access key: username
-      AWS secret key: password
-      Route53 Hosted Zone ID: zone
+    DuckDNS updater
+    Token should be set via the password field
 """
 import syslog
-import boto3
+import requests
 from . import BaseAccount
 
 
-class AWS(BaseAccount):
-    _services = ['aws']
+class duckdns(BaseAccount):
+    _services = ['duckdns']
 
     def __init__(self, account: dict):
         super().__init__(account)
 
     @staticmethod
     def known_services():
-        return  AWS._services
+        return  duckdns._services
 
     @staticmethod
     def match(account):
-        return account.get('service') in AWS._services
+        return account.get('service') in duckdns._services
 
     def execute(self):
-        """ AWS DNS update
+        """ Duck DNS update
         """
 
         if super().execute():
-            if not self.current_address:
-                syslog.syslog(
-                    syslog.LOG_WARNING,
-                    f"No address found for {self.description}"
-                )
-                return False
-            client = boto3.client('route53',
-                                  aws_access_key_id = self.settings.get('username'),
-                                  aws_secret_access_key = self.settings.get('password'))
+            data = {
+                'domains': self.settings.get('hostnames'),
+                'token': self.settings.get('password')
+            }
+
             ip = str(self.current_address)
             if ':' in ip:
-                addrType = 'AAAA'
+                data['ipv6'] = ip
             else:
-                addrType = 'A'
-            TTL = self.settings.get('ttl')
-            changeBatch = {
-                'Changes': [{
-                    'Action': 'UPSERT',
-                    'ResourceRecordSet': {
-                        'Name': host,
-                        'Type': addrType,
-                        'TTL': int(TTL),
-                        'ResourceRecords': [{'Value': ip}]
-                    }
-                } for host in self.settings.get('hostnames').split(",")]
-            }
+                data['ip'] = ip
+
+            proto = 'https' if self.settings.get('force_ssl', False) else 'http'
+
             try:
-                response = client.change_resource_record_sets(
-                    HostedZoneId = self.settings.get('zone'),
-                    ChangeBatch = changeBatch)
+                response = requests.get(proto+'://www.duckdns.org/update', data)
+                if response.text.startswith('KO'):
+                    raise RuntimeError(
+                        f"DuckDNS update failed for {self.description} with ip {self.current_address} for domains {data['domains']}, response: {response.text}")
             except Exception as e:
                 syslog.syslog(syslog.LOG_ERR, str(e))
                 return False
 
             syslog.syslog(
                 syslog.LOG_NOTICE,
-                f"Account {self.description} set new ip {self.current_address}, ID {response['ChangeInfo']['Id']}")
+                f"Account {self.description} set new ip {self.current_address} for domains {data['domains']}")
 
             self.update_state(address=self.current_address)
             return True
