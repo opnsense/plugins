@@ -9,6 +9,7 @@ Plugin Changelog
 1.15
 
 * Add AWS Route53 and DuckDNS to OPNsense backend (contributed by Greg Glockner)
+* Fix JSON output with disabled trailing accounts and empty stats in AccountField
 
 1.14
 
