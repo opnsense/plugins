@@ -30,7 +30,7 @@
                 <ValidationMessage>A backend is required.</ValidationMessage>
                 <OptionValues>
                     <ddclient>ddclient</ddclient>
-                    <opnsense>OPNsense</opnsense>
+                    <opnsense>native</opnsense>
                 </OptionValues>
             </backend>
         </general>
