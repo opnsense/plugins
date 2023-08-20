@@ -96,6 +96,21 @@ def deploy(config_filename):
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
+        # write subnet-up file
+        for dir in ['bin', 'lib', 'libexec', 'sbin']:
+            os.makedirs('%s/%s' % (network.get_basepath(), dir), exist_ok = True)
+        os.system('cp -f /bin/sh %s/bin' % network.get_basepath())
+        os.system('cp -f /lib/libc.so.7 %s/lib' % network.get_basepath())
+        os.system('cp -f /lib/libedit.so.8 %s/lib' % network.get_basepath())
+        os.system('cp -f /lib/libncursesw.so.9 %s/lib' % network.get_basepath())
+        os.system('cp -f /libexec/ld-elf.so.1 %s/libexec' % network.get_basepath())
+        os.system('cp -f /sbin/route %s/sbin' % network.get_basepath())
+
+        sub_up = list()
+        sub_up.append("#!/bin/sh")
+        sub_up.append("route add $SUBNET -iface %s" % (interface_name))
+        write_file("%s/subnet-up" % network.get_basepath(), '\n'.join(sub_up) + "\n", 0o700)
+
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
             tundev = subprocess.run(['/sbin/ifconfig', interface_type, 'create'],
