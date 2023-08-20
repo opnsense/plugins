@@ -78,9 +78,6 @@ class Network(NetwConfObject):
     def get_local_address(self):
         return self._payload['intaddress']
 
-    def get_local_hostname(self):
-        return self._payload['hostname']
-
     def get_mode(self):
         return self._payload['mode']
 
