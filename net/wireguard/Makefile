@@ -1,15 +1,9 @@
 PLUGIN_NAME=		wireguard
 PLUGIN_VERSION=		1.13
 PLUGIN_REVISION=	7
-PLUGIN_COMMENT=		WireGuard VPN service
-PLUGIN_DEPENDS=		wireguard-tools
+PLUGIN_COMMENT=		WireGuard VPN service kernel implementation
+PLUGIN_DEPENDS=		wireguard-kmod wireguard-tools
+PLUGIN_CONFLICTS=	wireguard-go
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
-PLUGIN_VARIANTS=	kmod go
-
-kmod_NAME=		wireguard
-kmod_DEPENDS=		wireguard-kmod
-
-go_NAME=		wireguard-go
-go_DEPENDS=		wireguard-go
 
 .include "../../Mk/plugins.mk"
