@@ -6,31 +6,39 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.15
+
+* Add AWS Route53 and DuckDNS to native backend (contributed by Greg Glockner)
+* Fix JSON output with disabled trailing accounts and empty stats in AccountField
+* Rename Python-based "OPNsense" backend to "native" to prevent ambiguity
+* Fix ClouDNS missing dynurl= parameter
+* Clean up ddclient.conf template
+
 1.14
 
 * Add "post" protocol in custom service type
 * Add DNSExit API and regfish.de support to ddclient backend
-* Add desec to OPNsense backend (contributed by Clemens Hardewig)
+* Add desec to native backend (contributed by Clemens Hardewig)
 
 1.13
 
-* Fix not returning IP address as a string in Python backend (contributed by Sean Kelly)
-* Fix PID file handling for Python backend
-* Use API token for cloudflare Python backend if available (contributed by juantxorena)
+* Fix not returning IP address as a string in native backend (contributed by Sean Kelly)
+* Fix PID file handling for native backend
+* Use API token for cloudflare native backend if available (contributed by juantxorena)
 * Read proxied attribute from cloudflare hostname and send it back to prevent it being removed
-* Move accounting of "last accessed timestamp" to poller in Python backend
+* Move accounting of "last accessed timestamp" to poller in native backend
 * Change if= use to proper ifv4=/ifv6= use (contributed by Rhys Barrie)
 
 1.12
 
-* Add cloudflare implementation for Python backend (contributed by Thomas Cekal)
-* Allow custom target hostname for dyndns2 protocol in Python backend
+* Add cloudflare implementation for native backend (contributed by Thomas Cekal)
+* Allow custom target hostname for dyndns2 protocol in native backend
 * Adjust for missing ipv6= option including upstream patches for use=/usev4=/usev6=
 * Require a selected interface through validation when interface check method is used
 
 1.11
 
-* Add Python backend support for custom ddclient-like implementation using the same input
+* Add Python-based native backend support for custom ddclient-like implementation using the same input
 * Add AzureDNS backende using OAuth 2.0
 * Add dyndns2 backend using said API
 
