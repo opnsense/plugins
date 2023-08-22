@@ -26,6 +26,7 @@ Changelog
 * Enforce wireguard-tools rc script to be disabled when still installed, this should prevent bootup issues
 * Move 'interface' calculated field to model for easy reusability
 * Change plugin maintainer
+
 1.13
 
 * Reworked widget and assorted cleanups (contributed by Patrik Kernstock)
