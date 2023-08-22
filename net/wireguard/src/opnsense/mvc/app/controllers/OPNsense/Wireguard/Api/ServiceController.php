@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2023 Deciso B.V.
  * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
@@ -53,13 +54,29 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
+     * @return array
+     */
+    public function reconfigureAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['result' => 'failed'];
+        }
+
+        $this->sessionClose();
+        $backend = new Backend();
+        $backend->configdRun('template reload ' . escapeshellarg(static::$internalServiceTemplate));
+        $backend->configdpRun('wireguard configure');
+
+        return ['result' => 'ok'];
+    }
+
+    /**
      * show wireguard config
      * @return array
      */
     public function showconfAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("wireguard showconf");
+        $response = (new Backend())->configdRun("wireguard showconf");
         return array("response" => $response);
     }
 
@@ -69,8 +86,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function showhandshakeAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("wireguard showhandshake");
+        $response = (new Backend())->configdRun("wireguard showhandshake");
         return array("response" => $response);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2023 Deciso B.V.
  * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
@@ -38,17 +39,15 @@ class ServerController extends ApiMutableModelControllerBase
 
     public function searchServerAction()
     {
-        $search = $this->searchBase('servers.server', array("enabled", "instance", "peers", "name", "networks", "pubkey", "port", "tunneladdress"));
-        // prepend "wg" to all instance IDs to use as interface name
-        foreach ($search["rows"] as $key => $server) {
-            $search["rows"][$key]["interface"] = "wg" . $server["instance"];
-        }
+        $search = $this->searchBase(
+            'servers.server',
+            ["enabled", "instance", "peers", "name", "networks", "pubkey", "port", "tunneladdress", 'interface']
+        );
         return $search;
     }
 
     public function getServerAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('server', 'servers.server', $uuid);
     }
 

@@ -16,6 +16,17 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.0
+
+* Remove wireguard-go support and cleanup some go specific code as it's not being used anymore anyway
+* Service control handler similar to OpenVPN, which offers control per instance/interface and keeps track of changed interfaces (configure only restarts the changed ones).
+* Add some basic logging for the service handling and a view to inspect it.
+* Configuration logs are being flushed to the correct log automatically as mwexecf() sends errors to syslog (which in this scope sends to wireguard)
+* Reimplement https://github.com/WireGuard/wireguard-tools/tree/master/contrib/reresolve-dns using Python in reresolve-dns.py
+* Enforce wireguard-tools rc script to be disabled when still installed, this should prevent bootup issues
+* Move 'interface' calculated field to model for easy reusability
+* Change plugin maintainer
+
 1.13
 
 * Reworked widget and assorted cleanups (contributed by Patrik Kernstock)
