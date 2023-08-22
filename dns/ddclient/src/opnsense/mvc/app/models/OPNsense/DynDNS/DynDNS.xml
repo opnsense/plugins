@@ -93,9 +93,9 @@
                     <Required>N</Required>
                     <ValidationMessage>A protocol type is required.</ValidationMessage>
                     <OptionValues>
-                        <dyndns1>DynDns1</dyndns1>
-                        <dyndns2>DynDns2</dyndns2>
-                        <post>custom POST</post>
+                        <dyndns1>DynDNS 1</dyndns1>
+                        <dyndns2>DynDNS 2</dyndns2>
+                        <post>Custom POST</post>
                     </OptionValues>
                 </protocol>
                 <server type="TextField">
