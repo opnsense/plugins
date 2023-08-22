@@ -60,7 +60,7 @@ function wg_start($server, $fhandle)
          *      where these (and maybe other) static routes hook into.
          **/
         $peers = explode(',', $server->peers);
-        $routes_to_add = ['inet'=> [], 'inet6' => []];
+        $routes_to_add = ['inet' => [], 'inet6' => []];
         foreach ((new OPNsense\Wireguard\Client())->clients->client->iterateItems() as $key => $client) {
             if (empty((string)$client->enabled) || !in_array($key, $peers)) {
                 continue;

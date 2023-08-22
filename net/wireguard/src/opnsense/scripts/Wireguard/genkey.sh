@@ -26,8 +26,8 @@
 # SUCH DAMAGE.
 
 TMPDIR="/tmp"
-GENPRIV="/usr/local/bin/wg genkey"
-GENPUB="/usr/local/bin/wg pubkey"
+GENPRIV="/usr/bin/wg genkey"
+GENPUB="/usr/bin/wg pubkey"
 
 cleanup() {
 	# Delete old files
