@@ -13,19 +13,19 @@
             "id": "{{ account['@uuid'] }}",
             "service": "{{ account.service }}",
             "protocol": "{{ account.protocol }}",
-            "server": "{{ account.server }}",
-            "resourceId": "{{ account.resourceId }}",
-            "username": "{{ account.username }}",
-            "password": "{{ account.password }}",
+            "server": {{ account.server | default('') | tojson }},
+            "resourceId": {{ account.resourceId | default('') | tojson }},
+            "username": {{ account.username | default('') | tojson }},
+            "password": {{ account.password | default('') | tojson }},
             "hostnames": "{{ account.hostnames }}",
             "wildcard": {{ "true" if account.wildcard == '1' else "false"}},
             "zone": "{{ account.zone }}",
             "checkip": "{{ account.checkip }}",
+            "interface": "{% if account.interface %}{{physical_interface(account.interface)}}{% endif %}",
             "checkip_timeout": {{ account.checkip_timeout }},
             "force_ssl": {{ "true" if account.force_ssl == '1' else "false"}},
             "ttl": "{{ account.ttl }}",
-            "interface": "{%if account.interface %}{{physical_interface(account.interface)}}{% endif%}",
-            "description": "{{ account.description }}"
+            "description": {{ account.description | default('') | tojson }}
         }{{ "," if not loop.last else ""}}
 {%   endfor %}
 {% endif %}
