@@ -102,4 +102,3 @@ function wireguard_devices()
 {
     return [['pattern' => '^wg', 'volatile' => true]];
 }
-
