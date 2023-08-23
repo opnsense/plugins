@@ -12,6 +12,7 @@ Plugin Changelog
 * Fix JSON output with disabled trailing accounts/escaping and empty stats in AccountField
 * Rename Python-based "OPNsense" backend to "native" to prevent ambiguity
 * Do not update on native backend when IP detection failed and emit a warning instead
+* Add desec to native backend (contributed by Clemens Hardewig)
 * Fix ClouDNS missing dynurl= parameter
 * Clean up ddclient.conf template
 
@@ -19,7 +20,6 @@ Plugin Changelog
 
 * Add "post" protocol in custom service type
 * Add DNSExit API and regfish.de support to ddclient backend
-* Add desec to native backend (contributed by Clemens Hardewig)
 
 1.13
 
