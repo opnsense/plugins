@@ -69,6 +69,7 @@ class Network(NetwConfObject):
         self._payload['debuglevel'] = 'd0'
         self._payload['mode'] = 'switch'
         self._payload['PMTUDiscovery'] = 'yes'
+        self._payload['StrictSubnets'] = 'no'
         self._hosts = list()
 
     def get_id(self):
@@ -81,10 +82,7 @@ class Network(NetwConfObject):
         return self._payload['mode']
 
     def get_debuglevel(self):
-        if len(self._payload['debuglevel']) > 1:
-            return self._payload['debuglevel'][1]
-        else:
-            return '0'
+        return self._payload['debuglevel'][1] if len(self._payload['debuglevel']) > 1 else '0'
 
     def set_hosts(self, hosts):
         for host in hosts:
@@ -94,10 +92,10 @@ class Network(NetwConfObject):
             self._hosts.append(hostObj)
 
     def set_PMTUDiscovery(self, value):
-        if value.text != '1':
-            self._payload['PMTUDiscovery'] = 'no'
-        else:
-            self._payload['PMTUDiscovery'] = 'yes'
+        self._payload['PMTUDiscovery'] = 'no' if value.text != '1' else 'yes'
+
+    def set_StrictSubnets(self, value):
+        self._payload['StrictSubnets'] = 'no' if value.text != '1' else 'yes'
 
     def config_text(self):
         result = list()
@@ -106,6 +104,7 @@ class Network(NetwConfObject):
         result.append('PMTUDiscovery=%(PMTUDiscovery)s' % self._payload)
         result.append('Port=%(port)s' % self._payload)
         result.append('PingTimeout=%(pingtimeout)s' % self._payload)
+        result.append('StrictSubnets=%(StrictSubnets)s' % self._payload)
         for host in self._hosts:
             if host.connect_to_this_host():
                 result.append('ConnectTo = %s' % (host.get_hostname(),))

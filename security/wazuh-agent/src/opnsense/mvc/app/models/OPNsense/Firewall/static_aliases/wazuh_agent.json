@@ -1,0 +1,9 @@
+{
+    "__wazuh_agent_drop": {
+      "enabled": "1",
+      "name": "__wazuh_agent_drop",
+      "type": "external",
+      "description": "Wazuh Agent blocklist (internal)",
+      "content": ""
+    }
+}

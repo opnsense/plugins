@@ -14,6 +14,7 @@
         <port>{{network.extport}}</port>
         <debuglevel>{{network.debuglevel}}</debuglevel>
         <pingtimeout>{{network.pingtimeout}}</pingtimeout>
+        <StrictSubnets>{{network.StrictSubnets}}</StrictSubnets>
         <hosts>
             <host>
                 <hostname>{{network.hostname}}</hostname>

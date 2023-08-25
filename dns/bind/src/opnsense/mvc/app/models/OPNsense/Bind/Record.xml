@@ -31,6 +31,7 @@
                         <AAAA>AAAA</AAAA>
                         <CAA>CAA</CAA>
                         <CNAME>CNAME</CNAME>
+                        <DNAME>DNAME</DNAME>
                         <DNSKEY>DNSKEY</DNSKEY>
                         <DS>DS</DS>
                         <MX>MX</MX>

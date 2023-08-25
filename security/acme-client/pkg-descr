@@ -7,15 +7,22 @@ WWW: https://github.com/acmesh-official/acme.sh
 
 Plugin Changelog
 ================
+
 3.19
 
 Added:
-* add Google Domains DNS API
+* add IPv64.net DNS API (#3504)
+
+Fixed:
+* fix Proxmox VE deployhook (#3517)
 
 3.18
 
 Added:
 * add support for TrueNAS deployhook (#3421)
+* add support for Proxmox VE deployhook (#3422)
+* add server,port and node name values for Proxmox VE deployhook (#3516)
+* add Google Domains DNS API
 
 3.17
 

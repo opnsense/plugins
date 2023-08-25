@@ -27,7 +27,10 @@
         <id>account.server</id>
         <label>Server</label>
         <type>text</type>
-        <help>DynDNS Server</help>
+        <help>DynDNS Server hostname or uri to use (depending on the protocol).
+         When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
+         and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
+         </help>
         <style>optional_setting service_custom</style>
     </field>
     <field>
@@ -59,7 +62,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
+        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -69,6 +72,13 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help>Hostname to update</help>
+    </field>
+    <field>
+        <id>account.ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <style>optional_setting service_aws</style>
+        <help>Time to Live for the DNS entry</help>
     </field>
     <field>
         <id>account.checkip</id>

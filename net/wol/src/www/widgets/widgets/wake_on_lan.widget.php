@@ -70,7 +70,7 @@ $wol = new Wol();
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="4"><a href="status_dhcp_leases.php" class="navlink"><?= gettext('DHCP Leases Status') ?></a></td>
+      <td colspan="4"><a href="ui/dhcpv4/leases" class="navlink"><?= gettext('DHCP Leases Status') ?></a></td>
     </tr>
   </tfoot>
 </table>

@@ -44,6 +44,7 @@ class Cloudflare(BaseAccount):
     def known_services():
         return  Cloudflare._services.keys()
 
+    @staticmethod
     def match(account):
         return account.get('service') in Cloudflare._services
 

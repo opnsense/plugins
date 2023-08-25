@@ -10,6 +10,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.27
+
+* Add DNAME support (contributed by Simon Fischer)
+
 1.26
 
 * Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)

@@ -34,6 +34,8 @@ class DynDNS2(BaseAccount):
 
     _services = {
         'dyndns2': 'members.dyndns.org',
+        'desec-v4': 'update.dedyn.io',
+        'desec-v6': 'update6.dedyn.io',
         'dns-o-matic': 'updates.dnsomatic.com',
         'dynu': 'api.dynu.com',
         'he-net': 'dyn.dns.he.net',
@@ -55,35 +57,46 @@ class DynDNS2(BaseAccount):
     def known_services():
         return  list(DynDNS2._services.keys()) + ['custom']
 
+    @staticmethod
     def match(account):
-        if account.get('service') in DynDNS2._services or (
-            account.get('server') is not None and account.get('protocol') in ['dyndns2', 'dyndns1']
-        ):
+        if account.get('service') in DynDNS2.known_services():
             return True
         else:
             return False
 
     def execute(self):
         if super().execute():
-            proto = 'https' if self.settings.get('force_ssl', False) else 'http'
-            if self.settings.get('service') in self._services:
-                url = "%s://%s/nic/update" % (proto, self._services[self.settings.get('service')])
+            protocol = self.settings.get('protocol', None)
+            if protocol == 'post':
+                url = self.settings.get('server')
+                url = url.replace('__MYIP__', self.current_address)
+                url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
+                req = requests.post(
+                    url=url,
+                    headers={'User-Agent': 'OPNsense-dyndns'},
+                    auth=HTTPBasicAuth(self.settings.get('username'), self.settings.get('password'))
+                )
             else:
-                url = "%s://%s/nic/update" % (proto, self.settings.get('server'))
+                uri_proto = 'https' if self.settings.get('force_ssl', False) else 'http'
+                if self.settings.get('service') in self._services:
+                    url = "%s://%s/nic/update" % (uri_proto, self._services[self.settings.get('service')])
+                else:
+                    url = "%s://%s/nic/update" % (uri_proto, self.settings.get('server'))
 
-            req_opts = {
-                'url': url,
-                'params': {
-                    'hostname': self.settings.get('hostnames'),
-                    'myip': self.current_address,
-                    'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
-                },
-                'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
-                'headers': {
-                    'User-Agent': 'OPNsense-dyndns'
+                req_opts = {
+                    'url': url,
+                    'params': {
+                        'hostname': self.settings.get('hostnames'),
+                        'myip': self.current_address,
+                        'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
+                    },
+                    'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
+                    'headers': {
+                        'User-Agent': 'OPNsense-dyndns'
+                    }
                 }
-            }
-            req = requests.get(**req_opts)
+                req = requests.get(**req_opts)
+
             if req.status_code == 200:
                 if self.is_verbose:
                     syslog.syslog(

@@ -466,6 +466,7 @@
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
                         <dns_inwx>INWX XMLRPC</dns_inwx>
                         <dns_ionos>IONOS domain</dns_ionos>
+                        <dns_ipv64>IPv64.net</dns_ipv64>
                         <dns_ispconfig>ISPConfig 3.1+</dns_ispconfig>
                         <dns_jd>JD Cloud</dns_jd>
                         <dns_joker>Joker</dns_joker>
@@ -712,6 +713,9 @@
                 <dns_ionos_secret type="TextField">
                     <Required>N</Required>
                 </dns_ionos_secret>
+                <dns_ipv64_token type="TextField">
+                    <Required>N</Required>
+                </dns_ipv64_token>
                 <dns_ispconfig_user type="TextField">
                     <Required>N</Required>
                 </dns_ispconfig_user>
@@ -1186,6 +1190,7 @@
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
+                        <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
@@ -1395,6 +1400,43 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_host>
+                <acme_proxmoxve_user type="TextField">
+                    <default>root</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_user>
+                <acme_proxmoxve_server type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_server>
+                <acme_proxmoxve_port type="PortField">
+                    <default>8006</default>
+                    <Required>N</Required>
+                </acme_proxmoxve_port>
+                <acme_proxmoxve_nodename type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_nodename>
+                <acme_proxmoxve_realm type="TextField">
+                    <default>pam</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_realm>
+                <acme_proxmoxve_tokenid type="TextField">
+                    <default>acme</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_tokenid>
+                <acme_proxmoxve_tokenkey type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxve_tokenkey>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
