@@ -40,6 +40,5 @@ class DnsLimacity extends Base implements LeValidationInterface
     public function prepare()
     {
         $this->acme_env['LIMACITY_APIKEY'] = (string)$this->config->dns_limacity_apikey;
-        $this->acme_env['LIMACITY_DOMAINID'] = (string)$this->config->dns_limacity_domainid;
     }
 }

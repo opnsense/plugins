@@ -832,9 +832,6 @@
                 <dns_limacity_apikey type="TextField">
                     <Required>N</Required>
                 </dns_limacity_apikey>
-                <dns_limacity_domainid type="TextField">
-                    <Required>N</Required>
-                </dns_limacity_domainid>
                 <dns_linode_key type="TextField">
                     <Required>N</Required>
                 </dns_linode_key>

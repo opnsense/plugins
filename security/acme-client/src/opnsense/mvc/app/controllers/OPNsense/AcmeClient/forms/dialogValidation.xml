@@ -787,11 +787,6 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_limacity_domainid</id>
-        <label>DomainID</label>
-        <type>text</type>
-    </field>
-    <field>
         <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
