@@ -19,10 +19,12 @@
                     <Required>Y</Required>
                 </instance>
                 <pubkey type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
+                    <ValidationMessage>A public key is required</ValidationMessage>
                 </pubkey>
                 <privkey type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
+                    <ValidationMessage>A private key is required</ValidationMessage>
                 </privkey>
                 <port type="PortField">
                     <Required>N</Required>

@@ -66,6 +66,19 @@
             }
         });
 
+        /**
+         * Move keypair generation button inside the server form and hook api event
+         */
+        $("#control_label_server\\.pubkey").append($("#keygen_div").detach().show());
+        $("#keygen").click(function(){
+            ajaxGet("/api/wireguard/server/key_pair", {}, function(data, status){
+                if (data.status && data.status === 'ok') {
+                    $("#server\\.pubkey").val(data.pubkey);
+                    $("#server\\.privkey").val(data.privkey);
+                }
+            });
+        })
+
         // Put API call into a function, needed for auto-refresh
         function update_showconf() {
             ajaxCall(url="/api/wireguard/service/showconf", sendData={}, callback=function(data,status) {
@@ -126,6 +139,11 @@
         </table>
     </div>
     <div id="servers" class="tab-pane fade in">
+        <span id="keygen_div" style="display:none" class="pull-right">
+            <button id="keygen" type="button" class="btn btn-secondary" title="{{ lang._('Generate new keypair.') }}" data-toggle="tooltip">
+              <i class="fa fa-fw fa-gear"></i>
+            </button>
+        </span>
         <table id="grid-servers" class="table table-responsive" data-editDialog="dialogEditWireguardServer">
             <thead>
                 <tr>
