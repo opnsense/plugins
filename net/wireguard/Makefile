@@ -1,5 +1,5 @@
 PLUGIN_NAME=		wireguard
-PLUGIN_VERSION=		2.0.d
+PLUGIN_VERSION=		2.0
 PLUGIN_COMMENT=		WireGuard VPN service kernel implementation
 PLUGIN_DEPENDS=		wireguard-kmod
 PLUGIN_CONFLICTS=	wireguard-go
