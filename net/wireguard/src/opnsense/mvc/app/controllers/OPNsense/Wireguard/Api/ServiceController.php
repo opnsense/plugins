@@ -123,6 +123,6 @@ class ServiceController extends ApiMutableServiceControllerBase
                 return in_array($record['type'], $types);
             };
         }
-        return $this->searchRecordsetBase($records, null, null,  $filter_funct);
+        return $this->searchRecordsetBase($records, null, null, $filter_funct);
     }
 }
