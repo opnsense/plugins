@@ -78,24 +78,6 @@
                 }
             });
         })
-
-        // Put API call into a function, needed for auto-refresh
-        function update_showconf() {
-            ajaxCall(url="/api/wireguard/service/showconf", sendData={}, callback=function(data,status) {
-                $("#listshowconf").text(data['response']);
-                setTimeout(update_showconf, 5000);
-            });
-        }
-
-        function update_showhandshake() {
-            ajaxCall(url="/api/wireguard/service/showhandshake", sendData={}, callback=function(data,status) {
-                $("#listshowhandshake").text(data['response']);
-                setTimeout(update_showhandshake, 5000);
-            });
-        }
-        // Call update funcs once when page loaded
-        update_showconf();
-        update_showhandshake();
     });
 </script>
 <!-- Navigation bar -->
@@ -103,8 +85,6 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Local') }}</a></li>
     <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
-    <li><a data-toggle="tab" href="#showconf">{{ lang._('Status') }}</a></li>
-    <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -168,12 +148,6 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
-    <div id="showconf" class="tab-pane fade in">
-      <pre id="listshowconf"></pre>
-    </div>
-    <div id="showhandshake" class="tab-pane fade in">
-      <pre id="listshowhandshake"></pre>
     </div>
 </div>
 

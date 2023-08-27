@@ -32,6 +32,8 @@ namespace OPNsense\Wireguard\Api;
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Wireguard\General;
+use OPNsense\Wireguard\Client;
+use OPNsense\Wireguard\Server;
 
 /**
  * Class ServiceController
@@ -72,6 +74,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     /**
      * show wireguard config
+     * XXX: remove in 24.1
      * @return array
      */
     public function showconfAction()
@@ -82,11 +85,44 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     /**
      * show wireguard handshakes
+     * XXX: remove in 24.1
      * @return array
      */
     public function showhandshakeAction()
     {
         $response = (new Backend())->configdRun("wireguard showhandshake");
         return array("response" => $response);
+    }
+
+    /**
+     * wg show all dump output
+     * @return array
+     */
+    public function showAction()
+    {
+        $payload = json_decode((new Backend())->configdRun("wireguard show") ?? '', true);
+        $records = !empty($payload) && !empty($payload['records']) ? $payload['records'] : [];
+        $key_descriptions = [];
+        foreach ((new Client())->clients->client->iterateItems() as $key => $client) {
+            $key_descriptions[(string)$client->pubkey] = (string)$client->name;
+        }
+        foreach ((new Server())->servers->server->iterateItems() as $key => $server) {
+            $key_descriptions[(string)$server->pubkey] = (string)$server->name;
+        }
+        foreach ($records as &$record) {
+            if (!empty($record['public-key']) && !empty($key_descriptions[$record['public-key']])) {
+                $record['name'] = $key_descriptions[$record['public-key']];
+            } else {
+                $record['name'] = '';
+            }
+        }
+        $filter_funct = null;
+        $types = $this->request->get('type');
+        if (!empty($types)) {
+            $filter_funct = function ($record) use ($types) {
+                return in_array($record['type'], $types);
+            };
+        }
+        return $this->searchRecordsetBase($records, null, null,  $filter_funct);
     }
 }
