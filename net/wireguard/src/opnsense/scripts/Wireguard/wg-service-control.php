@@ -43,7 +43,8 @@ function wg_start($server, $fhandle)
     mwexecf('/usr/bin/wg setconf %s %s', [$server->interface, $server->cnfFilename]);
 
     foreach (explode(',', (string)$server->tunneladdress) as $alias) {
-        mwexecf('/sbin/ifconfig %s %s alias', [$server->interface, $alias]);
+        $proto = strpos($alias, ':') === false ? "inet" : "inet6";
+        mwexecf('/sbin/ifconfig %s %s %s alias', [$server->interface, $proto, $alias]);
     }
     if (!empty((string)$server->mtu)) {
         mwexecf('/sbin/ifconfig %s mtu %s', [$server->interface, $server->mtu]);
@@ -87,7 +88,7 @@ function wg_start($server, $fhandle)
     } elseif (!empty((string)$server->gateway)) {
         /* Only bind the gateway ip to the tunnel */
         $ipprefix = strpos($tunneladdress, ":") === false ? "-4" :  "-6 ";
-        mwexecf('/sbin/route -q -n add -%s %s -iface %s', [$ipprefix, $server->gateway, $server->interface]);
+        mwexecf('/sbin/route -q -n add %s %s -iface %s', [$ipprefix, $server->gateway, $server->interface]);
     }
 
     // flush checksum to ease change detection

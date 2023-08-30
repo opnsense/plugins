@@ -29,7 +29,18 @@
 # https://github.com/WireGuard/wireguard-tools/tree/master/contrib/reresolve-dns
 import glob
 import os
+import time
 import subprocess
+
+
+
+sp = subprocess.run(['/usr/bin/wg', 'show', 'all', 'latest-handshakes'], capture_output=True, text=True)
+ts_now = time.time()
+handshakes = {}
+for line in sp.stdout.split('\n'):
+    parts = line.split()
+    if len(parts) == 3 and parts[2].isdigit():
+        handshakes["%s-%s" % (parts[0], parts[1])] = ts_now - int(parts[2])
 
 
 for filename in glob.glob('/usr/local/etc/wireguard/*.conf'):
@@ -38,24 +49,27 @@ for filename in glob.glob('/usr/local/etc/wireguard/*.conf'):
     with open(filename, 'r') as fhandle:
         for line in fhandle:
             if line.startswith('[Peer]'):
-                this_peer = {}
+                this_peer = {'ifname': ifname}
             elif line.startswith('PublicKey'):
                 this_peer['PublicKey'] = line.split('=', 1)[1].strip()
             elif line.startswith('Endpoint'):
                 this_peer['Endpoint'] = line.split('=', 1)[1].strip()
 
             if 'Endpoint' in this_peer and 'PublicKey' in this_peer:
-                subprocess.run(
-                    [
-                        '/usr/bin/wg',
-                        'set',
-                        ifname,
-                        'peer',
-                        this_peer['PublicKey'],
-                        'endpoint',
-                        this_peer['Endpoint']
-                    ],
-                    capture_output=True,
-                    text=True
-                )
+                peer_key = "%(ifname)s-%(PublicKey)s" % this_peer
+                if handshakes.get(peer_key, 999) > 135:
+                    # skip if there has been a handshake recently
+                    subprocess.run(
+                        [
+                            '/usr/bin/wg',
+                            'set',
+                            ifname,
+                            'peer',
+                            this_peer['PublicKey'],
+                            'endpoint',
+                            this_peer['Endpoint']
+                        ],
+                        capture_output=True,
+                        text=True
+                    )
                 this_peer = {}
