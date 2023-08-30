@@ -31,7 +31,7 @@ require_once('script/load_phalcon.php');
 require_once('util.inc');
 require_once('interfaces.inc');
 
-function wg_reload($server, $fhandle)
+function wg_syncconf($server)
 {
     mwexecf('/usr/bin/wg syncconf %s %s', [$server->interface, $server->cnfFilename]);
 }
@@ -152,7 +152,7 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         wg_start($node, $statHandle);
                         break;
                     case 'reload':
-                        wg_reload($node, $statHandle);
+                        wg_syncconf($node);
                         break;
                     case 'configure':
                         if (

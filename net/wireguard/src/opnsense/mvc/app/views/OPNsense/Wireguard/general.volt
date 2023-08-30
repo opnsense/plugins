@@ -66,6 +66,15 @@
             }
         });
 
+        $("#reloadAct_client").click(function(){
+            saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
+            $("#reloadAct_client_progress").addClass("fa-spin");
+                ajaxCall(url="/api/wireguard/service/reload", sendData={}, callback=function(data,status) {
+                    $("#reloadAct_client_progress").removeClass("fa-spin");
+                });
+            });
+        });
+
         /**
          * Move keypair generation button inside the server form and hook api event
          */
