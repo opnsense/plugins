@@ -31,6 +31,11 @@ require_once('script/load_phalcon.php');
 require_once('util.inc');
 require_once('interfaces.inc');
 
+function wg_reload($server, $fhandle)
+{
+    mwexecf('/usr/bin/wg syncconf %s %s', [$server->interface, $server->cnfFilename]);
+}
+
 /**
  * mimic wg-quick behaviour, but bound to our config
  */
@@ -116,8 +121,8 @@ $args = array_slice($argv, $optind);
 /* setup syslog logging */
 openlog("wireguard", LOG_ODELAY, LOG_AUTH);
 
-if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', 'restart', 'configure'])) {
-    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|configure] [uuid]\n\n";
+if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', 'restart', 'reload', 'configure'])) {
+    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|reload|configure] [uuid]\n\n";
     echo "\t-a all instances\n";
 } elseif (isset($opts['a']) || !empty($args[1])) {
     $server_id = $args[1] ?? null;
@@ -145,6 +150,9 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                     case 'restart':
                         wg_stop($node);
                         wg_start($node, $statHandle);
+                        break;
+                    case 'reload':
+                        wg_reload($node, $statHandle);
                         break;
                     case 'configure':
                         if (
