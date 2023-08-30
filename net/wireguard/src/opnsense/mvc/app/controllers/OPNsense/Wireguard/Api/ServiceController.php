@@ -94,7 +94,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array("response" => $response);
     }
 
-    /*
+    /**
      * wg show all dump output
      * @return array
      */
