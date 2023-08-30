@@ -67,7 +67,7 @@ function wg_start($server, $fhandle)
                 continue;
             }
             foreach (explode(',', (string)$client->tunneladdress) as $tunneladdress) {
-                $ipproto = strpos($tunneladdress, ":") === false ? "inet" :  "inet6 ";
+                $ipproto = strpos($tunneladdress, ":") === false ? "inet" :  "inet6";
                 /* wg-quick seems to prevent /0 being routed and translates this automatically */
                 if (str_ends_with(trim($tunneladdress), '/0')) {
                     if ($ipproto == 'inet') {
@@ -87,7 +87,7 @@ function wg_start($server, $fhandle)
         }
     } elseif (!empty((string)$server->gateway)) {
         /* Only bind the gateway ip to the tunnel */
-        $ipprefix = strpos($tunneladdress, ":") === false ? "-4" :  "-6 ";
+        $ipprefix = strpos($tunneladdress, ":") === false ? "-4" :  "-6";
         mwexecf('/sbin/route -q -n add %s %s -iface %s', [$ipprefix, $server->gateway, $server->interface]);
     }
 
