@@ -23,6 +23,7 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 """
+import syslog
 import hashlib
 import uuid
 import time
@@ -120,7 +121,13 @@ class BaseAccount:
             interface = self.settings['interface'] if self.settings.get('interface' ,'').strip() != '' else None
         )
 
-        if self._current_address != '' and (
+        if self._current_address == None:
+            syslog.syslog(
+                syslog.LOG_WARNING,
+                "Account %s no global IP address detected, check config if warning persists" % (self.description)
+            )
+            return False
+        elif (
                 self._state.get('ip') is None or
                 self._current_address != self._state.get('ip') or
                 self.state.get('md5') != self.md5
@@ -128,6 +135,5 @@ class BaseAccount:
             # if current address doesn't equal the current state, propagate the fact
             return True
         else:
-            # unmodified, keep track of last access timestamp
-            self._last_accessed = time.time()
+            # unmodified, poller keeps track of last access timestamp
             return False

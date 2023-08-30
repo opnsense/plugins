@@ -6,6 +6,11 @@
         <help>Enable this virtual server</help>
     </field>
     <field>
+        <id>account.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
         <id>account.service</id>
         <label>Service</label>
         <type>dropdown</type>
@@ -22,7 +27,10 @@
         <id>account.server</id>
         <label>Server</label>
         <type>text</type>
-        <help>DynDNS Server</help>
+        <help>DynDNS Server hostname or uri to use (depending on the protocol).
+         When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
+         and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
+         </help>
         <style>optional_setting service_custom</style>
     </field>
     <field>
@@ -54,7 +62,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
+        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -66,10 +74,22 @@
         <help>Hostname to update</help>
     </field>
     <field>
+        <id>account.ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <style>optional_setting service_aws</style>
+        <help>Time to Live for the DNS entry</help>
+    </field>
+    <field>
         <id>account.checkip</id>
         <label>Check ip method</label>
         <type>dropdown</type>
         <help>How to determine the address to use for this host</help>
+    </field>
+    <field>
+        <id>account.interface</id>
+        <label>Interface to monitor</label>
+        <type>dropdown</type>
     </field>
     <field>
         <id>account.checkip_timeout</id>
@@ -83,15 +103,5 @@
         <type>checkbox</type>
         <help>Force update using HTTPS, please note setting this option will enforce https updates on all accounts
         as ddclient only supports SSL=yes on a global level (the check ip service may still use HTTP on other services)</help>
-    </field>
-    <field>
-        <id>account.interface</id>
-        <label>Interface to monitor</label>
-        <type>dropdown</type>
-    </field>
-    <field>
-        <id>account.description</id>
-        <label>Description</label>
-        <type>text</type>
     </field>
 </form>

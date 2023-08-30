@@ -1,18 +1,18 @@
 <model>
     <mount>//OPNsense/dnscryptproxy/general</mount>
     <description>dnscrypt-proxy configuration</description>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
         </enabled>
         <listen_addresses type="CSVListField">
-            <default>127.0.0.1:5353,[::1]:5353</default>
-            <Required>N</Required>
+            <default>0.0.0.0:5353</default>
+            <Required>Y</Required>
         </listen_addresses>
         <allowprivileged type="BooleanField">
-            <default>0</default>
+            <default>1</default>
             <Required>Y</Required>
         </allowprivileged>
         <max_clients type="IntegerField">
@@ -140,12 +140,11 @@
             <default>1</default>
             <Required>Y</Required>
         </query_logs>
-        <disabled_serverlist type="TextField">
-            <mask>/^([a-z0-9.,\-]{1,70})$/</mask>
+        <disabled_serverlist type="CSVListField">
+            <mask>/^[A-Za-z0-9\._\-]{1,70}(,[A-Za-z0-9\._\-]{1,70})*$/</mask>
             <default></default>
             <Required>N</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <ValidationMessage>Please use valid server names.</ValidationMessage>
         </disabled_serverlist>
         <relaylist type="CSVListField">
             <Required>N</Required>

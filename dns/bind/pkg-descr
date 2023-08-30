@@ -10,10 +10,17 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.27
+
+* Add DNAME support (contributed by Simon Fischer)
+
 1.26
 
 * Allow multiple ACLs to be selected for Transfers/Queries (contributed by Robbert Rijkse)
 * Rename Master/Slave to Primary/Secondary (contributed by Robbert Rijkse)
+* Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0/:: for new users and interally translate these to "any"
+* Prevent using a port being used by another DNS service
 
 1.25
 

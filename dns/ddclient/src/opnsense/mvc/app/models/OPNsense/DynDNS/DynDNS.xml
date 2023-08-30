@@ -30,7 +30,7 @@
                 <ValidationMessage>A backend is required.</ValidationMessage>
                 <OptionValues>
                     <ddclient>ddclient</ddclient>
-                    <opnsense>OPNsense</opnsense>
+                    <opnsense>native</opnsense>
                 </OptionValues>
             </backend>
         </general>
@@ -51,7 +51,8 @@
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
-                        <dnsexit>DNSExit</dnsexit>
+                        <dnsexit2>DNSExit API</dnsexit2>
+                        <dnsexit>DNSExit Legacy</dnsexit>
                         <dyndns2>DynDNS.com</dyndns2>
                         <dnspark>DnsPark</dnspark>
                         <dslreports1>DSLReports</dslreports1>
@@ -77,6 +78,7 @@
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
                         <ovh>OVHcloud DynHost</ovh>
+                        <regfishde>regfish.de</regfishde>
                         <servercow>Servercow</servercow>
                         <sitelutions>Sitelutions</sitelutions>
                         <spdyn>spDYN</spdyn>
@@ -91,13 +93,13 @@
                     <Required>N</Required>
                     <ValidationMessage>A protocol type is required.</ValidationMessage>
                     <OptionValues>
-                        <dyndns1>DynDns1</dyndns1>
-                        <dyndns2>DynDns2</dyndns2>
+                        <dyndns1>DynDNS 1</dyndns1>
+                        <dyndns2>DynDNS 2</dyndns2>
+                        <post>Custom POST</post>
                     </OptionValues>
                 </protocol>
-                <server type="HostnameField">
+                <server type="TextField">
                     <Required>N</Required>
-                    <IpAllowed>N</IpAllowed>
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
@@ -105,7 +107,7 @@
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^[^\n]*$/</mask>
                 </password>
                 <resourceId type="TextField">
@@ -153,6 +155,11 @@
                         <web_zoneedit>zoneedit</web_zoneedit>
                         <if>Interface</if>
                     </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <reference>interface.check001</reference>
+                        </check001>
+                    </Constraints>
                 </checkip>
                 <checkip_timeout type="IntegerField">
                     <default>10</default>
@@ -164,9 +171,23 @@
                     <default>1</default>
                     <Required>Y</Required>
                 </force_ssl>
+                <ttl type="IntegerField">
+                    <default>300</default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>604800</MaximumValue>
+                </ttl>
                 <interface type="InterfaceField">
                     <Required>N</Required>
                     <multiple>N</multiple>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>An interface is required for the selected check method</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>checkip</field>
+                            <check>if</check>
+                        </check001>
+                    </Constraints>
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>

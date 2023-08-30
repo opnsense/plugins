@@ -4,7 +4,7 @@
     <version>0.0.4</version>
     <items>
         <servers>
-            <server type="ArrayField">
+            <server type=".\ServerField">
                 <enabled type="BooleanField">
                     <default>1</default>
                     <Required>Y</Required>
@@ -19,10 +19,12 @@
                     <Required>Y</Required>
                 </instance>
                 <pubkey type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
+                    <ValidationMessage>A public key is required</ValidationMessage>
                 </pubkey>
                 <privkey type="TextField">
-                    <Required>N</Required>
+                    <Required>Y</Required>
+                    <ValidationMessage>A private key is required</ValidationMessage>
                 </privkey>
                 <port type="PortField">
                     <Required>N</Required>

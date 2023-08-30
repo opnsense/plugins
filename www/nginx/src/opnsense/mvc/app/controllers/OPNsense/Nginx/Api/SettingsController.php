@@ -35,6 +35,7 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Nginx\Nginx';
     protected static $internalModelName = 'nginx';
+    protected static $internalModelUseSafeDelete = true;
 
     // download rules
     public function downloadrulesAction()
@@ -104,7 +105,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream
     public function searchupstreamAction()
     {
-        return $this->searchBase('upstream', array('description', 'serverentries', 'tls_enable', 'load_balancing_algorithm'));
+        return $this->searchBase('upstream', array('uuid', 'description', 'serverentries', 'tls_enable', 'load_balancing_algorithm'));
     }
 
     public function getupstreamAction($uuid = null)
@@ -131,7 +132,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // Upstream Server
     public function searchupstreamserverAction()
     {
-        return $this->searchBase('upstream_server', array('description', 'server', 'port', 'priority'));
+        return $this->searchBase('upstream_server', array('uuid', 'description', 'server', 'port', 'priority'));
     }
 
     public function getupstreamserverAction($uuid = null)
@@ -159,8 +160,8 @@ class SettingsController extends ApiMutableModelControllerBase
     public function searchlocationAction()
     {
         $data = $this->searchBase('location', array(
-            'description','urlpattern', 'path_prefix', 'matchtype', 'upstream',
-            'enable_secrules', 'enable_learning_mode', 'force_https',
+            'uuid', 'description', 'urlpattern', 'path_prefix', 'matchtype',
+            'upstream', 'enable_secrules', 'enable_learning_mode', 'force_https',
             'xss_block_score', 'sqli_block_score', 'custom_policy'
         ));
 
@@ -232,7 +233,7 @@ class SettingsController extends ApiMutableModelControllerBase
     public function searchhttpserverAction()
     {
         return $this->searchBase('http_server', array(
-            'servername', 'locations', 'root', 'https_only', 'certificate',
+            'uuid', 'servername', 'locations', 'root', 'https_only', 'certificate',
             'listen_http_address', 'listen_https_address', 'default_server'
         ));
     }
@@ -261,7 +262,7 @@ class SettingsController extends ApiMutableModelControllerBase
     // stream server
     public function searchstreamserverAction()
     {
-        return $this->searchBase('stream_server', array('description', 'certificate', 'udp', 'listen_address'));
+        return $this->searchBase('stream_server', array('uuid', 'description', 'certificate', 'udp', 'listen_address'));
     }
 
     public function getstreamserverAction($uuid = null)

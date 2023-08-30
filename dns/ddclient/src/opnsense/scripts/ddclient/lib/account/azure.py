@@ -84,11 +84,9 @@ class Azure(BaseAccount):
     def known_services():
         return  Azure._services
 
+    @staticmethod
     def match(account):
-        if account.get('service') in Azure._services:
-            return True
-        else:
-            return False
+        return account.get('service') in Azure._services
 
     def execute(self):
         """ Azure DNS update, uses an oauth2 sequence to login, the following requests are being performed:

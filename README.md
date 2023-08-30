@@ -37,7 +37,6 @@ devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
 dns/ddclient -- Dynamic DNS client
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
-dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
@@ -67,7 +66,8 @@ net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- Network traffic monitor
-net/wireguard -- WireGuard VPN service
+net/wireguard -- WireGuard VPN service kernel implementation
+net/wireguard-go -- WireGuard VPN service Go implementation (pending removal)
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
@@ -92,6 +92,7 @@ security/softether -- Cross-platform Multi-protocol VPN Program (development onl
 security/stunnel -- Stunnel TLS proxy
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
+security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/api-backup -- Provide the functionality to download the config.xml
 sysutils/apuled -- PC Engine APU LED control (development only)

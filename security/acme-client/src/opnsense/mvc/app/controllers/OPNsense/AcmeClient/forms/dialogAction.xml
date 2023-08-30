@@ -286,6 +286,76 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_acme_proxmoxve</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_user</id>
+        <label>Proxmox VE user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_server</id>
+        <label>Proxmox VE server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox ve node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_port</id>
+        <label>Proxmox VE server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8006.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_nodename</id>
+        <label>Proxmox VE node name</label>
+        <type>text</type>
+        <help>The name of the node we will be connecting to.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_realm</id>
+        <label>Proxmox VE realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenid</id>
+        <label>Proxmox VE token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenkey</id>
+        <label>Proxmox VE token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_truenas</style>
+    </field>
+    <field>
+        <id>action.acme_truenas_apikey</id>
+        <label>TrueNAS API key</label>
+        <type>text</type>
+        <help>API key generated in the TrueNAS web UI.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_hostname</id>
+        <label>TrueNAS hostname</label>
+        <type>text</type>
+        <help>Hostname or IP adress of TrueNAS Core Server.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_scheme</id>
+        <label>TrueNAS scheme</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to TrueNAS Core Server.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_acme_unifi</style>
     </field>
     <field>

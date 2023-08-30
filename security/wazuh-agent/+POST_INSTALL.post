@@ -1,0 +1,5 @@
+echo -n 'reload filter to register alias: '
+/usr/local/sbin/configctl filter reload
+cp /usr/local/opnsense/scripts/wazuh/opnsense-fw  /var/ossec/active-response/bin/opnsense-fw
+chmod 750 /var/ossec/active-response/bin/opnsense-fw
+chown root:wazuh /var/ossec/active-response/bin/opnsense-fw

@@ -41,6 +41,12 @@
         <help>When enabled (default), BGP only announces networks set at 'Network' if they are present in the routers routing table (alternatively, you can also set a null-route via System -> Routes). If disabled, all configured networks will be announced.</help>
     </field>
     <field>
+        <id>bgp.logneighborchanges</id>
+        <label>Log Neighbor Changes</label>
+        <type>checkbox</type>
+        <help>This will activate exetended logging of BGP neighbor changes.</help>
+    </field>
+    <field>
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>

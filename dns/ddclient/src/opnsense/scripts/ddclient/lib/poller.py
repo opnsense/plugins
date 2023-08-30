@@ -145,12 +145,17 @@ class Poller:
             for acc in self._accounts.values():
                 if time.time() - acc.atime > self.poll_interval:
                     if self.is_verbose:
-                        syslog.syslog(syslog.LOG_NOTICE, "Account %s execute" % acc.description)
+                        syslog.syslog(syslog.LOG_NOTICE, "Account %s executing" % acc.description)
                     try:
                         if acc.execute():
                             if self.is_verbose:
-                                syslog.syslog(syslog.LOG_NOTICE, "Account %s changed" % acc.description)
+                                syslog.syslog(syslog.LOG_NOTICE, "Account %s updated" % acc.description)
                             needs_flush = True
+                        else:
+                            if self.is_verbose:
+                                syslog.syslog(syslog.LOG_NOTICE, "Account %s not modified" % acc.description)
+                            # update last accessed timestamp
+                            acc.update_state(None)
                     except Exception as e:
                         # fatal exception, update atime so we're not going to retry too soon
                         acc.update_state(None)

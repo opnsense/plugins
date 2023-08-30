@@ -64,6 +64,12 @@
     <type>text</type>
   </field>
   <field>
+    <id>interface.bfd</id>
+    <label>BFD</label>
+    <type>checkbox</type>
+    <help>You can enable BFD support for this interface. You will also need to configure BFD peers.</help>
+  </field>
+  <field>
     <id>interface.networktype</id>
     <label>Network Type</label>
     <type>dropdown</type>

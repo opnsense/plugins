@@ -12,6 +12,17 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.35
+
+* Added automatic OSPFv3 firewall rules and opt-out automatic rule switch (contributed by Bill Gertz)
+
+1.34
+
+* Add checkbox to log BGP neighbor changes
+* Add BFD support (contributed by Mark Stitson)
+* Switch to FRR version 8
+* Rewrote diagnostics API
+
 1.33
 
 * Allow both IPv4 and IPv6 in BGP via setkey (contributed by as8net)

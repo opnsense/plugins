@@ -1,0 +1,160 @@
+#!/usr/local/bin/python3
+
+"""
+    Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+"""
+
+import argparse
+import datetime
+import json
+import os
+import sys
+import subprocess
+import ipaddress
+from select import select
+from configparser import ConfigParser
+
+
+def send_log(line):
+    with open('/var/ossec/logs/active-responses.log', 'a') as handle:
+        handle.write(
+            str(datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) +
+            " " +
+            os.path.basename(__file__) +
+            ": " +
+            line +
+            "\n"
+        )
+
+
+def read_data(filename):
+    payload = []
+    with open(filename, 'rb') as fin:
+        while True:
+            rlist, _, _ = select([fin], [], [], 0.5)
+            if not rlist:
+                break
+            line = fin.readline()
+            if line == b'':
+                break
+            payload.append(line)
+
+    return b''.join(payload)
+
+
+def main(params):
+    send_log('Started')
+    skip_alias=''
+    if os.path.isfile('/var/ossec/etc/opnsense-fw.conf'):
+        cnf = ConfigParser()
+        cnf.read('/var/ossec/etc/opnsense-fw.conf')
+        skip_alias = cnf.get('general', 'skip_alias') if cnf.has_option('general', 'skip_alias') else ''
+    else:
+        send_log('Skip configuration')
+
+    event=None
+    try:
+        event=json.loads(read_data(params.input))
+    except ValueError:
+        pass
+    if event is None:
+        send_log('Decoding JSON has failed, invalid input format')
+        return -1
+    else:
+        send_log('Received : %s' % json.dumps(event))
+
+    command=event.get('command', None)
+    srcip=event
+    for token in ['parameters', 'alert', 'data', 'srcip']:
+        if type(srcip) is dict and token in srcip:
+            srcip = srcip[token]
+        else:
+            srcip = None
+            break
+
+    if srcip is None:
+        send_log('srcip not found')
+        return -1
+
+    try:
+        ipaddress.ip_address(srcip)
+    except ValueError:
+        send_log('Unable to process even, invalid srcip (%s)' % srcip)
+        return -1
+
+    if skip_alias != '' and command == 'add':
+        sp = subprocess.run(['/sbin/pfctl', '-t', skip_alias, '-Ttest', srcip], capture_output=True, text=True)
+        if sp.stderr.strip().find("1/1") == 0:
+            send_log('Skip event %s in alias %s' % (srcip, skip_alias))
+            return 0
+
+    if command == 'add':
+        # return rule id for timeout list
+        try:
+            print(json.dumps({
+                "version": 1,
+                "origin": {
+                    "name": sys.argv[0],
+                    "module":"active-response"
+                },
+                "command": "check_keys",
+                "parameters":{
+                    "keys": [event['parameters']['alert']['rule']['id']]
+                }
+            }))
+            sys.stdout.flush()
+        except KeyError:
+            pass
+        # When attached to stdin we're likely running inside the agent, in which case we will read a second event which
+        # may abort the first one.
+        if params.input == '/dev/stdin':
+            timeout_event = None
+            try:
+                timeout_event=json.loads(read_data(params.input))
+            except ValueError:
+                pass
+            if timeout_event:
+                send_log('Received : %s' % json.dumps(timeout_event))
+                if timeout_event.get('command') == 'abort':
+                    send_log('Aborted')
+                    return 0
+                elif timeout_event.get('command') != 'continue':
+                    send_log('Invalid command')
+                    return -1
+        # add to table and kill active sessions for this ip as well
+        subprocess.run(['/sbin/pfctl', '-t', '__wazuh_agent_drop', '-T', 'add', srcip], capture_output=True)
+        subprocess.run(['/sbin/pfctl', '-k', srcip], capture_output=True)
+    elif command == 'delete':
+        subprocess.run(['/sbin/pfctl', '-t', '__wazuh_agent_drop', '-T', 'delete', srcip], capture_output=True)
+
+    send_log('Active response executed (%s %s)' % (command, srcip))
+
+    return 0
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-input', help='read message from', default='/dev/stdin')
+    sys.exit(main(parser.parse_args()))

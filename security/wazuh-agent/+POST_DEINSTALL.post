@@ -1,0 +1,1 @@
+rm /var/ossec/active-response/bin/opnsense-fw

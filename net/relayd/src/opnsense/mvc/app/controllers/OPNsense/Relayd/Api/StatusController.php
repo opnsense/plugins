@@ -47,13 +47,13 @@ class StatusController extends ApiControllerBase
      */
     public function sumAction($wait = 0)
     {
-        $result = array("result" => "failed");
+        $result = ["result" => "failed"];
         $backend = new Backend();
         $relaydMdl = new Relayd();
 
         // when $wait is set, try for max 10 seconds to receive a sensible status (wait for unknowns to resolve)
         $max_tries = !empty($wait) ? 10 : 1;
-        $output = array();
+        $output = [];
         for ($i = 0; $i < $max_tries; $i++) {
             $output = explode("\n", trim($backend->configdRun('relayd summary')));
             $unknowns = 0;
@@ -75,8 +75,8 @@ class StatusController extends ApiControllerBase
         $virtualServerId = 0;
         $virtualServerType = '';
         $tableId = 0;
-        $virtualserver = array();
-        $rows = array();
+        $virtualserver = [];
+        $rows = [];
         foreach ($output as $line) {
             $words = array_map('trim', explode("\t", $line));
             $id = $words[0];
@@ -138,7 +138,7 @@ class StatusController extends ApiControllerBase
                 $virtualserver['id'] = $id;
                 $virtualserver['type'] = $type;
                 $virtualserver['name'] = $words[2];
-                $virtualserver['status'] = $words[4];
+                $virtualserver['status'] = $words[4] ?? null;
                 $objs = $relaydMdl->getObjectsByAttribute("virtualserver", "name", $virtualserver['name']);
                 if (count($objs) > 0) {
                     $obj = $objs[0];
@@ -200,7 +200,7 @@ class StatusController extends ApiControllerBase
      */
     public function toggleAction($nodeType = null, $id = null, $action = null)
     {
-        $result = array("result" => "failed", "function" => "toggle");
+        $result = ["result" => "failed", "function" => "toggle"];
         if ($this->request->isPost()) {
             $this->sessionClose();
             $backend = new Backend();

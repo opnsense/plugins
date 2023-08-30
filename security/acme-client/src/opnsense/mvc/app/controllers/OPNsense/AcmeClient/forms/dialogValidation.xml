@@ -368,6 +368,21 @@
         <help>Note that this is the account token not the user token.</help>
     </field>
     <field>
+        <label>DNS.Services</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsservices</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsservices_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Domain-Offensive LetsEncrypt</label>
         <type>header</type>
         <style>table_dns table_dns_doapi</style>
@@ -542,6 +557,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>Google Domains</label>
+        <type>header</type>
+        <style>table_dns table_dns_googledomains</style>
+    </field>
+    <field>
+        <id>validation.dns_googledomains_access_token</id>
+        <label>Access Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_googledomains_zone</id>
+        <label>Zone</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>hosting.de</label>
         <type>header</type>
         <style>table_dns table_dns_hostingde</style>
@@ -616,6 +646,16 @@
     <field>
         <id>validation.dns_ionos_secret</id>
         <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>IPv64.net API</label>
+        <type>header</type>
+        <style>table_dns table_dns_ipv64</style>
+    </field>
+    <field>
+        <id>validation.dns_ipv64_token</id>
+        <label>IPv64.net API Token</label>
         <type>password</type>
     </field>
     <field>
@@ -1555,5 +1595,20 @@
         <label>cPanel Hostname</label>
         <type>text</type>
         <help>EX: https://hostname:2083</help>
+    </field>
+    <field>
+        <label>regru</label>
+        <type>header</type>
+        <style>table_dns table_dns_regru</style>
+    </field>
+    <field>
+        <id>validation.dns_regru_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_regru_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
 </form>

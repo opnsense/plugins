@@ -217,6 +217,10 @@
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Priority must be between 0 and 4294967295.</ValidationMessage>
                         </priority>
+			<bfd type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </bfd>
                         <networktype type="OptionField">
                                 <Required>N</Required>
                                 <multiple>N</multiple>

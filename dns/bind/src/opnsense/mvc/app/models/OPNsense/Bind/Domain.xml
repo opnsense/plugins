@@ -13,8 +13,8 @@
                     <default>primary</default>
                     <Required>Y</Required>
                     <OptionValues>
-                        <primary>Primary</primary>
-                        <secondary>Secondary</secondary>
+                        <primary>primary</primary>
+                        <secondary>secondary</secondary>
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
