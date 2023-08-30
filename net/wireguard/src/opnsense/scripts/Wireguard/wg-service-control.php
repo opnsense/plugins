@@ -82,7 +82,7 @@ function wg_start($server, $fhandle)
         }
         foreach ($routes_to_add as $ipproto => $routes) {
             foreach (array_unique($routes) as $route) {
-                mwexecf('/sbin/route -q -n add -%s %s -interface %s', [$ipproto,  $route, $server->interface]);
+                mwexecf('/sbin/route -q -n add %s %s -interface %s', [$ipproto,  $route, $server->interface]);
             }
         }
     } elseif (!empty((string)$server->gateway)) {
