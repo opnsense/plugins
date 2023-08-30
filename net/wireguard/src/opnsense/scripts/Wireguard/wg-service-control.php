@@ -152,7 +152,12 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         wg_start($node, $statHandle);
                         break;
                     case 'reload':
-                        wg_syncconf($node);
+                        if (
+                            @md5_file($node->cnfFilename) != @file_get_contents($node->statFilename) &&
+                            does_interface_exist((string)$node->interface)
+                        ) {
+                            wg_syncconf($node);
+                        }
                         break;
                     case 'configure':
                         if (
