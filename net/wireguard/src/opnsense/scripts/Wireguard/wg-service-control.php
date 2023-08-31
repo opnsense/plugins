@@ -94,7 +94,7 @@ function wg_start($server, $fhandle)
     // flush checksum to ease change detection
     fseek($fhandle, 0);
     ftruncate($fhandle, 0);
-    fwrite($fhandle, @md5_file($server->cnfFilename));
+    fwrite($fhandle, @md5_file($server->cnfFilename) . "|". wg_reconfigure_hash($server));
     syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) started");
 }
 
@@ -109,6 +109,43 @@ function wg_stop($server)
     syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) stopped");
 }
 
+
+/**
+ * Calculate a hash which determines if we are able to reconfigure without a restart of the tunnel.
+ * We currently assume if something changed on the interface or peer routes are being pushed, it's safer to
+ * restart then reload.
+ */
+function wg_reconfigure_hash($server)
+{
+    if (empty((string)$server->disableroutes)) {
+        return md5(uniqid('', true));   // random hash, should always reconfigure
+    }
+    return md5(
+        sprintf(
+            '%s|%s|%s',
+            $server->tunneladdress,
+            $server->mtu,
+            $server->gateway
+        )
+    );
+}
+
+/**
+ * The stat hash file answers two questions, [1] has anything changed, which is answered using an md5 hash of the
+ * configuration file. The second question, if something has changed, is it safe to only reload the configuration.
+ * This is answered by wg_reconfigure_hash() for the instance in question.
+ */
+function get_stat_hash($fhandle)
+{
+    fseek($fhandle, 0);
+    $payload = stream_get_contents($fhandle) ?? '';
+    $parts = explode('|', $payload);
+    return [
+        'file' => $parts[0] ?? '',
+        'interface' => $parts[1] ?? ''
+    ];
+
+}
 
 $opts = getopt('ah', [], $optind);
 $args = array_slice($argv, $optind);
@@ -148,10 +185,18 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         break;
                     case 'configure':
                         if (
-                            @md5_file($node->cnfFilename) != @file_get_contents($node->statFilename) ||
+                            @md5_file($node->cnfFilename) != get_stat_hash($statHandle)['file'] ||
                             !does_interface_exist((string)$node->interface)
                         ) {
-                            wg_stop($node);
+                            if (get_stat_hash($statHandle)['interface'] != wg_reconfigure_hash($node)) {
+                                // Fluent reloading not supported for this instance, make sure the user is informed
+                                syslog(
+                                    LOG_NOTICE,
+                                    "Wireguard interface {$node->name} ({$node->interface}) ".
+                                    "can not reconfigure without stopping it first."
+                                );
+                                wg_stop($node);
+                            }
                             wg_start($node, $statHandle);
                         }
                         break;
