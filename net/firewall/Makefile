@@ -1,5 +1,5 @@
 PLUGIN_NAME=		firewall
-PLUGIN_VERSION=		1.3
+PLUGIN_VERSION=		1.4
 PLUGIN_COMMENT=		Firewall API supplemental package
 PLUGIN_MAINTAINER=	ad@opnsense.org
 PLUGIN_TIER=		2

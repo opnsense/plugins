@@ -1,5 +1,5 @@
 {#
- # OPNsense (c) 2014-2018 by Deciso B.V.
+ # OPNsense (c) 2014-2023 by Deciso B.V.
  # OPNsense (c) 2018 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
  #
@@ -25,23 +25,72 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
+ <script>
+    $( document ).ready(function() {
+        var data_get_map = {'frm_general_settings':"/api/wireguard/general/get"};
+        mapDataToFormUI(data_get_map).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        $("#grid-clients").UIBootgrid(
+            {
+                'search':'/api/wireguard/client/searchClient',
+                'get':'/api/wireguard/client/getClient/',
+                'set':'/api/wireguard/client/setClient/',
+                'add':'/api/wireguard/client/addClient/',
+                'del':'/api/wireguard/client/delClient/',
+                'toggle':'/api/wireguard/client/toggleClient/'
+            }
+        );
+
+        $("#grid-servers").UIBootgrid(
+            {
+                'search':'/api/wireguard/server/searchServer',
+                'get':'/api/wireguard/server/getServer/',
+                'set':'/api/wireguard/server/setServer/',
+                'add':'/api/wireguard/server/addServer/',
+                'del':'/api/wireguard/server/delServer/',
+                'toggle':'/api/wireguard/server/toggleServer/'
+            }
+        );
+
+
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/wireguard/general/set", 'frm_general_settings', function(){
+                    dfObj.resolve();
+                });
+                return dfObj;
+            }
+        });
+
+        /**
+         * Move keypair generation button inside the server form and hook api event
+         */
+        $("#control_label_server\\.pubkey").append($("#keygen_div").detach().show());
+        $("#keygen").click(function(){
+            ajaxGet("/api/wireguard/server/key_pair", {}, function(data, status){
+                if (data.status && data.status === 'ok') {
+                    $("#server\\.pubkey").val(data.pubkey);
+                    $("#server\\.privkey").val(data.privkey);
+                }
+            });
+        })
+    });
+</script>
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#servers">{{ lang._('Local') }}</a></li>
     <li><a data-toggle="tab" href="#clients">{{ lang._('Endpoints') }}</a></li>
-    <li><a data-toggle="tab" href="#showconf">{{ lang._('Status') }}</a></li>
-    <li><a data-toggle="tab" href="#showhandshake">{{ lang._('Handshakes') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-            <div class="col-md-12">
-                <hr />
-                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_progress"></i></button>
-            </div>
         </div>
     </div>
     <div id="clients" class="tab-pane fade in">
@@ -68,13 +117,13 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr />
-            <button class="btn btn-primary" id="saveAct_client" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_client_progress"></i></button>
-            <br /><br />
-        </div>
     </div>
     <div id="servers" class="tab-pane fade in">
+        <span id="keygen_div" style="display:none" class="pull-right">
+            <button id="keygen" type="button" class="btn btn-secondary" title="{{ lang._('Generate new keypair.') }}" data-toggle="tooltip">
+              <i class="fa fa-fw fa-gear"></i>
+            </button>
+        </span>
         <table id="grid-servers" class="table table-responsive" data-editDialog="dialogEditWireguardServer">
             <thead>
                 <tr>
@@ -99,101 +148,23 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr />
-            <button class="btn btn-primary" id="saveAct_server" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_server_progress"></i></button>
-            <br /><br />
-        </div>
-    </div>
-    <div id="showconf" class="tab-pane fade in">
-      <pre id="listshowconf"></pre>
-    </div>
-    <div id="showhandshake" class="tab-pane fade in">
-      <pre id="listshowhandshake"></pre>
     </div>
 </div>
 
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint='/api/wireguard/service/reconfigure'
+                    data-label="{{ lang._('Apply') }}"
+                    data-error-title="{{ lang._('Error reconfiguring Wireguard') }}"
+                    type="button"
+            ></button>
+            <br/><br/>
+        </div>
+    </div>
+</section>
+
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardClient,'id':'dialogEditWireguardClient','label':lang._('Edit Endpoint')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditWireguardServer,'id':'dialogEditWireguardServer','label':lang._('Edit Local Configuration')])}}
-
-<script>
-
-// Put API call into a function, needed for auto-refresh
-function update_showconf() {
-    ajaxCall(url="/api/wireguard/service/showconf", sendData={}, callback=function(data,status) {
-        $("#listshowconf").text(data['response']);
-    });
-}
-
-function update_showhandshake() {
-    ajaxCall(url="/api/wireguard/service/showhandshake", sendData={}, callback=function(data,status) {
-        $("#listshowhandshake").text(data['response']);
-    });
-}
-
-$( document ).ready(function() {
-    var data_get_map = {'frm_general_settings':"/api/wireguard/general/get"};
-    mapDataToFormUI(data_get_map).done(function(data){
-        formatTokenizersUI();
-        $('.selectpicker').selectpicker('refresh');
-    });
-
-    $("#grid-clients").UIBootgrid(
-        {
-            'search':'/api/wireguard/client/searchClient',
-            'get':'/api/wireguard/client/getClient/',
-            'set':'/api/wireguard/client/setClient/',
-            'add':'/api/wireguard/client/addClient/',
-            'del':'/api/wireguard/client/delClient/',
-            'toggle':'/api/wireguard/client/toggleClient/'
-        }
-    );
-
-    $("#grid-servers").UIBootgrid(
-        {
-            'search':'/api/wireguard/server/searchServer',
-            'get':'/api/wireguard/server/getServer/',
-            'set':'/api/wireguard/server/setServer/',
-            'add':'/api/wireguard/server/addServer/',
-            'del':'/api/wireguard/server/delServer/',
-            'toggle':'/api/wireguard/server/toggleServer/'
-        }
-    );
-
-    // Call update funcs once when page loaded
-    update_showconf();
-    update_showhandshake();
-
-    // Call function update_neighbor with a auto-refresh of 5 seconds
-    setInterval(update_showconf, 5000);
-    setInterval(update_showhandshake, 5000);
-
-    $("#saveAct").click(function(){
-        saveFormToEndpoint(url="/api/wireguard/general/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-            });
-        });
-    });
-
-    $("#saveAct_client").click(function(){
-        saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_client_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                $("#saveAct_client_progress").removeClass("fa fa-spinner fa-pulse");
-            });
-        });
-    });
-
-    $("#saveAct_server").click(function(){
-        saveFormToEndpoint(url="/api/wireguard/server/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_server_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/wireguard/service/reconfigure", sendData={}, callback=function(data,status) {
-                $("#saveAct_server_progress").removeClass("fa fa-spinner fa-pulse");
-            });
-        });
-    });
-
-});
-</script>
