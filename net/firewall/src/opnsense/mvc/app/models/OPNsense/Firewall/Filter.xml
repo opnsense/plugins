@@ -9,7 +9,7 @@
         <rules>
             <rule type=".\FilterRuleField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <sequence type="IntegerField">
@@ -17,11 +17,11 @@
                     <MaximumValue>99999</MaximumValue>
                     <ValidationMessage>provide a valid sequence for sorting</ValidationMessage>
                     <Required>Y</Required>
-                    <default>1</default>
+                    <Default>1</Default>
                 </sequence>
                 <action type="OptionField">
                     <Required>Y</Required>
-                    <default>pass</default>
+                    <Default>pass</Default>
                     <OptionValues>
                         <pass>Pass</pass>
                         <block>Block</block>
@@ -29,18 +29,17 @@
                     </OptionValues>
                 </action>
                 <quick type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </quick>
                 <interface type="InterfaceField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
-                    <default>lan</default>
+                    <Multiple>Y</Multiple>
                     <AllowDynamic>Y</AllowDynamic>
                 </interface>
                 <direction type="OptionField">
                     <Required>Y</Required>
-                    <default>in</default>
+                    <Default>in</Default>
                     <OptionValues>
                         <in>In</in>
                         <out>Out</out>
@@ -48,7 +47,7 @@
                 </direction>
                 <ipprotocol type="OptionField">
                     <Required>Y</Required>
-                    <default>inet</default>
+                    <Default>inet</Default>
                     <OptionValues>
                         <inet>IPv4</inet>
                         <inet6>IPv6</inet6>
@@ -56,15 +55,15 @@
                 </ipprotocol>
                 <protocol type="ProtocolField">
                     <Required>Y</Required>
-                    <default>any</default>
+                    <Default>any</Default>
                 </protocol>
                 <!-- XXX: should map internally to  'source' => array('network' => $source_net, "not" => true|false) -->
                 <source_net type="NetworkAliasField">
-                    <default>any</default>
+                    <Default>any</Default>
                     <Required>Y</Required>
                 </source_net>
                 <source_not type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </source_not>
                 <source_port type="PortField">
@@ -76,11 +75,11 @@
                 </source_port>
                 <!-- XXX: should map internally to  'source' => array('destination' => destination_net, "not" => true|false) -->
                 <destination_net type="NetworkAliasField">
-                    <default>any</default>
+                    <Default>any</Default>
                     <Required>Y</Required>
                 </destination_net>
                 <destination_not type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </destination_not>
                 <destination_port type="PortField">
@@ -98,7 +97,7 @@
                     <ValidationMessage>Specify a valid gateway from the list matching the networks ip protocol.</ValidationMessage>
                 </gateway>
                 <log type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </log>
                 <description type="TextField">
@@ -111,11 +110,11 @@
         <snatrules>
             <rule type=".\SourceNatRuleField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <nonat type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </nonat>
                 <sequence type="IntegerField">
@@ -123,16 +122,16 @@
                     <MaximumValue>99999</MaximumValue>
                     <ValidationMessage>provide a valid sequence for sorting</ValidationMessage>
                     <Required>Y</Required>
-                    <default>1</default>
+                    <Default>1</Default>
                 </sequence>
                 <interface type="InterfaceField">
                     <Required>Y</Required>
-                    <default>lan</default>
+                    <Default>lan</Default>
                     <AllowDynamic>Y</AllowDynamic>
                 </interface>
                 <ipprotocol type="OptionField">
                     <Required>Y</Required>
-                    <default>inet</default>
+                    <Default>inet</Default>
                     <OptionValues>
                         <inet>IPv4</inet>
                         <inet6>IPv6</inet6>
@@ -140,14 +139,14 @@
                 </ipprotocol>
                 <protocol type="ProtocolField">
                     <Required>Y</Required>
-                    <default>any</default>
+                    <Default>any</Default>
                 </protocol>
                 <source_net type="NetworkAliasField">
-                    <default>any</default>
+                    <Default>any</Default>
                     <Required>Y</Required>
                 </source_net>
                 <source_not type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </source_not>
                 <source_port type="PortField">
@@ -158,11 +157,11 @@
                     <ValidationMessage>Please specify a valid portnumber, name, alias or range</ValidationMessage>
                 </source_port>
                 <destination_net type="NetworkAliasField">
-                    <default>any</default>
+                    <Default>any</Default>
                     <Required>Y</Required>
                 </destination_net>
                 <destination_not type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </destination_not>
                 <destination_port type="PortField">
@@ -173,7 +172,7 @@
                     <ValidationMessage>Please specify a valid portnumber, name, alias or range</ValidationMessage>
                 </destination_port>
                 <target type="NetworkAliasField">
-                    <default>wanip</default>
+                    <Default>wanip</Default>
                     <Required>Y</Required>
                 </target>
                 <target_port type="PortField">
@@ -182,7 +181,7 @@
                     <EnableRanges>Y</EnableRanges>
                 </target_port>
                 <log type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </log>
                 <description type="TextField">
