@@ -7,26 +7,26 @@
     <items>
         <general>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
             <verbose type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </verbose>
             <allowipv6 type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </allowipv6>
             <daemon_delay type="IntegerField">
-                <default>300</default>
+                <Default>300</Default>
                 <Required>Y</Required>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
             </daemon_delay>
             <backend type="OptionField">
                 <Required>Y</Required>
-                <default>ddclient</default>
+                <Default>ddclient</Default>
                 <ValidationMessage>A backend is required.</ValidationMessage>
                 <OptionValues>
                     <ddclient>ddclient</ddclient>
@@ -37,7 +37,7 @@
         <accounts>
             <account type=".\AccountField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <service type=".\ServiceField">
@@ -125,7 +125,7 @@
                     <FieldSeparator>,</FieldSeparator>
                 </hostnames>
                 <wildcard type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </wildcard>
                 <zone type="HostnameField">
@@ -134,7 +134,7 @@
                 </zone>
                 <checkip type=".\CheckipField">
                     <Required>Y</Required>
-                    <default>web_dyndns</default>
+                    <Default>web_dyndns</Default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
                     <OptionValues>
                         <web_dyndns>dyndns</web_dyndns>
@@ -162,24 +162,23 @@
                     </Constraints>
                 </checkip>
                 <checkip_timeout type="IntegerField">
-                    <default>10</default>
+                    <Default>10</Default>
                     <Required>Y</Required>
                     <MinimumValue>10</MinimumValue>
                     <MaximumValue>60</MaximumValue>
                 </checkip_timeout>
                 <force_ssl type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </force_ssl>
                 <ttl type="IntegerField">
-                    <default>300</default>
+                    <Default>300</Default>
                     <Required>Y</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>604800</MaximumValue>
                 </ttl>
                 <interface type="InterfaceField">
                     <Required>N</Required>
-                    <multiple>N</multiple>
                     <Constraints>
                         <check001>
                             <ValidationMessage>An interface is required for the selected check method</ValidationMessage>
