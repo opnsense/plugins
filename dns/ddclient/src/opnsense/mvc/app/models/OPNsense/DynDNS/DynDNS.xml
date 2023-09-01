@@ -93,8 +93,8 @@
                     <Required>N</Required>
                     <ValidationMessage>A protocol type is required.</ValidationMessage>
                     <OptionValues>
-                        <dyndns1>DynDns1</dyndns1>
-                        <dyndns2>DynDns2</dyndns2>
+                        <dyndns1>DynDNS 1</dyndns1>
+                        <dyndns2>DynDNS 2</dyndns2>
                         <get>Custom GET</get>
                         <post>Custom POST</post>
                         <put>Custom PUT</put>
