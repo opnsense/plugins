@@ -194,7 +194,6 @@
          </listen_endport>
          <listen_interface type="InterfaceField">
             <Required>N</Required>
-            <Multiple>N</Multiple>
             <filters>
                <enable>/^(?!0).*$/</enable>
                <ipaddr>/^((?!dhcp).)*$/</ipaddr>
@@ -210,7 +209,6 @@
          </transport_type>
          <routing_interface type="InterfaceField">
             <Required>N</Required>
-            <Multiple>N</Multiple>
             <filters>
                <enable>/^(?!0).*$/</enable>
                <ipaddr>/^((?!dhcp).)*$/</ipaddr>
@@ -225,7 +223,6 @@
                </template>
             </Model>
             <ValidationMessage>Table not found</ValidationMessage>
-            <Multiple>N</Multiple>
             <Required>Y</Required>
          </transport_table>
          <transport_port type="PortField">
@@ -264,7 +261,6 @@
                </template>
             </Model>
             <ValidationMessage>Table check not found</ValidationMessage>
-            <Multiple>N</Multiple>
             <Required>Y</Required>
          </transport_tablecheck>
          <backuptransport_table type="ModelRelationField">
@@ -276,7 +272,6 @@
                </template>
             </Model>
             <ValidationMessage>Table not found</ValidationMessage>
-            <Multiple>N</Multiple>
             <Required>N</Required>
          </backuptransport_table>
          <backuptransport_interval type="IntegerField">
@@ -298,7 +293,6 @@
                </template>
             </Model>
             <ValidationMessage>Table check not found</ValidationMessage>
-            <Multiple>N</Multiple>
             <Required>N</Required>
             <Constraints>
                 <check001>
@@ -337,7 +331,6 @@
                </template>
             </Model>
             <ValidationMessage>Protocol not found</ValidationMessage>
-            <Multiple>N</Multiple>
             <Required>N</Required>
          </protocol>
       </virtualserver>
