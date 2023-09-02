@@ -49,5 +49,8 @@
         </user>
         <password type="TextField">
         </password>
+        <encryption_password type="TextField">
+          <Required>N</Required>
+        </encryption_password>
     </items>
 </model>

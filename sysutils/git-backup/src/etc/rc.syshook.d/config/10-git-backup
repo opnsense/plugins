@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
 """
+    Copyright (c) 2023 Thomas Rogdakis <thomas@rogdakis.com>
     Copyright (c) 2020 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
     Redistribution and use in source and binary forms, with or without
@@ -25,9 +26,12 @@ import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+import syslog
 
 
 if len(sys.argv) > 1:
+    syslog.openlog('git-backup', facility=syslog.LOG_LOCAL4)
+
     commit_msg =  "unknown change"
     try:
         tree = ET.parse(sys.argv[1])
@@ -70,6 +74,11 @@ if len(sys.argv) > 1:
         # snapshot provided config.xml into git staging and commit with extracted data
         os.chdir('/conf/backup/git/')
         subprocess.run(['cp', sys.argv[1], '/conf/backup/git/config.xml'])
+        # encrypt before staging the file
+        encrypt_result = subprocess.run(['/usr/local/bin/php', '/usr/local/opnsense/scripts/OPNsense/GitBackup/EncryptConfig.php'])
+        if encrypt_result.returncode != 0:
+             syslog.syslog(syslog.LOG_ERR, f'EncryptConfig script returned unexpected code: {encrypt_result.returncode}')
+             os.exit(1)
         subprocess.run(['/usr/local/bin/git', 'add', 'config.xml'])
         message = "%s @ %s (%s)" % (metadata['./revision/description'], revdate, metadata['./revision/username'])
         subprocess.run(['/usr/local/bin/git', 'commit', '--author', "%s<%s>" % (fullname, user_email), '-m', message])

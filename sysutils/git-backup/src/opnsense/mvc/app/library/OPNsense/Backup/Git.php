@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *    Copyright (C) 2023 Thomas Rogdakis <thomas@rogdakis.com>
  *    Copyright (C) 2020 Deciso B.V.
  *
  *    All rights reserved.
@@ -84,6 +85,16 @@ class Git extends Base implements IBackupProvider
              "type" => "password",
              "label" => gettext("Password"),
              "value" => null
+           ],
+           [
+             "name" => "encryption_password",
+             "type" => "password",
+             "label" => gettext("Encryption Password"),
+             "value" => null,
+             'help' => gettext(
+                "When provided, the config will be encrypted before pushing it to Git.<br/>" .
+                "Disclaimer: When encryption is enabled, git diff will not be possible."
+             )
            ]
         ];
         $mdl = new GitSettings();
