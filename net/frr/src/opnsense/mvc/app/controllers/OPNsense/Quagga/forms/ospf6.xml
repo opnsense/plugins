@@ -28,4 +28,25 @@
         <type>text</type>
         <help>Router ID as IPv4 Address</help>
     </field>
+    <field>
+        <id>ospf6.originate</id>
+        <label>Advertise Default Gateway</label>
+        <type>checkbox</type>
+        <help>This will send the information that we have a default gateway.</help>
+        <style>opt_checkbox</style>
+    </field>
+    <field>
+        <id>ospf6.originatealways</id>
+        <label>Always Advertise Default Gateway</label>
+        <type>checkbox</type>
+        <help>This will send the information that we have a default gateway, regardless of if it is available.</help>
+        <style>ospf6_originate</style>
+    </field>
+    <field>
+        <id>ospf6.originatemetric</id>
+        <label>Advertise Default Gateway Metric</label>
+        <type>text</type>
+        <help>This let you manipulate the metric when advertising default gateway.</help>
+        <style>ospf6_originate</style>
+    </field>
 </form>

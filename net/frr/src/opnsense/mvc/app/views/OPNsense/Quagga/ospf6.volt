@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2023 by Deciso B.V.
 This file is Copyright © 2017 by Fabian Franz
 This file is Copyright © 2017 by Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
@@ -64,7 +64,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     <td colspan="5"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
                         <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
                     </td>
                 </tr>
@@ -76,10 +75,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
 
-function quagga_update_status() {
-  updateServiceControlUI('quagga');
-}
-
 $( document ).ready(function() {
   var data_get_map = {'frm_ospf6_settings':"/api/quagga/ospf6settings/get"};
   mapDataToFormUI(data_get_map).done(function(data){
@@ -87,14 +82,14 @@ $( document ).ready(function() {
       $('.selectpicker').selectpicker('refresh');
   });
 
-  quagga_update_status();
+  updateServiceControlUI('quagga');
 
   // link save button to API set action
   $("#saveAct").click(function(){
       saveFormToEndpoint(url="/api/quagga/ospf6settings/set",formid='frm_ospf6_settings',callback_ok=function(){
         $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
         ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          quagga_update_status();
+          updateServiceControlUI('quagga');
           $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
         });
       });
@@ -104,7 +99,7 @@ $( document ).ready(function() {
   $('.reload_btn').click(function reload_handler() {
     $(".reloadAct_progress").addClass("fa-spin");
     ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-      quagga_update_status();
+      updateServiceControlUI('quagga');
       $(".reloadAct_progress").removeClass("fa-spin");
     });
   });
@@ -119,6 +114,15 @@ $( document ).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
+
+  // hook checkbox item with conditional options
+  $(".opt_checkbox").change(function(){
+      if ($(this).is(':checked')) {
+          $("." + $(this).attr('id').replace('.', '_')).closest('tr').show();
+      } else {
+          $("." + $(this).attr('id').replace('.', '_')).closest('tr').hide();
+      }
+  });
 });
 </script>
 
