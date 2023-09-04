@@ -70,9 +70,5 @@
             <Default>0</Default>
             <Required>N</Required>
         </skip_ssl_verify>
-        <push_every_revision type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </push_every_revision>
     </items>
 </model>
