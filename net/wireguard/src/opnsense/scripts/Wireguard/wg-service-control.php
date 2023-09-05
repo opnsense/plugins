@@ -94,7 +94,7 @@ function wg_start($server, $fhandle)
     // flush checksum to ease change detection
     fseek($fhandle, 0);
     ftruncate($fhandle, 0);
-    fwrite($fhandle, @md5_file($server->cnfFilename) . "|". wg_reconfigure_hash($server));
+    fwrite($fhandle, @md5_file($server->cnfFilename) . "|" . wg_reconfigure_hash($server));
     syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) started");
 }
 
@@ -144,7 +144,6 @@ function get_stat_hash($fhandle)
         'file' => $parts[0] ?? '',
         'interface' => $parts[1] ?? ''
     ];
-
 }
 
 $opts = getopt('ah', [], $optind);
@@ -192,7 +191,7 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                                 // Fluent reloading not supported for this instance, make sure the user is informed
                                 syslog(
                                     LOG_NOTICE,
-                                    "Wireguard interface {$node->name} ({$node->interface}) ".
+                                    "Wireguard interface {$node->name} ({$node->interface}) " .
                                     "can not reconfigure without stopping it first."
                                 );
                                 wg_stop($node);
