@@ -1,6 +1,8 @@
 import LogLine from '../templates/LogLine.html';
+import LogColumn from '../templates/LogColumn.html';
 import logViewer from '../templates/logviewer.html';
 import LogLinesCollection from "../models/LogLinesCollection";
+import LogColumnModel from "../models/LogColumn";
 import noDataAvailable from '../templates/noDataAvailable.html';
 
 const LogViewLine = Backbone.View.extend({
@@ -13,6 +15,18 @@ const LogViewLine = Backbone.View.extend({
     render: function () {
         this.$el.html(LogLine({log_fields_visible: this.log_fields_visible, model: this.model}));
     },
+});
+
+const LogViewColumns = Backbone.View.extend({
+    tagName: 'tr',
+    className: 'filter',
+    initialize: function (data) {
+        this.log_fields_visible = data.log_fields_visible;
+    },
+
+    render: function() {
+        this.log_fields_visible.forEach((field) => this.$el.append(LogColumn({field: field, model: this.model})));
+    }
 });
 
 const LogView = Backbone.View.extend({
@@ -94,6 +108,12 @@ const LogView = Backbone.View.extend({
         else {
             tbody.html('');
         }
+
+        // create/update column headers
+        let thead = this.$('thead');
+        const logColumns = new LogViewColumns({log_fields_visible: this.logFieldsVisible, model: new LogColumnModel()});
+        logColumns.render();
+        thead.html(logColumns.$el);
 
         if (this.collection.length !== 0) {
             if (this.current_filtered_collection == null) {
@@ -200,8 +220,6 @@ const LogView = Backbone.View.extend({
         let field = $(event.currentTarget).find('input').prop('value');
         // toggle visibility
         localStorage.setItem('visibleColumns[' + type + '][' + uid + '][' + field + ']', !_.find(this.logFields, { 'id': field }).visible);
-        // reset table as we need new th
-        this.$('table').html('');
         this.update();
     }
 });
