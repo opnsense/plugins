@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *    Copyright (C) 2023 Deciso B.V.
  *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  *
  *    All rights reserved.
@@ -39,12 +40,14 @@ class ClientController extends ApiMutableModelControllerBase
 
     public function searchClientAction()
     {
-        return $this->searchBase('clients.client', array("enabled", "name", "pubkey", "tunneladdress", "serveraddress", "serverport"));
+        return $this->searchBase(
+            'clients.client',
+            ["enabled", "name", "pubkey", "tunneladdress", "serveraddress", "serverport"]
+        );
     }
 
     public function getClientAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('client', 'clients.client', $uuid);
     }
 

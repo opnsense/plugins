@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2023 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -313,6 +313,32 @@ lint-xml:
 	@find ${.CURDIR}/src \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
 
+lint-model:
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
+	    -name "*.xml"); do \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and (not(Required) or Required="N") and Default]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} has a spurious default value set"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Default=""]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} has an empty default value set"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc="None"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description is the default"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Required="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description not applicable on required field"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Multiple="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description not applicable on multiple field"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Multiple="N"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} Multiple=N is the default"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and OptionValues[default[not(@value)] or multiple[not(@value)] or required[not(@value)]]]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} option element default/multiple/required without value attribute"; \
+		done; \
+	done; fi
+
 lint-exec: check
 .for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
 .if exists(${DIR})
@@ -337,7 +363,7 @@ lint-php: check
 	    -type f -print0 | xargs -0 -n1 php -l
 .endif
 
-lint: lint-desc lint-shell lint-xml lint-exec lint-php
+lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
 
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
@@ -385,6 +411,14 @@ style-python: check
 	@if [ -d ${.CURDIR}/src ]; then \
 		pycodestyle --ignore=E501 ${.CURDIR}/src || true; \
 	fi
+
+style-model:
+	@for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
+	    -name "*.xml"); do \
+		perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
+		perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
+		perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
+	done
 
 test: check
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \

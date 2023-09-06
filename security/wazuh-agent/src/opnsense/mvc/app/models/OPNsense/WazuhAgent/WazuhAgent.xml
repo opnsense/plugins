@@ -1,0 +1,93 @@
+<model>
+    <mount>//OPNsense/WazuhAgent</mount>
+    <version>1.0.0</version>
+    <description>
+        Wazuh Agent
+    </description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <server_address type="HostnameField">
+                <Required>Y</Required>
+                <IpAllowed>Y</IpAllowed>
+            </server_address>
+            <debug_level type="OptionField">
+                <default>0</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <val0 value="0">no debug</val0>
+                    <val1 value="1">first level of debug</val1>
+                    <val2 value="2">full debugging</val2>
+                </OptionValues>
+            </debug_level>
+        </general>
+        <auth>
+            <password type="TextField">
+            </password>
+        </auth>
+        <logcollector>
+            <remote_commands type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </remote_commands>
+            <syslog_programs type="JsonKeyValueStoreField">
+                <Required>N</Required>
+                <Multiple>Y</Multiple>
+                <default>filterlog,openvpn,unbound,audit,sshd</default>
+                <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
+                <SourceFile>/tmp/syslog_applications.json</SourceFile>
+                <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
+                <SortByValue>Y</SortByValue>
+                <ValidationMessage>Specify valid source applications.</ValidationMessage>
+            </syslog_programs>
+            <suricata_eve_log type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </suricata_eve_log>
+        </logcollector>
+        <rootcheck>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+        </rootcheck>
+        <syscollector>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+        </syscollector>
+        <syscheck>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+        </syscheck>
+        <active_response>
+            <enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </enabled>
+            <remote_commands type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </remote_commands>
+            <fw_alias_ignore type="ModelRelationField">
+                <Model>
+                    <alias>
+                        <source>OPNsense.Firewall.Alias</source>
+                        <items>aliases.alias</items>
+                        <display>name</display>
+                        <filters>
+                            <type>/[network|host]/</type>
+                        </filters>
+                    </alias>
+                </Model>
+                <Required>N</Required>
+            </fw_alias_ignore>
+        </active_response>
+    </items>
+</model>

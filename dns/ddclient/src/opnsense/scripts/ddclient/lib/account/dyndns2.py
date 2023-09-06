@@ -67,11 +67,12 @@ class DynDNS2(BaseAccount):
     def execute(self):
         if super().execute():
             protocol = self.settings.get('protocol', None)
-            if protocol == 'post':
+            if protocol in [ 'get', 'post', 'put' ]:
                 url = self.settings.get('server')
                 url = url.replace('__MYIP__', self.current_address)
                 url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
-                req = requests.post(
+                req = requests.request(
+                    method=protocol,
                     url=url,
                     headers={'User-Agent': 'OPNsense-dyndns'},
                     auth=HTTPBasicAuth(self.settings.get('username'), self.settings.get('password'))

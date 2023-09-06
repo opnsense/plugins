@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Deciso B.V.
+ * Copyright (C) 2020-2023 Deciso B.V.
  * Copyright (C) 2020 D. Domig
  * Copyright (C) 2022 Patrik Kernstock <patrik@kernstock.net>
  * All rights reserved.
@@ -27,94 +27,69 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-require_once("guiconfig.inc");
-require_once("widgets/include/wireguard.inc");
-
-$enabled = ($config["OPNsense"]["wireguard"]["general"]["enabled"] === "1" ? true : false);
-
 ?>
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed" id="wg-table">
     <thead>
         <tr>
-            <th><?= gettext("Name") ?></th>
             <th><?= gettext("Interface") ?></th>
             <th><?= gettext("Endpoint") ?></th>
             <th><?= gettext("Public Key") ?></th>
             <th><?= gettext("Latest Handshake") ?></th>
         </tr>
     </thead>
-    <tbody id="wg-table-tbody">
-
-    <?php if (!$enabled): ?>
-    <tr>
-        <td colspan="5"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
-    </tr>
-    <?php endif; ?>
-
+    <tbody>
     </tbody>
+    <tfoot style="display: none;">
+        <tr>
+            <td colspan="4"><?= gettext("No WireGuard instance defined or enabled.") ?></td>
+        </tr>
+    </tfoot>
 </table>
+
+<style>
+    .psk_td {
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+
 
 <script>
 $(window).on("load", function() {
-    function wgGenerateRow(name, interface, peerName, publicKey, latestHandshake, status)
-    {
-        var tr = ''
-        +'<tr>'
-        +'    <td>' + name + '</td>'
-        +'    <td>' + interface + '</td>'
-        +'    <td>' + peerName  + '</td>'
-        +'    <td style="overflow: hidden; text-overflow: ellipsis;" title="' + publicKey + '">' + publicKey  + '</td>'
-        +'    <td>' + latestHandshake + '</td>'
-        +'</tr>';
-
-        return tr;
-    }
-
-    function wgUpdateStatusIf(obj)
-    {
-        // check if at least one peer is set. If not, ignore it.
-        if (Object.keys(obj.peers).length == 0) {
-            return '';
-        }
-
-        // generate row based on data
-        row = '';
-        for (var peerId in obj.peers) {
-            var peer = obj.peers[peerId];
-
-            // generate table row
-            row += wgGenerateRow(
-                obj.name,
-                obj.interface,
-                peer.name,
-                peer.publicKey,
-                peer.lastHandshake,
-                status
-            );
-        }
-
-        return row;
-    }
-
     function wgUpdateStatus()
     {
-        var table = '';
-        ajaxGet("/api/wireguard/general/getStatus", {}, function(data, status) {
-            if (status === 'success') {
-                for (var interface in data.items) {
-                    table += wgUpdateStatusIf(data.items[interface]);
+        ajaxGet("/api/wireguard/service/show", {}, function(data, status) {
+            let $target = $("#wg-table > tbody").empty();
+            if (data.rows !== undefined && data.rows.length > 0) {
+                $("#wg-table > tfoot").hide();
+                for (let i=0; data.rows.length > i; ++i) {
+                    let row = data.rows[i];
+                    let $tr = $("<tr/>");
+                    let ifname = row.ifname ? row.if + ' (' + row.ifname + ') ' : row.if;
+                    $tr.append($("<td>").append(ifname));
+                    $tr.append($("<td>").append(row.name));
+                    $tr.append($("<td class='psk_td'>").append(row['public-key']));
+                    let latest_handhake = '';
+                    if (row['latest-handshake']) {
+                        latest_handhake = moment.unix(row['latest-handshake']).local().format('YYYY-MM-DD HH:mm:ss');
+                    }
+                    $tr.append($("<td>").append(latest_handhake));
+                    $target.append($tr);
                 }
+                $(".psk_td").each(function(){
+                    $(this).tooltip({title: $(this).text(), container: 'body', trigger: 'hover'});
+                });
+            } else{
+                $("#wg-table > tfoot").show();
             }
-            // update table accordingly
-            document.getElementById("wg-table-tbody").innerHTML = table;
             setTimeout(wgUpdateStatus, 10000);
         });
     };
-
-    <?php if ($enabled): ?>
     wgUpdateStatus();
-    <?php endif; ?>
 });
 </script>

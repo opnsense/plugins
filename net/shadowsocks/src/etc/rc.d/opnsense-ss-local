@@ -1,6 +1,5 @@
 #!/bin/sh
-# $FreeBSD$
-
+#
 # PROVIDE: ss-local
 # REQUIRE: LOGIN cleanvar
 # KEYWORD: shutdown
@@ -11,12 +10,10 @@
 # ss_local_config (path): Shadowsocks config file.
 #      Defaults to "/usr/local/etc/shadowsocks-libev/local.json"
 
-
 . /etc/rc.subr
 
 name="ss_local"
 rcvar=ss_local_enable
-
 
 load_rc_config $name
 

@@ -1,34 +1,33 @@
 {% from 'OPNsense/Macros/interface.macro' import physical_interface %}
 {
-  "general": {
-      "enabled": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.enabled') else "false" }},
-      "verbose": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.verbose') else "false" }},
-      "allowipv6": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.allowipv6') else "false" }},
-      "daemon_delay": {{OPNsense.DynDNS.general.daemon_delay|default('300')}}
-  },
-  "accounts": [
-{%  if helpers.exists('OPNsense.DynDNS.accounts.account') %}
-{%     for account in helpers.toList('OPNsense.DynDNS.accounts.account') %}
-{%         if account.enabled  == '1' %}
-      {
-          "id": "{{ account['@uuid'] }}",
-          "service": "{{ account.service }}",
-          "protocol": "{{ account.protocol }}",
-          "server": "{{ account.server }}",
-          "resourceId": "{{ account.resourceId }}",
-          "username": "{{ account.username }}",
-          "password": "{{ account.password }}",
-          "hostnames": "{{ account.hostnames }}",
-          "wildcard": {{ "true" if account.wildcard  == '1' else "false"}},
-          "zone": "{{ account.zone }}",
-          "checkip": "{{ account.checkip }}",
-          "checkip_timeout": {{ account.checkip_timeout }},
-          "force_ssl": {{ "true" if account.force_ssl  == '1' else "false"}},
-          "interface": "{%if account.interface %}{{physical_interface(account.interface)}}{% endif%}",
-          "description": "{{ account.description }}"
-      }{{ "," if not loop.last else ""}}
-{%         endif %}
-{%     endfor %}
-{%  endif %}
-  ]
+    "general": {
+        "enabled": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.enabled') else "false" }},
+        "verbose": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.verbose') else "false" }},
+        "allowipv6": {{ "true" if not helpers.empty('OPNsense.DynDNS.general.allowipv6') else "false" }},
+        "daemon_delay": {{OPNsense.DynDNS.general.daemon_delay|default('300')}}
+    },
+    "accounts": [
+{% if helpers.exists('OPNsense.DynDNS.accounts.account') %}
+{%   for account in helpers.toList('OPNsense.DynDNS.accounts.account') | selectattr('enabled', 'equalto', '1') %}
+        {
+            "id": "{{ account['@uuid'] }}",
+            "service": "{{ account.service }}",
+            "protocol": "{{ account.protocol }}",
+            "server": {{ account.server | default('') | tojson }},
+            "resourceId": {{ account.resourceId | default('') | tojson }},
+            "username": {{ account.username | default('') | tojson }},
+            "password": {{ account.password | default('') | tojson }},
+            "hostnames": "{{ account.hostnames }}",
+            "wildcard": {{ "true" if account.wildcard == '1' else "false"}},
+            "zone": "{{ account.zone }}",
+            "checkip": "{{ account.checkip }}",
+            "interface": "{% if account.interface %}{{physical_interface(account.interface)}}{% endif %}",
+            "checkip_timeout": {{ account.checkip_timeout }},
+            "force_ssl": {{ "true" if account.force_ssl == '1' else "false"}},
+            "ttl": "{{ account.ttl }}",
+            "description": {{ account.description | default('') | tojson }}
+        }{{ "," if not loop.last else ""}}
+{%   endfor %}
+{% endif %}
+    ]
 }

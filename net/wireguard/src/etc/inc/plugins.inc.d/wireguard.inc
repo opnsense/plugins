@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2023 Deciso B.V.
  * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
@@ -28,8 +29,7 @@
 
 function wireguard_enabled()
 {
-    $model = new \OPNsense\Wireguard\General();
-    return (string)$model->enabled == '1';
+    return (string)(new \OPNsense\Wireguard\General())->enabled == '1';
 }
 
 function wireguard_services()
@@ -40,24 +40,30 @@ function wireguard_services()
         return $services;
     }
 
-    $service = [
-        'description' => gettext('WireGuard VPN'),
-        'configd' => [
-            'restart' => ['wireguard restart'],
-            'start' => ['wireguard start'],
-            'stop' => ['wireguard stop'],
-        ],
-        'name' => 'wireguard-go',
-    ];
-
-    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
-        $service['name'] = 'wireguard';
-        $service['nocheck'] = true;
+    foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
+        if (!empty((string)$node->enabled)) {
+            $services[] = [
+                'description' => "Wireguard " . htmlspecialchars($node->name),
+                'configd' => [
+                    'start' => ["wireguard start {$key}"],
+                    'restart' => ["wireguard restart {$key}"],
+                    'stop' => ["wireguard stop {$key}"],
+                ],
+                'nocheck' => true, /* no daemon to check */
+                'id' => $key,
+                'name' => "wireguard"
+            ];
+        }
     }
 
-    $services[] = $service;
-
     return $services;
+}
+
+function wireguard_syslog()
+{
+    return [
+        'wireguard' => ['facility' => ['wireguard']]
+    ];
 }
 
 function wireguard_interfaces()
@@ -87,11 +93,7 @@ function wireguard_xmlrpc_sync()
     $result['id'] = 'wireguard';
     $result['section'] = 'OPNsense.wireguard';
     $result['description'] = gettext('WireGuard');
-    $result['services'] = ['wireguard-go'];
-
-    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
-        $result['services'] = ['wireguard'];
-    }
+    $result['services'] = ['wireguard'];
 
     return [$result];
 }
@@ -99,4 +101,38 @@ function wireguard_xmlrpc_sync()
 function wireguard_devices()
 {
     return [['pattern' => '^wg', 'volatile' => true]];
+}
+
+function wireguard_configure()
+{
+    return [
+        'newwanip' => ['wireguard_renew:2'],
+        'vpn' => ['wireguard_configure_do:2'],
+    ];
+}
+
+function wireguard_configure_do($verbose = false, $unused = '')
+{
+    if (!wireguard_enabled()) {
+        return;
+    }
+
+    service_log('Configuring WireGuard VPN...', $verbose);
+
+    configd_run('wireguard configure');
+
+    service_log("done.\n", $verbose);
+}
+
+function wireguard_renew($verbose = false, $unused = '')
+{
+    if (!wireguard_enabled()) {
+        return;
+    }
+
+    service_log('Renewing WireGuard VPN...', $verbose);
+
+    configd_run('wireguard renew');
+
+    service_log("done.\n", $verbose);
 }
