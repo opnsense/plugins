@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
-
 # PROVIDE: os-relayd
 # REQUIRE: NETWORKING syslogd
 # BEFORE:  DAEMON
