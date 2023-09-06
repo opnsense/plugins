@@ -99,12 +99,15 @@ def deploy(config_filename):
         # write subnet-up file
         for dir in ['bin', 'lib', 'libexec', 'sbin']:
             os.makedirs('%s/%s' % (network.get_basepath(), dir), exist_ok = True)
+        # copy known requirements in chroot 
         os.system('cp -f /bin/sh %s/bin' % network.get_basepath())
-        os.system('cp -f /lib/libc.so.7 %s/lib' % network.get_basepath())
-        os.system('cp -f /lib/libedit.so.8 %s/lib' % network.get_basepath())
-        os.system('cp -f /lib/libncursesw.so.9 %s/lib' % network.get_basepath())
-        os.system('cp -f /libexec/ld-elf.so.1 %s/libexec' % network.get_basepath())
         os.system('cp -f /sbin/route %s/sbin' % network.get_basepath())
+        os.system('cp -f /libexec/ld-elf.so.1 %s/libexec' % network.get_basepath())
+        # copy all needed dynamically linked libraries in chroot
+        lddcommand = "ldd -f '%p ' /bin/sh | sed 's/\[vdso\].*//'"
+        outproc = os.popen(lddcommand)
+        for lib in outproc.readline().split():
+            os.system('cp -f %s %s%s' % (lib, network.get_basepath(), os.path.dirname(lib)))
 
         sub_up = list()
         sub_up.append("#!/bin/sh")
