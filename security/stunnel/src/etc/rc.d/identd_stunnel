@@ -1,11 +1,8 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
 # PROVIDE: identd_stunnel
 # REQUIRE: SERVERS
 # KEYWORD: shutdown
-#
 
 . /etc/rc.subr
 
