@@ -7,22 +7,22 @@
     <items>
         <general>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
             <chroot type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </chroot>
             <enable_ident_server type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </enable_ident_server>
         </general>
         <services>
             <service type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <accept_port type="IntegerField">
@@ -34,7 +34,7 @@
                 <accept_address type="NetworkField">
                     <Required>Y</Required>
                     <NetMaskAllowed>N</NetMaskAllowed>
-                    <default>127.0.0.1</default>
+                    <Default>127.0.0.1</Default>
                 </accept_address>
                 <connect_address type="HostnameField">
                     <Required>Y</Required>
@@ -55,22 +55,22 @@
                 </protocol>
                 <cacert type="CertificateField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                     <Type>ca</Type>
                     <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </cacert>
                 <enableCRL type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </enableCRL>
                 <clientmode type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </clientmode>
                 <ciphers type="JsonKeyValueStoreField">
-                    <default>TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,ECDHE-ECDSA-AES128-GCM-SHA256,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES256-GCM-SHA384,ECDHE-RSA-AES256-GCM-SHA384,ECDHE-ECDSA-CHACHA20-POLY1305,ECDHE-RSA-CHACHA20-POLY1305,DHE-RSA-AES128-GCM-SHA256,DHE-RSA-AES256-GCM-SHA384</default>
+                    <Default>TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256,ECDHE-ECDSA-AES128-GCM-SHA256,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES256-GCM-SHA384,ECDHE-RSA-AES256-GCM-SHA384,ECDHE-ECDSA-CHACHA20-POLY1305,ECDHE-RSA-CHACHA20-POLY1305,DHE-RSA-AES128-GCM-SHA256,DHE-RSA-AES256-GCM-SHA384</Default>
                     <Required>Y</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                     <ConfigdPopulateAct>stunnel ssl ciphers</ConfigdPopulateAct>
                     <SourceFile>/tmp/stunnel_ciphers_list.json</SourceFile>
                     <ConfigdPopulateTTL>360</ConfigdPopulateTTL>
