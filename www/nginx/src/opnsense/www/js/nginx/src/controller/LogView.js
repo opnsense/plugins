@@ -96,6 +96,15 @@ const LogView = Backbone.View.extend({
 
         this.logFieldsVisible = _.filter(this.logFields, ['visible', true]);
         // fields are ready
+
+        // create/update column headers
+        let thead = this.$('thead');
+        if (thead.children().length < 1) {
+            const logColumns = new LogViewColumns({log_fields_visible: this.logFieldsVisible, model: this.collection.filter_model});
+            logColumns.render();
+            thead.html(logColumns.$el);
+        }
+
         let tbody = this.$('tbody');
         if (tbody.length < 1) {
             if (this.collection.length !== 0) {
@@ -108,12 +117,6 @@ const LogView = Backbone.View.extend({
         else {
             tbody.html('');
         }
-
-        // create/update column headers
-        let thead = this.$('thead');
-        const logColumns = new LogViewColumns({log_fields_visible: this.logFieldsVisible, model: new LogColumnModel()});
-        logColumns.render();
-        thead.html(logColumns.$el);
 
         if (this.collection.length !== 0) {
             if (this.current_filtered_collection == null) {
@@ -220,6 +223,10 @@ const LogView = Backbone.View.extend({
         let field = $(event.currentTarget).find('input').prop('value');
         // toggle visibility
         localStorage.setItem('visibleColumns[' + type + '][' + uid + '][' + field + ']', !_.find(this.logFields, { 'id': field }).visible);
+        // unset filter for this column (if any) so as not to confuse the user
+        this.collection.filter_model.unset(field, {silent: true});
+        // reset table header and update data
+        this.$('thead').html('');
         this.update();
     }
 });
