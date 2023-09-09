@@ -188,5 +188,9 @@
             <default></default>
             <Required>N</Required>
         </ddnssecret>
+        <dhcpstaticmappings type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </dhcpstaticmappings>
     </items>
 </model>

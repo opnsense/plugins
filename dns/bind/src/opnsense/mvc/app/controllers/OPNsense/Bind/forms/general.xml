@@ -192,6 +192,12 @@
         <help>Option "secret" of the DDNS update-key "dhcp-key", generate with tsig-keygen</help>
     </field>
     <field>
+        <id>general.dhcpstaticmappings</id>
+        <label>Add DHCP static mappings</label>
+        <type>checkbox</type>
+        <help>Add DNS entries for the static dhcp mappings if the ddns-domain in dhcp network is set.</help>
+    </field>
+    <field>
         <type>header</type>
         <label>RNDC Key</label>
         <advanced>true</advanced>
