@@ -15,3 +15,6 @@ chmod 755 /var/stats
 mkdir -p /var/log/named
 chown -R bind:bind /var/log/named
 chmod 755 /var/log/named
+
+chown bind /usr/local/etc/namedb/primary
+chown bind /usr/local/etc/namedb/secondary

@@ -44,8 +44,9 @@ class Domain extends BaseModel
             }
         }
         // new serials on changed records
+        $lastupdate = (string)time();
         foreach ($serialsToSet as $domain) {
-            $domain->serial = (string)date("ymdHi");
+            $domain->serial = $lastupdate;
         }
         return parent::serializeToConfig($validateFullModel, $disable_validation);
     }
@@ -58,7 +59,7 @@ class Domain extends BaseModel
     {
         foreach ($this->domains->domain->iterateItems() as $domain) {
             if ($domain->getAttribute('uuid') == $uuid) {
-                $domain->serial = (string)date("ymdHi");
+                $domain->serial = (string)time();
                 return $this;
             }
         }
