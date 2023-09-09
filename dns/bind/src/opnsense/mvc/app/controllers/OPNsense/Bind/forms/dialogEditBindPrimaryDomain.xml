@@ -71,4 +71,10 @@
         <type>checkbox</type>
         <help>This will enable a ddns updates from a dhcp-server for this zone (key defined in "General").</help>
     </field>
+    <field>
+        <id>domain.rpzzone</id>
+        <label>Use zone as RPZ (response policy zone)</label>
+        <type>checkbox</type>
+        <help>This will enable add this zone as RPZ zone. DNSBL > Enable DNSBL and RPZ has to be enabled for this to work.</help>
+    </field>
 </form>
