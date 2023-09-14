@@ -27,7 +27,7 @@
    <script>
        $( document ).ready(function() {
 
-            let grid_phase1 = $("#grid-sessions").UIBootgrid({
+            $("#grid-sessions").UIBootgrid({
                 search:'/api/wireguard/service/show',
                 options:{
                     multiSelect: false,
@@ -39,6 +39,14 @@
                                 return byteFormat(row[column.id], 2);
                             }
                             return row[column.id];
+                        },
+                        epoch: function(column, row) {
+                            if (row[column.id]) {
+                                return moment.unix(row[column.id]).local().format('YYYY-MM-DD HH:mm:ss');
+                            } else {
+                                return '';
+                            }
+
                         }
                     },
                     requestHandler: function(request){
@@ -77,7 +85,7 @@
                  <th data-column-id="public-key" data-type="string" data-identifier="true">{{ lang._('Public key') }}</th>
                  <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                  <th data-column-id="endpoint" data-type="string">{{ lang._('Port / Endpoint') }}</th>
-                 <th data-column-id="latest-handshake" data-type="numeric">{{ lang._('Handshake') }}</th>
+                 <th data-column-id="latest-handshake"  data-formatter="epoch" data-type="numeric">{{ lang._('Handshake') }}</th>
 
                  <th data-column-id="transfer-tx" data-formatter="bytes" data-type="numeric">{{ lang._('Send') }}</th>
                  <th data-column-id="transfer-rx" data-formatter="bytes" data-type="numeric">{{ lang._('Received') }}</th>

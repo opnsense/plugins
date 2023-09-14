@@ -102,3 +102,37 @@ function wireguard_devices()
 {
     return [['pattern' => '^wg', 'volatile' => true]];
 }
+
+function wireguard_configure()
+{
+    return [
+        'newwanip' => ['wireguard_renew:2'],
+        'vpn' => ['wireguard_configure_do:2'],
+    ];
+}
+
+function wireguard_configure_do($verbose = false, $unused = '')
+{
+    if (!wireguard_enabled()) {
+        return;
+    }
+
+    service_log('Configuring WireGuard VPN...', $verbose);
+
+    configd_run('wireguard configure');
+
+    service_log("done.\n", $verbose);
+}
+
+function wireguard_renew($verbose = false, $unused = '')
+{
+    if (!wireguard_enabled()) {
+        return;
+    }
+
+    service_log('Renewing WireGuard VPN...', $verbose);
+
+    configd_run('wireguard renew');
+
+    service_log("done.\n", $verbose);
+}

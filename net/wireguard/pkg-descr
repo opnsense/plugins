@@ -16,6 +16,12 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.1
+
+* Only reload when interface configuration did not change
+* Implement 'newwanip' and 'vpn' plugin facilities
+* Refactor dashboard widget
+
 2.0
 
 * Remove wireguard-go support and cleanup some go specific code as it's not being used anymore anyway

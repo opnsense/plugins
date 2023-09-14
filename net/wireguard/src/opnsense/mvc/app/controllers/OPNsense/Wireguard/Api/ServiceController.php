@@ -103,11 +103,13 @@ class ServiceController extends ApiMutableServiceControllerBase
         $payload = json_decode((new Backend())->configdRun("wireguard show") ?? '', true);
         $records = !empty($payload) && !empty($payload['records']) ? $payload['records'] : [];
         $key_descriptions = [];
+        $ifnames = [];
         foreach ((new Client())->clients->client->iterateItems() as $key => $client) {
             $key_descriptions[(string)$client->pubkey] = (string)$client->name;
         }
         foreach ((new Server())->servers->server->iterateItems() as $key => $server) {
             $key_descriptions[(string)$server->pubkey] = (string)$server->name;
+            $ifnames[(string)$server->interface] =  (string)$server->name;
         }
         foreach ($records as &$record) {
             if (!empty($record['public-key']) && !empty($key_descriptions[$record['public-key']])) {
@@ -115,6 +117,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             } else {
                 $record['name'] = '';
             }
+            $record['ifname'] = $ifnames[$record['if']];
         }
         $filter_funct = null;
         $types = $this->request->get('type');

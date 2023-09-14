@@ -40,6 +40,9 @@ class GeneralController extends ApiMutableModelControllerBase
     protected static $internalModelClass = '\OPNsense\Wireguard\General';
     protected static $internalModelName = 'general';
 
+    /**
+     * XXX: remove in 24.1 unused
+     */
     public function getStatusAction()
     {
         // get wireguard configuration
