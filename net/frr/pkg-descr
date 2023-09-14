@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.36
+
+* Added default-information originate option for OSPFv3
+
 1.35
 
 * Added automatic OSPFv3 firewall rules and opt-out automatic rule switch (contributed by Bill Gertz)
