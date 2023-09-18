@@ -96,7 +96,7 @@ def deploy(config_filename):
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
-        # write subnet-up file and ship required binaries into the chroot
+        # write subnet-{up|down} scripts and ship required binaries into the chroot
         chroot_needs = set(['/bin/sh', '/sbin/route', '/libexec/ld-elf.so.1'])
         for item in list(chroot_needs):
             for line in subprocess.run(['/usr/bin/ldd', item],  capture_output=True, text=True).stdout.split('\n'):
@@ -108,6 +108,10 @@ def deploy(config_filename):
         write_file("%s/subnet-up" % network.get_basepath(), '\n'.join([
             "#!/bin/sh",
             "route add $SUBNET -iface %s\n" % interface_name
+        ]), 0o700)
+        write_file("%s/subnet-down" % network.get_basepath(), '\n'.join([
+            "#!/bin/sh",
+            "route delete $SUBNET -iface %s\n" % interface_name
         ]), 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
