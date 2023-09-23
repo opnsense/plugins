@@ -187,10 +187,6 @@ class Webdav extends Base implements IBackupProvider
      */
     public function listFiles($url, $username, $password, $directory = '/', $only_dirs = true)
     {
-        if ( $only_dirs){
-        } else {
-        }
-
         $headers = array("User-Agent: OPNsense Firewall", "Depth: 1");
         $result = $this->curl_request(
             "$url$directory",
