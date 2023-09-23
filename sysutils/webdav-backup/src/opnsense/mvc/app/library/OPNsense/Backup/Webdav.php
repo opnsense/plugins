@@ -187,32 +187,54 @@ class Webdav extends Base implements IBackupProvider
      */
     public function listFiles($url, $username, $password, $directory = '/', $only_dirs = true)
     {
+        syslog(LOG_NOTICE, "entering listFiles");
+        syslog(LOG_NOTICE, "filelist url:");
+        syslog(LOG_NOTICE, $url);
+        if ( $only_dirs){
+            syslog(LOG_NOTICE, "listFiles only_dirs: true");
+        } else {
+            syslog(LOG_NOTICE, "listFiles only_dirs: false");
+        }
+        syslog(LOG_NOTICE, "filelist directory:");
+        syslog(LOG_NOTICE, $directory);
+
+        $headers = array("User-Agent: OPNsense Firewall", "Depth: 1");
         $result = $this->curl_request(
             "$url$directory",
             $username,
             $password,
             'PROPFIND',
-            "Error while fetching filelist from Webdav '{$directory}' path"
+            "Error while fetching filelist from Webdav '{$directory}' path",
+            null,
+            $headers
         );
         // workaround - simplexml seems to be broken when using namespaces - remove them.
-        $xml = simplexml_load_string(str_replace(['<d:', '</d:'], ['<', '</'], $result['response']));
+        $xml = simplexml_load_string(str_ireplace(['<d:', '</d:'], ['<', '</'], $result['response']));
         $ret = array();
         foreach ($xml->children() as $response) {
             // d:response
             if ($response->getName() == 'response') {
                 $fileurl =  (string)$response->href;
-                $dirname = explode("", $fileurl, 2)[1];
+                syslog(LOG_NOTICE, "listFiles fileurl:");
+                syslog(LOG_NOTICE, $fileurl);
+                $dirname = end(array_filter(explode("/",$fileurl)));
+                syslog(LOG_NOTICE, "listFiles dirname:");
+                syslog(LOG_NOTICE, $dirname);
                 if (
                     $response->propstat->prop->resourcetype->children()->count() > 0 &&
                     $response->propstat->prop->resourcetype->children()[0]->getName() == 'collection' &&
                     $only_dirs
                 ) {
                     $ret[] = $dirname;
+                    syslog(LOG_NOTICE, "listFiles first if");
                 } elseif (!$only_dirs) {
+                    syslog(LOG_NOTICE, "listFiles second elif:");
                     $ret[] = $dirname;
                 }
             }
         }
+        syslog(LOG_NOTICE, "listFiles returns:");
+        syslog(LOG_NOTICE, implode('; ', $ret));
         return $ret;
     }
 
@@ -248,10 +270,19 @@ class Webdav extends Base implements IBackupProvider
      */
     public function create_directory($url, $username, $password, $backupdir)
     {
+        syslog(LOG_NOTICE, "entering create_directory");
+        syslog(LOG_NOTICE, "create_directory backupdir");
+        syslog(LOG_NOTICE, $backupdir);
         $parent_path = dirname($backupdir);
+        syslog(LOG_NOTICE, "create_directory parent_path");
+        syslog(LOG_NOTICE, $parent_path);
         try {
             $directories = $this->listFiles($url, $username, $password, "/{$parent_path}");
+            syslog(LOG_NOTICE, "create_directory gets:");
+            syslog(LOG_NOTICE, implode( '; ', $directories));
         } catch (\Exception $e) {
+            syslog(LOG_NOTICE, "Caught exception!");
+            syslog(LOG_NOTICE, $e);
             if ($backupdir == ".") {
                 // We cannot create root, if we reached here there's some other problem
                 syslog(LOG_ERR, "Check Webdav configuration parameters");
@@ -263,7 +294,7 @@ class Webdav extends Base implements IBackupProvider
             }
         }
         // if path exists ok
-        if (in_array("/{$backupdir}/", $directories)) {
+        if (in_array("$backupdir", $directories)) {
             return;
         }
 
