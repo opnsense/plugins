@@ -151,7 +151,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             if (isset($dnsupdate['usepublicip'])) {
                 $wanip = get_rfc2136_ip_address($dnsupdate['interface'], 4);
             } else {
-                $wanip = get_interface_ip($dnsupdate['interface']);
+                list ($wanip) = interfaces_primary_address($dnsupdate['interface']);
             }
             if (is_ipaddrv4($wanip)) {
                 if (($wanip != $cachedipv4) || (($currentTime - $cacheTimev4) > $maxCacheAgeSecs) || $forced) {
@@ -178,7 +178,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             if (isset($dnsupdate['usepublicip'])) {
                 $wanipv6 = get_rfc2136_ip_address($dnsupdate['interface'], 6);
             } else {
-                $wanipv6 = get_interface_ipv6($dnsupdate['interface']);
+                list ($wanipv6) = interfaces_primary_address6($dnsupdate['interface']);
             }
             if (is_ipaddrv6($wanipv6)) {
                 if (($wanipv6 != $cachedipv6) || (($currentTime - $cacheTimev6) > $maxCacheAgeSecs) || $forced) {
@@ -216,19 +216,16 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
 
 function get_rfc2136_ip_address($int, $ipver = 4)
 {
-    $ip_address = $ipver == 6 ? get_interface_ipv6($int) : get_interface_ip($int);
+    list ($ip_address) = $ipver == 6 ? interfaces_primary_address6($int) : interfaces_primary_address($int);
     if (empty($ip_address)) {
         log_error("Aborted IPv{$ipver} detection: no address for {$int}");
         return 'down';
     }
 
     if ($ipver != 6 && is_private_ip($ip_address)) {
-        /* Chinese alternative is http://ip.3322.net/ */
-        $hosttocheck = 'http://checkip.dyndns.org';
-        $ip_ch = curl_init($hosttocheck);
+        $ip_ch = curl_init('http://checkip.dyndns.org');
         curl_setopt($ip_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ip_ch, CURLOPT_INTERFACE, $ip_address);
-        curl_setopt($ip_ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ip_ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ip_ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         $ip_result = curl_exec($ip_ch);
