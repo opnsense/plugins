@@ -60,6 +60,13 @@
         <help>List of addresses to configure on the tunnel adapter. Please use CIDR notation like 10.0.0.1/24.</help>
     </field>
     <field>
+        <id>server.carp_depend_on</id>
+        <label>Depend on (carp)</label>
+        <type>dropdown</type>
+        <help>The carp VHID to depend on, when this virtual address is not in master state,
+        the instance will be shutdown.</help>
+    </field>
+    <field>
         <id>server.peers</id>
         <label>Peers</label>
         <type>select_multiple</type>
