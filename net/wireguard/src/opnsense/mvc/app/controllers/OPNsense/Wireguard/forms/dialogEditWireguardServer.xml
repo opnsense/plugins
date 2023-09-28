@@ -61,10 +61,9 @@
     </field>
     <field>
         <id>server.carp_depend_on</id>
-        <label>Depend on (carp)</label>
+        <label>Depend on (CARP)</label>
         <type>dropdown</type>
-        <help>The carp VHID to depend on, when this virtual address is not in master state,
-        the instance will be shutdown.</help>
+        <help>The CARP VHID to depend on. When this virtual address is not in master state, then the instance will be shutdown.</help>
     </field>
     <field>
         <id>server.peers</id>

@@ -59,7 +59,7 @@ function get_vhid_status()
 /**
  * mimic wg-quick behaviour, but bound to our config
  */
-function wg_start($server, $fhandle, $ifcfgflag='up')
+function wg_start($server, $fhandle, $ifcfgflag = 'up')
 {
     if (!does_interface_exist($server->interface)) {
         mwexecf('/sbin/ifconfig wg create name %s', [$server->interface]);
