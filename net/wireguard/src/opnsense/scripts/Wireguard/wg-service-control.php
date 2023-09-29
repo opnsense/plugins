@@ -32,9 +32,34 @@ require_once('util.inc');
 require_once('interfaces.inc');
 
 /**
+ * collect carp status per vhid
+ */
+function get_vhid_status()
+{
+    $vhids = [];
+    $uuids = [];
+    foreach ((new OPNsense\Interfaces\Vip())->vip->iterateItems() as $id => $item) {
+        if ($item->mode == 'carp') {
+            $uuids[(string)$item->vhid] =  $id;
+        }
+    }
+    foreach (legacy_interfaces_details() as $ifdata) {
+        if (!empty($ifdata['carp'])) {
+            foreach ($ifdata['carp'] as $data) {
+                if (isset($uuids[$data['vhid']])) {
+                    $vhids[$uuids[$data['vhid']]] = $data['status'];
+                }
+            }
+        }
+    }
+    return $vhids;
+}
+
+
+/**
  * mimic wg-quick behaviour, but bound to our config
  */
-function wg_start($server, $fhandle)
+function wg_start($server, $fhandle, $ifcfgflag = 'up')
 {
     if (!does_interface_exist($server->interface)) {
         mwexecf('/sbin/ifconfig wg create name %s', [$server->interface]);
@@ -49,7 +74,7 @@ function wg_start($server, $fhandle)
     if (!empty((string)$server->mtu)) {
         mwexecf('/sbin/ifconfig %s mtu %s', [$server->interface, $server->mtu]);
     }
-    mwexecf('/sbin/ifconfig %s up', [$server->interface]);
+    mwexecf('/sbin/ifconfig %s %s', [$server->interface, $ifcfgflag]);
 
     if (empty((string)$server->disableroutes)) {
         /**
@@ -161,12 +186,27 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
 
     $server_devs = [];
     if (!empty((string)(new OPNsense\Wireguard\General())->enabled)) {
+        $ifdetails = legacy_interfaces_details();
+        $vhids = get_vhid_status();
         foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
             if (empty((string)$node->enabled)) {
                 continue;
             }
             if ($server_id != null && $key != $server_id) {
                 continue;
+            }
+            /**
+             * CARP may influence the interface status (up or down).
+             * In order to fluently switch between roles, one should only have to change the interface flag in this
+             * case, which means we can still reconfigure an interface in the usual way and just omit sending traffic
+             * when in BACKUP or INIT mode.
+             */
+            $carp_if_flag = 'up';
+            if (
+                !empty($vhids[(string)$node->carp_depend_on]) &&
+                $vhids[(string)$node->carp_depend_on] != 'MASTER'
+            ) {
+                $carp_if_flag = 'down';
             }
             $server_devs[] = (string)$node->interface;
             $statHandle = fopen($node->statFilename, "a+");
@@ -176,16 +216,16 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         wg_stop($node);
                         break;
                     case 'start':
-                        wg_start($node, $statHandle);
+                        wg_start($node, $statHandle, $carp_if_flag);
                         break;
                     case 'restart':
                         wg_stop($node);
-                        wg_start($node, $statHandle);
+                        wg_start($node, $statHandle, $carp_if_flag);
                         break;
                     case 'configure':
                         if (
                             @md5_file($node->cnfFilename) != get_stat_hash($statHandle)['file'] ||
-                            !does_interface_exist((string)$node->interface)
+                            !isset($ifdetails[(string)$node->interface])
                         ) {
                             if (get_stat_hash($statHandle)['interface'] != wg_reconfigure_hash($node)) {
                                 // Fluent reloading not supported for this instance, make sure the user is informed
@@ -196,7 +236,13 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                                 );
                                 wg_stop($node);
                             }
-                            wg_start($node, $statHandle);
+                            wg_start($node, $statHandle, $carp_if_flag);
+                        } else {
+                            // when triggered via a CARP event, check our interface status [UP|DOWN]
+                            $tmp = in_array('up', $ifdetails[(string)$node->interface]['flags']) ? 'up' : 'down';
+                            if ($tmp !=  $carp_if_flag) {
+                                mwexecf('/sbin/ifconfig %s %s', [$node->interface, $carp_if_flag]);
+                            }
                         }
                         break;
                 }

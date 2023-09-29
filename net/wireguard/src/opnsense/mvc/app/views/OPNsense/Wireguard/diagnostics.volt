@@ -82,6 +82,7 @@
              <tr>
                  <th data-column-id="if" data-type="string" data-width="8em">{{ lang._('Interface') }}</th>
                  <th data-column-id="type" data-type="string" data-width="8em" data-visible="false">{{ lang._('Type') }}</th>
+                 <th data-column-id="status" data-type="string" data-width="8em" >{{ lang._('Status') }}</th>
                  <th data-column-id="public-key" data-type="string" data-identifier="true">{{ lang._('Public key') }}</th>
                  <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                  <th data-column-id="endpoint" data-type="string">{{ lang._('Port / Endpoint') }}</th>

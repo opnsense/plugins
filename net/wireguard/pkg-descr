@@ -16,6 +16,10 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.2
+
+* Add VHID (CARP) tracking support
+
 2.1
 
 * Only reload when interface configuration did not change

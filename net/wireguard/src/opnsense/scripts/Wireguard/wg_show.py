@@ -28,6 +28,13 @@
 import subprocess
 import ujson
 
+
+interfaces = {}
+for line in subprocess.run(['/sbin/ifconfig'], capture_output=True, text=True).stdout.split("\n"):
+    if not line.startswith('\t') and line.find('<') > -1:
+        ifname = line.split(':')[0]
+        interfaces[ifname] = 'up' if 'UP' in line.split('<')[1].split('>')[0].split(',') else 'down'
+
 sp = subprocess.run(['/usr/bin/wg', 'show', 'all', 'dump'], capture_output=True, text=True)
 result = {'records': []}
 if sp.returncode == 0:
@@ -44,6 +51,7 @@ if sp.returncode == 0:
             record['fwmark'] = parts[4]
             # convenience, copy listen-port to endpoint
             record['endpoint'] = parts[3]
+            record['status'] = interfaces.get(record['if'], 'down')
         elif len(parts) == 9:
             record['type'] = 'peer'
             record['public-key'] = parts[1]
