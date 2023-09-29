@@ -66,7 +66,7 @@ net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- Network traffic monitor
-net/wireguard -- WireGuard VPN service kernel implementation
+net/wireguard -- WireGuard VPN service kernel implementation (pending removal)
 net/wireguard-go -- WireGuard VPN service Go implementation (pending removal)
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
