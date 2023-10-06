@@ -83,4 +83,10 @@
     <type>checkbox</type>
     <help>Enable the ZFS collector.</help>
   </field>
+  <field>
+    <id>general.extraargs</id>
+    <label>Extra arguments</label>
+    <type>text</type>
+    <help>Add extra arguments not covered in these options</help>
+  </field>
 </form>

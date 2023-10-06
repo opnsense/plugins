@@ -46,7 +46,11 @@
     {%- set zfs = no_collector + "zfs " -%}
 {%- endif -%}
 
-node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}{{ zfs }}"
+{%- if OPNsense.NodeExporter.extraargs -%}
+    {%- set extraargs -%}
+{%- endif -%}
+
+node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}{{ zfs }}{{ extraargs }}"
 node_exporter_listen_address="{{ OPNsense.NodeExporter.listenaddress }}:{{ OPNsense.NodeExporter.listenport }}"
 node_exporter_enable="YES"
 
