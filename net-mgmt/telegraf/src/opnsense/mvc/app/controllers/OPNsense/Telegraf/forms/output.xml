@@ -215,4 +215,64 @@
         <type>text</type>
         <help>Set the API Key for accessing Datadog.</help>
     </field>
+    <field>
+        <id>output.mqtt_enable</id>
+        <label>Enable MQTT</label>
+        <type>checkbox</type>
+        <help>This will enable writes to a MQTT Broker acting as a mqtt Producer.</help>
+    </field>
+    <field>
+        <id>output.mqtt_topic_prefix</id>
+        <label>MQTT topic</label>
+        <type>text</type>
+        <help>Topic for producer messages.</help>
+    </field>
+    <field>
+        <id>output.mqtt_servers</id>
+        <label>MQTT brokers</label>
+        <type>text</type>
+        <help>URLs of mqtt brokers. Format is without square brackets, just like localhost:8083.</help>
+    </field>
+    <field>
+        <id>output.mqtt_qos</id>
+        <label>MQTT QoS</label>
+        <type>text</type>
+        <help>QoS policy for messages. 0 = at most once, 1 = at least once, 2 = exactly once. Defaults to 2. </help>
+    </field>
+    <field>
+        <id>output.mqtt_username</id>
+        <label>MQTT Username</label>
+        <type>text</type>
+        <help>Set the username for authentication.</help>
+    </field>
+    <field>
+        <id>output.mqtt_password</id>
+        <label>MQTT Password</label>
+        <type>text</type>
+        <help>Set the password for authentication.</help>
+    </field>
+    <field>
+        <id>output.mqtt_client_id</id>
+        <label>MQTT Client ID</label>
+        <type>text</type>
+        <help>Client ID, if not set a random ID is generated.</help>
+    </field>
+    <field>
+        <id>output.mqtt_timeout</id>
+        <label>MQTT Timeout</label>
+        <type>text</type>
+        <help>Timeout for write operations. Default is 5s. </help>
+    </field>
+    <field>
+        <id>output.mqtt_insecure_skip_verify</id>
+        <label>MQTT Client ID</label>
+        <type>checkbox</type>
+        <help>Use TLS, but skip chain & host verification.</help>
+    </field>
+    <field>
+        <id>output.mqtt_format</id>
+        <label>MQTT Format</label>
+        <type>text</type>
+        <help>Data format to output. Defaults to "influx".</help>
+    </field>
 </form>
