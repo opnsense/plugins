@@ -267,7 +267,7 @@
         <id>output.mqtt_insecure_skip_verify</id>
         <label>MQTT Client ID</label>
         <type>checkbox</type>
-        <help>Use TLS, but skip chain & host verification.</help>
+        <help>Use TLS, but skip chain and host verification.</help>
     </field>
     <field>
         <id>output.mqtt_format</id>
