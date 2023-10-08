@@ -146,6 +146,8 @@
         <mqtt_topic_prefix type="TextField">
             <default></default>
             <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_topic_prefix>
         <mqtt_servers type="TextField">
             <default></default>
@@ -154,10 +156,15 @@
         <mqtt_client_id type="TextField">
             <default></default>
             <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_client_id>
         <mqtt_qos type="IntegerField">
             <default></default>
             <Required>N</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>2</MaximumValue>
+            <ValidationMessage>Allowed values are 0-2</ValidationMessage>
         </mqtt_qos>
         <mqtt_timeout type="IntegerField">
             <default>5</default>
@@ -166,6 +173,8 @@
         <mqtt_username type="TextField">
             <default></default>
             <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_username>
         <mqtt_password type="TextField">
             <default></default>
@@ -178,6 +187,8 @@
         <mqtt_format type="TextField">
             <default></default>
             <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_format>
     </items>
 </model>
