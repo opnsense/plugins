@@ -139,5 +139,45 @@
             <default></default>
             <Required>N</Required>
         </datadog_apikey>
+        <mqtt_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </mqtt_enable>
+        <mqtt_topic_prefix type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_topic_prefix>
+        <mqtt_servers type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_servers>
+        <mqtt_client_id type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_client_id>
+        <mqtt_qos type="IntegerField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_qos>
+        <mqtt_timeout type="IntegerField">
+            <default>5</default>
+            <Required>N</Required>
+        </mqtt_timeout>
+        <mqtt_username type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_username>
+        <mqtt_password type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_password>
+        <mqtt_insecure_skip_verify type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </mqtt_insecure_skip_verify>
+        <mqtt_format type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_format>
     </items>
 </model>
