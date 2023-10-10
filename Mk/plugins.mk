@@ -44,6 +44,7 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
 PLUGIN_WWW?=		https://opnsense.org/
+PLUGIN_LICENSE?=	BSD2CLAUSE
 PLUGIN_TIER?=		3
 PLUGIN_REVISION?=	0
 
@@ -116,7 +117,7 @@ manifest: check
 	@echo "www: \"${PLUGIN_WWW}\""
 	@echo "prefix: \"${LOCALBASE}\""
 	@echo "licenselogic: \"single\""
-	@echo "licenses: [ \"BSD2CLAUSE\" ]"
+	@echo "licenses: [ \"${PLUGIN_LICENSE}\" ]"
 .if defined(PLUGIN_NO_ABI)
 	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
 	@echo "abi: \"${OSABIPREFIX}:*:*\""
