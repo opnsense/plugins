@@ -1,93 +1,42 @@
-<% let count = 0; %><table class="table table-striped">
+<table class="table table-striped">
     <thead class="sticky-top">
-        <tr>
-            <% if (log_type === 'errors' || log_type === 'stream_errors') {
-            count = 5; %>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Severity</th>
-            <th>Number</th>
-            <th>Message</th>
-            <% } else if (log_type === 'accesses') {
-            count = 9; %>
-            <th>Time</th>
-            <th>Remote IP</th>
-            <th>Username</th>
-            <th>Status</th>
-            <th>Size</th>
-            <th>Referer</th>
-            <th>User Agent</th>
-            <th>Forwarded For</th>
-            <th>Request Line</th>
-            <% } else {
-            count = 6; %>
-            <th>Time</th>
-            <th>Remote IP</th>
-            <th>Status</th>
-            <th>Bytes Sent</th>
-            <th>Bytes Received</th>
-            <th>Session Time</th>
-            <% } %>
-        </tr>
-        <tr class="filter">
-            <% if (log_type === 'errors' || log_type === 'stream_errors') { %>
-            <th class="active"><input type="text" value="<%= model.escape('date') %>" name="date" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('severity') %>" name="severity" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('number') %>" name="number" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('message') %>" name="message" /></th>
-            <% } else if (log_type === 'accesses') { %>
-            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('username') %>" name="username" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('status') %>" name="status" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('size') %>" name="size" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('http_referer') %>" name="http_referer" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('user_agent') %>" name="user_agent" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('forwarded_for') %>" name="forwarded_for" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('request_line') %>" name="request_line" /></th>
-            <% } else { %>
-            <th class="active"><input type="text" value="<%= model.escape('time') %>" name="time" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('remote_ip') %>" name="remote_ip" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('status') %>" name="status" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('bytes_sent') %>" name="bytes_sent" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('bytes_received') %>" name="bytes_received" /></th>
-            <th class="active"><input type="text" value="<%= model.escape('session_time') %>" name="session_time" /></th>
-            <% } %>
-        </tr>
     </thead>
     <tbody>
     </tbody>
     <tfoot class="sticky-bottom">
         <tr>
-            <th class="text-nowrap active">
+            <th class="text-nowrap active" colspan="100">
+                <div class="btn-group dropup"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="dropdown-text"><span class="icon glyphicon glyphicon-th-list"></span></span> <span class="caret"></span></button>
+                   <ul class="dropdown-menu">
+                       <% log_fields.forEach( (field) => { %>
+                       <li><label class="ngx-dropdown-item"><input type="checkbox" class="option" value="<%= _.escape(field.id) %>" <%= field.visible === true ? 'checked="checked"' : '' %>/> <%= _.escape(field.header) %></label></li>
+                       <% }) %>
+                   </ul>
+                </div>
                 <button class="btn btn-primary" id="paging_first" title="First Page"><i class="fa fa-fast-backward" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="paging_back" title="Previous Page"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="refresh" title="Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="paging_forward" title="Next Page"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
                 <button class="btn btn-primary" id="paging_last" title="Last Page"><i class="fa fa-fast-forward " aria-hidden="true"></i></button>
+                <span style="padding-left: 10px;">Page </span><span id="currentpage">1</span>/<span id="pagecount">0</span>
+                <div style="float: right; display: flex;">
+                    <label for="entrycount"><span id="entrycountdisplay">100</span> lines per page</label><input type="range" list="tickmarks" min="5" max="1000" step="5" id="entrycount" value="100" style="width: 200px;" />
+                    <datalist id="tickmarks">
+                        <option value="5" label="5">
+                        <option value="100" label="100">
+                        <option value="200" label="200">
+                        <option value="300">
+                        <option value="400">
+                        <option value="500" label="500">
+                        <option value="600">
+                        <option value="700">
+                        <option value="800">
+                        <option value="900">
+                        <option value="1000" label="1000">
+                    </datalist>
+                </div>
+                <span style="padding-left: 10px;">Found lines: </span><span id="resultcount">0</span>/<span id="totalcount">0</span>
             </th>
-            <th class="active">
-                Page <span id="currentpage">1</span>/<span id="pagecount">0</span>
-            </th>
-            <th class="active" colspan="2">
-                <label for="entrycount"><span id="entrycountdisplay">100</span> lines per page</label>
-                <input type="range" list="tickmarks" min="5" max="1000" step="5" id="entrycount" value="100" />
-                <datalist id="tickmarks">
-                    <option value="5" label="5">
-                    <option value="100" label="100">
-                    <option value="200" label="200">
-                    <option value="300">
-                    <option value="400">
-                    <option value="500" label="500">
-                    <option value="600">
-                    <option value="700">
-                    <option value="800">
-                    <option value="900">
-                    <option value="1000" label="1000">
-                </datalist>
-            </th>
-            <th class="active" colspan="<%= count - 4 %>">Found lines: <span id="resultcount">0</span>/<span id="totalcount">0</span></th>
         </tr>
     </tfoot>
 </table>
