@@ -69,6 +69,7 @@ def configure_bouncer(settings):
     config['log_dir'] = '/var/log/crowdsec'
     config['blacklists_ipv4'] = 'crowdsec_blacklists'
     config['blacklists_ipv6'] = 'crowdsec6_blacklists'
+    config['retry_initial_connect'] = True
     config['pf'] = {'anchor_name': ''}
 
     if not int(settings.get('lapi_manual_configuration', '0')):
