@@ -16,6 +16,11 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.3
+
+* Create WireGuard devices earlier to allow of to pick up NAT rules correctly
+* Consolidate the GUI with regard to WireGuard terminology
+
 2.2
 
 * Add VHID (CARP) tracking support
