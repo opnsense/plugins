@@ -89,6 +89,14 @@
                 <allownew>true</allownew>
                 <help>All sender domains listed here are getting whitelisted, no matter if they have wrong SPF records or are on multiple blacklists.</help>
             </field>
+            <field>
+                <id>rspamd.multimap.whitelistaddress</id>
+                <label>Adress Whitelist</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>All sender emaail-adresses listed here are getting whitelisted, no matter if they have wrong SPF records or are on multiple blacklists.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-general-milter-headers" description="Milter Headers">
             <field>
