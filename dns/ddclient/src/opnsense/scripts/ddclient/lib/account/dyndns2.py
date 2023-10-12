@@ -98,7 +98,7 @@ class DynDNS2(BaseAccount):
                 }
                 req = requests.get(**req_opts)
 
-            if req.status_code == 200:
+            if req.status_code in [200, 204]:
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
