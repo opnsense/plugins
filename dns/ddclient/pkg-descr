@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.16
+
+* Add custom GET/PUT protocols to native backend (contributed by DaCookie4u)
+
 1.15
 
 * Add AWS Route53 and DuckDNS to native backend (contributed by Greg Glockner)

@@ -121,7 +121,7 @@
         <id>general.scanhtml</id>
         <label>Scan HTML</label>
         <type>checkbox</type>
-        <help>Perform HTML normalisation and decryption of MS Script Encoder code.</help>
+        <help>Perform HTML normalization and decryption of MS Script Encoder code.</help>
     </field>
     <field>
         <id>general.scanarchive</id>

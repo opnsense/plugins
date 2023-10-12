@@ -4,7 +4,7 @@
     <description>OPNsense Git Backup Settings</description>
     <items>
         <enabled type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>Y</Required>
           <Constraints>
               <check001>
@@ -30,7 +30,7 @@
             </Constraints>
         </url>
         <branch type="TextField">
-          <default>master</default>
+          <Default>master</Default>
           <Required>Y</Required>
         </branch>
         <privkey type="TextField">

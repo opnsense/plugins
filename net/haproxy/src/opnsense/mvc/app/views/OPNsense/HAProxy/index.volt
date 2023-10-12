@@ -717,7 +717,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.6/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="http://docs.haproxy.org/2.6/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>

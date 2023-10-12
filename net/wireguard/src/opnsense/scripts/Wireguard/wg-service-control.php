@@ -37,9 +37,34 @@ function wg_syncconf($server)
 }
 
 /**
+ * collect carp status per vhid
+ */
+function get_vhid_status()
+{
+    $vhids = [];
+    $uuids = [];
+    foreach ((new OPNsense\Interfaces\Vip())->vip->iterateItems() as $id => $item) {
+        if ($item->mode == 'carp') {
+            $uuids[(string)$item->vhid] =  $id;
+        }
+    }
+    foreach (legacy_interfaces_details() as $ifdata) {
+        if (!empty($ifdata['carp'])) {
+            foreach ($ifdata['carp'] as $data) {
+                if (isset($uuids[$data['vhid']])) {
+                    $vhids[$uuids[$data['vhid']]] = $data['status'];
+                }
+            }
+        }
+    }
+    return $vhids;
+}
+
+
+/**
  * mimic wg-quick behaviour, but bound to our config
  */
-function wg_start($server, $fhandle)
+function wg_start($server, $fhandle, $ifcfgflag = 'up')
 {
     if (!does_interface_exist($server->interface)) {
         mwexecf('/sbin/ifconfig wg create name %s', [$server->interface]);
@@ -54,7 +79,7 @@ function wg_start($server, $fhandle)
     if (!empty((string)$server->mtu)) {
         mwexecf('/sbin/ifconfig %s mtu %s', [$server->interface, $server->mtu]);
     }
-    mwexecf('/sbin/ifconfig %s up', [$server->interface]);
+    mwexecf('/sbin/ifconfig %s %s', [$server->interface, $ifcfgflag]);
 
     if (empty((string)$server->disableroutes)) {
         /**
@@ -72,7 +97,7 @@ function wg_start($server, $fhandle)
                 continue;
             }
             foreach (explode(',', (string)$client->tunneladdress) as $tunneladdress) {
-                $ipproto = strpos($tunneladdress, ":") === false ? "inet" :  "inet6 ";
+                $ipproto = strpos($tunneladdress, ":") === false ? "inet" :  "inet6";
                 /* wg-quick seems to prevent /0 being routed and translates this automatically */
                 if (str_ends_with(trim($tunneladdress), '/0')) {
                     if ($ipproto == 'inet') {
@@ -92,14 +117,14 @@ function wg_start($server, $fhandle)
         }
     } elseif (!empty((string)$server->gateway)) {
         /* Only bind the gateway ip to the tunnel */
-        $ipprefix = strpos($tunneladdress, ":") === false ? "-4" :  "-6 ";
+        $ipprefix = strpos($tunneladdress, ":") === false ? "-4" :  "-6";
         mwexecf('/sbin/route -q -n add %s %s -iface %s', [$ipprefix, $server->gateway, $server->interface]);
     }
 
     // flush checksum to ease change detection
     fseek($fhandle, 0);
     ftruncate($fhandle, 0);
-    fwrite($fhandle, @md5_file($server->cnfFilename));
+    fwrite($fhandle, @md5_file($server->cnfFilename) . "|" . wg_reconfigure_hash($server));
     syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) started");
 }
 
@@ -114,6 +139,42 @@ function wg_stop($server)
     syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) stopped");
 }
 
+
+/**
+ * Calculate a hash which determines if we are able to reconfigure without a restart of the tunnel.
+ * We currently assume if something changed on the interface or peer routes are being pushed, it's safer to
+ * restart then reload.
+ */
+function wg_reconfigure_hash($server)
+{
+    if (empty((string)$server->disableroutes)) {
+        return md5(uniqid('', true));   // random hash, should always reconfigure
+    }
+    return md5(
+        sprintf(
+            '%s|%s|%s',
+            $server->tunneladdress,
+            $server->mtu,
+            $server->gateway
+        )
+    );
+}
+
+/**
+ * The stat hash file answers two questions, [1] has anything changed, which is answered using an md5 hash of the
+ * configuration file. The second question, if something has changed, is it safe to only reload the configuration.
+ * This is answered by wg_reconfigure_hash() for the instance in question.
+ */
+function get_stat_hash($fhandle)
+{
+    fseek($fhandle, 0);
+    $payload = stream_get_contents($fhandle) ?? '';
+    $parts = explode('|', $payload);
+    return [
+        'file' => $parts[0] ?? '',
+        'interface' => $parts[1] ?? ''
+    ];
+}
 
 $opts = getopt('ah', [], $optind);
 $args = array_slice($argv, $optind);
@@ -130,12 +191,27 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
 
     $server_devs = [];
     if (!empty((string)(new OPNsense\Wireguard\General())->enabled)) {
+        $ifdetails = legacy_interfaces_details();
+        $vhids = get_vhid_status();
         foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
             if (empty((string)$node->enabled)) {
                 continue;
             }
             if ($server_id != null && $key != $server_id) {
                 continue;
+            }
+            /**
+             * CARP may influence the interface status (up or down).
+             * In order to fluently switch between roles, one should only have to change the interface flag in this
+             * case, which means we can still reconfigure an interface in the usual way and just omit sending traffic
+             * when in BACKUP or INIT mode.
+             */
+            $carp_if_flag = 'up';
+            if (
+                !empty($vhids[(string)$node->carp_depend_on]) &&
+                $vhids[(string)$node->carp_depend_on] != 'MASTER'
+            ) {
+                $carp_if_flag = 'down';
             }
             $server_devs[] = (string)$node->interface;
             $statHandle = fopen($node->statFilename, "a+");
@@ -145,11 +221,11 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         wg_stop($node);
                         break;
                     case 'start':
-                        wg_start($node, $statHandle);
+                        wg_start($node, $statHandle, $carp_if_flag);
                         break;
                     case 'restart':
                         wg_stop($node);
-                        wg_start($node, $statHandle);
+                        wg_start($node, $statHandle, $carp_if_flag);
                         break;
                     case 'reload':
                         if (
@@ -161,11 +237,29 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         break;
                     case 'configure':
                         if (
-                            @md5_file($node->cnfFilename) != @file_get_contents($node->statFilename) ||
-                            !does_interface_exist((string)$node->interface)
+                            @md5_file($node->cnfFilename) != get_stat_hash($statHandle)['file'] ||
+                            !isset($ifdetails[(string)$node->interface]) || (
+                                // Interface has been setup, but without configuration
+                                empty($ifdetails[(string)$node->interface]['ipv4']) &&
+                                empty($ifdetails[(string)$node->interface]['ipv6'])
+                            )
                         ) {
-                            wg_stop($node);
-                            wg_start($node, $statHandle);
+                            if (get_stat_hash($statHandle)['interface'] != wg_reconfigure_hash($node)) {
+                                // Fluent reloading not supported for this instance, make sure the user is informed
+                                syslog(
+                                    LOG_NOTICE,
+                                    "Wireguard interface {$node->name} ({$node->interface}) " .
+                                    "can not reconfigure without stopping it first."
+                                );
+                                wg_stop($node);
+                            }
+                            wg_start($node, $statHandle, $carp_if_flag);
+                        } else {
+                            // when triggered via a CARP event, check our interface status [UP|DOWN]
+                            $tmp = in_array('up', $ifdetails[(string)$node->interface]['flags']) ? 'up' : 'down';
+                            if ($tmp !=  $carp_if_flag) {
+                                mwexecf('/sbin/ifconfig %s %s', [$node->interface, $carp_if_flag]);
+                            }
                         }
                         break;
                 }

@@ -146,7 +146,7 @@ function miniupnpd_configure_do($verbose = false)
             $if = get_real_interface($iface);
             /* above function returns iface if fail */
             if ($if != $iface) {
-                $addr = get_interface_ip($iface);
+                list ($addr) = interfaces_primary_address($iface);
                 if (!empty($addr)) {
                     $config_text .= "listening_ip={$if}";
                     if (!empty($upnp_config['overridesubnet'])) {

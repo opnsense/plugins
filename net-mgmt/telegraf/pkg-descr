@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.9
+
+* Add MQTT output
+
 1.12.8
 
 * bug: fix InfluxDB v2 template to remove erroneous `timeout` value (issue #3265, contributed by Gavin Chappell)

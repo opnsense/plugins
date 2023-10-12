@@ -56,7 +56,7 @@ class DynDNS extends BaseModel
                 continue;
             }
             $srv = (string)$node->server;
-            if ((string)$node->protocol == 'post') {
+            if (in_array((string)$node->protocol, ['get', 'post', 'put'])) {
                 if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
                     $messages->appendMessage(
                         new Message(

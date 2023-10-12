@@ -3,16 +3,16 @@
     <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
-            <required>Y</required>
+            <Required>Y</Required>
             <default>0</default>
         </enabled>
         <listen_addresses type="CSVListField">
-            <required>Y</required>
+            <Required>Y</Required>
             <default>localhost:443</default>
             <validationmessage>Please enter at least one hostname/IP:port combination.</validationmessage>
         </listen_addresses>
         <mode type="OptionField">
-            <required>Y</required>
+            <Required>Y</Required>
             <default>fork</default>
             <Multiple>N</Multiple>
             <OptionValues>
@@ -21,31 +21,31 @@
             </OptionValues>
         </mode>
         <timeout type="IntegerField">
-            <required>N</required>
+            <Required>N</Required>
         </timeout>
         <tls_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </tls_target>
         <ssh_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </ssh_target>
         <openvpn_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </openvpn_target>
         <http_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </http_target>
         <xmpp_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </xmpp_target>
         <tinc_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </tinc_target>
         <anyprot_target type="TextField">
-            <required>N</required>
+            <Required>N</Required>
         </anyprot_target>
         <on_timeout type="OptionField">
-            <required>Y</required>
+            <Required>Y</Required>
             <default>ssh</default>
             <Multiple>N</Multiple>
             <OptionValues>
@@ -58,10 +58,10 @@
             </OptionValues>
         </on_timeout>
         <verbose type="BooleanField">
-            <required>N</required>
+            <Required>N</Required>
         </verbose>
         <numeric type="BooleanField">
-            <required>N</required>
+            <Required>N</Required>
         </numeric>
     </items>
 </model>

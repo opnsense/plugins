@@ -16,6 +16,21 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.3
+
+* Create WireGuard devices earlier to allow of to pick up NAT rules correctly
+* Consolidate the GUI with regard to WireGuard terminology
+
+2.2
+
+* Add VHID (CARP) tracking support
+
+2.1
+
+* Only reload when interface configuration did not change
+* Implement 'newwanip' and 'vpn' plugin facilities
+* Refactor dashboard widget
+
 2.0
 
 * Remove wireguard-go support and cleanup some go specific code as it's not being used anymore anyway

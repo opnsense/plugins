@@ -1,18 +1,17 @@
 <model>
     <mount>//OPNsense/wireguard/server</mount>
-    <description>Wireguard Server configuration</description>
+    <description>WireGuard instance configuration</description>
     <version>0.0.4</version>
     <items>
         <servers>
             <server type=".\ServerField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._\-]){1,64}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z._\-]){1,64}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 64 characters. Allowed characters are alphanumeric characters, dash and underscores.</ValidationMessage>
                 </name>
                 <instance type="AutoNumberField">
@@ -26,27 +25,21 @@
                     <Required>Y</Required>
                     <ValidationMessage>A private key is required</ValidationMessage>
                 </privkey>
-                <port type="PortField">
-                    <Required>N</Required>
-                </port>
+                <port type="PortField"/>
                 <mtu type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>9300</MaximumValue>
-                    <Required>N</Required>
                 </mtu>
                 <dns type="CSVListField">
-                    <Required>N</Required>
-                    <mask>/^([a-fA-F0-9\.:\[\]]*?,)*([a-fA-F0-9\.:\[\]]*)$/</mask>
+                    <Mask>/^([a-fA-F0-9\.:\[\]]*?,)*([a-fA-F0-9\.:\[\]]*)$/</Mask>
                     <ValidationMessage>Please use valid IPv4 or IPv6 addresses.</ValidationMessage>
                 </dns>
                 <tunneladdress type="NetworkField">
-                    <default></default>
                     <FieldSeparator>,</FieldSeparator>
-                    <Required>N</Required>
                     <asList>Y</asList>
                 </tunneladdress>
                 <disableroutes type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                     <Constraints>
                         <check001>
@@ -58,9 +51,11 @@
                         </check001>
                     </Constraints>
                 </disableroutes>
-                <gateway type="NetworkField">
-                    <Required>N</Required>
-                </gateway>
+                <gateway type="NetworkField"/>
+                <carp_depend_on type="VirtualIPField">
+                    <type>carp</type>
+                    <key>mvc</key>
+                </carp_depend_on>
                 <peers type="ModelRelationField">
                     <Model>
                         <template>
@@ -70,7 +65,6 @@
                         </template>
                     </Model>
                     <Multiple>Y</Multiple>
-                    <Required>N</Required>
                     <ValidationMessage>Choose an Peer.</ValidationMessage>
                 </peers>
             </server>
