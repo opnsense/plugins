@@ -9,6 +9,7 @@ Plugin Changelog
 1.16
 
 * Add custom GET/PUT protocols to native backend (contributed by DaCookie4u)
+* Consider all 2xx status codes as success in native dyndns2 implementation
 
 1.15
 
