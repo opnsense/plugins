@@ -7,6 +7,7 @@
             <Realms VisibleName="Realms" order="40" url="/ui/radsecproxy/realms" />
             <Tls VisibleName="TLS" order="50" url="/ui/radsecproxy/tls" />
             <Rewrites VisibleName="Rewrite-Rules" order="60" url="/ui/radsecproxy/rewrites" />
+             <Log  order="100" VisibleName="Log File" url="/ui/diagnostics/log/core/radsecproxy" />
         </RadSecProxy>
     </Services>
 </menu>
