@@ -5,10 +5,13 @@ lua.
 Plugin Changelog
 ----------------
 
+1.13
+
+* Make local whitelist by e-mail address possible (contributed by itNGO)
+
 1.12
 
 * Adjusting the multimap setting to make the multimap whitelist work
-
 
 1.11
 
