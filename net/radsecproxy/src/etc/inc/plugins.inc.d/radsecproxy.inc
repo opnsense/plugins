@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2023 Deciso B.V.
  * Copyright (C) 2020 Tobias Boehnert
  * All rights reserved.
  *
@@ -27,39 +28,34 @@
 
 function radsecproxy_enabled()
 {
-    $model = new \OPNsense\RadSecProxy\RadSecProxy();
-    if ((string)$model->general->enabled == '1') {
-        return true;
-    }
-
-    return false;
+    return (string)(new \OPNsense\RadSecProxy\RadSecProxy())->general->enabled == '1';
 }
 
 function radsecproxy_syslog()
 {
-    $logfacilities = array();
-    $logfacilities['radsecproxy'] = array(
-        'facility' => array('LOG_DAEMON'),
-    );
-    return $logfacilities;
+    return [
+        'radsecproxy' => [
+            'facility' => ['radsecproxy']
+        ]
+    ];
 }
 
 
 function radsecproxy_services()
 {
-    $services = array();
+    $services = [];
 
     if (radsecproxy_enabled()) {
-        $services[] = array(
+        $services[] = [
             'description' => gettext('Radius Secure Proxy'),
-            'configd' => array(
-                'restart' => array('radsecproxy restart'),
-                'start' => array('radsecproxy start'),
-                'stop' => array('radsecproxy stop'),
-            ),
+            'configd' => [
+                'restart' => ['radsecproxy restart'],
+                'start' => ['radsecproxy start'],
+                'stop' => ['radsecproxy stop'],
+            ],
             'name' => 'radsecproxy',
-            'pidfile' => '/var/run/radsecproxy.pid'
-        );
+            'pidfile' => '/var/run/radsecproxy/radsecproxy.pid'
+        ];
     }
     return $services;
 }
