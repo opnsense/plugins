@@ -20,6 +20,8 @@ Changelog
 
 * Create WireGuard devices earlier to allow of to pick up NAT rules correctly
 * Consolidate the GUI with regard to WireGuard terminology
+* Only invoke routes for attached WireGuard instances
+* Correct interface group registration
 
 2.2
 
