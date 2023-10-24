@@ -16,12 +16,16 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.4
+
+* Only invoke routes for attached WireGuard instances
+* Make bootup device creation more robust
+* Correct interface group registration
+
 2.3
 
 * Create WireGuard devices earlier to allow of to pick up NAT rules correctly
 * Consolidate the GUI with regard to WireGuard terminology
-* Only invoke routes for attached WireGuard instances
-* Correct interface group registration
 
 2.2
 
