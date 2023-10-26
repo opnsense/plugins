@@ -71,11 +71,10 @@ function wg_start($server, $fhandle, $ifcfgflag = 'up')
     /**
      * The tunneladdress can be empty, so any string with a length of 0 bytes is removed.
      */
-    $addresses = array_filter(explode(',', (string)$server->tunneladdress), 'strlen');
-        foreach ($addresses as $alias) {
-            $proto = strpos($alias, ':') === false ? "inet" : "inet6";
-            mwexecf('/sbin/ifconfig %s %s %s alias', [$server->interface, $proto, $alias]);
-        }
+    foreach (array_filter(explode(',', (string)$server->tunneladdress), 'strlen') as $alias) {
+        $proto = strpos($alias, ':') === false ? "inet" : "inet6";
+        mwexecf('/sbin/ifconfig %s %s %s alias', [$server->interface, $proto, $alias]);
+    }
     if (!empty((string)$server->mtu)) {
         mwexecf('/sbin/ifconfig %s mtu %s', [$server->interface, $server->mtu]);
     }
