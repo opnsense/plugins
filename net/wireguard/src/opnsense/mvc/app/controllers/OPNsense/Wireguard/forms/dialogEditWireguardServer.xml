@@ -57,7 +57,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>List of addresses to configure on the device. Please use CIDR notation like 10.0.0.1/24. Can be left empty for point to point connections.</help>
+        <help>List of addresses to configure on the device. Please use CIDR notation like 10.0.0.1/24.</help>
     </field>
     <field>
         <id>server.carp_depend_on</id>
