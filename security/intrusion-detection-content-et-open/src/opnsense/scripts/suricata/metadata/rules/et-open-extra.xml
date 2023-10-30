@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset documentation_url="https://doc.emergingthreats.net/bin/view/Main/EmergingFAQ">
-    <location url="https://rules.emergingthreats.net/open/suricata-7.0/emerging.rules.tar.gz" prefix="ET open full"/>
+    <location url="https://rules.emergingthreats.net/open/suricata-7.0/emerging.rules.tar.gz" prefix="ET open"/>
     <version url="https://rules.emergingthreats.net/open/suricata-7.0/version.txt"/>
     <files>
         <file description="3coresec" url="inline::rules/3coresec.rules">3coresec.rules</file>
