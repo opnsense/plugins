@@ -16,6 +16,14 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.5
+
+* Fix error with empty tunnel address in instance (contributed by Monviech)
+* Allow instance selection from peer
+* Use "syncconf" on newwanip event
+* CARP event handling improvements
+* Minor UX and woring improvements
+
 2.4
 
 * Only invoke routes for attached WireGuard instances
