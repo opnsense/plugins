@@ -73,13 +73,13 @@
         <id>general.filteraaaav4</id>
         <label>Enable filter-aaaa on IPv4 Clients</label>
         <type>checkbox</type>
-        <help>This will filter AAAA records on IPv4 Clients</help>
+        <help>This will filter AAAA records on IPv4 Clients. Set "DNSSEC Validation" to "No" and AAAA records will be omitted even if they are signed.</help>
     </field>
     <field>
         <id>general.filteraaaav6</id>
         <label>Enable filter-aaaa on IPv6 Clients</label>
         <type>checkbox</type>
-        <help>This will filter AAAA records on IPv6 Clients</help>
+        <help>This will filter AAAA records on IPv6 Clients. Set "DNSSEC Validation" to "No" and AAAA records will be omitted even if they are signed.</help>
     </field>
     <field>
         <id>general.filteraaaaacl</id>
