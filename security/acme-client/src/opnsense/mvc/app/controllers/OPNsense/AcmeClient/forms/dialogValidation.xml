@@ -227,6 +227,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Bunny API</label>
+        <type>header</type>
+        <style>table_dns table_dns_bunny</style>
+    </field>
+    <field>
+        <id>validation.dns_bunny_key</id>
+        <label>Bunny API Key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Cloudflare</label>
         <type>header</type>
         <style>table_dns table_dns_cf</style>

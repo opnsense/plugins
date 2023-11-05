@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * add IPv64.net DNS API (#3504)
+* add Bunny DNS API
 
 Fixed:
 * fix Proxmox VE deployhook (#3517)

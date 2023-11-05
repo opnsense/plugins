@@ -429,6 +429,7 @@
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS</dns_azure>
+                        <dns_bunny>Bunny</dns_bunny>
                         <dns_cloudns>ClouDNS</dns_cloudns>
                         <dns_cf>CloudFlare.com</dns_cf>
                         <dns_cx>CloudXNS.com</dns_cx>
@@ -558,6 +559,9 @@
                 <dns_azuredns_clientsecret type="TextField">
                     <Required>N</Required>
                 </dns_azuredns_clientsecret>
+                <dns_bunny_key type="TextField">
+                    <Required>N</Required>
+                </dns_bunny_key>
                 <dns_cf_email type="TextField">
                     <Required>N</Required>
                 </dns_cf_email>
