@@ -29,7 +29,9 @@
 
 require_once('script/load_phalcon.php');
 require_once('util.inc');
+require_once('config.inc');
 require_once('interfaces.inc');
+require_once('system.inc');
 
 function wg_syncconf($server)
 {
@@ -52,7 +54,7 @@ function get_vhid_status()
         if (!empty($ifdata['carp'])) {
             foreach ($ifdata['carp'] as $data) {
                 if (isset($uuids[$data['vhid']])) {
-                    $vhids[$uuids[$data['vhid']]] = $data['status'];
+                    $vhids[$uuids[$data['vhid']]] = ['status' => $data['status'], 'vhid' => $data['vhid']];
                 }
             }
         }
@@ -72,7 +74,8 @@ function wg_start($server, $fhandle, $ifcfgflag = 'up')
     }
     mwexecf('/usr/bin/wg setconf %s %s', [$server->interface, $server->cnfFilename]);
 
-    foreach (explode(',', (string)$server->tunneladdress) as $alias) {
+    /* The tunneladdress can be empty, so array_filter without callback filters empty strings out. */
+    foreach (array_filter(explode(',', (string)$server->tunneladdress)) as $alias) {
         $proto = strpos($alias, ':') === false ? "inet" : "inet6";
         mwexecf('/sbin/ifconfig %s %s %s alias', [$server->interface, $proto, $alias]);
     }
@@ -125,7 +128,8 @@ function wg_start($server, $fhandle, $ifcfgflag = 'up')
     fseek($fhandle, 0);
     ftruncate($fhandle, 0);
     fwrite($fhandle, @md5_file($server->cnfFilename) . "|" . wg_reconfigure_hash($server));
-    syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) started");
+    syslog(LOG_NOTICE, "wireguard instance {$server->name} ({$server->interface}) started");
+    interfaces_restart_by_device(false, [(string)$server->interface], false);
 }
 
 /**
@@ -136,7 +140,7 @@ function wg_stop($server)
     if (does_interface_exist($server->interface)) {
         legacy_interface_destroy($server->interface);
     }
-    syslog(LOG_NOTICE, "Wireguard interface {$server->name} ({$server->interface}) stopped");
+    syslog(LOG_NOTICE, "wireguard instance {$server->name} ({$server->interface}) stopped");
 }
 
 
@@ -183,21 +187,29 @@ $args = array_slice($argv, $optind);
 openlog("wireguard", LOG_ODELAY, LOG_AUTH);
 
 if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', 'restart', 'reload', 'configure'])) {
-    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|reload|configure] [uuid]\n\n";
+    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|reload|configure] [uuid|vhid]\n\n";
     echo "\t-a all instances\n";
 } elseif (isset($opts['a']) || !empty($args[1])) {
-    $server_id = $args[1] ?? null;
+    // either a server id (uuid) or a vhid could be offered
+    $server_id = $vhid = null;
+    if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $args[1] ?? '') == 1) {
+        $server_id = $args[1];
+    } elseif (!empty($args[1])) {
+        $vhid = explode('@', $args[1])[0];
+    }
+
     $action = $args[0];
 
     $server_devs = [];
     if (!empty((string)(new OPNsense\Wireguard\General())->enabled)) {
-        $ifdetails = legacy_interfaces_details();
         $vhids = get_vhid_status();
         foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
+            $carp_depend_on = (string)$node->carp_depend_on;
             if (empty((string)$node->enabled)) {
                 continue;
-            }
-            if ($server_id != null && $key != $server_id) {
+            } elseif ($server_id != null && $key != $server_id) {
+                continue;
+            } elseif ($vhid != null && (!empty($vhids[$carp_depend_on]) && $vhids[$carp_depend_on]['vhid'] != $vhid)) {
                 continue;
             }
             /**
@@ -207,15 +219,13 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
              * when in BACKUP or INIT mode.
              */
             $carp_if_flag = 'up';
-            if (
-                !empty($vhids[(string)$node->carp_depend_on]) &&
-                $vhids[(string)$node->carp_depend_on] != 'MASTER'
-            ) {
+            if (!empty($vhids[$carp_depend_on]) && $vhids[$carp_depend_on]['status'] != 'MASTER') {
                 $carp_if_flag = 'down';
             }
             $server_devs[] = (string)$node->interface;
             $statHandle = fopen($node->statFilename, "a+");
             if (flock($statHandle, LOCK_EX)) {
+                $ifdetails = legacy_interfaces_details((string)$node->interface);
                 switch ($action) {
                     case 'stop':
                         wg_stop($node);
@@ -236,19 +246,34 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         }
                         break;
                     case 'configure':
+                        $ifstatus = '-';
+                        if (!empty($ifdetails[(string)$node->interface])) {
+                            $ifstatus = in_array('up', $ifdetails[(string)$node->interface]['flags']) ? 'up' : 'down';
+                        }
+
+                        if (!empty($carp_depend_on) && !empty($vhid)) {
+                            // CARP event traceability when a vhid is being passed
+                            syslog(
+                                LOG_NOTICE,
+                                sprintf(
+                                    "Wireguard configure event instance %s (%s) vhid: %s carp: %s interface: %s",
+                                    $node->name,
+                                    $node->interface,
+                                    $vhid,
+                                    !empty($vhids[$carp_depend_on]) ? $vhids[$carp_depend_on]['status'] : '-',
+                                    $ifstatus
+                                )
+                            );
+                        }
                         if (
                             @md5_file($node->cnfFilename) != get_stat_hash($statHandle)['file'] ||
-                            !isset($ifdetails[(string)$node->interface]) || (
-                                // Interface has been setup, but without configuration
-                                empty($ifdetails[(string)$node->interface]['ipv4']) &&
-                                empty($ifdetails[(string)$node->interface]['ipv6'])
-                            )
+                            empty($ifdetails[(string)$node->interface])
                         ) {
                             if (get_stat_hash($statHandle)['interface'] != wg_reconfigure_hash($node)) {
                                 // Fluent reloading not supported for this instance, make sure the user is informed
                                 syslog(
                                     LOG_NOTICE,
-                                    "Wireguard interface {$node->name} ({$node->interface}) " .
+                                    "wireguard instance {$node->name} ({$node->interface}) " .
                                     "can not reconfigure without stopping it first."
                                 );
                                 wg_stop($node);
@@ -256,8 +281,7 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                             wg_start($node, $statHandle, $carp_if_flag);
                         } else {
                             // when triggered via a CARP event, check our interface status [UP|DOWN]
-                            $tmp = in_array('up', $ifdetails[(string)$node->interface]['flags']) ? 'up' : 'down';
-                            if ($tmp !=  $carp_if_flag) {
+                            if ($ifstatus !=  $carp_if_flag) {
                                 mwexecf('/sbin/ifconfig %s %s', [$node->interface, $carp_if_flag]);
                             }
                         }
@@ -270,9 +294,9 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
     }
 
     /**
-     * When -a is specified, cleaup up old or disabled instances (files and interfaces)
+     * When -a is specified, cleanup up old or disabled instances (files and interfaces)
      */
-    if ($server_id == null) {
+    if ($server_id == null && $vhid == null) {
         foreach (glob('/usr/local/etc/wireguard/wg*') as $filename) {
             $this_dev = explode('.', basename($filename))[0];
             if (!in_array($this_dev, $server_devs)) {
@@ -283,6 +307,5 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
             }
         }
     }
-    mwexecf('/usr/local/etc/rc.routing_configure');
 }
 closelog();

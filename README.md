@@ -82,7 +82,7 @@ security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
-security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
+security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
@@ -94,7 +94,7 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/api-backup -- Provide the functionality to download the config.xml
+sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download (pending removal)
 sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git

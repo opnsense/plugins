@@ -1,5 +1,6 @@
-IDS Proofpoint ET open ruleset duplicates rule files which are being
-delivered empty in ET Pro Telemetry edition so both can be installed.
+IDS Proofpoint ET open full ruleset to complement ET Pro Telemetry edition.
+This plugin will trigger duplicate rules warnings in Suricata logs when
+selecting the same categories for both ET open and ET Telemetry.
 
 LICENSE: https://www.proofpoint.com/us/license
 WWW: https://www.proofpoint.com/us/blog/threat-insight

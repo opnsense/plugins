@@ -304,7 +304,7 @@ lint-desc: check
 
 lint-shell:
 	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
-	    if [ "$$(head $${FILE} | grep -cx '#!\/bin\/sh')" == "0" ]; then \
+	    if [ "$$(head $${FILE} | grep -c '^#!\/')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
 	    sh -n $${FILE} || exit 1; \
