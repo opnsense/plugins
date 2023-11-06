@@ -122,10 +122,10 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
-     * reload wireguard config
+     * sync wireguard config
      * @return array
      */
-    public function reloadAction()
+    public function syncAction()
     {
         if (!$this->request->isPost()) {
             return ['result' => 'failed'];
@@ -134,7 +134,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $this->sessionClose();
         $backend = new Backend();
         $backend->configdRun('template reload ' . escapeshellarg(static::$internalServiceTemplate));
-        $backend->configdpRun('wireguard reload');
+        $backend->configdpRun('wireguard sync');
 
         return ['result' => 'ok'];
     }

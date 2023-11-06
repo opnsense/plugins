@@ -66,11 +66,11 @@
             }
         });
 
-        $("#reloadAct_client").click(function(){
+        $("#syncAct_client").click(function(){
             saveFormToEndpoint(url="/api/wireguard/client/set", formid='frm_general_settings',callback_ok=function(){
-                $("#reloadAct_client_progress").addClass("fa-spin");
-                ajaxCall(url="/api/wireguard/service/reload", sendData={}, callback=function(data,status) {
-                    $("#reloadAct_client_progress").removeClass("fa-spin");
+                $("#syncAct_client_progress").addClass("fa-spin");
+                ajaxCall(url="/api/wireguard/service/sync", sendData={}, callback=function(data,status) {
+                    $("#syncAct_client_progress").removeClass("fa-spin");
                 });
             });
         });
@@ -122,7 +122,7 @@
                     <td colspan="6"></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button type="button" class="btn btn-xs reload_btn btn-primary bootgrid-tooltip" id="reloadAct_client" title="{{ lang._('Reload') }}"><span class="fa fa-refresh" id="reloadAct_client_progress"></span></button>
+                        <button type="button" class="btn btn-xs sync_btn btn-primary bootgrid-tooltip" id="syncAct_client"><span class="fa fa-refresh" id="syncAct_client_progress"></span></button>
                         <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-fw fa-trash-o"></span></button>
                     </td>
                 </tr>

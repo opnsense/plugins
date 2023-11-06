@@ -186,8 +186,8 @@ $args = array_slice($argv, $optind);
 /* setup syslog logging */
 openlog("wireguard", LOG_ODELAY, LOG_AUTH);
 
-if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', 'restart', 'reload', 'configure'])) {
-    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|reload|configure] [uuid|vhid]\n\n";
+if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', 'restart', 'sync', 'configure'])) {
+    echo "Usage: wg-service-control.php [-a] [-h] [stop|start|restart|sync|configure] [uuid|vhid]\n\n";
     echo "\t-a all instances\n";
 } elseif (isset($opts['a']) || !empty($args[1])) {
     // either a server id (uuid) or a vhid could be offered
@@ -237,13 +237,8 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                         wg_stop($node);
                         wg_start($node, $statHandle, $carp_if_flag);
                         break;
-                    case 'reload':
-                        if (
-                            @md5_file($node->cnfFilename) != @file_get_contents($node->statFilename) &&
-                            does_interface_exist((string)$node->interface)
-                        ) {
-                            wg_syncconf($node);
-                        }
+                    case 'sync':
+                        wg_syncconf($node);
                         break;
                     case 'configure':
                         $ifstatus = '-';
