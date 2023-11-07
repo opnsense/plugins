@@ -4,33 +4,32 @@
     <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <server type="TextField">
-            <default>server</default>
+            <Default>server</Default>
             <Required>Y</Required>
-            <mask>/\S*/</mask>
+            <Mask>/\S*/</Mask>
             <ValidationMessage>Please provide IP or hostname (no spaces allowed).</ValidationMessage>
         </server>
         <user type="TextField">
-            <default>user</default>
+            <Default>user</Default>
             <Required>Y</Required>
-            <mask>/^[a-zA-Z0-9.\@_-]{1,64}$/</mask>
-            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9._-@ and it has to be 1-64 characters long.</ValidationMessage>
+            <Mask>/^[a-zA-Z0-9.\@_\-:\/]{1,64}$/</Mask>
+            <ValidationMessage>Please provide a valid username. Allowed characters are a-zA-Z0-9.@_-:/ and it has to be 1-64 characters long.</ValidationMessage>
         </user>
         <password type="TextField">
-            <default>password</default>
+            <Default>password</Default>
             <Required>Y</Required>
         </password>
         <servercert type="TextField">
             <Required>N</Required>
-            <mask>/^([a-zA-Z0-9\/\+\=]){40,64}$/u</mask>
+            <Mask>/^([a-zA-Z0-9\/\+\=]){40,64}$/u</Mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
         <hash type="OptionField">
-            <default>sha256</default>
-            <multiple>N</multiple>
+            <Default>sha256</Default>
             <Required>Y</Required>
                 <OptionValues>
                     <sha256>SHA256</sha256>
@@ -40,7 +39,7 @@
         </hash>
         <group type="TextField">
             <Required>N</Required>
-            <mask>/^[() a-zA-Z0-9._-]{1,64}$/</mask>
+            <Mask>/^[() a-zA-Z0-9._-]{1,64}$/</Mask>
             <ValidationMessage>Please provide a valid group name. Allowed are at most 64 characters from a-zA-Z0-9._-() and space.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
@@ -60,8 +59,7 @@
             <Required>N</Required>
         </tokensecret>
         <protocol type="OptionField">
-            <default>anyconnect</default>
-            <multiple>N</multiple>
+            <Default>anyconnect</Default>
             <Required>Y</Required>
                 <OptionValues>
                     <anyconnect>Cisco AnyConnect</anyconnect>
