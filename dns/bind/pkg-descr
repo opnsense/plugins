@@ -10,6 +10,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.28
+
+* Add break-dnssec toggle when using filter-aaaa on IPv4/IPv6 clients (contributed by doktornotor)
+
 1.27
 
 * Add DNAME support (contributed by Simon Fischer)
