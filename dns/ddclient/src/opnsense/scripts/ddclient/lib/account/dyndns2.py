@@ -98,14 +98,14 @@ class DynDNS2(BaseAccount):
                 }
                 req = requests.get(**req_opts)
 
-            if 200 >= req.status_code < 300:
+            if 200 <= req.status_code < 300:
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
                         "Account %s set new ip %s [%s]" % (self.description, self.current_address, req.text.strip())
                     )
 
-                self.update_state(address=self.current_address, status=req.text.split()[0])
+                self.update_state(address=self.current_address, status=req.text.split()[0] if req.text else '')
                 return True
             else:
                 syslog.syslog(
