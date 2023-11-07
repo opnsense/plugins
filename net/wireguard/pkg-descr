@@ -19,6 +19,7 @@ Changelog
 2.5
 
 * Fix error with empty tunnel address in instance (contributed by Monviech)
+* Switch "setconf" to "syncconf" on (re)configuration
 * Allow instance selection from peer
 * Use "syncconf" on newwanip event
 * CARP event handling improvements
