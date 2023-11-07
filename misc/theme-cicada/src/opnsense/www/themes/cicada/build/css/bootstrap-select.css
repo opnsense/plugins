@@ -91,9 +91,7 @@ select.selectpicker {
 }
 .bootstrap-select > select.mobile-device:focus + .dropdown-toggle,
 .bootstrap-select .dropdown-toggle:focus {
-  outline: thin dotted #bbbbbb !important;
-  outline: 5px auto -webkit-focus-ring-color !important;
-  outline-offset: -2px;
+  outline: none !important;
 }
 .bootstrap-select.form-control {
   margin-bottom: 0;
