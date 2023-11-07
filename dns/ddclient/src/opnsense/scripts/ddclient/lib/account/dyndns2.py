@@ -105,7 +105,11 @@ class DynDNS2(BaseAccount):
                         "Account %s set new ip %s [%s]" % (self.description, self.current_address, req.text.strip())
                     )
 
-                self.update_state(address=self.current_address, status=req.text.split()[0])
+                if req.text is None or req.text == "":
+                    self.update_state(address=self.current_address)
+                else:
+                    self.update_state(address=self.current_address, status=req.text.split()[0])
+
                 return True
             else:
                 syslog.syslog(
