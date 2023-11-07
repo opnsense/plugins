@@ -43,7 +43,7 @@ function wireguard_services()
     foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
         if (!empty((string)$node->enabled)) {
             $services[] = [
-                'description' => "Wireguard " . htmlspecialchars($node->name),
+                'description' => 'WireGuard ' . htmlspecialchars($node->name),
                 'configd' => [
                     'start' => ["wireguard start {$key}"],
                     'restart' => ["wireguard restart {$key}"],
@@ -104,7 +104,7 @@ function wireguard_devices()
     foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
         if (!empty((string)$node->enabled)) {
             $names[(string)$node->interface] = [
-                'descr' => sprintf('%s (Wireguard - %s)', (string)$node->interface, (string)$node->name),
+                'descr' => sprintf('%s (WireGuard - %s)', (string)$node->interface, (string)$node->name),
                 'ifdescr' => (string)$node->name,
                 'name' => (string)$node->interface
             ];
@@ -144,7 +144,7 @@ function wireguard_prepare($device)
 function wireguard_configure()
 {
     return [
-        'newwanip' => ['wireguard_renew:2'],
+        'newwanip' => ['wireguard_sync:2'],
         'vpn' => ['wireguard_configure_do:2'],
     ];
 }
@@ -162,15 +162,33 @@ function wireguard_configure_do($verbose = false, $unused = '')
     service_log("done.\n", $verbose);
 }
 
-function wireguard_renew($verbose = false, $unused = '')
+function wireguard_sync($verbose = false, $unused = '')
 {
     if (!wireguard_enabled()) {
         return;
     }
 
-    service_log('Renewing WireGuard VPN...', $verbose);
+    $instances = [];
+    foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $node) {
+        if (!empty((string)$node->enabled)) {
+            $instances[(string)$node->interface] = (string)$node->cnfFilename;
+        }
+    }
 
-    configd_run('wireguard renew');
+    if (!count($instances)) {
+        return;
+    }
+
+    service_log('Synchronizing WireGuard VPN...', $verbose);
+
+    openlog('wireguard', LOG_ODELAY, LOG_AUTH);
+
+    foreach ($instances as $device => $config) {
+        mwexecf('/usr/bin/wg syncconf %s %s', [$device, $config]);
+    }
+
+    closelog();
+    reopenlog();
 
     service_log("done.\n", $verbose);
 }
