@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.17
+
+* Update to ddclient 3.11.1 (dnsexit legacy support removed)
+
 1.16
 
 * Add custom GET/PUT protocols to native backend (contributed by DaCookie4u)
