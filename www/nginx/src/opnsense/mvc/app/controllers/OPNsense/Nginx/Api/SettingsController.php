@@ -845,4 +845,18 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('syslog_target', 'syslog_target', $uuid);
     }
+
+    public function showconfigAction()
+    {
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun("nginx show_config"), true);
+        return $response;
+    }
+
+    public function testconfigAction()
+    {
+        $backend = new Backend();
+        $response = trim($backend->configdRun("nginx test_config"));
+        return array("response" => $response);
+    }
 }
