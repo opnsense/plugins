@@ -137,6 +137,9 @@
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-tls-fingerprint" href="#subtab_nginx-http-tls-fingerprint">{{ lang._('TLS Fingerprint (Advanced)')}}</a>
             </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-resolver" href="#subtab_nginx-http-resolver">{{ lang._('Resolvers')}}</a>
+            </li>
         </ul>
     </li>
     <li role="presentation" class="dropdown">
@@ -671,6 +674,29 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-resolver" class="tab-pane fade">
+        <table id="grid-resolver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="resolverdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="address" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Address') }}</th>
+                    <th data-column-id="commands" data-width="10em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-other-syslog-target" class="tab-pane fade">
         <table id="grid-syslog_target" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="syslog_target_dlg">
             <thead>
@@ -716,4 +742,5 @@
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
 {{ partial("layout_partials/base_dialog",['fields': errorpage,'id':'errorpage_dlg', 'label':lang._('Edit Error Page')]) }}
 {{ partial("layout_partials/base_dialog",['fields': tls_fingerprint,'id':'tls_fingerprint_dlg', 'label':lang._('Edit TLS Fingerprint')]) }}
+{{ partial("layout_partials/base_dialog",['fields': resolver,'id':'resolverdlg', 'label':lang._('Edit Resolver')]) }}
 {{ partial("layout_partials/base_dialog",['fields': syslog_target,'id':'syslog_target_dlg', 'label':lang._('Edit SYSLOG Target')]) }}

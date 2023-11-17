@@ -863,6 +863,18 @@
         <default>1</default>
         <Required>Y</Required>
       </tls_prefer_server_ciphers>
+      <resolver type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>resolver</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected resolver not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </resolver>
       <ocsp_stapling type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -1198,6 +1210,51 @@
         <Required>Y</Required>
       </action>
     </ip_acl_item>
+
+    <resolver type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </description>
+      <address type="CSVListField">
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</mask>
+        <ValidationMessage>Please provide a valid resolver address, i.e. 8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353.</ValidationMessage>
+      </address>
+      <valid type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </valid>
+      <ipv4_off type="BooleanField">
+        <Required>N</Required>
+        <Constraints>
+            <check001>
+                <ValidationMessage>Can not disable all record types.</ValidationMessage>
+                <type>SingleSelectConstraint</type>
+                <addFields>
+                    <ipv6_off>ipv6_off</ipv6_off>
+                </addFields>
+            </check001>
+        </Constraints>
+      </ipv4_off>
+      <ipv6_off type="BooleanField">
+        <Required>N</Required>
+        <Constraints>
+            <check001>
+                <ValidationMessage>Can not disable all record types.</ValidationMessage>
+                <type>SingleSelectConstraint</type>
+                <addFields>
+                    <ipv4_off>ipv4_off</ipv4_off>
+                </addFields>
+            </check001>
+        </Constraints>
+      </ipv6_off>
+      <timeout type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </timeout>
+    </resolver>
 
     <http_rewrite type="ArrayField">
       <description type="TextField">
