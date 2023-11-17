@@ -891,6 +891,10 @@
         <default>0</default>
         <Required>Y</Required>
       </disable_bot_protection>
+      <disable_gzip type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </disable_gzip>
       <naxsi_whitelist_srcip type="CSVListField">
         <Required>N</Required>
         <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>

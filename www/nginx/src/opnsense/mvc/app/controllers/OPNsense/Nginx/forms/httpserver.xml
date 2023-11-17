@@ -216,6 +216,13 @@
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
   </field>
   <field>
+    <id>httpserver.disable_gzip</id>
+    <label>Disable gzip</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Disables responses gzipping. Makes sense if TLS is used and this method of BREACH attack protection is preferred.</help>
+  </field>
+  <field>
     <id>httpserver.disable_bot_protection</id>
     <label>Disable Bot Protection</label>
     <type>checkbox</type>
