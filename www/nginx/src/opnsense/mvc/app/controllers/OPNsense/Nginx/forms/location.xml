@@ -244,6 +244,13 @@
     <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server.</help>
   </field>
   <field>
+    <id>location.upstream_keepalive</id>
+    <label>Upstream Keepalive Support</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Adds the directives required for upstream keepalive to work (enables HTTP 1.1 and clears the Connection header). Keepalive parameters must be set in Upstream settings also.</help>
+  </field>
+  <field>
     <id>location.proxy_read_timeout</id>
     <label>Proxy Read Timeout</label>
     <type>text</type>

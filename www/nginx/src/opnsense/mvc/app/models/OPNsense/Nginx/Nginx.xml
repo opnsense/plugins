@@ -128,6 +128,18 @@
         <BlankDesc>Weighted Round Robin</BlankDesc>
         <Required>N</Required>
       </load_balancing_algorithm>
+      <keepalive type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+      </keepalive>
+      <keepalive_requests type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </keepalive_requests>
+      <keepalive_timeout type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </keepalive_timeout>
       <host_port type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
@@ -428,7 +440,25 @@
       <websocket type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
+        <Constraints>
+            <check001>
+                <ValidationMessage>WebSocket and Upstream Keepalive support can not be combined.</ValidationMessage>
+                <type>SingleSelectConstraint</type>
+                <addFields>
+                    <field1>upstream_keepalive</field1>
+                </addFields>
+            </check001>
+        </Constraints>
       </websocket>
+      <upstream_keepalive type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+        <Constraints>
+            <check001>
+                <reference>websocket.check001</reference>
+            </check001>
+        </Constraints>
+      </upstream_keepalive>
       <proxy_buffer_size type="IntegerField">
         <Required>N</Required>
         <minValue>1</minValue>
