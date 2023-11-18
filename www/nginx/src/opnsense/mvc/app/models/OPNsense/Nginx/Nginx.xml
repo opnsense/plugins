@@ -65,6 +65,10 @@
         <Required>Y</Required>
         <default>403</default>
       </ban_response>
+      <bots_ua type="CSVListField">
+        <Required>Y</Required>
+        <default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</default>
+      </bots_ua>
       <headers_more_enable type="BooleanField">
         <Required>N</Required>
       </headers_more_enable>
