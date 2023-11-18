@@ -1275,7 +1275,7 @@
                 <ValidationMessage>Can not disable all record types.</ValidationMessage>
                 <type>SingleSelectConstraint</type>
                 <addFields>
-                    <ipv6_off>ipv6_off</ipv6_off>
+                    <field1>ipv6_off</field1>
                 </addFields>
             </check001>
         </Constraints>
@@ -1284,11 +1284,7 @@
         <Required>N</Required>
         <Constraints>
             <check001>
-                <ValidationMessage>Can not disable all record types.</ValidationMessage>
-                <type>SingleSelectConstraint</type>
-                <addFields>
-                    <ipv4_off>ipv4_off</ipv4_off>
-                </addFields>
+                <reference>ipv4_off.check001</reference>
             </check001>
         </Constraints>
       </ipv6_off>
