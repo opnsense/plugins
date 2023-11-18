@@ -38,6 +38,7 @@
         </tbody>
     </table>
 </div>
+<script src="{{ cache_safe('/ui/js/moment-with-locales.min.js') }}"></script>
 <script>
 $(function () {
     $("#grid-ban").UIBootgrid(
@@ -46,6 +47,12 @@ $(function () {
             'options': {
                 selection:false,
                 multiSelect:false,
+                converters: {
+                    timestamp: {
+                        from: function (value) { return moment(value, 'YYYY-MM-DD HH:mm:ss').valueOf(); },
+                        to: function (value) { return moment.unix(value).local().format('YYYY-MM-DD HH:mm:ss'); }
+                    }
+                },
                 formatters: {
                     "delbtn": function (column, row) {
                         return `<button type="button" class="btn btn-xs btn-default command-delete" data-row-id="${row.uuid}"><span class=\"fa fa-unlock-alt\"></span></button>`;
