@@ -35,7 +35,7 @@
             <default>1</default>
             <Required>N</Required>
         </diskio>
-       <internet_speed type="BooleanField">
+        <internet_speed type="BooleanField">
             <default>0</default>
             <Required>N</Required>
         </internet_speed>

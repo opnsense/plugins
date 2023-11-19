@@ -1,5 +1,5 @@
 <form>
-     <field>
+    <field>
         <label>InfluxDB</label>
         <type>header</type>
     </field>
@@ -45,7 +45,7 @@
         <type>checkbox</type>
         <help>This will skip chain and host verification.</help>
     </field>
-     <field>
+    <field>
         <label>InfluxDB v2</label>
         <type>header</type>
     </field>
@@ -91,7 +91,7 @@
         <type>text</type>
         <help>Flush timeout for the v2 Telegraf output in seconds, formatted as a string. If not provided, will default to 5. 0 means no timeout, but is not recommended. Increase if you get timeout errors.</help>
     </field>
-     <field>
+    <field>
         <label>Graphite</label>
         <type>header</type>
     </field>
@@ -137,7 +137,7 @@
         <type>checkbox</type>
         <help>This will enable support for tags.</help>
     </field>
-     <field>
+    <field>
         <label>Graylog</label>
         <type>header</type>
     </field>
@@ -153,7 +153,7 @@
         <type>text</type>
         <help>Set the IP and port where metrics shoud be sent to.</help>
     </field>
-     <field>
+    <field>
         <label>Elasticsearch</label>
         <type>header</type>
     </field>
@@ -193,7 +193,7 @@
         <type>text</type>
         <help>Set the index name.</help>
     </field>
-     <field>
+    <field>
         <label>Prometheus</label>
         <type>header</type>
     </field>
@@ -221,7 +221,7 @@
         <type>checkbox</type>
         <help>Send string metrics as Prometheus labels.</help>
     </field>
-     <field>
+    <field>
         <label>Datadog</label>
         <type>header</type>
     </field>
@@ -243,7 +243,7 @@
         <type>text</type>
         <help>Set the API Key for accessing Datadog.</help>
     </field>
-     <field>
+    <field>
         <label>MQTT</label>
         <type>header</type>
     </field>
@@ -254,10 +254,16 @@
         <help>This will enable writes to a MQTT Broker acting as a mqtt Producer.</help>
     </field>
     <field>
-        <id>output.mqtt_topic</id>
-        <label>MQTT topic</label>
+        <id>output.mqtt_topic_prefix</id>
+        <label>MQTT Topic Prefix</label>
         <type>text</type>
-        <help>MQTT Topic for produced messages.</help>
+        <help>MQTT Topic Prefix - Will be overidden by the Topic if defined below.</help>
+    </field>
+    <field>
+        <id>output.mqtt_topic</id>
+        <label>MQTT Topic</label>
+        <type>text</type>
+        <help>MQTT Topic for produced messages. if left blank, will default to [ mqtt_topic_prefix/{{ .Hostname }}/{{ .PluginName }} ]</help>
     </field>
     <field>
         <id>output.mqtt_servers</id>

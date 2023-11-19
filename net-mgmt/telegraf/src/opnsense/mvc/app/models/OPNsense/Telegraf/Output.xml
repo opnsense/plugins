@@ -143,11 +143,17 @@
             <default>0</default>
             <Required>N</Required>
         </mqtt_enable>
+        <mqtt_topic_prefix type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen are allowed. Do not use more than 128 characters.</ValidationMessage>
+        </mqtt_topic_prefix>
         <mqtt_topic type="TextField">
             <default></default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._-/{} ]){1,200}$/u</mask>
-            <ValidationMessage>Only characters, numbers, a dot, underscore, hyphen and slash allowed. Do not use more than 200 characters.</ValidationMessage>
+            <mask>/^([0-9a-zA-Z._\-\/{}]){1,200}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore, hyphen, slash and curly braces are allowed. Do not use more than 200 characters.</ValidationMessage>
         </mqtt_topic>
         <mqtt_servers type="CSVListField">
             <Required>N</Required>
