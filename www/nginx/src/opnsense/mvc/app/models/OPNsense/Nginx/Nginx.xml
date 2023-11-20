@@ -1175,6 +1175,14 @@
         <Required>N</Required>
         <MinimumValue>0</MinimumValue>
       </proxy_responses>
+      <proxy_connect_timeout type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_connect_timeout>
+      <proxy_timeout type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_timeout>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
