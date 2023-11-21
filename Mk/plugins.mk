@@ -202,7 +202,7 @@ scripts-post:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
@@ -213,7 +213,7 @@ install: check
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
 		FILE="$${FILE%%.in}"; \
 		echo ${LOCALBASE}/$${FILE}; \
@@ -233,16 +233,16 @@ metadata: check
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
 		    tar -C ${.CURDIR}/src -xpf -; \
 	done
 
 remove: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
-	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
