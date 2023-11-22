@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.37
+
+* Add Adjacency Logging to OSPF
+
 1.36
 
 * Added default-information originate option for OSPFv3
