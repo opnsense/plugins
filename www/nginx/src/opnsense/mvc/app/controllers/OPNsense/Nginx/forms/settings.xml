@@ -72,7 +72,7 @@
                 <type>select_multiple</type>
                 <style>tokenize</style>
                 <allownew>true</allownew>
-                <help>List of bots user agents that will be used in bot protection. Uses a well known list by default.</help>
+                <help>List of bot user agents that will be used in bot protection. Uses a well known list by default.</help>
             </field>
             <field>
                 <id>nginx.http.log_perm_ban</id>

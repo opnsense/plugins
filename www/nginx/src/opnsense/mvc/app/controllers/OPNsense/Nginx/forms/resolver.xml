@@ -15,16 +15,16 @@
   </field>
   <field>
     <id>resolver.ipv4_off</id>
-    <label>IPv4 OFF</label>
+    <label>Disable IPv4</label>
     <type>checkbox</type>
-    <help>Don't request ipv4 address.</help>
+    <help>Do not request IPv4 addresses.</help>
     <advanced>true</advanced>
   </field>
   <field>
     <id>resolver.ipv6_off</id>
-    <label>IPv6 OFF</label>
+    <label>Disable IPv6</label>
     <type>checkbox</type>
-    <help>Don't request ipv6 address.</help>
+    <help>Do not request IPv6 addresses.</help>
     <advanced>true</advanced>
   </field>
   <field>
