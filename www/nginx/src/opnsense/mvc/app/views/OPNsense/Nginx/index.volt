@@ -76,7 +76,7 @@
                 BootstrapDialog.show({
                    type: BootstrapDialog.TYPE_INFO,
                    title: "{{ lang._('NGINX config loaded successfully') }}",
-                   message: "{{ lang._('NGINX config loaded. Config file created at') }}" + ": " + moment.unix(data['time']).local().format('YYYY-MM-DD HH:mm:ss'),
+                   message: "{{ lang._('NGINX config loaded. Config file created at') }}" + ": " + (new Date(data['time']*1000)).toLocaleString(),
                    buttons: [{
                        label: 'Ok',
                        action: function(dlg){
@@ -145,7 +145,6 @@
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/dist/configuration.min.js') }}"></script>
-<script src="{{ cache_safe('/ui/js/moment-with-locales.min.js') }}"></script>
 <style>
     #frm_sni_hostname_mapdlg .col-md-4,
     #frm_ipacl_dlg .col-md-4 {

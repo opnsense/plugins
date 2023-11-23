@@ -38,7 +38,6 @@
         </tbody>
     </table>
 </div>
-<script src="{{ cache_safe('/ui/js/moment-with-locales.min.js') }}"></script>
 <script>
 $(function () {
     $("#grid-ban").UIBootgrid(
@@ -49,8 +48,7 @@ $(function () {
                 multiSelect:false,
                 converters: {
                     timestamp: {
-                        from: function (value) { return moment(value, 'YYYY-MM-DD HH:mm:ss').valueOf(); },
-                        to: function (value) { return moment.unix(value).local().format('YYYY-MM-DD HH:mm:ss'); }
+                        to: function (value) { return (new Date(value*1000)).toLocaleString(); }
                     }
                 },
                 formatters: {
