@@ -92,10 +92,11 @@ function wireguard_devices()
     $names = [];
     foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
         if (!empty((string)$node->enabled)) {
-            $names[(string)$node->interface] = [
-                'descr' => sprintf('%s (WireGuard - %s)', (string)$node->interface, (string)$node->name),
+            $device = 'wg' . $node->instance;
+            $names[$device] = [
+                'descr' => sprintf('%s (WireGuard - %s)', $device, (string)$node->name),
                 'ifdescr' => (string)$node->name,
-                'name' => (string)$node->interface
+                'name' => $device,
             ];
         }
     }
