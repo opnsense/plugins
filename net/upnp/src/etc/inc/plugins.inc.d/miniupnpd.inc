@@ -88,7 +88,10 @@ function miniupnpd_stop()
 
 function miniupnpd_configure()
 {
-    return ['bootup' => ['miniupnpd_configure_do']];
+    return [
+        'bootup' => ['miniupnpd_configure_do'],
+        'newwanip' => ['miniupnpd_configure_do'],
+    ];
 }
 
 function miniupnpd_uuid()
