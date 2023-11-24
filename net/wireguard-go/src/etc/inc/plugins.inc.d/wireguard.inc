@@ -50,11 +50,6 @@ function wireguard_services()
         'name' => 'wireguard-go',
     ];
 
-    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
-        $service['name'] = 'wireguard';
-        $service['nocheck'] = true;
-    }
-
     $services[] = $service;
 
     return $services;
@@ -89,14 +84,26 @@ function wireguard_xmlrpc_sync()
     $result['description'] = gettext('WireGuard');
     $result['services'] = ['wireguard-go'];
 
-    if (file_exists('/boot/modules/if_wg.ko') || file_exists('/boot/kernel/if_wg.ko')) {
-        $result['services'] = ['wireguard'];
-    }
-
     return [$result];
 }
 
 function wireguard_devices()
 {
-    return [['pattern' => '^wg', 'volatile' => true]];
+    $names = [];
+    foreach ((new OPNsense\Wireguard\Server())->servers->server->iterateItems() as $key => $node) {
+        if (!empty((string)$node->enabled)) {
+            $names[(string)$node->interface] = [
+                'descr' => sprintf('%s (WireGuard - %s)', (string)$node->interface, (string)$node->name),
+                'ifdescr' => (string)$node->name,
+                'name' => (string)$node->interface
+            ];
+        }
+    }
+    return [[
+        'configurable' => false,
+        'pattern' => '^wg',
+        'type' => 'wireguard',
+        'volatile' => true,
+        'names' => $names,
+    ]];
 }
