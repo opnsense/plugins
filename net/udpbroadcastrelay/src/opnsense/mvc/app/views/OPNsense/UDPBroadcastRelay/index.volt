@@ -96,6 +96,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="description" data-width="2em" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="RevertTTL" data-width="2em" data-type="string"  data-visible="true" data-formatter="boolean">{{ lang._('Use ID as TTL') }}</th>
+                <th data-column-id="msearch" data-width="2em" data-type="string" data-visible="true">{{ lang._('M-SEARCH') }}</th>
                 <th data-column-id="commands" data-width="2em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>

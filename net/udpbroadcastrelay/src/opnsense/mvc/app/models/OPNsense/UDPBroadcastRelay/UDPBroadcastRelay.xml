@@ -50,6 +50,16 @@
             <default>0</default>
             <Required>Y</Required>
          </RevertTTL>
+         <msearch type="OptionField">
+            <default>fwd</default>
+            <Required>Y</Required>
+            <OptionValues>
+               <block>block</block>
+               <fwd>fwd</fwd>
+               <proxy>proxy</proxy>
+               <dial>dial</dial>
+            </OptionValues>
+         </msearch>
          <description type="TextField">
             <Required>N</Required>
             <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
