@@ -6,6 +6,12 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.18
+
+* Update to ddclient 3.11.2 FreeBSD ports version
+* Default to native backend for new installs
+* Fix permission of ddclient.json
+
 1.17
 
 * Update to ddclient 3.11.1 (dnsexit legacy support removed)
