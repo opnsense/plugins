@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
     <version>1.5.1</version>
-    <description>
-        Dynamic DNS client
-    </description>
+    <description>Dynamic DNS client</description>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,7 +24,7 @@
             </daemon_delay>
             <backend type="OptionField">
                 <Required>Y</Required>
-                <Default>ddclient</Default>
+                <Default>opnsense</Default>
                 <ValidationMessage>A backend is required.</ValidationMessage>
                 <OptionValues>
                     <ddclient>ddclient</ddclient>
