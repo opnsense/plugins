@@ -35,19 +35,17 @@
         ajaxGet('/api/dechw/info/powerStatus', {}, function(data, status) {
             if (data['status'] === 'failed') {
                 $('#status').html(data['status_translated']);
-                $('#pwr-table').hide();
+                $('.pwr-container').hide();
                 return;
             }
 
             ['pwr1', 'pwr2'].forEach(function(key) {
                 let status = data[key];
                 let status_translated = data[key + '_translated'];
-                let $circle = $('<div data-toggle="tooltip" title=""></div>').addClass('circle');
-
-                $circle.css('background-color', status === '1' ? 'blue' : 'red');
-                $circle.attr('title', status_translated);
-
-                $('#'+key).append($('<td></td>').append($circle));
+                let $power = $('<span data-toggle="tooltip" title=""></span>').addClass('power fa fa-power-off fa-lg');
+                $power.css('color', status === '1' ? 'blue' : 'red');
+                $power.attr('title', status_translated);
+                $('#'+key).append($power);
             })
 
             $(".circle").tooltip({container: 'body', trigger: 'hover'});
@@ -56,28 +54,41 @@
 </script>
 
 <style>
-    .circle {
-      background-color: red;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      box-shadow: none;
+    #status {
+        margin: 10px;
+    }
+
+    .power {
       margin: 5px;
+      float: right;
     }
 
-    .circle:hover {
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.7);
+    .power:hover {
+      opacity: 0.5;
     }
 
+    .pwr-container {
+      margin: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .data-item {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin: 5px;
+      width: 50%;
+      display: inline-block;
+    }
 </style>
 
-<div>
-    <div id="status"></div>
-    <table id="pwr-table" class="table table-striped table-condensed">
-        <tbody>
-            <tr><th colspan="2"><?=gettext("Power Status");?></th></tr>
-            <tr id="pwr1"><td style="width: 30%;"><?=gettext("Power Supply 1");?></td><tr>
-            <tr id="pwr2"><td style="width: 30%;"><?=gettext("Power Supply 2");?></td><tr>
-        </tbody>
-    </table>
+<div id="status"></div>
+<div class="pwr-container">
+    <div id="pwr1" class="data-item">
+        <strong><?=gettext("Power Supply 1");?></strong>
+    </div>
+    <div id="pwr2" class="data-item">
+        <strong><?=gettext("Power Supply 2");?></strong>
+    </div>
 </div>
