@@ -20,6 +20,8 @@ Changelog
 
 * Fix error with empty tunnel address in instance (contributed by Monviech)
 * Switch "setconf" to "syncconf" on (re)configuration
+* Fix regression of UUID return in setClientAction()
+* Reload the packet filter after reconfiguration
 * Allow instance selection from peer
 * Use "syncconf" on newwanip event
 * CARP event handling improvements
