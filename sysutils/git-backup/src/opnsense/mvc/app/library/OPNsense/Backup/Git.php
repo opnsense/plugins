@@ -145,51 +145,45 @@ class Git extends Base implements IBackupProvider
         file_put_contents($ident_file, $privkey);
         chmod("{$targetdir}/identity", 0600);
         // When there are unprocessed config backups, flush them out.
-	(new Backend())->configdRun("system event config_changed");
-	$retry = 1;
-        do {
-            // configure upstream
-            exec("cd {$targetdir} && " .
-                "{$git} config core.sshCommand " .
-                "\"ssh -i {$ident_file} -o StrictHostKeyChecking=accept-new -o PasswordAuthentication=no\"");
-            $url = (string)$mdl->url;
-            $pos = strpos($url, '//');
-            // inject credentials in url (either username or username:password, depending on transport)
-            if (stripos(trim((string)$mdl->url), 'http') === 0) {
-                $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
-                $url = substr($url, 0, $pos + 2) . "{$cred}@" . substr($url, $pos + 2);
-            } else {
-                $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
-            }
-            exec("cd {$targetdir} && {$git} remote remove origin");
-            exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
-            $pushtxt = shell_exec(
-                "(cd {$targetdir} && {$git} push origin " . escapeshellarg("master:{$mdl->branch}") .
-                " && echo '__exit_ok__') 2>&1"
-            );
-            if (strpos($pushtxt, '__exit_ok__')) {
-                $error_type = null;
-            } elseif (strpos($pushtxt, 'Permission denied') || strpos($pushtxt, 'Authentication failed ')) {
-               $error_type = "authentication failure";
-            } elseif (strpos($pushtxt, 'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED')) {
-                $error_type = "ssh hostkey changed";
-            } elseif (strpos($pushtxt, "remote contains work that you do")) {
-                $error_type = "git out of sync";
-            } elseif (strpos($pushtxt, "Connection reset by peer")) {
-	        $error_type = "connection problems, trying againg...";
-	    } else {
-                $error_type = "unknown error, check log for details";
-            }
-            if (!empty($error_type)) {
-                syslog(LOG_ERR, "git-backup {$error_type} (" . str_replace("\n", " ", $pushtxt) . ")");
-                $retry += 1;
-                sleep(2);
-            } else {
-                // return filelist in git
-                return explode("\n", shell_exec("cd {$targetdir} && git ls-files"));
-	    }
-	} while ($retry <= 3);
-	throw new \Exception($error_type);
+        (new Backend())->configdRun("system event config_changed");
+        // configure upstream
+        exec("cd {$targetdir} && " .
+            "{$git} config core.sshCommand " .
+            "\"ssh -i {$ident_file} -o StrictHostKeyChecking=accept-new -o PasswordAuthentication=no\"");
+        $url = (string)$mdl->url;
+        $pos = strpos($url, '//');
+        // inject credentials in url (either username or username:password, depending on transport)
+        if (stripos(trim((string)$mdl->url), 'http') === 0) {
+            $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
+            $url = substr($url, 0, $pos + 2) . "{$cred}@" . substr($url, $pos + 2);
+        } else {
+            $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
+        }
+        exec("cd {$targetdir} && {$git} remote remove origin");
+        exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
+        sleep(rand(0,6));
+        $pushtxt = shell_exec(
+            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("master:{$mdl->branch}") .
+            " && echo '__exit_ok__') 2>&1"
+        );
+        if (strpos($pushtxt, '__exit_ok__')) {
+            $error_type = null;
+        } elseif (strpos($pushtxt, 'Permission denied') || strpos($pushtxt, 'Authentication failed ')) {
+            $error_type = "authentication failure";
+        } elseif (strpos($pushtxt, 'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED')) {
+            $error_type = "ssh hostkey changed";
+        } elseif (strpos($pushtxt, "remote contains work that you do")) {
+            $error_type = "git out of sync";
+        } else {
+            $error_type = "unknown error, check log for details";
+        }
+        if (!empty($error_type)) {
+            syslog(LOG_ERR, "git-backup {$error_type} (" . str_replace("\n", " ", $pushtxt) . ")");
+            throw new \Exception($error_type);
+        } else {
+            // return filelist in git
+            return explode("\n", shell_exec("cd {$targetdir} && git ls-files"));
+        }
     }
 
     /**
