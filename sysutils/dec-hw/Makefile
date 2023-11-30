@@ -5,4 +5,3 @@ PLUGIN_MAINTAINER=	stephan.de.wit@deciso.com
 PLUGIN_TIER=		2
 
 .include "../../Mk/plugins.mk"
-
