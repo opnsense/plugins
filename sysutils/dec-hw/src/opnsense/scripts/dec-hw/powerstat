@@ -1,0 +1,15 @@
+#!/bin/sh
+
+GPIOC="/dev/gpioc0"
+
+if [ ! -e "$GPIOC" ]; then
+	logger -t "dec-hw" "Error: GPIO device does not exist, exiting."
+	exit 0
+fi
+
+i=1
+for PIN in 4 5; do
+	STATUS=$(gpioctl -f "$GPIOC" "$PIN")
+	printf "pwr%d=%d\n" "$i" "$STATUS"
+	i=$((i + 1))
+done
