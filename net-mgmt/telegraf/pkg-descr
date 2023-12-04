@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.10
+
+* Fix MQTT output and additional UI cleanup (contributed by Pierre Christen)
+
 1.12.9
 
 * Add MQTT output

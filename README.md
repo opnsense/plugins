@@ -94,8 +94,9 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download (pending removal)
+sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download/this (pending removal)
 sysutils/apuled -- PC Engine APU LED control (development only)
+sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
@@ -114,6 +115,7 @@ vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generat
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
+www/squid -- Squid is a caching proxy for the web
 www/web-proxy-sso -- Kerberos authentication module
 ```
 

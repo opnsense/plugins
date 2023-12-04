@@ -67,7 +67,7 @@ function wg_start($server, $fhandle, $ifcfgflag = 'up')
         mwexecf('/sbin/ifconfig wg create name %s', [$server->interface]);
         mwexecf('/sbin/ifconfig %s group wireguard', [$server->interface]);
     }
-    mwexecf('/usr/bin/wg setconf %s %s', [$server->interface, $server->cnfFilename]);
+    mwexecf('/usr/bin/wg syncconf %s %s', [$server->interface, $server->cnfFilename]);
 
     /* The tunneladdress can be empty, so array_filter without callback filters empty strings out. */
     foreach (array_filter(explode(',', (string)$server->tunneladdress)) as $alias) {
@@ -293,6 +293,10 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                 }
             }
         }
+    }
+
+    if (count($server_devs)) {
+        configd_run('filter reload'); /* XXX required for NAT rules, but needs coalescing */
     }
 }
 closelog();
