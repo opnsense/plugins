@@ -357,7 +357,7 @@ class Diff(SyncWithTarget):
                     for message in cert['messages']:
                         print("    " + repr(message))
 
-            for cert in sync['delete']:
+            for cert in sync['deleted']:
                 print(f"\n  DEL: {cert['cert']}")
                 for message in cert['messages']:
                     print("    " + repr(message))
