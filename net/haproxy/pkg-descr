@@ -9,6 +9,9 @@ Plugin Changelog
 Fixed:
 * fix typo in cert sync script
 
+Changed:
+* replace bundled haproxyctl library with haproxy-cli
+
 4.1
 
 Fixed:

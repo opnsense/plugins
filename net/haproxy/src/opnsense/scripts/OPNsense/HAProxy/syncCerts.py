@@ -9,7 +9,6 @@ import OpenSSL
 import json
 from typing import List
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from haproxy.conn import HaPConn
 from haproxy import cmds
 
