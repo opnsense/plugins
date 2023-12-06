@@ -1,6 +1,6 @@
 PLUGIN_NAME=		sunnyvalley
 PLUGIN_VERSION=		1.5
-PLUGIN_COMMENT=		Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
+PLUGIN_COMMENT=		Vendor Repository for Zenarmor (a.k.a Zenarmor, Next Generation Firewall Extensions)
 PLUGIN_MAINTAINER=	opensource@sunnyvalley.io
 PLUGIN_WWW=		https://www.zenarmor.com
 
