@@ -1,0 +1,19 @@
+#!/bin/sh
+if [ -f /usr/local/etc/pkg/repos/SunnyValley.conf.temp ]; then
+      cp /usr/local/etc/pkg/repos/SunnyValley.conf.temp /usr/local/etc/pkg/repos/SunnyValley.conf 
+fi
+
+# check uuid exists
+if [ -f /usr/local/zenarmor/bin/eastpect ]; then 
+    NODE_UUID=$(/usr/local/zenarmor/bin/eastpect -s)
+    if [ ! -z "${NODE_UUID}" ]; then
+        if [ -f /usr/local/etc/pkg/repos/SunnyValley.conf ]; then
+              CN=$(grep -c -Eo '[[:alnum:]]{8}-[[:alnum:]]{4}-[[:alnum:]]{4}-[[:alnum:]]{4}-[[:alnum:]]{12}' /usr/local/etc/pkg/repos/SunnyValley.conf)
+              if [ ${CN} -gt 0 ]; then
+                    sed -i "" -r -E  "s/([[:alnum:]]{8}-[[:alnum:]]{4}-[[:alnum:]]{4}-[[:alnum:]]{4}-[[:alnum:]]{12})/${NODE_UUID}/g" /usr/local/etc/pkg/repos/SunnyValley.conf
+              else 
+                    sed -i "" -r -E  "s/latest/${NODE_UUID}/g" /usr/local/etc/pkg/repos/SunnyValley.conf
+              fi
+        fi
+    fi
+fi

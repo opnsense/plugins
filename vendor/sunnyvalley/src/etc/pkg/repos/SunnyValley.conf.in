@@ -1,8 +1,0 @@
-SunnyValley: {
-  fingerprints: "/usr/local/etc/pkg/fingerprints/SunnyValley",
-  url: "https://updates.zenarmor.com/standart/opnsense/${ABI}/%%PLUGIN_ABI%%/latest",
-  #url: "https://updates.zenarmor.com/premium/opnsense/${ABI}/%%PLUGIN_ABI%%/",
-  signature_type: "fingerprints",
-  priority: 7,
-  enabled: yes
-}
