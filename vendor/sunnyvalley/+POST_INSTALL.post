@@ -1,6 +1,6 @@
 #!/bin/sh
-if [ ! -f /usr/local/etc/pkg/repos/SunnyValley.conf -a -f /usr/local/etc/pkg/repos/SunnyValley.conf.sample]; then
-      cp /usr/local/etc/pkg/repos/SunnyValley.conf.sample /usr/local/etc/pkg/repos/SunnyValley.conf 
+if [ ! -f /usr/local/etc/pkg/repos/SunnyValley.conf -a -f /usr/local/etc/pkg/repos/SunnyValley.conf.shadow]; then
+      cp /usr/local/etc/pkg/repos/SunnyValley.conf.shadow /usr/local/etc/pkg/repos/SunnyValley.conf 
 fi
 
 # check uuid exists
