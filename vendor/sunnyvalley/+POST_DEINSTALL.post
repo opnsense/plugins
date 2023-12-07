@@ -1,0 +1,4 @@
+#!/bin/sh
+if [ -f /usr/local/etc/pkg/repos/SunnyValley.conf ]; then
+      rm -rf  /usr/local/etc/pkg/repos/SunnyValley.conf 
+fi
