@@ -29,8 +29,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<script src="{{ cache_safe('/ui/js/frr/diagnostics_utils.js') }}"></script>
-
 <style>
     .searchbox {
       margin: 8px;
@@ -46,9 +44,24 @@ POSSIBILITY OF SUCH DAMAGE.
             font-style: italic;
         }
     }
-  </style>
-  <link rel="stylesheet" type="text/css" href="{{ cache_safe(theme_file_or_default('/css/jqtree.css', ui_theme|default('opnsense'))) }}">
-  <script src="{{ cache_safe('/ui/js/tree.jquery.min.js') }}"></script>
+    .bootstrap-dialog-body {
+        overflow-x: auto;
+    }
+    .modal-dialog,
+    .modal-content {
+        height: 80%;
+    }
+
+    .modal-body {
+        height: calc(100% - 120px);
+        overflow-y: scroll;
+    }
+    @media (min-width: 768px) {
+        .modal-dialog {
+            width: 90%;
+        }
+    }
+</style>
 
 <script>
     'use strict';
@@ -60,26 +73,26 @@ POSSIBILITY OF SUCH DAMAGE.
          * only display the refresh button on the currently active tab
          */
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-          $(".tab-icon").removeClass("fa-refresh");
-          $("#"+e.target.id).find(".tab-icon").addClass("fa-refresh");
+            $(".tab-icon").removeClass("fa-refresh");
+            $("#"+e.target.id).find(".tab-icon").addClass("fa-refresh");
         });
 
         /**
          * resize tree widgets on window resize
          */
-        $(window).on('resize', resizeTreeWidget);
-
-        /**
-         * delayed search for tree widgets
-         */
-        $(".tree_search").keyup(treeSearchKeyUp);
+        $(window).on('resize', function(){
+            let new_height = $(".page-foot").offset().top -
+                ($(".page-content-head").offset().top + $(".page-content-head").height()) - 160;
+            $(".treewidget").height(new_height);
+            $(".treewidget").css('max-height', new_height + 'px');
+        });
 
         let all_grids = [];
         {% for tab in tabs %}
             /**
              * register refresh event handler for {{ tab['tabhead'] }}
              */
-            $("#refresh-{{ tab['name'] }}").click(function () {
+            $("#{{ tab['name'] }}_tab").click(function () {
             {% switch tab['type'] %}
                 {% case 'generalroutetable' %}
                 {% case 'bgproutetable' %}
@@ -203,46 +216,8 @@ POSSIBILITY OF SUCH DAMAGE.
                     {% break %}
                 {% case 'tree' %}
                     ajaxGet("{{ tab['endpoint'] }}", {}, function (data, status) {
-                        if (status == "success") {
-                            let $tree = $("#tree-{{ tab['name'] }}");
-                            if ($("#tree-{{ tab['name'] }} > ul").length == 0) {
-                                $tree.tree({
-                                    data: dict_to_tree(data['response']),
-                                    autoOpen: false,
-                                    dragAndDrop: false,
-                                    selectable: false,
-                                    closedIcon: $('<i class="fa fa-plus-square-o"></i>'),
-                                    openedIcon: $('<i class="fa fa-minus-square-o"></i>'),
-                                    onCreateLi: function(node, $li) {
-                                        let n_title = $li.find('.jqtree-title');
-                                        n_title.text(n_title.text().replace('&gt;','\>').replace('&lt;','\<'));
-                                        if (node.value !== undefined) {
-                                            $li.find('.jqtree-element').append(
-                                                '&nbsp; <strong>:</strong> &nbsp;' + node.value
-                                            );
-                                        }
-                                        if (node.selected) {
-                                            $li.addClass("node-selected");
-                                        } else {
-                                            $li.removeClass("node-selected");
-                                        }
-                                    }
-                                });
-                                // initial view, collapse first level if there's only one node
-                                if (Object.keys(data['response']).length == 1) {
-                                    for (let key in data['response']) {
-                                        $tree.tree('openNode', $tree.tree('getNodeById', key));
-                                    }
-                                }
-                                //open node on label click
-                                $tree.bind('tree.click', function(e) {
-                                    $tree.tree('toggle', e.node);
-                                });
-                            } else {
-                                let curent_state = $tree.tree('getState');
-                                $tree.tree('loadData', dict_to_tree(data['response']));
-                                $tree.tree('setState', curent_state);
-                            }
+                        if (status == "success" && data.response) {
+                            update_tree(data.response, "#tree-{{ tab['name'] }}");
                         }
                     });
                     $(window).trigger('resize');
@@ -257,13 +232,9 @@ POSSIBILITY OF SUCH DAMAGE.
             {% endswitch %}
             });
 
-            /**
-             * perform data fetch via event handler
-             */
-            $("a[id='{{ tab['name'] }}_tab']").on("shown.bs.tab", function (event) {
-                $("#refresh-{{ tab['name'] }}").click();
-            });
         {% endfor %}
+
+        $(".tree_search").keyup(tree_delayed_live_search);
 
         /**
          * add "sub title" heading
@@ -282,7 +253,7 @@ POSSIBILITY OF SUCH DAMAGE.
     {% for tab in tabs %}
         <li>
             <a data-toggle="tab" href="#{{ tab['name'] }}" id="{{tab['name']}}_tab">
-                {{ tab['tabhead'] }} <span id="refresh-{{ tab['name'] }}" class="fa tab-icon fa-refresh" style="cursor: pointer"></span>
+                {{ tab['tabhead'] }} <span class="fa tab-icon fa-refresh" style="cursor: pointer"></span>
             </a>
         </li>
     {% endfor %}
@@ -435,6 +406,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     </div>
                     {% break %}
                 {% case 'tree' %}
+                  <section class="col-xs-12">
                     <div class="searchbox">
                         <input
                             id="search-{{ tab['name'] }}"
@@ -444,7 +416,8 @@ POSSIBILITY OF SUCH DAMAGE.
                             placeholder="{{ lang._('search') }}"
                         ></input>
                     </div>
-                    <div class="treewidget" style="padding: 8px; overflow-y: scroll; height:400px;" id="tree-{{ tab['name'] }}"></div>
+                    <div class="treewidget" style="padding: 8px; overflow-y: scroll; height:400px;" id="tree-{{tab['name']}}"></div>
+                  </section>
                     {% break %}
                 {% case 'text' %}
                     <pre id="text-{{ tab['name'] }}"></pre>
