@@ -15,11 +15,9 @@
           <NetMaskAllowed>N</NetMaskAllowed>
           <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </listenaddress>
-        <listenport type="IntegerField">
+        <listenport type="PortField">
           <default>9100</default>
           <Required>Y</Required>
-          <MinimumValue>1</MinimumValue>
-          <MaximumValue>65535</MaximumValue>
           <ValidationMessage>Please provide a valid port number between 1 and 65535. Port 9100 is the default.</ValidationMessage>
         </listenport>
         <cpu type="BooleanField">
