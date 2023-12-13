@@ -99,3 +99,18 @@ function bind_configure_do($verbose)
 
     service_log("done.\n", $verbose);
 }
+
+/**
+ *  register syslog facilities
+ * @return array
+ */
+function bind_syslog()
+{
+    $syslogconf = array();
+
+    $syslogconf['bind'] = array(
+        'facility' => array('named'),
+    );
+
+    return $syslogconf;
+}
