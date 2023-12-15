@@ -171,9 +171,6 @@
     #frm_ipacl_dlg .bootstrap-select {
         width: 100% !important;
     }
-    .filter-option {
-        padding: inherit !important;
-    }
     #nginx_conf_container {
         overflow-x: auto;
     }
