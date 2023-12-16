@@ -68,6 +68,28 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <label>SSL settings</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateEnabled</id>
+        <label>Automatic OCSP updates</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable automatic OCSP response updates. Each OCSP response will be updated at least once an hour, and even more frequently if a given OCSP response has an expire date earlier than this one hour limit.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateMinDelay</id>
+        <label>Minimum OCSP Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets the minimum interval (in seconds) between two automatic updates of the same OCSP response.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateMaxDelay</id>
+        <label>Maximum OCSP Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets the maximum interval (in seconds) between two automatic updates of the same OCSP response.]]></help>
+    </field>
+    <field>
         <label>SSL default settings</label>
         <type>header</type>
     </field>

@@ -95,7 +95,12 @@ foreach ($configNodes as $key => $value) {
                                             file_put_contents($output_pem_filename, $pem_content);
                                             chmod($output_pem_filename, 0600);
                                             echo "exported $type to " . $output_pem_filename . "\n";
-                                            $crtlist[] = $output_pem_filename;
+                                            // Check if automatic OCSP updates are enabled.
+                                            if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
+                                              $crtlist[] = $output_pem_filename . " ocsp-update on";
+                                            } else {
+                                              $crtlist[] = $output_pem_filename;
+                                            }
                                         } else {
                                             // In contrast to certificates, CA/CRL content needs to be put in a single file.
                                             // A list of individual files is not supported by HAproxy.

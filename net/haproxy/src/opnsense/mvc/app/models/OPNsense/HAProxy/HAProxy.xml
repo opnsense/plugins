@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -27,6 +27,7 @@
                 <default>0</default>
                 <Required>Y</Required>
             </seamlessReload>
+            <!-- XXX: old value, required for model migration to 4.1.0 -->
             <storeOcsp type="BooleanField">
                 <default>0</default>
                 <Required>N</Required>
@@ -128,6 +129,24 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <ocspUpdateEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ocspUpdateEnabled>
+                <ocspUpdateMinDelay type="IntegerField">
+                    <default>300</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 86400.</ValidationMessage>
+                    <Required>N</Required>
+                </ocspUpdateMinDelay>
+                <ocspUpdateMaxDelay type="IntegerField">
+                    <default>3600</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 86400.</ValidationMessage>
+                    <Required>N</Required>
+                </ocspUpdateMaxDelay>
                 <ssl_defaultsEnabled type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -3027,6 +3046,7 @@
                     <ValidationMessage>Related cron not found.</ValidationMessage>
                     <Required>N</Required>
                 </syncCertsCron>
+                <!-- XXX: old value, required for model migration to 4.1.0 -->
                 <updateOcsp type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>
