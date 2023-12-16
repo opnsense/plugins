@@ -30,9 +30,13 @@ LogType=system
 {% else %}
 LogType=file
 LogFile=/var/log/zabbix/zabbix_proxy.log
+{% if helpers.exists('OPNsense.zabbixproxy.general.logFileSize') %}
 LogFileSize={{OPNsense.zabbixproxy.general.logFileSize}}
 {% endif %}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.debugLevel')
 DebugLevel={{OPNsense.zabbixproxy.general.debugLevel|replace("val_", "")}}
+{% endif %}
 PidFile=/var/run/zabbix/zabbix_proxy.pid
 DBName=/var/db/zabbix/%%PLUGIN_VARIANT%%_proxy.db
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxyofflinebuffer') and OPNsense.zabbixproxy.general.proxyofflinebuffer != '' %}
