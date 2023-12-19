@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2023 Thomas Cekal <thomas@cekal.org>
+    Copyright (c) 2023 Bernhard Frenking <bernhard@frenking.eu>
     Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
