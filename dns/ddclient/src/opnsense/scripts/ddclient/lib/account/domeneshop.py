@@ -71,21 +71,21 @@ class Domeneshop(BaseAccount):
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
-                        "Account %s set new ip %s [%s] for hostnames %s" % (self.description, self.current_address, response.text.strip(), hostnames)
+                        "Account %s set new ip %s [%s] for %s" % (self.description, self.current_address, response.text.strip(), hostnames)
                     )
                 self.update_state(address=self.current_address, status=response.text.split()[0] if response.text else '')
                 return True
             elif response.status_code is 404:
                 syslog.syslog(
                     syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%d - %s], because domain %s could not be found" % (
+                    "Account %s failed to set new ip %s [%d - %s], because %s could not be found" % (
                         self.description, self.current_address, response.status_code, response.text.replace('\n', ''), hostnames
                     )
                 )
             else:
                 syslog.syslog(
                     syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%d - %s] for domain %s" % (
+                    "Account %s failed to set new ip %s [%d - %s] for %s" % (
                         self.description, self.current_address, response.status_code, response.text.replace('\n', ''), hostnames
                     )
                 )
