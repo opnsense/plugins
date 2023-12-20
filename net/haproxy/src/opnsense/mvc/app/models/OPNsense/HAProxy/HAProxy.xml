@@ -814,6 +814,7 @@
                         <http10>HTTP/1.0</http10>
                     </OptionValues>
                 </advertised_protocols>
+                <!-- XXX: deprecated option (scheduled removal in os-haproxy 5.0) -->
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -1053,6 +1054,10 @@
                         <http10>HTTP/1.0</http10>
                     </OptionValues>
                 </ba_advertised_protocols>
+                <forwardFor type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </forwardFor>
                 <forwardedHeader type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>

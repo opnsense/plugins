@@ -9,6 +9,7 @@ Plugin Changelog
 Added:
 * add support for built-in OCSP update feature
 * add support for forwarded header (RFC7239)
+* add option "X-Forwarded-For Header" to backend settings
 
 Fixed:
 * fix typo in cert sync script
@@ -16,6 +17,9 @@ Fixed:
 Changed:
 * move OCSP settings from "Service" to "Global" section
 * replace bundled haproxyctl library with haproxy-cli
+
+Deprecated:
+* frontend option "X-Forwarded-For Header" (the backend option should be used)
 
 Removed:
 * remove OSCP update cron job

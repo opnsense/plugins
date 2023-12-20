@@ -207,9 +207,9 @@
     </field>
     <field>
         <id>frontend.forwardFor</id>
-        <label>X-Forwarded-For header</label>
+        <label>X-Forwarded-For (DEPRECATED)</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
+        <help><![CDATA[This option is DEPRECATED and should no longer be used. A new option is available in backend pool settings.]]></help>
     </field>
     <field>
         <id>frontend.prometheus_enabled</id>
