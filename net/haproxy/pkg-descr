@@ -8,6 +8,7 @@ Plugin Changelog
 
 Added:
 * add support for built-in OCSP update feature
+* add support for forwarded header (RFC7239)
 
 Fixed:
 * fix typo in cert sync script

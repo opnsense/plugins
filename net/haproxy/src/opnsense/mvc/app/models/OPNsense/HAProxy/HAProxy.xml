@@ -1053,6 +1053,23 @@
                         <http10>HTTP/1.0</http10>
                     </OptionValues>
                 </ba_advertised_protocols>
+                <forwardedHeader type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </forwardedHeader>
+                <forwardedHeaderParameters type="OptionField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <proto>proto</proto>
+                        <host>host</host>
+                        <by>by</by>
+                        <by_port>by_port</by_port>
+                        <for>for</for>
+                        <for_port>for_port</for_port>
+                    </OptionValues>
+                </forwardedHeaderParameters>
                 <persistence type="OptionField">
                     <Required>N</Required>
                     <default>sticktable</default>
