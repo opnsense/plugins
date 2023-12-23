@@ -27,7 +27,7 @@
 
 <script>
     {% set placeholder_txt = 'Click the Show Config button to load the current configuration. Please note that this is not a configuration from the running process memory. ' %}
-    {% set placeholder_txt = placeholder_txt ~ 'Also, the displayed configuration may differ from the configuration in OPNSense config if you have made but not applied changes.' %}
+    {% set placeholder_txt = placeholder_txt ~ 'Also, the displayed configuration may differ from the configuration in OPNsense config if you have made but not applied changes.' %}
 
     function bind_naxsi_rule_dl_button() {
         let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
@@ -140,7 +140,7 @@
         $("#conf_test_btn").click(function () {
             ngnx_test_conf();
         });
-    })
+    });
 </script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>

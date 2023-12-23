@@ -248,7 +248,7 @@
     <label>Upstream Keepalive Support</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>Adds the directives required for upstream keepalive to work (enables HTTP 1.1 and clears the Connection header). Mutually exclusive with WebSocket support. Keepalive parameters must be set in Upstream settings also.</help>
+    <help>Adds the directives required for upstream keepalive to work (enables HTTP 1.1 and clears the Connection header). Mutually exclusive with WebSocket support. Keepalive parameters must be set in Upstream settings too.</help>
   </field>
   <field>
     <id>location.proxy_read_timeout</id>
