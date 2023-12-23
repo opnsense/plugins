@@ -36,9 +36,9 @@
   </field>
   <field>
     <id>resolver.timeout</id>
-    <label>Time-Out</label>
+    <label>Time Out</label>
     <type>text</type>
-    <help>Resolver time-out in seconds. NGINX default (if empty) is 30 seconds.</help>
+    <help>Resolver time out in seconds. NGINX default (if empty) is 30 seconds.</help>
     <advanced>true</advanced>
   </field>
 </form>
