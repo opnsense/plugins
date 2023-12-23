@@ -140,7 +140,7 @@
         $("#conf_test_btn").click(function () {
             ngnx_test_conf();
         });
-    })
+    });
 </script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
