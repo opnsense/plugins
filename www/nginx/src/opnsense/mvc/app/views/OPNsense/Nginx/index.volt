@@ -29,6 +29,7 @@
     {% set placeholder_txt = 'Click the Show Config button to load the current configuration. Please note that this is not a configuration from the running process memory. ' %}
     {% set placeholder_txt = placeholder_txt ~ 'Also, the displayed configuration may differ from the configuration in OPNsense config if you have made but not applied changes.' %}
 
+    ngnx_config = [];
     function bind_naxsi_rule_dl_button() {
         let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
         naxsi_rule_download_button.click(function () {
@@ -65,27 +66,32 @@
         $("#config_help_text").hide();
         ajaxCall(url="/api/nginx/settings/showconfig/", sendData={}, callback=function(data,status) {
             if (data['time'] && data['config']) {
-                var L = 0;
-                var content = [];
+                let L = 0;
+                let content = [];
                 $.each(data['config'], function(index, line) {
+                    ngnx_config.push($('<textarea />').html(line).text());
                     L = line.indexOf('# configuration file ') > -1 ? 0 : L + 1;
+                    // line received HTML-encoded. Should be XSS-safe if not decoded before inserting to DOM
                     content.push('<tr><td class="l-number">' + L.toString() + '</td><td class="config-line"><span>' + line + '</span></td></tr>');
                 });
                 $("#nginx_conf tbody").empty().append(content.join());
                 $("#config_help_text").show();
+                if ((typeof navigator.clipboard === 'object') && (typeof navigator.clipboard.writeText === 'function')) {
+                    $('#nginx_config_copy').show();
+                }
                 BootstrapDialog.show({
                    type: BootstrapDialog.TYPE_INFO,
                    title: "{{ lang._('NGINX config loaded successfully') }}",
                    message: "{{ lang._('NGINX config loaded. Config file created at') }}" + ": " + (new Date(data['time']*1000)).toLocaleString(),
                    buttons: [{
-                       label: 'Ok',
+                       label: '{{ lang._('Ok') }}',
                        action: function(dlg){
                            dlg.close();
                        }
                    }]
                 });
             } else {
-                  $("#nginx_conf").html("{{ lang._('Empty response from the backend. Please check logs.') }}");
+                  $("#nginx_conf td.placeholdertd").text("{{ lang._('Empty response from the backend. Please check logs.') }}");
             }
         });
     }
@@ -98,7 +104,7 @@
                     title: "{{ lang._('NGINX config test failed') }}",
                     message: data['response'],
                     buttons: [{
-                        label: 'Ok',
+                        label: '{{ lang._('Ok') }}',
                         action: function(dlg){
                              dlg.close();
                         }
@@ -110,7 +116,7 @@
                     title: "{{ lang._('NGINX config test is successful') }}",
                     message: "{{ lang._('NGINX config test is successful') }}",
                     buttons: [{
-                        label: 'Ok',
+                        label: '{{ lang._('Ok') }}',
                         action: function(dlg){
                              dlg.close();
                         }
@@ -120,15 +126,13 @@
         });
     }
 
-    $( document ).ready(function() {
+    $(function() {
         $("#nginx_config_copy").click(function () {
-            $(this).fadeOut();
-            let conf_to_clipboard = [];
-            $('.config-line').each(function() {
-                conf_to_clipboard.push($(this).text())
-            });
-            navigator.clipboard.writeText(conf_to_clipboard.join('\n'));
-            $(this).fadeIn();
+            if (ngnx_config.length) {
+                $(this).fadeOut();
+                navigator.clipboard.writeText(ngnx_config.join('\n'));
+                $(this).fadeIn();
+            }
         });
         $("#subtab_item_nginx-other-config-preview").click(function () {
             $("#nginx_conf tbody").empty().append('<tr><td class="placeholdertd">{{ lang._(placeholder_txt) }}</td></tr>');
@@ -145,66 +149,7 @@
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/dist/configuration.min.js') }}"></script>
-<style>
-    #frm_sni_hostname_mapdlg .col-md-4,
-    #frm_ipacl_dlg .col-md-4 {
-        width: 50%;
-    }
-    #frm_sni_hostname_mapdlg td > input[type="text"],
-    #frm_ipacl_dlg td > input[type="text"] {
-        width: 100%;
-        max-width: 100%;
-    }
-    #frm_sni_hostname_mapdlg .col-md-5,
-    #frm_ipacl_dlg .col-md-5 {
-        width: 25%;
-    }
-    #row_snihostname\.data .row,
-    #row_ipacl\.data .row {
-        padding-top: 5px;
-    }
-    #row_snihostname\.data .row div,
-    #row_ipacl\.data .row div {
-        padding: 0;
-    }
-    #sni_hostname_mapdlg .bootstrap-select,
-    #frm_ipacl_dlg .bootstrap-select {
-        width: 100% !important;
-    }
-    #nginx_conf_container {
-        overflow-x: auto;
-    }
-    .ngx_conf_table {
-        white-space: pre-wrap;
-        word-break: break-word;
-    }
-    .ngx_conf_table_body {
-        display: grid;
-        height: 400px;
-        overflow-y: auto;
-    }
-    .l-number {
-        position: relative;
-        width: 1%;
-        min-width: 50px;
-        padding-right: 20px;
-        padding-left: 1px;
-        font-family: ui-monospace,monospace;
-        text-align: right;
-        white-space: nowrap;
-        vertical-align: top;
-        user-select: none;
-        filter: brightness(2.0);
-        filter: contrast(0.3);
-    }
-    .placeholdertd {
-        padding: 10px;
-    }
-    #nginx_config_copy {
-        cursor: pointer;
-    }
-</style>
-
+<link rel="stylesheet" href="{{ cache_safe('/ui/css/nginx/index.css') }}" type="text/css" />
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
@@ -840,16 +785,16 @@
     </div>
     <div id="subtab_nginx-other-config-preview" class="tab-pane fade">
         <div id="nginx_conf_container" class="nginx_table_responsive">
-            <pre style="margin: 0 0 0;"><table class="ngx_conf_table" id="nginx_conf">
+            <table class="ngx_conf_table" id="nginx_conf">
                 <tbody class="ngx_conf_table_body"></tbody>
-            </table></pre>
+            </table>
             <table class="table table-striped table-condensed">
                 <tbody>
                     <tr>
                         <td>
                             <div id="config_help_text" style="display:none">
                                 {{ lang._("Configuration files may contain sensitive information, keep it safe.") }}
-                                <a id="nginx_config_copy">{{ lang._('Click here to copy to clipboard.') }}</a>
+                                <a id="nginx_config_copy" style="display:none">{{ lang._('Click here to copy to clipboard.') }}</a>
                             </div>
                             <div>
                                 <button class="btn btn-primary" id="conf_show_btn" data-type="config" type="button"><b>{{ lang._('Show Config') }}</b></button>
