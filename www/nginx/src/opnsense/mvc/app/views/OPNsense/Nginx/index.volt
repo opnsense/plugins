@@ -64,12 +64,15 @@
 
         $("#nginx_conf tbody").empty().append('<tr><td class="placeholdertd">{{ lang._("Waiting for response..") }}</td></tr>');
         $("#config_help_text").hide();
+        // clear existing config in memory (if any)
+        ngnx_config = [];
         ajaxCall(url="/api/nginx/settings/showconfig/", sendData={}, callback=function(data,status) {
             if (data['time'] && data['config']) {
                 let L = 0;
                 let content = [];
                 $.each(data['config'], function(index, line) {
-                    ngnx_config.push($('<textarea />').html(line).text());
+                    // use lodash unescape to safely decode html chars in line and store for clipboard copy
+                    ngnx_config.push(_.unescape(line));
                     L = line.indexOf('# configuration file ') > -1 ? 0 : L + 1;
                     // line received HTML-encoded. Should be XSS-safe if not decoded before inserting to DOM
                     content.push('<tr><td class="l-number">' + L.toString() + '</td><td class="config-line"><span>' + line + '</span></td></tr>');
