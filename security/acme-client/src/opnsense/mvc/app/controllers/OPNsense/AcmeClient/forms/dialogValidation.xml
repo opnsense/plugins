@@ -1387,6 +1387,21 @@
         <label>Password</label>
         <type>password</type>
     </field>
+     <field>
+        <label>EasyDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_easydns</style>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apitoken</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apikey</id>
+        <label>Api Key</label>
+        <type>password</type>
+    </field>
     <field>
         <label>EUserv</label>
         <type>header</type>
