@@ -16,6 +16,7 @@ Fixed:
 * fix typo in cert sync script
 
 Changed:
+* upgrade to HAProxy 2.8 release series (#3459)
 * change default for HTTP/2 to enabled (only new frontends/backends)
 * add "no-alpn" option if HTTP/2 is not enabled (TLS-enabled frontends)
 * move OCSP settings from "Service" to "Global" section
