@@ -201,6 +201,42 @@
                     <default>TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256</default>
                     <Required>N</Required>
                 </ssl_cipherSuites>
+                <h2_initialWindowSize type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSize>
+                <h2_initialWindowSizeOutgoing type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSizeOutgoing>
+                <h2_initialWindowSizeIncoming type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSizeIncoming>
+                <h2_maxConcurrentStreams type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreams>
+                <h2_maxConcurrentStreamsOutgoing type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreamsOutgoing>
+                <h2_maxConcurrentStreamsIncoming type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreamsIncoming>
             </tuning>
             <defaults>
                 <maxConnections type="IntegerField">

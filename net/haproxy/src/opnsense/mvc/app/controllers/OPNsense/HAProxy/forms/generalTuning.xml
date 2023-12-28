@@ -132,4 +132,44 @@
         <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
     </field>
+    <field>
+        <label>HTTP/2 Performance</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSize</id>
+        <label>Initial window size</label>
+        <type>text</type>
+        <help><![CDATA[Sets the default value for the HTTP/2 initial window size, on both incoming and outgoing connections. The default value is 65536.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSizeOutgoing</id>
+        <label>Initial window size (outgoing)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 initial window size for outgoing connections, which is the number of bytes the server can respond to before waiting for an acknowledgment from HAProxy.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSizeIncoming</id>
+        <label>Initial window size (incoming)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 initial window size for incoming connections, which is the number of bytes the client can upload before waiting for an acknowledgment from HAProxy.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreams</id>
+        <label>Max concurrent streams</label>
+        <type>text</type>
+        <help><![CDATA[Sets the default HTTP/2 maximum number of concurrent streams per connection (i.e. the number of outstanding requests on a single connection). The default value is 100.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreamsOutgoing</id>
+        <label>Max concurrent streams (outgoing)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 maximum number of concurrent streams per outgoing connection (i.e. the number of outstanding requests on a single connection to a server).]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreamsIncoming</id>
+        <label>Max concurrent streams (incoming)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 maximum number of concurrent streams per incoming connection (i.e. the number of outstanding requests on a single connection from a client).]]></help>
+    </field>
 </form>

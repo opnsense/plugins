@@ -10,6 +10,7 @@ Added:
 * add support for built-in OCSP update feature
 * add support for forwarded header (RFC7239)
 * add option "X-Forwarded-For Header" to backend settings
+* add options for HTTP/2 performance tuning
 
 Fixed:
 * fix typo in cert sync script
