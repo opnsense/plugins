@@ -796,7 +796,7 @@
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
                 <http2Enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>N</Required>
                 </http2Enabled>
                 <http2Enabled_nontls type="BooleanField">
@@ -1036,7 +1036,7 @@
                     <Required>N</Required>
                 </linkedMailer>
                 <http2Enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>N</Required>
                 </http2Enabled>
                 <http2Enabled_nontls type="BooleanField">
