@@ -439,6 +439,7 @@
                         <dns_desec>deSEC.io</dns_desec>
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
+                        <dns_dnsexit>DNSExit</dns_dnsexit>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
@@ -607,6 +608,15 @@
                 <dns_dgon_key type="TextField">
                     <Required>N</Required>
                 </dns_dgon_key>
+                <dns_dnsexit_auth_user type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_auth_user>
+                <dns_dnsexit_auth_pass type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_auth_pass>
+                <dns_dnsexit_api type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_api>
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
