@@ -198,7 +198,8 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            $config_text .= "secure_mode=yes\n";
+            /* set secure mode, checkbox in ui is for disabling rather than enabling */
+            $config_text .= "secure_mode=" . (empty($upnp_config['secure_mode']) ? "yes" : "no") . "\n";
 
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {

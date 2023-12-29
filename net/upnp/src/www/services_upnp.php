@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'overridesubnet',
         'overridewanip',
         'permdefault',
+        'secure_mode',
         'stun_host',
         'stun_port',
         'num_permuser',
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // save form data
         $upnp = [];
         // boolean types
-        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault'] as $fieldname) {
+        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'secure_mode'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
@@ -374,6 +375,15 @@ include("head.inc");
                        <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_permdefault">
                          <?=gettext("By default deny access to service?");?>
+                       </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_secure_mode" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Disable secure mode");?></td>
+                      <td>
+                       <input name="secure_mode" type="checkbox" value="yes" <?=!empty($pconfig['secure_mode']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_secure_mode">
+                         <?=gettext("Secure mode means that a UPnP client can only add port mappings to its own IP address.");?>
                        </div>
                       </td>
                     </tr>
