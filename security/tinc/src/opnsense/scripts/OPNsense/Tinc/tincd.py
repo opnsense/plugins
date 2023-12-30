@@ -32,10 +32,10 @@ import os
 import sys
 import glob
 import pipes
-import xml.etree.ElementTree
 import shutil
 import subprocess
 import ipaddress
+from lxml import etree
 from lib import objects
 
 def write_file(filename, content, mode=0o600):
@@ -48,7 +48,7 @@ def write_file(filename, content, mode=0o600):
 def read_config(config_filename):
     result = list()
     if os.path.isfile(config_filename):
-        for network in xml.etree.ElementTree.parse(config_filename).getroot():
+        for network in etree.parse(config_filename).getroot():
             Network_obj = objects.Network()
             for network_prop in network:
                 Network_obj.set(network_prop.tag, network_prop)
