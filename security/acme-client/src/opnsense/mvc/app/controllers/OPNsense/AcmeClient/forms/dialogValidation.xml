@@ -227,6 +227,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Bunny</label>
+        <type>header</type>
+        <style>table_dns table_dns_bunny</style>
+    </field>
+    <field>
+        <id>validation.dns_bunny_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Cloudflare</label>
         <type>header</type>
         <style>table_dns table_dns_cf</style>
@@ -1405,6 +1415,21 @@
     <field>
         <id>validation.dns_schlundtech_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+     <field>
+        <label>EasyDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_easydns</style>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apitoken</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apikey</id>
+        <label>Api Key</label>
         <type>password</type>
     </field>
     <field>
