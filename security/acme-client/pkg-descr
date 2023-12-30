@@ -8,11 +8,12 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+* add support for DNSExit
+
 3.19
 
 Added:
 * add IPv64.net DNS API (#3504)
-* add support for DNSExit
 
 Fixed:
 * fix Proxmox VE deployhook (#3517)
