@@ -367,6 +367,26 @@
         <type>text</type>
     </field>
     <field>
+        <label>DNSExit</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsexit</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_auth_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_auth_pass</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_api</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>DNSimple</label>
         <type>header</type>
         <style>table_dns table_dns_dnsimple</style>
