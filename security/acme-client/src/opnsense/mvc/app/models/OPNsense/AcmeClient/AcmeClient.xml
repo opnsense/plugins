@@ -509,6 +509,7 @@
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
+                        <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
@@ -1172,6 +1173,12 @@
                 <dns_regru_password type="TextField">
                     <Required>N</Required>
                 </dns_regru_password>
+                <dns_world4you_username type="TextField">
+                    <Required>N</Required>
+                </dns_world4you_username>
+                <dns_world4you_password type="TextField">
+                    <Required>N</Required>
+                </dns_world4you_password>
             </validation>
         </validations>
         <actions>

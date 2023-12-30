@@ -9,9 +9,11 @@ Plugin Changelog
 ================
 
 3.20
+
 Added:
 * add Bunny DNS API
 * add support for DNSExit
+* add World4You DNS API (#3722)
 
 3.19
 
