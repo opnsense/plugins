@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.4.0</version>
+    <version>3.5.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -1206,7 +1206,6 @@
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
-                        <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
@@ -1219,16 +1218,6 @@
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
-                <highwinds_account_hash type="TextField">
-                    <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
-                </highwinds_account_hash>
-                <highwinds_access_token type="TextField">
-                    <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
-                </highwinds_access_token>
                 <sftp_host type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,255}$/u</mask>

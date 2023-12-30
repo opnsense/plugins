@@ -26,23 +26,6 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_configd_upload_highwinds</style>
-    </field>
-    <field>
-        <id>action.highwinds_account_hash</id>
-        <label>Account Hash</label>
-        <type>text</type>
-        <help>Account hash for Highwinds API.</help>
-    </field>
-    <field>
-        <id>action.highwinds_access_token</id>
-        <label>Access Token</label>
-        <type>text</type>
-        <help>Access token for Highwinds API.</help>
-    </field>
-    <field>
-        <label>Required Parameters</label>
-        <type>header</type>
         <style>method_table method_table_configd_upload_sftp</style>
     </field>
     <field>
