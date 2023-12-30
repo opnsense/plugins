@@ -15,6 +15,9 @@ Added:
 * add DNSExit DNS API (#3724)
 * add World4You DNS API (#3722)
 
+Changed:
+* support token authentication in Gandi LiveDNS (#3526)
+
 Fixed:
 * fix 2FA support in Synology automation (#3627)
 

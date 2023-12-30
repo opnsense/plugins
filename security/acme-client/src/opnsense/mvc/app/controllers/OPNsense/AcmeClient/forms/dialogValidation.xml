@@ -543,9 +543,15 @@
         <style>table_dns table_dns_gandi_livedns</style>
     </field>
     <field>
-        <id>validation.dns_gandi_livedns_key</id>
-        <label>Key</label>
+        <id>validation.dns_gandi_livedns_token</id>
+        <label>Personal Access Token</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_gandi_livedns_key</id>
+        <label>API Key (DEPRECATED)</label>
+        <type>text</type>
+        <help>The API Key is the previous mechanism that was replaced with Personal Access Tokens. API Keys should no longer be used.</help>
     </field>
     <field>
         <label>Google Cloud DNS</label>

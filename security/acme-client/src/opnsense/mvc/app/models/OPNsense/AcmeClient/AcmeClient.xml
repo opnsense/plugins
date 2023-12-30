@@ -683,6 +683,9 @@
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
+                <dns_gandi_livedns_token type="TextField">
+                    <Required>N</Required>
+                </dns_gandi_livedns_token>
                 <dns_gcloud_key type="TextField">
                     <Required>N</Required>
                 </dns_gcloud_key>
