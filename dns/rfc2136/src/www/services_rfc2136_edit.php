@@ -257,7 +257,7 @@ include("head.inc");
                       <button name="save" type="submit" class="btn btn-primary" value="save"><?= gettext('Save') ?></button>
                       <?php if (isset($id)): ?>
                         <button name="force" type="submit" class="btn btn-primary" value="force"><?= gettext('Save and Force Update') ?></button>
-                        <input name="id" type="hidden" value="<?=$id;?>" />
+                        <input name="id" type="hidden" value="<?=htmlspecialchars($id);?>" />
                       <?php endif; ?>
                       <a href="services_rfc2136.php" class="btn btn-default"><?= gettext('Cancel') ?></a>
                     </td>
