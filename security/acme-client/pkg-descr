@@ -15,6 +15,9 @@ Added:
 * add support for DNSExit
 * add World4You DNS API (#3722)
 
+Fixed:
+* fix 2FA support in Synology deployhook (#3627)
+
 Removed:
 * remove automation: Highwinds CDN (#3626)
 
