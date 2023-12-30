@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
- * All rights reserved.
+ * Copyright (C) 2023 Frank Wall
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,20 +25,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Upload certificate to Highwinds CDN API
+ * World4You DNS API
  * @package OPNsense\AcmeClient
  */
-class ConfigdUploadHighwinds extends Base implements LeAutomationInterface
+class DnsWorld4you extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $command = 'acmeclient upload_highwinds ' . $this->cert_id . ' ' . $this->config->id;
-        $this->command = $command;
-        return true;
+        $this->acme_env['WORLD4YOU_USERNAME'] = (string)$this->config->dns_world4you_username;
+        $this->acme_env['WORLD4YOU_PASSWORD'] = (string)$this->config->dns_world4you_password;
     }
 }

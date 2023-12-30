@@ -9,9 +9,17 @@ Plugin Changelog
 ================
 
 3.20
+
 Added:
-* add Bunny DNS API
-* add support for DNSExit
+* add Bunny DNS API (#3715)
+* add DNSExit DNS API (#3724)
+* add World4You DNS API (#3722)
+
+Fixed:
+* fix 2FA support in Synology automation (#3627)
+
+Removed:
+* remove automation: Highwinds CDN (#3626)
 
 3.19
 
