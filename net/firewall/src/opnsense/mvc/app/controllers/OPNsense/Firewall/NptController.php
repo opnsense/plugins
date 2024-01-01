@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Deciso B.V.
+ * Copyright (C) 2023 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,24 +25,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+namespace OPNsense\Firewall;
 
-
- /**
-  * @param $fw
-  */
-function pfplugin_firewall($fw)
+class NptController extends \OPNsense\Base\IndexController
 {
-    $mdlFilter = new OPNsense\Firewall\Filter();
-    foreach ($mdlFilter->rules->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $content = $rule->serialize();
-         $content["#ref"] = "ui/firewall/filter#" . (string)$rule->getAttributes()['uuid'];
-         $fw->registerFilterRule($rule->getPriority(), $content);
-    }
-
-    foreach ($mdlFilter->snatrules->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $fw->registerSNatRule(50, $rule->serialize());
-    }
-    foreach ($mdlFilter->npt->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $fw->registerNptRule(50, $rule->serialize());
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Firewall/filter');
+        $this->view->ruleController = "npt";
+        $this->view->formDialogFilterRule = $this->getForm("dialogNptRule");
     }
 }

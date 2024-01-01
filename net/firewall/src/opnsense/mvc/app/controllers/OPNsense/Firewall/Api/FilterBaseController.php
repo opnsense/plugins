@@ -30,6 +30,7 @@ namespace OPNsense\Firewall\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Firewall\Category;
 
 /**
  * Class FilterBaseController implements actions for various types
@@ -39,6 +40,45 @@ abstract class FilterBaseController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'filter';
     protected static $internalModelClass = 'OPNsense\Firewall\Filter';
+    protected static $categorysource = null;
+
+    /**
+     * list categories and usage
+     * @return array
+     */
+    public function listCategoriesAction()
+    {
+        $response = ['rows' => []];
+        $catcount = [];
+        if (!empty(static::$categorysource)) {
+            $node = $this->getModel();
+            foreach (explode('.', static::$categorysource) as $ref) {
+                $node = $node->$ref;
+            }
+            foreach ($node->iterateItems() as $item) {
+                if (!empty((string)$item->categories)) {
+                    foreach (explode(',', (string)$item->categories) as $cat) {
+                        if (!isset($catcount[$cat])) {
+                            $catcount[$cat] = 0;
+                        }
+                        $catcount[$cat] += 1;
+                    }
+                }
+            }
+        }
+        foreach ((new Category())->categories->category->iterateItems() as $key => $category) {
+            $response['rows'][] = [
+                "uuid" => $key,
+                "name" => (string)$category->name,
+                "color" => (string)$category->color,
+                "used" => isset($catcount[$key]) ? $catcount[$key] : 0
+            ];
+        }
+        array_multisort(array_column($response['rows'], "name"), SORT_ASC, SORT_NATURAL, $response['rows']);
+
+        return $response;
+    }
+
 
     public function applyAction($rollback_revision = null)
     {

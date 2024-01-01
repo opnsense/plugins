@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Deciso B.V.
+ * Copyright (C) 2023 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,24 +25,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+namespace OPNsense\Firewall\Api;
 
-
- /**
-  * @param $fw
-  */
-function pfplugin_firewall($fw)
+class NptController extends FilterBaseController
 {
-    $mdlFilter = new OPNsense\Firewall\Filter();
-    foreach ($mdlFilter->rules->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $content = $rule->serialize();
-         $content["#ref"] = "ui/firewall/filter#" . (string)$rule->getAttributes()['uuid'];
-         $fw->registerFilterRule($rule->getPriority(), $content);
+    protected static $categorysource = "npt.rule";
+
+    public function searchRuleAction()
+    {
+        $category = $this->request->get('category');
+        $filter_funct = function ($record) use ($category) {
+            return empty($category) || array_intersect(explode(',', $record->categories), $category);
+        };
+        return $this->searchBase("npt.rule", ['enabled', 'sequence', 'description'], "sequence", $filter_funct);
     }
 
-    foreach ($mdlFilter->snatrules->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $fw->registerSNatRule(50, $rule->serialize());
+    public function setRuleAction($uuid)
+    {
+        return $this->setBase("rule", "npt.rule", $uuid);
     }
-    foreach ($mdlFilter->npt->rule->sortedBy(["sequence"]) as $key => $rule) {
-         $fw->registerNptRule(50, $rule->serialize());
+
+    public function addRuleAction()
+    {
+        return $this->addBase("rule", "npt.rule");
+    }
+
+    public function getRuleAction($uuid = null)
+    {
+        return $this->getBase("rule", "npt.rule", $uuid);
+    }
+
+    public function delRuleAction($uuid)
+    {
+        return $this->delBase("npt.rule", $uuid);
+    }
+
+    public function toggleRuleAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("npt.rule", $uuid, $enabled);
     }
 }

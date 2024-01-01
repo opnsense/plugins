@@ -100,6 +100,17 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </log>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
@@ -184,6 +195,17 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </log>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
@@ -191,5 +213,38 @@
                 </description>
             </rule>
         </snatrules>
+        <npt>
+            <rule type=".\SourceNatRuleField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                    <Default>lan</Default>
+                    <AllowDynamic>Y</AllowDynamic>
+                </interface>
+                <source_net type="NetworkAliasField">
+                    <Required>Y</Required>
+                </source_net>
+                <destination_net type="NetworkAliasField"/>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </rule>
+        </npt>
     </items>
 </model>
