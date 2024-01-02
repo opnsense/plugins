@@ -54,7 +54,7 @@ class Domeneshop(BaseAccount):
     def execute(self):
         if super().execute():
             hostnames = self.settings.get('hostnames')
-            
+
             # DNS update request using the "IP update protocol"
             url = f'https://api.domeneshop.no/v0/dyndns/update?hostnames={hostnames}&myip={str(self.current_address)}'
             req_opts = {
@@ -64,8 +64,8 @@ class Domeneshop(BaseAccount):
                     'User-Agent': 'OPNsense-dyndns'
                 }
             }
-            response = requests.get(**req_opts)            
-            
+            response = requests.get(**req_opts)
+
             # Parse response and update state and log
             if response.status_code is 204:
                 if self.is_verbose:

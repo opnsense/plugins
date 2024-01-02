@@ -42,6 +42,5 @@ class DnsDnsexit extends Base implements LeValidationInterface
         $this->acme_env['DNSEXIT_AUTH_USER'] = (string)$this->config->dns_dnsexit_auth_user;
         $this->acme_env['DNSEXIT_AUTH_PASS'] = (string)$this->config->dns_dnsexit_auth_pass;
         $this->acme_env['DNSEXIT_API_KEY'] = (string)$this->config->dns_dnsexit_api;
-        
     }
 }
