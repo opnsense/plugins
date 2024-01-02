@@ -30,6 +30,7 @@ namespace OPNsense\Firewall\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Firewall\Alias;
 use OPNsense\Firewall\Category;
 
 /**
@@ -77,6 +78,44 @@ abstract class FilterBaseController extends ApiMutableModelControllerBase
         array_multisort(array_column($response['rows'], "name"), SORT_ASC, SORT_NATURAL, $response['rows']);
 
         return $response;
+    }
+
+    /**
+     * list of available network options
+     * @return array
+     */
+    public function listNetworkSelectOptionsAction()
+    {
+        $result = [
+            'single' => [
+                'label' => gettext("Single host or Network")
+            ],
+            'aliases' => [
+                'label' => gettext("Aliases"),
+                'items' => []
+            ],
+            'networks' => [
+                'label' => gettext("Networks"),
+                'items' => [
+                    'any' => gettext('any'),
+                    '(self)' => gettext("This Firewall")
+                ]
+            ]
+        ];
+        foreach ((Config::getInstance()->object())->interfaces->children() as $ifname => $ifdetail) {
+            $descr = htmlspecialchars(!empty($ifdetail->descr) ? $ifdetail->descr : strtoupper($ifname));
+            $result['networks']['items'][$ifname] = $descr . " " . gettext("net");
+            if (!isset($ifdetail->virtual)) {
+                $result['networks']['items'][$ifname . "ip"] = $descr . " " . gettext("address");
+            }
+        }
+        foreach ((new Alias())->aliases->alias->iterateItems() as $alias) {
+            if (strpos((string)$alias->type, "port") === false) {
+                $result['aliases']['items'][(string)$alias->name] = (string)$alias->name;
+            }
+        }
+
+        return $result;
     }
 
 
