@@ -57,7 +57,7 @@
     <family type="TextField">
       <Required>N</Required>
       <!-- series of hex arrays -->
-      <mask>/^[a-fA-f0-9,]+$/</mask>
+      <mask>/^[a-fA-F0-9,]+$/</mask>
     </family>
     <bandwithrate type="IntegerField">
       <Required>N</Required>
