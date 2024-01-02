@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
- * All rights reserved.
+ * Copyright (C) 2023 Frank Wall
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,17 +31,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Gandi LiveDNS API
+ * World4You DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsGandiLivedns extends Base implements LeValidationInterface
+class DnsWorld4you extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        if (!empty((string)$this->config->dns_gandi_livedns_token)) {
-            $this->acme_env['GANDI_LIVEDNS_TOKEN'] = (string)$this->config->dns_gandi_livedns_token;
-        } else {
-            $this->acme_env['GANDI_LIVEDNS_KEY'] = (string)$this->config->dns_gandi_livedns_key;
-        }
+        $this->acme_env['WORLD4YOU_USERNAME'] = (string)$this->config->dns_world4you_username;
+        $this->acme_env['WORLD4YOU_PASSWORD'] = (string)$this->config->dns_world4you_password;
     }
 }

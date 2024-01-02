@@ -227,6 +227,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Bunny</label>
+        <type>header</type>
+        <style>table_dns table_dns_bunny</style>
+    </field>
+    <field>
+        <id>validation.dns_bunny_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Cloudflare</label>
         <type>header</type>
         <style>table_dns table_dns_cf</style>
@@ -353,6 +363,26 @@
     </field>
     <field>
         <id>validation.dns_dgon_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>DNSExit</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsexit</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_auth_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_auth_pass</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_dnsexit_api</id>
         <label>API Key</label>
         <type>text</type>
     </field>
@@ -513,9 +543,15 @@
         <style>table_dns table_dns_gandi_livedns</style>
     </field>
     <field>
-        <id>validation.dns_gandi_livedns_key</id>
-        <label>Key</label>
+        <id>validation.dns_gandi_livedns_token</id>
+        <label>Personal Access Token</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_gandi_livedns_key</id>
+        <label>API Key (DEPRECATED)</label>
+        <type>text</type>
+        <help>The API Key is the previous mechanism that was replaced with Personal Access Tokens. API Keys should no longer be used.</help>
     </field>
     <field>
         <label>Google Cloud DNS</label>
@@ -1387,6 +1423,21 @@
         <label>Password</label>
         <type>password</type>
     </field>
+     <field>
+        <label>EasyDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_easydns</style>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apitoken</id>
+        <label>API Token</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_easydns_apikey</id>
+        <label>Api Key</label>
+        <type>password</type>
+    </field>
     <field>
         <label>EUserv</label>
         <type>header</type>
@@ -1608,6 +1659,21 @@
     </field>
     <field>
         <id>validation.dns_regru_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>World4You</label>
+        <type>header</type>
+        <style>table_dns table_dns_world4you</style>
+    </field>
+    <field>
+        <id>validation.dns_world4you_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_world4you_password</id>
         <label>Password</label>
         <type>password</type>
     </field>

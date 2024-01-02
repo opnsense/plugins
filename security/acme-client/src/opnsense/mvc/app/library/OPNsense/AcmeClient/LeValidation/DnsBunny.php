@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
- * All rights reserved.
+ * Copyright (C) 2023 Liam Steckler <liam@liamsteckler.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,20 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Upload certificate to Highwinds CDN API
+ * Bunny DNS API
  * @package OPNsense\AcmeClient
  */
-class ConfigdUploadHighwinds extends Base implements LeAutomationInterface
+class DnsBunny extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $command = 'acmeclient upload_highwinds ' . $this->cert_id . ' ' . $this->config->id;
-        $this->command = $command;
-        return true;
+        $this->acme_env['BUNNY_API_KEY'] = (string)$this->config->dns_bunny_api_key;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2023 sattamjh
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,17 +32,15 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Gandi LiveDNS API
+ * Dnsexit DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsGandiLivedns extends Base implements LeValidationInterface
+class DnsDnsexit extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        if (!empty((string)$this->config->dns_gandi_livedns_token)) {
-            $this->acme_env['GANDI_LIVEDNS_TOKEN'] = (string)$this->config->dns_gandi_livedns_token;
-        } else {
-            $this->acme_env['GANDI_LIVEDNS_KEY'] = (string)$this->config->dns_gandi_livedns_key;
-        }
+        $this->acme_env['DNSEXIT_AUTH_USER'] = (string)$this->config->dns_dnsexit_auth_user;
+        $this->acme_env['DNSEXIT_AUTH_PASS'] = (string)$this->config->dns_dnsexit_auth_pass;
+        $this->acme_env['DNSEXIT_API_KEY'] = (string)$this->config->dns_dnsexit_api;
     }
 }

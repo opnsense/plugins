@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2023 mleinart
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -14,7 +14,7 @@
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * THIS SOFTWARE IS PROVIDED ``AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
  * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -32,17 +32,14 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Gandi LiveDNS API
+ * Selfhost API
  * @package OPNsense\AcmeClient
  */
-class DnsGandiLivedns extends Base implements LeValidationInterface
+class DnsEasydns extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        if (!empty((string)$this->config->dns_gandi_livedns_token)) {
-            $this->acme_env['GANDI_LIVEDNS_TOKEN'] = (string)$this->config->dns_gandi_livedns_token;
-        } else {
-            $this->acme_env['GANDI_LIVEDNS_KEY'] = (string)$this->config->dns_gandi_livedns_key;
-        }
+        $this->acme_env[EASYDNS_Key] = (string)$this->config->dns_easydns_apikey;
+        $this->acme_env[EASYDNS_Token] = (string)$this->config->dns_easydns_apitoken;
     }
 }
