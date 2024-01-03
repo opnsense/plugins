@@ -219,15 +219,29 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+                <sequence type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>provide a valid sequence for sorting</ValidationMessage>
+                    <Required>Y</Required>
+                    <Default>1</Default>
+                </sequence>
                 <interface type="InterfaceField">
                     <Required>Y</Required>
                     <Default>lan</Default>
                     <AllowDynamic>Y</AllowDynamic>
                 </interface>
-                <source_net type="NetworkAliasField">
+                <source_net type="NetworkField">
                     <Required>Y</Required>
+                    <AddressFamily>ipv6</AddressFamily>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <WildcardEnabled>N</WildcardEnabled>
                 </source_net>
-                <destination_net type="NetworkAliasField"/>
+                <destination_net type="NetworkField">
+                    <AddressFamily>ipv6</AddressFamily>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <WildcardEnabled>N</WildcardEnabled>
+                </destination_net>
                 <categories type="ModelRelationField">
                     <Model>
                         <rulesets>

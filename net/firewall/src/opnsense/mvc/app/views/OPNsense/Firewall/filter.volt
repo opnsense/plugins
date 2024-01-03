@@ -179,9 +179,14 @@
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="sequence" data-type="string">{{ lang._('Sequence') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+{% for fieldlist in gridFields %}
+                    <th
+                        data-column-id="{{fieldlist['id']}}"
+                        data-width="{{fieldlist['width']|default('')}}"
+                        data-type="{{fieldlist['type']|default('string')}}"
+                        data-formatter="{{fieldlist['formatter']|default('')}}"
+                    >{{fieldlist['heading']|default('')}}</th>
+{% endfor %}
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -208,7 +213,7 @@
                 data-error-title="{{ lang._('Filter load error') }}"
                 type="button"
         ></button>
-
+{% if not hideSavePointBtns|default(false) %}
         <div class="pull-right">
             <button class="btn" id="savepointAct"
                     data-endpoint='/api/firewall/{{ruleController}}/savepoint'
@@ -220,6 +225,7 @@
                 {{ lang._('Revert') }}
             </button>
         </div>
+{% endif %}
         <br/><br/>
     </div>
     </div>

@@ -33,6 +33,25 @@ class NptController extends \OPNsense\Base\IndexController
     {
         $this->view->pick('OPNsense/Firewall/filter');
         $this->view->ruleController = "npt";
+        $this->view->hideSavePointBtns = true;
+        $this->view->gridFields = [
+            [
+                'id' => 'enabled', 'formatter' => 'rowtoggle' ,'width' => '6em', 'heading' => gettext('Enabled')
+            ],
+            [
+                'id' => 'sequence','width' => '9em', 'heading' => gettext('Sequence')
+            ],
+            [
+                'id' => 'source_net', 'heading' => gettext('Internal IPv6 Prefix')
+            ],
+            [
+                'id' => 'destination_net', 'heading' => gettext('External IPv6 Prefix')
+            ],
+            [
+                'id' => 'description', 'heading' => gettext('Description')
+            ]
+        ];
+
         $this->view->formDialogFilterRule = $this->getForm("dialogNptRule");
     }
 }

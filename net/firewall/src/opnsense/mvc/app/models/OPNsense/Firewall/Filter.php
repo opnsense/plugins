@@ -44,12 +44,7 @@ class Filter extends BaseModel
         $messages = parent::performValidation($validateFullModel);
         foreach ([$this->rules->rule, $this->snatrules->rule] as $rules) {
             foreach ($rules->iterateItems() as $rule) {
-                // validate changed rules
-                $rule_changed = false;
-                foreach ($rule->iterateItems() as $field) {
-                    $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
-                }
-                if ($validateFullModel || $rule_changed) {
+                if ($validateFullModel || $rule->isFieldChanged()) {
                     // port / protocol validation
                     if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
                         $messages->appendMessage(new Message(
@@ -98,6 +93,19 @@ class Filter extends BaseModel
                         }
                     }
                 }
+            }
+        }
+        foreach ($this->npt->rule->iterateItems() as $rule) {
+            if ($validateFullModel || $rule->isFieldChanged()) {
+                $src_is_addr = Util::isSubnet($rule->source_net) || Util::isIpAddress($rule->source_net);
+                $src_proto = strpos($rule->source_net, ':') === false ? "inet" : "inet6";
+                if ($src_is_addr && $src_proto != 'inet6') {
+                    $messages->appendMessage(new Message(
+                        gettext("You can not use IPv4 addresses in IPv6 rules."),
+                        $rule->source_net->__reference
+                    ));
+                }
+
             }
         }
         return $messages;

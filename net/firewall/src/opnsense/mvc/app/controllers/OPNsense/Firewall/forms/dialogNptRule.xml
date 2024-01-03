@@ -17,14 +17,12 @@
     </field>
     <field>
         <id>rule.source_net</id>
-        <label>Source</label>
-        <style>net_selector</style>
+        <label>Internal IPv6 Prefix (source)</label>
         <type>text</type>
     </field>
     <field>
         <id>rule.destination_net</id>
-        <label>Destination</label>
-        <style>net_selector</style>
+        <label>External IPv6 Prefix (target)</label>
         <type>text</type>
     </field>
     <field>
