@@ -13,6 +13,7 @@ Plugin Changelog
 1.28
 
 * Add break-dnssec toggle when using filter-aaaa on IPv4/IPv6 clients (contributed by doktornotor)
+* Fix template error if there is no 'records' in config at all (contributed by kulikov-a)
 
 1.27
 
