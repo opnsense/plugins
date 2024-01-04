@@ -178,9 +178,19 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Make sure the resource could be setup properly
         if (is_resource($proc)) {
             // Close all pipes
+            // We need to read from each pipe to ensure proc_close returns the actual child process return code
+            // See oohay251 comment at https://www.php.net/manual/en/function.proc-close.php
             fclose($proc_pipes[0]);
+            $output = array();
+            while (!feof($proc_pipes[1])) {
+                $output[] = rtrim(fgets($proc_pipes[1], 1024), "\n");
+            }
             fclose($proc_pipes[1]);
+            while (!feof($proc_pipes[2])) {
+                $output[] = rtrim(fgets($proc_pipes[2], 1024), "\n");
+            }
             fclose($proc_pipes[2]);
+
             // Get exit code
             $result = proc_close($proc);
         } else {
