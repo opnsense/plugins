@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -377,6 +377,8 @@ lint-php: check
 
 lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
 
+plist-fix:
+
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
 	    xargs -0 -n1 rm
@@ -439,4 +441,4 @@ test: check
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
 
-.PHONY:	check
+.PHONY:	check plist-fix
