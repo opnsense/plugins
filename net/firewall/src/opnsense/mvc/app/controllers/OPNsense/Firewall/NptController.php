@@ -48,6 +48,9 @@ class NptController extends \OPNsense\Base\IndexController
                 'id' => 'destination_net', 'heading' => gettext('External IPv6 Prefix')
             ],
             [
+                'id' => 'trackif', 'heading' => gettext('Track if')
+            ],
+            [
                 'id' => 'description', 'heading' => gettext('Description')
             ]
         ];

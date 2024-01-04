@@ -219,6 +219,10 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+                <log type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </log>
                 <sequence type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>99999</MaximumValue>
@@ -242,6 +246,8 @@
                     <NetMaskRequired>Y</NetMaskRequired>
                     <WildcardEnabled>N</WildcardEnabled>
                 </destination_net>
+                <trackif type="InterfaceField">
+                </trackif>
                 <categories type="ModelRelationField">
                     <Model>
                         <rulesets>

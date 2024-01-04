@@ -97,13 +97,21 @@ class Filter extends BaseModel
         }
         foreach ($this->npt->rule->iterateItems() as $rule) {
             if ($validateFullModel || $rule->isFieldChanged()) {
-                $src_is_addr = Util::isSubnet($rule->source_net) || Util::isIpAddress($rule->source_net);
-                $src_proto = strpos($rule->source_net, ':') === false ? "inet" : "inet6";
-                if ($src_is_addr && $src_proto != 'inet6') {
+                if (!empty((string)$rule->destination_net) && !empty((string)$rule->trackif)) {
                     $messages->appendMessage(new Message(
-                        gettext("You can not use IPv4 addresses in IPv6 rules."),
-                        $rule->source_net->__reference
+                        gettext("A track interface is only allowed without an extrenal prefix."),
+                        $rule->trackif->__reference
                     ));
+                }
+                if (!empty((string)$rule->destination_net) && !empty((string)$rule->source_net)) {
+                    $dparts = explode('/', (string)$rule->destination_net);
+                    $sparts = explode('/', (string)$rule->source_net);
+                    if (count($dparts) == 2 && count($sparts) == 2 && $dparts[1] != $sparts[1]) {
+                        $messages->appendMessage(new Message(
+                            gettext("External subnet should match internal subnet."),
+                            $rule->destination_net->__reference
+                        ));
+                    }
                 }
             }
         }

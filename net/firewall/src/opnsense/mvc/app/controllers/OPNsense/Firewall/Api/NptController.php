@@ -39,7 +39,7 @@ class NptController extends FilterBaseController
         };
         return $this->searchBase(
             "npt.rule",
-            ['enabled', 'sequence', 'source_net', 'destination_net', 'description'],
+            ['enabled', 'sequence', 'source_net', 'destination_net', 'trackif', 'description'],
             "sequence",
             $filter_funct
         );
