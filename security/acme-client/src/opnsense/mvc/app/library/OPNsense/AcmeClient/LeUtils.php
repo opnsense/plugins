@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2020 Frank Wall
+ * Copyright (C) 2017-2024 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -200,11 +200,11 @@ class LeUtils
             fclose($proc_pipes[2]);
             // Get exit code
             $result = proc_close($proc);
-            log_error(sprintf("AcmeClient: The shell command '%s' returned exit code '%d'", $proc_cmd, $result));
+            log_error(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
             return($result);
         } else {
             log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));
-            return false;
+            return(-999);
         }
     }
 }
