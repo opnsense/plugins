@@ -46,6 +46,7 @@
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
                         <cloudns>ClouDNS</cloudns>
+                        <digitalocean>Digitalocean</digitalocean>
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
