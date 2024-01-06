@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.5.0</version>
+    <version>4.0.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>

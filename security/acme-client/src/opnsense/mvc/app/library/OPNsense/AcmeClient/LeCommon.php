@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,6 +53,7 @@ abstract class LeCommon
     // Filenames for certs, configs, ...
     public const ACME_CERT_DIR = '/var/etc/acme-client/certs/%s/';
     public const ACME_CERT_FILE = '/var/etc/acme-client/certs/%s/cert.pem';
+    public const ACME_CERT_HOME_DIR = '/var/etc/acme-client/cert-home/%s';
     public const ACME_CHAIN_FILE = '/var/etc/acme-client/certs/%s/chain.pem';
     public const ACME_CONFIG_DIR = '/var/etc/acme-client/configs/%s/';
     public const ACME_FULLCHAIN_FILE = '/var/etc/acme-client/certs/%s/fullchain.pem';
