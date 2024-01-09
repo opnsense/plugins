@@ -44,6 +44,31 @@
       <help><![CDATA[Use the ID to set the TTL Value of the packet (Original method) rather than DSCP, default is not ticked]]></help>
    </field>
    <field>
+      <id>udpbroadcastrelay.allowcidr</id>
+      <label>Allowed CIDRs</label>
+      <style>tokenize</style>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <help><![CDATA[Only allow packets from a range of IP source addresses]]></help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.blockcidr</id>
+      <label>Blocked CIDRs</label>
+      <style>tokenize</style>
+      <type>select_multiple</type>
+      <allownew>true</allownew>
+      <help><![CDATA[Block packets from a range of IP source addresses<br/>Where overlapping CIDRs are specified with the Block/Allow CIDRs, the most specific match (longest prefix) will take effect]]></help>
+      <advanced>true</advanced>
+   </field>
+   <field>
+      <id>udpbroadcastrelay.msearch</id>
+      <label>M-SEARCH processing</label>
+      <type>text</type>
+      <help><![CDATA[A space-separated list of M-SEARCH processing actions, use a comma before search terms for example <code>block,search-term</code><br/>Please refer to the <a href="https://github.com/marjohn56/udpbroadcastrelay#usage">UDP Broadcast Relay documentation</href> for more information.]]></help>
+      <advanced>true</advanced>
+   </field>
+   <field>
       <id>udpbroadcastrelay.description</id>
       <label>Description</label>
       <type>text</type>
