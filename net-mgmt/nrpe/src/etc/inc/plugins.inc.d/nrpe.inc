@@ -47,7 +47,7 @@ function nrpe_services()
             'start' => array('nrpe start'),
             'stop' => array('nrpe stop'),
         ),
-        'name' => 'nrpe3',
+        'name' => 'nrpe',
         'pid' => '/var/run/nrpe.pid'
     );
 

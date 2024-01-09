@@ -1,5 +1,9 @@
 <form>
     <field>
+        <label>InfluxDB</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>output.influx_enable</id>
         <label>Enable Influx Output</label>
         <type>checkbox</type>
@@ -40,6 +44,10 @@
         <label>Disable SSL verification</label>
         <type>checkbox</type>
         <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
+        <label>InfluxDB v2</label>
+        <type>header</type>
     </field>
     <field>
         <id>output.influx_v2_enable</id>
@@ -84,6 +92,10 @@
         <help>Flush timeout for the v2 Telegraf output in seconds, formatted as a string. If not provided, will default to 5. 0 means no timeout, but is not recommended. Increase if you get timeout errors.</help>
     </field>
     <field>
+        <label>Graphite</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>output.graphite_enable</id>
         <label>Enable Graphite Output</label>
         <type>checkbox</type>
@@ -126,6 +138,10 @@
         <help>This will enable support for tags.</help>
     </field>
     <field>
+        <label>Graylog</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>output.graylog_enable</id>
         <label>Enable Graylog Output</label>
         <type>checkbox</type>
@@ -136,6 +152,10 @@
         <label>Graylog Server</label>
         <type>text</type>
         <help>Set the IP and port where metrics shoud be sent to.</help>
+    </field>
+    <field>
+        <label>Elasticsearch</label>
+        <type>header</type>
     </field>
     <field>
         <id>output.elastic_enable</id>
@@ -155,7 +175,7 @@
         <type>text</type>
         <help>Optional HTTP basic authentication details for Elasticsearch.</help>
     </field>
-        <field>
+    <field>
         <id>output.elastic_password</id>
         <label>Elasticsearch Password</label>
         <type>text</type>
@@ -172,6 +192,10 @@
         <label>Index Name</label>
         <type>text</type>
         <help>Set the index name.</help>
+    </field>
+    <field>
+        <label>Prometheus</label>
+        <type>header</type>
     </field>
     <field>
         <id>output.prometheus_enable</id>
@@ -198,6 +222,10 @@
         <help>Send string metrics as Prometheus labels.</help>
     </field>
     <field>
+        <label>Datadog</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>output.datadog_enable</id>
         <label>Enable Datadog Output</label>
         <type>checkbox</type>
@@ -214,5 +242,89 @@
         <label>Datadog API Key</label>
         <type>text</type>
         <help>Set the API Key for accessing Datadog.</help>
+    </field>
+    <field>
+        <label>MQTT</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>output.mqtt_enable</id>
+        <label>Enable MQTT</label>
+        <type>checkbox</type>
+        <help>This will enable writes to a MQTT Broker acting as a mqtt Producer.</help>
+    </field>
+    <field>
+        <id>output.mqtt_topic_prefix</id>
+        <label>MQTT Topic Prefix</label>
+        <type>text</type>
+        <help>MQTT Topic Prefix - Will be overidden by the Topic if defined below.</help>
+    </field>
+    <field>
+        <id>output.mqtt_topic</id>
+        <label>MQTT Topic</label>
+        <type>text</type>
+        <help>MQTT Topic for produced messages. if left blank, will default to [ mqtt_topic_prefix/{{ .Hostname }}/{{ .PluginName }} ]</help>
+    </field>
+    <field>
+        <id>output.mqtt_servers</id>
+        <label>MQTT brokers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>URL of MQTT brokers. Format is without square brackets, just like localhost:8083 or mqtts://server.net:8883. The same credentials will be used when defining multiple brokers.</help>
+    </field>
+    <field>
+        <id>output.mqtt_insecure_skip_verify</id>
+        <label>Skip TLS verification</label>
+        <type>checkbox</type>
+        <help>Use TLS, but skip chain and host verification.</help>
+    </field>
+    <field>
+        <id>output.mqtt_qos</id>
+        <label>MQTT QoS</label>
+        <type>dropdown</type>
+        <help>QoS policy for messages. 0 = at most once, 1 = at least once, 2 = exactly once. Defaults to 2.</help>
+    </field>
+    <field>
+        <id>output.mqtt_retain</id>
+        <label>MQTT Retain</label>
+        <type>checkbox</type>
+        <help>When selected, metrics will have the RETAIN flag set.</help>
+    </field>
+    <field>
+        <id>output.mqtt_username</id>
+        <label>MQTT Username</label>
+        <type>text</type>
+        <help>Set the username for authentication.</help>
+    </field>
+    <field>
+        <id>output.mqtt_password</id>
+        <label>MQTT Password</label>
+        <type>text</type>
+        <help>Set the password for authentication.</help>
+    </field>
+    <field>
+        <id>output.mqtt_client_id</id>
+        <label>MQTT Client ID</label>
+        <type>text</type>
+        <help>Client ID, if not set a random ID is generated.</help>
+    </field>
+    <field>
+        <id>output.mqtt_timeout</id>
+        <label>MQTT Timeout</label>
+        <type>text</type>
+        <help>Timeout for write operations. Default is 5s.</help>
+    </field>
+    <field>
+        <id>output.mqtt_layout</id>
+        <label>MQTT Layout</label>
+        <type>dropdown</type>
+        <help>Data layout to output. Defaults to "non-batch".</help>
+    </field>
+    <field>
+        <id>output.mqtt_data_format</id>
+        <label>MQTT Format</label>
+        <type>dropdown</type>
+        <help>Data format to output. Defaults to "influx".</help>
     </field>
 </form>

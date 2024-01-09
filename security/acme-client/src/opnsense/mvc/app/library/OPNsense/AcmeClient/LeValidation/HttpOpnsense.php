@@ -28,8 +28,6 @@
 
 namespace OPNsense\AcmeClient\LeValidation;
 
-require_once("interfaces.inc");
-
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
@@ -74,9 +72,10 @@ class HttpOpnsense extends Base implements LeValidationInterface
 
         // Add IP address from chosen interface
         if (!empty((string)$this->config->http_opn_interface)) {
-            $interface_ip = get_interface_ip((string)$this->config->http_opn_interface);
-            if (!empty($interface_ip)) {
-                $iplist[] = $interface_ip;
+            $backend = new \OPNsense\Core\Backend();
+            $response = $backend->configdpRun('interface address', [(string)$this->config->http_opn_interface]);
+            if (!empty($response['address'])) {
+                $iplist[] = $response['address'];
             }
         }
 

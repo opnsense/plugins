@@ -15,6 +15,6 @@
     <id>mdnsrepeater.interfaces</id>
     <label>Listen Interfaces</label>
     <type>select_multiple</type>
-    <help>At least two interfaces must be selected.</help>
+    <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
   </field>
 </form>

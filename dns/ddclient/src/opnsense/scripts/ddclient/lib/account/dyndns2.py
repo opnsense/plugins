@@ -67,11 +67,12 @@ class DynDNS2(BaseAccount):
     def execute(self):
         if super().execute():
             protocol = self.settings.get('protocol', None)
-            if protocol == 'post':
+            if protocol in [ 'get', 'post', 'put' ]:
                 url = self.settings.get('server')
                 url = url.replace('__MYIP__', self.current_address)
                 url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
-                req = requests.post(
+                req = requests.request(
+                    method=protocol,
                     url=url,
                     headers={'User-Agent': 'OPNsense-dyndns'},
                     auth=HTTPBasicAuth(self.settings.get('username'), self.settings.get('password'))
@@ -97,14 +98,14 @@ class DynDNS2(BaseAccount):
                 }
                 req = requests.get(**req_opts)
 
-            if req.status_code == 200:
+            if 200 <= req.status_code < 300:
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
                         "Account %s set new ip %s [%s]" % (self.description, self.current_address, req.text.strip())
                     )
 
-                self.update_state(address=self.current_address, status=req.text.split()[0])
+                self.update_state(address=self.current_address, status=req.text.split()[0] if req.text else '')
                 return True
             else:
                 syslog.syslog(

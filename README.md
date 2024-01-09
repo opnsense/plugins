@@ -47,7 +47,7 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
-net/firewall -- Firewall API supplemental package
+net/firewall -- Firewall API supplemental package (pending removal)
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
@@ -66,7 +66,8 @@ net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- Network traffic monitor
-net/wireguard -- WireGuard VPN service
+net/wireguard -- WireGuard VPN service kernel implementation (pending removal)
+net/wireguard-go -- WireGuard VPN service Go implementation (pending removal)
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
@@ -81,7 +82,7 @@ security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
-security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
+security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
@@ -93,8 +94,9 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/api-backup -- Provide the functionality to download the config.xml
+sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download/this (pending removal)
 sysutils/apuled -- PC Engine APU LED control (development only)
+sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
@@ -113,6 +115,7 @@ vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generat
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/nginx -- Nginx HTTP server and reverse proxy
+www/squid -- Squid is a caching proxy for the web
 www/web-proxy-sso -- Kerberos authentication module
 ```
 

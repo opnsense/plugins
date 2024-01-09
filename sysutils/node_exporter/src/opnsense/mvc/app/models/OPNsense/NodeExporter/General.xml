@@ -3,23 +3,21 @@
     <description>
         node_exporter - Prometheus exporter for hardware and OS metrics.
     </description>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <items>
         <enabled type="BooleanField">
           <default>0</default>
           <Required>Y</Required>
         </enabled>
-        <listenaddress type="TextField">
+        <listenaddress type="NetworkField">
           <default>0.0.0.0</default>
           <Required>Y</Required>
-          <mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</mask>
-          <ValidationMessage>Please provide a valid IPv4 address.</ValidationMessage>
+          <NetMaskAllowed>N</NetMaskAllowed>
+          <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </listenaddress>
-        <listenport type="IntegerField">
+        <listenport type="PortField">
           <default>9100</default>
           <Required>Y</Required>
-          <MinimumValue>1</MinimumValue>
-          <MaximumValue>65535</MaximumValue>
           <ValidationMessage>Please provide a valid port number between 1 and 65535. Port 9100 is the default.</ValidationMessage>
         </listenport>
         <cpu type="BooleanField">

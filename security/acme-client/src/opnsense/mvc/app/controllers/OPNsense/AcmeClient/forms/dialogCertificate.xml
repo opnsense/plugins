@@ -56,7 +56,7 @@
         <id>certificate.renewInterval</id>
         <label>Renewal Interval</label>
         <type>text</type>
-        <help><![CDATA[Specifies the days to renew the cert. The max value is 60 days.]]></help>
+        <help><![CDATA[Specifies the days to renew the cert. The max value is 5000 days.]]></help>
     </field>
     <field>
         <label>Security Settings</label>

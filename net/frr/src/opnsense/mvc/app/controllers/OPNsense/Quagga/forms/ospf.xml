@@ -50,6 +50,11 @@
         <help>Route Map to set for Redistribution.</help>
     </field>
     <field>
+        <id>ospf.logadjacencychanges</id>
+        <label>Log Adjacency Changes</label>
+        <type>checkbox</type>
+    </field>
+    <field>
         <id>ospf.originate</id>
         <label>Advertise Default Gateway</label>
         <type>checkbox</type>

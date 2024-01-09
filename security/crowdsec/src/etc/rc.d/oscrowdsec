@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
-
 # PROVIDE: oscrowdsec
 # REQUIRE: NETWORKING syslogd
 # BEFORE:  DAEMON

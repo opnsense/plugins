@@ -8,6 +8,25 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+Fixed:
+* fix sporadic command failure with gcloud DNS API (#3745)
+
+3.20
+
+Added:
+* add Bunny DNS API (#3715)
+* add DNSExit DNS API (#3724)
+* add World4You DNS API (#3722)
+
+Changed:
+* support token authentication in Gandi LiveDNS (#3526)
+
+Fixed:
+* fix 2FA support in Synology automation (#3627)
+
+Removed:
+* remove automation: Highwinds CDN (#3626)
+
 3.19
 
 Added:
