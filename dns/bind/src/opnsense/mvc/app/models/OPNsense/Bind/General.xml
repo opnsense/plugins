@@ -77,7 +77,6 @@
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </logsize>
         <general_log_level type="OptionField">
-            <multiple>N</multiple>
             <OptionValues>
                 <emerg value="emerg">Emergency</emerg>
                 <alert value="alert">Alert</alert>
