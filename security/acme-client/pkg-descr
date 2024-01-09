@@ -20,6 +20,7 @@ Changed:
 Fixed:
 * fix sporadic command failure with gcloud DNS API (#3745)
 * fix errors when the same Common Name is used multiple times (#3127)
+* fix crash on invalid automations (#3752)
 
 3.20
 
