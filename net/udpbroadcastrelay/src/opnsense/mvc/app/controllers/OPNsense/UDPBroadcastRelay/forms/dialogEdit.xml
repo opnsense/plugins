@@ -65,7 +65,7 @@
       <id>udpbroadcastrelay.msearch</id>
       <label>M-SEARCH processing</label>
       <type>text</type>
-      <help><![CDATA[A space-separated list of M-SEARCH processing actions, use a comma before search terms for example <code>block,search-term</code><br/>Please refer to the <a href="https://github.com/marjohn56/udpbroadcastrelay#usage">UDP Broadcast Relay documentation</href> for more information.]]></help>
+      <help><![CDATA[A space-separated list of M-SEARCH processing actions, use a comma before search terms for example <code>block,search-term</code><br/>Please refer to the <a href="https://github.com/marjohn56/udpbroadcastrelay#usage">UDP Broadcast Relay documentation</a> for more information]]></help>
       <advanced>true</advanced>
    </field>
    <field>
