@@ -225,62 +225,67 @@
     .long-str {
         word-break: break-word;
     }
+    .copy-button {
+        display: none;
+    }
 </style>
 <script>
 function zone_test(zonename) {
     let payload = {
-            'zone': zonename,
-        };
-    ajaxCall(url="/api/bind/general/zonetest/", payload, callback=function(data,status) {
+        'zone': zonename,
+    };
+    ajaxCall(url = "/api/bind/general/zonetest/", payload, callback = function(data, status) {
         if (data['response'].indexOf('Zone check completed successfully') == -1) {
-                BootstrapDialog.show({
+            BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_DANGER,
                 closeByBackdrop: false,
                 title: "{{ lang._('Primay zone check failed') }}",
                 message: data['response'],
                 buttons: [{
-                    label: "{{ lang._('Show zone content') }}",
-                    action: function(dlg){
+                        label: "{{ lang._('Show zone content') }}",
+                        action: function(dlg) {
                             $(this).closest(".modal-dialog").find("div.bootstrap-dialog-body").append('<div id="zone-wait">{{ lang._("Loading zone content..") }}<div>');
                             zone_show(payload);
+                        },
                     },
-                },
-                {
-                    label: 'Ok',
-                    action: function(dlg){
+                    {
+                        label: 'Ok',
+                        action: function(dlg) {
                             dlg.close();
-                    },
-                }]
+                        },
+                    }
+                ]
             });
         } else {
-                BootstrapDialog.show({
+            BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_INFO,
                 title: "{{ lang._('Zone check completed successfully') }}",
                 message: data['response'],
                 buttons: [{
-                    label: "{{ lang._('Show zone content') }}",
-                    action: function(dlg){
+                        label: "{{ lang._('Show zone content') }}",
+                        action: function(dlg) {
                             $(this).closest(".modal-dialog").find("div.bootstrap-dialog-body").append('<div id="zone-wait">{{ lang._("Loading zone content..") }}<div>');
                             zone_show(payload);
+                        },
                     },
-                },
-                {
-                    label: 'Ok',
-                    action: function(dlg){
+                    {
+                        label: 'Ok',
+                        action: function(dlg) {
                             dlg.close();
-                    },
-                }]
+                        },
+                    }
+                ]
             });
         }
     });
 }
 
 function zone_show(payload) {
-    ajaxCall(url="/api/bind/general/zoneshow/", payload, callback=function(data,status) {
+    ajaxCall(url = "/api/bind/general/zoneshow/", payload, callback = function(data, status) {
         if (data['time'] && data['zone_content']) {
             $("#zone-wait").remove();
-            var L = 0;
-            var content = [];
+            let L = 0;
+            let content = [];
             content.push('<tr><td class="l-number"></td><td class="conf-line">; zone file dump from ' + data['path'] + '</td></tr>');
             content.push('<tr><td class="l-number"></td><td class="conf-line">; zone file created at ' + data['time'] + '</td></tr>');
             $.each(data['zone_content'], function(index, line) {
@@ -288,21 +293,28 @@ function zone_show(payload) {
                 content.push('<tr><td class="l-number">' + L.toString() + '</td><td class="conf-line">' + line + '</td></tr>');
             });
             BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_INFO,
-            title: "{{ lang._('Zone loaded successfully') }}",
-            message: '<div id="zone-content"><table><tbody id="zone-table">' + content.join('') + '</tbody></table></div>',
-            buttons: [{
-                label: '<i id="copy-progress" class="fa fa-spinner fa-pulse" style="display: none"></i> {{ lang._("Copy to clipboard") }}',
-                action: function(){
-                    zone_copy();
-                }
-              },
-              {
-                label: 'Ok',
-                action: function(dlg){
-                    dlg.close();
-                }
-            }]
+                type: BootstrapDialog.TYPE_INFO,
+                title: "{{ lang._('Zone loaded successfully') }}",
+                message: '<div id="zone-content"><table><tbody id="zone-table">' + content.join('') + '</tbody></table></div>',
+                onshown: function(dialogRef) {
+                    if ((typeof navigator.clipboard === 'object') && (typeof navigator.clipboard.writeText === 'function')) {
+                        $(".copy-button").show();
+                    }
+                },
+                buttons: [{
+                        label: '<i id="copy-progress" class="fa fa-spinner fa-pulse" style="display: none"></i> {{ lang._("Copy to clipboard") }}',
+                        cssClass: 'copy-button',
+                        action: function() {
+                            zone_copy();
+                        }
+                    },
+                    {
+                        label: 'Ok',
+                        action: function(dlg) {
+                            dlg.close();
+                        }
+                    }
+                ]
             });
         } else {
             $("#zone-wait").text("{{ lang._('Empty response from the backend. Please check logs.') }}");
@@ -322,60 +334,77 @@ function zone_copy(dlg) {
     }, 1000);
 }
 
-$( document ).ready(function() {
-    let data_get_map = {'frm_general_settings':"/api/bind/general/get"};
-    mapDataToFormUI(data_get_map).done(function(data){
+$(document).ready(function() {
+    let data_get_map = {
+        'frm_general_settings': "/api/bind/general/get"
+    };
+    mapDataToFormUI(data_get_map).done(function(data) {
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
 
-    let data_get_map2 = {'frm_dnsbl_settings':"/api/bind/dnsbl/get"};
-    mapDataToFormUI(data_get_map2).done(function(data){
+    let data_get_map2 = {
+        'frm_dnsbl_settings': "/api/bind/dnsbl/get"
+    };
+    mapDataToFormUI(data_get_map2).done(function(data) {
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
 
     updateServiceControlUI('bind');
 
-    $("#grid-acls").UIBootgrid(
-        {   'search':'/api/bind/acl/searchAcl',
-            'get':'/api/bind/acl/getAcl/',
-            'set':'/api/bind/acl/setAcl/',
-            'add':'/api/bind/acl/addAcl/',
-            'del':'/api/bind/acl/delAcl/',
-            'toggle':'/api/bind/acl/toggleAcl/'
-        }
-    );
+    $("#grid-acls").UIBootgrid({
+        'search': '/api/bind/acl/searchAcl',
+        'get': '/api/bind/acl/getAcl/',
+        'set': '/api/bind/acl/setAcl/',
+        'add': '/api/bind/acl/addAcl/',
+        'del': '/api/bind/acl/delAcl/',
+        'toggle': '/api/bind/acl/toggleAcl/'
+    });
 
     $("#grid-primary-domains").UIBootgrid({
-        'search':'/api/bind/domain/searchPrimaryDomain',
-        'get':'/api/bind/domain/getDomain/',
-        'set':'/api/bind/domain/setDomain/',
-        'add':'/api/bind/domain/addPrimaryDomain/',
-        'del':'/api/bind/domain/delDomain/',
-        'toggle':'/api/bind/domain/toggleDomain/',
+        'search': '/api/bind/domain/searchPrimaryDomain',
+        'get': '/api/bind/domain/getDomain/',
+        'set': '/api/bind/domain/setDomain/',
+        'add': '/api/bind/domain/addPrimaryDomain/',
+        'del': '/api/bind/domain/delDomain/',
+        'toggle': '/api/bind/domain/toggleDomain/',
         commands: {
             'bind-checkzone': {
                 'title': "Check & preview",
                 'classname': "fa fa-fw fa-stethoscope  ",
                 'sequence': 300,
-                },
             },
-        options:{
+        },
+        options: {
             selection: true,
             multiSelect: false,
             rowSelect: true,
-            rowCount: [3,7,14,20,50,100,-1]
+            rowCount: [3, 7, 14, 20, 50, 100, -1]
         }
     }).on("selected.rs.jquery.bootgrid", function(e, rows) {
         $("#grid-primary-records").bootgrid('reload');
     }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
         $("#grid-primary-records").bootgrid('reload');
-    }).on("loaded.rs.jquery.bootgrid", function (e) {
+    }).on("loaded.rs.jquery.bootgrid", function(e) {
         // Checkzone button
         $("#grid-primary-domains").find(".command-bind-checkzone").off("click").on("click", function(ev) {
-            let zonename = $(this).closest('tr').find('td.zonename').text();
-            zone_test(zonename);
+            if (!$(this).closest("tr").hasClass("text-muted")) {
+                let zonename = $(this).closest('tr').find('td.zonename').text();
+                zone_test(zonename);
+            } else {
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_DANGER,
+                    title: "{{ lang._('Error') }}",
+                    message: "{{ lang._('For zone Check and Show to work, the zone must be enabled and the configuration applied.') }}",
+                    buttons: [{
+                        label: 'Ok',
+                        action: function(dlg) {
+                            dlg.close();
+                        },
+                    }]
+                });
+            }
         });
 
         let ids = $("#grid-primary-domains").bootgrid("getCurrentRows");
@@ -385,19 +414,19 @@ $( document ).ready(function() {
     });
 
     $("#grid-secondary-domains").UIBootgrid({
-        'search':'/api/bind/domain/searchSecondaryDomain',
-        'get':'/api/bind/domain/getDomain/',
-        'set':'/api/bind/domain/setDomain/',
-        'add':'/api/bind/domain/addSecondaryDomain/',
-        'del':'/api/bind/domain/delDomain/',
-        'toggle':'/api/bind/domain/toggleDomain/',
-        options:{
+        'search': '/api/bind/domain/searchSecondaryDomain',
+        'get': '/api/bind/domain/getDomain/',
+        'set': '/api/bind/domain/setDomain/',
+        'add': '/api/bind/domain/addSecondaryDomain/',
+        'del': '/api/bind/domain/delDomain/',
+        'toggle': '/api/bind/domain/toggleDomain/',
+        options: {
             selection: false,
             multiSelect: false,
             rowSelect: false,
-            rowCount: [7,14,20,50,100,-1]
+            rowCount: [7, 14, 20, 50, 100, -1]
         }
-    }).on("loaded.rs.jquery.bootgrid", function (e) {
+    }).on("loaded.rs.jquery.bootgrid", function(e) {
         let ids = $("#grid-secondary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-secondary-domains").bootgrid('select', [ids[0].uuid]);
@@ -405,13 +434,13 @@ $( document ).ready(function() {
     });
 
     $("#grid-primary-records").UIBootgrid({
-        'search':'/api/bind/record/searchRecord',
-        'get':'/api/bind/record/getRecord/',
-        'set':'/api/bind/record/setRecord/',
-        'add':'/api/bind/record/addRecord/',
-        'del':'/api/bind/record/delRecord/',
-        'toggle':'/api/bind/record/toggleRecord/',
-        options:{
+        'search': '/api/bind/record/searchRecord',
+        'get': '/api/bind/record/getRecord/',
+        'set': '/api/bind/record/setRecord/',
+        'add': '/api/bind/record/addRecord/',
+        'del': '/api/bind/record/delRecord/',
+        'toggle': '/api/bind/record/toggleRecord/',
+        options: {
             useRequestHandlerOnGet: true,
             requestHandler: function(request) {
                 let ids = $("#grid-primary-domains").bootgrid("getSelectedRows");
@@ -431,21 +460,21 @@ $( document ).ready(function() {
         }
     });
 
-    $("#saveAct").click(function(){
-        saveFormToEndpoint(url="/api/bind/general/set", formid='frm_general_settings',callback_ok=function(){
-        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
+    $("#saveAct").click(function() {
+        saveFormToEndpoint(url = "/api/bind/general/set", formid = 'frm_general_settings', callback_ok = function() {
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
                 updateServiceControlUI('bind');
                 $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
 
-    $("#saveAct_dnsbl").click(function(){
-        saveFormToEndpoint(url="/api/bind/dnsbl/set", formid='frm_dnsbl_settings',callback_ok=function(){
-        $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/bind/service/dnsbl", sendData={}, callback=function(data,status) {
-                ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
+    $("#saveAct_dnsbl").click(function() {
+        saveFormToEndpoint(url = "/api/bind/dnsbl/set", formid = 'frm_dnsbl_settings', callback_ok = function() {
+            $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url = "/api/bind/service/dnsbl", sendData = {}, callback = function(data, status) {
+                ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
                     updateServiceControlUI('bind');
                     $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
                 });
@@ -453,19 +482,19 @@ $( document ).ready(function() {
         });
     });
 
-    $("#saveAct_acl").click(function(){
-        saveFormToEndpoint(url="/api/bind/acl/set", formid='frm_general_settings',callback_ok=function(){
+    $("#saveAct_acl").click(function() {
+        saveFormToEndpoint(url = "/api/bind/acl/set", formid = 'frm_general_settings', callback_ok = function() {
             $("#saveAct_acl_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url="/api/bind/service/reconfigure", sendData={}, callback=function(data,status) {
+            ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
                 updateServiceControlUI('bind');
                 $("#saveAct_acl_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
 
-    $(".saveAct_domain").click(function(){
+    $(".saveAct_domain").click(function() {
         $(".saveAct_domain_progress").addClass("fa fa-spinner fa-pulse");
-        ajaxCall("/api/bind/service/reconfigure", {}, function(data,status) {
+        ajaxCall("/api/bind/service/reconfigure", {}, function(data, status) {
             updateServiceControlUI('bind');
             $(".saveAct_domain_progress").removeClass("fa fa-spinner fa-pulse");
         });
@@ -480,10 +509,10 @@ $( document ).ready(function() {
     });
 
     // update history on tab state and implement navigation
-    if(window.location.hash != "") {
+    if (window.location.hash != "") {
         $('a[href="' + window.location.hash + '"]').click()
     }
-    $('.nav-tabs a').on('shown.bs.tab', function (e) {
+    $('.nav-tabs a').on('shown.bs.tab', function(e) {
         history.pushState(null, null, e.target.hash);
     });
 });

@@ -40,17 +40,23 @@ class GeneralController extends ApiMutableModelControllerBase
 
     public function zonetestAction($zonename = null)
     {
-        $zonename = $_POST['zone'];
-        $backend = new Backend();
-        $response = trim($backend->configdRun("bind check_zone " . $zonename));
+        $response = "request error";
+        if ($this->request->hasPost("zone")) {
+            $zonename = $this->request->getPost("zone");
+            $backend = new Backend();
+            $response = trim($backend->configdpRun("bind zone check", [$zonename]));
+        }
         return array("response" => $response);
     }
     
     public function zoneshowAction($zonename = null)
     {
-        $zonename = $_POST['zone'];
-        $backend = new Backend();
-        $response = json_decode($backend->configdRun("bind show_zone " . $zonename), true);
+        $response = "request error";
+        if ($this->request->hasPost("zone")) {
+            $zonename = $this->request->getPost("zone");
+            $backend = new Backend();
+            $response = json_decode($backend->configdpRun("bind zone show", [$zonename]), true);
+        }
         return $response;
     }
 }
