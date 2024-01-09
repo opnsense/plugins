@@ -73,7 +73,7 @@
          <msearch type="TextField">
             <default></default>
             <Required>N</Required>
-            <mask>^((block|fwd|proxy|dial)(,\S+|) )*(block|fwd|proxy|dial)(,\S+|)$</mask>
+            <mask>/^(?:(?:block|fwd|proxy|dial)(?:,\S+|) )*(?:block|fwd|proxy|dial)(?:,\S+|)$/</mask>
             <ValidationMessage>Must be a space separated list of actions, with optional search term.</ValidationMessage>
          </msearch>
          <description type="TextField">
