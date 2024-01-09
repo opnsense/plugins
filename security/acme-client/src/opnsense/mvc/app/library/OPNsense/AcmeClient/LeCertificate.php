@@ -605,7 +605,7 @@ class LeCertificate extends LeCommon
                     $automation->run();
                 }
             } else {
-                LeUtils::log("ignoring invalid automation: ${auto_uuid}");
+                LeUtils::log_error("ignoring invalid automation: ${auto_uuid}");
             }
         }
 
