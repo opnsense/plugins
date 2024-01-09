@@ -106,11 +106,9 @@ function bind_configure_do($verbose)
  */
 function bind_syslog()
 {
-    $syslogconf = array();
+    $syslogconf = [];
 
-    $syslogconf['bind'] = array(
-        'facility' => array('named'),
-    );
+    $syslogconf['bind'] = ['facility' => ['named']];
 
     return $syslogconf;
 }
