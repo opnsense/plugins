@@ -1787,4 +1787,19 @@
         <label>Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>PointHQ</label>
+        <type>header</type>
+        <style>table_dns table_dns_pointhq</style>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_email</id>
+        <label>E-Mail</label>
+        <type>text</type>
+    </field>
 </form>

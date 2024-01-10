@@ -20,6 +20,7 @@ Added:
 * add Constellix DNS API
 * add Exoscale DNS API
 * add internetbs.net DNS API
+* add PointHQ DNS API
 
 Changed:
 * use a dedicated acme.sh runtime directory for every cert (#3127)
