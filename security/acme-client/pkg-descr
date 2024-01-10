@@ -8,9 +8,6 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
-Fixed:
-* fix sporadic command failure with gcloud DNS API (#3745)
-
 3.20
 
 Added:

@@ -194,19 +194,10 @@ class LeUtils
 
         // Make sure the resource could be setup properly
         if (is_resource($proc)) {
-            // This workaround ensures that the accurate return code
-            // is reliably returned.
+            // Close all pipes
             fclose($proc_pipes[0]);
-            $output = array();
-            while (!feof($proc_pipes[1])) {
-                $output[] = rtrim(fgets($proc_pipes[1], 1024), "\n");
-            }
             fclose($proc_pipes[1]);
-            while (!feof($proc_pipes[2])) {
-                $output[] = rtrim(fgets($proc_pipes[2], 1024), "\n");
-            }
             fclose($proc_pipes[2]);
-
             // Get exit code
             $result = proc_close($proc);
             log_error(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
