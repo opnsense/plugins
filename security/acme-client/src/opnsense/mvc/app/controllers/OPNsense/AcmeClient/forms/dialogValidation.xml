@@ -1772,4 +1772,19 @@
         <label>Secret Key</label>
         <type>password</type>
     </field>
+    <field>
+        <label>internetbs.net</label>
+        <type>header</type>
+        <style>table_dns table_dns_internetbs</style>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
 </form>

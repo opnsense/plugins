@@ -471,6 +471,7 @@
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_infoblox>Infoblox</dns_infoblox>
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
+                        <dns_internetbs>internetbs.net</dns_internetbs>
                         <dns_inwx>INWX XMLRPC</dns_inwx>
                         <dns_ionos>IONOS domain</dns_ionos>
                         <dns_ipv64>IPv64.net</dns_ipv64>
@@ -1230,6 +1231,12 @@
                 <dns_exoscale_secret type="TextField">
                     <Required>N</Required>
                 </dns_exoscale_secret>
+                <dns_internetbs_key type="TextField">
+                    <Required>N</Required>
+                </dns_internetbs_key>
+                <dns_internetbs_password type="TextField">
+                    <Required>N</Required>
+                </dns_internetbs_password>
             </validation>
         </validations>
         <actions>
