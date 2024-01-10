@@ -15,6 +15,7 @@ Downgrade to older releases is not supported. Be sure to create a
 full backup and include /var/etc/acme-client.
 
 Added:
+* add nic.ru DNS API (#3684)
 * add Aurora DNS API
 * add ConoHa DNS API
 * add Constellix DNS API
