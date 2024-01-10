@@ -436,6 +436,7 @@
                         <dns_cx>CloudXNS.com</dns_cx>
                         <dns_cn>Core-Networks</dns_cn>
                         <dns_conoha>ConoHa</dns_conoha>
+                        <dns_constellix>Constellix</dns_constellix>
                         <dns_cpanel>cPanel</dns_cpanel>
                         <dns_cyon>cyon.ch</dns_cyon>
                         <dns_ddnss>DDNSS</dns_ddnss>
@@ -1216,6 +1217,12 @@
                     <Required>N</Required>
                     <default>https://identity.xxxx.conoha.io/v2.0</default>
                 </dns_conoha_idapi>
+                <dns_constellix_key type="TextField">
+                    <Required>N</Required>
+                </dns_constellix_key>
+                <dns_constellix_secret type="TextField">
+                    <Required>N</Required>
+                </dns_constellix_secret>
             </validation>
         </validations>
         <actions>

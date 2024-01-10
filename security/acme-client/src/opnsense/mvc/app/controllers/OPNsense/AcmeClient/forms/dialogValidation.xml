@@ -1742,4 +1742,19 @@
         <label>Identity Service API</label>
         <type>text</type>
     </field>
+    <field>
+        <label>Constellix</label>
+        <type>header</type>
+        <style>table_dns table_dns_constellix</style>
+    </field>
+    <field>
+        <id>validation.dns_constellix_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_constellix_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
 </form>
