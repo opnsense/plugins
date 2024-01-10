@@ -458,6 +458,7 @@
                         <dns_dynv6>dynv6</dns_dynv6>
                         <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
+                        <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
@@ -1223,6 +1224,12 @@
                 <dns_constellix_secret type="TextField">
                     <Required>N</Required>
                 </dns_constellix_secret>
+                <dns_exoscale_key type="TextField">
+                    <Required>N</Required>
+                </dns_exoscale_key>
+                <dns_exoscale_secret type="TextField">
+                    <Required>N</Required>
+                </dns_exoscale_secret>
             </validation>
         </validations>
         <actions>

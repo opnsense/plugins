@@ -1757,4 +1757,19 @@
         <label>Secret</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Exoscale</label>
+        <type>header</type>
+        <style>table_dns table_dns_exoscale</style>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_secret</id>
+        <label>Secret Key</label>
+        <type>password</type>
+    </field>
 </form>

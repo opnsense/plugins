@@ -18,6 +18,7 @@ Added:
 * add Aurora DNS API
 * add ConoHa DNS API
 * add Constellix DNS API
+* add Exoscale DNS API
 
 Changed:
 * use a dedicated acme.sh runtime directory for every cert (#3127)
