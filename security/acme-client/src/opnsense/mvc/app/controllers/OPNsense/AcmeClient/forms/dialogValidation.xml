@@ -1663,6 +1663,31 @@
         <type>password</type>
     </field>
     <field>
+        <label>nic.ru</label>
+        <type>header</type>
+        <style>table_dns table_dns_nic</style>
+    </field>
+    <field>
+        <id>validation.dns_nic_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_client</id>
+        <label>ClientId</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_secret</id>
+        <label>ClientSecret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
