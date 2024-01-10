@@ -598,14 +598,10 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            // Skip invalid automations.
-            if (!is_null($automation)) {
-                $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
-                if ($automation->prepare()) {
-                    $automation->run();
-                }
-            } else {
-                LeUtils::log_error("ignoring invalid automation: ${auto_uuid}");
+            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
+            // Ignore invalid automations.
+            if ($automation->prepare()) {
+                $automation->run();
             }
         }
 
