@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.20
+
+* Add Digitalocean support (contributed by Mathias Schneuwly)
+
 1.19
 
 * Add Porkbun support (contributed by briandur)
