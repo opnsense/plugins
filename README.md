@@ -47,7 +47,6 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
-net/firewall -- Firewall API supplemental package (pending removal)
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
@@ -66,8 +65,6 @@ net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
 net/upnp -- Universal Plug and Play Service
 net/vnstat -- Network traffic monitor
-net/wireguard -- WireGuard VPN service kernel implementation (pending removal)
-net/wireguard-go -- WireGuard VPN service Go implementation (pending removal)
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
@@ -94,7 +91,6 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download/this (pending removal)
 sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard

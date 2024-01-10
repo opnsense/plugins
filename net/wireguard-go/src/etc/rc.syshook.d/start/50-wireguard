@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# start again to fix problems with failed name resolution (no need to restart)
-configctl -dq wireguard start
