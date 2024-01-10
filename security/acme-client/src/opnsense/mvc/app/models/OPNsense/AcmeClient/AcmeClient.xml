@@ -504,6 +504,7 @@
                         <dns_pleskxml>Plesk</dns_pleskxml>
                         <dns_pointhq>PointHQ</dns_pointhq>
                         <dns_porkbun>Porkbun</dns_porkbun>
+                        <dns_rackspace>Rackspace</dns_rackspace>
                         <dns_regru>RegRu</dns_regru>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
@@ -1244,6 +1245,12 @@
                 <dns_pointhq_email type="TextField">
                     <Required>N</Required>
                 </dns_pointhq_email>
+                <dns_rackspace_user type="TextField">
+                    <Required>N</Required>
+                </dns_rackspace_user>
+                <dns_rackspace_key type="TextField">
+                    <Required>N</Required>
+                </dns_rackspace_key>
             </validation>
         </validations>
         <actions>

@@ -1802,4 +1802,19 @@
         <label>E-Mail</label>
         <type>text</type>
     </field>
+    <field>
+        <label>Rackspace</label>
+        <type>header</type>
+        <style>table_dns table_dns_rackspace</style>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
 </form>
