@@ -1717,4 +1717,29 @@
         <label>Secret</label>
         <type>password</type>
     </field>
+    <field>
+        <label>ConoHa</label>
+        <type>header</type>
+        <style>table_dns table_dns_conoha</style>
+    </field>
+    <field>
+        <id>validation.dns_conoha_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_tenantid</id>
+        <label>Tenant ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_idapi</id>
+        <label>Identity Service API</label>
+        <type>text</type>
+    </field>
 </form>

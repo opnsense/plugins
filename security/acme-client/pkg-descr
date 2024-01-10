@@ -16,6 +16,7 @@ full backup and include /var/etc/acme-client.
 
 Added:
 * add Aurora DNS API
+* add ConoHa DNS API
 
 Changed:
 * use a dedicated acme.sh runtime directory for every cert (#3127)

@@ -435,6 +435,7 @@
                         <dns_cf>CloudFlare.com</dns_cf>
                         <dns_cx>CloudXNS.com</dns_cx>
                         <dns_cn>Core-Networks</dns_cn>
+                        <dns_conoha>ConoHa</dns_conoha>
                         <dns_cpanel>cPanel</dns_cpanel>
                         <dns_cyon>cyon.ch</dns_cyon>
                         <dns_ddnss>DDNSS</dns_ddnss>
@@ -1202,6 +1203,19 @@
                 <dns_aurora_secret type="TextField">
                     <Required>N</Required>
                 </dns_aurora_secret>
+                <dns_conoha_user type="TextField">
+                    <Required>N</Required>
+                </dns_conoha_user>
+                <dns_conoha_password type="TextField">
+                    <Required>N</Required>
+                </dns_conoha_password>
+                <dns_conoha_tenantid type="TextField">
+                    <Required>N</Required>
+                </dns_conoha_tenantid>
+                <dns_conoha_idapi type="TextField">
+                    <Required>N</Required>
+                    <default>https://identity.xxxx.conoha.io/v2.0</default>
+                </dns_conoha_idapi>
             </validation>
         </validations>
         <actions>
