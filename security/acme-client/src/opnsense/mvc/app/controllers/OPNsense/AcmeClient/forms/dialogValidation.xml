@@ -1612,7 +1612,7 @@
         <type>password</type>
     </field>
     <field>
-        <label>nic</label>
+        <label>nic.ru</label>
         <type>header</type>
         <style>table_dns table_dns_nic</style>
     </field>
