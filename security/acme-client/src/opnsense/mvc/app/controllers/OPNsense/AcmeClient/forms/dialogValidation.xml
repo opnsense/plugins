@@ -1702,4 +1702,19 @@
         <label>Password</label>
         <type>password</type>
     </field>
+    <field>
+        <label>Aurora (PCextreme/Versio)</label>
+        <type>header</type>
+        <style>table_dns table_dns_aurora</style>
+    </field>
+    <field>
+        <id>validation.dns_aurora_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_aurora_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
 </form>
