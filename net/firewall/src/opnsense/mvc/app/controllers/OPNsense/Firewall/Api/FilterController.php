@@ -29,9 +29,15 @@ namespace OPNsense\Firewall\Api;
 
 class FilterController extends FilterBaseController
 {
+    protected static $categorysource = "rules.rule";
+
     public function searchRuleAction()
     {
-        return $this->searchBase("rules.rule", array('enabled', 'sequence', 'description'), "sequence");
+        $category = $this->request->get('category');
+        $filter_funct = function ($record) use ($category) {
+            return empty($category) || array_intersect(explode(',', $record->categories), $category);
+        };
+        return $this->searchBase("rules.rule", ['enabled', 'sequence', 'description'], "sequence", $filter_funct);
     }
 
     public function setRuleAction($uuid)

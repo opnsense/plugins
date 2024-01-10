@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -210,6 +210,11 @@ install: check
 		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
 			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
+			FILE="$${FILE%%.in}"; \
+		fi; \
+		if [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
+			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
+			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
@@ -217,8 +222,14 @@ install: check
 plist: check
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
-		FILE="$${FILE%%.in}"; \
-		echo ${LOCALBASE}/$${FILE}; \
+		FILE="$${FILE%%.in}"; PREFIX=""; \
+		if [ "$${FILE%%.sample}" != "$${FILE}" ]; then \
+			PREFIX="@sample "; \
+		elif [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
+			FILE="$${FILE%%.shadow}.sample"; \
+			PREFIX="@shadow "; \
+		fi; \
+		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
@@ -269,7 +280,7 @@ package: check
 	@${MAKE} DESTDIR=${WRKSRC} metadata
 	@echo " done"
 	@echo ">>> Packaging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
-	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
+	@PORTSDIR=${PLUGINSDIR} ${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
 upgrade-check: check
@@ -366,6 +377,8 @@ lint-php: check
 
 lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
 
+plist-fix:
+
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
 	    xargs -0 -n1 rm
@@ -428,4 +441,4 @@ test: check
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
 
-.PHONY:	check
+.PHONY:	check plist-fix

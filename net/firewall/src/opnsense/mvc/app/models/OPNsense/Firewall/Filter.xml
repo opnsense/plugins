@@ -100,6 +100,17 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </log>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
@@ -184,6 +195,17 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </log>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
                 <description type="TextField">
                     <Required>N</Required>
                     <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
@@ -191,5 +213,58 @@
                 </description>
             </rule>
         </snatrules>
+        <npt>
+            <rule type=".\SourceNatRuleField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <log type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </log>
+                <sequence type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>provide a valid sequence for sorting</ValidationMessage>
+                    <Required>Y</Required>
+                    <Default>1</Default>
+                </sequence>
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                    <Default>lan</Default>
+                    <AllowDynamic>Y</AllowDynamic>
+                </interface>
+                <source_net type="NetworkField">
+                    <Required>Y</Required>
+                    <AddressFamily>ipv6</AddressFamily>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <WildcardEnabled>N</WildcardEnabled>
+                </source_net>
+                <destination_net type="NetworkField">
+                    <AddressFamily>ipv6</AddressFamily>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <WildcardEnabled>N</WildcardEnabled>
+                </destination_net>
+                <trackif type="InterfaceField">
+                </trackif>
+                <categories type="ModelRelationField">
+                    <Model>
+                        <rulesets>
+                            <source>OPNsense.Firewall.Category</source>
+                            <items>categories.category</items>
+                            <display>name</display>
+                        </rulesets>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                    <ValidationMessage>Related category not found.</ValidationMessage>
+                </categories>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </rule>
+        </npt>
     </items>
 </model>

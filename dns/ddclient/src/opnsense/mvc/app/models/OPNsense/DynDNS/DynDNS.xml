@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
     <version>1.5.1</version>
-    <description>
-        Dynamic DNS client
-    </description>
+    <description>Dynamic DNS client</description>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,7 +24,7 @@
             </daemon_delay>
             <backend type="OptionField">
                 <Required>Y</Required>
-                <Default>ddclient</Default>
+                <Default>opnsense</Default>
                 <ValidationMessage>A backend is required.</ValidationMessage>
                 <OptionValues>
                     <ddclient>ddclient</ddclient>
@@ -48,6 +46,7 @@
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
                         <cloudns>ClouDNS</cloudns>
+                        <digitalocean>Digitalocean</digitalocean>
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
@@ -77,6 +76,7 @@
                         <nsupdatev4>nsupdate.info (IPv4)</nsupdatev4>
                         <nsupdatev6>nsupdate.info (IPv6)</nsupdatev6>
                         <ovh>OVHcloud DynHost</ovh>
+                        <porkbun>Porkbun</porkbun>
                         <regfishde>regfish.de</regfishde>
                         <servercow>Servercow</servercow>
                         <sitelutions>Sitelutions</sitelutions>

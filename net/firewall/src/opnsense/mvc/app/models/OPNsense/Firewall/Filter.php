@@ -44,12 +44,7 @@ class Filter extends BaseModel
         $messages = parent::performValidation($validateFullModel);
         foreach ([$this->rules->rule, $this->snatrules->rule] as $rules) {
             foreach ($rules->iterateItems() as $rule) {
-                // validate changed rules
-                $rule_changed = false;
-                foreach ($rule->iterateItems() as $field) {
-                    $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
-                }
-                if ($validateFullModel || $rule_changed) {
+                if ($validateFullModel || $rule->isFieldChanged()) {
                     // port / protocol validation
                     if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
                         $messages->appendMessage(new Message(
@@ -96,6 +91,26 @@ class Filter extends BaseModel
                                 $rule->target_port->__reference
                             ));
                         }
+                    }
+                }
+            }
+        }
+        foreach ($this->npt->rule->iterateItems() as $rule) {
+            if ($validateFullModel || $rule->isFieldChanged()) {
+                if (!empty((string)$rule->destination_net) && !empty((string)$rule->trackif)) {
+                    $messages->appendMessage(new Message(
+                        gettext("A track interface is only allowed without an extrenal prefix."),
+                        $rule->trackif->__reference
+                    ));
+                }
+                if (!empty((string)$rule->destination_net) && !empty((string)$rule->source_net)) {
+                    $dparts = explode('/', (string)$rule->destination_net);
+                    $sparts = explode('/', (string)$rule->source_net);
+                    if (count($dparts) == 2 && count($sparts) == 2 && $dparts[1] != $sparts[1]) {
+                        $messages->appendMessage(new Message(
+                            gettext("External subnet should match internal subnet."),
+                            $rule->destination_net->__reference
+                        ));
                     }
                 }
             }

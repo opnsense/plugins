@@ -16,10 +16,16 @@ WWW: https://www.wireguard.com/
 Changelog
 ---------
 
+2.6
+
+* Consider missing CARP VHID as disabled
+
 2.5
 
 * Fix error with empty tunnel address in instance (contributed by Monviech)
 * Switch "setconf" to "syncconf" on (re)configuration
+* Fix regression of UUID return in setClientAction()
+* Reload the packet filter after reconfiguration
 * Allow instance selection from peer
 * Use "syncconf" on newwanip event
 * CARP event handling improvements

@@ -43,6 +43,7 @@ function get_vhid_status()
     foreach ((new OPNsense\Interfaces\Vip())->vip->iterateItems() as $id => $item) {
         if ($item->mode == 'carp') {
             $uuids[(string)$item->vhid] =  $id;
+            $vhids[$id] = ['status' => 'DISABLED', 'vhid' => (string)$item->vhid];
         }
     }
     foreach (legacy_interfaces_details() as $ifdata) {
@@ -293,6 +294,10 @@ if (isset($opts['h']) || empty($args) || !in_array($args[0], ['start', 'stop', '
                 }
             }
         }
+    }
+
+    if (count($server_devs)) {
+        configd_run('filter reload'); /* XXX required for NAT rules, but needs coalescing */
     }
 }
 closelog();

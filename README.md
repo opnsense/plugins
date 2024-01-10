@@ -47,7 +47,7 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
-net/firewall -- Firewall API supplemental package
+net/firewall -- Firewall API supplemental package (pending removal)
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
@@ -96,6 +96,7 @@ security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/api-backup -- EoL, core endpoint is /api/core/backup/download/this (pending removal)
 sysutils/apuled -- PC Engine APU LED control (development only)
+sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics

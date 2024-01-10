@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>3.4.0</version>
+    <version>3.5.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -429,6 +429,7 @@
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS</dns_azure>
+                        <dns_bunny>Bunny</dns_bunny>
                         <dns_cloudns>ClouDNS</dns_cloudns>
                         <dns_cf>CloudFlare.com</dns_cf>
                         <dns_cx>CloudXNS.com</dns_cx>
@@ -439,6 +440,7 @@
                         <dns_desec>deSEC.io</dns_desec>
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
+                        <dns_dnsexit>DNSExit</dns_dnsexit>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
@@ -451,6 +453,7 @@
                         <dns_dyn>Dyn Managed</dns_dyn>
                         <dns_dynu>Dynu</dns_dynu>
                         <dns_dynv6>dynv6</dns_dynv6>
+                        <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
@@ -507,6 +510,7 @@
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
+                        <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
@@ -559,6 +563,9 @@
                 <dns_azuredns_clientsecret type="TextField">
                     <Required>N</Required>
                 </dns_azuredns_clientsecret>
+                <dns_bunny_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_bunny_api_key>
                 <dns_cf_email type="TextField">
                     <Required>N</Required>
                 </dns_cf_email>
@@ -608,6 +615,15 @@
                 <dns_dgon_key type="TextField">
                     <Required>N</Required>
                 </dns_dgon_key>
+                <dns_dnsexit_auth_user type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_auth_user>
+                <dns_dnsexit_auth_pass type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_auth_pass>
+                <dns_dnsexit_api type="TextField">
+                    <Required>N</Required>
+                </dns_dnsexit_api>
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
@@ -668,6 +684,9 @@
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
+                <dns_gandi_livedns_token type="TextField">
+                    <Required>N</Required>
+                </dns_gandi_livedns_token>
                 <dns_gcloud_key type="TextField">
                     <Required>N</Required>
                 </dns_gcloud_key>
@@ -1072,6 +1091,12 @@
                 <dns_schlundtech_password type="TextField">
                     <Required>N</Required>
                 </dns_schlundtech_password>
+                <dns_easydns_apitoken type="TextField">
+                    <Required>N</Required>
+                </dns_easydns_apitoken>
+                <dns_easydns_apikey type="TextField">
+                    <Required>N</Required>
+                </dns_easydns_apikey>
                 <dns_euserv_user type="TextField">
                     <Required>N</Required>
                 </dns_euserv_user>
@@ -1164,6 +1189,12 @@
                 <dns_nic_secret type="TextField">
                     <Required>N</Required>
                 </dns_nic_secret>
+                <dns_world4you_username type="TextField">
+                    <Required>N</Required>
+                </dns_world4you_username>
+                <dns_world4you_password type="TextField">
+                    <Required>N</Required>
+                </dns_world4you_password>
             </validation>
         </validations>
         <actions>
@@ -1191,7 +1222,6 @@
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
-                        <configd_upload_highwinds>Upload certificate to Highwinds CDN</configd_upload_highwinds>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
@@ -1204,16 +1234,6 @@
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
-                <highwinds_account_hash type="TextField">
-                    <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
-                </highwinds_account_hash>
-                <highwinds_access_token type="TextField">
-                    <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
-                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
-                </highwinds_access_token>
                 <sftp_host type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,255}$/u</mask>
@@ -1376,6 +1396,11 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_deviceid>
+                <acme_synology_dsm_devicename type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_devicename>
                 <acme_fritzbox_url type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
