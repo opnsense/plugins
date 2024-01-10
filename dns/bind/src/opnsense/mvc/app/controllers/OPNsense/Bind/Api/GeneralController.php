@@ -48,7 +48,7 @@ class GeneralController extends ApiMutableModelControllerBase
         }
         return array("response" => $response);
     }
-    
+
     public function zoneshowAction($zonename = null)
     {
         $response = "request error";
