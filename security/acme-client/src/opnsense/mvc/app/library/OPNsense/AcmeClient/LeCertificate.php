@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
 use OPNsense\AcmeClient\LeAutomationFactory;
 use OPNsense\AcmeClient\LeValidationFactory;
-use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Manage ACME certificates with acme.sh
@@ -475,20 +474,37 @@ class LeCertificate extends LeCommon
         LeUtils::log('wiping certificate config: ' . (string)$this->config->name);
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // add env variables
+        $proc_env = $this->acme_env; // env variables for proc_open()
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
+        $proc_desc = array(  // descriptor array for proc_open()
+            0 => array("pipe", "r"), // stdin
+            1 => array("pipe", "w"), // stdout
+            2 => array("pipe", "w")  // stderr
+        );
+        $proc_pipes = array();
 
-        // Prepare acme.sh command to remove certificate and related config
+        // Run acme client to remove certificate and related config
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Run acme.sh command
-        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
+        // Make sure the resource could be setup properly
+        if (is_resource($proc)) {
+            // Close all pipes
+            fclose($proc_pipes[0]);
+            fclose($proc_pipes[1]);
+            fclose($proc_pipes[2]);
+            // Get exit code
+            $result = proc_close($proc);
+        } else {
+            LeUtils::log_error('unable to start acme client process');
+            return false;
+        }
 
-        // Check acme.sh result
+        // Check exit code
         if ($result) {
             LeUtils::log_error('error removing certificate ' . (string)$this->config->name);
             return false;
@@ -549,19 +565,36 @@ class LeCertificate extends LeCommon
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // add env variables
+        $proc_env = $this->acme_env; // env variables for proc_open()
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
+        $proc_desc = array(  // descriptor array for proc_open()
+            0 => array("pipe", "r"), // stdin
+            1 => array("pipe", "w"), // stdout
+            2 => array("pipe", "w")  // stderr
+        );
+        $proc_pipes = array();
 
-        // Prepare acme.sh command to revoke certificate
+        // Run acme client to revoke certificate
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Run acme.sh command
-        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
+        // Make sure the resource could be setup properly
+        if (is_resource($proc)) {
+            // Close all pipes
+            fclose($proc_pipes[0]);
+            fclose($proc_pipes[1]);
+            fclose($proc_pipes[2]);
+            // Get exit code
+            $result = proc_close($proc);
+        } else {
+            LeUtils::log_error('unable to start acme client process');
+            return false;
+        }
 
         // Check exit code
         if ($result) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -120,10 +120,16 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         LeUtils::log('running automation (acme.sh): ' . $this->config->name);
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // add env variables
+        $proc_env = $this->acme_env; // env variables for proc_open()
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
+        $proc_desc = array(  // descriptor array for proc_open()
+            0 => array("pipe", "r"), // stdin
+            1 => array("pipe", "w"), // stdout
+            2 => array("pipe", "w")  // stderr
+        );
+        $proc_pipes = array();
 
-        // Prepare acme.sh command to run a deploy hook
+        // Run acme client
         $acmecmd = self::ACME_CMD
           . ' '
           . '--deploy '
@@ -131,8 +137,18 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Run acme.sh command
-        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
+        // Make sure the resource could be setup properly
+        if (is_resource($proc)) {
+            // Close all pipes
+            fclose($proc_pipes[0]);
+            fclose($proc_pipes[1]);
+            fclose($proc_pipes[2]);
+            // Get exit code
+            $result = proc_close($proc);
+        } else {
+            LeUtils::log_error('unable to start acme client process');
+            return false;
+        }
 
         // acme.sh records the last used deploy hook and would automatically
         // use it on the next run. This information must be removed from the
