@@ -1817,4 +1817,19 @@
         <label>API Key</label>
         <type>password</type>
     </field>
+    <field>
+        <label>rage4</label>
+        <type>header</type>
+        <style>table_dns table_dns_rage4</style>
+    </field>
+    <field>
+        <id>validation.dns_rage4_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rage4_token</id>
+        <label>Token</label>
+        <type>password</type>
+    </field>
 </form>

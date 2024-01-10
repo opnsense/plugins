@@ -505,6 +505,7 @@
                         <dns_pointhq>PointHQ</dns_pointhq>
                         <dns_porkbun>Porkbun</dns_porkbun>
                         <dns_rackspace>Rackspace</dns_rackspace>
+                        <dns_rage4>rage4</dns_rage4>
                         <dns_regru>RegRu</dns_regru>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
@@ -1251,6 +1252,12 @@
                 <dns_rackspace_key type="TextField">
                     <Required>N</Required>
                 </dns_rackspace_key>
+                <dns_rage4_token type="TextField">
+                    <Required>N</Required>
+                </dns_rage4_token>
+                <dns_rage4_user type="TextField">
+                    <Required>N</Required>
+                </dns_rage4_user>
             </validation>
         </validations>
         <actions>

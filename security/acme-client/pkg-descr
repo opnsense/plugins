@@ -22,6 +22,7 @@ Added:
 * add internetbs.net DNS API
 * add PointHQ DNS API
 * add Rackspace DNS API
+* add rage4 DNS API
 
 Changed:
 * use a dedicated acme.sh runtime directory for every cert (#3127)
