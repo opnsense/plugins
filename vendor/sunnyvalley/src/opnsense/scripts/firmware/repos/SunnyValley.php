@@ -39,5 +39,4 @@ if (file_exists($conf . '.shadow') && file_exists('/usr/local/zenarmor/bin/eastp
         $fileContents = str_replace('/latest"', '/' . $node_uuid . '"', $fileContents);
         file_put_contents($conf, $fileContents);
     }
-
 }
