@@ -3,7 +3,7 @@
 /*
  * Copyright (C) 2015-2017 Deciso B.V.
  * Copyright (C) 2017 Fabian Franz
- * Copyright (C) 2017-2020 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2017-2024 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -197,6 +197,43 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
 
+    public function searchPeergroupAction()
+    {
+        return $this->searchBase(
+            'peergroups.peergroup',
+            array("enabled",
+                  "name",
+                  "updatesource",
+                  "nexthopself",
+                  "defaultoriginate",
+                  "linkedPrefixlistIn",
+                  "linkedPrefixlistOut",
+                  "linkedRoutemapIn",
+                  "linkedRoutemapOut")
+        );
+    }
+
+    public function getPeergroupAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('peergroup', 'peergroups.peergroup', $uuid);
+    }
+
+    public function addPeergroupAction()
+    {
+        return $this->addBase('peergroup', 'peergroups.peergroup');
+    }
+
+    public function delPeergroupAction($uuid)
+    {
+        return $this->delBase('peergroups.peergroup', $uuid);
+    }
+
+    public function setPeergroupAction($uuid)
+    {
+        return $this->setBase('peergroup', 'peergroups.peergroup', $uuid);
+    }
+
     public function toggleCommunitylistAction($uuid)
     {
         return $this->toggleBase('communitylists.communitylist', $uuid);
@@ -220,5 +257,10 @@ class BgpController extends ApiMutableModelControllerBase
     public function toggleRoutemapAction($uuid)
     {
         return $this->toggleBase('routemaps.routemap', $uuid);
+    }
+
+    public function togglePeergrouppAction($uuid)
+    {
+        return $this->toggleBase('peergroups.peergroup', $uuid);
     }
 }
