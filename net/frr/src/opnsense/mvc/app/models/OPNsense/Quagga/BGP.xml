@@ -13,6 +13,10 @@
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967295</MaximumValue>
         </asnumber>
+        <distance type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>255</MaximumValue>
+        </distance>
         <routerid type="TextField">
             <Required>N</Required>
             <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
