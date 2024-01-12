@@ -224,7 +224,7 @@
                                 <Multiple>N</Multiple>
                                 <Required>N</Required>
                         </peergroup>
-            </neighbor>
+                </neighbor>
         </neighbors>
         <aspaths>
                 <aspath type="ArrayField">

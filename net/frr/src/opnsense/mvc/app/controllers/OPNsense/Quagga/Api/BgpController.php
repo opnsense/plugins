@@ -203,6 +203,7 @@ class BgpController extends ApiMutableModelControllerBase
             'peergroups.peergroup',
             array("enabled",
                   "name",
+                  "remoteas",
                   "updatesource",
                   "nexthopself",
                   "defaultoriginate",
@@ -259,7 +260,7 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->toggleBase('routemaps.routemap', $uuid);
     }
 
-    public function togglePeergrouppAction($uuid)
+    public function togglePeergroupAction($uuid)
     {
         return $this->toggleBase('peergroups.peergroup', $uuid);
     }
