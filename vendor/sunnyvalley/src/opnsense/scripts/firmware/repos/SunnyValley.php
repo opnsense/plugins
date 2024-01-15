@@ -31,14 +31,18 @@
 require_once 'util.inc';
 
 $conf = '/usr/local/etc/pkg/repos/SunnyValley.conf';
-$uuidPattern = '/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/';
 
-if (file_exists($conf . '.shadow') && file_exists('/usr/local/zenarmor/bin/eastpect')) {
-    $node_uuid = shell_safe('/usr/local/zenarmor/bin/eastpect -s');
-    if ($node_uuid != '') {
-        $fileContents = file_get_contents($conf . '.shadow');
-        $fileContents = str_replace('/latest"', '/' . $node_uuid . '"', $fileContents);
-        file_put_contents($conf, $fileContents);
-    }
-
+if (!file_exists($conf . '.shadow')) {
+    exit(0);
 }
+
+$fileContents = file_get_contents($conf . '.shadow');
+
+if (file_exists('/usr/local/zenarmor/bin/eastpect')) {
+    $uuid = shell_safe('/usr/local/zenarmor/bin/eastpect -s');
+    if ($uuid != '') {
+        $fileContents = str_replace('/latest"', '/' . $uuid . '"', $fileContents);
+    }
+}
+
+file_put_contents($conf, $fileContents);
