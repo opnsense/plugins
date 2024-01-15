@@ -46,6 +46,7 @@
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
                         <cloudns>ClouDNS</cloudns>
+                        <digitalocean>Digitalocean</digitalocean>
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
                         <dns-o-matic>DNS-O-Matic</dns-o-matic>
@@ -68,6 +69,7 @@
                         <inwx>INWX</inwx>
                         <keysystems>Key-Systems</keysystems>
                         <loopia>Loopia</loopia>
+                        <mythicdyn>Mythic Beasts</mythicdyn>
                         <namecheap>NameCheap</namecheap>
                         <nfsn>NearlyFreeSpeech.net</nfsn>
                         <njalla>Njalla</njalla>
