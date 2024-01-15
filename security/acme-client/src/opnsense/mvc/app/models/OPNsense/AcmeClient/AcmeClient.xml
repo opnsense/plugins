@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -481,7 +481,7 @@
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
-                        <dns_lexicon>lexicon</dns_lexicon>
+                        <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
                         <dns_linode>Linode (v3 / Deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
@@ -787,67 +787,67 @@
                     <Required>N</Required>
                     <default>cloudflare</default>
                     <OptionValues>
-                        <aliyun>Aliyun.com</aliyun>
-                        <aurora>AuroraDNS</aurora>
+                        <aliyun>Aliyun.com (UNSUPPORTED)</aliyun>
+                        <aurora>AuroraDNS (UNSUPPORTED)</aurora>
                         <auto>Auto API</auto>
-                        <azure>Azure</azure>
-                        <cloudflare>CloudFlare</cloudflare>
-                        <cloudns>ClouDNS</cloudns>
-                        <cloudxns>CloudXNS</cloudxns>
-                        <conoha>ConoHa</conoha>
-                        <constellix>Constellix</constellix>
-                        <digitalocean>DigitalOcean</digitalocean>
-                        <dinahosting>Dinahosting</dinahosting>
-                        <directadmin>DirectAdmin</directadmin>
-                        <dnsimple>DNSimple</dnsimple>
-                        <dnsmadeeasy>DnsMadeEasy</dnsmadeeasy>
+                        <azure>Azure (UNSUPPORTED)</azure>
+                        <cloudflare>CloudFlare (UNSUPPORTED)</cloudflare>
+                        <cloudns>ClouDNS (UNSUPPORTED)</cloudns>
+                        <cloudxns>CloudXNS (UNSUPPORTED)</cloudxns>
+                        <conoha>ConoHa (UNSUPPORTED)</conoha>
+                        <constellix>Constellix (UNSUPPORTED)</constellix>
+                        <digitalocean>DigitalOcean (UNSUPPORTED)</digitalocean>
+                        <dinahosting>Dinahosting (UNSUPPORTED)</dinahosting>
+                        <directadmin>DirectAdmin (UNSUPPORTED)</directadmin>
+                        <dnsimple>DNSimple (UNSUPPORTED)</dnsimple>
+                        <dnsmadeeasy>DnsMadeEasy (UNSUPPORTED)</dnsmadeeasy>
                         <dnspark>DNSPark</dnspark>
-                        <dnspod>DNSPod</dnspod>
-                        <dreamhost>Dreamhost</dreamhost>
-                        <easydns>EasyDNS</easydns>
+                        <dnspod>DNSPod (UNSUPPORTED)</dnspod>
+                        <dreamhost>Dreamhost (UNSUPPORTED)</dreamhost>
+                        <easydns>EasyDNS (UNSUPPORTED)</easydns>
                         <easyname>Easyname</easyname>
-                        <exoscale>ExoScale</exoscale>
-                        <gandi>Gandi</gandi>
+                        <exoscale>ExoScale (UNSUPPORTED)</exoscale>
+                        <gandi>Gandi (UNSUPPORTED)</gandi>
                         <gehirn>Gehirn</gehirn>
                         <glesys>Glesys</glesys>
-                        <godaddy>GoDaddy</godaddy>
-                        <googleclouddns>Google Cloud</googleclouddns>
-                        <gratisdns>GratisDNS</gratisdns>
-                        <henet>Hurricane Electric</henet>
-                        <hetzner>Hetzner</hetzner>
+                        <godaddy>GoDaddy (UNSUPPORTED)</godaddy>
+                        <googleclouddns>Google Cloud (UNSUPPORTED)</googleclouddns>
+                        <gratisdns>GratisDNS (UNSUPPORTED)</gratisdns>
+                        <henet>Hurricane Electric (UNSUPPORTED)</henet>
+                        <hetzner>Hetzner (UNSUPPORTED)</hetzner>
                         <hover>Hover</hover>
-                        <infoblox>Infoblox</infoblox>
-                        <internetbs>Internet.bs</internetbs>
-                        <inwx>INWX</inwx>
-                        <linode>Linode (v3 / Deprecated)</linode>
-                        <linode4>Linode (v4)</linode4>
+                        <infoblox>Infoblox (UNSUPPORTED)</infoblox>
+                        <internetbs>Internet.bs (UNSUPPORTED)</internetbs>
+                        <inwx>INWX (UNSUPPORTED)</inwx>
+                        <linode>Linode v3 (UNSUPPORTED)</linode>
+                        <linode4>Linode v4 (UNSUPPORTED)</linode4>
                         <localzone>Localzone</localzone>
-                        <luadns>LuaDNS</luadns>
+                        <luadns>LuaDNS (UNSUPPORTED)</luadns>
                         <memset>Memset</memset>
-                        <namecheap>Namecheap</namecheap>
-                        <namesilo>Namesilo</namesilo>
-                        <netcup>Netcup</netcup>
-                        <nfsn>NFSN</nfsn>
-                        <nsone>NS1</nsone>
+                        <namecheap>Namecheap (UNSUPPORTED)</namecheap>
+                        <namesilo>Namesilo (UNSUPPORTED)</namesilo>
+                        <netcup>Netcup (UNSUPPORTED)</netcup>
+                        <nfsn>NFSN (UNSUPPORTED)</nfsn>
+                        <nsone>NS1 (UNSUPPORTED)</nsone>
                         <onapp>OnApp</onapp>
-                        <online>Online</online>
-                        <ovh>OVH</ovh>
-                        <plesk>Plesk</plesk>
-                        <pointhq>PointHQ</pointhq>
-                        <powerdns>PowerDNS</powerdns>
-                        <rackspace>Rackspace</rackspace>
-                        <rage4>Rage4</rage4>
-                        <route53>Route 53</route53>
+                        <online>Online (UNSUPPORTED)</online>
+                        <ovh>OVH (UNSUPPORTED)</ovh>
+                        <plesk>Plesk (UNSUPPORTED)</plesk>
+                        <pointhq>PointHQ (UNSUPPORTED)</pointhq>
+                        <powerdns>PowerDNS (UNSUPPORTED)</powerdns>
+                        <rackspace>Rackspace (UNSUPPORTED)</rackspace>
+                        <rage4>Rage4 (UNSUPPORTED)</rage4>
+                        <route53>Route 53 (UNSUPPORTED)</route53>
                         <safedns>SafeDNS</safedns>
                         <sakuracloud>SakuraCloud</sakuracloud>
                         <softlayer>Softlayer</softlayer>
                         <subreg>Subreg</subreg>
-                        <transip>Transip</transip>
-                        <vultr>Vultr</vultr>
-                        <yandex>Yandex</yandex>
-                        <zeit>Zeit</zeit>
-                        <zilore>Zilore</zilore>
-                        <zonomi>Zonomi</zonomi>
+                        <transip>Transip (UNSUPPORTED)</transip>
+                        <vultr>Vultr (UNSUPPORTED)</vultr>
+                        <yandex>Yandex (UNSUPPORTED)</yandex>
+                        <zeit>Zeit (UNSUPPORTED)</zeit>
+                        <zilore>Zilore (UNSUPPORTED)</zilore>
+                        <zonomi>Zonomi (UNSUPPORTED)</zonomi>
                     </OptionValues>
                 </dns_lexicon_provider>
                 <dns_lexicon_user type="TextField">
