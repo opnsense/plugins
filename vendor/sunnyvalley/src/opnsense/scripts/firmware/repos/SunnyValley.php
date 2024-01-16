@@ -31,11 +31,11 @@ require_once 'util.inc';
 
 $conf = '/usr/local/etc/pkg/repos/SunnyValley.conf';
 
-if (!file_exists($conf . '.shadow')) {
+if (!file_exists($conf . '.sample')) {
     exit(0);
 }
 
-$fileContents = file_get_contents($conf . '.shadow');
+$fileContents = file_get_contents($conf . '.sample');
 
 if (file_exists('/usr/local/zenarmor/bin/eastpect')) {
     $uuid = shell_safe('/usr/local/zenarmor/bin/eastpect -s');
