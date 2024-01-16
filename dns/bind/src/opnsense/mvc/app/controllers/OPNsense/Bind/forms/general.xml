@@ -93,7 +93,14 @@
         <id>general.logsize</id>
         <label>Logsize in MB</label>
         <type>text</type>
-        <help>Set the amount how big a logfile can growth.</help>
+        <help>Set the amount how big a logfile can growth. For Query and Blocked logs.</help>
+    </field>
+    <field>
+        <id>general.general_log_level</id>
+        <label>General Log level</label>
+        <style>selectpicker</style>
+        <type>dropdown</type>
+        <help>Select General Log level. Log levels are listed in the order of increasing verbosity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
     </field>
     <field>
         <id>general.maxcachesize</id>
