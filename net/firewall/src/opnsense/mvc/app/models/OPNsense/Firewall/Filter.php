@@ -40,6 +40,8 @@ class Filter extends BaseModel
      */
     public function performValidation($validateFullModel = false)
     {
+        $config = Config::getInstance()->object();
+
         // standard model validations
         $messages = parent::performValidation($validateFullModel);
         foreach ([$this->rules->rule, $this->snatrules->rule] as $rules) {
@@ -95,18 +97,35 @@ class Filter extends BaseModel
                 }
             }
         }
+
         foreach ($this->npt->rule->iterateItems() as $rule) {
             if ($validateFullModel || $rule->isFieldChanged()) {
-                if (!empty((string)$rule->destination_net) && !empty((string)$rule->trackif)) {
-                    $messages->appendMessage(new Message(
-                        gettext("A track interface is only allowed without an extrenal prefix."),
-                        $rule->trackif->__reference
-                    ));
+                if (!empty((string)$rule->trackif)) {
+                    if (!empty((string)$rule->destination_net)) {
+                        $messages->appendMessage(new Message(
+                            gettext('A track interface is only allowed without an external prefix.'),
+                            $rule->trackif->__reference
+                        ));
+                    }
+
+                    if (
+                        (empty($config->interfaces->{$rule->interface}->ipaddrv6) ||
+                        $config->interfaces->{$rule->interface}->ipaddrv6 != 'dhcp6') ||
+                        empty($config->interfaces->{$rule->trackif}->{'track6-interface'}) ||
+                        $config->interfaces->{$rule->trackif}->{'track6-interface'} != (string)$rule->interface
+                    ) {
+                        $messages->appendMessage(new Message(
+                            gettext('This interface is not tracking the current rule interface.'),
+                            $rule->trackif->__reference
+                        ));
+                    }
                 }
+
                 if (!empty((string)$rule->destination_net) && !empty((string)$rule->source_net)) {
-                    $dparts = explode('/', (string)$rule->destination_net);
-                    $sparts = explode('/', (string)$rule->source_net);
-                    if (count($dparts) == 2 && count($sparts) == 2 && $dparts[1] != $sparts[1]) {
+                    /* defaults to /128 */
+                    $dparts = explode('/', (string)$rule->destination_net . '/128');
+                    $sparts = explode('/', (string)$rule->source_net . '/128');
+                    if ($dparts[1] != $sparts[1]) {
                         $messages->appendMessage(new Message(
                             gettext("External subnet should match internal subnet."),
                             $rule->destination_net->__reference
