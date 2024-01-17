@@ -95,6 +95,7 @@ class LeCertificate extends LeCommon
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--cert-home %s', sprintf(self::ACME_CERT_HOME_DIR, $this->config->id));
         $this->acme_args[] = LeUtils::execSafe('--certpath %s', $this->cert_file);
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', $this->cert_key_file);
         $this->acme_args[] = LeUtils::execSafe('--capath %s', $this->cert_chain_file);

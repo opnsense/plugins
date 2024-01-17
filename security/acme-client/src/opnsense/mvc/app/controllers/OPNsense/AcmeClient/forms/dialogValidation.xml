@@ -788,12 +788,7 @@
         <help>Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2</help>
     </field>
     <field>
-        <label>lexicon</label>
-        <type>header</type>
-        <style>table_dns table_dns_lexicon</style>
-    </field>
-    <field>
-        <label>NOTE: A DNS sleep time of at least 1000 may be required.</label>
+        <label>lexicon (DEPRECATED)</label>
         <type>header</type>
         <style>table_dns table_dns_lexicon</style>
     </field>
@@ -1700,6 +1695,136 @@
     <field>
         <id>validation.dns_world4you_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Aurora (PCextreme/Versio)</label>
+        <type>header</type>
+        <style>table_dns table_dns_aurora</style>
+    </field>
+    <field>
+        <id>validation.dns_aurora_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_aurora_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ConoHa</label>
+        <type>header</type>
+        <style>table_dns table_dns_conoha</style>
+    </field>
+    <field>
+        <id>validation.dns_conoha_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_tenantid</id>
+        <label>Tenant ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_idapi</id>
+        <label>Identity Service API</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Constellix</label>
+        <type>header</type>
+        <style>table_dns table_dns_constellix</style>
+    </field>
+    <field>
+        <id>validation.dns_constellix_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_constellix_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Exoscale</label>
+        <type>header</type>
+        <style>table_dns table_dns_exoscale</style>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_secret</id>
+        <label>Secret Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>internetbs.net</label>
+        <type>header</type>
+        <style>table_dns table_dns_internetbs</style>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>PointHQ</label>
+        <type>header</type>
+        <style>table_dns table_dns_pointhq</style>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_email</id>
+        <label>E-Mail</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Rackspace</label>
+        <type>header</type>
+        <style>table_dns table_dns_rackspace</style>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>rage4</label>
+        <type>header</type>
+        <style>table_dns table_dns_rage4</style>
+    </field>
+    <field>
+        <id>validation.dns_rage4_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rage4_token</id>
+        <label>Token</label>
         <type>password</type>
     </field>
 </form>
