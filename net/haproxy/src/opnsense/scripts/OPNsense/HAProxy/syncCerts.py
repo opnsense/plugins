@@ -9,7 +9,6 @@ import OpenSSL
 import json
 from typing import List
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from haproxy.conn import HaPConn
 from haproxy import cmds
 
@@ -357,7 +356,7 @@ class Diff(SyncWithTarget):
                     for message in cert['messages']:
                         print("    " + repr(message))
 
-            for cert in sync['delete']:
+            for cert in sync['deleted']:
                 print(f"\n  DEL: {cert['cert']}")
                 for message in cert['messages']:
                     print("    " + repr(message))
