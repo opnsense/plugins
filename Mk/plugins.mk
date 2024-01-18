@@ -188,8 +188,8 @@ scripts-auto:
 		done; \
 	fi
 	@if [ -d ${.CURDIR}/src/opnsense/scripts/firmware/repos ]; then \
-		for FILE in $$(cd ${.CURDIR} && find -s \
-		    src/opnsense/scripts/firmware/repos -type f); do \
+		for FILE in $$(cd ${.CURDIR}/src && find -s \
+		    opnsense/scripts/firmware/repos -type f); do \
 			echo "${LOCALBASE}/$${FILE#.}" >> ${DESTDIR}/+POST_INSTALL; \
 		done \
 	fi
