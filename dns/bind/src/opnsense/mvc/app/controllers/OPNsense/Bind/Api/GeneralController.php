@@ -31,9 +31,32 @@
 namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Bind\General';
     protected static $internalModelName = 'general';
+
+    public function zonetestAction($zonename = null)
+    {
+        $response = "request error";
+        if ($this->request->hasPost("zone")) {
+            $zonename = $this->request->getPost("zone");
+            $backend = new Backend();
+            $response = trim($backend->configdpRun("bind zone check", [$zonename]));
+        }
+        return array("response" => $response);
+    }
+
+    public function zoneshowAction($zonename = null)
+    {
+        $response = "request error";
+        if ($this->request->hasPost("zone")) {
+            $zonename = $this->request->getPost("zone");
+            $backend = new Backend();
+            $response = json_decode($backend->configdpRun("bind zone show", [$zonename]), true);
+        }
+        return $response;
+    }
 }
