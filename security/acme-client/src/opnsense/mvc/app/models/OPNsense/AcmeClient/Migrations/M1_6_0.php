@@ -75,7 +75,7 @@ class M1_6_0 extends BaseModelMigration
                     }
 
                     // Write changes back to file
-                    file_put_contents($account_file, implode("\r\n", $new_account_conf) . "\n");
+                    file_put_contents($account_file, implode("\n", $new_account_conf) . "\n");
                     chmod($account_file, 0600);
 
                     // Finally, rename account directory

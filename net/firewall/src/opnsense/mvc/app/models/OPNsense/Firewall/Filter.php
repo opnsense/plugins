@@ -40,16 +40,13 @@ class Filter extends BaseModel
      */
     public function performValidation($validateFullModel = false)
     {
+        $config = Config::getInstance()->object();
+
         // standard model validations
         $messages = parent::performValidation($validateFullModel);
         foreach ([$this->rules->rule, $this->snatrules->rule] as $rules) {
             foreach ($rules->iterateItems() as $rule) {
-                // validate changed rules
-                $rule_changed = false;
-                foreach ($rule->iterateItems() as $field) {
-                    $rule_changed = $rule_changed ? $rule_changed : $field->isFieldChanged();
-                }
-                if ($validateFullModel || $rule_changed) {
+                if ($validateFullModel || $rule->isFieldChanged()) {
                     // port / protocol validation
                     if (!empty((string)$rule->source_port) && !in_array($rule->protocol, ['TCP', 'UDP'])) {
                         $messages->appendMessage(new Message(
@@ -96,6 +93,43 @@ class Filter extends BaseModel
                                 $rule->target_port->__reference
                             ));
                         }
+                    }
+                }
+            }
+        }
+
+        foreach ($this->npt->rule->iterateItems() as $rule) {
+            if ($validateFullModel || $rule->isFieldChanged()) {
+                if (!empty((string)$rule->trackif)) {
+                    if (!empty((string)$rule->destination_net)) {
+                        $messages->appendMessage(new Message(
+                            gettext('A track interface is only allowed without an external prefix.'),
+                            $rule->trackif->__reference
+                        ));
+                    }
+
+                    if (
+                        (empty($config->interfaces->{$rule->interface}->ipaddrv6) ||
+                        $config->interfaces->{$rule->interface}->ipaddrv6 != 'dhcp6') ||
+                        empty($config->interfaces->{$rule->trackif}->{'track6-interface'}) ||
+                        $config->interfaces->{$rule->trackif}->{'track6-interface'} != (string)$rule->interface
+                    ) {
+                        $messages->appendMessage(new Message(
+                            gettext('This interface is not tracking the current rule interface.'),
+                            $rule->trackif->__reference
+                        ));
+                    }
+                }
+
+                if (!empty((string)$rule->destination_net) && !empty((string)$rule->source_net)) {
+                    /* defaults to /128 */
+                    $dparts = explode('/', (string)$rule->destination_net . '/128');
+                    $sparts = explode('/', (string)$rule->source_net . '/128');
+                    if ($dparts[1] != $sparts[1]) {
+                        $messages->appendMessage(new Message(
+                            gettext("External subnet should match internal subnet."),
+                            $rule->destination_net->__reference
+                        ));
                     }
                 }
             }

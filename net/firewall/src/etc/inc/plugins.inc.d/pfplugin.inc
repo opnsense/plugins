@@ -42,4 +42,7 @@ function pfplugin_firewall($fw)
     foreach ($mdlFilter->snatrules->rule->sortedBy(["sequence"]) as $key => $rule) {
          $fw->registerSNatRule(50, $rule->serialize());
     }
+    foreach ($mdlFilter->npt->rule->sortedBy(["sequence"]) as $key => $rule) {
+         $fw->registerNptRule(50, $rule->serialize());
+    }
 }

@@ -30,6 +30,8 @@ namespace OPNsense\Firewall\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Firewall\Alias;
+use OPNsense\Firewall\Category;
 
 /**
  * Class FilterBaseController implements actions for various types
@@ -39,6 +41,83 @@ abstract class FilterBaseController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'filter';
     protected static $internalModelClass = 'OPNsense\Firewall\Filter';
+    protected static $categorysource = null;
+
+    /**
+     * list categories and usage
+     * @return array
+     */
+    public function listCategoriesAction()
+    {
+        $response = ['rows' => []];
+        $catcount = [];
+        if (!empty(static::$categorysource)) {
+            $node = $this->getModel();
+            foreach (explode('.', static::$categorysource) as $ref) {
+                $node = $node->$ref;
+            }
+            foreach ($node->iterateItems() as $item) {
+                if (!empty((string)$item->categories)) {
+                    foreach (explode(',', (string)$item->categories) as $cat) {
+                        if (!isset($catcount[$cat])) {
+                            $catcount[$cat] = 0;
+                        }
+                        $catcount[$cat] += 1;
+                    }
+                }
+            }
+        }
+        foreach ((new Category())->categories->category->iterateItems() as $key => $category) {
+            $response['rows'][] = [
+                "uuid" => $key,
+                "name" => (string)$category->name,
+                "color" => (string)$category->color,
+                "used" => isset($catcount[$key]) ? $catcount[$key] : 0
+            ];
+        }
+        array_multisort(array_column($response['rows'], "name"), SORT_ASC, SORT_NATURAL, $response['rows']);
+
+        return $response;
+    }
+
+    /**
+     * list of available network options
+     * @return array
+     */
+    public function listNetworkSelectOptionsAction()
+    {
+        $result = [
+            'single' => [
+                'label' => gettext("Single host or Network")
+            ],
+            'aliases' => [
+                'label' => gettext("Aliases"),
+                'items' => []
+            ],
+            'networks' => [
+                'label' => gettext("Networks"),
+                'items' => [
+                    'any' => gettext('any'),
+                    '(self)' => gettext("This Firewall")
+                ]
+            ]
+        ];
+        foreach ((Config::getInstance()->object())->interfaces->children() as $ifname => $ifdetail) {
+            $descr = htmlspecialchars(!empty($ifdetail->descr) ? $ifdetail->descr : strtoupper($ifname));
+            $result['networks']['items'][$ifname] = $descr . " " . gettext("net");
+            if (!isset($ifdetail->virtual)) {
+                $result['networks']['items'][$ifname . "ip"] = $descr . " " . gettext("address");
+            }
+        }
+        foreach ((new Alias())->aliases->alias->iterateItems() as $alias) {
+            if (strpos((string)$alias->type, "port") === false) {
+                $result['aliases']['items'][(string)$alias->name] = (string)$alias->name;
+            }
+        }
+
+        return $result;
+    }
+
 
     public function applyAction($rollback_revision = null)
     {

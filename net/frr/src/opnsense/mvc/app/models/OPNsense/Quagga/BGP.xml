@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -115,6 +115,10 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </rrclient>
+                        <soft_reconfiguration_inbound type="BooleanField">
+                                <default>0</default>
+                                <Required>N</Required>
+                        </soft_reconfiguration_inbound>
                         <bfd type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>

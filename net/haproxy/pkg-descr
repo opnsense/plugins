@@ -6,6 +6,30 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.2
+
+Added:
+* add support for built-in OCSP update feature
+* add support for forwarded header (RFC7239)
+* add option "X-Forwarded-For Header" to backend settings
+* add options for HTTP/2 performance tuning
+
+Fixed:
+* fix SSL sync cron job (bulk sync was never working properly)
+
+Changed:
+* upgrade to HAProxy 2.8 release series (#3459)
+* change default for HTTP/2 to enabled (only new frontends/backends)
+* add "no-alpn" option if HTTP/2 is not enabled (only TLS-enabled frontends)
+* move OCSP settings from "Service" to "Global" section
+* replace bundled haproxyctl library with haproxy-cli
+
+Deprecated:
+* frontend option "X-Forwarded-For Header" (the backend option should be used)
+
+Removed:
+* remove OSCP update cron job
+
 4.1
 
 Fixed:

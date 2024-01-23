@@ -99,7 +99,13 @@
         <type>checkbox</type>
         <help>Log packets that are handled by this rule</help>
     </field>
-
+    <field>
+        <id>rule.categories</id>
+        <label>Categories</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help>For grouping purposes you may select multiple groups here to organize items.</help>
+    </field>
     <field>
         <id>rule.description</id>
         <label>Description</label>

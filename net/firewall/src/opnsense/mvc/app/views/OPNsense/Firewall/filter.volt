@@ -2,12 +2,47 @@
     $( document ).ready(function() {
         let initial_load = true;
         let grid = $("#grid-rules").UIBootgrid({
-            search:'/api/firewall/{{ruleController}}/searchRule/',
-            get:'/api/firewall/{{ruleController}}/getRule/',
-            set:'/api/firewall/{{ruleController}}/setRule/',
-            add:'/api/firewall/{{ruleController}}/addRule/',
-            del:'/api/firewall/{{ruleController}}/delRule/',
-            toggle:'/api/firewall/{{ruleController}}/toggleRule/'
+            search:'/api/firewall/{{ruleController}}/search_rule/',
+            get:'/api/firewall/{{ruleController}}/get_rule/',
+            set:'/api/firewall/{{ruleController}}/set_rule/',
+            add:'/api/firewall/{{ruleController}}/add_rule/',
+            del:'/api/firewall/{{ruleController}}/del_rule/',
+            toggle:'/api/firewall/{{ruleController}}/toggle_rule/',
+            options:{
+                requestHandler: function(request){
+                    if ( $('#category_filter').val().length > 0) {
+                        request['category'] = $('#category_filter').val();
+                    }
+                    return request;
+                }
+            }
+        });
+        grid.on("loaded.rs.jquery.bootgrid", function (e){
+            // reload categories before grid load
+            ajaxCall('/api/firewall/{{ruleController}}/list_categories', {}, function(data, status){
+                if (data.rows !== undefined) {
+                    let current_selection = $("#category_filter").val();
+                    $("#category_filter").empty();
+                    for (i=0; i < data.rows.length ; ++i) {
+                        let row = data.rows[i];
+                        let opt_val = $('<div/>').html(row.name).text();
+                        let bgcolor = row.color != "" ? row.color : '31708f;'; // set category color
+                        let option = $("<option/>").val(row.uuid).html(row.name);
+                        if (row.used > 0) {
+                            option.attr(
+                              'data-content',
+                              "<span>"+opt_val + "</span>"+
+                              "<span style='background:#"+bgcolor+";' class='badge pull-right'>" + row.used + "</span>"
+                            );
+                            option.attr('id', row.uuid);
+                        }
+
+                        $("#category_filter").append(option);
+                    }
+                    $("#category_filter").val(current_selection);
+                    $("#category_filter").selectpicker('refresh');
+                }
+            });
         });
 
         // open edit dialog when opened with a uuid reference
@@ -62,6 +97,67 @@
                 }
             });
         });
+        // move filter into action header
+        $("#type_filter_container").detach().prependTo('#grid-rules-header > .row > .actionBar > .actions');
+        $("#category_filter").change(function(){
+            $('#grid-rules').bootgrid('reload');
+        });
+
+        // replace all "net" selectors with details retrieved from "list_network_select_options" endpoint
+        ajaxGet('/api/firewall/{{ruleController}}/list_network_select_options', [], function(data, status){
+            // fetch options
+            let options = [];
+            if (data.single) {
+                Object.keys(data).forEach((key, idx) => {
+                    if (data[key].items !== undefined) {
+                        let optgrp = $("<optgroup/>").attr('label', data[key].label);
+                        Object.keys(data[key].items).forEach((key2, idx2) => {
+                            let this_item = data[key].items[key2];
+                            optgrp.append($("<option/>").val(key2).text(this_item));
+                        });
+                        options.push(optgrp);
+                    } else {
+                        options.push($("<option/>").val('').text(data[key].label));
+                    }
+                });
+            }
+            if (options.length == 0) {
+                // unable to fetch options.
+                return;
+            }
+            $(".net_selector").each(function(){
+                let $items = $("#network_select").clone().show();
+                let $this_input = $items.find('input');
+                let $this_select = $items.find('select');
+                for (i=0; i < options.length; ++i) {
+                    $this_select.append(options[i].clone());
+                }
+                $this_select.attr('for', $(this).attr('id')).selectpicker();
+                $this_select.change(function(){
+                    let $value = $(this).val();
+                    if ($value !== '') {
+                        $this_input.val($value);
+                        $this_input.hide();
+                    } else {
+                        $this_input.show();
+                    }
+                });
+                $this_input.attr('id', $(this).attr('id'));
+                $this_input.change(function(){
+                    $this_select.val($(this).val());
+                    if ($this_select.val() === null || $this_select.val() == '') {
+                        $this_select.val('');
+                        $this_input.show();
+                    } else {
+                        $this_input.hide();
+                    }
+                    $this_select.selectpicker('refresh');
+                });
+                $this_input.show();
+                $(this).replaceWith($items);
+            });
+
+        });
     });
 </script>
 
@@ -71,14 +167,26 @@
 </ul>
 <div class="tab-content content-box">
     <div id="rules" class="tab-pane fade in active">
+        <div class="hidden">
+            <!-- filter per type container -->
+            <div id="type_filter_container" class="btn-group">
+                <select id="category_filter"  data-title="{{ lang._('Categories') }}" class="selectpicker" data-live-search="true" data-size="5"  multiple data-width="200px">
+                </select>
+            </div>
+        </div>
         <!-- tab page "rules" -->
         <table id="grid-rules" class="table table-condensed table-hover table-striped" data-editDialog="DialogFilterRule" data-editAlert="FilterRuleChangeMessage">
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="sequence" data-type="string">{{ lang._('Sequence') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+{% for fieldlist in gridFields %}
+                    <th
+                        data-column-id="{{fieldlist['id']}}"
+                        data-width="{{fieldlist['width']|default('')}}"
+                        data-type="{{fieldlist['type']|default('string')}}"
+                        data-formatter="{{fieldlist['formatter']|default('')}}"
+                    >{{fieldlist['heading']|default('')}}</th>
+{% endfor %}
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>
@@ -105,7 +213,7 @@
                 data-error-title="{{ lang._('Filter load error') }}"
                 type="button"
         ></button>
-
+{% if SavePointBtns is defined %}
         <div class="pull-right">
             <button class="btn" id="savepointAct"
                     data-endpoint='/api/firewall/{{ruleController}}/savepoint'
@@ -117,9 +225,26 @@
                 {{ lang._('Revert') }}
             </button>
         </div>
+{% endif %}
         <br/><br/>
     </div>
     </div>
+</div>
+
+<div id="network_select" style="display: none;" >
+    <table style="max-width: 348px">
+        <tr>
+            <td>
+                <select data-live-search="true" data-size="5" data-width="348px">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input style="display:none;" type="text"/>
+            </td>
+        </tr>
+    </table>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogFilterRule,'id':'DialogFilterRule','label':lang._('Edit rule')])}}

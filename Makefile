@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -44,7 +44,7 @@ list:
 .endfor
 
 # shared targets that are sane to run from the root directory
-TARGETS=	clean lint revision style style-fix style-python sweep test
+TARGETS=	clean lint plist-fix revision style style-fix style-python sweep test
 
 .for TARGET in ${TARGETS}
 ${TARGET}:

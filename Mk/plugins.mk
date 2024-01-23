@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -133,8 +133,8 @@ manifest: check
 	done
 	@echo "}"
 .endif
-	@if [ -f ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME} ]; then \
-	    echo "annotations $$(cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME})"; \
+	@if [ -f ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME} ]; then \
+	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
 
 scripts: check scripts-pre scripts-auto scripts-manual scripts-post
@@ -186,6 +186,12 @@ scripts-auto:
 			    sed "s:%%ARG%%:$${FILE#./}:g" >> \
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
+	fi
+	@if [ -d ${.CURDIR}/src/opnsense/scripts/firmware/repos ]; then \
+		for FILE in $$(cd ${.CURDIR}/src && find -s \
+		    opnsense/scripts/firmware/repos -type f); do \
+			echo "${LOCALBASE}/$${FILE#.}" >> ${DESTDIR}/+POST_INSTALL; \
+		done \
 	fi
 
 scripts-manual:
@@ -275,7 +281,7 @@ package: check
 	@${MAKE} DESTDIR=${WRKSRC} install
 	@echo " done"
 	@echo ">>> Generated version info for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
-	@cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME}
+	@cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}
 	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
 	@${MAKE} DESTDIR=${WRKSRC} metadata
 	@echo " done"
@@ -377,6 +383,8 @@ lint-php: check
 
 lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
 
+plist-fix:
+
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
 	    xargs -0 -n1 rm
@@ -434,9 +442,9 @@ style-model:
 
 test: check
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
-		cd /usr/local/opnsense/mvc/tests && \
+		cd ${LOCALBASE}/opnsense/mvc/tests && \
 		    phpunit --configuration PHPunit.xml \
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
 
-.PHONY:	check
+.PHONY:	check plist-fix

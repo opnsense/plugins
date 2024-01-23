@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ use OPNsense\Core\Config;
 use OPNsense\AcmeClient\LeAccount;
 use OPNsense\AcmeClient\LeAutomationFactory;
 use OPNsense\AcmeClient\LeValidationFactory;
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Manage ACME certificates with acme.sh
@@ -94,6 +95,7 @@ class LeCertificate extends LeCommon
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--cert-home %s', sprintf(self::ACME_CERT_HOME_DIR, $this->config->id));
         $this->acme_args[] = LeUtils::execSafe('--certpath %s', $this->cert_file);
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', $this->cert_key_file);
         $this->acme_args[] = LeUtils::execSafe('--capath %s', $this->cert_chain_file);
@@ -474,37 +476,20 @@ class LeCertificate extends LeCommon
         LeUtils::log('wiping certificate config: ' . (string)$this->config->name);
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // env variables for proc_open()
+        $proc_env = $this->acme_env; // add env variables
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
-        $proc_desc = array(  // descriptor array for proc_open()
-            0 => array("pipe", "r"), // stdin
-            1 => array("pipe", "w"), // stdout
-            2 => array("pipe", "w")  // stderr
-        );
-        $proc_pipes = array();
 
-        // Run acme client to remove certificate and related config
+        // Prepare acme.sh command to remove certificate and related config
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Make sure the resource could be setup properly
-        if (is_resource($proc)) {
-            // Close all pipes
-            fclose($proc_pipes[0]);
-            fclose($proc_pipes[1]);
-            fclose($proc_pipes[2]);
-            // Get exit code
-            $result = proc_close($proc);
-        } else {
-            LeUtils::log_error('unable to start acme client process');
-            return false;
-        }
+        // Run acme.sh command
+        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
-        // Check exit code
+        // Check acme.sh result
         if ($result) {
             LeUtils::log_error('error removing certificate ' . (string)$this->config->name);
             return false;
@@ -565,36 +550,19 @@ class LeCertificate extends LeCommon
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // env variables for proc_open()
+        $proc_env = $this->acme_env; // add env variables
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
-        $proc_desc = array(  // descriptor array for proc_open()
-            0 => array("pipe", "r"), // stdin
-            1 => array("pipe", "w"), // stdout
-            2 => array("pipe", "w")  // stderr
-        );
-        $proc_pipes = array();
 
-        // Run acme client to revoke certificate
+        // Prepare acme.sh command to revoke certificate
         $acmecmd = '/usr/local/sbin/acme.sh '
           . '--revoke '
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Make sure the resource could be setup properly
-        if (is_resource($proc)) {
-            // Close all pipes
-            fclose($proc_pipes[0]);
-            fclose($proc_pipes[1]);
-            fclose($proc_pipes[2]);
-            // Get exit code
-            $result = proc_close($proc);
-        } else {
-            LeUtils::log_error('unable to start acme client process');
-            return false;
-        }
+        // Run acme.sh command
+        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
         // Check exit code
         if ($result) {
@@ -631,10 +599,14 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
-            // Ignore invalid automations.
-            if ($automation->prepare()) {
-                $automation->run();
+            // Skip invalid automations.
+            if (!is_null($automation)) {
+                $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
+                if ($automation->prepare()) {
+                    $automation->run();
+                }
+            } else {
+                LeUtils::log_error("ignoring invalid automation: ${auto_uuid}");
             }
         }
 
