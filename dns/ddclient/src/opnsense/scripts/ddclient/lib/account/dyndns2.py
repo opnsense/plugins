@@ -89,8 +89,8 @@ class DynDNS2(BaseAccount):
                     'params': {
                         'hostname': self.settings.get('hostnames'),
                         'myip': self.current_address,
-                        'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG',
-                        'system': 'dyndns'
+                        'system': 'dyndns',
+                        'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
                     },
                     'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
                     'headers': {
