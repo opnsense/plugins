@@ -149,6 +149,7 @@
                                 <default></default>
                                 <OptionValues>
                                         <message-digest>MD5</message-digest>
+					<plain>plain</plain>
                                 </OptionValues>
                         </authtype>
                         <authkey type="TextField">
