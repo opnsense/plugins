@@ -8,6 +8,7 @@ Plugin Changelog
 
 1.20
 
+* Add system parameter to native dyndns2 requesto (contributed by Jakub Gargul)
 * Add Digitalocean support (contributed by Mathias Schneuwly)
 * Add Mythin Beasts support (contributed by PeterF)
 
