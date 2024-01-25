@@ -35,13 +35,13 @@
   * Nic DNS API
   * @package OPNsense\AcmeClient
   */
- class DnsNic extends Base implements LeValidationInterface
- {
-     public function prepare()
-     {
-         $this->acme_env['NIC_Username'] = (string)$this->config->dns_nic_username;
-         $this->acme_env['NIC_Password'] = (string)$this->config->dns_nic_password;
-         $this->acme_env['NIC_ClientID'] = (string)$this->config->dns_nic_client;
-         $this->acme_env['NIC_ClientSecret'] = (string)$this->config->dns_nic_secret;
-     }
- }
+class DnsNic extends Base implements LeValidationInterface
+{
+    public function prepare()
+    {
+        $this->acme_env['NIC_Username'] = (string)$this->config->dns_nic_username;
+        $this->acme_env['NIC_Password'] = (string)$this->config->dns_nic_password;
+        $this->acme_env['NIC_ClientID'] = (string)$this->config->dns_nic_client;
+        $this->acme_env['NIC_ClientSecret'] = (string)$this->config->dns_nic_secret;
+    }
+}

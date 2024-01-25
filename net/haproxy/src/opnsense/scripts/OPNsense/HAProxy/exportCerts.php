@@ -97,9 +97,9 @@ foreach ($configNodes as $key => $value) {
                                             echo "exported $type to " . $output_pem_filename . "\n";
                                             // Check if automatic OCSP updates are enabled.
                                             if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
-                                              $crtlist[] = $output_pem_filename . " ocsp-update on";
+                                                $crtlist[] = $output_pem_filename . " ocsp-update on";
                                             } else {
-                                              $crtlist[] = $output_pem_filename;
+                                                $crtlist[] = $output_pem_filename;
                                             }
                                         } else {
                                             // In contrast to certificates, CA/CRL content needs to be put in a single file.
