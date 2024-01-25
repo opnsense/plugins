@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -94,6 +94,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--cert-home %s', sprintf(self::ACME_CERT_HOME_DIR, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--certpath %s', sprintf(self::ACME_CERT_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
@@ -154,16 +155,10 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $account_conf_file = $account_conf_dir . '/account.conf';
 
         // Preparation to run acme client
-        $proc_env = $this->acme_env; // env variables for proc_open()
+        $proc_env = $this->acme_env; // add env variables
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
-        $proc_desc = array(  // descriptor array for proc_open()
-            0 => array("pipe", "r"), // stdin
-            1 => array("pipe", "w"), // stdout
-            2 => array("pipe", "w")  // stderr
-        );
-        $proc_pipes = array();
 
-        // Run acme client
+        // Prepare acme.sh command
         // NOTE: We "export" certificates to our own directory, so we don't have to deal
         // with domain names in filesystem, but instead can use the ID of our certObj, which
         // will never change.
@@ -173,25 +168,14 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-        // Make sure the resource could be setup properly
-        if (is_resource($proc)) {
-            // Close all pipes
-            fclose($proc_pipes[0]);
-            fclose($proc_pipes[1]);
-            fclose($proc_pipes[2]);
-            // Get exit code
-            $result = proc_close($proc);
-        } else {
-            LeUtils::log_error('unable to start acme client process');
-            return false;
-        }
+        // Run acme.sh command
+        $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
         // Run optional cleanup tasks.
         $this->cleanup();
 
-        // Check validation result
+        // Check acme.sh result
         if ($result) {
             LeUtils::log_error('domain validation failed (' . $this->getMethod() . ')');
             return false;

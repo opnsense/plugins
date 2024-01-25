@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2020 Frank Wall
+ * Copyright (C) 2017-2024 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -194,17 +194,26 @@ class LeUtils
 
         // Make sure the resource could be setup properly
         if (is_resource($proc)) {
-            // Close all pipes
+            // This workaround ensures that the accurate return code
+            // is reliably returned.
             fclose($proc_pipes[0]);
+            stream_set_blocking($proc_pipes[1], false);
+            stream_set_blocking($proc_pipes[2], false);
+            while (!feof($proc_pipes[1]) || !feof($proc_pipes[2])) {
+                $stdout = fread($proc_pipes[1], 1024);
+                $stderr = fread($proc_pipes[2], 1024);
+                usleep(50000);
+            }
             fclose($proc_pipes[1]);
             fclose($proc_pipes[2]);
+
             // Get exit code
             $result = proc_close($proc);
-            log_error(sprintf("AcmeClient: The shell command '%s' returned exit code '%d'", $proc_cmd, $result));
+            log_error(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
             return($result);
         } else {
             log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));
-            return false;
+            return(-999);
         }
     }
 }
