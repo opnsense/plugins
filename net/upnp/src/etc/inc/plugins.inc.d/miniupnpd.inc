@@ -230,7 +230,7 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "deny 0-65535 0.0.0.0/0 0-65535\n";
             }
 
-            /* Allow UPnP or NAT-PMP as requested */
+            /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
