@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -27,6 +27,7 @@
                 <default>0</default>
                 <Required>Y</Required>
             </seamlessReload>
+            <!-- XXX: old value, required for model migration to 4.1.0 -->
             <storeOcsp type="BooleanField">
                 <default>0</default>
                 <Required>N</Required>
@@ -128,6 +129,24 @@
                 <customOptions type="TextField">
                     <Required>N</Required>
                 </customOptions>
+                <ocspUpdateEnabled type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </ocspUpdateEnabled>
+                <ocspUpdateMinDelay type="IntegerField">
+                    <default>300</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 86400.</ValidationMessage>
+                    <Required>N</Required>
+                </ocspUpdateMinDelay>
+                <ocspUpdateMaxDelay type="IntegerField">
+                    <default>3600</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 86400.</ValidationMessage>
+                    <Required>N</Required>
+                </ocspUpdateMaxDelay>
                 <ssl_defaultsEnabled type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -182,6 +201,42 @@
                     <default>TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256</default>
                     <Required>N</Required>
                 </ssl_cipherSuites>
+                <h2_initialWindowSize type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSize>
+                <h2_initialWindowSizeOutgoing type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSizeOutgoing>
+                <h2_initialWindowSizeIncoming type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_initialWindowSizeIncoming>
+                <h2_maxConcurrentStreams type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreams>
+                <h2_maxConcurrentStreamsOutgoing type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreamsOutgoing>
+                <h2_maxConcurrentStreamsIncoming type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 10000000.</ValidationMessage>
+                    <Required>N</Required>
+                </h2_maxConcurrentStreamsIncoming>
             </tuning>
             <defaults>
                 <maxConnections type="IntegerField">
@@ -777,7 +832,7 @@
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
                 <http2Enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>N</Required>
                 </http2Enabled>
                 <http2Enabled_nontls type="BooleanField">
@@ -795,6 +850,7 @@
                         <http10>HTTP/1.0</http10>
                     </OptionValues>
                 </advertised_protocols>
+                <!-- XXX: deprecated option (scheduled removal in os-haproxy 5.0) -->
                 <forwardFor type="BooleanField">
                     <default>0</default>
                     <Required>Y</Required>
@@ -1016,7 +1072,7 @@
                     <Required>N</Required>
                 </linkedMailer>
                 <http2Enabled type="BooleanField">
-                    <default>0</default>
+                    <default>1</default>
                     <Required>N</Required>
                 </http2Enabled>
                 <http2Enabled_nontls type="BooleanField">
@@ -1034,6 +1090,27 @@
                         <http10>HTTP/1.0</http10>
                     </OptionValues>
                 </ba_advertised_protocols>
+                <forwardFor type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </forwardFor>
+                <forwardedHeader type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </forwardedHeader>
+                <forwardedHeaderParameters type="OptionField">
+                    <Required>N</Required>
+                    <Sorted>Y</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <proto>proto</proto>
+                        <host>host</host>
+                        <by>by</by>
+                        <by_port>by_port</by_port>
+                        <for>for</for>
+                        <for_port>for_port</for_port>
+                    </OptionValues>
+                </forwardedHeaderParameters>
                 <persistence type="OptionField">
                     <Required>N</Required>
                     <default>sticktable</default>
@@ -3027,6 +3104,7 @@
                     <ValidationMessage>Related cron not found.</ValidationMessage>
                     <Required>N</Required>
                 </syncCertsCron>
+                <!-- XXX: old value, required for model migration to 4.1.0 -->
                 <updateOcsp type="BooleanField">
                     <default>0</default>
                     <Required>N</Required>

@@ -11,17 +11,6 @@
         <help><![CDATA[Periodically sync SSL certificate changes into the running HAProxy service. This is most useful when using short-lived Let's Encrypt certificates, but changes to other certificates will also be synced. Note that when using the Let's Encrypt plugin, it is also possible to use an <a target="_blank" href="/ui/acmeclient/actions">Automation</a> instead of this cron job.]]></help>
     </field>
     <field>
-        <label>Update OCSP data for SSL certificates</label>
-        <type>header</type>
-        <style>table_cron table_cron_updateOcsp</style>
-    </field>
-    <field>
-        <id>haproxy.maintenance.cronjobs.updateOcsp</id>
-        <label>Enable</label>
-        <type>checkbox</type>
-        <help><![CDATA[Periodically fetch OCSP data for all configured SSL certificates. Note that OCSP support needs to be enabled in <a target="_blank" href="/ui/haproxy#general-settings">HAProxy service settings</a>.]]></help>
-    </field>
-    <field>
         <label>Reload HAProxy service</label>
         <type>header</type>
         <style>table_cron table_cron_reloadService</style>
