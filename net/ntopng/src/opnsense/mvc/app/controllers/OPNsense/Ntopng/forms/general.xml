@@ -8,9 +8,7 @@
     <field>
         <id>general.interface</id>
         <label>Interfaces</label>
-        <style>tokenize</style>
         <type>select_multiple</type>
-        <allownew>true</allownew>
         <advanced>true</advanced>
         <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
