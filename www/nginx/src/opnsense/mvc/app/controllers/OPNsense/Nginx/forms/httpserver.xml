@@ -156,7 +156,7 @@
     <id>httpserver.https_only</id>
     <label>HTTPS Only</label>
     <type>checkbox</type>
-    <help>If you check this box, a TLS encrypted connection is enforced.</help>
+    <help>If the request scheme is not https, redirect to use https for this server.</help>
   </field>
   <field>
     <id>httpserver.tls_protocols</id>
