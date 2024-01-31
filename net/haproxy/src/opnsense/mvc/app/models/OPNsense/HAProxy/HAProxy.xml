@@ -85,6 +85,14 @@
                     <ValidationMessage>Please specify a value between 1 and 1024.</ValidationMessage>
                     <Required>N</Required>
                 </nbthread>
+                <resolversPrefer type="OptionField">
+                    <Required>N</Required>
+                    <default>ipv4</default>
+                    <OptionValues>
+                        <ipv4>IPv4</ipv4>
+                        <ipv6>IPv6</ipv6>
+                    </OptionValues>
+                </resolversPrefer>
                 <sslServerVerify type="OptionField">
                     <Required>Y</Required>
                     <default>ignore</default>

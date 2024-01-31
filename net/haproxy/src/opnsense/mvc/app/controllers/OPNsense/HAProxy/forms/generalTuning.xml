@@ -23,6 +23,12 @@
         <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> Consider raising the settings for kern.maxfiles and kern.maxfilesperproc in <a target="_blank" href="/system_advanced_sysctl.php">System: Settings: Tunables</a>, otherwise HAProxy will fail to open the specified number of connections.</div>]]></help>
     </field>
     <field>
+        <id>haproxy.general.tuning.resolversPrefer</id>
+        <label>DNS prefer IP family</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option allows to choose which IP family is preferred when resolving DNS names. This is useful when IPv6 or IPv4 is not available. It solves a common issue with OCSP updates.]]></help>
+    </field>
+    <field>
         <id>haproxy.general.tuning.sslServerVerify</id>
         <label>Verify SSL Server Certificates</label>
         <type>dropdown</type>

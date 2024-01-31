@@ -97,7 +97,7 @@ foreach ($configNodes as $key => $value) {
                                             echo "exported $type to " . $output_pem_filename . "\n";
                                             // Check if automatic OCSP updates are enabled.
                                             if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
-                                                $crtlist[] = $output_pem_filename . " ocsp-update on";
+                                                $crtlist[] = $output_pem_filename . " [ocsp-update on]";
                                             } else {
                                                 $crtlist[] = $output_pem_filename;
                                             }
@@ -125,7 +125,12 @@ foreach ($configNodes as $key => $value) {
                             // check if a default certificate is configured
                             if (($type == 'cert') and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                                 $default_cert = (string)$child->ssl_default_certificate;
-                                $default_cert_filename = $export_path . $default_cert . ".pem";
+                                // Check if automatic OCSP updates are enabled.
+                                if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
+                                    $default_cert_filename = $export_path . $default_cert . ".pem [ocsp-update on]";
+                                } else {
+                                    $default_cert_filename = $export_path . $default_cert . ".pem";
+                                }
                                 // ensure that the default certificate is the first entry on the list
                                 $crtlist = array_diff($crtlist, [$default_cert_filename]);
                                 array_unshift($crtlist, $default_cert_filename);
