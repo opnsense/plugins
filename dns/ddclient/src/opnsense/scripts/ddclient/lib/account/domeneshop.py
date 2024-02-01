@@ -56,7 +56,7 @@ class Domeneshop(BaseAccount):
             hostnames = self.settings.get('hostnames')
 
             # DNS update request using the "IP update protocol"
-            url = f'https://api.domeneshop.no/v0/dyndns/update?hostnames={hostnames}&myip={str(self.current_address)}'
+            url = f'https://api.domeneshop.no/v0/dyndns/update?hostname={hostnames}&myip={str(self.current_address)}'
             req_opts = {
                 'url': url,
                 'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
