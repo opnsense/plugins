@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2016-2021 Frank Wall
+ * Copyright (C) 2016-2024 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * All rights reserved.
  *
@@ -37,6 +37,17 @@ use OPNsense\Core\Config;
 
 $export_path = '/tmp/haproxy/ssl/';
 
+function hasOcspInfo($cert_content)
+{
+    $cert_info = @openssl_x509_parse($cert_content);
+    if (!empty($cert_info['name'])) {
+        if (!empty($cert_info['extensions']) and !empty($cert_info['extensions']['authorityInfoAccess'])) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 // configure ssl elements
 $configNodes = [
     'frontends' => ['ssl_certificates', 'ssl_clientAuthCAs', 'ssl_clientAuthCRLs', 'ssl_default_certificate'],
@@ -68,6 +79,7 @@ foreach ($configNodes as $key => $value) {
                                 foreach ($configObj->$type as $cert) {
                                     if ($cert_refid == (string)$cert->refid) {
                                         $pem_content = '';
+                                        $ocsp_conf = '';
                                         // CRLs require special export
                                         if ($type == 'crl') {
                                             $crl =& lookup_crl($cert_refid);
@@ -75,6 +87,8 @@ foreach ($configNodes as $key => $value) {
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
                                             $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
+                                            // Get OCSP status
+                                            $ocsp_conf = hasOcspInfo($pem_content) ? ' [ocsp-update on]' : '';
                                             // check if a CA is linked
                                             if (!empty((string)$cert->caref)) {
                                                 $cert = (array)$cert;
@@ -97,7 +111,7 @@ foreach ($configNodes as $key => $value) {
                                             echo "exported $type to " . $output_pem_filename . "\n";
                                             // Check if automatic OCSP updates are enabled.
                                             if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
-                                                $crtlist[] = $output_pem_filename . " [ocsp-update on]";
+                                                $crtlist[] = $output_pem_filename . $ocsp_conf;
                                             } else {
                                                 $crtlist[] = $output_pem_filename;
                                             }
@@ -125,9 +139,17 @@ foreach ($configNodes as $key => $value) {
                             // check if a default certificate is configured
                             if (($type == 'cert') and isset($child->ssl_default_certificate) and (string)$child->ssl_default_certificate != "") {
                                 $default_cert = (string)$child->ssl_default_certificate;
+                                // Get OCSP status
+                                $ocsp_conf = '';
+                                foreach ($configObj->cert as $cert) {
+                                    if ($default_cert == (string)$cert->refid) {
+                                        $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
+                                        $ocsp_conf = hasOcspInfo($pem_content) ? ' [ocsp-update on]' : '';
+                                    }
+                                }
                                 // Check if automatic OCSP updates are enabled.
                                 if (isset($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled) and ($configObj->OPNsense->HAProxy->general->tuning->ocspUpdateEnabled == '1')) {
-                                    $default_cert_filename = $export_path . $default_cert . ".pem [ocsp-update on]";
+                                    $default_cert_filename = $export_path . $default_cert . ".pem" . $ocsp_conf;
                                 } else {
                                     $default_cert_filename = $export_path . $default_cert . ".pem";
                                 }
