@@ -320,6 +320,12 @@
                 <help>Do not decode and/or filter SSL content, only log requested domains and IP addresses. Some old servers may not provide SNI, so their addresses will not be indicated.</help>
             </field>
             <field>
+                <id>proxy.forward.tlskeylog</id>
+                <label>Record TLS connection pre-master secret and encryption details</label>
+                <type>checkbox</type>
+                <help>Record pre-master secret and related encryption details for accepted or established TLS connections. This log (a.k.a. SSLKEYLOGFILE) is meant for triage with traffic inspection tools like Wireshark and allows anybody to decrypt the corresponding encrypted TLS connections, both in-flight and postmortem. TLS connections include connections accepted on the SSL proxy port, TLS connections opened to origin servers/cache_peers/ICAP services, and bumped TLS tunnels. Enabling this setting also disables incompatible TLS protocols such as TLS 1.3.</help>
+            </field>
+            <field>
                 <id>proxy.forward.sslbumpport</id>
                 <label>SSL Proxy port</label>
                 <type>text</type>

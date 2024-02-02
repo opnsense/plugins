@@ -263,6 +263,13 @@
                             <field1>sslurlonly</field1>
                         </addFields>
                     </check001>
+                    <check002>
+                        <ValidationMessage>When enabling "Record TLS connection pre-master secret and encryption details", SSL inspection must also be enabled</ValidationMessage>
+                        <type>DependConstraint</type>
+                        <addFields>
+                            <field1>tlskeylog</field1>
+                        </addFields>
+                    </check002>
                 </Constraints>
             </sslbump>
             <sslurlonly type="BooleanField">
@@ -274,6 +281,15 @@
                     </check001>
                 </Constraints>
             </sslurlonly>
+            <tlskeylog type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <Constraints>
+                    <check001>
+                        <reference>sslbump.check002</reference>
+                    </check001>
+                </Constraints>
+            </tlskeylog>
             <sslcertificate type="CertificateField">
                 <Type>ca</Type>
                 <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
