@@ -12,6 +12,13 @@
         <help>Your AS Number here</help>
     </field>
     <field>
+        <id>bgp.distance</id>
+        <label>BGP AD Distance</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>BGP routes usually have an administrative distance of 20. Here you can adjust these values, e.g. when you want to prefer OSPF learned routes.</help>
+    </field>
+    <field>
         <id>bgp.routerid</id>
         <label>Router ID</label>
         <type>text</type>

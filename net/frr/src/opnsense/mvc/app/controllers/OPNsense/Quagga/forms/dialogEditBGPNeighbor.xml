@@ -169,4 +169,10 @@
     <type>dropdown</type>
     <help>Route-Map for outbound direction</help>
   </field>
+  <field>
+    <id>neighbor.peergroup</id>
+    <label>Peer Group</label>
+    <type>dropdown</type>
+    <help>Peer Group this neighbor belongs to.</help>
+  </field>
 </form>

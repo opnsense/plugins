@@ -12,6 +12,11 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.39
+
+* Add distance to BGP
+* Add BGP peer-group support
+
 1.38
 
 * Add "soft-reconfiguration inbound" neighbor option
