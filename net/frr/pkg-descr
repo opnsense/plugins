@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.39
+
+* Add plain password authentication to OSPF
+
 1.38
 
 * Add "soft-reconfiguration inbound" neighbor option
