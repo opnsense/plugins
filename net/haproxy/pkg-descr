@@ -6,6 +6,19 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.3
+
+Added:
+* Add new global parameter: DNS prefer IP family (#3779)
+
+Fixed:
+* SNI not working when automatic OCSP updates are enabled (#3779)
+* HAProxy error: has an OCSP URI but an error occurred (#3779)
+
+Changed:
+* prefer IPv4 results when resolving DNS names (#3779)
+* disable OCSP updates if cert contains no OCSP data (#3779)
+
 4.2
 
 Added:
