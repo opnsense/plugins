@@ -63,7 +63,7 @@ net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
 net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
-net/upnp -- Universal Plug and Play Service
+net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
 net/vnstat -- Network traffic monitor
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
