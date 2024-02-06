@@ -4,7 +4,7 @@
     <version url="https://rules.emergingthreats.net/open/suricata-7.0/version.txt"/>
     <files>
         <file description="3coresec" url="inline::rules/3coresec.rules">3coresec.rules</file>
-        <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">et_open-botcc.portgrouped.rules</file>
+        <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">botcc.portgrouped.rules</file>
         <file description="botcc" url="inline::rules/botcc.rules">et_open.botcc.rules</file>
         <file description="ciarmy" url="inline::rules/ciarmy.rules">et_open.ciarmy.rules</file>
         <file description="compromised" url="inline::rules/compromised.rules">et_open.compromised.rules</file>
