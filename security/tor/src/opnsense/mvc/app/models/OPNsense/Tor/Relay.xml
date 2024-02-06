@@ -54,6 +54,11 @@
       <Required>N</Required>
       <mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></mask>
     </contact_info>
+    <family type="TextField">
+      <Required>N</Required>
+      <!-- series of hex arrays -->
+      <mask>/^[a-fA-F0-9,]+$/</mask>
+    </family>
     <bandwithrate type="IntegerField">
       <Required>N</Required>
     </bandwithrate>

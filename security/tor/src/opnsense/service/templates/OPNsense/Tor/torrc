@@ -171,6 +171,12 @@ OutboundBindAddress {{ OPNsense.tor.relay.outboundbindv6 }}
 Nickname {{ OPNsense.tor.relay.nick }}
 {% endif %}
 
+{% if helpers.exists('OPNsense.tor.relay.family') and OPNsense.tor.relay.family != '' %}
+{%   if OPNsense.tor.relay.relay|default('1') != '1' %}
+MyFamily {{ OPNsense.tor.relay.family }}
+{%   endif %}
+{% endif %}
+
 {% if helpers.exists('OPNsense.tor.relay.contact_info') and OPNsense.tor.relay.contact_info != '' %}
 ContactInfo {{ OPNsense.tor.relay.contact_info }}
 {% endif %}
