@@ -129,10 +129,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . ' '
           . '--deploy '
           . implode(' ', $this->acme_args);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
         // Run acme.sh command
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
         // acme.sh records the last used deploy hook and would automatically
