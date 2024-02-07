@@ -8,8 +8,10 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.1
+
 Fixed:
-* proc_open(): Argument #2 ($descriptor_spec) must be of type array
+* automation does not start (#3790)
 
 4.0
 
