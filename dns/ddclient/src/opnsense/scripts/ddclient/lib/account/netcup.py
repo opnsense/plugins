@@ -121,7 +121,7 @@ class Netcup(BaseAccount):
             'action': 'logout',
             'param': {
                 'customernumber': self._account['username'],
-                'apikey': self.netcupAPIKey,
+                'apikey': self.settings['APIKey'],
                 'apisessionid': self.netcupAPISessionID
             }
         }
@@ -162,7 +162,7 @@ class Netcup(BaseAccount):
             'param': {
                 'domainname': self.domain,
                 'customernumber': self._account['username'],
-                'apikey': self.netcupAPIKey,
+                'apikey': self.settings['APIKey'],
                 'apisessionid': self.netcupAPISessionID,
             }
         }
@@ -175,8 +175,8 @@ class Netcup(BaseAccount):
             resp = req.json()
         except requests.exceptions.JSONDecodeError:
             resp = {}
-        if resp.get('status', '') == 'success' and resp.get('responsedata', None):
-            return resp['responsedata']
+        if resp.get('status', '') == 'success':
+            return resp.get('responsedata', {})
         else:
             syslog.syslog(
                 syslog.LOG_ERR,
