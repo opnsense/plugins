@@ -5,6 +5,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.15
+
+* Update plugin for dnscrypt-proxy 2.1
+
 1.14
 
 * Fix display of the config with more than one disabled server in GUI (contributed by Evgeny Grin (karlson2k))
