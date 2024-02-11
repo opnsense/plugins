@@ -66,17 +66,11 @@ class Netcup(BaseAccount):
 
             self.hostname, self.domain = self.settings['hostnames'].split('.', 1)
 
-            if self.settings['password'].count(':') > 1:
-                if self.settings['password'].count('\\:') == 1:
-                    self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('\\:')
-            elif self.settings['password'].count(':') == 1:
-                self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split(':')
+            if self.settings['password'].count('|') == 1:
+                self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('|')
 
             if self.settings['APIPassword'] is None or self.settings['APIKey'] is None:
-                syslog.syslog(
-                    syslog.LOG_ERR,
-                    "Unable to parse APIPassword:APIKey, when colons are used, make sure to escape the separator (\:)."
-                )
+                syslog.syslog(syslog.LOG_ERR, "Unable to parse APIPassword|APIKey.")
                 return False
 
             self.netcupAPISessionID = self._login()
