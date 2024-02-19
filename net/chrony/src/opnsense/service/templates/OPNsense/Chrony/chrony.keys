@@ -2,7 +2,7 @@
 
 {%   if helpers.exists('OPNsense.chrony.general.symmetric_auth') and OPNsense.chrony.general.symmetric_auth == '1' %}
 
-{%     if helpers.exists('OPNsense.chrony.general.symmetric_keys_file') and not helpers.empty('OPNsense.chrony.general.symmetric_keys_file') == '1' %}
+{%     if helpers.exists('OPNsense.chrony.general.symmetric_keys_file') and not helpers.empty('OPNsense.chrony.general.symmetric_keys_file') %}
 
 # This is the chrony keys file.  It enables authentication of NTP
 # packets with symmetric keys when its location is specified by the keyfile
