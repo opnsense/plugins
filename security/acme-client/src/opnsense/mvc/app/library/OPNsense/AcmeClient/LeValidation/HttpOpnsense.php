@@ -50,7 +50,7 @@ class HttpOpnsense extends Base implements LeValidationInterface
         $iplist = array();
 
         // Add IP addresses from auto-discovery feature
-        if ($this->config->http_opn_autodiscovery == 1) {
+        if ($this->config->http_opn_autodiscovery == '1') {
             $dnslist = explode(',', $this->cert_altnames);
             $dnslist[] = $this->cert_name;
             foreach ($dnslist as $fqdn) {
@@ -73,9 +73,9 @@ class HttpOpnsense extends Base implements LeValidationInterface
         // Add IP address from chosen interface
         if (!empty((string)$this->config->http_opn_interface)) {
             $backend = new \OPNsense\Core\Backend();
-            $response = $backend->configdpRun('interface address', [(string)$this->config->http_opn_interface]);
-            if (!empty($response['address'])) {
-                $iplist[] = $response['address'];
+            $response = json_decode($backend->configdpRun('interface address', [(string)$this->config->http_opn_interface]));
+            if (!empty($response->address)) {
+                $iplist[] = $response->address;
             }
         }
 
