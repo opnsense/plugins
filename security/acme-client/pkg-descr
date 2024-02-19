@@ -12,6 +12,7 @@ Plugin Changelog
 
 Fixed:
 * automation does not start (#3790)
+* bugfixes for HTTP-01 and TLS-ALPN-01 challenge types (#3813)
 
 4.0
 
