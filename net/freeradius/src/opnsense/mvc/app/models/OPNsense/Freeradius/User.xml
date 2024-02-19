@@ -17,6 +17,15 @@
                     <Required>Y</Required>
                     <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}]){1,128}$/u</mask>
                 </password>
+                <passwordencryption type="OptionField">
+                    <default>Cleartext-Password</default>
+                    <Required>Y</Required>
+                    <multiple>N</multiple>
+                    <OptionValues>
+                        <cleartext value="Cleartext-Password">Cleartext-Password</cleartext>
+                        <ntprehashed value="NT-Password">NT-Password (pre-hashed)</ntprehashed>
+                    </OptionValues>
+                </passwordencryption>
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
