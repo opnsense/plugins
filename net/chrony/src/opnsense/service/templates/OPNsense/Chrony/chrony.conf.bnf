@@ -1,0 +1,54 @@
+; Symmetric authenticated NTP subset
+; ----------------------------------
+
+<serverline>   ::=    {"server" <opt-whitespace>+ <hostname> <opt-whitespace>+ [<option_line>]}
+
+; didn't check if hostname is a valid fqdn
+<hostname>     ::=    <asciichar>+
+<option_line>  ::==   "key" <opt-whitespace>+ <keyid>
+
+<keyid>     ::= <positive_integer_2^32-1_to_1>
+<positive_integer_1_through_2^32-1> ::=   <4294967295>
+                                        | <429496729n> 
+                                        | <42949672nx> 
+                                        | <4294967nxx> 
+                                        | <429496nxxx> 
+                                        | <42949nxxxx> 
+                                        | <4294nxxxxx> 
+                                        | <429nxxxxxx> 
+                                        | <42nxxxxxxx> 
+                                        | <4nxxxxxxxx> 
+                                        | <nxxxxxxxxx> 
+                                        | < nxxxxxxxx> 
+                                        | <  nxxxxxxx> 
+                                        | <   nxxxxxx> 
+                                        | <    nxxxxx> 
+                                        | <     nxxxx> 
+                                        | <      nxxx> 
+                                        | <       nxx> 
+                                        | <        nx> 
+                                        | <         n> 
+
+; <positive_integer_2^32-1_to_1> = 4294967295 .. 1
+;                 4294967295 >= 
+<4294967295> ::= "4294967295"
+<429496729n> ::= "429496729" <"0"|"1"|"2"|"3"|"4">
+<42949672nx> ::= "42949672"  <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit>
+<4294967nxx> ::= "4294967"   <"0"|"1">                             <digit><digit>
+<429496nxxx> ::= "429496"    <"0"|"1"|"2"|"3"|"4"|"5"|"6">         <digit><digit><digit>
+<42949nxxxx> ::= "42949"     <"0"|"1"|"2"|"3"|"4"|"5">             <digit><digit><digit><digit>
+<4294nxxxxx> ::= "4294"      <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit><digit><digit><digit><digit>
+<429nxxxxxx> ::= "429"       <"0"|"1"|"2"|"3">                     <digit><digit><digit><digit><digit><digit>
+<42nxxxxxxx> ::= "42"        <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit><digit><digit><digit><digit><digit><digit>
+<4nxxxxxxxx> ::= "4"         <"0"|"1">                             <digit><digit><digit><digit><digit><digit><digit><digit>
+<nxxxxxxxxx> ::=             <"0"|"1"|"2"|"3">                     <digit><digit><digit><digit><digit><digit><digit><digit><digit>
+< nxxxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit><digit><digit>
+<  nxxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit><digit>
+<   nxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit>
+<    nxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit>
+<     nxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit>
+<      nxxx> ::=             <leading_digit>                       <digit><digit><digit>
+<       nxx> ::=             <leading_digit>                       <digit><digit>
+<        nx> ::=             <leading_digit>                       <digit>
+<         n> ::=             <leading_digit>                                   
+;                >=1

@@ -1,0 +1,74 @@
+; chrony.keys.bnf
+; ---------------
+;
+; Symmetric authenticated NTP subset
+; ----------------------------------
+; 10 tulip
+; 11 hyacinth
+; 20 MD5 ASCII:crocus
+; 25 SHA1 HEX:933F62BE1D604E68A81B557F18CFA200483F5B70
+; 30 AES128 HEX:7EA62AE64D190114D46D5A082F948EC1
+; 31 AES256 HEX:37DDCBC67BB902BCB8E995977FAB4D2B5642F5B32EBCEEE421921D97E5CBFE39
+ 
+<keys>      ::= {<keyline>}
+<keyline>   ::= <keyid><opt-whitespace>+[keytype]<opt-whitespace>+<key>
+<keyid>     ::= <positive_integer_2^32-1_to_1>
+<keytype>   ::= "AES128" | "AES256" | "MD5" | "SHA1" | "SHA384" | "SHA512" | "SHA3-224" | "SHA3-256" | "SHA3-384" | "SHA3-512" | "TIGER" | "WHIRLPOOL" 
+
+; Did not check if key length agrees with keytype
+<key>            ::=   "HEX:"   <opt-whitespace>+ <hex_text>
+                     | "ASCII:" <opt-whitespace>+ <ascii_text>
+                     |          <opt-whitespace>+ <ascii_text>  
+
+<hex_text>       ::= <hexchar>+
+<ascii_text>     ::= <asciichar>+
+<zero_digit>     ::= "0"
+<leading_digit>  ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit>          ::= <zero_digit> | <leading_digit> 
+<hexchar>        ::= <digit> | "A" | "B" | "C" | "D" | "E" | "F" 
+
+; Did not check if keyid collided
+<positive_integer_1_through_2^32-1> ::=   <4294967295>
+                                        | <429496729n> 
+                                        | <42949672nx> 
+                                        | <4294967nxx> 
+                                        | <429496nxxx> 
+                                        | <42949nxxxx> 
+                                        | <4294nxxxxx> 
+                                        | <429nxxxxxx> 
+                                        | <42nxxxxxxx> 
+                                        | <4nxxxxxxxx> 
+                                        | <nxxxxxxxxx> 
+                                        | < nxxxxxxxx> 
+                                        | <  nxxxxxxx> 
+                                        | <   nxxxxxx> 
+                                        | <    nxxxxx> 
+                                        | <     nxxxx> 
+                                        | <      nxxx> 
+                                        | <       nxx> 
+                                        | <        nx> 
+                                        | <         n> 
+
+; <positive_integer_2^32-1_to_1> = 4294967295 .. 1
+;                 4294967295 >= 
+<4294967295> ::= "4294967295"
+<429496729n> ::= "429496729" <"0"|"1"|"2"|"3"|"4">
+<42949672nx> ::= "42949672"  <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit>
+<4294967nxx> ::= "4294967"   <"0"|"1">                             <digit><digit>
+<429496nxxx> ::= "429496"    <"0"|"1"|"2"|"3"|"4"|"5"|"6">         <digit><digit><digit>
+<42949nxxxx> ::= "42949"     <"0"|"1"|"2"|"3"|"4"|"5">             <digit><digit><digit><digit>
+<4294nxxxxx> ::= "4294"      <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit><digit><digit><digit><digit>
+<429nxxxxxx> ::= "429"       <"0"|"1"|"2"|"3">                     <digit><digit><digit><digit><digit><digit>
+<42nxxxxxxx> ::= "42"        <"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"> <digit><digit><digit><digit><digit><digit><digit>
+<4nxxxxxxxx> ::= "4"         <"0"|"1">                             <digit><digit><digit><digit><digit><digit><digit><digit>
+<nxxxxxxxxx> ::=             <"0"|"1"|"2"|"3">                     <digit><digit><digit><digit><digit><digit><digit><digit><digit>
+< nxxxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit><digit><digit>
+<  nxxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit><digit>
+<   nxxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit><digit>
+<    nxxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit><digit>
+<     nxxxx> ::=             <leading_digit>                       <digit><digit><digit><digit>
+<      nxxx> ::=             <leading_digit>                       <digit><digit><digit>
+<       nxx> ::=             <leading_digit>                       <digit><digit>
+<        nx> ::=             <leading_digit>                       <digit>
+<         n> ::=             <leading_digit>                                   
+;                >=1
