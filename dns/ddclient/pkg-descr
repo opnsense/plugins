@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.21
+
+* Add Netcup support (contributed by Ingo Lafrenz)
+
 1.20
 
 * Add system parameter to native dyndns2 requesto (contributed by Jakub Gargul)
