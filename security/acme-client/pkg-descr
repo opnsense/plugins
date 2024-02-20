@@ -8,6 +8,12 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.1
+
+Fixed:
+* automation does not start (#3790)
+* bugfixes for HTTP-01 and TLS-ALPN-01 challenge types (#3813)
+
 4.0
 
 NOTE: This is a new major release with backwards-incompatible changes.
