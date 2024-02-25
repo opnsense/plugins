@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2023 Cedrik Pischem
- * Copyright (C) 2017 EURO-LOG AG
+ * Copyright (C) 2023-2024 Cedrik Pischem
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
