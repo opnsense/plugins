@@ -1,0 +1,34 @@
+<form>    
+    <field>
+        <id>caddy.general.TlsDnsProvider</id>
+        <label>DNS Provider</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge, enable the checkbox in the advanced mode of a Reverse Proxy Domain. To use Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>DNS API Key</label>
+        <type>text</type>
+        <help><![CDATA[This is the standard field for the API Key. Enter the API key for the selected DNS provider. For Route53 enter your "access_key_id" here. For Porkbun enter your "api_key" here. For ACME-DNS enter your "username" here. Leave this empty if no DNS provider is set.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>DNS Secret API Key</label>
+        <type>text</type>
+        <help><![CDATA[For Route53 enter your "secret_access_key" here. For Porkbun enter your "api_secret_key" here. For ACME-DNS enter your "password" here. Leave this empty if other or no DNS providers are set.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>DNS API Optional Field 1</label>
+        <type>text</type>
+        <help><![CDATA[For ACME-DNS enter your "subdomain" here. Leave this empty if other or no DNS providers are set.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>DNS API Optional Field 2</label>
+        <type>text</type>
+        <help><![CDATA[For ACME-DNS enter your "server_url" here. Leave this empty if other or no DNS providers are set.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

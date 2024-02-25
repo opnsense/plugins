@@ -1,0 +1,34 @@
+<form>    
+    <field>
+        <id>caddy.general.DynDnsSimpleHttp</id>
+        <label>DynDns Check Http</label>
+        <type>text</type>
+        <help><![CDATA[Optionally, enter a URL to test the current IP address of the firewall via HTTP protocol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you'd rather use your own, enter the https:// link to an IP address testing website.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.DynDnsInterface</id>
+        <label>DynDns Check Interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.DynDnsCheckInterval</id>
+        <label>DynDns Check Interval</label>
+        <type>text</type>
+        <help><![CDATA[Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.DynDnsIpVersions</id>
+        <label>DynDns IP Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "IPv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.DynDnsTTL</id>
+        <label>DynDns TTL</label>
+        <type>text</type>
+        <help><![CDATA[Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.]]></help>
+    </field>
+</form>
