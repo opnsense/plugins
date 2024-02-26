@@ -1,3 +1,3 @@
 Caddyfile:/usr/local/etc/caddy/Caddyfile
-rc.conf.d/opncaddy:/etc/rc.conf.d/opncaddy
+rc.conf.d/caddy:/etc/rc.conf.d/caddy
 syslog-ng.conf.d/caddy.conf:/usr/local/etc/syslog-ng.conf.d/caddy.conf

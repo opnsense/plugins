@@ -39,7 +39,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceClass = '\Pischem\Caddy\Caddy';
     protected static $internalServiceTemplate = 'Pischem/Caddy';
     protected static $internalServiceEnabled = 'general.enabled';
-    protected static $internalServiceName = 'opncaddy';
+    protected static $internalServiceName = 'caddy';
 
     protected function reconfigureForceRestart()
     {
@@ -54,7 +54,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend->configdRun("template reload " . self::$internalServiceTemplate);
 
         // Validate the Caddyfile
-        $validateResult = trim($backend->configdRun('opncaddy validate'));
+        $validateResult = trim($backend->configdRun('caddy validate'));
 
         // Attempt to parse the JSON output from the validation result
         if (($jsonStartPos = strpos($validateResult, '{"message":')) !== false) {

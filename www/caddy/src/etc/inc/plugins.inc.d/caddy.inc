@@ -35,14 +35,14 @@ function caddy_services()
     if (isset($config['Pischem']['caddy']['general']['enabled']) &&
         $config['Pischem']['caddy']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('Caddy'),
+            'description' => gettext('Caddy Web Server'),
             'configd' => array(
-                'restart' => array('opncaddy restart'),
-                'start' => array('opncaddy start'),
-                'stop' => array('opncaddy stop'),
+                'restart' => array('caddy restart'),
+                'start' => array('caddy start'),
+                'stop' => array('caddy stop'),
             ),
             'name' => 'caddy',
-            'pidfile' => '/var/run/caddy/caddy.pid'
+            'pidfile' => '/var/run/caddy.pid'
         );
     }
 
