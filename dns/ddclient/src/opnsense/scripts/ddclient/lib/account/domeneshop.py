@@ -67,7 +67,7 @@ class Domeneshop(BaseAccount):
             response = requests.get(**req_opts)
 
             # Parse response and update state and log
-            if response.status_code is 204:
+            if response.status_code == 204:
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
@@ -75,7 +75,7 @@ class Domeneshop(BaseAccount):
                     )
                 self.update_state(address=self.current_address, status=response.text.split()[0] if response.text else '')
                 return True
-            elif response.status_code is 404:
+            elif response.status_code == 404:
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s failed to set new ip %s [%d - %s], because %s could not be found" % (
