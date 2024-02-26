@@ -84,4 +84,3 @@ function extract_and_save_certificates($configObj, $temp_dir) {
 }
 
 extract_and_save_certificates($configObj, $temp_dir);
-?>
