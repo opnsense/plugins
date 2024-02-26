@@ -42,7 +42,7 @@ function caddy_services()
                 'stop' => array('caddy stop'),
             ),
             'name' => 'caddy',
-            'pidfile' => '/var/run/caddy.pid'
+            'pidfile' => '/var/run/caddy/caddy.pid'
         );
     }
 
