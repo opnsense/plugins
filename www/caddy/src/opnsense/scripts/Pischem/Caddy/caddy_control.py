@@ -54,7 +54,7 @@ def run_service_command(action, action_message):
             result["message"] = error_msg
     else:
         try:
-            subprocess.run(["service", "caddy", action], check=True)
+            subprocess.run(["service", "opncaddy", action], check=True)
             result["status"] = "ok"
         except subprocess.CalledProcessError as e:
             result["status"] = "failed"

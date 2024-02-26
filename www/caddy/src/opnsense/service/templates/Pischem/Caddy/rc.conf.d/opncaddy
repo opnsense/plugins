@@ -2,10 +2,10 @@
 {% if helpers.exists('Pischem.caddy.general.enabled') -%}
     {%- set general_enabled = helpers.toList('Pischem.caddy.general.enabled') | first %}
     {%- if general_enabled == '1' -%}
-caddy_enable="YES"
+opncaddy_enable="YES"
     {%- else -%}
-caddy_enable="NO"
+opncaddy_enable="NO"
     {%- endif %}
 {%- else -%}
-caddy_enable="NO"
+opncaddy_enable="NO"
 {%- endif %}
