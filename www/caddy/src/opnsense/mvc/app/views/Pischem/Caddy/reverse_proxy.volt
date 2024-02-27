@@ -132,8 +132,10 @@
                 }
             }
         });
+
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
+
     });
 </script>
 
