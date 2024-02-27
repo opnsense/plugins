@@ -10,6 +10,10 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.30
+
+* Add ability for RNDC key updates from other nameservers
+
 1.29
 
 * Migrate General Log to Syslog
