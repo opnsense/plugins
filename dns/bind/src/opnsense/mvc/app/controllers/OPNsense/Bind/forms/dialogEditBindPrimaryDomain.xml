@@ -24,9 +24,9 @@
         <help>Define the ACLs where you allow which client are allowed to query this zone.</help>
     </field>
     <id>domain.allowrndcupdate</id>  
-        <label>Allow rndc-key update</label> 
+        <label>Allow RDNC key update</label> 
         <type>checkbox</type>        
-        <help>Allow updates via the rndc-key named "rndc-key". The key is shown in the general tab.</help>
+        <help>Allow updates via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
     </field>  
     <field>
         <id>domain.ttl</id>
