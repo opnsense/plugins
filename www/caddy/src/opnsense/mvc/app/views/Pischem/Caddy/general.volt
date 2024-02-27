@@ -82,7 +82,7 @@
                 $("#messageArea").hide();
             });
             
-            // Reconfigure the serve, additional validation with a validation API is made beforehand
+            // Reconfigure the Caddy service, additional validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
                     const dfObj = $.Deferred();
@@ -159,11 +159,11 @@
     <div id="dnsProviderTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': dnsproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
-    <!-- DNS Provider Tab -->
+    <!-- Dynamic DNS Tab -->
     <div id="dynamicDnsTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': dynamicdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
-    <!-- DNS Provider Tab -->
+    <!-- Log Settings Tab -->
     <div id="logSettingsTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': logsettingsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
