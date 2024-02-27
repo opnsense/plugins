@@ -1,21 +1,7 @@
 #!/bin/sh
 
-mkdir -p /var/run/named
-chown -R bind:bind /var/run/named
-chmod 755 /var/run/named
-
-mkdir -p /var/dump
-chown -R bind:bind /var/dump
-chmod 755 /var/dump
-
-mkdir -p /var/stats
-chown -R bind:bind /var/stats
-chmod 755 /var/stats
-
-mkdir -p /var/log/named
-chown -R bind:bind /var/log/named
-chmod 755 /var/log/named
-
-mkdir -p /usr/local/etc/namedb/primary
-chown -R bind:bind /usr/local/etc/namedb/primary
-chmod 755 /usr/local/etc/namedb/primary
+for DIR in /var/run/named /var/dump /var/stats /var/log/named /usr/local/etc/namedb/primary; do
+	mkdir -p ${DIR}
+	chown -R bind:bind ${DIR}
+	chmod 755 ${DIR}
+done
