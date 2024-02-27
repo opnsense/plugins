@@ -26,7 +26,7 @@
     <id>domain.allowrndcupdate</id>  
         <label>Allow rndc-key update</label> 
         <type>checkbox</type>        
-        <help>By ticking this, you enable updates via the rndc-key named "rndc-key". The key is generated in the general tab</help>
+        <help>Allow updates via the rndc-key named "rndc-key". The key is shown in the general tab.</help>
     </field>  
     <field>
         <id>domain.ttl</id>
