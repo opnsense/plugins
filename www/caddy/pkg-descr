@@ -1,0 +1,27 @@
+Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution. 
+By default, Caddy automatically obtains and renews TLS certificates for all your sites. 
+It's the most advanced HTTPS server in the world.
+
+Reverse Proxy HTTP, HTTPS, FastCGI, WebSockets, gRPC, FastCGI (usually PHP), and more!
+
+WWW: https://caddyserver.com/
+
+Main features of this plugin:
+
+* Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
+* Hard to break! Extensive validations of the configuration on each save and apply.
+* Automatic Let's Encrypt and ZeroSSL Certificates with HTTP-01 and TLS-ALPN-01 challenge
+* DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
+* Use custom certificates from OPNsense certificate store
+* Wildcard Domain and Subdomain support
+* Access Lists to restrict access based on static networks
+* Basic Auth to restrict access by username and password
+* Syslog-ng integration and HTTP Access Log
+* NTLM Transport
+
+Plugin Changelog
+================
+
+1.5.1
+
+* Initial Release for OPNsense
