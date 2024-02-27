@@ -53,19 +53,25 @@
 - `Auto HTTPS`: `On (default)` creates automatic Let's Encrypt Certificates for all Domains that don't have more specific options set, like custom certificates.
 - `Trusted Proxies`: Leave empty if you don't use a CDN in front of your OPNsense. If you use Cloudflare or another CDN provider, create an access list with the IP addresses of that CDN and add it here. Add the same Access List to the domain this CDN tries to reach.
 - `Abort Connections`: This option, when enabled, aborts all connections to the Reverse Proxy Domain that don't match any specified handler or access list. This setting doesn't affect Let's Encrypt's ability to issue certificates, ensuring secure connections regardless of the option's status. If unchecked, the Reverse Proxy Domain remains accessible even without a matching handler, allowing for connectivity and certificate checks, even in the absence of a configured Backend Server. When using Access Lists, enabling this option is recommended to reject unauthorized connections outright. Without this option, unmatched IP addresses will encounter an empty page instead of an explicit rejection, though the Access Lists continue to function and restrict access.
-- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
-- `Log Access in Plain Format`: Don't send HTTP(S) access logs to the central OPNsense logging facility but save them in plain Caddy JSON format in a subdirectory instead. Only effective for Reverse Proxy Domains that have HTTP Access Log enabled. The feature is intended to have access log files processed by e.g. CrowdSec. They can be found in `/var/log/caddy/access`.
-- `Keep Plain Access Logs for (days)`: How many days until the plain format log files are deleted.
 
 ## General Settings - DNS Provider
 - `DNS Provider`: Choose either `none (default)` for normal HTTP ACME or a DNS Provider to enable the `DNS-01` ACME challenge and Dynamic DNS (DynDns). If your provider is missing, please note that all easy to add providers have already been built in, the remaining providers all want unique special configurations that are mostly out of scope.
-- `DNS API Key`: Leave empty if you don't use a DNS Provider, or put your `API Key` here.
-- `DNS Secret API Key`: This field is used by porkbun in addition to the DNS API Key.
+- `DNS API Key`: This is the standard field for the API Key. Enter the API key for the selected DNS provider. For Route53 enter your "access_key_id" here. For Porkbun enter your "api_key" here. For ACME-DNS enter your "username" here. Leave this empty if no DNS provider is set. 
+- `DNS Secret API Key`: For Route53 enter your "secret_access_key" here. For Porkbun enter your "api_secret_key" here. For ACME-DNS enter your "password" here. Leave this empty if other or no DNS providers are set. 
+- `DNS API Optional Field 1`: Some DNS Providers need additional fields. For ACME-DNS enter your "subdomain" here. Leave this empty if other or no DNS providers are set.
+- `DNS API Optional Field 1`: Some DNS Providers need additional fields. For ACME-DNS enter your "server_url" here. Leave this empty if other or no DNS providers are set. 
+
+## General Settings - Dynamic DNS
 - `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
 - `DynDns Check Interface`: Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.
 - `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes. 
 - `DynDns IP Version`: Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.
 - `DynDns TTL`: Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.
+
+## General Settings - Log Settings
+- `Log Credentials`: Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.
+- `Log Access in Plain Format`: Don't send HTTP(S) access logs to the central OPNsense logging facility but save them in plain Caddy JSON format in a subdirectory instead. Only effective for Reverse Proxy Domains that have HTTP Access Log enabled. The feature is intended to have access log files processed by e.g. CrowdSec. They can be found in `/var/log/caddy/access`.
+- `Keep Plain Access Logs for (days)`: How many days until the plain format log files are deleted.
 
 ## Reverse Proxy - Domains
 - Press `+` to create a new Reverse Proxy Domain
@@ -81,8 +87,10 @@
 - `Description`: The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
 
 ## Reverse Proxy - Subdomains
-
-- Refer to the options of Domains.
+- Press `+` to create a new Reverse Proxy Subdomain
+- `Reverse Proxy Domain` - Choose a wildcard domain you prepared in "Reverse Proxy - Domains", it has to be formatted like `*.example.com`
+- `Reverse Proxy Subdomain` - Create a name that is seated under the Wildcard domain, for example `foo.example.com` and `bar.example.com`.
+- For the other options refer to Domains.
 
 ## Reverse Proxy - Handler
 Please note that the order that handlers are saved in the scope of each domain or domain/subdomain can influence functionality - The first matching handler wins. So if you put /ui* in front of a more specific handler like /ui/opnsense, the /ui* will match first and /ui/opnsense won't ever match (in the scope of their domain). Right now there isn't an easy way to move the position of handlers in the grid, so you have to clone them if you want to change their order, and delete the old entries afterwards. Most of the time, creating just one empty catch-all handler is the best choice. The template logic makes sure that catch-all handlers are always placed last, after all other handlers.
@@ -163,7 +171,7 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - Additionally, you can create an access list to limit access to the GUI only from trusted IP addresses (recommended). Add that access list to the domain `opn.example.com` in advanced mode. Also, enable `Abort Connections` in the `General` Settings to abort all connections immediately that don't match the access list or the handler.
 
 # Troubleshooting
-- You can always test if your current Caddyfile is valid by invoking `https://yourOPNsenseIP/api/caddy/service/validate` - This is also done automatically each time `Apply` is pressed.
+- You can always test if your current Caddyfile is valid by invoking `/api/caddy/service/validate` - This is also done automatically each time `Apply` is pressed.
 - Check `/var/log/caddy/caddy.log` file to find errors. There is also a Caddy Log File in the GUI.
 - A good indicator that Caddy is indeed running is this log entry: `serving initial configuration`
 - If the Caddy configuration file is invalid, you can see a cycling log without the `serving initial configuration`. If that's the case, stop Caddy, and try to troubleshoot in the SSH shell. Run Caddy with `caddy run --config /usr/local/etc/caddy/Caddyfile` and look for the error message. That this happens is rare, though I couldn't test all possible configuration combinations.
@@ -172,7 +180,7 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 
 # Build caddy and os-caddy from source
 - As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
-- Use xcaddy to build your own caddy binary. [Readme](https://github.com/Monviech/os-caddy-plugin/blob/main/usr/local/bin/README.md)
+- Use xcaddy to build your own caddy binary. Additonal Caddy plugins can be compiled in, here is an example: [Additional Plugins](https://github.com/opnsense/tools/blob/a555d25b11486835460a136af0b8ad2e517ae96b/config/24.1/make.conf#L94)
 - Check the +MANIFEST file and put all dependant files into the right paths on your build system. Make sure to check your own file hashes with ```sha256 /path/to/file```. 
 - Use ```pkg create -M ./+MANIFEST``` in the folder of the ```+MANIFEST``` file.
 - For os-caddy.pkg make sure you have the OPNsense tools build system properly set up. 
@@ -187,9 +195,10 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 The Rest API is now fully integreated with the OPNsense syntax.
 https://docs.opnsense.org/development/api.html
 
-All API Actions can be found in the [API controller files](https://github.com/Monviech/os-caddy-plugin/tree/main/usr/plugins/devel/caddy/src/opnsense/mvc/app/controllers/Pischem/Caddy/Api)
+All API Actions can be found in the API Controller files ```/usr/local/opnsense/mvc/app/controllers/Pischem/Caddy/Api```
 
-Example:
+Examples:
 - /api/caddy/ReverseProxy/get
 - /api/caddy/General/get
 - /api/caddy/service/status
+- /api/caddy/service/validate
