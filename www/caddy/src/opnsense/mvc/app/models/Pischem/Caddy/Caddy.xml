@@ -68,8 +68,7 @@
             <DynDnsSimpleHttp type="UrlField">
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
-            <DynDnsInterface type=".\RealInterfaceField">
-            </DynDnsInterface>
+            <DynDnsInterface type="InterfaceField"/>
             <DynDnsCheckInterval type="IntegerField">
                 <Default>5</Default>
                 <MinimumValue>1</MinimumValue>
@@ -136,8 +135,7 @@
                 <DnsChallenge type="BooleanField">
                     <Default>0</Default>
                 </DnsChallenge>
-                <CustomCertificate type="CertificateField">
-                </CustomCertificate>
+                <CustomCertificate type="CertificateField"/>
                 <AccessLog type="BooleanField">
                     <Default>0</Default>
                 </AccessLog>
