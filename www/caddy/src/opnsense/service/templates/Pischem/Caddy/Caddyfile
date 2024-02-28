@@ -105,7 +105,11 @@
         ip_source simple_http {{ dynDnsSimpleHttp }}
         {% endif %}
         {% if dynDnsInterface %}
-        ip_source interface {{ dynDnsInterface }}
+            {% set physicalInterfaceNames = [] %}
+            {% for intfName in dynDnsInterface.split(',') %}
+                {% do physicalInterfaceNames.append(helpers.physical_interface(intfName)) %}
+            {% endfor %}
+            ip_source interface {{ physicalInterfaceNames | join(',') }}
         {% endif %}
         {% if dynDnsCheckInterval %}
         check_interval {{ dynDnsCheckInterval }}m
