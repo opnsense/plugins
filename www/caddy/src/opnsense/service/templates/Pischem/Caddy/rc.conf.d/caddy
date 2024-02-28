@@ -5,12 +5,9 @@
 caddy_enable="YES"
 # Path to the Caddy setup script
 caddy_setup="/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"
-# Execute the setup script before Caddy starts
-start_precmd="sh ${caddy_setup}"
     {%- else %}
 caddy_enable="NO"
     {%- endif %}
 {%- else %}
 caddy_enable="NO"
 {% endif %}
-
