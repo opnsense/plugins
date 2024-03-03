@@ -11,8 +11,7 @@
 - Automatic Let's Encrypt and ZeroSSL Certificates without configuration with HTTP-01 and TLS-ALPN-01
 - ACME DNS-01 challenge with configuration (requires supported DNS Provider)
 - Dynamic DNS (DynDns) with configuration (requires supported DNS Provider)
-- Supported DNS Providers in GUI:
-- ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, ionos, desec, porkbun, route53, acmedns```
+- Supported DNS Providers in GUI: ```cloudflare, duckdns, digitalocean, dnspod, hetzner, godaddy, gandi, ionos, desec, porkbun, route53, acmedns, alidns, googleclouddns, azure, openstack-designate, ovh, namecheap, netlify, namesilo, powerdns, vercel, ddnss, njalla, metaname, linode, tencentcloud, dinahosting, hexonet, mailinabox```
 - Use custom certificates from OPNsense certificate store
 - Normal domains, wildcard domains and subdomains
 - Access Lists to restrict access based on static networks
@@ -30,7 +29,7 @@
 
 - Thanks to the Caddy community/developers for creating a fantastic open source web server.
 - Thanks to the OPNsense community/developers for creating a powerful and flexible open source firewall and routing platform.
-- Additional big **Thank You** in no particular order: [AdShellevis](https://github.com/Adschellevis), [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464), [gspannu](https://github.com/gspannu), [francislavoie](https://caddy.community/u/francislavoie/summary), [matt](https://caddy.community/u/matt/summary)
+- Additional big **Thank You** in no particular order: [AdShellevis](https://github.com/Adschellevis), [mimugmail](https://forum.opnsense.org/index.php?action=profile;u=15464), [gspannu](https://github.com/gspannu), [francislavoie](https://caddy.community/u/francislavoie/summary), [matt](https://caddy.community/u/matt/summary), [fichtner](https://github.com/fichtner)
 
 # How to install
 
@@ -55,11 +54,15 @@
 - `Abort Connections`: This option, when enabled, aborts all connections to the Reverse Proxy Domain that don't match any specified handler or access list. This setting doesn't affect Let's Encrypt's ability to issue certificates, ensuring secure connections regardless of the option's status. If unchecked, the Reverse Proxy Domain remains accessible even without a matching handler, allowing for connectivity and certificate checks, even in the absence of a configured Backend Server. When using Access Lists, enabling this option is recommended to reject unauthorized connections outright. Without this option, unmatched IP addresses will encounter an empty page instead of an explicit rejection, though the Access Lists continue to function and restrict access.
 
 ## General Settings - DNS Provider
-- `DNS Provider`: Choose either `none (default)` for normal HTTP ACME or a DNS Provider to enable the `DNS-01` ACME challenge and Dynamic DNS (DynDns). If your provider is missing, please note that all easy to add providers have already been built in, the remaining providers all want unique special configurations that are mostly out of scope.
-- `DNS API Key`: This is the standard field for the API Key. Enter the API key for the selected DNS provider. For Route53 enter your "access_key_id" here. For Porkbun enter your "api_key" here. For ACME-DNS enter your "username" here. Leave this empty if no DNS provider is set. 
-- `DNS Secret API Key`: For Route53 enter your "secret_access_key" here. For Porkbun enter your "api_secret_key" here. For ACME-DNS enter your "password" here. Leave this empty if other or no DNS providers are set. 
-- `DNS API Optional Field 1`: Some DNS Providers need additional fields. For ACME-DNS enter your "subdomain" here. Leave this empty if other or no DNS providers are set.
-- `DNS API Optional Field 1`: Some DNS Providers need additional fields. For ACME-DNS enter your "server_url" here. Leave this empty if other or no DNS providers are set. 
+- `DNS Provider`: Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. For more information: https://github.com/caddy-dns
+- `DNS API Standard Field`: This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", DNSPod "auth_token", Hetzner "api_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Namesilo "api_token", Njalla "api_token", Vercel "api_token",  Google Cloud DNS "gcp_project", Alidns "access_key_id", Azure "tenant_id", OpenStack Designate "region_name", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Metaname "api_key", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url".
+- `DNS API Additional Field 1`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Duckdns "override_domain", Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Alidns "access_key_secret", Azure "client_id", OpenStack Designate "tenant_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Metaname "account_reference", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address".
+- `DNS API Additional Field 2`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "max_retries", ACME-DNS "subdomain", Azure "client_secret", OpenStack Designate "identity_api_version", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password".
+- `DNS API Additional Field 3`: Some DNS Providers need additional fields. For ACME-DNS enter your "server_url" here. Leave this empty if other or no DNS providers are set.
+- `DNS API Additional Field 4`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "region", Azure "resource_group_name", OpenStack Designate "username".
+- `DNS API Additional Field 5`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "token", OpenStack Designate "tenant_name".
+- `DNS API Additional Field 6`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "auth_url".
+- `DNS API Additional Field 7`: Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "endpoint_type".
 
 ## General Settings - Dynamic DNS
 - `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
@@ -171,12 +174,10 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 - Additionally, you can create an access list to limit access to the GUI only from trusted IP addresses (recommended). Add that access list to the domain `opn.example.com` in advanced mode. Also, enable `Abort Connections` in the `General` Settings to abort all connections immediately that don't match the access list or the handler.
 
 # Troubleshooting
-- You can always test if your current Caddyfile is valid by invoking `/api/caddy/service/validate` - This is also done automatically each time `Apply` is pressed.
-- Check `/var/log/caddy/caddy.log` file to find errors. There is also a Caddy Log File in the GUI.
+- You can always test if your current Caddyfile is valid by invoking `/api/caddy/service/validate` - This is also done automatically each time `Apply` is pressed. If you have an invalid configuration, Caddy will refuse to start and show the exact error message.
+- Check `/var/log/caddy/caddy.log` or `@latest.log` to find errors. There is also a Caddy Log File in the GUI.
 - A good indicator that Caddy is indeed running is this log entry: `serving initial configuration`
-- If the Caddy configuration file is invalid, you can see a cycling log without the `serving initial configuration`. If that's the case, stop Caddy, and try to troubleshoot in the SSH shell. Run Caddy with `caddy run --config /usr/local/etc/caddy/Caddyfile` and look for the error message. That this happens is rare, though I couldn't test all possible configuration combinations.
 - Check the Service Widget and the "General Settings" Service Control buttons. If everything works they should show a green "Play" sign. If Caddy is stopped there is a red "Stop" sign. If Caddy is disabled, there is no widget and no control buttons.
-- You won't find the custom certificates in /usr/local/etc/caddy/certificates/temp since they're deleted every time caddy has loaded them (at least when Auto HTTPS is activated).
 
 # Build caddy and os-caddy from source
 - As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
