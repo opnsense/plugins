@@ -230,7 +230,7 @@
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
                             <th data-column-id="reverse" data-type="string">Domain</th>
-                            <th data-column-id="subdomain" data-type="string">Subomain</th>
+                            <th data-column-id="subdomain" data-type="string">Subdomain</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
                             <th data-column-id="HandlePath" data-type="string">Handle Path</th>
                             <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
