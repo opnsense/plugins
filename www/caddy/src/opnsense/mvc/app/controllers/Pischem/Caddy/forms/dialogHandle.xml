@@ -83,7 +83,7 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>handle.Description</id>
+        <id>handle.description</id>
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this handler.]]></help>

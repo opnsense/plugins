@@ -149,11 +149,11 @@
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <Description type="TextField">
+                <description type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </Description>
+                </description>
                 <DnsChallenge type="BooleanField">
                     <Default>0</Default>
                 </DnsChallenge>
@@ -176,7 +176,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>Description</display>
+                            <display>description</display>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -209,11 +209,11 @@
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <Description type="TextField">
+                <description type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </Description>
+                </description>
                 <DynDns type="BooleanField">
                     <Default>0</Default>
                 </DynDns>
@@ -229,7 +229,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>Description</display>
+                            <display>description</display>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -238,7 +238,7 @@
                         <reverseproxy>
                             <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>Description</display>
+                            <display>description</display>
                         </reverseproxy>
                     </Model>
                 </subdomain>
@@ -284,10 +284,10 @@
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
-                <Description type="TextField">
+                <description type="TextField">
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </Description>
+                </description>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="TextField">
@@ -306,10 +306,10 @@
                 <accesslistInvert type="BooleanField">
                     <Default>0</Default>
                 </accesslistInvert>
-                <Description type="TextField">
+                <description type="TextField">
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </Description>
+                </description>
             </accesslist>
             <basicauth type="ArrayField">
                 <basicauthuser type="TextField">
@@ -320,10 +320,10 @@
                 <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
-                <Description type="TextField">
+                <description type="TextField">
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </Description>
+                </description>
             </basicauth>
         </reverseproxy>
     </items>

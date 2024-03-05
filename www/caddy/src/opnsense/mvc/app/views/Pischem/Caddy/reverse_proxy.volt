@@ -166,7 +166,7 @@
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>
@@ -199,7 +199,7 @@
                             <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
                             <th data-column-id="basicauth" data-type="string" data-visible="false">Basic Auth</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>
@@ -240,7 +240,7 @@
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">NTLM</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>
@@ -273,7 +273,7 @@
                             <th data-column-id="accesslistName" data-type="string">Name</th>
                             <th data-column-id="clientIps" data-type="string">Client IPs</th>
                             <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>
@@ -301,7 +301,7 @@
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
                             <th data-column-id="basicauthuser" data-type="string">User</th>
-                            <th data-column-id="Description" data-type="string">Description</th>
+                            <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
                     </thead>

@@ -12,7 +12,7 @@
         <help><![CDATA[Enter a password. It will be hashed with bcrypt. It can only be set and changed but won't be visible anymore.]]></help>
     </field>
     <field>
-        <id>basicauth.Description</id>
+        <id>basicauth.description</id>
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this user.]]></help>
