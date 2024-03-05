@@ -9,6 +9,8 @@ Plugin Changelog
 1.21
 
 * Add Netcup support (contributed by Ingo Lafrenz)
+* Use '==' instead of 'is' in Domeneshop Python support (contributed by ssmendon)
+* Update DNS record instead of overwriting in Cloudflare Python support (contributed by lin-xianming)
 
 1.20
 
