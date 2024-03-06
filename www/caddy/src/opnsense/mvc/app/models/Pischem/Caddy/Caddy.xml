@@ -1,5 +1,5 @@
 <model>
-    <mount>//OPNsense/caddy</mount>
+    <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
     <version>1.1.3</version>
     <items>
@@ -67,7 +67,7 @@
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
-                        <source>OPNsense.Caddy.Caddy</source>
+                        <source>Pischem.Caddy.Caddy</source>
                         <items>reverseproxy.accesslist</items>
                         <display>accesslistName</display>
                     </reverseproxy>
@@ -133,7 +133,7 @@
                 <accesslist type="ModelRelationField">
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
                             <display>accesslistName</display>
                         </reverseproxy>
@@ -142,7 +142,7 @@
                 <basicauth type="ModelRelationField">
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
                             <display>basicauthuser</display>
                         </reverseproxy>
@@ -174,7 +174,7 @@
                     <Required>Y</Required>
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
                             <display>description</display>
                         </reverseproxy>
@@ -193,7 +193,7 @@
                 <accesslist type="ModelRelationField">
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
                             <display>accesslistName</display>
                         </reverseproxy>
@@ -202,7 +202,7 @@
                 <basicauth type="ModelRelationField">
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
                             <display>basicauthuser</display>
                         </reverseproxy>
@@ -227,7 +227,7 @@
                     <Required>Y</Required>
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
                             <display>description</display>
                         </reverseproxy>
@@ -236,7 +236,7 @@
                 <subdomain type="ModelRelationField">
                     <Model>
                         <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
+                            <source>Pischem.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
                             <display>description</display>
                         </reverseproxy>
