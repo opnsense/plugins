@@ -4,7 +4,7 @@
     {%- if general_enabled == '1' %}
 caddy_enable="YES"
 # Path to the Caddy setup script
-caddy_setup="/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"
+caddy_setup="/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"
     {%- else %}
 caddy_enable="NO"
     {%- endif %}
