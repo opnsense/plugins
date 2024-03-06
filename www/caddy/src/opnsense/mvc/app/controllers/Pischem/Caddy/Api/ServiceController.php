@@ -36,7 +36,7 @@ use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    protected static $internalServiceClass = '\Pischem\Caddy\Caddy';
+    protected static $internalServiceClass = '\OPNsense\Caddy\Caddy';
     protected static $internalServiceTemplate = 'OPNsense/Caddy';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'caddy';
