@@ -26,7 +26,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Pischem\Caddy\Migrations;
+namespace OPNsense\Caddy\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
