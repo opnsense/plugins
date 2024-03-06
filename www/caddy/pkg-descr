@@ -24,4 +24,17 @@ Plugin Changelog
 
 1.5.1
 
-* Initial Release for OPNsense
+* More DNS Providers added: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate.
+* More input fields and better documentation added for the DNS Provider API Keys.
+* Changed rc.d script to standard freebsd poudriere one packaged with the caddy-custom binary, included setup.sh script to rc.conf.d/caddy.
+* Updated dependancy to caddy-custom instead of caddy.
+* Removed +POST_DEINSTALL.post and +POST_INSTALL.post.
+* Turned syslog-ng configuration from template to static file.
+* A few typos in the general.volt and reverse_proxy.volt corrected.
+* The RealInterfaceField custom Fieldtype was removed and replaced with an OPNsense integrated template function to read the interface name.
+* Enable $internalModelUseSafeDelete in ReverseProxyController.php - Items can only be deleted when they are not referenced by other items, making deleting in the GUI safer since there can't be any orphaned configuration left behind.
+* Migration script M1_1_3 from "Description" to "description" added. Lower case description is needed to be in line with some OPNsense integrated functions. 
+
+1.5.0
+
+* Initial release
