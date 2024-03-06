@@ -36,7 +36,7 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 class ReverseProxyController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'caddy';
-    protected static $internalModelClass = 'Pischem\Caddy\Caddy';
+    protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
     protected static $internalModelUseSafeDelete = true;
 
     /*ReverseProxy Section*/
