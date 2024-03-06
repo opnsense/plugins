@@ -29,7 +29,7 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Config;
@@ -39,4 +39,3 @@ class GeneralController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'Pischem\Caddy\Caddy';
 }
-
