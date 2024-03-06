@@ -37,9 +37,6 @@ class M1_1_3 extends BaseModelMigration
     {
         // Load the current system configuration
         $config = Config::getInstance()->object();
-        
-        // Track whether any changes are made during the migration
-        $hasChanges = false;
 
         // Ensure there are reverse proxy configurations to process
         if (!empty($config->Pischem->caddy->reverseproxy)) {
@@ -53,7 +50,7 @@ class M1_1_3 extends BaseModelMigration
                 // Check if the current configuration item has a 'Description' to migrate
                 if (!empty($configNode->Description)) {
                 
-                    // Store the value of 'Description' for migration.
+                    // Store the value of 'Description' for migration
                     $descriptionValue = (string)$configNode->Description;
 
                     // Attempt to locate the corresponding node in the model using the UUID
@@ -73,15 +70,11 @@ class M1_1_3 extends BaseModelMigration
                     // If a matching node is found in the model, migrate the 'Description' value to 'description' value
                     if ($modelNode !== null) {
                         $modelNode->description = $descriptionValue;
-                        $hasChanges = true;
                     }
                 }
             }
         }
 
-        // Save model if changes have been made
-        if ($hasChanges) {
-            parent::run($model);
-        }
+        // Model is saved by 'run_migrations.php'
     }
 }
