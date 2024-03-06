@@ -36,7 +36,7 @@ def run_service_command(action, action_message):
     if action == "validate":
         try:
             # Call Setup script
-            subprocess.run(["/usr/local/opnsense/scripts/Pischem/Caddy/setup.sh"], check=True)
+            subprocess.run(["/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"], check=True)
             # Validate the Caddyfile with explicit --config flag, capturing both stdout and stderr
             validation_output = subprocess.check_output(["caddy", "validate", "--config", "/usr/local/etc/caddy/Caddyfile"], stderr=subprocess.STDOUT, text=True)
             if "Valid configuration" in validation_output:
