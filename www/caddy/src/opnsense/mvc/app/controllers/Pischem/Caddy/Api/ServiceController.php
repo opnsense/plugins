@@ -29,7 +29,7 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
@@ -37,7 +37,7 @@ use OPNsense\Core\Backend;
 class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = '\Pischem\Caddy\Caddy';
-    protected static $internalServiceTemplate = 'Pischem/Caddy';
+    protected static $internalServiceTemplate = 'OPNsense/Caddy';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'caddy';
 
