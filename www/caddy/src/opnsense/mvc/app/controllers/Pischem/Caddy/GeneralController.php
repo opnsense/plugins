@@ -29,7 +29,7 @@
  *
  */
 
-namespace Pischem\Caddy;
+namespace OPNsense\Caddy;
 
 use OPNsense\Base\IndexController;
 
@@ -38,7 +38,7 @@ class GeneralController extends IndexController
     public function indexAction()
     {
         // Assign the general settings form to the view
-        $this->view->pick('Pischem/Caddy/general');
+        $this->view->pick('OPNsense/Caddy/general');
         $this->view->generalForm = $this->getForm("general");
         $this->view->dnsproviderForm = $this->getForm("dnsprovider");
         $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
