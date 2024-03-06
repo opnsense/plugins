@@ -29,7 +29,7 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
