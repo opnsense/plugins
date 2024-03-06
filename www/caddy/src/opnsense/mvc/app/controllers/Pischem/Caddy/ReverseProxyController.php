@@ -29,13 +29,13 @@
  *
  */
 
-namespace Pischem\Caddy;
+namespace OPNsense\Caddy;
 
 use OPNsense\Base\IndexController;
 
 class ReverseProxyController extends IndexController {
     public function indexAction() {
-        $this->view->pick('Pischem/Caddy/reverse_proxy');
+        $this->view->pick('OPNsense/Caddy/reverse_proxy');
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
         $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
         $this->view->formDialogHandle = $this->getForm("dialogHandle");
