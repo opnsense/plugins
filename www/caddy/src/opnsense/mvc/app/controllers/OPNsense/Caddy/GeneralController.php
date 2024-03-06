@@ -3,7 +3,7 @@
 /**
  *    Copyright (C) 2023-2024 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
- * 
+ *
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -29,14 +29,19 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Core\Config;
+use OPNsense\Base\IndexController;
 
-class GeneralController extends ApiMutableModelControllerBase
+class GeneralController extends IndexController
 {
-    protected static $internalModelName = 'caddy';
-    protected static $internalModelClass = 'Pischem\Caddy\Caddy';
+    public function indexAction()
+    {
+        // Assign the general settings form to the view
+        $this->view->pick('OPNsense/Caddy/general');
+        $this->view->generalForm = $this->getForm("general");
+        $this->view->dnsproviderForm = $this->getForm("dnsprovider");
+        $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
+        $this->view->logsettingsForm = $this->getForm("logsettings");
+    }
 }
-

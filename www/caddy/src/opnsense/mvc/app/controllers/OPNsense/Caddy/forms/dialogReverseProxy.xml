@@ -62,7 +62,7 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>reverse.Description</id>
+        <id>reverse.description</id>
         <label>Description</label>
         <type>text</type>
         <hint>example.com.443</hint>

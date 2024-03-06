@@ -29,39 +29,17 @@
  *
  */
 
-namespace Pischem\Caddy\Api;
+namespace OPNsense\Caddy;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
+use OPNsense\Base\IndexController;
 
-class ServiceController extends ApiMutableServiceControllerBase
-{
-    protected static $internalServiceClass = '\Pischem\Caddy\Caddy';
-    protected static $internalServiceTemplate = 'Pischem/Caddy';
-    protected static $internalServiceEnabled = 'general.enabled';
-    protected static $internalServiceName = 'caddy';
-
-    public function validateAction()
-    {
-        $backend = new Backend();
-
-        // First, reload the template to ensure the latest configuration is used
-        $backend->configdRun("template reload " . self::$internalServiceTemplate);
-
-        // Validate the Caddyfile
-        $validateResult = trim($backend->configdRun('caddy validate'));
-
-        // Attempt to parse the JSON output from the validation result
-        if (($jsonStartPos = strpos($validateResult, '{"message":')) !== false) {
-            $jsonOutput = substr($validateResult, $jsonStartPos);
-            $result = json_decode($jsonOutput, true);
-
-            if (is_array($result) && isset($result['status'])) {
-                return ["status" => $result['status'], "message" => $result['message']];
-            }
-        }
-
-        // If unable to parse the expected JSON output, return a generic error message
-        return ["status" => "failed", "message" => "Unable to parse the validation result."];
+class ReverseProxyController extends IndexController {
+    public function indexAction() {
+        $this->view->pick('OPNsense/Caddy/reverse_proxy');
+        $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
+        $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
+        $this->view->formDialogHandle = $this->getForm("dialogHandle");
+        $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
+        $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
     }
 }
