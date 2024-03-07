@@ -89,7 +89,7 @@ class Caddy extends BaseModel
                 $subdomainName = (string) $subdomain->FromDomain;
                 $isValid = false;
                 foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
-                    if ($this->endsWith($subdomainName, $baseDomain)) {
+                    if ($this->str_ends_with($subdomainName, $baseDomain)) {
                         $isValid = true;
                         break;
                     }
@@ -105,23 +105,6 @@ class Caddy extends BaseModel
                 }
             }
         }
-    }
-
-    /**
-     * Checks if a string (haystack) ends with another string (needle).
-     *
-     * @param string $haystack The string to search in.
-     * @param string $needle The substring to search for at the end of $haystack.
-     * @return bool Returns true if $haystack ends with $needle, false otherwise.
-     */
-    private function endsWith($haystack, $needle)
-    {
-        $length = strlen($needle);
-        if ($length == 0) {
-            return true;
-        }
-
-        return (substr($haystack, -$length) === $needle);
     }
 
     // 4. Check for conflicts between wildcard and base domains
