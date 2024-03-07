@@ -39,10 +39,10 @@ class M1_1_3 extends BaseModelMigration
         $config = Config::getInstance()->object();
 
         // Ensure there are reverse proxy configurations to process
-        if (!empty($config->OPNsense->caddy->reverseproxy)) {
+        if (!empty($config->Pischem->caddy->reverseproxy)) {
         
             // Loop through each reverse proxy configuration in the stored configuration config.xml
-            foreach ($config->OPNsense->caddy->reverseproxy->children() as $configNode) {
+            foreach ($config->Pischem->caddy->reverseproxy->children() as $configNode) {
             
                 // Extract the UUID attribute to identify the configuration item
                 $uuid = (string)$configNode->attributes()->uuid;
