@@ -89,7 +89,7 @@ class Caddy extends BaseModel
                 $subdomainName = (string) $subdomain->FromDomain;
                 $isValid = false;
                 foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
-                    if ($this->str_ends_with($subdomainName, $baseDomain)) {
+                    if (str_ends_with($subdomainName, $baseDomain)) {
                         $isValid = true;
                         break;
                     }
