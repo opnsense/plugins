@@ -1,0 +1,23 @@
+<form>
+    <field>
+        <id>caddy.general.LogCredentials</id>
+        <label>Log Credentials</label>
+        <type>checkbox</type>
+        <help><![CDATA[Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.LogAccessPlain</id>
+        <label>Log HTTP Access in JSON Format</label>
+        <type>checkbox</type>
+        <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g for processing by CrowdSec. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enabling this will make the HTTP Access Log dissappear from the standard "Log File" in the GUI. They can be found in the filesystem "/var/log/caddy/access/"]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.LogAccessPlainKeep</id>
+        <label>Keep HTTP Access JSON Logs for (days)</label>
+        <hint>10</hint>
+        <type>text</type>
+        <help><![CDATA[How many days to keep the JSON access logs.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

@@ -1,0 +1,57 @@
+<form>
+    <field>
+        <id>subdomain.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable this reverse proxy subdomain.]]></help>
+    </field>
+    <field>
+        <id>subdomain.reverse</id>
+        <label>Reverse Proxy Domain</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a domain, to which this subdomain should be added.]]></help>
+    </field>
+    <field>
+        <id>subdomain.FromDomain</id>
+        <label>Reverse Proxy Subdomain</label>
+        <type>text</type>
+        <hint>opn.example.com</hint>
+        <help><![CDATA[Enter the subdomain name (e.g., 'opn.example.com' if your wildcard domain is '*.example.com').]]></help>
+    </field>
+    <field>
+        <id>subdomain.FromPort</id>
+        <label>Reverse Proxy Port</label>
+        <type>text</type>
+        <hint>443</hint>
+        <help><![CDATA[Enter the port number. Leave this empty to bind to port 80 and 443 with automatic redirection. Don't forget to create a firewall rule that allows this destination port to "This Firewall".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>subdomain.accesslist</id>
+        <label>Access List</label>
+        <type>dropdown</type>
+        <help><![CDATA[Optionally, select an Access List to restrict access to this subdomain. If left as "None", any local or remote client is allowed access. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>subdomain.basicauth</id>
+        <label>Basic Auth</label>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Optionally, select Users to restrict access to this subdomain. Basic Auth matches after Access Lists. If left as "None", any client is allowed access. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>subdomain.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this subdomain will be automatically updated with your DNS Provider.]]></help>
+    </field>
+    <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <hint>opn.example.com.443</hint>
+        <help><![CDATA[Enter a description for this reverse proxy subdomain.]]></help>
+    </field>
+</form>

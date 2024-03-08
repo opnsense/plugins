@@ -1,0 +1,40 @@
+Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution. 
+By default, Caddy automatically obtains and renews TLS certificates for all your sites. 
+It's the most advanced HTTPS server in the world.
+
+Reverse Proxy HTTP, HTTPS, FastCGI, WebSockets, gRPC, FastCGI (usually PHP), and more!
+
+WWW: https://caddyserver.com/
+
+Main features of this plugin:
+
+* Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
+* Hard to break! Extensive validations of the configuration on each save and apply.
+* Automatic Let's Encrypt and ZeroSSL Certificates with HTTP-01 and TLS-ALPN-01 challenge
+* DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
+* Use custom certificates from OPNsense certificate store
+* Wildcard Domain and Subdomain support
+* Access Lists to restrict access based on static networks
+* Basic Auth to restrict access by username and password
+* Syslog-ng integration and HTTP Access Log
+* NTLM Transport
+
+Plugin Changelog
+================
+
+1.5.1
+
+* More DNS Providers added: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate.
+* More input fields and better documentation added for the DNS Provider API Keys.
+* Changed rc.d script to standard freebsd poudriere one packaged with the caddy-custom binary, included setup.sh script to rc.conf.d/caddy.
+* Updated dependancy to caddy-custom instead of caddy.
+* Removed +POST_DEINSTALL.post and +POST_INSTALL.post.
+* Turned syslog-ng configuration from template to static file.
+* A few typos in the general.volt and reverse_proxy.volt corrected.
+* The RealInterfaceField custom Fieldtype was removed and replaced with an OPNsense integrated template function to read the interface name.
+* Enable $internalModelUseSafeDelete in ReverseProxyController.php - Items can only be deleted when they are not referenced by other items, making deleting in the GUI safer since there can't be any orphaned configuration left behind.
+* Migration script M1_1_3 from "Description" to "description" added. Lower case description is needed to be in line with some OPNsense integrated functions. 
+
+1.5.0
+
+* Initial release

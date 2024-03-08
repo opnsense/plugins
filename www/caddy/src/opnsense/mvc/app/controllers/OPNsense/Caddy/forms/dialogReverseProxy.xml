@@ -1,0 +1,71 @@
+<form>
+    <field>
+        <id>reverse.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable this reverse proxy domain.]]></help>
+    </field>
+    <field>
+        <id>reverse.FromDomain</id>
+        <label>Reverse Proxy Domain</label>
+        <type>text</type>
+        <hint>example.com</hint>
+        <help><![CDATA[Enter a domain name or IP address. For a wildcard domain, use *.example.com. Only use wildcard domains with a wildcard certificate. Don't forget to create a firewall rule that allows port 80 and 443 to "This Firewall".]]></help>
+    </field>
+    <field>
+        <id>reverse.FromPort</id>
+        <label>Reverse Proxy Port</label>
+        <type>text</type>
+        <hint>443</hint>
+        <help><![CDATA[Enter the port number. Leave this empty to bind to port 80 and 443 with automatic redirection. Don't forget to create a firewall rule that allows this port to "This Firewall".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.accesslist</id>
+        <label>Access List</label>
+        <type>dropdown</type>
+        <help><![CDATA[Optionally, select an Access List to restrict access to this domain. If left as "None", any local or remote client is allowed access. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.basicauth</id>
+        <label>Basic Auth</label>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Optionally, select Users to restrict access to this domain. Basic Auth matches after Access Lists. If left as "None", any client is allowed access. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.DnsChallenge</id>
+        <label>DNS-01 challenge</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable DNS-01 challenge for ACME, please configure DNS Provider and API Key in General Settings. In most cases, leaving this option unchecked will be the best choice. The automatic Let's Encrypt HTTP challenge will be used if this option is unchecked, which needs no further configuration.]]></help>
+    </field>
+    <field>
+        <id>reverse.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider.]]></help>
+    </field>
+    <field>
+        <id>reverse.CustomCertificate</id>
+        <label>Custom Certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose your own certificate from System Trust Certificates. Make sure you have imported the full chain. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.AccessLog</id>
+        <label>HTTP Access Log</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>reverse.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <hint>example.com.443</hint>
+        <help><![CDATA[Enter a description for this reverse proxy domain.]]></help>
+    </field>
+</form>
