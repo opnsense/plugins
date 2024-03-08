@@ -21,8 +21,8 @@
 
 ## License
 
-- This project is licensed under the BSD 2-Clause "Simplified" license. See the LICENSE file for details. 
-- Caddy is licensed under the Apache License, Version 2.0. 
+- This project is licensed under the BSD 2-Clause "Simplified" license. See the LICENSE file for details.
+- Caddy is licensed under the Apache License, Version 2.0.
 - OPNsense is licensed under the BSD 2-Clause “Simplified” license.
 
 ## Acknowledgments
@@ -38,7 +38,7 @@
 ## Prepare Caddy for use after the installation
 
 **Attention**, additional preparation of OPNsense needed:
-- Make sure that port `80` and `443` aren't occupied. You have to change the default listen port to `8443` for example. Go to `System: Settings: Administration` to change the `TCP Port`. Then also enable `HTTP Redirect - Disable web GUI redirect rule`. 
+- Make sure that port `80` and `443` aren't occupied. You have to change the default listen port to `8443` for example. Go to `System: Settings: Administration` to change the `TCP Port`. Then also enable `HTTP Redirect - Disable web GUI redirect rule`.
 - If you have other reverse proxy or webserver plugins installed, make sure they don't use the same ports as Caddy
 - Create Firewall rules that allow 80 and 443 TCP to "This Firewall" on WAN and (optionally) LAN, OPT1 etc...
 - There is a lot of input validation. If you read all the hints, help texts and error messages, its unlikely that you create a configuration that won't work.
@@ -67,7 +67,7 @@
 ## General Settings - Dynamic DNS
 - `DynDns Check Http`: Optionally, enter an URL to test the current IP address of the firewall via HTTP procotol. Generally, this is not needed. Caddy uses default providers to test the current IP addresses. If you rather use your own, enter the https:// link to an IP address testing website.
 - `DynDns Check Interface`: Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.
-- `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes. 
+- `DynDns Check Interval`: Interval to poll for changes of the IP address. The default is 5 minutes. Can be a number between 1 to 1440 minutes.
 - `DynDns IP Version`: Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "Ipv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.
 - `DynDns TTL`: Set the TTL (time to live) for DNS Records. The default is 1 hour. Can be a number between 1 to 24 hours.
 
@@ -84,7 +84,7 @@
 - `Access List`: Restrict the access to this domain to a list of IP addresses you define in the `Access` Tab. This doesn't influence the Let's Encrypt certificate generation, so you can be as restrictive as you want here.
 - `Basic Auth`: Restrict the access to this domain to one or multiple users you define in the `Access` Tab. This doesn't influence the Let's Encrypt certificate generation, so you can be as restrictive as you want here.
 - `DNS-01 challenge`: Enable this if you want to use the `DNS-01` ACME challenge instead of HTTP challenge. This can be set per entry, so you can have both types of challenges at the same time for different entries. This option needs the `General Settings` - `DNS Provider` and `API KEY` set.
-- `Dynamic DNS`: Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider. 
+- `Dynamic DNS`: Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain will be automatically updated with your DNS Provider.
 - `Custom Certificate`: Use a Certificate you imported or generated in `System - Trust - Certificates`. The chain is generated automatically. `Certificate + Intermediate CA + Root CA`, `Certificate + Root CA` and `self signed Certificate` are all fully supported.
 - `HTTP Access Log`: Enable the HTTP request logging for this domain and its subdomains. This option is mostly for troubleshooting since it will log every single request.
 - `Description`: The description is mandatory. Create descriptions for each domain. Since there could be multiples of the same domain with different ports, do it like this: `foo.example.com` and `foo.example.com.8443`.
@@ -182,10 +182,10 @@ Now you have a "Internet <-- HTTPS --> OPNsense (Caddy) <-- HTTP --> Backend Ser
 # Build caddy and os-caddy from source
 - As build system use a FreeBSD 13.2 - https://github.com/opnsense/tools
 - Use xcaddy to build your own caddy binary. Additonal Caddy plugins can be compiled in, here is an example: [Additional Plugins](https://github.com/opnsense/tools/blob/a555d25b11486835460a136af0b8ad2e517ae96b/config/24.1/make.conf#L94)
-- Check the +MANIFEST file and put all dependant files into the right paths on your build system. Make sure to check your own file hashes with ```sha256 /path/to/file```. 
+- Check the +MANIFEST file and put all dependant files into the right paths on your build system. Make sure to check your own file hashes with ```sha256 /path/to/file```.
 - Use ```pkg create -M ./+MANIFEST``` in the folder of the ```+MANIFEST``` file.
-- For os-caddy.pkg make sure you have the OPNsense tools build system properly set up. 
-- Build the os-caddy.pkg by going into /usr/plugins/devel/caddy/ and invoking ```make package``` 
+- For os-caddy.pkg make sure you have the OPNsense tools build system properly set up.
+- Build the os-caddy.pkg by going into /usr/plugins/devel/caddy/ and invoking ```make package```
 
 # Custom configuration files
 - The Caddyfile has an additional import from the path ```/usr/local/etc/caddy/caddy.d/```. You can place your own custom configuration files inside that adhere to the Caddyfile syntax.

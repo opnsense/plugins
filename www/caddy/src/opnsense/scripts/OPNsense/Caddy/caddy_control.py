@@ -32,7 +32,7 @@ import sys
 
 def run_service_command(action, action_message):
     result = {"message": action_message}
-    
+
     if action == "validate":
         try:
             # Call Setup script

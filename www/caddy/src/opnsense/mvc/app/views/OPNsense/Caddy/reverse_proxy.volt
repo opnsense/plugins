@@ -52,7 +52,7 @@
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
         });
-        
+
         $("#accessListGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchAccessList/',
             get:'/api/caddy/ReverseProxy/getAccessList/',
@@ -60,7 +60,7 @@
             add:'/api/caddy/ReverseProxy/addAccessList/',
             del:'/api/caddy/ReverseProxy/delAccessList/',
         });
-        
+
         $("#basicAuthGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchBasicAuth/',
             get:'/api/caddy/ReverseProxy/getBasicAuth/',
@@ -90,7 +90,7 @@
         // Hide message area when starting new actions
         $('input, select, textarea').on('change', function() {
             $("#messageArea").hide();
-        });        
+        });
 
         // Adjusting the Reconfigure button to include validation in onPreAction
         $("#reconfigureAct").SimpleActionButton({
@@ -259,7 +259,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- New Combined Access Tab -->
     <div id="accessTab" class="tab-pane fade">
         <!-- Access Lists Section -->

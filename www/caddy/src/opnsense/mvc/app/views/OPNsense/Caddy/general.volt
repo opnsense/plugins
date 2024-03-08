@@ -81,7 +81,7 @@
             $('input, select, textarea').on('change', function() {
                 $("#messageArea").hide();
             });
-            
+
             // Reconfigure the Caddy service, additional validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
