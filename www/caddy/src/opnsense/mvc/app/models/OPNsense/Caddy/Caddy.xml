@@ -54,6 +54,23 @@
                     <dinahosting>Dinahosting</dinahosting>
                     <hexonet>Hexonet</hexonet>
                     <mailinabox>Mail-in-a-Box</mailinabox>
+                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
+                    <bunny>Bunny</bunny>
+                    <civo>Civo</civo>
+                    <scaleway>Scaleway</scaleway>
+                    <acmeproxy>ACME Proxy</acmeproxy>
+                    <inwx>INWX</inwx>
+                    <netcup>Netcup</netcup>
+                    <namedotcom>Name.com</namedotcom>
+                    <easydns>EasyDNS</easydns>
+                    <infomaniak>Infomaniak</infomaniak>
+                    <directadmin>DirectAdmin</directadmin>
+                    <hosttech>Hosttech</hosttech>
+                    <rfc2136>RFC2136</rfc2136>
+                    <loopia>Loopia</loopia>
+                    <mythicbeasts>Mythic Beasts</mythicbeasts>
+                    <glesys>GleSYS</glesys>
+                    <dynv6>Dynv6</dynv6>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
