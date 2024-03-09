@@ -22,6 +22,10 @@ Main features of this plugin:
 Plugin Changelog
 ================
 
+1.5.2
+
+* More DNS Providers added: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, netcup, namedotcom, easydns, infomaniak, directadmin, hosttech, rfc2136, loopia, mythicbeasts, glesys, dynv6.
+
 1.5.1
 
 * More DNS Providers added: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate.
@@ -99,11 +103,3 @@ Plugin Changelog
 * Use your own certificates where needed.
 * Use TLS, NTLM and CA certificates to communicate with your Backend Servers.
 * Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store.
-
-
-
-
-
-
-
-
