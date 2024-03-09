@@ -37,4 +37,73 @@ Plugin Changelog
 
 1.5.0
 
-* Initial release
+* Omit vultr from DNS-Providers since it can't be built without errors.
+* General view cleanup by seperating options into different tabs.
+* Added ACME-DNS Provider for custom ACME Server support.
+* When pressing save, a hint will appear that changes should be applied. Apply and Save now give feedback on success.
+* Create ACL for Caddy
+* Code consistency improved.
+
+1.4.5
+
+* New validate api action when pressing apply that validates the Caddyfile + Validation model fix.
+* Added configuration option to log HTTP access to plain JSON files. [contributed by @pmhausen]
+* Added backend path prepend feature to handler configuration. [contributed by @pmhausen]
+
+1.4.4
+
+* Route53 DNS Provider added
+* Dark Mode GUI fix
+
+1.4.2
+
+* Added Basic Auth as additional access restriction, multiple users can be set per domain and subdomain.
+* Made views cleaner: Seperated General Settings and DNS Provider Settings, joined Access List and Basic Auth in new Access Tab.
+* Fixed template generation of Caddyfile for new DNS Providers deSEC.
+* Added Porkbun DNS Provider for GUI configuration with additional DNS Secret Api Key input field.
+* Cleaned up some code and fixed some typos.
+
+1.4.0
+
+* DynDNS (Dynamic DNS) Feature added.
+* Logging refactored to syslog-ng.
+* HTTP Access Logs can be enabled.
+* More DNS Providers added: Cloudflare, Duck DNS, DigitalOcean, DNSPod, Hetzner, GoDaddy, Gandi, Vultr, IONOS, deSEC
+
+1.3.4
+
+* Added abort statement to close all connections that don't match any handle.
+* Added tls_server_name to model
+* Fixes DNS Challenge not adhering to the status of the DNS-01 Checkbox
+
+1.3.3
+
+* Swapped processing order in template from wildcard domains -> subdomains to subdomains -> wildcard domains
+
+1.3.2
+
+* Added inline loop logic to template to always print empty handles last in the Caddyfile before specific handles.
+
+1.3.1
+
+* Added AccessList functionality.
+* Small constraint to handle added. Handles have to start at least with / when they're not empty, or Caddy won't start.
+* Add reload for the ServiceControlUI after pressing Apply.
+
+1.3.0
+
+* Initial first stable release.
+* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt.
+* Control Caddy and view the Logfile in the OPNsense GUI.
+* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles.
+* Use your own certificates where needed.
+* Use TLS, NTLM and CA certificates to communicate with your Backend Servers.
+* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store.
+
+
+
+
+
+
+
+
