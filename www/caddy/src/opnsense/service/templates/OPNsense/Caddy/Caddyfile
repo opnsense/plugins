@@ -85,7 +85,7 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
                         {% if dnsApiKey %}api_key {{ dnsApiKey }}
@@ -208,6 +208,9 @@
                         {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
                         {% endif %}
                         {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
+                        {% endif %}
+                    {% elif dnsProvider == 'civo' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
                         {% endif %}
                     {% elif dnsProvider == 'scaleway' %}
                         {% if dnsApiKey %}secret_key {{ dnsApiKey }}
@@ -332,7 +335,7 @@
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsOptionalField5, TlsDnsOptionalField6) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" %}
-        {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
+        {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
             tls {
                 dns {{ dnsProvider }} {
                     {% if dnsProvider == 'duckdns' %}
@@ -470,6 +473,9 @@
                         {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
                         {% endif %}
                         {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
+                        {% endif %}
+                    {% elif dnsProvider == 'civo' %}
+                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
                         {% endif %}
                     {% elif dnsProvider == 'scaleway' %}
                         {% if dnsApiKey %}secret_key {{ dnsApiKey }}
