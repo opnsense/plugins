@@ -81,7 +81,7 @@
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
 
             // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
-            messageArea.fadeIn(500).delay(5000).fadeOut(500, function() {
+            messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
                 // Clear the message after fading out to ensure it's clean for the next message
                 $(this).html('');
             });
