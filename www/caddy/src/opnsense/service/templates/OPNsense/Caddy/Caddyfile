@@ -255,13 +255,13 @@
                         {% if dnsOptionalField1 %}api_url {{ dnsOptionalField1 }}
                         {% endif %}
                     {% elif dnsProvider == 'directadmin' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
+                        {% if dnsApiKey %}host {{ dnsApiKey }}
                         {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
+                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
                         {% endif %}
-                        {% if dnsOptionalField1 %}shared_secret {{ dnsOptionalField1 }}
+                        {% if dnsOptionalField1 %}login_key {{ dnsOptionalField1 }}
                         {% endif %}
-                        {% if dnsOptionalField2 %}endpoint_url {{ dnsOptionalField2 }}
+                        {% if dnsOptionalField2 %}insecure_requests {{ dnsOptionalField2 }}
                         {% endif %}
                     {% elif dnsProvider == 'rfc2136' %}
                         {% if dnsApiKey %}key_name {{ dnsApiKey }}
@@ -520,13 +520,13 @@
                         {% if dnsOptionalField1 %}api_url {{ dnsOptionalField1 }}
                         {% endif %}
                     {% elif dnsProvider == 'directadmin' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
+                        {% if dnsApiKey %}host {{ dnsApiKey }}
                         {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
+                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
                         {% endif %}
-                        {% if dnsOptionalField1 %}shared_secret {{ dnsOptionalField1 }}
+                        {% if dnsOptionalField1 %}login_key {{ dnsOptionalField1 }}
                         {% endif %}
-                        {% if dnsOptionalField2 %}endpoint_url {{ dnsOptionalField2 }}
+                        {% if dnsOptionalField2 %}insecure_requests {{ dnsOptionalField2 }}
                         {% endif %}
                     {% elif dnsProvider == 'rfc2136' %}
                         {% if dnsApiKey %}key_name {{ dnsApiKey }}
