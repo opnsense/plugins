@@ -12,6 +12,7 @@ Plugin Changelog
 
 * Enable use_wal, remove warning
 * Randomize cron execution over 5 minutes
+* Refact javascript
 
 1.0.7
 

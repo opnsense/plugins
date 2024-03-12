@@ -217,7 +217,7 @@ var CrowdSec = (function () {
     }
 
     function _initCollections () {
-        var url = '/api/crowdsec/collections/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.collections.map(function (row) {
@@ -234,7 +234,7 @@ var CrowdSec = (function () {
     }
 
     function _initScenarios () {
-        var url = '/api/crowdsec/scenarios/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.scenarios.map(function (row) {
@@ -252,7 +252,7 @@ var CrowdSec = (function () {
     }
 
     function _initParsers () {
-        var url = '/api/crowdsec/parsers/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.parsers.map(function (row) {
@@ -270,7 +270,7 @@ var CrowdSec = (function () {
     }
 
     function _initPostoverflows () {
-        var url = '/api/crowdsec/postoverflows/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.postoverflows.map(function (row) {
