@@ -45,6 +45,7 @@ def configure_agent(settings):
 
     config['common']['log_dir'] = '/var/log/crowdsec'
     config['crowdsec_service']['acquisition_dir'] = '/usr/local/etc/crowdsec/acquis.d/'
+    config['db_config']['use_wal'] = True
 
     if not int(settings.get('lapi_manual_configuration', '0')):
         config['api']['server']['listen_uri'] = get_netloc(settings)
