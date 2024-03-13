@@ -85,7 +85,7 @@
 
     {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dynDnsDomains|length > 0 %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
+            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
                 provider {{ dnsProvider }} {
                     {% if dnsProvider == 'porkbun' %}
                         {% if dnsApiKey %}api_key {{ dnsApiKey }}
@@ -202,91 +202,6 @@
                         {% endif %}
                         {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}
                         {% endif %}
-                    {% elif dnsProvider == 'dnsmadeeasy' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'civo' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'scaleway' %}
-                        {% if dnsApiKey %}secret_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}organization_id {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'acmeproxy' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'inwx' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}shared_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}endpoint_url {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'netcup' %}
-                        {% if dnsApiKey %}customer_number {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_password {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'namedotcom' %}
-                        {% if dnsApiKey %}token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}server {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}user {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'easydns' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_url {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'directadmin' %}
-                        {% if dnsApiKey %}host {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}login_key {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}insecure_requests {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'rfc2136' %}
-                        {% if dnsApiKey %}key_name {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}key_alg {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}key {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}server {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'loopia' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'mythicbeasts' %}
-                        {% if dnsApiKey %}key_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'glesys' %}
-                        {% if dnsApiKey %}project {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
-                        {% endif %}
                     {% endif %}
                 }
             {% elif dnsProvider in ['metaname'] %}
@@ -335,7 +250,7 @@
 # Reverse Proxy Configuration
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsOptionalField5, TlsDnsOptionalField6) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" %}
-        {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'netcup', 'namedotcom', 'easydns', 'directadmin', 'rfc2136', 'loopia', 'mythicbeasts', 'glesys'] %}
+        {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'alidns', 'googleclouddns', 'azure', 'openstack-designate', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
             tls {
                 dns {{ dnsProvider }} {
                     {% if dnsProvider == 'duckdns' %}
@@ -466,91 +381,6 @@
                         {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}
                         {% endif %}
                         {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'dnsmadeeasy' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'civo' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'scaleway' %}
-                        {% if dnsApiKey %}secret_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}organization_id {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'acmeproxy' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'inwx' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}shared_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}endpoint_url {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'netcup' %}
-                        {% if dnsApiKey %}customer_number {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_password {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'namedotcom' %}
-                        {% if dnsApiKey %}token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}server {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}user {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'easydns' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_url {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'directadmin' %}
-                        {% if dnsApiKey %}host {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}login_key {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}insecure_requests {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'rfc2136' %}
-                        {% if dnsApiKey %}key_name {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}key_alg {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}key {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}server {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'loopia' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'mythicbeasts' %}
-                        {% if dnsApiKey %}key_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'glesys' %}
-                        {% if dnsApiKey %}project {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
                         {% endif %}
                     {% endif %}
                 }
