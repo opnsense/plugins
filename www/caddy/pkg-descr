@@ -27,6 +27,7 @@ Plugin Changelog
 * Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds.
 * When pressing Apply, the form is saved automatically before the reconfigure action.
 * Cleaned up Caddy.xml model to satisfy make lint.
+* When selecting an interface in Dynamic DNS, at most one IPv6 GUA and IPv4 non-RFC1918 address will be extracted. Fixes all IP addresses being read. 
 
 1.5.1
 
