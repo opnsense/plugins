@@ -10,7 +10,7 @@
         <id>caddy.general.DynDnsInterface</id>
         <label>DynDns Check Interface</label>
         <type>dropdown</type>
-        <help><![CDATA[Optionally, select an interface to extract the current IP address of the firewall. Attention, all IP addresses will be read from this interface. Only choose this option if you know the implications.]]></help>
+        <help><![CDATA[Optionally, select an interface to extract the current IP addresses of the firewall. At most, one IPv6 Global Unicast Address and one IPv4 non-RFC1918 Address will be extracted. This depends on the DynDns IP Version that's specified.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
