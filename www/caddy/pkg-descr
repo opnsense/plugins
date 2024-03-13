@@ -24,9 +24,9 @@ Plugin Changelog
 
 1.5.2
 
-* More DNS Providers added: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, netcup, namedotcom, easydns, infomaniak, directadmin, hosttech, rfc2136, loopia, mythicbeasts, glesys, dynv6.
 * Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds.
 * When pressing Apply, the form is saved automatically before the reconfigure action.
+* Cleaned up Caddy.xml model to satisfy make lint.
 
 1.5.1
 
