@@ -71,7 +71,7 @@
                 messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
 
                 // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
-                messageArea.fadeIn(500).delay(5000).fadeOut(500, function() {
+                messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
                     // Clear the message after fading out to ensure it's clean for the next message
                     $(this).html('');
                 });
@@ -82,31 +82,35 @@
                 $("#messageArea").hide();
             });
 
-            // Reconfigure the Caddy service, additional validation with a validation API is made beforehand
+            // Reconfigure the Caddy service, additional form save and validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
                     const dfObj = $.Deferred();
 
-                    // Directly proceed to validation
-                    $.ajax({
-                        url: "/api/caddy/service/validate",
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            if (data && data['status'].toLowerCase() === 'ok') {
-                                // If configuration is valid, resolve the Deferred object to proceed
-                                dfObj.resolve();
-                            } else {
-                                // If configuration is invalid, show alert using showAlert
-                                showAlert(data['message'], "Validation Error");
-                                dfObj.reject();
+                    // Save the form before continue
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
+                        // After successful save, proceed with validation
+                        $.ajax({
+                            url: "/api/caddy/service/validate",
+                            type: "GET",
+                            dataType: "json",
+                            success: function(data) {
+                                if (data && data['status'].toLowerCase() === 'ok') {
+                                    dfObj.resolve(); // Configuration is valid
+                                } else {
+                                    showAlert(data['message'], "Validation Error");
+                                    dfObj.reject(); // Configuration is invalid
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                showAlert("Validation request failed: " + error, "Validation Error");
+                                dfObj.reject(); // AJAX request failed
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            // On AJAX error, show alert using showAlert
-                            showAlert("Validation request failed: " + error, "Validation Error");
-                            dfObj.reject();
-                        }
+                        });
+                    }, function() {
+                        // If save fails, reject the deferred object to stop the reconfigure action
+                        showAlert("Failed to save configuration.", "Error");
+                        dfObj.reject();
                     });
 
                     return dfObj.promise();
