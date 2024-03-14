@@ -1,0 +1,91 @@
+<form>
+    <field>
+        <id>handle.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable this handler.]]></help>
+    </field>
+    <field>
+        <id>handle.reverse</id>
+        <label>Reverse Proxy Domain</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a reverse proxy domain to which this handler should be added.]]></help>
+    </field>
+    <field>
+        <id>handle.subdomain</id>
+        <label>Reverse Proxy Subdomain</label>
+        <type>dropdown</type>
+        <help><![CDATA[Optionally, select a reverse proxy subdomain to which this handler should be added. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HandleType</id>
+        <label>Handle Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the handler type. In most cases, leaving this as "handle" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HandlePath</id>
+        <label>Handle Path</label>
+        <type>text</type>
+        <help><![CDATA[Enter a handler like '/*' or '/example/*', or leave blank for a catch-all handler (recommended). You can define multiple handlers per domain/subdomain by creating additional entries. Save more specific handlers first, as the first matching handler is prioritized. Blank handlers are processed last automatically. To reorder, clone handlers in the desired sequence and delete old ones.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.ToDomain</id>
+        <label>Backend Server Domain</label>
+        <type>text</type>
+        <hint>192.168.1.1</hint>
+        <help><![CDATA[Enter the internal domain name or IP address of the backend server destination for this handler.]]></help>
+    </field>
+    <field>
+        <id>handle.ToPort</id>
+        <label>Backend Server Port</label>
+        <type>text</type>
+        <hint>443</hint>
+        <help><![CDATA[Enter the port number of the backend server. Leave this empty for bind to port 80. For HTTPS, use 443.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.ToPath</id>
+        <label>Backend Path</label>
+        <type>text</type>
+        <help><![CDATA[Enter a path prefix like '/guacamole' that should be prepended to the backend request because the application demands it.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTls</id>
+        <label>TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Use HTTP over TLS (HTTPS) to communicate with the Backend Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Backend Server by default.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTlsTrustedCaCerts</id>
+        <label>TLS Trusted CA Certificate</label>
+        <type>dropdown</type>
+        <help><![CDATA[If TLS is enabled, and you are not using a globally trusted server certificate on your Backend Server, you can choose a CA certificate or self-signed certificate to trust from "System - Trust - Authorities".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTlsServerName</id>
+        <label>TLS Server Name</label>
+        <type>text</type>
+        <help><![CDATA[Optionally, specify a hostname or IP address that matches the SAN of the "TLS Trusted CA Certificate". Please note that only SAN certificates are supported; CN will not work.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpNtlm</id>
+        <label>NTLM</label>
+        <type>checkbox</type>
+        <help><![CDATA[If "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
+    </field>
+</form>

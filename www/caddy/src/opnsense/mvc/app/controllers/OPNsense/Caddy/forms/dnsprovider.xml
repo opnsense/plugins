@@ -1,0 +1,63 @@
+<form>
+    <field>
+        <id>caddy.general.TlsDnsProvider</id>
+        <label>DNS Provider</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. For more information: https://github.com/caddy-dns]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsApiKey</id>
+        <label>DNS API Standard Field</label>
+        <type>text</type>
+        <help><![CDATA[This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", DNSPod "auth_token", Hetzner "api_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Namesilo "api_token", Njalla "api_token", Vercel "api_token",  Google Cloud DNS "gcp_project", Alidns "access_key_id", Azure "tenant_id", OpenStack Designate "region_name", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Metaname "api_key", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url".]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsSecretApiKey</id>
+        <label>DNS API Additional Field 1</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Duckdns "override_domain", Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Alidns "access_key_secret", Azure "client_id", OpenStack Designate "tenant_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Metaname "account_reference", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField1</id>
+        <label>DNS API Additional Field 2</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "max_retries", ACME-DNS "subdomain", Azure "client_secret", OpenStack Designate "identity_api_version", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField2</id>
+        <label>DNS API Additional Field 3</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "aws_profile", ACME-DNS "server_url", Azure "subscription_id", OpenStack Designate "password", OVH "consumer_key", Namecheap "client_ip", DDNS "password".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField3</id>
+        <label>DNS API Additional Field 4</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "region", Azure "resource_group_name", OpenStack Designate "username".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField4</id>
+        <label>DNS API Additional Field 5</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "token", OpenStack Designate "tenant_name".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField5</id>
+        <label>DNS API Additional Field 6</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "auth_url".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsOptionalField6</id>
+        <label>DNS API Additional Field 7</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: OpenStack Designate "endpoint_type".]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

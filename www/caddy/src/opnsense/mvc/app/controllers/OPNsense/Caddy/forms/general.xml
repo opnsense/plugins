@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>caddy.general.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable the Caddy web server.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsEmail</id>
+        <label>ACME Email</label>
+        <type>text</type>
+        <hint>info@example.com</hint>
+        <help><![CDATA[Enter the email address for certificate notifications.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.TlsAutoHttps</id>
+        <label>Auto HTTPS</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the auto HTTPS option. "On" (default) creates automatic certificates using Let's Encrypt or ZeroSSL without needing any configuration.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.abort</id>
+        <label>Abort Connections</label>
+        <type>checkbox</type>
+        <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.accesslist</id>
+        <label>Trusted Proxies</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select an Access List of Trusted Proxies. If Caddy is not the first server being connected to by your clients (for example when a CDN is in front of Caddy), you may configure trusted_proxies with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the Domains your Trusted Proxy connects to.]]></help>
+    </field>
+</form>

@@ -1,0 +1,28 @@
+<form>
+    <field>
+        <id>accesslist.accesslistName</id>
+        <label>Access List Name</label>
+        <type>text</type>
+        <help><![CDATA[Enter a name for this access list.]]></help>
+    </field>
+    <field>
+        <id>accesslist.clientIps</id>
+        <label>Client IP Addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts multiple IPv4/IPv6 addresses or networks.]]></help>
+    </field>
+    <field>
+        <id>accesslist.accesslistInvert</id>
+        <label>Invert List</label>
+        <type>checkbox</type>
+        <help><![CDATA[If checked, the access list logic will be inverted (i.e., the listed IPs will be blocked instead of allowed).]]></help>
+    </field>
+    <field>
+        <id>accesslist.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this access list.]]></help>
+    </field>
+</form>
