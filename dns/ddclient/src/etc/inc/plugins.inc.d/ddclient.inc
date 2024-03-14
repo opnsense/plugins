@@ -32,8 +32,8 @@ function ddclient_services()
     $services = [];
     $cnf = \OPNsense\Core\Config::getInstance()->object();
     $is_enabled = false;
-    if ($cnf->OPNsense && $cnf->OPNsense->DynDNS && $cnf->OPNsense->DynDNS->general){
-       $is_enabled = $cnf->OPNsense->DynDNS->general->enabled == '1';
+    if ($cnf->OPNsense && $cnf->OPNsense->DynDNS && $cnf->OPNsense->DynDNS->general) {
+        $is_enabled = $cnf->OPNsense->DynDNS->general->enabled == '1';
     }
 
     if ($is_enabled) {

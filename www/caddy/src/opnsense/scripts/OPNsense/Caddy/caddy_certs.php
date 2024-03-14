@@ -37,7 +37,8 @@ use OPNsense\Core\Config;
 $configObj = Config::getInstance()->object();
 $temp_dir = '/usr/local/etc/caddy/certificates/temp/';
 
-function extract_and_save_certificates($configObj, $temp_dir) {
+function extract_and_save_certificates($configObj, $temp_dir)
+{
     // Traverse through certificates
     foreach ($configObj->cert as $cert) {
         $cert_refid = (string)$cert->refid;

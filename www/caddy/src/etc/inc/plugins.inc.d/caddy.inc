@@ -32,8 +32,10 @@ function caddy_services()
 
     $services = array();
 
-    if (isset($config['Pischem']['caddy']['general']['enabled']) &&
-        $config['Pischem']['caddy']['general']['enabled'] == 1) {
+    if (
+        isset($config['Pischem']['caddy']['general']['enabled']) &&
+        $config['Pischem']['caddy']['general']['enabled'] == 1
+    ) {
         $services[] = array(
             'description' => gettext('Caddy Web Server'),
             'configd' => array(

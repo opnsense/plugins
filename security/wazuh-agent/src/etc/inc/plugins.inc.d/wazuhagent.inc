@@ -32,7 +32,7 @@ function wazuhagent_services()
     $services = [];
     $cnf = \OPNsense\Core\Config::getInstance()->object();
     $is_enabled = false;
-    if ($cnf->OPNsense && $cnf->OPNsense->WazuhAgent && $cnf->OPNsense->WazuhAgent->general){
+    if ($cnf->OPNsense && $cnf->OPNsense->WazuhAgent && $cnf->OPNsense->WazuhAgent->general) {
         $is_enabled = $cnf->OPNsense->WazuhAgent->general->enabled == '1';
     }
 
