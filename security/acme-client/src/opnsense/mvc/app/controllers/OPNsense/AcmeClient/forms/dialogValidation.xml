@@ -1484,6 +1484,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>ArtFiles DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_artfiles</style>
+    </field>
+    <field>
+        <id>validation.dns_artfiles_username</id>
+        <label>API Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_artfiles_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Hetzner DNS API</label>
         <type>header</type>
         <style>table_dns table_dns_hetzner</style>
