@@ -44,6 +44,12 @@
       <help><![CDATA[Use the ID to set the TTL Value of the packet (Original method) rather than DSCP, default is not ticked]]></help>
    </field>
    <field>
+      <id>udpbroadcastrelay.msearch</id>
+      <label>SSDP M-SEARCH handling</label>I
+      <type>dropdown</type>
+      <help><![CDATA[Set how SSDP M-SEARCH packets are treated. Options are block, fwd, proxy and dial.]]></help>
+   </field>
+   <field>
       <id>udpbroadcastrelay.description</id>
       <label>Description</label>
       <type>text</type>

@@ -28,6 +28,7 @@ osudpbroadcastrelay_enable="YES"
 {%     do Parameters.append("-t ") %}
 {%    endif %}
 {%     do Parameters.append("-f") %}
+{%     do Parameters.append("--msearch " ~ osudpbroadcastrelay.msearch) %}
 {%    set Instance=osudpbroadcastrelay.InstanceID %}
 osudpbroadcastrelay_{{Instance}}="{% for Parameter in Parameters %} {{Parameter}}{% endfor %}"
 {%     do Instances.append(Instance) %}

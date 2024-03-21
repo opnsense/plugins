@@ -321,6 +321,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 "listenport",
                 "InstanceID",
                 "RevertTTL",
+                "msearch",
                 "description"
         );
         $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
