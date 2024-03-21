@@ -4,9 +4,6 @@
 
 # Global Options
 {
-    storage file_system {
-        root /usr/local/etc/caddy
-    }
     log {
         {% if generalSettings.LogAccessPlain|default("0") == "0" %}
         {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
