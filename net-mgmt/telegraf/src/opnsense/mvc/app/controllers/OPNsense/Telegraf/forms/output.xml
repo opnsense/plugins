@@ -327,4 +327,38 @@
         <type>dropdown</type>
         <help>Data format to output. Defaults to "influx".</help>
     </field>
+    <field>
+        <label>OpenTelemetry</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>output.opentelemetry_enable</id>
+        <label>Enable OpenTelemetry Output</label>
+        <type>checkbox</type>
+        <help>This will enable OpenTelemetry as output.</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_server</id>
+        <label>OpenTelemetry Server</label>
+        <type>text</type>
+        <help>Set the IP and port where metrics shoud be sent to, e.g. 192.168.0.1:4317.</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_compression</id>
+        <label>Compression</label>
+        <type>dropdown</type>
+        <help>Set the compression mode.</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Write timeout, formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended).</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_insecure_skip_verify</id>
+        <label>Disable TLS verification</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
 </form>
