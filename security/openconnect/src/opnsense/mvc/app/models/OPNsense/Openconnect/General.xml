@@ -58,6 +58,10 @@
         <tokensecret type="TextField">
             <Required>N</Required>
         </tokensecret>
+        <allowinsecure type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </allowinsecure>
         <protocol type="OptionField">
             <Default>anyconnect</Default>
             <Required>Y</Required>
