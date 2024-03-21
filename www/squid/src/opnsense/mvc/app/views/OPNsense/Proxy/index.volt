@@ -528,8 +528,16 @@
                       <button class="btn btn-primary" id="resetAct" type="button">{{ lang._('Reset') }}<i id="resetAct_progress" class=""></button>
                   </td>
                   <td>
-                      {{ lang._('Reset all generated content (cached files and certificates included) and restart the proxy.') }}
+                      {{ lang._('Reset all generated content (cached files, certificates and recorded encryption details included) and restart the proxy.') }}
                   </td>
+              </tr>
+              <tr>
+                <td>
+                    <a class="btn btn-primary" href="/api/proxy/export/download/" download>{{ lang._('Export') }}<i id="exportbtn_progress" class=""></a>
+                </td>
+                <td>
+                    {{ lang._('Export TLS connection pre-master secret and encryption details.') }}
+                </td>
               </tr>
             </tbody>
         </table>
