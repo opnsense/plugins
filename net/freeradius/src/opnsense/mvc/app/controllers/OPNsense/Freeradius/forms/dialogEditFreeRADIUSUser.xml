@@ -18,6 +18,13 @@
         <help>Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#= with up to 128 characters.</help>
     </field>
     <field>
+        <id>user.passwordencryption</id>
+        <label>Password Encryption</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Set encryption or hash for stored password.<br/><b>Cleartext-Password</b> The password will be stored in plaintext. This may be less secure than alternatives. Works with all RADIUS authentication protocols.<br/><b>NT-Password (pre-hashed)</b> An NT hash of the password will be stored. First the NT hash of the password should be generated; this will be a string such as 469DCB69D4A58A5F29272787713D96F8. Then the hash (not the password) should be entered into the password field above. A command such as <code>smbencrypt secret123</code> may be used to generate the pre-hashed NT Password. Works with the following RADIUS authentication protocols: PEAP, EAP-MSCHAPv2, EAP-GTC, PAP, MS-CHAP, Cisco LEAP.]]></help>
+    </field>
+    <field>
         <id>user.description</id>
         <label>Description</label>
         <type>text</type>
