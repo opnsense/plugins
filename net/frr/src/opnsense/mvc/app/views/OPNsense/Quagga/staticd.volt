@@ -27,33 +27,96 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-<div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':staticdForm,'id':'frm_staticd_settings'])}}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+<!-- Navigation bar -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#iproute">{{ lang._('IP Routes') }}</a></li>
+</ul>
+
+<div class="tab-content content-box tab-content">
+    <div id="general" class="tab-pane fade in active">
+	<div class="content-box" style="padding-bottom: 1.5em;">
+	    {{ partial("layout_partials/base_form",['fields':staticdForm,'id':'frm_staticd_settings'])}}
+	    <div class="col-md-12">
+		<hr />
+		<button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+	    </div>
+	</div>
+    </div>
+
+    <!-- Tab: IP Routes -->
+    <div id="iproute" class="tab-pane fade in">
+	<table id="grid-iproutes" class="table table-responsive" data-editDialog="DialogEditStaticdRoute">
+	    <thead>
+		<tr>
+		    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+		    <th data-column-id="iproute" data-type="string" data-visible="true">{{ lang._('IP Route') }}</th>
+		    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
+		    <th data-column-id="commands" data-formatter="commands" data-portable="false">{{ lang._('Commands') }}</th>
+		</tr>
+	    </thead>
+	    <tbody>
+	    </tbody>
+	    <tfoot>
+		<tr>
+		    <td colspan="3"></td>
+		    <td>
+			<button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+			<!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+			<button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+		    </td>
+		</tr>
+	    </tfoot>
+	</table>
     </div>
 </div>
 
 <script>
+
+function quagga_update_status() {                                               
+  updateServiceControlUI('quagga');
+}
+
 $(document).ready(function() {
   var data_get_map = {'frm_staticd_settings':"/api/quagga/staticd/get"};
   mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
+    formatTokenizersUI();
+    $('.selectpicker').selectpicker('refresh');
   });
 
-  updateServiceControlUI('quagga');
+  quagga_update_status();
 
   // link save button to API set action
   $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/staticd/set",formid='frm_staticd_settings',callback_ok=function(){
-        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-        ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          updateServiceControlUI('quagga');
-          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-        });
+    saveFormToEndpoint(url="/api/quagga/staticd/set",formid='frm_staticd_settings',callback_ok=function(){
+      $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+      ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
+	updateServiceControlUI('quagga');
+	$("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
       });
+    });
   });
+
+  /* allow a user to manually reload the service (for forms which do not do it automatically) */
+  $('.reload_btn').click(function reload_handler() {
+    $(".reloadAct_progress").addClass("fa-spin");
+    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function (data,status) {
+      quagga_update_status();
+      $(".reloadAct_progress").removeClass("fa-spin"); 
+    });
+  });
+
+  $("#grid-iproutes").UIBootgrid(
+    { 'search':'/api/quagga/staticd/searchRoute',
+      'get':'/api/quagga/staticd/getRoute/',
+      'set':'/api/quagga/staticd/setRoute/',
+      'add':'/api/quagga/staticd/addRoute/',
+      'del':'/api/quagga/staticd/delRoute/',
+      'toggle':'/api/quagga/staticd/toggleRoute/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
 });
 </script>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditStaticdRoute,'id':'DialogEditStaticdRoute','label':lang._('Edit IP Routes')])}}

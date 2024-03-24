@@ -36,4 +36,32 @@ class StaticdController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'staticd';
     protected static $internalModelClass = '\OPNsense\Quagga\Staticd';
+
+    public function searchRouteAction()
+    {
+	return $this->searchBase(
+	    'iproutes.iproute',
+	    array("enabled", "iproute", "interfacename"));
+    }
+    public function getRouteAction($uuid = null)
+    {
+	$this->sessionClose();
+	return $this->getBase('iproute', 'iproutes.iproute', $uuid);
+    }
+    public function setRouteAction($uuid)
+    {
+	return $this->setBase('iproute', 'iproutes.iproute', $uuid);
+    }
+    public function addRouteAction()
+    {
+	return $this->addBase('iproute', 'iproutes.iproute');
+    }
+    public function delRouteAction($uuid)
+    {
+	return $this->delBase('iproutes.iproute', $uuid);
+    }
+    public function toggleRouteAction($uuid)
+    {
+	return $this->toggleBase('iproutes.iproute', $uuid);
+    }
 }
