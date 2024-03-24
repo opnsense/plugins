@@ -83,6 +83,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.HttpTlsInsecureSkipVerify</id>
+        <label>TLS Insecure Skip Verify</label>
+        <type>checkbox</type>
+        <help><![CDATA[Turns off TLS handshake verification, making the connection insecure and vulnerable to man-in-the-middle attacks. Do not use in production.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.description</id>
         <label>Description</label>
         <type>text</type>

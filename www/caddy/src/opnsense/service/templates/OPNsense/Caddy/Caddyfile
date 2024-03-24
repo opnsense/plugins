@@ -403,28 +403,36 @@
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
-            {% if handle.HttpTls|default("0") == "1" %}
-            {% if handle.HttpNtlm|default("0") == "1" %}
-            transport http_ntlm {
-                tls
-                {% if handle.HttpTlsTrustedCaCerts %}
-                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+                {% if handle.HttpNtlm|default("0") == "1" %}
+                transport http_ntlm {
+                    {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+                    tls_insecure_skip_verify
+                    {% else %}
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                    {% if handle.HttpTlsServerName %}
+                    tls_server_name {{ handle.HttpTlsServerName }}
+                    {% endif %}
+                    {% endif %}
+                }
+                {% else %}
+                transport http {
+                    {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+                    tls_insecure_skip_verify
+                    {% else %}
+                    tls
+                    {% if handle.HttpTlsTrustedCaCerts %}
+                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    {% endif %}
+                    {% if handle.HttpTlsServerName %}
+                    tls_server_name {{ handle.HttpTlsServerName }}
+                    {% endif %}
+                    {% endif %}
+                }
                 {% endif %}
-                {% if handle.HttpTlsServerName %}
-                tls_server_name {{ handle.HttpTlsServerName }}
-                {% endif %}
-            }
-            {% else %}
-            transport http {
-                tls
-                {% if handle.HttpTlsTrustedCaCerts %}
-                tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                {% endif %}
-                {% if handle.HttpTlsServerName %}
-                tls_server_name {{ handle.HttpTlsServerName }}
-                {% endif %}
-            }
-            {% endif %}
             {% endif %}
         }
     }

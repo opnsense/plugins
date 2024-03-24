@@ -259,6 +259,7 @@
                 </ToPath>
                 <HttpTls type="BooleanField"/>
                 <HttpNtlm type="BooleanField"/>
+                <HttpTlsInsecureSkipVerify type="BooleanField"/>
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
