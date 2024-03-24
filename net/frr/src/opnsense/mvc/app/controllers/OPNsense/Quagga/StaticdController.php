@@ -33,6 +33,7 @@ class StaticdController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->staticdForm = $this->getForm("staticd");
+        $this->view->formDialogEditStaticdRoute = $this->getForm("dialogEditStaticdRoute");
         $this->view->pick('OPNsense/Quagga/staticd');
     }
 }
