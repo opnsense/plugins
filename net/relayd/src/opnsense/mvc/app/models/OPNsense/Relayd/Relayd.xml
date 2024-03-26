@@ -82,7 +82,7 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <hosts type="ModelRelationField">
@@ -155,7 +155,7 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <type type="OptionField">
@@ -242,7 +242,8 @@
             <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
          </transport_timeout>
          <transport_tablemode type="OptionField">
-            <Required>N</Required>
+            <Required>Y</Required>
+            <default>roundrobin</default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -305,7 +306,8 @@
             </Constraints>
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
-            <Required>N</Required>
+            <Required>Y</Required>
+            <default>roundrobin</default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
