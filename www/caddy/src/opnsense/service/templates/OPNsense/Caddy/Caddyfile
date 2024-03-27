@@ -341,7 +341,7 @@
         {% endif %}
     {% endif %}
     {% if customCert %}
-        tls /usr/local/etc/caddy/certificates/temp/{{ customCert }}.pem /usr/local/etc/caddy/certificates/temp/{{ customCert }}.key
+        tls /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key
     {% endif %}
 {% endmacro %}
 
@@ -359,7 +359,7 @@
                     {% else %}
                     tls
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
@@ -373,7 +373,7 @@
                     {% else %}
                     tls
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /usr/local/etc/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
