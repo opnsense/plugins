@@ -22,6 +22,15 @@ Main features of this plugin:
 Plugin Changelog
 ================
 
+1.5.3
+
+* Change from Phalcon Messages to OPNsense Messages in Caddy.php.
+* Change default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/.
+* Improve ReverseProxyController.php SearchBase() by automatically reading all fields.
+* Add tls_insecure_skip_verify to handlers.
+* Change description from "TextField" to "DescriptionField" in Caddy.xml model.
+* Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.
+
 1.5.2
 
 * Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds.
