@@ -426,6 +426,7 @@
                         <dns_ali>aliyun.com</dns_ali>
                         <dns_kas>All-Inkl.com</dns_kas>
                         <dns_arvan>ArvanCloud</dns_arvan>
+                        <dns_artfiles>ArtFiles</dns_artfiles>
                         <dns_aurora>Aurora (PCextreme/Versio)</dns_aurora>
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
@@ -1123,6 +1124,12 @@
                 <dns_arvan_token type="TextField">
                     <Required>N</Required>
                 </dns_arvan_token>
+                <dns_artfiles_username type="TextField">
+                    <Required>N</Required>
+                </dns_artfiles_username>
+                <dns_artfiles_password type="TextField">
+                    <Required>N</Required>
+                </dns_artfiles_password>
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
