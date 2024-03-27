@@ -1,0 +1,21 @@
+{% if helpers.exists('OPNsense.chrony.general.enabled') and OPNsense.chrony.general.enabled == '1' %}
+
+{%   if helpers.exists('OPNsense.chrony.general.symmetric_auth') and OPNsense.chrony.general.symmetric_auth == '1' %}
+
+{%     if helpers.exists('OPNsense.chrony.general.symmetric_keys_file') and not helpers.empty('OPNsense.chrony.general.symmetric_keys_file') %}
+
+# This is the chrony keys file.  It enables authentication of NTP
+# packets with symmetric keys when its location is specified by the keyfile
+# directive in chrony.conf(5).  It should be readable only by root and the
+# user under which chronyd is running.
+#
+# Don't use example keys!  It's recommended to generate random keys using
+# the chronyc keygen command.
+
+{{ OPNsense.chrony.general.symmetric_keys_file }}
+
+{%     endif %}
+
+{%   endif %}
+
+{% endif %}
