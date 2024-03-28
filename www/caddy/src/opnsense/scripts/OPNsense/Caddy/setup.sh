@@ -7,17 +7,17 @@ CADDY_LOG_DIR="/var/log/caddy/access"
 CADDY_CONF_DIR="${CADDY_DIR}/caddy.d"
 
 # Create custom directories with appropriate permissions
-mkdir -p "$CADDY_CERTS_DIR"
-chown -R root:wheel "$CADDY_CERTS_DIR"
-chmod -R 750 "$CADDY_CERTS_DIR"
+mkdir -p "${CADDY_CERTS_DIR}"
+chown -R root:wheel "${CADDY_CERTS_DIR}"
+chmod -R 750 "${CADDY_CERTS_DIR}"
 
-mkdir -p "$CADDY_LOG_DIR"
-chown -R root:wheel "$CADDY_LOG_DIR"
-chmod -R 750 "$CADDY_LOG_DIR"
+mkdir -p "${CADDY_LOG_DIR}"
+chown -R root:wheel "${CADDY_LOG_DIR}"
+chmod -R 750 "${CADDY_LOG_DIR}"
 
-mkdir -p "$CADDY_CONF_DIR"
-chown -R root:wheel "$CADDY_CONF_DIR"
-chmod -R 750 "$CADDY_CONF_DIR"
+mkdir -p "${CADDY_CONF_DIR}"
+chown -R root:wheel "${CADDY_CONF_DIR}"
+chmod -R 750 "${CADDY_CONF_DIR}"
 
 # Format and overwrite the Caddyfile
 (cd "${CADDY_DIR}" && /usr/local/bin/caddy fmt --overwrite)
