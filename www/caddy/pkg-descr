@@ -19,6 +19,8 @@ Main features of this plugin:
 * Syslog-ng integration and HTTP Access Log
 * NTLM Transport
 
+DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
+
 Plugin Changelog
 ================
 
@@ -26,7 +28,6 @@ Plugin Changelog
 
 * Change from Phalcon Messages to OPNsense Messages in Caddy.php.
 * Change default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/.
-* Improve ReverseProxyController.php SearchBase() by automatically reading all fields.
 * Add tls_insecure_skip_verify to handlers.
 * Change description from "TextField" to "DescriptionField" in Caddy.xml model.
 * Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.

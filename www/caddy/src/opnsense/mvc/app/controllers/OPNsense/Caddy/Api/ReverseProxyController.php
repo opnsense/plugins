@@ -41,9 +41,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*ReverseProxy Section*/
 
-    public function searchReverseProxyAction($add_empty='0')
+    public function searchReverseProxyAction()
     {
-        return $this->searchBase("reverseproxy.reverse", null, 'description');
+        return $this->searchBase("reverseproxy.reverse", ['enabled', 'FromDomain', 'FromPort', 'accesslist', 'basicauth', 'DnsChallenge', 'CustomCertificate', 'AccessLog', 'DynDns', 'description']);
     }
 
     public function setReverseProxyAction($uuid)
@@ -74,9 +74,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Subdomain Section*/
 
-    public function searchSubdomainAction($add_empty='0')
+    public function searchSubdomainAction()
     {
-        return $this->searchBase("reverseproxy.subdomain", null, 'description');
+        return $this->searchBase("reverseproxy.subdomain", ['enabled', 'reverse', 'FromDomain', 'FromPort', 'accesslist', 'basicauth', 'DynDns', 'description']);
     }
 
     public function setSubdomainAction($uuid)
@@ -107,9 +107,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Handler Section*/
 
-    public function searchHandleAction($add_empty='0')
+    public function searchHandleAction()
     {
-        return $this->searchBase("reverseproxy.handle", null, 'description');
+        return $this->searchBase("reverseproxy.handle", ['enabled', 'reverse', 'subdomain', 'HandleType', 'HandlePath', 'ToDomain', 'ToPort', 'ToPath', 'HttpTls', 'HttpTlsTrustedCaCerts', 'HttpTlsServerName', 'HttpNtlm', 'HttpTlsInsecureSkipVerify', 'description']);
     }
 
     public function setHandleAction($uuid)
@@ -140,9 +140,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* AccessList Section */
 
-    public function searchAccessListAction($add_empty='0')
+    public function searchAccessListAction()
     {
-        return $this->searchBase("reverseproxy.accesslist", null, 'description');
+        return $this->searchBase("reverseproxy.accesslist", ['accesslistName', 'clientIps', 'accesslistInvert', 'description']);
     }
 
     public function setAccessListAction($uuid)
@@ -168,9 +168,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* BasicAuth Section */
 
-    public function searchBasicAuthAction($add_empty='0')
+    public function searchBasicAuthAction()
     {
-        return $this->searchBase("reverseproxy.basicauth", null, 'description');
+        return $this->searchBase("reverseproxy.basicauth", ['basicauthuser', 'basicauthpass', 'description']);
     }
 
     public function setBasicAuthAction($uuid)
