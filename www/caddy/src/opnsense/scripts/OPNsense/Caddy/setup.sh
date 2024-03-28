@@ -4,7 +4,7 @@
 CADDY_DIR="/usr/local/etc/caddy"
 CADDY_CERTS_DIR="/var/db/caddy/data/caddy/certificates/temp"
 CADDY_LOG_DIR="/var/log/caddy/access"
-CADDY_CONF_DIR="$CADDY_DIR/caddy.d"
+CADDY_CONF_DIR="${CADDY_DIR}/caddy.d"
 
 # Create custom directories with appropriate permissions
 mkdir -p "$CADDY_CERTS_DIR"
