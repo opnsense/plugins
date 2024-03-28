@@ -204,7 +204,7 @@
     <id>location.force_https</id>
     <label>Force HTTPS</label>
     <type>checkbox</type>
-    <help>Force encrypted connections.</help>
+    <help>If the request scheme is not https, redirect to use https for this location.</help>
   </field>
   <field>
     <id>location.http2_push_preload</id>
