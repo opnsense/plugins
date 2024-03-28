@@ -70,6 +70,7 @@ function init_grids() {
         'snifwd',
         'errorpage',
         'tls_fingerprint',
+        'resolver',
         'syslog_target',
         'naxsirule'].forEach(function (element) {
         $("#grid-" + element).UIBootgrid(

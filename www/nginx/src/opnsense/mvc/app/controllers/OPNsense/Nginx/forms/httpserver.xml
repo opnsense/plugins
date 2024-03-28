@@ -188,6 +188,13 @@
     <help>Prefers server ciphers over client ciphers.</help>
   </field>
   <field>
+    <id>httpserver.resolver</id>
+    <label>Resolver</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Specify resolver for Upstream names resolution, OCSP stapling etc. Uses system resolver if not specified but can produce warning messages in log.]]></help>
+  </field>
+  <field>
     <id>httpserver.ocsp_stapling</id>
     <label>OCSP Stapling</label>
     <type>checkbox</type>
@@ -207,6 +214,13 @@
     <type>checkbox</type>
     <advanced>true</advanced>
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
+  </field>
+  <field>
+    <id>httpserver.disable_gzip</id>
+    <label>Disable gzip</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Disables responses gzipping. Makes sense if TLS is used and this method of BREACH attack protection is preferred.</help>
   </field>
   <field>
     <id>httpserver.disable_bot_protection</id>

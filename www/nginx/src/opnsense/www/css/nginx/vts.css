@@ -44,6 +44,7 @@
 #monitor thead th {
     font-size: 1em;
     padding: .1em .3em;
+    border: 1px solid;
 }
 #monitor tbody th {
     text-align: left;
