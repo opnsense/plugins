@@ -31,6 +31,7 @@ Plugin Changelog
 * Add tls_insecure_skip_verify to handlers.
 * Change description from "TextField" to "DescriptionField" in Caddy.xml model.
 * Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.
+* Implemented headers to forms to group options better, removed excessive use of advanced mode.
 
 1.5.2
 

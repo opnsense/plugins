@@ -10,7 +10,6 @@
         <label>Log HTTP Access in JSON Format</label>
         <type>checkbox</type>
         <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g for processing by CrowdSec. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enabling this will make the HTTP Access Log dissappear from the standard "Log File" in the GUI. They can be found in the filesystem "/var/log/caddy/access/"]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.LogAccessPlainKeep</id>
@@ -18,6 +17,5 @@
         <hint>10</hint>
         <type>text</type>
         <help><![CDATA[How many days to keep the JSON access logs.]]></help>
-        <advanced>true</advanced>
     </field>
 </form>
