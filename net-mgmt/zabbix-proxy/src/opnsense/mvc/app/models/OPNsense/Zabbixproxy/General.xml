@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/zabbixproxy/general</mount>
     <description>Zabbix Proxy configuration</description>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -106,6 +106,28 @@
             <asList>Y</asList>
             <Required>N</Required>
         </statsip>
+        <syslogEnable type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </syslogEnable>
+        <logFileSize type="IntegerField">
+            <default>100</default>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1024</MaximumValue>
+            <Required>Y</Required>
+        </logFileSize>
+        <debugLevel type="OptionField">
+            <default>val_3</default>
+            <OptionValues>
+                <val_0>basic information (0)</val_0>
+                <val_1>critical information (1)</val_1>
+                <val_2>error information (2)</val_2>
+                <val_3>warnings (3, default)</val_3>
+                <val_4>debugging (4)</val_4>
+                <val_5>extended debugging (5)</val_5>
+            </OptionValues>
+            <Required>Y</Required>
+        </debugLevel>
         <encryption type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
