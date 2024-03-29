@@ -6,10 +6,6 @@
         <help><![CDATA[Enable this reverse proxy subdomain.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Subdomain</label>
-    </field>
-    <field>
         <id>subdomain.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>

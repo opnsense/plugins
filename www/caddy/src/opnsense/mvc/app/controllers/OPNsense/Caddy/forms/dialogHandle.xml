@@ -6,33 +6,6 @@
         <help><![CDATA[Enable this handler.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Handle</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.HandleType</id>
-        <label>Handle Type</label>
-        <type>dropdown</type>
-        <help><![CDATA[Select the handler type. In most cases, leaving this as "handle" will be the best choice.]]></help>
-    </field>
-    <field>
-        <id>handle.HandlePath</id>
-        <label>Handle Path</label>
-        <type>text</type>
-        <help><![CDATA[Enter a handler like '/*' or '/example/*', or leave blank for a catch-all handler (recommended). You can define multiple handlers per domain/subdomain by creating additional entries. Save more specific handlers first, as the first matching handler is prioritized. Blank handlers are processed last automatically. To reorder, clone handlers in the desired sequence and delete old ones.]]></help>
-    </field>
-    <field>
-        <id>handle.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Domain</label>
-    </field>
-    <field>
         <id>handle.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
@@ -42,7 +15,26 @@
         <id>handle.subdomain</id>
         <label>Subdomain</label>
         <type>dropdown</type>
-        <help><![CDATA[Optionally, select a reverse proxy subdomain to which this handler should be added. In most cases, leaving this as "None" will be the best choice.]]></help>
+        <help><![CDATA[Optionally, select a reverse proxy subdomain to which this handler should be added. If not using subdomains, leaving this as "None" will be the best choice.]]></help>
+    </field>
+    <field>
+        <id>handle.HandleType</id>
+        <label>Handle Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[In most cases, leaving this as "handle" will be the best choice.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HandlePath</id>
+        <label>Handle Path</label>
+        <type>text</type>
+        <help><![CDATA[Enter a handler like '/*' or '/example/*', or leave blank for a catch-all handler (recommended). Any request matching this handler will be reverse proxied to the upstream destination.]]></help>
+    </field>
+    <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -53,14 +45,14 @@
         <label>Upstream Domain</label>
         <type>text</type>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter the internal domain name or IP address of the upstream server destination for this handler.]]></help>
+        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
         <hint>80</hint>
-        <help><![CDATA[Enter the port number of the upstream server. Leave this empty for bind to port 80. For HTTPS, use 443.]]></help>
+        <help><![CDATA[Enter the port number of the upstream destination. Leave this empty to use port 80.]]></help>
     </field>
     <field>
         <id>handle.ToPath</id>
@@ -71,20 +63,21 @@
     </field>
     <field>
         <type>header</type>
-        <label>Upstream Trust</label>
+        <label>Trust</label>
         <collapse>true</collapse>
     </field>
     <field>
         <id>handle.HttpTls</id>
         <label>TLS</label>
         <type>checkbox</type>
-        <help><![CDATA[Use HTTP over TLS (HTTPS) to communicate with the Upstream Server. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the Upstream Server by default.]]></help>
+        <help><![CDATA[Use HTTP over TLS (HTTPS) to communicate with the upstream destination. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the upstream destination by default.]]></help>
     </field>
     <field>
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
         <help><![CDATA[If "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HttpTlsInsecureSkipVerify</id>
@@ -97,7 +90,7 @@
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trusted CA Certificate</label>
         <type>dropdown</type>
-        <help><![CDATA[If TLS is enabled, and you are not using a globally trusted server certificate on your Upstream Server, you can choose a CA certificate or self-signed certificate to trust from "System - Trust - Authorities".]]></help>
+        <help><![CDATA[Optionally, if TLS is enabled, choose a CA certificate or self-signed certificate to trust from "System - Trust - Authorities".]]></help>
     </field>
     <field>
         <id>handle.HttpTlsServerName</id>

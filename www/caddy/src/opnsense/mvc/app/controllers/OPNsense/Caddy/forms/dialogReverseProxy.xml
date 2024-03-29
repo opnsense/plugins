@@ -6,10 +6,6 @@
         <help><![CDATA[Enable this reverse proxy domain.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Domain</label>
-    </field>
-    <field>
         <id>reverse.FromDomain</id>
         <label>Domain</label>
         <type>text</type>
