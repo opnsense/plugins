@@ -52,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 		<tr>
 		    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
 		    <th data-column-id="iproute" data-type="string" data-visible="true">{{ lang._('IP Route') }}</th>
+		    <th data-column-id="gateway" data-type="string" data-visible="true">{{ lang._('Gateway (optional)') }}</th>
 		    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
 		    <th data-column-id="commands" data-formatter="commands" data-portable="false">{{ lang._('Commands') }}</th>
 		</tr>
@@ -78,6 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
 		<tr>
 		    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
 		    <th data-column-id="ip6route" data-type="string" data-visible="true">{{ lang._('IPv6 Route') }}</th>
+		    <th data-column-id="gateway" data-type="string" data-visible="true">{{ lang._('Gateway (optional)') }}</th>
 		    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
 		    <th data-column-id="commands" data-formatter="commands" data-portable="false">{{ lang._('Commands') }}</th>
 		</tr>

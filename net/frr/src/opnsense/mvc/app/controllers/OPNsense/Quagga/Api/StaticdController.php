@@ -41,7 +41,7 @@ class StaticdController extends ApiMutableModelControllerBase
     {
 	return $this->searchBase(
 	    'iproutes.iproute',
-	    array("enabled", "iproute", "interfacename"));
+	    array("enabled", "iproute", "gateway", "interfacename"));
     }
     public function getRouteAction($uuid = null)
     {
@@ -69,7 +69,7 @@ class StaticdController extends ApiMutableModelControllerBase
     {
 	return $this->searchBase(
 	    'ip6routes.ip6route',
-	    array("enabled", "ip6route", "interfacename"));
+	    array("enabled", "ip6route", "gateway", "interfacename"));
     }
     public function getRoute6Action($uuid = null)
     {
