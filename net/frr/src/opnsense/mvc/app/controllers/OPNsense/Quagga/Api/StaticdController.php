@@ -64,4 +64,32 @@ class StaticdController extends ApiMutableModelControllerBase
     {
 	return $this->toggleBase('iproutes.iproute', $uuid);
     }
+
+    public function searchRoute6Action()
+    {
+	return $this->searchBase(
+	    'ip6routes.ip6route',
+	    array("enabled", "ip6route", "interfacename"));
+    }
+    public function getRoute6Action($uuid = null)
+    {
+	$this->sessionClose();
+	return $this->getBase('ip6route', 'ip6routes.ip6route', $uuid);
+    }
+    public function setRoute6Action($uuid)
+    {
+	return $this->setBase('ip6route', 'ip6routes.ip6route', $uuid);
+    }
+    public function addRoute6Action()
+    {
+	return $this->addBase('ip6route', 'ip6routes.ip6route');
+    }
+    public function delRoute6Action($uuid)
+    {
+	return $this->delBase('ip6routes.ip6route', $uuid);
+    }
+    public function toggleRoute6Action($uuid)
+    {
+	return $this->toggleBase('ip6routes.ip6route', $uuid);
+    }
 }

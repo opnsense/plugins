@@ -1,0 +1,21 @@
+<form>
+  <field>
+    <id>ip6route.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>                                                                     
+    <id>ip6route.ip6route</id>
+    <label>Network Address</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>tokenize</allownew>
+    <help>Defines the target for the static IPv6 route, in CIDR notation.</help>
+  </field>
+  <field>
+    <id>ip6route.interfacename</id>
+    <label>Interface</label>
+    <type>dropdown</type>
+    <help>Select an interface where this settings apply to.</help>
+  </field>
+</form>
