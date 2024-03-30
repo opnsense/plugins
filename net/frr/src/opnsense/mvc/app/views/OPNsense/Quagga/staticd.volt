@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#iproute">{{ lang._('IP Routes') }}</a></li>
+    <li><a data-toggle="tab" href="#ip6route">{{ lang._('IPv6 Routes') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -51,6 +52,32 @@ POSSIBILITY OF SUCH DAMAGE.
 		<tr>
 		    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
 		    <th data-column-id="iproute" data-type="string" data-visible="true">{{ lang._('IP Route') }}</th>
+		    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
+		    <th data-column-id="commands" data-formatter="commands" data-portable="false">{{ lang._('Commands') }}</th>
+		</tr>
+	    </thead>
+	    <tbody>
+	    </tbody>
+	    <tfoot>
+		<tr>
+		    <td colspan="3"></td>
+		    <td>
+			<button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+			<!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
+			<button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+		    </td>
+		</tr>
+	    </tfoot>
+	</table>
+    </div>
+
+    <!-- Tab: IPv6 Routes -->
+    <div id="ip6route" class="tab-pane fade in">
+	<table id="grid-ip6routes" class="table table-responsive" data-editDialog="DialogEditStaticdRoute6">
+	    <thead>
+		<tr>
+		    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+		    <th data-column-id="ip6route" data-type="string" data-visible="true">{{ lang._('IPv6 Route') }}</th>
 		    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
 		    <th data-column-id="commands" data-formatter="commands" data-portable="false">{{ lang._('Commands') }}</th>
 		</tr>
@@ -116,7 +143,19 @@ $(document).ready(function() {
       'options':{selection:false, multiSelect:false}
     }
   );
+
+  $("#grid-ip6routes").UIBootgrid(
+    { 'search':'/api/quagga/staticd/searchRoute6',
+      'get':'/api/quagga/staticd/getRoute6/',
+      'set':'/api/quagga/staticd/setRoute6/',
+      'add':'/api/quagga/staticd/addRoute6/',
+      'del':'/api/quagga/staticd/delRoute6/',
+      'toggle':'/api/quagga/staticd/toggleRoute6/',
+      'options':{selection:false, multiSelect:false}
+    }
+  );
 });
 </script>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditStaticdRoute,'id':'DialogEditStaticdRoute','label':lang._('Edit IP Routes')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditStaticdRoute6,'id':'DialogEditStaticdRoute6','label':lang._('Edit IPv6 Routes')])}}
