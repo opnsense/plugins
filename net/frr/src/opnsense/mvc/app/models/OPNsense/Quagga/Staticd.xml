@@ -17,6 +17,10 @@
 		    <default></default>
 		    <Required>Y</Required>
 		</iproute>
+		<gateway type="TextField">
+		    <default></default>
+		    <Required>N</Required>
+		</gateway>
 		<interfacename type="InterfaceField">
 		     <Required>Y</Required>
 		     <multiple>N</multiple>
@@ -38,6 +42,10 @@
 		    <default></default>
 		    <Required>Y</Required>
 		</ip6route>
+		<gateway type="TextField">
+		    <default></default>
+		    <Required>N</Required>
+		</gateway>
 		<interfacename type="InterfaceField">
 		     <Required>Y</Required>
 		     <multiple>N</multiple>

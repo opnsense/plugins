@@ -13,6 +13,12 @@
     <help>Defines the target for the static IPv6 route, in CIDR notation.</help>
   </field>
   <field>
+    <id>ip6route.gateway</id>
+    <label>Gateway (optional)</label>
+    <type>text</type>
+    <help>Optional gateway IPv6 address for this route.</help>
+  </field>
+  <field>
     <id>ip6route.interfacename</id>
     <label>Interface</label>
     <type>dropdown</type>

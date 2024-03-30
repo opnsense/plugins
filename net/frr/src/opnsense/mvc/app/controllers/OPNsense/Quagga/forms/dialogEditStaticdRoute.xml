@@ -13,6 +13,12 @@
     <help>Defines the target for the static route, in CIDR notation.</help>
   </field>
   <field>
+    <id>iproute.gateway</id>
+    <label>Gateway (optional)</label>
+    <type>text</type>
+    <help>Optional gateway IP address for this route.</help>
+  </field>
+  <field>
     <id>iproute.interfacename</id>
     <label>Interface</label>
     <type>dropdown</type>
