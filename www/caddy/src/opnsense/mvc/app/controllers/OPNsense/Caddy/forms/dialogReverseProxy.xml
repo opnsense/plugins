@@ -28,7 +28,7 @@
     </field>
     <field>
         <type>header</type>
-        <label>Trust</label>
+        <label>DNS</label>
         <collapse>true</collapse>
     </field>
     <field>
@@ -37,6 +37,11 @@
         <type>checkbox</type>
         <help><![CDATA[Enable Dynamic DNS, please configure DNS Provider and API Key in General Settings. The DNS Records of this domain wi
 ll be automatically updated with your DNS Provider.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Trust</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>

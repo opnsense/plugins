@@ -34,7 +34,7 @@
     </field>
     <field>
         <type>header</type>
-        <label>Trust</label>
+        <label>DNS</label>
         <collapse>true</collapse>
     </field>
     <field>
