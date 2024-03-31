@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // validate form data
     if (!empty($pconfig['enable']) && (empty($pconfig['enable_upnp']) && empty($pconfig['enable_natpmp']))) {
-        $input_errors[] = gettext('At least one of \'UPnP\' or \'NAT-PMP\' must be allowed');
+        $input_errors[] = gettext('At least one of \'UPnP IGD\' or \'PCP/NAT-PMP\' must be allowed');
     }
     if (!empty($pconfig['iface_array'])) {
         foreach($pconfig['iface_array'] as $iface) {
@@ -210,7 +210,7 @@ include("head.inc");
                   <thead>
                     <tr>
                       <td style="width:22%">
-                        <strong><?=gettext("UPnP and NAT-PMP Settings");?></strong>
+                        <strong><?=gettext("UPnP IGD & PCP/NAT-PMP Settings");?></strong>
                       </td>
                       <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
@@ -227,7 +227,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP Port Mapping");?></td>
+                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP IGD Port Mapping");?></td>
                       <td>
                        <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_upnp">
@@ -236,7 +236,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow NAT-PMP Port Mapping");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow PCP/NAT-PMP Port Mapping");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -291,7 +291,7 @@ include("head.inc");
 <?php endfor ?>
                         </select>
                         <div class="hidden" data-for="help_for_overridesubnet">
-                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting UPNP traffic across networks.");?>
+                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
                         </div>
                       </td>
                     </tr>
@@ -338,11 +338,11 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log NAT-PMP");?></td>
+                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log packets");?></td>
                       <td>
                        <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_logpackets">
-                         <?=gettext("Log packets handled by UPnP and NAT-PMP rules?");?>
+                         <?=gettext("Log packets handled by service rules?");?>
                        </div>
                       </td>
                     </tr>
@@ -351,7 +351,7 @@ include("head.inc");
                       <td>
                        <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_sysuptime">
-                         <?=gettext("Use system uptime instead of UPnP and NAT-PMP service uptime?");?>
+                         <?=gettext("Use system uptime instead of service uptime?");?>
                        </div>
                       </td>
                     </tr>
@@ -360,7 +360,7 @@ include("head.inc");
                       <td>
                        <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_permdefault">
-                         <?=gettext("By default deny access to UPnP and NAT-PMP?");?>
+                         <?=gettext("By default deny access to service?");?>
                        </div>
                       </td>
                     </tr>
@@ -390,7 +390,7 @@ include("head.inc");
                         <input name="<?= html_safe($permuser) ?>" type="text" value="<?= $pconfig[$permuser] ?>" />
 <?php if ($i == 1): ?>
                         <div class="hidden" data-for="help_for_permuser">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cdir] [int port or range]");?><br/>
+                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cidr] [int port or range]");?><br/>
                           <?=gettext("Example: allow 1024-65535 192.168.0.0/24 1024-65535");?>
                         </div>
 <?php endif ?>

@@ -28,8 +28,6 @@
 
 namespace OPNsense\AcmeClient\LeValidation;
 
-require_once("interfaces.inc");
-
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
@@ -53,7 +51,7 @@ class TlsalpnAcme extends Base implements LeValidationInterface
         $iplist = array();
 
         // Add IP addresses from auto-discovery feature
-        if ($this->config->tlsalpn_acme_autodiscovery == 1) {
+        if ($this->config->tlsalpn_acme_autodiscovery == '1') {
             $dnslist = explode(',', $this->cert_altnames);
             $dnslist[] = $this->cert_name;
             foreach ($dnslist as $fqdn) {
@@ -75,9 +73,10 @@ class TlsalpnAcme extends Base implements LeValidationInterface
 
         // Add IP address from chosen interface
         if (!empty((string)$this->config->tlsalpn_acme_interface)) {
-            $interface_ip = get_interface_ip((string)$this->config->tlsalpn_acme_interface);
-            if (!empty($interface_ip)) {
-                $iplist[] = $interface_ip;
+            $backend = new \OPNsense\Core\Backend();
+            $response = json_decode($backend->configdpRun('interface address', [(string)$this->config->tlsalpn_acme_interface]));
+            if (!empty($response->address)) {
+                $iplist[] = $response->address;
             }
         }
 

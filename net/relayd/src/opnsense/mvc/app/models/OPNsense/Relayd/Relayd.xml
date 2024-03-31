@@ -5,11 +5,10 @@
    <items>
       <general>
          <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
          </enabled>
          <interval type="IntegerField">
-            <default>10</default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <ValidationMessage>Check interval must be greater than 0</ValidationMessage>
@@ -22,13 +21,11 @@
             </OptionValues>
          </log>
          <prefork type="IntegerField">
-            <default>3</default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <ValidationMessage>Number of processes must be greater than 0</ValidationMessage>
          </prefork>
          <timeout type="IntegerField">
-            <default>200</default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
@@ -36,7 +33,7 @@
       </general>
       <host type="ArrayField">
         <enabled type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <name type="TextField">
@@ -85,7 +82,7 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <default>0</default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <hosts type="ModelRelationField">
@@ -97,7 +94,7 @@
                </template>
             </Model>
             <ValidationMessage>Host not found</ValidationMessage>
-            <multiple>Y</multiple>
+            <Multiple>Y</Multiple>
             <Required>Y</Required>
          </hosts>
       </table>
@@ -108,7 +105,7 @@
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
          </name>
          <type type="OptionField">
-            <default>icmp</default>
+            <Default>icmp</Default>
             <Required>Y</Required>
             <OptionValues>
                <icmp>ICMP</icmp>
@@ -158,11 +155,11 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <default>0</default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <type type="OptionField">
-            <default>relay</default>
+            <Default>relay</Default>
             <Required>Y</Required>
             <OptionValues>
                <relay>Relay</relay>
@@ -177,7 +174,7 @@
          </listen_address>
          <listen_proto type="OptionField">
              <Required>Y</Required>
-             <default>tcp</default>
+             <Default>tcp</Default>
              <OptionValues>
                  <tcp>TCP</tcp>
                  <udp>UDP</udp>
@@ -197,14 +194,13 @@
          </listen_endport>
          <listen_interface type="InterfaceField">
             <Required>N</Required>
-            <multiple>N</multiple>
             <filters>
                <enable>/^(?!0).*$/</enable>
                <ipaddr>/^((?!dhcp).)*$/</ipaddr>
             </filters>
          </listen_interface>
          <transport_type type="OptionField">
-            <default>forward</default>
+            <Default>forward</Default>
             <Required>Y</Required>
             <OptionValues>
                <forward>Forward</forward>
@@ -213,7 +209,6 @@
          </transport_type>
          <routing_interface type="InterfaceField">
             <Required>N</Required>
-            <multiple>N</multiple>
             <filters>
                <enable>/^(?!0).*$/</enable>
                <ipaddr>/^((?!dhcp).)*$/</ipaddr>
@@ -228,7 +223,6 @@
                </template>
             </Model>
             <ValidationMessage>Table not found</ValidationMessage>
-            <multiple>N</multiple>
             <Required>Y</Required>
          </transport_table>
          <transport_port type="PortField">
@@ -248,8 +242,8 @@
             <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
          </transport_timeout>
          <transport_tablemode type="OptionField">
+            <Required>Y</Required>
             <default>roundrobin</default>
-            <Required>N</Required>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -268,7 +262,6 @@
                </template>
             </Model>
             <ValidationMessage>Table check not found</ValidationMessage>
-            <multiple>N</multiple>
             <Required>Y</Required>
          </transport_tablecheck>
          <backuptransport_table type="ModelRelationField">
@@ -280,7 +273,6 @@
                </template>
             </Model>
             <ValidationMessage>Table not found</ValidationMessage>
-            <multiple>N</multiple>
             <Required>N</Required>
          </backuptransport_table>
          <backuptransport_interval type="IntegerField">
@@ -302,7 +294,6 @@
                </template>
             </Model>
             <ValidationMessage>Table check not found</ValidationMessage>
-            <multiple>N</multiple>
             <Required>N</Required>
             <Constraints>
                 <check001>
@@ -315,8 +306,8 @@
             </Constraints>
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
+            <Required>Y</Required>
             <default>roundrobin</default>
-            <Required>N</Required>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -327,16 +318,12 @@
             </OptionValues>
          </backuptransport_tablemode>
          <sessiontimeout type="IntegerField">
-            <default>600</default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>2147483647</MaximumValue>
             <ValidationMessage>The timeout must be a number between 1 and 2147483647.</ValidationMessage>
          </sessiontimeout>
-         <stickyaddress type="BooleanField">
-            <default>0</default>
-            <Required>N</Required>
-         </stickyaddress>
+         <stickyaddress type="BooleanField"/>
          <protocol type="ModelRelationField">
             <Model>
                <template>
@@ -346,9 +333,8 @@
                </template>
             </Model>
             <ValidationMessage>Protocol not found</ValidationMessage>
-            <multiple>N</multiple>
             <Required>N</Required>
-         </protocol>-->
+         </protocol>
       </virtualserver>
       <protocol type="ArrayField">
          <name type="TextField">
@@ -357,7 +343,7 @@
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
          </name>
          <type type="OptionField">
-            <default>tcp</default>
+            <Default>tcp</Default>
             <Required>Y</Required>
             <OptionValues>
                <tcp>TCP</tcp>

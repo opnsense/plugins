@@ -1,0 +1,10 @@
+Squid is a fully-featured HTTP, HTTPS, FTP, etc. proxy offering rich access
+control, authorization and logging environment to develop web proxy and
+content serving applications.
+
+Plugin Changelog
+================
+
+1.0
+
+* Initial version based on the OPNsense 23.7.12 core code

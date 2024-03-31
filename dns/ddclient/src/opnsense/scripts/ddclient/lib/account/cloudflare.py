@@ -142,7 +142,6 @@ class Cloudflare(BaseAccount):
                 return False
 
             record_id = payload['result'][0]['id']
-            proxied = payload['result'][0]['proxied']
             if self.is_verbose:
                 syslog.syslog(
                     syslog.LOG_NOTICE,
@@ -156,11 +155,10 @@ class Cloudflare(BaseAccount):
                     'type': recordType,
                     'name': self.settings.get('hostnames'),
                     'content': str(self.current_address),
-                    'proxied': proxied
                 },
                 'headers': req_opts['headers']
             }
-            response = requests.put(**req_opts)
+            response = requests.patch(**req_opts)
             try:
                 payload = response.json()
             except requests.exceptions.JSONDecodeError:

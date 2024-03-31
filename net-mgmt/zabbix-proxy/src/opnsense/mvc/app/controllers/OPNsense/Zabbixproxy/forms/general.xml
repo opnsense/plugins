@@ -154,6 +154,25 @@
         <help>IP address of host allowed to retrieve proxy statistics.</help>
     </field>
     <field>
+        <id>general.syslogEnable</id>
+        <label>Log To Syslog</label>
+        <type>checkbox</type>
+        <help>Use syslog instead of logging to a file.</help>
+    </field>
+    <field>
+        <id>general.logFileSize</id>
+        <label>Log File Size</label>
+        <type>text</type>
+        <help>Maximum size of log file (in MB).</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.debugLevel</id>
+        <label>Debug Level</label>
+        <type>dropdown</type>
+        <help>Specifies the debug level for the proxy.</help>
+    </field>
+    <field>
         <id>general.encryption</id>
         <label>PSK based encryption</label>
         <type>checkbox</type>

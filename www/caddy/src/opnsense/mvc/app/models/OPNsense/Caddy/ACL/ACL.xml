@@ -1,0 +1,18 @@
+<acl>
+    <page-caddy-general>
+        <name>Services: Caddy Web Server: General Settings</name>
+        <description>Allow access to Caddy General Settings</description>
+        <patterns>
+            <pattern>ui/caddy/general/*</pattern>
+            <pattern>api/caddy/general/*</pattern>
+        </patterns>
+    </page-caddy-general>
+    <page-caddy-reverse-proxy>
+        <name>Services: Caddy Web Server: Reverse Proxy</name>
+        <description>Allow access to Caddy Reverse Proxy</description>
+        <patterns>
+            <pattern>ui/caddy/reverse_proxy/*</pattern>
+            <pattern>api/caddy/reverse_proxy/*</pattern>
+        </patterns>
+    </page-caddy-reverse-proxy>
+</acl>

@@ -4,17 +4,17 @@
   <description>mdns-repeater settings</description>
   <items>
     <enabled type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enabled>
     <enablecarp type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enablecarp>
     <interfaces type="InterfaceField">
-      <default>lan</default>
+      <Default>lan</Default>
       <Required>Y</Required>
-      <multiple>Y</multiple>
+      <Multiple>Y</Multiple>
     </interfaces>
   </items>
 </model>

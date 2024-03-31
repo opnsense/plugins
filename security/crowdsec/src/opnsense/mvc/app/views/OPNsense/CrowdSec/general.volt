@@ -124,7 +124,7 @@
 
         <p>
             On the Settings tab, you can expose CrowdSec to the LAN for other servers by changing `LAPI listen address`.
-            Otherwise, leave the defualt value.
+            Otherwise, leave the default value.
         </p>
 
         <p>

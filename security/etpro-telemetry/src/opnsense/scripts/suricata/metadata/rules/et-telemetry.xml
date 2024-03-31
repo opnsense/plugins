@@ -8,7 +8,6 @@
     <files>
         <file url="inline::rules/telemetry_sids.txt" required="true">telemetry_sids.txt</file>
         <file url="https://opnsense.emergingthreats.net/api/v1/ruleset/version" required="true">telemetry_version.json</file>
-        <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">botcc.portgrouped.rules</file>
         <file description="botcc" url="inline::rules/botcc.rules">botcc.rules</file>
         <file description="ciarmy" url="inline::rules/ciarmy.rules">ciarmy.rules</file>
         <file description="compromised" url="inline::rules/compromised.rules">compromised.rules</file>
@@ -17,6 +16,7 @@
         <file description="emerging-activex" url="inline::rules/emerging-activex.rules">emerging-activex.rules</file>
         <file description="emerging-adware_pup" url="inline::rules/emerging-adware_pup.rules">emerging-adware_pup.rules</file>
         <file description="emerging-attack_response" url="inline::rules/emerging-attack_response.rules">emerging-attack_response.rules</file>
+        <file description="emerging-botcc_portgrouped" url="inline::rules/emerging-botcc_portgrouped.rules">emerging-botcc_portgrouped.rules</file>
         <file description="emerging-chat" url="inline::rules/emerging-chat.rules">emerging-chat.rules</file>
         <file description="emerging-coinminer" url="inline::rules/emerging-coinminer.rules">emerging-coinminer.rules</file>
         <file description="emerging-current_events" url="inline::rules/emerging-current_events.rules">emerging-current_events.rules</file>

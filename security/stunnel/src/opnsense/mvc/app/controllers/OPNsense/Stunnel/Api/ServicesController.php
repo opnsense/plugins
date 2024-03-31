@@ -35,7 +35,7 @@ class ServicesController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'stunnel';
     protected static $internalModelClass = 'OPNsense\Stunnel\Stunnel';
 
-    protected function save()
+    protected function save($validateFullModel = false, $disable_validation = false)
     {
         // hook service enable status on enabled tunnels
         $this->getModel()->general->enabled = "0";
@@ -45,7 +45,7 @@ class ServicesController extends ApiMutableModelControllerBase
                 break;
             }
         }
-        return parent::save();
+        return parent::save($validateFullModel, $disable_validation);
     }
 
     public function searchItemAction()

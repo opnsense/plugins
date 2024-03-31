@@ -6,6 +6,39 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.21
+
+* Add Netcup support (contributed by Ingo Lafrenz)
+* Use '==' instead of 'is' in Domeneshop Python support (contributed by ssmendon)
+* Update DNS record instead of overwriting in Cloudflare Python support (contributed by lin-xianming)
+* Improve service information fetch by avoiding creation of a model
+
+1.20
+
+* Add system parameter to native dyndns2 requesto (contributed by Jakub Gargul)
+* Add Digitalocean support (contributed by Mathias Schneuwly)
+* Add Mythin Beasts support (contributed by PeterF)
+
+1.19
+
+* Add Porkbun support (contributed by briandur)
+* Add native service for Domeneshop (contributed by Bernhard Frenking)
+
+1.18
+
+* Update to ddclient 3.11.2 FreeBSD ports version
+* Default to native backend for new installs
+* Fix permission of ddclient.json
+
+1.17
+
+* Update to ddclient 3.11.1 (dnsexit legacy support removed)
+
+1.16
+
+* Add custom GET/PUT protocols to native backend (contributed by DaCookie4u)
+* Consider all 2xx status codes as success in native dyndns2 implementation
+
 1.15
 
 * Add AWS Route53 and DuckDNS to native backend (contributed by Greg Glockner)

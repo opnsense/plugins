@@ -1,3 +1,3 @@
-nrpe:/etc/rc.conf.d/nrpe3
+nrpe:/etc/rc.conf.d/nrpe
 nrpe.cfg:/usr/local/etc/nrpe.cfg
 nrpe_commands.cfg:/usr/local/etc/nrpe_commands.cfg

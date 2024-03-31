@@ -39,6 +39,10 @@ class DnsGandiLivedns extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['GANDI_LIVEDNS_KEY'] = (string)$this->config->dns_gandi_livedns_key;
+        if (!empty((string)$this->config->dns_gandi_livedns_token)) {
+            $this->acme_env['GANDI_LIVEDNS_TOKEN'] = (string)$this->config->dns_gandi_livedns_token;
+        } else {
+            $this->acme_env['GANDI_LIVEDNS_KEY'] = (string)$this->config->dns_gandi_livedns_key;
+        }
     }
 }

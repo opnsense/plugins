@@ -88,7 +88,10 @@ function miniupnpd_stop()
 
 function miniupnpd_configure()
 {
-    return ['bootup' => ['miniupnpd_configure_do']];
+    return [
+        'bootup' => ['miniupnpd_configure_do'],
+        'newwanip' => ['miniupnpd_configure_do'],
+    ];
 }
 
 function miniupnpd_uuid()
@@ -146,7 +149,7 @@ function miniupnpd_configure_do($verbose = false)
             $if = get_real_interface($iface);
             /* above function returns iface if fail */
             if ($if != $iface) {
-                $addr = get_interface_ip($iface);
+                list ($addr) = interfaces_primary_address($iface);
                 if (!empty($addr)) {
                     $config_text .= "listening_ip={$if}";
                     if (!empty($upnp_config['overridesubnet'])) {
@@ -227,7 +230,7 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "deny 0-65535 0.0.0.0/0 0-65535\n";
             }
 
-            /* Allow UPnP or NAT-PMP as requested */
+            /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 

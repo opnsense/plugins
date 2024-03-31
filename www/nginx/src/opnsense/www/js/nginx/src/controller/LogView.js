@@ -1,30 +1,32 @@
-import accessLogLine from '../templates/AccessLogLine.html';
-import streamAccessLogLine from '../templates/StreamAccessLogLine.html';
-import errorLogLine from '../templates/ErrorLogLine.html';
+import LogLine from '../templates/LogLine.html';
+import LogColumn from '../templates/LogColumn.html';
 import logViewer from '../templates/logviewer.html';
 import LogLinesCollection from "../models/LogLinesCollection";
+import LogColumnModel from "../models/LogColumn";
 import noDataAvailable from '../templates/noDataAvailable.html';
-
 
 const LogViewLine = Backbone.View.extend({
     tagName: 'tr',
     initialize: function (data) {
         this.type = data.type;
+        this.log_fields_visible = data.log_fields_visible;
     },
 
     render: function () {
-        this.$el.html(this.get_template()({model: this.model}));
+        this.$el.html(LogLine({log_fields_visible: this.log_fields_visible, model: this.model}));
+    },
+});
+
+const LogViewColumns = Backbone.View.extend({
+    tagName: 'tr',
+    className: 'filter',
+    initialize: function (data) {
+        this.log_fields_visible = data.log_fields_visible;
     },
 
-    get_template: function() {
-        if (this.type === 'accesses') {
-            return accessLogLine;
-        } else if (this.type === 'stream_accesses') {
-            return streamAccessLogLine;
-        } else {
-            return errorLogLine;
-        }
-    },
+    render: function() {
+        this.log_fields_visible.forEach((field) => this.$el.append(LogColumn({field: field, model: this.model})));
+    }
 });
 
 const LogView = Backbone.View.extend({
@@ -39,6 +41,7 @@ const LogView = Backbone.View.extend({
         "click #paging_forward": "page_forward",
         "click #paging_last": "page_last",
         "change #entrycount": "change_entry_count",
+        "click .ngx-dropdown-item": "toggle_column",
     },
     page_entry_count: 100,
     filter_delay: -1,
@@ -52,10 +55,60 @@ const LogView = Backbone.View.extend({
     },
 
     render: function() {
+        // set logline fields
+        // all the fields are visible by default
+        // users choice is stored in browser localStorage
+        this.logFields = [];
+        let uid = this.collection.uuid;
+        let type = this.type;
+        switch (type) {
+            case 'accesses':
+                this.logFields.push({id: "time", header: "Time"},
+                                    {id: "remote_ip", header: "Remote IP"},
+                                    {id: "username", header: "Username"},
+                                    {id: "status", header: "Status"},
+                                    {id: "size", header: "Size"},
+                                    {id: "referer", header: "Referer"},
+                                    {id: "user_agent", header: "User Agent"},
+                                    {id: "forwarded_for", header: "Forwarded For"},
+                                    {id: "request_line", header: "Request Line"});
+                break;
+            case 'errors':
+            case 'stream_errors':
+                this.logFields.push({id: "date", header: "Date"},
+                                    {id: "time", header: "Time"},
+                                    {id: "severity", header: "Severity"},
+                                    {id: "number", header: "Number"},
+                                    {id: "message", header: "Message"});
+                break;
+            default:
+                // stream access
+                this.logFields.push({id: "time", header: "Time"},
+                                    {id: "remote_ip", header: "Remote IP"},
+                                    {id: "status", header: "Status"},
+                                    {id: "bytes_sent", header: "Bytes Sent"},
+                                    {id: "bytes_received", header: "Bytes Rcvd"},
+                                    {id: "session_time", header: "Session Time"});
+        }
+        this.logFields.forEach( (field) => {
+            field.visible = localStorage.getItem('visibleColumns[' + type + '][' + uid + '][' + field.id + ']') !== 'false';
+        });
+
+        this.logFieldsVisible = _.filter(this.logFields, ['visible', true]);
+        // fields are ready
+
+        // create/update column headers
+        let thead = this.$('thead');
+        if (thead.children().length < 1) {
+            const logColumns = new LogViewColumns({log_fields_visible: this.logFieldsVisible, model: this.collection.filter_model});
+            logColumns.render();
+            thead.html(logColumns.$el);
+        }
+
         let tbody = this.$('tbody');
         if (tbody.length < 1) {
             if (this.collection.length !== 0) {
-                this.$el.html(logViewer({log_type: this.type, model: this.collection.filter_model}));
+                this.$el.html(logViewer({log_type: this.type, log_fields: this.logFields, log_fields_visible: this.logFieldsVisible, model: this.collection.filter_model}));
                 tbody = this.$('tbody');
             } else {
                 this.$el.html(noDataAvailable);
@@ -99,7 +152,7 @@ const LogView = Backbone.View.extend({
     },
 
     render_one: function(parent_element, model) {
-        const logline = new LogViewLine({type: this.type, model: model});
+        const logline = new LogViewLine({type: this.type, log_fields_visible: this.logFieldsVisible, model: model});
         logline.render();
         parent_element.append(logline.$el);
     },
@@ -160,6 +213,20 @@ const LogView = Backbone.View.extend({
     change_entry_count: function (event) {
         this.page_entry_count = event.target.value;
         this.current_page = 0;
+        this.update();
+    },
+
+    toggle_column: function (event) {
+        event.stopPropagation();
+        let uid = this.collection.uuid;
+        let type = this.type;
+        let field = $(event.currentTarget).find('input').prop('value');
+        // toggle visibility
+        localStorage.setItem('visibleColumns[' + type + '][' + uid + '][' + field + ']', !_.find(this.logFields, { 'id': field }).visible);
+        // unset filter for this column (if any) so as not to confuse the user
+        this.collection.filter_model.unset(field, {silent: true});
+        // reset table header and update data
+        this.$('thead').html('');
         this.update();
     }
 });

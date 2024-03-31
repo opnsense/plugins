@@ -30,9 +30,13 @@
 function ddclient_services()
 {
     $services = [];
+    $cnf = \OPNsense\Core\Config::getInstance()->object();
+    $is_enabled = false;
+    if ($cnf->OPNsense && $cnf->OPNsense->DynDNS && $cnf->OPNsense->DynDNS->general) {
+        $is_enabled = $cnf->OPNsense->DynDNS->general->enabled == '1';
+    }
 
-    $mdl = new \OPNsense\DynDNS\DynDNS();
-    if ($mdl->general->enabled == '1') {
+    if ($is_enabled) {
         $service = [
             'description' => gettext('ddclient'),
             'configd' => [
@@ -42,7 +46,7 @@ function ddclient_services()
             ],
             'name' => 'ddclient',
         ];
-        $service['pidfile'] = (string)$mdl->general->backend != 'opnsense' ? '/var/run/ddclient.pid' : '/var/run/ddclient_opn.pid';
+        $service['pidfile'] = $cnf->OPNsense->DynDNS->general->backend != 'opnsense' ? '/var/run/ddclient.pid' : '/var/run/ddclient_opn.pid';
         $services[] = $service;
     }
 

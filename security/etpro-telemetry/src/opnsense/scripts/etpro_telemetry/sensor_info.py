@@ -45,7 +45,7 @@ args = parser.parse_args()
 cnf = telemetry.get_config(args.config)
 if cnf.token is not None:
     try:
-        req = requests.get(args.endpoint, headers={'Authorization': 'Bearer %s' % cnf.token})
+        req = requests.get(args.endpoint, headers={'Authorization': 'Bearer %s' % cnf.token}, verify=not args.insecure)
         if req.status_code == 200:
             response = ujson.loads(req.text)
             response['status'] = 'ok'

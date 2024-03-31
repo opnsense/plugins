@@ -30,7 +30,13 @@
 function wazuhagent_services()
 {
     $services = [];
-    if ((new \OPNsense\WazuhAgent\WazuhAgent())->general->enabled == '1') {
+    $cnf = \OPNsense\Core\Config::getInstance()->object();
+    $is_enabled = false;
+    if ($cnf->OPNsense && $cnf->OPNsense->WazuhAgent && $cnf->OPNsense->WazuhAgent->general) {
+        $is_enabled = $cnf->OPNsense->WazuhAgent->general->enabled == '1';
+    }
+
+    if ($is_enabled) {
         $service = [
             'description' => gettext('Wazuh Agent'),
             'configd' => [

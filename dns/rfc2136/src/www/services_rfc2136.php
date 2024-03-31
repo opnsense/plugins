@@ -148,7 +148,7 @@ legacy_html_escape_form_data($a_rfc2136);
                             if (isset($rfc2136['usepublicip'])) {
                                 $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 4);
                             } else {
-                                $ipaddr = get_interface_ip($rfc2136['interface']);
+                                list ($ipaddr) = interfaces_primary_address($rfc2136['interface']);
                             }
                             $cached_ip_s = explode("|", file_get_contents($filename));
                             $cached_ip = $cached_ip_s[0];
@@ -169,7 +169,7 @@ legacy_html_escape_form_data($a_rfc2136);
                             if (isset($rfc2136['usepublicip'])) {
                                 $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 6);
                             } else {
-                                $ipaddr = get_interface_ipv6($rfc2136['interface']);
+                                list ($ipaddr) = interfaces_primary_address6($rfc2136['interface']);
                             }
                             $cached_ip_s = explode("|", file_get_contents($filename6));
                             $cached_ip = $cached_ip_s[0];

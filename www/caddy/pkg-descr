@@ -1,0 +1,108 @@
+Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution.
+By default, Caddy automatically obtains and renews TLS certificates for all your sites.
+It's the most advanced HTTPS server in the world.
+
+Reverse Proxy HTTP, HTTPS, FastCGI, WebSockets, gRPC, FastCGI (usually PHP), and more!
+
+WWW: https://caddyserver.com/
+
+Main features of this plugin:
+
+* Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
+* Hard to break! Extensive validations of the configuration on each save and apply.
+* Automatic Let's Encrypt and ZeroSSL Certificates with HTTP-01 and TLS-ALPN-01 challenge
+* DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
+* Use custom certificates from OPNsense certificate store
+* Wildcard Domain and Subdomain support
+* Access Lists to restrict access based on static networks
+* Basic Auth to restrict access by username and password
+* Syslog-ng integration and HTTP Access Log
+* NTLM Transport
+
+Plugin Changelog
+================
+
+1.5.2
+
+* Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds.
+* When pressing Apply, the form is saved automatically before the reconfigure action.
+* Cleaned up Caddy.xml model to satisfy make lint.
+* When selecting an interface in Dynamic DNS, at most one IPv6 GUA and IPv4 non-RFC1918 address will be extracted. Fixes all IP addresses being read.
+
+1.5.1
+
+* More DNS Providers added: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate.
+* More input fields and better documentation added for the DNS Provider API Keys.
+* Changed rc.d script to standard freebsd poudriere one packaged with the caddy-custom binary, included setup.sh script to rc.conf.d/caddy.
+* Updated dependancy to caddy-custom instead of caddy.
+* Removed +POST_DEINSTALL.post and +POST_INSTALL.post.
+* Turned syslog-ng configuration from template to static file.
+* A few typos in the general.volt and reverse_proxy.volt corrected.
+* The RealInterfaceField custom Fieldtype was removed and replaced with an OPNsense integrated template function to read the interface name.
+* Enable $internalModelUseSafeDelete in ReverseProxyController.php - Items can only be deleted when they are not referenced by other items, making deleting in the GUI safer since there can't be any orphaned configuration left behind.
+* Migration script M1_1_3 from "Description" to "description" added. Lower case description is needed to be in line with some OPNsense integrated functions.
+
+1.5.0
+
+* Omit vultr from DNS-Providers since it can't be built without errors.
+* General view cleanup by seperating options into different tabs.
+* Added ACME-DNS Provider for custom ACME Server support.
+* When pressing save, a hint will appear that changes should be applied. Apply and Save now give feedback on success.
+* Create ACL for Caddy
+* Code consistency improved.
+
+1.4.5
+
+* New validate api action when pressing apply that validates the Caddyfile + Validation model fix.
+* Added configuration option to log HTTP access to plain JSON files. [contributed by @pmhausen]
+* Added backend path prepend feature to handler configuration. [contributed by @pmhausen]
+
+1.4.4
+
+* Route53 DNS Provider added
+* Dark Mode GUI fix
+
+1.4.2
+
+* Added Basic Auth as additional access restriction, multiple users can be set per domain and subdomain.
+* Made views cleaner: Seperated General Settings and DNS Provider Settings, joined Access List and Basic Auth in new Access Tab.
+* Fixed template generation of Caddyfile for new DNS Providers deSEC.
+* Added Porkbun DNS Provider for GUI configuration with additional DNS Secret Api Key input field.
+* Cleaned up some code and fixed some typos.
+
+1.4.0
+
+* DynDNS (Dynamic DNS) Feature added.
+* Logging refactored to syslog-ng.
+* HTTP Access Logs can be enabled.
+* More DNS Providers added: Cloudflare, Duck DNS, DigitalOcean, DNSPod, Hetzner, GoDaddy, Gandi, Vultr, IONOS, deSEC
+
+1.3.4
+
+* Added abort statement to close all connections that don't match any handle.
+* Added tls_server_name to model
+* Fixes DNS Challenge not adhering to the status of the DNS-01 Checkbox
+
+1.3.3
+
+* Swapped processing order in template from wildcard domains -> subdomains to subdomains -> wildcard domains
+
+1.3.2
+
+* Added inline loop logic to template to always print empty handles last in the Caddyfile before specific handles.
+
+1.3.1
+
+* Added AccessList functionality.
+* Small constraint to handle added. Handles have to start at least with / when they're not empty, or Caddy won't start.
+* Add reload for the ServiceControlUI after pressing Apply.
+
+1.3.0
+
+* Initial first stable release.
+* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt.
+* Control Caddy and view the Logfile in the OPNsense GUI.
+* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles.
+* Use your own certificates where needed.
+* Use TLS, NTLM and CA certificates to communicate with your Backend Servers.
+* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store.

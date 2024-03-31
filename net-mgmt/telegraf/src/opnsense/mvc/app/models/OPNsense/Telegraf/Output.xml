@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/output</mount>
     <description>Telegraf outputs configuration</description>
-    <version>1.4.2</version>
+    <version>1.4.5</version>
     <items>
         <influx_enable type="BooleanField">
             <default>0</default>
@@ -139,5 +139,90 @@
             <default></default>
             <Required>N</Required>
         </datadog_apikey>
+        <mqtt_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </mqtt_enable>
+        <mqtt_topic_prefix type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen are allowed. Do not use more than 128 characters.</ValidationMessage>
+        </mqtt_topic_prefix>
+        <mqtt_topic type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-\/{}]){1,200}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore, hyphen, slash and curly braces are allowed. Do not use more than 200 characters.</ValidationMessage>
+        </mqtt_topic>
+        <mqtt_servers type="CSVListField">
+            <Required>N</Required>
+            <AsList>Y</AsList>
+            <FieldSeparator>,</FieldSeparator>
+        </mqtt_servers>
+        <mqtt_insecure_skip_verify type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </mqtt_insecure_skip_verify>
+        <mqtt_client_id type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
+        </mqtt_client_id>
+        <mqtt_qos type="OptionField">
+            <default>2</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <qos0 value="0">(0) At most once</qos0>
+                <qos1 value="1">(1) At least once</qos1>
+                <qos2 value="2">(2) Exactly once</qos2>
+            </OptionValues>
+        </mqtt_qos>
+        <mqtt_retain type="BooleanField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_retain>
+        <mqtt_timeout type="IntegerField">
+            <default>5</default>
+            <Required>N</Required>
+        </mqtt_timeout>
+        <mqtt_username type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
+        </mqtt_username>
+        <mqtt_password type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </mqtt_password>
+        <mqtt_layout type="OptionField">
+            <default>non-batch</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <non-batch>(non-batch) send individual messages, one for each metric</non-batch>
+                <batch>(batch) send all metric as a single message per MQTT topic</batch>
+                <field >(field) send individual messages for each field</field>
+            </OptionValues>
+        </mqtt_layout>
+        <mqtt_data_format type="OptionField">
+            <default>influx</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <carbon2>Carbon2</carbon2>
+                <cloudevents>CloudEvents</cloudevents>
+                <csv>CSV</csv>
+                <graphite>Graphite</graphite>
+                <influx>Influx</influx>
+                <json>Json</json>
+                <msgpack>MsgPack</msgpack>
+                <nowmetric>NowMetric</nowmetric>
+                <prometheus>Prometheus</prometheus>
+                <prometheusremotewrite>PrometheusRemoteWrite</prometheusremotewrite>
+                <splunkmetric>SplunkMetric</splunkmetric>
+                <wavefront>Wavefront</wavefront>
+            </OptionValues>
+        </mqtt_data_format>
     </items>
 </model>

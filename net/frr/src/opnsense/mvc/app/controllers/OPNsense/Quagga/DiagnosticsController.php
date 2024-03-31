@@ -27,6 +27,25 @@ namespace OPNsense\Quagga;
 
 class DiagnosticsController extends \OPNsense\Base\IndexController
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function templateJSIncludes()
+    {
+        return array_merge(parent::templateJSIncludes(), [
+            '/ui/js/tree.jquery.min.js',
+            '/ui/js/opnsense-treeview.js'
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function templateCSSIncludes()
+    {
+        return array_merge(parent::templateCSSIncludes(), ['/css/jqtree.css']);
+    }
+
     public function bgpAction()
     {
         $this->view->tabs = [

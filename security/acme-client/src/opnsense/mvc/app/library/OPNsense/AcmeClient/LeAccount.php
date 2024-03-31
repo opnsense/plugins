@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 namespace OPNsense\AcmeClient;
 
 use OPNsense\Core\Config;
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Manage ACME CA accounts with acme.sh
@@ -104,40 +105,23 @@ class LeAccount extends LeCommon
                 return true;
             } else {
                 LeUtils::log_debug('generating a new account key for ' . (string)$this->config->name, $this->debug);
-                // Preparation to run acme client
-                $proc_env = $this->acme_env; // env variables for proc_open()
-                $proc_env['PATH'] = $this::ACME_ENV_PATH;
-                $proc_desc = array(  // descriptor array for proc_open()
-                    0 => array("pipe", "r"), // stdin
-                    1 => array("pipe", "w"), // stdout
-                    2 => array("pipe", "w")  // stderr
-                );
-                $proc_pipes = array();
 
-                // Run acme client to generate a account key
+                // Preparation to run acme client
+                $proc_env = $this->acme_env; // add env variables
+                $proc_env['PATH'] = $this::ACME_ENV_PATH;
+
+                // Prepare acme.sh command to generate a account key
                 $acmecmd = '/usr/local/sbin/acme.sh '
                   . '--createAccountKey '
                   . implode(' ', $this->acme_args) . ' '
                   . LeUtils::execSafe('--accountkeylength %s', self::ACME_ACCOUNT_KEY_LENGTH) . ' '
                   . LeUtils::execSafe('--accountconf %s', $account_conf_file);
                 LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-                $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-                // Make sure the resource could be setup properly
-                if (is_resource($proc)) {
-                    // Close all pipes
-                    fclose($proc_pipes[0]);
-                    fclose($proc_pipes[1]);
-                    fclose($proc_pipes[2]);
-                    // Get exit code
-                    $result = proc_close($proc);
-                } else {
-                    LeUtils::log_error('unable to start acme client process');
-                    $this->setStatus(500);
-                    return false;
-                }
+                // Run acme.sh command
+                $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
-                // Check exit code
+                // Check acme.sh result
                 if ($result) {
                     LeUtils::log_error('failed to create a new account key for ' . (string)$this->config->name);
                     $this->setStatus(300);
@@ -220,43 +204,28 @@ class LeAccount extends LeCommon
             }
 
             // Preparation to run acme client
-            $proc_env = $this->acme_env; // env variables for proc_open()
+            $proc_env = $this->acme_env; // add env variables
             $proc_env['PATH'] = $this::ACME_ENV_PATH;
-            $proc_desc = array(  // descriptor array for proc_open()
-                0 => array("pipe", "r"), // stdin
-                1 => array("pipe", "w"), // stdout
-                2 => array("pipe", "w")  // stderr
-            );
-            $proc_pipes = array();
 
-            // Run acme client
+            // Prepare acme.sh command to register an account
             $acmecmd = '/usr/local/sbin/acme.sh '
               . '--registeraccount '
               . implode(' ', $this->acme_args) . ' '
               . LeUtils::execSafe('--accountconf %s', $this->account_conf_file);
             LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-            $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
-            // Make sure the resource could be setup properly
-            if (is_resource($proc)) {
-                // Close all pipes
-                fclose($proc_pipes[0]);
-                fclose($proc_pipes[1]);
-                fclose($proc_pipes[2]);
-                // Get exit code
-                $result = proc_close($proc);
-            } else {
-                LeUtils::log_error('unable to start acme client process');
-                $this->setStatus(500);
-                return false;
-            }
+            // Run acme.sh command
+            $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
-            // Check validation result
+            // Check acme.sh result
             if ($result) {
                 LeUtils::log_error('account registration failed for ' . $this->config->name);
                 $this->setStatus(400);
                 return false;
             }
+
+            // Fix account config
+            $this->fixConfig();
 
             // Update account status.
             LeUtils::log_error('account registration successful for ' . $this->config->name);
@@ -266,5 +235,35 @@ class LeAccount extends LeCommon
         }
 
         return true;
+    }
+
+    /**
+     * Remove CERT_HOME property from account config,
+     * otherwise --cert-home will be ignored by acme.sh.
+     */
+    public function fixConfig()
+    {
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . (string)$this->config->id . '_' . $this->ca_compat;
+        $account_conf_file = $account_conf_dir . '/account.conf';
+
+        if (is_dir($account_conf_dir)) {
+            if (is_file($account_conf_file)) {
+                // Parse config file and remove property
+                $account_conf = parse_ini_file($account_conf_file);
+                if (isset($account_conf['CERT_HOME'])) {
+                    unset($account_conf['CERT_HOME']);
+                }
+
+                // Convert array back to ini file format
+                $new_account_conf = array();
+                foreach ($account_conf as $key => $value) {
+                    $new_account_conf[] = "${key}='${value}'";
+                }
+
+                // Write changes back to file
+                file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
+                chmod($account_conf_file, 0600);
+            }
+        }
     }
 }

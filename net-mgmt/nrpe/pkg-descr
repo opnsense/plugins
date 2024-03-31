@@ -7,3 +7,10 @@ the plugin requests to the remote host. Requires that nrpe be running on the
 remote host (either as a standalone daemon or as a service under inetd).
 
 WWW: http://www.nagios.org/
+
+Plugin Changelog:
+-----------------
+
+1.1
+
+* Make plugin compatible with NRPE version 4

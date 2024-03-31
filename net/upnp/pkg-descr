@@ -1,8 +1,8 @@
-Mini UPnPd is a lightweight implementation of a UPnP IGD daemon. This is
-supposed to be run on your gateway machine to allow client systems to redirect
-ports and punch holes in the firewall.
+MiniUPnPd is a lightweight implementation of a UPnP IGD & PCP/NAT-PMP daemon.
+This is supposed to be run on your gateway machine to allow client systems to
+map ports and punch holes in the firewall.
 
-WWW: http://miniupnp.free.fr/
+WWW: https://miniupnp.tuxfamily.org/
 
 Plugin Changelog
 ================

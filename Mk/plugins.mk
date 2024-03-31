@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -44,6 +44,7 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
 PLUGIN_WWW?=		https://opnsense.org/
+PLUGIN_LICENSE?=	BSD2CLAUSE
 PLUGIN_TIER?=		3
 PLUGIN_REVISION?=	0
 
@@ -116,7 +117,7 @@ manifest: check
 	@echo "www: \"${PLUGIN_WWW}\""
 	@echo "prefix: \"${LOCALBASE}\""
 	@echo "licenselogic: \"single\""
-	@echo "licenses: [ \"BSD2CLAUSE\" ]"
+	@echo "licenses: [ \"${PLUGIN_LICENSE}\" ]"
 .if defined(PLUGIN_NO_ABI)
 	@echo "arch: \"${OSABIPREFIX:tl}:*:*\""
 	@echo "abi: \"${OSABIPREFIX}:*:*\""
@@ -132,8 +133,8 @@ manifest: check
 	done
 	@echo "}"
 .endif
-	@if [ -f ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME} ]; then \
-	    echo "annotations $$(cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME})"; \
+	@if [ -f ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME} ]; then \
+	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
 
 scripts: check scripts-pre scripts-auto scripts-manual scripts-post
@@ -186,6 +187,12 @@ scripts-auto:
 			    ${DESTDIR}/+POST_INSTALL; \
 		done; \
 	fi
+	@if [ -d ${.CURDIR}/src/opnsense/scripts/firmware/repos ]; then \
+		for FILE in $$(cd ${.CURDIR}/src && find -s \
+		    opnsense/scripts/firmware/repos -type f); do \
+			echo "${LOCALBASE}/$${FILE#.}" >> ${DESTDIR}/+POST_INSTALL; \
+		done \
+	fi
 
 scripts-manual:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
@@ -203,21 +210,32 @@ scripts-post:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
 			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" "${DESTDIR}${LOCALBASE}/$${FILE%%.in}"; \
+			FILE="$${FILE%%.in}"; \
+		fi; \
+		if [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
+			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
+			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
-		FILE="$${FILE%%.in}"; \
-		echo ${LOCALBASE}/$${FILE}; \
+		FILE="$${FILE%%.in}"; PREFIX=""; \
+		if [ "$${FILE%%.sample}" != "$${FILE}" ]; then \
+			PREFIX="@sample "; \
+		elif [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
+			FILE="$${FILE%%.shadow}.sample"; \
+			PREFIX="@shadow "; \
+		fi; \
+		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
 	done
 	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
@@ -234,16 +252,16 @@ metadata: check
 	@${MAKE} DESTDIR=${DESTDIR} plist > ${DESTDIR}/plist
 
 collect: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
 		    tar -C ${.CURDIR}/src -xpf -; \
 	done
 
 remove: check
-	@(cd ${.CURDIR}/src; find * -type f) | while read FILE; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
 	done
-	@(cd ${.CURDIR}/src; find * -type d -depth) | while read DIR; do \
+	@(cd ${.CURDIR}/src 2> /dev/null && find * -type d -depth) | while read DIR; do \
 		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
 			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
 		fi; \
@@ -263,12 +281,12 @@ package: check
 	@${MAKE} DESTDIR=${WRKSRC} install
 	@echo " done"
 	@echo ">>> Generated version info for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
-	@cat ${WRKSRC}/usr/local/opnsense/version/${PLUGIN_NAME}
+	@cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}
 	@echo -n ">>> Generating metadata for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}..."
 	@${MAKE} DESTDIR=${WRKSRC} metadata
 	@echo " done"
 	@echo ">>> Packaging files for ${PLUGIN_PKGNAME}-${PLUGIN_PKGVERSION}:"
-	@${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
+	@PORTSDIR=${PLUGINSDIR} ${PKG} create -v -m ${WRKSRC} -r ${WRKSRC} \
 	    -p ${WRKSRC}/plist -o ${PKGDIR}
 
 upgrade-check: check
@@ -303,7 +321,7 @@ lint-desc: check
 
 lint-shell:
 	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
-	    if [ "$$(head $${FILE} | grep -cx '#!\/bin\/sh')" == "0" ]; then \
+	    if [ "$$(head $${FILE} | grep -c '^#!\/')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
 	    sh -n $${FILE} || exit 1; \
@@ -312,6 +330,32 @@ lint-shell:
 lint-xml:
 	@find ${.CURDIR}/src \
 	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
+
+lint-model:
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
+	    -name "*.xml"); do \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and (not(Required) or Required="N") and Default]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} has a spurious default value set"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Default=""]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} has an empty default value set"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc="None"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description is the default"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Required="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description not applicable on required field"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Multiple="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} blank description not applicable on multiple field"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Multiple="N"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} Multiple=N is the default"; \
+		done; \
+		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and OptionValues[default[not(@value)] or multiple[not(@value)] or required[not(@value)]]]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} option element default/multiple/required without value attribute"; \
+		done; \
+	done; fi
 
 lint-exec: check
 .for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
@@ -337,7 +381,9 @@ lint-php: check
 	    -type f -print0 | xargs -0 -n1 php -l
 .endif
 
-lint: lint-desc lint-shell lint-xml lint-exec lint-php
+lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
+
+plist-fix:
 
 sweep: check
 	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
@@ -386,11 +432,19 @@ style-python: check
 		pycodestyle --ignore=E501 ${.CURDIR}/src || true; \
 	fi
 
+style-model:
+	@for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
+	    -name "*.xml"); do \
+		perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
+		perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
+		perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
+	done
+
 test: check
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
-		cd /usr/local/opnsense/mvc/tests && \
+		cd ${LOCALBASE}/opnsense/mvc/tests && \
 		    phpunit --configuration PHPunit.xml \
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
 
-.PHONY:	check
+.PHONY:	check plist-fix

@@ -13,7 +13,8 @@ Plugin Changelog
 
 1.5
 
-* Add support for agentx.
+* Add support for agentx
+* Fixed directory mismatch in setup.sh (contributed by doktornotor)
 
 1.4
 
