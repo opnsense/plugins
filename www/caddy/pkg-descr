@@ -26,12 +26,13 @@ Plugin Changelog
 
 1.5.3
 
-* Change from Phalcon Messages to OPNsense Messages in Caddy.php.
+* Change from "Phalcon Messages" to "OPNsense Messages" in Caddy.php.
 * Change default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/.
-* Add tls_insecure_skip_verify to handlers.
 * Change description from "TextField" to "DescriptionField" in Caddy.xml model.
+* Add tls_insecure_skip_verify to handlers.
+* Add possibility to restart Caddy with the ACME Client by using "Automations - Run Command - System or Plugin Command". 
 * Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.
-* Implemented headers to forms to group options better, removed excessive use of advanced mode.
+* Cleanup dialogs and UI to present all options better.
 
 1.5.2
 
