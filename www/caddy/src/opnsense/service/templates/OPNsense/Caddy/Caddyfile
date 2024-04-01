@@ -219,6 +219,21 @@
 }
 
 # Reverse Proxy Configuration
+
+{% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
+    {% if reverse.enabled|default("0") == "1" and reverse.AcmePassthrough %}
+        # HTTP-01 challenge redirection for domain: "{{ reverse['@uuid'] }}"
+        http://{{ reverse.FromDomain|default("") }} {
+            handle /.well-known/acme-challenge/* {
+                reverse_proxy {{ reverse.AcmePassthrough }}
+            }
+            handle {
+                redir https://{host}{uri} 308
+            }
+        }
+    {% endif %}
+{% endfor %}
+
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
     {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" %}
         {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}

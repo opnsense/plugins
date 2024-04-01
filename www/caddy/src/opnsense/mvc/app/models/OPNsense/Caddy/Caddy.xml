@@ -144,6 +144,10 @@
                 <CustomCertificate type="CertificateField"/>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
+                <AcmePassthrough type="HostnameField">
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                </AcmePassthrough>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">

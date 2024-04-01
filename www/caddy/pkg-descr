@@ -30,7 +30,8 @@ Plugin Changelog
 * Change default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/.
 * Change description from "TextField" to "DescriptionField" in Caddy.xml model.
 * Add tls_insecure_skip_verify to handlers.
-* Add possibility to restart Caddy with the ACME Client by using "Automations - Run Command - System or Plugin Command". 
+* Add possibility to restart Caddy with the ACME Client by using "Automations - Run Command - System or Plugin Command".
+* Add option to redirect the ACME HTTP-01 challenge to an upstream destination as advanced option in domains.
 * Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.
 * Cleanup dialogs and UI to present all options better.
 
