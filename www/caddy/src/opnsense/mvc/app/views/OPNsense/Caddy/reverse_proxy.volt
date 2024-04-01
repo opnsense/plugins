@@ -166,7 +166,7 @@
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
-                            <th data-column-id="AcmeRedirection" data-type="string" data-visible="false">HTTP-01 redirection</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">HTTP-01 redirection</th>
                             <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
