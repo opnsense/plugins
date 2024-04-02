@@ -29,6 +29,8 @@
  */
 
 require_once("config.inc");
+require_once("certs.inc");
+require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
 
@@ -66,9 +68,7 @@ function extract_and_save_certificates($configObj, $temp_dir)
 
         // Save the certificate chain and private key
         file_put_contents($temp_dir . $cert_refid . '.pem', $cert_chain);
-        chmod($temp_dir . $cert_refid . '.pem', 0600);
         file_put_contents($temp_dir . $cert_refid . '.key', $key_content);
-        chmod($temp_dir . $cert_refid . '.key', 0600);
     }
 
     // Traverse through CA certificates and save them
@@ -78,7 +78,6 @@ function extract_and_save_certificates($configObj, $temp_dir)
 
         // Save the CA certificate
         file_put_contents($temp_dir . $ca_refid . '.pem', $ca_content);
-        chmod($temp_dir . $ca_refid . '.pem', 0600);
     }
 }
 

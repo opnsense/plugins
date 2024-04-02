@@ -9,7 +9,7 @@ CADDY_CONF_DIR="${CADDY_DIR}/caddy.d"
 # Create custom directories with appropriate permissions
 mkdir -p "${CADDY_CERTS_DIR}"
 chown -R root:wheel "${CADDY_CERTS_DIR}"
-chmod -R 750 "${CADDY_CERTS_DIR}"
+chmod -R 600 "${CADDY_CERTS_DIR}"
 
 mkdir -p "${CADDY_LOG_DIR}"
 chown -R root:wheel "${CADDY_LOG_DIR}"
