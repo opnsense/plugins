@@ -29,8 +29,6 @@
  */
 
 require_once("config.inc");
-require_once("certs.inc");
-require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
 
