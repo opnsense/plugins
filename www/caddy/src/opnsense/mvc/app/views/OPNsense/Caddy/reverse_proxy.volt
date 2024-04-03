@@ -166,6 +166,7 @@
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">HTTP-01 redirection</th>
                             <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
@@ -232,14 +233,15 @@
                             <th data-column-id="reverse" data-type="string">Domain</th>
                             <th data-column-id="subdomain" data-type="string">Subdomain</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
-                            <th data-column-id="HandlePath" data-type="string">Handle Path</th>
-                            <th data-column-id="ToDomain" data-type="string">Backend Domain</th>
-                            <th data-column-id="ToPort" data-type="string">Backend Port</th>
-                            <th data-column-id="ToPath" data-type="string" data-visible="false">Backend Path</th>
+                            <th data-column-id="HandlePath" data-type="string" data-visible="false">Handle Path</th>
+                            <th data-column-id="ToDomain" data-type="string">Upstream Domain</th>
+                            <th data-column-id="ToPort" data-type="string">Upstream Port</th>
+                            <th data-column-id="ToPath" data-type="string" data-visible="false">Upstream Path</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">TLS</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">NTLM</th>
+                            <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">TLS Insecure Skip Verify</th>
                             <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
