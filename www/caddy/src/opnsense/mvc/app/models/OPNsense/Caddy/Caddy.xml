@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -59,7 +59,8 @@
                     <reverseproxy>
                         <source>OPNsense.Caddy.Caddy</source>
                         <items>reverseproxy.accesslist</items>
-                        <display>accesslistName</display>
+                        <display>accesslistName,description</display>
+                        <display_format>%s - %s</display_format> 
                     </reverseproxy>
                 </Model>
             </accesslist>
@@ -123,7 +124,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
-                            <display>accesslistName</display>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format> 
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -132,7 +134,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
-                            <display>basicauthuser</display>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -160,7 +163,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -179,7 +183,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
-                            <display>accesslistName</display>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -188,7 +193,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
-                            <display>basicauthuser</display>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -209,7 +215,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -218,7 +225,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </subdomain>
@@ -261,7 +269,9 @@
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
-                <description type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="TextField">
@@ -278,7 +288,9 @@
                     <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
-                <description type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </accesslist>
             <basicauth type="ArrayField">
                 <basicauthuser type="TextField">
@@ -289,7 +301,9 @@
                 <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
-                <description type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </basicauth>
         </reverseproxy>
     </items>
