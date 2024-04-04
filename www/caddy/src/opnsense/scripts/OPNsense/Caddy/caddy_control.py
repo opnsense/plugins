@@ -64,9 +64,9 @@ def run_service_command(action, action_message):
 
 # Updated actions dictionary
 actions = {
-    "start": "onestart",
-    "stop": "onestop",
-    "restart": "onerestart",
+    "start": "start",
+    "stop": "stop",
+    "restart": "restart",
     "validate": "validate"  # Validate action
 }
 
