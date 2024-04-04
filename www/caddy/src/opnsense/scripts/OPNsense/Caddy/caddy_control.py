@@ -67,6 +67,7 @@ actions = {
     "start": "start",
     "stop": "stop",
     "restart": "restart",
+    "reload": "reload",
     "validate": "validate"  # Validate action
 }
 
