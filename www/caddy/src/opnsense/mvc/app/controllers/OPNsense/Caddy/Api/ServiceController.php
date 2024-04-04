@@ -41,6 +41,12 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'caddy';
 
+    protected function reconfigureForceRestart()
+    {
+        // Caddy can use a reload action instead
+        return 0;
+    }
+    
     public function validateAction()
     {
         $backend = new Backend();
