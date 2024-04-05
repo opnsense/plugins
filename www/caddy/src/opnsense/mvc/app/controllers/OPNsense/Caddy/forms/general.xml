@@ -30,4 +30,20 @@
         <type>checkbox</type>
         <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
     </field>
+    <field>
+        <id>caddy.general.HttpResponseCode</id>
+        <label>HTTP Response Code</label>
+        <type>text</type>
+        <hint>403</hint>
+        <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list doesn't match. Setting this will replace "Abort Connections", all clients will stay connected but will receive the response code.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.HttpResponseMessage</id>
+        <label>HTTP Response Message</label>
+        <type>text</type>
+        <hint>Forbidden</hint>
+        <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code.]]></help>
+        <advanced>true</advanced>
+    </field>
 </form>

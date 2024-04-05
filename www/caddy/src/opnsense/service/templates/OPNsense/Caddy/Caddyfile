@@ -491,7 +491,10 @@
         {% endif %}
         {% endfor %}
         {% endif %}
-        {% if Pischem.caddy.general.abort|default("0") == "1" %}
+        {% set general = Pischem.caddy.general %}
+        {% if general.HttpResponseCode or general.HttpResponseMessage %}
+        respond {{ '"' + general.HttpResponseMessage|default('') + '"' if general.HttpResponseMessage else '' }} {{ general.HttpResponseCode|default(403) }}
+        {% elif general.abort|default("0") == "1" %}
         abort
         {% endif %}
     }
@@ -531,7 +534,10 @@
     {% endif %}
     {% endfor %}
     {% endif %}
-    {% if Pischem.caddy.general.abort|default("0") == "1" %}
+    {% set general = Pischem.caddy.general %}
+    {% if general.HttpResponseCode or general.HttpResponseMessage %}
+    respond {{ '"' + general.HttpResponseMessage|default('') + '"' if general.HttpResponseMessage else '' }} {{ general.HttpResponseCode|default(403) }}
+    {% elif general.abort|default("0") == "1" %}
     abort
     {% endif %}
 }
