@@ -24,6 +24,14 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.5.4
+
+* Fix: When pressing Apply, the Caddy service will be reloaded instead of restarted. This fixes long restart times and service interruptions.
+* Change: All Description Fields are now required to be populated.
+* Change: Model Relation Fields now display two values instead of one to make most options appear unique.
+* Add: HTTP response code and HTTP response message can be set globally in general options.
+* Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability.
+
 1.5.3
 
 * Change from "Phalcon Messages" to "OPNsense Messages" in Caddy.php.
