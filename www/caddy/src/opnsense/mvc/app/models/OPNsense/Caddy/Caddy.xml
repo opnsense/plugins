@@ -248,6 +248,7 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid 'Backend Path' that starts with '/'.</ValidationMessage>
                 </ToPath>
+                <ChangeHostHeader type="BooleanField"/>
                 <HttpTls type="BooleanField"/>
                 <HttpNtlm type="BooleanField"/>
                 <HttpTlsInsecureSkipVerify type="BooleanField"/>

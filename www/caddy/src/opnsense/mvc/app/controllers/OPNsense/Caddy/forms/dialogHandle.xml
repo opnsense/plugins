@@ -62,6 +62,12 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.ChangeHostHeader</id>
+        <label>Change Host Header</label>
+        <type>checkbox</type>
+        <help><![CDATA[Override the Host header with the configured upstream address. Useful if you proxy to virtual hosts or HTTPS.]]></help>
+    </field>
+    <field>
         <type>header</type>
         <label>Trust</label>
         <collapse>true</collapse>

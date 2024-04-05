@@ -366,6 +366,9 @@
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+            {% if handle.ChangeHostHeader|default("0") == "1" %}
+            header_up Host {upstream_hostport}
+            {% endif %}
             {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
