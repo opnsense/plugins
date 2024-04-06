@@ -212,4 +212,32 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->delBase("reverseproxy.basicauth", $uuid);
     }
+
+
+    /* Header Section */
+
+    public function searchHeaderAction($add_empty='0')
+    {
+        return $this->searchBase("reverseproxy.header", null, 'description');
+    }
+
+    public function setHeaderAction($uuid)
+    {
+        return $this->setBase("header", "reverseproxy.header", $uuid);
+    }
+
+    public function addHeaderAction()
+    {
+        return $this->addBase("header", "reverseproxy.header");
+    }
+
+    public function getHeaderAction($uuid = null)
+    {
+        return $this->getBase("header", "reverseproxy.header", $uuid);
+    }
+
+    public function delHeaderAction($uuid)
+    {
+        return $this->delBase("reverseproxy.header", $uuid);
+    }
 }

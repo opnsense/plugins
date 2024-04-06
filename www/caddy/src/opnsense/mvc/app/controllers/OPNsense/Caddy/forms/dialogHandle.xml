@@ -38,6 +38,19 @@
     </field>
     <field>
         <type>header</type>
+        <label>Header</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>handle.header</id>
+        <label>Header Manipulation</label>
+        <type>dropdown</type>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Select one or multiple header manipulations. These will be set to this handler. Generally this is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
+    </field>
+    <field>
+        <type>header</type>
         <label>Upstream</label>
     </field>
     <field>

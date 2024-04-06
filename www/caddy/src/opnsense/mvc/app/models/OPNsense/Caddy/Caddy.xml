@@ -65,6 +65,12 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <HttpResponseCode type="IntegerField">
+                <MinimumValue>100</MinimumValue>
+                <MaximumValue>599</MaximumValue>
+                <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
+            </HttpResponseCode>
+            <HttpResponseMessage type="DescriptionField"/>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
@@ -90,6 +96,7 @@
                     <ipv4>IPv4 only</ipv4>
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
+                <BlankDesc>IPv4+IPv6</BlankDesc>
                 <Required>Y</Required>
             </DynDnsIpVersions>
             <DynDnsTTL type="IntegerField">
@@ -242,6 +249,17 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
                 </HandlePath>
+                <header type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.header</items>
+                            <display>HeaderUpDown,HeaderType,HeaderValue,description</display>
+                            <display_format>%s %s %s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </header>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
@@ -311,6 +329,24 @@
                     <Required>Y</Required>
                 </description>
             </basicauth>
+            <header type="ArrayField">
+                <HeaderUpDown type="OptionField">
+                    <Default>header_up</Default>
+                    <OptionValues>
+                        <header_up>header_up</header_up>
+                        <header_down>header_down</header_down>
+                    </OptionValues>
+                    <Required>Y</Required>
+                </HeaderUpDown>
+                <HeaderType type="TextField">
+                    <Required>Y</Required>
+                </HeaderType>
+                <HeaderValue type="TextField"/>
+                <HeaderReplace type="TextField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </header>
         </reverseproxy>
     </items>
 </model>

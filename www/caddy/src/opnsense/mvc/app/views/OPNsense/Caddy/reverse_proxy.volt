@@ -69,6 +69,14 @@
             del:'/api/caddy/ReverseProxy/delBasicAuth/',
         });
 
+        $("#reverseHeaderGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchHeader/',
+            get:'/api/caddy/ReverseProxy/getHeader/',
+            set:'/api/caddy/ReverseProxy/setHeader/',
+            add:'/api/caddy/ReverseProxy/addHeader/',
+            del:'/api/caddy/ReverseProxy/delHeader/',
+        });
+
         // Function to show alerts in the HTML message area
         function showAlert(message, type = "error") {
             var alertClass = type === "error" ? "alert-danger" : "alert-success";
@@ -143,6 +151,7 @@
     <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
     <li><a data-toggle="tab" href="#handlesTab">Handlers</a></li>
     <li><a data-toggle="tab" href="#accessTab">Access</a></li>
+    <li><a data-toggle="tab" href="#headerTab">Headers</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -322,6 +331,39 @@
             </div>
         </div>
     </div>
+
+    <!-- Header Tab -->
+    <div id="headerTab" class="tab-pane fade">
+        <div style="padding-left: 16px;">
+            <h1>Headers</h1>
+            <div style="display: block;"> <!-- Common container -->
+                <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
+                            <th data-column-id="HeaderUpDown" data-type="string">Header</th>
+                            <th data-column-id="HeaderType" data-type="string">Header Type</th>
+                            <th data-column-id="HeaderValue" data-type="string" data-visible="false">Header Value</th>
+                            <th data-column-id="HeaderReplace" data-type="string" data-visible="false">Header Replace</th>
+                            <th data-column-id="description" data-type="string">Description</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addReverseHeaderBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Reconfigure Button -->
@@ -351,3 +393,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handler')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':'DialogHeader','label':lang._('Edit Header')])}}
