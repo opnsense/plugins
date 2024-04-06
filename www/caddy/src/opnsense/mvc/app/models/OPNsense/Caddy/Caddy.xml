@@ -65,12 +65,6 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
-            <HttpResponseCode type="IntegerField">
-                <MinimumValue>100</MinimumValue>
-                <MaximumValue>599</MaximumValue>
-                <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
-            </HttpResponseCode>
-            <HttpResponseMessage type="DescriptionField"/>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
@@ -294,6 +288,12 @@
                     <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
+                <HttpResponseCode type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>599</MaximumValue>
+                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
+                </HttpResponseCode>
+                <HttpResponseMessage type="DescriptionField"/>
                 <description type="DescriptionField">
                     <Required>Y</Required>
                 </description>
