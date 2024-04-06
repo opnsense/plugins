@@ -90,7 +90,6 @@
                     <ipv4>IPv4 only</ipv4>
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
-                <BlankDesc>IPv4+IPv6</BlankDesc>
                 <Required>Y</Required>
             </DynDnsIpVersions>
             <DynDnsTTL type="IntegerField">
