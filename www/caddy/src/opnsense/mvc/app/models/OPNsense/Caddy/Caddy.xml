@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,8 +26,6 @@
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
                     <digitalocean>DigitalOcean</digitalocean>
-                    <dnspod>DNSPod</dnspod>
-                    <hetzner>Hetzner</hetzner>
                     <godaddy>GoDaddy</godaddy>
                     <gandi>Gandi</gandi>
                     <ionos>IONOS</ionos>
@@ -35,19 +33,14 @@
                     <porkbun>Porkbun</porkbun>
                     <route53>Route53</route53>
                     <acmedns>ACME-DNS</acmedns>
-                    <alidns>Alidns</alidns>
                     <googleclouddns>Google Cloud DNS</googleclouddns>
                     <azure>Azure</azure>
-                    <openstack-designate>OpenStack Designate</openstack-designate>
                     <ovh>OVH</ovh>
                     <namecheap>Namecheap</namecheap>
                     <netlify>Netlify</netlify>
-                    <namesilo>Namesilo</namesilo>
                     <powerdns>PowerDNS</powerdns>
-                    <vercel>Vercel</vercel>
                     <ddnss>DDNSS</ddnss>
                     <njalla>Njalla</njalla>
-                    <metaname>Metaname</metaname>
                     <linode>Linode</linode>
                     <tencentcloud>Tencent Cloud</tencentcloud>
                     <dinahosting>Dinahosting</dinahosting>
@@ -61,8 +54,6 @@
             <TlsDnsOptionalField2 type="TextField"/>
             <TlsDnsOptionalField3 type="TextField"/>
             <TlsDnsOptionalField4 type="TextField"/>
-            <TlsDnsOptionalField5 type="TextField"/>
-            <TlsDnsOptionalField6 type="TextField"/>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
@@ -146,15 +137,17 @@
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <description type="TextField">
+                <description type="DescriptionField">
                     <Required>Y</Required>
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </description>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField"/>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
+                <AcmePassthrough type="HostnameField">
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                </AcmePassthrough>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -200,10 +193,8 @@
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <description type="TextField">
+                <description type="DescriptionField">
                     <Required>Y</Required>
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
                 </description>
                 <DynDns type="BooleanField"/>
             </subdomain>
@@ -259,6 +250,7 @@
                 </ToPath>
                 <HttpTls type="BooleanField"/>
                 <HttpNtlm type="BooleanField"/>
+                <HttpTlsInsecureSkipVerify type="BooleanField"/>
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
@@ -269,10 +261,7 @@
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
-                <description type="TextField">
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </description>
+                <description type="DescriptionField"/>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="TextField">
@@ -289,10 +278,7 @@
                     <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
-                <description type="TextField">
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </description>
+                <description type="DescriptionField"/>
             </accesslist>
             <basicauth type="ArrayField">
                 <basicauthuser type="TextField">
@@ -303,10 +289,7 @@
                 <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
-                <description type="TextField">
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                    <ValidationMessage>Please provide a valid description.</ValidationMessage>
-                </description>
+                <description type="DescriptionField"/>
             </basicauth>
         </reverseproxy>
     </items>

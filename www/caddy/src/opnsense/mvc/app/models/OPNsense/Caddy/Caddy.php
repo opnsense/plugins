@@ -31,7 +31,7 @@
 namespace OPNsense\Caddy;
 
 use OPNsense\Base\BaseModel;
-use Phalcon\Messages\Message;
+use OPNsense\Base\Messages\Message;
 
 class Caddy extends BaseModel
 {
