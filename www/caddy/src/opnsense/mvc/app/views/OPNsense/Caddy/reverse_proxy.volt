@@ -243,6 +243,7 @@
                             <th data-column-id="subdomain" data-type="string">Subdomain</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
                             <th data-column-id="HandlePath" data-type="string" data-visible="false">Handle Path</th>
+                            <th data-column-id="header" data-type="string" data-visible="false">Header</th>
                             <th data-column-id="ToDomain" data-type="string">Upstream Domain</th>
                             <th data-column-id="ToPort" data-type="string">Upstream Port</th>
                             <th data-column-id="ToPath" data-type="string" data-visible="false">Upstream Path</th>
@@ -284,6 +285,8 @@
                             <th data-column-id="accesslistName" data-type="string">Name</th>
                             <th data-column-id="clientIps" data-type="string">Client IPs</th>
                             <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
+                            <th data-column-id="HttpResponseCode" data-type="string" data-visible="false">HTTP Code</th>
+                            <th data-column-id="HttpResponseMessage" data-type="string" data-visible="false">HTTP Message</th>
                             <th data-column-id="description" data-type="string">Description</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
                         </tr>
