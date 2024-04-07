@@ -360,12 +360,43 @@
     {% endif %}
 {% endmacro %}
 
+{% macro header_manipulation(handle) %}
+    {% if handle.header %}
+        {% for header_uuid in handle.header.split(',') %}
+            {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+            {# Generate directive only if HeaderUpDown and HeaderType are present #}
+            {% if header.HeaderUpDown and header.HeaderType %}
+                {# Prepare variables, making HeaderValue and HeaderReplace optional #}
+                {% set header_value = header.HeaderValue | default('') %}
+                {% set header_replace = header.HeaderReplace | default('') %}
+                {# Adjust output formatting based on the presence and style of HeaderValue #}
+                {% if header.HeaderReplace and header.HeaderValue %}
+                    {% if header_value.startswith('{') %}
+                        {{ header.HeaderUpDown }} {{ header.HeaderType }} {{ header_value }} "{{ header_replace }}"
+                    {% else %}
+                        {{ header.HeaderUpDown }} {{ header.HeaderType }} "{{ header_value }}" "{{ header_replace }}"
+                    {% endif %}
+                {% elif header.HeaderValue %}
+                    {% if header_value.startswith('{') %}
+                        {{ header.HeaderUpDown }} {{ header.HeaderType }} {{ header_value }}
+                    {% else %}
+                        {{ header.HeaderUpDown }} {{ header.HeaderType }} "{{ header_value }}"
+                    {% endif %}
+                {% else %}
+                    {{ header.HeaderUpDown }} {{ header.HeaderType }}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {% if handle.ToPath|default("") != "" %}
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
         reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+            {{ header_manipulation(handle) }}
             {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {

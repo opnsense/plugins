@@ -333,9 +333,17 @@
                 </HeaderUpDown>
                 <HeaderType type="TextField">
                     <Required>Y</Required>
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header type must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
                 </HeaderType>
-                <HeaderValue type="TextField"/>
-                <HeaderReplace type="TextField"/>
+                <HeaderValue type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header value must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderValue>
+                <HeaderReplace type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header replacement must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderReplace>
                 <description type="DescriptionField">
                     <Required>Y</Required>
                 </description>
