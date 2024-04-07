@@ -18,6 +18,7 @@ Main features of this plugin:
 * Basic Auth to restrict access by username and password
 * Syslog-ng integration and HTTP Access Log
 * NTLM Transport
+* Header manipulation with header_up and header_down
 
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
@@ -29,7 +30,8 @@ Plugin Changelog
 * Fix: When pressing Apply, the Caddy service will be reloaded instead of restarted. This fixes long restart times and service interruptions.
 * Change: All Description Fields are now required to be populated.
 * Change: Model Relation Fields now display two values instead of one to make most options appear unique.
-* Add: HTTP response code and HTTP response message can be set globally in general options.
+* Add: HTTP response code and HTTP response message can be set per access list in advanced mode.
+* Add: Header functionality added. Multiple header manipulations can be set per handler.
 * Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability.
 
 1.5.3
