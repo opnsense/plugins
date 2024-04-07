@@ -178,7 +178,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             if (isset($dnsupdate['usepublicip'])) {
                 $wanipv6 = get_rfc2136_ip_address($dnsupdate['interface'], 6);
             } else {
-                list ($wanipv6) = interfaces_primary_address6($dnsupdate['interface']);
+                list ($wanipv6) = interfaces_routed_address6($dnsupdate['interface']);
             }
             if (is_ipaddrv6($wanipv6)) {
                 if (($wanipv6 != $cachedipv6) || (($currentTime - $cacheTimev6) > $maxCacheAgeSecs) || $forced) {
@@ -216,7 +216,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
 
 function get_rfc2136_ip_address($int, $ipver = 4)
 {
-    list ($ip_address) = $ipver == 6 ? interfaces_primary_address6($int) : interfaces_primary_address($int);
+    list ($ip_address) = $ipver == 6 ? interfaces_routed_address6($int) : interfaces_primary_address($int);
     if (empty($ip_address)) {
         log_error("Aborted IPv{$ipver} detection: no address for {$int}");
         return 'down';
