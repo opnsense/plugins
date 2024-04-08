@@ -54,7 +54,7 @@ class M4_0_0 extends BaseModelMigration
                     // Convert array back to ini file format
                     $new_account_conf = array();
                     foreach ($account_conf as $key => $value) {
-                        $new_account_conf[] = "${key}='${value}'";
+                        $new_account_conf[] = "{$key}='{$value}'";
                     }
 
                     // Write changes back to file
