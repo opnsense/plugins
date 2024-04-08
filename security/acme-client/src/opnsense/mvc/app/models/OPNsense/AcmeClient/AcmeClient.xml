@@ -635,8 +635,10 @@
                 </dns_dnsexit_api>
                 <dns_dnshome_password type="TextField">
                     <Required>N</Required>
+                </dns_dnshome_password>
                 <dns_dnshome_subdomain type="TextField">
                     <Required>N</Required>
+                </dns_dnshome_subdomain>
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
