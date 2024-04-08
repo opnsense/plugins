@@ -444,7 +444,7 @@
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
                         <dns_dnsexit>DNSExit</dns_dnsexit>
-                        <dns_dnshome>DNSHome</dns_dnshome>
+                        <dns_dnshome>dnsHome</dns_dnshome>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
