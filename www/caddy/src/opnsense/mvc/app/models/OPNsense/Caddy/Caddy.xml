@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -12,8 +12,8 @@
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>
             <TlsAutoHttps type="OptionField">
+                <BlankDesc>On (default)</BlankDesc>
                 <OptionValues>
-                    <on>On (default)</on>
                     <off>Off</off>
                     <disable_redirects>Disable Redirects</disable_redirects>
                     <disable_certs>Disable Certs</disable_certs>
@@ -21,8 +21,8 @@
                 </OptionValues>
             </TlsAutoHttps>
             <TlsDnsProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
-                    <none>None (default)</none>
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
                     <digitalocean>DigitalOcean</digitalocean>
@@ -85,12 +85,11 @@
                 <Required>Y</Required>
             </DynDnsCheckInterval>
             <DynDnsIpVersions type="OptionField">
-                <Default>ipv4</Default>
+                <BlankDesc>IPv4+IPv6</BlankDesc>
                 <OptionValues>
                     <ipv4>IPv4 only</ipv4>
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
-                <Required>Y</Required>
             </DynDnsIpVersions>
             <DynDnsTTL type="IntegerField">
                 <Default>1</Default>

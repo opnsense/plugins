@@ -78,7 +78,7 @@
         {% endfor %}
     {% endfor %}
 
-    {% if dnsProvider and dnsProvider != "none" and dnsProvider != "acmedns" and dynDnsDomains|length > 0 %}
+    {% if dnsProvider and dnsProvider != "acmedns" and dynDnsDomains|length > 0 %}
         dynamic_dns {
             {% if dnsProvider in ['porkbun', 'desec', 'route53', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
                 provider {{ dnsProvider }} {
@@ -212,7 +212,7 @@
     email {{ emailValue }}
     {% endif %}
     {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
-    {% if autoHttpsValue != "on" %}
+    {% if autoHttpsValue %}
     auto_https {{ autoHttpsValue }}
     {% endif %}
     import /usr/local/etc/caddy/caddy.d/*.global
@@ -235,7 +235,7 @@
 {% endfor %}
 
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
-    {% if dnsChallenge == "1" and dnsProvider and dnsProvider != "none" %}
+    {% if dnsChallenge == "1" and dnsProvider %}
         {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
             tls {
                 dns {{ dnsProvider }} {
