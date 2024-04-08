@@ -1,0 +1,39 @@
+<form>
+    <field>
+        <id>policy.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this item</help>
+    </field>
+    <field>
+        <id>policy.applies_on</id>
+        <label>User / Group</label>
+        <type>select_multiple</type>
+        <help>ACL applies on selected users and groups. Users are prefixed with *, best use groups to structure policies</help>
+    </field>
+    <field>
+        <id>policy.source_net</id>
+        <label>Source</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>source ip or network, examples 10.0.0.0/24, 10.0.0.1</help>
+    </field>
+    <field>
+        <id>policy.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>Action to perform.</help>
+    </field>
+    <field>
+        <id>policy.content</id>
+        <label>Content</label>
+        <type>select_multiple</type>
+        <help>List of standard categories</help>
+    </field>
+    <field>
+        <id>policy.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>
