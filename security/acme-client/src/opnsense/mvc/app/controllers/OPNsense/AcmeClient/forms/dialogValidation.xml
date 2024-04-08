@@ -387,6 +387,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>dnsHome</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnshome</style>
+    </field>
+    <field>
+        <id>validation.dns_dnshome_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_dnshome_subdomain</id>
+        <label>Subdomain</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>DNSimple</label>
         <type>header</type>
         <style>table_dns table_dns_dnsimple</style>

@@ -445,6 +445,7 @@
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
                         <dns_dnsexit>DNSExit</dns_dnsexit>
+                        <dns_dnshome>dnsHome</dns_dnshome>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
@@ -633,6 +634,12 @@
                 <dns_dnsexit_api type="TextField">
                     <Required>N</Required>
                 </dns_dnsexit_api>
+                <dns_dnshome_password type="TextField">
+                    <Required>N</Required>
+                </dns_dnshome_password>
+                <dns_dnshome_subdomain type="TextField">
+                    <Required>N</Required>
+                </dns_dnshome_subdomain>
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
