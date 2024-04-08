@@ -8,6 +8,15 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.2
+
+Added:
+* add ArtFiles DNS API (#3866)
+* add dnsHome DNS API (#3882)
+
+Fixed:
+* fix PHP deprecation messages (#3892)
+
 4.1
 
 Fixed:
