@@ -387,7 +387,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>DNS Home</label>
+        <label>dnsHome</label>
         <type>header</type>
         <style>table_dns table_dns_dnshome</style>
     </field>
