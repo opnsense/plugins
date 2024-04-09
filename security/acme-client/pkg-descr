@@ -13,6 +13,7 @@ Plugin Changelog
 Added:
 * add ArtFiles DNS API (#3866)
 * add dnsHome DNS API (#3882)
+* add Oracle Cloud Infrastructure DNS API (#3901)
 
 Fixed:
 * fix PHP deprecation messages (#3892)
