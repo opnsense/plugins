@@ -1109,6 +1109,32 @@
         <type>info</type>
     </field>
     <field>
+        <label>Oracle Cloud Infrastructure (OCI)</label>
+        <type>header</type>
+        <style>table_dns table_dns_oci</style>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_user</id>
+        <label>OCID of the user calling the API</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_tenancy</id>
+        <label>OCID of your tenancy</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_region</id>
+        <label>Your OCI region</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_key</id>
+        <label>API Signing key in PEM format</label>
+        <type>textbox</type>
+        <help><![CDATA[Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-Oracle-Cloud-Infrastructure-DNS">acme.sh documentation</a> for further information.]]></help>
+    </field>
+    <field>
         <label>OVH</label>
         <type>header</type>
         <style>table_dns table_dns_ovh</style>

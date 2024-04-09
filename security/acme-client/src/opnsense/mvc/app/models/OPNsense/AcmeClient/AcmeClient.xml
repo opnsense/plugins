@@ -501,6 +501,7 @@
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_online>online.net</dns_online>
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
+                        <dns_oci>Oracle Cloud Infrastructure (OCI)</dns_oci>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove</dns_ovh>
                         <dns_pdns>PowerDNS.com</dns_pdns>
                         <dns_pleskxml>Plesk</dns_pleskxml>
@@ -953,6 +954,18 @@
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_key>
+                <dns_oci_cli_user type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_user>
+                <dns_oci_cli_tenancy type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_tenancy>
+                <dns_oci_cli_region type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_region>
+                <dns_oci_cli_key type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_key>
                 <dns_online_key type="TextField">
                     <Required>N</Required>
                 </dns_online_key>
