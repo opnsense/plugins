@@ -1,6 +1,6 @@
 <?php
-
 /**
+ *    Copyright (C) 2024 Deciso B.V.
  *    Copyright (C) 2024 Mike Shuey
  *
  *    All rights reserved.
@@ -32,64 +32,38 @@ namespace OPNsense\Quagga\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-class StaticdController extends ApiMutableModelControllerBase
+class StaticController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'staticd';
-    protected static $internalModelClass = '\OPNsense\Quagga\Staticd';
+    protected static $internalModelClass = '\OPNsense\Quagga\STATICd';
 
     public function searchRouteAction()
     {
-	return $this->searchBase(
-	    'iproutes.iproute',
-	    array("enabled", "iproute", "gateway", "interfacename"));
-    }
-    public function getRouteAction($uuid = null)
-    {
-	$this->sessionClose();
-	return $this->getBase('iproute', 'iproutes.iproute', $uuid);
-    }
-    public function setRouteAction($uuid)
-    {
-	return $this->setBase('iproute', 'iproutes.iproute', $uuid);
-    }
-    public function addRouteAction()
-    {
-	return $this->addBase('iproute', 'iproutes.iproute');
-    }
-    public function delRouteAction($uuid)
-    {
-	return $this->delBase('iproutes.iproute', $uuid);
-    }
-    public function toggleRouteAction($uuid)
-    {
-	return $this->toggleBase('iproutes.iproute', $uuid);
+	    return $this->searchBase('routes.route');
     }
 
-    public function searchRoute6Action()
+    public function getRouteAction($uuid = null)
     {
-	return $this->searchBase(
-	    'ip6routes.ip6route',
-	    array("enabled", "ip6route", "gateway", "interfacename"));
+	    return $this->getBase('route', 'routes.route', $uuid);
     }
-    public function getRoute6Action($uuid = null)
+
+    public function setRouteAction($uuid)
     {
-	$this->sessionClose();
-	return $this->getBase('ip6route', 'ip6routes.ip6route', $uuid);
+	    return $this->setBase('route', 'routes.route', $uuid);
     }
-    public function setRoute6Action($uuid)
+
+    public function addRouteAction()
     {
-	return $this->setBase('ip6route', 'ip6routes.ip6route', $uuid);
+	    return $this->addBase('route', 'routes.route');
     }
-    public function addRoute6Action()
+
+    public function delRouteAction($uuid)
     {
-	return $this->addBase('ip6route', 'ip6routes.ip6route');
+	    return $this->delBase('routes.route', $uuid);
     }
-    public function delRoute6Action($uuid)
+
+    public function toggleRouteAction($uuid)
     {
-	return $this->delBase('ip6routes.ip6route', $uuid);
-    }
-    public function toggleRoute6Action($uuid)
-    {
-	return $this->toggleBase('ip6routes.ip6route', $uuid);
+	    return $this->toggleBase('routes.route', $uuid);
     }
 }

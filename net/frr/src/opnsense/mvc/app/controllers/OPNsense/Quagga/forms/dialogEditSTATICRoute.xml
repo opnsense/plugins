@@ -1,25 +1,23 @@
 <form>
   <field>
-    <id>iproute.enabled</id>
+    <id>route.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
   </field>
-  <field>                                                                     
-    <id>iproute.iproute</id>
-    <label>Network Address</label>
-    <type>select_multiple</type>
-    <style>tokenize</style>
-    <allownew>tokenize</allownew>
+  <field>
+    <id>route.network</id>
+    <label>Network</label>
+    <type>text</type>
     <help>Defines the target for the static route, in CIDR notation.</help>
   </field>
   <field>
-    <id>iproute.gateway</id>
+    <id>route.gateway</id>
     <label>Gateway (optional)</label>
     <type>text</type>
     <help>Optional gateway IP address for this route.</help>
   </field>
   <field>
-    <id>iproute.interfacename</id>
+    <id>route.interfacename</id>
     <label>Interface</label>
     <type>dropdown</type>
     <help>Select an interface where this settings apply to.</help>
