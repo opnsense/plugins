@@ -35,4 +35,10 @@
         <type>dropdown</type>
         <help>Choose the cipher to use for encryption.</help>
     </field>
+    <field>
+        <id>general.tcpudpmode</id>
+        <label>Mode</label>
+        <type>dropdown</type>
+        <help>Choose TCP, UDP or both relay mode</help>
+    </field>
 </form>
