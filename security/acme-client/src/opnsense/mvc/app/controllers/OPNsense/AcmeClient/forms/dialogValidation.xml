@@ -1059,7 +1059,7 @@
         <help>Optionally set the name of the hosted zone (e.g. example.com) as some DNS Providers require, like dyn.com's 'Standard DNS'.</help>
     </field>
     <field>
-        <label>OCI</label>
+        <label>Oracle Cloud Infrastructure (OCI)</label>
         <type>header</type>
         <style>table_dns table_dns_oci</style>
     </field>
