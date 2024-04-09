@@ -47,6 +47,13 @@
     }
     {% endif %}
 
+    {#
+        Section: Dynamic DNS Global Configuration
+        Purpose:
+            Sets up global configuration for Dynamic DNS (DDNS), creates automatic DNS record updates for domains and subdomains.
+            It configures the DNS provider, API credentials, optional fields for
+            provider-specific settings, and domain lists for DDNS updates.
+    #}
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = generalSettings.TlsDnsApiKey %}
     {% set dnsSecretApiKey = generalSettings.TlsDnsSecretApiKey %}
@@ -220,6 +227,10 @@
 
 # Reverse Proxy Configuration
 
+{#
+    Section: HTTP-01 Challenge Redirection
+    Purpose: A small premade reverse_proxy section that can easily redirect the HTTP-01 challenge to a different webserver.
+#}
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" and reverse.AcmePassthrough %}
         # HTTP-01 challenge redirection for domain: "{{ reverse['@uuid'] }}"
@@ -234,6 +245,17 @@
     {% endif %}
 {% endfor %}
 
+{#
+    Macro: tls_configuration
+    Purpose: Configures TLS settings based on the DNS provider, API keys, and optional fields.
+    Parameters:
+        - dnsProvider (@string): The DNS provider used for the DNS challenge.
+        - dnsApiKey (@string): API key for the DNS provider.
+        - customCert (@string, optional): Path to a custom certificate, if used, enabling the use of non-automated certificates.
+        - dnsChallenge (@boolean): Indicates if a DNS challenge is used.
+        - dnsSecretApiKey (@string, optional): Additional to dnsApiKey.
+        - TlsDnsOptionalField1 to 4 (@string, optional): Additional to dnsApiKey.
+#}
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
     {% if dnsChallenge == "1" and dnsProvider %}
         {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
@@ -360,6 +382,12 @@
     {% endif %}
 {% endmacro %}
 
+{#
+    Macro: header_manipulation
+    Purpose: Manipulates HTTP headers
+    Parameters:
+        - handle (@object): An object that contains a `header` attribute. This attribute is a comma-separated string of header UUIDs which identifies the headers to be manipulated.
+#}
 {% macro header_manipulation(handle) %}
     {% if handle.header %}
         {% for header_uuid in handle.header.split(',') %}
@@ -390,6 +418,14 @@
     {% endif %}
 {% endmacro %}
 
+{#
+    Macro: reverse_proxy_configuration
+    Purpose: Configures reverse proxy settings and
+             additional directives such as header manipulation and transport options.
+    Parameters:
+        - handle (@object): Contains configuration details like HandleType, HandlePath, ToPath, ToDomain, ToPort,
+                  and conditions for using HTTP TLS or NTLM transport.
+#}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {% if handle.ToPath|default("") != "" %}
@@ -432,6 +468,15 @@
     }
 {% endmacro %}
 
+{#
+    Macro: access_list_configuration
+    Purpose: Defines access lists based on client IP addresses
+    Parameters:
+        - accesslist (@object): An object that includes:
+            - clientIps (@string): A comma-separated list of client IP addresses
+            - @uuid (@string): A unique identifier for the access list
+        - invert (@boolean): A flag that inverts the logic of the access list
+#}
 {% macro access_list_configuration(accesslist, invert) %}
     {% set client_ips = accesslist.clientIps.split(',') %}
     {% set client_ips_space_separated = client_ips | join(' ') %}
@@ -440,6 +485,12 @@
     }
 {% endmacro %}
 
+{#
+    Macro: basicauth_configuration
+    Purpose: Sets up basic authentication
+    Parameters:
+        - basicauth_uuids (@string): Comma-separated list of UUIDs corresponding to basic authentication user credentials.
+#}
 {% macro basicauth_configuration(basicauth_uuids) %}
     {% if basicauth_uuids %}
     basicauth {
@@ -453,6 +504,18 @@
     {% endif %}
 {% endmacro %}
 
+{#
+    Section: Reverse Proxy Configurations
+    Purpose: It creates the reverse proxy configuration with the previously defined macros.
+    Macros used:
+        - tls_configuration
+        - basicauth_configuration
+        - access_list_configuration
+        - reverse_proxy_configuration
+    Details: 
+        - Ordering of Handles - Prioritizes order of specific path handles over catch-all handles.
+        - Hirachy structure for handlers with domains, wildcard domains, subdomains, access list, basic auth etc...
+#}
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
 {% if reverse.enabled|default("0") == "1" %}
 # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
