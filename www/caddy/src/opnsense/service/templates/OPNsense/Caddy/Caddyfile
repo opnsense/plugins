@@ -30,6 +30,11 @@
 
 # Global Options
 {
+    {#
+    #   Section: Global Log Settings
+    #   Purpose: Sets up global log settings. The time format and unix socket make Caddy compatible
+    #            with the syslog-ng instance running on the OPNsense.
+    #}
     log {
         {% if generalSettings.LogAccessPlain|default("0") == "0" %}
         {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
@@ -45,6 +50,11 @@
         }
     }
 
+    {#
+    #   Section: Global Trusted Proxy and Credential Logging
+    #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
+    #            Credential logging is useful for troubleshooting basic auth.
+    #}
     {% set accessListUuid = generalSettings.accesslist %}
     {% set logCredentials = generalSettings.LogCredentials %}
 
@@ -75,8 +85,12 @@
 
     {#
     #   Section: Dynamic DNS Global Configuration
-    #   Purpose: Sets up global configuration for Dynamic DNS (DDNS), creates automatic DNS record updates 
-    #            for domains and subdomains.
+    #   Purpose: Sets up global configuration for Dynamic DNS. Caddy needs to be compiled with 
+    #            https://github.com/mholt/caddy-dynamicdns and https://github.com/caddy-dns. Otherwise the
+    #            generated Caddyfile won't run. Each DNS Provider that is added below has to be compiled in.
+    #            Some Providers don't support setting A and AAAA-Records, like acmedns.
+    #            Most need specific configurations. Since only one provider can be used at the same time,
+    #            they all share the same fields for configuration.
     #   Parameters:
     #   - @param dnsProvider (string): Specifies the DNS provider for DDNS updates.
     #   - @param dnsApiKey (string): The API key for authenticating with the DNS provider.
@@ -249,6 +263,12 @@
     }
     {% endif %}
 
+    {#
+    #   Section: ACME Email, Auto HTTPS selection and global import statement
+    #   Purpose: The ACME email is optional for receiving certificate notices.
+    #            Auto HTTPS is optional, the default is on (which means the section is empty).
+    #            The import statement is for user specific configuration out of scope of this template.
+    #}
     {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
     {% if emailValue %}
     email {{ emailValue }}
@@ -283,8 +303,9 @@
 
 {#
 #   Macro: tls_configuration
-#   Purpose: Configures TLS settings based on the DNS provider, API keys, and optional fields. Sets up
-#   automated or custom certificates.
+#   Purpose: Configures TLS settings based on the DNS provider, API keys, and optional fields.
+#            Sets up the Caddyfile to update TXT Records with the chosen DNS Provider and receive
+#            certificates with the DNS-01 challenge. Refer to Dynamic DNS section for more details.
 #   Parameters:
 #   - @param dnsProvider (string): The DNS provider used for the DNS challenge.
 #   - @param dnsApiKey (string): API key for the DNS provider, essential for authentication.
@@ -421,8 +442,9 @@
 
 {#
 #   Macro: header_manipulation
-#   Purpose: This macro customizes HTTP headers for requests or responses, to add, remove, or modify headers. 
+#   Purpose: Customizes HTTP headers for requests or responses; to add, remove, or modify headers. 
 #            It uses a 'handle' object that specifies which headers to manipulate based on their @UUIDs.
+#            Each handle can have multiple of these HTTP headers assigned.
 #   Parameters:
 #   @param handle (@object):
 #       - @uuid (@string)
@@ -430,7 +452,6 @@
 #       - HeaderType (string): Specifies the name of the header.
 #       - HeaderValue (string, optional): The new value to set for the header, if any.
 #       - HeaderReplace (string, optional): Specifies a value to replace in the header.
-#
 #}
 {% macro header_manipulation(handle) %}
     {% if handle.header %}
@@ -464,9 +485,8 @@
 
 {#
 #   Macro: reverse_proxy_configuration
-#   Purpose: Simplifies the setup of reverse proxy configurations, including path rewriting, backend service targeting, and advanced header manipulations.
-#   Integrated Macros:
-#   - header_manipulation: Invoked to customize HTTP headers based on predefined conditions, enhancing the control over request and response headers.
+#   Purpose: Sets up the handle with the reverse proxy configurations. The TLS Settings are generated here for the Upstream.
+#   Integrated Macros: header_manipulation
 #   Parameters:
 #   @param handle (@object):
 #       - @uuid (@string)
@@ -525,7 +545,10 @@
 
 {#
 #   Macro: access_list_configuration
-#   Purpose: Defines access lists based on client IP addresses
+#   Purpose: Defines access lists based on client IP addresses. The standard logic is "allow these IP addresses, deny all others."
+#            A handle with an @ matcher is created that will put the reverse_proxy_configuration inside. That means, the traffic will
+#            only get to the reverse proxy, when the access list matches. Invert is also possible, to explicitely deny IPs.
+#            The assembly is handled by the "Section: Reverse Proxy Configurations".
 #   Parameters:
 #   @param accesslist (@object):
 #       - @uuid (@string)
