@@ -55,6 +55,14 @@ class STATICd extends BaseModel
                     );
                 }
             }
+            if (empty((string)$route->gateway) && empty((string)$route->interfacename)) {
+                $messages->appendMessage(
+                    new Message(
+                        gettext("When no interface is provided, at least a gateway must be offered"),
+                        $key . ".gateway"
+                    )
+                );
+            }
         }
         return $messages;
     }
