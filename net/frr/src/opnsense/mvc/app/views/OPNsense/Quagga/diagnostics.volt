@@ -115,7 +115,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                             'connected': {short: 'C', long: '{{ lang._('Connected') }}'},
                                             'bgp': {short: 'B', long: '{{ lang._('BGP') }}'},
                                             'ospf': {short: 'O', long: '{{ lang._('OSPF') }}'},
-                                            'ospf6': {short: 'O', long: '{{ lang._('OSPFv3') }}'}
+                                            'ospf6': {short: 'O', long: '{{ lang._('OSPFv3') }}'},
+                                            'static': {short: 'S', long: '{{ lang._('STATIC') }}'},
                                         };
                                         let field = $("<div/>");
                                         if (protocols[row.protocol] !== undefined) {
