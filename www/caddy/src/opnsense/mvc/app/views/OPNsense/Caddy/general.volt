@@ -28,33 +28,6 @@
     $(document).ready(function() {
         var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
-            // console.log("Fetched data:", data); // Log the fetched data
-            var generalSettings = data.frm_GeneralSettings.caddy.general;
-
-            // Populate TlsAutoHttps dropdown
-            var tlsAutoHttpsSelect = $('#caddy\\.general\\.TlsAutoHttps');
-            tlsAutoHttpsSelect.empty(); // Clear existing options
-            $.each(generalSettings.TlsAutoHttps, function(key, option) {
-                if (key !== "") {  // Filter out the unwanted "None" option
-                    tlsAutoHttpsSelect.append(new Option(option.value, key, false, option.selected === 1));
-                }
-            });
-
-            // Populate TlsDnsProvider dropdown
-            var tlsDnsProviderSelect = $('#caddy\\.general\\.TlsDnsProvider');
-            tlsDnsProviderSelect.empty(); // Clear existing options
-            $.each(generalSettings.TlsDnsProvider, function(key, option) {
-                if (key !== "") {  // Filter out the unwanted "None" option
-                    tlsDnsProviderSelect.append(new Option(option.value, key, false, option.selected === 1));
-                }
-            });
-
-            // Populate Trusted Proxies dropdown
-            var accesslistSelect = $('#caddy\\.general\\.accesslist');
-            accesslistSelect.empty(); // Clear existing options
-            $.each(generalSettings.accesslist, function(key, option) {
-                accesslistSelect.append(new Option(option.value, key, false, option.selected === 1));
-            });
 
             // Refresh selectpicker for these dropdowns
             $('.selectpicker').selectpicker('refresh');

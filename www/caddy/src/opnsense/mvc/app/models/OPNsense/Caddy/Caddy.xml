@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.5</version>
+    <version>1.1.7</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -12,8 +12,8 @@
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>
             <TlsAutoHttps type="OptionField">
+                <BlankDesc>On (default)</BlankDesc>
                 <OptionValues>
-                    <on>On (default)</on>
                     <off>Off</off>
                     <disable_redirects>Disable Redirects</disable_redirects>
                     <disable_certs>Disable Certs</disable_certs>
@@ -21,8 +21,8 @@
                 </OptionValues>
             </TlsAutoHttps>
             <TlsDnsProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
-                    <none>None (default)</none>
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
                     <digitalocean>DigitalOcean</digitalocean>
@@ -59,7 +59,8 @@
                     <reverseproxy>
                         <source>OPNsense.Caddy.Caddy</source>
                         <items>reverseproxy.accesslist</items>
-                        <display>accesslistName</display>
+                        <display>accesslistName,description</display>
+                        <display_format>%s - %s</display_format> 
                     </reverseproxy>
                 </Model>
             </accesslist>
@@ -84,12 +85,11 @@
                 <Required>Y</Required>
             </DynDnsCheckInterval>
             <DynDnsIpVersions type="OptionField">
-                <Default>ipv4</Default>
+                <BlankDesc>IPv4+IPv6</BlankDesc>
                 <OptionValues>
                     <ipv4>IPv4 only</ipv4>
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
-                <Required>Y</Required>
             </DynDnsIpVersions>
             <DynDnsTTL type="IntegerField">
                 <Default>1</Default>
@@ -123,7 +123,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
-                            <display>accesslistName</display>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format> 
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -132,7 +133,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
-                            <display>basicauthuser</display>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -160,7 +162,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -179,7 +182,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
-                            <display>accesslistName</display>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -188,7 +192,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
-                            <display>basicauthuser</display>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -209,7 +214,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -218,7 +224,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>description</display>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s:%s</display_format>
                         </reverseproxy>
                     </Model>
                 </subdomain>
@@ -234,6 +241,17 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
                 </HandlePath>
+                <header type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.header</items>
+                            <display>HeaderUpDown,HeaderType,HeaderValue,description</display>
+                            <display_format>%s %s %s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </header>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
@@ -261,7 +279,9 @@
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
-                <description type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="TextField">
@@ -278,7 +298,15 @@
                     <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
-                <description type="DescriptionField"/>
+                <HttpResponseCode type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>599</MaximumValue>
+                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
+                </HttpResponseCode>
+                <HttpResponseMessage type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </accesslist>
             <basicauth type="ArrayField">
                 <basicauthuser type="TextField">
@@ -289,8 +317,36 @@
                 <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
-                <description type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
             </basicauth>
+            <header type="ArrayField">
+                <HeaderUpDown type="OptionField">
+                    <Default>header_up</Default>
+                    <OptionValues>
+                        <header_up>header_up</header_up>
+                        <header_down>header_down</header_down>
+                    </OptionValues>
+                    <Required>Y</Required>
+                </HeaderUpDown>
+                <HeaderType type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header type must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderType>
+                <HeaderValue type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header value must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderValue>
+                <HeaderReplace type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header replacement must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderReplace>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </header>
         </reverseproxy>
     </items>
 </model>
