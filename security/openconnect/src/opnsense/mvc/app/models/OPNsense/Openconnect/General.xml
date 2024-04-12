@@ -60,7 +60,7 @@
         </tokensecret>
         <allowinsecure type="BooleanField">
             <Default>0</Default>
-            <Required>N</Required>
+            <Required>Y</Required>
         </allowinsecure>
         <protocol type="OptionField">
             <Default>anyconnect</Default>
