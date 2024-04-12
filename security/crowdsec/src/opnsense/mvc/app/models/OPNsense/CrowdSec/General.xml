@@ -43,8 +43,8 @@
     </rules_log>
 
     <rules_tag type="TextField">
-      <default></default>
-      <Required>N</Required>
+      <Mask>/^([0-9a-zA-Z]{1,30})$/u</Mask>
+      <ValidationMessage>A tag must only contain numbers and letters and must be between 1 and 30 characters.</ValidationMessage>
     </rules_tag>
 
     <crowdsec_firewall_verbose type="BooleanField">
