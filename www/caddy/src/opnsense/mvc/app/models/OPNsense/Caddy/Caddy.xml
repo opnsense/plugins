@@ -256,6 +256,8 @@
                     <Required>Y</Required>
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
                 </ToDomain>
                 <ToPort type="PortField">
                     <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>

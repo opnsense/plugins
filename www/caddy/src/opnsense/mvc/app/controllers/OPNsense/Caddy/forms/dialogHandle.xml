@@ -56,9 +56,11 @@
     <field>
         <id>handle.ToDomain</id>
         <label>Upstream Domain</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler.]]></help>
+        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler. If multiple upstream destinations are chosen, they will be load balanced with the default random policy.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>

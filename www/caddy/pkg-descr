@@ -34,6 +34,7 @@ Plugin Changelog
 * Add: Header functionality added. Multiple header manipulations can be set per handler.
 * Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability.
 * Fix: Move selectpicker empty option to model in general.volt, using BlankDesc. This fixes the option IPv4+IPv6 not appearing in Dynamic DNS. 
+* Add: Simple Load Balancing support of Upstreams with the random policy, by allowing multiple Upstream Domains in Handlers.
 
 1.5.3
 
