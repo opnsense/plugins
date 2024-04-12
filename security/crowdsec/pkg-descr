@@ -8,6 +8,10 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.8
+
+* Add input validation for `rules_tag` to prevent invalid `pf` syntax.
+
 1.0.7
 
 * Add option `retry_initial_connect` to bouncer configuration for more robust startup. The option was introduced in Crowdsec 1.5.4.
