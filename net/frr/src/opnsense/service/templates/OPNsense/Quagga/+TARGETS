@@ -6,6 +6,7 @@ ospf6d.conf:/usr/local/etc/frr/ospf6d.conf
 ospf6d_carp.conf:/usr/local/etc/frr/ospf6d_carp.conf
 ripd.conf:/usr/local/etc/frr/ripd.conf
 sa_policies.conf:/usr/local/etc/frr/sa_policies.conf
+staticd.conf:/usr/local/etc/frr/staticd.conf
 frr:/etc/rc.conf.d/frr
 zebra.conf:/usr/local/etc/frr/zebra.conf
 vtysh.conf:/usr/local/etc/frr/vtysh.conf
