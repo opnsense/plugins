@@ -1,0 +1,59 @@
+<form>
+  <field>
+    <id>peergroup.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>peergroup.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>Specify the name of this peergroup.</help>
+  </field>
+  <field>
+    <id>peergroup.remoteas</id>
+    <label>Remote AS</label>
+    <type>text</type>
+    <help>Remote AS for tthis peergroup.</help>
+  </field>
+  <field>
+    <id>peergroup.updatesource</id>
+    <label>Update-Source Interface</label>
+    <type>dropdown</type>
+    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+  </field>
+  <field>
+    <id>peergroup.nexthopself</id>
+    <label>Next-Hop-Self</label>
+    <type>checkbox</type>
+  </field>
+    <field>
+    <id>peergroup.defaultoriginate</id>
+    <label>Send Defaultroute</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>peergroup.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction.</help>
+  </field>
+  <field>
+    <id>peergroup.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction.</help>
+  </field>
+  <field>
+    <id>peergroup.linkedRoutemapIn</id>
+    <label>Route-Map In</label>
+    <type>dropdown</type>
+    <help>Route-Map for inbound direction.</help>
+  </field>
+  <field>
+    <id>peergroup.linkedRoutemapOut</id>
+    <label>Route-Map Out</label>
+    <type>dropdown</type>
+    <help>Route-Map for outbound direction.</help>
+  </field>
+</form>
