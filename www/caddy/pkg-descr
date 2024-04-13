@@ -19,6 +19,7 @@ Main features of this plugin:
 * Syslog-ng integration and HTTP Access Log
 * NTLM Transport
 * Header manipulation with header_up and header_down
+* Simple load balancing with passive health check
 
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
@@ -34,6 +35,8 @@ Plugin Changelog
 * Add: Header functionality added. Multiple header manipulations can be set per handler.
 * Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability.
 * Fix: Move selectpicker empty option to model in general.volt, using BlankDesc. This fixes the option IPv4+IPv6 not appearing in Dynamic DNS. 
+* Add: Simple Load Balancing support with the default random policy, by allowing to add multiple Upstream Domains in Handlers.
+* Add: Passive Health check for load balancing (Upstream Fail Duration) in Handlers.
 
 1.5.3
 

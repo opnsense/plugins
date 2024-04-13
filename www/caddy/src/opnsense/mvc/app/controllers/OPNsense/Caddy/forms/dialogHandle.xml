@@ -56,9 +56,11 @@
     <field>
         <id>handle.ToDomain</id>
         <label>Upstream Domain</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler.]]></help>
+        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler. If multiple upstream destinations are chosen, they will be load balanced with the default random policy.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -72,6 +74,13 @@
         <label>Upstream Path</label>
         <type>text</type>
         <help><![CDATA[Enter a path prefix like '/guacamole' that should be prepended to the upstream request because the application demands it.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.PassiveHealthFailDuration</id>
+        <label>Upstream Fail Duration</label>
+        <type>text</type>
+        <help><![CDATA[Enables a passive health check when multiple upstream destinations have been defined for load balancing. "fail_duration" is a duration value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

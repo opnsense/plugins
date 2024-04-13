@@ -500,14 +500,21 @@
 #       - HttpTlsInsecureSkipVerify (boolean, optional): If true, the server's SSL certificate is not verified.
 #       - HttpTlsTrustedCaCerts (string, optional): The config extracted name of a CA certificate.
 #       - HttpTlsServerName (string, optional): Specifies the server name for the TLS handshake.
+#       - PassiveHealthFailDuration (integer, optional): Enables passive health checks when set > 0.
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {% if handle.ToPath|default("") != "" %}
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
-        reverse_proxy {{ handle.ToDomain }}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %} {
+        reverse_proxy {% for domain in handle.ToDomain.split(',') %}
+            {# For each domain/IP, append the port if it's specified, followed by a space #}
+            {{- domain -}}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}{% if not loop.last %} {% endif %}
+        {% endfor %}{
             {{ header_manipulation(handle) }}
+            {% if handle.PassiveHealthFailDuration|default("") %}
+            fail_duration {{ handle.PassiveHealthFailDuration }}s
+            {% endif %}
             {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {

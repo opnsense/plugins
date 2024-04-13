@@ -247,6 +247,7 @@
                             <th data-column-id="ToDomain" data-type="string">Upstream Domain</th>
                             <th data-column-id="ToPort" data-type="string">Upstream Port</th>
                             <th data-column-id="ToPath" data-type="string" data-visible="false">Upstream Path</th>
+                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">Fail Duration</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">TLS</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>
