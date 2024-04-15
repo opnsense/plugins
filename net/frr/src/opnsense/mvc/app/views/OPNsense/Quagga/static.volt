@@ -1,6 +1,6 @@
 {#
  # Copyright (c) 2024 Deciso B.V.
- # Copyright (c) 2024 by Mike Shuey
+ # Copyright (c) 2024 Mike Shuey
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
