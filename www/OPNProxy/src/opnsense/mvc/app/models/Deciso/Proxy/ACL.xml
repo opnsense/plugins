@@ -1,0 +1,132 @@
+<model>
+    <mount>//Deciso/Proxy/ACL</mount>
+    <version>1.0.0</version>
+    <description>
+        OPNsense central management / Proxy module
+    </description>
+    <items>
+        <policies>
+            <policy type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <Default>deny</Default>
+                    <OptionValues>
+                        <deny>Deny</deny>
+                        <allow>Allow</allow>
+                    </OptionValues>
+                </action>
+                <content type="OptionField">
+                    <Required>Y</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <adult>adult</adult>
+                        <aggressive>aggressive</aggressive>
+                        <astrology>astrology</astrology>
+                        <audio-video>audio-video</audio-video>
+                        <bank>bank</bank>
+                        <bitcoin>bitcoin</bitcoin>
+                        <blog>blog</blog>
+                        <celebrity>celebrity</celebrity>
+                        <chat>chat</chat>
+                        <child>child</child>
+                        <cleaning>cleaning</cleaning>
+                        <cooking>cooking</cooking>
+                        <cryptojacking>cryptojacking</cryptojacking>
+                        <dangerous_material>dangerous_material</dangerous_material>
+                        <dating>dating</dating>
+                        <ddos>ddos</ddos>
+                        <doh>doh</doh>
+                        <download>download</download>
+                        <drugs>drugs</drugs>
+                        <educational_games>educational_games</educational_games>
+                        <filehosting>filehosting</filehosting>
+                        <financial>financial</financial>
+                        <forums>forums</forums>
+                        <gambling>gambling</gambling>
+                        <games>games</games>
+                        <hacking>hacking</hacking>
+                        <jobsearch>jobsearch</jobsearch>
+                        <lingerie>lingerie</lingerie>
+                        <malware>malware</malware>
+                        <manga>manga</manga>
+                        <marketingware>marketingware</marketingware>
+                        <mixed_adult>mixed_adult</mixed_adult>
+                        <mobile-phone>mobile-phone</mobile-phone>
+                        <phishing>phishing</phishing>
+                        <press>press</press>
+                        <advertisements>advertisements</advertisements>
+                        <radio>radio</radio>
+                        <redirector>redirector</redirector>
+                        <remote-control>remote-control</remote-control>
+                        <sexual_education>sexual_education</sexual_education>
+                        <shopping>shopping</shopping>
+                        <shortener>shortener</shortener>
+                        <social_networks>social_networks</social_networks>
+                        <sports>sports</sports>
+                        <stalkerware>stalkerware</stalkerware>
+                        <translation>translation</translation>
+                        <update>update</update>
+                        <vpn>vpn</vpn>
+                        <warez>warez</warez>
+                        <webmail>webmail</webmail>
+                    </OptionValues>
+                </content>
+                <applies_on type=".\UserGroupField">
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <ValidationMessage>You need to select at least one user or group for who this list applies</ValidationMessage>
+                </applies_on>
+                <source_net type="NetworkField">
+                    <Required>N</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
+                </source_net>
+                <description type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </policy>
+        </policies>
+        <custom_policies>
+            <policy type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <Default>deny</Default>
+                    <OptionValues>
+                        <deny>Deny</deny>
+                        <allow>Allow</allow>
+                    </OptionValues>
+                </action>
+                <content type=".\CustomPolicyField">
+                    <Required>Y</Required>
+                </content>
+                <applies_on type=".\UserGroupField">
+                    <Multiple>Y</Multiple>
+                    <Required>N</Required>
+                    <ValidationMessage>You need to select at least one user or group for who this list applies</ValidationMessage>
+                </applies_on>
+                <source_net type="NetworkField">
+                    <Required>N</Required>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <FieldSeparator>,</FieldSeparator>
+                    <asList>Y</asList>
+                </source_net>
+                <description type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                </description>
+            </policy>
+        </custom_policies>
+    </items>
+</model>

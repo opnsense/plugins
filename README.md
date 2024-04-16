@@ -107,9 +107,10 @@ sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
+www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
-www/caddy -- Easy to configure Reverse Proxy based on Caddy with Automatic HTTPS and Dynamic DNS
+www/caddy -- Easy to configure Reverse Proxy with Automatic HTTPS and Dynamic DNS
 www/nginx -- Nginx HTTP server and reverse proxy
 www/squid -- Squid is a caching proxy for the web
 www/web-proxy-sso -- Kerberos authentication module
