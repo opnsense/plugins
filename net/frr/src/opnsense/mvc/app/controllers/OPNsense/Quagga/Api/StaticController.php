@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2024 Deciso B.V.
  *    Copyright (C) 2024 Mike Shuey
@@ -39,31 +40,31 @@ class StaticController extends ApiMutableModelControllerBase
 
     public function searchRouteAction()
     {
-	    return $this->searchBase('routes.route');
+        return $this->searchBase('routes.route');
     }
 
     public function getRouteAction($uuid = null)
     {
-	    return $this->getBase('route', 'routes.route', $uuid);
+        return $this->getBase('route', 'routes.route', $uuid);
     }
 
     public function setRouteAction($uuid)
     {
-	    return $this->setBase('route', 'routes.route', $uuid);
+        return $this->setBase('route', 'routes.route', $uuid);
     }
 
     public function addRouteAction()
     {
-	    return $this->addBase('route', 'routes.route');
+        return $this->addBase('route', 'routes.route');
     }
 
     public function delRouteAction($uuid)
     {
-	    return $this->delBase('routes.route', $uuid);
+        return $this->delBase('routes.route', $uuid);
     }
 
     public function toggleRouteAction($uuid)
     {
-	    return $this->toggleBase('routes.route', $uuid);
+        return $this->toggleBase('routes.route', $uuid);
     }
 }

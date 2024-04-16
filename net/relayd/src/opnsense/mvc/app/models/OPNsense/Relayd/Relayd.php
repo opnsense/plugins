@@ -129,21 +129,21 @@ class Relayd extends BaseModel
                     case 'send':
                         if (empty((string)$node->expect)) {
                             $messages->appendMessage(
-                                new Message(gettext('Expect Pattern cannot be empty.'),  $key . ".expect")
+                                new Message(gettext('Expect Pattern cannot be empty.'), $key . ".expect")
                             );
                         }
                         break;
                     case 'script':
                         if (empty((string)$node->path)) {
                             $messages->appendMessage(
-                                new Message(gettext('Script path cannot be empty.'),  $key . ".path")
+                                new Message(gettext('Script path cannot be empty.'), $key . ".path")
                             );
                         }
                         break;
                     case 'http':
                         if (empty((string)$node->path)) {
                             $messages->appendMessage(
-                                new Message(gettext('Path cannot be empty.'),  $key . ".path")
+                                new Message(gettext('Path cannot be empty.'), $key . ".path")
                             );
                         }
                         if (empty((string)$node->code) && empty((string)$node->digest)) {

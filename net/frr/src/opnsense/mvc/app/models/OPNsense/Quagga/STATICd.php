@@ -1,4 +1,5 @@
 <?php
+
 /**
  *    Copyright (C) 2024 Deciso B.V.
  *    Copyright (C) 2024 Mike Shuey
@@ -27,6 +28,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
 namespace OPNsense\Quagga;
 
 use OPNsense\Base\Messages\Message;

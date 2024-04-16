@@ -41,7 +41,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*ReverseProxy Section*/
 
-    public function searchReverseProxyAction($add_empty='0')
+    public function searchReverseProxyAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.reverse", null, 'description');
     }
@@ -74,7 +74,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Subdomain Section*/
 
-    public function searchSubdomainAction($add_empty='0')
+    public function searchSubdomainAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.subdomain", null, 'description');
     }
@@ -107,7 +107,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Handler Section*/
 
-    public function searchHandleAction($add_empty='0')
+    public function searchHandleAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.handle", null, 'description');
     }
@@ -140,7 +140,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* AccessList Section */
 
-    public function searchAccessListAction($add_empty='0')
+    public function searchAccessListAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.accesslist", null, 'description');
     }
@@ -168,7 +168,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* BasicAuth Section */
 
-    public function searchBasicAuthAction($add_empty='0')
+    public function searchBasicAuthAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.basicauth", null, 'description');
     }
@@ -216,7 +216,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* Header Section */
 
-    public function searchHeaderAction($add_empty='0')
+    public function searchHeaderAction($add_empty = '0')
     {
         return $this->searchBase("reverseproxy.header", null, 'description');
     }

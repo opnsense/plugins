@@ -60,7 +60,7 @@
                         <source>OPNsense.Caddy.Caddy</source>
                         <items>reverseproxy.accesslist</items>
                         <display>accesslistName,description</display>
-                        <display_format>%s - %s</display_format> 
+                        <display_format>%s - %s</display_format>
                     </reverseproxy>
                 </Model>
             </accesslist>
@@ -124,7 +124,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
                             <display>accesslistName,description</display>
-                            <display_format>%s - %s</display_format> 
+                            <display_format>%s - %s</display_format>
                         </reverseproxy>
                     </Model>
                 </accesslist>

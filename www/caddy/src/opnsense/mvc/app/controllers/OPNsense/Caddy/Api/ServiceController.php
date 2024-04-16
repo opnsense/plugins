@@ -46,7 +46,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         // Caddy can use a reload action instead
         return 0;
     }
-    
+
     public function validateAction()
     {
         $backend = new Backend();

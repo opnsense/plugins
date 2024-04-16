@@ -85,7 +85,7 @@
 
     {#
     #   Section: Dynamic DNS Global Configuration
-    #   Purpose: Sets up global configuration for Dynamic DNS. Caddy needs to be compiled with 
+    #   Purpose: Sets up global configuration for Dynamic DNS. Caddy needs to be compiled with
     #            https://github.com/mholt/caddy-dynamicdns and https://github.com/caddy-dns. Otherwise the
     #            generated Caddyfile won't run. Each DNS Provider that is added below has to be compiled in.
     #            Some Providers don't support setting A and AAAA-Records, like acmedns.
@@ -284,7 +284,7 @@
 
 {#
 #   Section: HTTP-01 Challenge Redirection
-#   Purpose: A small premade reverse_proxy section 
+#   Purpose: A small premade reverse_proxy section
 #            that can redirect the HTTP-01 challenge to a different webserver.
 #}
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
@@ -442,7 +442,7 @@
 
 {#
 #   Macro: header_manipulation
-#   Purpose: Customizes HTTP headers for requests or responses; to add, remove, or modify headers. 
+#   Purpose: Customizes HTTP headers for requests or responses; to add, remove, or modify headers.
 #            It uses a 'handle' object that specifies which headers to manipulate based on their @UUIDs.
 #            Each handle can have multiple of these HTTP headers assigned.
 #   Parameters:
@@ -574,7 +574,7 @@
 #   Macro: basicauth_configuration
 #   Purpose: Implements basic authentication with a username and password for access.
 #   Parameters:
-#   @param basicauth_uuids (@string): A comma-separated list of UUIDs, each UUID corresponding to 
+#   @param basicauth_uuids (@string): A comma-separated list of UUIDs, each UUID corresponding to
 #                                     a specific user credentials (username and password).
 #       - @uuid (@string)
 #       - basicauthuser (@string): The username required for authentication.
@@ -595,7 +595,7 @@
 
 {#
 #   Section: Reverse Proxy Configurations
-#   Purpose: Assembles reverse proxy configurations using predefined macros. 
+#   Purpose: Assembles reverse proxy configurations using predefined macros.
 #            This is the main logic of the whole template, handle with care.
 #   Macros Used:
 #   - tls_configuration
@@ -603,7 +603,7 @@
 #   - access_list_configuration
 #   - reverse_proxy_configuration
 #   - indirect: header_manipulation
-#   Important Details: 
+#   Important Details:
 #   - Order of Path specific Handles - Prioritizes order of specific path handles over catch-all handles.
 #   - Order of Wildcard Domains and Subdomains: Handles for wildcard domains come after all subdomains.
 #}
