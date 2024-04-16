@@ -107,41 +107,6 @@ class Caddy extends BaseModel
         }
     }
 
-    // 4. Check for conflicts between wildcard and base domains
-    private function checkForWildcardAndBaseDomainConflicts($domains, $messages)
-    {
-        $domainList = [];
-        foreach ($domains as $domain) {
-            if ((string) $domain->enabled === '1') {
-                $domainName = (string) $domain->FromDomain;
-                $domainList[$domainName] = true;
-
-                // Check for wildcard or base domain conflict
-                if (str_starts_with($domainName, '*.')) {
-                    $baseDomain = substr($domainName, 2);
-                    if (isset($domainList[$baseDomain])) {
-                        $key = $domain->__reference; // Dynamic key based on domain reference
-                        $messages->appendMessage(new Message(
-                            "Invalid domain configuration: Cannot create wildcard domain '$domainName' because base domain '$baseDomain' exists.",
-                            $key . ".FromDomain", // Use dynamic key for message referencing
-                            "WildcardBaseConflict"
-                        ));
-                    }
-                } else {
-                    $wildcardDomain = '*.' . $domainName;
-                    if (isset($domainList[$wildcardDomain])) {
-                        $key = $domain->__reference; // Dynamic key based on domain reference
-                        $messages->appendMessage(new Message(
-                            "Invalid domain configuration: Cannot create base domain '$domainName' because wildcard domain '$wildcardDomain' exists.",
-                            $key . ".FromDomain", // Use dynamic key for message referencing
-                            "BaseWildcardConflict"
-                        ));
-                    }
-                }
-            }
-        }
-    }
-
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -152,8 +117,6 @@ class Caddy extends BaseModel
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages, 'subdomain');
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        // 4. Check for conflicts between wildcard and base domains
-        $this->checkForWildcardAndBaseDomainConflicts($this->reverseproxy->reverse->iterateItems(), $messages);
 
         return $messages;
     }
