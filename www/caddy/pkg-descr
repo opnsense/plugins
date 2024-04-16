@@ -37,6 +37,7 @@ Plugin Changelog
 * Fix: Move selectpicker empty option to model in general.volt, using BlankDesc. This fixes the option IPv4+IPv6 not appearing in Dynamic DNS. 
 * Add: Simple Load Balancing support with the default random policy, by allowing to add multiple Upstream Domains in Handlers.
 * Add: Passive Health check for load balancing (Upstream Fail Duration) in Handlers.
+* Fix: Input validation so a base domain like "example.com" and a wildcard domain like "*.example.com" can now be created at the same time in domains.
 
 1.5.3
 
