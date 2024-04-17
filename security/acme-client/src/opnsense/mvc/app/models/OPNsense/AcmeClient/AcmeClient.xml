@@ -426,6 +426,7 @@
                         <dns_ali>aliyun.com</dns_ali>
                         <dns_kas>All-Inkl.com</dns_kas>
                         <dns_arvan>ArvanCloud</dns_arvan>
+                        <dns_artfiles>ArtFiles</dns_artfiles>
                         <dns_aurora>Aurora (PCextreme/Versio)</dns_aurora>
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
@@ -444,6 +445,7 @@
                         <dns_dgon>DigitalOcean</dns_dgon>
                         <dns_da>DirectAdmin</dns_da>
                         <dns_dnsexit>DNSExit</dns_dnsexit>
+                        <dns_dnshome>dnsHome</dns_dnshome>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
@@ -499,6 +501,7 @@
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_online>online.net</dns_online>
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
+                        <dns_oci>Oracle Cloud Infrastructure (OCI)</dns_oci>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove</dns_ovh>
                         <dns_pdns>PowerDNS.com</dns_pdns>
                         <dns_pleskxml>Plesk</dns_pleskxml>
@@ -632,6 +635,12 @@
                 <dns_dnsexit_api type="TextField">
                     <Required>N</Required>
                 </dns_dnsexit_api>
+                <dns_dnshome_password type="TextField">
+                    <Required>N</Required>
+                </dns_dnshome_password>
+                <dns_dnshome_subdomain type="TextField">
+                    <Required>N</Required>
+                </dns_dnshome_subdomain>
                 <dns_dnsimple_token type="TextField">
                     <Required>N</Required>
                 </dns_dnsimple_token>
@@ -945,6 +954,18 @@
                 <dns_nsupdate_key type="TextField">
                     <Required>N</Required>
                 </dns_nsupdate_key>
+                <dns_oci_cli_user type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_user>
+                <dns_oci_cli_tenancy type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_tenancy>
+                <dns_oci_cli_region type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_region>
+                <dns_oci_cli_key type="TextField">
+                    <Required>N</Required>
+                </dns_oci_cli_key>
                 <dns_online_key type="TextField">
                     <Required>N</Required>
                 </dns_online_key>
@@ -1123,6 +1144,12 @@
                 <dns_arvan_token type="TextField">
                     <Required>N</Required>
                 </dns_arvan_token>
+                <dns_artfiles_username type="TextField">
+                    <Required>N</Required>
+                </dns_artfiles_username>
+                <dns_artfiles_password type="TextField">
+                    <Required>N</Required>
+                </dns_artfiles_password>
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
