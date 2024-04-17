@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.5</version>
+   <version>1.0.6</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -145,8 +145,8 @@
       <virtualserver type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</mask>
+            <ValidationMessage>Should be a string between 1 and 31 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
             <Constraints>
                 <check001>
                     <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
