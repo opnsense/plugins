@@ -3,7 +3,7 @@
         <id>caddy.general.DynDnsIpVersions</id>
         <label>DynDns IP Version</label>
         <type>dropdown</type>
-        <help><![CDATA[Leave on None to set IPv4 A-Records and IPv6 AAAA-Records. Select "IPv4 only" for setting A-Records. Select "IPv6 only" for setting AAAA-Records.]]></help>
+        <help><![CDATA[Select "IPv4+IPv6" to set IPv4 A-Records and IPv6 AAAA-Records, "IPv4 only" for only A-Records, "IPv6 only" for only AAAA-Records.]]></help>
     </field>
     <field>
         <id>caddy.general.DynDnsCheckInterval</id>
