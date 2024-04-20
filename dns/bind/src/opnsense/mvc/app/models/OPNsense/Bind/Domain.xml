@@ -65,6 +65,14 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </allowrndcupdate>
+                <allowddnsupdate type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </allowddnsupdate>
+                <rpzzone type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </rpzzone>
                 <serial type="TextField"/>
                 <ttl type="IntegerField">
                     <Default>86400</Default>
