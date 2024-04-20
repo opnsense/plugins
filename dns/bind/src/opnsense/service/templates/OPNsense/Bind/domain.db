@@ -9,6 +9,21 @@ $TTL {{ domaindb.ttl }}
 {%             for record in helpers.sortDictList(OPNsense.bind.record.records.record, 'name', 'type' ) %}
 {%               if record.domain == domaindb['@uuid'] %}
 {{ record.name }}                {{ record.type }} {{ record.value }}
+{%             endif %}
+{%           endfor %}
+{%           if helpers.exists('dhcpd') and helpers.exists('OPNsense.bind.general.dhcpstaticmappings') and OPNsense.bind.general.dhcpstaticmappings == '1' %}
+{%             for interface_name, interface in dhcpd.items() %}
+{%               if 'staticmap' in interface %}
+{%                 for staticmapping in interface.staticmap %}
+{%                   if (('ddnsdomain' in staticmapping) or ('ddnsdomain' in interface)) and 'ipaddr' in staticmapping and 'hostname' in staticmapping %}
+{%                     set ddnsdomain=staticmapping.ddnsdomain if ('ddnsdomain' in staticmapping) else interface.ddnsdomain %}
+{%                     if domaindb.domainname == ddnsdomain %}
+{{ staticmapping.hostname }}                A {{ staticmapping.ipaddr }}
+{%                     elif domaindb.domainname == '.'.join(staticmapping.ipaddr.split('.')[-2::-1]) + '.in-addr.arpa' %}
+{{ staticmapping.ipaddr.split('.')[3] }}                PTR {{ staticmapping.hostname }}.{{ ddnsdomain }}.
+{%                     endif %}
+{%                   endif %}
+{%                 endfor %}
 {%               endif %}
 {%             endfor %}
 {%           endif %}
