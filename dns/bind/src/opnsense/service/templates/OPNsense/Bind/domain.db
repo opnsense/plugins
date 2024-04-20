@@ -8,9 +8,10 @@ $TTL {{ domaindb.ttl }}
 {%           if helpers.exists('OPNsense.bind.record.records.record') %}
 {%             for record in helpers.sortDictList(OPNsense.bind.record.records.record, 'name', 'type' ) %}
 {%               if record.domain == domaindb['@uuid'] %}
-{{ record.name }}                {{ record.type }} {{ record.value }}
-{%             endif %}
-{%           endfor %}
+{% if record.enabled == '0' %};{% endif %}{{ record.name }}                {{ record.type }} {{ record.value }}
+{%               endif %}
+{%             endfor %}
+{%           endif %}
 {%           if helpers.exists('dhcpd') and helpers.exists('OPNsense.bind.general.dhcpstaticmappings') and OPNsense.bind.general.dhcpstaticmappings == '1' %}
 {%             for interface_name, interface in dhcpd.items() %}
 {%               if 'staticmap' in interface %}
