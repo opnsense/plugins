@@ -273,8 +273,14 @@
     {% if emailValue %}
     email {{ emailValue }}
     {% endif %}
+
+    {#
+    #   Upstream docs: https://caddyserver.com/docs/caddyfile/options#auto-https
+    #   Note: if value is `on`, do not emit directive to caddyfile. `on` is default, and
+    #         should be omitted if that effect is desired.
+    #}
     {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
-    {% if autoHttpsValue %}
+    {% if autoHttpsValue != 'on' %}
     auto_https {{ autoHttpsValue }}
     {% endif %}
     import /usr/local/etc/caddy/caddy.d/*.global
