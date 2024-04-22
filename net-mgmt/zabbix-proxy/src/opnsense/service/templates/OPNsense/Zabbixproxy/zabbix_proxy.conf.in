@@ -34,7 +34,7 @@ LogFile=/var/log/zabbix/zabbix_proxy.log
 LogFileSize={{OPNsense.zabbixproxy.general.logFileSize}}
 {% endif %}
 {% endif %}
-{% if helpers.exists('OPNsense.zabbixproxy.general.debugLevel')
+{% if helpers.exists('OPNsense.zabbixproxy.general.debugLevel') %}
 DebugLevel={{OPNsense.zabbixproxy.general.debugLevel|replace("val_", "")}}
 {% endif %}
 PidFile=/var/run/zabbix/zabbix_proxy.pid
