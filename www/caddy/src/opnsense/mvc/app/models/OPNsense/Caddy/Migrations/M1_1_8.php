@@ -31,7 +31,7 @@ namespace OPNsense\Caddy\Migrations;
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
 
-class M1_1_7 extends BaseModelMigration
+class M1_1_8 extends BaseModelMigration
 {
     public function run($model)
     {
