@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.7</version>
+    <version>1.1.8</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -163,7 +163,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
                             <display>FromDomain,FromPort</display>
-                            <display_format>%s:%s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -215,7 +215,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
                             <display>FromDomain,FromPort</display>
-                            <display_format>%s:%s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -225,7 +225,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
                             <display>FromDomain,FromPort</display>
-                            <display_format>%s:%s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </subdomain>
