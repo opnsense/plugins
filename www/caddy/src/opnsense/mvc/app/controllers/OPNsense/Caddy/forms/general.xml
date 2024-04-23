@@ -30,4 +30,11 @@
         <type>checkbox</type>
         <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
     </field>
+    <field>
+        <id>caddy.general.GracePeriod</id>
+        <label>Grace Period</label>
+        <type>text</type>
+        <hint>10</hint>
+        <help><![CDATA[Defines the grace period for shutting down HTTP servers (i.e. during config changes or when Caddy is stopping) in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
+    </field>
 </form>
