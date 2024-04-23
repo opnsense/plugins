@@ -65,6 +65,13 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <GracePeriod type="IntegerField">
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
+                <Required>Y</Required>
+            </GracePeriod>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
