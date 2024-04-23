@@ -281,9 +281,8 @@
     # Important: Grace Period influences how fast the server can finish reloads with open connections, by forcing termination.
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
-    {% set gracePeriodValue = helpers.toList('Pischem.caddy.general.GracePeriod') | first %}
-    {% if gracePeriodValue %}
-    grace_period {{ gracePeriodValue }}s
+    {% if Pischem.caddy.general.GracePeriod %}
+    grace_period {{ Pischem.caddy.general.GracePeriod }}s
     {% endif %}
     import /usr/local/etc/caddy/caddy.d/*.global
 }
