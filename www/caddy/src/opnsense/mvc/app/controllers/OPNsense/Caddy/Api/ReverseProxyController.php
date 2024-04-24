@@ -41,9 +41,22 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*ReverseProxy Section*/
 
+    /*Search Function adjusted for the search filter dropdown*/
     public function searchReverseProxyAction($add_empty = '0')
     {
-        return $this->searchBase("reverseproxy.reverse", null, 'description');
+        // Get a comma-separated list of UUIDs from the request
+        $reverseUuids = $this->request->get('reverseUuids');
+        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
+
+        // Define the filter function to handle multiple UUIDs
+        $filterFunction = function ($modelItem) use ($uuidArray) {
+            $itemUuid = (string)$modelItem->getAttributes()['uuid'];
+            // Include the item if no UUIDs are provided (empty array) or if it's in the array of UUIDs
+            return empty($uuidArray) || in_array($itemUuid, $uuidArray, true);
+        };
+
+        // Return the search results filtered by the provided UUIDs, if any
+        return $this->searchBase("reverseproxy.reverse", null, 'description', $filterFunction);
     }
 
     public function setReverseProxyAction($uuid)
