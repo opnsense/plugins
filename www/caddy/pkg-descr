@@ -26,6 +26,11 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.5.5
+
+* Fix: "Apply" could hang when websockets are in use by clients. A grace period of 10s has been added in General Settings that forces to close all connections on config changes.
+* Add: In Reverse Proxy, a new dropdown can select one or multiple domains, filtering the Bootgrids of Domains, Subdomains and Handlers for the selected Domain.
+
 1.5.4
 
 * Fix: When pressing Apply, the Caddy service will be reloaded instead of restarted. This fixes long restart times and service interruptions.
