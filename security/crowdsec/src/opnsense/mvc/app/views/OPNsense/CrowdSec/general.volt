@@ -71,7 +71,7 @@
         the possibilities.</p>
 
         <p>For the latest plugin documentation, including how to use it with an external LAPI, see <a
-        href="https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_opnsense">Install
+        href="https://docs.crowdsec.net/u/getting_started/installation/opnsense">Install
         CrowdSec (OPNsense)</a></p>
 
         <p>A few remarks:</p>
