@@ -42,7 +42,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     /*ReverseProxy Section*/
 
     /*Search Function adjusted for the search filter dropdown*/
-    public function searchReverseProxyAction($add_empty = '0')
+    public function searchReverseProxyAction()
     {
         // Get a comma-separated list of UUIDs from the request
         $reverseUuids = $this->request->get('reverseUuids');
@@ -91,7 +91,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         $result = array("rows" => array());
 
         $mdlCaddy = new \OPNsense\Caddy\Caddy();
-        $reverseNodes = $mdlCaddy->getNodeByReference('reverseproxy.reverse')->iterateItems();
+        $reverseNodes = $mdlCaddy->reverseproxy->reverse->iterateItems();
 
         foreach ($reverseNodes as $item) {
             if (!empty($item->FromDomain)) {
@@ -114,7 +114,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     /*Subdomain Section*/
 
     /*Search Function adjusted for the search filter dropdown*/
-    public function searchSubdomainAction($add_empty = '0')
+    public function searchSubdomainAction()
     {
         $reverseUuids = $this->request->get('reverseUuids');
         $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
@@ -156,7 +156,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     /*Handler Section*/
     
     /*Search Function adjusted for the search filter dropdown*/
-    public function searchHandleAction($add_empty = '0')
+    public function searchHandleAction()
     {
         $reverseUuids = $this->request->get('reverseUuids');
         $uuidArray = explode(',', $reverseUuids);
@@ -203,7 +203,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* AccessList Section */
 
-    public function searchAccessListAction($add_empty = '0')
+    public function searchAccessListAction()
     {
         return $this->searchBase("reverseproxy.accesslist", null, 'description');
     }
@@ -231,7 +231,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* BasicAuth Section */
 
-    public function searchBasicAuthAction($add_empty = '0')
+    public function searchBasicAuthAction()
     {
         return $this->searchBase("reverseproxy.basicauth", null, 'description');
     }
@@ -279,7 +279,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /* Header Section */
 
-    public function searchHeaderAction($add_empty = '0')
+    public function searchHeaderAction()
     {
         return $this->searchBase("reverseproxy.header", null, 'description');
     }
