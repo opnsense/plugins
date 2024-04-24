@@ -31,6 +31,7 @@
 namespace OPNsense\Relayd;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 /**
  * Class Relayd
@@ -63,6 +64,107 @@ class Relayd extends BaseModel
     public function configClean()
     {
         return @unlink("/tmp/relayd.dirty");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+        foreach ($this->virtualserver->iterateItems() as $node) {
+            if (!$validateFullModel && !$node->isFieldChanged()) {
+                continue;
+            }
+            $key = $node->__reference;
+            if ($node->type == 'redirect') {
+                if (!in_array((string)$node->transport_tablemode, ['least-states', 'roundrobin'])) {
+                    $messages->appendMessage(
+                        new Message(
+                            sprintf(gettext('Scheduler "%s" not supported for redirects.'), $node->transport_tablemode),
+                            $key . ".transport_tablemode"
+                        )
+                    );
+                }
+                if (!in_array((string)$node->backuptransport_tablemode, ['least-states', 'roundrobin'])) {
+                    $messages->appendMessage(
+                        new Message(
+                            sprintf(gettext('Scheduler "%s" not supported for redirects.'), $node->transport_tablemode),
+                            $key . ".backuptransport_tablemode"
+                        )
+                    );
+                }
+                if ($node->transport_type == 'route' && empty((string)$node->routing_interface)) {
+                    $messages->appendMessage(
+                        new Message(gettext('Routing interface cannot be empty'), $key . ".routing_interface")
+                    );
+                }
+            } elseif ($node->type == 'relay') {
+                if ($node->transport_tablemode == 'least-states') {
+                    $messages->appendMessage(
+                        new Message(
+                            sprintf(gettext('Scheduler "%s" not supported for relays.'), $node->transport_tablemode),
+                            $key . ".transport_tablemode"
+                        )
+                    );
+                }
+                if ($node->backuptransport_tablemode == 'least-states') {
+                    $messages->appendMessage(
+                        new Message(
+                            sprintf(
+                                gettext('Scheduler "%s" not supported for relays.'),
+                                $node->backuptransport_tablemode
+                            ),
+                            $key . ".backuptransport_tablemode"
+                        )
+                    );
+                }
+            }
+            foreach ($this->tablecheck->iterateItems() as $node) {
+                if (!$validateFullModel && !$node->isFieldChanged()) {
+                    continue;
+                }
+                $key = $node->__reference;
+                switch ((string)$node->type) {
+                    case 'send':
+                        if (empty((string)$node->expect)) {
+                            $messages->appendMessage(
+                                new Message(gettext('Expect Pattern cannot be empty.'), $key . ".expect")
+                            );
+                        }
+                        break;
+                    case 'script':
+                        if (empty((string)$node->path)) {
+                            $messages->appendMessage(
+                                new Message(gettext('Script path cannot be empty.'), $key . ".path")
+                            );
+                        }
+                        break;
+                    case 'http':
+                        if (empty((string)$node->path)) {
+                            $messages->appendMessage(
+                                new Message(gettext('Path cannot be empty.'), $key . ".path")
+                            );
+                        }
+                        if (empty((string)$node->code) && empty((string)$node->digest)) {
+                            $messages->appendMessage(
+                                new Message(
+                                    gettext('Provide one of Response Code or Message Digest.'),
+                                    $key . ".code"
+                                )
+                            );
+                            $messages->appendMessage(
+                                new Message(
+                                    gettext('Provide one of Response Code or Message Digest.'),
+                                    $key . ".digest"
+                                )
+                            );
+                        }
+                        break;
+                }
+            }
+        }
+        return $messages;
     }
 
     /**
