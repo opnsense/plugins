@@ -60,6 +60,12 @@
         <help>Enter a secret to use with one-time password generation.</help>
     </field>
     <field>
+        <id>general.allowinsecure</id>
+        <label>Allow Insecure Ciphers</label>
+        <type>checkbox</type>
+        <help>This option allows the use of insecure ciphers.</help>
+    </field>
+    <field>
         <id>general.protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
