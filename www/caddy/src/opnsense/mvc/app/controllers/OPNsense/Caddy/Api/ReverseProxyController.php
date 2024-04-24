@@ -70,6 +70,32 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
     }
+ 
+    /*Function for the search filter dropdown in the bootgrid*/
+    public function getAllReverseDomainsAction()
+    {
+        $this->sessionClose(); // Close session early for performance
+        $result = array("rows" => array());
+
+        $mdlCaddy = new \OPNsense\Caddy\Caddy();
+        $reverseNodes = $mdlCaddy->getNodeByReference('reverseproxy.reverse')->iterateItems();
+
+        foreach ($reverseNodes as $item) {
+            if (!empty($item->FromDomain)) {
+                // Conditionally concatenate port if it exists
+                $domain = (string)$item->FromDomain;
+                $port = (string)$item->FromPort;
+                $combinedDomainPort = $domain . (!empty($port) ? ':' . $port : '');
+
+                $result['rows'][] = array(
+                    'id' => (string)$item->getAttributes()['uuid'],
+                    'domainPort' => $combinedDomainPort  // Combined domain and port, conditionally adding port
+                );
+            }
+        }
+
+        return $result;
+    }
 
 
     /*Subdomain Section*/
@@ -106,10 +132,25 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
 
     /*Handler Section*/
-
+    
+    /*Function adjusted for the search filter dropdown*/
     public function searchHandleAction($add_empty = '0')
     {
-        return $this->searchBase("reverseproxy.handle", null, 'description');
+        $reverseUuids = $this->request->get('reverseUuids');
+        $uuidArray = explode(',', $reverseUuids);
+
+        if (empty($reverseUuids)) {
+            // If no UUIDs are provided, do not apply any filter, return all records
+            return $this->searchBase("reverseproxy.handle", null, 'description');
+        } else {
+            // Apply the filter only if UUIDs are provided
+            $filterFunction = function ($modelItem) use ($uuidArray) {
+                $modelUUID = (string)$modelItem->reverse;
+                return in_array($modelUUID, $uuidArray, true);
+            };
+
+            return $this->searchBase("reverseproxy.handle", null, 'description', $filterFunction);
+        }
     }
 
     public function setHandleAction($uuid)
