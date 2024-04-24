@@ -220,7 +220,7 @@
     .common-filter {
         text-align: right;
         margin-top: 20px;
-        margin-bottom: 20px;
+        margin-right: 5px;
         padding: 0 15px;  // Align with the tables
     }
 
@@ -240,7 +240,7 @@
 
     <!-- Selectpicker for filter by domain -->
     <div class="form-group common-filter">
-        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="400px" data-size="7" title="Filter by Domain">
+        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="330px" data-size="7" title="Filter by Domain">
             <!-- Options will be populated dynamically using JavaScript/Ajax -->
         </select>
     </div>
