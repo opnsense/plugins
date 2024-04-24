@@ -100,9 +100,18 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Subdomain Section*/
 
+    /*Search Function adjusted for the search filter dropdown*/
     public function searchSubdomainAction($add_empty = '0')
     {
-        return $this->searchBase("reverseproxy.subdomain", null, 'description');
+        $reverseUuids = $this->request->get('reverseUuids');
+        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
+
+        $filterFunction = function ($modelItem) use ($uuidArray) {
+            // Filtering on domain UUIDs referenced by subdomains
+            return empty($uuidArray) || in_array((string)$modelItem->reverse, $uuidArray, true);
+        };
+
+        return $this->searchBase("reverseproxy.subdomain", null, 'description', $filterFunction);
     }
 
     public function setSubdomainAction($uuid)
@@ -133,7 +142,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     /*Handler Section*/
     
-    /*Function adjusted for the search filter dropdown*/
+    /*Search Function adjusted for the search filter dropdown*/
     public function searchHandleAction($add_empty = '0')
     {
         $reverseUuids = $this->request->get('reverseUuids');
