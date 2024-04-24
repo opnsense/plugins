@@ -26,6 +26,17 @@
 
 <script>
     $(document).ready(function() {
+    
+        // Function to handle the search filter request modification
+        function addDomainFilterToRequest(request) {
+            var selectedDomains = $('#reverseFilter').val();
+            if (selectedDomains && selectedDomains.length > 0) {
+                request['reverseUuids'] = selectedDomains.join(',');
+            }
+            return request;
+        }
+    
+        // Bootgrid Setup
         $("#reverseProxyGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchReverseProxy/',
             get:'/api/caddy/ReverseProxy/getReverseProxy/',
@@ -33,6 +44,9 @@
             add:'/api/caddy/ReverseProxy/addReverseProxy/',
             del:'/api/caddy/ReverseProxy/delReverseProxy/',
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseSubdomainGrid").UIBootgrid({
@@ -42,6 +56,9 @@
             add:'/api/caddy/ReverseProxy/addSubdomain/',
             del:'/api/caddy/ReverseProxy/delSubdomain/',
             toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseHandleGrid").UIBootgrid({
@@ -52,13 +69,7 @@
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
             options: {
-                requestHandler: function(request) {
-                    var selectedDomains = $('#reverseFilter').val();
-                    if (selectedDomains && selectedDomains.length > 0) {
-                        request['reverseUuids'] = selectedDomains.join(',');
-                    }
-                    return request;
-                }
+                requestHandler: addDomainFilterToRequest
             }
         });
 
@@ -177,7 +188,9 @@
         loadDomainFilters();
         
         // Reload Bootgrid on filter change
-        $('#reverseFilter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        $('#reverseFilter').on('changed.bs.select', function() {
+            $("#reverseProxyGrid").bootgrid("reload");
+            $("#reverseSubdomainGrid").bootgrid("reload");
             $("#reverseHandleGrid").bootgrid("reload");
         });
         
