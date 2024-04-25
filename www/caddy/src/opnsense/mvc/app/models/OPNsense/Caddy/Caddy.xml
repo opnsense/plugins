@@ -76,11 +76,11 @@
             <LogLevel type="OptionField">
                 <BlankDesc>INFO</BlankDesc>
                 <OptionValues>
-                    <DEBUG>Cloudflare</DEBUG>
-                    <WARN>Duck DNS</WARN>
-                    <ERROR>DigitalOcean</ERROR>
-                    <PANIC>GoDaddy</PANIC>
-                    <FATAL>Gandi</FATAL>
+                    <DEBUG>DEBUG</DEBUG>
+                    <WARN>WARN</WARN>
+                    <ERROR>ERROR</ERROR>
+                    <PANIC>PANIC</PANIC>
+                    <FATAL>FATAL</FATAL>
                 </OptionValues>
             </LogLevel>
             <DynDnsSimpleHttp type="UrlField">
