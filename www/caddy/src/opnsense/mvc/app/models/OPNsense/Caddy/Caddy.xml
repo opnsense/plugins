@@ -73,6 +73,16 @@
                 <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
                 <Required>Y</Required>
             </LogAccessPlainKeep>
+            <LogLevel type="OptionField">
+                <BlankDesc>INFO</BlankDesc>
+                <OptionValues>
+                    <DEBUG>Cloudflare</DEBUG>
+                    <WARN>Duck DNS</WARN>
+                    <ERROR>DigitalOcean</ERROR>
+                    <PANIC>GoDaddy</PANIC>
+                    <FATAL>Gandi</FATAL>
+                </OptionValues>
+            </LogLevel>
             <DynDnsSimpleHttp type="UrlField">
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
