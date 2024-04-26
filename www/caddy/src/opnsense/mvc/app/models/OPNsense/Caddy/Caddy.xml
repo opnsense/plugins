@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.8</version>
+    <version>1.1.9</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -65,6 +65,13 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <GracePeriod type="IntegerField">
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
+                <Required>Y</Required>
+            </GracePeriod>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
