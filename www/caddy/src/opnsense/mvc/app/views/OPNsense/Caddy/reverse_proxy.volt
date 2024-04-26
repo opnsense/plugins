@@ -224,7 +224,7 @@
         padding: 0 15px;  // Align with the tables
     }
 
-    .selectpicker {
+    #reverseFilter {
         width: 100% !important;  // Ensure it fills the container
     }
 </style>
