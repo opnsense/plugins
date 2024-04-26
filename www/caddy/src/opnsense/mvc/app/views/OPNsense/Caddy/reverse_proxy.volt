@@ -26,6 +26,17 @@
 
 <script>
     $(document).ready(function() {
+    
+        // Function to handle the search filter request modification
+        function addDomainFilterToRequest(request) {
+            var selectedDomains = $('#reverseFilter').val();
+            if (selectedDomains && selectedDomains.length > 0) {
+                request['reverseUuids'] = selectedDomains.join(',');
+            }
+            return request;
+        }
+    
+        // Bootgrid Setup
         $("#reverseProxyGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchReverseProxy/',
             get:'/api/caddy/ReverseProxy/getReverseProxy/',
@@ -33,6 +44,9 @@
             add:'/api/caddy/ReverseProxy/addReverseProxy/',
             del:'/api/caddy/ReverseProxy/delReverseProxy/',
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseSubdomainGrid").UIBootgrid({
@@ -42,6 +56,9 @@
             add:'/api/caddy/ReverseProxy/addSubdomain/',
             del:'/api/caddy/ReverseProxy/delSubdomain/',
             toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseHandleGrid").UIBootgrid({
@@ -51,6 +68,9 @@
             add:'/api/caddy/ReverseProxy/addHandle/',
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#accessListGrid").UIBootgrid({
@@ -143,9 +163,71 @@
 
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
+        
+        // Filter function for domains
+        function loadDomainFilters() {
+            $.ajax({
+                url: '/api/caddy/ReverseProxy/getAllReverseDomains', // custom API endpoint to get uuid and domainport combinations
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var select = $('#reverseFilter');
+                    select.empty(); // Clear current options
+                    if (data && data.rows) {
+                        data.rows.forEach(function(item) {
+                            select.append($('<option>').val(item.id).text(item.domainPort));
+                        });
+                    }
+                    select.selectpicker('refresh'); // Refresh selectpicker to update the UI
+                },
+                error: function() {
+                    $('#reverseFilter').html('<option value="">Failed to load data</option>').selectpicker('refresh');
+                }
+            });
+        }
+        loadDomainFilters();
+        
+        // Reload Bootgrid on filter change
+        $('#reverseFilter').on('changed.bs.select', function() {
+            $("#reverseProxyGrid").bootgrid("reload");
+            $("#reverseSubdomainGrid").bootgrid("reload");
+            $("#reverseHandleGrid").bootgrid("reload");
+        });
+        
+        // Control the visibility of selectpicker for filter by domain
+        function toggleSelectPicker(tab) {
+            if (tab === 'handlesTab' || tab === 'domainsTab') {
+                $('.common-filter').show();
+            } else {
+                $('.common-filter').hide();
+            }
+        }
+
+        // Initialize visibility based on the active tab on page load
+        var activeTab = $('#maintabs .active a').attr('href').replace('#', '');
+        toggleSelectPicker(activeTab);
+
+        // Change event when switching tabs
+        $('#maintabs a').on('click', function (e) {
+            var currentTab = $(this).attr('href').replace('#', '');
+            toggleSelectPicker(currentTab);
+        });
 
     });
 </script>
+
+<style>
+    .common-filter {
+        text-align: right;
+        margin-top: 20px;
+        margin-right: 5px;
+        padding: 0 15px;  // Align with the tables
+    }
+
+    #reverseFilter {
+        width: 100% !important;  // Ensure it fills the container
+    }
+</style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
@@ -155,6 +237,13 @@
 </ul>
 
 <div class="tab-content content-box">
+
+    <!-- Selectpicker for filter by domain -->
+    <div class="form-group common-filter">
+        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="340px" data-size="7" title="Filter by Domain">
+            <!-- Options will be populated dynamically using JavaScript/Ajax -->
+        </select>
+    </div>
 
     <!-- Reverse Proxy Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
