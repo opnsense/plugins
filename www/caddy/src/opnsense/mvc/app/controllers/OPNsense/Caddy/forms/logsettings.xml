@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>caddy.general.LogLevel</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select the minimum global Log Level. "INFO" is the default and shouldn't be changed without a reason, since that level displays the ACME Client messages for automatic certificates. This setting doesn't influence the HTTP Access logs, they're always using INFO, which is their lowest supported Log Level.]]></help>
+    </field>
+    <field>
         <id>caddy.general.LogCredentials</id>
         <label>Log Credentials</label>
         <type>checkbox</type>

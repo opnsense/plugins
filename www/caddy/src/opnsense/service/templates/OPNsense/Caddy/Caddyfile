@@ -48,6 +48,9 @@
         format json {
             time_format rfc3339
         }
+        {% if generalSettings.LogLevel %}
+        level {{ generalSettings.LogLevel }}
+        {% endif %}
     }
 
     {#

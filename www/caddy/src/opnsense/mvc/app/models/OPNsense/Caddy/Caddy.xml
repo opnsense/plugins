@@ -73,6 +73,16 @@
                 <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
                 <Required>Y</Required>
             </LogAccessPlainKeep>
+            <LogLevel type="OptionField">
+                <BlankDesc>INFO</BlankDesc>
+                <OptionValues>
+                    <DEBUG>DEBUG</DEBUG>
+                    <WARN>WARN</WARN>
+                    <ERROR>ERROR</ERROR>
+                    <PANIC>PANIC</PANIC>
+                    <FATAL>FATAL</FATAL>
+                </OptionValues>
+            </LogLevel>
             <DynDnsSimpleHttp type="UrlField">
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
