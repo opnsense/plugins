@@ -1,6 +1,6 @@
 PLUGIN_NAME=		web-proxy-sso
 PLUGIN_VERSION=		2.2
-PLUGIN_REVISION=	2
+PLUGIN_REVISION=	3
 PLUGIN_COMMENT=		Kerberos authentication module
 PLUGIN_DEPENDS=		msktutil cyrus-sasl-gssapi
 PLUGIN_MAINTAINER=	evbevz@gmail.com

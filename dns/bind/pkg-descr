@@ -6,9 +6,22 @@ necessary for asking and answering name service questions.
 
 WWW: https://www.isc.org
 
-
 Plugin Changelog
 ================
+
+1.31
+
+* Do not add the update-policy if the zone type is secondary (contributed by Brendan Bank)
+* Adjust severity log levels (contributed by kulikov-a)
+
+1.30
+
+* Add ability for RNDC key updates from other nameservers (contributed by Joachim Friberg)
+
+1.29
+
+* Migrate General Log to Syslog
+* Add Check & Preview button to Primary Zones grid
 
 1.28
 

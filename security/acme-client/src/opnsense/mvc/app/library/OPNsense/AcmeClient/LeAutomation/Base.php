@@ -71,6 +71,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--cert-home %s', sprintf(self::ACME_CERT_HOME_DIR, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--certpath %s', sprintf(self::ACME_CERT_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', sprintf(self::ACME_KEY_FILE, $this->cert_id));
         $this->acme_args[] = LeUtils::execSafe('--capath %s', sprintf(self::ACME_CHAIN_FILE, $this->cert_id));
@@ -128,10 +129,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . ' '
           . '--deploy '
           . implode(' ', $this->acme_args);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
-        $proc = proc_open($acmecmd, $proc_desc, $proc_pipes, null, $proc_env);
 
         // Run acme.sh command
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
         // acme.sh records the last used deploy hook and would automatically

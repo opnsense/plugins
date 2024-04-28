@@ -197,14 +197,14 @@ class LeUtils
             // This workaround ensures that the accurate return code
             // is reliably returned.
             fclose($proc_pipes[0]);
-            $output = array();
-            while (!feof($proc_pipes[1])) {
-                $output[] = rtrim(fgets($proc_pipes[1], 1024), "\n");
+            stream_set_blocking($proc_pipes[1], false);
+            stream_set_blocking($proc_pipes[2], false);
+            while (!feof($proc_pipes[1]) || !feof($proc_pipes[2])) {
+                $stdout = fread($proc_pipes[1], 1024);
+                $stderr = fread($proc_pipes[2], 1024);
+                usleep(50000);
             }
             fclose($proc_pipes[1]);
-            while (!feof($proc_pipes[2])) {
-                $output[] = rtrim(fgets($proc_pipes[2], 1024), "\n");
-            }
             fclose($proc_pipes[2]);
 
             // Get exit code

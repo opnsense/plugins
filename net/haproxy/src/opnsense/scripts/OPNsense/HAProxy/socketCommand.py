@@ -4,7 +4,6 @@ import sys
 import argparse
 import traceback
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 from haproxy.conn import HaPConn
 from haproxy import cmds
 

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/openconnect/general</mount>
     <description>Openconnect configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -58,6 +58,10 @@
         <tokensecret type="TextField">
             <Required>N</Required>
         </tokensecret>
+        <allowinsecure type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </allowinsecure>
         <protocol type="OptionField">
             <Default>anyconnect</Default>
             <Required>Y</Required>

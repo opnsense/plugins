@@ -387,6 +387,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>dnsHome</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnshome</style>
+    </field>
+    <field>
+        <id>validation.dns_dnshome_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_dnshome_subdomain</id>
+        <label>Subdomain</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>DNSimple</label>
         <type>header</type>
         <style>table_dns table_dns_dnsimple</style>
@@ -788,12 +803,7 @@
         <help>Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2</help>
     </field>
     <field>
-        <label>lexicon</label>
-        <type>header</type>
-        <style>table_dns table_dns_lexicon</style>
-    </field>
-    <field>
-        <label>NOTE: A DNS sleep time of at least 1000 may be required.</label>
+        <label>lexicon (DEPRECATED)</label>
         <type>header</type>
         <style>table_dns table_dns_lexicon</style>
     </field>
@@ -1097,6 +1107,32 @@
     <field>
         <label><![CDATA[Please manually install the plugin "os-bind" to enable support for it.]]></label>
         <type>info</type>
+    </field>
+    <field>
+        <label>Oracle Cloud Infrastructure (OCI)</label>
+        <type>header</type>
+        <style>table_dns table_dns_oci</style>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_user</id>
+        <label>OCID of the user calling the API</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_tenancy</id>
+        <label>OCID of your tenancy</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_region</id>
+        <label>Your OCI region</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_oci_cli_key</id>
+        <label>API Signing key in PEM format</label>
+        <type>textbox</type>
+        <help><![CDATA[Please refer to the <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-Oracle-Cloud-Infrastructure-DNS">acme.sh documentation</a> for further information.]]></help>
     </field>
     <field>
         <label>OVH</label>
@@ -1489,6 +1525,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>ArtFiles DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_artfiles</style>
+    </field>
+    <field>
+        <id>validation.dns_artfiles_username</id>
+        <label>API Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_artfiles_password</id>
+        <label>API Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Hetzner DNS API</label>
         <type>header</type>
         <style>table_dns table_dns_hetzner</style>
@@ -1663,6 +1714,31 @@
         <type>password</type>
     </field>
     <field>
+        <label>nic.ru</label>
+        <type>header</type>
+        <style>table_dns table_dns_nic</style>
+    </field>
+    <field>
+        <id>validation.dns_nic_username</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_client</id>
+        <label>ClientId</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_nic_secret</id>
+        <label>ClientSecret</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
@@ -1675,6 +1751,136 @@
     <field>
         <id>validation.dns_world4you_password</id>
         <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Aurora (PCextreme/Versio)</label>
+        <type>header</type>
+        <style>table_dns table_dns_aurora</style>
+    </field>
+    <field>
+        <id>validation.dns_aurora_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_aurora_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ConoHa</label>
+        <type>header</type>
+        <style>table_dns table_dns_conoha</style>
+    </field>
+    <field>
+        <id>validation.dns_conoha_user</id>
+        <label>User</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_tenantid</id>
+        <label>Tenant ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_conoha_idapi</id>
+        <label>Identity Service API</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Constellix</label>
+        <type>header</type>
+        <style>table_dns table_dns_constellix</style>
+    </field>
+    <field>
+        <id>validation.dns_constellix_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_constellix_secret</id>
+        <label>Secret</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Exoscale</label>
+        <type>header</type>
+        <style>table_dns table_dns_exoscale</style>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_exoscale_secret</id>
+        <label>Secret Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>internetbs.net</label>
+        <type>header</type>
+        <style>table_dns table_dns_internetbs</style>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_internetbs_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>PointHQ</label>
+        <type>header</type>
+        <style>table_dns table_dns_pointhq</style>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_pointhq_email</id>
+        <label>E-Mail</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Rackspace</label>
+        <type>header</type>
+        <style>table_dns table_dns_rackspace</style>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rackspace_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>rage4</label>
+        <type>header</type>
+        <style>table_dns table_dns_rage4</style>
+    </field>
+    <field>
+        <id>validation.dns_rage4_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_rage4_token</id>
+        <label>Token</label>
         <type>password</type>
     </field>
 </form>

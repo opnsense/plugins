@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.10</version>
+    <version>1.0.12</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -76,6 +76,19 @@
             <MaximumValue>1000</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </logsize>
+        <general_log_level type="OptionField">
+            <OptionValues>
+                <crit value="critical">Critical</crit>
+                <error value="error">Error</error>
+                <warn value="warning">Warning</warn>
+                <notice value="notice">Notice</notice>
+                <info value="info">Informational</info>
+                <debug value="debug">Debug</debug>
+                <dynamic value="dynamic">Dynamic</dynamic>
+            </OptionValues>
+            <Required>Y</Required>
+            <default>info</default>
+        </general_log_level>
         <maxcachesize type="IntegerField">
             <default>80</default>
             <Required>Y</Required>

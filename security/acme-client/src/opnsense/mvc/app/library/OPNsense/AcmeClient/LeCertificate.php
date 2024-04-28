@@ -95,6 +95,7 @@ class LeCertificate extends LeCommon
 
         // Store acme filenames
         $this->acme_args[] = LeUtils::execSafe('--home %s', self::ACME_HOME_DIR);
+        $this->acme_args[] = LeUtils::execSafe('--cert-home %s', sprintf(self::ACME_CERT_HOME_DIR, $this->config->id));
         $this->acme_args[] = LeUtils::execSafe('--certpath %s', $this->cert_file);
         $this->acme_args[] = LeUtils::execSafe('--keypath %s', $this->cert_key_file);
         $this->acme_args[] = LeUtils::execSafe('--capath %s', $this->cert_chain_file);
@@ -598,10 +599,14 @@ class LeCertificate extends LeCommon
         foreach ($automations as $auto_uuid) {
             $autoFactory = new LeAutomationFactory();
             $automation = $autoFactory->getAutomation($auto_uuid);
-            $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
-            // Ignore invalid automations.
-            if ($automation->prepare()) {
-                $automation->run();
+            // Skip invalid automations.
+            if (!is_null($automation)) {
+                $automation->init($this->getId(), (string)$this->config->name, (string)$this->config->account, $this->cert_ecc);
+                if ($automation->prepare()) {
+                    $automation->run();
+                }
+            } else {
+                LeUtils::log_error("ignoring invalid automation: ${auto_uuid}");
             }
         }
 

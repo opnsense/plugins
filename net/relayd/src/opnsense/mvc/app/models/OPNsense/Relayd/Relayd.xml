@@ -1,6 +1,6 @@
 <model>
    <mount>//OPNsense/relayd</mount>
-   <version>1.0.5</version>
+   <version>1.0.6</version>
    <description>Relayd settings</description>
    <items>
       <general>
@@ -82,7 +82,7 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <hosts type="ModelRelationField">
@@ -145,8 +145,8 @@
       <virtualserver type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            <mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</mask>
+            <ValidationMessage>Should be a string between 1 and 31 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
             <Constraints>
                 <check001>
                     <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
@@ -155,7 +155,7 @@
             </Constraints>
          </name>
          <enabled type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <type type="OptionField">
@@ -242,7 +242,8 @@
             <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
          </transport_timeout>
          <transport_tablemode type="OptionField">
-            <Required>N</Required>
+            <Required>Y</Required>
+            <default>roundrobin</default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -305,7 +306,8 @@
             </Constraints>
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
-            <Required>N</Required>
+            <Required>Y</Required>
+            <default>roundrobin</default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>

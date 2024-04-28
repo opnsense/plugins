@@ -6,6 +6,10 @@ the Juniper SSL VPN which is now known as Pulse Connect Secure.
 Plugin Changelog
 ================
 
+1.4.6
+
+* Add otion to allow insecure ciphers
+
 1.4.5
 
 * Allow ":" and "/" characters in user name

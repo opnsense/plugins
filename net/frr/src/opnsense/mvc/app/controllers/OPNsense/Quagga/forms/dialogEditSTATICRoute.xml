@@ -1,0 +1,25 @@
+<form>
+  <field>
+    <id>route.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>route.network</id>
+    <label>Network</label>
+    <type>text</type>
+    <help>Defines the target for the static route, in CIDR notation.</help>
+  </field>
+  <field>
+    <id>route.gateway</id>
+    <label>Gateway (optional)</label>
+    <type>text</type>
+    <help>Optional gateway IP address for this route.</help>
+  </field>
+  <field>
+    <id>route.interfacename</id>
+    <label>Interface</label>
+    <type>dropdown</type>
+    <help>Select an interface where this settings apply to.</help>
+  </field>
+</form>

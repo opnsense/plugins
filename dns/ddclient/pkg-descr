@@ -6,6 +6,19 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.21
+
+* Add Netcup support (contributed by Ingo Lafrenz)
+* Use '==' instead of 'is' in Domeneshop Python support (contributed by ssmendon)
+* Update DNS record instead of overwriting in Cloudflare Python support (contributed by lin-xianming)
+* Improve service information fetch by avoiding creation of a model
+
+1.20
+
+* Add system parameter to native dyndns2 requesto (contributed by Jakub Gargul)
+* Add Digitalocean support (contributed by Mathias Schneuwly)
+* Add Mythin Beasts support (contributed by PeterF)
+
 1.19
 
 * Add Porkbun support (contributed by briandur)

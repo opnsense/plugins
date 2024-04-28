@@ -5256,7 +5256,7 @@ fieldset[disabled] .btn-link {
 }
 
 .btn-xs, .btn-group-xs > .btn {
-  padding: 1px 5px;
+  padding: 1px 4px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
@@ -8530,13 +8530,13 @@ button.close {
   position: relative;
   width: auto;
   margin: 62px 10px 10px 10px;
-  border: 1px solid #303030;
+  border: none;
 }
 
 .modal-content {
   position: relative;
   background-color: #383838;
-  border: 1px solid #191919;
+  border: none;
   border-radius: 3px;
   -webkit-box-shadow: 0 5px 15px rgb(30, 30, 30);
   box-shadow: 0 5px 15px rgb(5, 5, 5);
@@ -10580,11 +10580,6 @@ h2 {
 
 label.btn.au-target {
   color: #EAC80A !important;
-}
-
-.btn-secondary {
-  background-color: #262626 !important;
-  border-color: #191919 !important;
 }
 
 .disabled {

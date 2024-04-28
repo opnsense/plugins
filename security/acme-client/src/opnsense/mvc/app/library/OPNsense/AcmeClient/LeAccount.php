@@ -224,6 +224,9 @@ class LeAccount extends LeCommon
                 return false;
             }
 
+            // Fix account config
+            $this->fixConfig();
+
             // Update account status.
             LeUtils::log_error('account registration successful for ' . $this->config->name);
             $this->setStatus(200);
@@ -232,5 +235,35 @@ class LeAccount extends LeCommon
         }
 
         return true;
+    }
+
+    /**
+     * Remove CERT_HOME property from account config,
+     * otherwise --cert-home will be ignored by acme.sh.
+     */
+    public function fixConfig()
+    {
+        $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . (string)$this->config->id . '_' . $this->ca_compat;
+        $account_conf_file = $account_conf_dir . '/account.conf';
+
+        if (is_dir($account_conf_dir)) {
+            if (is_file($account_conf_file)) {
+                // Parse config file and remove property
+                $account_conf = parse_ini_file($account_conf_file);
+                if (isset($account_conf['CERT_HOME'])) {
+                    unset($account_conf['CERT_HOME']);
+                }
+
+                // Convert array back to ini file format
+                $new_account_conf = array();
+                foreach ($account_conf as $key => $value) {
+                    $new_account_conf[] = "${key}='${value}'";
+                }
+
+                // Write changes back to file
+                file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
+                chmod($account_conf_file, 0600);
+            }
+        }
     }
 }

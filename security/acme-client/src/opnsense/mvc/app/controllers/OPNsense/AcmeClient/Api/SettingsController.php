@@ -347,14 +347,14 @@ class SettingsController extends ApiMutableModelControllerBase
                                     // Link to ACME Action is currently missing: add it!
                                     if (!empty((string)$_actions)) {
                                         // Extend existing string.
-                                        $_actions .= ",${action_ref}";
+                                        $_actions .= ",{$action_ref}";
                                     } else {
                                         // First linked Action for this frontend.
                                         $_actions = $action_ref;
                                     }
                                     // Add modified list of linked Actions to frontend.
                                     $frontend->linkedActions = $_actions;
-                                    $this->getLogger()->error("AcmeClient: HAProxy integration: updating frontend ${_frontend}");
+                                    $this->getLogger()->error("AcmeClient: HAProxy integration: updating frontend {$_frontend}");
                                     // We need to write changes to config.
                                     $integration_changes = true;
                                 }

@@ -72,6 +72,10 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </allowquery>
+                <allowrndcupdate type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </allowrndcupdate>
                 <serial type="TextField">
                     <Required>N</Required>
                 </serial>

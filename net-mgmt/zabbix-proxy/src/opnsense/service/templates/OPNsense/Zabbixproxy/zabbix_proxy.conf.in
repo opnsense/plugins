@@ -25,7 +25,18 @@ ListenPort={{ OPNsense.zabbixproxy.general.listenport }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.sourceip') and OPNsense.zabbixproxy.general.sourceip != '' %}
 SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.syslogEnable') and OPNsense.zabbixproxy.general.syslogEnable == '1' %}
+LogType=system
+{% else %}
+LogType=file
 LogFile=/var/log/zabbix/zabbix_proxy.log
+{% if helpers.exists('OPNsense.zabbixproxy.general.logFileSize') %}
+LogFileSize={{OPNsense.zabbixproxy.general.logFileSize}}
+{% endif %}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.debugLevel') %}
+DebugLevel={{OPNsense.zabbixproxy.general.debugLevel|replace("val_", "")}}
+{% endif %}
 PidFile=/var/run/zabbix/zabbix_proxy.pid
 DBName=/var/db/zabbix/%%PLUGIN_VARIANT%%_proxy.db
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxyofflinebuffer') and OPNsense.zabbixproxy.general.proxyofflinebuffer != '' %}

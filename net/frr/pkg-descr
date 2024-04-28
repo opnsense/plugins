@@ -12,6 +12,19 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.39
+
+* Add plain password authentication to OSPF
+* Set multihop value to 255 (contributed by Cogan Ng Jun Lin)
+* Add distance to BGP
+* Add BGP peer-group support
+* Add plain password authentication to OSPF
+* Set multihop value to 255 (contributed by Cogan Ng Jun Lin)
+
+1.38
+
+* Add "soft-reconfiguration inbound" neighbor option
+
 1.37
 
 * Add Adjacency Logging to OSPF

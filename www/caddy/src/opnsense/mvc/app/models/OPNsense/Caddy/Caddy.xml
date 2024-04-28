@@ -1,0 +1,376 @@
+<model>
+    <mount>//Pischem/caddy</mount>
+    <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
+    <version>1.1.9</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <TlsEmail type="EmailField">
+                <ValidationMessage>Please enter a valid email address.</ValidationMessage>
+            </TlsEmail>
+            <TlsAutoHttps type="OptionField">
+                <BlankDesc>On (default)</BlankDesc>
+                <OptionValues>
+                    <off>Off</off>
+                    <disable_redirects>Disable Redirects</disable_redirects>
+                    <disable_certs>Disable Certs</disable_certs>
+                    <ignore_loaded_certs>Ignore Loaded Certs</ignore_loaded_certs>
+                </OptionValues>
+            </TlsAutoHttps>
+            <TlsDnsProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
+                <OptionValues>
+                    <cloudflare>Cloudflare</cloudflare>
+                    <duckdns>Duck DNS</duckdns>
+                    <digitalocean>DigitalOcean</digitalocean>
+                    <godaddy>GoDaddy</godaddy>
+                    <gandi>Gandi</gandi>
+                    <ionos>IONOS</ionos>
+                    <desec>Desec</desec>
+                    <porkbun>Porkbun</porkbun>
+                    <route53>Route53</route53>
+                    <acmedns>ACME-DNS</acmedns>
+                    <googleclouddns>Google Cloud DNS</googleclouddns>
+                    <azure>Azure</azure>
+                    <ovh>OVH</ovh>
+                    <namecheap>Namecheap</namecheap>
+                    <netlify>Netlify</netlify>
+                    <powerdns>PowerDNS</powerdns>
+                    <ddnss>DDNSS</ddnss>
+                    <njalla>Njalla</njalla>
+                    <linode>Linode</linode>
+                    <tencentcloud>Tencent Cloud</tencentcloud>
+                    <dinahosting>Dinahosting</dinahosting>
+                    <hexonet>Hexonet</hexonet>
+                    <mailinabox>Mail-in-a-Box</mailinabox>
+                </OptionValues>
+            </TlsDnsProvider>
+            <TlsDnsApiKey type="TextField"/>
+            <TlsDnsSecretApiKey type="TextField"/>
+            <TlsDnsOptionalField1 type="TextField"/>
+            <TlsDnsOptionalField2 type="TextField"/>
+            <TlsDnsOptionalField3 type="TextField"/>
+            <TlsDnsOptionalField4 type="TextField"/>
+            <accesslist type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.accesslist</items>
+                        <display>accesslistName,description</display>
+                        <display_format>%s - %s</display_format>
+                    </reverseproxy>
+                </Model>
+            </accesslist>
+            <abort type="BooleanField"/>
+            <GracePeriod type="IntegerField">
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
+                <Required>Y</Required>
+            </GracePeriod>
+            <LogCredentials type="BooleanField"/>
+            <LogAccessPlain type="BooleanField"/>
+            <LogAccessPlainKeep type="IntegerField">
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
+                <Required>Y</Required>
+            </LogAccessPlainKeep>
+            <LogLevel type="OptionField">
+                <BlankDesc>INFO</BlankDesc>
+                <OptionValues>
+                    <DEBUG>DEBUG</DEBUG>
+                    <WARN>WARN</WARN>
+                    <ERROR>ERROR</ERROR>
+                    <PANIC>PANIC</PANIC>
+                    <FATAL>FATAL</FATAL>
+                </OptionValues>
+            </LogLevel>
+            <DynDnsSimpleHttp type="UrlField">
+                <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
+            </DynDnsSimpleHttp>
+            <DynDnsInterface type="InterfaceField"/>
+            <DynDnsCheckInterval type="IntegerField">
+                <Default>5</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>1440</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
+                <Required>Y</Required>
+            </DynDnsCheckInterval>
+            <DynDnsIpVersions type="OptionField">
+                <BlankDesc>IPv4+IPv6</BlankDesc>
+                <OptionValues>
+                    <ipv4>IPv4 only</ipv4>
+                    <ipv6>IPv6 only</ipv6>
+                </OptionValues>
+            </DynDnsIpVersions>
+            <DynDnsTTL type="IntegerField">
+                <Default>1</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>24</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 24 hours.</ValidationMessage>
+                <Required>Y</Required>
+            </DynDnsTTL>
+        </general>
+        <reverseproxy>
+            <reverse type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <FromDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid 'from' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>N</ZoneRootAllowed>
+                </FromDomain>
+                <FromPort type="PortField">
+                    <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>N</EnableRanges>
+                </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+                <DnsChallenge type="BooleanField"/>
+                <CustomCertificate type="CertificateField"/>
+                <AccessLog type="BooleanField"/>
+                <DynDns type="BooleanField"/>
+                <AcmePassthrough type="HostnameField">
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                </AcmePassthrough>
+            </reverse>
+            <subdomain type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <reverse type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.reverse</items>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </reverse>
+                <FromDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid 'from' Subdomain that is based upon the wildcard domain.</ValidationMessage>
+                    <ZoneRootAllowed>N</ZoneRootAllowed>
+                </FromDomain>
+                <FromPort type="PortField">
+                    <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>N</EnableRanges>
+                </FromPort>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName,description</display>
+                            <display_format>%s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+                <DynDns type="BooleanField"/>
+            </subdomain>
+            <handle type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <reverse type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.reverse</items>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </reverse>
+                <subdomain type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.subdomain</items>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </subdomain>
+                <HandleType type="OptionField">
+                    <Required>Y</Required>
+                    <Default>handle</Default>
+                    <OptionValues>
+                        <handle>handle</handle>
+                        <handle_path>handle_path</handle_path>
+                    </OptionValues>
+                </HandleType>
+                <HandlePath type="TextField">
+                    <Mask>/^(\/.*)?$/u</Mask>
+                    <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
+                </HandlePath>
+                <header type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.header</items>
+                            <display>HeaderUpDown,HeaderType,HeaderValue,description</display>
+                            <display_format>%s %s %s - %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </header>
+                <ToDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                </ToDomain>
+                <ToPort type="PortField">
+                    <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
+                    <EnableWellKnown>Y</EnableWellKnown>
+                    <EnableRanges>N</EnableRanges>
+                </ToPort>
+                <ToPath type="TextField">
+                    <Mask>/^(\/.*)?$/u</Mask>
+                    <ValidationMessage>Please enter a valid 'Backend Path' that starts with '/'.</ValidationMessage>
+                </ToPath>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <HttpTls type="BooleanField"/>
+                <HttpNtlm type="BooleanField"/>
+                <HttpTlsInsecureSkipVerify type="BooleanField"/>
+                <HttpTlsTrustedCaCerts type="CertificateField">
+                    <Type>ca</Type>
+                </HttpTlsTrustedCaCerts>
+                <HttpTlsServerName type="HostnameField">
+                    <ValidationMessage>Please enter a valid hostname or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ZoneRootAllowed>N</ZoneRootAllowed>
+                </HttpTlsServerName>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </handle>
+            <accesslist type="ArrayField">
+                <accesslistName type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                <ValidationMessage>Please provide a valid Access List Name.</ValidationMessage>
+                </accesslistName>
+                <clientIps type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>Y</NetMaskAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
+                </clientIps>
+                <accesslistInvert type="BooleanField"/>
+                <HttpResponseCode type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>599</MaximumValue>
+                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
+                </HttpResponseCode>
+                <HttpResponseMessage type="DescriptionField"/>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </accesslist>
+            <basicauth type="ArrayField">
+                <basicauthuser type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z]{2,72})$/u</Mask>
+                    <ValidationMessage>A user name must only contain numbers and letters and must be between 2 and 72 characters.</ValidationMessage>
+                </basicauthuser>
+                <basicauthpass type="UpdateOnlyTextField">
+                    <Required>Y</Required>
+                </basicauthpass>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </basicauth>
+            <header type="ArrayField">
+                <HeaderUpDown type="OptionField">
+                    <Default>header_up</Default>
+                    <OptionValues>
+                        <header_up>header_up</header_up>
+                        <header_down>header_down</header_down>
+                    </OptionValues>
+                    <Required>Y</Required>
+                </HeaderUpDown>
+                <HeaderType type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header type must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderType>
+                <HeaderValue type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header value must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderValue>
+                <HeaderReplace type="TextField">
+                    <Mask>/^([^"]{0,1024})$/u</Mask>
+                    <ValidationMessage>The header replacement must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
+                </HeaderReplace>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                </description>
+            </header>
+        </reverseproxy>
+    </items>
+</model>

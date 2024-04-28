@@ -27,16 +27,6 @@
 
 <script>
     $( document ).ready(function() {
-      // get entries from named/named.log
-      let grid_generallog = $("#grid-generallog").UIBootgrid({
-          options:{
-              sorting:false,
-              rowSelect: false,
-              selection: false,
-              rowCount:[20,50,100,200,500,1000,-1],
-          },
-          search:'/api/diagnostics/log/named/named'
-      });
 
       // get entries from named/query.log
       let grid_querylog = $("#grid-querylog").UIBootgrid({
@@ -58,19 +48,6 @@
               rowCount:[20,50,100,200,500,1000,-1],
           },
           search:'/api/diagnostics/log/named/rpz'
-      });
-
-      grid_generallog.on("loaded.rs.jquery.bootgrid", function(){
-          $(".action-page").click(function(event){
-              event.preventDefault();
-              $("#grid-generallog").bootgrid("search",  "");
-              let new_page = parseInt((parseInt($(this).data('row-id')) / $("#grid-log").bootgrid("getRowCount")))+1;
-              $("input.search-field").val("");
-              // XXX: a bit ugly, but clearing the filter triggers a load event.
-              setTimeout(function(){
-                  $("ul.pagination > li:last > a").data('page', new_page).click();
-              }, 100);
-          });
       });
 
       grid_querylog.on("loaded.rs.jquery.bootgrid", function(){
@@ -112,22 +89,7 @@
 <div class="content-box tab-content">
 
     <div id="generallog" class="tab-pane fade in active">
-        <div class="content-box" style="padding-bottom: 1.5em;">
-            <div  class="col-sm-12">
-                <table id="grid-generallog" class="table table-condensed table-hover table-striped table-responsive" data-store-selection="true">
-                    <thead>
-                    <tr>
-                        <th data-column-id="timestamp" data-width="15em" data-type="string">{{ lang._('Date') }}</th>
-                        <th data-column-id="process_name" data-width="9em" data-type="string">{{ lang._('Type') }}</th>
-                        <th data-column-id="severity" data-width="11em" data-type="string">{{ lang._('Level')}}</th>
-                        <th data-column-id="line" data-type="string">{{ lang._('Line') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {{ partial("OPNsense/Diagnostics/log",['module':'core','scope':'named'])}}
     </div>
 
     <div id="querylog" class="tab-pane fade">
@@ -169,5 +131,4 @@
             </div>
         </div>
     </div>
-
 </div>
