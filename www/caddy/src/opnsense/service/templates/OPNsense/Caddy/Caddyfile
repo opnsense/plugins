@@ -523,33 +523,35 @@
             {% if handle.PassiveHealthFailDuration|default("") %}
             fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts|default("") != "" or handle.HttpTlsServerName|default("") != "" %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
+                    {% if handle.HttpTls|default("0") == "1" %}
+                    tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                     tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
                     {% endif %}
                 }
                 {% else %}
                 transport http {
+                    {% if handle.HttpTls|default("0") == "1" %}
+                    tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                     tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
                     {% endif %}
                 }
                 {% endif %}
