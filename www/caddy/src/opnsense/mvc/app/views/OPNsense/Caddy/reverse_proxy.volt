@@ -224,9 +224,6 @@
         padding: 0 15px;  // Align with the tables
     }
 
-    #reverseFilter {
-        width: 100% !important;  // Ensure it fills the container
-    }
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -240,7 +237,7 @@
 
     <!-- Selectpicker for filter by domain -->
     <div class="form-group common-filter">
-        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="340px" data-size="7" title="Filter by Domain">
+        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="330px" data-size="7" title="Filter by Domain">
             <!-- Options will be populated dynamically using JavaScript/Ajax -->
         </select>
     </div>
