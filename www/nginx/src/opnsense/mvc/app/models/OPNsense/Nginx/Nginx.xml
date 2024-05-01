@@ -221,7 +221,7 @@
           <option1 value="=">Exact Match ("=")</option1>
           <option2 value="~">Case Sensitive Match ("~")</option2>
           <option3 value="~*">Case Insensitive Match ("~*")</option3>
-          <option4 value="^~">Don't check regular expressions on logest prefix match ("^~")</option4>
+          <option4 value="^~">Don't check regular expressions on longest prefix match ("^~")</option4>
         </OptionValues>
         <Required>N</Required>
       </matchtype>
