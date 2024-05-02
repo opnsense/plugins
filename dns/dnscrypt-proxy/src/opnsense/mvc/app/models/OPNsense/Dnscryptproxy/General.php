@@ -30,8 +30,8 @@
 namespace OPNsense\Dnscryptproxy;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 use OPNsense\Core\Backend;
-use Phalcon\Messages\Message;
 
 class General extends BaseModel
 {
