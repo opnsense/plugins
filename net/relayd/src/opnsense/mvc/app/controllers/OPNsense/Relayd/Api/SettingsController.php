@@ -224,7 +224,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param string $uuid id to toggled
      * @param string|null $enabled set enabled by default
      * @return array status
-     * @throws \Phalcon\Validation\Exception when field validations fail
+     * @throws \OPNsense\Base\ValidationException when field validations fail
      * @throws \ReflectionException when not bound to model
      */
     public function toggleAction($nodeType, $uuid, $enabled = null)
