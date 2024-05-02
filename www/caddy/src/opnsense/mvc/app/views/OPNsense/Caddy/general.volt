@@ -104,15 +104,25 @@
                 }
             });
 
-            // Adding Save functionality, so saving can be done independantly from applying
-            $("#saveSettings").click(function() {
-                saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                    // Callback function on successful save, optional
-                    showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
-                }, function() {
-                    // Callback function on save failure
-                    showAlert("Failed to save configuration.", "Error");
-                });
+            $("#saveSettings").SimpleActionButton({
+                onAction: function() {
+                    const dfObj = $.Deferred();
+
+                    // Save the form before continuing
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
+                        function() {  // callback_ok: What to do when save is successful
+                            showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
+                            dfObj.resolve();
+                        }, 
+                        false, // disable_dialog: Show the dialog with the validation error
+                        function(errorData) {  // callback_fail: What to do when save fails
+                            showAlert("Configuration save failed: " + (errorData.message || "Validation Error"), "Error");
+                            dfObj.reject();
+                        }
+                    );
+
+                    return dfObj.promise();
+                },
             });
 
             // Initialize the service control UI for 'caddy'
