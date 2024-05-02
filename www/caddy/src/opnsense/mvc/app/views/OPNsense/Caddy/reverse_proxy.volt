@@ -237,7 +237,7 @@
 
     <!-- Selectpicker for filter by domain -->
     <div class="form-group common-filter">
-        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="340px" data-size="7" title="Filter by Domain">
+        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="Filter by Domain">
             <!-- Options will be populated dynamically using JavaScript/Ajax -->
         </select>
     </div>
