@@ -13,6 +13,7 @@ Plugin Changelog
 * Enable use_wal, remove warning
 * Randomize cron execution over 5 minutes
 * Refact javascript
+* Fix service initial service start with no pending hub updates (1.6.1)
 
 1.0.7
 
