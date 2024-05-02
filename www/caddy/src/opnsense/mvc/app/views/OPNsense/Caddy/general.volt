@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
+        let data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
 
             // Refresh selectpicker for these dropdowns
@@ -34,8 +34,8 @@
 
             // Function to show alerts in the HTML message area
             function showAlert(message, type = "error") {
-                var alertClass = type === "error" ? "alert-danger" : "alert-success";
-                var messageArea = $("#messageArea");
+                let alertClass = type === "error" ? "alert-danger" : "alert-success";
+                let messageArea = $("#messageArea");
 
                 // Stop any current animation, clear the queue, and immediately hide the element
                 messageArea.stop(true, true).hide();
