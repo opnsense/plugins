@@ -28,7 +28,7 @@
 
 namespace OPNsense\Base\Constraints;
 
-use Phalcon\Messages\Message;
+use OPNsense\Base\Messages\Message;
 
 /**
  * a very specific nginx check - not reusable
