@@ -60,31 +60,35 @@
                 onPreAction: function() {
                     const dfObj = $.Deferred();
 
-                    // Save the form before continue
-                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                        // After successful save, proceed with validation
-                        $.ajax({
-                            url: "/api/caddy/service/validate",
-                            type: "GET",
-                            dataType: "json",
-                            success: function(data) {
-                                if (data && data['status'].toLowerCase() === 'ok') {
-                                    dfObj.resolve(); // Configuration is valid
-                                } else {
-                                    showAlert(data['message'], "Validation Error");
-                                    dfObj.reject(); // Configuration is invalid
+                    // Save the form before continuing
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
+                        function() {  // callback_ok: What to do when save is successful
+                            // After successful save, proceed with validation
+                            $.ajax({
+                                url: "/api/caddy/service/validate",
+                                type: "GET",
+                                dataType: "json",
+                                success: function(data) {
+                                    if (data && data['status'].toLowerCase() === 'ok') {
+                                        dfObj.resolve(); // Configuration is valid
+                                    } else {
+                                        showAlert(data['message'], "Validation Error");
+                                        dfObj.reject(); // Configuration is invalid
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    showAlert("Validation request failed: " + error, "Validation Error");
+                                    dfObj.reject(); // AJAX request failed
                                 }
-                            },
-                            error: function(xhr, status, error) {
-                                showAlert("Validation request failed: " + error, "Validation Error");
-                                dfObj.reject(); // AJAX request failed
-                            }
-                        });
-                    }, function() {
-                        // If save fails, reject the deferred object to stop the reconfigure action
-                        showAlert("Failed to save configuration.", "Error");
-                        dfObj.reject();
-                    });
+                            });
+                        }, 
+                        false, // disable_dialog: Show the dialog with the validation error
+                        function(errorData) {  // callback_fail: What to do when save fails
+                            // Handle failure due to validation errors or other issues
+                            showAlert("Configuration save failed: " + (errorData.message || "Validation Error"), "Error");
+                            dfObj.reject(); // Reject the deferred object to stop the reconfigure action
+                        }
+                    );
 
                     return dfObj.promise();
                 },
