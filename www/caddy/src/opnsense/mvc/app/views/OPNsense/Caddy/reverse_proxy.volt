@@ -29,7 +29,7 @@
     
         // Function to handle the search filter request modification
         function addDomainFilterToRequest(request) {
-            var selectedDomains = $('#reverseFilter').val();
+            let selectedDomains = $('#reverseFilter').val();
             if (selectedDomains && selectedDomains.length > 0) {
                 request['reverseUuids'] = selectedDomains.join(',');
             }
@@ -99,8 +99,8 @@
 
         // Function to show alerts in the HTML message area
         function showAlert(message, type = "error") {
-            var alertClass = type === "error" ? "alert-danger" : "alert-success";
-            var messageArea = $("#messageArea");
+            let alertClass = type === "error" ? "alert-danger" : "alert-success";
+            let messageArea = $("#messageArea");
 
             // Stop any current animation, clear the queue, and immediately hide the element
             messageArea.stop(true, true).hide();
@@ -171,7 +171,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var select = $('#reverseFilter');
+                    let select = $('#reverseFilter');
                     select.empty(); // Clear current options
                     if (data && data.rows) {
                         data.rows.forEach(function(item) {
@@ -204,12 +204,12 @@
         }
 
         // Initialize visibility based on the active tab on page load
-        var activeTab = $('#maintabs .active a').attr('href').replace('#', '');
+        let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
         toggleSelectPicker(activeTab);
 
         // Change event when switching tabs
         $('#maintabs a').on('click', function (e) {
-            var currentTab = $(this).attr('href').replace('#', '');
+            let currentTab = $(this).attr('href').replace('#', '');
             toggleSelectPicker(currentTab);
         });
 
