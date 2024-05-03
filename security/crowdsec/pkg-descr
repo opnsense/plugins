@@ -12,7 +12,7 @@ Plugin Changelog
 
 * Enable use_wal, remove warning
 * Randomize cron execution over 5 minutes
-* Refact javascript
+* Refactor javascript
 * Fix initial service start with no pending hub updates (1.6.1)
 * Add input validation for `rules_tag` to prevent invalid `pf` syntax.
 
