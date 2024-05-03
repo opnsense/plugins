@@ -10,6 +10,7 @@
             </enabled>
             <TlsEmail type="EmailField">
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
+                <Required>Y</Required>
             </TlsEmail>
             <TlsAutoHttps type="OptionField">
                 <BlankDesc>On (default)</BlankDesc>
