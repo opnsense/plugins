@@ -30,6 +30,7 @@
 namespace OPNsense\Proxy;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 /**
  * Class Proxy
@@ -51,7 +52,7 @@ class Proxy extends BaseModel
                     switch ($match_type) {
                         case 'url_matches':
                             if (strlen((string)$match->url) == 0) {
-                                $result->appendMessage(new \Phalcon\Messages\Message(
+                                $result->appendMessage(new Message(
                                     gettext('URL must be set.'),
                                     'pac.match.url'
                                 ));
@@ -61,7 +62,7 @@ class Proxy extends BaseModel
                         case 'dns_domain_is':
                         case 'is_resolvable':
                             if (strlen((string)$match->hostname) == 0) {
-                                $result->appendMessage(new \Phalcon\Messages\Message(
+                                $result->appendMessage(new Message(
                                     gettext('Hostname must be set.'),
                                     'pac.match.hostname'
                                 ));
@@ -70,7 +71,7 @@ class Proxy extends BaseModel
                         case 'destination_in_net':
                         case 'my_ip_in_net':
                             if (strlen((string)$match->network) == 0) {
-                                $result->appendMessage(new \Phalcon\Messages\Message(
+                                $result->appendMessage(new Message(
                                     gettext('Network must be set.'),
                                     'pac.match.network'
                                 ));
