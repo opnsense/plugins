@@ -26,15 +26,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
- namespace OPNsense\WazuhAgent;
+namespace OPNsense\WazuhAgent;
 
- use Phalcon\Messages\Message;
- use OPNsense\Base\BaseModel;
+use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
- /**
-  * Class WazuhAgent
-  * @package OPNsense\WazuhAgent
-  */
+/**
+ * Class WazuhAgent
+ * @package OPNsense\WazuhAgent
+ */
 class WazuhAgent extends BaseModel
 {
 }
