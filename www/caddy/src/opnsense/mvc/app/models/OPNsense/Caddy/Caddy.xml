@@ -290,8 +290,24 @@
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
-                <HttpTls type="BooleanField"/>
-                <HttpNtlm type="BooleanField"/>
+                <HttpTls type="BooleanField">
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>TLS and NTLM must be enabled at the same time.</ValidationMessage>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>HttpNtlm</field1>
+                            </addFields>
+                        </check001>
+                    </Constraints>
+                </HttpTls>
+                <HttpNtlm type="BooleanField">
+                    <Constraints>
+                        <check001>
+                            <reference>HttpNtlm.check001</reference>
+                        </check001>
+                    </Constraints>
+                </HttpNtlm>
                 <HttpTlsInsecureSkipVerify type="BooleanField"/>
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <Type>ca</Type>
