@@ -10,7 +10,7 @@
         <label>ACME Email</label>
         <type>text</type>
         <hint>info@example.com</hint>
-        <help><![CDATA[Enter the email address for certificate notifications.]]></help>
+        <help><![CDATA[Enter the email address for certificate notifications. This is required to receive automatic certificates from Let's Encrypt and ZeroSSL.]]></help>
     </field>
     <field>
         <id>caddy.general.TlsAutoHttps</id>
