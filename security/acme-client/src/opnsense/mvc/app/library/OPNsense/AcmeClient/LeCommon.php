@@ -219,13 +219,13 @@ abstract class LeCommon
                 $this->debug = true;
                 break;
             case 'debug2':
-                $this->acme_args[] = '--syslog 7';
+                $this->acme_args[] = '--syslog 8';
                 $this->acme_args[] = '--debug 2';
                 $this->acme_syslog = 7;
                 $this->debug = true;
                 break;
             case 'debug3':
-                $this->acme_args[] = '--syslog 7';
+                $this->acme_args[] = '--syslog 9';
                 $this->acme_args[] = '--debug 3';
                 $this->acme_syslog = 7;
                 $this->debug = true;
