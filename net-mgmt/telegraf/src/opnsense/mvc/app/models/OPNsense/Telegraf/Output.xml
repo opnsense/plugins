@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/output</mount>
     <description>Telegraf outputs configuration</description>
-    <version>1.4.5</version>
+    <version>1.4.6</version>
     <items>
         <influx_enable type="BooleanField">
             <default>0</default>
@@ -224,5 +224,28 @@
                 <wavefront>Wavefront</wavefront>
             </OptionValues>
         </mqtt_data_format>
+        <opentelemetry_enable type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </opentelemetry_enable>
+        <opentelemetry_server type="TextField">
+            <Required>N</Required>
+        </opentelemetry_server>
+        <opentelemetry_insecure_skip_verify type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </opentelemetry_insecure_skip_verify>
+        <opentelemetry_timeout type="IntegerField">
+            <default>5</default>
+            <Required>N</Required>
+        </opentelemetry_timeout>
+        <opentelemetry_compression type="OptionField">
+            <default>gzip</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <gzip>gzip</gzip>
+                <none>none</none>
+            </OptionValues>
+        </opentelemetry_compression>
     </items>
 </model>
