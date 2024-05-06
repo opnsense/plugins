@@ -26,7 +26,7 @@
 
 <script>
     $(document).ready(function() {
-    
+
         // Function to handle the search filter request modification
         function addDomainFilterToRequest(request) {
             var selectedDomains = $('#reverseFilter').val();
@@ -35,7 +35,7 @@
             }
             return request;
         }
-    
+
         // Bootgrid Setup
         $("#reverseProxyGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchReverseProxy/',
@@ -163,7 +163,7 @@
 
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
-        
+
         // Filter function for domains
         function loadDomainFilters() {
             $.ajax({
@@ -186,14 +186,14 @@
             });
         }
         loadDomainFilters();
-        
+
         // Reload Bootgrid on filter change
         $('#reverseFilter').on('changed.bs.select', function() {
             $("#reverseProxyGrid").bootgrid("reload");
             $("#reverseSubdomainGrid").bootgrid("reload");
             $("#reverseHandleGrid").bootgrid("reload");
         });
-        
+
         // Control the visibility of selectpicker for filter by domain
         function toggleSelectPicker(tab) {
             if (tab === 'handlesTab' || tab === 'domainsTab') {

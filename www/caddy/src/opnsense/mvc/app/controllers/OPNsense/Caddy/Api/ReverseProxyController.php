@@ -83,7 +83,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
     }
- 
+
     /*Function for the search filter dropdown in the bootgrid*/
     public function getAllReverseDomainsAction()
     {
@@ -154,7 +154,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
 
     /*Handler Section*/
-    
+
     /*Search Function adjusted for the search filter dropdown*/
     public function searchHandleAction()
     {

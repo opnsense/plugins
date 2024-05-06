@@ -280,7 +280,7 @@
     {% if autoHttpsValue %}
     auto_https {{ autoHttpsValue }}
     {% endif %}
-    {# 
+    {#
     # Important: Grace Period influences how fast the server can finish reloads with open connections, by forcing termination.
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
