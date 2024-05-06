@@ -12,22 +12,22 @@ use OPNsense\Core\Backend;
 /**
  * @package OPNsense\CrowdSec
  */
-class ScenariosController extends ApiControllerBase
+class HubController extends ApiControllerBase
 {
     /**
-     * retrieve list of registered scenarios
-     * @return array of scenarios
+     * retrieve the registered hub items
+     * @return dictionary of items, by type
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
         $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec scenarios-list")), true);
+        $bckresult = json_decode(trim($backend->configdRun("crowdsec hub-items")), true);
         if ($bckresult !== null) {
             // only return valid json type responses
             return $bckresult;
         }
-        return array("message" => "unable to list scenarios");
+        return array("message" => "unable to list hub items");
     }
 }

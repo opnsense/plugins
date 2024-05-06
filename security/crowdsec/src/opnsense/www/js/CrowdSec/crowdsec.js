@@ -6,6 +6,7 @@
 var CrowdSec = (function () {
     'use strict';
 
+    var crowdsec_path = '/usr/local/etc/crowdsec/';
     var _refreshTemplate = '<button class="btn btn-default" type="button" title="Refresh"><span class="icon glyphicon glyphicon-refresh"></span></button>';
 
     var _dataFormatters = {
@@ -87,8 +88,9 @@ var CrowdSec = (function () {
             timestamp = $freshness.data('refresh_timestamp');
         }
         var howlongHuman = '???';
+        var howlongms;
         if (timestamp) {
-            var howlongms = moment() - moment(timestamp);
+            howlongms = moment() - moment(timestamp);
             howlongHuman = moment.duration(howlongms).humanize();
         }
         $freshness.text(howlongHuman + ' ago');
@@ -129,7 +131,8 @@ var CrowdSec = (function () {
             dectypes[decision.type] = dectypes[decision.type] ? (dectypes[decision.type] + 1) : 1;
         });
         var ret = '';
-        for (var type in dectypes) {
+        var type;
+        for (type in dectypes) {
             if (ret !== '') {
                 ret += ' ';
             }
@@ -217,7 +220,7 @@ var CrowdSec = (function () {
     }
 
     function _initCollections () {
-        var url = '/api/crowdsec/collections/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.collections.map(function (row) {
@@ -225,7 +228,8 @@ var CrowdSec = (function () {
                     name: row.name,
                     status: row.status,
                     local_version: row.local_version || ' ',
-                    local_path: row.local_path || ' '
+                    local_path: row.local_path ? row.local_path.replace(crowdsec_path, '') : ' ',
+                    description: row.description || ' '
                 });
             });
         $('#collections table').bootgrid('clear').bootgrid('append', rows);
@@ -234,7 +238,7 @@ var CrowdSec = (function () {
     }
 
     function _initScenarios () {
-        var url = '/api/crowdsec/scenarios/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.scenarios.map(function (row) {
@@ -242,7 +246,7 @@ var CrowdSec = (function () {
                     name: row.name,
                     status: row.status,
                     local_version: row.local_version || ' ',
-                    local_path: row.local_path || ' ',
+                    local_path: row.local_path ? row.local_path.replace(crowdsec_path, '') : ' ',
                     description: row.description || ' '
                 });
             });
@@ -252,7 +256,7 @@ var CrowdSec = (function () {
     }
 
     function _initParsers () {
-        var url = '/api/crowdsec/parsers/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.parsers.map(function (row) {
@@ -260,7 +264,7 @@ var CrowdSec = (function () {
                     name: row.name,
                     status: row.status,
                     local_version: row.local_version || ' ',
-                    local_path: row.local_path || ' ',
+                    local_path: row.local_path ? row.local_path.replace(crowdsec_path, '') : ' ',
                     description: row.description || ' '
                 });
             });
@@ -270,7 +274,7 @@ var CrowdSec = (function () {
     }
 
     function _initPostoverflows () {
-        var url = '/api/crowdsec/postoverflows/get';
+        var url = '/api/crowdsec/hub/get';
         var dataCallback = function (data) {
             var rows = [];
             data.postoverflows.map(function (row) {
@@ -278,7 +282,7 @@ var CrowdSec = (function () {
                     name: row.name,
                     status: row.status,
                     local_version: row.local_version || ' ',
-                    local_path: row.local_path || ' ',
+                    local_path: row.local_path ? row.local_path.replace(crowdsec_path, '') : ' ',
                     description: row.description || ' '
                 });
             });

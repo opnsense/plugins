@@ -1,7 +1,7 @@
 <model>
   <mount>//OPNsense/crowdsec/general</mount>
   <description>CrowdSec general configuration</description>
-  <version>1.0.6</version>
+  <version>1.0.8</version>
   <items>
 
     <agent_enabled type="BooleanField">
@@ -43,8 +43,8 @@
     </rules_log>
 
     <rules_tag type="TextField">
-      <default></default>
-      <Required>N</Required>
+      <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
+      <ValidationMessage>A tag must only contain numbers and letters and must be between 1 and 63 characters.</ValidationMessage>
     </rules_tag>
 
     <crowdsec_firewall_verbose type="BooleanField">
