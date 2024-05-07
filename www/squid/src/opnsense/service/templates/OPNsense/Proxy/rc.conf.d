@@ -4,3 +4,5 @@ squid_enable="YES"
 {% else %}
 squid_enable="NO"
 {% endif %}
+
+squid_env="OPENSSL_CONF=/usr/local/etc/squid/openssl.cnf"
