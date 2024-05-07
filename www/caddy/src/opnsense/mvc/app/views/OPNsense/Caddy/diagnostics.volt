@@ -72,7 +72,7 @@
             </ul>
             <hr/>
             <button class="btn btn-primary" id="downloadCaddyConfig" type="button">{{ lang._('Download') }}</button>
-            <button class="btn btn-secondary" id="openConfigInNewTab" type="button">{{ lang._('Open in Browser') }}</button>
+            <button class="btn btn-secondary" id="openConfigInNewTab" type="button">{{ lang._('Show in browser') }}</button>
             <br/><br/>
         </div>
     </div>
