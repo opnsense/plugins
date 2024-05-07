@@ -26,6 +26,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        // Download the json configuration as file with timestamp
         $("#downloadCaddyConfig").click(function() {
             $.ajax({
                 url: "/api/caddy/diagnostics/showconfig",  // Custom API endpoint that shows a validated json configuration
@@ -45,11 +46,15 @@
             });
         });
 
+        // Open the json configuration in a new browser tab
+        $("#openConfigInNewTab").click(function() {
+            window.open('/api/caddy/diagnostics/showconfig', '_blank');
+        });
+
         function download_content(payload, filename, file_type) {
             let a_tag = $('<a></a>').attr('href', 'data:' + file_type + ';charset=utf-8,' + encodeURIComponent(payload))
                                     .attr('download', filename)
                                     .appendTo('body');
-
             a_tag[0].click();
             a_tag.remove();
         }
@@ -67,8 +72,8 @@
             </ul>
             <hr/>
             <button class="btn btn-primary" id="downloadCaddyConfig" type="button">{{ lang._('Download') }}</button>
+            <button class="btn btn-secondary" id="openConfigInNewTab" type="button">{{ lang._('Open in Browser') }}</button>
             <br/><br/>
         </div>
     </div>
 </section>
-
