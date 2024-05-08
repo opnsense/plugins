@@ -29,7 +29,7 @@
         // Download the json configuration as file with timestamp
         $("#downloadCaddyConfig").click(function() {
             $.ajax({
-                url: "/api/caddy/diagnostics/showconfig",  // Custom API endpoint that shows a validated json configuration
+                url: "/api/caddy/diagnostics/config",  // Custom API endpoint that shows a validated json configuration
                 type: "GET",
                 success: function(response) {
                     if (response.status === "success") {
@@ -48,7 +48,7 @@
 
         // Open the json configuration in a new browser tab
         $("#openConfigInNewTab").click(function() {
-            window.open('/api/caddy/diagnostics/showconfig', '_blank');
+            window.open('/api/caddy/diagnostics/config', '_blank');
         });
 
         function download_content(payload, filename, file_type) {

@@ -40,33 +40,34 @@ def show_caddy_config():
         # Attempt to decode the JSON to validate its integrity
         json.loads(config_data)  # This line is just to validate JSON
 
-        # If the file is valid JSON, return it as raw string
-        return config_data
+        # Print the valid JSON to stdout
+        print(config_data)
     except FileNotFoundError:
-        sys.exit("Caddy autosave configuration file not found.")
+        # Output error details in JSON format so that the API can consume them
+        print(json.dumps({"error": "File not found", "message": "Caddy autosave.json configuration file not found"}))
     except json.JSONDecodeError:
-        sys.exit("Error decoding the Caddy configuration JSON. The file is not valid JSON.")
+        print(json.dumps({"error": "Invalid JSON", "message": "Error decoding the Caddy autosave.json, the file is not valid JSON"}))
     except Exception as e:
-        sys.exit(f"An error occurred: {str(e)}")
+        print(json.dumps({"error": "General Error", "message": str(e)}))
 
 def perform_action(action):
     actions = {
-        "showconfig": show_caddy_config
+        "config": show_caddy_config
         # Additional actions can be added here in the same format.
     }
 
     action_func = actions.get(action)
     if action_func:
-        return action_func()
+        action_func()
     else:
-        return f"Unknown action: {action}"
+        # Output error details in JSON format if action is unknown
+        print(json.dumps({"error": "Unknown Action", "message": f"Unknown action: {action}"}))
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         action = sys.argv[1]
-        result = perform_action(action)
-        if result:
-            print(result)
+        perform_action(action)
     else:
-        print("No action specified.")
+        # Output error details in JSON format if no action is specified
+        print(json.dumps({"error": "No Action Specified", "message": "No action specified"}))
 

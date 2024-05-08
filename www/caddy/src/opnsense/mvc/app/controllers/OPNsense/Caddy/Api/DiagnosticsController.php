@@ -39,19 +39,20 @@ class DiagnosticsController extends ApiMutableModelControllerBase
     protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
 
     /**
-     * Fetch and display the contents of the Caddy configuration.
-     * Ensure that the JSON output is handled correctly.
+     * Fetch and display the contents of the Caddy configuration as JSON.
+     * Any errors are handled by caddy_diagnostics script and passed to this controller as JSON.
      */
-    public function showconfigAction()
+    public function configAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun('caddy showconfig');
+        $response = $backend->configdRun('caddy config');
 
-        // Decode JSON to PHP array to prevent double encoding issues
+        // Decode JSON to PHP array
         $responseArray = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            // If there's an error in the JSON structure, handle it
-            return ["status" => "failed", "message" => "Invalid JSON format: " . json_last_error_msg()];
+
+        // Since errors are handled by the caddy_diagnostics script and returned as json, check for an error key in the response
+        if (isset($responseArray['error'])) {
+            return ["status" => "failed", "message" => $responseArray['message']];
         }
 
         // Return the response as an array which gets automatically encoded to JSON
