@@ -26,54 +26,121 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        // Download the json configuration as file with timestamp
-        $("#downloadCaddyConfig").click(function() {
+        // Fetch and display Caddyfile and JSON configuration
+        fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay', false);
+        fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay', true);
+
+        /**
+         * Fetches data from the specified URL and displays it within a given element on the page.
+         * The Caddyfile is raw content and will be displayed directly.
+         * The JSON configuration is a double encoded JSON which will be stringified and nicely formatted.
+         *
+         * @param {string} url - The URL from which to fetch data.
+         * @param {string} displaySelector - jQuery selector for the element where data should be displayed.
+         * @param {boolean} isJson - Flag indicating whether the response should be treated as JSON that needs parsing.
+         */
+        function fetchAndDisplay(url, displaySelector, isJson) {
             $.ajax({
-                url: "/api/caddy/diagnostics/config",  // Custom API endpoint that shows a validated json configuration
+                url: url,
                 type: "GET",
                 success: function(response) {
                     if (response.status === "success") {
-                        let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
-                        let filename = "caddy_autosave_" + timestamp + ".json";
-                        download_content(JSON.stringify(response.content), filename, "application/json");
+                        if (isJson) {
+                            try {
+                                // Assuming response.content is a JSON object containing a stringified JSON in 'config_data'
+                                let parsedContent = JSON.parse(response.content.config_data); // Parse the stringified JSON
+                                let formattedContent = JSON.stringify(parsedContent, null, 2); // Format it nicely
+                                $(displaySelector).text(formattedContent);
+                            } catch (error) {
+                                // If JSON parsing fails, display an error message
+                                $(displaySelector).text("JSON parsing error: " + error.message);
+                            }
+                        } else {
+                            // If the data is not JSON, directly display the raw content
+                            $(displaySelector).text(response.content);
+                        }
                     } else {
-                        alert("Failed to download configuration: " + response.message);
+                        // If the response status is not 'success', handle it by showing an appropriate message
+                        $(displaySelector).text("Failed to load content: " + response.message || "Unknown error");
                     }
                 },
-                error: function() {
-                    alert("Error accessing the API.");
+                error: function(xhr, status, error) {
+                    // Handle errors from the AJAX request itself
+                    $(displaySelector).text("AJAX error accessing the API: " + error);
                 }
             });
+        }
+
+        $("#downloadJSONConfig").click(function() {
+            let content = $("#jsonDisplay").text();
+            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
+            let filename = "caddy_config_" + timestamp + ".json";
+            downloadContent(content, filename, "application/json");
         });
 
-        // Open the json configuration in a new browser tab
-        $("#openConfigInNewTab").click(function() {
-            window.open('/api/caddy/diagnostics/config', '_blank');
+        $("#downloadCaddyfile").click(function() {
+            let content = $("#caddyfileDisplay").text();
+            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
+            let filename = "Caddyfile_" + timestamp;
+            downloadContent(content, filename, "text/plain");
         });
 
-        function download_content(payload, filename, file_type) {
-            let a_tag = $('<a></a>').attr('href', 'data:' + file_type + ';charset=utf-8,' + encodeURIComponent(payload))
-                                    .attr('download', filename)
-                                    .appendTo('body');
-            a_tag[0].click();
-            a_tag.remove();
+        /**
+         * Initiates a file download directly from the browser using JavaScript. The function dynamically creates
+         * an anchor (<a>) element, sets its attributes for downloading and simulates a click to start the download.
+         *
+         * @param {string} payload - The content to be downloaded, which could be any data string (e.g., JSON text, plain text).
+         * @param {string} filename - The name of the file that will be suggested to the user when downloading.
+         * @param {string} file_type - The MIME type of the file, which helps the browser to handle the file appropriately.
+         */
+        function downloadContent(payload, filename, file_type) {
+            // Create an anchor tag (<a>) dynamically using jQuery
+            let a_tag = $('<a></a>')
+                .attr('href', 'data:' + file_type + ';charset=utf-8,' + encodeURIComponent(payload))  // Set the href attribute to a data URL containing the payload
+                .attr('download', filename)  // Set the download attribute to suggest a filename
+                .appendTo('body');  // Append the anchor tag to the body of the document to make it part of the DOM
+
+            a_tag[0].click();  // Programmatically click the anchor tag to trigger the download
+            a_tag.remove();  // Remove the anchor tag
         }
     });
 </script>
 
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <h2>{{ lang._('Caddy configuration file') }}</h2>
-            <ul>
-                <li>{{ lang._('Downloads the current configuration file from:') }} <code>/var/db/caddy/config/caddy/autosave.json</code></li>
-                <li>{{ lang._('The running configuration is adapted from:') }} <code>/usr/local/etc/caddy/Caddyfile</code></li>
-                <li>{{ lang._('Custom imports are included.') }} <code>*.conf</code> {{ lang._('and') }} <code>*.global</code> {{ lang._('from:') }} <code>/usr/local/etc/caddy/caddy.d/</code></li>
-            </ul>
-            <hr/>
-            <button class="btn btn-primary" id="downloadCaddyConfig" type="button">{{ lang._('Download') }}</button>
-            <button class="btn btn-secondary" id="openConfigInNewTab" type="button">{{ lang._('Show in browser') }}</button>
+<style>
+    .custom-style .content-box {
+        padding: 20px; /* Adds padding around the contents of each tab */
+    }
+
+    .custom-style .display-area {
+        height: 800px;
+        overflow-y: scroll;
+        background-color: #f8f9fa;
+        margin-bottom: 25px; /* Adds bottom margin to separate from the button */
+    }
+</style>
+
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="configTabs">
+    <li class="active"><a data-toggle="tab" href="#caddyfileTab">Caddyfile</a></li>
+    <li><a data-toggle="tab" href="#jsonConfigTab">JSON Configuration</a></li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content content-box custom-style">
+    <!-- Caddyfile Tab -->
+    <div id="caddyfileTab" class="tab-pane fade in active">
+        <div class="content-box">
+            <pre id="caddyfileDisplay" class="display-area"></pre>
+            <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">Download</button>
             <br/><br/>
         </div>
     </div>
-</section>
+    <!-- JSON Configuration Tab -->
+    <div id="jsonConfigTab" class="tab-pane fade">
+        <div class="content-box">
+            <pre id="jsonDisplay" class="display-area"></pre>
+            <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">Download</button>
+            <br/><br/>
+        </div>
+    </div>
+</div>

@@ -58,4 +58,27 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         // Return the response as an array which gets automatically encoded to JSON
         return ["status" => "success", "content" => $responseArray];
     }
+
+    /**
+     * Fetch and display the contents of the Caddyfile as JSON.
+     */
+    public function caddyfileAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun('caddy caddyfile');
+
+        // Decode JSON to PHP array
+        $responseArray = json_decode($response, true);
+
+        if (isset($responseArray['error'])) {
+            // Handle the error
+            return ["status" => "failed", "message" => $responseArray['message']];
+        }
+
+        // Extract and prepare the Caddyfile content from the response
+        $caddyfileContent = $responseArray['Caddyfile'];
+
+        // Return the response as an array which gets automatically encoded to JSON
+        return ["status" => "success", "content" => $caddyfileContent];
+    }
 }

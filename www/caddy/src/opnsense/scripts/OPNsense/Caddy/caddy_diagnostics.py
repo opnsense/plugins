@@ -28,7 +28,9 @@
 
 import sys
 import json
+import os
 
+# Function to show the Caddy configuration from a JSON file
 def show_caddy_config():
     config_path = "/var/db/caddy/config/caddy/autosave.json"
 
@@ -41,18 +43,33 @@ def show_caddy_config():
         json.loads(config_data)  # This line is just to validate JSON
 
         # Print the valid JSON to stdout
-        print(config_data)
-    except FileNotFoundError:
+        print(json.dumps({"config_data": config_data}))
         # Output error details in JSON format so that the API can consume them
+    except FileNotFoundError:
         print(json.dumps({"error": "File not found", "message": "Caddy autosave.json configuration file not found"}))
     except json.JSONDecodeError:
         print(json.dumps({"error": "Invalid JSON", "message": "Error decoding the Caddy autosave.json, the file is not valid JSON"}))
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
+# Function to show the main Caddyfile content
+def show_caddyfile():
+    caddyfile_path = "/usr/local/etc/caddy/Caddyfile"
+
+    try:
+        with open(caddyfile_path, "r") as file:
+            caddyfile_data = file.read()
+        print(json.dumps({"Caddyfile": caddyfile_data}))
+    except FileNotFoundError:
+        print(json.dumps({"error": "Caddyfile not found", "message": "Caddyfile not found"}))
+    except Exception as e:
+        print(json.dumps({"error": "General Error", "message": str(e)}))
+
+# Action handler
 def perform_action(action):
     actions = {
-        "config": show_caddy_config
+        "config": show_caddy_config,
+        "caddyfile": show_caddyfile
         # Additional actions can be added here in the same format.
     }
 
