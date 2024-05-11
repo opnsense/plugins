@@ -103,6 +103,26 @@
             a_tag[0].click();  // Programmatically click the anchor tag to trigger the download
             a_tag.remove();  // Remove the anchor tag
         }
+
+        // Event handler for the Validate Caddyfile button
+        $('#validateCaddyfile').click(function() {
+            $.ajax({
+                url: '/api/caddy/service/validate',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data && data['status'].toLowerCase() === 'ok') {
+                        alert('Validation successful: ' + data['message']);  // Show success message
+                    } else {
+                        alert('Validation error: ' + data['message']);  // Show error message from the API
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Validation request failed: ' + error);  // Show AJAX error
+                }
+            });
+        });
+
     });
 </script>
 
@@ -117,6 +137,13 @@
         background-color: #f8f9fa;
         margin-bottom: 25px; /* Adds bottom margin to separate from the button */
     }
+
+    .custom-style .help-text {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        line-height: 1.4;
+    }
+
 </style>
 
 <!-- Tab Navigation -->
@@ -131,7 +158,9 @@
     <div id="caddyfileTab" class="tab-pane fade in active">
         <div class="content-box">
             <pre id="caddyfileDisplay" class="display-area"></pre>
+            <p class="help-text">{{ lang._("This is the generated configuration located at %sCaddyfile%s. It's the main configuration file to get support with. The validation button triggers a manual check for any configuration errors, which is the same check that is triggered by the Apply buttons automatically.") | format('<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">Download</button>
+            <button class="btn btn-secondary" id="validateCaddyfile" type="button">Validate Caddyfile</button>
             <br/><br/>
         </div>
     </div>
@@ -139,6 +168,7 @@
     <div id="jsonConfigTab" class="tab-pane fade">
         <div class="content-box">
             <pre id="jsonDisplay" class="display-area"></pre>
+            <p class="help-text">{{ lang._("Shows the running Caddy configuration located in %sautosave.json%s. It is automatically adapted from the Caddyfile and also includes any custom imported configurations from %scaddy.d%s.") | format('<code>/var/db/caddy/config/caddy/', '</code>', '<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">Download</button>
             <br/><br/>
         </div>
