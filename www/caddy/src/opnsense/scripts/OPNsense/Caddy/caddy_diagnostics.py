@@ -28,7 +28,6 @@
 
 import sys
 import json
-import os
 
 # Function to show the Caddy configuration from a JSON file
 def show_caddy_config():
