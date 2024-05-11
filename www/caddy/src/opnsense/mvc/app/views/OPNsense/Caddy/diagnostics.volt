@@ -132,18 +132,19 @@
     }
 
     .custom-style .display-area {
-        height: 800px;
         overflow-y: scroll;
-        background-color: #f8f9fa;
-        margin-bottom: 25px; /* Adds bottom margin to separate from the button */
+        /* Dynamic height management using clamp for varying screen sizes */
+        height: clamp(50px, 50vh, 4000px); 
+        margin-bottom: 20px; /* Adds bottom margin to separate from the help text */
     }
 
     .custom-style .help-text {
         margin-top: 10px;
         margin-bottom: 20px;
         line-height: 1.4;
+        /* Adjusting text size for readability on various displays */
+        font-size: clamp(12px, 1.5vw, 16px);
     }
-
 </style>
 
 <!-- Tab Navigation -->
@@ -159,8 +160,8 @@
         <div class="content-box">
             <pre id="caddyfileDisplay" class="display-area"></pre>
             <p class="help-text">{{ lang._("This is the generated configuration located at %sCaddyfile%s. It's the main configuration file to get support with. The validation button triggers a manual check for any configuration errors, which is the same check that is triggered by the Apply buttons automatically.") | format('<code>/usr/local/etc/caddy/', '</code>') }}</p>
-            <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">Download</button>
-            <button class="btn btn-secondary" id="validateCaddyfile" type="button">Validate Caddyfile</button>
+            <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">{{ lang._('Download') }}</button>
+            <button class="btn btn-secondary" id="validateCaddyfile" type="button">{{ lang._('Validate Caddyfile') }}</button>
             <br/><br/>
         </div>
     </div>
@@ -169,7 +170,7 @@
         <div class="content-box">
             <pre id="jsonDisplay" class="display-area"></pre>
             <p class="help-text">{{ lang._("Shows the running Caddy configuration located in %sautosave.json%s. It is automatically adapted from the Caddyfile and also includes any custom imported configurations from %scaddy.d%s.") | format('<code>/var/db/caddy/config/caddy/', '</code>', '<code>/usr/local/etc/caddy/', '</code>') }}</p>
-            <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">Download</button>
+            <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">{{ lang._('Download') }}</button>
             <br/><br/>
         </div>
     </div>
