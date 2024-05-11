@@ -32,7 +32,7 @@
 
         /**
          * Fetches data from the specified URL and displays it within a given element on the page.
-         * The Caddyfile is raw content and will be displayed directly.
+         * The Caddyfile is raw content and will be displayed directly by setting isJson to false.
          * The JSON configuration is a double encoded JSON which will be stringified and nicely formatted.
          *
          * @param {string} url - The URL from which to fetch data.
@@ -112,16 +112,37 @@
                 dataType: 'json',
                 success: function(data) {
                     if (data && data['status'].toLowerCase() === 'ok') {
-                        alert('Validation successful: ' + data['message']);  // Show success message
+                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "Validation Successful", data['message']);
                     } else {
-                        alert('Validation error: ' + data['message']);  // Show error message from the API
+                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "Validation Error", data['message']);  // Show error message from the API
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Validation request failed: ' + error);  // Show AJAX error
+                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "Validation Request Failed", error);  // Show AJAX error
                 }
             });
         });
+        
+        /**
+         * Shows a BootstrapDialog alert with custom settings.
+         * 
+         * @param {string} type - Type of the dialog based on BootstrapDialog types.
+         * @param {string} title - Title of the dialog.
+         * @param {string} message - Message to be displayed in the dialog.
+         */
+        function showDialogAlert(type, title, message) {
+            BootstrapDialog.show({
+                type: type,
+                title: title,
+                message: message,
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
 
     });
 </script>
