@@ -27,40 +27,33 @@
 <script type="text/javascript">
     $(document).ready(function() {
         // Fetch and display Caddyfile and JSON configuration
-        fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay', false);
-        fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay', true);
+        fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay');
+        fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay');
 
         /**
          * Fetches data from the specified URL and displays it within a given element on the page.
-         * The Caddyfile is raw content and will be displayed directly by setting isJson to false.
-         * The JSON configuration is a double encoded JSON which will be stringified and nicely formatted.
+         * The response is expected to be JSON and will be formatted for display.
          *
          * @param {string} url - The URL from which to fetch data.
          * @param {string} displaySelector - jQuery selector for the element where data should be displayed.
-         * @param {boolean} isJson - Flag indicating whether the response should be treated as JSON that needs parsing.
          */
-        function fetchAndDisplay(url, displaySelector, isJson) {
+        function fetchAndDisplay(url, displaySelector) {
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function(response) {
                     if (response.status === "success") {
-                        if (isJson) {
-                            try {
-                                // Assuming response.content is a JSON object containing a stringified JSON in 'config_data'
-                                let parsedContent = JSON.parse(response.content.config_data); // Parse the stringified JSON
-                                let formattedContent = JSON.stringify(parsedContent, null, 2); // Format it nicely
-                                $(displaySelector).text(formattedContent);
-                            } catch (error) {
-                                // If JSON parsing fails, display an error message
-                                $(displaySelector).text("JSON parsing error: " + error.message);
-                            }
+                        let formattedContent;
+                        if (typeof response.content === 'object') {
+                            // If the content is an object, stringify and format it
+                            formattedContent = JSON.stringify(response.content, null, 2);
                         } else {
-                            // If the data is not JSON, directly display the raw content
-                            $(displaySelector).text(response.content);
+                            // If the content is plain text (as with the Caddyfile), just use it directly
+                            formattedContent = response.content;
                         }
+                        $(displaySelector).text(formattedContent);
                     } else {
-                        // If the response status is not 'success', handle it by showing an appropriate message
+                        // If the response status is not 'success', display an error message
                         $(displaySelector).text("Failed to load content: " + response.message || "Unknown error");
                     }
                 },

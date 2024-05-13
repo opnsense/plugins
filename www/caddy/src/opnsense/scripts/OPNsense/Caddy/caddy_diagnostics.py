@@ -34,15 +34,12 @@ def show_caddy_config():
     config_path = "/var/db/caddy/config/caddy/autosave.json"
 
     try:
-        # Open and read the JSON configuration file
+        # Open and read the JSON configuration file directly into a Python dictionary
         with open(config_path, "r") as file:
-            config_data = file.read()  # Read the file as raw text
+            config_data = json.load(file)  # Load the JSON directly
 
-        # Attempt to decode the JSON to validate its integrity
-        json.loads(config_data)  # This line is just to validate JSON
-
-        # Print the valid JSON to stdout
-        print(json.dumps({"config_data": config_data}))
+        # Print the JSON to stdout using json.dumps to ensure it's a JSON string and nicely formatted
+        print(json.dumps(config_data))  # Output the JSON directly
         # Output error details in JSON format so that the API can consume them
     except FileNotFoundError:
         print(json.dumps({"error": "File not found", "message": "Caddy autosave.json configuration file not found"}))
@@ -51,14 +48,14 @@ def show_caddy_config():
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
-# Function to show the main Caddyfile content
 def show_caddyfile():
     caddyfile_path = "/usr/local/etc/caddy/Caddyfile"
 
     try:
         with open(caddyfile_path, "r") as file:
             caddyfile_data = file.read()
-        print(json.dumps({"Caddyfile": caddyfile_data}))
+        # Output the Caddyfile data directly as a JSON object with a generic key like "content"
+        print(json.dumps({"content": caddyfile_data}))
     except FileNotFoundError:
         print(json.dumps({"error": "Caddyfile not found", "message": "Caddyfile not found"}))
     except Exception as e:

@@ -55,8 +55,14 @@ class DiagnosticsController extends ApiMutableModelControllerBase
             return ["status" => "failed", "message" => $responseArray['message']];
         }
 
-        // Return the response as an array which gets automatically encoded to JSON
-        return ["status" => "success", "content" => $responseArray];
+        // Prepare the response array
+        $response = ['status' => 'success', 'content' => $responseArray];
+        // Set the content type
+        $this->response->setContentType('application/json', 'UTF-8');
+        // Encode and set the content
+        $this->response->setContent(json_encode($response, JSON_PRETTY_PRINT));
+
+        return $this->response;
     }
 
     /**
@@ -75,10 +81,12 @@ class DiagnosticsController extends ApiMutableModelControllerBase
             return ["status" => "failed", "message" => $responseArray['message']];
         }
 
-        // Extract and prepare the Caddyfile content from the response
-        $caddyfileContent = $responseArray['Caddyfile'];
+        // Assuming the response structure is like { "content": "actual Caddyfile content here" }
+        if (!isset($responseArray['content'])) {
+            return ["status" => "failed", "message" => "Caddyfile content not found"];
+        }
 
         // Return the response as an array which gets automatically encoded to JSON
-        return ["status" => "success", "content" => $caddyfileContent];
+        return ["status" => "success", "content" => $responseArray['content']];
     }
 }
