@@ -32,6 +32,11 @@ Plugin Changelog
 * Add: In Reverse Proxy, a new dropdown can select one or multiple domains, filtering the Bootgrids of Domains, Subdomains and Handlers for the selected Domain.
 * Add: Global Log Level can be set in Log Settings.
 * Fix: "Apply" will always read all certificates from the filesystem, even if the Caddy configuration has remained unchanged. "reload" has been changed to "reloadssl".
+* Change: ACME Email should be filled out since it's a requirement for ZeroSSL.
+* Fix: "Save" and "Apply" buttons in General Settings have been improved to reliably trigger validation of form.
+* Cleanup: Javascript variables have been changed from var to let to reduce scope.
+* Fix: Template has been fixed to allow any TLS option in Handlers to appear independant when filled out. This increases flexibility with the "tls_server_name" option.
+* Add: Diagnostics view added where the current Caddyfile and JSON configuration can be displayed, validated and downloaded.
 
 1.5.4
 
