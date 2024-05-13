@@ -26,9 +26,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        // Fetch and display Caddyfile and JSON configuration
-        fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay');
-        fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay');
 
         /**
          * Fetches data from the specified URL and displays it within a given element on the page.
@@ -64,20 +61,6 @@
             });
         }
 
-        $("#downloadJSONConfig").click(function() {
-            let content = $("#jsonDisplay").text();
-            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
-            let filename = "caddy_config_" + timestamp + ".json";
-            downloadContent(content, filename, "application/json");
-        });
-
-        $("#downloadCaddyfile").click(function() {
-            let content = $("#caddyfileDisplay").text();
-            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
-            let filename = "Caddyfile_" + timestamp;
-            downloadContent(content, filename, "text/plain");
-        });
-
         /**
          * Initiates a file download directly from the browser using JavaScript. The function dynamically creates
          * an anchor (<a>) element, sets its attributes for downloading and simulates a click to start the download.
@@ -97,25 +80,6 @@
             a_tag.remove();  // Remove the anchor tag
         }
 
-        // Event handler for the Validate Caddyfile button
-        $('#validateCaddyfile').click(function() {
-            $.ajax({
-                url: '/api/caddy/service/validate',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    if (data && data['status'].toLowerCase() === 'ok') {
-                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "Validation Successful", data['message']);
-                    } else {
-                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "Validation Error", data['message']);  // Show error message from the API
-                    }
-                },
-                error: function(xhr, status, error) {
-                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "Validation Request Failed", error);  // Show AJAX error
-                }
-            });
-        });
-        
         /**
          * Shows a BootstrapDialog alert with custom settings.
          * 
@@ -136,6 +100,45 @@
                 }]
             });
         }
+
+        // Fetch and display Caddyfile and JSON configuration
+        fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay');
+        fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay');
+
+        // Event handler to initiate JSON configuration download
+        $("#downloadJSONConfig").click(function() {
+            let content = $("#jsonDisplay").text();
+            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
+            let filename = "caddy_config_" + timestamp + ".json";
+            downloadContent(content, filename, "application/json");
+        });
+
+        // Event handler to initiate Caddyfile download
+        $("#downloadCaddyfile").click(function() {
+            let content = $("#caddyfileDisplay").text();
+            let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
+            let filename = "Caddyfile_" + timestamp;
+            downloadContent(content, filename, "text/plain");
+        });
+
+        // Event handler for the Validate Caddyfile button
+        $('#validateCaddyfile').click(function() {
+            $.ajax({
+                url: '/api/caddy/service/validate',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data && data['status'].toLowerCase() === 'ok') {
+                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "Validation Successful", data['message']);
+                    } else {
+                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "Validation Error", data['message']);  // Show error message from the API
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "Validation Request Failed", error);  // Show AJAX error
+                }
+            });
+        });
 
     });
 </script>
