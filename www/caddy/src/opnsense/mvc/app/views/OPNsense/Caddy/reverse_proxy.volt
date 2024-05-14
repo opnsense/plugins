@@ -473,7 +473,7 @@
             <div id="messageArea" class="alert alert-info" style="display: none;"></div>
             <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
             <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
-            {{ lang._('Please don\'t forget to apply the configuration.') }}
+            {{ lang._('Please do not forget to apply the configuration.') }}
             </div>
         </div>
     </div>
