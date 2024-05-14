@@ -140,7 +140,6 @@
     <li><a data-toggle="tab" href="#logSettingsTab">{{ lang._('Log Settings') }}</a></li>
 </ul>
 
-
 <!-- Tab Content -->
 <div class="tab-content content-box">
     <!-- General Tab -->
