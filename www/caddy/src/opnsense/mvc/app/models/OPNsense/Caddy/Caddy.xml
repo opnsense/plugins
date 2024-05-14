@@ -219,6 +219,10 @@
                     <Required>Y</Required>
                 </description>
                 <DynDns type="BooleanField"/>
+                <AcmePassthrough type="HostnameField">
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                </AcmePassthrough>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
