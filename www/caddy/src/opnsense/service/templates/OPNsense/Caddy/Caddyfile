@@ -308,6 +308,20 @@
         }
     {% endif %}
 {% endfor %}
+{# Process redirection for subdomains afterwards, since a redirection of a wildcard domain has to match before them. #}
+{% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
+    {% if subdomain.enabled|default("0") == "1" and subdomain.AcmePassthrough %}
+        # HTTP-01 challenge redirection for subdomain: "{{ subdomain['@uuid'] }}"
+        http://{{ subdomain.FromDomain|default("") }} {
+            handle /.well-known/acme-challenge/* {
+                reverse_proxy {{ subdomain.AcmePassthrough }}
+            }
+            handle {
+                redir https://{host}{uri} 308
+            }
+        }
+    {% endif %}
+{% endfor %}
 
 {#
 #   Macro: tls_configuration
