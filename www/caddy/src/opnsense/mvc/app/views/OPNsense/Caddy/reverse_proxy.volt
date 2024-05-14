@@ -136,13 +136,13 @@
                             dfObj.resolve();
                         } else {
                             // If configuration is invalid, show alert and reject the Deferred object
-                            showAlert(data['message'], "Validation Failed");
+                            showAlert(data['message'], "{{ lang._('Validation Failed') }}");
                             dfObj.reject();
                         }
                     },
                     error: function(xhr, status, error) {
                         // On AJAX error, show alert and reject the Deferred object
-                        showAlert("Validation request failed: " + error, "Error");
+                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Error') }}");
                         dfObj.reject();
                     }
                 });
@@ -153,10 +153,10 @@
                 // Check if the action was successful
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                     // Update only the service control UI for 'caddy'
-                    showAlert("Configuration applied successfully.", "Apply Success");
+                    showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                     updateServiceControlUI('caddy');
                 } else {
-                    console.error("Action was not successful or an error occurred:", data);
+                    console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
                 }
             }
         });
@@ -181,7 +181,7 @@
                     select.selectpicker('refresh'); // Refresh selectpicker to update the UI
                 },
                 error: function() {
-                    $('#reverseFilter').html('<option value="">Failed to load data</option>').selectpicker('refresh');
+                    $('#reverseFilter').html('<option value="">{{ lang._('Failed to load data') }}</option>').selectpicker('refresh');
                 }
             });
         }
