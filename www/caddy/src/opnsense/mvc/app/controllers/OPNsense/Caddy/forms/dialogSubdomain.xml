@@ -45,6 +45,17 @@
     </field>
     <field>
         <type>header</type>
+        <label>Trust</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>subdomain.AcmePassthrough</id>
+        <label>HTTP-01 challenge redirection</label>
+        <type>text</type>
+        <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables a server behind Caddy to serve "/.well-known/acme-challenge/". Caddy will issue a certificate for the same domain using the TLS-ALPN-01 challenge or DNS-01 challenge instead.]]></help>
+    </field>
+    <field>
+        <type>header</type>
         <label>Access</label>
         <collapse>true</collapse>
     </field>
