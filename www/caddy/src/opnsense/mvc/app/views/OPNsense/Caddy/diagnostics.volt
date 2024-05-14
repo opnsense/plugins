@@ -51,12 +51,12 @@
                         $(displaySelector).text(formattedContent);
                     } else {
                         // If the response status is not 'success', display an error message
-                        $(displaySelector).text("Failed to load content: " + response.message || "Unknown error");
+                        $(displaySelector).text("{{ lang._('Failed to load content: ') }}" + response.message || "{{ lang._('Unknown error') }}");
                     }
                 },
                 error: function(xhr, status, error) {
                     // Handle errors from the AJAX request itself
-                    $(displaySelector).text("AJAX error accessing the API: " + error);
+                    $(displaySelector).text("{{ lang._('AJAX error accessing the API: ') }}" + error);
                 }
             });
         }
@@ -93,7 +93,7 @@
                 title: title,
                 message: message,
                 buttons: [{
-                    label: 'Close',
+                    label: '{{ lang._('Close') }}',
                     action: function(dialogRef) {
                         dialogRef.close();
                     }
@@ -129,13 +129,13 @@
                 dataType: 'json',
                 success: function(data) {
                     if (data && data['status'].toLowerCase() === 'ok') {
-                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "Validation Successful", data['message']);
+                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
                     } else {
-                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "Validation Error", data['message']);  // Show error message from the API
+                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
                     }
                 },
                 error: function(xhr, status, error) {
-                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "Validation Request Failed", error);  // Show AJAX error
+                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
                 }
             });
         });
@@ -166,8 +166,8 @@
 
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="configTabs">
-    <li class="active"><a data-toggle="tab" href="#caddyfileTab">Caddyfile</a></li>
-    <li><a data-toggle="tab" href="#jsonConfigTab">JSON Configuration</a></li>
+    <li class="active"><a data-toggle="tab" href="#caddyfileTab">{{ lang._('Caddyfile') }}</a></li>
+    <li><a data-toggle="tab" href="#jsonConfigTab">{{ lang._('JSON Configuration') }}</a></li>
 </ul>
 
 <!-- Tab Content -->
