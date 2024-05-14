@@ -111,7 +111,7 @@
                     // Save the form before continuing
                     saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
                         function() {  // callback_ok: What to do when save is successful
-                            showAlert("{{ lang._('Configuration saved successfully. Please don\'t forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
+                            showAlert("{{ lang._('Configuration saved successfully. Please do not forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
                             dfObj.resolve();
                         }, 
                         false, // disable_dialog: Show the dialog with the validation error
