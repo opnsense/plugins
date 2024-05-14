@@ -72,12 +72,12 @@
                                     if (data && data['status'].toLowerCase() === 'ok') {
                                         dfObj.resolve(); // Configuration is valid
                                     } else {
-                                        showAlert(data['message'], "Validation Error");
+                                        showAlert(data['message'], "{{ lang._('Validation Error') }}");
                                         dfObj.reject(); // Configuration is invalid
                                     }
                                 },
                                 error: function(xhr, status, error) {
-                                    showAlert("Validation request failed: " + error, "Validation Error");
+                                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Validation Error') }}");
                                     dfObj.reject(); // AJAX request failed
                                 }
                             });
@@ -85,7 +85,7 @@
                         false, // disable_dialog: Show the dialog with the validation error
                         function(errorData) {  // callback_fail: What to do when save fails
                             // Handle failure due to validation errors or other issues
-                            showAlert("Configuration save failed: " + (errorData.message || "Validation Error"), "Error");
+                            showAlert("{{ lang._('Configuration save failed: ') }}" + (errorData.message || "{{ lang._('Validation Error') }}"), "{{ lang._('Error') }}");
                             dfObj.reject(); // Reject the deferred object to stop the reconfigure action
                         }
                     );
@@ -95,11 +95,11 @@
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                         // Configuration is valid and applied, possibly refresh UI or notify user
-                        showAlert("Configuration applied successfully.", "Apply Success");
+                        showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                         updateServiceControlUI('caddy');
                     } else {
                         // Handle errors or unsuccessful application
-                        showAlert("An error occurred while applying the configuration.", "Error");
+                        showAlert("{{ lang._('An error occurred while applying the configuration.') }}", "{{ lang._('Error') }}");
                     }
                 }
             });
@@ -111,12 +111,12 @@
                     // Save the form before continuing
                     saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
                         function() {  // callback_ok: What to do when save is successful
-                            showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
+                            showAlert("{{ lang._('Configuration saved successfully. Please don\'t forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
                             dfObj.resolve();
                         }, 
                         false, // disable_dialog: Show the dialog with the validation error
                         function(errorData) {  // callback_fail: What to do when save fails
-                            showAlert("Configuration save failed: " + (errorData.message || "Validation Error"), "Error");
+                            showAlert("{{ lang._('Configuration save failed: ') }}" + (errorData.message || "{{ lang._('Validation Error') }}"), "{{ lang._('Error') }}");
                             dfObj.reject();
                         }
                     );
@@ -134,11 +134,12 @@
 
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
-    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
-    <li><a data-toggle="tab" href="#dynamicDnsTab">Dynamic DNS</a></li>
-    <li><a data-toggle="tab" href="#logSettingsTab">Log Settings</a></li>
+    <li class="active"><a data-toggle="tab" href="#generalTab">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#dnsProviderTab">{{ lang._('DNS Provider') }}</a></li>
+    <li><a data-toggle="tab" href="#dynamicDnsTab">{{ lang._('Dynamic DNS') }}</a></li>
+    <li><a data-toggle="tab" href="#logSettingsTab">{{ lang._('Log Settings') }}</a></li>
 </ul>
+
 
 <!-- Tab Content -->
 <div class="tab-content content-box">
