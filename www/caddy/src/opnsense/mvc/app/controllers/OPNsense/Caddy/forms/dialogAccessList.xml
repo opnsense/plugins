@@ -3,7 +3,7 @@
         <id>accesslist.accesslistName</id>
         <label>Access List Name</label>
         <type>text</type>
-        <help><![CDATA[Enter a name for this access list.]]></help>
+        <help><![CDATA[<strong>Enter a name for this access list.</strong>]]></help>
     </field>
     <field>
         <id>accesslist.clientIps</id>
@@ -11,34 +11,32 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts multiple IPv4/IPv6 addresses or networks.]]></help>
+        <help><![CDATA[<strong>Enter the client IP addresses or networks</strong> for this access list. Accepts multiple IPv4/IPv6 addresses or networks.]]></help>
     </field>
     <field>
         <id>accesslist.accesslistInvert</id>
         <label>Invert List</label>
         <type>checkbox</type>
-        <help><![CDATA[If checked, the access list logic will be inverted (i.e., the listed IPs will be blocked instead of allowed).]]></help>
+        <help><![CDATA[<strong>If checked, the access list logic will be inverted</strong> (i.e., the listed IPs will be blocked instead of allowed).]]></help>
     </field>
     <field>
         <id>accesslist.HttpResponseCode</id>
         <label>HTTP Response Code</label>
         <type>text</type>
         <hint>403</hint>
-        <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list doesn't match. Setting this will replace "Abort Connections", all clients will stay connected but will receive the response code.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[<strong>Set a custom HTTP response code</strong> that should be returned to the requesting client when the access list doesn't match. Setting this will replace <code>Abort Connections</code> only for this access list. All clients will stay connected but will receive the response code.]]></help>
     </field>
     <field>
         <id>accesslist.HttpResponseMessage</id>
         <label>HTTP Response Message</label>
         <type>text</type>
         <hint>Forbidden</hint>
-        <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[<strong>Set a custom HTTP response message</strong> in addition to the HTTP response code.]]></help>
     </field>
     <field>
         <id>accesslist.description</id>
         <label>Description</label>
         <type>text</type>
-        <help><![CDATA[Enter a description for this access list.]]></help>
+        <help><![CDATA[<strong>Enter a description for this access list.</strong>]]></help>
     </field>
 </form>
