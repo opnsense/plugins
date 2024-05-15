@@ -3,25 +3,25 @@
         <id>caddy.general.LogLevel</id>
         <label>Log Level</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the minimum global Log Level. "INFO" is the default and shouldn't be changed without a reason, since that level displays the ACME Client messages for automatic certificates. This setting doesn't influence the HTTP Access logs, they're always using INFO, which is their lowest supported Log Level.]]></help>
+        <help><![CDATA[<strong>Select the minimum global Log Level.</strong> <code>INFO</code> is the default and should not be changed without a reason, as it displays the ACME Client messages for automatic certificates. This setting does not influence the HTTP Access logs; they always use <code>INFO</code>, which is their lowest supported Log Level.]]></help>
     </field>
     <field>
         <id>caddy.general.LogCredentials</id>
         <label>Log Credentials</label>
         <type>checkbox</type>
-        <help><![CDATA[Log all Cookies and Authorization in HTTP request logging. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enable this option only for troubleshooting.]]></help>
+        <help><![CDATA[<strong>Log all cookies and authorization in HTTP request logging</strong>. Use this option combined with <code>HTTP Access Log</code> in a <code>Domain</code>. <strong>Enable this option only for troubleshooting.</strong>]]></help>
     </field>
     <field>
         <id>caddy.general.LogAccessPlain</id>
         <label>Log HTTP Access in JSON Format</label>
         <type>checkbox</type>
-        <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g for processing by CrowdSec. Use combined with HTTP Access Log in the Reverse Proxy Domain. Enabling this will make the HTTP Access Log dissappear from the standard "Log File" in the GUI. They can be found in the filesystem "/var/log/caddy/access/"]]></help>
+        <help><![CDATA[<strong>Log HTTP access in a standard JSON logfile per domain</strong>, e.g., for processing by <em>CrowdSec</em>. Use this option combined with <code>HTTP Access Log</code> in a <code>Domain</code>. Enabling this will make the HTTP Access Log disappear from the standard Log File. Logs can be found in the filesystem at <code>/var/log/caddy/access/</code>.]]></help>
     </field>
     <field>
         <id>caddy.general.LogAccessPlainKeep</id>
         <label>Keep HTTP Access JSON Logs for (days)</label>
         <hint>10</hint>
         <type>text</type>
-        <help><![CDATA[How many days to keep the JSON access logs.]]></help>
+        <help><![CDATA[<strong>Specify how many days to keep the JSON access logs.</strong>]]></help>
     </field>
 </form>
