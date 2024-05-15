@@ -1,40 +1,40 @@
 <form>
     <field>
         <id>handle.enabled</id>
-        <label>enabled</label>
+        <label>Enabled</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable this handler.]]></help>
+        <help><![CDATA[<strong>Enable or disable this handler.</strong>]]></help>
     </field>
     <field>
         <id>handle.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
-        <help><![CDATA[Select a reverse proxy domain to which this handler should be added.]]></help>
+        <help><![CDATA[<strong>Select a domain to handle.</strong>]]></help>
     </field>
     <field>
         <id>handle.subdomain</id>
         <label>Subdomain</label>
         <type>dropdown</type>
-        <help><![CDATA[Optionally, select a reverse proxy subdomain to which this handler should be added. If not using subdomains, leaving this as "None" will be the best choice.]]></help>
+        <help><![CDATA[<strong>Select a subdomain to handle</strong>. Make sure to additionaly choose a wildcard domain as <code>Domain</code>. Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
-        <help><![CDATA[In most cases, leaving this as "handle" will be the best choice.]]></help>
+        <help><![CDATA[<strong>Choose a handling directive.</strong> <code>handle</code> (default) will keep the URI of <code>Handle URI</code> in all requests. <code>handle_path</code> will strip the URI of <code>Handle URI</code> from all requests.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandlePath</id>
-        <label>Handle Path</label>
+        <label>Handle URI</label>
         <type>text</type>
-        <help><![CDATA[Enter a handler like '/*' or '/example/*', or leave blank for a catch-all handler (recommended). Any request matching this handler will be reverse proxied to the upstream destination.]]></help>
+        <help><![CDATA[<strong>Enter an URI to handle.</strong> Choose a pattern like <code>/*</code> or <code>/example/*</code>. <strong>Leave empty to catch all URIs (recommended)</strong>. Any request matching this pattern will be handled.]]></help>
     </field>
     <field>
         <id>handle.description</id>
         <label>Description</label>
         <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
+        <help><![CDATA[<strong>Enter a description for this handler.</strong>]]></help>
     </field>
     <field>
         <type>header</type>
@@ -47,7 +47,7 @@
         <type>dropdown</type>
         <type>select_multiple</type>
         <size>5</size>
-        <help><![CDATA[Select one or multiple header manipulations. These will be set to this handler. Generally this is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
+        <help><![CDATA[<strong>Select one or multiple header manipulations.</strong> Caddy sets <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code> and <code>X-Forwarded-Host</code> by default, adding them here is not needed. <strong>Setting a wrong configuration can be a security risk or break functionality.</strong>]]></help>
     </field>
     <field>
         <type>header</type>
@@ -60,28 +60,32 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter the internal domain name or IP address of the upstream destination for this handler. If multiple upstream destinations are chosen, they will be load balanced with the default random policy.]]></help>
+        <help><![CDATA[<strong>Enter a domain name or IP address of the upstream destination.</strong> If multiple are chosen, they will be load balanced with the default random policy. A health check can be set in <em>Load Balancing</em>]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
         <hint>80</hint>
-        <help><![CDATA[Enter the port number of the upstream destination. Leave this empty to use port 80.]]></help>
+        <help><![CDATA[<strong>Leave empty to use port 80</strong> or choose a custom port of the upstream destination.]]></help>
     </field>
     <field>
         <id>handle.ToPath</id>
         <label>Upstream Path</label>
         <type>text</type>
-        <help><![CDATA[Enter a path prefix like '/guacamole' that should be prepended to the upstream request because the application demands it.]]></help>
+        <help><![CDATA[<strong>Enter a path prefix</strong> like <code>/guacamole</code> that should be prepended to the upstream request because the application demands it.]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Load Balancing</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>handle.PassiveHealthFailDuration</id>
         <label>Upstream Fail Duration</label>
         <type>text</type>
-        <help><![CDATA[Enables a passive health check when multiple upstream destinations have been defined for load balancing. "fail_duration" is a duration value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[<strong>Enables a passive health check</strong> when multiple destinations in <code>Upstream Domain</code> are set. <code>Fail Duration</code> is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -92,32 +96,30 @@
         <id>handle.HttpTls</id>
         <label>TLS</label>
         <type>checkbox</type>
-        <help><![CDATA[Use HTTP over TLS (HTTPS) to communicate with the upstream destination. In most cases, leaving this unchecked will be the best choice. Caddy uses HTTP for communication with the upstream destination by default.]]></help>
+        <help><![CDATA[<strong>Enable or disable HTTP over TLS (HTTPS)</strong> to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
     </field>
     <field>
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
-        <help><![CDATA[If "TLS" has been checked, check "NTLM" in addition for reverse proxying an Exchange Server. In most other cases, leaving this unchecked will be the best choice.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[<strong>Enable or disable NTLM.</strong> Needed to reverse proxy an Exchange Server.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsInsecureSkipVerify</id>
         <label>TLS Insecure Skip Verify</label>
         <type>checkbox</type>
-        <help><![CDATA[Turns off TLS handshake verification, making the connection insecure and vulnerable to man-in-the-middle attacks. Do not use in production.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[<strong>Disable the TLS handshake verification</strong>, making the connection insecure and vulnerable to man-in-the-middle attacks. <strong>Do not use in production if possible.</strong> When having issues with an upstream that only accepts TLS connections, enabling this option can mitigate them.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trusted CA Certificate</label>
         <type>dropdown</type>
-        <help><![CDATA[Optionally, if TLS is enabled, choose a CA certificate or self-signed certificate to trust from "System - Trust - Authorities".]]></help>
+        <help><![CDATA[<strong>Choose a CA or self-signed certificate to trust</strong> from <em>System - Trust - Authorities</em>. Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsServerName</id>
         <label>TLS Server Name</label>
         <type>text</type>
-        <help><![CDATA[Optionally, specify a hostname or IP address that matches the SAN of the "TLS Trusted CA Certificate". Please note that only SAN certificates are supported; CN will not work.]]></help>
+        <help><![CDATA[<strong>Enter a hostname or IP address</strong> that matches the SAN <em>Subject Alternative Name</em> of the offered upstream certificate. This will change the SNI <em>Server Name Indication</em> of Caddy. Setting an IP address as <code>Upstream Domain</code>, enabling <code>TLS</code> and selecting a <code>TLS Trusted CA Certificate</code>, would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN <em>Common Name</em> will not work.]]></help>
     </field>
 </form>
