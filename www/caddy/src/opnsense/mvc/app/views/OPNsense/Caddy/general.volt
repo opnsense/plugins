@@ -81,7 +81,7 @@
                                     dfObj.reject(); // AJAX request failed
                                 }
                             });
-                        }, 
+                        },
                         false, // disable_dialog: Show the dialog with the validation error
                         function(errorData) {  // callback_fail: What to do when save fails
                             // Handle failure due to validation errors or other issues
@@ -113,7 +113,7 @@
                         function() {  // callback_ok: What to do when save is successful
                             showAlert("{{ lang._('Configuration saved successfully. Please do not forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
                             dfObj.resolve();
-                        }, 
+                        },
                         false, // disable_dialog: Show the dialog with the validation error
                         function(errorData) {  // callback_fail: What to do when save fails
                             showAlert("{{ lang._('Configuration save failed: ') }}" + (errorData.message || "{{ lang._('Validation Error') }}"), "{{ lang._('Error') }}");

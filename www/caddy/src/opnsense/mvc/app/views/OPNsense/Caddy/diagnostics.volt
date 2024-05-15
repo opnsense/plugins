@@ -82,7 +82,7 @@
 
         /**
          * Shows a BootstrapDialog alert with custom settings.
-         * 
+         *
          * @param {string} type - Type of the dialog based on BootstrapDialog types.
          * @param {string} title - Title of the dialog.
          * @param {string} message - Message to be displayed in the dialog.
@@ -151,7 +151,7 @@
     .custom-style .display-area {
         overflow-y: scroll;
         /* Dynamic height management using clamp for varying screen sizes */
-        height: clamp(50px, 50vh, 4000px); 
+        height: clamp(50px, 50vh, 4000px);
         margin-bottom: 20px; /* Adds bottom margin to separate from the help text */
     }
 

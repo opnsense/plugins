@@ -83,4 +83,3 @@ if __name__ == "__main__":
     else:
         # Output error details in JSON format if no action is specified
         print(json.dumps({"error": "No Action Specified", "message": "No action specified"}))
-
