@@ -52,7 +52,7 @@ class DiagnosticsController extends ApiMutableModelControllerBase
 
         // Since errors are handled by the caddy_diagnostics script and returned as json, check for an error key in the response
         if (isset($responseArray['error'])) {
-            return ["status" => "failed", "message" => $responseArray['message']];
+            return ["status" => "failed", "message" => _($responseArray['message'])];
         }
 
         // Prepare the response array
@@ -78,12 +78,7 @@ class DiagnosticsController extends ApiMutableModelControllerBase
 
         if (isset($responseArray['error'])) {
             // Handle the error
-            return ["status" => "failed", "message" => $responseArray['message']];
-        }
-
-        // Assuming the response structure is like { "content": "actual Caddyfile content here" }
-        if (!isset($responseArray['content'])) {
-            return ["status" => "failed", "message" => "Caddyfile content not found"];
+            return ["status" => "failed", "message" => _($responseArray['message'])];
         }
 
         // Return the response as an array which gets automatically encoded to JSON
