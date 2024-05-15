@@ -67,7 +67,7 @@
         <label>Upstream Port</label>
         <type>text</type>
         <hint>80</hint>
-        <help><![CDATA[Leave empty to use port 80 or choose a custom port for the upstream destination.]]></help>
+        <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
         <id>handle.ToPath</id>
