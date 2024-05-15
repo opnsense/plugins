@@ -59,7 +59,7 @@ class Caddy extends BaseModel
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        _("Duplicate entry: The combination of ") . $type . _(" '") . $fromDomainOrSubdomain . _("' and port '") . $port . _("' is already used. Each ") . $type . _(" and port pairing must be unique."),
+                        sprintf(gettext("Duplicate entry: The combination of %1\$s '%2\$s' and port '%3\$s' is already used. Each %1\$s and port pairing must be unique."), $type, $fromDomainOrSubdomain, $port),
                         $type === 'domain' ? $key . ".FromDomain" : $key . ".FromDomain", // Adjusted to use dynamic key
                         "Duplicate" . ucfirst($type) . "Port"
                     ));
@@ -98,7 +98,7 @@ class Caddy extends BaseModel
                 if (!$isValid) {
                     $key = $subdomain->__reference; // Dynamic key based on subdomain reference
                     $messages->appendMessage(new Message(
-                        _("Invalid subdomain configuration: '") . $subdomainName . _("' does not fall under any configured wildcard domain."),
+                        sprintf(gettext("Invalid subdomain configuration: '%1\$s' does not fall under any configured wildcard domain."), $subdomainName),
                         $key . ".FromDomain", // Use dynamic key for message referencing
                         "InvalidSubdomain"
                     ));

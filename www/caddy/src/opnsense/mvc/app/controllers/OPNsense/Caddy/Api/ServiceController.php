@@ -63,11 +63,11 @@ class ServiceController extends ApiMutableServiceControllerBase
             $result = json_decode($jsonOutput, true);
 
             if (is_array($result) && isset($result['status'])) {
-                return ["status" => $result['status'], "message" => _($result['message'])];
+                return ["status" => $result['status'], "message" => $result['message']];
             }
         }
 
         // If unable to parse the expected JSON output, return a generic error message
-        return ["status" => "failed", "message" => _("Unable to parse the validation result.")];
+        return ["status" => "failed", "message" => gettext("Unable to parse the validation result.")];
     }
 }
