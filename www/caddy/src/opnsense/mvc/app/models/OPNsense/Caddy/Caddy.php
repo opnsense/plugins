@@ -37,7 +37,7 @@ class Caddy extends BaseModel
 {
     // 1. Check domain-port combinations
     // 2. Check subdomain-port combinations
-    private function checkForUniquePortCombos($items, $messages, $type = 'domain')
+    private function checkForUniquePortCombos($items, $messages)
     {
         $combos = [];
         foreach ($items as $item) {
@@ -59,9 +59,9 @@ class Caddy extends BaseModel
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        sprintf(gettext("Duplicate entry: The combination of %1\$s '%2\$s' and port '%3\$s' is already used. Each %1\$s and port pairing must be unique."), $type, $fromDomainOrSubdomain, $port),
-                        $type === 'domain' ? $key . ".FromDomain" : $key . ".FromDomain", // Adjusted to use dynamic key
-                        "Duplicate" . ucfirst($type) . "Port"
+                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain/subdomain and port must be unique."), $fromDomainOrSubdomain, $port),
+                        $key . ".FromDomain", // Adjusted to use dynamic key
+                        "DuplicateDomainPort"
                     ));
                 } else {
                     $combos[$comboKey] = true;
@@ -112,9 +112,9 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
         // 1. Check domain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages, 'domain');
+        $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
         // 2. Check subdomain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages, 'subdomain');
+        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
 
