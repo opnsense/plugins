@@ -3,7 +3,7 @@
         <id>subdomain.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable this subdomain.]]></help>
+        <help><![CDATA[Enable this subdomain.]]></help>
     </field>
     <field>
         <id>subdomain.reverse</id>
@@ -23,7 +23,7 @@
         <label>Port</label>
         <type>text</type>
         <hint>443</hint>
-        <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule.]]></help>
+        <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Do not forget to allow these ports with a Firewall rule.]]></help>
     </field>
     <field>
         <id>subdomain.description</id>

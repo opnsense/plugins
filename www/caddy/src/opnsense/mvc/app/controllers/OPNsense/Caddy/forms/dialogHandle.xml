@@ -3,7 +3,7 @@
         <id>handle.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable this handler.]]></help>
+        <help><![CDATA[Enable this handler.]]></help>
     </field>
     <field>
         <id>handle.reverse</id>

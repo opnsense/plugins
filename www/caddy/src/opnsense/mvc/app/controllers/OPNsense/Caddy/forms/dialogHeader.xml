@@ -17,7 +17,7 @@
         <label>Header Value</label>
         <hint>{upstream_hostport}</hint>
         <type>text</type>
-        <help><![CDATA[Enter a value for the selected header. One of the most common options is "{upstream_hostport}". It's also possible to use a regular expression to search for a specific value in a header. For example: "^prefix-([A-Za-z0-9]*)$" which uses the regular expression language RE2 included in Go.]]></help>
+        <help><![CDATA[Enter a value for the selected header. One of the most common options is "{upstream_hostport}". It is also possible to use a regular expression to search for a specific value in a header. For example: "^prefix-([A-Za-z0-9]*)$" which uses the regular expression language RE2 included in Go.]]></help>
     </field>
     <field>
         <id>header.HeaderReplace</id>

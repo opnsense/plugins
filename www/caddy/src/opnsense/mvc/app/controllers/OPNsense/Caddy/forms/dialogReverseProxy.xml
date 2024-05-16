@@ -3,7 +3,7 @@
         <id>reverse.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable this domain.]]></help>
+        <help><![CDATA[Enable this domain.]]></help>
     </field>
     <field>
         <id>reverse.FromDomain</id>
@@ -46,7 +46,7 @@
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 Challenge</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can't be used due to restrictive firewall policies.]]></help>
+        <help><![CDATA[Enable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can not be used due to restrictive firewall policies.]]></help>
     </field>
     <field>
         <id>reverse.AcmePassthrough</id>
