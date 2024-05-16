@@ -10,31 +10,31 @@
         <label>ACME Email</label>
         <type>text</type>
         <hint>info@example.com</hint>
-        <help><![CDATA[Enter the email address for certificate notifications. This is required to receive automatic certificates from Let's Encrypt and ZeroSSL.]]></help>
+        <help><![CDATA[Enter the email address for certificate notifications. This is required to receive automatic certificates from "Let's Encrypt" and "ZeroSSL".]]></help>
     </field>
     <field>
         <id>caddy.general.TlsAutoHttps</id>
         <label>Auto HTTPS</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the auto HTTPS option. "On" (default) creates automatic certificates using Let's Encrypt or ZeroSSL without needing any configuration.]]></help>
+        <help><![CDATA[Select the Auto HTTPS option. "On (default)" creates automatic certificates using "Let's Encrypt" or "ZeroSSL". "Off" turns all automatic certificate requests off.]]></help>
     </field>
     <field>
         <id>caddy.general.accesslist</id>
         <label>Trusted Proxies</label>
         <type>dropdown</type>
-        <help><![CDATA[Select an Access List of Trusted Proxies. If Caddy is not the first server being connected to by your clients (for example when a CDN is in front of Caddy), you may configure trusted_proxies with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the Domains your Trusted Proxy connects to.]]></help>
+        <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
     </field>
     <field>
         <id>caddy.general.abort</id>
         <label>Abort Connections</label>
         <type>checkbox</type>
-        <help><![CDATA[Abort all connections that don't have a matching handle or access list. This option doesn't conflict with Let's Encrypt. Disable it for troubleshooting purposes, e.g., testing if the Reverse Proxy Domain works and the Certificate has been installed. For production use, enabling this option is recommended.]]></help>
+        <help><![CDATA[Abort all connections that don't have a matching Handle or Access List. This option does not conflict with "Let's Encrypt" or "ZeroSSL". Disable it for troubleshooting purposes, e.g., testing if the "Domain" works and the automatic certificate has been installed. For production use, enabling this option is recommended.]]></help>
     </field>
     <field>
         <id>caddy.general.GracePeriod</id>
         <label>Grace Period</label>
         <type>text</type>
         <hint>10</hint>
-        <help><![CDATA[Defines the grace period for shutting down HTTP servers (i.e. during config changes or when Caddy is stopping) in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
+        <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
     </field>
 </form>

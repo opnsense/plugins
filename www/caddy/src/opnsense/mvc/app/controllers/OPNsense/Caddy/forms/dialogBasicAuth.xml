@@ -3,13 +3,13 @@
         <id>basicauth.basicauthuser</id>
         <label>User</label>
         <type>text</type>
-        <help><![CDATA[Enter a username. Afterwards, you can select it in Reverse Proxy Domains or Subdomains to restrict access with basic auth.]]></help>
+        <help><![CDATA[Enter a username. Afterwards, select it in a "Domain" or "Subdomain" to restrict access with basic auth.]]></help>
     </field>
     <field>
         <id>basicauth.basicauthpass</id>
         <label>Password</label>
         <type>text</type>
-        <help><![CDATA[Enter a password. It will be hashed with bcrypt. It can only be set and changed but won't be visible anymore.]]></help>
+        <help><![CDATA[Enter a password. It will be hashed with bcrypt. It can only be set and changed but will not be visible anymore.]]></help>
     </field>
     <field>
         <id>basicauth.description</id>
