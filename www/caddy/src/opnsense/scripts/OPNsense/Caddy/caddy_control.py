@@ -75,11 +75,11 @@ if __name__ == "__main__":
         service_action = actions[action]
         message = f"{action.capitalize()}ing Caddy service" if action != "validate" else "Validating Caddy configuration"
 
-        # Call setup script for 'validate' and 'reload' actions
+        # Call setup script for 'validate' and 'reloadssl' actions
         # This is needed because the setup script triggers the caddy_certs.php script, which exports all certificates into the filesystem.
         # Caddy reloads certificates when reloadssl is used. Because it is a non standard command, the caddy_setup script will not be triggered in /etc/rc.conf.d/caddy.
         # The validate command needs it to make sure all certificates are in the filesystem, because otherwise the validation fails.
-        if action in ["validate", "reload"]:
+        if service_action in ["validate", "reloadssl"]:
             subprocess.run(["/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"], check=True)
 
         # Continue with the service action
