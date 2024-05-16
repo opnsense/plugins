@@ -37,7 +37,7 @@ class Caddy extends BaseModel
 {
     // 1. Check domain-port combinations
     // 2. Check subdomain-port combinations
-    private function checkForUniquePortCombos($items, $messages, $type = 'domain')
+    private function checkForUniquePortCombos($items, $messages)
     {
         $combos = [];
         foreach ($items as $item) {
@@ -59,9 +59,9 @@ class Caddy extends BaseModel
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        "Duplicate entry: The combination of $type '$fromDomainOrSubdomain' and port '$port' is already used. Each $type and port pairing must be unique.",
-                        $type === 'domain' ? $key . ".FromDomain" : $key . ".FromDomain", // Adjusted to use dynamic key
-                        "Duplicate" . ucfirst($type) . "Port"
+                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain/subdomain and port must be unique."), $fromDomainOrSubdomain, $port),
+                        $key . ".FromDomain", // Adjusted to use dynamic key
+                        "DuplicateDomainPort"
                     ));
                 } else {
                     $combos[$comboKey] = true;
@@ -98,7 +98,7 @@ class Caddy extends BaseModel
                 if (!$isValid) {
                     $key = $subdomain->__reference; // Dynamic key based on subdomain reference
                     $messages->appendMessage(new Message(
-                        "Invalid subdomain configuration: '$subdomainName' does not fall under any configured wildcard domain.",
+                        sprintf(gettext("Invalid subdomain configuration: '%s' does not fall under any configured wildcard domain."), $subdomainName),
                         $key . ".FromDomain", // Use dynamic key for message referencing
                         "InvalidSubdomain"
                     ));
@@ -112,9 +112,9 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
         // 1. Check domain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages, 'domain');
+        $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
         // 2. Check subdomain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages, 'subdomain');
+        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
 
