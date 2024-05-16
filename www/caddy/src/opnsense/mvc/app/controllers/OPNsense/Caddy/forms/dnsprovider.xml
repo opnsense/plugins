@@ -5,7 +5,6 @@
         <type>dropdown</type>
         <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is mostly needed for Wildcard Certificates, and for Dynamic DNS. To use, enable the checkbox in a "Domain" or "Subdomain". For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
     </field>
-    </field>
     <field>
         <id>caddy.general.TlsDnsApiKey</id>
         <label>DNS API Standard Field</label>
