@@ -26,6 +26,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.5.5_1
+
+* Fix: The newly introduced "configctl caddy reload" action, which calls the "service caddy reloadssl" command, will now also trigger the setup.sh script.
+
 1.5.5
 
 * Fix: "Apply" could hang when websockets are in use by clients. A grace period of 10s has been added in General Settings that forces to close all connections on config changes.
@@ -37,6 +41,9 @@ Plugin Changelog
 * Cleanup: Javascript variables have been changed from var to let to reduce scope.
 * Fix: Template has been fixed to allow any TLS option in Handlers to appear independant when filled out. This increases flexibility with the "tls_server_name" option.
 * Add: Diagnostics view added where the current Caddyfile and JSON configuration can be displayed, validated and downloaded.
+* Add: HTTP-01 Challenge Redirection can also be configured for subdomains.
+* Cleanup: lang() and gettext() functions added for translations.
+* Cleanup: Rewritten most help texts in forms for consistency.
 
 1.5.4
 

@@ -35,8 +35,6 @@ def run_service_command(action, action_message):
 
     if action == "validate":
         try:
-            # Call Setup script
-            subprocess.run(["/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"], check=True)
             # Validate the Caddyfile with explicit --config flag, capturing both stdout and stderr
             validation_output = subprocess.check_output(["caddy", "validate", "--config", "/usr/local/etc/caddy/Caddyfile"], stderr=subprocess.STDOUT, text=True)
             if "Valid configuration" in validation_output:
@@ -76,6 +74,15 @@ if __name__ == "__main__":
     if action in actions:
         service_action = actions[action]
         message = f"{action.capitalize()}ing Caddy service" if action != "validate" else "Validating Caddy configuration"
+
+        # Call setup script for 'validate' and 'reload' actions
+        # This is needed because the setup script triggers the caddy_certs.php script, which exports all certificates into the filesystem.
+        # Caddy reloads certificates when reloadssl is used. Because it is a non standard command, the caddy_setup script will not be triggered in /etc/rc.conf.d/caddy.
+        # The validate command needs it to make sure all certificates are in the filesystem, because otherwise the validation fails.
+        if action in ["validate", "reload"]:
+            subprocess.run(["/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"], check=True)
+
+        # Continue with the service action
         print(run_service_command(service_action, message))
     else:
         print(json.dumps({"status": "failed", "message": f"Unknown action: {action}"}))
