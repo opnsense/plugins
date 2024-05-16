@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -13,6 +13,10 @@
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967295</MaximumValue>
         </asnumber>
+        <distance type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>255</MaximumValue>
+        </distance>
         <routerid type="TextField">
             <Required>N</Required>
             <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
@@ -60,8 +64,6 @@
                                 <Required>Y</Required>
                         </address>
                         <remoteas type="IntegerField">
-                                <default></default>
-                                <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
@@ -211,7 +213,19 @@
                                 <Multiple>N</Multiple>
                                 <Required>N</Required>
                         </linkedRoutemapOut>
-            </neighbor>
+                        <peergroup type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>peergroups.peergroup</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Peer Group item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                        </peergroup>
+                </neighbor>
         </neighbors>
         <aspaths>
                 <aspath type="ArrayField">
@@ -395,5 +409,76 @@
                         </set>
                 </routemap>
         </routemaps>
+        <peergroups>
+                <peergroup type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <name type="TextField">
+                                <Required>Y</Required>
+                        </name>
+                        <remoteas type="IntegerField">
+                                <Required>Y</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>4294967295</MaximumValue>
+                        </remoteas>
+                        <updatesource type="InterfaceField">
+                                <AllowDynamic>Y</AllowDynamic>
+                                <filters>
+                                        <enable>/^(?!0).*$/</enable>
+                                        <type>/^(?!group).*$/</type>
+                                </filters>
+                        </updatesource>
+                        <nexthopself type="BooleanField"/>
+                        <defaultoriginate type="BooleanField"/>
+                        <linkedPrefixlistIn type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                        </linkedPrefixlistIn>
+                        <linkedPrefixlistOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>prefixlists.prefixlist</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
+                                <Multiple>N</Multiple>
+                                <Required>N</Required>
+                        </linkedPrefixlistOut>
+                        <linkedRoutemapIn type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>routemaps.routemap</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                        </linkedRoutemapIn>
+                        <linkedRoutemapOut type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>routemaps.routemap</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                        </linkedRoutemapOut>
+            </peergroup>
+        </peergroups>
     </items>
 </model>

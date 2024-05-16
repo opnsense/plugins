@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2017 Fabian Franz
- * Copyright (C) 2017-2020 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2017-2024 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,7 @@ class BgpController extends \OPNsense\Base\IndexController
         $this->view->formDialogEditBGPPrefixLists = $this->getForm("dialogEditBGPPrefixLists");
         $this->view->formDialogEditBGPCommunityLists = $this->getForm("dialogEditBGPCommunityLists");
         $this->view->formDialogEditBGPRouteMaps = $this->getForm("dialogEditBGPRouteMaps");
+        $this->view->formDialogEditBGPPeergroups = $this->getForm("dialogEditBGPPeergroups");
         $this->view->pick('OPNsense/Quagga/bgp');
     }
 }

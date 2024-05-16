@@ -1,0 +1,36 @@
+<model>
+    <mount>//OPNsense/quagga/static</mount>
+    <description>Staticd Routing configuration</description>
+    <version>1.0.0</version>
+    <items>
+		<enabled type="BooleanField">
+			<default>0</default>
+			<Required>Y</Required>
+		</enabled>
+		<routes>
+			<route type="ArrayField">
+				<enabled type="BooleanField">
+					<default>1</default>
+					<Required>Y</Required>
+				</enabled>
+				<network type="NetworkField">
+					<NetMaskRequired>Y</NetMaskRequired>
+					<Required>Y</Required>
+					<ValidationMessage>Specify a valid network matching the gateways ip protocol.</ValidationMessage>
+				</network>
+				<gateway type="NetworkField">
+					<NetMaskAllowed>N</NetMaskAllowed>
+					<Required>N</Required>
+				</gateway>
+				<interfacename type="InterfaceField">
+					<multiple>N</multiple>
+					<AllowDynamic>Y</AllowDynamic>
+					<filters>
+						<enable>/^(?!0).*$/</enable>
+						<type>/^(?!group).*$/</type>
+					</filters>
+				</interfacename>
+			</route>
+		</routes>
+    </items>
+</model>

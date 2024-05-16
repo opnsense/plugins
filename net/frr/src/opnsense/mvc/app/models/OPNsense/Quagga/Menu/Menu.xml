@@ -7,7 +7,8 @@
     <!--<ISIS VisibleName="IS-IS" cssClass="fa fa-bolt fa-fw" url="/ui/quagga/isis/index" order="30" />-->
     <BGP VisibleName="BGP" cssClass="fa fa-globe fa-fw" url="/ui/quagga/bgp/index" order="40" />
     <BFD VisibleName="BFD" cssClass="fa fa-exchange fa-fw" url="/ui/quagga/bfd/index" order="50" />
-    <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-medkit fa-fw" order="50">
+    <STATIC VisibleName="STATIC" cssClass="fa fa-expand fa-fw" url="/ui/quagga/static/index" order="60" />
+    <Diagnostics VisibleName="Diagnostics" cssClass="fa fa-medkit fa-fw" order="70">
       <General VisibleName="General" url="/ui/quagga/diagnostics/general" order="1" />
       <OSPF VisibleName="OSPF" url="/ui/quagga/diagnostics/ospf" order="20" />
       <OSPFv3 VisibleName="OSPFv3" url="/ui/quagga/diagnostics/ospfv3" order="25" />

@@ -12,6 +12,12 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.40
+
+* Add staticd to routing suite
+* Add BGP peer-group support
+* Add distance to BGP
+
 1.39
 
 * Add plain password authentication to OSPF
