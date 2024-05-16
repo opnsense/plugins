@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/shadowsocks/general</mount>
     <description>Shadowsocks configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -46,5 +46,14 @@
                 <chacha20-ietf-poly1305>ChaCha20-IETF-Poly1305</chacha20-ietf-poly1305>
             </OptionValues>
         </cipher>
+        <tcpudpmode type="OptionField">
+            <default>tcp_only</default>
+            <Required>Y</Required>
+            <OptionValues>
+                <tcp_only>TCP only</tcp_only>
+                <udp_only>UDP only</udp_only>
+                <tcp_and_udp>TCP and UDP</tcp_and_udp>
+            </OptionValues>
+        </tcpudpmode>
     </items>
 </model>
