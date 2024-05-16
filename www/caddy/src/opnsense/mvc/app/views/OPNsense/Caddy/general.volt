@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
+        let data_get_map = {'frm_GeneralSettings':"/api/caddy/General/get"};
         mapDataToFormUI(data_get_map).done(function(data){
 
             // Refresh selectpicker for these dropdowns
@@ -34,8 +34,8 @@
 
             // Function to show alerts in the HTML message area
             function showAlert(message, type = "error") {
-                var alertClass = type === "error" ? "alert-danger" : "alert-success";
-                var messageArea = $("#messageArea");
+                let alertClass = type === "error" ? "alert-danger" : "alert-success";
+                let messageArea = $("#messageArea");
 
                 // Stop any current animation, clear the queue, and immediately hide the element
                 messageArea.stop(true, true).hide();
@@ -60,55 +60,69 @@
                 onPreAction: function() {
                     const dfObj = $.Deferred();
 
-                    // Save the form before continue
-                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                        // After successful save, proceed with validation
-                        $.ajax({
-                            url: "/api/caddy/service/validate",
-                            type: "GET",
-                            dataType: "json",
-                            success: function(data) {
-                                if (data && data['status'].toLowerCase() === 'ok') {
-                                    dfObj.resolve(); // Configuration is valid
-                                } else {
-                                    showAlert(data['message'], "Validation Error");
-                                    dfObj.reject(); // Configuration is invalid
+                    // Save the form before continuing
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
+                        function() {  // callback_ok: What to do when save is successful
+                            // After successful save, proceed with validation
+                            $.ajax({
+                                url: "/api/caddy/service/validate",
+                                type: "GET",
+                                dataType: "json",
+                                success: function(data) {
+                                    if (data && data['status'].toLowerCase() === 'ok') {
+                                        dfObj.resolve(); // Configuration is valid
+                                    } else {
+                                        showAlert(data['message'], "{{ lang._('Validation Error') }}");
+                                        dfObj.reject(); // Configuration is invalid
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Validation Error') }}");
+                                    dfObj.reject(); // AJAX request failed
                                 }
-                            },
-                            error: function(xhr, status, error) {
-                                showAlert("Validation request failed: " + error, "Validation Error");
-                                dfObj.reject(); // AJAX request failed
-                            }
-                        });
-                    }, function() {
-                        // If save fails, reject the deferred object to stop the reconfigure action
-                        showAlert("Failed to save configuration.", "Error");
-                        dfObj.reject();
-                    });
+                            });
+                        },
+                        false, // disable_dialog: Show the dialog with the validation error
+                        function(errorData) {  // callback_fail: What to do when save fails
+                            // Handle failure due to validation errors or other issues
+                            showAlert("{{ lang._('Configuration save failed: ') }}" + (errorData.message || "{{ lang._('Validation Error') }}"), "{{ lang._('Error') }}");
+                            dfObj.reject(); // Reject the deferred object to stop the reconfigure action
+                        }
+                    );
 
                     return dfObj.promise();
                 },
                 onAction: function(data, status) {
                     if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                         // Configuration is valid and applied, possibly refresh UI or notify user
-                        showAlert("Configuration applied successfully.", "Apply Success");
+                        showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                         updateServiceControlUI('caddy');
                     } else {
                         // Handle errors or unsuccessful application
-                        showAlert("An error occurred while applying the configuration.", "Error");
+                        showAlert("{{ lang._('An error occurred while applying the configuration.') }}", "{{ lang._('Error') }}");
                     }
                 }
             });
 
-            // Adding Save functionality, so saving can be done independantly from applying
-            $("#saveSettings").click(function() {
-                saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings', function() {
-                    // Callback function on successful save, optional
-                    showAlert("Configuration saved successfully. Please don't forget to apply the configuration.", "Save Successful");
-                }, function() {
-                    // Callback function on save failure
-                    showAlert("Failed to save configuration.", "Error");
-                });
+            $("#saveSettings").SimpleActionButton({
+                onAction: function() {
+                    const dfObj = $.Deferred();
+
+                    // Save the form before continuing
+                    saveFormToEndpoint("/api/caddy/general/set", 'frm_GeneralSettings',
+                        function() {  // callback_ok: What to do when save is successful
+                            showAlert("{{ lang._('Configuration saved successfully. Please do not forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
+                            dfObj.resolve();
+                        },
+                        false, // disable_dialog: Show the dialog with the validation error
+                        function(errorData) {  // callback_fail: What to do when save fails
+                            showAlert("{{ lang._('Configuration save failed: ') }}" + (errorData.message || "{{ lang._('Validation Error') }}"), "{{ lang._('Error') }}");
+                            dfObj.reject();
+                        }
+                    );
+
+                    return dfObj.promise();
+                },
             });
 
             // Initialize the service control UI for 'caddy'
@@ -120,10 +134,10 @@
 
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#generalTab">General</a></li>
-    <li><a data-toggle="tab" href="#dnsProviderTab">DNS Provider</a></li>
-    <li><a data-toggle="tab" href="#dynamicDnsTab">Dynamic DNS</a></li>
-    <li><a data-toggle="tab" href="#logSettingsTab">Log Settings</a></li>
+    <li class="active"><a data-toggle="tab" href="#generalTab">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#dnsProviderTab">{{ lang._('DNS Provider') }}</a></li>
+    <li><a data-toggle="tab" href="#dynamicDnsTab">{{ lang._('Dynamic DNS') }}</a></li>
+    <li><a data-toggle="tab" href="#logSettingsTab">{{ lang._('Log Settings') }}</a></li>
 </ul>
 
 <!-- Tab Content -->

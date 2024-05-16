@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.8</version>
+    <version>1.1.9</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -65,6 +65,13 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <GracePeriod type="IntegerField">
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
+                <Required>Y</Required>
+            </GracePeriod>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
@@ -73,6 +80,16 @@
                 <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
                 <Required>Y</Required>
             </LogAccessPlainKeep>
+            <LogLevel type="OptionField">
+                <BlankDesc>INFO</BlankDesc>
+                <OptionValues>
+                    <DEBUG>DEBUG</DEBUG>
+                    <WARN>WARN</WARN>
+                    <ERROR>ERROR</ERROR>
+                    <PANIC>PANIC</PANIC>
+                    <FATAL>FATAL</FATAL>
+                </OptionValues>
+            </LogLevel>
             <DynDnsSimpleHttp type="UrlField">
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
@@ -202,6 +219,10 @@
                     <Required>Y</Required>
                 </description>
                 <DynDns type="BooleanField"/>
+                <AcmePassthrough type="HostnameField">
+                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
+                    <IpAllowed>Y</IpAllowed>
+                </AcmePassthrough>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
@@ -273,8 +294,24 @@
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
-                <HttpTls type="BooleanField"/>
-                <HttpNtlm type="BooleanField"/>
+                <HttpTls type="BooleanField">
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>TLS and NTLM must be enabled at the same time.</ValidationMessage>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>HttpNtlm</field1>
+                            </addFields>
+                        </check001>
+                    </Constraints>
+                </HttpTls>
+                <HttpNtlm type="BooleanField">
+                    <Constraints>
+                        <check001>
+                            <reference>HttpNtlm.check001</reference>
+                        </check001>
+                    </Constraints>
+                </HttpNtlm>
                 <HttpTlsInsecureSkipVerify type="BooleanField"/>
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <Type>ca</Type>

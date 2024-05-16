@@ -67,7 +67,7 @@ actions = {
     "start": "start",
     "stop": "stop",
     "restart": "restart",
-    "reload": "reload",
+    "reload": "reloadssl", # Forces the reload even if the config in the Caddyfile is unchanged, using an extra command of the rc.d script, forcing certificates in the filesystem to reload.
     "validate": "validate"  # Validate action
 }
 

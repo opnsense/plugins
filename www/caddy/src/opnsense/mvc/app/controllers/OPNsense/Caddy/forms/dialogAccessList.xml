@@ -24,8 +24,7 @@
         <label>HTTP Response Code</label>
         <type>text</type>
         <hint>403</hint>
-        <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list doesn't match. Setting this will replace "Abort Connections", all clients will stay connected but will receive the response code.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list does not match. Setting this will replace "Abort Connections" only for this access list. All clients will stay connected but will receive the response code.]]></help>
     </field>
     <field>
         <id>accesslist.HttpResponseMessage</id>
@@ -33,7 +32,6 @@
         <type>text</type>
         <hint>Forbidden</hint>
         <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>accesslist.description</id>

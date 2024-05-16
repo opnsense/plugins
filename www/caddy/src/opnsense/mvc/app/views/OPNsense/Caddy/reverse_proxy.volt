@@ -26,6 +26,17 @@
 
 <script>
     $(document).ready(function() {
+
+        // Function to handle the search filter request modification
+        function addDomainFilterToRequest(request) {
+            let selectedDomains = $('#reverseFilter').val();
+            if (selectedDomains && selectedDomains.length > 0) {
+                request['reverseUuids'] = selectedDomains.join(',');
+            }
+            return request;
+        }
+
+        // Bootgrid Setup
         $("#reverseProxyGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchReverseProxy/',
             get:'/api/caddy/ReverseProxy/getReverseProxy/',
@@ -33,6 +44,9 @@
             add:'/api/caddy/ReverseProxy/addReverseProxy/',
             del:'/api/caddy/ReverseProxy/delReverseProxy/',
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseSubdomainGrid").UIBootgrid({
@@ -42,6 +56,9 @@
             add:'/api/caddy/ReverseProxy/addSubdomain/',
             del:'/api/caddy/ReverseProxy/delSubdomain/',
             toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#reverseHandleGrid").UIBootgrid({
@@ -51,6 +68,9 @@
             add:'/api/caddy/ReverseProxy/addHandle/',
             del:'/api/caddy/ReverseProxy/delHandle/',
             toggle:'/api/caddy/ReverseProxy/toggleHandle/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
         });
 
         $("#accessListGrid").UIBootgrid({
@@ -79,8 +99,8 @@
 
         // Function to show alerts in the HTML message area
         function showAlert(message, type = "error") {
-            var alertClass = type === "error" ? "alert-danger" : "alert-success";
-            var messageArea = $("#messageArea");
+            let alertClass = type === "error" ? "alert-danger" : "alert-success";
+            let messageArea = $("#messageArea");
 
             // Stop any current animation, clear the queue, and immediately hide the element
             messageArea.stop(true, true).hide();
@@ -116,13 +136,13 @@
                             dfObj.resolve();
                         } else {
                             // If configuration is invalid, show alert and reject the Deferred object
-                            showAlert(data['message'], "Validation Failed");
+                            showAlert(data['message'], "{{ lang._('Validation Failed') }}");
                             dfObj.reject();
                         }
                     },
                     error: function(xhr, status, error) {
                         // On AJAX error, show alert and reject the Deferred object
-                        showAlert("Validation request failed: " + error, "Error");
+                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Error') }}");
                         dfObj.reject();
                     }
                 });
@@ -133,10 +153,10 @@
                 // Check if the action was successful
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
                     // Update only the service control UI for 'caddy'
-                    showAlert("Configuration applied successfully.", "Apply Success");
+                    showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                     updateServiceControlUI('caddy');
                 } else {
-                    console.error("Action was not successful or an error occurred:", data);
+                    console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
                 }
             }
         });
@@ -144,40 +164,106 @@
         // Initialize the service control UI for 'caddy'
         updateServiceControlUI('caddy');
 
+        // Filter function for domains
+        function loadDomainFilters() {
+            $.ajax({
+                url: '/api/caddy/ReverseProxy/getAllReverseDomains', // custom API endpoint to get uuid and domainport combinations
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    let select = $('#reverseFilter');
+                    select.empty(); // Clear current options
+                    if (data && data.rows) {
+                        data.rows.forEach(function(item) {
+                            select.append($('<option>').val(item.id).text(item.domainPort));
+                        });
+                    }
+                    select.selectpicker('refresh'); // Refresh selectpicker to update the UI
+                },
+                error: function() {
+                    $('#reverseFilter').html('<option value="">{{ lang._('Failed to load data') }}</option>').selectpicker('refresh');
+                }
+            });
+        }
+        loadDomainFilters();
+
+        // Reload Bootgrid on filter change
+        $('#reverseFilter').on('changed.bs.select', function() {
+            $("#reverseProxyGrid").bootgrid("reload");
+            $("#reverseSubdomainGrid").bootgrid("reload");
+            $("#reverseHandleGrid").bootgrid("reload");
+        });
+
+        // Control the visibility of selectpicker for filter by domain
+        function toggleSelectPicker(tab) {
+            if (tab === 'handlesTab' || tab === 'domainsTab') {
+                $('.common-filter').show();
+            } else {
+                $('.common-filter').hide();
+            }
+        }
+
+        // Initialize visibility based on the active tab on page load
+        let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
+        toggleSelectPicker(activeTab);
+
+        // Change event when switching tabs
+        $('#maintabs a').on('click', function (e) {
+            let currentTab = $(this).attr('href').replace('#', '');
+            toggleSelectPicker(currentTab);
+        });
+
     });
 </script>
 
+<style>
+    .common-filter {
+        text-align: right;
+        margin-top: 20px;
+        margin-right: 5px;
+        padding: 0 15px;  // Align with the tables
+    }
+
+</style>
+
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#domainsTab">Domains</a></li>
-    <li><a data-toggle="tab" href="#handlesTab">Handlers</a></li>
-    <li><a data-toggle="tab" href="#accessTab">Access</a></li>
-    <li><a data-toggle="tab" href="#headerTab">Headers</a></li>
+    <li class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
+    <li><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
+    <li><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
+    <li><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
+
+    <!-- Selectpicker for filter by domain -->
+    <div class="form-group common-filter">
+        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">
+            <!-- Options will be populated dynamically using JavaScript/Ajax -->
+        </select>
+    </div>
 
     <!-- Reverse Proxy Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
             <!-- Reverse Proxy -->
-            <h1>Domains</h1>
+            <h1>{{ lang._('Domains') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
-                            <th data-column-id="FromDomain" data-type="string">Domain</th>
-                            <th data-column-id="FromPort" data-type="string">Port</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">Basic Auth</th>
-                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">DNS-01</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
-                            <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">HTTP Access Log</th>
-                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">Custom Certificate</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">HTTP-01 redirection</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
+                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
+                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 challenge') }}</th>
+                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
+                            <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
+                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Custom Certificate') }}</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -196,21 +282,22 @@
         </div>
         <div style="padding-left: 16px;">
             <!-- Subdomains -->
-            <h1>Subdomains</h1>
+            <h1>{{ lang._('Subdomains') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
-                            <th data-column-id="reverse" data-type="string">Domain</th>
-                            <th data-column-id="FromDomain" data-type="string">Subdomain</th>
-                            <th data-column-id="FromPort" data-type="string">Port</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">Access List</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">Basic Auth</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">Dynamic DNS</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Subdomain') }}</th>
+                            <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
+                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
+                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
+                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -232,29 +319,29 @@
     <!-- Handle Tab -->
     <div id="handlesTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1>Handlers</h1>
+            <h1>{{ lang._('Handlers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">Enabled</th>
-                            <th data-column-id="reverse" data-type="string">Domain</th>
-                            <th data-column-id="subdomain" data-type="string">Subdomain</th>
-                            <th data-column-id="HandleType" data-type="string" data-visible="false">Handle Type</th>
-                            <th data-column-id="HandlePath" data-type="string" data-visible="false">Handle Path</th>
-                            <th data-column-id="header" data-type="string" data-visible="false">Header</th>
-                            <th data-column-id="ToDomain" data-type="string">Upstream Domain</th>
-                            <th data-column-id="ToPort" data-type="string">Upstream Port</th>
-                            <th data-column-id="ToPath" data-type="string" data-visible="false">Upstream Path</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">Fail Duration</th>
-                            <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">TLS</th>
-                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">TLS CA</th>
-                            <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">TLS Server Name</th>
-                            <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">NTLM</th>
-                            <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">TLS Insecure Skip Verify</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="subdomain" data-type="string">{{ lang._('Subdomain') }}</th>
+                            <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handle Type') }}</th>
+                            <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Handle Path') }}</th>
+                            <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('Header') }}</th>
+                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
+                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
+                            <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
+                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
+                            <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS') }}</th>
+                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS CA') }}</th>
+                            <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
+                            <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>
+                            <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS Insecure Skip Verify') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -277,19 +364,19 @@
     <div id="accessTab" class="tab-pane fade">
         <!-- Access Lists Section -->
         <div style="padding-left: 16px;">
-            <h1>Access Lists</h1>
+            <h1>{{ lang._('Access Lists') }}</h1>
             <div style="display: block;">
                 <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="accesslistName" data-type="string">Name</th>
-                            <th data-column-id="clientIps" data-type="string">Client IPs</th>
-                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">Invert</th>
-                            <th data-column-id="HttpResponseCode" data-type="string" data-visible="false">HTTP Code</th>
-                            <th data-column-id="HttpResponseMessage" data-type="string" data-visible="false">HTTP Message</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="accesslistName" data-type="string">{{ lang._('Name') }}</th>
+                            <th data-column-id="clientIps" data-type="string">{{ lang._('Client IPs') }}</th>
+                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">{{ lang._('Invert') }}</th>
+                            <th data-column-id="HttpResponseCode" data-type="string" data-visible="false">{{ lang._('HTTP Code') }}</th>
+                            <th data-column-id="HttpResponseMessage" data-type="string" data-visible="false">{{ lang._('HTTP Message') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -309,15 +396,15 @@
 
         <!-- Basic Auth Section -->
         <div style="padding-left: 16px;">
-            <h1>Basic Auth</h1>
+            <h1>{{ lang._('Basic Auth') }}</h1>
             <div style="display: block;">
                 <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="basicauthuser" data-type="string">User</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="basicauthuser" data-type="string">{{ lang._('User') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -339,18 +426,18 @@
     <!-- Header Tab -->
     <div id="headerTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1>Headers</h1>
+            <h1>{{ lang._('Headers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">ID</th>
-                            <th data-column-id="HeaderUpDown" data-type="string">Header</th>
-                            <th data-column-id="HeaderType" data-type="string">Header Type</th>
-                            <th data-column-id="HeaderValue" data-type="string" data-visible="false">Header Value</th>
-                            <th data-column-id="HeaderReplace" data-type="string" data-visible="false">Header Replace</th>
-                            <th data-column-id="description" data-type="string">Description</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">Commands</th>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="HeaderUpDown" data-type="string">{{ lang._('Header') }}</th>
+                            <th data-column-id="HeaderType" data-type="string">{{ lang._('Header Type') }}</th>
+                            <th data-column-id="HeaderValue" data-type="string" data-visible="false">{{ lang._('Header Value') }}</th>
+                            <th data-column-id="HeaderReplace" data-type="string" data-visible="false">{{ lang._('Header Replace') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -386,7 +473,7 @@
             <div id="messageArea" class="alert alert-info" style="display: none;"></div>
             <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
             <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
-            Please don't forget to apply the configuration.
+            {{ lang._('Please do not forget to apply the configuration.') }}
             </div>
         </div>
     </div>

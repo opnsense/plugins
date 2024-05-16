@@ -3,7 +3,7 @@
         <id>caddy.general.TlsDnsProvider</id>
         <label>DNS Provider</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is optional, since certificates will be requested from Let's Encrypt via HTTP Challenge when this option is unset. You mostly need this for Wildcard Certificates, and for Dynamic DNS. To use the DNS-01 Challenge and Dynamic DNS, enable the checkbox in a Reverse Proxy Domain or Subdomain. For more information: https://github.com/caddy-dns]]></help>
+        <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is mostly needed for Wildcard Certificates, and for Dynamic DNS. To use, enable the checkbox in a "Domain" or "Subdomain". For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsApiKey</id>

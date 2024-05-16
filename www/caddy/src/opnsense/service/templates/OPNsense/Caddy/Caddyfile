@@ -48,6 +48,9 @@
         format json {
             time_format rfc3339
         }
+        {% if generalSettings.LogLevel %}
+        level {{ generalSettings.LogLevel }}
+        {% endif %}
     }
 
     {#
@@ -277,6 +280,11 @@
     {% if autoHttpsValue %}
     auto_https {{ autoHttpsValue }}
     {% endif %}
+    {#
+    # Important: Grace Period influences how fast the server can finish reloads with open connections, by forcing termination.
+    # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
+    #}
+    grace_period {{ generalSettings.GracePeriod }}s
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
@@ -293,6 +301,20 @@
         http://{{ reverse.FromDomain|default("") }} {
             handle /.well-known/acme-challenge/* {
                 reverse_proxy {{ reverse.AcmePassthrough }}
+            }
+            handle {
+                redir https://{host}{uri} 308
+            }
+        }
+    {% endif %}
+{% endfor %}
+{# Process redirection for subdomains afterwards, since a redirection of a wildcard domain has to match before them. #}
+{% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
+    {% if subdomain.enabled|default("0") == "1" and subdomain.AcmePassthrough %}
+        # HTTP-01 challenge redirection for subdomain: "{{ subdomain['@uuid'] }}"
+        http://{{ subdomain.FromDomain|default("") }} {
+            handle /.well-known/acme-challenge/* {
+                reverse_proxy {{ subdomain.AcmePassthrough }}
             }
             handle {
                 redir https://{host}{uri} 308
@@ -515,33 +537,35 @@
             {% if handle.PassiveHealthFailDuration|default("") %}
             fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts|default("") != "" or handle.HttpTlsServerName|default("") != "" %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
+                    {% if handle.HttpTls|default("0") == "1" %}
+                    tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                     tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
                     {% endif %}
                 }
                 {% else %}
                 transport http {
+                    {% if handle.HttpTls|default("0") == "1" %}
+                    tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                     tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
                     tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
                     {% endif %}
                 }
                 {% endif %}
