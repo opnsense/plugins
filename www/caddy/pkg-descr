@@ -37,6 +37,10 @@ Plugin Changelog
 * Cleanup: Javascript variables have been changed from var to let to reduce scope.
 * Fix: Template has been fixed to allow any TLS option in Handlers to appear independant when filled out. This increases flexibility with the "tls_server_name" option.
 * Add: Diagnostics view added where the current Caddyfile and JSON configuration can be displayed, validated and downloaded.
+* Add: HTTP-01 Challenge Redirection can also be configured for subdomains.
+* Cleanup: lang() and gettext() functions added for translations.
+* Cleanup: Rewritten most help texts in forms for consistency.
+* Fix: The newly introduced "configctl caddy reload" action, which calls the "service caddy reloadssl" command, will now also trigger the setup.sh script.
 
 1.5.4
 
