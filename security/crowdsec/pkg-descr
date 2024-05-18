@@ -8,7 +8,7 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
-1.0.9
+1.0.8-1
 
 * Fix service start when lapi is disabled
 
