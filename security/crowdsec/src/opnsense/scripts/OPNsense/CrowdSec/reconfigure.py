@@ -53,6 +53,16 @@ def configure_agent(settings):
     save_config(config_path, config)
 
 
+def configure_lapi(settings):
+    config_path = '/usr/local/etc/crowdsec/config.yaml'
+    config = load_config(config_path)
+
+    enable = int(settings.get('lapi_enabled', '0'))
+    config['api']['server']['enable'] = bool(enable)
+
+    save_config(config_path, config)
+
+
 def configure_lapi_credentials(settings):
     config_path = '/usr/local/etc/crowdsec/local_api_credentials.yaml'
     config = load_config(config_path)
@@ -88,6 +98,7 @@ def main():
         return
 
     configure_agent(settings)
+    configure_lapi(settings)
     configure_lapi_credentials(settings)
     configure_bouncer(settings)
 
