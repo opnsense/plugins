@@ -123,7 +123,11 @@
     {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
         {% if reverse.enabled|default("0") == "1" and reverse.DynDns|default("0") == "1" %}
             {% set cleanedDomain = reverse.FromDomain | replace("*.","") %}
-            {% do dynDnsDomains.append(cleanedDomain + " @") %}
+            {% if reverse.FromDomain.startswith("*.") %}
+                {% do dynDnsDomains.append(cleanedDomain + " *") %}
+            {% else %}
+                {% do dynDnsDomains.append(cleanedDomain + " @") %}
+            {% endif %}
         {% endif %}
 
         {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
