@@ -4,8 +4,3 @@ crowdsec_enable="YES"
 {% else %}
 crowdsec_enable="NO"
 {% endif %}
-{% if helpers.exists('OPNsense.crowdsec.general.lapi_enabled') and OPNsense.crowdsec.general.lapi_enabled|default("1") == "1" %}
-crowdsec_flags=""
-{% else %}
-crowdsec_flags="-no-api"
-{% endif %}

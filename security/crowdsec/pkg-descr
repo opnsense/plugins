@@ -15,6 +15,7 @@ Plugin Changelog
 * Refactor javascript
 * Fix initial service start with no pending hub updates (1.6.1)
 * Add input validation for `rules_tag` to prevent invalid `pf` syntax.
+* Fix service start when lapi is disabled (revision 1)
 
 1.0.7
 
