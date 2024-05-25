@@ -46,6 +46,8 @@
                     <dinahosting>Dinahosting</dinahosting>
                     <hexonet>Hexonet</hexonet>
                     <mailinabox>Mail-in-a-Box</mailinabox>
+                    <netcup>Netcup</netcup>
+                    <rfc2136>RFC2136</rfc2136>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
