@@ -55,6 +55,26 @@
                 $("#messageArea").hide();
             });
 
+            // Function to display messages in the dedicated WebGUI message area
+            function showWebguiMessage(message) {
+                const webguiMessageArea = $('#webguiMessageArea');
+                webguiMessageArea.html(message).show();
+            }
+
+            // Display error if OPNsense WebGUI settings conflict with Caddy
+            $.ajax({
+                url: "/api/caddy/diagnostics/webgui",
+                type: "GET",
+                dataType: "json",
+                complete: function(xhr) {
+                    // Use the complete callback which fires after success or error
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        // Display the error message if it exists in the JSON response
+                        showWebguiMessage(xhr.responseJSON.error);
+                    }
+                }
+            });
+
             // Reconfigure the Caddy service, additional form save and validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
                 onPreAction: function() {
@@ -179,7 +199,9 @@
             >{{ lang._('Save') }}</button>
             <br/><br/>
             <!-- Message Area for error/success messages -->
-        <div id="messageArea" class="alert alert-info" style="display: none;"></div>
+            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
+            <!-- Message Area for Caddy WebGUI error messages -->
+            <div id="webguiMessageArea" class="alert alert-warning" style="display: none;"></div>
         </div>
     </div>
 </section>
