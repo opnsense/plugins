@@ -84,15 +84,4 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         // Return the response as an array which gets automatically encoded to JSON
         return ["status" => "success", "content" => $responseArray['content']];
     }
-
-     /**
-     * Return the OPNsense WebGUI settings check.
-     */
-    public function webguiAction()
-    {
-        $backend = new Backend();
-        $response = $backend->configdRun('caddy webgui');
-        $this->response->setContentType('application/json', 'UTF-8');
-        return $this->response->setContent($response);
-    }
 }
