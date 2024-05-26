@@ -32,6 +32,7 @@ namespace OPNsense\Caddy;
 
 use OPNsense\Base\BaseModel;
 use OPNsense\Base\Messages\Message;
+use OPNsense\Core\Config;
 
 class Caddy extends BaseModel
 {
@@ -107,6 +108,23 @@ class Caddy extends BaseModel
         }
     }
 
+    // 4. Function to check OPNsense webgui settings for conflicts with caddy
+    private function checkWebGuiSettings($messages) {
+        $configObj = Config::getInstance()->object();
+        $system = $configObj->system;
+
+        $webgui = $system->webgui;
+        $port = !empty($webgui->port) ? (string) $webgui->port : '';
+        $disablehttpredirect = isset($webgui->disablehttpredirect) ? (string) $webgui->disablehttpredirect : null;
+
+        if (empty($port) || in_array($port, ['80', '443'], true)) {
+            $messages->appendMessage(new Message(gettext('There are port conflicts with the OPNsense WebGUI. Go to "System - Settings - Administration" and change "TCP port" to a non-standard port, e.g., 8443.'), "general.enabled", "NonStandardPort"));
+        }
+        if ($disablehttpredirect === null || $disablehttpredirect === '0') {
+            $messages->appendMessage(new Message(gettext('There are port conflicts with the OPNsense WebGUI. Go to "System - Settings - Administration" and enable the checkbox "HTTP Redirect - Disable web GUI redirect rule".'), "general.enabled", "EnableRedirect"));
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -117,6 +135,16 @@ class Caddy extends BaseModel
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
+        // 4. Check webgui settings
+        $configObj = Config::getInstance()->object();
+        $system = $configObj->system;
+        $webgui = $system->webgui ?? null;
+        $interfaces = $webgui ? $webgui->interfaces->__toString() : '';
+
+        // Validate only when Caddy is changed from not enabled to enabled and interfaces in webgui are default all recommended.
+        if ($this->general->enabled->__toString() === '1' && empty($interfaces)) {
+            $this->checkWebGuiSettings($messages);
+        }
 
         return $messages;
     }
