@@ -269,7 +269,7 @@ class HAProxy extends BaseModel
                 return $acl_uuid;
             } else {
                 // Extend existing string.
-                $linkedAcls .= ",${acl_uuid}";
+                $linkedAcls .= ",{$acl_uuid}";
             }
         } else {
             $linkedAcls = $acl_uuid;
@@ -309,7 +309,7 @@ class HAProxy extends BaseModel
                 return $server_uuid;
             } else {
                 // Extend existing string.
-                $linkedServers .= ",${server_uuid}";
+                $linkedServers .= ",{$server_uuid}";
             }
         } else {
             $linkedServers = $server_uuid;
@@ -349,7 +349,7 @@ class HAProxy extends BaseModel
                 return $action_uuid;
             } else {
                 // Extend existing string.
-                $linkedActions .= ",${action_uuid}";
+                $linkedActions .= ",{$action_uuid}";
             }
         } else {
             $linkedActions = $action_uuid;
