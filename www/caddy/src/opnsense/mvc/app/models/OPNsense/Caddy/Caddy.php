@@ -108,12 +108,20 @@ class Caddy extends BaseModel
         }
     }
 
+    // Lazy getter for the OPNsense webgui configuration
+    private $webgui;
+
+    private function getWebGui() {
+        if (!$this->webgui) {
+            // Directly fetch the webgui configuration from the system
+            $this->webgui = Config::getInstance()->object()->system->webgui ?? null;
+        }
+        return $this->webgui;
+    }
+
     // 4. Function to check OPNsense webgui settings for conflicts with caddy
     private function checkWebGuiSettings($messages) {
-        $configObj = Config::getInstance()->object();
-        $system = $configObj->system;
-
-        $webgui = $system->webgui;
+        $webgui = $this->getWebGui();
         $port = !empty($webgui->port) ? (string) $webgui->port : '';
         $disablehttpredirect = isset($webgui->disablehttpredirect) ? (string) $webgui->disablehttpredirect : null;
 
@@ -135,13 +143,9 @@ class Caddy extends BaseModel
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        // 4. Check webgui settings
-        $configObj = Config::getInstance()->object();
-        $system = $configObj->system;
-        $webgui = $system->webgui ?? null;
+        // 4. Check webgui settings, only validate when Caddy is changed to enabled and interfaces in webgui are default all recommended.
+        $webgui = $this->getWebGui();
         $interfaces = $webgui ? $webgui->interfaces->__toString() : '';
-
-        // Validate only when Caddy is changed from not enabled to enabled and interfaces in webgui are default all recommended.
         if ($this->general->enabled->__toString() === '1' && empty($interfaces)) {
             $this->checkWebGuiSettings($messages);
         }
