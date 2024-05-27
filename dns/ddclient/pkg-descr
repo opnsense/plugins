@@ -6,6 +6,8 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+* Add zone support to DNSExit provider
+
 1.21
 
 * Add Netcup support (contributed by Ingo Lafrenz)
