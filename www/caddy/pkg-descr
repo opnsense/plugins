@@ -29,6 +29,7 @@ Plugin Changelog
 1.5.6
 
 * Fix: Wildcard domains with activated "Dynamic DNS" update their base domain with * instead of @.
+* Add: DNS Providers: Netcup, RFC2136
 
 1.5.5
 
