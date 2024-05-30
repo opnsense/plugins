@@ -108,28 +108,49 @@ class Caddy extends BaseModel
         }
     }
 
-    // Lazy getter for the OPNsense webgui configuration
+    // Get the OPNsense WebGUI configuration and store it
     private $webgui;
 
     private function getWebGui() {
         if (!$this->webgui) {
-            // Directly fetch the webgui configuration from the system
             $this->webgui = Config::getInstance()->object()->system->webgui ?? null;
         }
         return $this->webgui;
     }
 
-    // 4. Function to check OPNsense webgui settings for conflicts with caddy
-    private function checkWebGuiSettings($messages) {
+    // Get the default OPNsense WebGUI ports
+    private function getWebGuiPorts() {
         $webgui = $this->getWebGui();
-        $port = !empty($webgui->port) ? (string) $webgui->port : '';
-        $disablehttpredirect = isset($webgui->disablehttpredirect) ? (string) $webgui->disablehttpredirect : null;
+        $webGuiPorts = [];
 
-        if (empty($port) || in_array($port, ['80', '443'], true)) {
-            $messages->appendMessage(new Message(gettext('There are port conflicts with the OPNsense WebGUI. Go to "System - Settings - Administration" and change "TCP port" to a non-standard port, e.g., 8443.'), "general.enabled", "NonStandardPort"));
+        // Only add ports to array if no specific interfaces for the WebGUI are set
+        if (empty($webgui->interfaces)) {
+            // Add port 443 if no specific port is set, only checks for default WebGUI settings
+            if (empty($webgui->port)) {
+                $webGuiPorts[] = '443';
+            }
+
+            // Add port 80 if HTTP redirect is not explicitly disabled
+            if (!isset($webgui->disablehttpredirect) || $webgui->disablehttpredirect != '1') {
+                $webGuiPorts[] = '80';
+            }
         }
-        if ($disablehttpredirect === null || $disablehttpredirect === '0') {
-            $messages->appendMessage(new Message(gettext('There are port conflicts with the OPNsense WebGUI. Go to "System - Settings - Administration" and enable the checkbox "HTTP Redirect - Disable web GUI redirect rule".'), "general.enabled", "EnableRedirect"));
+
+        return $webGuiPorts;
+    }
+
+    // 4. Check for conflicts between Caddy and OPNsense WebGUI ports
+    private function checkWebGuiSettings($messages) {
+        $webGuiPorts = $this->getWebGuiPorts();
+        $tlsAutoHttpsSetting = $this->general->TlsAutoHttps->__toString();
+
+        // Since only one generic message is added, the array is checked for not empty. Only add message if AutoHttps is other than off.
+        if (!empty($webGuiPorts) && $tlsAutoHttpsSetting !== 'off') {
+            $messages->appendMessage(new Message(
+                gettext('To use Auto HTTPS, resolve these conflicts: The default ports are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration" and change "TCP port" to a non-standard port, e.g., 8443. Additionally, enable "Disable web GUI redirect rule".'),
+                "general.TlsAutoHttps",
+                "ConflictWebGuiPorts"
+            ));
         }
     }
 
@@ -143,12 +164,8 @@ class Caddy extends BaseModel
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        // 4. Check webgui settings, only validate when Caddy is changed to enabled and interfaces in webgui are default all recommended.
-        $webgui = $this->getWebGui();
-        $interfaces = $webgui ? $webgui->interfaces->__toString() : '';
-        if ($this->general->enabled->__toString() === '1' && empty($interfaces)) {
-            $this->checkWebGuiSettings($messages);
-        }
+        // 4. Check WebGUI conflicts
+        $this->checkWebGuiSettings($messages);
 
         return $messages;
     }
