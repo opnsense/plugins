@@ -108,30 +108,20 @@ class Caddy extends BaseModel
         }
     }
 
-    // Get the OPNsense WebGUI configuration and store it
-    private $webgui;
-
-    private function getWebGui() {
-        if (!$this->webgui) {
-            $this->webgui = Config::getInstance()->object()->system->webgui ?? null;
-        }
-        return $this->webgui;
-    }
-
-    // Get the default OPNsense WebGUI ports
+    // 4. Get the current OPNsense WebGUI ports
     private function getWebGuiPorts() {
-        $webgui = $this->getWebGui();
+        $webgui = Config::getInstance()->object()->system->webgui ?? null;
         $webGuiPorts = [];
 
         // Only add ports to array if no specific interfaces for the WebGUI are set
-        if (empty($webgui->interfaces)) {
-            // Add port 443 if no specific port is set, only checks for default WebGUI settings
+        if (!empty($webgui) && empty((string)$webgui->interfaces)) {
+            // Add port 443 if no specific port is set, otherwise set custom webgui port
             if (empty($webgui->port)) {
-                $webGuiPorts[] = '443';
+                $webGuiPorts[] = !empty((string)$webgui->port) ? (string)$webgui->port : '443';
             }
 
             // Add port 80 if HTTP redirect is not explicitly disabled
-            if (!isset($webgui->disablehttpredirect) || $webgui->disablehttpredirect != '1') {
+            if (empty((string)$webgui->disablehttpredirect)) {
                 $webGuiPorts[] = '80';
             }
         }
@@ -141,15 +131,25 @@ class Caddy extends BaseModel
 
     // 4. Check for conflicts between Caddy and OPNsense WebGUI ports
     private function checkWebGuiSettings($messages) {
-        $webGuiPorts = $this->getWebGuiPorts();
-        $tlsAutoHttpsSetting = $this->general->TlsAutoHttps->__toString();
+        $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
+        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
 
-        // Since only one generic message is added, the array is checked for not empty. Only add message if AutoHttps is other than off.
-        if (!empty($webGuiPorts) && $tlsAutoHttpsSetting !== 'off') {
+        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
+            // Dynamically construct the message based on conflicting ports in $overlap
+            $portOverlap = implode(', ', $overlap);
+            $portOverlapMessage = [];
+            $portOverlapMessageConstruction = implode(' and ', $portOverlapMessage);
+
+            if (in_array('443', $overlap)) {
+                $portOverlapMessage[] = gettext('change "TCP port" to a non-standard port, e.g., 8443');
+            }
+            if (in_array('80', $overlap)) {
+                $portOverlapMessage[] = gettext('enable "Disable web GUI redirect rule"');
+            }
+
             $messages->appendMessage(new Message(
-                gettext('To use Auto HTTPS, resolve these conflicts: The default ports are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration" and change "TCP port" to a non-standard port, e.g., 8443. Additionally, enable "Disable web GUI redirect rule".'),
-                "general.TlsAutoHttps",
-                "ConflictWebGuiPorts"
+                sprintf(gettext('To use Auto HTTPS, resolve these conflicts: Port (%s) are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration" and %s.'), $portOverlap, $portOverlapMessageConstruction),
+                "general.TlsAutoHttps"
             ));
         }
     }
