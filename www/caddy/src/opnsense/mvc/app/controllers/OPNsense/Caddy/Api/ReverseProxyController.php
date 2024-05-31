@@ -46,13 +46,16 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         // Get a comma-separated list of UUIDs from the request
         $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
+
+        // If reverseUuids is empty or null, uuidArray will be an empty array.
+        // Associative arrays are used here to improve the performance of UUID existence checks.
+        $uuidArray = !empty($reverseUuids) ? array_flip(explode(',', $reverseUuids)) : [];
 
         // Define the filter function to handle multiple UUIDs
         $filterFunction = function ($modelItem) use ($uuidArray) {
             $itemUuid = (string)$modelItem->getAttributes()['uuid'];
-            // Include the item if no UUIDs are provided (empty array) or if it's in the array of UUIDs
-            return empty($uuidArray) || in_array($itemUuid, $uuidArray, true);
+            // Check for existence using associative array keys for efficient O(1) lookup
+            return empty($uuidArray) || isset($uuidArray[$itemUuid]);
         };
 
         // Return the search results filtered by the provided UUIDs, if any
@@ -116,14 +119,21 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     /*Search Function adjusted for the search filter dropdown*/
     public function searchSubdomainAction()
     {
+        // Get reverseUuids from the request, which could be null or an empty string
         $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
 
+        // Convert reverseUuids to an associative array for faster key existence checks.
+        $uuidArray = !empty($reverseUuids) ? array_flip(explode(',', $reverseUuids)) : [];
+
+        // Define the filter function to handle multiple UUIDs
         $filterFunction = function ($modelItem) use ($uuidArray) {
             // Filtering on domain UUIDs referenced by subdomains
-            return empty($uuidArray) || in_array((string)$modelItem->reverse, $uuidArray, true);
+            $modelUUID = (string)$modelItem->reverse;
+            // Using associative array keys for O(1) lookup efficiency
+            return empty($uuidArray) || isset($uuidArray[$modelUUID]);
         };
 
+        // Return the search results filtered by the provided UUIDs, if any
         return $this->searchBase("reverseproxy.subdomain", null, 'description', $filterFunction);
     }
 
@@ -158,21 +168,21 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     /*Search Function adjusted for the search filter dropdown*/
     public function searchHandleAction()
     {
+        // Get reverseUuids from the request, which could be null or an empty string
         $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = explode(',', $reverseUuids);
 
-        if (empty($reverseUuids)) {
-            // If no UUIDs are provided, do not apply any filter, return all records
-            return $this->searchBase("reverseproxy.handle", null, 'description');
-        } else {
-            // Apply the filter only if UUIDs are provided
-            $filterFunction = function ($modelItem) use ($uuidArray) {
-                $modelUUID = (string)$modelItem->reverse;
-                return in_array($modelUUID, $uuidArray, true);
-            };
+        // Convert reverseUuids to an associative array for optimal look-up performance.
+        $uuidArray = !empty($reverseUuids) ? array_flip(explode(',', $reverseUuids)) : [];
 
-            return $this->searchBase("reverseproxy.handle", null, 'description', $filterFunction);
-        }
+        // Define the filter function to handle multiple UUIDs
+        $filterFunction = function ($modelItem) use ($uuidArray) {
+            $modelUUID = (string)$modelItem->reverse;
+            // Utilize associative array for quick O(1) existence check
+            return empty($uuidArray) || isset($uuidArray[$modelUUID]);
+        };
+
+        // Return the search results filtered by the provided UUIDs, if any
+        return $this->searchBase("reverseproxy.handle", null, 'description', $filterFunction);
     }
 
     public function setHandleAction($uuid)
