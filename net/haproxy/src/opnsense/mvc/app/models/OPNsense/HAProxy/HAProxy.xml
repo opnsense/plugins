@@ -2542,6 +2542,23 @@
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </map_use_backend_file>
+                <map_use_backend_file_matchtype type="OptionField">
+                    <Required>Y</Required>
+                    <default>dom</default>
+                    <OptionValues>
+                        <dom>Match domain exactly</dom>
+                        <reg>Match domain by regular expression</reg>
+                    </OptionValues>
+                </map_use_backend_file_matchtype>
+                <map_use_backend_file_snisupport type="OptionField">
+                    <Required>Y</Required>
+                    <default>hostonly</default>
+                    <OptionValues>
+                        <hostonly>Match Host header only</hostonly>
+                        <sniandhost>Match SNI and fallback to Host header</sniandhost>
+                        <snionly>Match SNI only</snionly>
+                    </OptionValues>
+                </map_use_backend_file_snisupport>
                 <map_use_backend_default type="ModelRelationField">
                     <Model>
                         <template>
