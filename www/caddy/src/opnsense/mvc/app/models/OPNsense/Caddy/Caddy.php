@@ -32,6 +32,7 @@ namespace OPNsense\Caddy;
 
 use OPNsense\Base\BaseModel;
 use OPNsense\Base\Messages\Message;
+use OPNsense\Core\Config;
 
 class Caddy extends BaseModel
 {
@@ -107,6 +108,39 @@ class Caddy extends BaseModel
         }
     }
 
+    // 4. Get the current OPNsense WebGUI ports
+    private function getWebGuiPorts() {
+        $webgui = Config::getInstance()->object()->system->webgui ?? null;
+        $webGuiPorts = [];
+
+        // Only add ports to array if no specific interfaces for the WebGUI are set
+        if (!empty($webgui) && empty((string)$webgui->interfaces)) {
+            // Add port 443 if no specific port is set, otherwise set custom webgui port
+            $webGuiPorts[] = !empty($webgui->port) ? (string)$webgui->port : '443';
+
+            // Add port 80 if HTTP redirect is not explicitly disabled
+            if (empty((string)$webgui->disablehttpredirect)) {
+                $webGuiPorts[] = '80';
+            }
+        }
+
+        return $webGuiPorts;
+    }
+
+    // 4. Check for conflicts between Caddy and OPNsense WebGUI ports
+    private function checkWebGuiSettings($messages) {
+        $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
+        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
+
+        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
+            $portOverlap = implode(', ', $overlap);
+            $messages->appendMessage(new Message(
+                sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port 443, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap),
+                "general.TlsAutoHttps"
+            ));
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -117,6 +151,8 @@ class Caddy extends BaseModel
         $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
+        // 4. Check WebGUI conflicts
+        $this->checkWebGuiSettings($messages);
 
         return $messages;
     }
