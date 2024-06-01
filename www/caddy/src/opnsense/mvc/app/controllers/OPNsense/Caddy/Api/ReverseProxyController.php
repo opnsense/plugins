@@ -74,20 +74,20 @@ class ReverseProxyController extends ApiMutableModelControllerBase
      * It filters entries based on UUIDs provided in the request, which may apply to either
      * direct (for "reverse") or referenced UUIDs (for "subdomain" and "handle")
      *
-     * @param \OPNsense\Base\BaseRequest $request The current request instance.
-     * @param string $modelPath The model path identifier for the search.
-     * @param bool $useOwnUUID Indicates whether to use the items own UUID or a referenced UUID for filtering.
-     * @return array The filtered search results.
+     * @param \OPNsense\Base\BaseRequest $request The current request instance, used to fetch search parameters.
+     * @param string $modelPath The data model path identifier, pointing to the section of the model being searched.
+     * @param string|null $uuidReferenceSection Specific section name to base the UUID reference on, if any.
+     * @return array Filtered search results.
      */
-    private function searchActionHelper($request, $modelPath, $useOwnUUID = true)
+    private function searchActionHelper($request, $modelPath, $uuidReferenceSection = null)
     {
-        // Fetch UUIDs from the request. Split into an array, or default to an empty array.
+        // Fetch UUIDs from the request. Split into an array if provided, or default to an empty array.
         $reverseUuids = $request->get('reverseUuids');
         $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
 
-        $filterFunction = function ($modelItem) use ($uuidArray, $useOwnUUID) {
-            // Extract UUID from the item, using either its own or a referenced UUID.
-            $modelUUID = $useOwnUUID ? (string)$modelItem->getAttributes()['uuid'] : (string)$modelItem->reverse;
+        $filterFunction = function ($modelItem) use ($uuidArray, $uuidReferenceSection) {
+            // Extract UUID based on whether a specific reference section is specified.
+            $modelUUID = $uuidReferenceSection ? (string)$modelItem->$uuidReferenceSection : (string)$modelItem->getAttributes()['uuid'];
             return empty($uuidArray) || in_array($modelUUID, $uuidArray, true);
         };
 
@@ -100,8 +100,8 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     // Adjusted for search filter dropdown, using helper function
     public function searchReverseProxyAction()
     {
-        // Use "reverse" own UUID
-        return $this->searchActionHelper($this->request, "reverseproxy.reverse", true);
+        // Use "reverse" own UUID by passing null
+        return $this->searchActionHelper($this->request, "reverseproxy.reverse", null);
     }
 
     public function setReverseProxyAction($uuid)
@@ -136,7 +136,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function searchSubdomainAction()
     {
         // Use referenced UUID from "reverse" for "subdomain"
-        return $this->searchActionHelper($this->request, "reverseproxy.subdomain", false);
+        return $this->searchActionHelper($this->request, "reverseproxy.subdomain", "reverse");
     }
 
     public function setSubdomainAction($uuid)
@@ -171,7 +171,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function searchHandleAction()
     {
         // Use referenced UUID from "reverse" for "handle"
-        return $this->searchActionHelper($this->request, "reverseproxy.handle", false);
+        return $this->searchActionHelper($this->request, "reverseproxy.handle", "reverse");
     }
 
     public function setHandleAction($uuid)
