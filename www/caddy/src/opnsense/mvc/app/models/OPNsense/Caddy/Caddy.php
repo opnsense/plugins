@@ -116,9 +116,7 @@ class Caddy extends BaseModel
         // Only add ports to array if no specific interfaces for the WebGUI are set
         if (!empty($webgui) && empty((string)$webgui->interfaces)) {
             // Add port 443 if no specific port is set, otherwise set custom webgui port
-            if (empty($webgui->port)) {
-                $webGuiPorts[] = !empty((string)$webgui->port) ? (string)$webgui->port : '443';
-            }
+            $webGuiPorts[] = !empty($webgui->port) ? (string)$webgui->port : '443';
 
             // Add port 80 if HTTP redirect is not explicitly disabled
             if (empty((string)$webgui->disablehttpredirect)) {
@@ -135,20 +133,9 @@ class Caddy extends BaseModel
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
 
         if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
-            // Dynamically construct the message based on conflicting ports in $overlap
             $portOverlap = implode(', ', $overlap);
-            $portOverlapMessage = [];
-            $portOverlapMessageConstruction = implode(' and ', $portOverlapMessage);
-
-            if (in_array('443', $overlap)) {
-                $portOverlapMessage[] = gettext('change "TCP port" to a non-standard port, e.g., 8443');
-            }
-            if (in_array('80', $overlap)) {
-                $portOverlapMessage[] = gettext('enable "Disable web GUI redirect rule"');
-            }
-
             $messages->appendMessage(new Message(
-                sprintf(gettext('To use Auto HTTPS, resolve these conflicts: Port (%s) are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration" and %s.'), $portOverlap, $portOverlapMessageConstruction),
+                sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port 443, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap),
                 "general.TlsAutoHttps"
             ));
         }
