@@ -2546,8 +2546,12 @@
                     <Required>Y</Required>
                     <default>dom</default>
                     <OptionValues>
-                        <dom>Match domain exactly</dom>
+                        <str>Match domain exactly</str>
+                        <dom>Match domain and subdomains</dom>
                         <reg>Match domain by regular expression</reg>
+                        <beg>Match string prefix</beg>
+                        <end>Match string suffix</end>
+                        <sub>Match substring</sub>
                     </OptionValues>
                 </map_use_backend_file_matchtype>
                 <map_use_backend_file_snisupport type="OptionField">
