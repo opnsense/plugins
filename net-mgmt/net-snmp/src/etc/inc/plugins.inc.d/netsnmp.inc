@@ -32,6 +32,18 @@ function netsnmp_enabled()
     return (string)$model->enabled == '1';
 }
 
+function netsnmp_xmlrpc_sync()
+{
+    return [
+        [
+            'description' => gettext('Netsnmp'),
+            'section' => 'OPNsense.netsnmp',
+            'services' => ['snmpd'],
+            'id' => 'netsnmp'
+        ]
+    ];
+}
+
 function netsnmp_services()
 {
     $services = array();
