@@ -32,6 +32,18 @@ function nrpe_enabled()
     return (string)$model->enabled == '1';
 }
 
+function nrpe_xmlrpc_sync()
+{
+    return [
+        [
+            'description' => gettext('NRPE'),
+            'section' => 'OPNsense.nrpe',
+            'services' => ['nrpe'],
+            'id' => 'nrpe',
+        ]
+    ];
+}
+
 function nrpe_services()
 {
     $services = array();
