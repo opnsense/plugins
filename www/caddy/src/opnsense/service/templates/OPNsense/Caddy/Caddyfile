@@ -694,7 +694,7 @@
     {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
     @{{ subdomain['@uuid'] }} {
-        host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
+        host {{ subdomain.FromDomain }}
     }
     handle @{{ subdomain['@uuid'] }} {
 

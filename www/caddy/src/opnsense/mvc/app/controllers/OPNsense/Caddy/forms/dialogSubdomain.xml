@@ -16,20 +16,13 @@
         <label>Subdomain</label>
         <type>text</type>
         <hint>opn.example.com</hint>
-        <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com".]]></help>
-    </field>
-    <field>
-        <id>subdomain.FromPort</id>
-        <label>Port</label>
-        <type>text</type>
-        <hint>443</hint>
-        <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Do not forget to allow these ports with a Firewall rule.]]></help>
+        <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports as their parent wildcard domain.]]></help>
     </field>
     <field>
         <id>subdomain.description</id>
         <label>Description</label>
         <type>text</type>
-        <hint>opn.example.com.443</hint>
+        <hint>opn.example.com</hint>
         <help><![CDATA[Enter a description for this subdomain.]]></help>
     </field>
     <field>

@@ -37,13 +37,12 @@ use OPNsense\Core\Config;
 class Caddy extends BaseModel
 {
     // 1. Check domain-port combinations
-    // 2. Check subdomain-port combinations
     private function checkForUniquePortCombos($items, $messages)
     {
         $combos = [];
         foreach ($items as $item) {
             $key = $item->__reference; // Dynamic key based on item reference
-            $fromDomainOrSubdomain = (string) $item->FromDomain;
+            $fromDomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
             if ($fromPort === '') {
@@ -53,14 +52,14 @@ class Caddy extends BaseModel
             }
 
             foreach ($defaultPorts as $port) {
-                // Create a unique key for domain/subdomain-port combination
-                $comboKey = $fromDomainOrSubdomain . ':' . $port;
+                // Create a unique key for domain-port combination
+                $comboKey = $fromDomain . ':' . $port;
 
                 // Check for duplicate combinations
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain/subdomain and port must be unique."), $fromDomainOrSubdomain, $port),
+                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain and port must be unique."), $fromDomain, $port),
                         $key . ".FromDomain", // Adjusted to use dynamic key
                         "DuplicateDomainPort"
                     ));
@@ -147,8 +146,6 @@ class Caddy extends BaseModel
         $messages = parent::performValidation($validateFullModel);
         // 1. Check domain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
-        // 2. Check subdomain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
         // 3. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
         // 4. Check WebGUI conflicts
