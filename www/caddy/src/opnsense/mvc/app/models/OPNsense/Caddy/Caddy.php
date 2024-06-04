@@ -141,6 +141,19 @@ class Caddy extends BaseModel
         }
     }
 
+    // 5. Check for ACME Email being required when Auto HTTPS on
+    private function checkAcmeEmailAutoHttps($messages) {
+        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
+        $tlsEmail = (string)$this->general->TlsEmail;
+
+        if (empty($tlsEmail) && $tlsAutoHttpsSetting !== 'off') {
+            $messages->appendMessage(new Message(
+                gettext('To use "Auto HTTPS", an email address is required.'),
+                "general.TlsEmail"
+            ));
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -153,6 +166,8 @@ class Caddy extends BaseModel
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
         // 4. Check WebGUI conflicts
         $this->checkWebGuiSettings($messages);
+        // 5. Check for ACME Email requirement
+        $this->checkAcmeEmailAutoHttps($messages);
 
         return $messages;
     }
