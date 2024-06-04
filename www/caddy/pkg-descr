@@ -26,6 +26,14 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.5.7
+
+* Add: Error message when OPNsense WebGUI settings conflict with Auto HTTPS.
+* Add: Error message when Auto HTTPS is enabled, and ACME email field is empty, for caddy v2.8.0+
+* Cleanup: Fix crash of searchAction when reverseUuids is null
+* Cleanup: basicauth directive is now basic_auth in the Caddyfile template, for caddy v2.8.0+
+* Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain.
+
 1.5.6
 
 * Fix: Wildcard domains with activated "Dynamic DNS" update their base domain with * instead of @.
