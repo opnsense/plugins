@@ -642,7 +642,7 @@
 #}
 {% macro basicauth_configuration(basicauth_uuids) %}
     {% if basicauth_uuids %}
-    basicauth {
+    basic_auth {
         {% for uuid in basicauth_uuids.split(',') %}
             {% set basicauth = helpers.toList('Pischem.caddy.reverseproxy.basicauth') | selectattr('@uuid', 'equalto', uuid) | first %}
             {% if basicauth %}
