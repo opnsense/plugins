@@ -37,13 +37,12 @@ use OPNsense\Core\Config;
 class Caddy extends BaseModel
 {
     // 1. Check domain-port combinations
-    // 2. Check subdomain-port combinations
     private function checkForUniquePortCombos($items, $messages)
     {
         $combos = [];
         foreach ($items as $item) {
             $key = $item->__reference; // Dynamic key based on item reference
-            $fromDomainOrSubdomain = (string) $item->FromDomain;
+            $fromDomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
             if ($fromPort === '') {
@@ -53,14 +52,14 @@ class Caddy extends BaseModel
             }
 
             foreach ($defaultPorts as $port) {
-                // Create a unique key for domain/subdomain-port combination
-                $comboKey = $fromDomainOrSubdomain . ':' . $port;
+                // Create a unique key for domain-port combination
+                $comboKey = $fromDomain . ':' . $port;
 
                 // Check for duplicate combinations
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain/subdomain and port must be unique."), $fromDomainOrSubdomain, $port),
+                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain and port must be unique."), $fromDomain, $port),
                         $key . ".FromDomain", // Adjusted to use dynamic key
                         "DuplicateDomainPort"
                     ));
@@ -71,7 +70,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 3. Check that subdomains are under a wildcard or exact domain
+    // 2. Check that subdomains are under a wildcard or exact domain
     private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
     {
         $wildcardDomainList = [];
@@ -108,7 +107,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 4. Get the current OPNsense WebGUI ports
+    // 3. Get the current OPNsense WebGUI ports and check for conflicts with Caddy
     private function getWebGuiPorts() {
         $webgui = Config::getInstance()->object()->system->webgui ?? null;
         $webGuiPorts = [];
@@ -127,7 +126,6 @@ class Caddy extends BaseModel
         return $webGuiPorts;
     }
 
-    // 4. Check for conflicts between Caddy and OPNsense WebGUI ports
     private function checkWebGuiSettings($messages) {
         $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
@@ -141,7 +139,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 5. Check for ACME Email being required when Auto HTTPS on
+    // 4. Check for ACME Email being required when Auto HTTPS on
     private function checkAcmeEmailAutoHttps($messages) {
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
         $tlsEmail = (string)$this->general->TlsEmail;
@@ -160,13 +158,11 @@ class Caddy extends BaseModel
         $messages = parent::performValidation($validateFullModel);
         // 1. Check domain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
-        // 2. Check subdomain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->subdomain->iterateItems(), $messages);
-        // 3. Check that subdomains are under a wildcard or exact domain
+        // 2. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        // 4. Check WebGUI conflicts
+        // 3. Check WebGUI conflicts
         $this->checkWebGuiSettings($messages);
-        // 5. Check for ACME Email requirement
+        // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
 
         return $messages;

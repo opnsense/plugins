@@ -291,7 +291,6 @@
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                             <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="FromDomain" data-type="string">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
                             <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
