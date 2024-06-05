@@ -70,7 +70,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 3. Check that subdomains are under a wildcard or exact domain
+    // 2. Check that subdomains are under a wildcard or exact domain
     private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
     {
         $wildcardDomainList = [];
@@ -107,7 +107,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 4. Get the current OPNsense WebGUI ports
+    // 3. Get the current OPNsense WebGUI ports and check for conflicts with Caddy
     private function getWebGuiPorts() {
         $webgui = Config::getInstance()->object()->system->webgui ?? null;
         $webGuiPorts = [];
@@ -126,7 +126,6 @@ class Caddy extends BaseModel
         return $webGuiPorts;
     }
 
-    // 4. Check for conflicts between Caddy and OPNsense WebGUI ports
     private function checkWebGuiSettings($messages) {
         $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
@@ -140,16 +139,31 @@ class Caddy extends BaseModel
         }
     }
 
+    // 4. Check for ACME Email being required when Auto HTTPS on
+    private function checkAcmeEmailAutoHttps($messages) {
+        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
+        $tlsEmail = (string)$this->general->TlsEmail;
+
+        if (empty($tlsEmail) && $tlsAutoHttpsSetting !== 'off') {
+            $messages->appendMessage(new Message(
+                gettext('To use "Auto HTTPS", an email address is required.'),
+                "general.TlsEmail"
+            ));
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
         $messages = parent::performValidation($validateFullModel);
         // 1. Check domain-port combinations
         $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
-        // 3. Check that subdomains are under a wildcard or exact domain
+        // 2. Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
-        // 4. Check WebGUI conflicts
+        // 3. Check WebGUI conflicts
         $this->checkWebGuiSettings($messages);
+        // 4. Check for ACME Email requirement
+        $this->checkAcmeEmailAutoHttps($messages);
 
         return $messages;
     }
