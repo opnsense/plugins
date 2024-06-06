@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,7 +26,6 @@
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
                     <digitalocean>DigitalOcean</digitalocean>
-                    <godaddy>GoDaddy</godaddy>
                     <gandi>Gandi</gandi>
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
@@ -48,6 +47,19 @@
                     <mailinabox>Mail-in-a-Box</mailinabox>
                     <netcup>Netcup</netcup>
                     <rfc2136>RFC2136</rfc2136>
+                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
+                    <bunny>Bunny</bunny>
+                    <civo>Civo</civo>
+                    <scaleway>Scaleway</scaleway>
+                    <acmeproxy>ACME Proxy</acmeproxy>
+                    <inwx>INWX</inwx>
+                    <netcup>Netcup</netcup>
+                    <namedotcom>Name.com</namedotcom>
+                    <easydns>EasyDNS</easydns>
+                    <infomaniak>Infomaniak</infomaniak>
+                    <directadmin>DirectAdmin</directadmin>
+                    <hosttech>Hosttech</hosttech>
+                    <vultr>Vultr</vultr>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
