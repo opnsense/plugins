@@ -36,6 +36,7 @@ Plugin Changelog
 * Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain.
 * Add: DNS Providers: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, namedotcom, easydns, infomaniak, directadmin, hosttech, vultr
 * Remove: DNS Providers: godaddy
+* Cleanup: Refactor dns provider configuration in Caddyfile template
 
 1.5.6
 
