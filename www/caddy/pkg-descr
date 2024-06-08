@@ -33,6 +33,7 @@ Plugin Changelog
 * Add: Error message when Auto HTTPS is enabled, and ACME email field is empty, for caddy v2.8.4
 * Cleanup: Fix crash of searchAction when reverseUuids is null
 * Cleanup: basicauth directive is now basic_auth in the Caddyfile template, for caddy v2.8.4
+* Change: Dynamic DNS TTL has been changed from hours to seconds. Existing values have been reset to use the defaults of the implementation.
 * Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain.
 * Add: DNS Providers: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, namedotcom, easydns, infomaniak, directadmin, hosttech, vultr
 * Remove: DNS Providers: godaddy
