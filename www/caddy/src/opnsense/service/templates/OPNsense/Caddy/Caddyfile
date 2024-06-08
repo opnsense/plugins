@@ -141,11 +141,16 @@
         {% endfor %}
     {% endfor %}
 
-    {# Define special DNS Providers that have more than one API key, or special requirements that do not allow the use of just "api_token" #}
+    {#
+    # Define special DNS Providers that have more than one API key, or special requirements that do not allow the use of the default.
+    # The same providers have to be added to "OPNsense/Caddy/includeDnsProvider, best in the same order as in this array for maintainability.
+    #}
     {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin'] %}
 
+    {# Conditionally add the dynamic_dns section, acmedns provider is special, it does not support dynamic_dns. #}
     {% if dnsProvider and dynDnsDomains|length > 0 and dnsProvider != "acmedns" %}
         dynamic_dns {
+            {# duckdns provider is special, it has a different configuration for dynamic dns than for the dns-01 challenge. #}
             {% if dnsProvider in dnsProviderSpecialConfig and dnsProvider != "duckdns" %}
                 provider {{ dnsProvider }} {
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
@@ -253,7 +258,7 @@
 #}
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
     {% if dnsChallenge == "1" and dnsProvider %}
-        {% if dnsProvider in dnsProviderSpecialConfig and dnsProvider %}
+        {% if dnsProvider in dnsProviderSpecialConfig %}
             tls {
                 dns {{ dnsProvider }} {
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
