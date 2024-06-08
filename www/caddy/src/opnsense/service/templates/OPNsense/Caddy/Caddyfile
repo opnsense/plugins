@@ -105,6 +105,7 @@
     #   - @param dynDnsIpVersions (string): The IP version(s) (IPv4, IPv6) for the DDNS update.
     #   - @param dynDnsTTL (integer): Time-To-Live for the DNS records, in hours.
     #   - @param dynDnsDomains (list): Domains and subdomains list for which DDNS updates are enabled.
+    #   - @param dynDnsUpdateOnly (boolean): If set, only updates DNS records, not creating new ones.
     #}
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = generalSettings.TlsDnsApiKey %}
@@ -115,6 +116,7 @@
     {% set dnsOptionalField4 = generalSettings.TlsDnsOptionalField4 %}
     {% set dynDnsSimpleHttp = generalSettings.DynDnsSimpleHttp %}
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
+    {% set dynDnsUpdateOnly = generalSettings.DynDnsUpdateOnly %}
     {% set dynDnsCheckInterval = generalSettings.DynDnsInterval %}
     {% set dynDnsIpVersions = generalSettings.DynDnsIpVersions %}
     {% set dynDnsTtl = generalSettings.DynDnsTtl %}
@@ -337,6 +339,9 @@
         {% endif %}
         {% if dynDnsTtl %}
         ttl {{ dynDnsTtl }}s
+        {% endif %}
+        {% if dynDnsUpdateOnly|default("0") == "1" %}
+        update_only
         {% endif %}
     }
     {% endif %}

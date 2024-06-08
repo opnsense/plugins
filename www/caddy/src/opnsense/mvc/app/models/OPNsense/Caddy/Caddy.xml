@@ -108,13 +108,11 @@
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
             <DynDnsInterface type="InterfaceField"/>
-            <DynDnsCheckInterval type="IntegerField">
-                <Default>5</Default>
+            <DynDnsInterval type="IntegerField">
                 <MinimumValue>1</MinimumValue>
-                <MaximumValue>1440</MaximumValue>
-                <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
-                <Required>Y</Required>
-            </DynDnsCheckInterval>
+                <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 2147483647 seconds or leave empty for default.</ValidationMessage>
+            </DynDnsInterval>
             <DynDnsIpVersions type="OptionField">
                 <BlankDesc>IPv4+IPv6</BlankDesc>
                 <OptionValues>
@@ -122,7 +120,12 @@
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
             </DynDnsIpVersions>
-            <DynDnsTtl type="IntegerField"/>
+            <DynDnsTtl type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
+            </DynDnsTtl>
+            <DynDnsUpdateOnly type="BooleanField"/>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">

@@ -6,6 +6,12 @@
         <help><![CDATA[Select the DynDns IP Version: "IPv4+IPv6" to set IPv4 A-Records and IPv6 AAAA-Records, "IPv4 only" for only A-Records, "IPv6 only" for only AAAA-Records.]]></help>
     </field>
     <field>
+        <id>caddy.general.DynDnsUpdateOnly</id>
+        <label>DynDns Update Only</label>
+        <type>checkbox</type>
+        <help><![CDATA[If enabled, no new DNS records will be created. Only existing records will be updated. This means that the A or AAAA records need to be created manually ahead of time.]]></help>
+    </field>
+    <field>
         <id>caddy.general.DynDnsInterval</id>
         <label>DynDns Check Interval</label>
         <type>text</type>
