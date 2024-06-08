@@ -115,7 +115,7 @@
     {% set dnsOptionalField4 = generalSettings.TlsDnsOptionalField4 %}
     {% set dynDnsSimpleHttp = generalSettings.DynDnsSimpleHttp %}
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
-    {% set dynDnsCheckInterval = generalSettings.DynDnsCheckInterval %}
+    {% set dynDnsCheckInterval = generalSettings.DynDnsInterval %}
     {% set dynDnsIpVersions = generalSettings.DynDnsIpVersions %}
     {% set dynDnsTtl = generalSettings.DynDnsTtl %}
     {% set dynDnsDomains = [] %}
@@ -330,7 +330,7 @@
             ip_source interface {{ physicalInterfaceNames | join(',') }}
         {% endif %}
         {% if dynDnsCheckInterval %}
-        check_interval {{ dynDnsCheckInterval }}m
+        check_interval {{ dynDnsCheckInterval }}s
         {% endif %}
         {% if dynDnsIpVersions %}
         versions {{ dynDnsIpVersions }}
