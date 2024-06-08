@@ -15,7 +15,7 @@
         <id>caddy.general.DynDnsTTL</id>
         <label>DynDns TTL</label>
         <type>text</type>
-        <help><![CDATA[Set the TTL (Time to Live) for DNS records. The default is 1 hour. Values can range from 1 to 24 hours.]]></help>
+        <help><![CDATA[Set the TTL (Time to Live) for DNS records in seconds. Can be left empty to use the defaults of the dynamicdns module. If set, values should be as defined in rfc2181 section 8.]]></help>
     </field>
     <field>
         <type>header</type>

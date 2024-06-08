@@ -117,7 +117,7 @@
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
     {% set dynDnsCheckInterval = generalSettings.DynDnsCheckInterval %}
     {% set dynDnsIpVersions = generalSettings.DynDnsIpVersions %}
-    {% set dynDnsTTL = generalSettings.DynDnsTTL %}
+    {% set dynDnsTtl = generalSettings.DynDnsTtl %}
     {% set dynDnsDomains = [] %}
 
     {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
@@ -335,8 +335,8 @@
         {% if dynDnsIpVersions %}
         versions {{ dynDnsIpVersions }}
         {% endif %}
-        {% if dynDnsTTL %}
-        ttl {{ dynDnsTTL }}h
+        {% if dynDnsTtl %}
+        ttl {{ dynDnsTtl }}s
         {% endif %}
     }
     {% endif %}
