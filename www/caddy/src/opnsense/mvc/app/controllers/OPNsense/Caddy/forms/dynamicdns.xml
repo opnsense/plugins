@@ -19,7 +19,7 @@
         <help><![CDATA[Set the interval in seconds to poll for changes in the IP address. Leave empty to use system defaults.]]></help>
     </field>
     <field>
-        <id>caddy.general.DynDnsTTL</id>
+        <id>caddy.general.DynDnsTtl</id>
         <label>DynDns TTL</label>
         <type>text</type>
         <help><![CDATA[Set the TTL (Time to Live) for DNS records in seconds. Leave empty to use the default of an already existing TTL (when updating only) or the default of the provider API (when creating new records). If explicitely set, values should be as defined in rfc2181 section 8.]]></help>
