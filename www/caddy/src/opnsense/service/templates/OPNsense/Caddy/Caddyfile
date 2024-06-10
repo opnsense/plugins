@@ -101,10 +101,11 @@
     #   - @param dnsOptionalField1 to 4 (string): Optional configuration field for the DNS provider.
     #   - @param dynDnsSimpleHttp (string): URL for a simple HTTP-based service to discover the server's public IP.
     #   - @param dynDnsInterface (string): Network interface(s) to use for IP discovery.
-    #   - @param dynDnsCheckInterval (integer): Interval in minutes to check for IP changes.
+    #   - @param dynDnsCheckInterval (integer): Interval in seconds to check for IP changes. Can be empty for defaults.
     #   - @param dynDnsIpVersions (string): The IP version(s) (IPv4, IPv6) for the DDNS update.
-    #   - @param dynDnsTTL (integer): Time-To-Live for the DNS records, in hours.
+    #   - @param dynDnsTtl (integer): Time-To-Live for the DNS records, in seconds. Can be empty for defaults.
     #   - @param dynDnsDomains (list): Domains and subdomains list for which DDNS updates are enabled.
+    #   - @param dynDnsUpdateOnly (boolean): If set, only updates DNS records, not creating new ones.
     #}
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = generalSettings.TlsDnsApiKey %}
@@ -115,9 +116,10 @@
     {% set dnsOptionalField4 = generalSettings.TlsDnsOptionalField4 %}
     {% set dynDnsSimpleHttp = generalSettings.DynDnsSimpleHttp %}
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
-    {% set dynDnsCheckInterval = generalSettings.DynDnsCheckInterval %}
+    {% set dynDnsUpdateOnly = generalSettings.DynDnsUpdateOnly %}
+    {% set dynDnsCheckInterval = generalSettings.DynDnsInterval %}
     {% set dynDnsIpVersions = generalSettings.DynDnsIpVersions %}
-    {% set dynDnsTTL = generalSettings.DynDnsTTL %}
+    {% set dynDnsTtl = generalSettings.DynDnsTtl %}
     {% set dynDnsDomains = [] %}
 
     {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
@@ -330,13 +332,16 @@
             ip_source interface {{ physicalInterfaceNames | join(',') }}
         {% endif %}
         {% if dynDnsCheckInterval %}
-        check_interval {{ dynDnsCheckInterval }}m
+        check_interval {{ dynDnsCheckInterval }}s
         {% endif %}
         {% if dynDnsIpVersions %}
         versions {{ dynDnsIpVersions }}
         {% endif %}
-        {% if dynDnsTTL %}
-        ttl {{ dynDnsTTL }}h
+        {% if dynDnsTtl %}
+        ttl {{ dynDnsTtl }}s
+        {% endif %}
+        {% if dynDnsUpdateOnly|default("0") == "1" %}
+        update_only
         {% endif %}
     }
     {% endif %}

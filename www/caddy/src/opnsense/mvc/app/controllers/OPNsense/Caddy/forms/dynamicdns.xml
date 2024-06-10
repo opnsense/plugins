@@ -6,16 +6,23 @@
         <help><![CDATA[Select the DynDns IP Version: "IPv4+IPv6" to set IPv4 A-Records and IPv6 AAAA-Records, "IPv4 only" for only A-Records, "IPv6 only" for only AAAA-Records.]]></help>
     </field>
     <field>
-        <id>caddy.general.DynDnsCheckInterval</id>
-        <label>DynDns Check Interval</label>
-        <type>text</type>
-        <help><![CDATA[Set the interval to poll for changes in the IP address. The default is 5 minutes. Values can range from 1 to 1440 minutes.]]></help>
+        <id>caddy.general.DynDnsUpdateOnly</id>
+        <label>DynDns Update Only</label>
+        <type>checkbox</type>
+        <help><![CDATA[If enabled, no new DNS records will be created. Only existing records will be updated. This means that the A or AAAA records need to be created manually ahead of time.]]></help>
     </field>
     <field>
-        <id>caddy.general.DynDnsTTL</id>
+        <id>caddy.general.DynDnsInterval</id>
+        <label>DynDns Check Interval</label>
+        <type>text</type>
+        <hint>1800</hint>
+        <help><![CDATA[Set the interval in seconds to poll for changes in the IP address. Leave empty to use system defaults.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.DynDnsTtl</id>
         <label>DynDns TTL</label>
         <type>text</type>
-        <help><![CDATA[Set the TTL (Time to Live) for DNS records. The default is 1 hour. Values can range from 1 to 24 hours.]]></help>
+        <help><![CDATA[Set the TTL (Time to Live) for DNS records in seconds. Leave empty to use the default of an already existing TTL (when updating only) or the default of the provider API (when creating new records). If explicitely set, values should be as defined in rfc2181 section 8.]]></help>
     </field>
     <field>
         <type>header</type>
