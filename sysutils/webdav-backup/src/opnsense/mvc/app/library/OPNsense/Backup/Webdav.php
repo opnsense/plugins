@@ -327,34 +327,6 @@ class Webdav extends Base implements IBackupProvider
     }
 
     /**
-     * @param $url string URL to call
-     * @param $username string username
-     * @param $password string password
-     * @param $method string HTTP verb
-     * @param $error_message string error message to forward to the http calling method
-     * @param null $postdata post data if any (can be null)
-     * @return array|\SimpleXMLElement|null
-     * @throws \Exception
-     */
-    public function ocs_request($url, $username, $password, $method, $error_message, $postdata = null)
-    {
-        $headers = $headers = array("User-Agent: OPNsense Firewall", "OCS-APIRequest: true");
-        $result = $this->curl_request($url, $username, $password, $method, $error_message, $postdata, $headers);
-        if (array_key_exists('content_type', $result['info'])) {
-            if (stripos($result['info']['content_type'], 'xml') !== false) {
-                return new \SimpleXMLElement($result['response']);
-            }
-            if (stripos($result['info']['content_type'], 'json') !== false) {
-                return json_decode($result['response'], true);
-            }
-
-            throw new \Exception();
-        }
-
-        return null;
-    }
-
-    /**
      * Is this provider enabled
      * @return boolean enabled status
      * @throws \OPNsense\Base\ModelException
