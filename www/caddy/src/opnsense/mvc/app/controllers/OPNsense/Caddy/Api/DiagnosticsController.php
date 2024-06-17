@@ -61,8 +61,6 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         $this->response->setContentType('application/json', 'UTF-8');
         // Encode and set the content
         $this->response->setContent(json_encode($response, JSON_PRETTY_PRINT));
-
-        return $this->response;
     }
 
     /**
