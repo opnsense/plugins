@@ -26,6 +26,20 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.5.7
+
+* Build: Update to Caddy v2.8.4 + caddy-dns plugins updated to latest upstream versions
+* Add: Error message when OPNsense WebGUI settings conflict with Auto HTTPS.
+* Add: Error message when Auto HTTPS is enabled, and ACME email field is empty, for caddy v2.8.4
+* Cleanup: Fix crash of searchAction when reverseUuids is null
+* Cleanup: basicauth directive is now basic_auth in the Caddyfile template, for caddy v2.8.4
+* Change: Dynamic DNS "TTL" and "Check Interval" have been changed to seconds. Existing values have been reset to use the defaults of the implementation.
+* Add: Dynamic DNS now supports "Update Only", only updating existing records without creating new ones.
+* Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain.
+* Add: DNS Providers: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, namedotcom, easydns, infomaniak, directadmin, hosttech, vultr
+* Remove: DNS Providers: godaddy
+* Cleanup: Refactor dns provider configuration in Caddyfile template
+
 1.5.6
 
 * Fix: Wildcard domains with activated "Dynamic DNS" update their base domain with * instead of @.

@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.1.9</version>
+    <version>1.2.2</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,7 +26,6 @@
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
                     <digitalocean>DigitalOcean</digitalocean>
-                    <godaddy>GoDaddy</godaddy>
                     <gandi>Gandi</gandi>
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
@@ -48,6 +47,19 @@
                     <mailinabox>Mail-in-a-Box</mailinabox>
                     <netcup>Netcup</netcup>
                     <rfc2136>RFC2136</rfc2136>
+                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
+                    <bunny>Bunny</bunny>
+                    <civo>Civo</civo>
+                    <scaleway>Scaleway</scaleway>
+                    <acmeproxy>ACME Proxy</acmeproxy>
+                    <inwx>INWX</inwx>
+                    <netcup>Netcup</netcup>
+                    <namedotcom>Name.com</namedotcom>
+                    <easydns>EasyDNS</easydns>
+                    <infomaniak>Infomaniak</infomaniak>
+                    <directadmin>DirectAdmin</directadmin>
+                    <hosttech>Hosttech</hosttech>
+                    <vultr>Vultr</vultr>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -96,13 +108,11 @@
                 <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
             </DynDnsSimpleHttp>
             <DynDnsInterface type="InterfaceField"/>
-            <DynDnsCheckInterval type="IntegerField">
-                <Default>5</Default>
+            <DynDnsInterval type="IntegerField">
                 <MinimumValue>1</MinimumValue>
-                <MaximumValue>1440</MaximumValue>
-                <ValidationMessage>Please enter a valid number from 1 to 1440 minutes.</ValidationMessage>
-                <Required>Y</Required>
-            </DynDnsCheckInterval>
+                <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 2147483647 seconds or leave empty for default.</ValidationMessage>
+            </DynDnsInterval>
             <DynDnsIpVersions type="OptionField">
                 <BlankDesc>IPv4+IPv6</BlankDesc>
                 <OptionValues>
@@ -110,13 +120,12 @@
                     <ipv6>IPv6 only</ipv6>
                 </OptionValues>
             </DynDnsIpVersions>
-            <DynDnsTTL type="IntegerField">
-                <Default>1</Default>
-                <MinimumValue>1</MinimumValue>
-                <MaximumValue>24</MaximumValue>
-                <ValidationMessage>Please enter a valid number from 1 to 24 hours.</ValidationMessage>
-                <Required>Y</Required>
-            </DynDnsTTL>
+            <DynDnsTtl type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
+            </DynDnsTtl>
+            <DynDnsUpdateOnly type="BooleanField"/>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -191,11 +200,6 @@
                     <ValidationMessage>Please enter a valid 'from' Subdomain that is based upon the wildcard domain.</ValidationMessage>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </FromDomain>
-                <FromPort type="PortField">
-                    <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
-                    <EnableWellKnown>Y</EnableWellKnown>
-                    <EnableRanges>N</EnableRanges>
-                </FromPort>
                 <accesslist type="ModelRelationField">
                     <Model>
                         <reverseproxy>
