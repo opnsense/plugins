@@ -1,0 +1,8 @@
+// Has to be added to: src/opnsense/mvc/app/controllers/OPNsense/Core/Api/DashboardController.php
+
+'caddy' => [
+    'title' => gettext('Caddy Web Server'),
+    'enabled' => gettext('Enabled'),
+    'disabled' => gettext('Disabled'),
+    'unconfigured' => gettext('Caddy is disabled or not configured.'),
+],
