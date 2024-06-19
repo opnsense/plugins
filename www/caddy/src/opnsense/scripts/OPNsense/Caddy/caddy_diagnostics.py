@@ -28,6 +28,10 @@
 
 import sys
 import json
+import os
+import subprocess
+import asyncio
+from datetime import datetime
 
 # Function to show the Caddy configuration from a JSON file
 def show_caddy_config():
@@ -61,12 +65,65 @@ def show_caddyfile():
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
+async def extract_certificate_info(cert_path):
+    try:
+        # Execute the openssl command to get the expiration date
+        result = await asyncio.create_subprocess_exec(
+            'openssl', 'x509', '-in', cert_path, '-noout', '-enddate',
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        stdout, stderr = await result.communicate()
+
+        # Check for errors in the execution
+        if result.returncode != 0:
+            raise Exception(stderr.decode().strip())
+
+        # Decode output and process the information
+        expiration_date_str = stdout.decode().strip().split('=')[1]
+
+        # Convert expiration date string to datetime object
+        expiration_date = datetime.strptime(expiration_date_str, "%b %d %H:%M:%S %Y GMT")
+
+        # Determine if the certificate has expired
+        expired = 1 if datetime.now() > expiration_date else 0
+
+        # Extract the hostname from the filename
+        hostname = os.path.basename(cert_path).replace('.crt', '').lower()
+
+        return {'hostname': hostname, 'expiration_date': expiration_date_str, 'expired': expired}
+    except Exception as e:
+        print(json.dumps({"error": "General Error", "message": str(e)}))
+        return {'hostname': os.path.basename(cert_path).replace('.crt', '').lower(), 'error': str(e)}
+
+async def find_certificates(base_dir):
+    tasks = []
+    for root, dirs, files in os.walk(base_dir):
+        # Skip any directories named 'temp'
+        dirs[:] = [d for d in dirs if d != 'temp']
+        for file in files:
+            if file.endswith('.crt'):
+                cert_path = os.path.join(root, file)
+                task = asyncio.create_task(extract_certificate_info(cert_path))
+                tasks.append(task)
+
+    if not tasks:
+        print(json.dumps({"error": "No Certificates Found", "message": "No certificates were found in the specified directory."}))
+        # return []
+
+    return await asyncio.gather(*tasks)
+
+async def show_certificates():
+    base_dir = '/var/db/caddy/data/caddy/certificates'
+    certificates_data = await find_certificates(base_dir)
+    certificates_json = json.dumps(certificates_data, indent=4)
+    print(certificates_json)
+
 # Action handler
 def perform_action(action):
     actions = {
         "config": show_caddy_config,
-        "caddyfile": show_caddyfile
-        # Additional actions can be added here in the same format.
+        "caddyfile": show_caddyfile,
+        "certificate": lambda: asyncio.run(show_certificates())
     }
 
     action_func = actions.get(action)
