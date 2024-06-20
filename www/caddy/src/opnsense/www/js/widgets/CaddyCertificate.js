@@ -43,18 +43,18 @@ export default class CaddyCertificate extends BaseTableWidget {
 
     getMarkup() {
         let $container = $('<div></div>');
-        let $certificateTable = this.createTable('certificateTable', {
+        let $caddyCertificateTable = this.createTable('caddyCertificateTable', {
             headerPosition: 'none'
         });
 
-        $container.append($certificateTable);
+        $container.append($caddyCertificateTable);
         return $container;
     }
 
     async onWidgetTick() {
         await ajaxGet('/api/caddy/diagnostics/certificate', {}, (data, status) => {
-            if (status !== "success") {
-                $('#certificateTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
+            if (data.status !== "success") {
+                $('#caddyCertificateTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
                 return;
             }
 
@@ -89,7 +89,7 @@ export default class CaddyCertificate extends BaseTableWidget {
             let sortedRows = rows.map(row => [row.html]);
 
             // Update table
-            super.updateTable('certificateTable', sortedRows);
+            super.updateTable('caddyCertificateTable', sortedRows);
 
             // Initialize tooltips
             $('[data-toggle="tooltip"]').tooltip();

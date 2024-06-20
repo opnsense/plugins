@@ -92,8 +92,7 @@ async def extract_certificate_info(cert_path):
 
         return {'hostname': hostname, 'expiration_date': expiration_date_str, 'expired': expired}
     except Exception as e:
-        print(json.dumps({"error": "General Error", "message": str(e)}))
-        return {'hostname': os.path.basename(cert_path).replace('.crt', '').lower(), 'error': str(e)}
+        raise RuntimeError(f"Error extracting certificate info for {cert_path}: {str(e)}")
 
 async def find_certificates(base_dir):
     tasks = []
@@ -107,16 +106,18 @@ async def find_certificates(base_dir):
                 tasks.append(task)
 
     if not tasks:
-        print(json.dumps({"error": "No Certificates Found", "message": "No certificates were found in the specified directory."}))
-        # return []
+        raise RuntimeError("No certificates were found in the specified directory.")
 
     return await asyncio.gather(*tasks)
 
 async def show_certificates():
     base_dir = '/var/db/caddy/data/caddy/certificates'
-    certificates_data = await find_certificates(base_dir)
-    certificates_json = json.dumps(certificates_data, indent=4)
-    print(certificates_json)
+    try:
+        certificates_data = await find_certificates(base_dir)
+        certificates_json = json.dumps(certificates_data, indent=4)
+        print(certificates_json)
+    except Exception as e:
+        print(json.dumps({"error": "General Error", "message": str(e)}))
 
 # Action handler
 def perform_action(action):
