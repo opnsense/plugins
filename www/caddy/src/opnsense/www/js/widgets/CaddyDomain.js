@@ -28,7 +28,7 @@
 
 import BaseTableWidget from "./BaseTableWidget.js";
 
-export default class Caddy extends BaseTableWidget {
+export default class CaddyDomain extends BaseTableWidget {
     constructor() {
         super();
         this.resizeHandles = "e, w";
@@ -43,18 +43,18 @@ export default class Caddy extends BaseTableWidget {
 
     getMarkup() {
         let $container = $('<div></div>');
-        let $caddyTable = this.createTable('caddyTable', {
+        let $caddyDomainTable = this.createTable('caddyDomainTable', {
             headerPosition: 'none'
         });
 
-        $container.append($caddyTable);
+        $container.append($caddyDomainTable);
         return $container;
     }
 
     async onWidgetTick() {
         await ajaxGet('/api/caddy/reverse_proxy/get', {}, (data, status) => {
             if (!data.caddy.general || data.caddy.general.enabled === "0") {
-                $('#caddyTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
+                $('#caddyDomainTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
                 return;
             }
 
@@ -76,11 +76,10 @@ export default class Caddy extends BaseTableWidget {
                     let row = $(`
                         <div class="caddy-info">
                             <div class="caddy-enabled">
-                                <span class="separator">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <i class="fa fa-circle ${colorClass}" style="cursor: pointer;"
                                     data-toggle="tooltip" title="${tooltipText}">
                                 </i>
-                                <span class="separator">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                &nbsp;
                                 <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
                                     ${domainPort}
                                 </a>
@@ -99,7 +98,7 @@ export default class Caddy extends BaseTableWidget {
             let sortedRows = rows.map(row => [row.html]);
 
             // Update table
-            super.updateTable('caddyTable', sortedRows);
+            super.updateTable('caddyDomainTable', sortedRows);
 
             // Initialize tooltips
             $('[data-toggle="tooltip"]').tooltip();

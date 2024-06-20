@@ -1,8 +1,14 @@
 // Has to be added to: src/opnsense/mvc/app/controllers/OPNsense/Core/Api/DashboardController.php
 
-'caddy' => [
-    'title' => gettext('Caddy Web Server'),
+'caddydomain' => [
+    'title' => gettext('Caddy Domains'),
     'enabled' => gettext('Enabled'),
     'disabled' => gettext('Disabled'),
     'unconfigured' => gettext('Caddy is disabled or not configured.'),
-],
+    ],
+'caddycertificate' => [
+    'title' => gettext('Caddy Certificates'),
+    'valid' => gettext('Valid'),
+    'expired' => gettext('Expired'),
+    'unconfigured' => gettext('Caddy is disabled or not configured.'),
+    ],
