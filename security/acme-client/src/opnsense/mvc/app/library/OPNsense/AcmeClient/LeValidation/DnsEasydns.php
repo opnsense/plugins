@@ -39,7 +39,7 @@ class DnsEasydns extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env[EASYDNS_Key] = (string)$this->config->dns_easydns_apikey;
-        $this->acme_env[EASYDNS_Token] = (string)$this->config->dns_easydns_apitoken;
+        $this->acme_env['EASYDNS_Key'] = (string)$this->config->dns_easydns_apikey;
+        $this->acme_env['EASYDNS_Token'] = (string)$this->config->dns_easydns_apitoken;
     }
 }
