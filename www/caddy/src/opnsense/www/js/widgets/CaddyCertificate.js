@@ -66,7 +66,7 @@ export default class CaddyCertificate extends BaseTableWidget {
                 let colorClass = certificate.expired === 0 ? 'text-success' : 'text-danger';
                 let statusText = certificate.expired === 0 ? this.translations.valid : this.translations.expired;
                 let hostname = certificate.hostname;
-                let expirationDate = new Date(certificate.expiration_date).toLocaleString();
+                let expirationDate = new Date(certificate.expiration_date);
 
                 let row = `
                     <div>
@@ -76,14 +76,14 @@ export default class CaddyCertificate extends BaseTableWidget {
                         &nbsp;
                         <span><b>${hostname}</b></span>
                         <br/>
-                        <div style="margin-top: 5px; margin-bottom: 5px;">${expirationDate}</div>
+                        <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.validity}</i> ${expirationDate.toLocaleString()}</div>
                     </div>`;
 
-                rows.push({ html: row, expired: certificate.expired });
+                rows.push({ html: row, expirationDate });
             }
 
-            // Sort rows: expired first, then valid
-            rows.sort((a, b) => a.expired - b.expired);
+            // Sort rows by expiration date from lowest to highest
+            rows.sort((a, b) => a.expirationDate - b.expirationDate);
 
             // Extract sorted HTML rows
             let sortedRows = rows.map(row => [row.html]);

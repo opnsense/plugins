@@ -10,5 +10,6 @@
     'title' => gettext('Caddy Certificates'),
     'valid' => gettext('Valid'),
     'expired' => gettext('Expired'),
-    'unconfigured' => gettext('Caddy is disabled or not configured.'),
+    'unconfigured' => gettext('Caddy does not manage any automatic certificates.'),
+    'validity' => gettext('Expires:'),
     ],
