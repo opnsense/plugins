@@ -1,3 +1,5 @@
+// endpoint:/api/caddy/diagnostics/*
+
 /*
  * Copyright (C) 2024 Cedrik Pischem
  * All rights reserved.
