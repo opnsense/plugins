@@ -108,7 +108,8 @@ class Caddy extends BaseModel
     }
 
     // 3. Get the current OPNsense WebGUI ports and check for conflicts with Caddy
-    private function getWebGuiPorts() {
+    private function getWebGuiPorts()
+    {
         $webgui = Config::getInstance()->object()->system->webgui ?? null;
         $webGuiPorts = [];
 
@@ -126,7 +127,8 @@ class Caddy extends BaseModel
         return $webGuiPorts;
     }
 
-    private function checkWebGuiSettings($messages) {
+    private function checkWebGuiSettings($messages)
+    {
         $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
 
@@ -140,7 +142,8 @@ class Caddy extends BaseModel
     }
 
     // 4. Check for ACME Email being required when Auto HTTPS on
-    private function checkAcmeEmailAutoHttps($messages) {
+    private function checkAcmeEmailAutoHttps($messages)
+    {
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
         $tlsEmail = (string)$this->general->TlsEmail;
 
