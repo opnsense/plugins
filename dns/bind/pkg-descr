@@ -13,6 +13,7 @@ Plugin Changelog
 
 * Do not add the update-policy if the zone type is secondary (contributed by Brendan Bank)
 * Adjust severity log levels (contributed by kulikov-a)
+* Fix handling of multiple ACLs in allow-query/allow-transfer (contributed by Nathan Rennie-Waldock)
 
 1.30
 
