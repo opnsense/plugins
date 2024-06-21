@@ -65,6 +65,7 @@ def show_caddyfile():
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
+# Extract information about automatic certificates from the filesystem
 async def extract_certificate_info(cert_path):
     try:
         # Execute the openssl command to get the expiration date
@@ -84,13 +85,18 @@ async def extract_certificate_info(cert_path):
         # Convert expiration date string to datetime object
         expiration_date = datetime.strptime(expiration_date_str, "%b %d %H:%M:%S %Y GMT")
 
-        # Determine if the certificate has expired
-        expired = 1 if datetime.now() > expiration_date else 0
+        # Determine the current date
+        now = datetime.now()
+
+        # Calculate remaining days until expiration
+        remaining_days = (expiration_date - now).days
+        if remaining_days < 0:
+            remaining_days = 0
 
         # Extract the hostname from the filename
         hostname = os.path.basename(cert_path).replace('.crt', '').lower()
 
-        return {'hostname': hostname, 'expiration_date': expiration_date_str, 'expired': expired}
+        return {'hostname': hostname, 'expiration_date': expiration_date_str, 'remaining_days': remaining_days}
     except Exception as e:
         raise RuntimeError(f"Error extracting certificate info for {cert_path}: {str(e)}")
 

@@ -1,4 +1,4 @@
-// endpoint:/api/caddy/diagnostics/*
+// endpoint:/api/caddy/reverse_proxy/*
 
 /*
  * Copyright (C) 2024 Cedrik Pischem
@@ -63,10 +63,19 @@ export default class CaddyCertificate extends BaseTableWidget {
 
             // Collect rows
             for (const certificate of certificates) {
-                let colorClass = certificate.expired === 0 ? 'text-success' : 'text-danger';
-                let statusText = certificate.expired === 0 ? this.translations.valid : this.translations.expired;
+                let colorClass = 'text-success';
+                if (certificate.remaining_days === 0) {
+                    colorClass = 'text-danger';
+                } else if (certificate.remaining_days < 14) {
+                    colorClass = 'text-warning';
+                }
+
+                let statusText = certificate.remaining_days === 0 ? this.translations.expired :
+                    this.translations.valid;
+
                 let hostname = certificate.hostname;
                 let expirationDate = new Date(certificate.expiration_date);
+                let remainingDays = certificate.remaining_days;
 
                 let row = `
                     <div>
@@ -76,7 +85,7 @@ export default class CaddyCertificate extends BaseTableWidget {
                         &nbsp;
                         <span><b>${hostname}</b></span>
                         <br/>
-                        <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.validity}</i> ${expirationDate.toLocaleString()}</div>
+                        <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.expires}</i> ${remainingDays} <i>${this.translations.days}</i>, ${expirationDate.toLocaleString()}</div>
                     </div>`;
 
                 rows.push({ html: row, expirationDate });
