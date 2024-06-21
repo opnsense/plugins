@@ -31,7 +31,7 @@ import BaseTableWidget from "./BaseTableWidget.js";
 export default class CaddyCertificate extends BaseTableWidget {
     constructor() {
         super();
-        this.resizeHandles = "e, w";
+        // this.resizeHandles = "e, w";
     }
 
     getGridOptions() {

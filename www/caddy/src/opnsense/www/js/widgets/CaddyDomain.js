@@ -31,7 +31,7 @@ import BaseTableWidget from "./BaseTableWidget.js";
 export default class CaddyDomain extends BaseTableWidget {
     constructor() {
         super();
-        this.resizeHandles = "e, w";
+        // this.resizeHandles = "e, w";
     }
 
     getGridOptions() {
@@ -60,36 +60,42 @@ export default class CaddyDomain extends BaseTableWidget {
 
             let rows = [];
             const reverseProxies = data.caddy.reverseproxy.reverse;
+            const subdomains = data.caddy.reverseproxy.subdomain;
 
-            // Collect rows
-            for (const id in reverseProxies) {
-                if (reverseProxies.hasOwnProperty(id)) {
-                    const reverse = reverseProxies[id];
-                    let colorClass = reverse.enabled === "1" ? 'text-success' : 'text-danger';
-                    let tooltipText = reverse.enabled === "1" ? this.translations.enabled : this.translations.disabled;
-                    let domainPort = reverse.FromDomain;
+            const collectRows = (domains) => {
+                for (const id in domains) {
+                    if (domains.hasOwnProperty(id)) {
+                        const domain = domains[id];
+                        let colorClass = domain.enabled === "1" ? 'text-success' : 'text-danger';
+                        let tooltipText = domain.enabled === "1" ? this.translations.enabled : this.translations.disabled;
+                        let domainPort = domain.FromDomain;
 
-                    if (reverse.FromPort) {
-                        domainPort += `:${reverse.FromPort}`;
-                    }
+                        if (domain.FromPort) {
+                            domainPort += `:${domain.FromPort}`;
+                        }
 
-                    let row = $(`
-                        <div class="caddy-info">
-                            <div class="caddy-enabled">
-                                <i class="fa fa-circle ${colorClass}" style="cursor: pointer;"
-                                    data-toggle="tooltip" title="${tooltipText}">
-                                </i>
-                                &nbsp;
-                                <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
-                                    ${domainPort}
-                                </a>
+                        let row = $(`
+                            <div class="caddy-info">
+                                <div class="caddy-enabled">
+                                    <i class="fa fa-circle ${colorClass}" style="cursor: pointer;"
+                                        data-toggle="tooltip" title="${tooltipText}">
+                                    </i>
+                                    &nbsp;
+                                    <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
+                                        ${domainPort}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    `).prop('outerHTML');
+                        `).prop('outerHTML');
 
-                    rows.push({ html: row, enabled: reverse.enabled });
+                        rows.push({ html: row, enabled: domain.enabled });
+                    }
                 }
-            }
+            };
+
+            // Collect rows from both reverse proxies and subdomains
+            collectRows(reverseProxies);
+            collectRows(subdomains);
 
             // Sort rows: disabled first, then enabled
             rows.sort((a, b) => a.enabled - b.enabled);
