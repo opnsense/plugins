@@ -29,6 +29,7 @@ Plugin Changelog
 1.6.0
 
 * Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status
+* Fix: Template Caddyfile fixed for IPv6 addresses and custom port.
 
 1.5.7
 
