@@ -200,14 +200,26 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         if ($need_update) {
             @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
             unset($upinst);
+
             /* invoke nsupdate */
             $cmd = "/usr/local/bin/nsupdate -k {$keyfile}";
             if (isset($dnsupdate['usetcp'])) {
                 $cmd .= " -v";
             }
+
             $cmd .= " /var/etc/nsupdatecmds{$i}";
-            mwexec_bg($cmd);
-            unset($cmd);
+
+            //mwexec_bg($cmd);
+            $out = shell_exec($cmd." 2>&1; echo $?");
+            $status = ((int)trim(end(explode("\n", trim($out)))));
+
+            if ($status > 0) {
+                @unlink($cacheFile);
+                @unlink($cacheFile6);
+                log_error("Dynamic DNS: update failed, delete cache files");
+            }
+
+            unset($cmd, $status);
         }
     }
 
