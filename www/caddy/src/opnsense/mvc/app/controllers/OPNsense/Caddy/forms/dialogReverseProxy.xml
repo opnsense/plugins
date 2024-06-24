@@ -10,7 +10,7 @@
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name or IP address. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
