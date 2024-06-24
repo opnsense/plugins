@@ -65,19 +65,22 @@ def show_caddyfile():
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
-# Extract information about automatic certificates from the filesystem
+# Function to extract certificate information using openssl command
 async def extract_certificate_info(cert_path):
     try:
-        # Execute the openssl command to get the expiration date
-        result = await asyncio.create_subprocess_exec(
-            'openssl', 'x509', '-in', cert_path, '-noout', '-enddate',
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
+        # Execute the openssl command to get the expiration date with a timeout
+        result = await asyncio.wait_for(
+            asyncio.create_subprocess_exec(
+                'openssl', 'x509', '-in', cert_path, '-noout', '-enddate',
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE),
+            timeout=10)  # Make sure tasks are cleaned up if they hang
+
         stdout, stderr = await result.communicate()
 
         # Check for errors in the execution
         if result.returncode != 0:
-            raise Exception(stderr.decode().strip())
+            error_message = stderr.decode().strip()
+            raise RuntimeError(f"Subprocess failed with error: {error_message}")
 
         # Decode output and process the information
         expiration_date_str = stdout.decode().strip().split('=')[1]
@@ -90,16 +93,19 @@ async def extract_certificate_info(cert_path):
 
         # Calculate remaining days until expiration
         remaining_days = (expiration_date - now).days
-        if remaining_days < 0:
-            remaining_days = 0
+        remaining_days = max(remaining_days, 0)  # Ensure non-negative days
 
         # Extract the hostname from the filename
         hostname = os.path.basename(cert_path).replace('.crt', '').lower()
 
         return {'hostname': hostname, 'expiration_date': expiration_date_str, 'remaining_days': remaining_days}
+    except asyncio.TimeoutError as e:
+        # Handle timeout specific errors
+        raise RuntimeError(f"Timeout occurred while processing {cert_path}: {str(e)}")
     except Exception as e:
         raise RuntimeError(f"Error extracting certificate info for {cert_path}: {str(e)}")
 
+# Function to find certificates and create tasks to extract info
 async def find_certificates(base_dir):
     tasks = []
     for root, dirs, files in os.walk(base_dir):
@@ -114,14 +120,19 @@ async def find_certificates(base_dir):
     if not tasks:
         raise RuntimeError("No certificates were found in the specified directory.")
 
-    return await asyncio.gather(*tasks)
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    return [result for result in results if not isinstance(result, Exception)]
 
+# Function to show certificates, processing all found in the given directory
 async def show_certificates():
+    # Function to show certificates, processing all found in the given directory
     base_dir = '/var/db/caddy/data/caddy/certificates'
     try:
         certificates_data = await find_certificates(base_dir)
-        certificates_json = json.dumps(certificates_data, indent=4)
-        print(certificates_json)
+        if certificates_data:
+            print(json.dumps(certificates_data, indent=4))
+        else:
+            raise RuntimeError("No valid certificate data found.")
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
