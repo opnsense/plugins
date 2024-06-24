@@ -77,7 +77,7 @@ export default class CaddyDomain extends BaseTableWidget {
                         let row = $(`
                             <div class="caddy-info">
                                 <div class="caddy-enabled">
-                                    <i class="fa fa-circle ${colorClass}" style="cursor: pointer;"
+                                    <i class="fa fa-globe ${colorClass}" style="cursor: pointer;"
                                         data-toggle="tooltip" title="${tooltipText}">
                                     </i>
                                     &nbsp;

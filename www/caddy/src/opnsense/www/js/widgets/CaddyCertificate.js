@@ -79,7 +79,7 @@ export default class CaddyCertificate extends BaseTableWidget {
 
                 let row = `
                     <div>
-                        <i class="fa fa-circle ${colorClass}" style="cursor: pointer;"
+                        <i class="fa fa-lock ${colorClass}" style="cursor: pointer;"
                             data-toggle="tooltip" title="${statusText}">
                         </i>
                         &nbsp;
