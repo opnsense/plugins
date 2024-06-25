@@ -80,31 +80,18 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     dataHasChanged(newCertificates) {
-        const newCertificatesMap = newCertificates.reduce((acc, certificate) => {
-            acc[certificate.hostname] = {
-                expiration_date: new Date(certificate.expiration_date).getTime(),  // Store as timestamp for reliable comparison
-                remaining_days: certificate.remaining_days
-            };
-            return acc;
-        }, {});
 
-        const keySetChanged = Object.keys(newCertificatesMap).length !== Object.keys(this.currentCertificates).length;
-        const certificatesChanged = keySetChanged || Object.keys(newCertificatesMap).some(key => {
-            const newCertificate = newCertificatesMap[key];
-            const currentCertificate = this.currentCertificates[key];
-            if (!currentCertificate) {
-                return true;
-            }
-            const expirationChanged = newCertificate.expiration_date !== currentCertificate.expiration_date;
-            const daysChanged = newCertificate.remaining_days !== currentCertificate.remaining_days;
-            if (expirationChanged || daysChanged) {
-                return true;
-            }
+        // Directly serialize the entire newCertificates array
+        const newCertificatesString = JSON.stringify(newCertificates);
+        const currentCertificatesString = JSON.stringify(this.currentCertificates);
+
+        // Compare the serialized strings
+        if (newCertificatesString !== currentCertificatesString) {
+            this.currentCertificates = JSON.parse(newCertificatesString);
+            return true;
+        } else {
             return false;
-        });
-
-        this.currentCertificates = newCertificatesMap; // Always update the current state
-        return certificatesChanged;
+        }
     }
 
     processCertificates(certificates) {
