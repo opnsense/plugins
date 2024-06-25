@@ -31,12 +31,17 @@ import BaseTableWidget from "./BaseTableWidget.js";
 export default class CaddyDomain extends BaseTableWidget {
     constructor() {
         super();
-        // this.resizeHandles = "e, w";
+        this.resizeHandles = "e, w";
+        this.currentDomains = {};
+
+        // Since we only update when dataHasChanged we can almost update in real time
+        this.tickTimeout = 2000;
+
     }
 
     getGridOptions() {
         return {
-            // trigger overflow-y:scroll after 650px height
+            // Trigger overflow-y:scroll after 650px height
             sizeToContent: 650
         };
     }
@@ -52,62 +57,78 @@ export default class CaddyDomain extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        await ajaxGet('/api/caddy/reverse_proxy/get', {}, (data, status) => {
+        try {
+            // Check if caddy is enabled
+            const data = await ajaxGet('/api/caddy/reverse_proxy/get', {});
             if (!data.caddy.general || data.caddy.general.enabled === "0") {
                 $('#caddyDomainTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
                 return;
             }
 
-            let rows = [];
-            const reverseProxies = data.caddy.reverseproxy.reverse;
-            const subdomains = data.caddy.reverseproxy.subdomain;
+            // Process domains if caddy is enabled
+            let domains = { ...data.caddy.reverseproxy.reverse, ...data.caddy.reverseproxy.subdomain };
+            this.processDomains(domains);
 
-            const collectRows = (domains) => {
-                for (const id in domains) {
-                    if (domains.hasOwnProperty(id)) {
-                        const domain = domains[id];
-                        let colorClass = domain.enabled === "1" ? 'text-success' : 'text-danger';
-                        let tooltipText = domain.enabled === "1" ? this.translations.enabled : this.translations.disabled;
-                        let domainPort = domain.FromDomain;
+        } catch (error) {
+            $('#caddyDomainTable').html(`<a href="/ui/caddy/general">${this.translations.error}</a>`);
+        }
+    }
 
-                        if (domain.FromPort) {
-                            domainPort += `:${domain.FromPort}`;
-                        }
+    dataHasChanged(newDomains) {
+        // Since the object is deeply nested, a deep comparison instead of a shallow one has to be done
+        // Convert domain objects to a string to perform a deep comparison
+        const newDomainsString = JSON.stringify(newDomains);
+        const currentDomainsString = JSON.stringify(this.currentDomains);
 
-                        let row = $(`
-                            <div class="caddy-info">
-                                <div class="caddy-enabled">
-                                    <i class="fa fa-globe ${colorClass}" style="cursor: pointer;"
-                                        data-toggle="tooltip" title="${tooltipText}">
-                                    </i>
-                                    &nbsp;
-                                    <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
-                                        ${domainPort}
-                                    </a>
-                                </div>
-                            </div>
-                        `).prop('outerHTML');
+        if (newDomainsString !== currentDomainsString) {
+            this.currentDomains = newDomains; // Update the current state with new data
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                        rows.push({ html: row, enabled: domain.enabled });
-                    }
-                }
-            };
+    processDomains(domains) {
+        if (!this.dataHasChanged(domains)) {
+            return;  // Early exit if no changes
+        }
 
-            // Collect rows from both reverse proxies and subdomains
-            collectRows(reverseProxies);
-            collectRows(subdomains);
+        let rows = [];
+        // Assuming domains is a combination of both reverse and subdomains
+        for (const key in domains) {
+            const domain = domains[key];
+            let colorClass = domain.enabled === "1" ? 'text-success' : 'text-danger';
+            let tooltipText = domain.enabled === "1" ? this.translations.enabled : this.translations.disabled;
+            let domainPort = domain.FromDomain;
 
-            // Sort rows: disabled first, then enabled
-            rows.sort((a, b) => a.enabled - b.enabled);
+            if (domain.FromPort) {
+                domainPort += `:${domain.FromPort}`;
+            }
 
-            // Extract sorted HTML rows
-            let sortedRows = rows.map(row => [row.html]);
+            let row = $(`
+                <div class="caddy-info">
+                    <div class="caddy-enabled">
+                        <i class="fa fa-globe ${colorClass}" style="cursor: pointer;"
+                            data-toggle="tooltip" title="${tooltipText}">
+                        </i>
+                        &nbsp;
+                        <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
+                            ${domainPort}
+                        </a>
+                    </div>
+                </div>
+            `).prop('outerHTML');
 
-            // Update table
-            super.updateTable('caddyDomainTable', sortedRows);
+            rows.push({ html: row, enabled: domain.enabled });
+        }
 
-            // Initialize tooltips
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+        // Sort rows by their enabled status
+        rows.sort((a, b) => a.enabled - b.enabled);
+
+        // Update table with sorted rows
+        super.updateTable('caddyDomainTable', rows.map(row => [row.html]));
+
+        // Initialize tooltips for interactivity
+        $('[data-toggle="tooltip"]').tooltip();
     }
 }
