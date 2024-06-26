@@ -61,7 +61,7 @@ export default class CaddyDomain extends BaseTableWidget {
             // Check if caddy is enabled
             const data = await ajaxGet('/api/caddy/reverse_proxy/get', {});
             if (!data.caddy.general || data.caddy.general.enabled === "0") {
-                $('#caddyDomainTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
+                this.displayError(`${this.translations.unconfigured}`);
                 return;
             }
 
@@ -70,12 +70,19 @@ export default class CaddyDomain extends BaseTableWidget {
             this.processDomains(domains);
 
         } catch (error) {
-            $('#caddyDomainTable').html(`<a href="/ui/caddy/general">${this.translations.error}</a>`);
+            this.displayError(`${this.translations.error}`);
         }
     }
 
+    // Utility function to display errors within the widget
+    displayError(message) {
+        const $error = $(`<div class="error-message"><a href="/ui/caddy/general">${message}</a></div>`);
+        $('#caddyDomainTable').empty().append($error);
+    }
+
+    // Checks if the data has changed to prevent unnecessary UI updates
     dataHasChanged(newDomains) {
-        // Since the object is deeply nested, a deep comparison instead of a shallow one has to be done
+
         // Convert domain objects to a string to perform a deep comparison
         const newDomainsString = JSON.stringify(newDomains);
         const currentDomainsString = JSON.stringify(this.currentDomains);

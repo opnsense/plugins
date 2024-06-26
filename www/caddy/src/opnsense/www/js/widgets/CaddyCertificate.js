@@ -61,27 +61,34 @@ export default class CaddyCertificate extends BaseTableWidget {
             // Check if Caddy is enabled
             const caddyStatus = await ajaxGet('/api/caddy/reverse_proxy/get', {});
             if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
-                $('#caddyCertificateTable').html(`<a href="/ui/caddy/general">${this.translations.unconfigured}</a>`);
+                this.displayError(`${this.translations.unconfigured}`);
                 return;
             }
 
             // Fetch the certificate details
             const response = await ajaxGet('/api/caddy/diagnostics/certificate', {});
             if (response.status !== "success") {
-                $('#caddyCertificateTable').html(`<a href="/ui/caddy/general">${this.translations.nocerts}</a>`);
+                this.displayError(`${this.translations.nocerts}`);
                 return;
             }
 
             // Process certificates if the response is successful
             this.processCertificates(response.content);
         } catch (error) {
-            $('#caddyCertificateTable').html(`<a href="/ui/caddy/general">${this.translations.error}</a>`);
+            this.displayError(`${this.translations.error}`);
         }
     }
 
+    // Utility function to display errors within the widget
+    displayError(message) {
+        const $error = $(`<div class="error-message"><a href="/ui/caddy/general">${message}</a></div>`);
+        $('#caddyCertificateTable').empty().append($error);
+    }
+
+    // Checks if the data has changed to prevent unnecessary UI updates
     dataHasChanged(newCertificates) {
 
-        // Directly serialize the entire newCertificates array
+        // Directly serialize the entire newCertificates array to perform a deep comparison
         const newCertificatesString = JSON.stringify(newCertificates);
         const currentCertificatesString = JSON.stringify(this.currentCertificates);
 
@@ -118,7 +125,7 @@ export default class CaddyCertificate extends BaseTableWidget {
                     &nbsp;
                     <span><b>${certificate.hostname}</b></span>
                     <br/>
-                    <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.expires}</i> ${certificate.remaining_days} <i>${this.translations.days}</i>, ${new Date(certificate.expiration_date).toLocaleString()}</div>
+                    <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days}, ${new Date(certificate.expiration_date).toLocaleString()}</div>
                 </div>`;
             return { html: row, expirationDate: new Date(certificate.expiration_date) };
         });
