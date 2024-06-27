@@ -89,6 +89,17 @@
     </field>
     <field>
         <type>header</type>
+        <label>Access</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>handle.ForwardAuth</id>
+        <label>Forward Auth</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider.]]></help>
+    </field>
+    <field>
+        <type>header</type>
         <label>Trust</label>
         <collapse>true</collapse>
     </field>

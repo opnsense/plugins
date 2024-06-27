@@ -126,6 +126,29 @@
                 <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsTtl>
             <DynDnsUpdateOnly type="BooleanField"/>
+            <AuthProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
+                <OptionValues>
+                    <authelia>Authelia</authelia>
+                </OptionValues>
+            </AuthProvider>
+            <AuthToDomain type="HostnameField">
+                <ValidationMessage>Please enter a valid 'to' domain.</ValidationMessage>
+                <IpAllowed>Y</IpAllowed>
+                <HostWildcardAllowed>Y</HostWildcardAllowed>
+                <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                <ZoneRootAllowed>N</ZoneRootAllowed>
+            </AuthToDomain>
+            <AuthToPort type="PortField">
+                <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
+                <EnableWellKnown>Y</EnableWellKnown>
+                <EnableRanges>N</EnableRanges>
+            </AuthToPort>
+            <AuthToTls type="BooleanField"/>
+            <AuthToUri type="TextField">
+                <Mask>/^(\/.*)?$/u</Mask>
+                <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
+            </AuthToUri>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -300,6 +323,7 @@
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
+                <ForwardAuth type="BooleanField"/>
                 <HttpTls type="BooleanField">
                     <Constraints>
                         <check001>

@@ -1,0 +1,11 @@
+{#
+# This file gets imported to configure forward auth in handlers.
+# - Section: Reverse Proxy Configurations
+#}
+{% if generalSettings.AuthProvider == 'authelia' %}
+    forward_auth {% if generalSettings.AuthToTls|default("0") == "1" %}https://{% endif %}{{ generalSettings.AuthToDomain|default("") }}{% if generalSettings.AuthToPort %}:{{ generalSettings.AuthToPort }}{% endif %} {
+    {% if generalSettings.AuthToUri %}uri {{ generalSettings.AuthToUri|default("") }}{% endif %}
+
+    copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+{% endif %}
