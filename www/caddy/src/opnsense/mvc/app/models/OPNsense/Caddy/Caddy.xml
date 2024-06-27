@@ -135,8 +135,8 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'from' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
+                    <ValidationMessage>Please enter a valid 'from' domain.</ValidationMessage>
+                    <IpAllowed>N</IpAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
