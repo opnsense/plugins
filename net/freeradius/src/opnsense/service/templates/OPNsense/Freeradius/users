@@ -104,6 +104,14 @@ DEFAULT Auth-Type := Accept
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
        Tunnel-Private-Group-Id = {{ OPNsense.freeradius.general.fallbackvlan_id }},
+
+{%        if helpers.exists('OPNsense.freeradius.general.mikrotik') and OPNsense.freeradius.general.mikrotik == '1' %}
+       Mikrotik-Wireless-VLANID := {{ OPNsense.freeradius.general.fallbackvlan_id }},
+       Mikrotik-Wireless-VLANID-Type := 0,
+       Mikrotik-Wireless-Comment = "unknown",
+{%       endif %}
+
        Framed-Protocol = PPP
+
 {%  endif %}
 {% endif %}
