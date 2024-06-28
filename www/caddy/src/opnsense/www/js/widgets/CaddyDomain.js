@@ -1,5 +1,3 @@
-// endpoint:/api/caddy/reverse_proxy/*
-
 /*
  * Copyright (C) 2024 Cedrik Pischem
  * All rights reserved.

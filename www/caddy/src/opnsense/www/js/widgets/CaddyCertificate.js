@@ -1,5 +1,3 @@
-// endpoint:/api/caddy/*
-
 /*
  * Copyright (C) 2024 Cedrik Pischem
  * All rights reserved.
