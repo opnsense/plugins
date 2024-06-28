@@ -130,7 +130,7 @@ async def show_certificates():
     try:
         certificates_data = await find_certificates(base_dir)
         if certificates_data:
-            print(json.dumps(certificates_data, indent=4))
+            print(json.dumps(certificates_data))
         else:
             raise RuntimeError("No valid certificate data found.")
     except Exception as e:
