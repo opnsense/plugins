@@ -28,8 +28,10 @@ Plugin Changelog
 
 1.6.0
 
-* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status
+* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
 * Fix: Template Caddyfile fixed for IPv6 addresses and custom port.
+* Cleanup: Remove unused code, correct indentation of Caddyfile template for maintainability.
+* Add: forward_auth directive with Authelia as Authz Provider.
 
 1.5.7
 
