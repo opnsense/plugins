@@ -31,8 +31,6 @@ from . import BaseAccount
 
 
 class Gandi(BaseAccount):
-    _priority = 65535
-
     _services = {
         'gandi': 'api.gandi.net'
     }
