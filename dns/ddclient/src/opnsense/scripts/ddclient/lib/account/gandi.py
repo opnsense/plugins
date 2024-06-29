@@ -1,6 +1,6 @@
 """
-    Copyright (c) 2023 Thomas Cekal <thomas@cekal.org>
-    Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2024 Thomas Cekal <thomas@cekal.org>
+    Copyright (c) 2024 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -51,13 +51,7 @@ class Gandi(BaseAccount):
     def execute(self):
         if super().execute():
             # IPv4/IPv6
-            recordType = None
-            if str(self.current_address).find(':') > 1:
-                #IPv6
-                recordType = "AAAA"
-            else:
-                #IPv4
-                recordType = "A"
+            recordType = "AAAA" if str(self.current_address).find(':') > 1 else "A"
 
             # Use bearer (api key) authentication
             url = "https://api.gandi.net/v5/livedns/domains/" + self.settings.get('zone') + "/records/" + self.settings.get('hostnames') + "/" + recordType
