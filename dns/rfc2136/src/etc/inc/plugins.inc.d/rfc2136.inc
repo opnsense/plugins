@@ -157,8 +157,6 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
                 if (($wanip != $cachedipv4) || (($currentTime - $cacheTimev4) > $maxCacheAgeSecs) || $forced) {
                     $upinst .= "update delete {$dnsupdate['host']}. A\n";
                     $upinst .= "update add {$dnsupdate['host']}. {$dnsupdate['ttl']} A {$wanip}\n";
-                    @file_put_contents($cacheFile, "{$wanip}|{$currentTime}");
-                    log_error("Dynamic DNS: updating cache file {$cacheFile}: {$wanip}");
                     $need_update = true;
                 } else {
                     log_error("Dynamic DNS: Not updating {$dnsupdate['host']} A record because the IP address has not changed.");
@@ -184,8 +182,6 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
                 if (($wanipv6 != $cachedipv6) || (($currentTime - $cacheTimev6) > $maxCacheAgeSecs) || $forced) {
                     $upinst .= "update delete {$dnsupdate['host']}. AAAA\n";
                     $upinst .= "update add {$dnsupdate['host']}. {$dnsupdate['ttl']} AAAA {$wanipv6}\n";
-                    @file_put_contents($cacheFile6, "{$wanipv6}|{$currentTime}");
-                    log_error("Dynamic DNS: updating cache file {$cacheFile6}: {$wanipv6}");
                     $need_update = true;
                 } else {
                     log_error("Dynamic DNS: Not updating {$dnsupdate['host']} AAAA record because the IPv6 address has not changed.");
@@ -202,24 +198,31 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
             unset($upinst);
 
             /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -k {$keyfile}";
+            $updateCmd = "/usr/local/opnsense/scripts/OPNsense/rfc2136/nsupdate-apply.sh";
+            $updateCmd .= " --keyfile {$keyfile}";
+            $updateCmd .= " --scriptfile /var/etc/nsupdatecmds{$i}";
+
             if (isset($dnsupdate['usetcp'])) {
-                $cmd .= " -v";
+                $updateCmd .= " --tcp";
             }
 
-            $cmd .= " /var/etc/nsupdatecmds{$i}";
-
-            //mwexec_bg($cmd);
-            $out = shell_exec($cmd." 2>&1; echo $?");
-            $status = ((int)trim(end(explode("\n", trim($out)))));
-
-            if ($status > 0) {
-                @unlink($cacheFile);
-                @unlink($cacheFile6);
-                log_error("Dynamic DNS: update failed, delete cache files");
+            if (isset($cacheFile) && !empty($cacheFile)) {
+                $updateCmd .= " --cachefile4 {$cacheFile}";
+                if (isset($wanip) && !empty($wanip)) {
+                    $updateCmd .= " --ip4 {$wanip}";
+                }
             }
 
-            unset($cmd, $status);
+            if (isset($cacheFile6) && !empty($cacheFile6)) {
+                $updateCmd .= " --cachefile6 {$cacheFile6}";
+                if (isset($wanipv6) && !empty($wanipv6)) {
+                    $updateCmd .= " --ip6 {$wanipv6}";
+                }
+            }
+
+            log_error("Dynamic DNS: update command: ".$updateCmd);
+            mwexec_bg($updateCmd);
+            unset($updateCmd);
         }
     }
 
