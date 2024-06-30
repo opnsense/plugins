@@ -53,6 +53,21 @@
         {% endif %}
     }
 
+    {# Change default bind and default ports on demand. #}
+    {% set loopback = generalSettings.Loopback %}
+    {% set httpPort = generalSettings.HttpPort %}
+    {% set httpsPort = generalSettings.HttpsPort %}
+
+    {% if loopback|default("0") == "1" %}
+        default_bind 127.0.0.1 [::1]
+    {% endif %}
+    {% if httpPort %}
+        http_port {{ httpPort }}
+    {% endif %}
+    {% if httpsPort %}
+        https_port {{ httpsPort }}
+    {% endif %}
+
     {#
     #   Section: Global Trusted Proxy and Credential Logging
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
@@ -215,6 +230,14 @@
 }
 
 # Reverse Proxy Configuration
+
+{# Set up a http site block when default_bind is used, otherwise Caddy will not bind http to the loopback interfaces. #}
+{% if loopback|default("0") == "1" %}
+    http:// {
+    bind 127.0.0.1 [::1]
+    }
+{% endif %}
+
 
 {#
 #   Section: HTTP-01 Challenge Redirection

@@ -132,7 +132,12 @@ class Caddy extends BaseModel
         $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
 
-        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
+        // If these following variables are set, the validation should not happen since it should only catch the default usecase.
+        $Loopback = (string)$this->general->Loopback;
+        $httpPort = (string)$this->general->HttpPort;
+        $httpsPort = (string)$this->general->HttpPort;
+
+        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off' && $Loopback === '0' && empty($httpPort) && empty($httpsPort)) {
             $portOverlap = implode(', ', $overlap);
             $messages->appendMessage(new Message(
                 sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port 443, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap),

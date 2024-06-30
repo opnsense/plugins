@@ -6,6 +6,29 @@
         <help><![CDATA[Enable or disable the Caddy web server.]]></help>
     </field>
     <field>
+        <id>caddy.general.HttpPort</id>
+        <label>HTTP Port</label>
+        <type>text</type>
+        <hint>80</hint>
+        <help><![CDATA[If the default HTTP port is changed to e.g. 8080, then a port forward from port 80 to 8080 is necessary to issue automatic certificates with the HTTP-01 challenge and serve clients the reverse proxied resources.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.HttpsPort</id>
+        <label>HTTPS Port</label>
+        <type>text</type>
+        <hint>443</hint>
+        <help><![CDATA[If the default HTTPS port is changed to e.g. 8443, then a port forward from port 443 to 8443 is necessary to issue automatic certificates with the TLS-ALPN-01 challenge and serve clients the reverse proxied resources.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>caddy.general.Loopback</id>
+        <label>Bind to Loopback</label>
+        <type>checkbox</type>
+        <help><![CDATA[Instead of binding to all interfaces (default), enable this checkbox to bind Caddy to 127.0.0.1 and ::1 instead. Use Port Forwarding to route traffic to Caddy. This option can be combined with custom ports for HTTP and HTTPS.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>caddy.general.TlsEmail</id>
         <label>ACME Email</label>
         <type>text</type>
