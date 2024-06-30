@@ -26,6 +26,10 @@
  #}
 
 <script>
+    {% set placeholder_txt = 'Click the Show Config button to load the current configuration. Please note that this is not a configuration from the running process memory. ' %}
+    {% set placeholder_txt = placeholder_txt ~ 'Also, the displayed configuration may differ from the configuration in OPNsense config if you have made but not applied changes.' %}
+
+    ngnx_config = [];
     function bind_naxsi_rule_dl_button() {
         let naxsi_rule_download_button = $('#naxsiruledownloadbtn');
         naxsi_rule_download_button.click(function () {
@@ -55,42 +59,100 @@
             });
         });
     }
+
+    function ngnx_show_conf() {
+
+        $("#nginx_conf tbody").empty().append('<tr><td class="placeholdertd">{{ lang._("Waiting for response..") }}</td></tr>');
+        $("#config_help_text").hide();
+        // clear existing config in memory (if any)
+        ngnx_config = [];
+        ajaxCall(url="/api/nginx/settings/showconfig/", sendData={}, callback=function(data,status) {
+            if (data['time'] && data['config']) {
+                let L = 0;
+                let content = [];
+                $.each(data['config'], function(index, line) {
+                    // use lodash unescape to safely decode html chars in line and store for clipboard copy
+                    ngnx_config.push(_.unescape(line));
+                    L = line.indexOf('# configuration file ') > -1 ? 0 : L + 1;
+                    // line received HTML-encoded. Should be XSS-safe if not decoded before inserting to DOM
+                    content.push('<tr><td class="l-number">' + L.toString() + '</td><td class="config-line"><span>' + line + '</span></td></tr>');
+                });
+                $("#nginx_conf tbody").empty().append(content.join());
+                $("#config_help_text").show();
+                if ((typeof navigator.clipboard === 'object') && (typeof navigator.clipboard.writeText === 'function')) {
+                    $('#nginx_config_copy').show();
+                }
+                BootstrapDialog.show({
+                   type: BootstrapDialog.TYPE_INFO,
+                   title: "{{ lang._('NGINX config loaded successfully') }}",
+                   message: "{{ lang._('NGINX config loaded. Config file created at') }}" + ": " + (new Date(data['time']*1000)).toLocaleString(),
+                   buttons: [{
+                       label: '{{ lang._('Ok') }}',
+                       action: function(dlg){
+                           dlg.close();
+                       }
+                   }]
+                });
+            } else {
+                  $("#nginx_conf td.placeholdertd").text("{{ lang._('Empty response from the backend. Please check logs.') }}");
+            }
+        });
+    }
+
+    function ngnx_test_conf() {
+        ajaxCall(url="/api/nginx/settings/testconfig/", sendData={}, callback=function(data,status) {
+            if (data['response'].indexOf('test failed') > -1) {
+                 BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_DANGER,
+                    title: "{{ lang._('NGINX config test failed') }}",
+                    message: data['response'],
+                    buttons: [{
+                        label: '{{ lang._('Ok') }}',
+                        action: function(dlg){
+                             dlg.close();
+                        }
+                    }]
+                });
+            } else {
+                 BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_INFO,
+                    title: "{{ lang._('NGINX config test is successful') }}",
+                    message: "{{ lang._('NGINX config test is successful') }}",
+                    buttons: [{
+                        label: '{{ lang._('Ok') }}',
+                        action: function(dlg){
+                             dlg.close();
+                        }
+                    }]
+                });
+            }
+        });
+    }
+
+    $(function() {
+        $("#nginx_config_copy").click(function () {
+            if (ngnx_config.length) {
+                $(this).fadeOut();
+                navigator.clipboard.writeText(ngnx_config.join('\n'));
+                $(this).fadeIn();
+            }
+        });
+        $("#subtab_item_nginx-other-config-preview").click(function () {
+            $("#nginx_conf tbody").empty().append('<tr><td class="placeholdertd">{{ lang._(placeholder_txt) }}</td></tr>');
+        });
+
+        $("#conf_show_btn").click(function () {
+            ngnx_show_conf();
+        });
+        $("#conf_test_btn").click(function () {
+            ngnx_test_conf();
+        });
+    });
 </script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/lodash.min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/lib/backbone-min.js') }}"></script>
 <script src="{{ cache_safe('/ui/js/nginx/dist/configuration.min.js') }}"></script>
-<style>
-    #frm_sni_hostname_mapdlg .col-md-4,
-    #frm_ipacl_dlg .col-md-4 {
-        width: 50%;
-    }
-    #frm_sni_hostname_mapdlg td > input[type="text"],
-    #frm_ipacl_dlg td > input[type="text"] {
-        width: 100%;
-        max-width: 100%;
-    }
-    #frm_sni_hostname_mapdlg .col-md-5,
-    #frm_ipacl_dlg .col-md-5 {
-        width: 25%;
-    }
-    #row_snihostname\.data .row,
-    #row_ipacl\.data .row {
-        padding-top: 5px;
-    }
-    #row_snihostname\.data .row div,
-    #row_ipacl\.data .row div {
-        padding: 0;
-    }
-    #sni_hostname_mapdlg .bootstrap-select,
-    #frm_ipacl_dlg .bootstrap-select {
-        width: 100% !important;
-    }
-    .filter-option {
-        padding: inherit !important;
-    }
-
-</style>
-
+<link rel="stylesheet" href="{{ cache_safe('/ui/css/nginx/index.css') }}" type="text/css" />
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
@@ -136,6 +198,9 @@
             </li>
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-tls-fingerprint" href="#subtab_nginx-http-tls-fingerprint">{{ lang._('TLS Fingerprint (Advanced)')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-http-resolver" href="#subtab_nginx-http-resolver">{{ lang._('Resolvers')}}</a>
             </li>
         </ul>
     </li>
@@ -212,6 +277,9 @@
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a data-toggle="tab" id="subtab_item_nginx-other-syslog-target" href="#subtab_nginx-other-syslog-target">{{ lang._('SYSLOG Targets')}}</a>
+            </li>
+            <li>
+                <a data-toggle="tab" id="subtab_item_nginx-other-config-preview" href="#subtab_nginx-other-config-preview">{{ lang._('Config Preview')}}</a>
             </li>
         </ul>
     </li>
@@ -671,6 +739,29 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-http-resolver" class="tab-pane fade">
+        <table id="grid-resolver" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="resolverdlg">
+            <thead>
+                <tr>
+                    <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
+                    <th data-column-id="address" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Address') }}</th>
+                    <th data-column-id="commands" data-width="10em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
     <div id="subtab_nginx-other-syslog-target" class="tab-pane fade">
         <table id="grid-syslog_target" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="syslog_target_dlg">
             <thead>
@@ -695,8 +786,30 @@
             </tfoot>
         </table>
     </div>
+    <div id="subtab_nginx-other-config-preview" class="tab-pane fade">
+        <div id="nginx_conf_container" class="nginx_table_responsive">
+            <table class="ngx_conf_table" id="nginx_conf">
+                <tbody class="ngx_conf_table_body"></tbody>
+            </table>
+            <table class="table table-striped table-condensed">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div id="config_help_text" style="display:none">
+                                {{ lang._("Configuration files may contain sensitive information, keep it safe.") }}
+                                <a id="nginx_config_copy" style="display:none">{{ lang._('Click here to copy to clipboard.') }}</a>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" id="conf_show_btn" data-type="config" type="button"><b>{{ lang._('Show Config') }}</b></button>
+                                <button class="btn btn-primary" id="conf_test_btn" data-type="test" type="button"><b>{{ lang._('Test Config') }}</b></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
 
 {{ partial("layout_partials/base_dialog",['fields': upstream,'id':'upstreamdlg', 'label':lang._('Edit Upstream')]) }}
 {{ partial("layout_partials/base_dialog",['fields': upstream_server,'id':'upstreamserverdlg', 'label':lang._('Edit Upstream')]) }}
@@ -716,4 +829,5 @@
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
 {{ partial("layout_partials/base_dialog",['fields': errorpage,'id':'errorpage_dlg', 'label':lang._('Edit Error Page')]) }}
 {{ partial("layout_partials/base_dialog",['fields': tls_fingerprint,'id':'tls_fingerprint_dlg', 'label':lang._('Edit TLS Fingerprint')]) }}
+{{ partial("layout_partials/base_dialog",['fields': resolver,'id':'resolverdlg', 'label':lang._('Edit Resolver')]) }}
 {{ partial("layout_partials/base_dialog",['fields': syslog_target,'id':'syslog_target_dlg', 'label':lang._('Edit SYSLOG Target')]) }}
