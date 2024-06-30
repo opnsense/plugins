@@ -6,6 +6,11 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.22
+
+* Add gandi support
+* Optionally support descriptive values for account selection when using native backend
+
 1.21
 
 * Add Netcup support (contributed by Ingo Lafrenz)
