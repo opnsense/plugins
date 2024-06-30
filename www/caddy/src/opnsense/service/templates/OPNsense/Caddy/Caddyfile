@@ -53,14 +53,10 @@
         {% endif %}
     }
 
-    {# Change default bind and default ports on demand. #}
-    {% set loopback = generalSettings.Loopback %}
+    {# Change default ports on demand #}
     {% set httpPort = generalSettings.HttpPort %}
     {% set httpsPort = generalSettings.HttpsPort %}
 
-    {% if loopback|default("0") == "1" %}
-        default_bind 127.0.0.1 [::1]
-    {% endif %}
     {% if httpPort %}
         http_port {{ httpPort }}
     {% endif %}
@@ -230,14 +226,6 @@
 }
 
 # Reverse Proxy Configuration
-
-{# Set up a http site block when default_bind is used, otherwise Caddy will not bind http to the loopback interfaces. #}
-{% if loopback|default("0") == "1" %}
-    http:// {
-    bind 127.0.0.1 [::1]
-    }
-{% endif %}
-
 
 {#
 #   Section: HTTP-01 Challenge Redirection

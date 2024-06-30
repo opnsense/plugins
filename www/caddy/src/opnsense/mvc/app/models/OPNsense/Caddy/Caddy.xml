@@ -18,7 +18,6 @@
                 <EnableWellKnown>Y</EnableWellKnown>
                 <EnableRanges>N</EnableRanges>
             </HttpsPort>
-            <Loopback type="BooleanField"/>
             <TlsEmail type="EmailField">
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>

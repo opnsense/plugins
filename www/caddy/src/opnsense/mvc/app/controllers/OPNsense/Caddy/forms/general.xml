@@ -22,13 +22,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>caddy.general.Loopback</id>
-        <label>Bind to Loopback</label>
-        <type>checkbox</type>
-        <help><![CDATA[Instead of binding to all interfaces (default), enable this checkbox to bind Caddy to 127.0.0.1 and ::1 instead. Use Port Forwarding to route traffic to Caddy. This option can be combined with custom ports for HTTP and HTTPS.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>caddy.general.TlsEmail</id>
         <label>ACME Email</label>
         <type>text</type>
