@@ -8,9 +8,7 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <TlsEmail type="EmailField">
-                <ValidationMessage>Please enter a valid email address.</ValidationMessage>
-            </TlsEmail>
+            <TlsEmail type="EmailField"/>
             <TlsAutoHttps type="OptionField">
                 <BlankDesc>On (default)</BlankDesc>
                 <OptionValues>
@@ -83,7 +81,6 @@
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>3600</MaximumValue>
-                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
             <LogCredentials type="BooleanField"/>
@@ -91,7 +88,6 @@
             <LogAccessPlainKeep type="IntegerField">
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
-                <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
                 <Required>Y</Required>
             </LogAccessPlainKeep>
             <LogLevel type="OptionField">
@@ -104,14 +100,11 @@
                     <FATAL>FATAL</FATAL>
                 </OptionValues>
             </LogLevel>
-            <DynDnsSimpleHttp type="UrlField">
-                <ValidationMessage>Please enter a valid URL, starting with http or https.</ValidationMessage>
-            </DynDnsSimpleHttp>
+            <DynDnsSimpleHttp type="UrlField"/>
             <DynDnsInterface type="InterfaceField"/>
             <DynDnsInterval type="IntegerField">
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>2147483647</MaximumValue>
-                <ValidationMessage>Please enter a valid number from 1 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsInterval>
             <DynDnsIpVersions type="OptionField">
                 <BlankDesc>IPv4+IPv6</BlankDesc>
@@ -123,7 +116,6 @@
             <DynDnsTtl type="IntegerField">
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>2147483647</MaximumValue>
-                <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsTtl>
             <DynDnsUpdateOnly type="BooleanField"/>
         </general>
@@ -135,17 +127,9 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'from' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
-                    <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
-                    <ZoneRootAllowed>N</ZoneRootAllowed>
                 </FromDomain>
-                <FromPort type="PortField">
-                    <ValidationMessage>Please enter a valid 'from' port number.</ValidationMessage>
-                    <EnableWellKnown>Y</EnableWellKnown>
-                    <EnableRanges>N</EnableRanges>
-                </FromPort>
+                <FromPort type="PortField"/>
                 <accesslist type="ModelRelationField">
                     <Model>
                         <reverseproxy>
@@ -174,10 +158,7 @@
                 <CustomCertificate type="CertificateField"/>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
-                <AcmePassthrough type="HostnameField">
-                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
-                </AcmePassthrough>
+                <AcmePassthrough type="HostnameField"/>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -197,8 +178,6 @@
                 </reverse>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'from' Subdomain that is based upon the wildcard domain.</ValidationMessage>
-                    <ZoneRootAllowed>N</ZoneRootAllowed>
                 </FromDomain>
                 <accesslist type="ModelRelationField">
                     <Model>
@@ -225,10 +204,7 @@
                     <Required>Y</Required>
                 </description>
                 <DynDns type="BooleanField"/>
-                <AcmePassthrough type="HostnameField">
-                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
-                </AcmePassthrough>
+                <AcmePassthrough type="HostnameField"/>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
@@ -266,7 +242,7 @@
                 </HandleType>
                 <HandlePath type="TextField">
                     <Mask>/^(\/.*)?$/u</Mask>
-                    <ValidationMessage>Please enter a valid 'Handle Path' that starts with '/'.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </HandlePath>
                 <header type="ModelRelationField">
                     <Model>
@@ -281,24 +257,17 @@
                 </header>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </ToDomain>
-                <ToPort type="PortField">
-                    <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
-                    <EnableWellKnown>Y</EnableWellKnown>
-                    <EnableRanges>N</EnableRanges>
-                </ToPort>
+                <ToPort type="PortField"/>
                 <ToPath type="TextField">
                     <Mask>/^(\/.*)?$/u</Mask>
-                    <ValidationMessage>Please enter a valid 'Backend Path' that starts with '/'.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </ToPath>
                 <PassiveHealthFailDuration type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
                 <HttpTls type="BooleanField">
                     <Constraints>
@@ -322,36 +291,25 @@
                 <HttpTlsTrustedCaCerts type="CertificateField">
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
-                <HttpTlsServerName type="HostnameField">
-                    <ValidationMessage>Please enter a valid hostname or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
-                    <HostWildcardAllowed>Y</HostWildcardAllowed>
-                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
-                    <ZoneRootAllowed>N</ZoneRootAllowed>
-                </HttpTlsServerName>
+                <HttpTlsServerName type="HostnameField"/>
                 <description type="DescriptionField">
                     <Required>Y</Required>
                 </description>
             </handle>
             <accesslist type="ArrayField">
-                <accesslistName type="TextField">
+                <accesslistName type="DescriptionField">
                     <Required>Y</Required>
-                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_*-\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-                <ValidationMessage>Please provide a valid Access List Name.</ValidationMessage>
                 </accesslistName>
                 <clientIps type="NetworkField">
                     <Required>Y</Required>
-                    <NetMaskAllowed>Y</NetMaskAllowed>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
-                    <ValidationMessage>Please enter valid IP address(es) or network(s), separated by commas.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
                 <HttpResponseCode type="IntegerField">
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>599</MaximumValue>
-                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
                 <description type="DescriptionField">
