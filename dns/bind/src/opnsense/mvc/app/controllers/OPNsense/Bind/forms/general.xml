@@ -178,6 +178,34 @@
     </field>
     <field>
         <type>header</type>
+        <label>Dynamic DNS from DHCP-Server</label>
+    </field>
+    <field>
+        <id>general.enableddnsupdates</id>
+        <label>Enable DDNS Updates from a dhcp server</label>
+        <type>checkbox</type>
+        <help>This will enable a ddns updates from a dhcp-server with the key options below.</help>
+    </field>
+    <field>
+        <id>general.ddnsalgorithm</id>
+        <label>DDNS Updates Key Algorithm</label>
+        <type>dropdown</type>
+        <help>Option "algorithm" of the DDNS-update-key</help>
+    </field>
+    <field>
+        <id>general.ddnssecret</id>
+        <label>DDNS Updates Key Secret</label>
+        <type>text</type>
+        <help>Option "secret" of the DDNS update-key "dhcp-key", generate with tsig-keygen</help>
+    </field>
+    <field>
+        <id>general.dhcpstaticmappings</id>
+        <label>Add DHCP static mappings</label>
+        <type>checkbox</type>
+        <help>Add DNS entries for the static dhcp mappings if the ddns-domain in dhcp network is set.</help>
+    </field>
+    <field>
+        <type>header</type>
         <label>RNDC Key</label>
         <advanced>true</advanced>
     </field>
