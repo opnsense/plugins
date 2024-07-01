@@ -132,17 +132,9 @@
                     <authelia>Authelia</authelia>
                 </OptionValues>
             </AuthProvider>
-            <AuthToDomain type="HostnameField">
-                <ValidationMessage>Please enter a valid 'to' domain.</ValidationMessage>
-                <IpAllowed>Y</IpAllowed>
-                <HostWildcardAllowed>N</HostWildcardAllowed>
-                <FqdnWildcardAllowed>N</FqdnWildcardAllowed>
-                <ZoneRootAllowed>N</ZoneRootAllowed>
-            </AuthToDomain>
+            <AuthToDomain type="HostnameField"/>
             <AuthToPort type="PortField">
-                <ValidationMessage>Please enter a valid 'to' port number.</ValidationMessage>
                 <EnableWellKnown>Y</EnableWellKnown>
-                <EnableRanges>N</EnableRanges>
             </AuthToPort>
             <AuthToTls type="BooleanField"/>
             <AuthToUri type="TextField">
