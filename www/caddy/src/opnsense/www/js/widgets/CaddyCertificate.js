@@ -32,8 +32,7 @@ export default class CaddyCertificate extends BaseTableWidget {
         this.resizeHandles = "e, w";
         this.currentCertificates = {};
 
-        // Since we only update when dataHasChanged we can almost update in real time
-        this.tickTimeout = 2000;
+        this.tickTimeout = 30000;
 
     }
 

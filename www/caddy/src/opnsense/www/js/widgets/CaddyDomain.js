@@ -32,9 +32,6 @@ export default class CaddyDomain extends BaseTableWidget {
         this.resizeHandles = "e, w";
         this.currentDomains = {};
 
-        // Since we only update when dataHasChanged we can almost update in real time
-        this.tickTimeout = 2000;
-
     }
 
     getGridOptions() {
