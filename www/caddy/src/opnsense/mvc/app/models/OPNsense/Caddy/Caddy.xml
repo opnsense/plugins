@@ -349,8 +349,8 @@
                 <HttpTlsServerName type="HostnameField">
                     <ValidationMessage>Please enter a valid hostname or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
-                    <HostWildcardAllowed>Y</HostWildcardAllowed>
-                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <HostWildcardAllowed>N</HostWildcardAllowed>
+                    <FqdnWildcardAllowed>N</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
                 </HttpTlsServerName>
                 <description type="DescriptionField">
