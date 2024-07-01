@@ -30,11 +30,6 @@
 
 # Global Options
 {
-    {#
-    # Global Log Settings
-    # Sets up global log settings. The time format and unix socket make Caddy compatible
-    # with the syslog-ng instance running on the OPNsense.
-    #}
     log {
         {% if generalSettings.LogAccessPlain|default("0") == "0" %}
             {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
@@ -53,11 +48,6 @@
         {% endif %}
     }
 
-    {#
-    # Global Trusted Proxy and Credential Logging
-    # The trusted proxy section is important when using CDNs so that headers are trusted.
-    # Credential logging is useful for troubleshooting basic auth.
-    #}
     {% set accessListUuid = generalSettings.accesslist %}
     {% set logCredentials = generalSettings.LogCredentials %}
 
@@ -86,8 +76,20 @@
     }
     {% endif %}
 
+    {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
+    {% if emailValue %}
+        email {{ emailValue }}
+    {% endif %}
+    {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
+    {# Auto HTTPS is optional, the default is on (which means the section is empty). #}
+    {% if autoHttpsValue %}
+        auto_https {{ autoHttpsValue }}
+    {% endif %}
+    {# Grace Period terminates open connections, so that the server is allowed to reload after the period is over. #}
+    grace_period {{ generalSettings.GracePeriod }}s
+
     {#
-    # Dynamic DNS Global Configuration
+    # Section: Dynamic DNS Global Configuration
     # Sets up global configuration for Dynamic DNS. Caddy needs to be compiled with
     # https://github.com/mholt/caddy-dynamicdns and https://github.com/caddy-dns. Otherwise the
     # generated Caddyfile won't run. Each DNS Provider that is added below has to be compiled in.
@@ -192,33 +194,14 @@
     }
     {% endif %}
 
-    {#
-    # ACME Email, Auto HTTPS selection and global import statement
-    # The ACME email is optional for receiving certificate notices.
-    # Auto HTTPS is optional, the default is on (which means the section is empty).
-    # The import statement is for user specific configuration out of scope of this template.
-    #}
-    {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
-    {% if emailValue %}
-        email {{ emailValue }}
-    {% endif %}
-    {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
-    {% if autoHttpsValue %}
-        auto_https {{ autoHttpsValue }}
-    {% endif %}
-    {#
-    # Important: Grace Period influences how fast the server can finish reloads with open connections, by forcing termination.
-    # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
-    #}
-    grace_period {{ generalSettings.GracePeriod }}s
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
 # Reverse Proxy Configuration
 
 {#
-# HTTP-01 Challenge Redirection
-# A small premade reverse_proxy section that can redirect the HTTP-01 challenge to a different webserver.
+# Section: HTTP-01 Challenge Redirection
+# A reverse_proxy section that can redirect the HTTP-01 challenge to a different webserver.
 #}
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" and reverse.AcmePassthrough %}
@@ -287,8 +270,7 @@
 # It uses a 'handle' object that specifies which headers to manipulate based on their @UUIDs.
 # Each handle can have multiple of these HTTP headers assigned.
 #
-# @param handle (object):
-# @uuid (string)
+# @param handle (object)
 # @param HeaderUpDown (string): Determines the direction of the header.
 # @param HeaderType (string): Specifies the name of the header.
 # @param HeaderValue (string, optional): The new value to set for the header, if any.
@@ -329,8 +311,7 @@
 # Sets up the handle with the reverse proxy configurations. The TLS Settings are generated here for the Upstream.
 # Integrated Macros: header_manipulation
 #
-# @param handle (object):
-# @uuid (string)
+# @param handle (object)
 # @param HandleType (string): Specifies the handling strategy.
 # @param HandlePath (string, optional): The path the handle should match on.
 # @param ToDomain (string): Target domain for the reverse proxy.
@@ -400,8 +381,7 @@
 # only get to the reverse proxy, when the access list matches. Invert is also possible, to explicitely deny IPs.
 # The assembly is handled by the "Section: Reverse Proxy Configurations".
 #
-# @param accesslist (object):
-# @uuid (string)
+# @param accesslist (object)
 # @param clientIps (string): A comma-separated list of client IP addresses
 # @param invert (boolean): A flag that inverts the logic of the access list
 #}
@@ -418,7 +398,6 @@
 # Implements basic authentication with a username and password for access.
 #
 # @param basicauth_uuids (string): A comma-separated list of UUIDs, each UUID corresponding to a specific user credentials (username and password).
-# @uuid (string)
 # @param basicauthuser (string): The username required for authentication.
 # @param basicauthpass (string): The password associated with the username.
 #}
@@ -436,7 +415,7 @@
 {% endmacro %}
 
 {#
-# Reverse Proxy Configurations
+# Section: Reverse Proxy Configurations
 # Assembles reverse proxy configurations using predefined macros. This is the main logic of the whole template, handle with care.
 # Macros Used:
 # - tls_configuration
