@@ -32,6 +32,7 @@ Plugin Changelog
 * Fix: Template Caddyfile fixed for IPv6 addresses and custom port.
 * Cleanup: Remove unused code, correct indentation of Caddyfile template for maintainability.
 * Add: forward_auth directive with Authelia as Authz Provider.
+* Add: Default HTTP and HTTPS ports can be changed in general settings.
 
 1.5.7
 
