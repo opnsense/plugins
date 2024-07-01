@@ -127,6 +127,7 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
+                    <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                 </FromDomain>
                 <FromPort type="PortField"/>
