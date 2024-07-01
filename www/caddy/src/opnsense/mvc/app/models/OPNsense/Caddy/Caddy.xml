@@ -133,9 +133,7 @@
                 </OptionValues>
             </AuthProvider>
             <AuthToDomain type="HostnameField"/>
-            <AuthToPort type="PortField">
-                <EnableWellKnown>Y</EnableWellKnown>
-            </AuthToPort>
+            <AuthToPort type="PortField"/>
             <AuthToTls type="BooleanField"/>
             <AuthToUri type="TextField">
                 <Mask>/^(\/.*)?$/u</Mask>
