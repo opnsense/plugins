@@ -213,7 +213,11 @@ authenticate {
         #  in the 'authorize' section supplies a password.  The
         #  password can be clear-text, or encrypted.
         Auth-Type PAP {
+{%  if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
+                ldap
+{%  else %}
                 pap
+{%  endif %}
         }
 
         #
