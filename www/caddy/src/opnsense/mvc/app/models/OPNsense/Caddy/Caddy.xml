@@ -9,14 +9,10 @@
                 <Required>Y</Required>
             </enabled>
             <HttpPort type="PortField">
-                <ValidationMessage>Please enter a valid HTTP port number.</ValidationMessage>
                 <EnableWellKnown>Y</EnableWellKnown>
-                <EnableRanges>N</EnableRanges>
             </HttpPort>
             <HttpsPort type="PortField">
-                <ValidationMessage>Please enter a valid HTTPS port number.</ValidationMessage>
                 <EnableWellKnown>Y</EnableWellKnown>
-                <EnableRanges>N</EnableRanges>
             </HttpsPort>
             <TlsEmail type="EmailField">
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
