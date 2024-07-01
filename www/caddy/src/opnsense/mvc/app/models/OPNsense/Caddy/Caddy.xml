@@ -8,12 +8,8 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <HttpPort type="PortField">
-                <EnableWellKnown>Y</EnableWellKnown>
-            </HttpPort>
-            <HttpsPort type="PortField">
-                <EnableWellKnown>Y</EnableWellKnown>
-            </HttpsPort>
+            <HttpPort type="PortField"/>
+            <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField">
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>
