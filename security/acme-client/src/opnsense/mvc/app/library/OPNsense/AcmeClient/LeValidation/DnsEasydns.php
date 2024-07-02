@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2023 mleinart
+ * Copyright (C) 2024 txr13
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +40,7 @@ class DnsEasydns extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env[EASYDNS_Key] = (string)$this->config->dns_easydns_apikey;
-        $this->acme_env[EASYDNS_Token] = (string)$this->config->dns_easydns_apitoken;
+        $this->acme_env['EASYDNS_Key'] = (string)$this->config->dns_easydns_apikey;
+        $this->acme_env['EASYDNS_Token'] = (string)$this->config->dns_easydns_apitoken;
     }
 }
