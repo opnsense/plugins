@@ -42,6 +42,7 @@ class GeneralController extends IndexController
         $this->view->generalForm = $this->getForm("general");
         $this->view->dnsproviderForm = $this->getForm("dnsprovider");
         $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
+        $this->view->authproviderForm = $this->getForm("authprovider");
         $this->view->logsettingsForm = $this->getForm("logsettings");
     }
 }

@@ -346,6 +346,9 @@
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {% if handle.ForwardAuth|default("0") == "1" %}
+            {% include "OPNsense/Caddy/includeAuthProvider" %}
+        {% endif %}
         {% if handle.ToPath|default("") != "" %}
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
