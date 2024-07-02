@@ -26,6 +26,13 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.6.0
+
+* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
+* Fix: Caddyfile template fixed for IPv6 addresses and custom port.
+* Add: forward_auth directive with Authelia as Authz Provider.
+* Add: Default HTTP and HTTPS ports can be changed in general settings.
+
 1.5.7
 
 * Build: Update to Caddy v2.8.4 + caddy-dns plugins updated to latest upstream versions
