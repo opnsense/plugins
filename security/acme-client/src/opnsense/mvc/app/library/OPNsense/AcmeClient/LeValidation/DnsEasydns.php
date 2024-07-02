@@ -1,8 +1,8 @@
 <?php
 
 /*
- * Copyright (C) 2023 mleinart,
- *               2024 txr13
+ * Copyright (C) 2023 mleinart
+ * Copyright (C) 2024 txr13
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
