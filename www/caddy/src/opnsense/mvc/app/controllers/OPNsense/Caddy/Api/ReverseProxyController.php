@@ -26,7 +26,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\Caddy\Api;
@@ -70,14 +69,15 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Centralized and generalized helper function for searching across different sections of the reverse proxy setup.
+     * Generalized helper function for searching across different sections of the reverse proxy setup.
      * This function mostly helps when model relation fields are used.
      * It filters entries based on UUIDs provided as an argument. The section or key used for the UUID
      * can be specified, allowing for direct or indirect UUID referencing.
      *
-     * @param string $modelPath The data model path identifier, pointing to the section of the model being searched.
-     * @param string $uuidSearchBase The request parameter name for the comma-separated list of UUIDs to filter the search results.
-     * @param string|null $uuidReferenceKey The specific attribute key used to fetch the UUID for filtering. If null, defaults to the item's own UUID.
+     * @param string $modelPath The data model path identifier, pointing to section of model being searched.
+     * @param string $uuidSearchBase The request parameter name for the comma-separated list of UUIDs.
+     * @param string|null $uuidReferenceKey Attribute key used to fetch the UUID for filtering.
+     *                                      If null, uses item's own UUID.
      * @return array Filtered search results.
      */
     private function searchActionHelper($modelPath, $uuidSearchBase, $uuidReferenceKey = null)
@@ -89,8 +89,12 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
         // Define a filter function to determine which items to include based on the UUID.
         $filterFunction = function ($modelItem) use ($uuidArray, $uuidReferenceKey) {
-            // Extract UUID from the item, using the specified UUID key if provided, otherwise default to direct UUID access.
-            $modelUUID = ($uuidReferenceKey !== null) ? (string)$modelItem->$uuidReferenceKey : (string)$modelItem->getAttributes()['uuid'];
+            // Extract UUID from the item, using the specified UUID key if provided, else default to direct UUID access.
+            if ($uuidReferenceKey !== null) {
+                $modelUUID = (string)$modelItem->$uuidReferenceKey;
+            } else {
+                $modelUUID = (string)$modelItem->getAttributes()['uuid'];
+            }
             // Include the item if the UUID array is empty or if the item's UUID is in the array.
             return empty($uuidArray) || in_array($modelUUID, $uuidArray, true);
         };
@@ -245,8 +249,10 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;
@@ -260,8 +266,10 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;

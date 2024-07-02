@@ -50,7 +50,7 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         // Decode JSON to PHP array
         $responseArray = json_decode($response, true);
 
-        // Since errors are handled by the caddy_diagnostics script and returned as json, check for an error key in the response
+        // Errors are handled by the caddy_diagnostics script and returned, check for an error key in the response
         if (isset($responseArray['error'])) {
             return ["status" => "failed", "message" => $responseArray['message']];
         }
@@ -74,7 +74,6 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         // Decode JSON to PHP array
         $responseArray = json_decode($response, true);
 
-        // Since errors are handled by the caddy_diagnostics script and returned as json, check for an error key in the response
         if (isset($responseArray['error'])) {
             return ["status" => "failed", "message" => $responseArray['message']];
         }
