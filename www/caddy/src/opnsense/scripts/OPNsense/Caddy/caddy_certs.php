@@ -2,8 +2,7 @@
 <?php
 
 /*
- *    Copyright (C) 2023-2024 Cedrik Pischem
- *    Copyright (C) 2015 Deciso B.V.
+ *    Copyright (C) 2024 Cedrik Pischem
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -28,12 +27,7 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once("config.inc");
-
 use OPNsense\Core\Config;
-
-$configObj = Config::getInstance()->object();
-$temp_dir = '/var/db/caddy/data/caddy/certificates/temp/';
 
 function extract_and_save_certificates($configObj, $temp_dir)
 {
@@ -78,5 +72,3 @@ function extract_and_save_certificates($configObj, $temp_dir)
         file_put_contents($temp_dir . $ca_refid . '.pem', $ca_content);
     }
 }
-
-extract_and_save_certificates($configObj, $temp_dir);
