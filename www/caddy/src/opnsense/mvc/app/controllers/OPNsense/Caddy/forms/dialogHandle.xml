@@ -38,7 +38,7 @@
     </field>
     <field>
         <type>header</type>
-        <label>Access</label>
+        <label>Forward Auth</label>
         <collapse>true</collapse>
     </field>
     <field>
@@ -88,11 +88,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <type>header</type>
-        <label>Load Balancing</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
         <id>handle.PassiveHealthFailDuration</id>
         <label>Upstream Fail Duration</label>
         <type>text</type>
@@ -100,20 +95,27 @@
     </field>
     <field>
         <type>header</type>
-        <label>Trust</label>
+        <label>HTTP Transport</label>
         <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.HttpTls</id>
-        <label>TLS</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
     </field>
     <field>
         <id>handle.HttpVersion</id>
         <label>HTTP Version</label>
         <type>dropdown</type>
         <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires TLS, and only establishes connections to webservers that also support HTTP/3.]]></help>
+    </field>
+    <field>
+        <id>handle.HttpKeepalive</id>
+        <label>HTTP Keepalive</label>
+        <type>text</type>
+        <hint>120</hint>
+        <help><![CDATA[Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds. Use Keepalive 0 combined with HTTP Version HTTP/1.1 to replace the deprecated NTLM checkbox.]]></help>
+    </field>
+    <field>
+        <id>handle.HttpTls</id>
+        <label>TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
     </field>
     <field>
         <id>handle.HttpNtlm</id>

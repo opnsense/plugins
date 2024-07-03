@@ -355,6 +355,7 @@
 #       - HttpTlsServerName (string, optional): Specifies the server name for the TLS handshake.
 #       - PassiveHealthFailDuration (integer, optional): Enables passive health checks when set > 0.
 #       - HttpVersion (string, optional): Choose HTTP version. Empty (default) is 1.1 and 2.
+#       - HttpKeepalive (string, optional): Keeaplive is either off (0) or a value. Empty (default) 120s.
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
@@ -374,7 +375,7 @@
             {% if handle.PassiveHealthFailDuration|default("") %}
             fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName or handle.HttpVersion %}
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName or handle.HttpVersion or handle.HttpKeepalive %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
                     {% if handle.HttpTls|default("0") == "1" %}
@@ -396,6 +397,13 @@
                     {% set version_map = {'http1': 1.1, 'http2': 2, 'http3': 3} %}
                     {% if handle.HttpVersion %}
                         versions {{ version_map[handle.HttpVersion] }}
+                    {% endif %}
+                    {% if handle.HttpKeepalive %}
+                        {% if handle.HttpKeepalive == "0" %}
+                            keepalive off
+                        {% else %}
+                            keepalive {{ handle.HttpKeepalive }}s
+                        {% endif %}
                     {% endif %}
                     {% if handle.HttpTls|default("0") == "1" %}
                     tls

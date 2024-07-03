@@ -335,6 +335,10 @@
                         <http3>HTTP/3</http3>
                     </OptionValues>
                 </HttpVersion>
+                <HttpKeepalive type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                </HttpKeepalive>
                 <HttpNtlm type="BooleanField">
                     <Constraints>
                         <check001>
