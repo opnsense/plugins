@@ -53,6 +53,17 @@
         {% endif %}
     }
 
+    {# Change default ports on demand #}
+    {% set httpPort = generalSettings.HttpPort %}
+    {% set httpsPort = generalSettings.HttpsPort %}
+
+    {% if httpPort %}
+        http_port {{ httpPort }}
+    {% endif %}
+    {% if httpsPort %}
+        https_port {{ httpsPort }}
+    {% endif %}
+
     {#
     #   Section: Global Trusted Proxy and Credential Logging
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
