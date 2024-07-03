@@ -1,0 +1,29 @@
+<metadata>
+    <caddydomain>
+        <filename>CaddyDomain.js</filename>
+        <endpoints>
+            <endpoint>/api/caddy/reverse_proxy/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>Caddy Domains</title>
+            <enabled>Enabled</enabled>
+            <disabled>Disabled</disabled>
+            <unconfigured>Caddy is disabled or not configured.</unconfigured>
+        </translations>
+    </caddydomain>
+    <caddycertificate>
+        <filename>CaddyCertificate.js</filename>
+        <endpoints>
+            <endpoint>/api/caddy/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>Caddy Certificates</title>
+            <valid>Valid</valid>
+            <expired>Expired</expired>
+            <unconfigured>Caddy is disabled or not configured.</unconfigured>
+            <nocerts>Caddy does not manage any automatic certificates.</nocerts>
+            <expires>Expires:</expires>
+            <days>days</days>
+        </translations>
+    </caddycertificate>
+</metadata>

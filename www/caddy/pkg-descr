@@ -17,7 +17,6 @@ Main features of this plugin:
 * Access Lists to restrict access based on static networks
 * Basic Auth to restrict access by username and password
 * Syslog-ng integration and HTTP Access Log
-* NTLM Transport
 * Header manipulation with header_up and header_down
 * Simple load balancing with passive health check
 
@@ -25,6 +24,16 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
 Plugin Changelog
 ================
+
+1.6.0
+
+* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
+* Fix: Caddyfile template fixed for IPv6 addresses and custom port.
+* Add: forward_auth directive with Authelia as Authz Provider.
+* Add: Default HTTP and HTTPS ports can be changed in general settings.
+* Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen.
+* Change: NTLM is now deprecated, though the option will stay for a while longer.
+* Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
 
 1.5.7
 
