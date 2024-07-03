@@ -38,7 +38,7 @@
     </field>
     <field>
         <type>header</type>
-        <label>Forward Auth</label>
+        <label>Access</label>
         <collapse>true</collapse>
     </field>
     <field>
@@ -109,7 +109,12 @@
         <label>HTTP Keepalive</label>
         <type>text</type>
         <hint>120</hint>
-        <help><![CDATA[Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds. Use Keepalive 0 combined with HTTP Version HTTP/1.1 to replace the deprecated NTLM checkbox.]]></help>
+        <help><![CDATA[Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Trust</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>handle.HttpTls</id>
