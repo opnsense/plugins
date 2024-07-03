@@ -137,6 +137,7 @@
     <li class="active"><a data-toggle="tab" href="#generalTab">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsProviderTab">{{ lang._('DNS Provider') }}</a></li>
     <li><a data-toggle="tab" href="#dynamicDnsTab">{{ lang._('Dynamic DNS') }}</a></li>
+    <li><a data-toggle="tab" href="#authProviderTab">{{ lang._('Auth Provider') }}</a></li>
     <li><a data-toggle="tab" href="#logSettingsTab">{{ lang._('Log Settings') }}</a></li>
 </ul>
 
@@ -153,6 +154,10 @@
     <!-- Dynamic DNS Tab -->
     <div id="dynamicDnsTab" class="tab-pane fade">
         {{ partial("layout_partials/base_form", ['fields': dynamicdnsForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <!-- Auth Provider Tab -->
+    <div id="authProviderTab" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': authproviderForm, 'action': '/ui/caddy/general', 'id': 'frm_GeneralSettings']) }}
     </div>
     <!-- Log Settings Tab -->
     <div id="logSettingsTab" class="tab-pane fade">
