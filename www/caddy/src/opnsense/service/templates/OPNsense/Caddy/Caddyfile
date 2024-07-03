@@ -369,7 +369,7 @@
                     tls_insecure_skip_verify
                     {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
@@ -384,7 +384,7 @@
                     tls_insecure_skip_verify
                     {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}

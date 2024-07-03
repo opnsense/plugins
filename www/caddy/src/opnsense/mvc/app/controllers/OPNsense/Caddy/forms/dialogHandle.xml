@@ -112,7 +112,7 @@
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
-        <label>TLS Trusted CA Certificate</label>
+        <label>TLS Trust Pool</label>
         <type>dropdown</type>
         <help><![CDATA[Choose a CA or self-signed certificate to trust from "System - Trust - Authorities". Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
     </field>
@@ -120,6 +120,6 @@
         <id>handle.HttpTlsServerName</id>
         <label>TLS Server Name</label>
         <type>text</type>
-        <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trusted CA Certificate", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
+        <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
     </field>
 </form>
