@@ -30,10 +30,7 @@ export default class CaddyCertificate extends BaseTableWidget {
     constructor() {
         super();
         this.resizeHandles = "e, w";
-        this.currentCertificates = {};
-
         this.tickTimeout = 30000;
-
     }
 
     getGridOptions() {
@@ -82,25 +79,9 @@ export default class CaddyCertificate extends BaseTableWidget {
         $('#caddyCertificateTable').empty().append($error);
     }
 
-    // Checks if the data has changed to prevent unnecessary UI updates
-    dataHasChanged(newCertificates) {
-
-        // Directly serialize the entire newCertificates array to perform a deep comparison
-        const newCertificatesString = JSON.stringify(newCertificates);
-        const currentCertificatesString = JSON.stringify(this.currentCertificates);
-
-        // Compare the serialized strings
-        if (newCertificatesString !== currentCertificatesString) {
-            this.currentCertificates = JSON.parse(newCertificatesString);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     processCertificates(certificates) {
-        if (!this.dataHasChanged(certificates)) {
-            return;  // Early exit if no changes
+        if (!this.dataChanged('certificates', certificates)) {
+            return;
         }
 
         let rows = certificates.map(certificate => {

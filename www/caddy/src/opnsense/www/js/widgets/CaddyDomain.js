@@ -30,8 +30,6 @@ export default class CaddyDomain extends BaseTableWidget {
     constructor() {
         super();
         this.resizeHandles = "e, w";
-        this.currentDomains = {};
-
     }
 
     getGridOptions() {
@@ -75,24 +73,9 @@ export default class CaddyDomain extends BaseTableWidget {
         $('#caddyDomainTable').empty().append($error);
     }
 
-    // Checks if the data has changed to prevent unnecessary UI updates
-    dataHasChanged(newDomains) {
-
-        // Convert domain objects to a string to perform a deep comparison
-        const newDomainsString = JSON.stringify(newDomains);
-        const currentDomainsString = JSON.stringify(this.currentDomains);
-
-        if (newDomainsString !== currentDomainsString) {
-            this.currentDomains = newDomains; // Update the current state with new data
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     processDomains(domains) {
-        if (!this.dataHasChanged(domains)) {
-            return;  // Early exit if no changes
+        if (!this.dataChanged('domains', domains)) {
+            return;
         }
 
         let rows = [];
