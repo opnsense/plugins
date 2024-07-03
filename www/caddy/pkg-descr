@@ -32,7 +32,8 @@ Plugin Changelog
 * Add: forward_auth directive with Authelia as Authz Provider.
 * Add: Default HTTP and HTTPS ports can be changed in general settings.
 * Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen.
-* Change: NTLM is now deprecated, though the option will stay for a while longer.
+* Add: HTTP Keepalive can be set in a handler.
+* Change: NTLM is now deprecated and moved to advanced mode, though the option will stay for as long as the optional module works.
 * Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
 
 1.5.7
