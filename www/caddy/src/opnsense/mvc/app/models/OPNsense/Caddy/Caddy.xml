@@ -8,6 +8,8 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
+            <HttpPort type="PortField"/>
+            <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField"/>
             <TlsAutoHttps type="OptionField">
                 <BlankDesc>On (default)</BlankDesc>
@@ -118,6 +120,19 @@
                 <MaximumValue>2147483647</MaximumValue>
             </DynDnsTtl>
             <DynDnsUpdateOnly type="BooleanField"/>
+            <AuthProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
+                <OptionValues>
+                    <authelia>Authelia</authelia>
+                </OptionValues>
+            </AuthProvider>
+            <AuthToDomain type="HostnameField"/>
+            <AuthToPort type="PortField"/>
+            <AuthToTls type="BooleanField"/>
+            <AuthToUri type="TextField">
+                <Mask>/^(\/.*)?$/u</Mask>
+                <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
+            </AuthToUri>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -270,6 +285,7 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>100</MaximumValue>
                 </PassiveHealthFailDuration>
+                <ForwardAuth type="BooleanField"/>
                 <HttpTls type="BooleanField">
                     <Constraints>
                         <check001>
@@ -281,6 +297,14 @@
                         </check001>
                     </Constraints>
                 </HttpTls>
+                <HttpVersion type="OptionField">
+                    <BlankDesc>HTTP/1.1, HTTP/2</BlankDesc>
+                    <OptionValues>
+                        <http1>HTTP/1.1</http1>
+                        <http2>HTTP/2</http2>
+                        <http3>HTTP/3</http3>
+                    </OptionValues>
+                </HttpVersion>
                 <HttpNtlm type="BooleanField">
                     <Constraints>
                         <check001>

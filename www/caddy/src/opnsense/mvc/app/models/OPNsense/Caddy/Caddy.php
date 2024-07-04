@@ -140,8 +140,13 @@ class Caddy extends BaseModel
 
     private function checkWebGuiSettings($messages)
     {
-        $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
+        // Get custom caddy ports if set. If empty, default to 80 and 443.
+        $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : '80';
+        $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : '443';
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
+
+        // Check for conflicts
+        $overlap = array_intersect($this->getWebGuiPorts(), [$httpPort, $httpsPort]);
 
         if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
             $portOverlap = implode(', ', $overlap);
@@ -152,10 +157,11 @@ class Caddy extends BaseModel
                         'that are currently configured for the OPNsense WebGUI. ' .
                         'Go to "System - Settings - Administration". ' .
                         'To release port 80, enable "Disable web GUI redirect rule". ' .
-                        'To release port 443, change "TCP port" to a non-standard port, ' .
+                        'To release port %s, change "TCP port" to a non-standard port, ' .
                         'e.g., 8443.'
                     ),
-                    $portOverlap
+                    $portOverlap,
+                    $httpsPort
                 ),
                 "general.TlsAutoHttps"
             ));

@@ -53,6 +53,17 @@
         {% endif %}
     }
 
+    {# Change default ports on demand #}
+    {% set httpPort = generalSettings.HttpPort %}
+    {% set httpsPort = generalSettings.HttpsPort %}
+
+    {% if httpPort %}
+        http_port {{ httpPort }}
+    {% endif %}
+    {% if httpsPort %}
+        https_port {{ httpsPort }}
+    {% endif %}
+
     {#
     #   Section: Global Trusted Proxy and Credential Logging
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
@@ -343,9 +354,13 @@
 #       - HttpTlsTrustedCaCerts (string, optional): The config extracted name of a CA certificate.
 #       - HttpTlsServerName (string, optional): Specifies the server name for the TLS handshake.
 #       - PassiveHealthFailDuration (integer, optional): Enables passive health checks when set > 0.
+#       - HttpVersion (string, optional): Choose HTTP version. Empty (default) is 1.1 and 2.
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {% if handle.ForwardAuth|default("0") == "1" %}
+            {% include "OPNsense/Caddy/includeAuthProvider" %}
+        {% endif %}
         {% if handle.ToPath|default("") != "" %}
         rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
@@ -359,7 +374,7 @@
             {% if handle.PassiveHealthFailDuration|default("") %}
             fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts|default("") != "" or handle.HttpTlsServerName|default("") != "" %}
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName or handle.HttpVersion %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
                     {% if handle.HttpTls|default("0") == "1" %}
@@ -369,7 +384,7 @@
                     tls_insecure_skip_verify
                     {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
@@ -377,6 +392,11 @@
                 }
                 {% else %}
                 transport http {
+                    {# The model does not allow to set a single number as option directly, so we have to map them. #}
+                    {% set version_map = {'http1': 1.1, 'http2': 2, 'http3': 3} %}
+                    {% if handle.HttpVersion %}
+                        versions {{ version_map[handle.HttpVersion] }}
+                    {% endif %}
                     {% if handle.HttpTls|default("0") == "1" %}
                     tls
                     {% endif %}
@@ -384,7 +404,7 @@
                     tls_insecure_skip_verify
                     {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                    tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
                     tls_server_name {{ handle.HttpTlsServerName }}
