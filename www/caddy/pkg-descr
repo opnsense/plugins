@@ -28,6 +28,7 @@ Plugin Changelog
 1.6.0
 
 * Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
+* Cleanup: PHP files refactored for PSR-12, Python files refactored for PEP-8, general code cleanup.
 * Fix: Caddyfile template fixed for IPv6 addresses and custom port.
 * Add: forward_auth directive with Authelia as Authz Provider.
 * Add: Default HTTP and HTTPS ports can be changed in general settings.
