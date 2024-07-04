@@ -88,7 +88,7 @@ if __name__ == "__main__":
         # when reloadssl is used. Because it is a non standard command, the caddy_setup script will not be triggered
         # in /etc/rc.conf.d/caddy. The validate command needs it to make sure all certificates are in the filesystem,
         # because otherwise the validation fails.
-        if action in ["validate", "reloadssl"]:
+        if cmd_action in ["validate", "reloadssl"]:
             subprocess.run(["/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"], check=True)
 
         # Continue with the service action
