@@ -109,7 +109,7 @@
         <label>HTTP Keepalive</label>
         <type>text</type>
         <hint>120</hint>
-        <help><![CDATA[Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
+        <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -126,8 +126,7 @@
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will be removed in the future when support for NTLM phases out.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsInsecureSkipVerify</id>
