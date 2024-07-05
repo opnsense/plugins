@@ -51,26 +51,22 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        try {
-            // Check if Caddy is enabled
-            const caddyStatus = await ajaxGet('/api/caddy/reverse_proxy/get', {});
-            if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
-                this.displayError(`${this.translations.unconfigured}`);
-                return;
-            }
-
-            // Fetch the certificate details
-            const response = await ajaxGet('/api/caddy/diagnostics/certificate', {});
-            if (response.status !== "success") {
-                this.displayError(`${this.translations.nocerts}`);
-                return;
-            }
-
-            // Process certificates if the response is successful
-            this.processCertificates(response.content);
-        } catch (error) {
-            this.displayError(`${this.translations.error}`);
+        // Check if Caddy is enabled
+        const caddyStatus = await this.ajaxGet('/api/caddy/reverse_proxy/get');
+        if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
+            this.displayError(`${this.translations.unconfigured}`);
+            return;
         }
+
+        // Fetch the certificate details
+        const response = await this.ajaxGet('/api/caddy/diagnostics/certificate');
+        if (response.status !== "success") {
+            this.displayError(`${this.translations.nocerts}`);
+            return;
+        }
+
+        // Process certificates if the response is successful
+        this.processCertificates(response.content);
     }
 
     // Utility function to display errors within the widget
