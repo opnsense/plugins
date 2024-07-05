@@ -337,6 +337,7 @@
                             <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS') }}</th>
                             <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
+                            <th data-column-id="HttpKeepalive" data-type="string" data-visible="false">{{ lang._('HTTP Keepalive') }}</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS CA') }}</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>

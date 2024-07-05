@@ -36,7 +36,8 @@ Plugin Changelog
 * Add: forward_auth directive with Authelia as Authz Provider.
 * Add: Default HTTP and HTTPS ports can be changed in general settings.
 * Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen. HTTP/3 reverse proxy is an experimental new feature of caddy v2.8.4.
-* Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
+* Add: HTTP Keepalive can be set in a handler.
+* Change: Option "tls_trusted_ca_certs" (deprecated) is now "tls_trust_pool". No functional change.
 
 1.5.7
 
