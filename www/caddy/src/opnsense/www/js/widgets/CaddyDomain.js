@@ -50,21 +50,16 @@ export default class CaddyDomain extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        try {
-            // Check if caddy is enabled
-            const data = await ajaxGet('/api/caddy/reverse_proxy/get', {});
-            if (!data.caddy.general || data.caddy.general.enabled === "0") {
-                this.displayError(`${this.translations.unconfigured}`);
-                return;
-            }
-
-            // Process domains if caddy is enabled
-            let domains = { ...data.caddy.reverseproxy.reverse, ...data.caddy.reverseproxy.subdomain };
-            this.processDomains(domains);
-
-        } catch (error) {
-            this.displayError(`${this.translations.error}`);
+        // Check if caddy is enabled
+        const data = await this.ajaxGet('/api/caddy/reverse_proxy/get');
+        if (!data.caddy.general || data.caddy.general.enabled === "0") {
+            this.displayError(`${this.translations.unconfigured}`);
+            return;
         }
+
+        // Process domains if caddy is enabled
+        let domains = { ...data.caddy.reverseproxy.reverse, ...data.caddy.reverseproxy.subdomain };
+        this.processDomains(domains);
     }
 
     // Utility function to display errors within the widget
