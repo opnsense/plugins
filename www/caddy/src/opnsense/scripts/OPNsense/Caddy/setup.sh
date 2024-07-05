@@ -23,4 +23,4 @@ chmod -R 750 "${CADDY_CONF_DIR}"
 (cd "${CADDY_DIR}" && /usr/local/bin/caddy fmt --overwrite)
 
 # Write custom certs from the OPNsense Trust Store into a directory where Caddy can read them
-/usr/local/opnsense/scripts/OPNsense/Caddy/run_caddy_certs.php
+/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php
