@@ -83,6 +83,7 @@
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
             <LogCredentials type="BooleanField"/>
@@ -90,6 +91,7 @@
             <LogAccessPlainKeep type="IntegerField">
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a valid number of 1 or larger.</ValidationMessage>
                 <Required>Y</Required>
             </LogAccessPlainKeep>
             <LogLevel type="OptionField">
@@ -107,6 +109,7 @@
             <DynDnsInterval type="IntegerField">
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 1 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsInterval>
             <DynDnsIpVersions type="OptionField">
                 <BlankDesc>IPv4+IPv6</BlankDesc>
@@ -118,6 +121,7 @@
             <DynDnsTtl type="IntegerField">
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsTtl>
             <DynDnsUpdateOnly type="BooleanField"/>
             <AuthProvider type="OptionField">
@@ -284,6 +288,7 @@
                 <PassiveHealthFailDuration type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
                 <ForwardAuth type="BooleanField"/>
                 <HttpTls type="BooleanField">
@@ -335,6 +340,7 @@
                 <HttpResponseCode type="IntegerField">
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>599</MaximumValue>
+                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
                 <description type="DescriptionField">
