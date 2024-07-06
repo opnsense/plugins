@@ -34,6 +34,7 @@ Plugin Changelog
 * Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen.
 * Add: HTTP Keepalive can be set in a handler.
 * Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
+* Build: Update caddy-dns Cloudflare and Route53. Route53 field names changed due to upstream changes.
 
 1.5.7
 
