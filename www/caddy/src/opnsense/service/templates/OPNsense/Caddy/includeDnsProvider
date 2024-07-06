@@ -26,11 +26,11 @@
     {% endif %}
     {% if dnsOptionalField1 %}max_retries {{ dnsOptionalField1 }}
     {% endif %}
-    {% if dnsOptionalField2 %}aws_profile {{ dnsOptionalField2 }}
+    {% if dnsOptionalField2 %}profile {{ dnsOptionalField2 }}
     {% endif %}
     {% if dnsOptionalField3 %}region {{ dnsOptionalField3 }}
     {% endif %}
-    {% if dnsOptionalField4 %}token {{ dnsOptionalField4 }}
+    {% if dnsOptionalField4 %}session_token {{ dnsOptionalField4 }}
     {% endif %}
 {% elif dnsProvider == 'acmedns' %}
     {% if dnsApiKey %}username {{ dnsApiKey }}
