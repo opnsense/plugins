@@ -161,8 +161,7 @@ def perform_action(cmd_action):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        service_action = sys.argv[1]
-        perform_action(service_action)
+        perform_action(sys.argv[1])
     else:
         # Output error details in JSON format if no action is specified
         print(json.dumps({"error": "No Action Specified", "message": "No action specified"}))
