@@ -58,15 +58,13 @@ export default class ETProTelemetry extends BaseTableWidget {
     }
 
     async onMarkupRendered() {
-        await ajaxGet('/api/core/system/systemInformation', {}, (data, status) => {
-            let rows = [];
-            rows.push([['<img src="/ui/img/proofpoint.svg" style="height:30px;" class="image_invertible">'], '']);
-            rows.push([[this.translations['sensor_status']], $('<span id="etpro_sensor_status">').prop('outerHTML')]);
-            rows.push([[this.translations['event_received']], $('<span id="etpro_event_received">').prop('outerHTML')]);
-            rows.push([[this.translations['last_rule_download']], $('<span id="etpro_last_rule_download">').prop('outerHTML')]);
-            rows.push([[this.translations['last_heartbeat']], $('<span id="etpro_last_heartbeat">').prop('outerHTML')]);
+        let rows = [];
+        rows.push([['<img src="/ui/img/proofpoint.svg" style="height:30px;" class="image_invertible">'], '']);
+        rows.push([[this.translations['sensor_status']], $('<span id="etpro_sensor_status">').prop('outerHTML')]);
+        rows.push([[this.translations['event_received']], $('<span id="etpro_event_received">').prop('outerHTML')]);
+        rows.push([[this.translations['last_rule_download']], $('<span id="etpro_last_rule_download">').prop('outerHTML')]);
+        rows.push([[this.translations['last_heartbeat']], $('<span id="etpro_last_heartbeat">').prop('outerHTML')]);
 
-            super.updateTable('ETProTelemetry-table', rows);
-        });
+        super.updateTable('ETProTelemetry-table', rows);
     }
 }
