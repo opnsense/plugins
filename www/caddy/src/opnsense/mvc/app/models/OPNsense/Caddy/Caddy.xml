@@ -193,6 +193,7 @@
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
                 </AcmePassthrough>
+                <HttpNoTls type="BooleanField"/>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">

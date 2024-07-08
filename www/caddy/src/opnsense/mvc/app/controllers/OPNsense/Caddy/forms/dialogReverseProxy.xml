@@ -43,6 +43,12 @@
         <collapse>true</collapse>
     </field>
     <field>
+        <id>reverse.HttpNoTls</id>
+        <label>Disable TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Disable HTTP over TLS (HTTPS) for this domain. A "http://" address will be used instead. Certificate management for this domain will be disabled.]]></help>
+    </field>
+    <field>
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 Challenge</label>
         <type>checkbox</type>

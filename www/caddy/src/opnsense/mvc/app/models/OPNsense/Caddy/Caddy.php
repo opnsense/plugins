@@ -160,6 +160,35 @@ class Caddy extends BaseModel
         }
     }
 
+    // 5. Prevent the usage of conflicting options when TLS is deactivated for a Domain
+    private function checkHttpNoTlsConflicts($messages)
+    {
+        foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+            if ((string) $item->HttpNoTls === '1') {
+                $conflictChecks = [
+                    'DnsChallenge' => (string) $item->DnsChallenge === '1',
+                    'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
+                    'CustomCertificate' => !empty((string) $item->CustomCertificate)
+                ];
+
+                $conflictFields = array_keys(array_filter($conflictChecks));
+
+                if (!empty($conflictFields)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                '"Disable TLS" can not be used with either of: ' .
+                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection", "Custom Certificate".'
+                            )
+                        ),
+                        $item->__reference . ".HttpNoTls",
+                        "HttpNoTlsConflict"
+                    ));
+                }
+            }
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -172,6 +201,8 @@ class Caddy extends BaseModel
         $this->checkWebGuiSettings($messages);
         // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
+        // 5. Check for TLS conflicts in Domain
+        $this->checkHttpNoTlsConflicts($messages);
 
         return $messages;
     }
