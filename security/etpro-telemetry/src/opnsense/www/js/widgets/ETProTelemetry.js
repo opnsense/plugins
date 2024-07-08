@@ -42,19 +42,18 @@ export default class ETProTelemetry extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        await ajaxGet('/api/diagnostics/proofpoint_et/status', {}, (data, status) => {
-            if (data['sensor_status'] == 'active') {
-                $('#etpro_sensor_status').text(data['sensor_status']);
-                $('#etpro_event_received').text(data['event_received']);
-                $('#etpro_last_rule_download').text(data['last_rule_download']);
-                $('#etpro_last_heartbeat').text(data['last_heartbeat']);
-            } else {
-                $('#etpro_sensor_status').text('-');
-                $('#etpro_event_received').text('-');
-                $('#etpro_last_rule_download').text('-');
-                $('#etpro_last_heartbeat').text('-');
-            }
-        });
+        const data = await this.ajaxGet('/api/diagnostics/proofpoint_et/status');
+        if (data['sensor_status'] == 'active') {
+            $('#etpro_sensor_status').text(data['sensor_status']);
+            $('#etpro_event_received').text(data['event_received']);
+            $('#etpro_last_rule_download').text(data['last_rule_download']);
+            $('#etpro_last_heartbeat').text(data['last_heartbeat']);
+        } else {
+            $('#etpro_sensor_status').text('-');
+            $('#etpro_event_received').text('-');
+            $('#etpro_last_rule_download').text('-');
+            $('#etpro_last_heartbeat').text('-');
+        }
     }
 
     async onMarkupRendered() {
