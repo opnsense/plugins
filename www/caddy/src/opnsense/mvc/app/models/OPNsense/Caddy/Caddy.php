@@ -164,7 +164,7 @@ class Caddy extends BaseModel
     private function checkHttpNoTlsConflicts($messages)
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-            if ((string) $item->HttpNoTls === '1') {
+            if ((string) $item->HttpTls === '0') {
                 $conflictChecks = [
                     'DnsChallenge' => (string) $item->DnsChallenge === '1',
                     'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
@@ -177,11 +177,11 @@ class Caddy extends BaseModel
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
-                                '"Disable TLS" can not be used with either of: ' .
-                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection", "Custom Certificate".'
+                                '"TLS" has to be activated to use the following options: ' .
+                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
                             )
                         ),
-                        $item->__reference . ".HttpNoTls",
+                        $item->__reference . ".HttpTls",
                         "HttpNoTlsConflict"
                     ));
                 }

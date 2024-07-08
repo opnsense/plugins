@@ -484,7 +484,8 @@
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
 {% if reverse.enabled|default("0") == "1" %}
 # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
-{% if reverse.HttpNoTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+{# The default are encrypted connections, uncencrypted connections have to render http:// #}
+{% if reverse.HttpTls|default("1") == "0" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
     {% if reverse.AccessLog|default("0") == "1" %}
     {% if generalSettings.LogAccessPlain|default("0") == "0" %}
     log {{ reverse['@uuid'] }}

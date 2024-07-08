@@ -43,10 +43,10 @@
         <collapse>true</collapse>
     </field>
     <field>
-        <id>reverse.HttpNoTls</id>
-        <label>Disable TLS</label>
+        <id>reverse.HttpTls</id>
+        <label>TLS</label>
         <type>checkbox</type>
-        <help><![CDATA[Disable HTTP over TLS (HTTPS) for this domain. A "http://" address will be used instead. Certificate management for this domain will be disabled.]]></help>
+        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) for this domain. When disabling TLS, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
