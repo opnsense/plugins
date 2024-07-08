@@ -148,6 +148,7 @@
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <ValidationMessage>Please enter a valid domain name.</ValidationMessage>
                 </FromDomain>
                 <FromPort type="PortField"/>
                 <accesslist type="ModelRelationField">
@@ -198,6 +199,8 @@
                 </reverse>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
+                    <IpAllowed>N</IpAllowed>
+                    <ValidationMessage>Please enter a valid domain name.</ValidationMessage>
                 </FromDomain>
                 <accesslist type="ModelRelationField">
                     <Model>
