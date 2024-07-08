@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.2.3</version>
+    <version>1.2.2</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -193,10 +193,7 @@
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
                 </AcmePassthrough>
-                <HttpTls type="BooleanField">
-                    <Default>1</Default>
-                    <Required>Y</Required>
-                </HttpTls>
+                <DisableTls type="BooleanField"/>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
