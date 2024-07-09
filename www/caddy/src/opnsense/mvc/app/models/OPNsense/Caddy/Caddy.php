@@ -164,25 +164,28 @@ class Caddy extends BaseModel
     private function checkDisableTlsConflicts($messages)
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-            if ((string) $item->DisableTls === '1') {
-                $conflictChecks = [
-                    'DnsChallenge' => (string) $item->DnsChallenge === '1',
-                    'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
-                    'CustomCertificate' => !empty((string) $item->CustomCertificate)
-                ];
+            // First check if the DisableTls field has been changed
+            if ($item->isFieldChanged('DisableTls')) {
+                if ((string) $item->DisableTls === '1') {
+                    $conflictChecks = [
+                        'DnsChallenge' => (string) $item->DnsChallenge === '1',
+                        'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
+                        'CustomCertificate' => !empty((string) $item->CustomCertificate)
+                    ];
 
-                $conflictFields = array_keys(array_filter($conflictChecks));
+                    $conflictFields = array_keys(array_filter($conflictChecks));
 
-                if (!empty($conflictFields)) {
-                    $messages->appendMessage(new Message(
-                        sprintf(
-                            gettext(
-                                'TLS can not be disabled if one of the following options are used: ' .
-                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
-                            )
-                        ),
-                        $item->__reference . ".DisableTls"
-                    ));
+                    if (!empty($conflictFields)) {
+                        $messages->appendMessage(new Message(
+                            sprintf(
+                                gettext(
+                                    'TLS cannot be disabled if one of the following options are used: ' .
+                                    '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
+                                )
+                            ),
+                            $item->__reference . ".DisableTls"
+                        ));
+                    }
                 }
             }
         }
