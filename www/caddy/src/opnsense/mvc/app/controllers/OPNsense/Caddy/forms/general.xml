@@ -25,7 +25,7 @@
         <id>caddy.general.DisableSuperuser</id>
         <label>Disable Superuser</label>
         <type>checkbox</type>
-        <help><![CDATA[Caddy can run as www user instead of root superuser. This setting increases security, but comes with the hard restriction that no well-known Ports (<1024) can be used anymore. After enabling and saving this setting, the service has to be totally restarted. Use the service buttons at the top of this page. Please note that the Apply button only reloads the service.]]></help>
+        <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
