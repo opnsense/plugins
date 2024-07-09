@@ -177,11 +177,9 @@ class Caddy extends BaseModel
 
                     if (!empty($conflictFields)) {
                         $messages->appendMessage(new Message(
-                            sprintf(
-                                gettext(
-                                    'TLS cannot be disabled if one of the following options are used: ' .
-                                    '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
-                                )
+                            gettext(
+                                'TLS cannot be disabled if one of the following options are used: ' .
+                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
                             ),
                             $item->__reference . ".DisableTls"
                         ));
