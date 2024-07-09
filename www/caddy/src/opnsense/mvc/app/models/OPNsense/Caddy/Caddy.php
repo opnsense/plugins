@@ -210,12 +210,12 @@ class Caddy extends BaseModel
             }
         }
     }
-  
+
     /**
      * 6. Check that when Superuser is disabled, all ports are 1024 and above.
      * In General settings where this triggers, a validation dialog will show the hidden validation of the domain ports.
      * The default HTTP and HTTPS ports are not allowed to be empty, since then they are 80 and 443.
-     * The domain ports are allowed to be empty, since then they have the same value as the HTTP and HTTPS default ports.
+     * Domain ports are allowed to be empty, since then they have the same value as the HTTP and HTTPS default ports.
      * Any value that is below 1024 will trigger the validation.
      */
     private function checkSuperuserPorts($messages)

@@ -30,10 +30,10 @@
 {% if generalSettings.enabled|default("0") == "1" %}
 caddy_enable="YES"
 caddy_setup="/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"
-{% else %}
-caddy_enable="NO"
-{% endif %}
-{% if generalSettings.enabled|default("0") == "1" and generalSettings.DisableSuperuser|default("0") == "1" %}
+{% if generalSettings.DisableSuperuser|default("0") == "1" %}
 caddy_user=www
 caddy_group=www
+{% endif %}
+{% else %}
+caddy_enable="NO"
 {% endif %}
