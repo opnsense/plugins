@@ -176,7 +176,9 @@ class Caddy extends BaseModel
             // Check default HTTP port
             if ($httpPort < 1024) {
                 $messages->appendMessage(new Message(
-                    gettext('Superuser is disabled, HTTP port must not be empty and must be 1024 or above.'),
+                    gettext(
+                        'Superuser is disabled, HTTP port must not be empty and must be 1024 or above.'
+                    ),
                     "general.HttpPort"
                 ));
             }
@@ -184,7 +186,9 @@ class Caddy extends BaseModel
             // Check default HTTPS port
             if ($httpsPort < 1024) {
                 $messages->appendMessage(new Message(
-                    gettext('Superuser is disabled, HTTPS port must not be empty and must be 1024 or above.'),
+                    gettext(
+                        'Superuser is disabled, HTTPS port must not be empty and must be 1024 or above.'
+                    ),
                     "general.HttpsPort"
                 ));
             }
@@ -195,7 +199,9 @@ class Caddy extends BaseModel
 
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
-                        gettext('Superuser is disabled, port must be empty or must be 1024 or above.'),
+                        gettext(
+                            'Superuser is disabled, port must be empty or must be 1024 or above.'
+                        ),
                         $item->__reference . ".FromPort"
                     ));
                 }

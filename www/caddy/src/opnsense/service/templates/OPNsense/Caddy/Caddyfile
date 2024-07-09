@@ -28,6 +28,13 @@
 
 {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
 
+{# Print as comments if Caddy runs as root or www user, as information in support cases. #}
+{% if generalSettings.DisableSuperuser|default("0") == "1" %}
+# caddy_user=www
+{% else %}
+# caddy_user=root
+{% endif %}
+
 # Global Options
 {
     {#
