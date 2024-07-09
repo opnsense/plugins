@@ -160,6 +160,49 @@ class Caddy extends BaseModel
         }
     }
 
+    /**
+     * 6. Check that when Superuser is disabled, all ports are 1024 and above.
+     * In General settings where this triggers, a validation dialog will show the hidden validation of the domain ports.
+     * The default HTTP and HTTPS ports are not allowed to be empty, since then they are 80 and 443.
+     * The domain ports are allowed to be empty, since then they have the same value as the HTTP and HTTPS default ports.
+     * Any value that is below 1024 will trigger the validation.
+     */
+    private function checkSuperuserPorts($messages)
+    {
+        if ((string)$this->general->DisableSuperuser === '1') {
+            $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : 80;
+            $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : 443;
+
+            // Check default HTTP port
+            if ($httpPort < 1024) {
+                $messages->appendMessage(new Message(
+                    gettext('Superuser is disabled, HTTP port must not be empty and must be 1024 or above.'),
+                    "general.HttpPort"
+                ));
+            }
+
+            // Check default HTTPS port
+            if ($httpsPort < 1024) {
+                $messages->appendMessage(new Message(
+                    gettext('Superuser is disabled, HTTPS port must not be empty and must be 1024 or above.'),
+                    "general.HttpsPort"
+                ));
+            }
+
+            // Check ports under domain configurations
+            foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+                $fromPort = !empty((string)$item->FromPort) ? (string)$item->FromPort : null;
+
+                if ($fromPort !== null && $fromPort < 1024) {
+                    $messages->appendMessage(new Message(
+                        gettext('Superuser is disabled, port must be empty or must be 1024 or above.'),
+                        $item->__reference . ".FromPort"
+                    ));
+                }
+            }
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -172,6 +215,8 @@ class Caddy extends BaseModel
         $this->checkWebGuiSettings($messages);
         // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
+        // 6. Check DisableSuperuser Port conflicts
+        $this->checkSuperuserPorts($messages);
 
         return $messages;
     }
