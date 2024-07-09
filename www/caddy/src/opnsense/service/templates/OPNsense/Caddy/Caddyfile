@@ -43,7 +43,7 @@
         {% endif %}
         {% endfor %}
         {% endif %}
-        output net unixgram//var/caddy/var/run/log {
+        output net unixgram//var/run/caddy/log.sock {
         }
         format json {
             time_format rfc3339

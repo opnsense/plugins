@@ -81,6 +81,7 @@
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <DisableSuperuser type="BooleanField"/>
             <GracePeriod type="IntegerField">
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
