@@ -10,6 +10,18 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.33
+
+* Add the "resolver" directive support
+* Add config preview/test/copy to GUI
+* Add gzip disabling support
+* Move bot UA settings to GUI
+* Add auto-ban logging support
+* Add Upstream keepalive support
+* Add Stream proxy_connect_timeout and proxy_timeout directives support
+* Convert epoch time to readable format on "Banned" page
+* Cosmetic: add table header borders on Traffic Statistic page for better reading
+
 1.32.2
 
 * Add columns select button to the log viewer (contributed by kulikov-a)

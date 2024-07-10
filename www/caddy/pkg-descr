@@ -35,6 +35,7 @@ Plugin Changelog
 * Add: HTTP Keepalive can be set in a handler.
 * Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
 * Build: Update caddy-dns Cloudflare and Route53. Route53 field names changed due to upstream changes.
+* Add: TLS can be deactivated in a domain.
 
 1.5.7
 
