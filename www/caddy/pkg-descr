@@ -28,7 +28,11 @@ Plugin Changelog
 1.6.0
 
 * Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
-* Fix: Caddyfile template fixed for IPv6 addresses and custom port.
+* Cleanup: PHP files refactored for PSR-12, Python files refactored for PEP-8.
+* Cleanup: Templates Caddyfile and rc.conf.d/caddy refactored for maintainability.
+* Cleanup: Spurious keys removed from Caddy.xml model.
+* Cleanup: Unused code removed from Caddy.php.
+* Fix: Caddyfile template fixed when IPv6 addresses and ports are used in Upstream. IPv6 address wraps into brackets now.
 * Add: forward_auth directive with Authelia as Authz Provider.
 * Add: Default HTTP and HTTPS ports can be changed in general settings.
 * Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen.

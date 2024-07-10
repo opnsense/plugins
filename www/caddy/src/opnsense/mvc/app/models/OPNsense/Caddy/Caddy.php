@@ -59,9 +59,15 @@ class Caddy extends BaseModel
                 if (isset($combos[$comboKey])) {
                     // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
-                        sprintf(gettext("Duplicate entry: The combination of '%s' and port '%s' is already used. Each combination of domain and port must be unique."), $fromDomain, $port),
-                        $key . ".FromDomain", // Adjusted to use dynamic key
-                        "DuplicateDomainPort"
+                        sprintf(
+                            gettext(
+                                'Duplicate entry: The combination of %s and port %s is already used. ' .
+                                'Each combination of domain and port must be unique.'
+                            ),
+                            $fromDomain,
+                            $port
+                        ),
+                        $key . ".FromDomain"
                     ));
                 } else {
                     $combos[$comboKey] = true;
@@ -98,9 +104,14 @@ class Caddy extends BaseModel
                 if (!$isValid) {
                     $key = $subdomain->__reference; // Dynamic key based on subdomain reference
                     $messages->appendMessage(new Message(
-                        sprintf(gettext("Invalid subdomain configuration: '%s' does not fall under any configured wildcard domain."), $subdomainName),
-                        $key . ".FromDomain", // Use dynamic key for message referencing
-                        "InvalidSubdomain"
+                        sprintf(
+                            gettext(
+                                'Invalid subdomain configuration: %s does not fall ' .
+                                'under any configured wildcard domain.'
+                            ),
+                            $subdomainName
+                        ),
+                        $key . ".FromDomain"
                     ));
                 }
             }
@@ -140,7 +151,18 @@ class Caddy extends BaseModel
         if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
             $portOverlap = implode(', ', $overlap);
             $messages->appendMessage(new Message(
-                sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port %s, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap, $httpsPort),
+                sprintf(
+                    gettext(
+                        'To use "Auto HTTPS", resolve these conflicting ports %s ' .
+                        'that are currently configured for the OPNsense WebGUI. ' .
+                        'Go to "System - Settings - Administration". ' .
+                        'To release port 80, enable "Disable web GUI redirect rule". ' .
+                        'To release port %s, change "TCP port" to a non-standard port, ' .
+                        'e.g., 8443.'
+                    ),
+                    $portOverlap,
+                    $httpsPort
+                ),
                 "general.TlsAutoHttps"
             ));
         }
@@ -242,12 +264,23 @@ class Caddy extends BaseModel
     public function performValidation($validateFullModel = false)
     {
         $messages = parent::performValidation($validateFullModel);
+
         // 1. Check domain-port combinations
-        $this->checkForUniquePortCombos($this->reverseproxy->reverse->iterateItems(), $messages);
+        $this->checkForUniquePortCombos(
+            $this->reverseproxy->reverse->iterateItems(),
+            $messages
+        );
+
         // 2. Check that subdomains are under a wildcard or exact domain
-        $this->checkSubdomainsAgainstDomains($this->reverseproxy->subdomain->iterateItems(), $this->reverseproxy->reverse->iterateItems(), $messages);
+        $this->checkSubdomainsAgainstDomains(
+            $this->reverseproxy->subdomain->iterateItems(),
+            $this->reverseproxy->reverse->iterateItems(),
+            $messages
+        );
+
         // 3. Check WebGUI conflicts
         $this->checkWebGuiSettings($messages);
+
         // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
         // 5. Check for TLS conflicts in Domain
