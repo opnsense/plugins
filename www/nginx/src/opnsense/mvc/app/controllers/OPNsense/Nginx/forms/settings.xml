@@ -67,6 +67,20 @@
                 <advanced>true</advanced>
             </field>
             <field>
+                <id>nginx.http.bots_ua</id>
+                <label>Bots User Agents</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>List of bot user agents that will be used in bot protection. Uses a well known list by default.</help>
+            </field>
+            <field>
+                <id>nginx.http.log_perm_ban</id>
+                <label>Log Banned Requests</label>
+                <type>checkbox</type>
+                <help>Log requests that led to auto-blocking (bots and honeypots).</help>
+            </field>
+            <field>
                 <id>nginx.http.ban_response</id>
                 <label>Autoban Response Code</label>
                 <style>selectpicker</style>
