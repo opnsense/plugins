@@ -344,6 +344,7 @@
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses or networks.</ValidationMessage>
                 </clientIps>
                 <accesslistInvert type="BooleanField"/>
                 <HttpResponseCode type="IntegerField">
