@@ -42,31 +42,28 @@ export default class ETProTelemetry extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        await ajaxGet('/api/diagnostics/proofpoint_et/status', {}, (data, status) => {
-            if (data['sensor_status'] == 'active') {
-                $('#etpro_sensor_status').text(data['sensor_status']);
-                $('#etpro_event_received').text(data['event_received']);
-                $('#etpro_last_rule_download').text(data['last_rule_download']);
-                $('#etpro_last_heartbeat').text(data['last_heartbeat']);
-            } else {
-                $('#etpro_sensor_status').text('-');
-                $('#etpro_event_received').text('-');
-                $('#etpro_last_rule_download').text('-');
-                $('#etpro_last_heartbeat').text('-');
-            }
-        });
+        const data = await this.ajaxGet('/api/diagnostics/proofpoint_et/status');
+        if (data['sensor_status'] == 'active') {
+            $('#etpro_sensor_status').text(data['sensor_status']);
+            $('#etpro_event_received').text(data['event_received']);
+            $('#etpro_last_rule_download').text(data['last_rule_download']);
+            $('#etpro_last_heartbeat').text(data['last_heartbeat']);
+        } else {
+            $('#etpro_sensor_status').text('-');
+            $('#etpro_event_received').text('-');
+            $('#etpro_last_rule_download').text('-');
+            $('#etpro_last_heartbeat').text('-');
+        }
     }
 
     async onMarkupRendered() {
-        await ajaxGet('/api/core/system/systemInformation', {}, (data, status) => {
-            let rows = [];
-            rows.push([['<img src="/ui/img/proofpoint.svg" style="height:30px;" class="image_invertible">'], '']);
-            rows.push([[this.translations['sensor_status']], $('<span id="etpro_sensor_status">').prop('outerHTML')]);
-            rows.push([[this.translations['event_received']], $('<span id="etpro_event_received">').prop('outerHTML')]);
-            rows.push([[this.translations['last_rule_download']], $('<span id="etpro_last_rule_download">').prop('outerHTML')]);
-            rows.push([[this.translations['last_heartbeat']], $('<span id="etpro_last_heartbeat">').prop('outerHTML')]);
+        let rows = [];
+        rows.push([['<img src="/ui/img/proofpoint.svg" style="height:30px;" class="image_invertible">'], '']);
+        rows.push([[this.translations['sensor_status']], $('<span id="etpro_sensor_status">').prop('outerHTML')]);
+        rows.push([[this.translations['event_received']], $('<span id="etpro_event_received">').prop('outerHTML')]);
+        rows.push([[this.translations['last_rule_download']], $('<span id="etpro_last_rule_download">').prop('outerHTML')]);
+        rows.push([[this.translations['last_heartbeat']], $('<span id="etpro_last_heartbeat">').prop('outerHTML')]);
 
-            super.updateTable('ETProTelemetry-table', rows);
-        });
+        super.updateTable('ETProTelemetry-table', rows);
     }
 }

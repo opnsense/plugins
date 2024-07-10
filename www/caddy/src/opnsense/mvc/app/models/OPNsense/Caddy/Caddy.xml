@@ -180,6 +180,7 @@
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
+                <DisableTls type="BooleanField"/>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
