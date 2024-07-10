@@ -1,0 +1,44 @@
+<form>
+  <field>
+    <id>resolver.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Brief description for reference.</help>
+  </field>
+  <field>
+    <id>resolver.address</id>
+    <label>Address(es)</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a list of IP addresses and ports (optional). Uses port 53 if omitted. Like "8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353".</help>
+  </field>
+  <field>
+    <id>resolver.ipv4_off</id>
+    <label>Disable IPv4</label>
+    <type>checkbox</type>
+    <help>Do not request IPv4 addresses.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>resolver.ipv6_off</id>
+    <label>Disable IPv6</label>
+    <type>checkbox</type>
+    <help>Do not request IPv6 addresses.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>resolver.valid</id>
+    <label>Validity Time</label>
+    <type>text</type>
+    <help>Override response TTL in seconds.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
+    <id>resolver.timeout</id>
+    <label>Time Out</label>
+    <type>text</type>
+    <help>Resolver time out in seconds. NGINX default (if empty) is 30 seconds.</help>
+    <advanced>true</advanced>
+  </field>
+</form>
