@@ -283,6 +283,7 @@
                     <Required>Y</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
                 <ToPort type="PortField"/>
                 <ToPath type="TextField">
