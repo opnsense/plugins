@@ -41,4 +41,3 @@ if os.path.isfile(nginx_config_file):
     load_config_file(nginx_config_file)
     result['config'] = nginx_config
 print(ujson.dumps(result))
-
