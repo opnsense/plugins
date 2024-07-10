@@ -8,6 +8,8 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
+            <HttpPort type="PortField"/>
+            <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField">
                 <ValidationMessage>Please enter a valid email address.</ValidationMessage>
             </TlsEmail>
@@ -126,6 +128,19 @@
                 <ValidationMessage>Please enter a valid number from 0 to 2147483647 seconds or leave empty for default.</ValidationMessage>
             </DynDnsTtl>
             <DynDnsUpdateOnly type="BooleanField"/>
+            <AuthProvider type="OptionField">
+                <BlankDesc>None (default)</BlankDesc>
+                <OptionValues>
+                    <authelia>Authelia</authelia>
+                </OptionValues>
+            </AuthProvider>
+            <AuthToDomain type="HostnameField"/>
+            <AuthToPort type="PortField"/>
+            <AuthToTls type="BooleanField"/>
+            <AuthToUri type="TextField">
+                <Mask>/^(\/.*)?$/u</Mask>
+                <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
+            </AuthToUri>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -135,8 +150,8 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <ValidationMessage>Please enter a valid 'from' domain or IP address.</ValidationMessage>
-                    <IpAllowed>Y</IpAllowed>
+                    <ValidationMessage>Please enter a valid 'from' domain.</ValidationMessage>
+                    <IpAllowed>N</IpAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <ZoneRootAllowed>N</ZoneRootAllowed>
@@ -178,6 +193,7 @@
                     <ValidationMessage>Please enter a valid 'to' domain or IP address.</ValidationMessage>
                     <IpAllowed>Y</IpAllowed>
                 </AcmePassthrough>
+                <DisableTls type="BooleanField"/>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -300,6 +316,7 @@
                     <MaximumValue>100</MaximumValue>
                     <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
+                <ForwardAuth type="BooleanField"/>
                 <HttpTls type="BooleanField">
                     <Constraints>
                         <check001>
@@ -311,6 +328,18 @@
                         </check001>
                     </Constraints>
                 </HttpTls>
+                <HttpVersion type="OptionField">
+                    <BlankDesc>HTTP/1.1, HTTP/2</BlankDesc>
+                    <OptionValues>
+                        <http1>HTTP/1.1</http1>
+                        <http2>HTTP/2</http2>
+                        <http3>HTTP/3</http3>
+                    </OptionValues>
+                </HttpVersion>
+                <HttpKeepalive type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                </HttpKeepalive>
                 <HttpNtlm type="BooleanField">
                     <Constraints>
                         <check001>

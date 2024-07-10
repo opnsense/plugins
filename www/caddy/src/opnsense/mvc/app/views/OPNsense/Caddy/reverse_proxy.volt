@@ -262,6 +262,7 @@
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
                             <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Custom Certificate') }}</th>
                             <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
+                            <th data-column-id="DisableTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Disable TLS') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
@@ -334,7 +335,10 @@
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
                             <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
+                            <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
                             <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS') }}</th>
+                            <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
+                            <th data-column-id="HttpKeepalive" data-type="string" data-visible="false">{{ lang._('HTTP Keepalive') }}</th>
                             <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS CA') }}</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>

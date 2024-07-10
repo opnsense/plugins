@@ -32,7 +32,7 @@
         <id>caddy.general.TlsDnsOptionalField2</id>
         <label>DNS API Additional Field 3</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "aws_profile", ACME-DNS "server_url", Azure "subscription_id", OVH "consumer_key", Namecheap "client_ip", DDNS "password", INWX "endpoint_url", DirectAdmin "insecure_requests", RFC2136 "server".]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "profile", ACME-DNS "server_url", Azure "subscription_id", OVH "consumer_key", Namecheap "client_ip", DDNS "password", INWX "endpoint_url", DirectAdmin "insecure_requests", RFC2136 "server".]]></help>
     </field>
     <field>
         <id>caddy.general.TlsDnsOptionalField3</id>
@@ -44,6 +44,6 @@
         <id>caddy.general.TlsDnsOptionalField4</id>
         <label>DNS API Additional Field 5</label>
         <type>text</type>
-        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "token".]]></help>
+        <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "session_token".]]></help>
     </field>
 </form>

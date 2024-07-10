@@ -108,7 +108,8 @@ class Caddy extends BaseModel
     }
 
     // 3. Get the current OPNsense WebGUI ports and check for conflicts with Caddy
-    private function getWebGuiPorts() {
+    private function getWebGuiPorts()
+    {
         $webgui = Config::getInstance()->object()->system->webgui ?? null;
         $webGuiPorts = [];
 
@@ -126,21 +127,28 @@ class Caddy extends BaseModel
         return $webGuiPorts;
     }
 
-    private function checkWebGuiSettings($messages) {
-        $overlap = array_intersect($this->getWebGuiPorts(), ['80', '443']);
+    private function checkWebGuiSettings($messages)
+    {
+        // Get custom caddy ports if set. If empty, default to 80 and 443.
+        $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : '80';
+        $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : '443';
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
+
+        // Check for conflicts
+        $overlap = array_intersect($this->getWebGuiPorts(), [$httpPort, $httpsPort]);
 
         if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
             $portOverlap = implode(', ', $overlap);
             $messages->appendMessage(new Message(
-                sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port 443, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap),
+                sprintf(gettext('To use "Auto HTTPS", resolve these conflicting ports (%s) that are currently configured for the OPNsense WebGUI. Go to "System - Settings - Administration". To release port 80, enable "Disable web GUI redirect rule". To release port %s, change "TCP port" to a non-standard port, e.g., 8443.'), $portOverlap, $httpsPort),
                 "general.TlsAutoHttps"
             ));
         }
     }
 
     // 4. Check for ACME Email being required when Auto HTTPS on
-    private function checkAcmeEmailAutoHttps($messages) {
+    private function checkAcmeEmailAutoHttps($messages)
+    {
         $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
         $tlsEmail = (string)$this->general->TlsEmail;
 
@@ -149,6 +157,35 @@ class Caddy extends BaseModel
                 gettext('To use "Auto HTTPS", an email address is required.'),
                 "general.TlsEmail"
             ));
+        }
+    }
+
+    // 5. Prevent the usage of conflicting options when TLS is deactivated for a Domain
+    private function checkDisableTlsConflicts($messages)
+    {
+        foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+            // First check if the DisableTls field has been changed
+            if ($item->isFieldChanged('DisableTls')) {
+                if ((string) $item->DisableTls === '1') {
+                    $conflictChecks = [
+                        'DnsChallenge' => (string) $item->DnsChallenge === '1',
+                        'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
+                        'CustomCertificate' => !empty((string) $item->CustomCertificate)
+                    ];
+
+                    $conflictFields = array_keys(array_filter($conflictChecks));
+
+                    if (!empty($conflictFields)) {
+                        $messages->appendMessage(new Message(
+                            gettext(
+                                'TLS cannot be disabled if one of the following options are used: ' .
+                                '"DNS-01 Challenge", "HTTP-01 Challenge Redirection" and "Custom Certificate"'
+                            ),
+                            $item->__reference . ".DisableTls"
+                        ));
+                    }
+                }
+            }
         }
     }
 
@@ -164,6 +201,8 @@ class Caddy extends BaseModel
         $this->checkWebGuiSettings($messages);
         // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
+        // 5. Check for TLS conflicts in Domain
+        $this->checkDisableTlsConflicts($messages);
 
         return $messages;
     }

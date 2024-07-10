@@ -10,7 +10,7 @@
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name or IP address. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
@@ -41,6 +41,12 @@
         <type>header</type>
         <label>Trust</label>
         <collapse>true</collapse>
+    </field>
+    <field>
+        <id>reverse.DisableTls</id>
+        <label>Disable TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Disable HTTP over TLS (HTTPS) for this domain. When disabling TLS, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
