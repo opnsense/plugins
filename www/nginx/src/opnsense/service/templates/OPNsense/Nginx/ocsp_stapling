@@ -141,6 +141,7 @@ server {
 {%       if server.ocsp_stapling is defined and server.ocsp_stapling == '1'%}
     ssl_stapling on;
     ssl_stapling_verify {% if server.ocsp_verify is defined and server.ocsp_verify == '1' %}On{% else %}Off{% endif %};
+    ssl_trusted_certificate /usr/local/etc/nginx/key/{{ single_servername }}.pem;
 {%       else %}
     ssl_stapling off;
 {%       endif %}
