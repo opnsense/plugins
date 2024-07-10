@@ -52,7 +52,7 @@ export default class CaddyCertificate extends BaseTableWidget {
 
     async onWidgetTick() {
         // Check if Caddy is enabled
-        const caddyStatus = await this.ajaxGet('/api/caddy/reverse_proxy/get');
+        const caddyStatus = await this.ajaxCall('/api/caddy/reverse_proxy/get');
         if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;
