@@ -59,7 +59,7 @@ export default class CaddyCertificate extends BaseTableWidget {
         }
 
         // Fetch the certificate details
-        const response = await this.ajaxGet('/api/caddy/diagnostics/certificate');
+        const response = await this.ajaxCall('/api/caddy/diagnostics/certificate');
         if (response.status !== "success") {
             this.displayError(`${this.translations.nocerts}`);
             return;
