@@ -515,10 +515,6 @@
         <Required>N</Required>
         <minValue>1</minValue>
       </proxy_send_timeout>
-      <http2_push_preload type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </http2_push_preload>
       <ip_acl type="ModelRelationField">
         <Model>
           <template>
