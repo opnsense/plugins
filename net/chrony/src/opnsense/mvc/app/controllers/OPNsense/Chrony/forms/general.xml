@@ -45,4 +45,22 @@
         <allownew>true</allownew>
         <help>Set the networks allowed to synchronize time with this server. If this value is not set it will also not listen to the port and just synchronize the time for itself.</help>
     </field>
+    <field>
+        <id>general.symmetric_auth</id>
+        <label>NTP Symmetric Authentication</label>
+        <type>checkbox</type>
+        <help>This enabled enables symmetric authentication.</help>
+    </field>
+    <field>
+        <id>general.symmetric_keys_file</id>
+        <label>NTP Symmetric Keys</label>
+        <type>textbox</type>
+        <help>This is the symmetric keys file.  IT is used to authenticate NTP packets.  For further information, please see chrony.conf(5).</help>
+    </field>
+    <field>
+        <id>general.auth_servers</id>
+        <label>NTP Authenticated Servers</label>
+        <type>textbox</type>
+        <help>This is the list of authenticated servers. For further information, please see chrony.conf(5).</help>
+    </field>
 </form>
