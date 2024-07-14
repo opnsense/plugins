@@ -41,6 +41,10 @@
             <default>0</default>
             <Required>Y</Required>
         </enable_pwd>
+        <pwd_serverid type="TextField">
+            <default>theserver@example.com</default>
+            <Required>Y</Required>
+        </pwd_serverid>
         <crl type="CertificateField">
             <Type>crl</Type>
             <Required>N</Required>

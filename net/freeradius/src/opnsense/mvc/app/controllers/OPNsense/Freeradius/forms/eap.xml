@@ -36,6 +36,11 @@
         <help>This enables EAP-PWD authentication</help>
     </field>
     <field>
+        <id>eap.pwd_serverid</id>
+        <label>EAP-PWD server id</label>
+        <type>text</type>
+    </field>
+    <field>
         <id>eap.crl</id>
         <label>CRL</label>
         <type>dropdown</type>

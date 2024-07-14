@@ -93,7 +93,7 @@ eap {
         pwd {
         #        group = 19
 
-        #        server_id = theserver@example.com
+                server_id = {{ OPNsense.freeradius.eap.pwd_serverid }}
 
                 #  This has the same meaning as for TLS.
                 #
