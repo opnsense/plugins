@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.4
+
+Fixed:
+* fix EasyDNS variable assignment (#4068)
+
 4.3
 
 Fixed:
