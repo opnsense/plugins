@@ -143,6 +143,13 @@
     <advanced>true</advanced>
   </field>
   <field>
+    <id>httpserver.log_handshakes</id>
+    <label>Enable TLS handshakes logging</label>
+    <type>checkbox</type>
+    <help>Log TLS handshakes to fill the User Agent fingerprint database and detect MITM attacks.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.enable_acme_support</id>
     <label>Enable Let's Encrypt Plugin Support</label>
     <type>checkbox</type>
