@@ -69,6 +69,7 @@
             // These fields do not need the validation workaround, they are in the main form "generalForm"
             let validationExceptions = [
                 "caddy.general.enabled",
+                "caddy.general.DisableSuperuser",
                 "caddy.general.HttpPort",
                 "caddy.general.HttpsPort",
                 "caddy.general.TlsEmail",
