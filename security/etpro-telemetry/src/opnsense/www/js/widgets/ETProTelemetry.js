@@ -42,7 +42,7 @@ export default class ETProTelemetry extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        const data = await this.ajaxGet('/api/diagnostics/proofpoint_et/status');
+        const data = await this.ajaxCall('/api/diagnostics/proofpoint_et/status');
         if (data['sensor_status'] == 'active') {
             $('#etpro_sensor_status').text(data['sensor_status']);
             $('#etpro_event_received').text(data['event_received']);
