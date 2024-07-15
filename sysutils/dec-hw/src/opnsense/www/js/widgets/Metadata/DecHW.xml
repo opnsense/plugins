@@ -1,0 +1,15 @@
+<metadata>
+    <dechw>
+        <filename>DecHW.js</filename>
+        <endpoints>
+            <endpoint>/api/dechw/info/powerStatus</endpoint>
+        </endpoints>
+        <translations>
+            <title>Deciso Hardware Information</title>
+            <nopower>Power status could not be fetched. This widget is only applicable to Deciso hardware with dual power supplies.</nopower>
+            <poweron>Power is on</poweron>
+            <poweroff>Power is off</poweroff>
+            <powersupply>Power Supply</powersupply>
+        </translations>
+    </dechw>
+</metadata>
