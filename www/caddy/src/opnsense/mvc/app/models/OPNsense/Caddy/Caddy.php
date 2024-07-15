@@ -255,6 +255,12 @@ class Caddy extends BaseModel
                         ),
                         $item->__reference . ".FromPort"
                     ));
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'Ports in "Reverse Proxy - Domains" must be empty or must be 1024 or above.'
+                        ),
+                        "general.DisableSuperuser"
+                    ));
                 }
             }
         }
@@ -283,8 +289,10 @@ class Caddy extends BaseModel
 
         // 4. Check for ACME Email requirement
         $this->checkAcmeEmailAutoHttps($messages);
+
         // 5. Check for TLS conflicts in Domain
         $this->checkDisableTlsConflicts($messages);
+
         // 6. Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
 
