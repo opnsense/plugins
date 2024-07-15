@@ -28,6 +28,7 @@ Plugin Changelog
 1.6.1
 
 Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings.
+Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog.
 
 1.6.0
 
