@@ -66,7 +66,7 @@
                 $("#messageArea").hide();
             });
 
-            // These fields do not need the validation workaround, they are in the main form "generalForm"
+            // These fields do not need the validation workaround, they get their validation messages from core.
             let validationExceptions = [
                 "caddy.general.enabled",
                 "caddy.general.DisableSuperuser",
@@ -79,24 +79,41 @@
                 "caddy.general.GracePeriod"
             ];
 
-            // For all other fields that are in different tabs than the main form, append the validation message
-            // Note: This is a workaround and generally not needed
-            // It fixes a design flaw where multiple tabs reside in the same form
+            // For all other fields that are in different tabs than the main form, append the validation message.
+            // Note: This is a workaround and generally not needed. Do not copy this.
             function displayValidationErrors(errors) {
-                $(".error-message").remove();  // Clear previous error messages if any
+                $(".error-message").remove();  // Clear previous error messages
+                $(".error-input").removeClass("error-input");
+                $(".error-label").removeClass("error-label");
 
                 for (let key in errors) {
                     if (errors.hasOwnProperty(key) && !validationExceptions.includes(key)) {
                         let jquerySafeKey = key.replace(/\./g, '\\.');  // Escape dots for jQuery ID selector
                         let field = $('#' + jquerySafeKey);
+                        let label = $('#control_label_' + jquerySafeKey);
+                        let helpBlock = $('#help_block_' + jquerySafeKey);
 
-                        if(field.length !== 0) {
-                            let errorMessage = $('<div class="error-message" style="color: red;">' + errors[key] + '</div>');
-                            errorMessage.insertAfter(field);
+                        if (field.length !== 0) {
+                            field.addClass('error-input');
+                            label.addClass('error-label');
+                            let errorMessage = $('<div class="error-message">' + errors[key] + '</div>');
+                            helpBlock.html(errorMessage);  // append error message into help block
                         }
                     }
                 }
             }
+
+            $('input, select, textarea').on('change', function() {
+                // Remove error styles when the user corrects the input
+                if($(this).hasClass('error-input')) {
+                    $(this).removeClass('error-input');
+                    let id = this.id.replace(/\./g, '\\.');
+                    let label = $('#control_label_' + id);
+                    label.removeClass('error-label');
+                    let helpBlock = $('#help_block_' + id);
+                    helpBlock.empty();
+                }
+            });
 
             // Reconfigure the Caddy service, additional form save and validation with a validation API is made beforehand
             $("#reconfigureAct").SimpleActionButton({
@@ -125,7 +142,7 @@
                                 }
                             });
                         },
-                        true, // disable_dialog: This has to be set explicitely so there actually is a callback_fail to catch the validation error
+                        true, // disable_dialog: This has to be set explicitely so there actually is a callback_fail to catch the validation error.
                         function(errorData) {  // callback_fail: What to do when save fails
                             if (errorData.validations) {
                                 displayValidationErrors(errorData.validations);
@@ -160,7 +177,7 @@
                             showAlert("{{ lang._('Configuration saved successfully. Please do not forget to apply the configuration.') }}", "{{ lang._('Save Success') }}");
                             dfObj.resolve();
                         },
-                        true, // disable_dialog: This has to be set explicitely so there actually is a callback_fail to catch the validation error
+                        true, // disable_dialog
                         function(errorData) {  // callback_fail: What to do when save fails
                             if (errorData.validations) {
                                 displayValidationErrors(errorData.validations);
@@ -182,6 +199,23 @@
     });
 </script>
 
+<style>
+    .error-message {
+        color: #E55451;
+        margin-left: 10px; /* Adjust spacing to the right of the input field */
+    }
+
+    .form-control.error-input {
+        border: 1px solid #E55451;
+        padding: 2px 8px;
+        box-sizing: border-box;
+    }
+
+    .error-label {
+        color: #E55451;
+    }
+</style>
+
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#generalTab">{{ lang._('General') }}</a></li>
@@ -192,7 +226,7 @@
 </ul>
 
 <!-- Tab Content
-     Note: It is bad practice to put multiple tabs into the same form id "frm_GeneralSettings" because the validation messages will not append to all keys.
+     Note: Do not copy this tab layout, it uses the same form id "frm_GeneralSettings". It works, but has problems with validation messages.
      To fix this issue a custom displayValidationErrors function is used, that appends the messages to all keys. -->
 <div class="tab-content content-box">
     <!-- General Tab -->
