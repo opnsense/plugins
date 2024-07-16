@@ -12,7 +12,7 @@ Plugin Changelog
 
 1.35
 
-* limit CSP log file size
+* limit CSP log file size (migration notice: if you want to keep CSP violations logged, you will need to enable logging in the security policy)
 
 1.34
 
