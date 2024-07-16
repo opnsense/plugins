@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.34</version>
+  <version>1.33</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -515,6 +515,10 @@
         <Required>N</Required>
         <minValue>1</minValue>
       </proxy_send_timeout>
+      <http2_push_preload type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </http2_push_preload>
       <ip_acl type="ModelRelationField">
         <Model>
           <template>
@@ -859,10 +863,6 @@
         <Required>Y</Required>
         <default>error</default>
       </error_log_level>
-      <log_handshakes type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </log_handshakes>
       <enable_acme_support type="BooleanField">
         <Required>Y</Required>
         <default>1</default>
