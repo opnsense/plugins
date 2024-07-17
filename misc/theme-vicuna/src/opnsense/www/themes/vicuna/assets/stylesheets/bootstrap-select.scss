@@ -23,14 +23,14 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
       white-space: nowrap;
 
       &.bs-placeholder {
-        color: #ccc;
+        color: #fff;
 
         &:hover, &:focus, &:active {
-          color: #ccc;
+          color: #fff;
         }
 
         &.btn-primary, &.btn-secondary, &.btn-success, &.btn-danger, &.btn-info, &.btn-dark, &.btn-primary:hover, &.btn-secondary:hover, &.btn-success:hover, &.btn-danger:hover, &.btn-info:hover, &.btn-dark:hover, &.btn-primary:focus, &.btn-secondary:focus, &.btn-success:focus, &.btn-danger:focus, &.btn-info:focus, &.btn-dark:focus, &.btn-primary:active, &.btn-secondary:active, &.btn-success:active, &.btn-danger:active, &.btn-info:active, &.btn-dark:active {
-          color: rgba(0, 0, 0, 0.5);
+          color: #ffffff;
         }
       }
     }
@@ -72,10 +72,6 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
 
   &:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
     width: 348px;
-  }
-
-  > select.mobile-device:focus + .dropdown-toggle, .dropdown-toggle:focus {
-    outline: none !important;
   }
 
   &.form-control {
@@ -290,8 +286,8 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
       margin: 0 2%;
       min-height: 26px;
       padding: 3px 5px;
-      background: #151515;
-      border: 1px solid #232323;
+      background: #f5f5f5;
+      border: 1px solid #e3e3e3;
       -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
       pointer-events: none;
@@ -304,7 +300,7 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
 
   .no-results {
     padding: 3px;
-    background: #151515;
+    background: #f5f5f5;
     margin: 0 5px;
     white-space: nowrap;
   }
@@ -386,7 +382,7 @@ select.bs-select-hidden, .bootstrap-select > select.bs-select-hidden, select.sel
       &:before {
         bottom: auto;
         top: -4px;
-        border-top: 7px solid rgba(50, 50, 50, 0.2);
+        border-top: 7px solid rgba(204, 204, 204, 0.2);
         border-bottom: 0;
       }
 
