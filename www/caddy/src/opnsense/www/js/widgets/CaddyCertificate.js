@@ -112,6 +112,6 @@ export default class CaddyCertificate extends BaseTableWidget {
         super.updateTable('caddyCertificateTable', sortedRows);
 
         // Initialize tooltips for new elements
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     }
 }

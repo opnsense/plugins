@@ -109,6 +109,6 @@ export default class CaddyDomain extends BaseTableWidget {
         super.updateTable('caddyDomainTable', rows.map(row => [row.html]));
 
         // Initialize tooltips for interactivity
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     }
 }
