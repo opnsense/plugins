@@ -29,7 +29,6 @@ import BaseTableWidget from "./BaseTableWidget.js";
 export default class CaddyCertificate extends BaseTableWidget {
     constructor() {
         super();
-        this.resizeHandles = "e, w";
         this.tickTimeout = 30;
     }
 
@@ -80,6 +79,8 @@ export default class CaddyCertificate extends BaseTableWidget {
             return;
         }
 
+        $('.caddy-certificate-tooltip').tooltip('hide');
+
         let rows = certificates.map(certificate => {
             let colorClass = 'text-success';
             if (certificate.remaining_days === 0) {
@@ -93,8 +94,8 @@ export default class CaddyCertificate extends BaseTableWidget {
 
             let row = `
                 <div>
-                    <i class="fa fa-lock ${colorClass}" style="cursor: pointer;"
-                        data-toggle="tooltip" title="${statusText}">
+                    <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
+                        data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
                     </i>
                     &nbsp;
                     <span><b>${certificate.hostname}</b></span>
@@ -112,6 +113,6 @@ export default class CaddyCertificate extends BaseTableWidget {
         super.updateTable('caddyCertificateTable', sortedRows);
 
         // Initialize tooltips for new elements
-        $('[data-toggle="tooltip"]').tooltip();
+        $('.caddy-certificate-tooltip').tooltip({container: 'body'});
     }
 }
