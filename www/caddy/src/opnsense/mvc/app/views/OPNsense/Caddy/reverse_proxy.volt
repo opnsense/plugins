@@ -45,7 +45,7 @@
             del:'/api/caddy/ReverseProxy/delReverseProxy/',
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
             options: {
-                requestHandler: addDomainFilterToRequest
+                requestHandler: addDomainFilterToRequest,
             }
         });
 
@@ -155,6 +155,7 @@
                     // Update only the service control UI for 'caddy'
                     showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                     updateServiceControlUI('caddy');
+                    checkAndToggleSubdomainsTab();
                 } else {
                     console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
                 }
@@ -196,7 +197,7 @@
 
         // Control the visibility of selectpicker for filter by domain
         function toggleSelectPicker(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab') {
+            if (tab === 'handlesTab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
                 $('.common-filter').show();
             } else {
                 $('.common-filter').hide();
@@ -213,25 +214,63 @@
             toggleSelectPicker(currentTab);
         });
 
-        // Add click event listener for "Add Handle" button
+        // Add click event listener for "Add Upstream" button
         $("#addHandleBtn").on("click", function() {
-            // Switch to the "Handlers" tab
-            $('#maintabs a[href="#handlesTab"]').tab('show');
-
-            // Once the tab is shown, click the "Add Reverse Handle" button
-            $('#maintabs a[href="#handlesTab"]').one('shown.bs.tab', function(e) {
-                // Ensure the button is visible and click it
+            if ($('#maintabs .active a').attr('href') === "#handlesTab") {
+                // Directly open the dialog if already in the Handles tab
                 $("#addReverseHandleBtn").click();
-            });
+            } else {
+                // Switch to the "Handlers" tab if not already there
+                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function(e) {
+                    $("#addReverseHandleBtn").click();
+                });
+            }
         });
 
         // Add click event listener for "Add Domain" button
         $("#addDomainBtn").on("click", function() {
-            $('#maintabs a[href="#domainsTab"]').tab('show');
-            $('#maintabs a[href="#domainsTab"]').one('shown.bs.tab', function(e) {
+            if ($('#maintabs .active a').attr('href') === "#domainsTab") {
+                // Directly open the dialog if already in the Domains tab
                 $("#addReverseProxyBtn").click();
-            });
+            } else {
+                // Switch to the Domains tab if not already there
+                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function(e) {
+                    $("#addReverseProxyBtn").click();
+                });
+            }
         });
+
+        // Check and set the visibility of the Subdomains tab on initial load
+        checkAndToggleSubdomainsTab();
+
+        // Function to check and toggle Subdomains tab
+        function checkAndToggleSubdomainsTab() {
+            $.ajax({
+                url: '/api/caddy/ReverseProxy/getAllReverseDomains',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var hasWildcard = response.rows.some(domain => domain.domainPort.startsWith('*'));
+                    toggleSubdomainsTab(hasWildcard);
+                },
+                error: function() {
+                    console.error('Failed to load domain data from getAllReverseDomains');
+                }
+            });
+        }
+
+        // Function to show or hide the Subdomains tab
+        function toggleSubdomainsTab(visible) {
+            var subdomainsTab = $('#maintabs a[href="#subdomainsTab"]').parent();
+            if (visible) {
+                subdomainsTab.show();
+            } else {
+                subdomainsTab.hide();
+                if (subdomainsTab.hasClass('active')) {
+                    $('#maintabs a[href="#domainsTab"]').tab('show');
+                }
+            }
+        }
     });
 </script>
 
@@ -242,20 +281,25 @@
         margin-right: 5px;
         padding: 0 15px;  // Align with the tables
     }
-
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
+    <li><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
     <li><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
     <li><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
     <li><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
-
-    <!-- Selectpicker for filter by domain -->
-    <div class="form-group common-filter">
+    <!-- Container using flexbox -->
+    <div class="form-group common-filter" style="display: flex; justify-content: space-between; align-items: center;">
+        <!-- Button group on the left -->
+        <div>
+            <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
+            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Upstream') }}</button>
+        </div>
+        <!-- Selectpicker on the right -->
         <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">
             <!-- Options will be populated dynamically using JavaScript/Ajax -->
         </select>
@@ -298,13 +342,13 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 4px">
-                    <button id="addHandleBtn" type="button" class="btn btn-primary">{{ lang._('Step 2: Add Upstream') }}</button>
-                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Subdomains Tab -->
+    <div id="subdomainsTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <!-- Subdomains -->
             <h1>{{ lang._('Subdomains') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
@@ -381,9 +425,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 4px">
-                    <button id="addDomainBtn" type="button" class="btn btn-primary">{{ lang._('Step 1: Add Domain') }}</button>
-                </div>
             </div>
         </div>
     </div>
