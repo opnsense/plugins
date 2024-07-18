@@ -213,6 +213,29 @@
             toggleSelectPicker(currentTab);
         });
 
+        // Add click event listener for "Add Handle" button
+        $("#addHandleBtn").on("click", function() {
+            // Switch to the "Handlers" tab
+            $('#maintabs a[href="#handlesTab"]').tab('show');
+
+            // Once the tab is shown, click the "Add Reverse Handle" button
+            $('#maintabs a[href="#handlesTab"]').one('shown.bs.tab', function(e) {
+                // Ensure the button is visible and click it
+                $("#addReverseHandleBtn").click();
+            });
+        });
+
+        // Add click event listener for "Add Domain" button
+        $("#addDomainBtn").on("click", function() {
+            // Switch to the "Handlers" tab
+            $('#maintabs a[href="#domainsTab"]').tab('show');
+
+            // Once the tab is shown, click the "Add Reverse Handle" button
+            $('#maintabs a[href="#domainsTab"]').one('shown.bs.tab', function(e) {
+                // Ensure the button is visible and click it
+                $("#addReverseProxyBtn").click();
+            });
+        });
     });
 </script>
 
@@ -279,6 +302,9 @@
                         </tr>
                     </tfoot>
                 </table>
+                <div style="margin-top: 10px;">
+                    <button id="addHandleBtn" type="button" class="btn btn-primary">Step 2: Add Handler</button>
+                </div>
             </div>
         </div>
         <div style="padding-left: 16px;">
@@ -359,6 +385,9 @@
                         </tr>
                     </tfoot>
                 </table>
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <button id="addDomainBtn" type="button" class="btn btn-primary">Step 1: Add Domain</button>
+                </div>
             </div>
         </div>
     </div>
