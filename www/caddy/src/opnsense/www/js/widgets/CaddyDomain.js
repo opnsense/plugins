@@ -72,6 +72,8 @@ export default class CaddyDomain extends BaseTableWidget {
             return;
         }
 
+        $('.caddy-domain-tooltip').tooltip('hide');
+
         let rows = [];
         // Assuming domains is a combination of both reverse and subdomains
         for (const key in domains) {
@@ -87,8 +89,8 @@ export default class CaddyDomain extends BaseTableWidget {
             let row = $(`
                 <div class="caddy-info">
                     <div class="caddy-enabled">
-                        <i class="fa fa-globe ${colorClass}" style="cursor: pointer;"
-                            data-toggle="tooltip" title="${tooltipText}">
+                        <i class="fa fa-globe ${colorClass} caddy-domain-tooltip" style="cursor: pointer;"
+                            data-tooltip="caddy-domain-${domainPort}" title="${tooltipText}">
                         </i>
                         &nbsp;
                         <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
@@ -108,6 +110,6 @@ export default class CaddyDomain extends BaseTableWidget {
         super.updateTable('caddyDomainTable', rows.map(row => [row.html]));
 
         // Initialize tooltips for interactivity
-        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        $('.caddy-domain-tooltip').tooltip({container: 'body'});
     }
 }
