@@ -254,7 +254,7 @@
                     toggleSubdomainsTab(hasWildcard);
                 },
                 error: function() {
-                    console.error('Failed to load domain data from getAllReverseDomains');
+                    console.error("{{ lang._('Failed to load domain data from getAllReverseDomains') }}");
                 }
             });
         }
