@@ -29,6 +29,7 @@
         <label>Handle URI</label>
         <type>text</type>
         <help><![CDATA[Enter an URI to handle. Choose a pattern like "/*" or "/example/*". Leave empty to catch all URIs (recommended). Any request matching this pattern will be handled.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.description</id>
@@ -71,7 +72,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be set in "Load Balancing"]]></help>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration".]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -86,6 +87,11 @@
         <type>text</type>
         <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request because the application demands it.]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Health Check</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>handle.PassiveHealthFailDuration</id>
