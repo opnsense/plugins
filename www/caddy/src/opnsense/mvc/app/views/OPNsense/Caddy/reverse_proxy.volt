@@ -45,7 +45,7 @@
             del:'/api/caddy/ReverseProxy/delReverseProxy/',
             toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
             options: {
-                requestHandler: addDomainFilterToRequest,
+                requestHandler: addDomainFilterToRequest
             }
         });
 
