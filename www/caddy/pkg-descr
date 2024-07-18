@@ -30,6 +30,7 @@ Plugin Changelog
 Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings.
 Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog.
 Change: Description Fields are optional now, reducing the steps needed to create new entries.
+Add: Shortcuts to add new Domains and Handlers, reducing friction in UI.
 
 1.6.0
 

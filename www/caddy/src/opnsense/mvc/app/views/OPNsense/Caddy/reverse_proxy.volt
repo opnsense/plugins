@@ -227,12 +227,8 @@
 
         // Add click event listener for "Add Domain" button
         $("#addDomainBtn").on("click", function() {
-            // Switch to the "Handlers" tab
             $('#maintabs a[href="#domainsTab"]').tab('show');
-
-            // Once the tab is shown, click the "Add Reverse Handle" button
             $('#maintabs a[href="#domainsTab"]').one('shown.bs.tab', function(e) {
-                // Ensure the button is visible and click it
                 $("#addReverseProxyBtn").click();
             });
         });
@@ -302,8 +298,8 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div style="margin-top: 10px;">
-                    <button id="addHandleBtn" type="button" class="btn btn-primary">Step 2: Add Handler</button>
+                <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 4px">
+                    <button id="addHandleBtn" type="button" class="btn btn-primary">{{ lang._('Step 2: Add Upstream') }}</button>
                 </div>
             </div>
         </div>
@@ -385,8 +381,8 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div style="margin-top: 10px; margin-bottom: 10px;">
-                    <button id="addDomainBtn" type="button" class="btn btn-primary">Step 1: Add Domain</button>
+                <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 4px">
+                    <button id="addDomainBtn" type="button" class="btn btn-primary">{{ lang._('Step 1: Add Domain') }}</button>
                 </div>
             </div>
         </div>
