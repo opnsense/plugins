@@ -230,10 +230,8 @@
         // Add click event listener for "Add Domain" button
         $("#addDomainBtn").on("click", function() {
             if ($('#maintabs .active a').attr('href') === "#domainsTab") {
-                // Directly open the dialog if already in the Domains tab
                 $("#addReverseProxyBtn").click();
             } else {
-                // Switch to the Domains tab if not already there
                 $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function(e) {
                     $("#addReverseProxyBtn").click();
                 });
@@ -281,6 +279,11 @@
         margin-right: 5px;
         padding: 0 15px;  // Align with the tables
     }
+    .custom-header {
+        font-weight: 800;
+        font-size: 16px;
+        font-style: italic;
+    }
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -309,7 +312,7 @@
     <div id="domainsTab" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
             <!-- Reverse Proxy -->
-            <h1>{{ lang._('Domains') }}</h1>
+            <h1 class="custom-header">{{ lang._('Domains') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -349,7 +352,7 @@
     <!-- Subdomains Tab -->
     <div id="subdomainsTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1>{{ lang._('Subdomains') }}</h1>
+            <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -385,7 +388,7 @@
     <!-- Handle Tab -->
     <div id="handlesTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1>{{ lang._('Handlers') }}</h1>
+            <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -433,7 +436,7 @@
     <div id="accessTab" class="tab-pane fade">
         <!-- Access Lists Section -->
         <div style="padding-left: 16px;">
-            <h1>{{ lang._('Access Lists') }}</h1>
+            <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
             <div style="display: block;">
                 <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -465,7 +468,7 @@
 
         <!-- Basic Auth Section -->
         <div style="padding-left: 16px;">
-            <h1>{{ lang._('Basic Auth') }}</h1>
+            <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
             <div style="display: block;">
                 <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -495,7 +498,7 @@
     <!-- Header Tab -->
     <div id="headerTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1>{{ lang._('Headers') }}</h1>
+            <h1 class="custom-header">{{ lang._('Headers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
                     <thead>
