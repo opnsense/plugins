@@ -1369,6 +1369,10 @@
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
+      <csp_log_violations type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_log_violations>
       <csp_report_only type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
