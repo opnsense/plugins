@@ -10,6 +10,13 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.34
+
+* Add the option to not log TLS handshakes
+* Remove obsolete http2_push_preload directive
+* Migrate from the deprecated 'listen … http2' directive to the 'http2' directive
+* Limit CSP log file size (migration notice: if you want to keep CSP violations logged, you will need to enable logging in the security policy)
+
 1.33
 
 * Add the "resolver" directive support

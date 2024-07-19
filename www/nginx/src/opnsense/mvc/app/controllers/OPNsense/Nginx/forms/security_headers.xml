@@ -74,6 +74,12 @@
       <help>If checked, the Content Security Policy (CSP) header is enabled. A detailed configuration is still required via the other tabs of this sheet.</help>
     </field>
     <field>
+      <id>security_header.csp_log_violations</id>
+      <label>Log violations</label>
+      <type>checkbox</type>
+      <help>If checked, the plugin collects CSP violation reports and stores one JSON document per line under /var/log/nginx/csp_violations.log. You can use that file to check for XSS attempts or broken web pages where the CSP denied access to a resource.</help>
+    </field>
+    <field>
       <id>security_header.csp_report_only</id>
       <label>Report Only</label>
       <type>checkbox</type>
