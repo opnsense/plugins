@@ -18,24 +18,27 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Handle</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
         <help><![CDATA[Choose a handling directive. "handle" (default) will keep the URI of "Handle URI" in all requests. "handle_path" will strip the URI of "Handle URI" from all requests.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandlePath</id>
         <label>Handle URI</label>
         <type>text</type>
         <help><![CDATA[Enter an URI to handle. Choose a pattern like "/*" or "/example/*". Leave empty to catch all URIs (recommended). Any request matching this pattern will be handled.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>handle.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
     </field>
     <field>
         <type>header</type>
