@@ -10,20 +10,19 @@
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider. Adding a wildcard domain and pressing "Apply" will activate the "Subdomain" Tab, in which subdomains can be configured.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
         <label>Port</label>
         <type>text</type>
         <hint>443</hint>
-        <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule.]]></help>
+        <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule. If the default ports have been changed in "General Settings", leaving this empty will use the chosen alternative ports instead.]]></help>
     </field>
     <field>
         <id>reverse.description</id>
         <label>Description</label>
         <type>text</type>
-        <hint>example.com.443</hint>
         <help><![CDATA[Enter a description for this domain.]]></help>
     </field>
     <field>

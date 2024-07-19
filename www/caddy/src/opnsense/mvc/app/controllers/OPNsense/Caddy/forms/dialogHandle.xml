@@ -18,23 +18,27 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Handle</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
         <help><![CDATA[Choose a handling directive. "handle" (default) will keep the URI of "Handle URI" in all requests. "handle_path" will strip the URI of "Handle URI" from all requests.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandlePath</id>
         <label>Handle URI</label>
         <type>text</type>
         <help><![CDATA[Enter an URI to handle. Choose a pattern like "/*" or "/example/*". Leave empty to catch all URIs (recommended). Any request matching this pattern will be handled.]]></help>
-    </field>
-    <field>
-        <id>handle.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -71,7 +75,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be set in "Load Balancing"]]></help>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration".]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -86,6 +90,17 @@
         <type>text</type>
         <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request because the application demands it.]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpTlsInsecureSkipVerify</id>
+        <label>TLS Insecure Skip Verify</label>
+        <type>checkbox</type>
+        <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Health Check</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>handle.PassiveHealthFailDuration</id>
@@ -127,12 +142,6 @@
         <label>NTLM</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
-    </field>
-    <field>
-        <id>handle.HttpTlsInsecureSkipVerify</id>
-        <label>TLS Insecure Skip Verify</label>
-        <type>checkbox</type>
-        <help><![CDATA[Disable the TLS handshake verification, making the connection insecure and vulnerable to man-in-the-middle attacks. Do not use in production if possible. When having issues with an upstream that only accepts TLS connections, enabling this option can mitigate them.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>

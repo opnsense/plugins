@@ -74,11 +74,12 @@
                         <source>OPNsense.Caddy.Caddy</source>
                         <items>reverseproxy.accesslist</items>
                         <display>accesslistName,description</display>
-                        <display_format>%s - %s</display_format>
+                        <display_format>%s %s</display_format>
                     </reverseproxy>
                 </Model>
             </accesslist>
             <abort type="BooleanField"/>
+            <DisableSuperuser type="BooleanField"/>
             <GracePeriod type="IntegerField">
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
@@ -157,7 +158,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
                             <display>accesslistName,description</display>
-                            <display_format>%s - %s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -167,14 +168,12 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
                             <display>basicauthuser,description</display>
-                            <display_format>%s - %s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField"/>
                 <AccessLog type="BooleanField"/>
@@ -209,7 +208,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.accesslist</items>
                             <display>accesslistName,description</display>
-                            <display_format>%s - %s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </accesslist>
@@ -219,14 +218,12 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.basicauth</items>
                             <display>basicauthuser,description</display>
-                            <display_format>%s - %s</display_format>
+                            <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
                 </basicauth>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
             </subdomain>
@@ -274,7 +271,7 @@
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.header</items>
                             <display>HeaderUpDown,HeaderType,HeaderValue,description</display>
-                            <display_format>%s %s %s - %s</display_format>
+                            <display_format>%s %s %s %s</display_format>
                         </reverseproxy>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -331,9 +328,7 @@
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
                 <HttpTlsServerName type="HostnameField"/>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="DescriptionField">
@@ -353,9 +348,7 @@
                     <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
             </accesslist>
             <basicauth type="ArrayField">
                 <basicauthuser type="TextField">
@@ -366,9 +359,7 @@
                 <basicauthpass type="UpdateOnlyTextField">
                     <Required>Y</Required>
                 </basicauthpass>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
             </basicauth>
             <header type="ArrayField">
                 <HeaderUpDown type="OptionField">
@@ -392,9 +383,7 @@
                     <Mask>/^([^"]{0,1024})$/u</Mask>
                     <ValidationMessage>The header replacement must not contain quotation marks (") and must be less than 1024 characters.</ValidationMessage>
                 </HeaderReplace>
-                <description type="DescriptionField">
-                    <Required>Y</Required>
-                </description>
+                <description type="DescriptionField"/>
             </header>
         </reverseproxy>
     </items>

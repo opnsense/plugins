@@ -28,6 +28,13 @@
 
 {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
 
+{# Print as comments if Caddy runs as root or www user, as information in support cases. #}
+{% if generalSettings.DisableSuperuser|default("0") == "1" %}
+# caddy_user=www
+{% else %}
+# caddy_user=root
+{% endif %}
+
 # Global Options
 {
     {#
@@ -43,7 +50,7 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        output net unixgram//var/caddy/var/run/log {
+        output net unixgram//var/run/caddy/log.sock {
         }
         format json {
             time_format rfc3339
