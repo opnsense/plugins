@@ -248,7 +248,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    var hasWildcard = response.rows.some(domain => domain.domainPort.startsWith('*'));
+                    let hasWildcard = response.rows.some(domain => domain.domainPort.startsWith('*'));
                     toggleSubdomainsTab(hasWildcard);
                 },
                 error: function() {
@@ -259,7 +259,7 @@
 
         // Function to show or hide the Subdomains tab
         function toggleSubdomainsTab(visible) {
-            var subdomainsTab = $('#maintabs a[href="#subdomainsTab"]').parent();
+            let subdomainsTab = $('#maintabs a[href="#subdomainsTab"]').parent();
             if (visible) {
                 subdomainsTab.show();
             } else {
