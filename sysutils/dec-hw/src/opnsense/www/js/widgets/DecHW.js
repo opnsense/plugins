@@ -57,7 +57,7 @@ export default class DecHW extends BaseWidget {
             display: inline-block;
             }
         `;
-      
+
         const styleSheet = document.createElement("style");
         styleSheet.innerText = styles;
         document.head.appendChild(styleSheet);
@@ -71,7 +71,7 @@ export default class DecHW extends BaseWidget {
                 <div id="pwr2" class="data-item">
                     <strong>${this.translations.powersupply} 2</strong>
                 </div>
-            </div> 
+            </div>
         `);
     }
 
