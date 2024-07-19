@@ -46,6 +46,7 @@
         <label>Trusted Proxies</label>
         <type>dropdown</type>
         <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>caddy.general.abort</id>
@@ -59,5 +60,6 @@
         <type>text</type>
         <hint>10</hint>
         <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
+        <advanced>true</advanced>
     </field>
 </form>
