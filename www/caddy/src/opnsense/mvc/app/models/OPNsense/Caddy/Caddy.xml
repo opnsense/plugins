@@ -129,6 +129,7 @@
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
                     <authelia>Authelia</authelia>
+                    <authentik>Authentik</authentik>
                 </OptionValues>
             </AuthProvider>
             <AuthToDomain type="HostnameField"/>
