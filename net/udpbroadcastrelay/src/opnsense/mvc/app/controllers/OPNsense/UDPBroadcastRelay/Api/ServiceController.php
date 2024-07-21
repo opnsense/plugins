@@ -45,9 +45,6 @@ class ServiceController extends ApiMutableModelControllerBase
     public function statusAction($uuid)
     {
         $result = array("result" => "failed", "function" => "status");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
             $node = $mdlUDPBroadcastRelay->getNodeByReference('udpbroadcastrelay.' . $uuid);
@@ -127,9 +124,6 @@ class ServiceController extends ApiMutableModelControllerBase
     public function configAction()
     {
         $result = array("result" => "failed", "function" => "config");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         $result['result'] = $this->callBackend('template');
         return $result;
     }
@@ -140,9 +134,6 @@ class ServiceController extends ApiMutableModelControllerBase
      */
     public function reloadAction()
     {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         $result = $this->configAction();
         if ($result['result'] == 'OK') {
             $result['function'] = "reload";
