@@ -1,13 +1,14 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.2.2</version>
+    <description>Reverse Proxy and Layer4 with Caddy.</description>
+    <version>1.3.0</version>
     <items>
         <general>
             <enabled type="BooleanField">
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
+            <EnableLayer4 type="BooleanField"/>
             <HttpPort type="PortField"/>
             <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField"/>
@@ -331,6 +332,24 @@
                 <HttpTlsServerName type="HostnameField"/>
                 <description type="DescriptionField"/>
             </handle>
+            <layer4 type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <reverse type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.reverse</items>
+                            <display>FromDomain,FromPort</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </reverse>
+                <description type="DescriptionField"/>
+            </layer4>
             <accesslist type="ArrayField">
                 <accesslistName type="DescriptionField">
                     <Required>Y</Required>

@@ -6,6 +6,13 @@
         <help><![CDATA[Enable or disable the Caddy web server.]]></help>
     </field>
     <field>
+        <id>caddy.general.EnableLayer4</id>
+        <label>Enable Layer4</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable experimental Layer4 support. WARNING: This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Only base domains are supported, subdomains are unsupported.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>caddy.general.HttpPort</id>
         <label>HTTP Port</label>
         <type>text</type>

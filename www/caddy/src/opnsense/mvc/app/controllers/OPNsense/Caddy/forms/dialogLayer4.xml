@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>layer4.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable this Layer4 route.]]></help>
+    </field>
+    <field>
+        <id>layer4.reverse</id>
+        <label>Domain</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a domain to route via SNI on Layer4. This route will match before the HTTP Handler for this domain.]]></help>
+    </field>
+    <field>
+        <id>layer4.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this Layer4 route.]]></help>
+    </field>
+</form>

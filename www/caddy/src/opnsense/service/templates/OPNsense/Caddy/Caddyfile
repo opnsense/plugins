@@ -78,9 +78,11 @@
     #}
     {% set accessListUuid = generalSettings.accesslist %}
     {% set logCredentials = generalSettings.LogCredentials %}
+    {% set enableLayer4 = generalSettings.EnableLayer4 %}
 
     {% set hasAccessList = false %}
     {% set hasLogCredentials = false %}
+    {% set hasEnableLayer4 = false %}
 
     {% if accessListUuid %}
         {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
@@ -93,13 +95,24 @@
         {% set hasLogCredentials = true %}
     {% endif %}
 
-    {% if hasAccessList or hasLogCredentials %}
+    {% if enableLayer4 == '1' %}
+        {% set hasEnableLayer4 = true %}
+    {% endif %}
+
+    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 %}
     servers {
         {% if hasAccessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
         {% if hasLogCredentials %}
             log_credentials
+        {% endif %}
+        {% if hasEnableLayer4 %}
+            listener_wrappers {
+                {# Plug the Layer 4 template in #}
+                {% include "OPNsense/Caddy/includeLayer4" %}
+
+            }
         {% endif %}
     }
     {% endif %}

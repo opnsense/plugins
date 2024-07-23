@@ -61,6 +61,18 @@
             }
         });
 
+        $("#reverseLayer4Grid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchLayer4/',
+            get:'/api/caddy/ReverseProxy/getLayer4/',
+            set:'/api/caddy/ReverseProxy/setLayer4/',
+            add:'/api/caddy/ReverseProxy/addLayer4/',
+            del:'/api/caddy/ReverseProxy/delLayer4/',
+            toggle:'/api/caddy/ReverseProxy/toggleLayer4/',
+            options: {
+                requestHandler: addDomainFilterToRequest
+            }
+        });
+
         $("#reverseHandleGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchHandle/',
             get:'/api/caddy/ReverseProxy/getHandle/',
@@ -192,12 +204,13 @@
         $('#reverseFilter').on('changed.bs.select', function() {
             $("#reverseProxyGrid").bootgrid("reload");
             $("#reverseSubdomainGrid").bootgrid("reload");
+            $("#reverseLayer4Grid").bootgrid("reload");
             $("#reverseHandleGrid").bootgrid("reload");
         });
 
         // Control the visibility of selectpicker for filter by domain
         function toggleSelectPicker(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
+            if (tab === 'handlesTab' || tab === 'layer4Tab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
                 $('.common-filter').show();
             } else {
                 $('.common-filter').hide();
@@ -238,8 +251,9 @@
             }
         });
 
-        // Check and set the visibility of the Subdomains tab on initial load
+        // Check and set the visibility of tabs on initial load
         checkAndToggleSubdomainsTab();
+        checkAndToggleLayer4Tab();
 
         // Function to check and toggle Subdomains tab
         function checkAndToggleSubdomainsTab() {
@@ -269,6 +283,36 @@
                 }
             }
         }
+
+        // Function to check if Layer 4 is enabled and toggle the tab visibility
+        function checkAndToggleLayer4Tab() {
+            $.ajax({
+                url: '/api/caddy/reverse_proxy/get',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Check if Layer 4 is enabled
+                    let enableLayer4 = response.caddy.general.EnableLayer4 === '1';
+                    toggleLayer4Tab(enableLayer4);
+                },
+                error: function() {
+                    console.error("Failed to load data from /api/caddy/reverse_proxy/get");
+                }
+            });
+        }
+
+        // Function to show or hide the Layer 4 tab. Doesn't have to be plugged into Apply button since changed in general.volt.
+        function toggleLayer4Tab(visible) {
+            let layer4Tab = $('#maintabs a[href="#layer4Tab"]').parent();
+            if (visible) {
+                layer4Tab.show();
+            } else {
+                layer4Tab.hide();
+                if (layer4Tab.hasClass('active')) {
+                    $('#maintabs a[href="#domainsTab"]').tab('show');
+                }
+            }
+        }
     });
 </script>
 
@@ -289,7 +333,8 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
     <li><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
-    <li><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
+    <li><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
+    <li><a data-toggle="tab" href="#handlesTab">{{ lang._('HTTP Handlers') }}</a></li>
     <li><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
     <li><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
 </ul>
@@ -385,10 +430,41 @@
         </div>
     </div>
 
+    <!-- Layer4 Tab -->
+    <div id="layer4Tab" class="tab-pane fade">
+        <div style="padding-left: 16px;">
+            <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
+            <div style="display: block;"> <!-- Common container -->
+                <table id="reverseLayer4Grid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4" data-editAlert="ConfigurationChangeMessage">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addReverseLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- Handle Tab -->
     <div id="handlesTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
+            <h1 class="custom-header">{{ lang._('HTTP Handlers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -551,9 +627,10 @@
     </div>
 </section>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Reverse Proxy Domain')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Reverse Proxy Subdomain')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit Handler')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Domain')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Subdomain')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':'DialogLayer4','label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit HTTP Handler')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':'DialogHeader','label':lang._('Edit Header')])}}
