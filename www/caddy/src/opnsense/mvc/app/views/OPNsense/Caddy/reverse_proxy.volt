@@ -441,6 +441,9 @@
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                             <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="Matchers" data-type="string">{{ lang._('Matcher') }}</th>
+                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
+                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>

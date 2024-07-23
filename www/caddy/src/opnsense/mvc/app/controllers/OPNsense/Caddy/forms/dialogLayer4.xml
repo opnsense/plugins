@@ -9,7 +9,29 @@
         <id>layer4.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
-        <help><![CDATA[Select a domain to route via SNI on Layer4. This route will match before the HTTP Handler for this domain.]]></help>
+        <help><![CDATA[Select a domain to route via SNI on Layer4.]]></help>
+    </field>
+    <field>
+        <id>layer4.Matchers</id>
+        <label>Matchers</label>
+        <type>dropdown</type>
+        <help><![CDATA[Match the traffic of the selected domain via one of the offered protocols. When the protocol matches, the traffic will be routed (proxied) to the chosen upstream domain. All unmatched traffic will be routed to the HTTP reverse proxy.]]></help>
+    </field>
+    <field>
+        <id>layer4.ToDomain</id>
+        <label>Upstream Domain</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <hint>192.168.1.1</hint>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy.]]></help>
+    </field>
+    <field>
+        <id>layer4.ToPort</id>
+        <label>Upstream Port</label>
+        <type>text</type>
+        <hint>80</hint>
+        <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
         <id>layer4.description</id>
