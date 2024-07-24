@@ -17,14 +17,20 @@ layer4 {
                     {% if 'http' in layer4.Matchers %}
                         @{{ reverse['@uuid'] }}-http http host {{ reverse.FromDomain }}
                         route @{{ reverse['@uuid'] }}-http {
-                            proxy {% for domain in layer4.ToDomain.split(',') %}{{ domain }}:{{ layer4.ToPort }} {% endfor %}
+                            proxy {% for domain in layer4.ToDomain.split(',') %}
+                                {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
+                                {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+                            {% endfor %}
                         }
                     {% endif %}
                     {# Check for TLS Matchers #}
                     {% if 'tls' in layer4.Matchers %}
                         @{{ reverse['@uuid'] }}-tls tls sni {{ reverse.FromDomain }}
                         route @{{ reverse['@uuid'] }}-tls {
-                            proxy {% for domain in layer4.ToDomain.split(',') %}{{ domain }}:{{ layer4.ToPort }} {% endfor %}
+                            proxy {% for domain in layer4.ToDomain.split(',') %}
+                                {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
+                                {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+                            {% endfor %}
                         }
                     {% endif %}
                 {% endif %}
