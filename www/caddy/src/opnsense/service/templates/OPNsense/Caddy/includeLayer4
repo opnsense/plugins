@@ -1,12 +1,38 @@
 {#
 # This file sets up the listener_wrapper for layer 4 routing support.
-# - Section: Servers Global Configuration inside listener_wrapper
-# Allows for custom configurations with the import statement.
+# - Section: Servers Global Configuration
+# Also allows for custom configurations with the import statement.
 #}
-
-# Layer4 Routes
-
+{% set reverse_domains = helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
+{% set layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
 layer4 {
     import /usr/local/etc/caddy/caddy.d/*.layer4
+    {# Loop through each domain #}
+    {% for reverse in reverse_domains %}
+        {% if reverse.enabled == "1" %}
+            {# Check for Layer 4 configurations related to the current domain #}
+            {% for layer4 in layer4_configs %}
+                {% if layer4.enabled == "1" and layer4.reverse == reverse['@uuid'] %}
+                    {# Check for HTTP Matchers #}
+                    {% if 'http' in layer4.Matchers %}
+                        @{{ reverse['@uuid'] }}-http http host {{ reverse.FromDomain }}
+                        route @{{ reverse['@uuid'] }}-http {
+                            proxy {% for domain in layer4.ToDomain.split(',') %}{{ domain }}:{{ layer4.ToPort }} {% endfor %}
+                        }
+                    {% endif %}
+                    {# Check for TLS Matchers #}
+                    {% if 'tls' in layer4.Matchers %}
+                        @{{ reverse['@uuid'] }}-tls tls sni {{ reverse.FromDomain }}
+                        route @{{ reverse['@uuid'] }}-tls {
+                            proxy {% for domain in layer4.ToDomain.split(',') %}{{ domain }}:{{ layer4.ToPort }} {% endfor %}
+                        }
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {# Empty Route that catches all other traffic #}
+    route
 }
+{# Route all other traffic to default tls handler of reverse_proxy #}
 tls
