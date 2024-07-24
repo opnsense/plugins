@@ -35,6 +35,7 @@ use OPNsense\Core\Backend;
  * Class ServiceController Handles settings related API actions for the UDPBroadcastRelay
  * @package OPNsense\UDPBroadcastRelay
  */
+
 class ServiceController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'udpbroadcastrelay';
@@ -44,6 +45,7 @@ class ServiceController extends ApiMutableModelControllerBase
     public function statusAction($uuid)
     {
         if ($uuid != null) {
+            $result = array("result" => "failed", "function" => "status");
             $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
             $node = $mdlUDPBroadcastRelay->getNodeByReference('udpbroadcastrelay.' . $uuid);
             if ($node != null) {
@@ -121,6 +123,7 @@ class ServiceController extends ApiMutableModelControllerBase
      */
     public function configAction()
     {
+        $result = array("result" => "failed", "function" => "status");
         $result['result'] = $this->callBackend('template');
         return $result;
     }
