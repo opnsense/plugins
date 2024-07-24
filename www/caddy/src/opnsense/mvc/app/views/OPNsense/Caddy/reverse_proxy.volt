@@ -27,6 +27,9 @@
 <script>
     $(document).ready(function() {
 
+        // This will show or hide subdomain and layer4 tab
+        initializeTabs();
+
         // Function to handle the search filter request modification
         function addDomainFilterToRequest(request) {
             let selectedDomains = $('#reverseFilter').val();
@@ -164,10 +167,11 @@
             onAction: function(data, status) {
                 // Check if the action was successful
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    // Update only the service control UI for 'caddy'
                     showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
+                    // Update the service control UI for 'caddy'
                     updateServiceControlUI('caddy');
-                    checkAndToggleSubdomainsTab();
+                    // Update the Tab visibility
+                    initializeTabs()
                 } else {
                     console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
                 }
@@ -251,22 +255,28 @@
             }
         });
 
-        // Check and set the visibility of tabs on initial load
-        checkAndToggleSubdomainsTab();
-        checkAndToggleLayer4Tab();
-
-        // Function to check and toggle Subdomains tab
-        function checkAndToggleSubdomainsTab() {
+        // Perform an API call to get data and check tabs' visibility on initial load
+        function initializeTabs() {
             $.ajax({
-                url: '/api/caddy/ReverseProxy/getAllReverseDomains',
+                url: '/api/caddy/reverse_proxy/get',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    let hasWildcard = response.rows.some(domain => domain.domainPort.startsWith('*'));
+                    // Check for wildcards in domains to toggle Subdomains tab
+                    let hasWildcard = false;
+                    Object.values(response.caddy.reverseproxy.reverse).forEach(entry => {
+                        if (entry.FromDomain.startsWith('*')) {
+                            hasWildcard = true;
+                        }
+                    });
                     toggleSubdomainsTab(hasWildcard);
+
+                    // Check if Layer 4 is enabled to toggle the Layer 4 tab
+                    let enableLayer4 = response.caddy.general.EnableLayer4 === '1';
+                    toggleLayer4Tab(enableLayer4);
                 },
                 error: function() {
-                    console.error("{{ lang._('Failed to load domain data from getAllReverseDomains') }}");
+                    console.error("Failed to load data from /api/caddy/reverse_proxy/get");
                 }
             });
         }
@@ -284,24 +294,7 @@
             }
         }
 
-        // Function to check if Layer 4 is enabled and toggle the tab visibility
-        function checkAndToggleLayer4Tab() {
-            $.ajax({
-                url: '/api/caddy/reverse_proxy/get',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Check if Layer 4 is enabled
-                    let enableLayer4 = response.caddy.general.EnableLayer4 === '1';
-                    toggleLayer4Tab(enableLayer4);
-                },
-                error: function() {
-                    console.error("Failed to load data from /api/caddy/reverse_proxy/get");
-                }
-            });
-        }
-
-        // Function to show or hide the Layer 4 tab. Doesn't have to be plugged into Apply button since changed in general.volt.
+        // Function to show or hide the Layer 4 tab
         function toggleLayer4Tab(visible) {
             let layer4Tab = $('#maintabs a[href="#layer4Tab"]').parent();
             if (visible) {
@@ -313,6 +306,7 @@
                 }
             }
         }
+
     });
 </script>
 
@@ -328,6 +322,7 @@
         font-size: 16px;
         font-style: italic;
     }
+
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -345,7 +340,7 @@
         <!-- Button group on the left -->
         <div>
             <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Upstream') }}</button>
+            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add HTTP Handler') }}</button>
         </div>
         <!-- Selectpicker on the right -->
         <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">

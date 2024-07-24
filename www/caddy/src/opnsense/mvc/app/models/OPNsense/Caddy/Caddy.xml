@@ -1,6 +1,6 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for HTTPS reverse proxy and Layer4 streams with Caddy.</description>
+    <description>Model for Caddy HTTPS and Layer4 Reverse Proxy.</description>
     <version>1.3.0</version>
     <items>
         <general>
@@ -350,18 +350,9 @@
                 </reverse>
                 <Matchers type="OptionField">
                     <Required>Y</Required>
-                    <Default>remote_ip</Default>
+                    <Default>tls</Default>
                     <OptionValues>
-                        <remote_ip>Remote IP</remote_ip>
-                        <local_ip>Local IP</local_ip>
-                        <http>HTTP</http>
-                        <postgres>Postgres</postgres>
-                        <socks4>Socks4</socks4>
-                        <socks5>Socks5</socks5>
-                        <ssh>SSH</ssh>
                         <tls>TLS</tls>
-                        <xmpp>XMPP</xmpp>
-                        <rdp>RDP</rdp>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">
@@ -370,7 +361,9 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
-                <ToPort type="PortField"/>
+                <ToPort type="PortField">
+                    <Required>Y</Required>
+                </ToPort>
                 <description type="DescriptionField"/>
             </layer4>
             <accesslist type="ArrayField">

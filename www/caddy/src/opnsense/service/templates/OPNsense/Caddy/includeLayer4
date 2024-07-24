@@ -1,6 +1,12 @@
 {#
 # This file sets up the listener_wrapper for layer 4 routing support.
-# - Section: Servers Global Configuration
+# - Section: Servers Global Configuration inside listener_wrapper
+# Allows for custom configurations with the import statement.
 #}
 
 # Layer4 Routes
+
+layer4 {
+    import /usr/local/etc/caddy/caddy.d/*.layer4
+}
+tls

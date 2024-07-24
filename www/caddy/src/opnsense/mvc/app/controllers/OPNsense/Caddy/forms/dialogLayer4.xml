@@ -9,13 +9,13 @@
         <id>layer4.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
-        <help><![CDATA[Select a domain to route via SNI on Layer4.]]></help>
+        <help><![CDATA[Select a domain to route via SNI or hostname. The domain will be added to the same "listener_wrapper" as the default reverse proxy. This means, the default HTTP and HTTPS ports of Caddy are chosen automatically for the frontend listener. Any custom ports will be ignored. Any other options for this domain will not be matched here.]]></help>
     </field>
     <field>
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domain via one of the offered protocols. When the protocol matches, the traffic will be routed (proxied) to the chosen upstream domain. All unmatched traffic will be routed to the HTTP reverse proxy.]]></help>
+        <help><![CDATA[Match the traffic of the selected domain via one of the offered protocols. When the protocol matches, the traffic will be streamed to the chosen upstream domain (without terminating TLS). Since the Layer4 app matches the traffic before being received by the HTTP app, "HTTP Handlers" for the same domain name will not match anymore. Only protocols that support parsing SNI or hostnames can be implemented here.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
@@ -30,8 +30,7 @@
         <id>layer4.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
-        <hint>80</hint>
-        <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
+        <help><![CDATA[Choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
         <id>layer4.description</id>
