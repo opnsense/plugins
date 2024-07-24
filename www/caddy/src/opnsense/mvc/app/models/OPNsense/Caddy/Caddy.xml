@@ -365,6 +365,11 @@
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
+                </PassiveHealthFailDuration>
                 <description type="DescriptionField"/>
             </layer4>
             <accesslist type="ArrayField">

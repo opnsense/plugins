@@ -27,15 +27,16 @@ Plugin Changelog
 
 1.6.2
 
-* Add Authentik as authentication provider (contributed by Tim-Sc)
+* Add: Authentik as authentication provider (contributed by Tim-Sc)
+* Add: Feature Preview - Layer4 support to proxy TLS without termination to one or multiple upstreams.
 
 1.6.1
 
-Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings.
-Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog.
-Change: Description Fields are optional now, reducing the steps needed to create new entries.
-Add: Shortcuts to add new Domains and Handlers.
-Change: Subdomain Tab only appears when a wildcard domain has been configured.
+* Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings.
+* Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog.
+* Change: Description Fields are optional now, reducing the steps needed to create new entries.
+* Add: Shortcuts to add new Domains and Handlers.
+* Change: Subdomain Tab only appears when a wildcard domain has been configured.
 
 1.6.0
 

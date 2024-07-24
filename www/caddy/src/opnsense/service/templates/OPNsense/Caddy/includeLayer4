@@ -5,6 +5,20 @@
 #}
 {% set reverse_domains = helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
 {% set layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
+
+{# Define a macro for the proxy setup #}
+{% macro setup_proxy(layer4) %}
+    proxy {% for domain in layer4.ToDomain.split(',') %}
+        {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
+        {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+    {% endfor %} {
+    {% if layer4.PassiveHealthFailDuration %}
+        fail_duration {{ layer4.PassiveHealthFailDuration }}s
+    {% endif %}
+    }
+{% endmacro %}
+
+{# Set up Layer4 App #}
 layer4 {
     import /usr/local/etc/caddy/caddy.d/*.layer4
     {# Loop through each domain #}
@@ -17,20 +31,14 @@ layer4 {
                     {% if 'http' in layer4.Matchers %}
                         @{{ reverse['@uuid'] }}-http http host {{ reverse.FromDomain }}
                         route @{{ reverse['@uuid'] }}-http {
-                            proxy {% for domain in layer4.ToDomain.split(',') %}
-                                {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-                                {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
-                            {% endfor %}
+                            {{ setup_proxy(layer4) }}
                         }
                     {% endif %}
                     {# Check for TLS Matchers #}
                     {% if 'tls' in layer4.Matchers %}
                         @{{ reverse['@uuid'] }}-tls tls sni {{ reverse.FromDomain }}
                         route @{{ reverse['@uuid'] }}-tls {
-                            proxy {% for domain in layer4.ToDomain.split(',') %}
-                                {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-                                {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
-                            {% endfor %}
+                            {{ setup_proxy(layer4) }}
                         }
                     {% endif %}
                 {% endif %}
@@ -40,5 +48,5 @@ layer4 {
     {# Empty Route that catches all other traffic #}
     route
 }
-{# Route all other traffic to default tls handler of reverse_proxy #}
+{# Route all other traffic to HTTP App #}
 tls
