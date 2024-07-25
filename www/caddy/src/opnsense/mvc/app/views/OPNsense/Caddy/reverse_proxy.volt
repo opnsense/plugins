@@ -272,7 +272,7 @@
                     toggleLayer4Tab(enableLayer4);
                 },
                 error: function() {
-                    console.error("Failed to load data from /api/caddy/reverse_proxy/get");
+                    console.error("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}");
                 }
             });
         }
