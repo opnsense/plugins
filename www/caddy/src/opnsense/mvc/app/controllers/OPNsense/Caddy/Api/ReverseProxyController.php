@@ -212,12 +212,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     // Layer4 Section
 
-    // Adjusted for search filter dropdown, using helper function
     public function searchLayer4Action()
     {
-        // For layer4, compare 'reverseUuids' (which contain domain UUIDs)
-        // to 'reverse' (which contain the same domain UUIDs due to model relation field)
-        return $this->searchActionHelper("reverseproxy.layer4", "reverseUuids", "reverse");
+        return $this->searchBase("reverseproxy.layer4", null, 'description');
     }
 
     public function setLayer4Action($uuid)

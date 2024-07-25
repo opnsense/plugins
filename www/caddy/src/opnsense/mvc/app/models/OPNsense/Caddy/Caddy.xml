@@ -332,45 +332,6 @@
                 <HttpTlsServerName type="HostnameField"/>
                 <description type="DescriptionField"/>
             </handle>
-            <layer4 type="ArrayField">
-                <enabled type="BooleanField">
-                    <Default>1</Default>
-                    <Required>Y</Required>
-                </enabled>
-                <reverse type="ModelRelationField">
-                    <Required>Y</Required>
-                    <Model>
-                        <reverseproxy>
-                            <source>OPNsense.Caddy.Caddy</source>
-                            <items>reverseproxy.reverse</items>
-                            <display>FromDomain,FromPort</display>
-                            <display_format>%s %s</display_format>
-                        </reverseproxy>
-                    </Model>
-                </reverse>
-                <Matchers type="OptionField">
-                    <Required>Y</Required>
-                    <Default>tls</Default>
-                    <OptionValues>
-                        <tls>TLS</tls>
-                    </OptionValues>
-                </Matchers>
-                <ToDomain type="HostnameField">
-                    <Required>Y</Required>
-                    <FieldSeparator>,</FieldSeparator>
-                    <AsList>Y</AsList>
-                    <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
-                </ToDomain>
-                <ToPort type="PortField">
-                    <Required>Y</Required>
-                </ToPort>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
-                </PassiveHealthFailDuration>
-                <description type="DescriptionField"/>
-            </layer4>
             <accesslist type="ArrayField">
                 <accesslistName type="DescriptionField">
                     <Required>Y</Required>
@@ -426,6 +387,43 @@
                 </HeaderReplace>
                 <description type="DescriptionField"/>
             </header>
+            <layer4 type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <FromDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <IpAllowed>N</IpAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
+                </FromDomain>
+                <Matchers type="OptionField">
+                    <Required>Y</Required>
+                    <Default>tlssni</Default>
+                    <OptionValues>
+                        <tlssni>tls sni</tlssni>
+                        <nottlssni>not tls sni</nottlssni>
+                    </OptionValues>
+                </Matchers>
+                <ToDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
+                </ToDomain>
+                <ToPort type="PortField">
+                    <Required>Y</Required>
+                </ToPort>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <description type="DescriptionField"/>
+            </layer4>
         </reverseproxy>
     </items>
 </model>

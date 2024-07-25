@@ -6,10 +6,12 @@
         <help><![CDATA[Enable this Layer4 route.]]></help>
     </field>
     <field>
-        <id>layer4.reverse</id>
+        <id>layer4.FromDomain</id>
         <label>Domain</label>
-        <type>dropdown</type>
-        <help><![CDATA[Select a domain to route via SNI or hostname. The domain will be added to the same "listener_wrapper" as the default reverse proxy. This means, the default HTTP and HTTPS ports are chosen automatically for the frontend listener. If any of the domains have custom ports set, the traffic received by these ports will also be sent to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners is funnelled through this wrapper to be processed and routed.]]></help>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter one or multiple domains to route via SNI. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed.]]></help>
     </field>
     <field>
         <id>layer4.description</id>
@@ -21,7 +23,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domain via one of the offered protocols. When the protocol matches, the traffic will be streamed to the chosen upstream domain (without terminating TLS). Since the Layer4 app matches the traffic before the HTTP app, "HTTP Handlers" for the same domain name will not match anymore. Only protocols that send SNI can be implemented here. When choosing TLS, any protocol that looks like TLS in its TCP/UDP pakets can be routed without being altered. An example would be OpenConnect SSL VPN.]]></help>
+        <help><![CDATA[Match the traffic of the entered domains via one of the offered protocols. When the protocol matches, the traffic will be streamed to the chosen upstream domains (without terminating TLS). Since the Layer4 app matches the traffic before being received by the HTTP app, "HTTP Handlers" for the same domain name will not match anymore. Only protocols that send and evaluate SNI can be routed here. The matcher "tls sni" will route all entered domains to the upstreams. The matcher "not tls sni" will route all unmatched domains to the upstreams.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
@@ -29,7 +31,6 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <hint>192.168.1.1</hint>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy.]]></help>
     </field>
     <field>
