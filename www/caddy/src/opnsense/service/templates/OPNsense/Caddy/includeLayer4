@@ -3,17 +3,16 @@
 # - Section: Servers Global Configuration
 # Also allows for custom configurations with the import statement.
 #}
-{% set reverse_domains = helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
 {% set layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
 
-{# Define a macro for the proxy setup #}
-{% macro setup_proxy(layer4) %}
-    proxy {% for domain in layer4.ToDomain.split(',') %}
-        {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-        {{ is_ipv6 and '[' or '' }}{{ domain }}{{ is_ipv6 and ']' or '' }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+{# Define a macro for setting up the proxy #}
+{% macro setup_proxy(to_domains, to_port, fail_duration) %}
+    proxy {% for domain in to_domains.split(',') %}
+        {% set is_ipv6 = (':' in domain) %}  {# Check if the domain contains a colon, typical in IPv6 addresses #}
+        {{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %} {% endif %}
     {% endfor %} {
-    {% if layer4.PassiveHealthFailDuration %}
-        fail_duration {{ layer4.PassiveHealthFailDuration }}s
+    {% if fail_duration %}
+        fail_duration {{ fail_duration }}s
     {% endif %}
     }
 {% endmacro %}
@@ -21,21 +20,22 @@
 {# Set up Layer4 App #}
 layer4 {
     import /usr/local/etc/caddy/caddy.d/*.layer4
-    {# Loop through each domain #}
-    {% for reverse in reverse_domains %}
-        {% if reverse.enabled == "1" %}
-            {# Check for Layer 4 configurations related to the current domain #}
-            {% for layer4 in layer4_configs %}
-                {% if layer4.enabled == "1" and layer4.reverse == reverse['@uuid'] %}
-                    {# Check for TLS Matchers #}
-                    {% if 'tls' in layer4.Matchers %}
-                        @{{ reverse['@uuid'] }}-tls tls sni {{ reverse.FromDomain }}
-                        route @{{ reverse['@uuid'] }}-tls {
-                            {{ setup_proxy(layer4) }}
-                        }
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
+    {# First loop to handle tls sni matchers #}
+    {% for layer4 in layer4_configs %}
+        {% if layer4.enabled == "1" and layer4.Matchers == 'tlssni' %}
+            @{{ layer4['@uuid'] }} tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+            route @{{ layer4['@uuid'] }} {
+                {{ setup_proxy(layer4.ToDomain, layer4.ToPort, layer4.PassiveHealthFailDuration) }}
+            }
+        {% endif %}
+    {% endfor %}
+    {# Second loop to handle not tls sni matchers #}
+    {% for layer4 in layer4_configs %}
+        {% if layer4.enabled == "1" and layer4.Matchers == 'nottlssni' %}
+            @{{ layer4['@uuid'] }} not tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+            route @{{ layer4['@uuid'] }} {
+                {{ setup_proxy(layer4.ToDomain, layer4.ToPort, layer4.PassiveHealthFailDuration) }}
+            }
         {% endif %}
     {% endfor %}
     {# Empty Route that catches all other traffic #}
