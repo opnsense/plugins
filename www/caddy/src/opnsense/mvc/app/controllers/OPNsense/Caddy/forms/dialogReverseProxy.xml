@@ -51,7 +51,7 @@
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 Challenge</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can not be used due to restrictive firewall policies. Not applicaple for Layer4 Routes.]]></help>
+        <help><![CDATA[Enable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can not be used due to restrictive firewall policies. Not applicable for Layer4 Routes.]]></help>
     </field>
     <field>
         <id>reverse.AcmePassthrough</id>
