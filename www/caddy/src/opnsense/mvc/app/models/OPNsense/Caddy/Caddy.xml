@@ -353,7 +353,6 @@
                     <Default>tls</Default>
                     <OptionValues>
                         <tls>TLS</tls>
-                        <http>HTTP</http>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">

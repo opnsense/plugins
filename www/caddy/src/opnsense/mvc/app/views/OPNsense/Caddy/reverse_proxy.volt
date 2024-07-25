@@ -330,8 +330,8 @@
     <li><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
     <li><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
     <li><a data-toggle="tab" href="#handlesTab">{{ lang._('HTTP Handlers') }}</a></li>
-    <li><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
-    <li><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
+    <li><a data-toggle="tab" href="#accessTab">{{ lang._('HTTP Access') }}</a></li>
+    <li><a data-toggle="tab" href="#headerTab">{{ lang._('HTTP Headers') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -439,6 +439,7 @@
                             <th data-column-id="Matchers" data-type="string">{{ lang._('Matcher') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
+                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
@@ -572,7 +573,7 @@
     <!-- Header Tab -->
     <div id="headerTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Headers') }}</h1>
+            <h1 class="custom-header">{{ lang._('HTTP Headers') }}</h1>
             <div style="display: block;"> <!-- Common container -->
                 <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
                     <thead>
@@ -631,4 +632,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit HTTP Handler')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':'DialogHeader','label':lang._('Edit Header')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':'DialogHeader','label':lang._('Edit HTTP Header')])}}
