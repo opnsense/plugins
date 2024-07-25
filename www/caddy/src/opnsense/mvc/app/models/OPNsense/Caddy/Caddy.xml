@@ -396,6 +396,7 @@
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
@@ -404,8 +405,8 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
-                        <tlssni>tls sni</tlssni>
-                        <nottlssni>not tls sni</nottlssni>
+                        <tlssni>TLS SNI</tlssni>
+                        <nottlssni>not TLS SNI</nottlssni>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">

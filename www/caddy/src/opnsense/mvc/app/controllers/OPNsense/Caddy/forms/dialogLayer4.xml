@@ -11,7 +11,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter one or multiple domains to route via SNI. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed.]]></help>
+        <help><![CDATA[Enter one or multiple domains to route via SNI. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*".]]></help>
     </field>
     <field>
         <id>layer4.description</id>
@@ -23,7 +23,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domains. When the protocol matches, the TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send and evaluate SNI can be routed here. Routing Logic: 1. The matcher "tls sni" will route all selected domains to the selected upstreams. 2. The matcher "not tls sni" will route all unmatched domains to the upstreams - it will always be processed after "tls sni". 3. All domains that are still unmatched will be routed to the "HTTP Handlers".]]></help>
+        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send and evaluate SNI can be routed here. Routing Logic: 1. The matcher "TLS SNI" will route all selected domains to the selected upstreams. 2. The matcher "not TLS SNI" inverts the match of "TLS SNI" and will always be evaluated after it. 3. All unmatched traffic will be routed to the default "Domains" or "Subdomains" tab, where they can be routed by "HTTP Handlers". If no traffic is unmatched, it will be handled exclusively by Layer4 routes.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
