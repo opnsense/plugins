@@ -23,7 +23,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the entered domains via one of the offered protocols. When the protocol matches, the traffic will be streamed to the chosen upstream domains (without terminating TLS). Since the Layer4 app matches the traffic before being received by the HTTP app, "HTTP Handlers" for the same domain name will not match anymore. Only protocols that send and evaluate SNI can be routed here. The matcher "tls sni" will route all entered domains to the upstreams. The matcher "not tls sni" will route all unmatched domains to the upstreams.]]></help>
+        <help><![CDATA[Match the traffic of the selected domains. When the protocol matches, the TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send and evaluate SNI can be routed here. Routing Logic: 1. The matcher "tls sni" will route all selected domains to the selected upstreams. 2. The matcher "not tls sni" will route all unmatched domains to the upstreams - it will always be processed after "tls sni". 3. All domains that are still unmatched will be routed to the "HTTP Handlers".]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
