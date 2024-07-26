@@ -9,16 +9,19 @@ WWW: https://caddyserver.com/
 Main features of this plugin:
 
 * Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
-* Hard to break! Extensive validations of the configuration on each save and apply.
-* Automatic Let's Encrypt and ZeroSSL Certificates with HTTP-01 and TLS-ALPN-01 challenge
+* Automatic Let's Encrypt and ZeroSSL certificates with HTTP-01 and TLS-ALPN-01 challenge
 * DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
 * Use custom certificates from OPNsense certificate store
 * Wildcard Domain and Subdomain support
 * Access Lists to restrict access based on static networks
 * Basic Auth to restrict access by username and password
+* Forward Auth with Authelia
 * Syslog-ng integration and HTTP Access Log
-* Header manipulation with header_up and header_down
+* NTLM Transport
+* Header manipulation
 * Simple load balancing with passive health check
+* Widgets for OPNsense Dashboard (24.7 and later)
+* Layer4 SNI based routing of TCP/UDP
 
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
@@ -28,7 +31,7 @@ Plugin Changelog
 1.6.2
 
 * Add: Authentik as authentication provider (contributed by Tim-Sc)
-* Add: Feature Preview - Layer4 support to proxy TLS without termination to one or multiple upstreams.
+* Add: Feature Preview - Layer4 routing support
 
 1.6.1
 
