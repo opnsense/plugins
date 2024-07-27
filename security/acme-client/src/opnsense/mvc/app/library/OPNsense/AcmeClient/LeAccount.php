@@ -228,7 +228,7 @@ class LeAccount extends LeCommon
             $this->fixConfig();
 
             // Update account status.
-            LeUtils::log_error('account registration successful for ' . $this->config->name);
+            LeUtils::log_debug('account registration successful for ' . $this->config->name);
             $this->setStatus(200);
         } else {
             LeUtils::log_debug('account already registered: ' . (string)$this->config->name, $this->debug);

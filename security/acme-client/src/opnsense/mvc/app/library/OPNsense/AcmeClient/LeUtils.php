@@ -209,7 +209,7 @@ class LeUtils
 
             // Get exit code
             $result = proc_close($proc);
-            log_error(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
+            log_debug(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
             return($result);
         } else {
             log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));

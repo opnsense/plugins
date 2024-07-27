@@ -13,6 +13,7 @@ Plugin Changelog
 Fixed:
 * fix empty System Log
 * avoid unnecessary error log messages (#3860)
+* don't log errors for successful commands (#3955)
 
 4.4
 
