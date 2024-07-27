@@ -23,7 +23,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send and evaluate SNI can be routed here. Routing Logic: 1. The matcher "TLS SNI" will route all selected domains to the selected upstreams. 2. The matcher "not TLS SNI" inverts the match of "TLS SNI" and will always be evaluated after it. 3. All unmatched traffic will be routed to the default "Domains" or "Subdomains" tab, where they can be routed by "HTTP Handlers". If no traffic is unmatched, it will be handled exclusively by Layer4 routes.]]></help>
+        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send a Client Hello - like TLS - can be routed here. Routing Logic: 1. The matcher "SNI" will route all selected domains to the selected upstreams. 2. The matcher "not SNI" inverts the match of "SNI" and will always be evaluated after it. It will route any unmatched domains to the selected upstream and all matched domains will fall through to the next routing step. 3. All unmatched domains will be routed to the default "Domains" or "Subdomains" tab, where they can be routed by "HTTP Handlers". If all domains are matched, they will be handled exclusively by Layer4 routes.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
