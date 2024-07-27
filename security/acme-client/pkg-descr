@@ -12,6 +12,7 @@ Plugin Changelog
 
 Fixed:
 * fix empty System Log
+* avoid unnecessary error log messages (#3860)
 
 4.4
 
