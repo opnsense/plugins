@@ -27,9 +27,6 @@
 <script>
     $(document).ready(function() {
 
-        // This will show or hide subdomain and layer4 tab
-        initializeTabs();
-
         // Function to handle the search filter request modification
         function addDomainFilterToRequest(request) {
             let selectedDomains = $('#reverseFilter').val();
@@ -279,29 +276,31 @@
 
         // Function to show or hide the Subdomains tab
         function toggleSubdomainsTab(visible) {
-            let subdomainsTab = $('#maintabs a[href="#subdomainsTab"]').parent();
+            let subdomainsTab = $('#tab-subdomains');
             if (visible) {
                 subdomainsTab.show();
             } else {
                 subdomainsTab.hide();
                 if (subdomainsTab.hasClass('active')) {
-                    $('#maintabs a[href="#domainsTab"]').tab('show');
+                    $('#tab-domains a').tab('show');
                 }
             }
         }
 
         // Function to show or hide the Layer 4 tab
         function toggleLayer4Tab(visible) {
-            let layer4Tab = $('#maintabs a[href="#layer4Tab"]').parent();
+            let layer4Tab = $('#tab-layer4');
             if (visible) {
                 layer4Tab.show();
             } else {
                 layer4Tab.hide();
                 if (layer4Tab.hasClass('active')) {
-                    $('#maintabs a[href="#domainsTab"]').tab('show');
+                    $('#tab-domains a').tab('show');
                 }
             }
         }
+
+        initializeTabs();
 
     });
 </script>
@@ -322,12 +321,12 @@
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
-    <li><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
-    <li><a data-toggle="tab" href="#handlesTab">{{ lang._('HTTP Handlers') }}</a></li>
-    <li><a data-toggle="tab" href="#accessTab">{{ lang._('HTTP Access') }}</a></li>
-    <li><a data-toggle="tab" href="#headerTab">{{ lang._('HTTP Headers') }}</a></li>
-    <li><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
+    <li id="tab-subdomains" style="display: none;"><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
+    <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('HTTP Handlers') }}</a></li>
+    <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('HTTP Access') }}</a></li>
+    <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('HTTP Headers') }}</a></li>
+    <li id="tab-layer4" style="display: none;"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
