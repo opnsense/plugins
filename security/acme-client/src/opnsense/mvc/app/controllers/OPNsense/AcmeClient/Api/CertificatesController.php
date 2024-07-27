@@ -104,7 +104,7 @@ class CertificatesController extends ApiMutableModelControllerBase
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient sign-cert ${uuid}");
+                    $response = $backend->configdRun("acmeclient sign-cert {$uuid}");
                     return array("response" => $response);
                 }
             }
@@ -125,7 +125,7 @@ class CertificatesController extends ApiMutableModelControllerBase
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-key ${uuid}");
+                $response = $backend->configdRun("acmeclient remove-key {$uuid}");
             }
         }
         return $result;
@@ -146,7 +146,7 @@ class CertificatesController extends ApiMutableModelControllerBase
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient revoke-cert ${uuid}");
+                    $response = $backend->configdRun("acmeclient revoke-cert {$uuid}");
                     return array("response" => $response);
                 }
             }
@@ -167,7 +167,7 @@ class CertificatesController extends ApiMutableModelControllerBase
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient run-automation ${uuid}");
+                $response = $backend->configdRun("acmeclient run-automation {$uuid}");
             }
         }
         return $result;
@@ -186,7 +186,7 @@ class CertificatesController extends ApiMutableModelControllerBase
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient import ${uuid}");
+                $response = $backend->configdRun("acmeclient import {$uuid}");
             }
         }
         return $result;
