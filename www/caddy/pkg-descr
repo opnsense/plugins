@@ -31,7 +31,7 @@ Plugin Changelog
 1.6.2
 
 * Add: Authentik as authentication provider (contributed by Tim-Sc)
-* Add: Feature Preview - Layer4 routing support
+* Add: Feature Preview - Layer4 routing to proxy traffic without TLS termination. Can be enabled in advanced mode of "General Settings".
 
 1.6.1
 
