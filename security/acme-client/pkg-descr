@@ -8,6 +8,8 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.5
+
 Fixed:
 * fix empty System Log
 
