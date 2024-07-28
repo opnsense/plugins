@@ -224,7 +224,7 @@
             toggleSelectPicker(currentTab);
         });
 
-        // Add click event listener for "Add Upstream" button
+        // Add click event listener for "Add HTTP Handler" button
         $("#addHandleBtn").on("click", function() {
             if ($('#maintabs .active a').attr('href') === "#handlesTab") {
                 // Directly open the dialog if already in the Handles tab
@@ -256,17 +256,12 @@
                 dataType: 'json',
                 success: function(response) {
                     // Check for wildcards in domains to toggle Subdomains tab
-                    let hasWildcard = false;
-                    Object.values(response.caddy.reverseproxy.reverse).forEach(entry => {
-                        if (entry.FromDomain.startsWith('*')) {
-                            hasWildcard = true;
-                        }
-                    });
-                    toggleSubdomainsTab(hasWildcard);
+                    const hasWildcard = Object.values(response.caddy.reverseproxy.reverse).some(entry => entry.FromDomain.startsWith('*'));
+                    toggleTabVisibility('#tab-subdomains', hasWildcard);
 
                     // Check if Layer 4 is enabled to toggle the Layer 4 tab
-                    let enableLayer4 = response.caddy.general.EnableLayer4 === '1';
-                    toggleLayer4Tab(enableLayer4);
+                    const enableLayer4 = response.caddy.general.EnableLayer4 === '1';
+                    toggleTabVisibility('#tab-layer4', enableLayer4);
                 },
                 error: function() {
                     console.error("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}");
@@ -274,32 +269,21 @@
             });
         }
 
-        // Function to show or hide the Subdomains tab
-        function toggleSubdomainsTab(visible) {
-            let subdomainsTab = $('#tab-subdomains');
+        // Generic function to show or hide a tab and switch to another tab if the current one is hidden
+        function toggleTabVisibility(tabSelector, visible) {
+            let tab = $(tabSelector);
             if (visible) {
-                subdomainsTab.show();
+                tab.show();
             } else {
-                subdomainsTab.hide();
-                if (subdomainsTab.hasClass('active')) {
+                tab.hide();
+                // Switch to 'Domains' tab if the currently active tab is being hidden
+                if (tab.hasClass('active')) {
                     $('#tab-domains a').tab('show');
                 }
             }
         }
 
-        // Function to show or hide the Layer 4 tab
-        function toggleLayer4Tab(visible) {
-            let layer4Tab = $('#tab-layer4');
-            if (visible) {
-                layer4Tab.show();
-            } else {
-                layer4Tab.hide();
-                if (layer4Tab.hasClass('active')) {
-                    $('#tab-domains a').tab('show');
-                }
-            }
-        }
-
+        // Initialize tabs on load
         initializeTabs();
 
     });
