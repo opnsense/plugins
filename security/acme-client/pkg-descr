@@ -8,6 +8,14 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.5
+
+Fixed:
+* fix empty System Log
+* avoid unnecessary error log messages (#3860)
+* don't log errors for successful commands (#3955)
+* fix more PHP deprecation messages (#4008)
+
 4.4
 
 Fixed:

@@ -125,9 +125,9 @@ abstract class LeCommon
     {
         // Get config object
         $model = new \OPNsense\AcmeClient\AcmeClient();
-        $obj = $model->getNodeByReference("${path}.${uuid}");
+        $obj = $model->getNodeByReference("{$path}.{$uuid}");
         if ($obj == null) {
-            LeUtils::log_error("config of type ${path} not found: ${uuid}");
+            LeUtils::log_error("config of type {$path} not found: {$uuid}");
             return false;
         }
         // Store config objects
@@ -153,9 +153,9 @@ abstract class LeCommon
     {
         // Get account config object
         $model = new \OPNsense\AcmeClient\AcmeClient();
-        $obj = $model->getNodeByReference("accounts.account.${uuid}");
+        $obj = $model->getNodeByReference("accounts.account.{$uuid}");
         if (empty($obj) || $obj == null) {
-            LeUtils::log_error("unable to set CA, account not found: ${uuid}");
+            LeUtils::log_error("unable to set CA, account not found: {$uuid}");
             return false;
         }
 
