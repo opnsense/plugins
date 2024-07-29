@@ -248,13 +248,13 @@
 # Reverse Proxy Configuration
 
 {#
-#   When Layer4 is active, under certain conditions
-#   this workaround is necessary so Caddy listens on the default ports.
-#   Otherwise the Layer4 Routes will not work, since there is no port listening for them.
+#   When Layer4 is active, set default ports.
+#   Caddy does not set them up automatically under certain conditions.
+#   For example when AutoHTTPS would be off, or no domains have been configured.
+#   There are no regressions to set these ports up.
 #}
-{% set hasReverseProxyEntry = helpers.toList('Pischem.caddy.reverseproxy.reverse') | selectattr('enabled', 'equalto', '1') | list | length > 0 %}
 
-{% if enableLayer4 == '1' %}
+{% if enableLayer4|default("0") == '1' %}
     # Layer4 default HTTP port
     {% if httpPort %}
         :{{ httpPort }} {
@@ -263,15 +263,13 @@
         :80 {
         }
     {% endif %}
-    {% if not hasReverseProxyEntry %}
-        # Layer4 default HTTPS port
-        {% if httpsPort %}
-            :{{ httpsPort }} {
-            }
-        {% else %}
-            :443 {
-            }
-        {% endif %}
+    # Layer4 default HTTPS port
+    {% if httpsPort %}
+        :{{ httpsPort }} {
+        }
+    {% else %}
+        :443 {
+        }
     {% endif %}
 {% endif %}
 
