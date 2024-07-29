@@ -405,9 +405,9 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
-                        <httphost>Host</httphost>
-                        <tlssni>SNI</tlssni>
-                        <nottlssni>not SNI</nottlssni>
+                        <httphost>Host (HTTP)</httphost>
+                        <tlssni>SNI (TLS)</tlssni>
+                        <nottlssni>not SNI (TLS)</nottlssni>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">
