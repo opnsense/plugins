@@ -11,13 +11,13 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter one or multiple domains to route via SNI. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*".]]></help>
+        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*".]]></help>
     </field>
     <field>
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains (without terminating TLS or altering the traffic). Only protocols that send a Client Hello - like TLS - can be routed here. Routing Logic: 1. The matcher "SNI" will route all selected domains to the selected upstreams. 2. The matcher "not SNI" inverts the match of "SNI" and will always be evaluated after it. It will route any unmatched domains to the selected upstream and all matched domains will fall through to the next routing step. 3. All unmatched domains will be routed to the default "Domains" or "Subdomains" tab, where they can be routed by "HTTP Handlers". If all domains are matched, they will be handled exclusively by Layer4 routes.]]></help>
+        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains without terminating TLS or altering the traffic. Only protocols that send a "Client Hello" (like TLS), or a "Host Header" (like HTTP) can be routed here. Routing Precedence: 1. "Host", 2. "not Host", 3. "SNI", 4. "not SNI", 5. "HTTP Handlers" (hidden default route for all unmatched traffic). The "not" operators will invert the match of the selected domains.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>
