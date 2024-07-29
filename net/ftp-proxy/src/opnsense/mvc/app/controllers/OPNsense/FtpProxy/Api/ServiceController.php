@@ -41,9 +41,6 @@ class ServiceController extends ApiControllerBase
     public function statusAction($uuid)
     {
         $result = array("result" => "failed", "function" => "status");
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlFtpProxy = new FtpProxy();
             $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
@@ -83,9 +80,6 @@ class ServiceController extends ApiControllerBase
     public function stopAction($uuid)
     {
         $result = array("result" => "failed", "function" => "stop");
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlFtpProxy = new FtpProxy();
             $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
@@ -103,9 +97,6 @@ class ServiceController extends ApiControllerBase
      */
     public function restartAction($uuid)
     {
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlFtpProxy = new FtpProxy();
             $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
@@ -123,9 +114,6 @@ class ServiceController extends ApiControllerBase
     public function configAction()
     {
         $result = array("result" => "failed", "function" => "config");
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         $result['result'] = $this->callBackend('template');
         return $result;
     }
@@ -136,9 +124,6 @@ class ServiceController extends ApiControllerBase
      */
     public function reloadAction()
     {
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         $result = $this->configAction();
         if ($result['result'] == 'OK') {
             $result['function'] = "reload";
