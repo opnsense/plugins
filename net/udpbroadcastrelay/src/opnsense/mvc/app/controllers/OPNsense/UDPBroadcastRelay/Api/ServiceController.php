@@ -63,9 +63,6 @@ class ServiceController extends ApiMutableModelControllerBase
     public function startAction($uuid)
     {
         $result = array("result" => "failed", "function" => "start");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
             $node = $mdlUDPBroadcastRelay->getNodeByReference('udpbroadcastrelay.' . $uuid);
@@ -84,9 +81,6 @@ class ServiceController extends ApiMutableModelControllerBase
     public function stopAction($uuid)
     {
         $result = array("result" => "failed", "function" => "stop");
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
             $node = $mdlUDPBroadcastRelay->getNodeByReference('udpbroadcastrelay.' . $uuid);
@@ -104,9 +98,6 @@ class ServiceController extends ApiMutableModelControllerBase
      */
     public function restartAction($uuid)
     {
-        if ($this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlUDPBroadcastRelay = new UDPBroadcastRelay();
             $node = $mdlUDPBroadcastRelay->getNodeByReference('udpbroadcastrelay.' . $uuid);
