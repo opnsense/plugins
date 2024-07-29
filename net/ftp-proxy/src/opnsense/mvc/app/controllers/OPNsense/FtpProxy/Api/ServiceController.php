@@ -41,7 +41,7 @@ class ServiceController extends ApiControllerBase
     public function statusAction($uuid)
     {
         $result = array("result" => "failed", "function" => "status");
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         if ($uuid != null) {
@@ -62,7 +62,7 @@ class ServiceController extends ApiControllerBase
     public function startAction($uuid)
     {
         $result = array("result" => "failed", "function" => "start");
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         if ($uuid != null) {
@@ -83,7 +83,7 @@ class ServiceController extends ApiControllerBase
     public function stopAction($uuid)
     {
         $result = array("result" => "failed", "function" => "stop");
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         if ($uuid != null) {
@@ -103,7 +103,7 @@ class ServiceController extends ApiControllerBase
      */
     public function restartAction($uuid)
     {
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         if ($uuid != null) {
@@ -123,7 +123,7 @@ class ServiceController extends ApiControllerBase
     public function configAction()
     {
         $result = array("result" => "failed", "function" => "config");
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         $result['result'] = $this->callBackend('template');
@@ -136,7 +136,7 @@ class ServiceController extends ApiControllerBase
      */
     public function reloadAction()
     {
-        if ($this->request->isPost()) {
+        if (isset($this->request) && $this->request->isPost()) {
             $this->sessionClose();
         }
         $result = $this->configAction();
