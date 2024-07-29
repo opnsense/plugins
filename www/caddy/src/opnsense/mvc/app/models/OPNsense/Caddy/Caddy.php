@@ -266,39 +266,6 @@ class Caddy extends BaseModel
         }
     }
 
-    /**
-     * 7. Check that when "Host" Layer4 Routes are used, it does not conflict with "AutoHTTPS".
-     * Otherwise Caddy will force clients to upgrade to HTTPS with a permanent redirect, making the HTTP routing fail.
-     * Only validate for the "Host" matchers, since this behavior could be desired for the "SNI" matchers.
-     */
-    private function checkLayer4HostMatcher($messages)
-    {
-        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
-        if (empty($tlsAutoHttpsSetting)) {
-            foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-
-                $protocolMatchers = (string)$item->Matchers;
-
-                if ($protocolMatchers === 'httphost') {
-                    $messages->appendMessage(new Message(
-                        gettext(
-                            'When Layer4 "Host" Matchers are used, ' .
-                            '"Auto HTTPS" must be either "Off" or "Disable Redirects".'
-                        ),
-                        $item->__reference . ".Matchers"
-                    ));
-                    $messages->appendMessage(new Message(
-                        gettext(
-                            'When Layer4 "Host" Matchers are used, ' .
-                            '"Auto HTTPS" must be either "Off" or "Disable Redirects".'
-                        ),
-                        "general.TlsAutoHttps"
-                    ));
-                }
-            }
-        }
-    }
-
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -328,9 +295,6 @@ class Caddy extends BaseModel
 
         // 6. Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
-
-        // 7. Check Layer4 Host Matcher conflicts
-        $this->checkLayer4HostMatcher($messages);
 
         return $messages;
     }
