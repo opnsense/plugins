@@ -59,9 +59,6 @@ class ServiceController extends ApiControllerBase
     public function startAction($uuid)
     {
         $result = array("result" => "failed", "function" => "start");
-        if (isset($this->request) && $this->request->isPost()) {
-            $this->sessionClose();
-        }
         if ($uuid != null) {
             $mdlFtpProxy = new FtpProxy();
             $node = $mdlFtpProxy->getNodeByReference('ftpproxy.' . $uuid);
