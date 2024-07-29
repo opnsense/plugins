@@ -254,7 +254,7 @@
 #   There are no regressions to set these ports up.
 #}
 
-{% if enableLayer4|default("0") == '1' %}
+{% if enableLayer4|default("0") == "1" %}
     # Layer4 default HTTP port
     {% if httpPort %}
         :{{ httpPort }} {
