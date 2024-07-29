@@ -406,7 +406,6 @@
                     <Default>tlssni</Default>
                     <OptionValues>
                         <httphost>Host</httphost>
-                        <nothttphost>not Host</nothttphost>
                         <tlssni>SNI</tlssni>
                         <nottlssni>not SNI</nottlssni>
                     </OptionValues>

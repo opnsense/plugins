@@ -279,7 +279,7 @@ class Caddy extends BaseModel
 
                 $protocolMatchers = (string)$item->Matchers;
 
-                if ($protocolMatchers === 'httphost' || $protocolMatchers === 'nothttphost') {
+                if ($protocolMatchers === 'httphost') {
                     $messages->appendMessage(new Message(
                         gettext(
                             'When Layer4 "Host" Matchers are used, ' .
