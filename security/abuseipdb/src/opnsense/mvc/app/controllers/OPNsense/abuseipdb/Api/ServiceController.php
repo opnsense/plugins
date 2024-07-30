@@ -62,7 +62,7 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $bckresult = json_decode(trim($backend->configdRun("helloworld test")), true);
+            $bckresult = json_decode(trim($backend->configdRun("abuseipdb")), true);
             if ($bckresult !== null) {
                 // only return valid json type responses
                 return $bckresult;

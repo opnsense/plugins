@@ -28,10 +28,10 @@
  *
  */
 
-namespace OPNsense\HelloWorld;
+namespace OPNsense\abuseipdb;
 
 use OPNsense\Base\BaseModel;
 
-class HelloWorld extends BaseModel
+class abuseipdb extends BaseModel
 {
 }

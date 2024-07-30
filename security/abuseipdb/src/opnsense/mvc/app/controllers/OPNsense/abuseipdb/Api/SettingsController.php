@@ -52,7 +52,7 @@ class SettingsController extends ApiControllerBase
         $result = array();
         if ($this->request->isGet()) {
             $mdlabuseipdb = new abuseipdb();
-            $result['helloworld'] = $mdlabuseipdb->getNodes();
+            $result['abuseipdb'] = $mdlabuseipdb->getNodes();
         }
         return $result;
     }
@@ -69,7 +69,7 @@ class SettingsController extends ApiControllerBase
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlabuseipdb = new abuseipdb();
-            $mdlabuseipdb->setNodes($this->request->getPost("helloworld"));
+            $mdlabuseipdb->setNodes($this->request->getPost("abuseipdb"));
 
             // perform validation
             $valMsgs = $mdlabuseipdb->performValidation();
@@ -77,7 +77,7 @@ class SettingsController extends ApiControllerBase
                 if (!array_key_exists("validations", $result)) {
                     $result["validations"] = array();
                 }
-                $result["validations"]["helloworld." . $msg->getField()] = $msg->getMessage();
+                $result["validations"]["abuseipdb." . $msg->getField()] = $msg->getMessage();
             }
 
             // serialize model to config and save

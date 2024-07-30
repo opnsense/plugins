@@ -1,7 +1,13 @@
 <form>
     <field>
-        <id>abuseipdb.general.Enabled</id>
-        <label>enabled</label>
+        <id>abuseipdb.general.enabled</id>
+        <label>Service Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this feature</help>
+    </field>
+    <field>
+        <id>abuseipdb.general.flush_on_start</id>
+        <label>Flush Alias entries on start</label>
         <type>checkbox</type>
         <help>Enable this feature</help>
     </field>
@@ -11,5 +17,12 @@
         <type>text</type>
         <help><![CDATA[API Key from abuseipdb.com]]></help>
         <hint>API Key from abuseipdb.com</hint>
+    </field>
+    <field>
+        <id>abuseipdb.general.log_interval</id>
+        <label>Log Interval</label>
+        <type>text</type>
+        <help><![CDATA[Log status every X seconds]]></help>
+        <hint>Log status every X seconds</hint>
     </field>
 </form>

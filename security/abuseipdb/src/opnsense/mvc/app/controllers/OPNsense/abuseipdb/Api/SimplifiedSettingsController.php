@@ -38,6 +38,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
  */
 class SimplifiedSettingsController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'helloworld';
+    protected static $internalModelName = 'abuseipdb';
     protected static $internalModelClass = 'OPNsense\abuseipdb\abuseipdb';
 }
