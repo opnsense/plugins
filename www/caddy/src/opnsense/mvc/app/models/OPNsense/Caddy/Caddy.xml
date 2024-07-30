@@ -405,10 +405,10 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <httphost>HTTP (Host Header)</httphost>
                         <ssh>SSH</ssh>
-                        <httphost>Host (HTTP)</httphost>
-                        <tlssni>SNI (TLS)</tlssni>
-                        <nottlssni>not SNI (TLS)</nottlssni>
+                        <tlssni>TLS (SNI)</tlssni>
+                        <nottlssni>TLS (inverted SNI)</nottlssni>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">
