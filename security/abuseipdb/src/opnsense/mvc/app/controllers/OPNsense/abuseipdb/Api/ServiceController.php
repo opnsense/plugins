@@ -54,20 +54,4 @@ class ServiceController extends ApiControllerBase
         }
         return array("status" => $status);
     }
-
-    /**
-     * test abuseipdb
-     */
-    public function testAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $bckresult = json_decode(trim($backend->configdRun("abuseipdb")), true);
-            if ($bckresult !== null) {
-                // only return valid json type responses
-                return $bckresult;
-            }
-        }
-        return array("message" => "unable to run config action");
-    }
 }
