@@ -363,7 +363,7 @@
                 </youtube>
                 <safePorts type="CSVListField">
                     <Default>80:http,21:ftp,443:https,70:gopher,210:wais,1025-65535:unregistered ports,280:http-mgmt,488:gss-http,591:filemaker,777:multiling http</Default>
-                    <mask>/^([ \-0-9a-zA-Z:,])*/u</mask>
+                    <Mask>/^([ \-0-9a-zA-Z:,])*/u</Mask>
                     <Required>Y</Required>
                 </safePorts>
                 <sslPorts type="CSVListField">
