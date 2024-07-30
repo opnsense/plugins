@@ -18,6 +18,14 @@
             <api_key type="TextField">
                 <Required>N</Required>
             </api_key>
+            <packet_count type="TextField">
+                <default>10</default>
+                <Required>Y</Required>
+            </packet_count>
+            <packet_timeframe type="TextField">
+                <default>120</default>
+                <Required>Y</Required>
+            </packet_timeframe>
             <log_interval type="TextField">
                 <default>60</default>
                 <Required>N</Required>

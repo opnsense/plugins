@@ -19,8 +19,22 @@
         <hint>API Key from abuseipdb.com</hint>
     </field>
     <field>
+        <id>abuseipdb.general.packet_count</id>
+        <label>Reporting / Blocking Packet Threshold</label>
+        <type>text</type>
+        <help><![CDATA[Number of packets]]></help>
+        <hint>Number of packets before triggering a report / block in threshold seconds</hint>
+    </field>
+    <field>
+        <id>abuseipdb.general.packet_timeframe</id>
+        <label>Reporting / Blocking Timeframe</label>
+        <type>text</type>
+        <help><![CDATA[How long to track packets in seconds.]]></help>
+        <hint>How long to track packets in seconds.</hint>
+    </field>
+    <field>
         <id>abuseipdb.general.log_interval</id>
-        <label>Log Interval</label>
+        <label>Log Interval in seconds</label>
         <type>text</type>
         <help><![CDATA[Log status every X seconds]]></help>
         <hint>Log status every X seconds</hint>

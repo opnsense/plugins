@@ -43,14 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
-        $("#testAct").click(function(){
-            $("#responseMsg").removeClass("hidden");
-            ajaxCall(url="/api/abuseipdb/service/test", sendData={},callback=function(data,status) {
-                // action to run after reload
-                $("#responseMsg").html(data['message']);
-            });
-        });
-
     });
 </script>
 
@@ -64,5 +56,4 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="col-md-12">
     <button class="btn btn-primary"  id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-    <button class="btn btn-primary"  id="testAct" type="button"><b>{{ lang._('Test') }}</b></button>
 </div>
