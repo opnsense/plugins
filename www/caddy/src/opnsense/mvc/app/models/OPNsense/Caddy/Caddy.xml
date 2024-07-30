@@ -1,6 +1,6 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>Model for Caddy HTTPS and Layer4 Reverse Proxy.</description>
+    <description>Caddy Reverse Proxy</description>
     <version>1.3.0</version>
     <items>
         <general>
