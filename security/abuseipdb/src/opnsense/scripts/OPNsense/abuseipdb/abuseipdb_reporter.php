@@ -1,22 +1,20 @@
 #!/usr/local/bin/php
 <?
-## ------- BEGIN USER CONFIG OPTIONS -------
+include "config.inc";
+
+if ( $config['OPNsense']['abuseipdb']["general"]["enabled"] != 1 ) {
+	exit 0;
+}
+
+## Import config
+$flush_on_start =	$config['OPNsense']['abuseipdb']["general"]["flush_on_start"];
+$api_key =			$config['OPNsense']['abuseipdb']["general"]["api_key"];
+$hits_num =			$config['OPNsense']['abuseipdb']["general"]["packet_count"];
+$hits_time =		$config['OPNsense']['abuseipdb']["general"]["packet_timeframe"];
+$log_interval =		$config['OPNsense']['abuseipdb']["general"]["log_interval"];
+
 ## Filter ID to report...
 $filter_id = "1033271e831bc05b5ee99c101f944dd6";
-
-## Your abuseipdb API key, automatic submission disabled if not set.
-$api_key = "";
-
-## Number of hits over seconds before banning
-$hits_num = 15;
-$hits_time = 1800;
-
-## Log interval (in seconds)
-$log_interval = 5;
-
-## Flush rules on start
-$flush_on_start = 0;
-## ------- END USER CONFIG OPTIONS -------
 
 ## Open up the pf log - /var/log/filter/latest.log
 $log = "/var/log/filter/latest.log";
