@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# PROVIDE: opnsense-abuseipdb
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=abuseipdb
+
+stop_cmd=abuseipdb_stop
+start_cmd=abuseipdb_start
+status_cmd=abuseipdb_status
+rcvar=abuseipdb_enable
+
+load_rc_config opnsense-abuseipdb
+pidfile=/var/run/${name}.pid
+
+[ -z "$abuseipdb_enable" ] && abuseipdb_enable="NO"
+
+abuseipdb_status()
+{
+	 if [ -n "$rc_pid" ]; then
+	     echo "${name} is running as pid $rc_pid."
+	     return 0
+	 else
+	     echo "${name} is not running."
+	 fi
+}
+
+abuseipdb_stop()
+{
+        if [ -n "$rc_pid" ]; then
+            echo "stopping abuseipdb"
+            kill -2 ${rc_pid}
+        else
+            echo "${name} is not running."
+        fi
+}
+
+abuseipdb_start()
+{
+        echo "starting abuseipdb"
+	/usr/local/opnsense/scripts/OPNsense/abuseipdb/abuseipdb_reporter.php &
+	return 0
+}
+
+run_rc_command $1
