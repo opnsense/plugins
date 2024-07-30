@@ -266,6 +266,28 @@ class Caddy extends BaseModel
         }
     }
 
+    // 7. Check that when Layer4 SSH matcher is selected, only "*" is valid as FromDomain
+    private function checkSshMatchers($messages)
+    {
+        foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
+            $matchers = (string) $item->Matchers;
+            $fromDomain = (string) $item->FromDomain;
+
+            if ($matchers === 'ssh' && $fromDomain !== '*') {
+                $key = $item->__reference;
+                $messages->appendMessage(new Message(
+                    sprintf(
+                        gettext(
+                            'When "SSH" matcher is selected, the only valid entry in Domain is "*".'
+                        ),
+                        $fromDomain
+                    ),
+                    $key . ".FromDomain"
+                ));
+            }
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -295,6 +317,9 @@ class Caddy extends BaseModel
 
         // 6. Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
+
+        // 7. Check Layer4 SSH matchers
+        $this->checkSshMatchers($messages);
 
         return $messages;
     }

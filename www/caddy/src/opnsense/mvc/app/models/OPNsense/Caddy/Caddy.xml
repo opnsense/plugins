@@ -405,6 +405,7 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <ssh>SSH</ssh>
                         <httphost>Host (HTTP)</httphost>
                         <tlssni>SNI (TLS)</tlssni>
                         <nottlssni>not SNI (TLS)</nottlssni>

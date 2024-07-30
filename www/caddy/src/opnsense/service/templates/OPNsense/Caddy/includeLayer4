@@ -23,7 +23,16 @@
 {# Set up Layer4 App #}
 layer4 {
     import /usr/local/etc/caddy/caddy.d/*.layer4
-    {# 1. loop to handle http host matchers #}
+    {# 1. loop to handle raw ssh traffic matchers #}
+    {% for layer4 in layer4_configs %}
+        {% if layer4.enabled == "1" and layer4.Matchers == 'ssh' %}
+            @{{ layer4['@uuid'] }} ssh
+            route @{{ layer4['@uuid'] }} {
+                {{ setup_proxy(layer4.ToDomain, layer4.ToPort, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+            }
+        {% endif %}
+    {% endfor %}
+    {# 2. loop to handle http host matchers #}
     {% for layer4 in layer4_configs %}
         {% if layer4.enabled == "1" and layer4.Matchers == 'httphost' %}
             @{{ layer4['@uuid'] }} http host {{ layer4.FromDomain.replace(',', ' ') }}
@@ -32,7 +41,7 @@ layer4 {
             }
         {% endif %}
     {% endfor %}
-    {# 2. loop to handle tls sni matchers #}
+    {# 3. loop to handle tls sni matchers #}
     {% for layer4 in layer4_configs %}
         {% if layer4.enabled == "1" and layer4.Matchers == 'tlssni' %}
             @{{ layer4['@uuid'] }} tls sni {{ layer4.FromDomain.replace(',', ' ') }}
@@ -41,7 +50,7 @@ layer4 {
             }
         {% endif %}
     {% endfor %}
-    {# 3. loop to handle not tls sni matchers #}
+    {# 4. loop to handle not tls sni matchers #}
     {% for layer4 in layer4_configs %}
         {% if layer4.enabled == "1" and layer4.Matchers == 'nottlssni' %}
             @{{ layer4['@uuid'] }} not tls sni {{ layer4.FromDomain.replace(',', ' ') }}
