@@ -193,9 +193,9 @@ Plugin Changelog
 
 1.3.0 - Initial release
 
-* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt.
-* Control Caddy and view the Logfile in the OPNsense GUI.
-* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles.
-* Use your own certificates where needed.
-* Use TLS, NTLM and CA certificates to communicate with your Backend Servers.
-* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store.
+* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt
+* Control Caddy and view the Logfile in the OPNsense GUI
+* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles
+* Use your own certificates where needed
+* Use TLS, NTLM and CA certificates to communicate with your Backend Servers
+* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store
