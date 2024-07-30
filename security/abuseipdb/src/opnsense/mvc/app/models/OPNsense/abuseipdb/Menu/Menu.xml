@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <abuseipdb VisibleName="Abuseipdb" cssClass="fa fa-comment-o fa-fw" url="/ui/abuseipdb"/>
+    </Services>
+</menu>

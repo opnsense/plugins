@@ -1,0 +1,19 @@
+<model>
+    <mount>//OPNsense/abuseipdb</mount>
+    <description>
+        abuseipdb.com firewall / reporter daemon
+    </description>
+    <items>
+        <!-- container -->
+        <general>
+            <!-- fields -->
+            <Enabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </Enabled>
+            <api_key type="TextField">
+                <Required>N</Required>
+            </api_key>
+        </general>
+    </items>
+</model>

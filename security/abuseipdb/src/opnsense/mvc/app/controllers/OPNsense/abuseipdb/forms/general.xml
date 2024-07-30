@@ -1,0 +1,15 @@
+<form>
+    <field>
+        <id>abuseipdb.general.Enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this feature</help>
+    </field>
+    <field>
+        <id>abuseipdb.general.api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help><![CDATA[API Key from abuseipdb.com]]></help>
+        <hint>API Key from abuseipdb.com</hint>
+    </field>
+</form>
