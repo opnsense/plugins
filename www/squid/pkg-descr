@@ -10,3 +10,4 @@ Plugin Changelog
 * Initial version based on the OPNsense 23.7.12 core code
 * Workaround for segmentation faults using OpenSSL legacy provider
 * Correct migration to Python ipaddress library use
+* Set default ACL values vor Safe_ports and SSL_ports
