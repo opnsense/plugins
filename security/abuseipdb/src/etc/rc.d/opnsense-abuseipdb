@@ -20,27 +20,27 @@ pidfile=/var/run/${name}.pid
 
 abuseipdb_status()
 {
-	 if [ -n "$rc_pid" ]; then
-	     echo "${name} is running as pid $rc_pid."
-	     return 0
-	 else
-	     echo "${name} is not running."
-	 fi
+	if [ -n "$rc_pid" ]; then
+		echo "${name} is running as pid $rc_pid."
+		return 0
+	else
+		echo "${name} is not running."
+	fi
 }
 
 abuseipdb_stop()
 {
-        if [ -n "$rc_pid" ]; then
-            echo "stopping abuseipdb"
-            kill -2 ${rc_pid}
-        else
-            echo "${name} is not running."
-        fi
+	if [ -n "$rc_pid" ]; then
+		echo "stopping abuseipdb"
+		kill -2 ${rc_pid}
+	else
+		echo "${name} is not running."
+	fi
 }
 
 abuseipdb_start()
 {
-        echo "starting abuseipdb"
+	echo "starting abuseipdb"
 	/usr/local/opnsense/scripts/OPNsense/abuseipdb/abuseipdb_reporter.php &
 	return 0
 }
