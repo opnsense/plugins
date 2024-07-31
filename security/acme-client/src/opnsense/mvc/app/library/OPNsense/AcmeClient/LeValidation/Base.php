@@ -58,7 +58,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // Get account object to query ID
         $account = new LeAccount($accountuuid);
         if (empty($account) || $account == null) {
-            LeUtils::log_error("unable to load account information: ${accountuuid}");
+            LeUtils::log_error("unable to load account information: {$accountuuid}");
             return false;
         }
 
@@ -164,7 +164,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // will never change.
         $acmecmd = self::ACME_CMD
           . ' '
-          . "--${acme_action} "
+          . "--{$acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
         LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);

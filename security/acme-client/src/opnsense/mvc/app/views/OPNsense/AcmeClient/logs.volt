@@ -1,4 +1,5 @@
 {#
+ # Copyright (c) 2024 Frank Wall
  # Copyright (c) 2019 Deciso B.V.
  # All rights reserved.
  #
@@ -37,7 +38,7 @@
               rowCount:[20,50,100,200,500,1000,-1],
               requestHandler: function(request){
                   // Show only log entries that match 'AcmeClient'
-                  request['searchPhrase'] = 'AcmeClient';
+                  request['searchPhrase'] = 'acmeclient';
                   return request;
               },
           },
