@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# PROVIDE: opnsense-abuseipdb
+# PROVIDE: abuseipdb
 # REQUIRE: SERVERS
 # KEYWORD: shutdown
 
@@ -13,7 +13,7 @@ start_cmd=abuseipdb_start
 status_cmd=abuseipdb_status
 rcvar=abuseipdb_enable
 
-load_rc_config opnsense-abuseipdb
+load_rc_config abuseipdb
 pidfile=/var/run/${name}.pid
 
 [ -z "$abuseipdb_enable" ] && abuseipdb_enable="NO"
