@@ -11,13 +11,13 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*".]]></help>
+        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*". Some protocols match all domains and "*" is mandatory.]]></help>
     </field>
     <field>
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains without terminating TLS or altering the traffic. Only protocols that send a "Client Hello" (like TLS), or a "Host Header" (like HTTP) can be routed here. Routing Precedence: 1. "Host", 2. "SNI", 3. "not SNI", 4. "HTTP Handlers" (hidden default route for all unmatched traffic). The "not" operator will invert the match of the selected domains.]]></help>
+        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains without terminating TLS or altering the traffic. Only protocols that send a "Client Hello" (like TLS), or a "Host Header" (like HTTP) can be routed here. Routing Precedence: 1. "SSH (or other protocols)", 2. "HTTP (Host Header)", 3. "TLS (SNI)", 4. "TLS (inverted SNI)", 5. "HTTP Handlers" (hidden default route for all unmatched traffic). The "SSH" matcher (and any other matcher that does not evaluate Host Header or SNI), will match any SSH like traffic on the default ports. That means, these protocols will only match once per ruleset and will proxy traffic to one upstream.]]></help>
     </field>
     <field>
         <id>layer4.ToDomain</id>

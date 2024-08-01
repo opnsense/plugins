@@ -405,9 +405,16 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
-                        <httphost>Host (HTTP)</httphost>
-                        <tlssni>SNI (TLS)</tlssni>
-                        <nottlssni>not SNI (TLS)</nottlssni>
+                        <httphost>HTTP (Host Header)</httphost>
+                        <postgres>Postgres</postgres>
+                        <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <rdp>RDP</rdp>
+                        <socks4>SOCKSv4</socks4>
+                        <socks5>SOCKSv5</socks5>
+                        <ssh>SSH</ssh>
+                        <tlssni>TLS (SNI)</tlssni>
+                        <nottlssni>TLS (inverted SNI)</nottlssni>
+                        <xmpp>XMPP</xmpp>
                     </OptionValues>
                 </Matchers>
                 <ToDomain type="HostnameField">

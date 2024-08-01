@@ -32,6 +32,7 @@ Plugin Changelog
 
 * Add: Authentik as authentication provider (contributed by Tim-Sc)
 * Add: Feature Preview - Layer4 routing to proxy traffic without TLS termination. Can be enabled in advanced mode of "General Settings"
+* Add: Layer4 protocols: HTTP, Postgres, Proxy Protocol, RDP, SOCKS4, SOCKS5, SSH, TLS, XMPP
 
 1.6.1
 
