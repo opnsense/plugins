@@ -2,7 +2,13 @@
 <?
 include "config.inc";
 
+## Exit if we're disabled.
 if ( $config['OPNsense']['abuseipdb']["general"]["enabled"] != 1 ) {
+	exit;
+}
+
+## Exit if we have no filter ID set.
+if ( ! $config['OPNsense']['abuseipdb']["general"]["filter_id"] ) {
 	exit;
 }
 
@@ -12,13 +18,11 @@ $api_key =			$config['OPNsense']['abuseipdb']["general"]["api_key"];
 $hits_num =			$config['OPNsense']['abuseipdb']["general"]["packet_count"];
 $hits_time =		$config['OPNsense']['abuseipdb']["general"]["packet_timeframe"];
 $log_interval =		$config['OPNsense']['abuseipdb']["general"]["log_interval"];
+$filter_id =		$config['OPNsense']['abuseipdb']["general"]["filter_id"];
 
 ## Write the PID to disk.
 file_put_contents("/var/run/abuseipdb.pid", getmypid());
 register_shutdown_function('unlink', "/var/run/abuseipdb.pid");
-
-## Filter ID to report...
-$filter_id = "1033271e831bc05b5ee99c101f944dd6";
 
 ## Open up the pf log - /var/log/filter/latest.log
 $log = "/var/log/filter/latest.log";

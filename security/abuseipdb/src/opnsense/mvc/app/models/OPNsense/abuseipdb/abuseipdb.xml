@@ -18,6 +18,9 @@
             <api_key type="TextField">
                 <Required>N</Required>
             </api_key>
+            <filter_id type="TextField">
+                <Required>Y</Required>
+            </filter_id>
             <packet_count type="TextField">
                 <default>10</default>
                 <Required>Y</Required>
