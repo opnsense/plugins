@@ -1,0 +1,20 @@
+<metadata>
+    <ddclient>
+        <filename>Dyndns.js</filename>
+        <endpoints>
+            <endpoint>/api/dyndns/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>Dynamic DNS</title>
+            <servicedisabled>DynDNS service is not running</servicedisabled>
+            <noaccount>No DynDNS account information available</noaccount>
+            <enabled>Enabled</enabled>
+            <disabled>Disabled</disabled>
+            <currentip>Current IP</currentip>
+            <currentmtime>Updated</currentmtime>
+            <domains>Hostnames</domains>
+            <service>Accounts</service>
+            <undefined>N/A</undefined>
+        </translations>
+    </ddclient>
+</metadata>
