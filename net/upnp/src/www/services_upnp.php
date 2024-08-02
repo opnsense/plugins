@@ -224,6 +224,9 @@ include("head.inc");
                       <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_enable">
+                         <?=gettext("Enable autonomous port mapping service.");?>
+                       </div>
                       </td>
                     </tr>
                     <tr>
