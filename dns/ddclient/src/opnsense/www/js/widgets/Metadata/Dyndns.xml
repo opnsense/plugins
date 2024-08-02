@@ -1,5 +1,5 @@
 <metadata>
-    <dyndnswidget>
+    <ddclient>
         <filename>Dyndns.js</filename>
         <endpoints>
             <endpoint>/api/dyndns/*</endpoint>
@@ -14,6 +14,7 @@
             <currentmtime>Updated</currentmtime>
             <domains>Hostnames</domains>
             <service>Accounts</service>
+            <undefined>N/A</undefined>
         </translations>
-    </dyndnswidget>
+    </ddclient>
 </metadata>

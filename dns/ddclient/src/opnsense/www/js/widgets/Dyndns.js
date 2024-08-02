@@ -97,8 +97,8 @@ export default class Dyndns extends BaseTableWidget {
                   .join('');
 
             // Convert time to a localized format
-            let localizedTime = account.current_mtime ? new Date(account.current_mtime).toLocaleString() : '-';
-            let currentIp = account.current_ip || '-';
+            let localizedTime = account.current_mtime ? new Date(account.current_mtime).toLocaleString() : this.translations.undefined;
+            let currentIp = account.current_ip || this.translations.undefined;
 
             let row = [
                 `
