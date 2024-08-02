@@ -9,7 +9,7 @@
 {% macro define_proxy(to_domains, to_port, fail_duration, proxy_protocol) %}
     proxy {% for domain in to_domains.split(',') %}
         {% set is_ipv6 = (':' in domain) %}  {# Check if the domain contains a colon, typical in IPv6 addresses #}
-        {{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %},{% endif %}
+        {{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %} {% endif %}
     {% endfor %} {
     {% if fail_duration %}
         fail_duration {{ fail_duration }}s
