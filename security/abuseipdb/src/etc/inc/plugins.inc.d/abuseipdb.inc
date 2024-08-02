@@ -1,4 +1,5 @@
 <?php
+// kate: space-indent off; indent-width 4; mixedindent off; indent-mode cstyle;
 /*
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  *    All rights reserved.
@@ -28,7 +29,7 @@ use OPNsense\Core\Config;
 use OPNsense\Firewall\Alias;
 use OPNsense\Firewall\Plugin;
 
-function add_alias_if_not_exist($name, $description, $proto)
+function add_alias_if_not_exist($name, $description)
 {
 	$model = new Alias();
 
@@ -39,34 +40,34 @@ function add_alias_if_not_exist($name, $description, $proto)
 	$new_alias = $model->aliases->alias->Add();
 	$new_alias->name = $name;
 	$new_alias->description = $description;
-	$new_alias->proto = $proto;
 	$new_alias->type = 'external';
 	$model->serializeToConfig();
 	Config::getInstance()->save();
 }
 
-function crowdsec_firewall(Plugin $fw)
+function abuseipdb_firewall(Plugin $fw)
 {
 	global $config;
 	if (
 		isset($config['OPNsense']['abuseipdb']['general']['enabled']) &&
 		$config['OPNsense']['abuseipdb']['general']['enabled'] == 1
 	) {
-		add_alias_if_not_exist('abuseipdb', 'abuseipdb blocklist', 'IPv4');
+		add_alias_if_not_exist('abuseipdb', 'abuseipdb blocklist');
 		$fw->registerFilterRule(
 			1, /* priority */
 			array(
-				'ipprotocol'	=> 'inet',
+				'ipprotocol'	=> 'inet46',
 				'descr'			=> 'abuseipdb blocklist',
 				'from'			=> '$abuseipdb',     # $ to reference an alias
 				'direction'		=> 'in',
 				'type'			=> 'block',
-				'log'			=> $rules_log_enabled,
-				'tag'			=> $rules_tag,
+				'log'			=> false,
+				'tag'			=> "",
 				'quick'			=> true
 			)
 		);
 	}
+}
 
 function abuseipdb_services()
 {
@@ -91,4 +92,3 @@ function abuseipdb_services()
 
 	return $services;
 }
-

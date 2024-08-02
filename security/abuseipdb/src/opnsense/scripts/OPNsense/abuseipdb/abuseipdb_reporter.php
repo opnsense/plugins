@@ -1,5 +1,6 @@
 #!/usr/local/bin/php
 <?
+// kate: space-indent off; indent-width 4; mixedindent off; indent-mode cstyle;
 include "config.inc";
 
 ## Exit if we're disabled.
