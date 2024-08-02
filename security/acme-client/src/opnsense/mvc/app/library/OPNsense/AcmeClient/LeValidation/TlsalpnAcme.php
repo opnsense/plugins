@@ -74,14 +74,15 @@ class TlsalpnAcme extends Base implements LeValidationInterface
         // Add IP address from chosen interface
         if (!empty((string)$this->config->tlsalpn_acme_interface)) {
             $backend = new \OPNsense\Core\Backend();
-            $response = json_decode($backend->configdpRun('interface address', [(string)$this->config->tlsalpn_acme_interface]));
+            $interface = (string)$this->config->tlsalpn_acme_interface;
+            $response = json_decode($backend->configdpRun('interface address', [$interface]));
             // XXX Returns both IPv4 and IPv6 now. While "[0]" and
             // "[1]" should remain in this order it would make sense
             // to ensure "family" matches "inet" or "inet6" and/or
             // pull both addresses for missing IPv6 support depending
             // on how this should work.
-            if (!empty($response[0]->address)) {
-                $iplist[] = $response[0]->address;
+            if (!empty($response->$interface[0]->address)) {
+                $iplist[] = $response->$interface[0]->address;
             }
         }
 
