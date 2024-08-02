@@ -220,7 +220,7 @@ function http_req($method, $url, &$headers, &$data) {
 }
 
 function cleanup_on_exit() {
-	unlink "/var/run/abuseipdb.pid";
+	unlink("/var/run/abuseipdb.pid");
 	exit;
 }
 

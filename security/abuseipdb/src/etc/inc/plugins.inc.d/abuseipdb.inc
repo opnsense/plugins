@@ -58,7 +58,7 @@ function abuseipdb_firewall(Plugin $fw)
 			array(
 				'ipprotocol'	=> 'inet46',
 				'descr'			=> 'abuseipdb blocklist',
-				'from'			=> '$abuseipdb',     # $ to reference an alias
+				'from'			=> '<abuseipdb>',
 				'direction'		=> 'in',
 				'type'			=> 'block',
 				'log'			=> false,
@@ -91,4 +91,19 @@ function abuseipdb_services()
 	}
 
 	return $services;
+}
+
+/**
+ *  register legacy syslog facilities
+ * @return array
+ */
+function abuseipdb_syslog()
+{
+	$syslogconf = array();
+
+	$syslogconf['abuseipdb'] = array(
+		'facility' => array('abuseipdb'),
+	);
+
+	return $syslogconf;
 }

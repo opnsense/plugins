@@ -1,0 +1,38 @@
+#!/bin/sh
+# PROVIDE: abuseipdb
+# REQUIRE: DAEMON NETWORKING syslogd
+
+. /etc/rc.subr
+
+name="abuseipdb"
+rcvar="abuseipdb_enable"
+
+load_rc_config $name
+
+: "${abuseipdb_enable="NO"}"
+
+case $1 in
+	start)
+		/usr/local/opnsense/scripts/abuseipdb/abuseipdb_reporter.php &
+		exit $?
+		;;
+	stop)
+		read pid < /var/run/abuseipdb.pid
+		kill -TERM $pid
+		;;
+	restart)
+		stop
+		start
+		;;
+	status)
+		if [ -f /var/run/abuseipdb.pid ]; then
+			read pid < /var/run/abuseipdb.pid
+			ps $pid > /dev/null
+			if [ "$?" == "0" ]; then
+				echo "Process is running: $(ps $pid)"
+				exit 0
+			fi
+		fi
+		echo "Process is not running..."
+		;;
+esac
