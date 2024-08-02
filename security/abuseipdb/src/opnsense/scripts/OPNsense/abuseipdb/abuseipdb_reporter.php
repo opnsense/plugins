@@ -22,7 +22,7 @@ $filter_id =		$config['OPNsense']['abuseipdb']["general"]["filter_id"];
 
 ## Write the PID to disk.
 file_put_contents("/var/run/abuseipdb.pid", getmypid());
-register_shutdown_function('unlink', "/var/run/abuseipdb.pid");
+register_shutdown_function('cleanup_on_exit');
 
 ## Open up the pf log - /var/log/filter/latest.log
 $log = "/var/log/filter/latest.log";
@@ -216,6 +216,11 @@ function http_req($method, $url, &$headers, &$data) {
 	$result = curl_exec($ch);
 
 	return array($result, curl_getinfo($ch, CURLINFO_HTTP_CODE));
+}
+
+function cleanup_on_exit() {
+	unlink "/var/run/abuseipdb.pid";
+	exit;
 }
 
 ?>
