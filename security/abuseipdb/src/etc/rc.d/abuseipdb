@@ -13,7 +13,7 @@ load_rc_config $name
 
 case $1 in
 	start)
-		/usr/local/opnsense/scripts/abuseipdb/abuseipdb_reporter.php &
+		/usr/local/opnsense/scripts/abuseipdb/abuseipdb &
 		exit $?
 		;;
 	stop)

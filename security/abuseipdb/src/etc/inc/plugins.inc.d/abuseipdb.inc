@@ -92,18 +92,3 @@ function abuseipdb_services()
 
 	return $services;
 }
-
-/**
- *  register legacy syslog facilities
- * @return array
- */
-function abuseipdb_syslog()
-{
-	$syslogconf = array();
-
-	$syslogconf['abuseipdb'] = array(
-		'facility' => array('abuseipdb'),
-	);
-
-	return $syslogconf;
-}
