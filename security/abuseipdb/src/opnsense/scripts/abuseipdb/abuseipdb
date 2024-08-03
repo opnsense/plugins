@@ -3,14 +3,17 @@
 // kate: space-indent off; indent-width 4; mixedindent off; syntax PHP (HTML)
 include "config.inc";
 openlog('abuseipdb', LOG_PID, LOG_LOCAL0);
+syslog(LOG_NOTICE, "abuseipdb system daemon starting.");
 
 ## Exit if we're disabled.
 if ( $config['OPNsense']['abuseipdb']["general"]["enabled"] != 1 ) {
+	syslog(LOG_ERROR, "abuseipdb disabled in config. Exiting...");
 	exit;
 }
 
 ## Exit if we have no filter ID set.
 if ( ! $config['OPNsense']['abuseipdb']["general"]["filter_id"] ) {
+	syslog(LOG_ERROR, "No firewall filter id set. Exiting...");
 	exit;
 }
 
