@@ -135,11 +135,11 @@ while (1) {
 					list($result, $ret_code) = http_req("POST", $url, $headers, $data);
 					if ( $ret_code == 200 ) {
 						unset($known_ips[$ip]);
-						echo "Reported $ip successfully\n";
+						syslog(LOG_INFO, "Reported $ip successfully");
 						$ratelimit_expires = 0;
 						$ratelimit_delay= 5;
 					} else {
-						echo "abuseipdb: Got status code: $ret_code - Ratelimiting active...\n";
+						syslog(LOG_NOTICE, "Got status code: $ret_code - Ratelimiting active...");
 						$ratelimit_delay *= 2;
 						if ( $ratelimit_delay >= $ratelimit_delay_max ) {
 							$ratelimit_delay = $ratelimit_delay_max;
@@ -157,14 +157,14 @@ while (1) {
 	if ( time() > $log_last + $log_interval ) {
 		$log_last = time();
 		if ( time() < $ratelimit_expires && $reports_outstanding != 0 ) {
-			echo "abuseipdb: Ratelimit active. $reports_outstanding reports outstanding\n";
+			syslog(LOG_NOTICE, "abuseipdb: Ratelimit active. $reports_outstanding reports outstanding");
 		}
-		echo "Tracking " . count($known_ips) . " hosts\n";
+		syslog(LOG_INFO, "Tracking " . count($known_ips) . " hosts");
 	}
 }
 
 function get_blocklist($api_key, $flush_on_start) {
-	echo "Downloading initial blocklist...\n";
+	syslog(LOG_INFO, "Downloading initial blocklist...");
 	$data = [ 'confidenceMinimum' => 100, 'limit' => 9999999 ];
 	$headers = ["Key: $api_key", "Accept: application/json"];
 	$url = "https://api.abuseipdb.com/api/v2/blacklist";
@@ -174,7 +174,7 @@ function get_blocklist($api_key, $flush_on_start) {
 	if ( $resp_code == 200 ) {
 		## Clear the current table...
 		if ( $flush_on_start == 1 ) {
-			echo "Clearing current table for initial priming...\n";
+			syslog(LOG_NOTICE, "Clearing current table for initial priming...");
 			shell_exec("pfctl -t abuseipdb -T flush");
 		}
 		$addresses = array();
@@ -197,9 +197,9 @@ function get_blocklist($api_key, $flush_on_start) {
 		if ( count($addresses) != 0 ) {
 			shell_exec("pfctl -q -t abuseipdb -T add " . implode(" ", $addresses));
 		}
-		echo "Imported " . count($blocklist["data"]) . " entries on startup...\n";
+		syslog(LOG_INFO, "Imported " . count($blocklist["data"]) . " entries on startup...");
 	} else {
-		echo "abuseipdb: Got reply code: $resp_code. Not importing anything...\n";
+		syslog(LOG_NOTICE, "Got reply code: $resp_code. Not importing anything...");
 	}
 }
 
