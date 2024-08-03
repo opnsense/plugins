@@ -30,28 +30,18 @@
 
 namespace OPNsense\abuseipdb\Api;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
+use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Config;
 
-/**
- * Class ServiceController
- * @package OPNsense\Cron
- */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * reconfigure abuseipdb
-     */
-    public function reloadAction()
+    protected static $internalServiceClass = '\OPNsense\abuseipdb\abuseipdb';
+    protected static $internalServiceTemplate = 'OPNsense/abuseipdb';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'abuseipdb';
+
+    protected function reconfigureForceRestart()
     {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $bckresult = trim($backend->configdRun('template reload OPNsense/abuseipdb'));
-            if ($bckresult == "OK") {
-                $status = "ok";
-            }
-        }
-        return array("status" => $status);
+        return 0;
     }
 }
