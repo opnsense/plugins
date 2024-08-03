@@ -11,28 +11,40 @@ load_rc_config $name
 
 : "${abuseipdb_enable="NO"}"
 
+start() {
+	/usr/local/opnsense/scripts/abuseipdb/abuseipdb &
+	exit $?
+}
+
+stop() {
+	read pid < /var/run/abuseipdb.pid
+	kill -TERM $pid
+}
+
+status() {
+	if [ -f /var/run/abuseipdb.pid ]; then
+		read pid < /var/run/abuseipdb.pid
+		ps $pid > /dev/null
+		if [ "$?" == "0" ]; then
+			echo "Process is running: $(ps $pid)"
+			exit 0
+		fi
+	fi
+	echo "Process is not running..."
+}
+
 case $1 in
 	start)
-		/usr/local/opnsense/scripts/abuseipdb/abuseipdb &
-		exit $?
+		start
 		;;
 	stop)
-		read pid < /var/run/abuseipdb.pid
-		kill -TERM $pid
+		stop
 		;;
 	restart)
 		stop
 		start
 		;;
 	status)
-		if [ -f /var/run/abuseipdb.pid ]; then
-			read pid < /var/run/abuseipdb.pid
-			ps $pid > /dev/null
-			if [ "$?" == "0" ]; then
-				echo "Process is running: $(ps $pid)"
-				exit 0
-			fi
-		fi
-		echo "Process is not running..."
+		status
 		;;
 esac
