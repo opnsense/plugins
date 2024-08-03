@@ -1,5 +1,12 @@
 <menu>
     <Services>
-        <abuseipdb VisibleName="Abuseipdb" cssClass="fa fa-comment-o fa-fw" url="/ui/abuseipdb"/>
+        <abuseipdb VisibleName="Abuseipdb" cssClass="fa fa-comment-o fa-fw">
+            <Settings order="10" url="/ui/abuseipdb/">
+                <General url="/ui/abuseipdb/" />
+            </Settings>
+            <Logs VisibleName="Log Files" order="60" url="/ui/diagnostics/log/core/abuseipdb">
+                <SystemLog VisibleName="Log Files" order="10" url="/ui/diagnostics/log/core/abuseipdb"/>
+            </Logs>
+        </abuseipdb>
     </Services>
 </menu>
