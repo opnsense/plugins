@@ -120,6 +120,7 @@ while (1) {
 		if ( count($timestamps) > $hits_num ) {
 			## Add to the firewall alias.
 			shell_exec("pfctl -q -t abuseipdb -T add $ip");
+			syslog(LOG_INFO, "Added $ip to blocklist");
 
 			if ( $api_key != "" ) {
 				if ( time() > $ratelimit_expires ) {
@@ -136,11 +137,11 @@ while (1) {
 					list($result, $ret_code) = http_req("POST", $url, $headers, $data);
 					if ( $ret_code == 200 ) {
 						unset($known_ips[$ip]);
-						syslog(LOG_INFO, "Reported $ip successfully");
+						syslog(LOG_INFO, "API: Reported $ip successfully");
 						$ratelimit_expires = 0;
 						$ratelimit_delay= 5;
 					} else {
-						syslog(LOG_NOTICE, "Got status code: $ret_code - Ratelimiting active...");
+						syslog(LOG_NOTICE, "API: Got status code: $ret_code - Ratelimiting active...");
 						$ratelimit_delay *= 2;
 						if ( $ratelimit_delay >= $ratelimit_delay_max ) {
 							$ratelimit_delay = $ratelimit_delay_max;
@@ -158,7 +159,7 @@ while (1) {
 	if ( time() > $log_last + $log_interval ) {
 		$log_last = time();
 		if ( time() < $ratelimit_expires && $reports_outstanding != 0 ) {
-			syslog(LOG_NOTICE, "abuseipdb: Ratelimit active. $reports_outstanding reports outstanding");
+			syslog(LOG_NOTICE, "API: Ratelimit active. $reports_outstanding reports outstanding");
 		}
 		syslog(LOG_INFO, "Tracking " . count($known_ips) . " hosts");
 	}
@@ -200,7 +201,7 @@ function get_blocklist($api_key, $flush_on_start) {
 		}
 		syslog(LOG_INFO, "Imported " . count($blocklist["data"]) . " entries on startup...");
 	} else {
-		syslog(LOG_NOTICE, "Got reply code: $resp_code. Not importing anything...");
+		syslog(LOG_NOTICE, "API: Got reply code: $resp_code. Not importing anything...");
 	}
 }
 
