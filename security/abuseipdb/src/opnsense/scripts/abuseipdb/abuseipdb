@@ -1,6 +1,6 @@
 #!/usr/local/bin/php
 <?
-// kate: space-indent off; indent-width 4; mixedindent off; indent-mode cstyle;
+// kate: space-indent off; indent-width 4; mixedindent off; syntax PHP (HTML)
 include "config.inc";
 openlog('abuseipdb', LOG_PID, LOG_LOCAL0);
 
@@ -40,7 +40,7 @@ $known_ips = array();
 $report_queue = array();
 
 ## Handle 429 responses from abuseipdb.
-$ratelimit_delay = 2;
+$ratelimit_delay = 5;
 $ratelimit_delay_max = 180;
 $ratelimit_expires = 0;
 
@@ -149,10 +149,10 @@ while (1) {
 					if ( $ret_code == 200 ) {
 						syslog(LOG_INFO, "API: Reported " . $report["ip"] . " successfully");
 						$ratelimit_expires = 0;
-						$ratelimit_delay= 2;
+						$ratelimit_delay= 5;
 					} else {
 						array_push($report_queue_new, $report);
-						$ratelimit_delay *= 1.5;
+						$ratelimit_delay *= 2;
 						if ( $ratelimit_delay >= $ratelimit_delay_max ) {
 							$ratelimit_delay = $ratelimit_delay_max;
 						}

@@ -61,7 +61,7 @@ function abuseipdb_firewall(Plugin $fw)
 				'from'			=> '<abuseipdb>',
 				'direction'		=> 'in',
 				'type'			=> 'block',
-				'log'			=> false,
+				'log'			=> $config['OPNsense']['abuseipdb']['general']['log_denies'],
 				'tag'			=> "",
 				'quick'			=> true
 			)

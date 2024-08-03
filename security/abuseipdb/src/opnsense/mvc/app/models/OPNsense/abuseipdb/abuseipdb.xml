@@ -15,6 +15,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </flush_on_start>
+            <log_denies type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </log_denies>
             <api_key type="TextField">
                 <Required>N</Required>
             </api_key>

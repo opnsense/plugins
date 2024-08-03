@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#saveAct").click(function(){
             saveFormToEndpoint(url="/api/abuseipdb/settings/set",formid='frm_GeneralSettings',callback_ok=function(){
                 // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/abuseipdb/service/reload", sendData={},callback=function(data,status) {
+                ajaxCall(url="/api/abuseipdb/service/restart", sendData={},callback=function(data,status) {
                     // action to run after reload
                 });
             });

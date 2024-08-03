@@ -12,6 +12,12 @@
         <help>Flush the abuseipdb Firewall Alias group when starting. If an API Key is set, will pre-populate with a download from abuseipdb.com</help>
     </field>
     <field>
+        <id>abuseipdb.general.log_denies</id>
+        <label>Log denied packets in PF log</label>
+        <type>checkbox</type>
+        <help>Log packets that are denied by the abuseipdb firewall rule to the firewall logs</help>
+    </field>
+    <field>
         <id>abuseipdb.general.api_key</id>
         <label>API Key</label>
         <type>text</type>
