@@ -2,6 +2,7 @@
 <?
 // kate: space-indent off; indent-width 4; mixedindent off; indent-mode cstyle;
 include "config.inc";
+openlog('abuseipdb', LOG_PID, LOG_LOCAL0);
 
 ## Exit if we're disabled.
 if ( $config['OPNsense']['abuseipdb']["general"]["enabled"] != 1 ) {
@@ -221,6 +222,7 @@ function http_req($method, $url, &$headers, &$data) {
 
 function cleanup_on_exit() {
 	unlink("/var/run/abuseipdb.pid");
+	closelog();
 	exit;
 }
 
