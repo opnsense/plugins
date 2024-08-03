@@ -37,9 +37,10 @@ $file = null;
 
 ## Init known hosts array
 $known_ips = array();
+$report_queue = array();
 
 ## Handle 429 responses from abuseipdb.
-$ratelimit_delay = 5;
+$ratelimit_delay = 2;
 $ratelimit_delay_max = 180;
 $ratelimit_expires = 0;
 
@@ -114,7 +115,6 @@ while (1) {
 	$known_ips = $known_ips_new;
 	unset($known_ips_new);
 
-	$reports_outstanding = 0;
 	foreach ( $known_ips as $ip => $timestamps ) {
 		## Process anything with more than $hits_num entries.
 		if ( count($timestamps) > $hits_num ) {
@@ -123,45 +123,60 @@ while (1) {
 			syslog(LOG_INFO, "Added $ip to blocklist");
 
 			if ( $api_key != "" ) {
+				$duration = $known_ips[$ip][count($known_ips[$ip]) -1] - $known_ips[$ip][0] + 1;
+				$data = [
+					'ip' => $ip,
+					'timestamp' => date('c', $known_ips[$ip][0]),
+					'categories' => "14",
+					'comment' => "Honeypot hits: " . count($timestamps) . " hits in $duration second(s)"
+				];
+				array_push($report_queue, $data);
+			}
+			unset($known_ips[$ip]);
+		}
+	}
+
+	## Process any reports.
+	if ( $api_key != "" ) {
+		if ( time() > $ratelimit_expires ) {
+			$report_queue_new = array();
+
+			foreach ( $report_queue as $report ) {
 				if ( time() > $ratelimit_expires ) {
-					## Send the report to adbuseipdb.com
-					$duration = $known_ips[$ip][count($known_ips[$ip]) -1] - $known_ips[$ip][0] + 1;
-					$data = [
-						'ip' => $ip,
-						'timestamp' => date('c', $known_ips[$ip][0]),
-						'categories' => "14",
-						'comment' => "Honeypot hits: " . count($timestamps) . " hits in $duration second(s)" 
-					];
 					$headers = ["Key: $api_key", "Accept: application/json"];
 					$url = "https://api.abuseipdb.com/api/v2/report";
-					list($result, $ret_code) = http_req("POST", $url, $headers, $data);
+					list($result, $ret_code) = http_req("POST", $url, $headers, $report);
 					if ( $ret_code == 200 ) {
-						unset($known_ips[$ip]);
-						syslog(LOG_INFO, "API: Reported $ip successfully");
+						syslog(LOG_INFO, "API: Reported " . $report["ip"] . " successfully");
 						$ratelimit_expires = 0;
-						$ratelimit_delay= 5;
+						$ratelimit_delay= 2;
 					} else {
-						syslog(LOG_NOTICE, "API: Got status code: $ret_code - Ratelimiting active...");
-						$ratelimit_delay *= 2;
+						array_push($report_queue_new, $report);
+						$ratelimit_delay *= 1.5;
 						if ( $ratelimit_delay >= $ratelimit_delay_max ) {
 							$ratelimit_delay = $ratelimit_delay_max;
 						}
 						$ratelimit_expires = time() + $ratelimit_delay;
-						$reports_outstanding++;
+						syslog(LOG_NOTICE, "API: Got status code: $ret_code - Waiting " . ( $ratelimit_expires - time()) . " seconds before retry...");
 					}
 				} else {
-					$reports_outstanding++;
+					## We're still rate limited, just push the report back into the queue
+					array_push($report_queue_new, $report);
 				}
 			}
+
+			$report_queue = $report_queue_new;
+			unset($report_queue_new);
 		}
 	}
 
 	if ( time() > $log_last + $log_interval ) {
 		$log_last = time();
-		if ( time() < $ratelimit_expires && $reports_outstanding != 0 ) {
-			syslog(LOG_NOTICE, "API: Ratelimit active. $reports_outstanding reports outstanding");
+		if ( count($report_queue) != 0 ) {
+			syslog(LOG_NOTICE, "Tracking " . count($known_ips) . " hosts, API ratelimit active. " . count($report_queue) . " report(s) outstanding");
+		} else {
+			syslog(LOG_INFO, "Tracking " . count($known_ips) . " hosts");
 		}
-		syslog(LOG_INFO, "Tracking " . count($known_ips) . " hosts");
 	}
 }
 
