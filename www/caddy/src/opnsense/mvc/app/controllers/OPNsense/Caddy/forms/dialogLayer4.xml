@@ -61,4 +61,17 @@
         <type>dropdown</type>
         <help><![CDATA[Add the HA Proxy Protocol header. Either version 1 or 2 can be chosen. The default is off, since it is only needed when the upstream can use the Proxy Protocol header.]]></help>
     </field>
+    <field>
+        <type>header</type>
+        <label>Access</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>layer4.RemoteIp</id>
+        <label>Remote IP</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter one or multiple IP addresses and networks. Leaving this empty will allow any remote client to connect. If populated and the remote IP address of a client matches, the connection to the "Upstream Domain" is allowed, otherwise the connection is dropped. Due to restrictions with this matcher, this list can not be inverted.]]></help>
+    </field>
 </form>

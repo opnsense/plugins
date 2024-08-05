@@ -438,6 +438,12 @@
                         <v2>v2</v2>
                     </OptionValues>
                 </ProxyProtocol>
+                <RemoteIp type="NetworkField">
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses or networks.</ValidationMessage>
+                </RemoteIp>
                 <description type="DescriptionField"/>
             </layer4>
         </reverseproxy>
