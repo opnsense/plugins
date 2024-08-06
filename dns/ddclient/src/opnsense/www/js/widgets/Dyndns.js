@@ -44,7 +44,7 @@ export default class Dyndns extends BaseTableWidget {
             headerPosition: 'top',
             headers: [
                 this.translations.service,
-                // this.translations.domains
+                this.translations.domains
             ]
         });
 
@@ -110,7 +110,6 @@ export default class Dyndns extends BaseTableWidget {
                     <div class="current-mtime"><em>${this.translations.currentmtime}:</em> ${localizedTime}</div>
                 `,
                 `
-                    <div><u>${this.translations.domains}</u></div>
                     <div class="domain-names">${domainNames}</div>
                 `
             ];
@@ -127,8 +126,10 @@ export default class Dyndns extends BaseTableWidget {
 
     onWidgetResize(elem, width, height) {
         if (width < 320) {
+            $('#header_dyndnsTable').hide();
             $('.domain-names').parent().hide();
         } else {
+            $('#header_dyndnsTable').show();
             $('.domain-names').parent().show();
         }
         return true; // Return true to force the grid to update its layout
