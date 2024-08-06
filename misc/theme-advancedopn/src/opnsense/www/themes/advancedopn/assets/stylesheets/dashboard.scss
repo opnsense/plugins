@@ -12,7 +12,14 @@
 
 
 #save-grid {
-    height: 33px !important;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 33px;
+    margin-right: 10px;
+    transition: opacity 0.3s ease;
 }
 
 #save-btn-text, #icon-container {
@@ -314,7 +321,7 @@ div {
     display: grid;
     transition: 0.5s;
     opacity: 0.4;
-    border-top: 1px solid #e8eaef;
+    border-top: 1px solid #eff3f8;
     background-color: #d6e5f7; /* fade-in color, transitions to transparent */
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
@@ -326,7 +333,7 @@ div {
 
 .grid-header {
     font-weight: bold;
-    border-top: 1px solid #d6e4f7;
+    border-top: 1px solid #eff3f8;
 }
 
 .grid-item {
