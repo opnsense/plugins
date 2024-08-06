@@ -210,6 +210,39 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
+    // Layer4 Section
+
+    public function searchLayer4Action()
+    {
+        return $this->searchBase("reverseproxy.layer4", null, 'description');
+    }
+
+    public function setLayer4Action($uuid)
+    {
+        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function addLayer4Action()
+    {
+        return $this->addBase("layer4", "reverseproxy.layer4");
+    }
+
+    public function getLayer4Action($uuid = null)
+    {
+        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function delLayer4Action($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4", $uuid);
+    }
+
+    public function toggleLayer4Action($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
+    }
+
+
     // AccessList Section
 
     public function searchAccessListAction()

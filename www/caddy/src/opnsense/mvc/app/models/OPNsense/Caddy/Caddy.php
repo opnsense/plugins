@@ -266,6 +266,37 @@ class Caddy extends BaseModel
         }
     }
 
+    /**
+    * 6. Check that when certain Layer4 matchers are selected, only "*" is valid as FromDomain.
+    * This happens because they cannot be matched by host header or SNI, so they match all traffic.
+    * The "*" shows the user that all traffic will be matched, and that creating multiple
+    * matchers will not result in more routes for the same traffic type to work.
+    */
+    private function checkLayer4Matchers($messages)
+    {
+        foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
+            $matchers = (string) $item->Matchers;
+            $fromDomain = (string) $item->FromDomain;
+
+            // Check if matchers is not in the list of specific values
+            $isNotInSpecificMatchers = !in_array($matchers, ['httphost', 'tlssni', 'nottlssni']);
+            $isInvalidFromDomain = $fromDomain !== '*';
+
+            if ($isNotInSpecificMatchers && $isInvalidFromDomain) {
+                $key = $item->__reference;
+                $messages->appendMessage(new Message(
+                    sprintf(
+                        gettext(
+                            'When "%s" matcher is selected, the only valid entry in Domain is "*".'
+                        ),
+                        $matchers
+                    ),
+                    $key . ".FromDomain"
+                ));
+            }
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -295,6 +326,9 @@ class Caddy extends BaseModel
 
         // 6. Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
+
+        // 7. Check Layer4 matchers
+        $this->checkLayer4Matchers($messages);
 
         return $messages;
     }

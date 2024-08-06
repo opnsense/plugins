@@ -1,13 +1,14 @@
 <model>
     <mount>//Pischem/caddy</mount>
-    <description>A GUI model for configuring a reverse proxy in the Caddy web server.</description>
-    <version>1.2.2</version>
+    <description>Caddy Reverse Proxy</description>
+    <version>1.3.0</version>
     <items>
         <general>
             <enabled type="BooleanField">
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
+            <EnableLayer4 type="BooleanField"/>
             <HttpPort type="PortField"/>
             <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField"/>
@@ -129,6 +130,7 @@
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
                     <authelia>Authelia</authelia>
+                    <authentik>Authentik</authentik>
                 </OptionValues>
             </AuthProvider>
             <AuthToDomain type="HostnameField"/>
@@ -385,6 +387,65 @@
                 </HeaderReplace>
                 <description type="DescriptionField"/>
             </header>
+            <layer4 type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <FromDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <IpAllowed>N</IpAllowed>
+                    <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                    <HostWildcardAllowed>Y</HostWildcardAllowed>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
+                </FromDomain>
+                <Matchers type="OptionField">
+                    <Required>Y</Required>
+                    <Default>tlssni</Default>
+                    <OptionValues>
+                        <httphost>HTTP (Host Header)</httphost>
+                        <postgres>Postgres</postgres>
+                        <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <rdp>RDP</rdp>
+                        <socks4>SOCKSv4</socks4>
+                        <socks5>SOCKSv5</socks5>
+                        <ssh>SSH</ssh>
+                        <tlssni>TLS (SNI)</tlssni>
+                        <nottlssni>TLS (inverted SNI)</nottlssni>
+                        <xmpp>XMPP</xmpp>
+                    </OptionValues>
+                </Matchers>
+                <ToDomain type="HostnameField">
+                    <Required>Y</Required>
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
+                </ToDomain>
+                <ToPort type="PortField">
+                    <Required>Y</Required>
+                </ToPort>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <ProxyProtocol type="OptionField">
+                    <BlankDesc>Off (default)</BlankDesc>
+                    <OptionValues>
+                        <v1>v1</v1>
+                        <v2>v2</v2>
+                    </OptionValues>
+                </ProxyProtocol>
+                <RemoteIp type="NetworkField">
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <ValidationMessage>Please enter one or multiple valid IP addresses or networks.</ValidationMessage>
+                </RemoteIp>
+                <description type="DescriptionField"/>
+            </layer4>
         </reverseproxy>
     </items>
 </model>

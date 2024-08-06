@@ -6,6 +6,13 @@
         <help><![CDATA[Enable or disable the Caddy web server.]]></help>
     </field>
     <field>
+        <id>caddy.general.EnableLayer4</id>
+        <label>(Feature Preview) Enable Layer4</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable Layer4 support to stream TCP/UDP. WARNING: This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Deactivating this option will remove all Layer4 functionality completely. More information: https://github.com/mholt/caddy-l4]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>caddy.general.HttpPort</id>
         <label>HTTP Port</label>
         <type>text</type>

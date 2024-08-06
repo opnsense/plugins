@@ -9,186 +9,195 @@ WWW: https://caddyserver.com/
 Main features of this plugin:
 
 * Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
-* Hard to break! Extensive validations of the configuration on each save and apply.
-* Automatic Let's Encrypt and ZeroSSL Certificates with HTTP-01 and TLS-ALPN-01 challenge
+* Automatic Let's Encrypt and ZeroSSL certificates with HTTP-01 and TLS-ALPN-01 challenge
 * DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
 * Use custom certificates from OPNsense certificate store
 * Wildcard Domain and Subdomain support
 * Access Lists to restrict access based on static networks
 * Basic Auth to restrict access by username and password
+* Forward Auth with Authelia
 * Syslog-ng integration and HTTP Access Log
-* Header manipulation with header_up and header_down
+* NTLM Transport
+* Header manipulation
 * Simple load balancing with passive health check
+* Widgets for OPNsense Dashboard (24.7 and later)
+* Layer4 SNI based routing of TCP/UDP
 
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
 Plugin Changelog
 ================
 
+1.6.2
+
+* Add: Authentik as authentication provider (contributed by Tim-Sc)
+* Add: Feature Preview - Layer4 routing to proxy traffic without TLS termination. Can be enabled in advanced mode of "General Settings"
+* Add: Layer4 protocols: HTTP, Postgres, Proxy Protocol, RDP, SOCKS4, SOCKS5, SSH, TLS, XMPP
+* Add: Layer4 Remote IP matcher to restrict access to proxied services
+
 1.6.1
 
-Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings.
-Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog.
-Change: Description Fields are optional now, reducing the steps needed to create new entries.
-Add: Shortcuts to add new Domains and Handlers.
-Change: Subdomain Tab only appears when a wildcard domain has been configured.
+* Add: Run Caddy as "www" user and group, by enabling "Disable Superuser" in General Settings
+* Add: Shortcuts to add new Domains and Handlers
+* Change: Description Fields are optional now, reducing the steps needed to create new entries
+* Change: Subdomain Tab only appears when a wildcard domain has been configured
+* Cleanup: Validations in general.volt are all appended to their form keys, instead of triggering a Bootstrap Dialog
 
 1.6.0
 
-* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status.
-* Cleanup: PHP files refactored for PSR-12, Python files refactored for PEP-8.
-* Cleanup: Templates Caddyfile and rc.conf.d/caddy refactored for maintainability.
-* Cleanup: Spurious keys removed from Caddy.xml model.
-* Cleanup: Unused code removed from Caddy.php.
-* Fix: Caddyfile template fixed when IPv6 addresses and ports are used in Upstream. IPv6 address wraps into brackets now.
-* Add: forward_auth directive with Authelia as Authz Provider.
-* Add: Default HTTP and HTTPS ports can be changed in general settings.
-* Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen.
-* Add: HTTP Keepalive can be set in a handler.
-* Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool".
-* Build: Update caddy-dns Cloudflare and Route53. Route53 field names changed due to upstream changes.
-* Add: TLS can be deactivated in a domain.
+* Add: New Dashboard widgets for 24.7, showing domain status and certificate validity status
+* Add: forward_auth directive with Authelia as Authz Provider
+* Add: Default HTTP and HTTPS ports can be changed in general settings
+* Add: Introduce HTTP version to handler. HTTP/1.1, HTTP/2 and HTTP/3 can be chosen
+* Add: HTTP Keepalive can be set in a handler
+* Add: TLS can be deactivated in a domain
+* Build: Update caddy-dns Cloudflare and Route53. Route53 field names changed due to upstream changes
+* Change: Option "tls_trusted_ca_certs" is now "tls_trust_pool"
+* Cleanup: PHP files refactored for PSR-12, Python files refactored for PEP-8
+* Cleanup: Templates Caddyfile and rc.conf.d/caddy refactored for maintainability
+* Cleanup: Spurious keys removed from Caddy.xml model
+* Cleanup: Unused code removed from Caddy.php
+* Fix: Caddyfile template fixed when IPv6 addresses and ports are used in Upstream. IPv6 address wraps into brackets now
 
 1.5.7
 
-* Build: Update to Caddy v2.8.4 + caddy-dns plugins updated to latest upstream versions
-* Add: Error message when OPNsense WebGUI settings conflict with Auto HTTPS.
-* Add: Error message when Auto HTTPS is enabled, and ACME email field is empty, for caddy v2.8.4
+* Add: Error message when OPNsense WebGUI settings conflict with Auto HTTPS
+* Add: Error message when Auto HTTPS is enabled, and ACME email field is empty, for caddy v2.8.
+* Add: Dynamic DNS now supports "Update Only", only updating existing records without creating new ones
+* Add: DNS Providers: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, namedotcom, easydns, infomaniak, directadmin, hosttech, vult
+* Build: Update to Caddy v2.8.4 + caddy-dns plugins updated to latest upstream version
+* Change: Dynamic DNS "TTL" and "Check Interval" have been changed to seconds. Existing values have been reset to use the defaults of the implementation
 * Cleanup: Fix crash of searchAction when reverseUuids is null
-* Cleanup: basicauth directive is now basic_auth in the Caddyfile template, for caddy v2.8.4
-* Change: Dynamic DNS "TTL" and "Check Interval" have been changed to seconds. Existing values have been reset to use the defaults of the implementation.
-* Add: Dynamic DNS now supports "Update Only", only updating existing records without creating new ones.
-* Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain.
-* Add: DNS Providers: dnsmadeeasy, bunny, civo, scaleway, acmeproxy, inwx, namedotcom, easydns, infomaniak, directadmin, hosttech, vultr
-* Remove: DNS Providers: godaddy
+* Cleanup: basicauth directive is now basic_auth in the Caddyfile template, for caddy v2.8
 * Cleanup: Refactor dns provider configuration in Caddyfile template
+* Fix: The subdomain port field has been removed, since it is unsupported. Subdomains track their ports from their parent wildcard domain
+* Remove: DNS Providers: godaddy
 
 1.5.6
 
-* Fix: Wildcard domains with activated "Dynamic DNS" update their base domain with * instead of @.
 * Add: DNS Providers: Netcup, RFC2136
+* Fix: Wildcard domains with activated "Dynamic DNS" update their base domain with * instead of @
 
 1.5.5
 
-* Fix: "Apply" could hang when websockets are in use by clients. A grace period of 10s has been added in General Settings that forces to close all connections on config changes.
-* Add: In Reverse Proxy, a new dropdown can select one or multiple domains, filtering the Bootgrids of Domains, Subdomains and Handlers for the selected Domain.
-* Add: Global Log Level can be set in Log Settings.
-* Fix: "Apply" will always read all certificates from the filesystem, even if the Caddy configuration has remained unchanged. "reload" has been changed to "reloadssl".
-* Change: ACME Email should be filled out since it's a requirement for ZeroSSL.
-* Fix: "Save" and "Apply" buttons in General Settings have been improved to reliably trigger validation of form.
-* Cleanup: Javascript variables have been changed from var to let to reduce scope.
-* Fix: Template has been fixed to allow any TLS option in Handlers to appear independant when filled out. This increases flexibility with the "tls_server_name" option.
-* Add: Diagnostics view added where the current Caddyfile and JSON configuration can be displayed, validated and downloaded.
-* Add: HTTP-01 Challenge Redirection can also be configured for subdomains.
-* Cleanup: lang() and gettext() functions added for translations.
-* Cleanup: Rewritten most help texts in forms for consistency.
-* Fix: The newly introduced "configctl caddy reload" action, which calls the "service caddy reloadssl" command, will now also trigger the setup.sh script.
+* Add: In Reverse Proxy, a new dropdown can select one or multiple domains, filtering the Bootgrids of Domains, Subdomains and Handlers for the selected Domain
+* Add: Global Log Level can be set in Log Settings
+* Add: Diagnostics view added where the current Caddyfile and JSON configuration can be displayed, validated and downloaded
+* Add: HTTP-01 Challenge Redirection can also be configured for subdomains
+* Change: ACME Email should be filled out since it's a requirement for ZeroSSL
+* Cleanup: Javascript variables have been changed from var to let to reduce scope
+* Cleanup: lang() and gettext() functions added for translations
+* Cleanup: Rewritten most help texts in forms for consistency
+* Fix: "Apply" could hang when websockets are in use by clients. A grace period of 10s has been added in General Settings that forces to close all connections on config changes
+* Fix: "Apply" will always read all certificates from the filesystem, even if the Caddy configuration has remained unchanged. "reload" has been changed to "reloadssl"
+* Fix: "Save" and "Apply" buttons in General Settings have been improved to reliably trigger validation of form
+* Fix: Template has been fixed to allow any TLS option in Handlers to appear independant when filled out. This increases flexibility with the "tls_server_name" option
+* Fix: The newly introduced "configctl caddy reload" action, which calls the "service caddy reloadssl" command, will now also trigger the setup.sh script
 
 1.5.4
 
-* Fix: When pressing Apply, the Caddy service will be reloaded instead of restarted. This fixes long restart times and service interruptions.
-* Change: All Description Fields are now required to be populated.
-* Change: Model Relation Fields now display two values instead of one to make most options appear unique.
-* Add: HTTP response code and HTTP response message can be set per access list in advanced mode.
-* Add: Header functionality added. Multiple header manipulations can be set per handler.
-* Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability.
-* Fix: Move selectpicker empty option to model in general.volt, using BlankDesc. This fixes the option IPv4+IPv6 not appearing in Dynamic DNS.
-* Add: Simple Load Balancing support with the default random policy, by allowing to add multiple Upstream Domains in Handlers.
-* Add: Passive Health check for load balancing (Upstream Fail Duration) in Handlers.
-* Fix: Input validation so a base domain like "example.com" and a wildcard domain like "*.example.com" can now be created at the same time in domains.
+* Add: Simple Load Balancing support with the default random policy, by allowing to add multiple Upstream Domains in Handlers
+* Add: Passive Health check for load balancing (Upstream Fail Duration) in Handlers
+* Add: HTTP response code and HTTP response message can be set per access list in advanced mode
+* Add: Header functionality added. Multiple header manipulations can be set per handler
+* Change: All Description Fields are now required to be populated
+* Change: Model Relation Fields now display two values instead of one to make most options appear unique
+* Cleanup: Update searchBase() in ReverseProxyController.php for easier maintainability
+* Fix: When pressing Apply, the Caddy service will be reloaded instead of restarted. This fixes long restart times and service interruptions
+* Fix: Move selectpicker empty option to model in general.volt, using BlankDesc. This fixes the option IPv4+IPv6 not appearing in Dynamic DNS
+* Fix: Input validation so a base domain like "example.com" and a wildcard domain like "*.example.com" can now be created at the same time in domains
 
 1.5.3
 
-* Change from "Phalcon Messages" to "OPNsense Messages" in Caddy.php.
-* Change default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/.
-* Change description from "TextField" to "DescriptionField" in Caddy.xml model.
-* Add tls_insecure_skip_verify to handlers.
-* Add possibility to restart Caddy with the ACME Client by using "Automations - Run Command - System or Plugin Command".
-* Add option to redirect the ACME HTTP-01 challenge to an upstream destination as advanced option in domains.
-* Remove unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate.
-* Cleanup dialogs and UI to present all options better.
+* Add: tls_insecure_skip_verify to handlers
+* Add: Possibility to restart Caddy with the ACME Client by using "Automations - Run Command - System or Plugin Command"
+* Add: Option to redirect the ACME HTTP-01 challenge to an upstream destination as advanced option in domains
+* Change: From "Phalcon Messages" to "OPNsense Messages" in Caddy.php
+* Change: Default storage location from /usr/local/etc/caddy to /var/db/caddy/data/caddy/
+* Change: Description from "TextField" to "DescriptionField" in Caddy.xml model
+* Cleanup: Dialogs and UI to present all options better
+* Remove: Unmaintained DNS Providers: dnspod, hetzner, namesilo, vercel, alidns, metaname, openstack-designate
 
 1.5.2
 
-* Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds.
-* When pressing Apply, the form is saved automatically before the reconfigure action.
-* Cleaned up Caddy.xml model to satisfy make lint.
-* When selecting an interface in Dynamic DNS, at most one IPv6 GUA and IPv4 non-RFC1918 address will be extracted. Fixes all IP addresses being read.
+* Build: When selecting an interface in Dynamic DNS, at most one IPv6 GUA and IPv4 non-RFC1918 address will be extracted. Fixes all IP addresses being read
+* Cleanup: Increased timeout of message area in reverse_proxy.volt and general.volt to 15 seconds
+* Cleanup: Caddy.xml model to satisfy make lint
+* Fix: When pressing Apply, the form is saved automatically before the reconfigure action
 
 1.5.1
 
-* More DNS Providers added: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate.
-* More input fields and better documentation added for the DNS Provider API Keys.
-* Changed rc.d script to standard freebsd poudriere one packaged with the caddy-custom binary, included setup.sh script to rc.conf.d/caddy.
-* Updated dependancy to caddy-custom instead of caddy.
-* Removed +POST_DEINSTALL.post and +POST_INSTALL.post.
-* Turned syslog-ng configuration from template to static file.
-* A few typos in the general.volt and reverse_proxy.volt corrected.
-* The RealInterfaceField custom Fieldtype was removed and replaced with an OPNsense integrated template function to read the interface name.
-* Enable $internalModelUseSafeDelete in ReverseProxyController.php - Items can only be deleted when they are not referenced by other items, making deleting in the GUI safer since there can't be any orphaned configuration left behind.
-* Migration script M1_1_3 from "Description" to "description" added. Lower case description is needed to be in line with some OPNsense integrated functions.
+* Add: More DNS Providers: netlify, namesilo, njalla, vercel, googleclouddns, alidns, powerdns, tencentcloud, dinahosting, metaname, hexonet, ddnss, linode, mailinabox, ovh, namecheap, azure, openstack-designate
+* Add: More input fields and better documentation for the DNS Provider API Keys
+* Change: rc.d script to standard freebsd poudriere one packaged with the caddy-custom binary, included setup.sh script to rc.conf.d/caddy
+* Change: Updated dependancy to caddy-custom instead of caddy
+* Change: Enable $internalModelUseSafeDelete in ReverseProxyController.php - Items can only be deleted when they are not referenced by other items, making deleting in the GUI safer since there can't be any orphaned configuration left behind
+* Cleanup: Turned syslog-ng configuration from template to static file
+* Cleanup: A few typos in the general.volt and reverse_proxy.volt corrected
+* Cleanup: The RealInterfaceField custom Fieldtype was removed and replaced with an OPNsense integrated template function to read the interface name
+* Cleanup: Migration script M1_1_3 from "Description" to "description" added. Lower case description is needed to be in line with some OPNsense integrated functions
+* Remove: +POST_DEINSTALL.post and +POST_INSTALL.post
 
 1.5.0
 
-* Omit vultr from DNS-Providers since it can't be built without errors.
-* General view cleanup by seperating options into different tabs.
-* Added ACME-DNS Provider for custom ACME Server support.
-* When pressing save, a hint will appear that changes should be applied. Apply and Save now give feedback on success.
-* Create ACL for Caddy
-* Code consistency improved.
+* Add: ACME-DNS Provider for custom ACME Server support
+* Add: When pressing save, a hint will appear that changes should be applied. Apply and Save now give feedback on success
+* Add: Create ACL for Caddy
+* Cleanup: General view cleanup by seperating options into different tabs
+* Cleanup: Code consistency improved
+* Remove: vultr from DNS-Providers since it can't be built without errors
 
 1.4.5
 
-* New validate api action when pressing apply that validates the Caddyfile + Validation model fix.
-* Added configuration option to log HTTP access to plain JSON files. [contributed by @pmhausen]
-* Added backend path prepend feature to handler configuration. [contributed by @pmhausen]
+* Add: New validate api action when pressing apply that validates the Caddyfile + Validation model fix
+* Add: Configuration option to log HTTP access to plain JSON files (contributed by pmhausen)
+* Add: Backend path prepend feature to handler configuration (contributed by pmhausen)
 
 1.4.4
 
-* Route53 DNS Provider added
-* Dark Mode GUI fix
+* Add: Route53 DNS Provider
+* Cleanup: Dark Mode GUI
 
 1.4.2
 
-* Added Basic Auth as additional access restriction, multiple users can be set per domain and subdomain.
-* Made views cleaner: Seperated General Settings and DNS Provider Settings, joined Access List and Basic Auth in new Access Tab.
-* Fixed template generation of Caddyfile for new DNS Providers deSEC.
-* Added Porkbun DNS Provider for GUI configuration with additional DNS Secret Api Key input field.
-* Cleaned up some code and fixed some typos.
+* Add: Basic Auth as additional access restriction, multiple users can be set per domain and subdomain
+* Add: Porkbun DNS Provider for GUI configuration with additional DNS Secret Api Key input field
+* Cleanup: Improve views with seperated General Settings and DNS Provider Settings, joined Access List and Basic Auth in new Access Tab
+* Cleanup: Fixed some typos in forms.
+* Fix: Template generation of Caddyfile for new DNS Provider deSEC
 
 1.4.0
 
-* DynDNS (Dynamic DNS) Feature added.
-* Logging refactored to syslog-ng.
-* HTTP Access Logs can be enabled.
-* More DNS Providers added: Cloudflare, Duck DNS, DigitalOcean, DNSPod, Hetzner, GoDaddy, Gandi, Vultr, IONOS, deSEC
+* Add: DynDNS (Dynamic DNS) Feature
+* Add: HTTP Access Logs
+* Add: More DNS Providers: Cloudflare, Duck DNS, DigitalOcean, DNSPod, Hetzner, GoDaddy, Gandi, Vultr, IONOS, deSEC
+* Cleanup: Logging refactored to syslog-ng.
 
 1.3.4
 
-* Added abort statement to close all connections that don't match any handle.
-* Added tls_server_name to model
-* Fixes DNS Challenge not adhering to the status of the DNS-01 Checkbox
+* Add: abort statement to close all connections that do not match any handle
+* Add: tls_server_name to model
+* Fix: DNS Challenge not adhering to the status of the DNS-01 Checkbox
 
 1.3.3
 
-* Swapped processing order in template from wildcard domains -> subdomains to subdomains -> wildcard domains
+* Change: Swapped processing order in template from wildcard domains -> subdomains to subdomains -> wildcard domains
 
 1.3.2
 
-* Added inline loop logic to template to always print empty handles last in the Caddyfile before specific handles.
+* Add: Inline loop logic to template to always print empty handles last in the Caddyfile before specific handles
 
 1.3.1
 
-* Added AccessList functionality.
-* Small constraint to handle added. Handles have to start at least with / when they're not empty, or Caddy won't start.
-* Add reload for the ServiceControlUI after pressing Apply.
+* Add: Access Lists
+* Add: Reload for the ServiceControlUI after pressing Apply
+* Fix: Small constraint to handle added. Handles have to start at least with / when they're not empty, or Caddy won't start
 
-1.3.0
+1.3.0 - Initial release
 
-* Initial first stable release.
-* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt.
-* Control Caddy and view the Logfile in the OPNsense GUI.
-* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles.
-* Use your own certificates where needed.
-* Use TLS, NTLM and CA certificates to communicate with your Backend Servers.
-* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store.
+* Create easy Reverse Proxy entries, use the HTTP or DNS-01 Challenge to get quick and easy ACME Certificates with Let's Encrypt
+* Control Caddy and view the Logfile in the OPNsense GUI
+* Create more complicated nested handle structures with wildcard domains, subdomains, handles and catch all handles
+* Use your own certificates where needed
+* Use TLS, NTLM and CA certificates to communicate with your Backend Servers
+* Use Caddy with two OPNsense Firewalls in HA - only fully supported with custom certificates from OPNsense trust store

@@ -69,6 +69,7 @@
             // These fields do not need the validation workaround, they get their validation messages from core.
             let validationExceptions = [
                 "caddy.general.enabled",
+                "caddy.general.EnableLayer4",
                 "caddy.general.DisableSuperuser",
                 "caddy.general.HttpPort",
                 "caddy.general.HttpsPort",
