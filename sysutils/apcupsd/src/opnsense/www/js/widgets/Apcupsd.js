@@ -105,9 +105,9 @@ export default class ApcUpsd extends BaseTableWidget {
             // self test values
             const value_keys = {
                 OK: 'status_selftest_ok',
-                BT: 'status_selftest_battery',
-                NG: 'status_selftest_overload',
-                NO: 'status_selftest_no_results',
+                BT: 'status_selftest_bt',
+                NG: 'status_selftest_ng',
+                NO: 'status_selftest_no',
             };
 
             // Try to translate it, otherwise use the raw value
