@@ -1,0 +1,26 @@
+<metadata>
+    <apcupsd>
+        <filename>Apcupsd.js</filename>
+        <endpoints>
+            <endpoint>/api/apcupsd/service/getUpsStatus</endpoint>
+        </endpoints>
+        <translations>
+            <title>Apcupsd</title>
+            <status_model>Model</status_model>
+            <status_status>Status</status_status>
+            <status_selftest>Self test</status_selftest>
+            <status_selftest_ok>OK</status_selftest_ok>
+            <status_selftest_bt>Failed due to battery capacity (BT)</status_selftest_bt>
+            <status_selftest_ng>Failed due to overload (NG)</status_selftest_ng>
+            <status_selftest_no>No results</status_selftest_no>
+            <status_linev>Line voltage</status_linev>
+            <status_load>Load</status_load>
+            <status_bcharge>Battery level</status_bcharge>
+            <status_timeleft>Battery runtime</status_timeleft>
+            <status_battv>Battery voltage</status_battv>
+            <status_battdate>Battery date</status_battdate>
+            <status_itemp>Temperature</status_itemp>
+            <status_date>Status update</status_date>
+        </translations>
+    </apcupsd>
+</metadata>
