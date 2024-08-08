@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ifconfig ocvpn0 name tun30000
