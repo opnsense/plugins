@@ -512,6 +512,15 @@
                 <advanced>true</advanced>
             </field>
             <field>
+                <id>proxy.forward.icap.PersistentConnections</id>
+                <label>Persistent Connections</label>
+                <type>checkbox</type>
+                <style>tokenize</style>
+                <help>If you enable this option, squid will use persistent connections to the icap server.</help>
+                <allownew>true</allownew>
+                <advanced>true</advanced>
+            </field>
+            <field>
                 <id>proxy.forward.icap.SendClientIP</id>
                 <label>Send Client IP</label>
                 <type>checkbox</type>

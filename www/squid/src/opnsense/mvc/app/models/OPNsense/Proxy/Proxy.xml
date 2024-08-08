@@ -436,6 +436,10 @@
                 </enable>
                 <RequestURL type="TextField"/>
                 <ResponseURL type="TextField"/>
+                <PersistentConnections type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </PersistentConnections>
                 <SendClientIP type="BooleanField">
                     <Required>Y</Required>
                     <Default>1</Default>
