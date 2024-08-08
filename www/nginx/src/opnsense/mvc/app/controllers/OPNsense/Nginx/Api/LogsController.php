@@ -287,11 +287,12 @@ class LogsController extends ApiControllerBase
      */
     private function sendConfigdToClient($command)
     {
-        $backend = new Backend();
         // must be passed directly -> OOM Problem
-        $this->response->setContent($backend->configdRun($command));
-        $this->response->setStatusCode(200, "OK");
-        $this->response->setContentType('application/json', 'UTF-8');
-        return $this->response->send();
+        if (!$this->response->isSent()) {
+            $backend = new Backend();
+            $this->response->setContent($backend->configdRun($command));
+            $this->response->setStatusCode(200, "OK");
+            $this->response->setContentType('application/json', 'UTF-8');
+        }
     }
 }
