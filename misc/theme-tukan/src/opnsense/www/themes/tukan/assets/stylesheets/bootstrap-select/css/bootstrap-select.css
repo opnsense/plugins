@@ -96,7 +96,7 @@ span.form-control {
   position: absolute;
 }
 .bootstrap-select.btn-group.bs-container .dropdown-menu {
-  z-index: 1060;
+  z-index: 9999;
 }
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline-block;
@@ -204,7 +204,7 @@ span.form-control {
   margin-right: 34px;
 }
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle {
-  z-index: 1061;
+  z-index: 9999;
 }
 .bootstrap-select.show-menu-arrow .dropdown-toggle:before {
   content: '';
