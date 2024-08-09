@@ -186,6 +186,10 @@
             <default>0</default>
             <Required>Y</Required>
         </reject_unverified_recipient>
+        <always_add_missing_headers type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </always_add_missing_headers>
         <delay_warning_time type="IntegerField">
             <default>0</default>
             <Required>N</Required>

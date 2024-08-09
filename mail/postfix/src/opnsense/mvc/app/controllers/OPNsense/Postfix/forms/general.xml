@@ -248,6 +248,11 @@
         <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
     </field>
     <field>
+        <id>general.always_add_missing_headers</id>
+        <label>Always add missing headers</label>
+        <type>checkbox</type>
+    </field>
+    <field>
         <id>general.delay_warning_time</id>
         <label>Delay Warning Time</label>
         <type>text</type>
