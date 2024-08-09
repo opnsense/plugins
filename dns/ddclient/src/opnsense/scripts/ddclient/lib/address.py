@@ -29,6 +29,7 @@ import ipaddress
 
 
 checkip_service_list = {
+  'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
   'dyndns': '%s://checkip.dyndns.org/',
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
   'googledomains': '%s://domains.google.com/checkip',
