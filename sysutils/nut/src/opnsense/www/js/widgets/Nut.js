@@ -29,61 +29,203 @@
 import BaseTableWidget from "./BaseTableWidget.js";
 
 export default class Nut extends BaseTableWidget {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+    this.statusInfo = {
+      OL: { color: "text-success", fullName: "On Line" },
+      OB: { color: "text-danger", fullName: "On Battery" },
+      LB: { color: "text-danger", fullName: "Low Battery" },
+      RB: { color: "text-warning", fullName: "Replace Battery" },
+    };
+  }
 
-    getMarkup() {
-        let $container = $('<div></div>');
-        let $nuttable = this.createTable('nut-table', {
-            headerPosition: 'left',
-        });
-        $container.append($nuttable);
-        return $container;
-    }
+  getMarkup() {
+    let $container = $("<div></div>");
+    let $nuttable = this.createTable("nut-table", {
+      headerPosition: "left",
+    });
+    $container.append($nuttable);
+    return $container;
+  }
 
-    async onWidgetTick() {
-       await ajaxGet('/api/nut/diagnostics/upsstatus', {}, (data, status) => {
-        let rows = [];
-         const keysOfInterest = [
-            'battery.charge', 'device.model', 'device.serial', 'device.type',
-            'driver.name', 'driver.state', 'input.voltage', 'output.voltage',
-            'ups.load', 'ups.status'
-        ];
+  getBatteryChargeColor(charge) {
+    if (charge == 100) return "text-success";
+    if (charge > 0) return "text-warning";
+    return "text-danger";
+  }
 
-        const formatKey = (key) => {
-            return key.split('.').map(word => {
-                if (word.toLowerCase() === 'ups') {
-                    return 'UPS';
-                }
-                return word.charAt(0).toUpperCase() + word.slice(1);
-            }).join(' ');
+  getUpsLoadColor(load) {
+    return load == 0 ? "text-success" : "text-warning";
+  }
+
+  async onWidgetTick() {
+    await ajaxGet("/api/nut/diagnostics/upsstatus", {}, (data, status) => {
+      let rows = [];
+      const keysOfInterest = [
+        "ups.status",
+        "battery.charge",
+        "ups.load",
+        "device.model",
+        "device.serial",
+        "device.type",
+        "driver.name",
+        "driver.state",
+        "input.voltage",
+        "output.voltage",
+      ];
+
+      const formatKey = (key) => {
+        let formattedKey = key
+          .split(".")
+          .map((word) => {
+            if (word.toLowerCase() === "ups") {
+              return "UPS";
+            }
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          })
+          .join(" ");
+
+        // Add icons for specific keys
+        if (key === "device.serial") {
+          return `<i class="fa fa-barcode" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
+        } else if (key === "device.model") {
+          return `<i class="fa fa-server" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
+        } else if (key === "ups.load") {
+          return `<i class="fa fa-bolt" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
+        }
+
+        return formattedKey;
+      };
+
+      if (!data || typeof data !== "object" || !data.response) {
+        console.error("Invalid data format received");
+        return;
+      }
+
+      let lines = data.response.split("\n");
+      let upsStatus = "";
+      let batteryCharge = "";
+      let upsLoad = "";
+
+      for (let line of lines) {
+        line = line.trim();
+        if (line === "") continue;
+
+        let [key, value] = line.split(":").map((item) => item.trim());
+
+        if (!key || !value || !keysOfInterest.includes(key)) {
+          continue;
+        }
+
+        if (key === "ups.status") {
+          upsStatus = value;
+          continue;
+        }
+
+        if (key === "battery.charge") {
+          batteryCharge = value;
+          continue;
+        }
+
+        if (key === "ups.load") {
+          upsLoad = value;
+          continue;
+        }
+
+        rows.push([formatKey(key), value]);
+      }
+
+      // Create UPS Status row with icons
+      if (upsStatus) {
+        let statusCodes = upsStatus.split(" ");
+        let displayStatus = statusCodes
+          .map((code) => {
+            let info = this.statusInfo[code] || {
+              color: "text-muted",
+              fullName: code,
+            };
+            return `<span class="${info.color}" style="font-weight: bold;">${info.fullName}</span>`;
+          })
+          .join(", ");
+
+        let primaryStatus = statusCodes[0];
+        let primaryInfo = this.statusInfo[primaryStatus] || {
+          color: "text-muted",
+          fullName: "Unknown",
         };
 
-        // Ensure data is an object and has the response key
-        if (!data || typeof data !== 'object' || !data.response) {
-            console.error('Invalid data format received');
-            return;
-        }
+        let $header = $(`
+                    <div>
+                        <i class="fa fa-circle ${primaryInfo.color} nut-status-icon" style="font-size: 11px; cursor: pointer;"
+                            data-toggle="tooltip" title="${primaryInfo.fullName}">
+                        </i>
+                        &nbsp;
+                        <i class="fa fa-power-off" style="font-size: 11px;"></i>
+                        &nbsp;UPS Status
+                    </div>
+                `);
+        rows.unshift([$header.prop("outerHTML"), displayStatus]);
+      }
 
-        // Get the response string and split it into lines
-        let lines = data.response.split('\n');
+      // Create Battery Charge row with icons and colored ball
+      if (batteryCharge) {
+        let chargeValue = parseInt(batteryCharge);
+        let chargeColor = this.getBatteryChargeColor(chargeValue);
 
-        for (let line of lines) {
-            line = line.trim();
-            if (line === '') continue; // Skip empty lines
+        let $header = $(`
+                    <div>
+                        <i class="fa fa-circle ${chargeColor}" style="font-size: 11px; cursor: pointer;"
+                            data-toggle="tooltip" title="${chargeValue}%">
+                        </i>
+                        &nbsp;
+                        <i class="fa fa-battery-full" style="font-size: 11px;"></i>
+                        &nbsp;Battery Charge
+                    </div>
+                `);
 
-            let [key, value] = line.split(':').map(item => item.trim());
+        let $value = $(`
+                    <div>
+                        ${batteryCharge}
+                    </div>
+                `);
 
-            if (!key || !value || !keysOfInterest.includes(key)) {
-                continue;
-            }
+        // Insert Battery Charge row directly after UPS Status
+        rows.splice(1, 0, [
+          $header.prop("outerHTML"),
+          $value.prop("outerHTML"),
+        ]);
+      }
 
-            rows.push([formatKey(key), value]);
-        }
+      // Create UPS Load row with colored ball
+      if (upsLoad) {
+        let loadValue = parseFloat(upsLoad);
+        let loadColor = this.getUpsLoadColor(loadValue);
 
-        // Update the table
-        super.updateTable('nut-table', rows);
+        let $header = $(`
+                    <div>
+                        <i class="fa fa-circle ${loadColor}" style="font-size: 11px; cursor: pointer;"
+                            data-toggle="tooltip" title="${loadValue}%">
+                        </i>
+                        &nbsp;
+                        <i class="fa fa-bolt" style="font-size: 11px;"></i>
+                        &nbsp;UPS Load
+                    </div>
+                `);
+
+        let $value = $(`<div>${upsLoad}</div>`);
+
+        // Insert UPS Load row directly after Battery Charge
+        rows.splice(2, 0, [
+          $header.prop("outerHTML"),
+          $value.prop("outerHTML"),
+        ]);
+      }
+
+      // Update the table
+      super.updateTable("nut-table", rows);
+
+      // Initialize tooltips
+      $(".nut-status-icon, .fa-circle").tooltip({ container: "body" });
     });
   }
 }
