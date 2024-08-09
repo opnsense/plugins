@@ -85,16 +85,22 @@ export default class Nut extends BaseTableWidget {
           })
           .join(" ");
 
-        // Add icons for specific keys
-        if (key === "device.serial") {
-          return `<i class="fa fa-barcode" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
-        } else if (key === "device.model") {
-          return `<i class="fa fa-server" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
-        } else if (key === "ups.load") {
-          return `<i class="fa fa-bolt" style="font-size: 11px;"></i>&nbsp;${formattedKey}`;
-        }
+        // Add icons for all keys
+        const iconMap = {
+          "device.serial": "fa-barcode",
+          "device.model": "fa-server",
+          "ups.load": "fa-bolt",
+          "device.type": "fa-plug",
+          "driver.name": "fa-microchip",
+          "driver.state": "fa-info-circle",
+          "input.voltage": "fa-arrow-right",
+          "output.voltage": "fa-arrow-left",
+        };
 
-        return formattedKey;
+        const icon = iconMap[key] || "";
+        return icon
+          ? `<i class="fa ${icon}" style="font-size: 11px;"></i>&nbsp;${formattedKey}`
+          : formattedKey;
       };
 
       if (!data || typeof data !== "object" || !data.response) {
