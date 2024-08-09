@@ -156,6 +156,9 @@ relayhost = {{ OPNsense.postfix.general.relayhost }}
 {% if helpers.exists('OPNsense.postfix.general.always_add_missing_headers') and OPNsense.postfix.general.always_add_missing_headers == '1' %}
 always_add_missing_headers = yes
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.local_header_rewrite_clients') and OPNsense.postfix.general.local_header_rewrite_clients != '' %}
+local_header_rewrite_clients = {{ OPNsense.postfix.general.local_header_rewrite_clients }}
+{% endif %}
 
 {% if helpers.exists('OPNsense.postfix.general.smtpauth_enabled') and OPNsense.postfix.general.smtpauth_enabled != '' %}
 smtp_sasl_auth_enable = yes
