@@ -29,7 +29,7 @@ import ipaddress
 
 
 checkip_service_list = {
-  'cloudflare': '%s://1.1.1.1/cdn-cgi/trace',
+  'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
   'dyndns': '%s://checkip.dyndns.org/',
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
   'googledomains': '%s://domains.google.com/checkip',
@@ -57,8 +57,6 @@ def extract_address(txt):
     for regexp in [r'[^a-fA-F0-9\:]', r'[^F0-9\.]']:
         for line in re.sub(regexp, ' ', txt).split():
             if line.count('.') == 3 or line.count(':') >= 2:
-                if line == '1.1.1.1':
-                    continue
                 try:
                     ipaddress.ip_address(line)
                     return line
