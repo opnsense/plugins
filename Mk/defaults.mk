@@ -86,7 +86,7 @@ SED_REPLACE=	# empty
 SED_REPLACE+=	-e "s=%%${REPLACEMENT}%%=${${REPLACEMENT}}=g"
 .endfor
 
-ARGS=	diff mfc
+ARGS=	diff feed mfc
 
 # handle argument expansion for required targets
 .for TARGET in ${.TARGETS}
@@ -113,6 +113,9 @@ diff_ARGS?= 	.
 
 diff: ensure-stable
 	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
+
+feed: ensure-stable
+	@git log --stat -p --reverse stable/${PLUGIN_ABI}...${feed_ARGS:[1]}~1
 
 mfc_ARGS?=	.
 
