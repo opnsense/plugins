@@ -776,11 +776,11 @@ eap {
                 #  EAP conversation, then this configuration entry is
                 #  ignored.
                 #
-                {% if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_type == 'ttls-gtc' %}
-                default_eap_type = gtc
-                {% else %}
+{%   if helpers.exists('OPNsense.freeradius.eap.default_eap_type') and OPNsense.freeradius.eap.default_eap_ttls_type != '' %}
+                default_eap_type = {{ OPNsense.freeradius.eap.default_eap_ttls_type }}
+{%   else %}
                 default_eap_type = md5
-                {% endif %}
+{%   endif %}
 
                 #  The tunneled authentication request does not usually
                 #  contain useful attributes like 'Calling-Station-Id',

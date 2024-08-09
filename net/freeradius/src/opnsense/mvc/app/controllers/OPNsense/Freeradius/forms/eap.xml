@@ -6,6 +6,12 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.default_eap_ttls_type</id>
+        <label>Default EAP TTLS Type</label>
+        <type>dropdown</type>
+        <help>Set the default EAP TTLS type, used only when selected TTLS in EAP type.</help>
+    </field>
+    <field>
         <id>eap.elliptic_curve</id>
         <label>Elliptic Curve</label>
         <type>dropdown</type>
