@@ -48,7 +48,8 @@ PLUGIN_ABI?=	${_PLUGIN_ABI}
 PLUGIN_ABI?=	24.7
 .endif
 
-PLUGIN_MAIN?=	master
+PLUGIN_MAINS=	master main
+PLUGIN_MAIN?=	${PLUGIN_MAINS:[1]}
 PLUGIN_STABLE?=	stable/${PLUGIN_ABI}
 
 PHPBIN=		${LOCALBASE}/bin/php
@@ -144,7 +145,7 @@ mfc: ensure-stable
 stable:
 	@git checkout ${PLUGIN_STABLE}
 
-devel main ${PLUGIN_MAIN}:
+${PLUGIN_MAINS}:
 	@git checkout ${PLUGIN_MAIN}
 
 rebase:
