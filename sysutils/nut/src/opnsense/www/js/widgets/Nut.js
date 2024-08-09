@@ -87,9 +87,11 @@ export default class Nut extends BaseTableWidget {
 
         // Add icons for all keys
         const iconMap = {
+          "ups.status": "fa-power-off",
+          "battery.charge": "fa-battery-full",
+          "ups.load": "fa-bolt",
           "device.serial": "fa-barcode",
           "device.model": "fa-server",
-          "ups.load": "fa-bolt",
           "device.type": "fa-plug",
           "driver.name": "fa-microchip",
           "driver.state": "fa-info-circle",
@@ -141,9 +143,15 @@ export default class Nut extends BaseTableWidget {
         rows.push([formatKey(key), value]);
       }
 
-      // Create UPS Status row with icons
+      // Create UPS Status row with icon
       if (upsStatus) {
         let statusCodes = upsStatus.split(" ");
+        let primaryStatus = statusCodes[0];
+        let primaryInfo = this.statusInfo[primaryStatus] || {
+          color: "text-muted",
+          fullName: "Unknown",
+        };
+
         let displayStatus = statusCodes
           .map((code) => {
             let info = this.statusInfo[code] || {
@@ -154,77 +162,52 @@ export default class Nut extends BaseTableWidget {
           })
           .join(", ");
 
-        let primaryStatus = statusCodes[0];
-        let primaryInfo = this.statusInfo[primaryStatus] || {
-          color: "text-muted",
-          fullName: "Unknown",
-        };
-
-        let $header = $(`
+        let $header = formatKey("ups.status");
+        let $value = $(`
                     <div>
                         <i class="fa fa-circle ${primaryInfo.color} nut-status-icon" style="font-size: 11px; cursor: pointer;"
                             data-toggle="tooltip" title="${primaryInfo.fullName}">
                         </i>
-                        &nbsp;
-                        <i class="fa fa-power-off" style="font-size: 11px;"></i>
-                        &nbsp;UPS Status
+                        &nbsp;${displayStatus}
                     </div>
                 `);
-        rows.unshift([$header.prop("outerHTML"), displayStatus]);
+        rows.unshift([$header, $value.prop("outerHTML")]);
       }
 
-      // Create Battery Charge row with icons and colored ball
+      // Create Battery Charge row with icon
       if (batteryCharge) {
         let chargeValue = parseInt(batteryCharge);
         let chargeColor = this.getBatteryChargeColor(chargeValue);
 
-        let $header = $(`
+        let $header = formatKey("battery.charge");
+        let $value = $(`
                     <div>
                         <i class="fa fa-circle ${chargeColor}" style="font-size: 11px; cursor: pointer;"
                             data-toggle="tooltip" title="${chargeValue}%">
                         </i>
-                        &nbsp;
-                        <i class="fa fa-battery-full" style="font-size: 11px;"></i>
-                        &nbsp;Battery Charge
+                        &nbsp;${batteryCharge}
                     </div>
                 `);
 
-        let $value = $(`
-                    <div>
-                        ${batteryCharge}
-                    </div>
-                `);
-
-        // Insert Battery Charge row directly after UPS Status
-        rows.splice(1, 0, [
-          $header.prop("outerHTML"),
-          $value.prop("outerHTML"),
-        ]);
+        rows.splice(1, 0, [$header, $value.prop("outerHTML")]);
       }
 
-      // Create UPS Load row with colored ball
+      // Create UPS Load row with icon
       if (upsLoad) {
         let loadValue = parseFloat(upsLoad);
         let loadColor = this.getUpsLoadColor(loadValue);
 
-        let $header = $(`
+        let $header = formatKey("ups.load");
+        let $value = $(`
                     <div>
                         <i class="fa fa-circle ${loadColor}" style="font-size: 11px; cursor: pointer;"
                             data-toggle="tooltip" title="${loadValue}%">
                         </i>
-                        &nbsp;
-                        <i class="fa fa-bolt" style="font-size: 11px;"></i>
-                        &nbsp;UPS Load
+                        &nbsp;${upsLoad}
                     </div>
                 `);
 
-        let $value = $(`<div>${upsLoad}</div>`);
-
-        // Insert UPS Load row directly after Battery Charge
-        rows.splice(2, 0, [
-          $header.prop("outerHTML"),
-          $value.prop("outerHTML"),
-        ]);
+        rows.splice(2, 0, [$header, $value.prop("outerHTML")]);
       }
 
       // Update the table
