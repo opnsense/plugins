@@ -1,0 +1,13 @@
+ <metadata>
+    <nut>
+        <filename>Nut.js</filename>
+        <endpoints>
+            <endpoint>/api/nut/diagnostics/upsstatus</endpoint>
+        </endpoints>
+        <translations>
+            <title>Nut UPS Server</title>
+            <help>Nut Server UPS status.</help>
+            <unconfigured>Nut not available or not configured.</unconfigured>
+        </translations>
+    </nut>
+ /<metadata>
