@@ -251,6 +251,7 @@
         <id>general.always_add_missing_headers</id>
         <label>Always add missing headers</label>
         <type>checkbox</type>
+        <help>Always add (Resent-) From:, To:, Date: or Message-ID: headers when not present.</help>
     </field>
     <field>
         <id>general.local_header_rewrite_clients</id>
