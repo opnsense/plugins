@@ -48,6 +48,7 @@ PLUGIN_ABI?=	${_PLUGIN_ABI}
 PLUGIN_ABI?=	24.7
 .endif
 
+PLUGIN_MAIN?=	master
 PLUGIN_STABLE?=	stable/${PLUGIN_ABI}
 
 PHPBIN=		${LOCALBASE}/bin/php
@@ -129,7 +130,7 @@ mfc: ensure-stable
 	@git apply /tmp/mfc.diff
 	@git add ${.CURDIR}/${MFC}
 	@if ! git diff --quiet HEAD; then \
-		git commit -m "${MFC:S/^.$/${PLUGIN_DIR}/}: sync with master"; \
+		git commit -m "${MFC:S/^.$/${PLUGIN_DIR}/}: sync with ${PLUGIN_MAIN}"; \
 	fi
 .else
 	@git checkout ${PLUGIN_STABLE}
@@ -137,19 +138,19 @@ mfc: ensure-stable
 		git cherry-pick --abort; \
 	fi
 .endif
-	@git checkout master
+	@git checkout ${PLUGIN_MAIN}
 .endfor
 
 stable:
 	@git checkout ${PLUGIN_STABLE}
 
-master:
-	@git checkout master
+devel main ${PLUGIN_MAIN}:
+	@git checkout ${PLUGIN_MAIN}
 
 rebase:
 	@git checkout ${PLUGIN_STABLE}
 	@git rebase -i
-	@git checkout master
+	@git checkout ${PLUGIN_MAIN}
 
 log:
 	@git log --stat -p ${PLUGIN_STABLE}
@@ -157,4 +158,4 @@ log:
 push:
 	@git checkout ${PLUGIN_STABLE}
 	@git push
-	@git checkout master
+	@git checkout ${PLUGIN_MAIN}
