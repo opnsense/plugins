@@ -46,4 +46,15 @@
         <type>text</type>
         <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "session_token".]]></help>
     </field>
+    <field>
+        <type>header</type>
+        <label>DNS Propagation</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>caddy.general.TlsDnsPropagationTimeout</id>
+        <label>Disable Propagation Timeout</label>
+        <type>checkbox</type>
+        <help><![CDATA[Propagation Timeout is a duration value that sets the maximum time to wait for the DNS TXT records to appear when using the DNS challenge. The default is 2 minutes. Disabling this will set propagation_timeout to -1 (checking propagation infinitely) and additionally set a propagation_delay of 30s (wait time before starting propagation checks). This can help when the DNS Challenge continues to fail because the local DNS Server does not know the new DNS TXT records yet in the default timeframe of 2 minutes.]]></help>
+    </field>
 </form>

@@ -318,19 +318,32 @@
 #   - @param dnsChallenge (boolean): Indicates if a DNS challenge is used for certificate authentication.
 #   - @param dnsSecretApiKey (string, optional): A secret API key or token for additional security, depending on the provider.
 #   - @param TlsDnsOptionalField1 to 4 (string, optional): Additional fields for specific DNS provider configurations.
+#   - @param TlsDnsPropagationTimeout (boolean, optional): Disables Propagation Timeout for DNS Challenge.
 #}
-{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
+{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsPropagationTimeout) %}
     {% if dnsChallenge == "1" and dnsProvider %}
         {% if dnsProvider in dnsProviderSpecialConfig %}
             tls {
-                dns {{ dnsProvider }} {
-                    {% include "OPNsense/Caddy/includeDnsProvider" %}
+                issuer acme {
+                    dns {{ dnsProvider }} {
+                        {% include "OPNsense/Caddy/includeDnsProvider" %}
+                    }
+                    {% if TlsDnsPropagationTimeout|default("0") == "1" %}
+                        propagation_delay 30s
+                        propagation_timeout -1
+                    {% endif %}
                 }
             }
         {% else %}
             tls {
-                {# Other DNS Providers fall under this default #}
-                dns {{ dnsProvider }} {{ dnsApiKey }}
+                issuer acme {
+                    {# Other DNS Providers fall under this default #}
+                    dns {{ dnsProvider }} {{ dnsApiKey }}
+                    {% if TlsDnsPropagationTimeout|default("0") == "1" %}
+                        propagation_delay 30s
+                        propagation_timeout -1
+                    {% endif %}
+                }
             }
         {% endif %}
     {% endif %}
@@ -545,7 +558,8 @@
             {% endif %}
             {% set customCert = reverse.CustomCertificate|default("") %}
             {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
-            {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) }}
+            {% set TlsDnsPropagationTimeout = generalSettings.TlsDnsPropagationTimeout %}
+            {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsPropagationTimeout) }}
 
             {% if not reverse.accesslist %}
                 {% set basicauth_uuids = reverse.basicauth %}
