@@ -28,6 +28,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.6.3
+
+* Add: Disable Propagation Timeout in DNS Provider Tab. This can help if the DNS Challenge fails due to DNS Propagation being too slow.
+
 1.6.2
 
 * Add: Authentik as authentication provider (contributed by Tim-Sc)
