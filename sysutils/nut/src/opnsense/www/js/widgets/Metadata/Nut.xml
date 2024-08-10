@@ -1,4 +1,4 @@
- <metadata>
+<metadata>
     <nut>
         <filename>Nut.js</filename>
         <endpoints>
@@ -6,8 +6,23 @@
         </endpoints>
         <translations>
             <title>Nut UPS Server</title>
-            <help>Nut Server UPS status.</help>
             <unconfigured>Nut not available or not configured.</unconfigured>
+            <errorLoadingData>Error loading data.</errorLoadingData>
+            <status_online>On Line</status_online>
+            <status_onBattery>On Battery</status_onBattery>
+            <status_lowBattery>Low Battery</status_lowBattery>
+            <status_replaceBattery>Replace Battery</status_replaceBattery>
+            <status_unknown>Unknown</status_unknown>
+
+            <status_model>Model</status_model>
+            <status_serial>Serial Number</status_serial>
+            <status_type>Type</status_type>
+            <status_driverName>Driver Name</status_driverName>
+            <status_driverState>Driver State</status_driverState>
+            <status_inputVoltage>Input Voltage</status_inputVoltage>
+            <status_outputVoltage>Output Voltage</status_outputVoltage>
+            <status_batteryCharge>Battery Level</status_batteryCharge>
+            <status_upsLoad>Load</status_upsLoad>
         </translations>
     </nut>
- /<metadata>
+</metadata>
