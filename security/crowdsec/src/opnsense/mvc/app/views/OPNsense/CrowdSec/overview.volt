@@ -54,7 +54,7 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Name</th>
                   <th data-column-id="ip_address">IP Address</th>
                   <th data-column-id="last_update" data-formatter="datetime">Last Update</th>
                   <th data-column-id="validated" data-formatter="yesno" data-searchable="false">Validated?</th>
@@ -74,7 +74,7 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Name</th>
                   <th data-column-id="ip_address">IP Address</th>
                   <th data-column-id="valid" data-formatter="yesno" data-searchable="false">Valid</th>
                   <th data-column-id="last_pull" data-formatter="datetime">Last API Pull</th>
@@ -95,10 +95,11 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Collection</th>
                   <th data-column-id="status">Status</th>
                   <th data-column-id="local_version">Version</th>
-                  <th data-column-id="local_path">Local Path</th>
+                  <th data-visible="false" data-column-id="local_path">Path</th>
+                  <th data-column-id="description">Description</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,10 +115,10 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Scenario</th>
                   <th data-column-id="status">Status</th>
                   <th data-column-id="local_version">Version</th>
-                  <th data-column-id="local_path">Path</th>
+                  <th data-visible="false" data-column-id="local_path">Path</th>
                   <th data-column-id="description">Description</th>
                 </tr>
             </thead>
@@ -134,10 +135,10 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Parser</th>
                   <th data-column-id="status">Status</th>
                   <th data-column-id="local_version">Version</th>
-                  <th data-column-id="local_path">Local Path</th>
+                  <th data-visible="false" data-column-id="local_path">Path</th>
                   <th data-column-id="description">Description</th>
                 </tr>
             </thead>
@@ -154,10 +155,10 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="name">Name</th>
+                  <th data-column-id="name" data-order="asc">Postoverflow</th>
                   <th data-column-id="status">Status</th>
                   <th data-column-id="local_version">Version</th>
-                  <th data-column-id="local_path">Local Path</th>
+                  <th data-visible="false" data-column-id="local_path">Path</th>
                   <th data-column-id="description">Description</th>
                 </tr>
             </thead>
@@ -174,7 +175,7 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="id" data-type="numeric">ID</th>
+                  <th data-column-id="id" data-type="numeric" data-order="asc">ID</th>
                   <th data-column-id="value">Value</th>
                   <th data-column-id="reason">Reason</th>
                   <th data-column-id="country">Country</th>
@@ -198,17 +199,19 @@ ul.nav>li>a {
         <table class="table table-condensed table-hover table-striped">
             <thead>
                 <tr>
-                  <th data-column-id="delete" data-formatter="delete" data-visible-in-selection="false"></th>
-                  <th data-column-id="id" data-identifier="true" data-type="numeric">ID</th>
-                  <th data-column-id="source">Source</th>
+                  <th data-column-id="delete" data-formatter="delete"
+                  data-visible-in-selection="false"></th>
+                  <th data-column-id="id" data-visible="false" data-identifier="true" data-type="numeric"
+                  data-order="asc">ID</th>
+                  <th data-visible="false" data-column-id="source">Source</th>
                   <th data-column-id="scope_value">Scope:Value</th>
                   <th data-column-id="reason">Reason</th>
-                  <th data-column-id="action">Action</th>
+                  <th data-visible="false" data-column-id="action">Action</th>
                   <th data-column-id="country">Country</th>
                   <th data-column-id="as">AS</th>
                   <th data-column-id="events_count" data-type="numeric">Events</th>
                   <th data-column-id="expiration" data-formatter="duration">Expiration</th>
-                  <th data-column-id="alert_id" data-type="numeric">Alert&nbsp;ID</th>
+                  <th data-visible="false" data-column-id="alert_id" data-type="numeric">Alert&nbsp;ID</th>
                 </tr>
             </thead>
             <tbody>

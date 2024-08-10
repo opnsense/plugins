@@ -3,7 +3,7 @@
   <!-- agent_enabled -->
   <field>
     <id>general.agent_enabled</id>
-    <label>Enable CrowdSec (IDS)</label>
+    <label>Enable Log Processor (IDS)</label>
     <type>checkbox</type>
     <help>Enable/disable the CrowdSec agent. Keep this enabled to detect
       attacks and receive alerts from the CrowSec central service.</help>
@@ -21,9 +21,9 @@
   <!-- firewall_bouncer_enabled -->
   <field>
     <id>general.firewall_bouncer_enabled</id>
-    <label>Enable Firewall Bouncer (IPS)</label>
+    <label>Enable Remediation Component (IPS)</label>
     <type>checkbox</type>
-    <help>Enable/disable the firewall bouncer. Keep this enabled to block
+    <help>Enable/disable the remediation component. Keep this enabled to block
       packets from the attacking IP addresses.</help>
   </field>
 

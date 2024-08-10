@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.32.1</version>
+  <version>1.34</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -65,6 +65,14 @@
         <Required>Y</Required>
         <default>403</default>
       </ban_response>
+      <log_perm_ban type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </log_perm_ban>
+      <bots_ua type="CSVListField">
+        <Required>Y</Required>
+        <default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</default>
+      </bots_ua>
       <headers_more_enable type="BooleanField">
         <Required>N</Required>
       </headers_more_enable>
@@ -120,6 +128,18 @@
         <BlankDesc>Weighted Round Robin</BlankDesc>
         <Required>N</Required>
       </load_balancing_algorithm>
+      <keepalive type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+      </keepalive>
+      <keepalive_requests type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </keepalive_requests>
+      <keepalive_timeout type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </keepalive_timeout>
       <host_port type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
@@ -221,7 +241,7 @@
           <option1 value="=">Exact Match ("=")</option1>
           <option2 value="~">Case Sensitive Match ("~")</option2>
           <option3 value="~*">Case Insensitive Match ("~*")</option3>
-          <option4 value="^~">Don't check regular expressions on logest prefix match ("^~")</option4>
+          <option4 value="^~">Don't check regular expressions on longest prefix match ("^~")</option4>
         </OptionValues>
         <Required>N</Required>
       </matchtype>
@@ -420,7 +440,25 @@
       <websocket type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
+        <Constraints>
+            <check001>
+                <ValidationMessage>WebSocket and Upstream Keepalive support can not be combined.</ValidationMessage>
+                <type>SingleSelectConstraint</type>
+                <addFields>
+                    <field1>upstream_keepalive</field1>
+                </addFields>
+            </check001>
+        </Constraints>
       </websocket>
+      <upstream_keepalive type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+        <Constraints>
+            <check001>
+                <reference>websocket.check001</reference>
+            </check001>
+        </Constraints>
+      </upstream_keepalive>
       <proxy_buffer_size type="IntegerField">
         <Required>N</Required>
         <minValue>1</minValue>
@@ -477,10 +515,6 @@
         <Required>N</Required>
         <minValue>1</minValue>
       </proxy_send_timeout>
-      <http2_push_preload type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </http2_push_preload>
       <ip_acl type="ModelRelationField">
         <Model>
           <template>
@@ -825,6 +859,10 @@
         <Required>Y</Required>
         <default>error</default>
       </error_log_level>
+      <log_handshakes type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </log_handshakes>
       <enable_acme_support type="BooleanField">
         <Required>Y</Required>
         <default>1</default>
@@ -863,6 +901,18 @@
         <default>1</default>
         <Required>Y</Required>
       </tls_prefer_server_ciphers>
+      <resolver type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>resolver</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected resolver not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>N</multiple>
+      </resolver>
       <ocsp_stapling type="BooleanField">
         <default>0</default>
         <Required>Y</Required>
@@ -879,6 +929,10 @@
         <default>0</default>
         <Required>Y</Required>
       </disable_bot_protection>
+      <disable_gzip type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </disable_gzip>
       <naxsi_whitelist_srcip type="CSVListField">
         <Required>N</Required>
         <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
@@ -1121,6 +1175,14 @@
         <Required>N</Required>
         <MinimumValue>0</MinimumValue>
       </proxy_responses>
+      <proxy_connect_timeout type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_connect_timeout>
+      <proxy_timeout type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>0</MinimumValue>
+      </proxy_timeout>
     </stream_server>
 
     <sni_hostname_upstream_map type="ArrayField">
@@ -1199,6 +1261,47 @@
       </action>
     </ip_acl_item>
 
+    <resolver type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </description>
+      <address type="CSVListField">
+        <Required>Y</Required>
+        <multiple>Y</multiple>
+        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</mask>
+        <ValidationMessage>Please provide a valid resolver address, i.e. 8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353.</ValidationMessage>
+      </address>
+      <valid type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </valid>
+      <ipv4_off type="BooleanField">
+        <Required>N</Required>
+        <Constraints>
+            <check001>
+                <ValidationMessage>Can not disable all record types.</ValidationMessage>
+                <type>SingleSelectConstraint</type>
+                <addFields>
+                    <field1>ipv6_off</field1>
+                </addFields>
+            </check001>
+        </Constraints>
+      </ipv4_off>
+      <ipv6_off type="BooleanField">
+        <Required>N</Required>
+        <Constraints>
+            <check001>
+                <reference>ipv4_off.check001</reference>
+            </check001>
+        </Constraints>
+      </ipv6_off>
+      <timeout type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>N</Required>
+      </timeout>
+    </resolver>
+
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
@@ -1266,6 +1369,10 @@
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
+      <csp_log_violations type="BooleanField">
+        <Required>Y</Required>
+        <default>0</default>
+      </csp_log_violations>
       <csp_report_only type="BooleanField">
         <Required>Y</Required>
         <default>0</default>

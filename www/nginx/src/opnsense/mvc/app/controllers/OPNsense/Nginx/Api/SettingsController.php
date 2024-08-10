@@ -229,6 +229,33 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('custompolicy', 'custom_policy', $uuid);
     }
 
+    // Resolver
+    public function searchresolverAction()
+    {
+        return $this->searchBase('resolver', array('uuid', 'description', 'address', 'valid', 'timeout'));
+    }
+
+    public function getresolverAction($uuid = null)
+    {
+        $this->sessionClose();
+        return $this->getBase('resolver', 'resolver', $uuid);
+    }
+
+    public function addresolverAction()
+    {
+        return $this->addBase('resolver', 'resolver');
+    }
+
+    public function delresolverAction($uuid)
+    {
+        return $this->delBase('resolver', $uuid);
+    }
+
+    public function setresolverAction($uuid)
+    {
+        return $this->setBase('resolver', 'resolver', $uuid);
+    }
+
     // http server
     public function searchhttpserverAction()
     {
@@ -817,5 +844,19 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setsyslogTargetAction($uuid)
     {
         return $this->setBase('syslog_target', 'syslog_target', $uuid);
+    }
+
+    public function showconfigAction()
+    {
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun("nginx show_config"), true);
+        return $response;
+    }
+
+    public function testconfigAction()
+    {
+        $backend = new Backend();
+        $response = trim($backend->configdRun("nginx test_config"));
+        return array("response" => $response);
     }
 }

@@ -28,13 +28,13 @@
 
  namespace OPNsense\DynDNS;
 
- use Phalcon\Messages\Message;
- use OPNsense\Base\BaseModel;
+use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
- /**
-  * Class DynDNS
-  * @package OPNsense\DynDNS
-  */
+/**
+ * Class DynDNS
+ * @package OPNsense\DynDNS
+ */
 class DynDNS extends BaseModel
 {
     public function performValidation($validateFullModel = false)

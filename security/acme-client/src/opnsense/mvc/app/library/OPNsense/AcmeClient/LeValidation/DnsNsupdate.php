@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ class DnsNsupdate extends Base implements LeValidationInterface
     public function prepare()
     {
         $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
-        $secret_key_filename = "${configdir}/secret.key";
+        $secret_key_filename = "{$configdir}/secret.key";
         $secret_key_data = (string)$this->config->dns_nsupdate_key . "\n";
         file_put_contents($secret_key_filename, $secret_key_data);
 

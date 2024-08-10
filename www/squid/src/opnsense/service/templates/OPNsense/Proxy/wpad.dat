@@ -51,11 +51,11 @@ function FindProxyForURL(url, host) {
 {%         endif %}
 {%         if match.match_type == 'destination_in_net' %}
 {%           set tmp_net = helpers.getIPNetwork(match.network) %}
-{%           set match_script = match_script + 'isInNet(dstip, "' + tmp_net.network.__str__() + '", "' + tmp_net.netmask.__str__() + '")' %}
+{%           set match_script = match_script + 'isInNet(dstip, "' + tmp_net.network_address.__str__() + '", "' + tmp_net.netmask.__str__() + '")' %}
 {%         endif %}
 {%         if match.match_type == 'my_ip_in_net' %}
 {%           set tmp_net = helpers.getIPNetwork(match.network) %}
-{%           set match_script = match_script + 'isInNet(myIpAddress(), "' + tmp_net.network.__str__() + '", "' + tmp_net.netmask.__str__() + '")' %}
+{%           set match_script = match_script + 'isInNet(myIpAddress(), "' + tmp_net.network_address.__str__() + '", "' + tmp_net.netmask.__str__() + '")' %}
 {%         endif %}
 {%         if match.match_type == 'plain_hostname' %}
 {%           set match_script = match_script + 'isPlainHostName(host)' %}

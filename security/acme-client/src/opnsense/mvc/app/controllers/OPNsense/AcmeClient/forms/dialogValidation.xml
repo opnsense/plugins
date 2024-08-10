@@ -1471,7 +1471,7 @@
     </field>
     <field>
         <id>validation.dns_easydns_apikey</id>
-        <label>Api Key</label>
+        <label>API Key</label>
         <type>password</type>
     </field>
     <field>

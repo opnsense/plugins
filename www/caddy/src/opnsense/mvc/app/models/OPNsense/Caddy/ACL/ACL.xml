@@ -15,4 +15,12 @@
             <pattern>api/caddy/reverse_proxy/*</pattern>
         </patterns>
     </page-caddy-reverse-proxy>
+    <page-caddy-diagnostics>
+        <name>Services: Caddy Web Server: Diagnostics</name>
+        <description>Allow access to Caddy Diagnostics</description>
+        <patterns>
+            <pattern>ui/caddy/diagnostics/*</pattern>
+            <pattern>api/caddy/diagnostics/*</pattern>
+        </patterns>
+    </page-caddy-diagnostics>
 </acl>

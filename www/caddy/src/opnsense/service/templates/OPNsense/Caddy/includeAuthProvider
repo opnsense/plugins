@@ -1,0 +1,29 @@
+{#
+# This file gets imported to configure forward auth in handlers.
+# - Section: Reverse Proxy Configurations
+#}
+{% if generalSettings.AuthProvider %}
+    {# Check if the domain is IPv6 and wrap in square brackets if necessary #}
+    {% set is_ipv6 = (':' in generalSettings.AuthToDomain and generalSettings.AuthToDomain.count(':') >= 2) %}
+    {% set auth_url = (generalSettings.AuthToTls|default("0") == "1" and 'https://' or 'http://') + (is_ipv6 and '[' or '') + generalSettings.AuthToDomain|default("") + (is_ipv6 and ']' or '') + (generalSettings.AuthToPort and ':' + generalSettings.AuthToPort or '') %}
+{% endif %}
+{% if generalSettings.AuthProvider == 'authelia' %}
+    forward_auth {{ auth_url }} {
+    {% if generalSettings.AuthToUri %}
+        uri {{ generalSettings.AuthToUri|default("") }}
+    {% endif %}
+    copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+{% elif generalSettings.AuthProvider == 'authentik' %}
+    reverse_proxy /outpost.goauthentik.io/* {{ auth_url }} {
+    {% if generalSettings.AuthToTls|default("0") == "1" %}
+        header_up Host {http.reverse_proxy.upstream.hostport}
+    {% endif %}
+    }
+    forward_auth {{ auth_url }} {
+    {% if generalSettings.AuthToUri %}
+        uri {{ generalSettings.AuthToUri|default("") }}
+    {% endif %}
+    copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Name X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-Jwks X-Authentik-Meta-Outpost X-Authentik-Meta-Provider X-Authentik-Meta-App X-Authentik-Meta-Version
+    }
+{% endif %}

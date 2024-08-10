@@ -155,7 +155,7 @@ class LeUtils
      */
     public static function log($msg)
     {
-        syslog(LOG_NOTICE, "AcmeClient: ${msg}");
+        syslog(LOG_NOTICE, "AcmeClient: {$msg}");
     }
 
     /**
@@ -164,7 +164,7 @@ class LeUtils
     public static function log_debug($msg, bool $debug = false)
     {
         if ($debug) {
-            syslog(LOG_NOTICE, "AcmeClient: ${msg}");
+            syslog(LOG_NOTICE, "AcmeClient: {$msg}");
         }
     }
 
@@ -173,7 +173,7 @@ class LeUtils
      */
     public static function log_error($msg)
     {
-        syslog(LOG_ERR, "AcmeClient: ${msg}");
+        syslog(LOG_ERR, "AcmeClient: {$msg}");
     }
 
     /**
@@ -209,10 +209,10 @@ class LeUtils
 
             // Get exit code
             $result = proc_close($proc);
-            log_error(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
+            self::log(sprintf("AcmeClient: The shell command returned exit code '%d': '%s'", $result, $proc_cmd));
             return($result);
         } else {
-            log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));
+            self::log_error(sprintf("AcmeClient: Unable to prepare shell command '%s'", $proc_cmd));
             return(-999);
         }
     }

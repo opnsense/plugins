@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>caddy.general.AuthProvider</id>
+        <label>Forward Auth Provider</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select a Forward Auth Provider. It can be added inside a "Handler" by enabling the "Forward Auth" checkbox. For Authelia only the basic subdomain example is supported. More information: https://www.authelia.com/integration/proxies/caddy/#basic-examples. For Authentik custom headers are not supported. More information: https://docs.goauthentik.io/docs/providers/proxy/server_caddy]]></help>
+    </field>
+    <field>
+        <id>caddy.general.AuthToDomain</id>
+        <label>Forward Auth Domain</label>
+        <type>text</type>
+        <help><![CDATA[Enter the domain name or IP address of the chosen Forward Auth Provider.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.AuthToPort</id>
+        <label>Forward Auth Port</label>
+        <type>text</type>
+        <help><![CDATA[Enter the listen port of the chosen Forward Auth Provider.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.AuthToTls</id>
+        <label>TLS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the Forward Auth Provider.]]></help>
+    </field>
+    <field>
+        <id>caddy.general.AuthToUri</id>
+        <label>Forward Auth URI</label>
+        <type>text</type>
+        <help><![CDATA[Enter the URI of the authz api endpoint.]]></help>
+    </field>
+</form>

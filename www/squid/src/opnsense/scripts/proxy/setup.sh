@@ -40,3 +40,5 @@ fi
 
 # install theme files
 /usr/local/opnsense/scripts/proxy/deploy_error_pages.py > /dev/null 2>&1
+
+sed 's/legacy = legacy_sect/#legacy = legacy_sect/' /usr/local/openssl/openssl.cnf > /usr/local/etc/squid/openssl.cnf

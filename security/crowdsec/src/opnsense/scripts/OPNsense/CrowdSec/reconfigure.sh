@@ -10,7 +10,6 @@ set -e
 # apply configuration options specific to opnsense
 /usr/local/opnsense/scripts/OPNsense/CrowdSec/reconfigure.py
 
-# enable pf anchor here - the tables and rules will be created by the bouncer
 /usr/local/sbin/configctl filter reload >/dev/null
 
 # the hub is upgraded by cron too

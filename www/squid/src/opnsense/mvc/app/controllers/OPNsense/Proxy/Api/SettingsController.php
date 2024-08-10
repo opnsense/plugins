@@ -74,7 +74,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * update remote blacklist item
      * @param string $uuid
      * @return array result status
-     * @throws \Phalcon\Filter\Validation\Exception
+     * @throws \OPNsense\Base\ValidationException
      */
     public function setRemoteBlacklistAction($uuid)
     {
@@ -182,7 +182,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * update PAC Rule
      * @param string $uuid
      * @return array result status
-     * @throws \Phalcon\Filter\Validation\Exception
+     * @throws \OPNsense\Base\ValidationException
      */
     public function setPACRuleAction($uuid)
     {
@@ -246,7 +246,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * update PAC Proxy
      * @param string $uuid
      * @return array result status
-     * @throws \Phalcon\Filter\Validation\Exception
+     * @throws \OPNsense\Base\ValidationException
      */
     public function setPACProxyAction($uuid)
     {
@@ -299,7 +299,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * update PAC Rule
      * @param string $uuid
      * @return array result status
-     * @throws \Phalcon\Filter\Validation\Exception
+     * @throws \OPNsense\Base\ValidationException
      */
     public function setPACMatchAction($uuid)
     {

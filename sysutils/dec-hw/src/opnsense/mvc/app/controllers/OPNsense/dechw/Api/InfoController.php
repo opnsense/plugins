@@ -35,20 +35,11 @@ class InfoController extends ApiControllerBase
 {
     public function powerStatusAction()
     {
-        $result = [
-            "status" => "failed",
-            "status_translated" => gettext("Power status could not be fetched.
-                This widget is only applicable to Deciso hardware with dual power supplies.")
-        ];
+        $result = ["status" => "failed"];
         $status = parse_ini_string((new Backend())->configdRun('dechw power'));
 
         if (!empty($status)) {
             $result["status"] = "OK";
-            unset($result["status_translated"]);
-
-            foreach (['pwr1', 'pwr2'] as $key) {
-                $result[$key . '_translated'] = $status[$key] === '1' ? gettext('On') : gettext('Off');
-            }
             $result = array_merge($result, $status);
         }
 

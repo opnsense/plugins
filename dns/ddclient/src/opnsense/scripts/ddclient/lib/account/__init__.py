@@ -61,7 +61,7 @@ class BaseAccount:
 
     @staticmethod
     def known_services():
-        return []
+        return {}
 
     @property
     def id(self):

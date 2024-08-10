@@ -131,7 +131,7 @@ class LeAccount extends LeCommon
                 // Read account key file
                 $account_key_content = @file_get_contents($account_key_file);
                 if (empty($account_key_content) || ($account_key_content == false)) {
-                    LeUtils::log_error("unable to read account key from file ${account_key_file}");
+                    LeUtils::log_error("unable to read account key from file {$account_key_file}");
                     $this->setStatus(500);
                     return false;
                 }
@@ -228,7 +228,7 @@ class LeAccount extends LeCommon
             $this->fixConfig();
 
             // Update account status.
-            LeUtils::log_error('account registration successful for ' . $this->config->name);
+            LeUtils::log('account registration successful for ' . $this->config->name);
             $this->setStatus(200);
         } else {
             LeUtils::log_debug('account already registered: ' . (string)$this->config->name, $this->debug);
@@ -257,7 +257,7 @@ class LeAccount extends LeCommon
                 // Convert array back to ini file format
                 $new_account_conf = array();
                 foreach ($account_conf as $key => $value) {
-                    $new_account_conf[] = "${key}='${value}'";
+                    $new_account_conf[] = "{$key}='{$value}'";
                 }
 
                 // Write changes back to file

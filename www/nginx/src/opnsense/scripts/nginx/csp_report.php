@@ -27,6 +27,8 @@
  */
 
 $log_file = '/var/log/nginx/csp_violations.log';
+$max_file_size = 1024 * 1024 * 30; // 30 MiB
+$max_single_record_size = 1024 * 20; // 20 KiB
 
 // make sure we don't have any formatting issues here
 if (stristr($_SERVER['CONTENT_TYPE'], 'csp-report') === false) {
@@ -41,6 +43,18 @@ if ($json_data = json_decode(file_get_contents('php://input'), true)) {
     $json_data['server_time'] = time();
     $json_data['server_uuid'] = $_SERVER['SERVER-UUID'];
     $json_data = json_encode($json_data);
+    if (strlen($json_data) > $max_single_record_size) {
+        echo "The payload is too large";
+        http_response_code(413);
+        exit(0);
+    }
+    if (file_exists($log_file)) {
+        if ((filesize($log_file) + strlen($json_data)) > $max_file_size) {
+            // silently drop the data
+            http_response_code(200);
+            exit(0);
+        }
+    }
     file_put_contents($log_file, $json_data . PHP_EOL, FILE_APPEND | LOCK_EX);
 } else {
     http_response_code(400);

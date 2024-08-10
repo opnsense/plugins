@@ -134,10 +134,10 @@ class ServiceController extends ApiMutableServiceControllerBase
             $backend = new Backend();
             $output = trim($backend->configdRun('apcupsd upsstatus'));
             if (empty($output)) {
-                $error = 'Error: empty output from apcaccess';
+                $error = gettext('Error: empty output from apcaccess');
             }
         } else {
-            $error = 'Error: apcupsd is disabled';
+            $error = gettext('Error: apcupsd is disabled');
         }
 
         return array(

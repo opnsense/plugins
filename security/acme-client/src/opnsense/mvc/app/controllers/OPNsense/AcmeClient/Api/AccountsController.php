@@ -92,7 +92,7 @@ class AccountsController extends ApiMutableModelControllerBase
                 $node = $mdlAcme->getNodeByReference('accounts.account.' . $uuid);
                 if ($node != null) {
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient register-account ${uuid}");
+                    $response = $backend->configdRun("acmeclient register-account {$uuid}");
                     return array("response" => $response);
                 }
             }

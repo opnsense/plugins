@@ -9,6 +9,11 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.32
+
+* Fix handling of multiple ACLs in allow-query/allow-transfer (contributed by Nathan Rennie-Waldock)
+* Fix multiple select on Recursion field and resulting multiple ACLs (contributed by Jordan Stacy)
+
 1.31
 
 * Do not add the update-policy if the zone type is secondary (contributed by Brendan Bank)

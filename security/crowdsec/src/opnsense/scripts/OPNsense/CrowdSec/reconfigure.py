@@ -45,9 +45,20 @@ def configure_agent(settings):
 
     config['common']['log_dir'] = '/var/log/crowdsec'
     config['crowdsec_service']['acquisition_dir'] = '/usr/local/etc/crowdsec/acquis.d/'
+    config['db_config']['use_wal'] = True
 
     if not int(settings.get('lapi_manual_configuration', '0')):
         config['api']['server']['listen_uri'] = get_netloc(settings)
+
+    save_config(config_path, config)
+
+
+def configure_lapi(settings):
+    config_path = '/usr/local/etc/crowdsec/config.yaml'
+    config = load_config(config_path)
+
+    enable = int(settings.get('lapi_enabled', '0'))
+    config['api']['server']['enable'] = bool(enable)
 
     save_config(config_path, config)
 
@@ -87,6 +98,7 @@ def main():
         return
 
     configure_agent(settings)
+    configure_lapi(settings)
     configure_lapi_credentials(settings)
     configure_bouncer(settings)
 

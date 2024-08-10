@@ -71,7 +71,7 @@
         the possibilities.</p>
 
         <p>For the latest plugin documentation, including how to use it with an external LAPI, see <a
-        href="https://docs.crowdsec.net/docs/next/getting_started/install_crowdsec_opnsense">Install
+        href="https://docs.crowdsec.net/u/getting_started/installation/opnsense">Install
         CrowdSec (OPNsense)</a></p>
 
         <p>A few remarks:</p>
@@ -79,7 +79,7 @@
         <ul>
             <li>
                 New acquisition files go under <code>/usr/local/etc/crowdsec/acquis.d</code>. See opnsense.yaml for details.
-                The option <code>poll_without_inotify: true</code> is required if the acquitision targets are symlinks (which
+                The option <code>poll_without_inotify: true</code> is required if the log sources are symlinks (which
                 is the case for most opnsense logs).
             </li>
             <li>
@@ -91,7 +91,7 @@
                 At the moment, the CrowdSec package for OPNsense is fully functional on the
                 command line but its web interface is limited; you can only list the installed objects and revoke
                 <a href="https://docs.crowdsec.net/docs/user_guides/decisions_mgmt/">decisions</a>. For anything else
-                you need the shell.
+                you need the shell or the <a href="https://app.crowdsec.net">CrowdSec Console</a>.
             </li>
             <li>
                 Do not enable/start the agent and bouncer services with <code>sysrc</code> or <code>/etc/rc.conf</code>

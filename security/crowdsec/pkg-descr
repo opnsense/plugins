@@ -8,6 +8,15 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.8
+
+* Enable use_wal, remove warning
+* Randomize cron execution over 5 minutes
+* Refactor javascript
+* Fix initial service start with no pending hub updates (1.6.1)
+* Add input validation for `rules_tag` to prevent invalid `pf` syntax.
+* Fix service start when lapi is disabled (revision 1)
+
 1.0.7
 
 * Add option `retry_initial_connect` to bouncer configuration for more robust startup. The option was introduced in Crowdsec 1.5.4.

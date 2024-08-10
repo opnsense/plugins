@@ -10,6 +10,25 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.34
+
+* Add the option to not log TLS handshakes
+* Remove obsolete http2_push_preload directive
+* Migrate from the deprecated 'listen … http2' directive to the 'http2' directive
+* Limit CSP log file size (migration notice: if you want to keep CSP violations logged, you will need to enable logging in the security policy)
+
+1.33
+
+* Add the "resolver" directive support
+* Add config preview/test/copy to GUI
+* Add gzip disabling support
+* Move bot UA settings to GUI
+* Add auto-ban logging support
+* Add Upstream keepalive support
+* Add Stream proxy_connect_timeout and proxy_timeout directives support
+* Convert epoch time to readable format on "Banned" page
+* Cosmetic: add table header borders on Traffic Statistic page for better reading
+
 1.32.2
 
 * Add columns select button to the log viewer (contributed by kulikov-a)

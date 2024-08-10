@@ -26,7 +26,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\Caddy\Api;
@@ -39,24 +38,79 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
     protected static $internalModelUseSafeDelete = true;
 
-    /*ReverseProxy Section*/
-
-    /*Search Function adjusted for the search filter dropdown*/
-    public function searchReverseProxyAction()
+    /**
+     * Function for search filter dropdown
+     *
+     * @return array containing rows of domain and port combinations.
+     */
+    public function getAllReverseDomainsAction()
     {
-        // Get a comma-separated list of UUIDs from the request
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
+        $this->sessionClose(); // Close session early for performance
+        $result = array("rows" => array());
 
-        // Define the filter function to handle multiple UUIDs
-        $filterFunction = function ($modelItem) use ($uuidArray) {
-            $itemUuid = (string)$modelItem->getAttributes()['uuid'];
-            // Include the item if no UUIDs are provided (empty array) or if it's in the array of UUIDs
-            return empty($uuidArray) || in_array($itemUuid, $uuidArray, true);
+        $mdlCaddy = new \OPNsense\Caddy\Caddy();
+        $reverseNodes = $mdlCaddy->reverseproxy->reverse->iterateItems();
+
+        foreach ($reverseNodes as $item) {
+            if (!empty($item->FromDomain)) {
+                // Conditionally concatenate port if it exists
+                $domain = (string)$item->FromDomain;
+                $port = (string)$item->FromPort;
+                $combinedDomainPort = $domain . (!empty($port) ? ':' . $port : '');
+
+                $result['rows'][] = array(
+                    'id' => (string)$item->getAttributes()['uuid'],
+                    'domainPort' => $combinedDomainPort  // Combined domain and port, conditionally adding port
+                );
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Generalized helper function for searching across different sections of the reverse proxy setup.
+     * This function mostly helps when model relation fields are used.
+     * It filters entries based on UUIDs provided as an argument. The section or key used for the UUID
+     * can be specified, allowing for direct or indirect UUID referencing.
+     *
+     * @param string $modelPath The data model path identifier, pointing to section of model being searched.
+     * @param string $uuidSearchBase The request parameter name for the comma-separated list of UUIDs.
+     * @param string|null $uuidReferenceKey Attribute key used to fetch the UUID for filtering.
+     *                                      If null, uses item's own UUID.
+     * @return array Filtered search results.
+     */
+    private function searchActionHelper($modelPath, $uuidSearchBase, $uuidReferenceKey = null)
+    {
+        // Fetch the comma-separated UUIDs string from the request using the provided parameter name.
+        $uuidList = $this->request->get($uuidSearchBase);
+        // Ensure the retrieved UUID list is a string and not empty before attempting to explode it.
+        $uuidArray = (!empty($uuidList) && is_string($uuidList)) ? explode(',', $uuidList) : [];
+
+        // Define a filter function to determine which items to include based on the UUID.
+        $filterFunction = function ($modelItem) use ($uuidArray, $uuidReferenceKey) {
+            // Extract UUID from the item, using the specified UUID key if provided, else default to direct UUID access.
+            if ($uuidReferenceKey !== null) {
+                $modelUUID = (string)$modelItem->$uuidReferenceKey;
+            } else {
+                $modelUUID = (string)$modelItem->getAttributes()['uuid'];
+            }
+            // Include the item if the UUID array is empty or if the item's UUID is in the array.
+            return empty($uuidArray) || in_array($modelUUID, $uuidArray, true);
         };
 
-        // Return the search results filtered by the provided UUIDs, if any
-        return $this->searchBase("reverseproxy.reverse", null, 'description', $filterFunction);
+        // Perform the search using the specified model path and the filter function, returning the results.
+        // Note: This uses the existing search function of the ApiMutableModelControllerBase
+        return $this->searchBase($modelPath, null, 'description', $filterFunction);
+    }
+
+
+    // ReverseProxy Section
+
+    public function searchReverseProxyAction()
+    {
+        // For domains, use their domain UUIDs directly, $uuidReferenceKey null added for explicit clarity
+        return $this->searchActionHelper("reverseproxy.reverse", "reverseUuids", null);
     }
 
     public function setReverseProxyAction($uuid)
@@ -83,48 +137,15 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
     }
- 
-    /*Function for the search filter dropdown in the bootgrid*/
-    public function getAllReverseDomainsAction()
-    {
-        $this->sessionClose(); // Close session early for performance
-        $result = array("rows" => array());
-
-        $mdlCaddy = new \OPNsense\Caddy\Caddy();
-        $reverseNodes = $mdlCaddy->reverseproxy->reverse->iterateItems();
-
-        foreach ($reverseNodes as $item) {
-            if (!empty($item->FromDomain)) {
-                // Conditionally concatenate port if it exists
-                $domain = (string)$item->FromDomain;
-                $port = (string)$item->FromPort;
-                $combinedDomainPort = $domain . (!empty($port) ? ':' . $port : '');
-
-                $result['rows'][] = array(
-                    'id' => (string)$item->getAttributes()['uuid'],
-                    'domainPort' => $combinedDomainPort  // Combined domain and port, conditionally adding port
-                );
-            }
-        }
-
-        return $result;
-    }
 
 
-    /*Subdomain Section*/
+    // Subdomain Section
 
-    /*Search Function adjusted for the search filter dropdown*/
     public function searchSubdomainAction()
     {
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
-
-        $filterFunction = function ($modelItem) use ($uuidArray) {
-            // Filtering on domain UUIDs referenced by subdomains
-            return empty($uuidArray) || in_array((string)$modelItem->reverse, $uuidArray, true);
-        };
-
-        return $this->searchBase("reverseproxy.subdomain", null, 'description', $filterFunction);
+        // For subdomains, compare 'reverseUuids' (which contain domain UUIDs)
+        // to 'reverse' (which contain the same domain UUIDs due to model relation field)
+        return $this->searchActionHelper("reverseproxy.subdomain", "reverseUuids", "reverse");
     }
 
     public function setSubdomainAction($uuid)
@@ -153,26 +174,14 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /*Handler Section*/
-    
-    /*Search Function adjusted for the search filter dropdown*/
+    // Handler Section
+
+    // Adjusted for search filter dropdown, using helper function
     public function searchHandleAction()
     {
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = explode(',', $reverseUuids);
-
-        if (empty($reverseUuids)) {
-            // If no UUIDs are provided, do not apply any filter, return all records
-            return $this->searchBase("reverseproxy.handle", null, 'description');
-        } else {
-            // Apply the filter only if UUIDs are provided
-            $filterFunction = function ($modelItem) use ($uuidArray) {
-                $modelUUID = (string)$modelItem->reverse;
-                return in_array($modelUUID, $uuidArray, true);
-            };
-
-            return $this->searchBase("reverseproxy.handle", null, 'description', $filterFunction);
-        }
+        // For handles, compare 'reverseUuids' (which contain domain UUIDs)
+        // to 'reverse' (which contain the same domain UUIDs due to model relation field)
+        return $this->searchActionHelper("reverseproxy.handle", "reverseUuids", "reverse");
     }
 
     public function setHandleAction($uuid)
@@ -201,7 +210,40 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /* AccessList Section */
+    // Layer4 Section
+
+    public function searchLayer4Action()
+    {
+        return $this->searchBase("reverseproxy.layer4", null, 'description');
+    }
+
+    public function setLayer4Action($uuid)
+    {
+        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function addLayer4Action()
+    {
+        return $this->addBase("layer4", "reverseproxy.layer4");
+    }
+
+    public function getLayer4Action($uuid = null)
+    {
+        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function delLayer4Action($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4", $uuid);
+    }
+
+    public function toggleLayer4Action($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
+    }
+
+
+    // AccessList Section
 
     public function searchAccessListAction()
     {
@@ -229,7 +271,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /* BasicAuth Section */
+    // BasicAuth Section
 
     public function searchBasicAuthAction()
     {
@@ -240,8 +282,10 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;
@@ -255,8 +299,10 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;
@@ -277,7 +323,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /* Header Section */
+    // Header Section
 
     public function searchHeaderAction()
     {

@@ -113,7 +113,7 @@ function get_files_lastmodified(array $files): array
     // - No content => -1
     $times = [];
     foreach ($files as $file) {
-        $mtime = @filemtime($file) ?: rand();
+        $mtime = @filemtime($file) ?: random_int(0, getrandmax());
         $times[$file] = @filesize($file) === 0 ? -1 : $mtime;
     }
     return $times;

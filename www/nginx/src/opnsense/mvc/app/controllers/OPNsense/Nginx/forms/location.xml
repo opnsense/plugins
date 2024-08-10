@@ -204,13 +204,7 @@
     <id>location.force_https</id>
     <label>Force HTTPS</label>
     <type>checkbox</type>
-    <help>Force encrypted connections.</help>
-  </field>
-  <field>
-    <id>location.http2_push_preload</id>
-    <label>Enable HTTP/2 Preloading</label>
-    <type>checkbox</type>
-    <help>If you check this box, you can use the link header to send resources to the client before they are requested. You can boost your performance with this setting. This requires that your application sets the "Link" header correctly.</help>
+    <help>If the request scheme is not HTTPS, redirect to use HTTPS for this location.</help>
   </field>
   <field>
     <id>location.php_enable</id>
@@ -241,7 +235,14 @@
     <label>WebSocket Support</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server.</help>
+    <help>If you enable the WebSocket Support option, nginx will pass the upgrade header to the backed server. Mutually exclusive with Keepalive support.</help>
+  </field>
+  <field>
+    <id>location.upstream_keepalive</id>
+    <label>Upstream Keepalive Support</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Adds the directives required for upstream keepalive to work (enables HTTP 1.1 and clears the Connection header). Mutually exclusive with WebSocket support. Keepalive parameters must be set in Upstream settings too.</help>
   </field>
   <field>
     <id>location.proxy_read_timeout</id>

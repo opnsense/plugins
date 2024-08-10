@@ -1,6 +1,7 @@
 {% if helpers.exists('OPNsense.netsnmp.general.enabled') and OPNsense.netsnmp.general.enabled == '1' %}
 snmpd_setup="/usr/local/opnsense/scripts/OPNsense/Netsnmp/setup.sh"
 snmpd_enable="YES"
+snmpd_sugid="NO"
 {% else %}
 snmpd_enable="NO"
 {% endif %}

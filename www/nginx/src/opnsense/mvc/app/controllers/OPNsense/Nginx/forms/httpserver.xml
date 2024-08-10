@@ -143,6 +143,13 @@
     <advanced>true</advanced>
   </field>
   <field>
+    <id>httpserver.log_handshakes</id>
+    <label>Enable TLS handshakes logging</label>
+    <type>checkbox</type>
+    <help>Log TLS handshakes to fill the User Agent fingerprint database and detect MITM attacks.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>httpserver.enable_acme_support</id>
     <label>Enable Let's Encrypt Plugin Support</label>
     <type>checkbox</type>
@@ -156,7 +163,7 @@
     <id>httpserver.https_only</id>
     <label>HTTPS Only</label>
     <type>checkbox</type>
-    <help>If you check this box, a TLS encrypted connection is enforced.</help>
+    <help>If the request scheme is not HTTPS, redirect to use HTTPS for this server.</help>
   </field>
   <field>
     <id>httpserver.tls_protocols</id>
@@ -188,6 +195,13 @@
     <help>Prefers server ciphers over client ciphers.</help>
   </field>
   <field>
+    <id>httpserver.resolver</id>
+    <label>Resolver</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help><![CDATA[Specify resolver for Upstream names resolution, OCSP stapling etc. Uses system resolver if not specified but can produce warning messages in log.]]></help>
+  </field>
+  <field>
     <id>httpserver.ocsp_stapling</id>
     <label>OCSP Stapling</label>
     <type>checkbox</type>
@@ -207,6 +221,13 @@
     <type>checkbox</type>
     <advanced>true</advanced>
     <help>Blocks files like .htaccess files or other files not intended for the public.</help>
+  </field>
+  <field>
+    <id>httpserver.disable_gzip</id>
+    <label>Disable gzip</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Disables responses gzipping. Makes sense if TLS is used and this method of BREACH attack protection is preferred.</help>
   </field>
   <field>
     <id>httpserver.disable_bot_protection</id>

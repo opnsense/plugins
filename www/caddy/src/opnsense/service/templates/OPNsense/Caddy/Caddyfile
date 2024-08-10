@@ -28,6 +28,13 @@
 
 {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
 
+{# Print as comments if Caddy runs as root or www user, as information in support cases. #}
+{% if generalSettings.DisableSuperuser|default("0") == "1" %}
+# caddy_user=www
+{% else %}
+# caddy_user=root
+{% endif %}
+
 # Global Options
 {
     {#
@@ -37,21 +44,32 @@
     #}
     log {
         {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-        {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
-        {% if reverse.enabled|default("0") == "1" and reverse.AccessLog|default("0") == "1" %}
-        include http.log.access.{{ reverse['@uuid'] }}
+            {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
+                {% if reverse.enabled|default("0") == "1" and reverse.AccessLog|default("0") == "1" %}
+                    include http.log.access.{{ reverse['@uuid'] }}
+                {% endif %}
+            {% endfor %}
         {% endif %}
-        {% endfor %}
-        {% endif %}
-        output net unixgram//var/caddy/var/run/log {
+        output net unixgram//var/run/caddy/log.sock {
         }
         format json {
             time_format rfc3339
         }
         {% if generalSettings.LogLevel %}
-        level {{ generalSettings.LogLevel }}
+            level {{ generalSettings.LogLevel }}
         {% endif %}
     }
+
+    {# Change default ports on demand #}
+    {% set httpPort = generalSettings.HttpPort %}
+    {% set httpsPort = generalSettings.HttpsPort %}
+
+    {% if httpPort %}
+        http_port {{ httpPort }}
+    {% endif %}
+    {% if httpsPort %}
+        https_port {{ httpsPort }}
+    {% endif %}
 
     {#
     #   Section: Global Trusted Proxy and Credential Logging
@@ -60,9 +78,11 @@
     #}
     {% set accessListUuid = generalSettings.accesslist %}
     {% set logCredentials = generalSettings.LogCredentials %}
+    {% set enableLayer4 = generalSettings.EnableLayer4 %}
 
     {% set hasAccessList = false %}
     {% set hasLogCredentials = false %}
+    {% set hasEnableLayer4 = false %}
 
     {% if accessListUuid %}
         {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
@@ -75,13 +95,24 @@
         {% set hasLogCredentials = true %}
     {% endif %}
 
-    {% if hasAccessList or hasLogCredentials %}
+    {% if enableLayer4 == '1' %}
+        {% set hasEnableLayer4 = true %}
+    {% endif %}
+
+    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 %}
     servers {
         {% if hasAccessList %}
-        trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
+            trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
         {% if hasLogCredentials %}
-        log_credentials
+            log_credentials
+        {% endif %}
+        {% if hasEnableLayer4 %}
+            listener_wrappers {
+                {# Plug the Layer 4 template in #}
+                {% include "OPNsense/Caddy/includeLayer4" %}
+
+            }
         {% endif %}
     }
     {% endif %}
@@ -101,10 +132,11 @@
     #   - @param dnsOptionalField1 to 4 (string): Optional configuration field for the DNS provider.
     #   - @param dynDnsSimpleHttp (string): URL for a simple HTTP-based service to discover the server's public IP.
     #   - @param dynDnsInterface (string): Network interface(s) to use for IP discovery.
-    #   - @param dynDnsCheckInterval (integer): Interval in minutes to check for IP changes.
+    #   - @param dynDnsCheckInterval (integer): Interval in seconds to check for IP changes. Can be empty for defaults.
     #   - @param dynDnsIpVersions (string): The IP version(s) (IPv4, IPv6) for the DDNS update.
-    #   - @param dynDnsTTL (integer): Time-To-Live for the DNS records, in hours.
+    #   - @param dynDnsTtl (integer): Time-To-Live for the DNS records, in seconds. Can be empty for defaults.
     #   - @param dynDnsDomains (list): Domains and subdomains list for which DDNS updates are enabled.
+    #   - @param dynDnsUpdateOnly (boolean): If set, only updates DNS records, not creating new ones.
     #}
     {% set dnsProvider = helpers.toList('Pischem.caddy.general.TlsDnsProvider') | first %}
     {% set dnsApiKey = generalSettings.TlsDnsApiKey %}
@@ -115,15 +147,20 @@
     {% set dnsOptionalField4 = generalSettings.TlsDnsOptionalField4 %}
     {% set dynDnsSimpleHttp = generalSettings.DynDnsSimpleHttp %}
     {% set dynDnsInterface = generalSettings.DynDnsInterface %}
-    {% set dynDnsCheckInterval = generalSettings.DynDnsCheckInterval %}
+    {% set dynDnsUpdateOnly = generalSettings.DynDnsUpdateOnly %}
+    {% set dynDnsCheckInterval = generalSettings.DynDnsInterval %}
     {% set dynDnsIpVersions = generalSettings.DynDnsIpVersions %}
-    {% set dynDnsTTL = generalSettings.DynDnsTTL %}
+    {% set dynDnsTtl = generalSettings.DynDnsTtl %}
     {% set dynDnsDomains = [] %}
 
     {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
         {% if reverse.enabled|default("0") == "1" and reverse.DynDns|default("0") == "1" %}
             {% set cleanedDomain = reverse.FromDomain | replace("*.","") %}
-            {% do dynDnsDomains.append(cleanedDomain + " @") %}
+            {% if reverse.FromDomain.startswith("*.") %}
+                {% do dynDnsDomains.append(cleanedDomain + " *") %}
+            {% else %}
+                {% do dynDnsDomains.append(cleanedDomain + " @") %}
+            {% endif %}
         {% endif %}
 
         {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
@@ -137,115 +174,32 @@
         {% endfor %}
     {% endfor %}
 
-    {% if dnsProvider and dnsProvider != "acmedns" and dynDnsDomains|length > 0 %}
+    {#
+    # Define special DNS Providers that have more than one API key, or special requirements that do not allow the use of the default.
+    # The same providers have to be added to "OPNsense/Caddy/includeDnsProvider", best in the same order as in this array for maintainability.
+    # For a new provider to work, it has to be compiled into the caddy binary.
+    #}
+    {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin'] %}
+
+    {# Conditionally add the dynamic_dns section, acmedns provider is special, it does not support dynamic_dns. #}
+    {% if dnsProvider and dynDnsDomains|length > 0 and dnsProvider != "acmedns" %}
         dynamic_dns {
-            {% if dnsProvider in ['porkbun', 'desec', 'route53', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
+            {# duckdns provider is special, it has a different configuration for dynamic dns than for the dns-01 challenge. #}
+            {% if dnsProvider in dnsProviderSpecialConfig and dnsProvider != "duckdns" %}
                 provider {{ dnsProvider }} {
-                    {% if dnsProvider == 'porkbun' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'desec' %}
-                        {% if dnsApiKey %}token {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'route53' %}
-                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}max_retries {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}aws_profile {{ dnsOptionalField2 }}
-                        {% endif %}
-                        {% if dnsOptionalField3 %}region {{ dnsOptionalField3 }}
-                        {% endif %}
-                        {% if dnsOptionalField4 %}token {{ dnsOptionalField4 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'googleclouddns' %}
-                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'azure' %}
-                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}
-                        {% endif %}
-                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'ovh' %}
-                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'namecheap' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'powerdns' %}
-                        {% if dnsApiKey %}server_url {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'ddnss' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}
-                        {% endif %}
-                        password {{ dnsOptionalField1 }}
-                    {% elif dnsProvider == 'linode' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'tencentcloud' %}
-                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'dinahosting' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'hexonet' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'mailinabox' %}
-                        {% if dnsApiKey %}api_url {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% endif %}
+                    {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
             {% else %}
+                {# Other DNS Providers fall under this default #}
                 provider {{ dnsProvider }} {{ dnsApiKey }}
             {% endif %}
             domains {
                 {% for domain in dynDnsDomains %}
-                {{ domain }}
+                    {{ domain }}
                 {% endfor %}
             }
         {% if dynDnsSimpleHttp %}
-        ip_source simple_http {{ dynDnsSimpleHttp }}
+            ip_source simple_http {{ dynDnsSimpleHttp }}
         {% endif %}
         {% if dynDnsInterface %}
             {% set physicalInterfaceNames = [] %}
@@ -255,13 +209,16 @@
             ip_source interface {{ physicalInterfaceNames | join(',') }}
         {% endif %}
         {% if dynDnsCheckInterval %}
-        check_interval {{ dynDnsCheckInterval }}m
+            check_interval {{ dynDnsCheckInterval }}s
         {% endif %}
         {% if dynDnsIpVersions %}
-        versions {{ dynDnsIpVersions }}
+            versions {{ dynDnsIpVersions }}
         {% endif %}
-        {% if dynDnsTTL %}
-        ttl {{ dynDnsTTL }}h
+        {% if dynDnsTtl %}
+            ttl {{ dynDnsTtl }}s
+        {% endif %}
+        {% if dynDnsUpdateOnly|default("0") == "1" %}
+            update_only
         {% endif %}
     }
     {% endif %}
@@ -274,13 +231,13 @@
     #}
     {% set emailValue = helpers.toList('Pischem.caddy.general.TlsEmail') | first %}
     {% if emailValue %}
-    email {{ emailValue }}
+        email {{ emailValue }}
     {% endif %}
     {% set autoHttpsValue = helpers.toList('Pischem.caddy.general.TlsAutoHttps') | first %}
     {% if autoHttpsValue %}
-    auto_https {{ autoHttpsValue }}
+        auto_https {{ autoHttpsValue }}
     {% endif %}
-    {# 
+    {#
     # Important: Grace Period influences how fast the server can finish reloads with open connections, by forcing termination.
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
@@ -289,6 +246,32 @@
 }
 
 # Reverse Proxy Configuration
+
+{#
+#   When Layer4 is active, set default ports.
+#   Caddy does not set them up automatically under certain conditions.
+#   For example when AutoHTTPS would be off, or no domains have been configured.
+#   There are no regressions to set these ports up.
+#}
+
+{% if enableLayer4|default("0") == "1" %}
+    # Layer4 default HTTP port
+    {% if httpPort %}
+        :{{ httpPort }} {
+        }
+    {% else %}
+        :80 {
+        }
+    {% endif %}
+    # Layer4 default HTTPS port
+    {% if httpsPort %}
+        :{{ httpsPort }} {
+        }
+    {% else %}
+        :443 {
+        }
+    {% endif %}
+{% endif %}
 
 {#
 #   Section: HTTP-01 Challenge Redirection
@@ -301,6 +284,20 @@
         http://{{ reverse.FromDomain|default("") }} {
             handle /.well-known/acme-challenge/* {
                 reverse_proxy {{ reverse.AcmePassthrough }}
+            }
+            handle {
+                redir https://{host}{uri} 308
+            }
+        }
+    {% endif %}
+{% endfor %}
+{# Process redirection for subdomains afterwards, since a redirection of a wildcard domain has to match before them. #}
+{% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
+    {% if subdomain.enabled|default("0") == "1" and subdomain.AcmePassthrough %}
+        # HTTP-01 challenge redirection for subdomain: "{{ subdomain['@uuid'] }}"
+        http://{{ subdomain.FromDomain|default("") }} {
+            handle /.well-known/acme-challenge/* {
+                reverse_proxy {{ subdomain.AcmePassthrough }}
             }
             handle {
                 redir https://{host}{uri} 308
@@ -324,121 +321,15 @@
 #}
 {% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) %}
     {% if dnsChallenge == "1" and dnsProvider %}
-        {% if dnsProvider in ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox'] %}
+        {% if dnsProvider in dnsProviderSpecialConfig %}
             tls {
                 dns {{ dnsProvider }} {
-                    {% if dnsProvider == 'duckdns' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}override_domain {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'porkbun' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'desec' %}
-                        {% if dnsApiKey %}token {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'route53' %}
-                        {% if dnsApiKey %}access_key_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}max_retries {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}aws_profile {{ dnsOptionalField2 }}
-                        {% endif %}
-                        {% if dnsOptionalField3 %}region {{ dnsOptionalField3 }}
-                        {% endif %}
-                        {% if dnsOptionalField4 %}token {{ dnsOptionalField4 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'acmedns' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}subdomain {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}server_url {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'googleclouddns' %}
-                        {% if dnsApiKey %}gcp_project {{ dnsApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'azure' %}
-                        {% if dnsApiKey %}tenant_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}client_id {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}client_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}subscription_id {{ dnsOptionalField2 }}
-                        {% endif %}
-                        {% if dnsOptionalField3 %}resource_group_name {{ dnsOptionalField3 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'ovh' %}
-                        {% if dnsApiKey %}endpoint {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}application_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}application_secret {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}consumer_key {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'namecheap' %}
-                        {% if dnsApiKey %}api_key {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}user {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_endpoint {{ dnsOptionalField1 }}
-                        {% endif %}
-                        {% if dnsOptionalField2 %}client_ip {{ dnsOptionalField2 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'powerdns' %}
-                        {% if dnsApiKey %}server_url {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_token {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'ddnss' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}username {{ dnsSecretApiKey }}
-                        {% endif %}
-                        password {{ dnsOptionalField1 }}
-                    {% elif dnsProvider == 'linode' %}
-                        {% if dnsApiKey %}api_token {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}api_url {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}api_version {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% elif dnsProvider == 'tencentcloud' %}
-                        {% if dnsApiKey %}secret_id {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}secret_key {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'dinahosting' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'hexonet' %}
-                        {% if dnsApiKey %}username {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
-                        {% endif %}
-                    {% elif dnsProvider == 'mailinabox' %}
-                        {% if dnsApiKey %}api_url {{ dnsApiKey }}
-                        {% endif %}
-                        {% if dnsSecretApiKey %}email_address {{ dnsSecretApiKey }}
-                        {% endif %}
-                        {% if dnsOptionalField1 %}password {{ dnsOptionalField1 }}
-                        {% endif %}
-                    {% endif %}
+                    {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
             }
         {% else %}
             tls {
+                {# Other DNS Providers fall under this default #}
                 dns {{ dnsProvider }} {{ dnsApiKey }}
             }
         {% endif %}
@@ -454,8 +345,8 @@
 #            It uses a 'handle' object that specifies which headers to manipulate based on their @UUIDs.
 #            Each handle can have multiple of these HTTP headers assigned.
 #   Parameters:
-#   @param handle (@object):
-#       - @uuid (@string)
+#   @param handle (object):
+#       - @uuid (string)
 #       - HeaderUpDown (string): Determines the direction of the header.
 #       - HeaderType (string): Specifies the name of the header.
 #       - HeaderValue (string, optional): The new value to set for the header, if any.
@@ -496,60 +387,81 @@
 #   Purpose: Sets up the handle with the reverse proxy configurations. The TLS Settings are generated here for the Upstream.
 #   Integrated Macros: header_manipulation
 #   Parameters:
-#   @param handle (@object):
-#       - @uuid (@string)
+#   @param handle (object):
+#       - @uuid (string)
 #       - HandleType (string): Specifies the handling strategy.
 #       - HandlePath (string, optional): The path the handle should match on.
 #       - ToDomain (string): Target domain for the reverse proxy.
 #       - ToPort (string, optional): Target port on the ToDomain.
 #       - ToPath (string, optional): Destination path on the ToDomain.
 #       - HttpTls (boolean, optional): Enable TLS for the connection.
-#       - HttpNtlm (boolean, optional): Enable NTLM authentication for the connection.
+#       - HttpNtlm (boolean, optional): Enable NTLM authentication for the connection. Not all HTTP options apply to NTLM.
 #       - HttpTlsInsecureSkipVerify (boolean, optional): If true, the server's SSL certificate is not verified.
 #       - HttpTlsTrustedCaCerts (string, optional): The config extracted name of a CA certificate.
 #       - HttpTlsServerName (string, optional): Specifies the server name for the TLS handshake.
 #       - PassiveHealthFailDuration (integer, optional): Enables passive health checks when set > 0.
+#       - HttpVersion (string, optional): Choose HTTP version. Empty (default) is 1.1 and 2.
+#       - HttpKeepalive (string, optional): Keeaplive is either off (0) or a value. Empty (default) 120s.
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {% if handle.ForwardAuth|default("0") == "1" %}
+            {% include "OPNsense/Caddy/includeAuthProvider" %}
+        {% endif %}
         {% if handle.ToPath|default("") != "" %}
-        rewrite * {{ handle.ToPath }}{uri}
+            rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
         reverse_proxy {% for domain in handle.ToDomain.split(',') %}
+            {# Check if the domain is IPv6 and wrap in square brackets if necessary #}
+            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
             {# For each domain/IP, append the port if it's specified, followed by a space #}
-            {{- domain -}}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}{% if not loop.last %} {% endif %}
-        {% endfor %}{
+            {{- '[' if is_ipv6 else '' -}}{{ domain }}{{ ']' if is_ipv6 else '' -}}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}{% if not loop.last %} {% endif %}
+        {% endfor %} {
             {{ header_manipulation(handle) }}
             {% if handle.PassiveHealthFailDuration|default("") %}
-            fail_duration {{ handle.PassiveHealthFailDuration }}s
+                fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+            {% if handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName or handle.HttpVersion or handle.HttpKeepalive %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
+                    {% if handle.HttpTls|default("0") == "1" %}
+                        tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
-                    tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                        tls_insecure_skip_verify
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                        tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
-                    tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
+                        tls_server_name {{ handle.HttpTlsServerName }}
                     {% endif %}
                 }
                 {% else %}
                 transport http {
+                    {# The model does not allow to set a single number as option directly, so we have to map them. #}
+                    {% set version_map = {'http1': 1.1, 'http2': 2, 'http3': 3} %}
+                    {% if handle.HttpVersion %}
+                        versions {{ version_map[handle.HttpVersion] }}
+                    {% endif %}
+                    {% if handle.HttpKeepalive %}
+                        {% if handle.HttpKeepalive == "0" %}
+                            keepalive off
+                        {% else %}
+                            keepalive {{ handle.HttpKeepalive }}s
+                        {% endif %}
+                    {% endif %}
+                    {% if handle.HttpTls|default("0") == "1" %}
+                        tls
+                    {% endif %}
                     {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
-                    tls_insecure_skip_verify
-                    {% else %}
-                    tls
+                        tls_insecure_skip_verify
+                    {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
-                    tls_trusted_ca_certs /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                        tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
                     {% endif %}
                     {% if handle.HttpTlsServerName %}
-                    tls_server_name {{ handle.HttpTlsServerName }}
-                    {% endif %}
+                        tls_server_name {{ handle.HttpTlsServerName }}
                     {% endif %}
                 }
                 {% endif %}
@@ -565,10 +477,10 @@
 #            only get to the reverse proxy, when the access list matches. Invert is also possible, to explicitely deny IPs.
 #            The assembly is handled by the "Section: Reverse Proxy Configurations".
 #   Parameters:
-#   @param accesslist (@object):
-#       - @uuid (@string)
-#       - clientIps (@string): A comma-separated list of client IP addresses
-#       - invert (@boolean): A flag that inverts the logic of the access list
+#   @param accesslist (object):
+#       - uuid (string)
+#       - clientIps (string): A comma-separated list of client IP addresses
+#       - invert (boolean): A flag that inverts the logic of the access list
 #}
 {% macro access_list_configuration(accesslist, invert) %}
     {% set client_ips = accesslist.clientIps.split(',') %}
@@ -582,15 +494,15 @@
 #   Macro: basicauth_configuration
 #   Purpose: Implements basic authentication with a username and password for access.
 #   Parameters:
-#   @param basicauth_uuids (@string): A comma-separated list of UUIDs, each UUID corresponding to
+#   @param basicauth_uuids (string): A comma-separated list of UUIDs, each UUID corresponding to
 #                                     a specific user credentials (username and password).
-#       - @uuid (@string)
-#       - basicauthuser (@string): The username required for authentication.
-#       - basicauthpass (@string): The password associated with the username.
+#       - @uuid (string)
+#       - basicauthuser (string): The username required for authentication.
+#       - basicauthpass (string): The password associated with the username.
 #}
 {% macro basicauth_configuration(basicauth_uuids) %}
     {% if basicauth_uuids %}
-    basicauth {
+    basic_auth {
         {% for uuid in basicauth_uuids.split(',') %}
             {% set basicauth = helpers.toList('Pischem.caddy.reverseproxy.basicauth') | selectattr('@uuid', 'equalto', uuid) | first %}
             {% if basicauth %}
@@ -616,138 +528,139 @@
 #   - Order of Wildcard Domains and Subdomains: Handles for wildcard domains come after all subdomains.
 #}
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
-{% if reverse.enabled|default("0") == "1" %}
-# Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
-{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
-    {% if reverse.AccessLog|default("0") == "1" %}
-    {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-    log {{ reverse['@uuid'] }}
-    {% else %}
-    log {
-        output file /var/log/caddy/access/{{ reverse['@uuid'] }}.log {
-            roll_keep_for {{ generalSettings.LogAccessPlainKeep|default("10") }}d
-        }
-    }
-    {% endif %}
-    {% endif %}
-    {% set customCert = reverse.CustomCertificate|default("") %}
-    {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
-    {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) }}
-
-    {% if not reverse.accesslist %}
-        {% set basicauth_uuids = reverse.basicauth %}
-        {{ basicauth_configuration(basicauth_uuids) }}
-    {% endif %}
-
-    {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
-    {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
-    @{{ subdomain['@uuid'] }} {
-        host {{ subdomain.FromDomain }}{% if subdomain.FromPort %}:{{ subdomain.FromPort }}{% endif %}
-    }
-    handle @{{ subdomain['@uuid'] }} {
-
-        {% if not subdomain.accesslist %}
-            {% set subdomain_basicauth_uuids = subdomain.basicauth %}
-            {{ basicauth_configuration(subdomain_basicauth_uuids) }}
-        {% endif %}
-
-        {% if subdomain.accesslist %}
-        {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
-        {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
-        handle @{{ accesslist['@uuid'] }} {
-
-            {% set subdomain_basicauth_uuids = subdomain.basicauth %}
-            {{ basicauth_configuration(subdomain_basicauth_uuids) }}
-
-            {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-            {% for handle in subdomain_handles %}
-            {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
-                {{ reverse_proxy_configuration(handle) }}
+    {% if reverse.enabled|default("0") == "1" %}
+        # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
+        {# The default are encrypted connections, uncencrypted connections have to render http:// #}
+        {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+            {% if reverse.AccessLog|default("0") == "1" %}
+                {% if generalSettings.LogAccessPlain|default("0") == "0" %}
+                    log {{ reverse['@uuid'] }}
+                {% else %}
+                    log {
+                        output file /var/log/caddy/access/{{ reverse['@uuid'] }}.log {
+                            roll_keep_for {{ generalSettings.LogAccessPlainKeep|default("10") }}d
+                        }
+                    }
+                {% endif %}
             {% endif %}
+            {% set customCert = reverse.CustomCertificate|default("") %}
+            {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
+            {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4) }}
+
+            {% if not reverse.accesslist %}
+                {% set basicauth_uuids = reverse.basicauth %}
+                {{ basicauth_configuration(basicauth_uuids) }}
+            {% endif %}
+
+            {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
+                {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
+                    @{{ subdomain['@uuid'] }} {
+                        host {{ subdomain.FromDomain }}
+                    }
+                    handle @{{ subdomain['@uuid'] }} {
+
+                        {% if not subdomain.accesslist %}
+                            {% set subdomain_basicauth_uuids = subdomain.basicauth %}
+                            {{ basicauth_configuration(subdomain_basicauth_uuids) }}
+                        {% endif %}
+
+                        {% if subdomain.accesslist %}
+                            {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
+                            {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
+                            handle @{{ accesslist['@uuid'] }} {
+
+                                {% set subdomain_basicauth_uuids = subdomain.basicauth %}
+                                {{ basicauth_configuration(subdomain_basicauth_uuids) }}
+
+                                {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
+                                {% for handle in subdomain_handles %}
+                                    {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
+                                        {{ reverse_proxy_configuration(handle) }}
+                                    {% endif %}
+                                {% endfor %}
+                            {% for handle in subdomain_handles %}
+                                {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
+                                    {{ reverse_proxy_configuration(handle) }}
+                                {% endif %}
+                            {% endfor %}
+                            }
+                        {% else %}
+                            {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
+                            {% for handle in subdomain_handles %}
+                                {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
+                                    {{ reverse_proxy_configuration(handle) }}
+                                {% endif %}
+                            {% endfor %}
+                            {% for handle in subdomain_handles %}
+                                {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
+                                    {{ reverse_proxy_configuration(handle) }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if subdomain.accesslist %}
+                            {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
+                                respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
+                            {% elif Pischem.caddy.general.abort|default("0") == "1" %}
+                                abort
+                            {% endif %}
+                        {% else %}
+                            {% if Pischem.caddy.general.abort|default("0") == "1" %}
+                                abort
+                            {% endif %}
+                        {% endif %}
+                    }
+                {% endif %}
             {% endfor %}
-            {% for handle in subdomain_handles %}
-            {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
-                {{ reverse_proxy_configuration(handle) }}
+
+            {% if reverse.accesslist %}
+                {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
+                {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
+                handle @{{ accesslist['@uuid'] }} {
+
+                    {% set basicauth_uuids = reverse.basicauth %}
+                    {{ basicauth_configuration(basicauth_uuids) }}
+
+                    {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+                        {% for handle in wildcard_handles %}
+                            {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
+                                {{ reverse_proxy_configuration(handle) }}
+                            {% endif %}
+                        {% endfor %}
+                    {% for handle in wildcard_handles %}
+                        {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
+                            {{ reverse_proxy_configuration(handle) }}
+                        {% endif %}
+                    {% endfor %}
+                }
+            {% else %}
+                {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+                {% for handle in wildcard_handles %}
+                    {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
+                        {{ reverse_proxy_configuration(handle) }}
+                    {% endif %}
+                {% endfor %}
+                {% for handle in wildcard_handles %}
+                    {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
+                        {{ reverse_proxy_configuration(handle) }}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
-            {% endfor %}
+
+            {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
+            {% if accesslist %}
+                {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
+                    respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
+                {% elif Pischem.caddy.general.abort|default("0") == "1" %}
+                    abort
+                {% endif %}
+            {% else %}
+                {% if Pischem.caddy.general.abort|default("0") == "1" %}
+                    abort
+                {% endif %}
+            {% endif %}
         }
-        {% else %}
-        {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-        {% for handle in subdomain_handles %}
-        {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
-            {{ reverse_proxy_configuration(handle) }}
-        {% endif %}
-        {% endfor %}
-        {% for handle in subdomain_handles %}
-        {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
-            {{ reverse_proxy_configuration(handle) }}
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-
-        {% if subdomain.accesslist %}
-            {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
-            respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
-            {% elif Pischem.caddy.general.abort|default("0") == "1" %}
-            abort
-            {% endif %}
-        {% else %}
-            {% if Pischem.caddy.general.abort|default("0") == "1" %}
-            abort
-            {% endif %}
-        {% endif %}
-    }
     {% endif %}
-    {% endfor %}
-
-    {% if reverse.accesslist %}
-    {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
-    {{ access_list_configuration(accesslist, accesslist.accesslistInvert|default("0") == "1") }}
-    handle @{{ accesslist['@uuid'] }} {
-
-        {% set basicauth_uuids = reverse.basicauth %}
-        {{ basicauth_configuration(basicauth_uuids) }}
-
-        {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-        {% for handle in wildcard_handles %}
-        {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
-            {{ reverse_proxy_configuration(handle) }}
-        {% endif %}
-        {% endfor %}
-        {% for handle in wildcard_handles %}
-        {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
-            {{ reverse_proxy_configuration(handle) }}
-        {% endif %}
-        {% endfor %}
-    }
-    {% else %}
-    {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-    {% for handle in wildcard_handles %}
-    {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
-        {{ reverse_proxy_configuration(handle) }}
-    {% endif %}
-    {% endfor %}
-    {% for handle in wildcard_handles %}
-    {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
-        {{ reverse_proxy_configuration(handle) }}
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-
-    {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
-    {% if accesslist %}
-        {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
-        respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
-        {% elif Pischem.caddy.general.abort|default("0") == "1" %}
-        abort
-        {% endif %}
-    {% else %}
-        {% if Pischem.caddy.general.abort|default("0") == "1" %}
-        abort
-        {% endif %}
-    {% endif %}
-}
-{% endif %}
 {% endfor %}
 
 import /usr/local/etc/caddy/caddy.d/*.conf
