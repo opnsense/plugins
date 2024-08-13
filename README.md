@@ -91,6 +91,8 @@ security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/apuled -- PC Engine APU LED control (development only)
+sysutils/cpu-microcode-amd -- AMD CPU microcode updates
+sysutils/cpu-microcode-intel -- Intel CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/git-backup -- Track config changes using git
