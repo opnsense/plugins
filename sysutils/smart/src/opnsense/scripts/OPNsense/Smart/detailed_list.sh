@@ -30,9 +30,9 @@ RESULT=
 for DEV in $(sysctl -n kern.disks); do
     IDENT=$(/usr/sbin/diskinfo -s ${DEV})
 
-    if [ "${DEV#nvd}" != "${DEV}" ]; then
-        # the disk formerly know as nvdX
-        DEV="nvme${DEV#nvd}"
+    if [ "${DEV#nda}" != "${DEV}" ]; then
+        # the disk formerly know as ndaX
+        DEV="nvme${DEV#nda}"
     fi
 
     STATE=$(/usr/local/sbin/smartctl -jH /dev/${DEV})
