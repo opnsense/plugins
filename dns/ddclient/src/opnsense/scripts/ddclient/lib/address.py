@@ -32,7 +32,6 @@ checkip_service_list = {
   'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
   'dyndns': '%s://checkip.dyndns.org/',
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
-  'googledomains': '%s://domains.google.com/checkip',
   'he': '%s://checkip.dns.he.net/',
   'icanhazip': '%s://icanhazip.com/',
   'ip4only.me': '%s://ip4only.me/api/',
