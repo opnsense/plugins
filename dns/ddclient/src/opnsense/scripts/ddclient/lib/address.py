@@ -26,6 +26,8 @@
 import subprocess
 import re
 import ipaddress
+import dns.resolver
+import dns.rdataclass
 from urllib.parse import urlparse
 
 checkip_service_list = {
@@ -49,6 +51,17 @@ checkip_service_list = {
   'zoneedit': '%s://dynamic.zoneedit.com/checkip.html'
 }
 
+checkip_dns_list = {
+   'cloudflare-dns': {
+       'nameservers': ['1.1.1.1','1.0.0.1'],
+       'resolve_params': {
+           'qname': 'whoami.cloudflare',
+           'rdtype': 'TXT',
+           'rdclass': dns.rdataclass.from_text('CH')
+       }
+   }
+}
+
 
 def extract_address(host, txt):
     """ Extract first IPv4 or IPv6 address from provided string
@@ -68,12 +81,24 @@ def extract_address(host, txt):
 
 
 def checkip(service, proto='https', timeout='10', interface=None):
-    """ find ip address using external services defined in checkip_service_list
+    """ find ip address using external web services defined in checkip_service_list or dns services defined in checkip_dns_list
         :param proto: protocol
         :param timeout: timeout in seconds
         :param interface: bind to interface
         :return: str
     """
+    if service.startswith('dns_'):
+        svc = service[4:]
+        if svc in checkip_dns_list:
+            svc_info = checkip_dns_list[svc]
+            resolve_params = svc_info['resolve_params']
+            dns_resolver = dns.resolver.Resolver()
+            dns_resolver.nameservers = svc_info['nameservers']
+            try:
+                dns_response = dns_resolver.resolve(**resolve_params)
+                return dns_response[0].to_text().strip('"')
+            except:
+                return ''
     if service.startswith('web_'):
         # configuration name, strip web_ part
         service = service[4:]
