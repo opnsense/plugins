@@ -1,5 +1,5 @@
 PLUGIN_NAME=		theme-tukan
-PLUGIN_VERSION=		1.27
+PLUGIN_VERSION=		1.28
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		The tukan theme - blue/white
 PLUGIN_MAINTAINER=	rene@team-rebellion.net
