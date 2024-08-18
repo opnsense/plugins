@@ -139,7 +139,9 @@
                     <Default>web_dyndns</Default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
                     <OptionValues>
-                        <web_dyndns>cloudflare</web_dyndns>
+                        <web_cloudflare>cloudflare</web_cloudflare>
+                        <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
+                        <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
                         <web_dyndns>dyndns</web_dyndns>
                         <web_freedns>freedns</web_freedns>
                         <web_he>he</web_he>
