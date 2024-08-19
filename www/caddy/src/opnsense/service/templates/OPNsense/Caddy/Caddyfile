@@ -319,36 +319,38 @@
 #   - @param dnsSecretApiKey (string, optional): A secret API key or token for additional security, depending on the provider.
 #   - @param TlsDnsOptionalField1 to 4 (string, optional): Additional fields for specific DNS provider configurations.
 #   - @param TlsDnsPropagationTimeout (boolean, optional): Disables Propagation Timeout for DNS Challenge.
+#   - @param TlsDnsPropagationResolvers (string, optional): Set custom nameserver for DNS Challenge.
 #}
-{% macro tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsPropagationTimeout) %}
-    {% if dnsChallenge == "1" and dnsProvider %}
-        {% if dnsProvider in dnsProviderSpecialConfig %}
-            tls {
-                issuer acme {
-                    dns {{ dnsProvider }} {
-                        {% include "OPNsense/Caddy/includeDnsProvider" %}
-                    }
-                    {% if TlsDnsPropagationTimeout|default("0") == "1" %}
-                        propagation_delay 30s
-                        propagation_timeout -1
-                    {% endif %}
+{% macro tls_configuration(
+    customCert,
+    dnsChallenge,
+    dnsProvider,
+    dnsApiKey,
+    dnsSecretApiKey,
+    tlsDnsOptionalField1,
+    tlsDnsOptionalField2,
+    tlsDnsOptionalField3,
+    tlsDnsOptionalField4,
+    tlsDnsPropagationTimeout,
+    tlsDnsPropagationResolvers
+) %}
+    {% if customCert or (dnsChallenge == "1" and dnsProvider) %}
+        tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {% if not customCert and dnsChallenge == "1" and dnsProvider %}{
+            issuer acme {
+                dns {{ dnsProvider }} {% if dnsProvider not in dnsProviderSpecialConfig %}{{ dnsApiKey }}{% else %}{
+                    {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
+                {% endif %}
+
+                {% if tlsDnsPropagationResolvers %}
+                resolvers {{ tlsDnsPropagationResolvers }}
+                {% endif %}
+                {% if tlsDnsPropagationTimeout|default("0") == "1" %}
+                propagation_delay 30s
+                propagation_timeout -1
+                {% endif %}
             }
-        {% else %}
-            tls {
-                issuer acme {
-                    {# Other DNS Providers fall under this default #}
-                    dns {{ dnsProvider }} {{ dnsApiKey }}
-                    {% if TlsDnsPropagationTimeout|default("0") == "1" %}
-                        propagation_delay 30s
-                        propagation_timeout -1
-                    {% endif %}
-                }
-            }
-        {% endif %}
-    {% endif %}
-    {% if customCert %}
-        tls /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key
+        }{% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -558,8 +560,21 @@
             {% endif %}
             {% set customCert = reverse.CustomCertificate|default("") %}
             {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
-            {% set TlsDnsPropagationTimeout = generalSettings.TlsDnsPropagationTimeout %}
-            {{ tls_configuration(dnsProvider, dnsApiKey, customCert, dnsChallenge, dnsSecretApiKey, TlsDnsOptionalField1, TlsDnsOptionalField2, TlsDnsOptionalField3, TlsDnsOptionalField4, TlsDnsPropagationTimeout) }}
+            {% set tlsDnsPropagationTimeout = generalSettings.TlsDnsPropagationTimeout %}
+            {% set tlsDnsPropagationResolvers = generalSettings.TlsDnsPropagationResolvers %}
+            {{ tls_configuration(
+                customCert,
+                dnsChallenge,
+                dnsProvider,
+                dnsApiKey,
+                dnsSecretApiKey,
+                tlsDnsOptionalField1,
+                tlsDnsOptionalField2,
+                tlsDnsOptionalField3,
+                tlsDnsOptionalField4,
+                tlsDnsPropagationTimeout,
+                tlsDnsPropagationResolvers
+            ) }}
 
             {% if not reverse.accesslist %}
                 {% set basicauth_uuids = reverse.basicauth %}
