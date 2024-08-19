@@ -70,6 +70,9 @@
             <TlsDnsOptionalField3 type="TextField"/>
             <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
+            <TlsDnsPropagationResolvers type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+            </TlsDnsPropagationResolvers>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>

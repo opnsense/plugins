@@ -52,6 +52,12 @@
         <collapse>true</collapse>
     </field>
     <field>
+        <id>caddy.general.TlsDnsPropagationResolvers</id>
+        <label>Resolvers</label>
+        <type>text</type>
+        <help><![CDATA[Leave empty to use the system resolvers (default). Resolvers customizes the DNS resolvers used when performing the DNS challenge; these take precedence over system resolvers or any default ones. If set here, the resolvers will propagate to all configured certificate issuers. If the system resolvers use DNS over TLS, setting an external resolver here is required or the DNS challenge will fail.]]></help>
+    </field>
+    <field>
         <id>caddy.general.TlsDnsPropagationTimeout</id>
         <label>Disable Propagation Timeout</label>
         <type>checkbox</type>
