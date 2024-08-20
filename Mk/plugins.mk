@@ -218,7 +218,7 @@ scripts-post:
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
-		tar -C ${.CURDIR}/src -cpf - $${FILE} | \
+		tar -C ${.CURDIR}/src -cpf - "$${FILE}" | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
 		if [ "$${FILE%%.in}" != "$${FILE}" ]; then \
 			sed -i '' ${SED_REPLACE} "${DESTDIR}${LOCALBASE}/$${FILE}"; \
@@ -260,17 +260,17 @@ metadata: check
 
 collect: check
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
-		tar -C ${DESTDIR}${LOCALBASE} -cpf - $${FILE} | \
+		tar -C ${DESTDIR}${LOCALBASE} -cpf - "$${FILE}" | \
 		    tar -C ${.CURDIR}/src -xpf -; \
 	done
 
 remove: check
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
-		rm -f ${DESTDIR}${LOCALBASE}/$${FILE}; \
+		rm -f "${DESTDIR}${LOCALBASE}/$${FILE}"; \
 	done
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type d -depth) | while read DIR; do \
-		if [ -d ${DESTDIR}${LOCALBASE}/$${DIR} ]; then \
-			rmdir ${DESTDIR}${LOCALBASE}/$${DIR} 2> /dev/null || true; \
+		if [ -d "${DESTDIR}${LOCALBASE}/$${DIR}" ]; then \
+			rmdir "${DESTDIR}${LOCALBASE}/$${DIR}" 2> /dev/null || true; \
 		fi; \
 	done
 
@@ -331,7 +331,7 @@ lint-shell:
 	    if [ "$$(head $${FILE} | grep -c '^#!\/')" == "0" ]; then \
 	        echo "Missing shebang in $${FILE}"; exit 1; \
 	    fi; \
-	    sh -n $${FILE} || exit 1; \
+	    sh -n "$${FILE}" || exit 1; \
 	done
 
 lint-xml:
