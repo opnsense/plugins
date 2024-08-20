@@ -9,6 +9,7 @@ Plugin Changelog
 1.23
 
 * Add dashboard widget
+* Refactored IP matching (contributed by Rob van Oostenrijk)
 
 1.22
 

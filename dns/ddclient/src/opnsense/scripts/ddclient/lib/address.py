@@ -82,7 +82,7 @@ def checkip(service, proto='https', timeout='10', interface=None):
         if interface is not None:
             params.append("--interface")
             params.append(interface)
-        url = checkip_service_list[service] % proto 
+        url = checkip_service_list[service] % proto
         params.append(url)
         return extract_address(urlparse(url).hostname,
             subprocess.run(params, capture_output=True, text=True).stdout)
