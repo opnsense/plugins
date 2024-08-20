@@ -81,6 +81,11 @@ export default class NutNetclient extends BaseTableWidget {
             return acc;
         }, {});
 
+        // Use the dataChanged method to check if the data has changed since the last tick
+        if (!this.dataChanged('ups_status', nut_ups_status)) {
+            return;
+        }
+
         // Prepare the rows for the table based on the fetched data.
         const rows = [
             // Display the remote server address if available.
