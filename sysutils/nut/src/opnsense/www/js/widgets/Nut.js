@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2024 Ben 'DollarSign23'x
+ * Copyright (C) 2024 Ben 'DollarSign23'
+ * Copyright (C) 2024 Nicola Pellegrini
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
