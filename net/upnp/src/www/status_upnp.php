@@ -65,7 +65,6 @@ include("head.inc");
             <table class="table table-striped table-condensed table-hover">
               <thead>
                 <tr>
-                  <td><?=gettext("Interface")?></td>
                   <td><?=gettext("Ext. Port")?></td>
                   <td><?=gettext("Internal IP")?></td>
                   <td><?=gettext("Int. Port")?></td>
@@ -83,7 +82,6 @@ include("head.inc");
                   }
               ?>
                 <tr>
-                  <td><?= html_safe(convert_friendly_interface_to_friendly_descr(convert_real_interface_to_friendly_interface_name($matches['iface']))) ?></td>
                   <td><?= html_safe($matches['extport']) ?></td>
                   <td><?= html_safe($matches['intaddr']) ?></td>
                   <td><?= html_safe($matches['intport']) ?></td>
@@ -97,7 +95,7 @@ include("head.inc");
               </tbody>
               <tfoot>
                   <tr>
-                    <td colspan="8">
+                    <td colspan="7">
                       <form method="post">
                         <button type="submit" name="clear" id="clear" class="btn btn-primary" value="Clear"><?=gettext("Clear");?></button>
                         <?=gettext("all currently connected sessions");?>.
