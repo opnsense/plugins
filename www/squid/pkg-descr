@@ -11,3 +11,4 @@ Plugin Changelog
 * Workaround for segmentation faults using OpenSSL legacy provider
 * Correct migration to Python ipaddress library use
 * Set default ACL values vor Safe_ports and SSL_ports
+* Include "icap_service_failure_limit -1" configuration (contributed by Andy Binder)
