@@ -34,6 +34,13 @@ export default class NutNetclient extends BaseTableWidget {
         this.timeoutPeriod = 1000; // Set a timeout period for AJAX calls or other timed operations.
     }
 
+    getGridOptions() {
+        return {
+            // Trigger overflow-y:scroll after 650px height
+            sizeToContent: 650
+        };
+    }
+
     // Creates and returns the HTML structure for the widget, including a table without a header.
     getMarkup() {
         let $container = $('<div></div>'); // Create a container div.
