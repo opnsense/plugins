@@ -106,6 +106,8 @@ export default class NutNetclient extends BaseTableWidget {
             nut_ups_status['input.voltage'] && nut_ups_status['input.frequency'] && this.makeTextRow('status_input_power', `${nut_ups_status['input.voltage']} V | ${nut_ups_status['input.frequency']} Hz`),
             // Display the output voltage and frequency if available.
             nut_ups_status['output.voltage'] && nut_ups_status['output.frequency'] && this.makeTextRow('status_output_power', `${nut_ups_status['output.voltage']} V | ${nut_ups_status['output.frequency']} Hz`),
+            // Display the result of the UPS efficiency if available.
+            nut_ups_status['ups.efficiency'] && this.makeTextRow('status_efficiency', `${nut_ups_status['ups.efficiency']}%`),
             // Display the result of the UPS self-test if available.
             nut_ups_status['ups.test.result'] && this.makeTextRow('status_selftest', nut_ups_status['ups.test.result']),
         ].filter(Boolean); // Remove any undefined or null rows.

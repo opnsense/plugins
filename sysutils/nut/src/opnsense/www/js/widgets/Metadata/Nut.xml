@@ -12,6 +12,7 @@
             <status_status>UPS Status</status_status>
             <status_battery>Battery status</status_battery>
             <status_load>UPS Load</status_load>
+            <status_efficiency>UPS Efficiency</status_efficiency>
             <status_bcharge>Battery level</status_bcharge>
             <status_timeleft>Battery runtime</status_timeleft>
             <status_output_power>Output Power</status_output_power>
