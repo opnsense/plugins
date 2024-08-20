@@ -9,6 +9,10 @@ and management interface.
 Plugin Changelog
 ----------------
 
+1.9
+
+* Add dashboard widget
+
 1.8
 
 * Add apcupsd-ups driver support
