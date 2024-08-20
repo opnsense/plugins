@@ -57,7 +57,7 @@ export default class NutNetclient extends BaseTableWidget {
         const nut_service_status = await this.ajaxCall('/api/nut/service/status');
 
         // If the service is not running, display a message and stop further processing.
-        if (nut_service_status.status !== 'running') {
+        if (!nut_service_status || nut_service_status.status !== 'running') {
             $('#nut-netclient-table').html(`<a href="/ui/nut/index">${this.translations.unconfigured}</a>`);
             return;
         }
