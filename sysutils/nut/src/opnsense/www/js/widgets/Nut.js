@@ -44,10 +44,10 @@ export default class NutNetclient extends BaseTableWidget {
     // Creates and returns the HTML structure for the widget, including a table without a header.
     getMarkup() {
         let $container = $('<div></div>'); // Create a container div.
-        let $nut_netclient_table = this.createTable('nut-netclient-table', {
+        let $nut_table = this.createTable('nut-table', {
             headerPosition: 'none', // Disable table headers.
         });
-        $container.append($nut_netclient_table); // Append the table to the container.
+        $container.append($nut_table); // Append the table to the container.
         return $container; // Return the container with the table.
     }
 
@@ -58,7 +58,7 @@ export default class NutNetclient extends BaseTableWidget {
 
         // If the service is not running, display a message and stop further processing.
         if (!nut_service_status || nut_service_status.status !== 'running') {
-            $('#nut-netclient-table').html(`<a href="/ui/nut/index">${this.translations.unconfigured}</a>`);
+            $('#nut-table').html(`<a href="/ui/nut/index">${this.translations.unconfigured}</a>`);
             return;
         }
 
@@ -67,7 +67,7 @@ export default class NutNetclient extends BaseTableWidget {
 
         // // If netclient is not enabled, display a message and stop further processing.
         // if (nut_settings.nut?.netclient?.enable !== "1") {
-        //     $('#nut-netclient-table').html(`<a href="/ui/nut/index#subtab_nut-ups-netclient">${this.translations.netclient_unconfigured}</a>`);
+        //     $('#nut-table').html(`<a href="/ui/nut/index#subtab_nut-ups-netclient">${this.translations.netclient_unconfigured}</a>`);
         //     return;
         // }
 
@@ -111,7 +111,7 @@ export default class NutNetclient extends BaseTableWidget {
         ].filter(Boolean); // Remove any undefined or null rows.
 
         // Update the table with the prepared rows.
-        this.updateTable('nut-netclient-table', rows);
+        this.updateTable('nut-table', rows);
     }
 
     // Formats the runtime (in seconds) into a human-readable format (hours, minutes, seconds).
