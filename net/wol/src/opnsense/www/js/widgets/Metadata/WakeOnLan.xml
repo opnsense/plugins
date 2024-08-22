@@ -1,0 +1,12 @@
+<metadata>
+    <wol>
+        <filename>WakeOnLan.js</filename>
+        <endpoints>
+           <endpoint>/api/wol/wol/*</endpoint>
+           <endpoint>/diagnostics/interface/*Arp</endpoint>
+        </endpoints>
+        <translations>
+           <title>WakeOnLan</title>
+        </translations>
+    </wol>
+</metadata>
