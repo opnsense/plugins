@@ -1,6 +1,11 @@
-.btn-pressed, .btn-pressed:hover {
+.btn-pressed {
+  background-color: #d94f00;
+  color: white;
+
+  &:hover {
     background-color: #d94f00;
     color: white;
+  }
 }
 
 .fa-spinner {
@@ -17,8 +22,8 @@
 }
 
 .widget-error {
-    margin: 50px;
-    color: #721c24;
+  margin: 50px;
+  color: #721c24;
 }
 
 .widget-content {
@@ -224,11 +229,6 @@ div {
   font-weight: bold;
 }
 
-.flextable-row:hover {
-  background: #131c22;
-  transition: 500ms;
-}
-
 .flex-cell {
   text-align: left;
   word-break: break-word;
@@ -247,11 +247,6 @@ div {
     padding: 0;
     border: 0;
     border-top: rgb(59, 59, 59);
-
-    &:hover {
-      background: none !important;
-      transition: 500ms;
-    }
   }
 }
 
@@ -282,11 +277,6 @@ div {
   border-top: 1px solid #f7e2d6;
   transition: 0.5s;
   opacity: 0.4;
-
-  &:hover {
-    background: #F5F5F5 !important;
-    transition: 500ms;
-  }
 }
 
 .grid-header {
