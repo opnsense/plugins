@@ -95,5 +95,4 @@ export default class WakeOnLan extends BaseTableWidget {
       return (arp.expired === false && arp.intf_description === intf);
     }
   }
-
 }

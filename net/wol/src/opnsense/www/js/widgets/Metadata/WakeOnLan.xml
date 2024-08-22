@@ -2,8 +2,9 @@
     <wol>
         <filename>WakeOnLan.js</filename>
         <endpoints>
-           <endpoint>/api/wol/wol/*</endpoint>
-           <endpoint>/diagnostics/interface/*Arp</endpoint>
+           <endpoint>/api/wol/wol/searchHost</endpoint>
+           <endpoint>/api/wol/wol/set</endpoint>
+           <endpoint>/diagnostics/interface/getArp</endpoint>
         </endpoints>
         <translations>
            <title>WakeOnLan</title>
