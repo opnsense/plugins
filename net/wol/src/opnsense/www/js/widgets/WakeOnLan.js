@@ -24,8 +24,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import BaseTableWidget from "./BaseTableWidget.js";
-
 export default class WakeOnLan extends BaseTableWidget {
     constructor() {
         super();
