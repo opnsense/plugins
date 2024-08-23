@@ -34,7 +34,7 @@ function rfc2136_configure()
     return [
         'bootup' => ['rfc2136_configure_do'],
         'local' => ['rfc2136_configure_do'],
-        'newwanip' => ['rfc2136_configure_do:2'],
+        'newwanip_map' => ['rfc2136_configure_map:2'],
     ];
 }
 
@@ -87,7 +87,7 @@ function rfc2136_cache_file($dnsupdate, $ipver = 4)
     return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$dnsupdate['host']}_{$dnsupdate['server']}{$ipver}.cache";
 }
 
-function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $forced = false)
+function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $forced = false)
 {
     global $config;
 
@@ -95,12 +95,15 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
         return;
     }
 
+    /* $int is passed as an optional CSV so transform into empty array when not set */
+    $int = !empty($int) ? explode(',', $int) : [];
+
     service_log('Configuring RFC 2136 clients...', $verbose);
 
     foreach ($config['dnsupdates']['dnsupdate'] as $i => $dnsupdate) {
         if (!isset($dnsupdate['enable'])) {
             continue;
-        } elseif (!empty($int) && $int != $dnsupdate['interface']) {
+        } elseif (count($int) && !in_array($dnsupdate['interface'], $int)) {
             continue;
         } elseif (!empty($updatehost) && ($updatehost != $dnsupdate['host'])) {
             continue;
