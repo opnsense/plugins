@@ -217,11 +217,6 @@ div {
     font-weight: bold;
 }
 
-.flextable-row:hover {
-    background: #131c22;
-    transition: 500ms;
-}
-
 .flex-cell {
     text-align: left;
     word-break: break-word;
@@ -240,10 +235,6 @@ div {
     padding: 0;
     border: 0;
     border-top: rgb(59, 59, 59);
-}
-.column .flex-cell:hover {
-    background: none !important;
-    transition: 500ms;
 }
 .flex-subcell {
     width: 100%;
@@ -268,11 +259,6 @@ div {
     border-top: 1px solid #f7e2d6;
     transition: 0.5s;
     opacity: 0.4;
-}
-
-.grid-row:hover {
-    background: #F5F5F5 !important;
-    transition: 500ms;
 }
 
 .grid-header {
