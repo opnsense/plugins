@@ -90,7 +90,7 @@ function miniupnpd_configure()
 {
     return [
         'bootup' => ['miniupnpd_configure_do'],
-        'newwanip' => ['miniupnpd_configure_do'],
+        'newwanip_map' => ['miniupnpd_configure_do'],
     ];
 }
 
