@@ -58,7 +58,7 @@ function igmpproxy_configure()
 {
     return [
         'bootup' => ['igmpproxy_configure_do'],
-        'newwanip' => ['igmpproxy_configure_do'],
+        'newwanip_map' => ['igmpproxy_configure_do'],
     ];
 }
 
