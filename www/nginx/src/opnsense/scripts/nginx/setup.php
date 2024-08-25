@@ -74,6 +74,8 @@ syslog(LOG_DEBUG, "NGINX setup routine started.");
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
 @mkdir("/var/log/nginx", 0750, true);
+// check logs dir permissions. in case if logs moved to tmpfs
+@chmod('/var/log/nginx', 0750);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
