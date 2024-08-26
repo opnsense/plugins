@@ -89,6 +89,7 @@ export default class WakeOnLan extends BaseTableWidget {
       const result = await this.ajaxCall('/api/wol/wol/set', JSON.stringify(data), 'POST').then(() => {
           btn.removeClass('fa-bolt').addClass('fa-check');
       });
+      event.currentTarget.blur();
     });
   }
 
