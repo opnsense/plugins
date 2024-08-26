@@ -26,12 +26,14 @@
 import subprocess
 import re
 import ipaddress
-
+from urllib.parse import urlparse
 
 checkip_service_list = {
+  'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
+  'cloudflare-ipv4': '%s://1.1.1.1/cdn-cgi/trace',
+  'cloudflare-ipv6': '%s://[2606:4700:4700::1111]/cdn-cgi/trace',
   'dyndns': '%s://checkip.dyndns.org/',
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
-  'googledomains': '%s://domains.google.com/checkip',
   'he': '%s://checkip.dns.he.net/',
   'icanhazip': '%s://icanhazip.com/',
   'ip4only.me': '%s://ip4only.me/api/',
@@ -48,17 +50,18 @@ checkip_service_list = {
 }
 
 
-def extract_address(txt):
+def extract_address(host, txt):
     """ Extract first IPv4 or IPv6 address from provided string
         :param txt: text blob
         :return: str
     """
-    for regexp in [r'[^a-fA-F0-9\:]', r'[^F0-9\.]']:
-        for line in re.sub(regexp, ' ', txt).split():
-            if line.count('.') == 3 or line.count(':') >= 2:
+    for regexp in [r'(?:\d{1,3}\.){3}\d{1,3}', r'([a-f0-9:]+:+)+[a-f0-9]+']:
+        matches = re.finditer(regexp, txt)
+        for match in matches:
+            if match.group() != host:
                 try:
-                    ipaddress.ip_address(line)
-                    return line
+                    ipaddress.ip_address(match.group())
+                    return match.group()
                 except ValueError:
                     pass
     return ""
@@ -79,8 +82,10 @@ def checkip(service, proto='https', timeout='10', interface=None):
         if interface is not None:
             params.append("--interface")
             params.append(interface)
-        params.append(checkip_service_list[service] % proto)
-        return extract_address(subprocess.run(params, capture_output=True, text=True).stdout)
+        url = checkip_service_list[service] % proto
+        params.append(url)
+        return extract_address(urlparse(url).hostname,
+            subprocess.run(params, capture_output=True, text=True).stdout)
     elif service in ['if', 'if6'] and interface is not None:
         # return first non private IPv[4|6] interface address
         ifcfg = subprocess.run(['/sbin/ifconfig', interface], capture_output=True, text=True).stdout

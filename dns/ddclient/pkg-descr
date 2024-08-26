@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.24
+
+* Refactored IP matching (contributed by Rob van Oostenrijk)
+
 1.23
 
 * Add dashboard widget
