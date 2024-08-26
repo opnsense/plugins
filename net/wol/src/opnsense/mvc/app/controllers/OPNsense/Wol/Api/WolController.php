@@ -66,27 +66,32 @@ class WolController extends ApiMutableModelControllerBase
     {
         $this->delBase('wolentry', $uuid);
     }
+
     public function searchHostAction()
     {
-        return $this->searchBase('wolentry', array("interface", "mac", "descr"));
+        return $this->searchBase('wolentry', ['interface', 'mac', 'descr']);
     }
+
     public function getHostAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('host', 'wolentry', $uuid);
     }
+
     public function getwakeAction()
     {
         return $this->getBase('wake', 'wolentry', null);
     }
+
     public function addHostAction()
     {
         return $this->addBase('host', 'wolentry');
     }
+
     public function setHostAction($uuid)
     {
         return $this->setBase('host', 'wolentry', $uuid);
     }
+
     public function wakeallAction()
     {
         if (!$this->request->isPost()) {
@@ -100,6 +105,7 @@ class WolController extends ApiMutableModelControllerBase
         }
         return $results;
     }
+
     private function wakeHostByNode($wolent, &$result)
     {
         $backend = new Backend();
@@ -114,6 +120,7 @@ class WolController extends ApiMutableModelControllerBase
         $broadcast_ip = escapeshellarg($this->calculateSubnetBroadcast($ipaddr, $cidr));
         $result['status'] = trim($backend->configdRun("wol wake {$broadcast_ip} " . escapeshellarg((string)$wolent->mac)));
     }
+
     private function getInterfaceIP($if)
     {
         $cfg = Config::getInstance()->object();
@@ -128,6 +135,7 @@ class WolController extends ApiMutableModelControllerBase
             return null;
         }
     }
+
     private function getInterfaceSubnet($if)
     {
         $cfg = Config::getInstance()->object();
@@ -137,6 +145,7 @@ class WolController extends ApiMutableModelControllerBase
             return null;
         }
     }
+
     private function calculateSubnetBroadcast($ip_addr, $cidr)
     {
         // TODO undefined offset
