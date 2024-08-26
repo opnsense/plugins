@@ -69,15 +69,7 @@ class WolController extends ApiMutableModelControllerBase
 
     public function searchHostAction()
     {
-        $ret = $this->searchBase('wolentry', ['interface', 'mac', 'descr']);
-
-        foreach ($ret['rows'] ?? [] as $idx => $wol) {
-            /* not entirely accurate naming but it's too much effor to unwind this API */
-            $ret['rows'][$idx]['identifier'] =
-                (string)$this->getModel()->getNodeByReference('wolentry.' . $wol['uuid'])->interface;
-        }
-
-        return $ret;
+        return $this->searchBase('wolentry', ['interface', 'mac', 'descr']);
     }
 
     public function getHostAction($uuid = null)

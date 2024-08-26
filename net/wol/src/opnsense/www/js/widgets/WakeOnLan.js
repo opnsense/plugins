@@ -50,10 +50,10 @@ export default class WakeOnLan extends BaseTableWidget {
         const data = await this.ajaxCall('/api/wol/wol/searchHost');
 
         let rows = [];
-	if (data.total == 0) {
+        if (data.total == 0) {
           const empty_list = [`<b>${this.translations.msg_empty_wol}</b>`];
           rows.push(empty_list);
-	} else {
+        } else {
           const header = [`<b>${this.translations.h_device}</b>`,
                           `<b>${this.translations.h_interface}</b>`,
                           `<b>${this.translations.h_status}</b>`,
@@ -66,7 +66,7 @@ export default class WakeOnLan extends BaseTableWidget {
 
           for(let it = 0; it < data.rows.length; it++){
               const item = data.rows[it];
-              let is_active = this.checkActive(arp, item.mac, item.identifier);
+              let is_active = this.checkActive(arp, item.mac, item.interface);
               let row = [
                   `${item.descr.length !== 0 ? item.descr + '<br/>': ''} ${item.mac}`,
                   `${item.interface}`,
