@@ -50,10 +50,10 @@ export default class WakeOnLan extends BaseTableWidget {
         const data = await this.ajaxCall('/api/wol/wol/searchHost');
 
         let rows = [];
-      	if (data.total == 0) {
+	if (data.total == 0) {
           const empty_list = [`<b>${this.translations.msg_empty_wol}</b>`];
           rows.push(empty_list);
-      	} else {
+	} else {
           const header = [`<b>${this.translations.h_device}</b>`,
                           `<b>${this.translations.h_interface}</b>`,
                           `<b>${this.translations.h_status}</b>`,
@@ -66,13 +66,13 @@ export default class WakeOnLan extends BaseTableWidget {
 
           for(let it = 0; it < data.rows.length; it++){
               const item = data.rows[it];
-              let is_active = this.checkActive(arp, item.mac, item.interface);
+              let is_active = this.checkActive(arp, item.mac, item.identifier);
               let row = [
                   `${item.descr.length !== 0 ? item.descr + '<br/>': ''} ${item.mac}`,
                   `${item.interface}`,
                   `<i class="fa fa-${is_active == 1 ? "play" : "remove"} fa-fw text-${is_active == 1 ? "success" : "danger"}" ></i>
                    ${ is_active == 1 ? "Online" : "Offline"}`,
-                  `<button class="btn btn-primary btn-xs wakeupbtn" data-mac="${item.mac}" data-interface="${item.interface}" data-uuid="${item.uuid}">
+                  `<button class="btn btn-primary btn-xs wakeupbtn" data-uuid="${item.uuid}">
                     <i class="fa fa-bolt fa-fw" title="Wake Up"></i>
                    </button>`
                   ];
@@ -83,8 +83,12 @@ export default class WakeOnLan extends BaseTableWidget {
 
     $('.wakeupbtn').on('click', async (event) => {
       event.preventDefault();
+      let btn = $(event.currentTarget).find('i');
+      /* the call is quick, omit fa-spinner fa-pulse use */
       const data = {uuid: $(event.currentTarget).data('uuid')};
-      const result = await this.ajaxCall('/api/wol/wol/set', JSON.stringify(data), 'POST');
+      const result = await this.ajaxCall('/api/wol/wol/set', JSON.stringify(data), 'POST').then(() => {
+          btn.removeClass('fa-bolt').addClass('fa-check');
+      });
     });
   }
 
