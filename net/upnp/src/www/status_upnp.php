@@ -62,41 +62,40 @@ include("head.inc");
 <?php
           else: ?>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-condensed table-hover">
               <thead>
                 <tr>
-                  <td><?=gettext("Port");?></td>
-                  <td><?=gettext("Protocol");?></td>
-                  <td><?=gettext("Internal IP");?></td>
-                  <td><?=gettext("Int. Port");?></td>
-                  <td><?=gettext("Description");?></td>
+                  <td><?=gettext("Ext. Port")?></td>
+                  <td><?=gettext("Internal IP")?></td>
+                  <td><?=gettext("Int. Port")?></td>
+                  <td><?=gettext("Protocol")?></td>
+                  <td><?=gettext("Source IP")?></td>
+                  <td><?=gettext("Source Port")?></td>
+                  <td><?=gettext("Description")?></td>
                 </tr>
               </thead>
               <tbody>
 <?php
               foreach ($rdr_entries as $rdr_entry):
-                  if (!preg_match("/on (.*) inet proto (.*) from (.*) to (.*) port = (.*) keep state label \"(.*)\" rtable [0-9] -> (.*) port (.*)/", $rdr_entry, $matches)) {
+                  if (!preg_match("/on (?P<iface>.*) inet proto (?P<proto>.*) from (?P<srcaddr>.*) (port (?P<srcport>.*) )?to (?P<extaddr>.*) port = (?P<extport>.*) keep state (label \"(?P<descr>.*)\" )?rtable [0-9] -> (?P<intaddr>.*) port (?P<intport>.*)/", $rdr_entry, $matches)) {
                       continue;
                   }
-                  $rdr_proto = $matches[2];
-                  $rdr_port = $matches[5];
-                  $rdr_label =$matches[6];
-                  $rdr_ip = $matches[7];
-                  $rdr_iport = $matches[8];
               ?>
                 <tr>
-                  <td><?=$rdr_port;?></td>
-                  <td><?=$rdr_proto;?></td>
-                  <td><?=$rdr_ip;?></td>
-                  <td><?=$rdr_iport;?></td>
-                  <td><?=$rdr_label;?></td>
+                  <td><?= html_safe($matches['extport']) ?></td>
+                  <td><?= html_safe($matches['intaddr']) ?></td>
+                  <td><?= html_safe($matches['intport']) ?></td>
+                  <td><?= html_safe(strtoupper($matches['proto'])) ?></td>
+                  <td><?= html_safe($matches['srcaddr']) ?></td>
+                  <td><?= html_safe($matches['srcport'] ?: "any") ?></td>
+                  <td><?= html_safe($matches['descr']) ?></td>
                 </tr>
 <?php
               endforeach;?>
               </tbody>
               <tfoot>
                   <tr>
-                    <td colspan="5">
+                    <td colspan="7">
                       <form method="post">
                         <button type="submit" name="clear" id="clear" class="btn btn-primary" value="Clear"><?=gettext("Clear");?></button>
                         <?=gettext("all currently connected sessions");?>.

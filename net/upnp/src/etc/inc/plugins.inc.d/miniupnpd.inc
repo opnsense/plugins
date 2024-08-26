@@ -90,7 +90,7 @@ function miniupnpd_configure()
 {
     return [
         'bootup' => ['miniupnpd_configure_do'],
-        'newwanip' => ['miniupnpd_configure_do'],
+        'newwanip_map' => ['miniupnpd_configure_do'],
     ];
 }
 
@@ -232,7 +232,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
-            $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
+            $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
             /* configure lifetimes to force periodic expire */
             $config_text .= "clean_ruleset_interval=600\n";

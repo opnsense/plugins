@@ -221,9 +221,12 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Enable");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle text-muted"></i></a> <?=gettext("Enable");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_enable">
+                         <?=gettext("Enable autonomous port mapping service.");?>
+                       </div>
                       </td>
                     </tr>
                     <tr>
