@@ -51,10 +51,13 @@ export default class WakeOnLan extends BaseTableWidget {
 
         let rows = [];
       	if (data.total == 0) {
-          const empty_list = [`<b>No saved WOL addresses</b>`];
+          const empty_list = [`<b>${this.translations.msg_empty_wol}</b>`];
           rows.push(empty_list);
       	} else {
-          const header = ['<b>Device</b>','<b>Interface</b>','<b>Status</b>',''];
+          const header = [`<b>${this.translations.h_device}</b>`,
+                          `<b>${this.translations.h_interface}</b>`,
+                          `<b>${this.translations.h_status}</b>`,
+                          ''];
           rows.push(header);
 
           //NOTE: this ARP list call is the most expensive one and can grow substantialy in big networks
