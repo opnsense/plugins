@@ -71,12 +71,14 @@ PLUGIN_SUFFIX?=		-devel
 PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
 .endif
 
-.if !empty(PLUGIN_VARIANT)
+.if "${PLUGIN_VARIANT}" == ""
+.error Plugin variant cannot be empty
+.else
 PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
 .if empty(PLUGIN_NAME)
 .error Plugin variant '${PLUGIN_VARIANT}' does not exist
 .endif
-.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS:N${PLUGIN_VARIANT}}
 PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
 .endfor
 PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
