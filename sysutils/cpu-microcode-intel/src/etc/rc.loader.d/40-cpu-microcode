@@ -1,2 +1,0 @@
-cpu_microcode_load="YES"
-cpu_microcode_name="/boot/firmware/intel-ucode.bin"
