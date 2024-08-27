@@ -4,5 +4,6 @@ PLUGIN_COMMENT=		AMD CPU microcode updates
 PLUGIN_DEPENDS=		cpu-microcode-amd x86info
 PLUGIN_CONFLICTS=	cpu-microcode-intel
 PLUGIN_MAINTAINER=	franco@opnsense.org
+PLUGIN_TIER=		2
 
 .include "../../Mk/plugins.mk"
