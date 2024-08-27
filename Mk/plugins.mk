@@ -58,6 +58,8 @@ check:
 .  endif
 .endfor
 
+_PLUGIN_COMMENT:=	${PLUGIN_COMMENT}
+
 .if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
 .else
@@ -85,6 +87,9 @@ PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}${PLUGIN_SUFFIX} \
 			${${_PLUGIN_VARIANT}_NAME}
 .endfor
 PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.if !empty(${PLUGIN_VARIANT}_COMMENT)
+_PLUGIN_COMMENT:=	${${PLUGIN_VARIANT}_COMMENT}
+.endif
 .endif
 .endif
 
@@ -115,7 +120,7 @@ manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
 	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
-	@echo "comment: \"${PLUGIN_COMMENT}\""
+	@echo "comment: \"${_PLUGIN_COMMENT}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
 	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
 	@echo "www: \"${PLUGIN_WWW}\""
