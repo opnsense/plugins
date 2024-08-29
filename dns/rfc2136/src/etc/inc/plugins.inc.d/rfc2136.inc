@@ -34,7 +34,7 @@ function rfc2136_configure()
     return [
         'bootup' => ['rfc2136_configure_do'],
         'local' => ['rfc2136_configure_do'],
-        'newwanip_map' => ['rfc2136_configure_map:2'],
+        'newwanip_map' => ['rfc2136_configure_do:2'],
     ];
 }
 
