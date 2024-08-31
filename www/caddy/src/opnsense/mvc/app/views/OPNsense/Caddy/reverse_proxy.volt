@@ -106,20 +106,14 @@
             del:'/api/caddy/ReverseProxy/delHeader/',
         });
 
-        // Function to show alerts in the HTML message area
+        // Show alert function
         function showAlert(message, type = "error") {
-            let alertClass = type === "error" ? "alert-danger" : "alert-success";
-            let messageArea = $("#messageArea");
+            const alertClass = type === "error" ? "alert-danger" : "alert-success";
+            const messageArea = $("#messageArea");
 
-            // Stop any current animation, clear the queue, and immediately hide the element
             messageArea.stop(true, true).hide();
-
-            // Now set the class and message
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-
-            // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
             messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                // Clear the message after fading out to ensure it's clean for the next message
                 $(this).html('');
             });
         }
@@ -145,13 +139,13 @@
                             dfObj.resolve();
                         } else {
                             // If configuration is invalid, show alert and reject the Deferred object
-                            showAlert(data['message'], "{{ lang._('Validation Failed') }}");
+                            showAlert(data['message'], "error");
                             dfObj.reject();
                         }
                     },
                     error: function(xhr, status, error) {
                         // On AJAX error, show alert and reject the Deferred object
-                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Error') }}");
+                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
                         dfObj.reject();
                     }
                 });
@@ -167,7 +161,7 @@
                     // Update the Tab visibility
                     initializeTabs()
                 } else {
-                    console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
+                    showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
                 }
             }
         });
@@ -214,14 +208,26 @@
             }
         }
 
+        function toggleButtonVisibility(tab) {
+            if (tab === 'handlesTab' || tab === 'domainsTab') {
+                $("#addDomainBtn").show();
+                $("#addHandleBtn").show();
+            } else {
+                $("#addDomainBtn").hide();
+                $("#addHandleBtn").hide();
+            }
+        }
+
         // Initialize visibility based on the active tab on page load
         let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
         toggleSelectPicker(activeTab);
+        toggleButtonVisibility(activeTab);
 
         // Change event when switching tabs
         $('#maintabs a').on('click', function (e) {
             let currentTab = $(this).attr('href').replace('#', '');
             toggleSelectPicker(currentTab);
+            toggleButtonVisibility(currentTab);
         });
 
         // Add click event listener for "Add HTTP Handler" button
@@ -264,7 +270,7 @@
                     toggleTabVisibility('#tab-layer4', enableLayer4);
                 },
                 error: function() {
-                    console.error("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}");
+                    showAlert("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}", "error");
                 }
             });
         }
@@ -291,7 +297,7 @@
 
 <style>
     .common-filter {
-        text-align: right;
+        align-items: center;
         margin-top: 20px;
         margin-right: 5px;
         padding: 0 15px;  // Align with the tables
@@ -300,6 +306,10 @@
         font-weight: 800;
         font-size: 16px;
         font-style: italic;
+    }
+
+    .nav-tabs a {
+        font-weight: bold;
     }
 
 </style>
@@ -358,7 +368,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addReverseProxyBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addReverseProxyBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -394,7 +404,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addSubdomainBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addSubdomainBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -441,7 +451,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addReverseHandleBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addReverseHandleBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -476,7 +486,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -504,7 +514,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addBasicAuthBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addBasicAuthBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -537,7 +547,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addReverseHeaderBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addReverseHeaderBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -574,7 +584,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <button id="addReverseLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                                <button id="addReverseLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
