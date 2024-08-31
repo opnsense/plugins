@@ -24,7 +24,7 @@
     {% endif %}
     {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}
     {% endif %}
-    {% if dnsOptionalField1 %}max_retries {{ dnsOptionalField1 }}
+    {% if dnsOptionalField1 %}hosted_zone_id {{ dnsOptionalField1 }}
     {% endif %}
     {% if dnsOptionalField2 %}profile {{ dnsOptionalField2 }}
     {% endif %}

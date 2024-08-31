@@ -14,7 +14,11 @@ Plugin Changelog
 
 1.7.0
 
+* Add: Layer4 protocols: DNS
+* Add: DNS Providers: Hetzner
+* Change: DNS Providers: Route53 field "max_retries" has been renamed to "hosted_zone_id"
 * Cleanup: Refactor "general.volt" from "layout_partials/base_form" to "layout_partials/base_tabs"
+* Cleanup: Restructure "general.xml" to include tabs, add new "Advanced Settings" Tab
 
 1.6.3
 

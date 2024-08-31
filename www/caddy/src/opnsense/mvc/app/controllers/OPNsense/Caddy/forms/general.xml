@@ -1,40 +1,10 @@
 <form>
-    <tab id="general-settings" description="General">
+    <tab id="general-settings" description="General Settings">
         <field>
             <id>caddy.general.enabled</id>
             <label>Enabled</label>
             <type>checkbox</type>
             <help><![CDATA[Enable or disable the Caddy web server.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.EnableLayer4</id>
-            <label>(Feature Preview) Enable Layer4</label>
-            <type>checkbox</type>
-            <help><![CDATA[Enable Layer4 support to stream TCP/UDP. WARNING: This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Deactivating this option will remove all Layer4 functionality completely. More information: https://github.com/mholt/caddy-l4]]></help>
-            <advanced>true</advanced>
-        </field>
-        <field>
-            <id>caddy.general.HttpPort</id>
-            <label>HTTP Port</label>
-            <type>text</type>
-            <hint>80</hint>
-            <help><![CDATA[If the default HTTP port is changed to e.g. 8080, then a port forward from port 80 to 8080 is necessary to issue automatic certificates with the HTTP-01 challenge and serve clients the reverse proxied resources.]]></help>
-            <advanced>true</advanced>
-        </field>
-        <field>
-            <id>caddy.general.HttpsPort</id>
-            <label>HTTPS Port</label>
-            <type>text</type>
-            <hint>443</hint>
-            <help><![CDATA[If the default HTTPS port is changed to e.g. 8443, then a port forward from port 443 to 8443 is necessary to issue automatic certificates with the TLS-ALPN-01 challenge and serve clients the reverse proxied resources.]]></help>
-            <advanced>true</advanced>
-        </field>
-        <field>
-            <id>caddy.general.DisableSuperuser</id>
-            <label>Disable Superuser</label>
-            <type>checkbox</type>
-            <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
-            <advanced>true</advanced>
         </field>
         <field>
             <id>caddy.general.TlsEmail</id>
@@ -49,12 +19,39 @@
             <type>dropdown</type>
             <help><![CDATA[Select the Auto HTTPS option. "On (default)" creates automatic certificates using "Let's Encrypt" or "ZeroSSL". "Off" turns all automatic certificate requests off.]]></help>
         </field>
+    </tab>
+    <tab id="general-advanced" description="Advanced Settings">
+        <field>
+            <id>caddy.general.EnableLayer4</id>
+            <label>Enable Layer4</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable Layer4 support to stream TCP/UDP. This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Deactivating this option will remove all Layer4 functionality completely. More information: https://github.com/mholt/caddy-l4]]></help>
+        </field>
+        <field>
+            <id>caddy.general.DisableSuperuser</id>
+            <label>Disable Superuser</label>
+            <type>checkbox</type>
+            <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.HttpPort</id>
+            <label>HTTP Port</label>
+            <type>text</type>
+            <hint>80</hint>
+            <help><![CDATA[If the default HTTP port is changed to e.g. 8080, then a port forward from port 80 to 8080 is necessary to issue automatic certificates with the HTTP-01 challenge and serve clients the reverse proxied resources.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.HttpsPort</id>
+            <label>HTTPS Port</label>
+            <type>text</type>
+            <hint>443</hint>
+            <help><![CDATA[If the default HTTPS port is changed to e.g. 8443, then a port forward from port 443 to 8443 is necessary to issue automatic certificates with the TLS-ALPN-01 challenge and serve clients the reverse proxied resources.]]></help>
+        </field>
         <field>
             <id>caddy.general.accesslist</id>
             <label>Trusted Proxies</label>
             <type>dropdown</type>
             <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
-            <advanced>true</advanced>
         </field>
         <field>
             <id>caddy.general.abort</id>
@@ -68,7 +65,33 @@
             <type>text</type>
             <hint>10</hint>
             <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
-            <advanced>true</advanced>
+        </field>
+    </tab>
+    <tab id="general-logsettings" description="Log Settings">
+        <field>
+            <id>caddy.general.LogLevel</id>
+            <label>Log Level</label>
+            <type>dropdown</type>
+            <help><![CDATA[Select the minimum global Log Level. "INFO" is the default and should not be changed without a reason, as it displays the ACME Client messages for automatic certificates. This setting does not influence the HTTP Access logs; they always use "INFO", which is their lowest supported Log Level.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.LogCredentials</id>
+            <label>Log Credentials</label>
+            <type>checkbox</type>
+            <help><![CDATA[Log all cookies and authorization in HTTP request logging. Use this option combined with "HTTP Access Log" in a "Domain". Enable this option only for troubleshooting.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.LogAccessPlain</id>
+            <label>Log HTTP Access in JSON Format</label>
+            <type>checkbox</type>
+            <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g., for processing by CrowdSec. Use this option combined with "HTTP Access Log" in a "Domain". Enabling this will make the HTTP Access Log disappear from the standard Log File. Logs can be found in the filesystem at "/var/log/caddy/access/".]]></help>
+        </field>
+        <field>
+            <id>caddy.general.LogAccessPlainKeep</id>
+            <label>Keep HTTP Access JSON Logs for (days)</label>
+            <hint>10</hint>
+            <type>text</type>
+            <help><![CDATA[Specify how many days to keep the JSON access logs.]]></help>
         </field>
     </tab>
     <tab id="general-dnsprovider" description="DNS Provider">
@@ -82,7 +105,7 @@
             <id>caddy.general.TlsDnsApiKey</id>
             <label>DNS API Standard Field</label>
             <type>text</type>
-            <help><![CDATA[This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Njalla "api_token", Google Cloud DNS "gcp_project", Azure "tenant_id", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url", DNS Made Easy "api_key", Bunny "access_key", Civo "api_token", Scaleway "secret_key", ACME Proxy "username", INWX "username", Netcup "customer_number", RFC2136 "key_name", Name.com "token", EasyDNS "api_token", Infomaniak "api_token", DirectAdmin "host", Hosttech "api_token", Vultr "api_token"]]></help>
+            <help><![CDATA[This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Njalla "api_token", Google Cloud DNS "gcp_project", Azure "tenant_id", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url", DNS Made Easy "api_key", Bunny "access_key", Civo "api_token", Scaleway "secret_key", ACME Proxy "username", INWX "username", Netcup "customer_number", RFC2136 "key_name", Name.com "token", EasyDNS "api_token", Infomaniak "api_token", DirectAdmin "host", Hosttech "api_token", Vultr "api_token", Hetzner "api_token"]]></help>
         </field>
         <field>
             <type>header</type>
@@ -99,7 +122,7 @@
             <id>caddy.general.TlsDnsOptionalField1</id>
             <label>DNS API Additional Field 2</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "max_retries", ACME-DNS "subdomain", Azure "client_secret", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password", DNS Made Easy "api_endpoint", ACME Proxy "endpoint", INWX "shared_secret", Netcup "api_password", Name.com "user", EasyDNS "api_url", DirectAdmin "login_key", RFC2136 "key".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "hosted_zone_id", ACME-DNS "subdomain", Azure "client_secret", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password", DNS Made Easy "api_endpoint", ACME Proxy "endpoint", INWX "shared_secret", Netcup "api_password", Name.com "user", EasyDNS "api_url", DirectAdmin "login_key", RFC2136 "key".]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsOptionalField2</id>
@@ -205,33 +228,6 @@
             <label>Forward Auth URI</label>
             <type>text</type>
             <help><![CDATA[Enter the URI of the authz api endpoint.]]></help>
-        </field>
-    </tab>
-    <tab id="general-logsettings" description="Log Settings">
-        <field>
-            <id>caddy.general.LogLevel</id>
-            <label>Log Level</label>
-            <type>dropdown</type>
-            <help><![CDATA[Select the minimum global Log Level. "INFO" is the default and should not be changed without a reason, as it displays the ACME Client messages for automatic certificates. This setting does not influence the HTTP Access logs; they always use "INFO", which is their lowest supported Log Level.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.LogCredentials</id>
-            <label>Log Credentials</label>
-            <type>checkbox</type>
-            <help><![CDATA[Log all cookies and authorization in HTTP request logging. Use this option combined with "HTTP Access Log" in a "Domain". Enable this option only for troubleshooting.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.LogAccessPlain</id>
-            <label>Log HTTP Access in JSON Format</label>
-            <type>checkbox</type>
-            <help><![CDATA[Log HTTP access in a standard JSON logfile per domain, e.g., for processing by CrowdSec. Use this option combined with "HTTP Access Log" in a "Domain". Enabling this will make the HTTP Access Log disappear from the standard Log File. Logs can be found in the filesystem at "/var/log/caddy/access/".]]></help>
-        </field>
-        <field>
-            <id>caddy.general.LogAccessPlainKeep</id>
-            <label>Keep HTTP Access JSON Logs for (days)</label>
-            <hint>10</hint>
-            <type>text</type>
-            <help><![CDATA[Specify how many days to keep the JSON access logs.]]></help>
         </field>
     </tab>
     <activetab>general-settings</activetab>
