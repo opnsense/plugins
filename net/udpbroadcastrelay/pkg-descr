@@ -28,6 +28,18 @@ udp_vars=" --id 1 --port 80 --dev eth0 --dev eth1"
 Warcraft 3 Server Discovery
 udp_vars=" --id 1 --port 6112 --dev eth0 --dev eth1"
 
+Youtube Application on Smart TV along with DLNA media playback
+udp_vars=" --id 1 --dev eth0 --dev eth1 --port 1900 --multicast 239.255.255.250 -s 1.1.1.2 --msearch proxy,urn:schemas-upnp-org:device:MediaServer:1 --msearch dial"
+
 It is a requirement that generally a firewall entry will be required to allow the server responses
 back to the requesting client. As it's not known what the port/address of the server is then this
 entry will need to be created manually.
+
+Plugin Changelog
+================
+
+1.1
+
+* Added Allowed/Blocked CIDRs
+* Added M-SEARCH processing options
+* Updated the expiry time for M-SEARCH, Locator and REST proxies
