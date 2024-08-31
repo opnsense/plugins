@@ -111,7 +111,7 @@
 <div id="generalTabsContent" class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content", ['formData': generalForm]) }}
     <!-- Message Area for error/success messages -->
-    <div style="max-width: 97%; margin: 10px auto;">
+    <div style="max-width: 98%; margin: 10px auto;">
         <div id="messageArea" class="alert alert-info" style="display: none;"></div>
     </div>
 </div>
