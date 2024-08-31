@@ -176,7 +176,6 @@
     <div id="caddyfileTab" class="tab-pane fade in active">
         <div class="content-box">
             <pre id="caddyfileDisplay" class="display-area"></pre>
-            <p class="help-text">{{ lang._("This is the generated configuration located at %sCaddyfile%s. It's the main configuration file to get support with. The validation button triggers a manual check for any configuration errors, which is the same check that is triggered by the Apply buttons automatically.") | format('<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">{{ lang._('Download') }}</button>
             <button class="btn btn-secondary" id="validateCaddyfile" type="button">{{ lang._('Validate Caddyfile') }}</button>
             <br/><br/>
@@ -186,7 +185,6 @@
     <div id="jsonConfigTab" class="tab-pane fade">
         <div class="content-box">
             <pre id="jsonDisplay" class="display-area"></pre>
-            <p class="help-text">{{ lang._("Shows the running Caddy configuration located in %sautosave.json%s. It is automatically adapted from the Caddyfile and also includes any custom imported configurations from %scaddy.d%s.") | format('<code>/var/db/caddy/config/caddy/', '</code>', '<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">{{ lang._('Download') }}</button>
             <br/><br/>
         </div>
