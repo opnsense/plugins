@@ -7,7 +7,7 @@
     "eslint": "^6.2.2",
     "webpack-cli": "^3.3.6",
     "raw-loader": "^0.5.1",
-    "webpack": "^4.35.3"
+    "webpack": "^5.94.0"
   },
   "scripts": {
     "webpack-cli": "webpack-cli",
