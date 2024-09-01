@@ -26,16 +26,6 @@
 
 <script>
     $(document).ready(function() {
-
-        // Function to handle the search filter request modification
-        function addDomainFilterToRequest(request) {
-            let selectedDomains = $('#reverseFilter').val();
-            if (selectedDomains && selectedDomains.length > 0) {
-                request['reverseUuids'] = selectedDomains.join(',');
-            }
-            return request;
-        }
-
         // Bootgrid Setup
         $("#reverseProxyGrid").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchReverseProxy/',
@@ -106,7 +96,26 @@
             del:'/api/caddy/ReverseProxy/delHeader/',
         });
 
-        // Show alert function
+        /**
+         * Modifies the search request to include domain filter.
+         *
+         * @param {Object} request - The original request object.
+         * @returns {Object} The modified request object with domain filter.
+         */
+        function addDomainFilterToRequest(request) {
+            let selectedDomains = $('#reverseFilter').val();
+            if (selectedDomains && selectedDomains.length > 0) {
+                request['reverseUuids'] = selectedDomains.join(',');
+            }
+            return request;
+        }
+
+        /**
+         * Displays an alert message to the user.
+         *
+         * @param {string} message - The message to display.
+         * @param {string} [type="error"] - The type of alert (error or success).
+         */
         function showAlert(message, type = "error") {
             const alertClass = type === "error" ? "alert-danger" : "alert-success";
             const messageArea = $("#messageArea");
@@ -116,6 +125,93 @@
             messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
                 $(this).html('');
             });
+        }
+
+        /**
+         * Loads domain filters from the server and populates the filter dropdown.
+         */
+        function loadDomainFilters() {
+            ajaxGet('/api/caddy/ReverseProxy/getAllReverseDomains', null, function(data, status) {
+                let select = $('#reverseFilter');
+                select.empty(); // Clear current options
+                if (status === "success" && data && data.rows) {
+                    data.rows.forEach(function(item) {
+                        select.append($('<option>').val(item.id).text(item.domainPort));
+                    });
+                } else {
+                    select.html('<option value="">{{ lang._('Failed to load data') }}</option>');
+                }
+                select.selectpicker('refresh'); // Refresh selectpicker to update the UI
+            }).fail(function() {
+                $('#reverseFilter').html('<option value="">{{ lang._('Failed to load data') }}</option>').selectpicker('refresh');
+            });
+        }
+
+        /**
+         * Controls the visibility of the selectpicker for domain filtering.
+         *
+         * @param {string} tab - The currently active tab.
+         */
+        function toggleSelectPicker(tab) {
+            if (tab === 'handlesTab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
+                $('.common-filter').show();
+            } else {
+                $('.common-filter').hide();
+            }
+        }
+
+        /**
+         * Controls the visibility of add buttons based on the active tab.
+         *
+         * @param {string} tab - The currently active tab.
+         */
+        function toggleButtonVisibility(tab) {
+            if (tab === 'handlesTab' || tab === 'domainsTab') {
+                $("#addDomainBtn").show();
+                $("#addHandleBtn").show();
+            } else {
+                $("#addDomainBtn").hide();
+                $("#addHandleBtn").hide();
+            }
+        }
+
+        /**
+         * Initializes tabs by fetching data and setting visibility.
+         */
+        function initializeTabs() {
+            ajaxGet('/api/caddy/reverse_proxy/get', null, function(response, status) {
+                if (status === "success" && response) {
+                    // Check for wildcards in domains to toggle Subdomains tab
+                    const hasWildcard = Object.values(response.caddy.reverseproxy.reverse).some(entry => entry.FromDomain.startsWith('*'));
+                    toggleTabVisibility('#tab-subdomains', hasWildcard);
+
+                    // Check if Layer 4 is enabled to toggle the Layer 4 tab
+                    const enableLayer4 = response.caddy.general.EnableLayer4 === '1';
+                    toggleTabVisibility('#tab-layer4', enableLayer4);
+                } else {
+                    showAlert("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}", "error");
+                }
+            }).fail(function() {
+                showAlert("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}", "error");
+            });
+        }
+
+        /**
+         * Toggles the visibility of a specific tab.
+         *
+         * @param {string} tabSelector - The jQuery selector for the tab.
+         * @param {boolean} visible - Whether the tab should be visible.
+         */
+        function toggleTabVisibility(tabSelector, visible) {
+            let tab = $(tabSelector);
+            if (visible) {
+                tab.show();
+            } else {
+                tab.hide();
+                if (tab.hasClass('active')) {
+                    $('#tab-domains a').tab('show');
+                }
+            }
         }
 
         // Hide message area when starting new actions
@@ -129,25 +225,19 @@
                 const dfObj = new $.Deferred();
 
                 // Perform configuration validation
-                $.ajax({
-                    url: "/api/caddy/service/validate",
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        if (data && data['status'].toLowerCase() === 'ok') {
-                            // If configuration is valid, resolve the Deferred object to proceed
-                            dfObj.resolve();
-                        } else {
-                            // If configuration is invalid, show alert and reject the Deferred object
-                            showAlert(data['message'], "error");
-                            dfObj.reject();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // On AJAX error, show alert and reject the Deferred object
-                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
+                ajaxGet("/api/caddy/service/validate", null, function(data, status) {
+                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                        // If configuration is valid, resolve the Deferred object to proceed
+                        dfObj.resolve();
+                    } else {
+                        // If configuration is invalid, show alert and reject the Deferred object
+                        showAlert(data['message'], "error");
                         dfObj.reject();
                     }
+                }).fail(function(xhr, status, error) {
+                    // On AJAX error, show alert and reject the Deferred object
+                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
+                    dfObj.reject();
                 });
 
                 return dfObj.promise();
@@ -159,38 +249,12 @@
                     // Update the service control UI for 'caddy'
                     updateServiceControlUI('caddy');
                     // Update the Tab visibility
-                    initializeTabs()
+                    initializeTabs();
                 } else {
                     showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
                 }
             }
         });
-
-        // Initialize the service control UI for 'caddy'
-        updateServiceControlUI('caddy');
-
-        // Filter function for domains
-        function loadDomainFilters() {
-            $.ajax({
-                url: '/api/caddy/ReverseProxy/getAllReverseDomains', // custom API endpoint to get uuid and domainport combinations
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    let select = $('#reverseFilter');
-                    select.empty(); // Clear current options
-                    if (data && data.rows) {
-                        data.rows.forEach(function(item) {
-                            select.append($('<option>').val(item.id).text(item.domainPort));
-                        });
-                    }
-                    select.selectpicker('refresh'); // Refresh selectpicker to update the UI
-                },
-                error: function() {
-                    $('#reverseFilter').html('<option value="">{{ lang._('Failed to load data') }}</option>').selectpicker('refresh');
-                }
-            });
-        }
-        loadDomainFilters();
 
         // Reload Bootgrid on filter change
         $('#reverseFilter').on('changed.bs.select', function() {
@@ -198,25 +262,6 @@
             $("#reverseSubdomainGrid").bootgrid("reload");
             $("#reverseHandleGrid").bootgrid("reload");
         });
-
-        // Control the visibility of selectpicker for filter by domain
-        function toggleSelectPicker(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
-                $('.common-filter').show();
-            } else {
-                $('.common-filter').hide();
-            }
-        }
-
-        function toggleButtonVisibility(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab') {
-                $("#addDomainBtn").show();
-                $("#addHandleBtn").show();
-            } else {
-                $("#addDomainBtn").hide();
-                $("#addHandleBtn").hide();
-            }
-        }
 
         // Initialize visibility based on the active tab on page load
         let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
@@ -254,43 +299,10 @@
             }
         });
 
-        // Perform an API call to get data and check tabs' visibility on initial load
-        function initializeTabs() {
-            $.ajax({
-                url: '/api/caddy/reverse_proxy/get',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Check for wildcards in domains to toggle Subdomains tab
-                    const hasWildcard = Object.values(response.caddy.reverseproxy.reverse).some(entry => entry.FromDomain.startsWith('*'));
-                    toggleTabVisibility('#tab-subdomains', hasWildcard);
-
-                    // Check if Layer 4 is enabled to toggle the Layer 4 tab
-                    const enableLayer4 = response.caddy.general.EnableLayer4 === '1';
-                    toggleTabVisibility('#tab-layer4', enableLayer4);
-                },
-                error: function() {
-                    showAlert("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}", "error");
-                }
-            });
-        }
-
-        // Generic function to show or hide a tab and switch to another tab if the current one is hidden
-        function toggleTabVisibility(tabSelector, visible) {
-            let tab = $(tabSelector);
-            if (visible) {
-                tab.show();
-            } else {
-                tab.hide();
-                // Switch to 'Domains' tab if the currently active tab is being hidden
-                if (tab.hasClass('active')) {
-                    $('#tab-domains a').tab('show');
-                }
-            }
-        }
-
-        // Initialize tabs on load
+        // Initialize tabs, service control and filter selectpicker
         initializeTabs();
+        updateServiceControlUI('caddy');
+        loadDomainFilters();
 
     });
 </script>

@@ -35,29 +35,24 @@
          * @param {string} displaySelector - jQuery selector for the element where data should be displayed.
          */
         function fetchAndDisplay(url, displaySelector) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(response) {
-                    if (response.status === "success") {
-                        let formattedContent;
-                        if (typeof response.content === 'object') {
-                            // If the content is an object, stringify and format it
-                            formattedContent = JSON.stringify(response.content, null, 2);
-                        } else {
-                            // If the content is plain text (as with the Caddyfile), just use it directly
-                            formattedContent = response.content;
-                        }
-                        $(displaySelector).text(formattedContent);
+            ajaxGet(url, null, function(response, status) {
+                if (status === "success" && response.status === "success") {
+                    let formattedContent;
+                    if (typeof response.content === 'object') {
+                        // If the content is an object, stringify and format it
+                        formattedContent = JSON.stringify(response.content, null, 2);
                     } else {
-                        // If the response status is not 'success', display an error message
-                        $(displaySelector).text("{{ lang._('Failed to load content: ') }}" + response.message || "{{ lang._('Unknown error') }}");
+                        // If the content is plain text (as with the Caddyfile), just use it directly
+                        formattedContent = response.content;
                     }
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors from the AJAX request itself
-                    $(displaySelector).text("{{ lang._('AJAX error accessing the API: ') }}" + error);
+                    $(displaySelector).text(formattedContent);
+                } else {
+                    // If the response status is not 'success', display an error message
+                    $(displaySelector).text("{{ lang._('Failed to load content: ') }}" + (response.message || "{{ lang._('Unknown error') }}"));
                 }
+            }).fail(function(xhr, status, error) {
+                // Handle errors from the AJAX request itself
+                $(displaySelector).text("{{ lang._('AJAX error accessing the API: ') }}" + error);
             });
         }
 
@@ -123,20 +118,14 @@
 
         // Event handler for the Validate Caddyfile button
         $('#validateCaddyfile').click(function() {
-            $.ajax({
-                url: '/api/caddy/service/validate',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    if (data && data['status'].toLowerCase() === 'ok') {
-                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
-                    } else {
-                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
-                    }
-                },
-                error: function(xhr, status, error) {
-                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
+            ajaxGet('/api/caddy/service/validate', null, function(data, status) {
+                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                    showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
+                } else {
+                    showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
                 }
+            }).fail(function(xhr, status, error) {
+                showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
             });
         });
 
@@ -144,23 +133,24 @@
 </script>
 
 <style>
+    .nav-tabs a {
+        font-weight: bold;
+    }
+
     .custom-style .content-box {
-        padding: 20px; /* Adds padding around the contents of each tab */
+        padding: 10px;
     }
 
     .custom-style .display-area {
         overflow-y: scroll;
-        /* Dynamic height management using clamp for varying screen sizes */
         height: clamp(50px, 50vh, 4000px);
-        margin-bottom: 20px; /* Adds bottom margin to separate from the help text */
+        margin: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
     }
 
-    .custom-style .help-text {
-        margin-top: 10px;
-        margin-bottom: 20px;
-        line-height: 1.4;
-        /* Adjusting text size for readability on various displays */
-        font-size: clamp(12px, 1.5vw, 16px);
+    .custom-style .content-box .btn {
+        margin-left: 10px;
     }
 </style>
 
