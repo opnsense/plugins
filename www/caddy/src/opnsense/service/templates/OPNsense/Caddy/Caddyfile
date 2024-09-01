@@ -436,7 +436,7 @@ http://{{ domain }} {
                     {% if handle.HttpTls|default("0") == "1" %}
                         tls
                     {% endif %}
-                    {% if handle.HttpTlsesecureSkipVerify|default("0") == "1" %}
+                    {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
                         tls_insecure_skip_verify
                     {% endif %}
                     {% if handle.HttpTlsTrustedCaCerts %}
