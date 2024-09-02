@@ -22,6 +22,7 @@ Plugin Changelog
 * Cleanup: Refactor "general.volt", "reverse_proxy.volt" and "diagnostics.volt" to imported ajaxGet() and ajaxCall()
 * Cleanup: Adjust style of all views
 * Cleanup: Restructure "general.xml" to include tabs, add new "Advanced Settings" Tab
+* Cleanup: Remove old custom migrations
 
 1.6.3
 
