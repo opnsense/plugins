@@ -1,32 +1,27 @@
 Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution.
-By default, Caddy automatically obtains and renews TLS certificates for all your sites.
+By default, Caddy automatically obtains and renews TLS certificates (Let's Encrypt and ZeroSSL) for all your sites.
 It's the most advanced HTTPS server in the world.
 
-Reverse Proxy HTTP, HTTPS, FastCGI, WebSockets, gRPC, FastCGI (usually PHP), and more!
+* Reverse Proxy HTTP, HTTPS and WebSockets
+* Route UDP/TCP traffic with the included Layer4 module: https://github.com/mholt/caddy-l4
+* Dynamic DNS module included: https://github.com/mholt/caddy-dynamicdns
+* Large selection of DNS Providers available: https://github.com/caddy-dns
 
 WWW: https://caddyserver.com/
-
-Main features of this plugin:
-
-* Easy to configure and reliable! Reverse Proxy any HTTP/HTTPS or WebSocket application in minutes.
-* Automatic Let's Encrypt and ZeroSSL certificates with HTTP-01 and TLS-ALPN-01 challenge
-* DNS-01 challenge and Dynamic DNS with supported DNS Providers built right in
-* Use custom certificates from OPNsense certificate store
-* Wildcard Domain and Subdomain support
-* Access Lists to restrict access based on static networks
-* Basic Auth to restrict access by username and password
-* Forward Auth with Authelia
-* Syslog-ng integration and HTTP Access Log
-* NTLM Transport
-* Header manipulation
-* Simple load balancing with passive health check
-* Widgets for OPNsense Dashboard (24.7 and later)
-* Layer4 SNI based routing of TCP/UDP
-
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
 Plugin Changelog
 ================
+
+1.7.0
+
+* Add: Layer4 protocols: DNS
+* Add: DNS Providers: Hetzner
+* Change: DNS Providers: Route53 field "max_retries" has been renamed to "hosted_zone_id"
+* Cleanup: Refactor "general.volt" from "layout_partials/base_form" to "layout_partials/base_tabs"
+* Cleanup: Refactor "general.volt", "reverse_proxy.volt" and "diagnostics.volt" to imported ajaxGet() and ajaxCall()
+* Cleanup: Adjust style of all views
+* Cleanup: Restructure "general.xml" to include tabs, add new "Advanced Settings" Tab
 
 1.6.3
 
