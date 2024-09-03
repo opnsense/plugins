@@ -36,7 +36,7 @@ use OPNsense\Core\Config;
 
 class Caddy extends BaseModel
 {
-    // 1. Check domain-port combinations
+    // Check domain-port combinations
     private function checkForUniquePortCombos($items, $messages)
     {
         $combos = [];
@@ -76,7 +76,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 2. Check that subdomains are under a wildcard or exact domain
+    // Check that subdomains are under a wildcard or exact domain
     private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
     {
         $wildcardDomainList = [];
@@ -118,7 +118,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 3. Get the current OPNsense WebGUI ports and check for conflicts with Caddy
+    // Get the current OPNsense WebGUI ports and check for conflicts with Caddy
     private function getWebGuiPorts()
     {
         $webgui = Config::getInstance()->object()->system->webgui ?? null;
@@ -168,21 +168,7 @@ class Caddy extends BaseModel
         }
     }
 
-    // 4. Check for ACME Email being required when Auto HTTPS on
-    private function checkAcmeEmailAutoHttps($messages)
-    {
-        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
-        $tlsEmail = (string)$this->general->TlsEmail;
-
-        if (empty($tlsEmail) && $tlsAutoHttpsSetting !== 'off') {
-            $messages->appendMessage(new Message(
-                gettext('To use "Auto HTTPS", an email address is required.'),
-                "general.TlsEmail"
-            ));
-        }
-    }
-
-    // 5. Prevent the usage of conflicting options when TLS is deactivated for a Domain
+    // Prevent the usage of conflicting options when TLS is deactivated for a Domain
     private function checkDisableTlsConflicts($messages)
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
@@ -212,7 +198,7 @@ class Caddy extends BaseModel
     }
 
     /**
-     * 6. Check that when Superuser is disabled, all ports are 1024 and above.
+     * Check that when Superuser is disabled, all ports are 1024 and above.
      * In General settings where this triggers, a validation dialog will show the hidden validation of the domain ports.
      * The default HTTP and HTTPS ports are not allowed to be empty, since then they are 80 and 443.
      * Domain ports are allowed to be empty, since then they have the same value as the HTTP and HTTPS default ports.
@@ -267,7 +253,7 @@ class Caddy extends BaseModel
     }
 
     /**
-    * 6. Check that when certain Layer4 matchers are selected, only "*" is valid as FromDomain.
+    * Check that when certain Layer4 matchers are selected, only "*" is valid as FromDomain.
     * This happens because they cannot be matched by host header or SNI, so they match all traffic.
     * The "*" shows the user that all traffic will be matched, and that creating multiple
     * matchers will not result in more routes for the same traffic type to work.
@@ -302,32 +288,29 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
 
-        // 1. Check domain-port combinations
+        // Check domain-port combinations
         $this->checkForUniquePortCombos(
             $this->reverseproxy->reverse->iterateItems(),
             $messages
         );
 
-        // 2. Check that subdomains are under a wildcard or exact domain
+        // Check that subdomains are under a wildcard or exact domain
         $this->checkSubdomainsAgainstDomains(
             $this->reverseproxy->subdomain->iterateItems(),
             $this->reverseproxy->reverse->iterateItems(),
             $messages
         );
 
-        // 3. Check WebGUI conflicts
+        // Check WebGUI conflicts
         $this->checkWebGuiSettings($messages);
 
-        // 4. Check for ACME Email requirement
-        $this->checkAcmeEmailAutoHttps($messages);
-
-        // 5. Check for TLS conflicts in Domain
+        // Check for TLS conflicts in Domain
         $this->checkDisableTlsConflicts($messages);
 
-        // 6. Check DisableSuperuser Port conflicts
+        // Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
 
-        // 7. Check Layer4 matchers
+        // Check Layer4 matchers
         $this->checkLayer4Matchers($messages);
 
         return $messages;

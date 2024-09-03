@@ -23,6 +23,8 @@ Plugin Changelog
 * Cleanup: Adjust style of all views
 * Cleanup: Restructure "general.xml" to include tabs, add new "Advanced Settings" Tab
 * Cleanup: Remove old custom migrations
+* Cleanup: Refactor Caddyfile template, extracting duplicate logic into macros
+* Fix: Removed email validation from Caddy.php since it made the default migration fail
 
 1.6.3
 
