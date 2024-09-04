@@ -223,7 +223,7 @@ ul.nav>li>a {
     </div>
 
     <!-- Modal popup to confirm decision deletion -->
-    <div class="modal fade" id="delete-decision-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="remove-decision-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -237,7 +237,7 @@ ul.nav>li>a {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-decision-confirm">Yes, delete</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="remove-decision-confirm">Yes, delete</button>
                 </div>
             </div>
         </div>

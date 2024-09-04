@@ -385,10 +385,10 @@ const CrowdSec = (function () {
   }
 
   function deleteDecision(decisionId) {
-    const $modal = $('#delete-decision-modal');
+    const $modal = $('#remove-decision-modal');
     $modal.find('.modal-title').text('Delete decision #' + decisionId);
     $modal.find('.modal-body').text('Are you sure?');
-    $modal.find('#delete-decision-confirm').on('click', function () {
+    $modal.find('#remove-decision-confirm').on('click', function () {
       $.ajax({
         // XXX handle errors
         url: '/api/crowdsec/decisions/delete/' + decisionId,
