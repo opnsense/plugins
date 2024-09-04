@@ -40,6 +40,7 @@
                         <RP>RP</RP>
                         <RRSIG>RRSIG</RRSIG>
                         <SRV>SRV</SRV>
+                        <SSHFP>SSHFP</SSHFP>
                         <TLSA>TLSA</TLSA>
                         <TXT>TXT</TXT>
                     </OptionValues>
