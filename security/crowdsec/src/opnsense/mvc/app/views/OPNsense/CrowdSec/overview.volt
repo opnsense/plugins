@@ -45,7 +45,6 @@ ul.nav>li>a {
     <li><a data-toggle="tab" id="postoverflows_tab" href="#postoverflows">Postoverflows</a></li>
     <li class="spaced"><a data-toggle="tab" id="alerts_tab" href="#alerts">Alerts</a></li>
     <li><a data-toggle="tab" id="decisions_tab" href="#decisions">Decisions</a></li>
-    <li class="pull-right"><a data-toggle="tab" id="debug_tab" href="#debug" style="display:none">Debug</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -221,11 +220,6 @@ ul.nav>li>a {
                 </tr>
             </tfoot>
         </table>
-    </div>
-
-    <div id="debug" class="tab-pane fade in">
-        <pre>
-        </pre>
     </div>
 
     <!-- Modal popup to confirm decision deletion -->

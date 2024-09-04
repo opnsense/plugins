@@ -165,15 +165,6 @@ var CrowdSec = (function () {
         });
     }
 
-    function _initDebug () {
-        $.ajax({
-            url: '/api/crowdsec/service/debug',
-            cache: false
-        }).done(function (data) {
-            $('#debug pre').text(data.message);
-        });
-    }
-
     function _initTab (selector, url, dataCallback) {
         var $tab = $(selector);
         if ($tab.find('table.bootgrid-table').length) {
@@ -408,10 +399,6 @@ var CrowdSec = (function () {
         $(window).on('hashchange', function (e) {
             $(window.location.hash + '_tab').click();
         });
-
-        if (new URLSearchParams(window.location.search).has('debug')) {
-            $('#debug_tab').show().on('click', _initDebug);
-        }
 
         // navigation
         if (window.location.hash !== '') {
