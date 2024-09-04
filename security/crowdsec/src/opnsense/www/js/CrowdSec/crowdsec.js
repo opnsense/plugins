@@ -3,20 +3,20 @@
 /* eslint no-undef: "error" */
 /* eslint semi: "error" */
 
-var CrowdSec = (function () {
+const CrowdSec = (function () {
   'use strict';
 
-  var crowdsec_path = '/usr/local/etc/crowdsec/';
-  var _refreshTemplate =
+  const crowdsec_path = '/usr/local/etc/crowdsec/';
+  const _refreshTemplate =
     '<button class="btn btn-default" type="button" title="Refresh"><span class="icon glyphicon glyphicon-refresh"></span></button>';
 
-  var _dataFormatters = {
+  const _dataFormatters = {
     yesno: function (column, row) {
       return _yesno2html(row[column.id]);
     },
 
     delete: function (column, row) {
-      var val = row.id;
+      const val = row.id;
       if (isNaN(val)) {
         return '';
       }
@@ -30,7 +30,7 @@ var CrowdSec = (function () {
     },
 
     duration: function (column, row) {
-      var duration = row[column.id];
+      const duration = row[column.id];
       if (!duration) {
         return 'n/a';
       }
@@ -45,8 +45,8 @@ var CrowdSec = (function () {
     },
 
     datetime: function (column, row) {
-      var dt = row[column.id];
-      var parsed = moment(dt);
+      const dt = row[column.id];
+      const parsed = moment(dt);
       if (!dt) {
         return '';
       }
@@ -64,11 +64,64 @@ var CrowdSec = (function () {
         .prop('outerHTML');
     },
   };
+  function _decisionsByType(decisions) {
+    const dectypes = {};
+    if (!decisions) {
+      return '';
+    }
+    decisions.map(function (decision) {
+      // TODO ignore negative expiration?
+      dectypes[decision.type] = dectypes[decision.type]
+        ? dectypes[decision.type] + 1
+        : 1;
+    });
+    let ret = '';
+    for (const type in dectypes) {
+      if (ret !== '') {
+        ret += ' ';
+      }
+      ret += type + ':' + dectypes[type];
+    }
+    return ret;
+  }
+
+  function _updateFreshness(selector, timestamp) {
+    const $freshness = $(selector).find('.actionBar .freshness');
+    if (timestamp) {
+      $freshness.data('refresh_timestamp', timestamp);
+    } else {
+      timestamp = $freshness.data('refresh_timestamp');
+    }
+    const howlongHuman = '???';
+    if (timestamp) {
+      const howlongms = moment() - moment(timestamp);
+      howlongHuman = moment.duration(howlongms).humanize();
+    }
+    $freshness.text(howlongHuman + ' ago');
+  }
+
+  function _addFreshness(selector) {
+    // this creates one timer per tab
+    const freshnessTemplate =
+      '<span style="float:left">Last refresh: <span class="freshness"></span></span>';
+    $(selector).find('.actionBar').prepend(freshnessTemplate);
+    setInterval(function () {
+      _updateFreshness(selector);
+    }, 5000);
+  }
+
+  function _refreshTab(selector, url, dataCallback) {
+    $.ajax({
+      url: url,
+      cache: false,
+    }).done(dataCallback);
+    _updateFreshness(selector, moment());
+  }
 
   function _parseDuration(duration) {
-    var re = /(-?)(?:(?:(\d+)h)?(\d+)m)?(\d+).\d+(m?)s/m;
-    var matches = duration.match(re);
-    var seconds = 0;
+    const re = /(-?)(?:(?:(\d+)h)?(\d+)m)?(\d+).\d+(m?)s/m;
+    const matches = duration.match(re);
+    let seconds = 0;
 
     if (!matches.length) {
       throw new Error(
@@ -95,32 +148,6 @@ var CrowdSec = (function () {
     return seconds;
   }
 
-  function _updateFreshness(selector, timestamp) {
-    var $freshness = $(selector).find('.actionBar .freshness');
-    if (timestamp) {
-      $freshness.data('refresh_timestamp', timestamp);
-    } else {
-      timestamp = $freshness.data('refresh_timestamp');
-    }
-    var howlongHuman = '???';
-    var howlongms;
-    if (timestamp) {
-      howlongms = moment() - moment(timestamp);
-      howlongHuman = moment.duration(howlongms).humanize();
-    }
-    $freshness.text(howlongHuman + ' ago');
-  }
-
-  function _addFreshness(selector) {
-    // this creates one timer per tab
-    var freshnessTemplate =
-      '<span style="float:left">Last refresh: <span class="freshness"></span></span>';
-    $(selector).find('.actionBar').prepend(freshnessTemplate);
-    setInterval(function () {
-      _updateFreshness(selector);
-    }, 5000);
-  }
-
   function _humanizeDate(text) {
     return moment(text).fromNow();
   }
@@ -135,54 +162,6 @@ var CrowdSec = (function () {
     } else {
       return '<i class="fa fa-times text-danger"></i>';
     }
-  }
-
-  function _decisionsByType(decisions) {
-    var dectypes = {};
-    if (!decisions) {
-      return '';
-    }
-    decisions.map(function (decision) {
-      // TODO ignore negative expiration?
-      dectypes[decision.type] = dectypes[decision.type]
-        ? dectypes[decision.type] + 1
-        : 1;
-    });
-    var ret = '';
-    var type;
-    for (type in dectypes) {
-      if (ret !== '') {
-        ret += ' ';
-      }
-      ret += type + ':' + dectypes[type];
-    }
-    return ret;
-  }
-
-  function _initService() {
-    $.ajax({
-      url: '/api/crowdsec/service/status',
-      cache: false,
-    }).done(function (data) {
-      // TODO handle errors
-      var crowdsecStatus = data['crowdsec-status'];
-      if (crowdsecStatus === 'unknown') {
-        crowdsecStatus = '<span class="text-danger">Unknown</span>';
-      } else {
-        crowdsecStatus = _yesno2html(crowdsecStatus === 'running');
-      }
-      $('#crowdsec-status').html(crowdsecStatus);
-
-      var crowdsecFirewallStatus = data['crowdsec-firewall-status'];
-      if (crowdsecFirewallStatus === 'unknown') {
-        crowdsecFirewallStatus = '<span class="text-danger">Unknown</span>';
-      } else {
-        crowdsecFirewallStatus = _yesno2html(
-          crowdsecFirewallStatus === 'running',
-        );
-      }
-      $('#crowdsec-firewall-status').html(crowdsecFirewallStatus);
-    });
   }
 
   function _initTab(selector, url, dataCallback) {
@@ -207,15 +186,7 @@ var CrowdSec = (function () {
       });
   }
 
-  function _refreshTab(selector, url, dataCallback) {
-    $.ajax({
-      url: url,
-      cache: false,
-    }).done(dataCallback);
-    _updateFreshness(selector, moment());
-  }
-
-  function _initMachines() {
+  function _initStatusMachines() {
     var url = '/api/crowdsec/machines/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -233,7 +204,7 @@ var CrowdSec = (function () {
     _initTab('#machines', url, dataCallback);
   }
 
-  function _initCollections() {
+  function _initStatusCollections() {
     var url = '/api/crowdsec/hub/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -253,7 +224,7 @@ var CrowdSec = (function () {
     _initTab('#collections', url, dataCallback);
   }
 
-  function _initScenarios() {
+  function _initStatusScenarios() {
     var url = '/api/crowdsec/hub/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -273,7 +244,7 @@ var CrowdSec = (function () {
     _initTab('#scenarios', url, dataCallback);
   }
 
-  function _initParsers() {
+  function _initStatusParsers() {
     var url = '/api/crowdsec/hub/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -293,7 +264,7 @@ var CrowdSec = (function () {
     _initTab('#parsers ', url, dataCallback);
   }
 
-  function _initPostoverflows() {
+  function _initStatusPostoverflows() {
     var url = '/api/crowdsec/hub/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -313,7 +284,7 @@ var CrowdSec = (function () {
     _initTab('#postoverflows ', url, dataCallback);
   }
 
-  function _initBouncers() {
+  function _initStatusBouncers() {
     var url = '/api/crowdsec/bouncers/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -333,7 +304,7 @@ var CrowdSec = (function () {
     _initTab('#bouncers ', url, dataCallback);
   }
 
-  function _initAlerts() {
+  function _initStatusAlerts() {
     var url = '/api/crowdsec/alerts/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -354,7 +325,7 @@ var CrowdSec = (function () {
     _initTab('#alerts ', url, dataCallback);
   }
 
-  function _initDecisions() {
+  function _initStatusDecisions() {
     var url = '/api/crowdsec/decisions/get';
     var dataCallback = function (data) {
       var rows = [];
@@ -387,8 +358,34 @@ var CrowdSec = (function () {
     _initTab('#decisions ', url, dataCallback);
   }
 
+  function initService() {
+    $.ajax({
+      url: '/api/crowdsec/service/status',
+      cache: false,
+    }).done(function (data) {
+      // TODO handle errors
+      let crowdsecStatus = data['crowdsec-status'];
+      if (crowdsecStatus === 'unknown') {
+        crowdsecStatus = '<span class="text-danger">Unknown</span>';
+      } else {
+        crowdsecStatus = _yesno2html(crowdsecStatus === 'running');
+      }
+      $('#crowdsec-status').html(crowdsecStatus);
+
+      let crowdsecFirewallStatus = data['crowdsec-firewall-status'];
+      if (crowdsecFirewallStatus === 'unknown') {
+        crowdsecFirewallStatus = '<span class="text-danger">Unknown</span>';
+      } else {
+        crowdsecFirewallStatus = _yesno2html(
+          crowdsecFirewallStatus === 'running',
+        );
+      }
+      $('#crowdsec-firewall-status').html(crowdsecFirewallStatus);
+    });
+  }
+
   function deleteDecision(decisionId) {
-    var $modal = $('#delete-decision-modal');
+    const $modal = $('#delete-decision-modal');
     $modal.find('.modal-title').text('Delete decision #' + decisionId);
     $modal.find('.modal-body').text('Are you sure?');
     $modal.find('#delete-decision-confirm').on('click', function () {
@@ -408,16 +405,16 @@ var CrowdSec = (function () {
   }
 
   function init() {
-    _initService();
+    initService();
 
-    $('#machines_tab').on('click', _initMachines);
-    $('#collections_tab').on('click', _initCollections);
-    $('#scenarios_tab').on('click', _initScenarios);
-    $('#parsers_tab').on('click', _initParsers);
-    $('#postoverflows_tab').on('click', _initPostoverflows);
-    $('#bouncers_tab').on('click', _initBouncers);
-    $('#alerts_tab').on('click', _initAlerts);
-    $('#decisions_tab').on('click', _initDecisions);
+    $('#machines_tab').on('click', _initStatusMachines);
+    $('#collections_tab').on('click', _initStatusCollections);
+    $('#scenarios_tab').on('click', _initStatusScenarios);
+    $('#parsers_tab').on('click', _initStatusParsers);
+    $('#postoverflows_tab').on('click', _initStatusPostoverflows);
+    $('#bouncers_tab').on('click', _initStatusBouncers);
+    $('#alerts_tab').on('click', _initStatusAlerts);
+    $('#decisions_tab').on('click', _initStatusDecisions);
 
     $('[data-toggle="tooltip"]').tooltip();
 
