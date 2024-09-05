@@ -55,7 +55,7 @@ export default class Smart extends BaseTableWidget {
         }
     }
 
-async onMarkupRendered() {
+    async onMarkupRendered() {
         try {
             this.disks = await ajaxCall("/api/smart/service/list", {});
             const rows = [];
