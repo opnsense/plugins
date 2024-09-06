@@ -165,7 +165,7 @@ const CrowdSec = (function () {
   }
 
   function _initTab(selector, url, dataCallback) {
-    var $tab = $(selector);
+    const $tab = $(selector);
     if ($tab.find('table.bootgrid-table').length) {
       return;
     }
@@ -187,9 +187,10 @@ const CrowdSec = (function () {
   }
 
   function _initStatusMachines() {
-    var url = '/api/crowdsec/machines/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/machines/get';
+    const id = '#machines';
+    const dataCallback = function (data) {
+      const rows = [];
       data.map(function (row) {
         rows.push({
           name: row.machineId,
@@ -199,15 +200,16 @@ const CrowdSec = (function () {
           version: row.version || ' ',
         });
       });
-      $('#machines table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#machines', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusCollections() {
-    var url = '/api/crowdsec/hub/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/hub/get';
+    const id = '#collections';
+    const dataCallback = function (data) {
+      const rows = [];
       data.collections.map(function (row) {
         rows.push({
           name: row.name,
@@ -219,15 +221,16 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $('#collections table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#collections', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusScenarios() {
-    var url = '/api/crowdsec/hub/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/hub/get';
+    const id = '#scenarios';
+    const dataCallback = function (data) {
+      const rows = [];
       data.scenarios.map(function (row) {
         rows.push({
           name: row.name,
@@ -239,15 +242,16 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $('#scenarios table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#scenarios', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusParsers() {
-    var url = '/api/crowdsec/hub/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/hub/get';
+    const id = '#parsers';
+    const dataCallback = function (data) {
+      const rows = [];
       data.parsers.map(function (row) {
         rows.push({
           name: row.name,
@@ -259,15 +263,16 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $('#parsers table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#parsers ', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusPostoverflows() {
-    var url = '/api/crowdsec/hub/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/hub/get';
+    const id = '#postoverflows';
+    const dataCallback = function (data) {
+      const rows = [];
       data.postoverflows.map(function (row) {
         rows.push({
           name: row.name,
@@ -279,15 +284,16 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $('#postoverflows table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#postoverflows ', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusBouncers() {
-    var url = '/api/crowdsec/bouncers/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/bouncers/get';
+    const id = '#bouncers';
+    const dataCallback = function (data) {
+      const rows = [];
       data.map(function (row) {
         // TODO - remove || ' ' later, it was fixed for 1.3.3
         rows.push({
@@ -299,15 +305,16 @@ const CrowdSec = (function () {
           version: row.version || ' ',
         });
       });
-      $('#bouncers table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#bouncers ', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusAlerts() {
-    var url = '/api/crowdsec/alerts/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/alerts/get';
+    const id = '#alerts';
+    const dataCallback = function (data) {
+      const rows = [];
       data.map(function (row) {
         rows.push({
           id: row.id,
@@ -320,15 +327,16 @@ const CrowdSec = (function () {
           created_at: row.created_at,
         });
       });
-      $('#alerts table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#alerts ', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function _initStatusDecisions() {
-    var url = '/api/crowdsec/decisions/get';
-    var dataCallback = function (data) {
-      var rows = [];
+    const url = '/api/crowdsec/decisions/get';
+    const id = '#decisions';
+    const dataCallback = function (data) {
+      const rows = [];
       data.map(function (row) {
         row.decisions.map(function (decision) {
           // ignore deleted decisions
@@ -353,9 +361,9 @@ const CrowdSec = (function () {
           });
         });
       });
-      $('#decisions table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
     };
-    _initTab('#decisions ', url, dataCallback);
+    _initTab(id, url, dataCallback);
   }
 
   function initService() {
@@ -392,7 +400,7 @@ const CrowdSec = (function () {
       $.ajax({
         // XXX handle errors
         url: '/api/crowdsec/decisions/delete/' + decisionId,
-        type: 'DELETE',
+        method: 'DELETE',
         success: function (result) {
           if (result && result.message === 'OK') {
             $('#decisions table').bootgrid('remove', [decisionId]);
