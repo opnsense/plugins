@@ -114,8 +114,11 @@ const CrowdSec = (function () {
     $.ajax({
       url: url,
       cache: false,
-    }).done(dataCallback);
-    _updateFreshness(selector, moment());
+      success: dataCallback,
+      complete: function () {
+        _updateFreshness(selector, moment());
+      },
+    });
   }
 
   function _parseDuration(duration) {
@@ -386,25 +389,25 @@ const CrowdSec = (function () {
     $.ajax({
       url: '/api/crowdsec/service/status',
       cache: false,
-    }).done(function (data) {
-      // TODO handle errors
-      let crowdsecStatus = data['crowdsec-status'];
-      if (crowdsecStatus === 'unknown') {
-        crowdsecStatus = '<span class="text-danger">Unknown</span>';
-      } else {
-        crowdsecStatus = _yesno2html(crowdsecStatus === 'running');
-      }
-      $('#crowdsec-status').html(crowdsecStatus);
+      success: function (data) {
+        let crowdsecStatus = data['crowdsec-status'];
+        if (crowdsecStatus === 'unknown') {
+          crowdsecStatus = '<span class="text-danger">Unknown</span>';
+        } else {
+          crowdsecStatus = _yesno2html(crowdsecStatus === 'running');
+        }
+        $('#crowdsec-status').html(crowdsecStatus);
 
-      let crowdsecFirewallStatus = data['crowdsec-firewall-status'];
-      if (crowdsecFirewallStatus === 'unknown') {
-        crowdsecFirewallStatus = '<span class="text-danger">Unknown</span>';
-      } else {
-        crowdsecFirewallStatus = _yesno2html(
-          crowdsecFirewallStatus === 'running',
-        );
-      }
-      $('#crowdsec-firewall-status').html(crowdsecFirewallStatus);
+        let crowdsecFirewallStatus = data['crowdsec-firewall-status'];
+        if (crowdsecFirewallStatus === 'unknown') {
+          crowdsecFirewallStatus = '<span class="text-danger">Unknown</span>';
+        } else {
+          crowdsecFirewallStatus = _yesno2html(
+            crowdsecFirewallStatus === 'running',
+          );
+        }
+        $('#crowdsec-firewall-status').html(crowdsecFirewallStatus);
+      },
     });
   }
 
