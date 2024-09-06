@@ -200,7 +200,9 @@ const CrowdSec = (function () {
           version: row.version || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -221,7 +223,9 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -242,7 +246,9 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -263,7 +269,9 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -284,7 +292,9 @@ const CrowdSec = (function () {
           description: row.description || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -305,7 +315,9 @@ const CrowdSec = (function () {
           version: row.version || ' ',
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -327,7 +339,9 @@ const CrowdSec = (function () {
           created_at: row.created_at,
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
@@ -361,7 +375,9 @@ const CrowdSec = (function () {
           });
         });
       });
-      $(id + ' table').bootgrid('clear').bootgrid('append', rows);
+      $(id + ' table')
+        .bootgrid('clear')
+        .bootgrid('append', rows);
     };
     _initTab(id, url, dataCallback);
   }
