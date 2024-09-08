@@ -53,7 +53,7 @@ class DomainController extends ApiMutableModelControllerBase
     {
         return $this->searchBase(
             'domains.domain',
-            [ 'enabled', 'type', 'domainname', 'ttl', 'refresh', 'retry', 'expire', 'negative' ],
+            [ 'enabled', 'type', 'domainname', 'ttl', 'refresh', 'retry', 'expire', 'negative', 'allowddnsupdate' ],
             'domainname',
             function ($record) {
                 return $record->type->getNodeData()['primary']['selected'] === 1;
