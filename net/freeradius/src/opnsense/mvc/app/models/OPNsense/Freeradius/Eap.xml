@@ -9,12 +9,24 @@
             <multiple>N</multiple>
             <OptionValues>
                 <md5>MD5</md5>
+                <gtc>GTC</gtc>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
                 <tls>TLS</tls>
                 <ttls>TTLS</ttls>
             </OptionValues>
         </default_eap_type>
+        <default_eap_ttls_type type="OptionField">
+            <default>md5</default>
+            <Required>N</Required>
+            <multiple>N</multiple>
+            <OptionValues>
+                <md5>MD5</md5>
+                <mschapv2>MSCHAPv2</mschapv2>
+                <pap>PAP</pap>
+                <gtc>GTC</gtc>
+            </OptionValues>
+        </default_eap_ttls_type>
         <elliptic_curve type="OptionField">
             <default>prime256v1</default>
             <Required>Y</Required>
