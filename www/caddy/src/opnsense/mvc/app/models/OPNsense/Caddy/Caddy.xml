@@ -61,6 +61,7 @@
                     <directadmin>DirectAdmin</directadmin>
                     <hosttech>Hosttech</hosttech>
                     <vultr>Vultr</vultr>
+                    <hetzner>Hetzner</hetzner>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -409,6 +410,7 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <dns>DNS</dns>
                         <httphost>HTTP (Host Header)</httphost>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
