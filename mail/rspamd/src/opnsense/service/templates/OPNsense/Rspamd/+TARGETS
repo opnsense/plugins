@@ -13,6 +13,7 @@ surbl-whitelist.inc.local:/var/db/rspamd/surbl-whitelist.inc.local
 greylist.conf:/usr/local/etc/rspamd/local.d/greylist.conf
 greylist_ip.wl:/usr/local/etc/rspamd/local.d/greylist_ip.wl
 phishing.conf:/usr/local/etc/rspamd/local.d/phishing.conf
+phishing_whitelist.inc:/usr/local/etc/rspamd/local.d/phishing_whitelist.inc
 milter_headers.conf:/usr/local/etc/rspamd/local.d/milter_headers.conf
 multimap.conf:/usr/local/etc/rspamd/local.d/multimap.conf
 mx_check.conf:/usr/local/etc/rspamd/local.d/mx_check.conf
