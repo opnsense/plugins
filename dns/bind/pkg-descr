@@ -13,6 +13,7 @@ Plugin Changelog
 
 * Fix handling of multiple ACLs in allow-query/allow-transfer (contributed by Nathan Rennie-Waldock)
 * Fix multiple select on Recursion field and resulting multiple ACLs (contributed by Jordan Stacy)
+* Add SSHFP record type (contributed by doktornotor)
 
 1.31
 
