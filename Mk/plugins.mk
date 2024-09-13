@@ -370,7 +370,7 @@ ACLBIN?=	${.CURDIR}/../../../core/Scripts/dashboard-acl.sh
 
 lint-acl: check
 .if exists(${ACLBIN})
-	@${ACLBIN}
+	@${ACLBIN} ${.CURDIR}/../../../core
 .else
 	@echo "Did not find ACLBIN, please provide a core repository"; exit 1
 .endif
