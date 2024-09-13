@@ -2,7 +2,7 @@
     <caddydomain>
         <filename>CaddyDomain.js</filename>
         <endpoints>
-            <endpoint>/api/caddy/reverse_proxy/*</endpoint>
+            <endpoint>/api/caddy/reverse_proxy/get</endpoint>
         </endpoints>
         <translations>
             <title>Caddy Domains</title>
@@ -14,7 +14,8 @@
     <caddycertificate>
         <filename>CaddyCertificate.js</filename>
         <endpoints>
-            <endpoint>/api/caddy/*</endpoint>
+            <endpoint>/api/caddy/diagnostics/certificate</endpoint>
+            <endpoint>/api/caddy/reverse_proxy/get</endpoint>
         </endpoints>
         <translations>
             <title>Caddy Certificates</title>
