@@ -366,6 +366,15 @@ lint-model:
 		done; \
 	done; fi
 
+ACLBIN?=	${.CURDIR}/../../../core/Scripts/dashboard-acl.sh
+
+lint-acl: check
+.if exists(${ACLBIN})
+	@${ACLBIN}
+.else
+	@echo "Did not find ACLBIN, please provide a core repository"; exit 1
+.endif
+
 lint-exec: check
 .for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
 .if exists(${DIR})
@@ -384,7 +393,7 @@ lint-php: check
 	@echo "Did not find LINTBIN, please provide a core repository"; exit 1
 .endif
 
-lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
+lint: lint-desc lint-shell lint-xml lint-model lint-acl lint-exec lint-php
 
 plist-fix:
 
