@@ -52,14 +52,14 @@ export default class Dyndns extends BaseTableWidget {
 
     async onWidgetTick() {
         // Check if DynDNS is enabled
-        const statusData = await this.ajaxCall('/api/dyndns/service/status');
+        const statusData = await this.ajaxCall(`/api/dyndns/service/${'status'}`);
         if (!statusData || statusData.status !== "running") {
             this.displayError(this.translations.servicedisabled);
             return;
         }
 
         // Fetch DynDNS account information
-        const accountData = await this.ajaxCall('/api/dyndns/accounts/search_item');
+        const accountData = await this.ajaxCall(`/api/dyndns/accounts/${'search_item'}`);
         if (!accountData || !accountData.rows || accountData.rows.length === 0) {
             this.displayError(this.translations.noaccount);
             return;

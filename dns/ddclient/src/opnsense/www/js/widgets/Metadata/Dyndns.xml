@@ -2,7 +2,8 @@
     <ddclient>
         <filename>Dyndns.js</filename>
         <endpoints>
-            <endpoint>/api/dyndns/*</endpoint>
+            <endpoint>/api/dyndns/accounts/*</endpoint>
+            <endpoint>/api/dyndns/service/*</endpoint>
         </endpoints>
         <translations>
             <title>Dynamic DNS</title>
