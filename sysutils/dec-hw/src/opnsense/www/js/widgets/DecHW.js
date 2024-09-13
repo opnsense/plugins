@@ -75,7 +75,7 @@ export default class DecHW extends BaseWidget {
 
     async onWidgetTick() {
         $('.power').tooltip('hide');
-        let data = await this.ajaxCall('/api/dechw/info/powerStatus');
+        let data = await this.ajaxCall('/api/dechw/info/powerstatus');
 
         if (!data || data.status === 'failed') {
             $('#status').html(`<div class="error-message" style="margin: 10px;">${this.translations.nopower}</div>`);
