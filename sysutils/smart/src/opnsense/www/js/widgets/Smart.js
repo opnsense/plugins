@@ -44,7 +44,7 @@ export default class Smart extends BaseTableWidget {
         if (this.disks && this.disks.devices) {
             for (const device of this.disks.devices) {
                 try {
-                    const data = await ajaxCall("/api/smart/service/info", { type: "H", device });
+                    const data = await this.ajaxCall('/api/smart/service/info', { type: "H", device });
                     const health = data.output.includes("PASSED");
                     $(`#${device}`).css({ color: health ? "green" : "red", fontSize: '150%' });
                     $(`#${device}`).text(health ? "OK" : "FAILED");
@@ -57,7 +57,7 @@ export default class Smart extends BaseTableWidget {
 
     async onMarkupRendered() {
         try {
-            this.disks = await ajaxCall("/api/smart/service/list", {});
+            this.disks = await this.ajaxCall('/api/smart/service/list', {});
             const rows = [];
             for (const device of this.disks.devices) {
                 const field = $(`<span id="${device}">`).prop('outerHTML');
