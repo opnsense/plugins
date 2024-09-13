@@ -415,7 +415,7 @@ http://{{ domain }} {
             {% if handle.PassiveHealthFailDuration|default("") %}
                 fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% set has_transport_options = handle.HttpVersion or handle.HttpKeepalive or handle.HttpTls|default("0") == "1" or handle.HttpTlsesecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName %}
+            {% set has_transport_options = handle.HttpVersion or handle.HttpKeepalive or handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName %}
             {% if has_transport_options %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
