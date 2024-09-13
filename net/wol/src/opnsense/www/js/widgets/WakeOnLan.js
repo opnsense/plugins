@@ -94,7 +94,7 @@ export default class WakeOnLan extends BaseTableWidget {
   }
 
   checkActive(arp_list, mac, intf) {
-    const arp = arp_list.find((obj) => obj.mac === mac);
+    const arp = arp_list.find((obj) => obj.mac === mac.toLowerCase());
     if (arp === undefined) {
       return 0;
     } else {
