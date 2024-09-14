@@ -29,215 +29,246 @@ export default class Nut extends BaseTableWidget {
   constructor() {
     super();
     this.statusInfo = {
-      OL: { color: "text-success", fullName: this.translations.online },
-      OB: { color: "text-danger", fullName: this.translations.onBattery },
-      LB: { color: "text-danger", fullName: this.translations.lowBattery },
-      RB: { color: "text-warning", fullName: this.translations.replaceBattery },
+      OL: { color: "text-success", fullNameKey: "status_online" },
+      OB: { color: "text-danger", fullNameKey: "status_onBattery" },
+      LB: { color: "text-danger", fullNameKey: "status_lowBattery" },
+      RB: { color: "text-warning", fullNameKey: "status_replaceBattery" },
     };
 
     this.previousData = null;
   }
 
-  displayError(message) {
-    console.error(message);
-    const $container = this.getMarkup();
-    $container.html(`<div class="error">${message}</div>`);
-    $(`#${this.id}`).html($container);
-  }
-
   getMarkup() {
     let $container = $("<div></div>");
-    let $nuttable = this.createTable("nut-table", {
+    let $nutTable = this.createTable("nut-table", {
       headerPosition: "left",
     });
-    $container.append($nuttable);
+    $container.append($nutTable);
     return $container;
   }
 
-  getBatteryChargeColor(charge) {
-    if (charge == 100) return "text-success";
-    if (charge > 0) return "text-warning";
-    return "text-danger";
+  async onWidgetTick() {
+    try {
+      const data = await this.ajaxCall("/api/nut/diagnostics/upsstatus");
+
+      if (data.error) {
+        this.displayError(data.error);
+        return;
+      }
+
+      if (!data.response) {
+        this.displayError(this.translations.unconfigured);
+        return;
+      }
+
+      if (!this.dataChanged("nut", data)) {
+        return;
+      }
+
+      let rows = this.makeRows(data.response);
+
+      super.updateTable("nut-table", rows);
+
+      $('[data-toggle="tooltip"]').tooltip({ container: "body" });
+    } catch (error) {
+      console.error("AJAX call failed:", error);
+      this.displayError(this.translations.unconfigured);
+    }
   }
 
-  getUpsLoadColor(load) {
-    return load == 0 ? "text-success" : "text-warning";
+  displayError(message) {
+    const $row = $(
+      '<div class="flextable-row text-danger" style="justify-content: center"></div>'
+    ).text(message);
+    $(`#nut-table`).html($row);
+  }
+
+  makeRows(response) {
+    const rows = [];
+    const keysOfInterest = [
+      "ups.status",
+      "battery.charge",
+      "ups.load",
+      "device.model",
+      "device.serial",
+      "device.type",
+      "driver.name",
+      "driver.state",
+      "input.voltage",
+      "output.voltage",
+    ];
+
+    const dataMap = {};
+
+    let lines = response.split("\n");
+    for (let line of lines) {
+      line = line.trim();
+      if (line === "") continue;
+
+      let [key, value] = line.split(":").map((item) => item.trim());
+
+      if (key && value && keysOfInterest.includes(key)) {
+        dataMap[key] = value;
+      }
+    }
+
+    for (let key of keysOfInterest) {
+      if (dataMap[key]) {
+        switch (key) {
+          case "ups.status":
+            rows.push(this.makeUpsStatusRow(key, dataMap[key]));
+            break;
+          case "battery.charge":
+            rows.push(this.makeBatteryChargeRow(key, dataMap[key]));
+            break;
+          case "ups.load":
+            rows.push(this.makeUpsLoadRow(key, dataMap[key]));
+            break;
+          default:
+            rows.push(this.makeTextRow(key, dataMap[key]));
+            break;
+        }
+      }
+    }
+
+    return rows;
+  }
+
+  makeUpsStatusRow(key, value) {
+    let statusCodes = value.split(" ");
+    let primaryStatus = statusCodes[0];
+
+    let primaryInfo = this.statusInfo[primaryStatus] || {
+      color: "text-muted",
+      fullNameKey: "status_unknown",
+    };
+    primaryInfo.fullName =
+      this.translate(primaryInfo.fullNameKey) || primaryInfo.fullNameKey;
+
+    let displayStatus = statusCodes
+      .map((code) => {
+        let info = this.statusInfo[code] || {
+          color: "text-muted",
+          fullNameKey: "status_" + code,
+        };
+        info.fullName = this.translate(info.fullNameKey) || code;
+        return `<span class="${info.color}" style="font-weight: bold;">${info.fullName}</span>`;
+      })
+      .join(", ");
+
+    let $icon = $("<i>", {
+      class: `fa fa-circle ${primaryInfo.color} nut-status-icon`,
+      css: { fontSize: "11px", cursor: "pointer" },
+      attr: { "data-toggle": "tooltip", title: primaryInfo.fullName },
+    });
+
+    let $value = $("<div>").append($icon, ` ${displayStatus}`);
+
+    return [this.formatKey(key), $value.prop("outerHTML")];
+  }
+
+  makeBatteryChargeRow(key, value) {
+    let chargeValue = parseFloat(value);
+    return this.makeProgressBarRow(this.formatKey(key), chargeValue);
+  }
+
+  makeUpsLoadRow(key, value) {
+    let loadValue = parseFloat(value);
+    return this.makeProgressBarRow(this.formatKey(key), loadValue);
+  }
+
+  makeProgressBarRow(label, progress) {
+    let progressText = `${progress.toFixed(1)} %`;
+    const $textEl = $('<span class="text-center"></span>')
+      .text(progressText)
+      .css({
+        position: "absolute",
+        left: 0,
+        right: 0,
+      });
+
+    const $barEl = $('<div class="progress-bar"></div>').css({
+      width: `${progress}%`,
+      zIndex: 0,
+    });
+
+    const $progressBar = $('<div class="progress"></div>').append(
+      $barEl,
+      $textEl
+    );
+
+    return [label, $progressBar.prop("outerHTML")];
+  }
+
+  makeTextRow(key, value) {
+    const nonTranslatableKeys = [
+      "device.model",
+      "device.serial",
+      "device.type",
+      "driver.name",
+      "driver.state",
+      "input.voltage",
+      "output.voltage",
+    ];
+
+    let displayValue;
+    if (nonTranslatableKeys.includes(key)) {
+      displayValue = value;
+    } else {
+      displayValue = this.translate(value) || value;
+    }
+
+    return [this.formatKey(key), displayValue];
+  }
+
+  formatKey(key) {
+    const keyMap = {
+      "ups.status": "status_ups_status",
+      "battery.charge": "status_battery_charge",
+      "ups.load": "status_ups_load",
+      "device.model": "status_device_model",
+      "device.serial": "status_device_serial",
+      "device.type": "status_device_type",
+      "driver.name": "status_driver_name",
+      "driver.state": "status_driver_state",
+      "input.voltage": "status_input_voltage",
+      "output.voltage": "status_output_voltage",
+    };
+
+    const translationKey = keyMap[key] || key;
+    let formattedKey = this.translate(translationKey) || key;
+
+    const iconMap = {
+      "ups.status": "fa-power-off",
+      "battery.charge": "fa-battery-full",
+      "ups.load": "fa-bolt",
+      "device.serial": "fa-barcode",
+      "device.model": "fa-server",
+      "device.type": "fa-plug",
+      "driver.name": "fa-microchip",
+      "driver.state": "fa-info-circle",
+      "input.voltage": "fa-arrow-right",
+      "output.voltage": "fa-arrow-left",
+    };
+
+    const icon = iconMap[key] || "";
+    if (icon) {
+      const $icon = $("<i>", {
+        class: `fa ${icon}`,
+        css: { fontSize: "11px" },
+      });
+      return $icon.prop("outerHTML") + `&nbsp;${formattedKey}`;
+    } else {
+      return formattedKey;
+    }
   }
 
   translate(value) {
-    return this.translations[value] || value;
-  }
-
-  async onWidgetTick() {
-    await this.ajaxCall(
-      "/api/nut/diagnostics/upsstatus",
-      {},
-      (data, status) => {
-        let rows = [];
-        const keysOfInterest = [
-          "ups.status",
-          "battery.charge",
-          "ups.load",
-          "device.model",
-          "device.serial",
-          "device.type",
-          "driver.name",
-          "driver.state",
-          "input.voltage",
-          "output.voltage",
-        ];
-
-        if (!data || status !== 200) {
-          this.displayError(this.translations.unconfigured);
-          return;
-        }
-
-        if (!this.dataChanged("nut", data)) {
-          return;
-        }
-
-        $(".nut-status-icon, .fa-circle").tooltip("hide").tooltip("dispose");
-
-        const formatKey = (key) => {
-          let formattedKey = key
-            .split(".")
-            .map((word) => {
-              if (word.toLowerCase() === "ups") {
-                return "UPS";
-              }
-              return word.charAt(0).toUpperCase() + word.slice(1);
-            })
-            .join(" ");
-
-          // Add icons for all keys
-          const iconMap = {
-            "ups.status": "fa-power-off",
-            "battery.charge": "fa-battery-full",
-            "ups.load": "fa-bolt",
-            "device.serial": "fa-barcode",
-            "device.model": "fa-server",
-            "device.type": "fa-plug",
-            "driver.name": "fa-microchip",
-            "driver.state": "fa-info-circle",
-            "input.voltage": "fa-arrow-right",
-            "output.voltage": "fa-arrow-left",
-          };
-
-          const icon = iconMap[key] || "";
-          return icon
-            ? `<i class="fa ${icon}" style="font-size: 11px;"></i>&nbsp;${formattedKey}`
-            : formattedKey;
-        };
-
-        if (!data || typeof data !== "object" || !data.response) {
-          console.error("Invalid data format received");
-          return;
-        }
-
-        let lines = data.response.split("\n");
-        let upsStatus = "";
-        let batteryCharge = "";
-        let upsLoad = "";
-
-        for (let line of lines) {
-          line = line.trim();
-          if (line === "") continue;
-
-          let [key, value] = line.split(":").map((item) => item.trim());
-
-          if (!key || !value || !keysOfInterest.includes(key)) {
-            continue;
-          }
-
-          if (key === "ups.status") {
-            upsStatus = value;
-            continue;
-          }
-
-          if (key === "battery.charge") {
-            batteryCharge = value;
-            continue;
-          }
-
-          if (key === "ups.load") {
-            upsLoad = value;
-            continue;
-          }
-
-          const translatedValue = this.translate(value);
-          rows.push([formatKey(key), translatedValue]);
-        }
-
-        // Create UPS Status row with icon
-        if (upsStatus) {
-          let statusCodes = upsStatus.split(" ");
-          let primaryStatus = statusCodes[0];
-          let primaryInfo = this.statusInfo[primaryStatus] || {
-            color: "text-muted",
-            fullName: this.translate("unknown"),
-          };
-
-          let displayStatus = statusCodes
-            .map((code) => {
-              let info = this.statusInfo[code] || {
-                color: "text-muted",
-                fullName: this.translate(code),
-              };
-              return `<span class="${info.color}" style="font-weight: bold;">${info.fullName}</span>`;
-            })
-            .join(", ");
-
-          let $header = formatKey("ups.status");
-          let $value = $(`
-                    <div>
-                        <i class="fa fa-circle ${primaryInfo.color} nut-status-icon" style="font-size: 11px; cursor: pointer;"
-                            data-toggle="tooltip" title="${primaryInfo.fullName}">
-                        </i>
-                        &nbsp;${displayStatus}
-                    </div>
-                `);
-          rows.unshift([$header, $value.prop("outerHTML")]);
-        }
-
-        if (batteryCharge) {
-          let chargeValue = parseInt(batteryCharge);
-          let chargeColor = this.getBatteryChargeColor(chargeValue);
-
-          let $header = formatKey("battery.charge");
-          let $value = $(`
-                    <div>
-                        <i class="fa fa-circle ${chargeColor}" style="font-size: 11px; cursor: pointer;"
-                            data-toggle="tooltip" title="${chargeValue}%">
-                        </i>
-                        &nbsp;${this.translate(batteryCharge)}
-                    </div>
-                `);
-
-          rows.splice(1, 0, [$header, $value.prop("outerHTML")]);
-        }
-
-        // Create UPS Load row with icon
-        if (upsLoad) {
-          let loadValue = parseFloat(upsLoad);
-          let loadColor = this.getUpsLoadColor(loadValue);
-
-          let $header = formatKey("ups.load");
-          let $value = $(`
-                    <div>
-                        <i class="fa fa-circle ${loadColor}" style="font-size: 11px; cursor: pointer;"
-                            data-toggle="tooltip" title="${loadValue}%">
-                        </i>
-                        &nbsp;${this.translate(upsLoad)}
-                    </div>
-                `);
-
-          rows.splice(2, 0, [$header, $value.prop("outerHTML")]);
-        }
-
-        super.updateTable("nut-table", rows);
-
-        $(".nut-status-icon, .fa-circle").tooltip({ container: "body" });
-      }
-    );
+    let translatedValue = this.translations[value];
+    if (translatedValue === undefined) {
+      console.error("Missing translation for " + value);
+      translatedValue = value;
+    }
+    return translatedValue;
   }
 }

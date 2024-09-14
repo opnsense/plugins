@@ -13,16 +13,16 @@
             <status_lowBattery>Low Battery</status_lowBattery>
             <status_replaceBattery>Replace Battery</status_replaceBattery>
             <status_unknown>Unknown</status_unknown>
-
-            <status_model>Model</status_model>
-            <status_serial>Serial Number</status_serial>
-            <status_type>Type</status_type>
-            <status_driverName>Driver Name</status_driverName>
-            <status_driverState>Driver State</status_driverState>
-            <status_inputVoltage>Input Voltage</status_inputVoltage>
-            <status_outputVoltage>Output Voltage</status_outputVoltage>
-            <status_batteryCharge>Battery Level</status_batteryCharge>
-            <status_upsLoad>Load</status_upsLoad>
+            <status_ups_status>UPS Status</status_ups_status>
+            <status_battery_charge>Battery Level</status_battery_charge>
+            <status_ups_load>Load</status_ups_load>
+            <status_device_model>Model</status_device_model>
+            <status_device_serial>Serial Number</status_device_serial>
+            <status_device_type>Type</status_device_type>
+            <status_driver_name>Driver Name</status_driver_name>
+            <status_driver_state>Driver State</status_driver_state>
+            <status_input_voltage>Input Voltage</status_input_voltage>
+            <status_output_voltage>Output Voltage</status_output_voltage>
         </translations>
     </nut>
 </metadata>
