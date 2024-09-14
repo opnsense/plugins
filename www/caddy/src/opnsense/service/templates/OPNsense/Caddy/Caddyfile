@@ -76,46 +76,19 @@
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
     #            Credential logging is useful for troubleshooting basic auth.
     #}
-    {% set accessListUuid = generalSettings.accesslist %}
-    {% set logCredentials = generalSettings.LogCredentials %}
-    {% set enableLayer4 = generalSettings.EnableLayer4 %}
-    {% set disableQuic = generalSettings.DisableQuic %}
-
-    {% set hasAccessList = false %}
-    {% set hasLogCredentials = false %}
-    {% set hasEnableLayer4 = false %}
-
-    {% if accessListUuid %}
-        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
-        {% if accessList %}
-            {% set hasAccessList = true %}
-        {% endif %}
+    {% if generalSettings.accesslist %}
+        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', generalSettings.accesslist) | first %}
     {% endif %}
 
-    {% if logCredentials == '1' %}
-        {% set hasLogCredentials = true %}
-    {% endif %}
-
-    {% if disableQuic == '1' %}
-        {% set hasDisableQuic = true %}
-    {% endif %}
-
-    {% if enableLayer4 == '1' %}
-        {% set hasEnableLayer4 = true %}
-    {% endif %}
-
-    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 or hasDisableQuic %}
     servers {
-        {% if hasDisableQuic %}
-            protocols h1 h2
-        {% endif %}
-        {% if hasAccessList %}
+        protocols {{ generalSettings.HttpVersion.split(',') | join(' ') }}
+        {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
-        {% if hasLogCredentials %}
+        {% if generalSettings.LogCredentials|default("0") == "1" %}
             log_credentials
         {% endif %}
-        {% if hasEnableLayer4 %}
+        {% if generalSettings.EnableLayer4|default("0") == "1" %}
             listener_wrappers {
                 {# Plug the Layer 4 template in #}
                 {% include "OPNsense/Caddy/includeLayer4" %}
@@ -123,7 +96,6 @@
             }
         {% endif %}
     }
-    {% endif %}
 
     {#
     #   Section: Dynamic DNS Global Configuration
