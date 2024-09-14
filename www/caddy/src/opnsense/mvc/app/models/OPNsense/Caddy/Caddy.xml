@@ -86,8 +86,10 @@
             </accesslist>
             <abort type="BooleanField"/>
             <DisableSuperuser type="OptionField">
-                <BlankDesc>root (default)</BlankDesc>
+                <Required>Y</Required>
+                <Default>0</Default>
                 <OptionValues>
+                    <root value="0">root (default)</root>
                     <www value="1">www</www>
                 </OptionValues>
             </DisableSuperuser>
@@ -202,8 +204,10 @@
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
                 <DisableTls type="OptionField">
-                    <BlankDesc>HTTPS (default)</BlankDesc>
+                    <Required>Y</Required>
+                    <Default>0</Default>
                     <OptionValues>
+                        <https value="0">HTTPS (default)</https>
                         <http value="1">HTTP</http>
                     </OptionValues>
                 </DisableTls>
