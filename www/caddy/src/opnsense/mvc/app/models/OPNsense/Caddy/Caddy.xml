@@ -93,6 +93,7 @@
                 <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
+            <DisableQuic type="BooleanField"/>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">

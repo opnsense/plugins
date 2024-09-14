@@ -79,6 +79,7 @@
     {% set accessListUuid = generalSettings.accesslist %}
     {% set logCredentials = generalSettings.LogCredentials %}
     {% set enableLayer4 = generalSettings.EnableLayer4 %}
+    {% set disableQuic = generalSettings.DisableQuic %}
 
     {% set hasAccessList = false %}
     {% set hasLogCredentials = false %}
@@ -95,12 +96,19 @@
         {% set hasLogCredentials = true %}
     {% endif %}
 
+    {% if disableQuic == '1' %}
+        {% set hasDisableQuic = true %}
+    {% endif %}
+
     {% if enableLayer4 == '1' %}
         {% set hasEnableLayer4 = true %}
     {% endif %}
 
-    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 %}
+    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 or hasDisableQuic %}
     servers {
+        {% if hasDisableQuic %}
+            protocols h1 h2
+        {% endif %}
         {% if hasAccessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
