@@ -12,6 +12,12 @@
         <help><![CDATA[Enter a description for this handler.]]></help>
     </field>
     <field>
+        <id>handle.HandleType</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
+    </field>
+    <field>
         <type>header</type>
         <label>Frontend</label>
     </field>
@@ -28,18 +34,11 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
-        <id>handle.HandleType</id>
-        <label>Handle Type</label>
-        <type>dropdown</type>
-        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>handle.HandlePath</id>
         <label>Path</label>
         <type>text</type>
+        <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
@@ -72,8 +71,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration".]]></help>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -86,7 +84,7 @@
         <id>handle.ToPath</id>
         <label>Upstream Path</label>
         <type>text</type>
-        <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request because the application demands it.]]></help>
+        <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -111,19 +109,6 @@
     </field>
     <field>
         <type>header</type>
-        <label>Header</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.header</id>
-        <label>HTTP Headers</label>
-        <type>dropdown</type>
-        <type>select_multiple</type>
-        <size>5</size>
-        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
-    </field>
-    <field>
-        <type>header</type>
         <label>Trust</label>
         <collapse>true</collapse>
     </field>
@@ -138,6 +123,19 @@
         <label>TLS Server Name</label>
         <type>text</type>
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Header</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>handle.header</id>
+        <label>HTTP Headers</label>
+        <type>dropdown</type>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
     </field>
     <field>
         <type>header</type>

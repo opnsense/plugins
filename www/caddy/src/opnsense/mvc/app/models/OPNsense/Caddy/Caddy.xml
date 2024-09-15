@@ -295,7 +295,7 @@
                     <Required>Y</Required>
                     <Default>handle</Default>
                     <OptionValues>
-                        <handle>handle</handle>
+                        <handle>handle (default)</handle>
                         <handle_path>handle_path</handle_path>
                     </OptionValues>
                 </HandleType>
