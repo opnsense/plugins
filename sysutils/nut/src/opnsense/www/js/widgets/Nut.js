@@ -96,6 +96,7 @@ export default class Nut extends BaseTableWidget {
       "driver.state",
       "input.voltage",
       "output.voltage",
+      "ups.realpower.nominal",
     ];
 
     const dataMap = {};
@@ -122,7 +123,13 @@ export default class Nut extends BaseTableWidget {
             rows.push(this.makeBatteryChargeRow(key, dataMap[key]));
             break;
           case "ups.load":
-            rows.push(this.makeUpsLoadRow(key, dataMap[key]));
+            rows.push(
+              this.makeUpsLoadRow(
+                key,
+                dataMap[key],
+                dataMap["ups.realpower.nominal"]
+              )
+            );
             break;
           default:
             rows.push(this.makeTextRow(key, dataMap[key]));
@@ -172,9 +179,34 @@ export default class Nut extends BaseTableWidget {
     return this.makeProgressBarRow(this.formatKey(key), chargeValue);
   }
 
-  makeUpsLoadRow(key, value) {
-    let loadValue = parseFloat(value);
-    return this.makeProgressBarRow(this.formatKey(key), loadValue);
+  makeUpsLoadRow(key, value, nominalPower) {
+    let loadPercentage = parseFloat(value);
+    let nominalPowerValue = parseFloat(nominalPower);
+
+    let estimatedLoadWatts = (loadPercentage / 100) * nominalPowerValue;
+
+    let progressText = `${loadPercentage.toFixed(
+      1
+    )} % (${estimatedLoadWatts.toFixed(2)} Watts)`;
+    const $textEl = $('<span class="text-center"></span>')
+      .text(progressText)
+      .css({
+        position: "absolute",
+        left: 0,
+        right: 0,
+      });
+
+    const $barEl = $('<div class="progress-bar"></div>').css({
+      width: `${loadPercentage}%`,
+      zIndex: 0,
+    });
+
+    const $progressBar = $('<div class="progress"></div>').append(
+      $barEl,
+      $textEl
+    );
+
+    return [this.formatKey(key), $progressBar.prop("outerHTML")];
   }
 
   makeProgressBarRow(label, progress) {
@@ -209,6 +241,7 @@ export default class Nut extends BaseTableWidget {
       "driver.state",
       "input.voltage",
       "output.voltage",
+      "ups.realpower.nominal",
     ];
 
     let displayValue;
@@ -233,6 +266,7 @@ export default class Nut extends BaseTableWidget {
       "driver.state": "status_driver_state",
       "input.voltage": "status_input_voltage",
       "output.voltage": "status_output_voltage",
+      "ups.realpower.nominal": "status_realpower_nominal",
     };
 
     const translationKey = keyMap[key] || key;
@@ -249,6 +283,7 @@ export default class Nut extends BaseTableWidget {
       "driver.state": "fa-info-circle",
       "input.voltage": "fa-arrow-right",
       "output.voltage": "fa-arrow-left",
+      "ups.realpower.nominal": "fa-lightbulb-o",
     };
 
     const icon = iconMap[key] || "";

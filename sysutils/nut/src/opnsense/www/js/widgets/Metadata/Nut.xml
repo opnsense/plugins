@@ -14,6 +14,7 @@
             <status_replaceBattery>Replace Battery</status_replaceBattery>
             <status_unknown>Unknown</status_unknown>
             <status_ups_status>UPS Status</status_ups_status>
+            <status_realpower_nominal>Nominal Power</status_realpower_nominal>
             <status_battery_charge>Battery Level</status_battery_charge>
             <status_ups_load>Load</status_ups_load>
             <status_device_model>Model</status_device_model>
