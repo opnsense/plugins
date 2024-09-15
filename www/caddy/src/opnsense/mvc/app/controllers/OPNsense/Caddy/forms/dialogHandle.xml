@@ -6,6 +6,16 @@
         <help><![CDATA[Enable this handler.]]></help>
     </field>
     <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Frontend</label>
+    </field>
+    <field>
         <id>handle.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
@@ -18,55 +28,43 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
-        <id>handle.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Handle</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
         <id>handle.HandleType</id>
         <label>Handle Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the URI of "Handle URI" in all requests. "handle_path" will strip the URI of "Handle URI" from all requests.]]></help>
+        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.HandlePath</id>
-        <label>Handle URI</label>
+        <label>Path</label>
         <type>text</type>
-        <help><![CDATA[Enter an URI to handle. Choose a pattern like "/*" or "/example/*". Leave empty to catch all URIs (recommended). Any request matching this pattern will be handled.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Access</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.ForwardAuth</id>
-        <label>Forward Auth</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Header</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.header</id>
-        <label>Header Manipulation</label>
-        <type>dropdown</type>
-        <type>select_multiple</type>
-        <size>5</size>
-        <help><![CDATA[Select one or multiple header manipulations. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
+        <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
         <label>Upstream</label>
+    </field>
+    <field>
+        <id>handle.HttpTls</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
+    </field>
+    <field>
+        <id>handle.HttpVersion</id>
+        <label>HTTP Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires HTTPS, and only establishes connections to webservers that also support HTTP/3.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HttpKeepalive</id>
+        <label>HTTP Keepalive</label>
+        <type>text</type>
+        <hint>120</hint>
+        <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>handle.ToDomain</id>
@@ -92,56 +90,42 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.PassiveHealthFailDuration</id>
+        <label>Upstream Fail Duration</label>
+        <type>text</type>
+        <help><![CDATA[Enables a passive health check when multiple destinations in "Upstream Domain" are set. "Fail Duration" is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.HttpTlsInsecureSkipVerify</id>
         <label>TLS Insecure Skip Verify</label>
         <type>checkbox</type>
         <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Health Check</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.PassiveHealthFailDuration</id>
-        <label>Upstream Fail Duration</label>
-        <type>text</type>
-        <help><![CDATA[Enables a passive health check when multiple destinations in "Upstream Domain" are set. "Fail Duration" is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
+        <id>handle.HttpNtlm</id>
+        <label>NTLM</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
-        <label>HTTP Transport</label>
+        <label>Header</label>
         <collapse>true</collapse>
     </field>
     <field>
-        <id>handle.HttpVersion</id>
-        <label>HTTP Version</label>
+        <id>handle.header</id>
+        <label>HTTP Headers</label>
         <type>dropdown</type>
-        <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires TLS, and only establishes connections to webservers that also support HTTP/3.]]></help>
-    </field>
-    <field>
-        <id>handle.HttpKeepalive</id>
-        <label>HTTP Keepalive</label>
-        <type>text</type>
-        <hint>120</hint>
-        <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
     </field>
     <field>
         <type>header</type>
         <label>Trust</label>
         <collapse>true</collapse>
-    </field>
-    <field>
-        <id>handle.HttpTls</id>
-        <label>TLS</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
-    </field>
-    <field>
-        <id>handle.HttpNtlm</id>
-        <label>NTLM</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
@@ -154,5 +138,16 @@
         <label>TLS Server Name</label>
         <type>text</type>
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Access</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>handle.ForwardAuth</id>
+        <label>Forward Auth</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
     </field>
 </form>
