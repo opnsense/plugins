@@ -343,10 +343,6 @@
         font-style: italic;
     }
 
-    .nav-tabs a {
-        font-weight: bold;
-    }
-
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
