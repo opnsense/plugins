@@ -161,8 +161,8 @@
                 <Required>Y</Required>
                 <Default>0</Default>
                 <OptionValues>
-                    <http value="0">HTTP (default)</http>
-                    <https value="1">HTTPS</https>
+                    <http value="0">http://</http>
+                    <https value="1">https://</https>
                 </OptionValues>
             </AuthToTls>
             <AuthToUri type="TextField">
@@ -214,8 +214,8 @@
                     <Required>Y</Required>
                     <Default>0</Default>
                     <OptionValues>
-                        <https value="0">HTTPS (default)</https>
-                        <http value="1">HTTP</http>
+                        <https value="0">https://</https>
+                        <http value="1">http://</http>
                     </OptionValues>
                 </DisableTls>
             </reverse>
@@ -276,8 +276,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>FromDomain,FromPort</display>
-                            <display_format>%s %s</display_format>
+                            <display>DisableTls,FromDomain,FromPort</display>
+                            <display_format>%s%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -295,7 +295,7 @@
                     <Required>Y</Required>
                     <Default>handle</Default>
                     <OptionValues>
-                        <handle>handle (default)</handle>
+                        <handle>handle</handle>
                         <handle_path>handle_path</handle_path>
                     </OptionValues>
                 </HandleType>
@@ -335,8 +335,8 @@
                     <Required>Y</Required>
                     <Default>0</Default>
                     <OptionValues>
-                        <http value="0">HTTP (default)</http>
-                        <https value="1">HTTPS</https>
+                        <http value="0">http://</http>
+                        <https value="1">https://</https>
                     </OptionValues>
                     <Constraints>
                         <check001>
