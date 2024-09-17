@@ -62,5 +62,5 @@ function zerotier_services()
 
 function zerotier_devices()
 {
-    return [['pattern' => '^zt', 'volatile' => true]];
+    return [['pattern' => '^zt', 'spoofmac' => false, 'volatile' => true]];
 }
