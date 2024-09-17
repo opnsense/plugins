@@ -112,7 +112,7 @@ vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generat
 www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
-www/caddy -- Easy to configure Reverse Proxy with Automatic HTTPS and Dynamic DNS
+www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
 www/squid -- Squid is a caching proxy for the web
 www/web-proxy-sso -- Kerberos authentication module
