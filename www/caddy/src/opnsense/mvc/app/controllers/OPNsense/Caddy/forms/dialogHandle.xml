@@ -140,6 +140,11 @@
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
     </field>
     <field>
+        <type>header</type>
+        <label>Access</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.ForwardAuth</id>
         <label>Forward Auth</label>
         <type>checkbox</type>
