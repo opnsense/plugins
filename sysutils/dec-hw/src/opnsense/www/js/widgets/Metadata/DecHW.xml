@@ -2,7 +2,7 @@
     <dechw>
         <filename>DecHW.js</filename>
         <endpoints>
-            <endpoint>/api/dechw/info/powerStatus</endpoint>
+            <endpoint>/api/dechw/info/powerstatus</endpoint>
         </endpoints>
         <translations>
             <title>Deciso Hardware Information</title>
