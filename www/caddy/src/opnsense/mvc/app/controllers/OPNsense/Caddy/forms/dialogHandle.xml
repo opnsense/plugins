@@ -30,6 +30,18 @@
     </field>
     <field>
         <type>header</type>
+        <label>Access</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.ForwardAuth</id>
+        <label>Forward Auth</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
         <label>Handler</label>
         <advanced>true</advanced>
     </field>
@@ -46,6 +58,20 @@
         <type>text</type>
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Header</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.header</id>
+        <label>HTTP Headers</label>
+        <type>dropdown</type>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -68,15 +94,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>handle.header</id>
-        <label>HTTP Headers</label>
-        <type>dropdown</type>
-        <type>select_multiple</type>
-        <size>5</size>
-        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>handle.HttpTls</id>
         <label>Protocol</label>
         <type>dropdown</type>
@@ -88,6 +105,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
+        <hint>192.168.1.1</hint>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode.]]></help>
     </field>
     <field>
@@ -112,6 +130,12 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.HttpTlsInsecureSkipVerify</id>
+        <label>TLS Insecure Skip Verify</label>
+        <type>checkbox</type>
+        <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
+    </field>
+    <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trust Pool</label>
         <type>dropdown</type>
@@ -126,29 +150,10 @@
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
     </field>
     <field>
-        <id>handle.HttpTlsInsecureSkipVerify</id>
-        <label>TLS Insecure Skip Verify</label>
-        <type>checkbox</type>
-        <style>HttpTls</style>
-        <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
-    </field>
-    <field>
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
         <style>HttpTls</style>
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Access</label>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>handle.ForwardAuth</id>
-        <label>Forward Auth</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
-        <advanced>true</advanced>
     </field>
 </form>
