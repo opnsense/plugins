@@ -30,18 +30,6 @@
     </field>
     <field>
         <type>header</type>
-        <label>Access</label>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>handle.ForwardAuth</id>
-        <label>Forward Auth</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <type>header</type>
         <label>Handler</label>
         <advanced>true</advanced>
     </field>
@@ -58,6 +46,18 @@
         <type>text</type>
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Access</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.ForwardAuth</id>
+        <label>Forward Auth</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
