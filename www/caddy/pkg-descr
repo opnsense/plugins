@@ -16,7 +16,7 @@ Plugin Changelog
 1.7.1
 
 * Add: Frontend HTTP Version can be selected in General Settings, can be used to disable QUIC protocol
-* Cleanup: Some checkboxes have been converted to dropdowns for clarity
+* Cleanup: TLS checkboxes have been converted to dropdowns with http/https for clarity
 * Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
 
 1.7.0
