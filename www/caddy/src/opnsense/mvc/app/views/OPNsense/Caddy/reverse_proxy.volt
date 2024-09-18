@@ -322,6 +322,14 @@
             }
         });
 
+        $("#reverse\\.DisableTls").change(function() {
+            if ($(this).val() === "1") {
+                $(".DisableTls").closest('tr').hide();
+            } else {
+                $(".DisableTls").closest('tr').show();
+            }
+        });
+
         // Initialize tabs, service control and filter selectpicker
         initializeTabs();
         updateServiceControlUI('caddy');
@@ -384,11 +392,11 @@
                             <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
                             <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
-                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 challenge') }}</th>
+                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 Challenge') }}</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
-                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Custom Certificate') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
+                            <th data-column-id="CustomCertificate" data-type="string">{{ lang._('Certificate') }}</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 Challenge Redirection') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
@@ -424,7 +432,7 @@
                             <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
                             <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
+                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 Challenge Redirection') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
@@ -456,19 +464,19 @@
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                             <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="subdomain" data-type="string" data-visible="false">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handle Type') }}</th>
-                            <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Handle Path') }}</th>
-                            <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('Header') }}</th>
+                            <th data-column-id="subdomain" data-type="string">{{ lang._('Subdomain') }}</th>
+                            <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handler') }}</th>
+                            <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Path') }}</th>
+                            <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('HTTP Headers') }}</th>
                             <th data-column-id="HttpTls" data-type="string" data-visible="false">{{ lang._('Protocol') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
+                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Upstream Fail Duration') }}</th>
                             <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
                             <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
                             <th data-column-id="HttpKeepalive" data-type="string" data-visible="false">{{ lang._('HTTP Keepalive') }}</th>
-                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS CA') }}</th>
+                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS Trust Pool') }}</th>
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>
                             <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS Insecure Skip Verify') }}</th>

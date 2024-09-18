@@ -133,6 +133,7 @@
         <id>handle.HttpTlsInsecureSkipVerify</id>
         <label>TLS Insecure Skip Verify</label>
         <type>checkbox</type>
+        <style>HttpTls</style>
         <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
     </field>
     <field>

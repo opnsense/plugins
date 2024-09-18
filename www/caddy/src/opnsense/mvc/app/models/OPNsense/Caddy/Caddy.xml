@@ -206,7 +206,9 @@
                 </basicauth>
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
-                <CustomCertificate type="CertificateField"/>
+                <CustomCertificate type="CertificateField">
+                    <BlankDesc>ACME</BlankDesc>
+                </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
