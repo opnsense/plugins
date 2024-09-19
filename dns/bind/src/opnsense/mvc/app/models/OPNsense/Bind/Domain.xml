@@ -62,8 +62,7 @@
                     <Required>N</Required>
                 </allowtransfer>
                 <allowrndctransfer type="BooleanField">
-                    <default>1</default>
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </allowrndctransfer>
                 <allowquery type="ModelRelationField">
                     <Model>
