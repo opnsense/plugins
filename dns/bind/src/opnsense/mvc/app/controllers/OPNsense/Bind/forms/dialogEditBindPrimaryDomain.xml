@@ -18,6 +18,12 @@
         <help>Define the ACLs where you allow which server can retrieve this zone.</help>
     </field>
     <field>
+        <id>domain.allowrndctransfer</id>
+        <label>Allow RDNC key transfer</label>
+        <type>checkbox</type>
+        <help>Allow transfers via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
+    </field>
+    <field>
         <id>domain.allowquery</id>
         <label>Allow Query</label>
         <type>select_multiple</type>
