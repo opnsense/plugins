@@ -395,7 +395,7 @@
                             <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 Challenge') }}</th>
                             <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
                             <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
-                            <th data-column-id="CustomCertificate" data-type="string">{{ lang._('Certificate') }}</th>
+                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Certificate') }}</th>
                             <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 Challenge Redirection') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>

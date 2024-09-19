@@ -26,7 +26,7 @@
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Adding a wildcard domain and pressing "Apply" will activate the "Subdomain" Tab, in which subdomains can be configured. Using subdomains requires a "DNS Provider" and the "DNS-01" challenge.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Adding a wildcard domain and pressing "Apply" will activate the "Subdomain" Tab, in which subdomains can be configured. Using subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
@@ -54,7 +54,7 @@
         <label>DNS-01 Challenge</label>
         <type>checkbox</type>
         <style>DisableTls</style>
-        <help><![CDATA[Enable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can not be used due to restrictive firewall policies.]]></help>
+        <help><![CDATA[Enable the DNS-01 Challenge for this domain. Requires a "DNS Provider" in "General Settings". This is only needed for wildcard domains, or when the default challenges can not be used due to restrictive firewall policies.]]></help>
     </field>
     <field>
         <id>reverse.DynDns</id>
