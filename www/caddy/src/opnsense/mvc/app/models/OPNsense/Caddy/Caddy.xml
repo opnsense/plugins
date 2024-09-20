@@ -157,7 +157,14 @@
             </AuthProvider>
             <AuthToDomain type="HostnameField"/>
             <AuthToPort type="PortField"/>
-            <AuthToTls type="BooleanField"/>
+            <AuthToTls type="OptionField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <OptionValues>
+                    <http value="0">http://</http>
+                    <https value="1">https://</https>
+                </OptionValues>
+            </AuthToTls>
             <AuthToUri type="TextField">
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
@@ -199,7 +206,9 @@
                 </basicauth>
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
-                <CustomCertificate type="CertificateField"/>
+                <CustomCertificate type="CertificateField">
+                    <BlankDesc>ACME (HTTP-01, TLS-ALPN-01)</BlankDesc>
+                </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
@@ -207,8 +216,8 @@
                     <Required>Y</Required>
                     <Default>0</Default>
                     <OptionValues>
-                        <https value="0">HTTPS (default)</https>
-                        <http value="1">HTTP</http>
+                        <https value="0">https://</https>
+                        <http value="1">http://</http>
                     </OptionValues>
                 </DisableTls>
             </reverse>
@@ -269,8 +278,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>FromDomain,FromPort</display>
-                            <display_format>%s %s</display_format>
+                            <display>DisableTls,FromDomain,FromPort</display>
+                            <display_format>%s%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -324,10 +333,16 @@
                     <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
                 </PassiveHealthFailDuration>
                 <ForwardAuth type="BooleanField"/>
-                <HttpTls type="BooleanField">
+                <HttpTls type="OptionField">
+                    <Required>Y</Required>
+                    <Default>0</Default>
+                    <OptionValues>
+                        <http value="0">http://</http>
+                        <https value="1">https://</https>
+                    </OptionValues>
                     <Constraints>
                         <check001>
-                            <ValidationMessage>TLS and NTLM must be enabled at the same time.</ValidationMessage>
+                            <ValidationMessage>HTTPS and NTLM must be enabled at the same time.</ValidationMessage>
                             <type>DependConstraint</type>
                             <addFields>
                                 <field1>HttpNtlm</field1>

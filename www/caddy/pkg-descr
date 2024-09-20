@@ -13,6 +13,13 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.7.1
+
+* Add: Frontend HTTP Version can be selected in General Settings, can be used to disable QUIC protocol
+* Change: Caddy Domains widget will now open links to managed websites in new browser tabs
+* Cleanup: TLS checkboxes have been converted to dropdowns with http/https for clarity
+* Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
+
 1.7.0
 
 * Add: Layer4 protocols: DNS
