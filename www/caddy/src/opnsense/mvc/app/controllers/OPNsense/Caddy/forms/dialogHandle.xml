@@ -54,6 +54,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>handle.accesslist</id>
+        <label>Access List</label>
+        <type>dropdown</type>
+        <help><![CDATA[Select an Access List to restrict access to this handler. If unset, any local or remote client is allowed access.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>handle.ForwardAuth</id>
         <label>Forward Auth</label>
         <type>checkbox</type>

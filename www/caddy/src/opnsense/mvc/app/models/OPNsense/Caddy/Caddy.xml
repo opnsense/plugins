@@ -305,6 +305,16 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </HandlePath>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName,description</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <header type="ModelRelationField">
                     <Model>
                         <reverseproxy>
