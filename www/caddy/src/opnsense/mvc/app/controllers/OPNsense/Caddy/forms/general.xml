@@ -60,12 +60,6 @@
             <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
         </field>
         <field>
-            <id>caddy.general.abort</id>
-            <label>Abort Connections</label>
-            <type>checkbox</type>
-            <help><![CDATA[Abort all connections that don't have a matching Handle or Access List. This option does not conflict with "Let's Encrypt" or "ZeroSSL". Disable it for troubleshooting purposes, e.g., testing if the "Domain" works and the automatic certificate has been installed. For production use, enabling this option is recommended.]]></help>
-        </field>
-        <field>
             <id>caddy.general.GracePeriod</id>
             <label>Grace Period</label>
             <type>text</type>

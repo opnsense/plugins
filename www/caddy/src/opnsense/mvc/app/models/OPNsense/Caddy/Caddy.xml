@@ -84,7 +84,6 @@
                     </reverseproxy>
                 </Model>
             </accesslist>
-            <abort type="BooleanField"/>
             <DisableSuperuser type="OptionField">
                 <Required>Y</Required>
                 <Default>0</Default>

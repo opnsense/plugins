@@ -379,25 +379,8 @@ http://{{ domain }} {
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
-        {# Access list logic for dropping connections based on IP inside handler #}
-        {% if handle.accesslist %}
-            {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', handle.accesslist) | first %}
-            {% if accesslist_obj %}
-                {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
-                @{{ accesslist_obj['@uuid'] }} {
-                    {# Non-inverted access lists have "not" as default, inverted ones '' #}
-                    {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
-                }
-                {# When IP is matched, abort or send response code. This will end processing in the scope of this handler #}
-                handle @{{ accesslist_obj['@uuid'] }} {
-                    {% if accesslist_obj.HttpResponseCode or accesslist_obj.HttpResponseMessage %}
-                        respond {{ '"' + accesslist_obj.HttpResponseMessage|default('') + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode|default(403) }}
-                    {% else %}
-                        abort
-                    {% endif %}
-                }
-            {% endif %}
-        {% endif %}
+        {# Access list logic for dropping connections based on IP #}
+        {{ handle_accesslist(handle.accesslist) }}
         {# All unmatched IPs will continue processing here #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
@@ -456,21 +439,26 @@ http://{{ domain }} {
 #   Purpose: Manages the logic for access lists, including configuration and handling.
 #   Parameters:
 #   @param accesslist (string): The UUID of the access list to be applied.
-#   @param content (string): The content to be wrapped in the access list handler.
-#   @param invert (boolean): A flag that inverts the logic of the access list.
 #}
-{% macro handle_accesslist(accesslist, content) %}
+{% macro handle_accesslist(accesslist) %}
+    {# Access list logic for dropping connections based on IP inside handler #}
     {% if accesslist %}
         {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
-        {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
-        @{{ accesslist_obj['@uuid'] }} {
-            {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "1" else '' }} client_ip {{ client_ips }}
-        }
-        handle @{{ accesslist_obj['@uuid'] }} {
-            {{ content }}
-        }
-    {% else %}
-        {{ content }}
+        {% if accesslist_obj %}
+            {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
+            @{{ accesslist_obj['@uuid'] }} {
+                {# Non-inverted access lists have "not" as default, inverted ones '' #}
+                {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
+            }
+            {# When IP is matched, abort or send response code. This will end processing in the scope of this handler #}
+            handle @{{ accesslist_obj['@uuid'] }} {
+                {% if accesslist_obj.HttpResponseCode or accesslist_obj.HttpResponseMessage %}
+                    respond {{ '"' + accesslist_obj.HttpResponseMessage|default('') + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode|default(403) }}
+                {% else %}
+                    abort
+                {% endif %}
+            }
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -490,25 +478,6 @@ http://{{ domain }} {
             {% endif %}
         {% endfor %}
     }
-    {% endif %}
-{% endmacro %}
-
-{#
-#   Macro: handle_response
-#   Purpose: Manages the response logic for access lists and aborts.
-#   Parameters:
-#   @param accesslist (object): The access list object containing response settings.
-#   @param general_abort (string): The global abort setting.
-#}
-{% macro handle_response(accesslist, general_abort) %}
-    {% if accesslist %}
-        {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
-            respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
-        {% elif general_abort == "1" %}
-            abort
-        {% endif %}
-    {% elif general_abort == "1" %}
-        abort
     {% endif %}
 {% endmacro %}
 
@@ -589,10 +558,7 @@ http://{{ domain }} {
                         {% set subdomain_content %}
                             {{ render_handles(subdomain_handles, subdomain.basicauth) }}
                         {% endset %}
-                        {{ handle_accesslist(subdomain.accesslist, subdomain_content) }}
-
-                        {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
-                        {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+                        {{ handle_accesslist(subdomain.accesslist) }}
                     }
                 {% endif %}
             {% endfor %}
@@ -601,10 +567,7 @@ http://{{ domain }} {
             {% set wildcard_content %}
                 {{ render_handles(wildcard_handles, reverse.basicauth) }}
             {% endset %}
-            {{ handle_accesslist(reverse.accesslist, wildcard_content) }}
-
-            {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
-            {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+            {{ handle_accesslist(reverse.accesslist) }}
         }
     {% endif %}
 {% endfor %}
