@@ -379,9 +379,8 @@ http://{{ domain }} {
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
-        {# Access list logic for dropping connections based on IP #}
         {{ handle_accesslist(handle.accesslist) }}
-        {# All unmatched IPs will continue processing here #}
+        {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
         {% endif %}
@@ -436,12 +435,12 @@ http://{{ domain }} {
 
 {#
 #   Macro: handle_accesslist
-#   Purpose: Manages the logic for access lists, including configuration and handling.
+#   Purpose: Manages the logic for access lists, used for handlers, domains and subdomains
 #   Parameters:
 #   @param accesslist (string): The UUID of the access list to be applied.
 #}
 {% macro handle_accesslist(accesslist) %}
-    {# Access list logic for dropping connections based on IP inside handler #}
+    {# Access list logic for dropping connections based on IP #}
     {% if accesslist %}
         {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
         {% if accesslist_obj %}
@@ -450,7 +449,7 @@ http://{{ domain }} {
                 {# Non-inverted access lists have "not" as default, inverted ones '' #}
                 {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
             }
-            {# When IP is matched, abort or send response code. This will end processing in the scope of this handler #}
+            {# When IP is matched, abort or send response code. This will end processing and drop the request #}
             handle @{{ accesslist_obj['@uuid'] }} {
                 {% if accesslist_obj.HttpResponseCode or accesslist_obj.HttpResponseMessage %}
                     respond {{ '"' + accesslist_obj.HttpResponseMessage|default('') + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode|default(403) }}
@@ -555,19 +554,17 @@ http://{{ domain }} {
                     }
                     handle @{{ subdomain['@uuid'] }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-                        {% set subdomain_content %}
-                            {{ render_handles(subdomain_handles, subdomain.basicauth) }}
-                        {% endset %}
                         {{ handle_accesslist(subdomain.accesslist) }}
+                        {# All IPs not matched by accesslist will continue processing #}
+                        {{ render_handles(subdomain_handles, subdomain.basicauth) }}
                     }
                 {% endif %}
             {% endfor %}
 
-            {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-            {% set wildcard_content %}
-                {{ render_handles(wildcard_handles, reverse.basicauth) }}
-            {% endset %}
+            {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
             {{ handle_accesslist(reverse.accesslist) }}
+            {# All IPs not matched by accesslist will continue processing #}
+            {{ render_handles(domain_handles, reverse.basicauth) }}
         }
     {% endif %}
 {% endfor %}
