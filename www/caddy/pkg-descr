@@ -23,6 +23,7 @@ Plugin Changelog
 * Cleanup: Caddyfile template logic for Access Lists has been rewritten
 * Cleanup: TLS checkboxes have been converted to dropdowns with http/https for clarity
 * Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
+* Fix: Layer4 ports did not render in 1.7.0 due to a small regression in Caddyfile template
 
 1.7.0
 
