@@ -287,7 +287,7 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>FromDomain,FromPort</display>
+                            <display>FromDomain,description</display>
                             <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>

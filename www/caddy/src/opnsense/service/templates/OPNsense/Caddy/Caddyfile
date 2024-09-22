@@ -234,7 +234,7 @@
 #   There are no regressions to set these ports up.
 #}
 
-{% if enableLayer4|default("0") == "1" %}
+{% if generalSettings.EnableLayer4|default("0") == "1" %}
     # Layer4 default HTTP port
     {% if httpPort %}
         :{{ httpPort }} {
@@ -451,8 +451,8 @@ http://{{ domain }} {
             }
             {# When IP is matched, abort or send response code. This will end processing and drop the request #}
             handle @{{ accesslist_obj['@uuid'] }} {
-                {% if accesslist_obj.HttpResponseCode or accesslist_obj.HttpResponseMessage %}
-                    respond {{ '"' + accesslist_obj.HttpResponseMessage|default('') + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode|default(403) }}
+                {% if accesslist_obj.HttpResponseCode %}
+                    respond {{ '"' + accesslist_obj.HttpResponseMessage + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode }}
                 {% else %}
                     abort
                 {% endif %}
