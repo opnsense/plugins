@@ -76,38 +76,19 @@
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
     #            Credential logging is useful for troubleshooting basic auth.
     #}
-    {% set accessListUuid = generalSettings.accesslist %}
-    {% set logCredentials = generalSettings.LogCredentials %}
-    {% set enableLayer4 = generalSettings.EnableLayer4 %}
-
-    {% set hasAccessList = false %}
-    {% set hasLogCredentials = false %}
-    {% set hasEnableLayer4 = false %}
-
-    {% if accessListUuid %}
-        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
-        {% if accessList %}
-            {% set hasAccessList = true %}
-        {% endif %}
+    {% if generalSettings.accesslist %}
+        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', generalSettings.accesslist) | first %}
     {% endif %}
 
-    {% if logCredentials == '1' %}
-        {% set hasLogCredentials = true %}
-    {% endif %}
-
-    {% if enableLayer4 == '1' %}
-        {% set hasEnableLayer4 = true %}
-    {% endif %}
-
-    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 %}
     servers {
-        {% if hasAccessList %}
+        protocols {{ generalSettings.HttpVersion.split(',') | join(' ') }}
+        {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
-        {% if hasLogCredentials %}
+        {% if generalSettings.LogCredentials|default("0") == "1" %}
             log_credentials
         {% endif %}
-        {% if hasEnableLayer4 %}
+        {% if generalSettings.EnableLayer4|default("0") == "1" %}
             listener_wrappers {
                 {# Plug the Layer 4 template in #}
                 {% include "OPNsense/Caddy/includeLayer4" %}
@@ -115,7 +96,6 @@
             }
         {% endif %}
     }
-    {% endif %}
 
     {#
     #   Section: Dynamic DNS Global Configuration
@@ -254,7 +234,7 @@
 #   There are no regressions to set these ports up.
 #}
 
-{% if enableLayer4|default("0") == "1" %}
+{% if generalSettings.EnableLayer4|default("0") == "1" %}
     # Layer4 default HTTP port
     {% if httpPort %}
         :{{ httpPort }} {
@@ -399,6 +379,8 @@ http://{{ domain }} {
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {{ handle_accesslist(handle.accesslist) }}
+        {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
         {% endif %}
@@ -453,25 +435,29 @@ http://{{ domain }} {
 
 {#
 #   Macro: handle_accesslist
-#   Purpose: Manages the logic for access lists, including configuration and handling.
+#   Purpose: Manages the logic for access lists, used for handlers, domains and subdomains
 #   Parameters:
 #   @param accesslist (string): The UUID of the access list to be applied.
-#   @param content (string): The content to be wrapped in the access list handler.
-#   @param invert (boolean): A flag that inverts the logic of the access list.
 #}
-{% macro handle_accesslist(accesslist, content, invert=false) %}
+{% macro handle_accesslist(accesslist) %}
+    {# Access list logic for dropping connections based on IP #}
     {% if accesslist %}
         {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
-        {% set client_ips = accesslist_obj.clientIps.split(',') %}
-        {% set client_ips_space_separated = client_ips | join(' ') %}
-        @{{ accesslist_obj['@uuid'] }} {
-            {{ 'not' if invert or accesslist_obj.accesslistenvert|default("0") == "1" else '' }} client_ip {{ client_ips_space_separated }}
-        }
-        handle @{{ accesslist_obj['@uuid'] }} {
-            {{ content }}
-        }
-    {% else %}
-        {{ content }}
+        {% if accesslist_obj %}
+            {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
+            @{{ accesslist_obj['@uuid'] }} {
+                {# Non-inverted access lists have "not" as default, inverted ones '' #}
+                {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
+            }
+            {# When IP is matched, abort or send response code. This will end processing and drop the request #}
+            handle @{{ accesslist_obj['@uuid'] }} {
+                {% if accesslist_obj.HttpResponseCode %}
+                    respond {{ '"' + accesslist_obj.HttpResponseMessage + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode }}
+                {% else %}
+                    abort
+                {% endif %}
+            }
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -491,25 +477,6 @@ http://{{ domain }} {
             {% endif %}
         {% endfor %}
     }
-    {% endif %}
-{% endmacro %}
-
-{#
-#   Macro: handle_response
-#   Purpose: Manages the response logic for access lists and aborts.
-#   Parameters:
-#   @param accesslist (object): The access list object containing response settings.
-#   @param general_abort (string): The global abort setting.
-#}
-{% macro handle_response(accesslist, general_abort) %}
-    {% if accesslist %}
-        {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
-            respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
-        {% elif general_abort == "1" %}
-            abort
-        {% endif %}
-    {% elif general_abort == "1" %}
-        abort
     {% endif %}
 {% endmacro %}
 
@@ -587,25 +554,17 @@ http://{{ domain }} {
                     }
                     handle @{{ subdomain['@uuid'] }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-                        {% set subdomain_content %}
-                            {{ render_handles(subdomain_handles, subdomain.basicauth) }}
-                        {% endset %}
-                        {{ handle_accesslist(subdomain.accesslist, subdomain_content) }}
-
-                        {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
-                        {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+                        {{ handle_accesslist(subdomain.accesslist) }}
+                        {# All IPs not matched by accesslist will continue processing #}
+                        {{ render_handles(subdomain_handles, subdomain.basicauth) }}
                     }
                 {% endif %}
             {% endfor %}
 
-            {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-            {% set wildcard_content %}
-                {{ render_handles(wildcard_handles, reverse.basicauth) }}
-            {% endset %}
-            {{ handle_accesslist(reverse.accesslist, wildcard_content) }}
-
-            {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
-            {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+            {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+            {{ handle_accesslist(reverse.accesslist) }}
+            {# All IPs not matched by accesslist will continue processing #}
+            {{ render_handles(domain_handles, reverse.basicauth) }}
         }
     {% endif %}
 {% endfor %}

@@ -29,9 +29,15 @@
         </field>
         <field>
             <id>caddy.general.DisableSuperuser</id>
-            <label>Disable Superuser</label>
-            <type>checkbox</type>
+            <label>System User</label>
+            <type>dropdown</type>
             <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.HttpVersion</id>
+            <label>HTTP Version</label>
+            <type>select_multiple</type>
+            <help><![CDATA[Select the HTTP Version for the frontend listeners. By default, QUIC (HTTP/3) is enabled. This means, UDP/443 will be used by Caddy. To free this protocol port combination for a different service, choose a different combination of protocols that does not include HTTP/3.]]></help>
         </field>
         <field>
             <id>caddy.general.HttpPort</id>
@@ -52,12 +58,6 @@
             <label>Trusted Proxies</label>
             <type>dropdown</type>
             <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.abort</id>
-            <label>Abort Connections</label>
-            <type>checkbox</type>
-            <help><![CDATA[Abort all connections that don't have a matching Handle or Access List. This option does not conflict with "Let's Encrypt" or "ZeroSSL". Disable it for troubleshooting purposes, e.g., testing if the "Domain" works and the automatic certificate has been installed. For production use, enabling this option is recommended.]]></help>
         </field>
         <field>
             <id>caddy.general.GracePeriod</id>
@@ -206,6 +206,12 @@
             <help><![CDATA[Select a Forward Auth Provider. It can be added inside a "Handler" by enabling the "Forward Auth" checkbox. For Authelia only the basic subdomain example is supported. More information: https://www.authelia.com/integration/proxies/caddy/#basic-examples. For Authentik custom headers are not supported. More information: https://docs.goauthentik.io/docs/providers/proxy/server_caddy]]></help>
         </field>
         <field>
+            <id>caddy.general.AuthToTls</id>
+            <label>Protocol</label>
+            <type>dropdown</type>
+            <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the Forward Auth Provider.]]></help>
+        </field>
+        <field>
             <id>caddy.general.AuthToDomain</id>
             <label>Forward Auth Domain</label>
             <type>text</type>
@@ -216,12 +222,6 @@
             <label>Forward Auth Port</label>
             <type>text</type>
             <help><![CDATA[Enter the listen port of the chosen Forward Auth Provider.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.AuthToTls</id>
-            <label>TLS</label>
-            <type>checkbox</type>
-            <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the Forward Auth Provider.]]></help>
         </field>
         <field>
             <id>caddy.general.AuthToUri</id>

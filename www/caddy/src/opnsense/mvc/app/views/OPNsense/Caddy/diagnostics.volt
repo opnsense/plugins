@@ -133,10 +133,6 @@
 </script>
 
 <style>
-    .nav-tabs a {
-        font-weight: bold;
-    }
-
     .custom-style .content-box {
         padding: 10px;
     }

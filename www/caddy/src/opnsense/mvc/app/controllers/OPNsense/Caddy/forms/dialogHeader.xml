@@ -8,14 +8,12 @@
     <field>
         <id>header.HeaderType</id>
         <label>Header Type</label>
-        <hint>Host</hint>
         <type>text</type>
         <help><![CDATA[Enter a header, for example "Host". Use the "+" or "-" prefix to add or remove this header, for example "-Host" or "+Host". A suffix match like "-Host-*" is also supported. To replace a header, use "Host" without "+" or "-".]]></help>
     </field>
     <field>
         <id>header.HeaderValue</id>
         <label>Header Value</label>
-        <hint>{upstream_hostport}</hint>
         <type>text</type>
         <help><![CDATA[Enter a value for the selected header. One of the most common options is "{upstream_hostport}". It is also possible to use a regular expression to search for a specific value in a header. For example: "^prefix-([A-Za-z0-9]*)$" which uses the regular expression language RE2 included in Go.]]></help>
     </field>

@@ -6,6 +6,16 @@
         <help><![CDATA[Enable this Layer4 route.]]></help>
     </field>
     <field>
+        <id>layer4.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this Layer4 route.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Frontend</label>
+    </field>
+    <field>
         <id>layer4.FromDomain</id>
         <label>Domain</label>
         <type>select_multiple</type>
@@ -18,6 +28,10 @@
         <label>Matchers</label>
         <type>dropdown</type>
         <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains without terminating TLS or altering the traffic. Only protocols that send a "Client Hello" (like TLS), or a "Host Header" (like HTTP) can be routed here. Routing Precedence: 1. "SSH (or other protocols)", 2. "HTTP (Host Header)", 3. "TLS (SNI)", 4. "TLS (inverted SNI)", 5. "HTTP Handlers" (hidden default route for all unmatched traffic). The "SSH" matcher (and any other matcher that does not evaluate Host Header or SNI), will match any SSH like traffic on the default ports. That means, these protocols will only match once per ruleset and will proxy traffic to one upstream.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Upstream</label>
     </field>
     <field>
         <id>layer4.ToDomain</id>
@@ -34,32 +48,18 @@
         <help><![CDATA[Choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
-        <id>layer4.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this Layer4 route.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Health Check</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
         <id>layer4.PassiveHealthFailDuration</id>
         <label>Upstream Fail Duration</label>
         <type>text</type>
         <help><![CDATA[Enables a passive health check when multiple destinations in "Upstream Domain" are set. "Fail Duration" is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Proxy Protocol</label>
-        <collapse>true</collapse>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>layer4.ProxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>
         <help><![CDATA[Add the HA Proxy Protocol header. Either version 1 or 2 can be chosen. The default is off, since it is only needed when the upstream can use the Proxy Protocol header.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>

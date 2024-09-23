@@ -91,7 +91,7 @@ export default class CaddyDomain extends BaseTableWidget {
                             data-tooltip="caddy-domain-${domainPort}" title="${tooltipText}">
                         </i>
                         &nbsp;
-                        <a class="caddy-domainport" href="/ui/caddy/reverse_proxy">
+                        <a class="caddy-domainport" href="https://${domainPort}" target="_blank">
                             ${domainPort}
                         </a>
                     </div>

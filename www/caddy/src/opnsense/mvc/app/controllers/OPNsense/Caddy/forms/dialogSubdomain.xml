@@ -6,6 +6,16 @@
         <help><![CDATA[Enable this subdomain.]]></help>
     </field>
     <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this subdomain.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Frontend</label>
+    </field>
+    <field>
         <id>subdomain.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
@@ -16,18 +26,7 @@
         <label>Subdomain</label>
         <type>text</type>
         <hint>opn.example.com</hint>
-        <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports as their parent wildcard domain.]]></help>
-    </field>
-    <field>
-        <id>subdomain.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this subdomain.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>DNS</label>
-        <collapse>true</collapse>
+        <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports and protocols as their parent wildcard domain.]]></help>
     </field>
     <field>
         <id>subdomain.DynDns</id>
@@ -36,15 +35,11 @@
         <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this subdomain will be automatically updated.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Trust</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
         <id>subdomain.AcmePassthrough</id>
         <label>HTTP-01 Challenge Redirection</label>
         <type>text</type>
         <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables an ACME Client behind Caddy to serve "/.well-known/acme-challenge/" on port 80. Caddy will reverse proxy the HTTP-01 challenge for this subdomain.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
