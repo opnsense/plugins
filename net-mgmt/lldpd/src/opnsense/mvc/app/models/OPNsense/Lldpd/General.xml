@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/lldpd/general</mount>
     <description>Lldpd configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -23,6 +23,10 @@
             <default>0</default>
             <Required>Y</Required>
         </sonmp>
+        <agentx type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </agentx>
         <interface type="TextField">
             <Required>N</Required>
         </interface>
