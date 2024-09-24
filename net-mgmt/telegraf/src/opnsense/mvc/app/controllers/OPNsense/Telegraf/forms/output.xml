@@ -28,6 +28,12 @@
         <help>Write timeout (for the InfluxDB client), formatted as a string. If not provided, will default to 5s. 0s means no timeout (not recommended).</help>
     </field>
     <field>
+        <id>output.influx_name_prefix</id>
+        <label>Name Prefix</label>
+        <type>text</type>
+        <help>Specifies a prefix to attach to the measurement name, formatted as a string.</help>
+    </field>
+    <field>
         <id>output.influx_username</id>
         <label>Username</label>
         <type>text</type>
