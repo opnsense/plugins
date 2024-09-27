@@ -1,0 +1,13 @@
+<form>
+    <field>
+        <id>xymonclient.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>xymonclient.XYMSERVERS</id>
+        <label>Server addresses</label>
+        <type>text</type>
+        <help>Xymon server addresses.</help>
+    </field>
+ </form>
