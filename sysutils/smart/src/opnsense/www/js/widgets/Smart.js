@@ -41,7 +41,7 @@ export default class Smart extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        let disks = await ajaxCall(`/api/smart/service/list/detailed`, {}, null);
+        let disks = await this.ajaxCall(`/api/smart/service/${'list/detailed'}`, {}, null);
         if (disks && disks.devices) {
             const rows = [];
             for (const device of disks.devices) {
