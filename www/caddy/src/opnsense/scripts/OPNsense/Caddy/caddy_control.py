@@ -29,14 +29,41 @@
 import subprocess
 import json
 import sys
+import os
+import signal
+import time
+
+
+def kill_and_start_caddy(pidfile):
+    """
+    Caddy can fail to reload in rare circumstances when
+    persistent keepalive connections are open with the NTLM
+    module active
+    """
+    if os.path.exists(pidfile):
+        try:
+            with open(pidfile, 'r') as f:
+                pid = int(f.read().strip())
+
+            os.kill(pid, signal.SIGKILL)
+            time.sleep(2)
+            subprocess.run(["service", "caddy", "start"], check=True)
+        except Exception as e:
+            print(f"Error: {str(e)}")
+    else:
+        subprocess.run(["service", "caddy", "start"], check=True)
 
 
 def run_service_command(service_action, action_message):
+    """
+    Includes special actions like a validation and
+    timeouts that force a restart when caddy is unresponsive
+    """
     result = {"message": action_message}
+    pidfile = "/var/run/caddy/caddy.pid"
 
     if service_action == "validate":
         try:
-            # Validate the Caddyfile with explicit --config flag, capturing both stdout and stderr
             validation_output = subprocess.check_output(
                 ["caddy", "validate", "--config", "/usr/local/etc/caddy/Caddyfile"], stderr=subprocess.STDOUT,
                 text=True)
@@ -44,16 +71,27 @@ def run_service_command(service_action, action_message):
                 result["status"] = "ok"
                 result["message"] = "Caddy configuration is valid."
             else:
-                # Search for the specific error message
                 error_msg = next((line for line in validation_output.split('\n') if line.startswith("Error:")),
                                  "Caddy configuration is not valid.")
                 result["status"] = "failed"
                 result["message"] = error_msg
         except subprocess.CalledProcessError as e:
-            # Extracting only the specific "Error: ..." line from the output
             error_msg = next((line for line in e.output.split('\n') if line.startswith("Error:")), "Validation failed.")
             result["status"] = "failed"
             result["message"] = error_msg
+    elif service_action in ["stop", "restart", "reloadssl"]:
+        try:
+            proc = subprocess.Popen(["service", "caddy", service_action])
+            try:
+                proc.wait(timeout=20)
+                result["status"] = "ok"
+            except subprocess.TimeoutExpired:
+                kill_and_start_caddy(pidfile)
+                result["status"] = "ok"
+                result["message"] = f"{service_action.capitalize()} took too long, Caddy was forcefully restarted."
+        except subprocess.CalledProcessError as e:
+            result["status"] = "failed"
+            result["message"] = str(e)
     else:
         try:
             subprocess.run(["service", "caddy", service_action], check=True)
@@ -71,14 +109,12 @@ actions = {
     "stop": "stop",
     "restart": "restart",
     "reload": "reloadssl",
-    # Reloadssl reloads even if the config in the Caddyfile is unchanged, using an extra command of the rc.d script,
-    # forcing certificates in the filesystem to be reloaded.
-    "validate": "validate"  # Validate action
+    "validate": "validate"
 }
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        action = sys.argv[1]  # Get the action from the command-line argument
+        action = sys.argv[1]
         if action in actions:
             cmd_action = action
             service_action = actions[action]
@@ -86,7 +122,7 @@ if __name__ == "__main__":
 
             # Call setup script for 'validate' and 'reloadssl' actions. This is needed because the setup script triggers
             # the caddy_certs.php script, which exports all certificates into the filesystem. Caddy reloads certificates
-            # when reloadssl is used. Because it is a non standard command, the caddy_setup script will not be triggered
+            # when reloadssl is used. Because it is a non-standard command, the caddy_setup script will not be triggered
             # in /etc/rc.conf.d/caddy. The validate command needs it to make sure all certificates are in the filesystem,
             # because otherwise the validation fails.
             if service_action in ["validate", "reloadssl"]:

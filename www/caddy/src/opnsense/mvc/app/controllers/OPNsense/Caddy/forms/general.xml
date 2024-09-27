@@ -64,7 +64,7 @@
             <label>Grace Period</label>
             <type>text</type>
             <hint>10</hint>
-            <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
+            <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close. If the grace period is over and Caddy is unresponsive, there will be a forced kill and service restart.]]></help>
         </field>
     </tab>
     <tab id="general-logsettings" description="Log Settings">
