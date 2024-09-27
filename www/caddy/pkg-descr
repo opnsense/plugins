@@ -25,6 +25,7 @@ Plugin Changelog
 * Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
 * Fix: Layer4 default ports did not render due to regression in previous version
 * Fix: Invert in Access Lists did not render due to regression in previous version
+* Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
 
 1.7.0
 
