@@ -77,4 +77,23 @@
         <type>text</type>
         <help>Set the DNS server hosting this file. This should usually be the FQDN of your firewall where the BIND plugin is installed.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>DNSSEC</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>domain.dnssecpolicy</id>
+        <label>DNSSEC policy</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Enable the default or a custom 'dnssec-policy' for this zone. The custom 'dnssec-policy' has to be configured in the 'General' tab.</help>
+    </field>
+    <field>
+        <id>domain.inlinesigning</id>
+        <label>DNSSEC inline-signing</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Sign this zone completely transparently. 'inline-signing' must be enabled explicitly for zones using 'dnssec-policy' without a configured 'allow-update' or 'update-policy'. See https://kb.isc.org/docs/dnssec-policy-requires-dynamic-dns-or-inline-signing</help>
+    </field>
 </form>
