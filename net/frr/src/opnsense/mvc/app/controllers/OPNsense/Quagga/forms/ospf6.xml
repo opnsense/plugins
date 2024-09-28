@@ -23,6 +23,12 @@
         <hint>Type or select a route source.</hint>
     </field>
     <field>
+        <id>ospf6.redistributemap</id>
+        <label>Redistribution Map</label>
+        <type>dropdown</type>
+        <help>Route Map to set for Redistribution.</help>
+    </field>
+    <field>
         <id>ospf6.routerid</id>
         <label>Router ID</label>
         <type>text</type>
@@ -33,7 +39,6 @@
         <label>Advertise Default Gateway</label>
         <type>checkbox</type>
         <help>This will send the information that we have a default gateway.</help>
-        <style>opt_checkbox</style>
     </field>
     <field>
         <id>ospf6.originatealways</id>
