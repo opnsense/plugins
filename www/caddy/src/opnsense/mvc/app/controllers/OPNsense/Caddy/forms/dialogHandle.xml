@@ -37,7 +37,7 @@
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
+        <help><![CDATA[Choose a handling type: "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -45,7 +45,7 @@
         <label>Path</label>
         <type>text</type>
         <hint>any</hint>
-        <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
+        <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -83,6 +83,18 @@
     </field>
     <field>
         <type>header</type>
+        <label>Directive</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.HandleDirective</id>
+        <label>Directive</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose a handling directive: "reverse_proxy" will proxy all HTTP traffic to the selected upstream. "redir" will create a HTTP redirect.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
         <label>Upstream</label>
     </field>
     <field>
@@ -113,7 +125,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode.]]></help>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -126,7 +138,7 @@
         <id>handle.ToPath</id>
         <label>Upstream Path</label>
         <type>text</type>
-        <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path.]]></help>
+        <help><![CDATA[When directive is "reverse_proxy", enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path. When directive is "redir", add the path the request should be redirected to; leaving it empty will append {uri}.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

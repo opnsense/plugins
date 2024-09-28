@@ -468,6 +468,7 @@
                             <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handler') }}</th>
                             <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Path') }}</th>
                             <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('HTTP Headers') }}</th>
+                            <th data-column-id="HandleDirective" data-type="string" data-visible="false">{{ lang._('Directive') }}</th>
                             <th data-column-id="HttpTls" data-type="string" data-visible="false">{{ lang._('Protocol') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
