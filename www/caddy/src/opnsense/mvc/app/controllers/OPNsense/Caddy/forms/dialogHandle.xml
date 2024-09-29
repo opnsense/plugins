@@ -37,7 +37,7 @@
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a handling directive. "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
+        <help><![CDATA[Choose a handling type: "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -45,7 +45,7 @@
         <label>Path</label>
         <type>text</type>
         <hint>any</hint>
-        <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be reverse proxied.]]></help>
+        <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -69,17 +69,13 @@
     </field>
     <field>
         <type>header</type>
-        <label>Header</label>
-        <advanced>true</advanced>
+        <label>Directive</label>
     </field>
     <field>
-        <id>handle.header</id>
-        <label>HTTP Headers</label>
+        <id>handle.HandleDirective</id>
+        <label>Directive</label>
         <type>dropdown</type>
-        <type>select_multiple</type>
-        <size>5</size>
-        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[Choose a handling directive: "reverse_proxy" will proxy all HTTP traffic to the selected upstream. "redir" will create a HTTP redirect.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -89,7 +85,18 @@
         <id>handle.HttpVersion</id>
         <label>HTTP Version</label>
         <type>dropdown</type>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires HTTPS, and only establishes connections to webservers that also support HTTP/3.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>handle.header</id>
+        <label>HTTP Headers</label>
+        <type>dropdown</type>
+        <type>select_multiple</type>
+        <size>5</size>
+        <style>style_reverse_proxy selectpicker</style>
+        <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -97,6 +104,7 @@
         <label>HTTP Keepalive</label>
         <type>text</type>
         <hint>120</hint>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
         <advanced>true</advanced>
     </field>
@@ -113,7 +121,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <hint>192.168.1.1</hint>
-        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode.]]></help>
+        <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
@@ -126,13 +134,14 @@
         <id>handle.ToPath</id>
         <label>Upstream Path</label>
         <type>text</type>
-        <help><![CDATA[Enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path.]]></help>
+        <help><![CDATA[When directive is "reverse_proxy", enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path. When directive is "redir", add the path the request should be redirected to; leaving it empty will append {uri}.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
         <id>handle.PassiveHealthFailDuration</id>
         <label>Upstream Fail Duration</label>
         <type>text</type>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[Enables a passive health check when multiple destinations in "Upstream Domain" are set. "Fail Duration" is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
         <advanced>true</advanced>
     </field>
@@ -140,28 +149,28 @@
         <id>handle.HttpTlsInsecureSkipVerify</id>
         <label>TLS Insecure Skip Verify</label>
         <type>checkbox</type>
-        <style>HttpTls</style>
+        <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trust Pool</label>
         <type>dropdown</type>
-        <style>HttpTls</style>
+        <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Choose a CA or self-signed certificate to trust from "System - Trust - Authorities". Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
     </field>
     <field>
         <id>handle.HttpTlsServerName</id>
         <label>TLS Server Name</label>
         <type>text</type>
-        <style>HttpTls</style>
+        <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
     </field>
     <field>
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
-        <style>HttpTls</style>
+        <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
     </field>
 </form>

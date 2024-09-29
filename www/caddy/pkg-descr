@@ -13,6 +13,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.7.2
+
+* Add: Directive in HTTP Handler can be chosen, "reverse_proxy" and "redir"
+
 1.7.1
 
 * Add: Frontend HTTP Version can be selected in General Settings, can be used to disable QUIC protocol
