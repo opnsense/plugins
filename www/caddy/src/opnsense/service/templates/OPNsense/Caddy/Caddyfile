@@ -441,7 +441,7 @@ http://{{ domain }} {
             {% else %}
                 {% set domain_with_port = formatted_domain %}
             {% endif %}
-            {{ handle.HandleDirective|default("redir") }} {{ protocol }}{{ domain_with_port }}{{ handle.ToPath|default("{uri}") }}
+            {{ handle.HandleDirective }} {{ protocol }}{{ domain_with_port }}{{ handle.ToPath|default("{uri}") }}
         {% endif %}
     }
 {% endmacro %}
