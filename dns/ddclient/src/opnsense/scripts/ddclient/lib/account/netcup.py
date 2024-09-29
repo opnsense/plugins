@@ -58,7 +58,7 @@ class Netcup(BaseAccount):
                 syslog.syslog(syslog.LOG_ERR, "Incomplete FQDN offerred %s" % self.settings['hostnames'])
                 return False
 
-            syslog.syslog(syslog.LOG_DEBUG, f'Hostnames in settings: {str(self.settings['hostnames'])}')
+            syslog.syslog(syslog.LOG_DEBUG, f"Hostnames in settings: {str(self.settings['hostnames'])}")
             all_hostnames = self.settings['hostnames'].split(',')
             hostnames = {}
             for hostname in all_hostnames:
