@@ -67,6 +67,9 @@ class Netcup(BaseAccount):
                 if domain not in hostnames:
                     hostnames[domain] = []
                 hostnames[domain].append(hostname)
+            
+            if self.settings['password'].count('|') == 1:
+                self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('|')
 
             if self.settings['APIPassword'] is None or self.settings['APIKey'] is None:
                 syslog.syslog(syslog.LOG_ERR, "Unable to parse APIPassword|APIKey.")
