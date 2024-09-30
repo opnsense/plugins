@@ -1593,7 +1593,7 @@
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_prefix>
                 <acme_vault_token type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_token>
