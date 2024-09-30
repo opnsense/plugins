@@ -45,6 +45,9 @@ class AcmeVault extends Base implements LeAutomationInterface
         if ((string)$this->config->acme_vault_kvv2 == 1) {
             $this->acme_env['VAULT_KV_V2'] = 1;
         }
+        if (!empty((string)$this->config->acme_vault_token)) {
+            $this->acme_env['VAULT_TOKEN'] = (string)$this->config->acme_vault_token;
+        }
         $this->acme_args[] = '--deploy-hook vault';
         return true;
     }

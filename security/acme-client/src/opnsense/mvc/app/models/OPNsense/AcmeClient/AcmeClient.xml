@@ -1596,6 +1596,11 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_prefix>
+                <acme_vault_token type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_vault_token>
                 <acme_vault_kvv2 type="BooleanField">
                     <default>1</default>
                 </acme_vault_kvv2>
