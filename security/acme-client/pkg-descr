@@ -8,6 +8,15 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.6
+
+Added:
+* add Lima-City DNS API (#3566)
+
+Fixed:
+* fix Hashicorp Vault support, added Vault token (#4270)
+* fix acme.sh error: "Cannot find dns api hook for..."
+
 4.5
 
 Fixed:
