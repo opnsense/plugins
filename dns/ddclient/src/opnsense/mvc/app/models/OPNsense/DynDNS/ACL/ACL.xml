@@ -2,10 +2,10 @@
     <page-services-dyndns>
         <name>Services: Dynamic DNS</name>
         <patterns>
+            <pattern>ui/dyndns/*</pattern>
             <pattern>api/dyndns/accounts/*</pattern>
             <pattern>api/dyndns/service/*</pattern>
             <pattern>api/dyndns/settings/*</pattern>
-            <pattern>ui/dyndns/*</pattern>
         </patterns>
     </page-services-dyndns>
 </acl>
