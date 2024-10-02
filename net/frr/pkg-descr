@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.41
+
+* Set up networks, prefix lists, and route maps for OSPF6 (contributed by Mike Shuey)
+
 1.40
 
 * Add staticd to routing suite
