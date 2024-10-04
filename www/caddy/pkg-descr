@@ -16,6 +16,7 @@ Plugin Changelog
 1.7.2
 
 * Add: Directive in HTTP Handler can be chosen, "reverse_proxy" and "redir"
+* Build: Update Caddy Layer4 module, fixes TLS matcher in chromium based browsers
 * Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
 
 1.7.1
