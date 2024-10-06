@@ -339,6 +339,14 @@
             }
         });
 
+        $("#layer4\\.Matchers").change(function() {
+            if ($(this).val() !== "tlssni" && $(this).val() !== "httphost") {
+                $(".style_matchers").closest('tr').hide();
+            } else {
+                $(".style_matchers").closest('tr').show();
+            }
+        });
+
         // Initialize tabs, service control and filter selectpicker
         initializeTabs();
         updateServiceControlUI('caddy');

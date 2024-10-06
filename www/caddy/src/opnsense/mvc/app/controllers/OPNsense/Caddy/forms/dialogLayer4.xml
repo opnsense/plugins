@@ -56,9 +56,9 @@
         <id>layer4.FromDomain</id>
         <label>Domain</label>
         <type>select_multiple</type>
-        <style>tokenize</style>
+        <style>style_matchers tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header on OSI Layer 7. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*". Some protocols match all domains and "*" is mandatory. Only applicable when a matched protocol offers this information.]]></help>
+        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
     </field>
     <field>
         <type>header</type>

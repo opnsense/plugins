@@ -471,7 +471,6 @@
                 </Protocol>
                 <FromPort type="PortField"/>
                 <FromDomain type="HostnameField">
-                    <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>

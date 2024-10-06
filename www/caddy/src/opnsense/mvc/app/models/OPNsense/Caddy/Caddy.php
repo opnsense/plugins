@@ -276,11 +276,11 @@ class Caddy extends BaseModel
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
             $key = $item->__reference;
 
-            if (!in_array((string)$item->Matchers, ['httphost', 'tlssni']) && (string)$item->FromDomain !== '*') {
+            if (in_array((string)$item->Matchers, ['httphost', 'tlssni']) && empty((string)$item->FromDomain)) {
                 $messages->appendMessage(new Message(
                     sprintf(
                         gettext(
-                            'When "%s" matcher is selected, the only valid entry in Domain is "*".'
+                            'When "%s" matcher is selected, domain is required.'
                         ),
                         $item->Matchers
                     ),
