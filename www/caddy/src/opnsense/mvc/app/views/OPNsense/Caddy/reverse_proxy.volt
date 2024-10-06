@@ -617,6 +617,9 @@
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                            <th data-column-id="Type" data-type="string" data-visible="false">{{ lang._('Routing Type') }}</th>
+                            <th data-column-id="Protocol" data-type="string" data-visible="false">{{ lang._('Protocol') }}</th>
+                            <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
                             <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="Matchers" data-type="string">{{ lang._('Matcher') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>

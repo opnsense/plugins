@@ -453,6 +453,23 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+                <Type type="OptionField">
+                    <Required>Y</Required>
+                    <Default>listener_wrappers</Default>
+                    <OptionValues>
+                        <listener_wrappers>listener_wrappers</listener_wrappers>
+                        <global>global</global>
+                    </OptionValues>
+                </Type>
+                <Protocol type="OptionField">
+                    <Required>Y</Required>
+                    <Default>tcp</Default>
+                    <OptionValues>
+                        <tcp>TCP</tcp>
+                        <udp>UDP</udp>
+                    </OptionValues>
+                </Protocol>
+                <FromPort type="PortField"/>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
@@ -466,6 +483,7 @@
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <any>ANY</any>
                         <dns>DNS</dns>
                         <httphost>HTTP (Host Header)</httphost>
                         <postgres>Postgres</postgres>
@@ -475,7 +493,7 @@
                         <socks5>SOCKSv5</socks5>
                         <ssh>SSH</ssh>
                         <tlssni>TLS (SNI)</tlssni>
-                        <nottlssni>TLS (inverted SNI)</nottlssni>
+                        <wireguard>Wireguard</wireguard>
                         <xmpp>XMPP</xmpp>
                     </OptionValues>
                 </Matchers>
