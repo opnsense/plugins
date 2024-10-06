@@ -50,7 +50,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When routing type of the matcher is global, unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.]]></help>
+        <help><![CDATA[Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.]]></help>
     </field>
     <field>
         <id>layer4.FromDomain</id>
@@ -59,6 +59,13 @@
         <style>style_matchers tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
+    </field>
+    <field>
+        <id>layer4.InvertMatchers</id>
+        <label>Invert Matchers</label>
+        <type>checkbox</type>
+        <help><![CDATA[Invert the sense of the matcher. E.g., if the protocol is TLS, inverting will match all traffic that is not TLS. When domains have been chosen, these will be equally inverted.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>

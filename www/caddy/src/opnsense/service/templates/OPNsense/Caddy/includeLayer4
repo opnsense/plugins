@@ -57,12 +57,13 @@
 {% endfor %}
 
 {% macro handle_special_matchers(layer4) %}
+    {% set invert_prefix = 'not ' if layer4.InvertMatchers == '1' else '' %}
     {% if layer4.Matchers == 'httphost' %}
-        http host {{ layer4.FromDomain.replace(',', ' ') }}
+        {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
     {% elif layer4.Matchers == 'tlssni' %}
-        tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+        {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
     {% else %}
-        {{ layer4.Matchers }}
+        {{ invert_prefix }}{{ layer4.Matchers }}
     {% endif %}
 {% endmacro %}
 

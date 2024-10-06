@@ -484,6 +484,7 @@
                     <OptionValues>
                         <any>ANY</any>
                         <dns>DNS</dns>
+                        <http>HTTP</http>
                         <httphost>HTTP (Host Header)</httphost>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
@@ -491,11 +492,13 @@
                         <socks4>SOCKSv4</socks4>
                         <socks5>SOCKSv5</socks5>
                         <ssh>SSH</ssh>
-                        <tlssni>TLS (SNI)</tlssni>
+                        <tls>TLS</tls>
+                        <tlssni>TLS (SNI Client Hello)</tlssni>
                         <wireguard>Wireguard</wireguard>
                         <xmpp>XMPP</xmpp>
                     </OptionValues>
                 </Matchers>
+                <InvertMatchers type="BooleanField"/>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <FieldSeparator>,</FieldSeparator>
