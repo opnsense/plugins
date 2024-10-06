@@ -214,7 +214,7 @@ class Caddy extends BaseModel
             if ($httpPort < 1024) {
                 $messages->appendMessage(new Message(
                     gettext(
-                        'Superuser is disabled, HTTP port must not be empty and must be 1024 or above.'
+                        'www user is active, HTTP port must not be empty and must be 1024 or above.'
                     ),
                     "general.HttpPort"
                 ));
@@ -224,7 +224,7 @@ class Caddy extends BaseModel
             if ($httpsPort < 1024) {
                 $messages->appendMessage(new Message(
                     gettext(
-                        'Superuser is disabled, HTTPS port must not be empty and must be 1024 or above.'
+                        'www user is active, HTTPS port must not be empty and must be 1024 or above.'
                     ),
                     "general.HttpsPort"
                 ));
@@ -237,7 +237,7 @@ class Caddy extends BaseModel
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
                         gettext(
-                            'Superuser is disabled, port must be empty or must be 1024 or above.'
+                            'www user is active, port must be empty or must be 1024 or above.'
                         ),
                         $item->__reference . ".FromPort"
                     ));
@@ -249,35 +249,76 @@ class Caddy extends BaseModel
                     ));
                 }
             }
+
+            foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
+                $fromPort = !empty((string)$item->FromPort) ? (string)$item->FromPort : null;
+
+                if ($fromPort !== null && $fromPort < 1024) {
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'www user is active, port must be empty or must be 1024 or above.'
+                        ),
+                        $item->__reference . ".FromPort"
+                    ));
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'Ports in "Reverse Proxy - Layer4 Routes" must be empty or must be 1024 or above.'
+                        ),
+                        "general.DisableSuperuser"
+                    ));
+                }
+            }
         }
     }
 
-    /**
-    * Check that when certain Layer4 matchers are selected, only "*" is valid as FromDomain.
-    * This happens because they cannot be matched by host header or SNI, so they match all traffic.
-    * The "*" shows the user that all traffic will be matched, and that creating multiple
-    * matchers will not result in more routes for the same traffic type to work.
-    */
     private function checkLayer4Matchers($messages)
     {
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-            $matchers = (string) $item->Matchers;
-            $fromDomain = (string) $item->FromDomain;
+            $key = $item->__reference;
 
-            // Check if matchers is not in the list of specific values
-            $isNotInSpecificMatchers = !in_array($matchers, ['httphost', 'tlssni', 'nottlssni']);
-            $isInvalidFromDomain = $fromDomain !== '*';
-
-            if ($isNotInSpecificMatchers && $isInvalidFromDomain) {
-                $key = $item->__reference;
+            if (!in_array((string)$item->Matchers, ['httphost', 'tlssni']) && (string)$item->FromDomain !== '*') {
                 $messages->appendMessage(new Message(
                     sprintf(
                         gettext(
                             'When "%s" matcher is selected, the only valid entry in Domain is "*".'
                         ),
-                        $matchers
+                        $item->Matchers
                     ),
                     $key . ".FromDomain"
+                ));
+            }
+
+            if ((string)$item->Type !== 'global' && !empty((string)$item->FromPort)) {
+                $messages->appendMessage(new Message(
+                    sprintf(
+                        gettext(
+                            'When routing type is "%s", port must be empty.'
+                        ),
+                        $item->Type
+                    ),
+                    $key . ".FromPort"
+                ));
+            } elseif ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
+                $messages->appendMessage(new Message(
+                    sprintf(
+                        gettext(
+                            'When routing type is "%s", port is required.'
+                        ),
+                        $item->Type
+                    ),
+                    $key . ".FromPort"
+                ));
+            }
+
+            if ((string)$item->Type !== 'global' && ((string)$item->Protocol !== 'tcp')) {
+                $messages->appendMessage(new Message(
+                    sprintf(
+                        gettext(
+                            'When routing type is "%s", protocol must be TCP.'
+                        ),
+                        $item->Type
+                    ),
+                    $key . ".Protocol"
                 ));
             }
         }
