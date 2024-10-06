@@ -16,6 +16,10 @@ Plugin Changelog
 1.7.2
 
 * Add: Directive in HTTP Handler can be chosen, "reverse_proxy" and "redir"
+* Add: Layer4 routes feature. Routing Type "global" or "listener_wrapper" can be chosen
+* Add: Any Layer4 TCP/UDP traffic can be proxied without choosing a Layer 7 protocol matcher
+* Change: Layer4 routes are not ordered automatically anymore
+* Change: Layer4 "not tls sni" matcher has been replaced by generalized "Invert Matchers" checkbox
 * Build: Update Caddy Layer4 module, fixes TLS matcher in chromium based browsers
 * Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
 
