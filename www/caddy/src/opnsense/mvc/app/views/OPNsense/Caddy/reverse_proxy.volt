@@ -630,7 +630,7 @@
                             <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
                             <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="Matchers" data-type="string">{{ lang._('Matchers') }}</th>
-                            <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean">{{ lang._('Invert Matchers') }}</th>
+                            <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Invert Matchers') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>

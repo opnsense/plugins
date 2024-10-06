@@ -240,17 +240,23 @@ class Caddy extends BaseModel
                         ),
                         $key . ".FromDomain"
                     ));
-                } elseif (!in_array((string)$item->Matchers, ['httphost', 'tlssni']) && !empty((string)$item->FromDomain)) {
-                    $messages->appendMessage(new Message(
-                        sprintf(
-                            gettext(
-                                'When "%s" matcher is selected, domain must be empty.'
+                    } elseif (
+                        !in_array((string)$item->Matchers, ['httphost', 'tlssni']) &&
+                        (
+                            !empty((string)$item->FromDomain) &&
+                            (string)$item->FromDomain != '*'
+                        )
+                    ) {
+                        $messages->appendMessage(new Message(
+                            sprintf(
+                                gettext(
+                                    'When "%s" matcher is selected, domain must be empty or *.'
+                                ),
+                                $item->Matchers
                             ),
-                            $item->Matchers
-                        ),
-                        $key . ".FromDomain"
-                    ));
-                }
+                            $key . ".FromDomain"
+                        ));
+                    }
 
                 if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
                     $messages->appendMessage(new Message(
