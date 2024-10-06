@@ -37,11 +37,11 @@ use OPNsense\Core\Config;
 class Caddy extends BaseModel
 {
     // Check domain-port combinations
-    private function checkForUniquePortCombos($items, $messages)
+    private function checkForUniquePortCombos($messages)
     {
         $combos = [];
-        foreach ($items as $item) {
-            $key = $item->__reference; // Dynamic key based on item reference
+        foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+            $key = $item->__reference;
             $fromDomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
@@ -52,12 +52,9 @@ class Caddy extends BaseModel
             }
 
             foreach ($defaultPorts as $port) {
-                // Create a unique key for domain-port combination
                 $comboKey = $fromDomain . ':' . $port;
 
-                // Check for duplicate combinations
                 if (isset($combos[$comboKey])) {
-                    // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
@@ -71,48 +68,6 @@ class Caddy extends BaseModel
                     ));
                 } else {
                     $combos[$comboKey] = true;
-                }
-            }
-        }
-    }
-
-    // Check that subdomains are under a wildcard or exact domain
-    private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
-    {
-        $wildcardDomainList = [];
-        foreach ($domains as $domain) {
-            if ((string) $domain->enabled === '1') {
-                $domainName = (string) $domain->FromDomain;
-                if (str_starts_with($domainName, '*.')) {
-                    $wildcardBase = substr($domainName, 2);
-                    $wildcardDomainList[$wildcardBase] = $domainName;
-                }
-            }
-        }
-
-        foreach ($subdomains as $subdomain) {
-            if ((string) $subdomain->enabled === '1') {
-                $subdomainName = (string) $subdomain->FromDomain;
-                $isValid = false;
-                foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
-                    if (str_ends_with($subdomainName, $baseDomain)) {
-                        $isValid = true;
-                        break;
-                    }
-                }
-
-                if (!$isValid) {
-                    $key = $subdomain->__reference; // Dynamic key based on subdomain reference
-                    $messages->appendMessage(new Message(
-                        sprintf(
-                            gettext(
-                                'Invalid subdomain configuration: %s does not fall ' .
-                                'under any configured wildcard domain.'
-                            ),
-                            $subdomainName
-                        ),
-                        $key . ".FromDomain"
-                    ));
                 }
             }
         }
@@ -172,8 +127,7 @@ class Caddy extends BaseModel
     private function checkDisableTlsConflicts($messages)
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-            // First check if the DisableTls field has been changed
-            if ($item->isFieldChanged('DisableTls')) {
+            if ($item->isFieldChanged()) {
                 if ((string) $item->DisableTls === '1') {
                     $conflictChecks = [
                         'DnsChallenge' => (string) $item->DnsChallenge === '1',
@@ -274,52 +228,53 @@ class Caddy extends BaseModel
     private function checkLayer4Matchers($messages)
     {
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-            $key = $item->__reference;
+            if ($item->isFieldChanged()) {
+                $key = $item->__reference;
+                if (in_array((string)$item->Matchers, ['httphost', 'tlssni']) && empty((string)$item->FromDomain)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, domain is required.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".FromDomain"
+                    ));
+                }
 
-            if (in_array((string)$item->Matchers, ['httphost', 'tlssni']) && empty((string)$item->FromDomain)) {
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext(
-                            'When "%s" matcher is selected, domain is required.'
+                if ((string)$item->Type !== 'global' && !empty((string)$item->FromPort)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", port must be empty.'
+                            ),
+                            $item->Type
                         ),
-                        $item->Matchers
-                    ),
-                    $key . ".FromDomain"
-                ));
-            }
+                        $key . ".FromPort"
+                    ));
+                } elseif ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", port is required.'
+                            ),
+                            $item->Type
+                        ),
+                        $key . ".FromPort"
+                    ));
+                }
 
-            if ((string)$item->Type !== 'global' && !empty((string)$item->FromPort)) {
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext(
-                            'When routing type is "%s", port must be empty.'
+                if ((string)$item->Type !== 'global' && ((string)$item->Protocol !== 'tcp')) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", protocol must be TCP.'
+                            ),
+                            $item->Type
                         ),
-                        $item->Type
-                    ),
-                    $key . ".FromPort"
-                ));
-            } elseif ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext(
-                            'When routing type is "%s", port is required.'
-                        ),
-                        $item->Type
-                    ),
-                    $key . ".FromPort"
-                ));
-            }
-
-            if ((string)$item->Type !== 'global' && ((string)$item->Protocol !== 'tcp')) {
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext(
-                            'When routing type is "%s", protocol must be TCP.'
-                        ),
-                        $item->Type
-                    ),
-                    $key . ".Protocol"
-                ));
+                        $key . ".Protocol"
+                    ));
+                }
             }
         }
     }
@@ -329,29 +284,10 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
 
-        // Check domain-port combinations
-        $this->checkForUniquePortCombos(
-            $this->reverseproxy->reverse->iterateItems(),
-            $messages
-        );
-
-        // Check that subdomains are under a wildcard or exact domain
-        $this->checkSubdomainsAgainstDomains(
-            $this->reverseproxy->subdomain->iterateItems(),
-            $this->reverseproxy->reverse->iterateItems(),
-            $messages
-        );
-
-        // Check WebGUI conflicts
+        $this->checkForUniquePortCombos($messages);
         $this->checkWebGuiSettings($messages);
-
-        // Check for TLS conflicts in Domain
         $this->checkDisableTlsConflicts($messages);
-
-        // Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
-
-        // Check Layer4 matchers
         $this->checkLayer4Matchers($messages);
 
         return $messages;
