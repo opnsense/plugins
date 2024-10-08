@@ -1,0 +1,11 @@
+<acl>
+    <page-services-stepca>
+        <name>Services: StepCA</name>
+        <patterns>
+            <pattern>ui/stepca/*</pattern>
+            <pattern>api/stepca/*</pattern>
+            <pattern>ui/diagnostics/log/core/stepca/*</pattern>
+            <pattern>api/diagnostics/log/core/stepca/*</pattern>
+        </patterns>
+    </page-services-stepca>
+</acl>
