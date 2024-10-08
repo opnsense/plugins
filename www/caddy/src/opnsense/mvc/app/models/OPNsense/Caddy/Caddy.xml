@@ -453,6 +453,17 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+                <Sequence type="AutoNumberField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 and 99999 or leave empty.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Sequence value has to be unique or empty.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </Sequence>
                 <Type type="OptionField">
                     <Required>Y</Required>
                     <Default>listener_wrappers</Default>
