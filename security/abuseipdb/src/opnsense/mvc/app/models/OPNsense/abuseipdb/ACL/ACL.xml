@@ -1,0 +1,9 @@
+<acl>
+    <page-user-abuseipdb>
+        <name>Services: abuseipdb</name>
+        <patterns>
+            <pattern>ui/abuseipdb/*</pattern>
+            <pattern>api/abuseipdb/*</pattern>
+        </patterns>
+    </page-user-abuseipdb>
+</acl>
