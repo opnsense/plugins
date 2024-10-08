@@ -37,11 +37,11 @@ use OPNsense\Core\Config;
 class Caddy extends BaseModel
 {
     // Check domain-port combinations
-    private function checkForUniquePortCombos($items, $messages)
+    private function checkForUniquePortCombos($messages)
     {
         $combos = [];
-        foreach ($items as $item) {
-            $key = $item->__reference; // Dynamic key based on item reference
+        foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+            $key = $item->__reference;
             $fromDomain = (string) $item->FromDomain;
             $fromPort = (string) $item->FromPort;
 
@@ -52,12 +52,9 @@ class Caddy extends BaseModel
             }
 
             foreach ($defaultPorts as $port) {
-                // Create a unique key for domain-port combination
                 $comboKey = $fromDomain . ':' . $port;
 
-                // Check for duplicate combinations
                 if (isset($combos[$comboKey])) {
-                    // Use dynamic $key for message referencing
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
@@ -71,48 +68,6 @@ class Caddy extends BaseModel
                     ));
                 } else {
                     $combos[$comboKey] = true;
-                }
-            }
-        }
-    }
-
-    // Check that subdomains are under a wildcard or exact domain
-    private function checkSubdomainsAgainstDomains($subdomains, $domains, $messages)
-    {
-        $wildcardDomainList = [];
-        foreach ($domains as $domain) {
-            if ((string) $domain->enabled === '1') {
-                $domainName = (string) $domain->FromDomain;
-                if (str_starts_with($domainName, '*.')) {
-                    $wildcardBase = substr($domainName, 2);
-                    $wildcardDomainList[$wildcardBase] = $domainName;
-                }
-            }
-        }
-
-        foreach ($subdomains as $subdomain) {
-            if ((string) $subdomain->enabled === '1') {
-                $subdomainName = (string) $subdomain->FromDomain;
-                $isValid = false;
-                foreach ($wildcardDomainList as $baseDomain => $wildcardDomain) {
-                    if (str_ends_with($subdomainName, $baseDomain)) {
-                        $isValid = true;
-                        break;
-                    }
-                }
-
-                if (!$isValid) {
-                    $key = $subdomain->__reference; // Dynamic key based on subdomain reference
-                    $messages->appendMessage(new Message(
-                        sprintf(
-                            gettext(
-                                'Invalid subdomain configuration: %s does not fall ' .
-                                'under any configured wildcard domain.'
-                            ),
-                            $subdomainName
-                        ),
-                        $key . ".FromDomain"
-                    ));
                 }
             }
         }
@@ -172,8 +127,7 @@ class Caddy extends BaseModel
     private function checkDisableTlsConflicts($messages)
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-            // First check if the DisableTls field has been changed
-            if ($item->isFieldChanged('DisableTls')) {
+            if ($item->isFieldChanged()) {
                 if ((string) $item->DisableTls === '1') {
                     $conflictChecks = [
                         'DnsChallenge' => (string) $item->DnsChallenge === '1',
@@ -214,7 +168,7 @@ class Caddy extends BaseModel
             if ($httpPort < 1024) {
                 $messages->appendMessage(new Message(
                     gettext(
-                        'Superuser is disabled, HTTP port must not be empty and must be 1024 or above.'
+                        'www user is active, HTTP port must not be empty and must be 1024 or above.'
                     ),
                     "general.HttpPort"
                 ));
@@ -224,7 +178,7 @@ class Caddy extends BaseModel
             if ($httpsPort < 1024) {
                 $messages->appendMessage(new Message(
                     gettext(
-                        'Superuser is disabled, HTTPS port must not be empty and must be 1024 or above.'
+                        'www user is active, HTTPS port must not be empty and must be 1024 or above.'
                     ),
                     "general.HttpsPort"
                 ));
@@ -237,7 +191,7 @@ class Caddy extends BaseModel
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
                         gettext(
-                            'Superuser is disabled, port must be empty or must be 1024 or above.'
+                            'www user is active, port must be empty or must be 1024 or above.'
                         ),
                         $item->__reference . ".FromPort"
                     ));
@@ -249,36 +203,111 @@ class Caddy extends BaseModel
                     ));
                 }
             }
+
+            foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
+                $fromPort = !empty((string)$item->FromPort) ? (string)$item->FromPort : null;
+
+                if ($fromPort !== null && $fromPort < 1024) {
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'www user is active, port must be empty or must be 1024 or above.'
+                        ),
+                        $item->__reference . ".FromPort"
+                    ));
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'Ports in "Reverse Proxy - Layer4 Routes" must be empty or must be 1024 or above.'
+                        ),
+                        "general.DisableSuperuser"
+                    ));
+                }
+            }
         }
     }
 
-    /**
-    * Check that when certain Layer4 matchers are selected, only "*" is valid as FromDomain.
-    * This happens because they cannot be matched by host header or SNI, so they match all traffic.
-    * The "*" shows the user that all traffic will be matched, and that creating multiple
-    * matchers will not result in more routes for the same traffic type to work.
-    */
     private function checkLayer4Matchers($messages)
     {
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-            $matchers = (string) $item->Matchers;
-            $fromDomain = (string) $item->FromDomain;
-
-            // Check if matchers is not in the list of specific values
-            $isNotInSpecificMatchers = !in_array($matchers, ['httphost', 'tlssni', 'nottlssni']);
-            $isInvalidFromDomain = $fromDomain !== '*';
-
-            if ($isNotInSpecificMatchers && $isInvalidFromDomain) {
+            if ($item->isFieldChanged()) {
                 $key = $item->__reference;
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext(
-                            'When "%s" matcher is selected, the only valid entry in Domain is "*".'
+                if (in_array((string)$item->Matchers, ['httphost', 'tlssni']) && empty((string)$item->FromDomain)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, domain is required.'
+                            ),
+                            $item->Matchers
                         ),
-                        $matchers
-                    ),
-                    $key . ".FromDomain"
-                ));
+                        $key . ".FromDomain"
+                    ));
+                    } elseif (
+                        !in_array((string)$item->Matchers, ['httphost', 'tlssni']) &&
+                        (
+                            !empty((string)$item->FromDomain) &&
+                            (string)$item->FromDomain != '*'
+                        )
+                    ) {
+                        $messages->appendMessage(new Message(
+                            sprintf(
+                                gettext(
+                                    'When "%s" matcher is selected, domain must be empty or *.'
+                                ),
+                                $item->Matchers
+                            ),
+                            $key . ".FromDomain"
+                        ));
+                    }
+
+                if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", port is required.'
+                            ),
+                            $item->Type
+                        ),
+                        $key . ".FromPort"
+                    ));
+                } elseif ((string)$item->Type !== 'global' && !empty((string)$item->FromPort)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", port must be empty.'
+                            ),
+                            $item->Type
+                        ),
+                        $key . ".FromPort"
+                    ));
+                }
+
+                if ((string)$item->Type !== 'global' && ((string)$item->Protocol !== 'tcp')) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", protocol must be TCP.'
+                            ),
+                            $item->Type
+                        ),
+                        $key . ".Protocol"
+                    ));
+                }
+
+                if ((string)$item->Type !== 'global' &&
+                    (
+                        (string)$item->Matchers == 'tls' ||
+                        (string)$item->Matchers == 'http'
+                    )
+                ) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When routing type is "%s", matchers "HTTP" or "TLS" cannot be chosen.'
+                            ),
+                            $item->Type
+                        ),
+                        $key . ".Matchers"
+                    ));
+                }
             }
         }
     }
@@ -288,29 +317,10 @@ class Caddy extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
 
-        // Check domain-port combinations
-        $this->checkForUniquePortCombos(
-            $this->reverseproxy->reverse->iterateItems(),
-            $messages
-        );
-
-        // Check that subdomains are under a wildcard or exact domain
-        $this->checkSubdomainsAgainstDomains(
-            $this->reverseproxy->subdomain->iterateItems(),
-            $this->reverseproxy->reverse->iterateItems(),
-            $messages
-        );
-
-        // Check WebGUI conflicts
+        $this->checkForUniquePortCombos($messages);
         $this->checkWebGuiSettings($messages);
-
-        // Check for TLS conflicts in Domain
         $this->checkDisableTlsConflicts($messages);
-
-        // Check DisableSuperuser Port conflicts
         $this->checkSuperuserPorts($messages);
-
-        // Check Layer4 matchers
         $this->checkLayer4Matchers($messages);
 
         return $messages;

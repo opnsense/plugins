@@ -90,12 +90,26 @@
         {% endif %}
         {% if generalSettings.EnableLayer4|default("0") == "1" %}
             listener_wrappers {
-                {# Plug the Layer 4 template in #}
-                {% include "OPNsense/Caddy/includeLayer4" %}
-
+                layer4 {
+                    import /usr/local/etc/caddy/caddy.d/*.layer4listener
+                    {% set context_var = "listener_wrappers" %}
+                    {% include "OPNsense/Caddy/includeLayer4" %}
+                    {# Empty Route that catches all other traffic #}
+                    route
+                }
+                {# Route all other traffic to HTTP App #}
+                tls
             }
         {% endif %}
     }
+
+    {% if generalSettings.EnableLayer4|default("0") == "1" %}
+        layer4 {
+            import /usr/local/etc/caddy/caddy.d/*.layer4global
+            {% set context_var = "global" %}
+            {% include "OPNsense/Caddy/includeLayer4" %}
+        }
+    {% endif %}
 
     {#
     #   Section: Dynamic DNS Global Configuration
