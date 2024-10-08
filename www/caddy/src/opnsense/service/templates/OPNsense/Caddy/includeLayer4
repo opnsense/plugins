@@ -1,15 +1,31 @@
 {#
-# This file sets up the listener_wrapper for layer 4 routing support.
-# - Section: Servers Global Configuration
-# Also allows for custom configurations with the import statement.
+#  This file sets up layer4 routing support.
+#  There are two contexts: "listener_wrappers" and "global"
+#
+#  "listener_wrappers" multiplexes on OSI Layer 7 on the default HTTP and HTTPS ports and requires a traffic matcher since
+#  otherwise the "reverse_proxy" would stop receiving any requests. The "any" Layer 7 matcher is not allowed here.
+#  This context allows for matching domains via SNI and route them without terminating TLS.
+#
+#  "global" can set up custom ports and also route any OSI Layer 4 TCP/UDP traffic without a matcher.
+#  They will be grouped under the same protocol/port combination
+#  to allow multiple Layer 7 matchers inside the scope of the same Layer 4 matcher.
+#  This context is for advanced usecases where raw TCP/UDP traffic on custom ports should be proxied or load balanced.
 #}
-{% set layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
 
-{# Nested Macro for proxy definition #}
-{% macro define_proxy(to_domains, to_port, fail_duration, proxy_protocol) %}
+{% set unsorted_layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
+
+{# Ensure that 'Sequence' is present and converted to an integer in each item #}
+{% for item in unsorted_layer4_configs %}
+    {% set _ = item.update({'Sequence': item.get('Sequence', '0') | int}) %}
+{% endfor %}
+
+{# Sort the configurations based on 'Sequence' #}
+{% set layer4_configs = unsorted_layer4_configs | sort(attribute='Sequence') %}
+
+{% macro define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) %}
     proxy {% for domain in to_domains.split(',') %}
-        {% set is_ipv6 = (':' in domain) %}  {# Check if the domain contains a colon, typical in IPv6 addresses #}
-        {{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %} {% endif %}
+        {% set is_ipv6 = (':' in domain) %}
+        {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %} {% endif %}
     {% endfor %} {
     {% if fail_duration %}
         fail_duration {{ fail_duration }}s
@@ -20,64 +36,73 @@
     }
 {% endmacro %}
 
-{# Macro for configuring the proxy with additional remote IP access list #}
-{% macro configure_proxy(to_domains, to_port, remote_ips, fail_duration, proxy_protocol) %}
-    {% if remote_ips %}
-        {% set ip_list = remote_ips.split(',') %}
-        subroute {
-            @allowed_ips remote_ip {{ ip_list|join(' ') }}
-            route @allowed_ips {
-                {# Call Nested Macro #}
-                {{ define_proxy(to_domains, to_port, fail_duration, proxy_protocol) }}
+{% macro configure_proxy(layer4, to_domains, to_port, remote_ips, fail_duration, proxy_protocol) %}
+    {% set content %}
+        {% if remote_ips %}
+            {% set ip_list = remote_ips.split(',') %}
+            subroute {
+                @allowed_ips remote_ip {{ ip_list|join(' ') }}
+                route @allowed_ips {
+                    {{ define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) }}
+                }
             }
-        }
+        {% else %}
+            {{ define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) }}
+        {% endif %}
+    {% endset %}
+    {{ content|trim }}
+{% endmacro %}
+
+{% set grouped_configs = {} %}
+{% for layer4 in layer4_configs %}
+    {% if layer4.FromPort and layer4.Protocol and layer4.enabled == "1"  %}
+        {% set key = layer4.Protocol ~ '/:' ~ layer4.FromPort %}
+        {% if not key in grouped_configs %}
+            {% set _ = grouped_configs.update({key: []}) %}
+        {% endif %}
+        {% set _ = grouped_configs[key].append(layer4) %}
+    {% endif %}
+{% endfor %}
+
+{% macro handle_special_matchers(layer4) %}
+    {% set invert_prefix = 'not ' if layer4.InvertMatchers == '1' else '' %}
+    {% if layer4.Matchers == 'httphost' %}
+        {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'tlssni' %}
+        {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
     {% else %}
-        {# Call Nested Macro #}
-        {{ define_proxy(to_domains, to_port, fail_duration, proxy_protocol) }}
+        {{ invert_prefix }}{{ layer4.Matchers }}
     {% endif %}
 {% endmacro %}
 
-{# Set up Layer4 App #}
-layer4 {
-    import /usr/local/etc/caddy/caddy.d/*.layer4
-    {# 1. loop to handle any traffic matchers that can only be added once since they match all specific protocol traffic. #}
+{% if context_var == 'listener_wrappers' %}
     {% for layer4 in layer4_configs %}
-        {% if layer4.enabled == "1" and layer4.Matchers not in ['httphost', 'tlssni', 'nottlssni'] %}
-            @{{ layer4['@uuid'] }} {{ layer4.Matchers }}
-            route @{{ layer4['@uuid'] }} {
-                {{ configure_proxy(layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
-            }
+        {% if layer4.enabled == "1" and layer4.Type == 'listener_wrappers' %}
+            {% if layer4.Matchers != 'any' %}
+                @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
+                route @{{ layer4['@uuid'] }} {
+                    {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                }
+            {% endif %}
         {% endif %}
     {% endfor %}
-    {# 2. loop to handle http host matchers #}
-    {% for layer4 in layer4_configs %}
-        {% if layer4.enabled == "1" and layer4.Matchers == 'httphost' %}
-            @{{ layer4['@uuid'] }} http host {{ layer4.FromDomain.replace(',', ' ') }}
-            route @{{ layer4['@uuid'] }} {
-                {{ configure_proxy(layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
-            }
-        {% endif %}
+{% elif context_var == 'global' %}
+    {% for key, layers in grouped_configs.items() %}
+        {{ key }} {
+            {% for layer4 in layers %}
+                {% if layer4.enabled == "1" and layer4.Type == 'global' %}
+                    {% if layer4.Matchers != 'any' %}
+                        @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
+                        route @{{ layer4['@uuid'] }} {
+                            {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                        }
+                    {% else %}
+                        route {
+                            {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                        }
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        }
     {% endfor %}
-    {# 3. loop to handle tls sni matchers #}
-    {% for layer4 in layer4_configs %}
-        {% if layer4.enabled == "1" and layer4.Matchers == 'tlssni' %}
-            @{{ layer4['@uuid'] }} tls sni {{ layer4.FromDomain.replace(',', ' ') }}
-            route @{{ layer4['@uuid'] }} {
-                {{ configure_proxy(layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
-            }
-        {% endif %}
-    {% endfor %}
-    {# 4. loop to handle not tls sni matchers #}
-    {% for layer4 in layer4_configs %}
-        {% if layer4.enabled == "1" and layer4.Matchers == 'nottlssni' %}
-            @{{ layer4['@uuid'] }} not tls sni {{ layer4.FromDomain.replace(',', ' ') }}
-            route @{{ layer4['@uuid'] }} {
-                {{ configure_proxy(layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
-            }
-        {% endif %}
-    {% endfor %}
-    {# Empty Route that catches all other traffic #}
-    route
-}
-{# Route all other traffic to HTTP App #}
-tls
+{% endif %}
