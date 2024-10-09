@@ -1,0 +1,14 @@
+<metadata>
+    <smart>
+        <filename>Smart.js</filename>
+        <link>/ui/smart</link>
+        <endpoints>
+            <endpoint>/api/smart/service/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>SMART Status</title>
+            <nodisk>Error fetching disk list</nodisk>
+            <nosmart>Error fetching SMART info for device</nosmart>
+        </translations>
+    </smart>
+</metadata>
