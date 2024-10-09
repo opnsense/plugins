@@ -1,0 +1,10 @@
+<menu>
+    <Services>
+        <StepCA VisibleName="Step CA" cssClass="fa fa-certificate fa-fw" >
+            <Initialize order="10" url="/ui/stepca/initialize"/>
+            <General order="20" url="/ui/stepca/general"/>
+            <Provisioners VisibleName="Provisioners" order="30" url="/ui/stepca/provisioners"/>
+            <Logs order="100" url="/ui/diagnostics/log/core/stepca"/>
+        </StepCA>
+    </Services>
+</menu>

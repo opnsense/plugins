@@ -1,0 +1,315 @@
+<model>
+    <mount>//OPNsense/StepCA/CA</mount>
+    <version>0.1.0</version>
+    <description>StepCA for OPNsense</description>
+    <items>
+        <Enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </Enabled>
+        <Address type="IPPortField">
+            <default>127.0.0.1:9443</default>
+            <Required>Y</Required>
+        </Address>
+        <DNSNames type="HostnameField">
+            <default>localhost</default>
+            <Required>Y</Required>
+            <IpAllowed>Y</IpAllowed>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+        </DNSNames>
+        <db>
+            <DB type="OptionField">
+                <Required>Y</Required>
+                <default>badgerv2</default>
+                <Sorted>N</Sorted>
+                <Multiple>N</Multiple>
+                <OptionValues>
+                    <badgerv2>Badger (V2)</badgerv2>
+                    <bbolt>BoltDB</bbolt>
+                    <postgresql>PostgreSQL</postgresql>
+                    <mysql>MySQL</mysql>
+                </OptionValues>
+            </DB>
+            <DBUrl type="TextField">
+                <Required>N</Required>
+                <default></default>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>DB</field>
+                        <check>postgresql</check>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>DB</field>
+                        <check>mysql</check>
+                    </check002>
+                </Constraints>
+            </DBUrl>
+            <Database type="TextField">
+                <Required>N</Required>
+                <default></default>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>DB</field>
+                        <check>postgresql</check>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>DB</field>
+                        <check>mysql</check>
+                    </check002>
+                </Constraints>
+            </Database>
+        </db>
+        <authority>
+            <claims>
+                <minTLSCertDuration type="TextField">
+                    <Required>N</Required>
+                </minTLSCertDuration>
+                <maxTLSCertDuration type="TextField">
+                    <Required>N</Required>
+                    <default>24h</default>
+                </maxTLSCertDuration>
+                <defaultTLSCertDuration type="TextField">
+                    <Required>N</Required>
+                    <default>24h</default>
+                </defaultTLSCertDuration>
+                <disableRenewal type="BooleanField">
+                    <Required>N</Required>
+                </disableRenewal>
+                <allowRenewalAfterExpiry type="BooleanField">
+                    <Required>N</Required>
+                </allowRenewalAfterExpiry>
+                <minHostSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </minHostSSHCertDuration>
+                <maxHostSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </maxHostSSHCertDuration>
+                <defaultHostSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </defaultHostSSHCertDuration>
+                <minUserSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </minUserSSHCertDuration>
+                <maxUserSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </maxUserSSHCertDuration>
+                <defaultUserSSHCertDuration type="TextField">
+                    <Required>N</Required>
+                </defaultUserSSHCertDuration>
+                <enableSSHCA type="BooleanField"><Required>N</Required></enableSSHCA>
+            </claims>
+            <policy>
+                <x509>
+                    <allow>
+                        <DNSNames type="HostnameField">
+                            <default></default>
+                            <Required>N</Required>
+                            <IpAllowed>N</IpAllowed>
+                            <FieldSeparator>,</FieldSeparator>
+                            <AsList>Y</AsList>
+                            <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                        </DNSNames>
+                        <IPNames type="NetworkField">
+                            <default></default>
+                            <Required>N</Required>
+                            <NetMaskAllowed>Y</NetMaskAllowed>
+                            <NetMaskRequired>N</NetMaskRequired>
+                            <FieldSeparator>,</FieldSeparator>
+                            <AsList>Y</AsList>
+                        </IPNames>
+                    </allow>
+                    <deny>
+                        <DNSNames type="HostnameField">
+                            <default></default>
+                            <Required>N</Required>
+                            <IpAllowed>N</IpAllowed>
+                            <FieldSeparator>,</FieldSeparator>
+                            <AsList>Y</AsList>
+                            <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                        </DNSNames>
+                        <IPNames type="NetworkField">
+                            <default></default>
+                            <Required>N</Required>
+                            <NetMaskAllowed>Y</NetMaskAllowed>
+                            <NetMaskRequired>N</NetMaskRequired>
+                            <FieldSeparator>,</FieldSeparator>
+                            <AsList>Y</AsList>
+                        </IPNames>
+                    </deny>
+                </x509>
+                <ssh>
+                    <host>
+                        <allow>
+                            <DNSNames type="HostnameField">
+                                <default></default>
+                                <Required>N</Required>
+                                <IpAllowed>N</IpAllowed>
+                                <FieldSeparator>,</FieldSeparator>
+                                <AsList>Y</AsList>
+                                <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                            </DNSNames>
+                            <IPNames type="NetworkField">
+                                <default></default>
+                                <Required>N</Required>
+                                <NetMaskAllowed>Y</NetMaskAllowed>
+                                <NetMaskRequired>N</NetMaskRequired>
+                                <FieldSeparator>,</FieldSeparator>
+                                <AsList>Y</AsList>
+                            </IPNames>
+                        </allow>
+                        <deny>
+                            <DNSNames type="HostnameField">
+                                <default></default>
+                                <Required>N</Required>
+                                <IpAllowed>N</IpAllowed>
+                                <FieldSeparator>,</FieldSeparator>
+                                <AsList>Y</AsList>
+                                <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
+                            </DNSNames>
+                            <IPNames type="NetworkField">
+                                <default></default>
+                                <Required>N</Required>
+                                <NetMaskAllowed>Y</NetMaskAllowed>
+                                <NetMaskRequired>N</NetMaskRequired>
+                                <FieldSeparator>,</FieldSeparator>
+                                <AsList>Y</AsList>
+                            </IPNames>
+                        </deny>
+                    </host>
+                    <user>
+                        <allow>
+                            <EmailNames type="EmailField">
+                                <default></default>
+                                <Required>N</Required>
+                                <AsList>Y</AsList>
+                                <FieldSeparator>,</FieldSeparator>
+                            </EmailNames>
+                        </allow>
+                        <deny>
+                            <EmailNames type="EmailField">
+                                <default></default>
+                                <Required>N</Required>
+                                <AsList>Y</AsList>
+                                <FieldSeparator>,</FieldSeparator>
+                            </EmailNames>
+                        </deny>
+                    </user>
+                </ssh>
+            </policy>
+        </authority>
+        <provisioners>
+            <provisioner type="ArrayField">
+                <Enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </Enabled>
+                <Provisioner type="OptionField">
+                    <Required>Y</Required>
+                    <default>acme</default>
+                    <Sorted>N</Sorted>
+                    <Multiple>N</Multiple>
+                    <OptionValues>
+                        <acme>ACME</acme>
+                        <jwt>JWT</jwt>
+                    </OptionValues>
+                </Provisioner>
+                <Name type="TextField">
+                    <default>acme</default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-z_\-]){4,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 4 and 32 characters, containing lower-case characters, numbers, dashes and underscores.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A Provisioner with this name already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </Name>
+                <ForceCN type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </ForceCN>
+                <claims>
+                    <minTLSCertDuration type="TextField"><Required>N</Required></minTLSCertDuration>
+                    <maxTLSCertDuration type="TextField"><Required>N</Required></maxTLSCertDuration>
+                    <defaultTLSCertDuration type="TextField"><Required>N</Required></defaultTLSCertDuration>
+                    <disableRenewal type="BooleanField"><Required>N</Required></disableRenewal>
+                    <allowRenewalAfterExpiry type="BooleanField"><Required>N</Required></allowRenewalAfterExpiry>
+                    <minHostSSHCertDuration type="TextField"><Required>N</Required></minHostSSHCertDuration>
+                    <maxHostSSHCertDuration type="TextField"><Required>N</Required></maxHostSSHCertDuration>
+                    <defaultHostSSHCertDuration type="TextField"><Required>N</Required></defaultHostSSHCertDuration>
+                    <minUserSSHCertDuration type="TextField"><Required>N</Required></minUserSSHCertDuration>
+                    <maxUserSSHCertDuration type="TextField"><Required>N</Required></maxUserSSHCertDuration>
+                    <defaultUserSSHCertDuration type="TextField"><Required>N</Required></defaultUserSSHCertDuration>
+                    <enableSSHCA type="BooleanField"><Required>N</Required></enableSSHCA>
+                </claims>
+                <Challenges type="OptionField">
+                    <Required>Y</Required>
+                    <default>http-01</default>
+                    <Sorted>N</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <http-01>http-01</http-01>
+                        <dns01>dns-01</dns01>
+                        <tls-alpn-01>tls-alpn-01</tls-alpn-01>
+                        <device-attest-01>device-attest-01</device-attest-01>
+                        <wire-oidc-01>wire-oidc-01</wire-oidc-01>
+                        <wire-dpop-01>wire-dpop-01</wire-dpop-01>
+                    </OptionValues>
+                </Challenges>
+                <Attestation type="OptionField">
+                    <Required>N</Required>
+                    <default></default>
+                    <Sorted>N</Sorted>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <apple>apple</apple>
+                        <step>step</step>
+                        <tpm>tpm</tpm>
+                    </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>This field must be set.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>Challenges</field>
+                            <check>device-attest-01</check>
+                        </check001>
+                    </Constraints>
+                </Attestation>
+                <AttestationRoots type="CertificateField">
+                    <Required>N</Required>
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>This field must be set.</ValidationMessage>
+                            <type>SetIfConstraint</type>
+                            <field>Attestation</field>
+                            <check>tpm</check>
+                        </check001>
+                    </Constraints>
+                </AttestationRoots>
+                <CreateTemplate type="TextField">
+                    <Required>Y</Required>
+                    <default>"subject": {{ toJson .Subject }},
+"sans": {{ toJson .SANs }},
+{{- if typeIs "*rsa.PublicKey" .Insecure.CR.PublicKey }}
+"keyUsage": ["keyEncipherment", "digitalSignature"],
+{{- else }}
+"keyUsage": ["digitalSignature"],
+{{- end }}
+"extKeyUsage": ["serverAuth", "clientAuth"]</default>
+                </CreateTemplate>
+            </provisioner>
+        </provisioners>
+    </items>
+</model>
