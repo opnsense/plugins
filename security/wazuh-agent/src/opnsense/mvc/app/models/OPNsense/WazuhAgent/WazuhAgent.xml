@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/WazuhAgent</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>
         Wazuh Agent
     </description>
@@ -14,6 +14,14 @@
                 <Required>Y</Required>
                 <IpAllowed>Y</IpAllowed>
             </server_address>
+            <protocol type="OptionField">
+                <default>tcp</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <tcp>TCP</tcp>
+                    <udp>UDP</udp>
+                </OptionValues>
+            </protocol>
             <debug_level type="OptionField">
                 <default>0</default>
                 <Required>Y</Required>
