@@ -6,7 +6,7 @@
 {%     do optional_flags.append('-v') %}
 {%   endif %}
 {%   if helpers.exists('OPNsense.QemuGuestAgent.general.DisabledRPCs') and not helpers.empty('OPNsense.QemuGuestAgent.general.DisabledRPCs') %}
-{%     do optional_flags.append('--blacklist=' ~ OPNsense.QemuGuestAgent.general.DisabledRPCs) %}
+{%     do optional_flags.append('--block-rpcs=' ~ OPNsense.QemuGuestAgent.general.DisabledRPCs) %}
 {%   endif %}
 qemu_guest_agent_setup="/usr/local/opnsense/scripts/OPNsense/QemuGuestAgent/setup.sh"
 qemu_guest_agent_enable="YES"
