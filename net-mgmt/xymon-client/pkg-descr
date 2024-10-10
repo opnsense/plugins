@@ -1,0 +1,13 @@
+Client data collection package for Xymon (previously known as Hobbit).
+
+This gathers statistics and data from a single system and reports it to
+the Xymon monitor.
+
+WWW: https://sourceforge.net/projects/xymon/
+
+Plugin Changelog
+================
+
+1.0.0
+
+* Initial release
