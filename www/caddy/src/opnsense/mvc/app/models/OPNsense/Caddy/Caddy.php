@@ -98,12 +98,15 @@ class Caddy extends BaseModel
         // Get custom caddy ports if set. If empty, default to 80 and 443.
         $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : '80';
         $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : '443';
-        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
 
-        // Check for conflicts
         $overlap = array_intersect($this->getWebGuiPorts(), [$httpPort, $httpsPort]);
 
-        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
+        /**
+         * The intend to use Lets Encrypt is populated email address and empty AutoHttps field.
+         * This prevents a migration lockout during first install of the plugin
+         * when AutoHttps is "on" (empty) per default but the webgui ports are still default, too.
+         */
+        if (!empty($overlap) && !empty((string)$this->general->TlsEmail) && empty((string)$this->general->TlsAutoHttps)) {
             $portOverlap = implode(', ', $overlap);
             $messages->appendMessage(new Message(
                 sprintf(

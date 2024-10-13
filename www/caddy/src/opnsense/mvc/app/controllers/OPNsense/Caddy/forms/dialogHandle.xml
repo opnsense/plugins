@@ -6,6 +6,12 @@
         <help><![CDATA[Enable this handler.]]></help>
     </field>
     <field>
+        <id>handle.Sequence</id>
+        <label>Sequence</label>
+        <type>text</type>
+        <help><![CDATA[Handlers are sorted based on the sequence number, higher number means lower priority. Use the sequence number to generate handlers in a custom order inside the scope of their domain if there are multiple handlers per domain. If there is only a single handler in a domain, the sequence does not matter and can be left default or empty.]]></help>
+    </field>
+    <field>
         <id>handle.description</id>
         <label>Description</label>
         <type>text</type>

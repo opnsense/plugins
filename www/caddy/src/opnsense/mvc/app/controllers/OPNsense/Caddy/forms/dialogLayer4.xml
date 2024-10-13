@@ -9,7 +9,7 @@
         <id>layer4.Sequence</id>
         <label>Sequence</label>
         <type>text</type>
-        <help><![CDATA[Rules are sorted based on the sequence number, higher number means lower priority. Rules without a sequence number will be processed first.]]></help>
+        <help><![CDATA[Rules are sorted based on the sequence number, higher number means lower priority. Use the sequence number to generate rules in a custom order inside the scope of the listener_wrapper or a global port if there are multiple rules per port. If there is only a single rule per port, the sequence does not matter and can be left default or empty.]]></help>
     </field>
     <field>
         <id>layer4.description</id>
