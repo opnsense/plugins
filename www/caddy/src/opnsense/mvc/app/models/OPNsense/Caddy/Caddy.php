@@ -104,9 +104,13 @@ class Caddy extends BaseModel
         /**
          * The intend to use Lets Encrypt is populated email address and empty AutoHttps field.
          * This prevents a migration lockout during first install of the plugin
-         * when AutoHttps is "on" (empty) per default but the webgui ports are still default, too.
+         * when AutoHttps is "on" (empty) per default but the WebGUI ports are still default.
          */
-        if (!empty($overlap) && !empty((string)$this->general->TlsEmail) && empty((string)$this->general->TlsAutoHttps)) {
+        if (
+            !empty($overlap) &&
+            !empty((string)$this->general->TlsEmail) &&
+            empty((string)$this->general->TlsAutoHttps)
+        ) {
             $portOverlap = implode(', ', $overlap);
             $messages->appendMessage(new Message(
                 sprintf(
@@ -243,23 +247,23 @@ class Caddy extends BaseModel
                         ),
                         $key . ".FromDomain"
                     ));
-                    } elseif (
-                        !in_array((string)$item->Matchers, ['httphost', 'tlssni']) &&
-                        (
-                            !empty((string)$item->FromDomain) &&
-                            (string)$item->FromDomain != '*'
-                        )
-                    ) {
-                        $messages->appendMessage(new Message(
-                            sprintf(
-                                gettext(
-                                    'When "%s" matcher is selected, domain must be empty or *.'
-                                ),
-                                $item->Matchers
+                } elseif (
+                    !in_array((string)$item->Matchers, ['httphost', 'tlssni']) &&
+                    (
+                        !empty((string)$item->FromDomain) &&
+                        (string)$item->FromDomain != '*'
+                    )
+                ) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, domain must be empty or *.'
                             ),
-                            $key . ".FromDomain"
-                        ));
-                    }
+                            $item->Matchers
+                        ),
+                        $key . ".FromDomain"
+                    ));
+                }
 
                 if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
                     $messages->appendMessage(new Message(
@@ -295,7 +299,8 @@ class Caddy extends BaseModel
                     ));
                 }
 
-                if ((string)$item->Type !== 'global' &&
+                if (
+                    (string)$item->Type !== 'global' &&
                     (
                         (string)$item->Matchers == 'tls' ||
                         (string)$item->Matchers == 'http'
