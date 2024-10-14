@@ -1,4 +1,6 @@
 *.pyc
+.*DS_Store
 .idea
+.sass-cache
 venv
 /*/*/work
