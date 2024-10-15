@@ -95,7 +95,12 @@ class DigitalOcean(BaseAccount):
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:
-                    payload = {}
+                    syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s error getting record ID for hostname %s (%s): failed to decode response as JSON. Response: %s"
+                        % (self.description, hostname, recordType, response.text),
+                    )
+                    continue
 
                 if response.status_code != 200:
                     syslog.syslog(
@@ -111,7 +116,7 @@ class DigitalOcean(BaseAccount):
                     )
                     continue
 
-                if not payload["domain_records"]:
+                if not payload.get("domain_records"):
                     syslog.syslog(
                         syslog.LOG_ERR,
                         "Account %s error getting record ID for hostname %s (%s): no results returned. Response: %s"
@@ -138,10 +143,7 @@ class DigitalOcean(BaseAccount):
 
                 # Update record IP
                 response = requests.patch(**request)
-                try:
-                    payload = response.json()
-                except requests.exceptions.JSONDecodeError:
-                    payload = {}
+
                 if response.status_code == 200:
                     if self.is_verbose:
                         syslog.syslog(
