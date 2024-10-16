@@ -8,6 +8,10 @@ solution.
 Plugin Changelog
 ================
 
+1.1
+
+* Add advanced option to specify transport protocol
+
 1.0
 
 * Initial version

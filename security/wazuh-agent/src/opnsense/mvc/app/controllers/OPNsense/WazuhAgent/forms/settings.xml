@@ -20,7 +20,7 @@
         <label>Protocol</label>
         <type>dropdown</type>
         <advanced>true</advanced>
-        <help>Specifies the IP protocol to use.</help>
+        <help>Specifies the transport protocol to use.</help>
     </field>
     <field>
         <id>agent.logcollector.syslog_programs</id>
