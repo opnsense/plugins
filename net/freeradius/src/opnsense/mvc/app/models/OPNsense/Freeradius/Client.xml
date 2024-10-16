@@ -18,6 +18,10 @@
                 <ip type="NetworkField">
                     <Required>N</Required>
                 </ip>
+                <require_ma type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </require_ma>
             </client>
         </clients>
     </items>
