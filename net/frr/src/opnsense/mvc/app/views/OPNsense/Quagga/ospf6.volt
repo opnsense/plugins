@@ -182,8 +182,7 @@
         <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditPrefixLists">
             <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowt
-oggle" data-sortable="false">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
                     <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Sequence Number') }}</th>
                     <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
