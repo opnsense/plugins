@@ -15,7 +15,7 @@
         <id>user.password</id>
         <label>Password</label>
         <type>password</type>
-        <help>Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
+        <help><![CDATA[Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=:& with up to 128 characters.]]></help>
     </field>
     <field>
         <id>user.passwordencryption</id>
