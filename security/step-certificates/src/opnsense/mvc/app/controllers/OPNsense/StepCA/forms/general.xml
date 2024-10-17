@@ -1,0 +1,201 @@
+<form>
+    <field>
+        <id>CA.Enabled</id>
+        <label>Enable Service</label>
+        <type>checkbox</type>
+        <help>Enable the StepCA service.</help>
+    </field>
+    <field>
+        <id>CA.Address</id>
+        <label>Address to listen on</label>
+        <type>text</type>
+        <help>IP:Port</help>
+    </field>
+    <field>
+        <label>NOTE: Remember to add firewall rules for this port.</label>
+        <type>info</type>
+    </field>
+    <field>
+        <id>CA.DNSNames</id>
+        <label>DNS for hostname verification</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>IP:Port</help>
+    </field>
+
+    <field>
+        <label>Policy for X509 Certificates</label>
+        <type>header</type>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>CA.authority.policy.x509.allow.DNSNames</id>
+        <label>Allowed Domain names for X509</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>A dns rule for www.example.com, only matching the domain www.example.com. A dns rule for *.internal.example.com, matching all subdomains of internal.example.com.</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.x509.allow.IPNames</id>
+        <label>Allowed IP addresses for X509</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An ip rule for the 192.168.0.0/24 CIDR, matching all IPs in the range from 192.168.0.0-192.168.0.255</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.x509.deny.DNSNames</id>
+        <label>Denied Domain names for X509</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>A dns rule for www.example.com, only matching the domain www.example.com. A dns rule for *.internal.example.com, matching all subdomains of internal.example.com.</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.x509.deny.IPNames</id>
+        <label>Denied IP addresses for X509</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An ip rule for the 192.168.0.0/24 CIDR, matching all IPs in the range from 192.168.0.0-192.168.0.255</help>
+    </field>
+
+    <field>
+        <label>Policy for SSH Host Certificates</label>
+        <type>header</type>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.host.allow.DNSNames</id>
+        <label>Allowed Domain names for SSH Host</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>A dns rule for www.example.com, only matching the domain www.example.com. A dns rule for *.internal.example.com, matching all subdomains of internal.example.com.</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.host.allow.IPNames</id>
+        <label>Allowed IP addresses for SSH Host</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An ip rule for the 192.168.0.0/24 CIDR, matching all IPs in the range from 192.168.0.0-192.168.0.255</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.host.deny.DNSNames</id>
+        <label>Denied Domain names for SSH Host</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>A dns rule for www.example.com, only matching the domain www.example.com. A dns rule for *.internal.example.com, matching all subdomains of internal.example.com.</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.host.deny.IPNames</id>
+        <label>Denied IP addresses for SSH Host</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An ip rule for the 192.168.0.0/24 CIDR, matching all IPs in the range from 192.168.0.0-192.168.0.255</help>
+    </field>
+    <!-- 
+    <field>
+        <label>Policy for X509 User Certificates</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.user.allow.EmailNames</id>
+        <label>Allowed Email addresses for SSH Users</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An email rule for @devops, matching all SSH user principals in the @devops domain</help>
+    </field>
+    <field>
+        <id>CA.authority.policy.ssh.user.deny.EmailNames</id>
+        <label>Denied Email addresses for SSH Users</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>An email rule for @devops, matching all SSH user principals in the @devops domain</help>
+    </field> -->
+
+    <field>
+        <label>Default Claims</label>
+        <type>header</type>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>CA.authority.claims.minTLSCertDuration</id>
+        <label>minTLSCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.maxTLSCertDuration</id>
+        <label>maxTLSCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.defaultTLSCertDuration</id>
+        <label>defaultTLSCertDuration</label>
+        <type>text</type>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.disableRenewal</id>
+        <label>disableRenewal</label>
+        <type>checkbox</type>
+        <help>do not allow any certificates to be renewed. The default is false.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.allowRenewalAfterExpiry</id>
+        <label>allowRenewalAfterExpiry</label>
+        <type>checkbox</type>
+        <help>☠️ allow expired certificates to be renewed. The default is false. This option adds security risk; proceed with caution and consider alternatives.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.minUserSSHCertDuration</id>
+        <label>minUserSSHCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.maxUserSSHCertDuration</id>
+        <label>maxUserSSHCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.defaultUserSSHCertDuration</id>
+        <label>defaultUserSSHCertDuration</label>
+        <type>text</type>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.minHostSSHCertDuration</id>
+        <label>minHostSSHCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.maxHostSSHCertDuration</id>
+        <label>maxHostSSHCertDuration</label>
+        <type>text</type>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.defaultHostSSHCertDuration</id>
+        <label>defaultHostSSHCertDuration</label>
+        <type>text</type>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>CA.authority.claims.enableSSHCA</id>
+        <label>enableSSHCA</label>
+        <type>checkbox</type>
+        <help>enable this provisioner to generate SSH Certificates. The default value is false.</help>
+    </field>
+</form>
