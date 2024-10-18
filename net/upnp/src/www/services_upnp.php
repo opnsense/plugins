@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'permdefault',
         'stun_host',
         'stun_port',
+        'num_permuser',
         'sysuptime',
         'upload',
     ];
@@ -94,6 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $pconfig[$fieldname] = $config['installedpackages']['miniupnpd']['config'][0][$fieldname];
         }
     }
+
+    // ensure backwards compatibility
+    if (!isset($pconfig['num_permuser'])) {
+      $pconfig['num_permuser'] = 8;
+    }
+
     // parse array
     $pconfig['iface_array'] = explode(',', $pconfig['iface_array']);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -171,6 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
+        // numeric types
+        $upnp['num_permuser'] = $pconfig['num_permuser'];
         // text field types
         foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
@@ -382,6 +391,15 @@ include("head.inc");
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
+                      <td>
+                        <input name="num_permuser" type="number" min="1" value="<?=$pconfig['num_permuser'];?>" />
+                        <div class="hidden" data-for="help_for_num_permuser">
+                          <?=gettext("Number of permissions to configure.");?>
+                        </div>
+                      </td>
+                    </tr>
 <?php foreach (miniupnpd_permuser_list() as $i => $permuser): ?>
                     <tr>
 <?php if ($i == 1): ?>

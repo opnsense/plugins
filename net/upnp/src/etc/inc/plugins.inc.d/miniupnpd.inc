@@ -104,10 +104,17 @@ function miniupnpd_uuid()
 
 function miniupnpd_permuser_list()
 {
-    $ret = [];
-    $count = 8;
+    global $config;
 
-    for ($i = 1; $i <= $count; $i++) {
+    $num_permuser = 8;
+
+    if (isset($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
+        $num_permuser = $config['installedpackages']['miniupnpd']['config'][0]['num_permuser'];
+    }
+
+    $ret = [];
+
+    for ($i = 1; $i <= $num_permuser; $i++) {
         $ret[$i] = "permuser{$i}";
     }
 
@@ -218,6 +225,9 @@ function miniupnpd_configure_do($verbose = false)
 
             /* set model number */
             $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
+
+            /* number of upnp access restrictions */
+            $config_text .= "num_permuser={$upnp_config['num_permuser']}\n";
 
             /* upnp access restrictions */
             foreach (miniupnpd_permuser_list() as $permuser) {
