@@ -14,6 +14,7 @@ Plugin Changelog
 1.6
 
 * Add support for Observium (contributed by Patrick M. Hausen)
+* Fix sysServices value in case "Layer 3 Visibility" option is unchecked (contributed by Patrick M. Hausen)
 
 1.5
 
