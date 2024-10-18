@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($pconfig['upload']) && ($pconfig['upload'] <= 0 || !is_numeric($pconfig['upload']))) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Upload Speed\' field');
     }
-    if (!empty($pconfig['num_permuser'] && ($pconfig['num_permuser'] < 1 || !is_numeric($pconfig['num_permuser'])))) {
+    if (!empty($pconfig['num_permuser'] && (!is_numeric($pconfig['num_permuser']) || $pconfig['num_permuser'] < 1))) {
         $input_errors[] = gettext('Number of permissions must be an integer greater than 0');
     }
 
@@ -394,7 +394,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
                       <td>
-                        <input name="num_permuser" type="number" min="1" value="<?=$pconfig['num_permuser'];?>" />
+                        <input name="num_permuser" type="number" value="<?=$pconfig['num_permuser'];?>" />
                         <div class="hidden" data-for="help_for_num_permuser">
                           <?=gettext("Number of permissions to configure.");?>
                         </div>
