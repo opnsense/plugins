@@ -135,10 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ((!empty($pconfig['download']) && empty($pconfig['upload'])) || (!empty($pconfig['upload']) && empty($pconfig['download']))) {
         $input_errors[] = gettext('You must fill in both \'Maximum Download Speed\' and \'Maximum Upload Speed\' fields');
     }
-    if (!empty($pconfig['download']) && ($pconfig['download'] <= 0 || !is_numeric($pconfig['download']))) {
+    if (!empty($pconfig['download']) && (!is_numeric($pconfig['download']) || $pconfig['download'] <= 0)) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Download Speed\' field');
     }
-    if (!empty($pconfig['upload']) && ($pconfig['upload'] <= 0 || !is_numeric($pconfig['upload']))) {
+    if (!empty($pconfig['upload']) && (!is_numeric($pconfig['upload']) || $pconfig['upload'] <= 0)) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Upload Speed\' field');
     }
     if (!empty($pconfig['num_permuser'] && (!is_numeric($pconfig['num_permuser']) || $pconfig['num_permuser'] < 1))) {
