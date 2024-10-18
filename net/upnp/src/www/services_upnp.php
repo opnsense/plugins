@@ -96,11 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 
-    // ensure backwards compatibility
-    if (!isset($pconfig['num_permuser'])) {
-      $pconfig['num_permuser'] = 8;
-    }
-
     // parse array
     $pconfig['iface_array'] = explode(',', $pconfig['iface_array']);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -146,6 +141,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($pconfig['upload']) && ($pconfig['upload'] <= 0 || !is_numeric($pconfig['upload']))) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Upload Speed\' field');
     }
+    if (!empty($pconfig['num_permuser'] && ($pconfig['num_permuser'] < 1 || !is_numeric($pconfig['num_permuser'])))) {
+        $input_errors[] = gettext('Number of permissions must be an integer greater than 0');
+    }
 
     /* user permissions validation */
     foreach (miniupnpd_permuser_list() as $i => $permuser) {
@@ -179,7 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
-        $upnp['num_permuser'] = $pconfig['num_permuser'];
+        if (!empty($upnp['num_permuser'])) {
+            $upnp['num_permuser'] = $pconfig['num_permuser'];
+        }
         // text field types
         foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];

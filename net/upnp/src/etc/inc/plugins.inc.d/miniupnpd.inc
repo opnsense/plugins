@@ -108,7 +108,7 @@ function miniupnpd_permuser_list()
 
     $num_permuser = 8;
 
-    if (isset($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
+    if (!empty($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
         $num_permuser = $config['installedpackages']['miniupnpd']['config'][0]['num_permuser'];
     }
 
