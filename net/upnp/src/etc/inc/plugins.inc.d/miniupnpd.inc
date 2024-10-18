@@ -226,9 +226,6 @@ function miniupnpd_configure_do($verbose = false)
             /* set model number */
             $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
 
-            /* number of upnp access restrictions */
-            $config_text .= "num_permuser={$upnp_config['num_permuser']}\n";
-
             /* upnp access restrictions */
             foreach (miniupnpd_permuser_list() as $permuser) {
                 if (!empty($upnp_config[$permuser])) {
