@@ -16,8 +16,8 @@
         </patterns>
     </page-caddy-reverse-proxy>
     <page-caddy-layer4-routes>
-        <name>Services: Caddy Web Server: Layer4</name>
-        <description>Allow access to Caddy Layer4</description>
+        <name>Services: Caddy Web Server: Layer4 Proxy</name>
+        <description>Allow access to Caddy Layer4 Proxy</description>
         <patterns>
             <pattern>ui/caddy/layer4/*</pattern>
             <pattern>api/caddy/reverse_proxy/*</pattern>

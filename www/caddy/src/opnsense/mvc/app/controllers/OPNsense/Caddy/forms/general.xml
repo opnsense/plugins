@@ -8,9 +8,9 @@
         </field>
         <field>
             <id>caddy.general.EnableLayer4</id>
-            <label>Enable Layer4</label>
+            <label>Enable Layer4 Proxy</label>
             <type>checkbox</type>
-            <help><![CDATA[Enable Layer4 support to stream TCP/UDP. Layer4 Routes match before the Reverse Proxy. More information: https://github.com/mholt/caddy-l4]]></help>
+            <help><![CDATA[Enable Layer4 Proxy to stream TCP/UDP. Layer4 Proxy matches before the Reverse Proxy; both can be used concurrently. More information: https://github.com/mholt/caddy-l4]]></help>
         </field>
         <field>
             <id>caddy.general.TlsEmail</id>
