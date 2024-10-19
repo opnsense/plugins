@@ -26,7 +26,7 @@
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Adding a wildcard domain and pressing "Apply" will activate the "Subdomain" Tab, in which subdomains can be configured. Using subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Using a wildcard domain with subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
