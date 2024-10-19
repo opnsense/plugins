@@ -95,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $pconfig[$fieldname] = $config['installedpackages']['miniupnpd']['config'][0][$fieldname];
         }
     }
-
     // parse array
     $pconfig['iface_array'] = explode(',', $pconfig['iface_array']);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
