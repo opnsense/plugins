@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'permdefault',
         'stun_host',
         'stun_port',
+        'num_permuser',
         'sysuptime',
         'upload',
     ];
@@ -133,11 +134,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ((!empty($pconfig['download']) && empty($pconfig['upload'])) || (!empty($pconfig['upload']) && empty($pconfig['download']))) {
         $input_errors[] = gettext('You must fill in both \'Maximum Download Speed\' and \'Maximum Upload Speed\' fields');
     }
-    if (!empty($pconfig['download']) && ($pconfig['download'] <= 0 || !is_numeric($pconfig['download']))) {
+    if (!empty($pconfig['download']) && (!is_numeric($pconfig['download']) || $pconfig['download'] <= 0)) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Download Speed\' field');
     }
-    if (!empty($pconfig['upload']) && ($pconfig['upload'] <= 0 || !is_numeric($pconfig['upload']))) {
+    if (!empty($pconfig['upload']) && (!is_numeric($pconfig['upload']) || $pconfig['upload'] <= 0)) {
         $input_errors[] = gettext('You must specify a value greater than 0 in the \'Maximum Upload Speed\' field');
+    }
+    if (!empty($pconfig['num_permuser'] && (!is_numeric($pconfig['num_permuser']) || $pconfig['num_permuser'] < 1))) {
+        $input_errors[] = gettext('Number of permissions must be an integer greater than 0');
     }
 
     /* user permissions validation */
@@ -170,6 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // boolean types
         foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
+        }
+        // numeric types
+        if (!empty($upnp['num_permuser'])) {
+            $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
         foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port'] as $fieldname) {
@@ -382,6 +390,15 @@ include("head.inc");
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
+                      <td>
+                        <input name="num_permuser" type="number" value="<?=$pconfig['num_permuser'];?>" />
+                        <div class="hidden" data-for="help_for_num_permuser">
+                          <?=gettext("Number of permissions to configure.");?>
+                        </div>
+                      </td>
+                    </tr>
 <?php foreach (miniupnpd_permuser_list() as $i => $permuser): ?>
                     <tr>
 <?php if ($i == 1): ?>

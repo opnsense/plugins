@@ -104,10 +104,17 @@ function miniupnpd_uuid()
 
 function miniupnpd_permuser_list()
 {
-    $ret = [];
-    $count = 8;
+    global $config;
 
-    for ($i = 1; $i <= $count; $i++) {
+    $num_permuser = 8;
+
+    if (!empty($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
+        $num_permuser = $config['installedpackages']['miniupnpd']['config'][0]['num_permuser'];
+    }
+
+    $ret = [];
+
+    for ($i = 1; $i <= $num_permuser; $i++) {
         $ret[$i] = "permuser{$i}";
     }
 
