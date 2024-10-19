@@ -423,7 +423,6 @@
                         <tr>
                             <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                             <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="Sequence" data-type="string">{{ lang._('Sequence') }}</th>
                             <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="subdomain" data-type="string">{{ lang._('Subdomain') }}</th>
                             <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handler') }}</th>
