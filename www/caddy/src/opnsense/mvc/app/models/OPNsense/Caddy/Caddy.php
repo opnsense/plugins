@@ -82,8 +82,9 @@ class Caddy extends BaseModel
         if (!empty($webgui) && empty((string)$webgui->interfaces)) {
             $webGuiPorts[] = !empty($webgui->port) ? (string)$webgui->port : '443';
 
-            if (empty((string)$webgui->disablehttpredirect)
-                && (string)$webgui->protocol !== 'http'
+            if (
+                empty((string) $webgui->disablehttpredirect) &&
+                (string) $webgui->protocol !== 'http'
             ) {
                 $webGuiPorts[] = '80';
             }
