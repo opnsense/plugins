@@ -1,0 +1,7 @@
+rc.conf.d:/etc/rc.conf.d/step_ca
+rc.conf.d:/etc/rc.conf.d/pcscd
+ca.json:/usr/local/etc/step/ca/config/ca.json
+password.txt:/usr/local/etc/step/password.txt
+root.tpl:/usr/local/etc/step/ca/templates/root.tpl
+intermediate.tpl:/usr/local/etc/step/ca/templates/intermediate.tpl
+leaf.tpl:/usr/local/etc/step/ca/templates/leaf.[OPNsense.StepCA.CA.provisioners.provisioner.%.Name].tpl
