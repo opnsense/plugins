@@ -21,13 +21,13 @@
         <id>sensor.remoteserver</id>
         <label>Remote Server</label>
         <type>text</type>
-        <help>IP address of the remote logging server.</help>
+        <help>IP address of the remote logging server. This is necessary if you are using a centralized Maltrail instance, otherwise leave it blank to use this instance as the logging server.</help>
     </field>
     <field>
         <id>sensor.remoteport</id>
         <label>Remote Port</label>
         <type>text</type>
-        <help>Port of the logging server.</help>
+        <help>Port of the remote logging server.</help>
     </field>
     <field>
         <id>sensor.syslogserver</id>
@@ -39,6 +39,6 @@
         <id>sensor.syslogport</id>
         <label>Syslog Port</label>
         <type>text</type>
-        <help>Port of the syslog server.</help>
+        <help>Port of the remote syslog server.</help>
     </field>
 </form>
