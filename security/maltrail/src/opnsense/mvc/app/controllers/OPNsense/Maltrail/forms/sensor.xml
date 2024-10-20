@@ -21,7 +21,7 @@
         <id>sensor.remoteserver</id>
         <label>Remote Server</label>
         <type>text</type>
-        <help>IP address of the remote logging server. This is necessary if you are using a centralized Maltrail instance, otherwise leave it blank to use that instance as the logging server.</help>
+        <help>IP address of the remote logging server. This is necessary if you are using a centralized Maltrail instance, otherwise leave it blank to use this instance as the logging server.</help>
     </field>
     <field>
         <id>sensor.remoteport</id>
