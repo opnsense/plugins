@@ -73,61 +73,6 @@ class Caddy extends BaseModel
         }
     }
 
-    // Get the current OPNsense WebGUI ports and check for conflicts with Caddy
-    private function getWebGuiPorts()
-    {
-        $webgui = Config::getInstance()->object()->system->webgui ?? null;
-        $webGuiPorts = [];
-
-        if (!empty($webgui) && empty((string)$webgui->interfaces)) {
-            $webGuiPorts[] = !empty($webgui->port) ? (string)$webgui->port : '443';
-
-            if (
-                empty((string) $webgui->disablehttpredirect) &&
-                (string) $webgui->protocol !== 'http'
-            ) {
-                $webGuiPorts[] = '80';
-            }
-        }
-
-        return $webGuiPorts;
-    }
-
-    private function checkWebGuiSettings($messages)
-    {
-        // Get custom caddy ports if set. If empty, default to 80 and 443.
-        $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : '80';
-        $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : '443';
-
-        $overlap = array_intersect($this->getWebGuiPorts(), [$httpPort, $httpsPort]);
-
-        if (
-            !empty($overlap) &&
-            !empty((string)$this->general->TlsEmail) &&
-            empty((string)$this->general->TlsAutoHttps)
-        ) {
-            $portOverlap = implode(', ', $overlap);
-
-            $validationMessage = gettext(
-                'Resolve conflicting HTTP and/or HTTPS port(s) with ' .
-                'the OPNsense WebGUI: "%s".'
-            );
-
-            $messages->appendMessage(new Message(
-                sprintf($validationMessage, $portOverlap),
-                "general.TlsAutoHttps"
-            ));
-            $messages->appendMessage(new Message(
-                sprintf($validationMessage, $portOverlap),
-                "general.HttpPort"
-            ));
-            $messages->appendMessage(new Message(
-                sprintf($validationMessage, $portOverlap),
-                "general.HttpsPort"
-            ));
-        }
-    }
-
     // Prevent the usage of conflicting options when TLS is deactivated for a Domain
     private function checkDisableTlsConflicts($messages)
     {
@@ -324,7 +269,6 @@ class Caddy extends BaseModel
         $messages = parent::performValidation($validateFullModel);
 
         $this->checkForUniquePortCombos($messages);
-        $this->checkWebGuiSettings($messages);
         $this->checkDisableTlsConflicts($messages);
         $this->checkSuperuserPorts($messages);
         $this->checkLayer4Matchers($messages);
