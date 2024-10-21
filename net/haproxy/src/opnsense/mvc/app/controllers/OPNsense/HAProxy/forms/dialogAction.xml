@@ -446,7 +446,19 @@
         <id>action.map_use_backend_default</id>
         <label>Default backend pool</label>
         <type>dropdown</type>
-        <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file.]]></help>
+        <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file by Host header.]]></help>
+    </field>
+    <field>
+        <id>action.map_use_backend_file_matchtype</id>
+	<label>Match type</label>
+        <type>dropdown</type>
+	<help><![CDATA[HAProxy will match the hostname against the map file using the selected matching method. See HAProxy documentation for Map files for details.]]></help>
+    </field>
+    <field>
+        <id>action.map_use_backend_file_snisupport</id>
+	<label>Hostname reference</label>
+        <type>dropdown</type>
+	<help><![CDATA[HAProxy will use SNI and/or Host header as hostname according to the selected sequence.]]></help>
     </field>
     <field>
         <label>Parameters</label>
