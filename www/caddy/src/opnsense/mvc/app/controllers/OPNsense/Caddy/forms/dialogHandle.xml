@@ -25,7 +25,6 @@
         <id>handle.subdomain</id>
         <label>Subdomain</label>
         <type>dropdown</type>
-        <style>Subdomain</style>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
