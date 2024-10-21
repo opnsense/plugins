@@ -73,56 +73,6 @@ class Caddy extends BaseModel
         }
     }
 
-    // Get the current OPNsense WebGUI ports and check for conflicts with Caddy
-    private function getWebGuiPorts()
-    {
-        $webgui = Config::getInstance()->object()->system->webgui ?? null;
-        $webGuiPorts = [];
-
-        // Only add ports to array if no specific interfaces for the WebGUI are set
-        if (!empty($webgui) && empty((string)$webgui->interfaces)) {
-            // Add port 443 if no specific port is set, otherwise set custom webgui port
-            $webGuiPorts[] = !empty($webgui->port) ? (string)$webgui->port : '443';
-
-            // Add port 80 if HTTP redirect is not explicitly disabled
-            if (empty((string)$webgui->disablehttpredirect)) {
-                $webGuiPorts[] = '80';
-            }
-        }
-
-        return $webGuiPorts;
-    }
-
-    private function checkWebGuiSettings($messages)
-    {
-        // Get custom caddy ports if set. If empty, default to 80 and 443.
-        $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : '80';
-        $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : '443';
-        $tlsAutoHttpsSetting = (string)$this->general->TlsAutoHttps;
-
-        // Check for conflicts
-        $overlap = array_intersect($this->getWebGuiPorts(), [$httpPort, $httpsPort]);
-
-        if (!empty($overlap) && $tlsAutoHttpsSetting !== 'off') {
-            $portOverlap = implode(', ', $overlap);
-            $messages->appendMessage(new Message(
-                sprintf(
-                    gettext(
-                        'To use "Auto HTTPS", resolve these conflicting ports %s ' .
-                        'that are currently configured for the OPNsense WebGUI. ' .
-                        'Go to "System - Settings - Administration". ' .
-                        'To release port 80, enable "Disable web GUI redirect rule". ' .
-                        'To release port %s, change "TCP port" to a non-standard port, ' .
-                        'e.g., 8443.'
-                    ),
-                    $portOverlap,
-                    $httpsPort
-                ),
-                "general.TlsAutoHttps"
-            ));
-        }
-    }
-
     // Prevent the usage of conflicting options when TLS is deactivated for a Domain
     private function checkDisableTlsConflicts($messages)
     {
@@ -319,7 +269,6 @@ class Caddy extends BaseModel
         $messages = parent::performValidation($validateFullModel);
 
         $this->checkForUniquePortCombos($messages);
-        $this->checkWebGuiSettings($messages);
         $this->checkDisableTlsConflicts($messages);
         $this->checkSuperuserPorts($messages);
         $this->checkLayer4Matchers($messages);
