@@ -90,6 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $copy_fields[] = $permuser;
     }
 
+    $pconfig['num_permuser'] = null;
+
     foreach ($copy_fields as $fieldname) {
         if (isset($config['installedpackages']['miniupnpd']['config'][0][$fieldname])) {
             $pconfig[$fieldname] = $config['installedpackages']['miniupnpd']['config'][0][$fieldname];
@@ -176,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
-        if (!empty($upnp['num_permuser'])) {
+        if (!empty($pconfig['num_permuser'])) {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
@@ -393,7 +395,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
                       <td>
-                        <input name="num_permuser" type="number" value="<?=$pconfig['num_permuser'];?>" />
+                        <input name="num_permuser" type="text" value="<?= html_safe($pconfig['num_permuser']) ?>" />
                         <div class="hidden" data-for="help_for_num_permuser">
                           <?=gettext("Number of permissions to configure.");?>
                         </div>
@@ -407,7 +409,7 @@ include("head.inc");
                       <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext('Entry') . ' ' . $i ?></td>
 <?php endif ?>
                       <td style="width:78%">
-                        <input name="<?= html_safe($permuser) ?>" type="text" value="<?= $pconfig[$permuser] ?>" />
+                        <input name="<?= html_safe($permuser) ?>" type="text" value="<?= isset($pconfig[$permuser]) ? $pconfig[$permuser] : '' ?>" />
 <?php if ($i == 1): ?>
                         <div class="hidden" data-for="help_for_permuser">
                           <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cidr] [int port or range]");?><br/>
