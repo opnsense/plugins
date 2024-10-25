@@ -51,47 +51,55 @@ function result_to_html(elements) {
 
         // only if test did already run
         if ('result' in element) {
-            var result = element.result,
-                start = result.start,
-                connection = start.connected[0],
-                intervals = result.intervals,
-                test_end = result.end,
-                cpu = test_end.cpu_utilization_percent;
-            // General
-            output += "<h3>{{ lang._('General') }}</h3>";
-            output += '<table class="table table-striped">';
-            output += table_tr_kv("{{ lang._('Time') }}", start.timestamp.time);
-            output += table_tr_kv("{{ lang._('Duration') }}", start.test_start.duration);
-            output += table_tr_kv("{{ lang._('Block Size') }}", start.test_start.blksize);
-            output += "</table>";
-            // connection
-            output += "<h3>{{ lang._('Connection') }}</h3>";
-            output += '<table class="table table-striped">';
-            output += table_tr_kv("{{ lang._('Local Host') }}", connection.local_host);
-            output += table_tr_kv("{{ lang._('Local Port') }}", connection.local_port);
-            output += table_tr_kv("{{ lang._('Remote Host') }}", connection.remote_host);
-            output += table_tr_kv("{{ lang._('Remote Port') }}", connection.remote_port);
-            output += "</table>";
-            // CPU Usage
-            output += "<h3>{{ lang._('CPU Usage') }}</h3>";
-            output += '<table class="table table-striped">';
-            output += table_tr_kv("{{ lang._('Host Total') }}", cpu.host_total.toFixed(2));
-            output += table_tr_kv("{{ lang._('Host User') }}", cpu.host_user.toFixed(2));
-            output += table_tr_kv("{{ lang._('Host System') }}", cpu.host_system.toFixed(2));
-            output += table_tr_kv("{{ lang._('Remote Total') }}", cpu.remote_total.toFixed(2));
-            output += table_tr_kv("{{ lang._('Remote User') }}", cpu.remote_user.toFixed(2));
-            output += table_tr_kv("{{ lang._('Remote System') }}", cpu.remote_system.toFixed(2));
-            output += "</table>";
-            // performance data
-            output += "<h3>{{ lang._('Performance Data') }}</h3>";
-            output += '<table class="table table-striped">';
-            var fields = ['sum_sent', 'sum_received'];
-            output += table_tr_transpose("{{ lang._('Start') }}","start",fields, test_end);
-            output += table_tr_transpose("{{ lang._('End') }}","end",fields, test_end);
-            output += table_tr_transpose("{{ lang._('Seconds') }}","seconds",fields, test_end);
-            output += table_tr_transpose("{{ lang._('Bytes') }}","bytes",fields, test_end);
-            output += table_tr_transpose("{{ lang._('Bits Per Second') }}","bits_per_second",fields, test_end);
-            output += "</table>";
+            var result = element.result;
+            if ('error' in result) {
+                // We can't assume that any other fields exist when there's an error
+                output += "<h3>{{ lang._('Error') }}</h3>";
+                output += '<table class="table table-striped">';
+                output += table_tr_kv("{{ lang._('Error message') }}", result.error);
+                output += "</table>";
+            } else {
+                var start = result.start,
+                    connection = start.connected[0],
+                    intervals = result.intervals,
+                    test_end = result.end,
+                    cpu = test_end.cpu_utilization_percent;
+                // General
+                output += "<h3>{{ lang._('General') }}</h3>";
+                output += '<table class="table table-striped">';
+                output += table_tr_kv("{{ lang._('Time') }}", start.timestamp.time);
+                output += table_tr_kv("{{ lang._('Duration') }}", start.test_start.duration);
+                output += table_tr_kv("{{ lang._('Block Size') }}", start.test_start.blksize);
+                output += "</table>";
+                // connection
+                output += "<h3>{{ lang._('Connection') }}</h3>";
+                output += '<table class="table table-striped">';
+                output += table_tr_kv("{{ lang._('Local Host') }}", connection.local_host);
+                output += table_tr_kv("{{ lang._('Local Port') }}", connection.local_port);
+                output += table_tr_kv("{{ lang._('Remote Host') }}", connection.remote_host);
+                output += table_tr_kv("{{ lang._('Remote Port') }}", connection.remote_port);
+                output += "</table>";
+                // CPU Usage
+                output += "<h3>{{ lang._('CPU Usage') }}</h3>";
+                output += '<table class="table table-striped">';
+                output += table_tr_kv("{{ lang._('Host Total') }}", cpu.host_total.toFixed(2));
+                output += table_tr_kv("{{ lang._('Host User') }}", cpu.host_user.toFixed(2));
+                output += table_tr_kv("{{ lang._('Host System') }}", cpu.host_system.toFixed(2));
+                output += table_tr_kv("{{ lang._('Remote Total') }}", cpu.remote_total.toFixed(2));
+                output += table_tr_kv("{{ lang._('Remote User') }}", cpu.remote_user.toFixed(2));
+                output += table_tr_kv("{{ lang._('Remote System') }}", cpu.remote_system.toFixed(2));
+                output += "</table>";
+                // performance data
+                output += "<h3>{{ lang._('Performance Data') }}</h3>";
+                output += '<table class="table table-striped">';
+                var fields = ['sum_sent', 'sum_received'];
+                output += table_tr_transpose("{{ lang._('Start') }}","start",fields, test_end);
+                output += table_tr_transpose("{{ lang._('End') }}","end",fields, test_end);
+                output += table_tr_transpose("{{ lang._('Seconds') }}","seconds",fields, test_end);
+                output += table_tr_transpose("{{ lang._('Bytes') }}","bytes",fields, test_end);
+                output += table_tr_transpose("{{ lang._('Bits Per Second') }}","bits_per_second",fields, test_end);
+                output += "</table>";
+            }
         }
     }
     $('#resultcontainer').html(output);
