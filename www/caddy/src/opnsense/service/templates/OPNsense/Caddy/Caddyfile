@@ -94,8 +94,6 @@
                     import /usr/local/etc/caddy/caddy.d/*.layer4listener
                     {% set context_var = "listener_wrappers" %}
                     {% include "OPNsense/Caddy/includeLayer4" %}
-                    {# Empty Route that catches all other traffic #}
-                    route
                 }
                 {# Route all other traffic to HTTP App #}
                 tls
