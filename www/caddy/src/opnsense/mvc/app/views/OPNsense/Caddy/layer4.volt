@@ -36,6 +36,15 @@
             toggle:'/api/caddy/ReverseProxy/toggleLayer4/',
         });
 
+        $("#Layer4OpenvpnGrid").UIBootgrid({
+            search:'/api/caddy/ReverseProxy/searchLayer4Openvpn/',
+            get:'/api/caddy/ReverseProxy/getLayer4Openvpn/',
+            set:'/api/caddy/ReverseProxy/setLayer4Openvpn/',
+            add:'/api/caddy/ReverseProxy/addLayer4Openvpn/',
+            del:'/api/caddy/ReverseProxy/delLayer4Openvpn/',
+            toggle:'/api/caddy/ReverseProxy/toggleLayer4Openvpn/',
+        });
+
         /**
          * Displays an alert message to the user.
          *
@@ -86,11 +95,17 @@
             }
         });
 
+        // Hide all elements with style_matchers initially
+        $(".style_matchers").closest('tr').hide();
+
         $("#layer4\\.Matchers").change(function() {
-            if ($(this).val() !== "tlssni" && $(this).val() !== "httphost") {
-                $(".style_matchers").closest('tr').hide();
-            } else {
-                $(".style_matchers").closest('tr').show();
+            $(".style_matchers").closest('tr').hide();
+            const selectedVal = $(this).val();
+
+            if (selectedVal === "tlssni" || selectedVal === "httphost") {
+                $(".matchers_domain").closest('tr').show();
+            } else if (selectedVal === "openvpn") {
+                $(".matchers_openvpn").closest('tr').show();
             }
         });
 
@@ -108,6 +123,7 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li id="tab-layer4" class="active"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Matcher Configuration') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -115,7 +131,7 @@
     <div id="layer4Tab" class="tab-pane fade active in">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
+            <div style="display: block;">
                 <table id="Layer4Grid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
@@ -125,9 +141,11 @@
                             <th data-column-id="Type" data-type="string" data-visible="false">{{ lang._('Routing Type') }}</th>
                             <th data-column-id="Protocol" data-type="string">{{ lang._('Protocol') }}</th>
                             <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="Matchers" data-type="string">{{ lang._('Matchers') }}</th>
                             <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Invert Matchers') }}</th>
+                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
+                            <th data-column-id="FromOpenvpnModes" data-type="string" data-visible="false">{{ lang._('OpenVPN Modes') }}</th>
+                            <th data-column-id="FromOpenvpnStaticKey" data-type="string" data-visible="false">{{ lang._('OpenVPN Static Key') }}</th>
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>
@@ -144,6 +162,36 @@
                             <td></td>
                             <td>
                                 <button id="addLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
+                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matcher Tab -->
+    <div id="matcherTab" class="tab-pane fade">
+        <div style="padding-left: 16px;">
+            <!-- OpenVPN Matcher -->
+            <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+            <div style="display: block;">
+                <table id="Layer4OpenvpnGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4Openvpn" data-editAlert="ConfigurationChangeMessage">
+                    <thead>
+                        <tr>
+                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="addLayer4OpenvpnBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
                                 <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                             </td>
                         </tr>
@@ -177,3 +225,4 @@
 </section>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':'DialogLayer4','label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':'DialogLayer4Openvpn','label':lang._('Edit OpenVPN Static Key')])}}

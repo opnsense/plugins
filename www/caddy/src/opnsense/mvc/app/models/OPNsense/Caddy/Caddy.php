@@ -208,6 +208,42 @@ class Caddy extends BaseModel
                     ));
                 }
 
+                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnModes)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, field must be empty.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".FromOpenvpnModes"
+                    ));
+                }
+
+                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnStaticKey)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, field must be empty.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".FromOpenvpnStaticKey"
+                    ));
+                }
+
+                if (
+                    (string)$item->FromOpenvpnModes !== 'crypt2_client' &&
+                    count((array)$item->FromOpenvpnStaticKey) > 1
+                ) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext('Only mode "crypt2_client" supports multiple keys.'),
+                        ),
+                        $key . ".FromOpenvpnStaticKey"
+                    ));
+                }
+
                 if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
                     $messages->appendMessage(new Message(
                         sprintf(
