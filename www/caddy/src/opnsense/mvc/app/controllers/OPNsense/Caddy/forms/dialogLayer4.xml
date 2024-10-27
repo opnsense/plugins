@@ -71,7 +71,7 @@
         <label>OpenVPN Mode</label>
         <type>dropdown</type>
         <style>style_matchers matchers_openvpn</style>
-        <help><![CDATA[Select the mode to match the OpenVPN Server or Client.]]></help>
+        <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
     </field>
     <field>
         <id>layer4.FromOpenvpnStaticKey</id>
@@ -80,7 +80,7 @@
         <style>style_matchers selectpicker matchers_openvpn</style>
         <hint>Any</hint>
         <size>5</size>
-        <help><![CDATA[Select one or multiple Static Keys to match. Matching multiple Static Keys is only supported in tls-crypt2_client mode.]]></help>
+        <help><![CDATA[Select a Static Key to match. Multiple Static Keys are only supported for tls-crypt2_client mode.]]></help>
     </field>
     <field>
         <id>layer4.InvertMatchers</id>

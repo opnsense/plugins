@@ -73,10 +73,14 @@
     {% elif layer4.Matchers == 'openvpn' and layer4.FromOpenvpnModes and layer4.FromOpenvpnStaticKey %}
         {% for mode in layer4.FromOpenvpnModes.split(',') %}
             {% set mode_clean = mode.strip() %}
+            {% set key_list = layer4.FromOpenvpnStaticKey.split(',') %}
             {% if mode_clean.startswith('auth') %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
                 {% set digest = 'sha256' if 'sha256' in mode_clean else 'sha512' %}
                 {% set direction = 'normal' if 'normal' in mode_clean else 'inverse' %}
-                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                {% for key_uuid in key_list %}
                     {{ invert_prefix }}openvpn {
                         modes auth
                         auth_digest {{ digest }}
@@ -85,21 +89,28 @@
                     }
                 {% endfor %}
             {% elif mode_clean == 'crypt' %}
-                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {% for key_uuid in key_list %}
                     {{ invert_prefix }}openvpn {
                         modes crypt
                         group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
                     }
                 {% endfor %}
             {% elif mode_clean == 'crypt2_client' %}
+                {# Multiple keys are allowed for crypt2_client #}
                 {{ invert_prefix }}openvpn {
                     modes crypt2
-                    {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                    {% for key_uuid in key_list %}
                         client_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
                     {% endfor %}
                 }
             {% elif mode_clean == 'crypt2_server' %}
-                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {% for key_uuid in key_list %}
                     {{ invert_prefix }}openvpn {
                         modes crypt2
                         server_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
