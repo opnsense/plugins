@@ -70,6 +70,43 @@
         {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
     {% elif layer4.Matchers == 'tlssni' %}
         {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'openvpn' and layer4.FromOpenvpnModes and layer4.FromOpenvpnStaticKey %}
+        {% for mode in layer4.FromOpenvpnModes.split(',') %}
+            {% set mode_clean = mode.strip() %}
+            {% if mode_clean.startswith('auth') %}
+                {% set digest = 'sha256' if 'sha256' in mode_clean else 'sha512' %}
+                {% set direction = 'normal' if 'normal' in mode_clean else 'inverse' %}
+                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                    {{ invert_prefix }}openvpn {
+                        modes auth
+                        auth_digest {{ digest }}
+                        group_key_direction {{ direction }}
+                        group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    }
+                {% endfor %}
+            {% elif mode_clean == 'crypt' %}
+                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                    {{ invert_prefix }}openvpn {
+                        modes crypt
+                        group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    }
+                {% endfor %}
+            {% elif mode_clean == 'crypt2_client' %}
+                {{ invert_prefix }}openvpn {
+                    modes crypt2
+                    {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                        client_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    {% endfor %}
+                }
+            {% elif mode_clean == 'crypt2_server' %}
+                {% for key_uuid in layer4.FromOpenvpnStaticKey.split(',') %}
+                    {{ invert_prefix }}openvpn {
+                        modes crypt2
+                        server_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    }
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
     {% else %}
         {{ invert_prefix }}{{ layer4.Matchers }}
     {% endif %}
