@@ -232,18 +232,6 @@ class Caddy extends BaseModel
                     ));
                 }
 
-                if (
-                    (string)$item->FromOpenvpnModes !== 'crypt2_client' &&
-                    count((array)$item->FromOpenvpnStaticKey) > 1
-                ) {
-                    $messages->appendMessage(new Message(
-                        sprintf(
-                            gettext('Only mode "crypt2_client" supports multiple keys.'),
-                        ),
-                        $key . ".FromOpenvpnStaticKey"
-                    ));
-                }
-
                 if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
                     $messages->appendMessage(new Message(
                         sprintf(
