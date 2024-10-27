@@ -44,7 +44,7 @@ foreach ($configObj->cert as $cert) {
     // Handle CA and possible intermediate CA to create a certificate bundle
     if (!empty($cert->caref)) {
         foreach ($configObj->ca as $ca) {
-            if ((string) $cert->caref === (string)$ca->refid) {
+            if ((string)$cert->caref === (string)$ca->refid) {
                 $ca_content = base64_decode((string)$ca->crt);
                 $cert_chain .= "\n" . $ca_content;
 

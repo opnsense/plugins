@@ -570,6 +570,12 @@
                 </StaticKey>
                 <description type="DescriptionField">
                     <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Description must be unique.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
                 </description>
             </layer4openvpn>
         </reverseproxy>
