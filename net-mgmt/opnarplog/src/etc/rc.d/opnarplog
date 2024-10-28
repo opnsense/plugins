@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: opnarplog
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=opnarplog
+
+rcvar=opnarplog_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -P ${pidfile} /usr/local/bin/python3 /usr/local/bin/opnarplog.py"
+
+load_rc_config ${name}
+
+: ${opnarplog_enable="NO"}
+
+run_rc_command $1

@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.opnarplog.general.enabled') and OPNsense.opnarplog.general.enabled == '1' %}
+opnarplog_enable="YES"
+{% else %}
+opnarplog_enable="NO"
+{% endif %}

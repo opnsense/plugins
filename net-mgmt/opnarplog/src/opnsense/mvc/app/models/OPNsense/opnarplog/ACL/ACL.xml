@@ -1,0 +1,9 @@
+<acl>
+   <page-opnarplog-config>
+      <name>Services: OPNarplog</name>
+      <patterns>
+         <pattern>ui/opnarplog/*</pattern>
+         <pattern>api/opnarplog/*</pattern>
+      </patterns>
+   </page-opnarplog-config>
+</acl>
