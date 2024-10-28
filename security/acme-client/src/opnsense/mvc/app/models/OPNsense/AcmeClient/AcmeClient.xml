@@ -490,6 +490,7 @@
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
@@ -906,6 +907,12 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_mydnsjp_masterid type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_masterid>
+                <dns_mydnsjp_password type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_password>
                 <dns_mythic_beasts_key type="TextField">
                     <Required>N</Required>
                 </dns_mythic_beasts_key>
