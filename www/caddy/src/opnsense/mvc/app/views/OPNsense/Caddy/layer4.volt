@@ -109,6 +109,18 @@
             }
         });
 
+        // Layer7 Matchers dropdown
+        const matcherContentMap = {
+            'openvpn': "OpenVPNMatcherContent"
+            // Prepared for more matchers that need customization options
+        };
+
+        $("#matcherTypeSelect").change(function() {
+            const selectedMatcher = $(this).val();
+            $(".matcher-content").hide();
+            $("#" + matcherContentMap[selectedMatcher]).show();
+        });
+
         updateServiceControlUI('caddy');
     });
 </script>
@@ -119,11 +131,15 @@
         font-size: 16px;
         font-style: italic;
     }
+
+    #matcherTypeSelect {
+        margin-top: 20px;
+    }
 </style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li id="tab-layer4" class="active"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
-    <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Matcher Configuration') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Layer7 Matchers') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -171,12 +187,16 @@
         </div>
     </div>
 
-    <!-- Matcher Tab -->
+    <!-- Layer7 Tab -->
     <div id="matcherTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
+            <select id="matcherTypeSelect" class="form-control" style="width: 200px; display: inline-block;">
+                <option value="openvpn" selected>{{ lang._('OpenVPN') }}</option>
+            </select>
+
             <!-- OpenVPN Matcher -->
-            <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
-            <div style="display: block;">
+            <div id="OpenVPNMatcherContent" class="matcher-content">
+                <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
                 <table id="Layer4OpenvpnGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4Openvpn" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
