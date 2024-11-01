@@ -139,7 +139,7 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li id="tab-layer4" class="active"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
-    <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Layer7 Matchers') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Layer7 Matcher Settings') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
