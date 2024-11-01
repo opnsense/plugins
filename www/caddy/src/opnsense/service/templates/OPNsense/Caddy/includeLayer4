@@ -70,6 +70,8 @@
         {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
     {% elif layer4.Matchers == 'tlssni' %}
         {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'quicsni' %}
+        {{ invert_prefix }}quic sni {{ layer4.FromDomain.replace(',', ' ') }}
     {% elif layer4.Matchers == 'openvpn' and layer4.FromOpenvpnModes %}
         {% for mode in layer4.FromOpenvpnModes.split(',') %}
             {% set mode_clean = mode.strip() %}

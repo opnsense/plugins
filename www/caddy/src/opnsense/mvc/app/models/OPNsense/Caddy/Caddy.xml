@@ -523,6 +523,8 @@
                         <openvpn>OpenVPN</openvpn>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <quic>QUIC</quic>
+                        <quicsni>QUIC (SNI Client Hello)</quicsni>
                         <rdp>RDP</rdp>
                         <socks4>SOCKSv4</socks4>
                         <socks5>SOCKSv5</socks5>

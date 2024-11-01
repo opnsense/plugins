@@ -102,7 +102,7 @@
             $(".style_matchers").closest('tr').hide();
             const selectedVal = $(this).val();
 
-            if (selectedVal === "tlssni" || selectedVal === "httphost") {
+            if (selectedVal === "tlssni" || selectedVal === "httphost" || selectedVal === "quicsni") {
                 $(".matchers_domain").closest('tr').show();
             } else if (selectedVal === "openvpn") {
                 $(".matchers_openvpn").closest('tr').show();
