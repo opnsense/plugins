@@ -109,18 +109,6 @@
             }
         });
 
-        // Layer7 Matchers dropdown
-        const matcherContentMap = {
-            'openvpn': "OpenVPNMatcherContent"
-            // Prepared for more matchers that need customization options
-        };
-
-        $("#matcherTypeSelect").change(function() {
-            const selectedMatcher = $(this).val();
-            $(".matcher-content").hide();
-            $("#" + matcherContentMap[selectedMatcher]).show();
-        });
-
         updateServiceControlUI('caddy');
     });
 </script>
@@ -130,10 +118,6 @@
         font-weight: 800;
         font-size: 16px;
         font-style: italic;
-    }
-
-    #matcherTypeSelect {
-        margin-top: 20px;
     }
 </style>
 
@@ -190,13 +174,9 @@
     <!-- Layer7 Tab -->
     <div id="matcherTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
-            <select id="matcherTypeSelect" class="form-control" style="width: 200px; display: inline-block;">
-                <option value="openvpn" selected>{{ lang._('OpenVPN') }}</option>
-            </select>
-
             <!-- OpenVPN Matcher -->
-            <div id="OpenVPNMatcherContent" class="matcher-content">
-                <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+            <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+            <div style="display: block;">
                 <table id="Layer4OpenvpnGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4Openvpn" data-editAlert="ConfigurationChangeMessage">
                     <thead>
                         <tr>
@@ -221,6 +201,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Reconfigure Button -->
 <section class="page-content-main">
