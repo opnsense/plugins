@@ -31,12 +31,12 @@
 import os
 import sys
 import glob
-import pipes
 import xml.etree.ElementTree
 import shutil
 import subprocess
 import ipaddress
 from lib import objects
+from shlex import quote
 
 def write_file(filename, content, mode=0o600):
     dirname = '/'.join(filename.split('/')[0:-1])
@@ -92,7 +92,7 @@ def deploy(config_filename):
 
         if_up = list()
         if_up.append("#!/bin/sh")
-        if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, pipes.quote(interface_address)))
+        if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, quote(interface_address)))
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
