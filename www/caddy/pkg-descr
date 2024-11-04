@@ -20,6 +20,7 @@ Plugin Changelog
 * Add: Layer4 QUIC matcher
 * Build: Update dependency to lang/go123
 * Build: Update caddy-l4 and caddy-dynamicdns module
+* Build: Fix that caddy-l4 does not stop when ssh is proxied
 * Build: DNS Providers: Update porkbun, dnsmadeeasy
 * Cleanup: Layer4 default route in listener_wrappers has been removed (obsolete)
 * Fix: Error when same Access List is set to wildcard and subdomain
