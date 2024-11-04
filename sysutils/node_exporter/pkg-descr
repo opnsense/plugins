@@ -3,6 +3,9 @@ written in Go with pluggable metric collectors.
 
 WWW: https://github.com/prometheus/node_exporter
 
+***Please note that this needs to be enabled via Services: Prometheus Exporter.
+
+The source for this plugin is located at https://github.com/opnsense/plugins/edit/master/sysutils/node_exporter
 
 Changelog
 ---------
