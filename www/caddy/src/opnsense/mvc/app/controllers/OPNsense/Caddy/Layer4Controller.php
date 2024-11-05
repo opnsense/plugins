@@ -38,5 +38,6 @@ class Layer4Controller extends IndexController
     {
         $this->view->pick('OPNsense/Caddy/layer4');
         $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
+        $this->view->formDialogLayer4Openvpn = $this->getForm("dialogLayer4Openvpn");
     }
 }

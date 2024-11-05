@@ -62,9 +62,25 @@
         <id>layer4.FromDomain</id>
         <label>Domain</label>
         <type>select_multiple</type>
-        <style>style_matchers tokenize</style>
+        <style>style_matchers tokenize matchers_domain</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
+    </field>
+    <field>
+        <id>layer4.FromOpenvpnModes</id>
+        <label>OpenVPN Mode</label>
+        <type>dropdown</type>
+        <style>style_matchers matchers_openvpn</style>
+        <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
+    </field>
+    <field>
+        <id>layer4.FromOpenvpnStaticKey</id>
+        <label>OpenVPN Static Key</label>
+        <type>select_multiple</type>
+        <style>style_matchers selectpicker matchers_openvpn</style>
+        <hint>Any</hint>
+        <size>5</size>
+        <help><![CDATA[Select a Static Key to match. Multiple Static Keys are only supported for tls-crypt2_client mode.]]></help>
     </field>
     <field>
         <id>layer4.InvertMatchers</id>

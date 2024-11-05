@@ -489,6 +489,29 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
                 </FromDomain>
+                <FromOpenvpnModes type="OptionField">
+                    <BlankDesc>Any</BlankDesc>
+                    <OptionValues>
+                        <auth_sha256_normal>tls-auth_sha256_normal</auth_sha256_normal>
+                        <auth_sha256_inverse>tls-auth_sha256_inverse</auth_sha256_inverse>
+                        <auth_sha512_normal>tls-auth_sha512_normal</auth_sha512_normal>
+                        <auth_sha512_inverse>tls-auth_sha512_inverse</auth_sha512_inverse>
+                        <crypt>tls-crypt</crypt>
+                        <crypt2_client>tls-crypt2_client</crypt2_client>
+                        <crypt2_server>tls-crypt2_server</crypt2_server>
+                    </OptionValues>
+                </FromOpenvpnModes>
+                <FromOpenvpnStaticKey type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.layer4openvpn</items>
+                            <display>description</display>
+                            <display_format>%s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </FromOpenvpnStaticKey>
                 <Matchers type="OptionField">
                     <Required>Y</Required>
                     <Default>tlssni</Default>
@@ -497,14 +520,18 @@
                         <dns>DNS</dns>
                         <http>HTTP</http>
                         <httphost>HTTP (Host Header)</httphost>
+                        <openvpn>OpenVPN</openvpn>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <quic>QUIC</quic>
+                        <quicsni>QUIC (SNI Client Hello)</quicsni>
                         <rdp>RDP</rdp>
                         <socks4>SOCKSv4</socks4>
                         <socks5>SOCKSv5</socks5>
                         <ssh>SSH</ssh>
                         <tls>TLS</tls>
                         <tlssni>TLS (SNI Client Hello)</tlssni>
+                        <winbox>Winbox</winbox>
                         <wireguard>Wireguard</wireguard>
                         <xmpp>XMPP</xmpp>
                     </OptionValues>
@@ -539,6 +566,20 @@
                 </RemoteIp>
                 <description type="DescriptionField"/>
             </layer4>
+            <layer4openvpn type="ArrayField">
+                <StaticKey type="TextField">
+                    <Required>Y</Required>
+                </StaticKey>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Description must be unique.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </description>
+            </layer4openvpn>
         </reverseproxy>
     </items>
 </model>

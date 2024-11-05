@@ -209,40 +209,6 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
 
-
-    // Layer4 Section
-
-    public function searchLayer4Action()
-    {
-        return $this->searchBase("reverseproxy.layer4", null, 'description');
-    }
-
-    public function setLayer4Action($uuid)
-    {
-        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
-    }
-
-    public function addLayer4Action()
-    {
-        return $this->addBase("layer4", "reverseproxy.layer4");
-    }
-
-    public function getLayer4Action($uuid = null)
-    {
-        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
-    }
-
-    public function delLayer4Action($uuid)
-    {
-        return $this->delBase("reverseproxy.layer4", $uuid);
-    }
-
-    public function toggleLayer4Action($uuid, $enabled = null)
-    {
-        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
-    }
-
-
     // AccessList Section
 
     public function searchAccessListAction()
@@ -348,5 +314,71 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function delHeaderAction($uuid)
     {
         return $this->delBase("reverseproxy.header", $uuid);
+    }
+
+
+    // Layer4 Proxy Section
+
+    public function searchLayer4Action()
+    {
+        return $this->searchBase("reverseproxy.layer4", null, 'description');
+    }
+
+    public function setLayer4Action($uuid)
+    {
+        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function addLayer4Action()
+    {
+        return $this->addBase("layer4", "reverseproxy.layer4");
+    }
+
+    public function getLayer4Action($uuid = null)
+    {
+        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function delLayer4Action($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4", $uuid);
+    }
+
+    public function toggleLayer4Action($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
+    }
+
+
+    // Layer4 OpenVPN Section
+
+    public function searchLayer4OpenvpnAction()
+    {
+        return $this->searchBase("reverseproxy.layer4openvpn", null, 'description');
+    }
+
+    public function setLayer4OpenvpnAction($uuid)
+    {
+        return $this->setBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function addLayer4OpenvpnAction()
+    {
+        return $this->addBase("layer4openvpn", "reverseproxy.layer4openvpn");
+    }
+
+    public function getLayer4OpenvpnAction($uuid = null)
+    {
+        return $this->getBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function delLayer4OpenvpnAction($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function toggleLayer4OpenvpnAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4openvpn", $uuid, $enabled);
     }
 }

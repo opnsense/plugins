@@ -70,6 +70,66 @@
         {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
     {% elif layer4.Matchers == 'tlssni' %}
         {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'quicsni' %}
+        {{ invert_prefix }}quic sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'openvpn' and layer4.FromOpenvpnModes %}
+        {% for mode in layer4.FromOpenvpnModes.split(',') %}
+            {% set mode_clean = mode.strip() %}
+            {% if layer4.FromOpenvpnStaticKey %}
+                {% set key_list = layer4.FromOpenvpnStaticKey.split(',') %}
+            {% endif %}
+            {% if mode_clean.startswith('auth') %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {% set digest = 'sha256' if 'sha256' in mode_clean else 'sha512' %}
+                {% set direction = 'normal' if 'normal' in mode_clean else 'inverse' %}
+                {{ invert_prefix }}openvpn {
+                    modes auth
+                    auth_digest {{ digest }}
+                {% if layer4.FromOpenvpnStaticKey %}
+                    group_key_direction {{ direction }}
+                    {% for key_uuid in key_list %}
+                    group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    {% endfor %}
+                {% endif %}
+                }
+            {% elif mode_clean == 'crypt' %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {{ invert_prefix }}openvpn {
+                    modes crypt
+                {% if layer4.FromOpenvpnStaticKey %}
+                    {% for key_uuid in key_list %}
+                    group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    {% endfor %}
+                {% endif %}
+                }
+            {% elif mode_clean == 'crypt2_client' %}
+                {# Multiple keys are allowed for crypt2_client #}
+                {{ invert_prefix }}openvpn {
+                    modes crypt2
+                    {% if layer4.FromOpenvpnStaticKey %}
+                        {% for key_uuid in key_list %}
+                    client_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                        {% endfor %}
+                    {% endif %}
+                }
+            {% elif mode_clean == 'crypt2_server' %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {{ invert_prefix }}openvpn {
+                    modes crypt2
+                    {% if layer4.FromOpenvpnStaticKey %}
+                        {% for key_uuid in key_list %}
+                    server_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                        {% endfor %}
+                    {% endif %}
+                }
+            {% endif %}
+        {% endfor %}
     {% else %}
         {{ invert_prefix }}{{ layer4.Matchers }}
     {% endif %}

@@ -94,8 +94,6 @@
                     import /usr/local/etc/caddy/caddy.d/*.layer4listener
                     {% set context_var = "listener_wrappers" %}
                     {% include "OPNsense/Caddy/includeLayer4" %}
-                    {# Empty Route that catches all other traffic #}
-                    route
                 }
                 {# Route all other traffic to HTTP App #}
                 tls
@@ -465,19 +463,23 @@ http://{{ domain }} {
 #   Purpose: Manages the logic for access lists, used for handlers, domains and subdomains
 #   Parameters:
 #   @param accesslist (string): The UUID of the access list to be applied.
+#   @param unique_suffix (string): A unique string to append to the access list, stripped of non-alphanumeric characters.
 #}
-{% macro handle_accesslist(accesslist) %}
+{% macro handle_accesslist(accesslist, unique_suffix='') %}
     {# Access list logic for dropping connections based on IP #}
     {% if accesslist %}
+        {% set sanitized_suffix = unique_suffix | regex_replace('[^a-zA-Z0-9]', '') %}
+        {% set unique_identifier = '@' + accesslist + ('_' + sanitized_suffix if sanitized_suffix else '') %}
+
         {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
         {% if accesslist_obj %}
             {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
-            @{{ accesslist_obj['@uuid'] }} {
+            {{ unique_identifier }} {
                 {# Non-inverted access lists have "not" as default, inverted ones '' #}
                 {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
             }
             {# When IP is matched, abort or send response code. This will end processing and drop the request #}
-            handle @{{ accesslist_obj['@uuid'] }} {
+            handle {{ unique_identifier }} {
                 {% if accesslist_obj.HttpResponseCode %}
                     respond {{ '"' + accesslist_obj.HttpResponseMessage + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode }}
                 {% else %}
@@ -581,7 +583,7 @@ http://{{ domain }} {
                     }
                     handle @{{ subdomain['@uuid'] }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-                        {{ handle_accesslist(subdomain.accesslist) }}
+                        {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
                         {# All IPs not matched by accesslist will continue processing #}
                         {{ render_handles(subdomain_handles, subdomain.basicauth) }}
                     }
@@ -589,7 +591,7 @@ http://{{ domain }} {
             {% endfor %}
 
             {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-            {{ handle_accesslist(reverse.accesslist) }}
+            {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}
             {# All IPs not matched by accesslist will continue processing #}
             {{ render_handles(domain_handles, reverse.basicauth) }}
         }
