@@ -6,11 +6,10 @@
         <acls>
             <acl type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
                     <Required>Y</Required>
                     <mask>/^(?!any$|localhost$|localnets$|none$)[0-9a-zA-Z_\-]{1,32}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, A-Z, _ and -. Built-in ACL names must not be used: any, localhost, localnets, none.</ValidationMessage>
@@ -22,7 +21,6 @@
                     </Constraints>
                 </name>
                 <networks type="NetworkField">
-                    <default></default>
                     <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
                     <asList>Y</asList>

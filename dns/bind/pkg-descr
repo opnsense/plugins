@@ -9,6 +9,11 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.33
+
+* Add option to allow the rndc-key for zone transfers (contributed by Naomi Rennie-Waldock)
+* Switch to Bind 9.20
+
 1.32
 
 * Fix handling of multiple ACLs in allow-query/allow-transfer (contributed by Nathan Rennie-Waldock)
