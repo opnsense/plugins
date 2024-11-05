@@ -1132,13 +1132,29 @@ a.text-primary:hover {
 a.text-success:hover {
   color: #7fc54f; }
 
-.text-info {
+.fa-long-arrow-right {
+  color: #26A50C;
+}
+
+.fa-flash {
+  color: #0d68dd;
+}
+
+.fa-info-circle {
+  color: #dd630d;
+}
+
+.fa-flash.text-muted {
+  color: #b00ddd;
+}
+
+a.text-info {
   color: #46A50C; }
 
 a.text-info:hover {
   color: #245269; }
 
-.text-warning {
+a.text-warning {
   color: #f0ad4e; }
 
 a.text-warning:hover {

@@ -1559,20 +1559,38 @@ a.text-success:hover {
   color: #7fc54f;
 }
 
-.text-info {
-  color: #46A50C;
+.fa-long-arrow-right {
+  color: #26A50C;
 }
 
-a.text-info:hover {
-  color: #245269;
+.fa-flash {
+  color: #0d68dd;
 }
 
-.text-warning {
-  color: #f0ad4e;
+.fa-info-circle {
+  color: #dd630d;
 }
 
-a.text-warning:hover {
-  color: #ec971f;
+.fa-flash.text-muted {
+  color: #b00ddd;
+}
+
+a {
+  &.text-info {
+    color: #46A50C;
+
+    &:hover {
+      color: #245269;
+    }
+  }
+
+  &.text-warning {
+    color: #f0ad4e;
+
+    &:hover {
+      color: #ec971f;
+    }
+  }
 }
 
 .text-danger {

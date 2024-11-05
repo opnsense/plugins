@@ -1131,19 +1131,35 @@ a.text-primary:hover {
 a.text-success:hover {
   color: #7fc54f; }
 
-.text-info {
+.fa-long-arrow-right {
+  color: #26A50C;
+}
+
+.fa-flash {
+  color: #0d68dd;
+}
+
+.fa-info-circle {
+  color: #dd630d;
+}
+
+.fa-flash.text-muted {
+  color: #b00ddd;
+}
+
+a.text-info {
   color: #46A50C; }
 
 a.text-info:hover {
   color: #245269; }
 
-.text-warning {
+a.text-warning {
   color: #de7313; }
 
 a.text-warning:hover {
   color: #ec971f; }
 
-.text-danger {
+a.text-danger {
   color: #DB4829 !important; }
 
 a.text-danger:hover {
@@ -2382,7 +2398,7 @@ input[type="color"]
   input[type="tel"]::-moz-placeholder,
   input[type="color"]::-moz-placeholder
    {
-    color: #777777;
+    color: #535759;
     opacity: 1;
 	filter: alpha(opacity=100); }
 
@@ -2403,7 +2419,7 @@ input[type="color"]
   input[type="tel"]:-ms-input-placeholder,
   input[type="color"]:-ms-input-placeholder
    {
-    color: #777777; }
+    color: #535759; }
 
   select::-webkit-input-placeholder,
   textarea::-webkit-input-placeholder,
@@ -2422,7 +2438,7 @@ input[type="color"]
   input[type="tel"]::-webkit-input-placeholder,
   input[type="color"]::-webkit-input-placeholder
    {
-    color: #777777; }
+    color: #535759; }
 
   select[disabled], select[readonly], fieldset[disabled] select,
   textarea[disabled],
@@ -5510,7 +5526,7 @@ button.close {
 
 .show {
   display: block !important;
-  color: #FFF; }
+  color: #878e92; }
 
 .invisible {
   visibility: hidden; }
