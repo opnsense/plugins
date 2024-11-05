@@ -43,11 +43,10 @@ class BFD extends BaseModel
             $key = $neighbor->__reference;
             $address_proto = str_contains($neighbor->address, ':') ? 'inet6' : 'inet';
             if (!empty((string)$neighbor->multihop) && $address_proto == 'inet6') {
-               $messages->appendMessage(
-                  new Message(gettext("Multihop is currently only supported for IPv4"), $key . ".multihop")
-              );
+                $messages->appendMessage(
+                    new Message(gettext("Multihop is currently only supported for IPv4"), $key . ".multihop")
+                );
             }
-
         }
         return $messages;
     }
