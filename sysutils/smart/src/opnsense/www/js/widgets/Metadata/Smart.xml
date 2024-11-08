@@ -1,6 +1,7 @@
 <metadata>
     <smart>
         <filename>Smart.js</filename>
+        <link>/ui/smart</link>
         <endpoints>
             <endpoint>/api/smart/service/*</endpoint>
         </endpoints>

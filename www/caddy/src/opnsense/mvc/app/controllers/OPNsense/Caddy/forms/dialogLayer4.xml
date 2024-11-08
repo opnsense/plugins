@@ -6,6 +6,12 @@
         <help><![CDATA[Enable this Layer4 route.]]></help>
     </field>
     <field>
+        <id>layer4.Sequence</id>
+        <label>Sequence</label>
+        <type>text</type>
+        <help><![CDATA[Rules are sorted based on the sequence number, higher number means lower priority. Rules without a sequence number will be processed first.]]></help>
+    </field>
+    <field>
         <id>layer4.description</id>
         <label>Description</label>
         <type>text</type>
@@ -13,21 +19,75 @@
     </field>
     <field>
         <type>header</type>
-        <label>Frontend</label>
+        <label>Type</label>
+        <advanced>true</advanced>
     </field>
     <field>
-        <id>layer4.FromDomain</id>
-        <label>Domain</label>
-        <type>select_multiple</type>
-        <style>tokenize</style>
-        <allownew>true</allownew>
-        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. The domain will be added to the "listener_wrapper". Essentially, all traffic that Caddy receives on its frontend listeners (most likely the default HTTP and HTTPS ports) is funnelled through this wrapper to be processed and routed. Wildcard domains are allowed, e.g. "*.example.com". Host wildcards are allowed too, e.g. "*". Some protocols match all domains and "*" is mandatory.]]></help>
+        <id>layer4.Type</id>
+        <label>Routing Type</label>
+        <type>dropdown</type>
+        <help><![CDATA[Choose either "listener_wrappers" for multiplexing protocols on the default HTTP and HTTPS ports on OSI Layer 7, or "global" for raw TCP/UDP traffic routing on a custom "Local port" on OSI Layer 4 with optional OSI Layer 7 protocol matching.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Layer 4</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>layer4.Protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>layer4.FromPort</id>
+        <label>Local Port</label>
+        <type>text</type>
+        <help><![CDATA[Choose a custom local port to listen on.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Layer 7</label>
     </field>
     <field>
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help><![CDATA[Match the traffic of the selected domains. The TCP/UDP packets will be routed to the selected upstream domains without terminating TLS or altering the traffic. Only protocols that send a "Client Hello" (like TLS), or a "Host Header" (like HTTP) can be routed here. Routing Precedence: 1. "SSH (or other protocols)", 2. "HTTP (Host Header)", 3. "TLS (SNI)", 4. "TLS (inverted SNI)", 5. "HTTP Handlers" (hidden default route for all unmatched traffic). The "SSH" matcher (and any other matcher that does not evaluate Host Header or SNI), will match any SSH like traffic on the default ports. That means, these protocols will only match once per ruleset and will proxy traffic to one upstream.]]></help>
+        <help><![CDATA[Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.]]></help>
+    </field>
+    <field>
+        <id>layer4.FromDomain</id>
+        <label>Domain</label>
+        <type>select_multiple</type>
+        <style>style_matchers tokenize matchers_domain</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
+    </field>
+    <field>
+        <id>layer4.FromOpenvpnModes</id>
+        <label>OpenVPN Mode</label>
+        <type>dropdown</type>
+        <style>style_matchers matchers_openvpn</style>
+        <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
+    </field>
+    <field>
+        <id>layer4.FromOpenvpnStaticKey</id>
+        <label>OpenVPN Static Key</label>
+        <type>select_multiple</type>
+        <style>style_matchers selectpicker matchers_openvpn</style>
+        <hint>Any</hint>
+        <size>5</size>
+        <help><![CDATA[Select a Static Key to match. Multiple Static Keys are only supported for tls-crypt2_client mode.]]></help>
+    </field>
+    <field>
+        <id>layer4.InvertMatchers</id>
+        <label>Invert Matchers</label>
+        <type>checkbox</type>
+        <help><![CDATA[Invert the sense of the matcher. E.g., if the protocol is TLS, inverting will match all traffic that is not TLS. When domains have been chosen, these will be equally inverted.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
@@ -64,7 +124,6 @@
     <field>
         <type>header</type>
         <label>Access</label>
-        <collapse>true</collapse>
     </field>
     <field>
         <id>layer4.RemoteIp</id>

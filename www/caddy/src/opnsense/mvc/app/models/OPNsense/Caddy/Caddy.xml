@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -453,8 +453,35 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
-                <FromDomain type="HostnameField">
+                <Sequence type="AutoNumberField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 and 99999 or leave empty.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Sequence value has to be unique or empty.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </Sequence>
+                <Type type="OptionField">
                     <Required>Y</Required>
+                    <Default>listener_wrappers</Default>
+                    <OptionValues>
+                        <listener_wrappers>listener_wrappers</listener_wrappers>
+                        <global>global</global>
+                    </OptionValues>
+                </Type>
+                <Protocol type="OptionField">
+                    <Required>Y</Required>
+                    <Default>tcp</Default>
+                    <OptionValues>
+                        <tcp>TCP</tcp>
+                        <udp>UDP</udp>
+                    </OptionValues>
+                </Protocol>
+                <FromPort type="PortField"/>
+                <FromDomain type="HostnameField">
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
@@ -462,23 +489,54 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
                 </FromDomain>
+                <FromOpenvpnModes type="OptionField">
+                    <BlankDesc>Any</BlankDesc>
+                    <OptionValues>
+                        <auth_sha256_normal>tls-auth_sha256_normal</auth_sha256_normal>
+                        <auth_sha256_inverse>tls-auth_sha256_inverse</auth_sha256_inverse>
+                        <auth_sha512_normal>tls-auth_sha512_normal</auth_sha512_normal>
+                        <auth_sha512_inverse>tls-auth_sha512_inverse</auth_sha512_inverse>
+                        <crypt>tls-crypt</crypt>
+                        <crypt2_client>tls-crypt2_client</crypt2_client>
+                        <crypt2_server>tls-crypt2_server</crypt2_server>
+                    </OptionValues>
+                </FromOpenvpnModes>
+                <FromOpenvpnStaticKey type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.layer4openvpn</items>
+                            <display>description</display>
+                            <display_format>%s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </FromOpenvpnStaticKey>
                 <Matchers type="OptionField">
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <any>ANY</any>
                         <dns>DNS</dns>
+                        <http>HTTP</http>
                         <httphost>HTTP (Host Header)</httphost>
+                        <openvpn>OpenVPN</openvpn>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <quic>QUIC</quic>
+                        <quicsni>QUIC (SNI Client Hello)</quicsni>
                         <rdp>RDP</rdp>
                         <socks4>SOCKSv4</socks4>
                         <socks5>SOCKSv5</socks5>
                         <ssh>SSH</ssh>
-                        <tlssni>TLS (SNI)</tlssni>
-                        <nottlssni>TLS (inverted SNI)</nottlssni>
+                        <tls>TLS</tls>
+                        <tlssni>TLS (SNI Client Hello)</tlssni>
+                        <winbox>Winbox</winbox>
+                        <wireguard>Wireguard</wireguard>
                         <xmpp>XMPP</xmpp>
                     </OptionValues>
                 </Matchers>
+                <InvertMatchers type="BooleanField"/>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <FieldSeparator>,</FieldSeparator>
@@ -508,6 +566,20 @@
                 </RemoteIp>
                 <description type="DescriptionField"/>
             </layer4>
+            <layer4openvpn type="ArrayField">
+                <StaticKey type="TextField">
+                    <Required>Y</Required>
+                </StaticKey>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Description must be unique.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </description>
+            </layer4openvpn>
         </reverseproxy>
     </items>
 </model>

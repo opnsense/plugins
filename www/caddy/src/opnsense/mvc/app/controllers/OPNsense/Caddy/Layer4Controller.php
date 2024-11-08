@@ -2,7 +2,6 @@
 
 /**
  *    Copyright (C) 2023-2024 Cedrik Pischem
- *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -33,16 +32,12 @@ namespace OPNsense\Caddy;
 
 use OPNsense\Base\IndexController;
 
-class ReverseProxyController extends IndexController
+class Layer4Controller extends IndexController
 {
     public function indexAction()
     {
-        $this->view->pick('OPNsense/Caddy/reverse_proxy');
-        $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
-        $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
-        $this->view->formDialogHandle = $this->getForm("dialogHandle");
-        $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
-        $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
-        $this->view->formDialogHeader = $this->getForm("dialogHeader");
+        $this->view->pick('OPNsense/Caddy/layer4');
+        $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
+        $this->view->formDialogLayer4Openvpn = $this->getForm("dialogLayer4Openvpn");
     }
 }

@@ -13,9 +13,34 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.7.4
+
+* Add: Layer4 OpenVPN matcher with mode, digest and static key support
+* Add: Layer4 Winbox matcher
+* Add: Layer4 QUIC matcher
+* Build: Update dependency to lang/go123
+* Build: Update caddy-l4 and caddy-dynamicdns module
+* Build: Fix that caddy-l4 does not stop when ssh is proxied
+* Build: DNS Providers: Update porkbun, dnsmadeeasy
+* Cleanup: Layer4 default route in listener_wrappers has been removed (obsolete)
+* Fix: Error when same Access List is set to wildcard and subdomain
+
+1.7.3
+
+* Add: Clear All button to Filter by Domain selectpicker
+* Change: Layer4 Proxy has own menu entry
+* Change: Domains and Subdomains are in same tab, Subdomains are not initially hidden anymore
+* Fix: WebGUI port conflict validation triggers too aggressively
+
 1.7.2
 
 * Add: Directive in HTTP Handler can be chosen, "reverse_proxy" and "redir"
+* Add: Layer4 routes feature. Routing Type "global" or "listener_wrapper" can be chosen
+* Add: Any Layer4 TCP/UDP traffic can be proxied without choosing a Layer 7 protocol matcher
+* Change: Layer4 routes are not ordered automatically anymore
+* Change: Layer4 "not tls sni" matcher has been replaced by generalized "Invert Matchers" checkbox
+* Build: Update Caddy Layer4 module, fixes TLS matcher in chromium based browsers
+* Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
 
 1.7.1
 
@@ -29,7 +54,6 @@ Plugin Changelog
 * Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
 * Fix: Layer4 default ports did not render due to regression in previous version
 * Fix: Invert in Access Lists did not render due to regression in previous version
-* Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
 
 1.7.0
 

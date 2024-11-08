@@ -1,7 +1,19 @@
-LLDP is an industry standard protocol designed to supplant
-proprietary Link-Layer protocols such as EDP or CDP.
-The goal of LLDP is to provide an inter-vendor compatible
-mechanism to deliver Link-Layer notifications to adjacent
-network devices.
+LLDP is an industry standard protocol designed to supplant proprietary
+Link-Layer protocols such as EDP or CDP.  The goal of LLDP is to provide
+an inter-vendor compatible mechanism to deliver Link-Layer notifications
+to adjacent network devices.
 
-WWW: https://vincentbernat.github.io/lldpd/
+Plugin Changelog
+================
+
+1.2
+
+* Add AgentX integration support (contributed by TotalGriffLock)
+
+1.1
+
+* Ability to set interfaces (contributed by Michael Muenz)
+
+1.0
+
+* Initial version (contributed by Michael Muenz)

@@ -16,6 +16,13 @@
         <help>Specifies the IP address or the hostname of the Wazuh manager.</help>
     </field>
     <field>
+        <id>agent.general.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Specifies the transport protocol to use.</help>
+    </field>
+    <field>
         <id>agent.logcollector.syslog_programs</id>
         <label>Applications</label>
         <type>select_multiple</type>

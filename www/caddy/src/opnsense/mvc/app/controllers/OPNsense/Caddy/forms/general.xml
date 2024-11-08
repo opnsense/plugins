@@ -2,15 +2,20 @@
     <tab id="general-settings" description="General Settings">
         <field>
             <id>caddy.general.enabled</id>
-            <label>Enabled</label>
+            <label>Enable Caddy</label>
             <type>checkbox</type>
             <help><![CDATA[Enable or disable the Caddy web server.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.EnableLayer4</id>
+            <label>Enable Layer4 Proxy</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable Layer4 Proxy to stream TCP/UDP. Layer4 Proxy matches before the Reverse Proxy; both can be used concurrently. More information: https://github.com/mholt/caddy-l4]]></help>
         </field>
         <field>
             <id>caddy.general.TlsEmail</id>
             <label>ACME Email</label>
             <type>text</type>
-            <hint>info@example.com</hint>
             <help><![CDATA[Enter the email address for certificate notifications. This is required to receive automatic certificates from "Let's Encrypt" and "ZeroSSL".]]></help>
         </field>
         <field>
@@ -21,12 +26,6 @@
         </field>
     </tab>
     <tab id="general-advanced" description="Advanced Settings">
-        <field>
-            <id>caddy.general.EnableLayer4</id>
-            <label>Enable Layer4</label>
-            <type>checkbox</type>
-            <help><![CDATA[Enable Layer4 support to stream TCP/UDP. This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Deactivating this option will remove all Layer4 functionality completely. More information: https://github.com/mholt/caddy-l4]]></help>
-        </field>
         <field>
             <id>caddy.general.DisableSuperuser</id>
             <label>System User</label>

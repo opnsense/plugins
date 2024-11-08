@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2022 Frank Wall
+ * Copyright (C) 2024 laraveluser
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,29 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Run acme.sh deploy hook vault
+ * Netcup DNS API
  * @package OPNsense\AcmeClient
  */
-class AcmeVault extends Base implements LeAutomationInterface
+class DnsLimacity extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['VAULT_ADDR'] = (string)$this->config->acme_vault_url;
-        if (!empty((string)$this->config->acme_vault_prefix)) {
-            $this->acme_env['VAULT_PREFIX'] = (string)$this->config->acme_vault_prefix;
-        }
-        if ((string)$this->config->acme_vault_kvv2 == 1) {
-            $this->acme_env['VAULT_KV_V2'] = 1;
-        }
-        if (!empty((string)$this->config->acme_vault_token)) {
-            $this->acme_env['VAULT_TOKEN'] = (string)$this->config->acme_vault_token;
-        }
-        $this->acme_args[] = '--deploy-hook vault';
-        return true;
+        $this->acme_env['LIMACITY_APIKEY'] = (string)$this->config->dns_limacity_apikey;
     }
 }

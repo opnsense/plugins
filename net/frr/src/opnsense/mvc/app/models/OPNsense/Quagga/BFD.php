@@ -3,8 +3,10 @@
 namespace OPNsense\Quagga;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 /*
+    Copyright (C) 2024 Deciso B.V.
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 - 2021 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
@@ -28,4 +30,24 @@ use OPNsense\Base\BaseModel;
 */
 class BFD extends BaseModel
 {
+       /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+        foreach ($this->neighbors->neighbor->iterateItems() as $neighbor) {
+            if (!$validateFullModel && !$neighbor->isFieldChanged()) {
+                continue;
+            }
+            $key = $neighbor->__reference;
+            $address_proto = str_contains($neighbor->address, ':') ? 'inet6' : 'inet';
+            if (!empty((string)$neighbor->multihop) && $address_proto == 'inet6') {
+                $messages->appendMessage(
+                    new Message(gettext("Multihop is currently only supported for IPv4"), $key . ".multihop")
+                );
+            }
+        }
+        return $messages;
+    }
 }

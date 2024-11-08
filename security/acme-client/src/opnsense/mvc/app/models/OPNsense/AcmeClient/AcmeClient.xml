@@ -484,6 +484,7 @@
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
                         <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
+                        <dns_limacity>Lima-City (TrafficPlex)</dns_limacity>
                         <dns_linode>Linode (v3 / Deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
@@ -865,6 +866,9 @@
                 <dns_lexicon_token type="TextField">
                     <Required>N</Required>
                 </dns_lexicon_token>
+                <dns_limacity_apikey type="TextField">
+                    <Required>N</Required>
+                </dns_limacity_apikey>
                 <dns_linode_key type="TextField">
                     <Required>N</Required>
                 </dns_linode_key>
@@ -1592,6 +1596,11 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_prefix>
+                <acme_vault_token type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_vault_token>
                 <acme_vault_kvv2 type="BooleanField">
                     <default>1</default>
                 </acme_vault_kvv2>
