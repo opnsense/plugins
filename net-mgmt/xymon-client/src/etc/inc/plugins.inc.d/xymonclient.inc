@@ -22,12 +22,9 @@
     SOFTWARE.
 */
 
-use Kumy\XymonClient\Settings;
-
 function xymonclient_enabled()
 {
-    $model = new Settings();
-    return (string)$model->enabled == '1';
+    return (string)(new Kumy\XymonClient\Settings())->enabled == '1';
 }
 
 function xymonclient_services()

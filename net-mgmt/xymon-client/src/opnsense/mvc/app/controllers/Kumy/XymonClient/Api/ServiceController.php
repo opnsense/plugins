@@ -42,7 +42,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             $backend = new Backend();
             $status = strtolower(trim($backend->configdRun('template reload Kumy/XymonClient')));
 
-            $config = Config::getInstance()->object()->kumy->xymon->client;
+            $config = $this->getModel();
             if (
                 $status == 'ok' &&
                 (string)$config->enabled == "1" &&

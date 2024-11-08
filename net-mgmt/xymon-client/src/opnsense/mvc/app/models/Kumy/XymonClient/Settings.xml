@@ -8,7 +8,6 @@
             <Required>Y</Required>
         </enabled>
         <XYMSERVERS type="TextField">
-            <default/>
             <Required>N</Required>
         </XYMSERVERS>
     </items>
