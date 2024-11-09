@@ -10,6 +10,7 @@
         mapDataToFormUI({"frm_Settings": "/api/xymonclient/settings/get"}).done(function(data) {
             if ('frm_Settings' in data) {
                 updateServiceControlUI('xymonclient');
+                formatTokenizersUI();
             }
         });
 
@@ -25,7 +26,7 @@
                 })
                 .always(function() {
                     spinStop("#button-save_progress");
-                });;
+                });
             });
         });
     });

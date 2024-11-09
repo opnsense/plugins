@@ -7,7 +7,10 @@
     <field>
         <id>xymonclient.XYMSERVERS</id>
         <label>Server addresses</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <separator> </separator>
+        <style>tokenize</style>
         <help>Xymon server addresses.</help>
     </field>
  </form>
