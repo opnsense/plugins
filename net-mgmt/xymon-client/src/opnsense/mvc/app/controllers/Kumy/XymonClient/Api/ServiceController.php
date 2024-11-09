@@ -25,8 +25,6 @@
 namespace Kumy\XymonClient\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Core\Config;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -34,23 +32,4 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'Kumy\XymonClient';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'xymonclient';
-
-    public function reloadAction()
-    {
-        $status = 'failed';
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $status = strtolower(trim($backend->configdRun('template reload Kumy/XymonClient')));
-
-            $config = $this->getModel();
-            if (
-                $status == 'ok' &&
-                (string)$config->enabled == "1" &&
-                !empty((string)$config->XYMSERVERS)
-            ) {
-                $status = strtolower(trim($backend->configdRun('xymonclient restart')));
-            }
-        }
-        return ['status' => $status];
-    }
 }

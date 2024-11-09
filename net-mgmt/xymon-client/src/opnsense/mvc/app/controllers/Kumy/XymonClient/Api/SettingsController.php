@@ -32,14 +32,21 @@ class SettingsController extends ApiMutableModelControllerBase
     protected static $internalModelClass = '\Kumy\XymonClient\Settings';
     protected static $internalModelName = 'xymonclient';
 
-    protected function setActionHook() {
-        $config = $this->getModel();
-        if (
-            (string)$config->enabled == "0" ||
-            empty((string)$config->XYMSERVERS)
-        ) {
+    public function reconfigureAction()
+    {
+        $status = 'failed';
+        if ($this->request->isPost()) {
             $backend = new Backend();
-            $backend->configdRun('xymonclient stop');
+            $status = strtolower(trim($backend->configdRun('template reload Kumy/XymonClient')));
+            if ($status === 'ok') {
+                $config = $this->getModel();
+                if ((string)$config->enabled == "1" && !empty((string)$config->XYMSERVERS)) {
+                    $status = $backend->configdRun('xymonclient restart');
+                } else {
+                    $status = $backend->configdRun('xymonclient stop');
+                }
+            }
         }
+        return ['status' => strtolower(trim($status))];
     }
 }
