@@ -49,8 +49,10 @@ class NgxBusyBufferConstraint extends BaseConstraint
                 $proxy_buffers_size_node = $parentNode->proxy_buffers_size;
                 $proxy_busy_buffers_size_node = $parentNode->proxy_busy_buffers_size;
 
-                if (!is_null($proxy_buffers_count_node) && !$proxy_buffers_count_node->isEmpty() &&
-                    !is_null($proxy_buffers_size_node) && !$proxy_buffers_size_node->isEmpty()) {
+                if (
+                    !is_null($proxy_buffers_count_node) && !$proxy_buffers_count_node->isEmpty() &&
+                    !is_null($proxy_buffers_size_node) && !$proxy_buffers_size_node->isEmpty()
+                ) {
                     $proxy_buffers_count_int = intval((string) $proxy_buffers_count_node);
                     $proxy_buffers_size_int = intval((string) $proxy_buffers_size_node);
 
