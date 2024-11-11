@@ -45,7 +45,7 @@ class NgxUniqueDefaultServerConstraint extends BaseConstraint
         if ($node) {
             $httpServerNode = $node->getParentNode();
             $defaultServerNode = $httpServerNode->getChild("default_server");
-            if (!$this->isEmpty($defaultServerNode)) {
+            if (!$defaultServerNode->isEmpty()) {
                 $myUUID = $httpServerNode->getAttribute("uuid");
                 $myListenHTTPAddress = $httpServerNode->getChild("listen_http_address");
 
@@ -58,7 +58,7 @@ class NgxUniqueDefaultServerConstraint extends BaseConstraint
                     $uuid = $httpServer->getAttribute("uuid");
                     if ($uuid != $myUUID) {
                         $defaultServerNode = $httpServer->getChild("default_server");
-                        if (!$this->isEmpty($defaultServerNode)) {
+                        if (!$defaultServerNode->isEmpty()) {
                             $listenHTTPAddressNode = $httpServer->getChild("listen_http_address");
                             if ($this->compareListenAddresses($myListenHTTPAddress, $listenHTTPAddressNode, $msg)) {
                                 $validator->appendMessage(new Message(

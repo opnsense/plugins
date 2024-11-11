@@ -43,24 +43,27 @@ class NgxBusyBufferConstraint extends BaseConstraint
         $node = $this->getOption('node');
         if ($node) {
             $parentNode = $node->getParentNode();
-            if (!$this->isEmpty($node)) {
+            if (!$node->isEmpty()) {
                 $proxy_buffer_size_node = $parentNode->proxy_buffer_size;
                 $proxy_buffers_count_node = $parentNode->proxy_buffers_count;
                 $proxy_buffers_size_node = $parentNode->proxy_buffers_size;
                 $proxy_busy_buffers_size_node = $parentNode->proxy_busy_buffers_size;
 
-                if (!$this->isEmpty($proxy_buffers_count_node) && !$this->isEmpty($proxy_buffers_size_node)) {
+                if (
+                    !is_null($proxy_buffers_count_node) && !$proxy_buffers_count_node->isEmpty() &&
+                    !is_null($proxy_buffers_size_node) && !$proxy_buffers_size_node->isEmpty()
+                ) {
                     $proxy_buffers_count_int = intval((string) $proxy_buffers_count_node);
                     $proxy_buffers_size_int = intval((string) $proxy_buffers_size_node);
 
                     $proxy_buffers_total_minus1_size = ($proxy_buffers_count_int - 1) * $proxy_buffers_size_int;
                 }
 
-                if (!$this->isEmpty($proxy_busy_buffers_size_node)) {
+                if (!is_null($proxy_busy_buffers_size_node) && !$proxy_busy_buffers_size_node->isEmpty()) {
                     $proxy_busy_buffers_size = intval((string) $proxy_busy_buffers_size_node);
                 }
 
-                if (!$this->isEmpty($proxy_buffer_size_node)) {
+                if (!is_null($proxy_buffer_size_node) && !$proxy_buffer_size_node->isEmpty()) {
                     $proxy_buffer_size_int = intval((string) $proxy_buffer_size_node);
                 }
 
