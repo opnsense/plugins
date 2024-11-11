@@ -47,7 +47,7 @@ function xymonclient_services()
                 'stop' => ['xymonclient stop'],
             ],
             'name' => 'xymonclient',
-            'pidfile' => "/usr/local/www/xymon/client/logs/clientlaunch.$fqdn.pid"
+            'pidfile' => "/var/run/xymon/xymon_client.pid"
         ];
     }
 
