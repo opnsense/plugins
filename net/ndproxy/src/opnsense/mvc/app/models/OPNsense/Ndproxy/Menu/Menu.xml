@@ -1,5 +1,5 @@
 <menu>
     <Services>
-        <General VisibleName="Ndproxy" cssClass="fa fa-bullseye fa-fw" url="/ui/ndproxy/general"/>
+        <Ndproxy VisibleName="Ndproxy" cssClass="fa fa-bullseye fa-fw" url="/ui/ndproxy/general"/>
     </Services>
 </menu>
