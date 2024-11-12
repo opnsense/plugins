@@ -51,7 +51,7 @@ function ndproxy_services()
 
 function ndproxy_xmlrpc_sync()
 {
-    $result = array();
+    $result = [];
 
     $result[] = array(
         'description' => gettext('Ndproxy'),
