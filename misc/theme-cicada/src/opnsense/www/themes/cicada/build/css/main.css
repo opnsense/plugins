@@ -1159,7 +1159,7 @@ a.text-warning {
 a.text-warning:hover {
   color: #ec971f; }
 
-a.text-danger {
+.text-danger {
   color: #DB4829 !important; }
 
 a.text-danger:hover {
