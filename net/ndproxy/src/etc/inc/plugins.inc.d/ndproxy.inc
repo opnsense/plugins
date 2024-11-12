@@ -41,8 +41,8 @@ function ndproxy_services()
                 'restart' => ['ndproxy restart'],
                 'stop' => ['ndproxy stop'],
             ],
-            'nocheck' => true, // No daemon to check
-            'name' => 'ndproxy'
+            'name' => 'ndproxy',
+            'nocheck' => true,
         ];
     }
 
