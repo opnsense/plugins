@@ -95,6 +95,9 @@ run()
 		if [ -n "${TESTCASE}" -a "${TESTCASE}" != "${CASE}" ]; then
 			continue
 		fi
+		if [ -n "${CLEANUP}" ]; then
+			${ATFCMD} ${TEST} ${CASE}:cleanup > /dev/null 2>&1
+		fi
 		RESULT=$( (${ATFCMD} ${TEST} ${CASE} 2>&1) | grep ${PATTERNS})
 		if [ -n "${CLEANUP}" ]; then
 			${ATFCMD} ${TEST} ${CASE}:cleanup > /dev/null 2>&1
