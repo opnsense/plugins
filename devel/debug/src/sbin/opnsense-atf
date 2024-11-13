@@ -31,7 +31,7 @@ __RUNNING_INSIDE_ATF_RUN=internal-yes-value
 export __RUNNING_INSIDE_ATF_RUN
 
 if [ "$(id -u)" != "0" ]; then
-	echo "Must be root."
+	echo "Must be root." >&2
 	exit 1
 fi
 
@@ -107,6 +107,11 @@ run()
 	done
 }
 
+if [ ! -d "${TESTDIR}" ]; then
+	echo "Test directory not found: ${TESTDIR}" >&2
+	exit 1
+fi
+
 if [ -n "${DO_LIST}" ]; then
 	list
 	exit 0
@@ -131,3 +136,6 @@ if [ -z "${TESTS}" ]; then
 fi
 
 chmod 644 ${TESTDIR}/../common/*.sh ${TESTDIR}/../common/*.py ${TESTDIR}/*.py
+
+# other leftovers
+rm -f created_interfaces.lst created_jails.lst
