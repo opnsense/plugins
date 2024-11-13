@@ -24,7 +24,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 ATFCMD=/usr/local/bin/atf-sh
-PATTERNS="-e ^passed -e ^skipped -e ^failed"
 TESTDIR=/usr/src/tests/sys/netpfil/pf
 __RUNNING_INSIDE_ATF_RUN=internal-yes-value
 
@@ -107,7 +106,7 @@ run()
 			${ATFCMD} ${TEST} ${CASE}:cleanup > /dev/null 2>&1
 		fi
 
-		(echo "${RESULT}" | grep ${PATTERN})
+		echo "${RESULT}" | grep -e ^passed -e ^skipped -e ^failed
 
 		if [ -n "${DO_DEBUG}" ]; then
 			echo "${RESULT}"
