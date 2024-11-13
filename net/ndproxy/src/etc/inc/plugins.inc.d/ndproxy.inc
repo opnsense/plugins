@@ -32,8 +32,10 @@ function ndproxy_services()
 
     $services = [];
 
-    if (isset($config['OPNsense']['ndproxy']['general']['enabled']) &&
-        $config['OPNsense']['ndproxy']['general']['enabled'] == 1) {
+    if (
+        isset($config['OPNsense']['ndproxy']['general']['enabled']) &&
+        $config['OPNsense']['ndproxy']['general']['enabled'] == 1
+    ) {
         $services[] = [
             'description' => gettext('Ndproxy'),
             'configd' => [
