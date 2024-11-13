@@ -23,6 +23,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+ATFCMD=/usr/local/bin/atf-sh
 PATTERNS="-e ^passed -e ^skipped -e ^failed"
 TESTDIR=/usr/src/tests/sys/netpfil/pf
 __RUNNING_INSIDE_ATF_RUN=internal-yes-value
@@ -94,9 +95,9 @@ run()
 		if [ -n "${TESTCASE}" -a "${TESTCASE}" != "${CASE}" ]; then
 			continue
 		fi
-		RESULT=$( (/usr/libexec/atf-sh ${TEST} ${CASE} 2>&1) | grep ${PATTERNS})
+		RESULT=$( (${ATFCMD} ${TEST} ${CASE} 2>&1) | grep ${PATTERNS})
 		if [ -n "${CLEANUP}" ]; then
-			/usr/libexec/atf-sh ${TEST} ${CASE}:cleanup > /dev/null 2>&1
+			${ATFCMD} ${TEST} ${CASE}:cleanup > /dev/null 2>&1
 		fi
 		if [ -z "${DO_DEBUG}" ]; then
 			echo ">>> $(basename ${TESTDIR})(${TESTFILE}:${CASE}): ${RESULT}"
@@ -117,8 +118,8 @@ if [ -n "${DO_ALL}" ]; then
 fi
 
 # We could consider copying the whole test setup
-# somewhere else # but the whole thing needs to
-# be redesigned anyway.  Fudge this locally.
+# somewhere else but the whole thing needs to be
+# redesigned anyway.  Fudge this locally.
 chmod 555 ${TESTDIR}/../common/*.sh ${TESTDIR}/../common/*.py ${TESTDIR}/*.py
 
 for TEST in ${TESTS}; do
