@@ -18,10 +18,16 @@
         <help>Define the ACLs where you allow which server can retrieve this zone.</help>
     </field>
     <field>
+        <id>domain.allowedkeys</id>
+        <label>Allowed RNDC keys</label>
+        <type>select_multiple</type>
+        <help>Allowed RNDC keys for this zone.</help>
+    </field>
+    <field>
         <id>domain.allowrndctransfer</id>
-        <label>Allow RDNC key transfer</label>
+        <label>Allow RNDC key transfer</label>
         <type>checkbox</type>
-        <help>Allow transfers via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
+        <help>Allow transfers via the selected RNDC keys</help>
     </field>
     <field>
         <id>domain.allowquery</id>
@@ -31,9 +37,9 @@
     </field>
     <field>
         <id>domain.allowrndcupdate</id>
-        <label>Allow RDNC key update</label>
+        <label>Allow RNDC key update</label>
         <type>checkbox</type>
-        <help>Allow updates via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
+        <help>Allow updates via the selected RNDC keys.</help>
     </field>
     <field>
         <id>domain.ttl</id>

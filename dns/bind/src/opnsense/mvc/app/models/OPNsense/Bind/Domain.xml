@@ -51,6 +51,16 @@
                     <Multiple>Y</Multiple>
                 </allowtransfer>
                 <allowrndctransfer type="BooleanField"/>
+                <allowedkeys type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Key</source>
+                            <items>keys.key</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </allowedkeys>
                 <allowquery type="ModelRelationField">
                     <Model>
                         <template>

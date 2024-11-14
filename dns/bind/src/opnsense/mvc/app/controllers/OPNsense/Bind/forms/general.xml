@@ -182,17 +182,17 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>general.rndcalgo</id>
-        <label>Algorithm</label>
-        <type>dropdown</type>
+        <id>general.rndccontrolkeys</id>
+        <label>Allowed RNDC Control Keys</label>
+        <type>select_multiple</type>
+        <help>Allowed RNDC control keys</help>
         <advanced>true</advanced>
-        <help>Set the authentication algorithm for the RNDC key. This requires a restart of the Bind Service.</help>
     </field>
     <field>
-        <id>general.rndcsecret</id>
-        <label>Secret</label>
-        <type>text</type>
+        <id>general.defaultrndccontrolkey</id>
+        <label>Default RNDC Control Key</label>
+        <type>dropdown</type>
+        <help>Default RNDC control key</help>
         <advanced>true</advanced>
-        <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
 </form>
