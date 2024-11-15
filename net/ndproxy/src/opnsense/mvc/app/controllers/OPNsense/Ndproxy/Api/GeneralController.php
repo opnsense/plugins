@@ -32,9 +32,15 @@ namespace OPNsense\Ndproxy\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Config;
+use OPNsense\Core\Backend;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'ndproxy';
     protected static $internalModelClass = 'OPNsense\Ndproxy\Ndproxy';
+
+    public function countAction()
+    {
+        return json_decode((new Backend())->configdRun('ndproxy count'), true);
+    }
 }

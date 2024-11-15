@@ -49,13 +49,37 @@
             }
         });
 
+        function updateNdproxyCount() {
+            ajaxCall("/api/ndproxy/general/count", {}, function(data) {
+                if (data && data.ndproxycount !== undefined) {
+                    $("#ndproxyCount").text(data.ndproxycount);
+                }
+            });
+        }
+
+        $("#refreshCountBtn").on("click", function() {
+            updateNdproxyCount();
+        });
+
         updateServiceControlUI('ndproxy');
+        updateNdproxyCount();
     });
 </script>
 
 <section class="page-content-main">
     <div class="content-box">
         {{ partial("layout_partials/base_form", ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <br/>
+    <div class="content-box">
+        <div class="col-md-12" id="ndproxyCountBox" style="display: flex; align-items: center; gap: 10px;">
+            <strong>net.inet6.ndproxycount:</strong>
+            <span id="ndproxyCount">0</span>
+            <button class="btn btn-default btn-sm" id="refreshCountBtn" aria-label="{{ lang._('Refresh') }}"
+                    style="margin-top: 10px; margin-bottom: 10px;">
+                <i class="fa fa-refresh fa-fw"></i>
+            </button>
+        </div>
     </div>
     <br/>
     <div class="content-box">
