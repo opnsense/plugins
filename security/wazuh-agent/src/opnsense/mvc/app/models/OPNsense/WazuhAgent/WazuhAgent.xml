@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/WazuhAgent</mount>
     <version>1.0.2</version>
-    <description>
-        Wazuh Agent
-    </description>
+    <description>Wazuh Agent</description>
     <items>
         <general>
             <enabled type="BooleanField">
