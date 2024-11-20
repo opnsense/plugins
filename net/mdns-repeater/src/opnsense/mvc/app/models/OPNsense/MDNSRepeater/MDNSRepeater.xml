@@ -16,5 +16,9 @@
       <Required>Y</Required>
       <Multiple>Y</Multiple>
     </interfaces>
+    <blocklist type="TextField">
+      <Default></Default>
+      <Required>N</Required>
+    </interfaces>
   </items>
 </model>
