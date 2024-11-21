@@ -18,7 +18,7 @@
     <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
   </field>
   <field>
-    <id>mdnsrepeater.bloklist</id>
+    <id>mdnsrepeater.blocklist</id>
     <label>Block List</label>
     <type>text</type>
     <help>Optionally to blacklist an entire subnet, (eg. 192.168.1.1/24).</help>
