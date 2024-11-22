@@ -19,13 +19,11 @@
     <blocklist type="NetworkField">
       <Default></Default>
       <Required>N</Required>
-      <ValidationMessage>Add entire subnets in CIDR notation, e.g. 192.168.1.0/24. Only one IPv4 subnet is allowed. <ValidationMessage>
-      <Mask>^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\/([0-9]|[12][0-9]|3[0-2])$<Mask>
+      <ValidationMessage>Please enter one or more valid IPv4 networks or individual addresses in CIDR notation.<ValidationMessage>
       <NetMaskRequired>Y<NetMaskRequired>
       <NetMaskAllowed>Y<NetMaskAllowed>
       <AddressFamily>ipv4<AddressFamily>
-      <AsList>N<AsList>
-      <Strict>Y<Strict>
+      <AsList>Y<AsList>
     </blocklist>
   </items>
 </model>
