@@ -124,6 +124,7 @@ if [ -z "${TESTS}" ]; then
 	exit 0
 fi
 
+# XXX kldload required things now as kyua is powerless (but complains)
 
 # set up a shadow config
 cat > ${DESTDIR}/_Kyuafile << EOF
