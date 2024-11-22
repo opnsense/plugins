@@ -19,11 +19,11 @@
     <blocklist type="NetworkField">
       <Default></Default>
       <Required>N</Required>
-      <ValidationMessage>Please enter one or more valid IPv4 networks or individual addresses in CIDR notation.<ValidationMessage>
-      <NetMaskRequired>Y<NetMaskRequired>
-      <NetMaskAllowed>Y<NetMaskAllowed>
-      <AddressFamily>ipv4<AddressFamily>
-      <AsList>Y<AsList>
+      <ValidationMessage>Please enter one or more valid IPv4 networks or individual addresses in CIDR notation.</ValidationMessage>   
+      <NetMaskRequired>Y</NetMaskRequired>
+      <NetMaskAllowed>Y</NetMaskAllowed>
+      <AddressFamily>ipv4</AddressFamily>
+      <AsList>Y</AsList>    
     </blocklist>
   </items>
 </model>
