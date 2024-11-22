@@ -1,0 +1,74 @@
+<model>
+    <mount>//system/backup/github</mount>
+    <version>1.0.0</version>
+    <description>OPNsense GitHub Backup Settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+            <Constraints>
+                <url_check>
+                    <reference>url.check001</reference>
+                </url_check>
+                <token_check>
+                    <reference>token.check001</reference>
+                </token_check>
+                <repo_check>
+                    <reference>repository.check001</reference>
+                </repo_check>
+            </Constraints>
+        </enabled>
+        <url type="TextField">
+            <Required>Y</Required>
+            <Default>https://api.github.com</Default>
+            <mask>/^http(?:s)?:\/\/(?:(?:api\.github\.com$)|(?:.*\/api\/v3$))/</mask>
+            <ValidationMessage>A valid GitHub API URL must be provided.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>The GitHub API URL must be set</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </url>
+        <token type="TextField">
+            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>The GitHub Token must be set</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </token>
+        <repository type="TextField">
+            <Required>Y</Required>
+            <mask>/^(?:.*)\/(?:.*)$/</mask>
+            <ValidationMessage>A valid repository must be provided.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A Repository must be set</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </repository>
+        <branch type="TextField">
+            <Default>master</Default>
+            <Required>Y</Required>
+        </branch>
+        <encryption_password type="TextField">
+            <Required>N</Required>
+        </encryption_password>
+        <skip_ssl_verify type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </skip_ssl_verify>
+    </items>
+</model>
