@@ -60,13 +60,7 @@ class CertificateController
             if (!empty((string)$cert->caref)) {
                 $ca = CertStore::getCACertificate((string)$cert->caref);
                 if ($ca) {
-                    $certChain .= "\n" . $ca['crt'];
-                    if (!empty($ca['caref'])) {
-                        $parentCa = CertStore::getCACertificate($ca['caref']);
-                        if ($parentCa) {
-                            $certChain .= "\n" . $parentCa['crt'];
-                        }
-                    }
+                    $certChain .= "\n" . $ca['cert'];
                 }
             }
 
