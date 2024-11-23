@@ -29,59 +29,16 @@
 
 require_once "config.inc";
 
-use OPNsense\Core\Config;
+use OPNsense\Caddy\CertificateController;
 
-$configObj = Config::getInstance()->object();
-$temp_dir = '/var/db/caddy/data/caddy/certificates/temp/';
+$tempDir = '/var/db/caddy/data/caddy/certificates/temp/';
 
-// Traverse through certificates
-foreach ($configObj->cert as $cert) {
-    $cert_refid = (string)$cert->refid;
-    $cert_content = base64_decode((string)$cert->crt);
-    $key_content = base64_decode((string)$cert->prv);
-    $cert_chain = $cert_content;
+try {
+    $CertController = new CertificateController($tempDir);
+    $CertController->processCertificates();
+    $CertController->processCaCertificates();
+    $CertController->processOpenVpnKeys();
 
-    // Handle CA and possible intermediate CA to create a certificate bundle
-    if (!empty($cert->caref)) {
-        foreach ($configObj->ca as $ca) {
-            if ((string)$cert->caref === (string)$ca->refid) {
-                $ca_content = base64_decode((string)$ca->crt);
-                $cert_chain .= "\n" . $ca_content;
-
-                if (!empty($ca->caref)) {
-                    foreach ($configObj->ca as $parent_ca) {
-                        if ((string)$ca->caref === (string)$parent_ca->refid) {
-                            $parent_ca_content = base64_decode((string)$parent_ca->crt);
-                            $cert_chain .= "\n" . $parent_ca_content;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Save the certificate chain and private key
-    file_put_contents($temp_dir . $cert_refid . '.pem', $cert_chain);
-    file_put_contents($temp_dir . $cert_refid . '.key', $key_content);
-}
-
-// Traverse through CA certificates and save them
-foreach ($configObj->ca as $ca) {
-    $ca_refid = (string)$ca->refid;
-    $ca_content = base64_decode((string)$ca->crt);
-
-    // Save the CA certificate
-    file_put_contents($temp_dir . $ca_refid . '.pem', $ca_content);
-}
-
-// Traverse through layer4 OpenVPN static keys and save them as files
-if (isset($configObj->Pischem->caddy->reverseproxy->layer4openvpn)) {
-    foreach ($configObj->Pischem->caddy->reverseproxy->layer4openvpn as $openvpn) {
-        $uuid = (string) $openvpn['uuid'];
-        $static_key = (string) $openvpn->StaticKey;
-
-        // Save the static key
-        file_put_contents($temp_dir . $uuid . '.key', $static_key);
-    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
 }
