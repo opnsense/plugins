@@ -67,6 +67,14 @@
         <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
     </field>
     <field>
+        <id>layer4.TerminateTls</id>
+        <label>Terminate TLS</label>
+        <type>checkbox</type>
+        <style>style_matchers matchers_domain</style>
+        <help><![CDATA[Terminate TLS before routing to the upstream. Since this requires a certificate, ensure there is a domain configured in "Reverse Proxy" that matches the SNI of "Domain"; it will be automatically matched for this route.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>layer4.FromOpenvpnModes</id>
         <label>OpenVPN Mode</label>
         <type>dropdown</type>

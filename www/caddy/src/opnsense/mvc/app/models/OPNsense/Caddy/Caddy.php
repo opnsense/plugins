@@ -208,6 +208,18 @@ class Caddy extends BaseModel
                     ));
                 }
 
+                if (!in_array((string)$item->Matchers, ['tlssni', 'quicsni']) && !empty((string)$item->TerminateTls)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, TLS can not be terminated.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".TerminateTls"
+                    ));
+                }
+
                 if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnModes)) {
                     $messages->appendMessage(new Message(
                         sprintf(
