@@ -27,10 +27,9 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Caddy;
+require_once('script/load_phalcon.php');
 
-require_once "config.inc";
-
+use OPNsense\Caddy\Caddy;
 use OPNsense\Trust\Ca;
 use OPNsense\Trust\Cert;
 use OPNsense\Trust\Store as CertStore;
@@ -66,9 +65,9 @@ foreach ((new Cert())->cert->iterateItems() as $cert) {
         $certKey = base64_decode((string)$cert->prv);
 
         if (!empty((string)$cert->caref)) {
-            $ca = CertStore::getCACertificate((string)$cert->caref);
+            $ca = CertStore::getCaChain((string)$cert->caref);
             if ($ca) {
-                $certChain .= "\n" . $ca['cert'];
+                $certChain .= "\n" . $ca;
             }
         }
 
