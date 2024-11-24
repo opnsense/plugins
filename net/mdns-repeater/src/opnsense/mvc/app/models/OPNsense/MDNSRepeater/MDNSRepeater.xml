@@ -22,7 +22,7 @@
       <ValidationMessage>Please enter one or more valid IPv4 networks or individual addresses including subnet.</ValidationMessage>
       <NetMaskRequired>Y</NetMaskRequired>
       <AddressFamily>ipv4</AddressFamily>
-      <AsList>Y</AsList>    
+      <AsList>N</AsList>    
     </blocklist>
   </items>
 </model>
