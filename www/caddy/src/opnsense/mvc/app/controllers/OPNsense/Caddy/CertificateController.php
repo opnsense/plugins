@@ -48,7 +48,7 @@ class CertificateController
     private function writeFileIfChanged($filePath, $content)
     {
         if (
-            !file_exists($filePath) || 
+            !file_exists($filePath) ||
             hash('sha256', $content) !== hash_file('sha256', $filePath)
         ) {
             file_put_contents($filePath, $content);
@@ -57,29 +57,59 @@ class CertificateController
 
     public function processCertificates()
     {
-        foreach ((new Cert())->cert->iterateItems() as $cert) {
-            $certChain = base64_decode((string)$cert->crt);
-            $certKey = base64_decode((string)$cert->prv);
+        $certificateRefs = [];
 
-            if (!empty((string)$cert->caref)) {
-                $ca = CertStore::getCACertificate((string)$cert->caref);
-                if ($ca) {
-                    $certChain .= "\n" . $ca['cert'];
-                }
+        foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
+            $certRef = (string)$reverseItem->CustomCertificate;
+            if (!empty($certRef)) {
+                $certificateRefs[] = $certRef;
             }
+        }
 
-            $this->writeFileIfChanged($this->tempDir . (string)$cert->refid . '.pem', $certChain);
-            $this->writeFileIfChanged($this->tempDir . (string)$cert->refid . '.key', $certKey);
+        $certificateRefs = array_unique($certificateRefs);
+
+        foreach ((new Cert())->cert->iterateItems() as $cert) {
+            $refid = (string)$cert->refid;
+
+            if (in_array($refid, $certificateRefs, true)) {
+                $certChain = base64_decode((string)$cert->crt);
+                $certKey = base64_decode((string)$cert->prv);
+
+                if (!empty((string)$cert->caref)) {
+                    $ca = CertStore::getCACertificate((string)$cert->caref);
+                    if ($ca) {
+                        $certChain .= "\n" . $ca['cert'];
+                    }
+                }
+
+                $this->writeFileIfChanged($this->tempDir . $refid . '.pem', $certChain);
+                $this->writeFileIfChanged($this->tempDir . $refid . '.key', $certKey);
+            }
         }
     }
 
     public function processCaCertificates()
     {
+        $caCertRefs = [];
+
+        foreach ((new Caddy())->reverseproxy->handle->iterateItems() as $handleItem) {
+            $caCertField = (string)$handleItem->HttpTlsTrustedCaCerts;
+
+            if (!empty($caCertField)) {
+                $caCertRefs[] = $caCertField;
+            }
+        }
+
+        $caCertRefs = array_unique($caCertRefs);
+
         foreach ((new Ca())->ca->iterateItems() as $caItem) {
-            $this->writeFileIfChanged(
-                $this->tempDir . (string)$caItem->refid . '.pem',
-                base64_decode((string)$caItem->crt)
-            );
+            $refid = (string)$caItem->refid;
+
+            if (in_array($refid, $caCertRefs, true)) {
+                $caCert = base64_decode((string)$caItem->crt);
+
+                $this->writeFileIfChanged($this->tempDir . $refid . '.pem', $caCert);
+            }
         }
     }
 
