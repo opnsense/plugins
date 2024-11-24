@@ -20,9 +20,9 @@
   <field>
     <id>mdnsrepeater.blocklist</id>
     <label>Block List</label>
-     <type>select_multiple</type> 
+     <!-- type>select_multiple</type --> 
      <style>tokenize</style> 
      <allownew>true</allownew> 
-    <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts up to 16 IPv4 addresses or networks.]]></help>
+    <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts up to 16 IPv4 addresses including subnet mask or networks.]]></help>
   </field>
 </form>
