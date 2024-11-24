@@ -21,8 +21,8 @@
     <id>mdnsrepeater.blocklist</id>
     <label>Block List</label>
      <type>select_multiple</type> 
-     <!-- style>tokenize</style --> 
+     <style>tokenize</style> 
      <allownew>true</allownew> 
-    <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts up to 16 IPv4 addresses including subnet mask or networks.]]></help>
+    <help>Enter up to 16 client IPv4 addresses including subnet or networks to be blocked.</help>
   </field>
 </form>
