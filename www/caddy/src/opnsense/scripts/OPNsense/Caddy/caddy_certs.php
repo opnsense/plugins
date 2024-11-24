@@ -27,18 +27,83 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  */
 
+namespace OPNsense\Caddy;
+
 require_once "config.inc";
 
-use OPNsense\Caddy\CertificateController;
+use OPNsense\Trust\Ca;
+use OPNsense\Trust\Cert;
+use OPNsense\Trust\Store as CertStore;
+
+$writeFileIfChanged = function ($filePath, $content) {
+    if (
+        !file_exists($filePath) ||
+        hash('sha256', $content) !== hash_file('sha256', $filePath)
+    ) {
+        file_put_contents($filePath, $content);
+    }
+};
 
 $tempDir = '/var/db/caddy/data/caddy/certificates/temp/';
 
-try {
-    $CertController = new CertificateController($tempDir);
-    $CertController->processCertificates();
-    $CertController->processCaCertificates();
-    $CertController->processOpenVpnKeys();
+// leaf certificate chain
+$certificateRefs = [];
 
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage() . "\n";
+foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
+    $certRef = (string)$reverseItem->CustomCertificate;
+    if (!empty($certRef)) {
+        $certificateRefs[] = $certRef;
+    }
+}
+
+$certificateRefs = array_unique($certificateRefs);
+
+foreach ((new Cert())->cert->iterateItems() as $cert) {
+    $refid = (string)$cert->refid;
+
+    if (in_array($refid, $certificateRefs, true)) {
+        $certChain = base64_decode((string)$cert->crt);
+        $certKey = base64_decode((string)$cert->prv);
+
+        if (!empty((string)$cert->caref)) {
+            $ca = CertStore::getCACertificate((string)$cert->caref);
+            if ($ca) {
+                $certChain .= "\n" . $ca['cert'];
+            }
+        }
+
+        $writeFileIfChanged($tempDir . $refid . '.pem', $certChain);
+        $writeFileIfChanged($tempDir . $refid . '.key', $certKey);
+    }
+}
+
+// ca certificate
+$caCertRefs = [];
+
+foreach ((new Caddy())->reverseproxy->handle->iterateItems() as $handleItem) {
+    $caCertField = (string)$handleItem->HttpTlsTrustedCaCerts;
+
+    if (!empty($caCertField)) {
+        $caCertRefs[] = $caCertField;
+    }
+}
+
+$caCertRefs = array_unique($caCertRefs);
+
+foreach ((new Ca())->ca->iterateItems() as $caItem) {
+    $refid = (string)$caItem->refid;
+
+    if (in_array($refid, $caCertRefs, true)) {
+        $caCert = base64_decode((string)$caItem->crt);
+
+        $writeFileIfChanged($tempDir . $refid . '.pem', $caCert);
+    }
+}
+
+// openvpn static keys
+foreach ((new Caddy())->reverseproxy->layer4openvpn->iterateItems() as $openvpnItem) {
+    $writeFileIfChanged(
+        $tempDir . (string)$openvpnItem->getAttributes()['uuid'] . '.key',
+        (string)$openvpnItem->StaticKey
+    );
 }
