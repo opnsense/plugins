@@ -32,6 +32,10 @@ use OPNsense\Trust\Ca;
 use OPNsense\Trust\Cert;
 use OPNsense\Trust\Store as CertStore;
 
+/**
+ * Class CertificateController
+ * @package OPNsense\Caddy
+ */
 class CertificateController
 {
     private $tempDir;
@@ -89,4 +93,3 @@ class CertificateController
         }
     }
 }
-
