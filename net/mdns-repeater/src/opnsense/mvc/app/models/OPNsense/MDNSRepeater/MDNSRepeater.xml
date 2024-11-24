@@ -1,6 +1,5 @@
 <model>
-  <mount>//OPNsense/MDNSRepeater</mount>
-  <version>1.0.1</version>
+  <mount>//OPNsense/MDNSRepeater</mount>  <version>1.0.1</version>
   <description>mdns-repeater settings</description>
   <items>
     <enabled type="BooleanField">
@@ -16,13 +15,17 @@
       <Required>Y</Required>
       <Multiple>Y</Multiple>
     </interfaces>
-    <blocklist type="NetworkField">
+    <blacklist type="NetworkField">
       <Default></Default>
       <Required>N</Required>
-      <ValidationMessage>Please enter one or more valid IPv4 networks or individual addresses including subnet.</ValidationMessage>
+      <ValidationMessage>Only valid IPv4 networks or individual addresses including subnet are allowed.</ValidationMessage>
       <NetMaskRequired>Y</NetMaskRequired>
+      <NetMaskAllowed>Y</NetMaskAllowed>
       <AddressFamily>ipv4</AddressFamily>
-      <AsList>N</AsList>    
-    </blocklist>
+      <FieldSeparator>,</FieldSeparator>
+      <WildcardEnabled>N</WildcardEnabled>
+      <AsList>Y</AsList>
+      <Strict>N</Strict>
+    </blacklist>
   </items>
 </model>
