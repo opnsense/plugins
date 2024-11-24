@@ -20,7 +20,9 @@
   <field>
     <id>mdnsrepeater.blocklist</id>
     <label>Block List</label>
-    <type>text</type>
-    <help>Optionally to blacklist an entire subnet, (eg. 192.168.1.0/24) or individual addresses. Up to 16 subnets are supported and IPv4 subnets only.</help>
+     <type>select_multiple</type> 
+     <style>tokenize</style> 
+     <allownew>true</allownew> 
+    <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts up to 16 IPv4 addresses or networks.]]></help>
   </field>
 </form>
