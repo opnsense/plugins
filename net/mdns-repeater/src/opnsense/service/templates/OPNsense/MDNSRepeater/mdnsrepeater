@@ -10,8 +10,6 @@ required_files="/var/run/mdns-repeater.CARP_MASTER"
 {% do interface_list.append(physical_interface(i)) %}
 {% endfor %}
 {% set repeater_interfaces = interface_list | join(' ') %}
-# This is a hack to support blacklist. Ideally it should be handled in the opnsense ports collection
-# but since the ports collection is pulled from other sources it would take looong and hard time to get through.
 {% if helpers.exists('OPNsense.MDNSRepeater.blacklist') and OPNsense.MDNSRepeater.blacklist != '' %}
 {% set blacklist_and_repeater_interfaces = "-b " + OPNsense.MDNSRepeater.blacklist.split(',') | join(' -b ') + " " + repeater_interfaces %}
 mdns_repeater_interfaces="{{ blacklist_and_repeater_interfaces }}"
