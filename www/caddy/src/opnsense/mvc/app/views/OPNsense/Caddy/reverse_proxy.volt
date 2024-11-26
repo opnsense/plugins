@@ -249,7 +249,7 @@
         });
 
         $("#handle\\.HttpTls").change(function() {
-            if ($(this).val() === "0") {
+            if ($(this).val() != "1") {
                 $(".style_tls").closest('tr').hide();
             } else {
                 $(".style_tls").closest('tr').show();
