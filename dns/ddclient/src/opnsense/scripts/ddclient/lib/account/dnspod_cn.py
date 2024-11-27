@@ -197,22 +197,28 @@ class DNSPod_CN(BaseAccount):
         if super().execute():
             # IPv4/IPv6
             recordType = "AAAA" if str(self.current_address).find(':') > 1 else "A"
-            syslog.syslog(
-                syslog.LOG_DEBUG,
-                f"hostnames {self.settings.get('hostnames', '')} "
-            )
-            if self.settings.get('hostnames') == self.settings.get('zone'):
-                subdomain = '@'
-            else:
-                subdomain = self.settings.get('hostnames', '').replace(f".{self.settings.get('zone')}", '')
+
+            subdomains = []
+            hostnames = self.settings.get('hostnames').split(',')
+            for _subdomain in hostnames:
+                if _subdomain == self.settings.get('zone') or _subdomain == '@':
+                    subdomains.append('@')
+                else:
+                    subdomains.append(_subdomain.replace(f".{self.settings.get('zone')}", ''))
+            
+            if len(subdomains) < 1:
+                syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s hostnames format error" % self.description
+                    )
+                return False
 
             # Get record ID
             response = self.send_request(
                 action='DescribeRecordList',
                 payload={
                     'RecordType': recordType,
-                    'Domain': self.settings.get('zone'),
-                    'Subdomain': subdomain
+                    'Domain': self.settings.get('zone')
                 }
             )
             try:
@@ -232,31 +238,27 @@ class DNSPod_CN(BaseAccount):
                 )
                 return False
 
-            record_id = [x['RecordId'] for x in payload['Response']['RecordList'] if x['Name'] == subdomain]
-            if len(record_id) != 1:
+            record_id_list = [x['RecordId'] for x in payload['Response']['RecordList'] if x['Name'] in subdomains]
+            if len(record_id_list) < 1:
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error Not Found Record [%s]" % (self.description, self.settings.get('hostnames'))
                 )
                 return False
 
-            record_id = record_id[0]
             if self.is_verbose:
                 syslog.syslog(
                     syslog.LOG_NOTICE,
-                    "Account %s ZoneID for %s %s" % (self.description, self.settings.get('zone'), record_id)
+                    "Account %s ZoneID for %s %s" % (self.description, self.settings.get('zone'), record_id_list)
                 )
 
             # Send IP address update
             response = self.send_request(
-                action='ModifyRecord',
+                action='ModifyRecordBatch',
                 payload={
-                    'Domain': self.settings.get('zone'),
-                    'RecordType': recordType,
-                    'RecordLine': '默认',
-                    'Value': str(self.current_address),
-                    'RecordId': record_id,
-                    'SubDomain': subdomain,
+                    'RecordIdList': record_id_list,
+                    'Change': 'value',
+                    'ChangeTo': str(self.current_address),
                 }
             )
             try:
