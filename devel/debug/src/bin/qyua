@@ -143,6 +143,11 @@ for TEST in ${TESTS}; do
 		CASE=
 
 		if [ -n "${DO_DEBUG}" ]; then
+			if [ -n "${TEST%%*:*}" ]; then
+				echo "No test case given in debug mode, use '${TEST}:case'" >&2
+				exit 1
+			fi
+
 			CASE=:${TEST##*:}
 			TEST=${TEST%%:*}
 		fi
