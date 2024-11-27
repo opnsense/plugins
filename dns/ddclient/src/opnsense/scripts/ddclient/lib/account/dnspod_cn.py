@@ -282,10 +282,10 @@ class DNSPod_CN(BaseAccount):
             if record_list and len(record_list) == len(subdomains):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
-                    "Account %s set new ip %s [%s]" % (
+                    "Account %s set new ip %s %s" % (
                         self.description,
                         self.current_address,
-                        payload.get('result', {}).get('content', '')
+                        subdomains
                     )
                 )
 
