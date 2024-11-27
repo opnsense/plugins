@@ -361,4 +361,50 @@
         <type>checkbox</type>
         <help>This will skip chain and host verification.</help>
     </field>
+    <field>
+        <label>HTTP</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>output.http_enable</id>
+        <label>Enable HTTP Output</label>
+        <type>checkbox</type>
+        <help>This will enable output via HTTP.</help>
+    </field>
+    <field>
+        <id>output.http_url</id>
+        <label>HTTP URL</label>
+        <type>text</type>
+        <help>Set the URL where metrics should be sent to.</help>
+    </field>
+    <field>
+        <id>output.http_method</id>
+        <label>HTTP Method</label>
+        <type>text</type>
+        <help>Set the HTTP method to use (e.g., POST).</help>
+    </field>
+    <field>
+        <id>output.http_data_format</id>
+        <label>Data Format</label>
+        <type>text</type>
+        <help>Set the data format to use (e.g., json).</help>
+    </field>
+    <field>
+        <id>output.http_insecure_skip_verify</id>
+        <label>Disable SSL verification</label>
+        <type>checkbox</type>
+        <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
+        <id>output.http_headers_content_type</id>
+        <label>Content-Type Header</label>
+        <type>text</type>
+        <help>Set the Content-Type header value.</help>
+    </field>
+    <field>
+        <id>output.http_headers_authorization</id>
+        <label>Authorization Header</label>
+        <type>text</type>
+        <help>Set the Authorization header value.</help>
+    </field>
 </form>
