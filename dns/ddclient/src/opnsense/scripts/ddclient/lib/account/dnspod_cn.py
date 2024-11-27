@@ -271,7 +271,15 @@ class DNSPod_CN(BaseAccount):
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, payload['Response']['Error']['Code'])
                     )
                 return False
-            if 'Response' in payload and payload['Response'].get('RecordId', False):
+            if len(payload['Response']['DetailList']) < 1:
+                syslog.syslog(
+                    syslog.LOG_ERR,
+                    "Account %s failed to set new ip %s [%s]" % (self.description, self.current_address, response.text)
+                )
+                return False
+            
+            record_list = payload['Response']['DetailList'][0].get('RecordList', False)
+            if record_list and len(record_list) == len(subdomains):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
                     "Account %s set new ip %s [%s]" % (
@@ -283,11 +291,11 @@ class DNSPod_CN(BaseAccount):
 
                 self.update_state(address=self.current_address)
                 return True
-            else:
-                syslog.syslog(
-                    syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%s]" % (self.description, self.current_address, response.text)
-                )
+
+            syslog.syslog(
+                syslog.LOG_ERR,
+                "Account %s failed to set new ip %s %s" % (self.description, self.current_address, subdomains)
+            )
 
 
         return False
