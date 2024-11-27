@@ -392,6 +392,7 @@ http://{{ domain }} {
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {{ handle_accesslist(handle.accesslist) }}
+        {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
         {% endif %}
@@ -451,8 +452,7 @@ http://{{ domain }} {
                 }
             {% endif %}
         }
-        {% endif %}
-        {% if handle.HandleDirective == "redir" %}
+        {% elif handle.HandleDirective == "redir" %}
             {{ handle.HandleDirective }} {{ formatted_domains[0] }}{{ handle.ToPath|default("{uri}") }}
         {% endif %}
     }
