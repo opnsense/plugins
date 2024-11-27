@@ -109,6 +109,17 @@
                     <Default>opnsense.localdomain</Default>
                     <Required>Y</Required>
                 </dnsserver>
+                <dnssecpolicy type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <default>default</default>
+                        <custom>custom</custom>
+                    </OptionValues>
+                </dnssecpolicy>
+                <inlinesigning type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </inlinesigning>
             </domain>
         </domains>
     </items>
