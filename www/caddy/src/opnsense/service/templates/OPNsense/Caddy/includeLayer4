@@ -23,7 +23,7 @@
 {% set layer4_configs = unsorted_layer4_configs | sort(attribute='Sequence') %}
 
 {% macro define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) %}
-    {% if layer4.TerminateTls and layer4.TerminateTls == "1" %}
+    {% if layer4.TerminateTls|default("0") == "1" %}
     tls
     {% endif %}
     proxy {% for domain in to_domains.split(',') %}
