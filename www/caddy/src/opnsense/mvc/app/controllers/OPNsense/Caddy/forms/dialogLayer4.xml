@@ -19,34 +19,27 @@
     </field>
     <field>
         <type>header</type>
-        <label>Type</label>
-        <advanced>true</advanced>
+        <label>Layer 4</label>
     </field>
     <field>
         <id>layer4.Type</id>
         <label>Routing Type</label>
         <type>dropdown</type>
         <help><![CDATA[Choose either "listener_wrappers" for multiplexing protocols on the default HTTP and HTTPS ports on OSI Layer 7, or "global" for raw TCP/UDP traffic routing on a custom "Local port" on OSI Layer 4 with optional OSI Layer 7 protocol matching.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Layer 4</label>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>layer4.Protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
+        <style>style_type</style>
         <help><![CDATA[Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>layer4.FromPort</id>
         <label>Local Port</label>
         <type>text</type>
+        <style>style_type</style>
         <help><![CDATA[Choose a custom local port to listen on.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
