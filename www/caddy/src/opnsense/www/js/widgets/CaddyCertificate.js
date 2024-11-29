@@ -25,9 +25,11 @@
  */
 
 export default class CaddyCertificate extends BaseTableWidget {
-    constructor() {
-        super();
+    constructor(config) {
+        super(config);
         this.tickTimeout = 30;
+        this.configurable = true;
+        this.configChanged = false;
     }
 
     getGridOptions() {
@@ -63,7 +65,7 @@ export default class CaddyCertificate extends BaseTableWidget {
         }
 
         // Process certificates if the response is successful
-        this.processCertificates(response.content);
+        await this.processCertificates(response.content);
     }
 
     // Utility function to display errors within the widget
@@ -72,38 +74,55 @@ export default class CaddyCertificate extends BaseTableWidget {
         $('#caddyCertificateTable').empty().append($error);
     }
 
-    processCertificates(certificates) {
-        if (!this.dataChanged('certificates', certificates)) {
+    async processCertificates(certificates) {
+        const config = await this.getWidgetConfig() || {};
+
+        if (!this.dataChanged('certificates', certificates) && !this.configChanged) {
             return;
         }
 
+        if (this.configChanged) {
+            this.configChanged = false;
+        }
+
+        // Hide tooltips before updating
         $('.caddy-certificate-tooltip').tooltip('hide');
 
-        let rows = certificates.map(certificate => {
-            let colorClass = 'text-success';
-            if (certificate.remaining_days === 0) {
-                colorClass = 'text-danger';
-            } else if (certificate.remaining_days < 14) {
-                colorClass = 'text-warning';
-            }
+        const hiddenCertificates = config.hiddenCertificates || [];
 
-            let statusText = certificate.remaining_days === 0 ? this.translations.expired :
-                             this.translations.valid;
+        let rows = certificates
+            .filter(certificate => {
+                // Exclude certificates based on the configuration
+                return !hiddenCertificates.includes(certificate.hostname);
+            })
+            .map(certificate => {
+                let colorClass = 'text-success';
+                if (certificate.remaining_days === 0) {
+                    colorClass = 'text-danger';
+                } else if (certificate.remaining_days < 14) {
+                    colorClass = 'text-warning';
+                }
 
-            let row = `
-                <div>
-                    <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
-                        data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
-                    </i>
-                    &nbsp;
-                    <span><b>${certificate.hostname}</b></span>
-                    <br/>
-                    <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days}, ${new Date(certificate.expiration_date).toLocaleString()}</div>
-                </div>`;
-            return { html: row, expirationDate: new Date(certificate.expiration_date) };
-        });
+                let statusText = certificate.remaining_days === 0 ? this.translations.expired :
+                                 this.translations.valid;
 
-        // Sort rows by expiration date from lowest to highest
+                let row = `
+                    <div>
+                        <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
+                            data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
+                        </i>
+                        &nbsp;
+                        <span><b>${certificate.hostname}</b></span>
+                        <br/>
+                        <div style="margin-top: 5px; margin-bottom: 5px;">
+                            <i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days},
+                            ${new Date(certificate.expiration_date).toLocaleString()}
+                        </div>
+                    </div>`;
+                return { html: row, expirationDate: new Date(certificate.expiration_date) };
+            });
+
+        // Sort rows by expiration date from earliest to latest
         rows.sort((a, b) => a.expirationDate - b.expirationDate);
 
         // Extract sorted HTML rows and update table
@@ -112,5 +131,34 @@ export default class CaddyCertificate extends BaseTableWidget {
 
         // Initialize tooltips for new elements
         $('.caddy-certificate-tooltip').tooltip({container: 'body'});
+    }
+
+    async getWidgetOptions() {
+        const response = await this.ajaxCall('/api/caddy/diagnostics/certificate');
+
+        if (response.status !== "success") {
+            return {};
+        }
+
+        const certificateOptions = response.content.map(certificate => {
+            return {
+                value: certificate.hostname,
+                label: certificate.hostname
+            };
+        });
+
+        return {
+            hiddenCertificates: {
+                title: this.translations.hiddencerts,
+                type: 'select_multiple',
+                options: certificateOptions,
+                default: [],
+                required: false
+            }
+        };
+    }
+
+    async onWidgetOptionsChanged(options) {
+        this.configChanged = true;
     }
 }

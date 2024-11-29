@@ -27,6 +27,7 @@
             <nocerts>Caddy does not manage any automatic certificates.</nocerts>
             <expires>Expires:</expires>
             <days>days</days>
+            <hiddencerts>Hide Certificates</hiddencerts>
         </translations>
     </caddycertificate>
 </metadata>
