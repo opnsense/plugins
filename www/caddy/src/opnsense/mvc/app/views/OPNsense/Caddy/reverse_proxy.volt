@@ -248,6 +248,7 @@
             }
         });
 
+        // Hide TLS specific options when http or h2c is selected
         $("#handle\\.HttpTls").change(function() {
             if ($(this).val() != "1") {
                 $(".style_tls").closest('tr').hide();
@@ -266,6 +267,7 @@
             }
         });
 
+        // Hide TLS specific options when http is selected
         $("#reverse\\.DisableTls").change(function() {
             if ($(this).val() === "1") {
                 $(".style_tls").closest('tr').hide();
