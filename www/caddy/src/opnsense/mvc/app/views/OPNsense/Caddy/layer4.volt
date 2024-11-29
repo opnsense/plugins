@@ -95,9 +95,6 @@
             }
         });
 
-        // Hide all elements with style_matchers initially
-        $(".style_matchers").closest('tr').hide();
-
         $("#layer4\\.Matchers").change(function() {
             $(".style_matchers").closest('tr').hide();
             const selectedVal = $(this).val();
@@ -106,6 +103,14 @@
                 $(".matchers_domain").closest('tr').show();
             } else if (selectedVal === "openvpn") {
                 $(".matchers_openvpn").closest('tr').show();
+            }
+        });
+
+        $("#layer4\\.Type").change(function() {
+            if ($(this).val() === "global") {
+                $(".style_type").closest('tr').show();
+            } else {
+                $(".style_type").closest('tr').hide();
             }
         });
 

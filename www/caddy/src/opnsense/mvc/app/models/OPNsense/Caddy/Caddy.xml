@@ -544,6 +544,7 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
+                <TerminateTls type="BooleanField"/>
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
