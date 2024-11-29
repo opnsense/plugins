@@ -356,6 +356,7 @@
                     <OptionValues>
                         <http value="0">http://</http>
                         <https value="1">https://</https>
+                        <h2c value="2">h2c://</h2c>
                     </OptionValues>
                     <Constraints>
                         <check001>
