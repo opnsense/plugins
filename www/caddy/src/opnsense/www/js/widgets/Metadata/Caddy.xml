@@ -10,6 +10,7 @@
             <enabled>Enabled</enabled>
             <disabled>Disabled</disabled>
             <unconfigured>Caddy is disabled or not configured.</unconfigured>
+            <nodomains>Caddy does not manage any domains.</nodomains>
         </translations>
     </caddydomain>
     <caddycertificate>
@@ -27,7 +28,6 @@
             <nocerts>Caddy does not manage any automatic certificates.</nocerts>
             <expires>Expires:</expires>
             <days>days</days>
-            <hiddencerts>Hide Certificates</hiddencerts>
         </translations>
     </caddycertificate>
 </metadata>
