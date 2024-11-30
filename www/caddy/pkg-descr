@@ -17,7 +17,7 @@ Plugin Changelog
 
 * Add: Layer4 TLS Termination
 * Add: h2c protocol to HTTP Handler
-* Add: Caddy Certificate widget can be configured to hide entries
+* Cleanup: Caddy Certificate widget hides unused automatic certificates
 * Cleanup: Refactor caddy_certs.php to Trust model
 
 1.7.4
