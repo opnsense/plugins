@@ -180,7 +180,10 @@ class Caddy extends BaseModel
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
             if ($item->isFieldChanged()) {
                 $key = $item->__reference;
-                if (in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) && empty((string)$item->FromDomain)) {
+                if (
+                    in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) &&
+                    empty((string)$item->FromDomain)
+                ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
@@ -205,6 +208,18 @@ class Caddy extends BaseModel
                             $item->Matchers
                         ),
                         $key . ".FromDomain"
+                    ));
+                }
+
+                if (!in_array((string)$item->Matchers, ['tlssni', 'quicsni']) && !empty((string)$item->TerminateTls)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, TLS can not be terminated.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".TerminateTls"
                     ));
                 }
 

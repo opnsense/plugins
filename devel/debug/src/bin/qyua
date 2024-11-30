@@ -140,7 +140,15 @@ FINAL=
 
 for TEST in ${TESTS}; do
 	if [ -n "${DO_INJECT}" ]; then
+		CASE=
+
 		if [ -n "${DO_DEBUG}" ]; then
+			if [ -n "${TEST%%*:*}" ]; then
+				echo "No test case given in debug mode, use '${TEST}:case'" >&2
+				exit 1
+			fi
+
+			CASE=:${TEST##*:}
 			TEST=${TEST%%:*}
 		fi
 
@@ -162,7 +170,7 @@ EOF
 		chmod 555 ${DESTDIR}/_${TEST}
 	fi
 
-	FINAL="${FINAL} ${DO_INJECT+_}${TEST}"
+	FINAL="${FINAL} ${DO_INJECT+_}${TEST}${CASE}"
 done
 
 if [ -z "${DO_DEBUG}" ]; then

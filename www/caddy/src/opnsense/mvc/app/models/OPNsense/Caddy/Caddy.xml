@@ -356,6 +356,7 @@
                     <OptionValues>
                         <http value="0">http://</http>
                         <https value="1">https://</https>
+                        <h2c value="2">h2c://</h2c>
                     </OptionValues>
                     <Constraints>
                         <check001>
@@ -543,6 +544,7 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
+                <TerminateTls type="BooleanField"/>
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
