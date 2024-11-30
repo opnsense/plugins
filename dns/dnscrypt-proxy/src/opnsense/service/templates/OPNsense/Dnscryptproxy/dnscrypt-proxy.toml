@@ -41,9 +41,9 @@ doh_servers = false
 {%   endif %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.odoh_servers') and OPNsense.dnscryptproxy.general.odoh_servers == '1' %}
-doh_servers = true
+odoh_servers = true
 {%   else %}
-doh_servers = false
+odoh_servers = false
 {%   endif %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.require_dnssec') and OPNsense.dnscryptproxy.general.require_dnssec == '1' %}
