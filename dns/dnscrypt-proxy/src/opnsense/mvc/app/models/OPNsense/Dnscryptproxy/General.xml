@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/dnscryptproxy/general</mount>
     <description>dnscrypt-proxy configuration</description>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
