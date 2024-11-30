@@ -38,6 +38,10 @@
             <default>1</default>
             <Required>Y</Required>
         </doh_servers>
+        <odoh_servers type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </odoh_servers>
         <require_dnssec type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
