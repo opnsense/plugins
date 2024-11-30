@@ -25,11 +25,9 @@
  */
 
 export default class CaddyCertificate extends BaseTableWidget {
-    constructor(config) {
-        super(config);
+    constructor() {
+        super();
         this.tickTimeout = 30;
-        this.configurable = true;
-        this.configChanged = false;
     }
 
     getGridOptions() {
@@ -40,8 +38,8 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     getMarkup() {
-        let $container = $('<div></div>');
-        let $caddyCertificateTable = this.createTable('caddyCertificateTable', {
+        const $container = $('<div></div>');
+        const $caddyCertificateTable = this.createTable('caddyCertificateTable', {
             headerPosition: 'none'
         });
 
@@ -50,115 +48,74 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        // Check if Caddy is enabled
-        const caddyStatus = await this.ajaxCall('/api/caddy/reverse_proxy/get');
-        if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
+        const proxyData = await this.ajaxCall('/api/caddy/reverse_proxy/get');
+        if (!proxyData.caddy.general || proxyData.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;
         }
 
-        // Fetch the certificate details
-        const response = await this.ajaxCall('/api/caddy/diagnostics/certificate');
-        if (response.status !== "success") {
+        const domains = Object.values(proxyData.caddy.reverseproxy?.reverse || [])
+            .map(proxy => proxy.FromDomain)
+            .filter(Boolean);
+
+        const certificates = (await this.ajaxCall('/api/caddy/diagnostics/certificate')).content || [];
+
+        // Display certificate if hostname in config and CN of stored cert on disk match
+        const matchingCertificates = certificates.filter(cert => domains.includes(cert.hostname));
+
+        if (matchingCertificates.length === 0) {
             this.displayError(`${this.translations.nocerts}`);
             return;
         }
 
-        // Process certificates if the response is successful
-        await this.processCertificates(response.content);
+        this.clearError();
+        this.processCertificates(matchingCertificates);
     }
 
-    // Utility function to display errors within the widget
     displayError(message) {
         const $error = $(`<div class="error-message"><a href="/ui/caddy/general">${message}</a></div>`);
         $('#caddyCertificateTable').empty().append($error);
     }
 
-    async processCertificates(certificates) {
-        const config = await this.getWidgetConfig() || {};
+    clearError() {
+        $('#caddyCertificateTable .error-message').remove();
+    }
 
-        if (!this.dataChanged('certificates', certificates) && !this.configChanged) {
-            return;
-        }
-
-        if (this.configChanged) {
-            this.configChanged = false;
-        }
-
-        // Hide tooltips before updating
+    processCertificates(certificates) {
         $('.caddy-certificate-tooltip').tooltip('hide');
 
-        const hiddenCertificates = config.hiddenCertificates || [];
+        const rows = certificates.map(certificate => {
+            const colorClass = certificate.remaining_days === 0
+                ? 'text-danger'
+                : certificate.remaining_days < 14
+                ? 'text-warning'
+                : 'text-success';
 
-        let rows = certificates
-            .filter(certificate => {
-                // Exclude certificates based on the configuration
-                return !hiddenCertificates.includes(certificate.hostname);
-            })
-            .map(certificate => {
-                let colorClass = 'text-success';
-                if (certificate.remaining_days === 0) {
-                    colorClass = 'text-danger';
-                } else if (certificate.remaining_days < 14) {
-                    colorClass = 'text-warning';
-                }
+            const statusText = certificate.remaining_days === 0
+                ? this.translations.expired
+                : this.translations.valid;
 
-                let statusText = certificate.remaining_days === 0 ? this.translations.expired :
-                                 this.translations.valid;
-
-                let row = `
-                    <div>
-                        <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
-                            data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
-                        </i>
-                        &nbsp;
-                        <span><b>${certificate.hostname}</b></span>
-                        <br/>
-                        <div style="margin-top: 5px; margin-bottom: 5px;">
-                            <i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days},
-                            ${new Date(certificate.expiration_date).toLocaleString()}
-                        </div>
-                    </div>`;
-                return { html: row, expirationDate: new Date(certificate.expiration_date) };
-            });
-
-        // Sort rows by expiration date from earliest to latest
-        rows.sort((a, b) => a.expirationDate - b.expirationDate);
-
-        // Extract sorted HTML rows and update table
-        let sortedRows = rows.map(row => [row.html]);
-        super.updateTable('caddyCertificateTable', sortedRows);
-
-        // Initialize tooltips for new elements
-        $('.caddy-certificate-tooltip').tooltip({container: 'body'});
-    }
-
-    async getWidgetOptions() {
-        const response = await this.ajaxCall('/api/caddy/diagnostics/certificate');
-
-        if (response.status !== "success") {
-            return {};
-        }
-
-        const certificateOptions = response.content.map(certificate => {
-            return {
-                value: certificate.hostname,
-                label: certificate.hostname
-            };
+            const row = `
+                <div>
+                    <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
+                        data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
+                    </i>
+                    &nbsp;
+                    <span><b>${certificate.hostname}</b></span>
+                    <br/>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                        <i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days},
+                        ${new Date(certificate.expiration_date).toLocaleString()}
+                    </div>
+                </div>`;
+            return { html: row, expirationDate: new Date(certificate.expiration_date) };
         });
 
-        return {
-            hiddenCertificates: {
-                title: this.translations.hiddencerts,
-                type: 'select_multiple',
-                options: certificateOptions,
-                default: [],
-                required: false
-            }
-        };
-    }
+        rows.sort((a, b) => a.expirationDate - b.expirationDate);
 
-    async onWidgetOptionsChanged(options) {
-        this.configChanged = true;
+        const sortedRows = rows.map(row => [row.html]);
+        super.updateTable('caddyCertificateTable', sortedRows);
+
+        $('.caddy-certificate-tooltip').tooltip({ container: 'body' });
     }
 }
