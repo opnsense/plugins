@@ -1,5 +1,6 @@
 <model>
-  <mount>//OPNsense/MDNSRepeater</mount>  <version>1.0.1</version>
+  <mount>//OPNsense/MDNSRepeater</mount>
+  <version>1.0.2</version>
   <description>mdns-repeater settings</description>
   <items>
     <enabled type="BooleanField">
