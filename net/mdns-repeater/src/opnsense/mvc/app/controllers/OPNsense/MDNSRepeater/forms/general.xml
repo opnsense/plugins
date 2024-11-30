@@ -1,28 +1,32 @@
 <form>
-  <field>
-    <id>mdnsrepeater.enabled</id>
-    <label>Enable</label>
-    <type>checkbox</type>
-    <help>Enable the repeater.</help>
-  </field>
-  <field>
-    <id>mdnsrepeater.enablecarp</id>
-    <label>Enable CARP Failover</label>
-    <type>checkbox</type>
-    <help>This will activate the repeater service only on the master device.</help>
-  </field>
-  <field>
-    <id>mdnsrepeater.interfaces</id>
-    <label>Listen Interfaces</label>
-    <type>select_multiple</type>
-    <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
-  </field>
-  <field>
-    <id>mdnsrepeater.blacklist</id>
-    <label>Blacklist</label>
-    <type>select_multiple</type>
-    <style>tokenize</style>
-    <allownew>true</allownew>
-    <help>Enter up to 16 client IPv4 addresses including subnet or networks to be exluded.</help>
-  </field>
+    <field>
+        <type>header</type>
+        <label>General Settings</label>
+    </field>
+    <field>
+        <id>mdnsrepeater.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable the repeater.</help>
+    </field>
+    <field>
+        <id>mdnsrepeater.enablecarp</id>
+        <label>Enable CARP Failover</label>
+        <type>checkbox</type>
+        <help>This will activate the repeater service only on the master device.</help>
+    </field>
+    <field>
+        <id>mdnsrepeater.interfaces</id>
+        <label>Listen Interfaces</label>
+        <type>select_multiple</type>
+        <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
+    </field>
+    <field>
+        <id>mdnsrepeater.blacklist</id>
+        <label>Blacklist</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Enter up to 16 client IPv4 addresses including subnet or networks to be exluded.</help>
+    </field>
 </form>
