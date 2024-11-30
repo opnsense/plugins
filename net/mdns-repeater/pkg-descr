@@ -7,6 +7,11 @@ It can be used to bridge zeroconf devices to work properly across the two subnet
 Plugin Changelog
 ================
 
+1.2
+
+* modernize plugin code
+* blacklist support (contributed by Kodehyrden)
+
 1.1
 
 * CARP support (contributed by Markus Reiter)

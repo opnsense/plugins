@@ -17,4 +17,12 @@
     <type>select_multiple</type>
     <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
   </field>
+  <field>
+    <id>mdnsrepeater.blacklist</id>
+    <label>Blacklist</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Enter up to 16 client IPv4 addresses including subnet or networks to be exluded.</help>
+  </field>
 </form>
