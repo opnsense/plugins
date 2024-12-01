@@ -344,11 +344,6 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </ToPath>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <ForwardAuth type="BooleanField"/>
                 <HttpTls type="OptionField">
                     <Required>Y</Required>
@@ -392,6 +387,30 @@
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
                 <HttpTlsServerName type="HostnameField"/>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <lb_policy type="OptionField">
+                    <BlankDesc>random</BlankDesc>
+                    <OptionValues>
+                        <first>first</first>
+                        <round_robin>round_robin</round_robin>
+                        <least_conn>least_conn</least_conn>
+                        <ip_hash>ip_hash</ip_hash>
+                        <client_ip_hash>client_ip_hash</client_ip_hash>
+                        <uri_hash>uri_hash</uri_hash>
+                    </OptionValues>
+                </lb_policy>
+                <lb_retries type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_retries>
+                <lb_try_duration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_duration>
+                <lb_try_interval type="IntegerField"/>
                 <description type="DescriptionField"/>
             </handle>
             <accesslist type="ArrayField">
@@ -548,11 +567,6 @@
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <ProxyProtocol type="OptionField">
                     <BlankDesc>Off (default)</BlankDesc>
                     <OptionValues>
@@ -560,6 +574,21 @@
                         <v2>v2</v2>
                     </OptionValues>
                 </ProxyProtocol>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <lb_policy type="OptionField">
+                    <BlankDesc>random</BlankDesc>
+                    <OptionValues>
+                        <first>first</first>
+                        <round_robin>round_robin</round_robin>
+                        <least_conn>least_conn</least_conn>
+                        <ip_hash>ip_hash</ip_hash>
+                        <client_ip_hash>client_ip_hash</client_ip_hash>
+                        <uri_hash>uri_hash</uri_hash>
+                    </OptionValues>
+                </lb_policy>
                 <RemoteIp type="NetworkField">
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>

@@ -415,6 +415,18 @@ http://{{ domain }} {
             {% if handle.PassiveHealthFailDuration|default("") %}
                 fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
+            {% if handle.lb_policy|default("") %}
+                lb_policy {{ handle.lb_policy }}
+            {% endif %}
+            {% if handle.lb_retries|default("") %}
+                lb_retries {{ handle.lb_retries }}
+            {% endif %}
+            {% if handle.lb_try_duration|default("") %}
+                lb_try_duration {{ handle.lb_try_duration }}s
+            {% endif %}
+            {% if handle.lb_try_interval|default("") %}
+                lb_try_interval {{ handle.lb_try_interval }}ms
+            {% endif %}
             {% set has_transport_options =
                 handle.HttpVersion or
                 handle.HttpKeepalive or

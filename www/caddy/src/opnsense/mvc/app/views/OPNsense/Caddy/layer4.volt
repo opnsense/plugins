@@ -148,6 +148,7 @@
                             <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
                             <th data-column-id="Matchers" data-type="string">{{ lang._('Matchers') }}</th>
                             <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Invert Matchers') }}</th>
+                            <th data-column-id="TerminateTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Terminate TLS') }}</th>
                             <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
                             <th data-column-id="FromOpenvpnModes" data-type="string" data-visible="false">{{ lang._('OpenVPN Modes') }}</th>
                             <th data-column-id="FromOpenvpnStaticKey" data-type="string" data-visible="false">{{ lang._('OpenVPN Static Key') }}</th>
@@ -155,6 +156,7 @@
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>
                             <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
+                            <th data-column-id="lb_policy" data-type="string" data-visible="false">{{ lang._('Load Balance Policy') }}</th>
                             <th data-column-id="ProxyProtocol" data-type="string" data-visible="false">{{ lang._('Proxy Protocol') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
