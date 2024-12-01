@@ -80,7 +80,6 @@ if (isset($configObj->OPNsense->freeradius)) {
         $cert_refid = (string)$find_cert->ca;
         // if eap has a ca-certificate attached, search for its contents
         if ($cert_refid != "") {
-
 			// multiple comma-separated values are possible (see haproxy)
 			$cert_refids = explode(',', $cert_refid);
             foreach ($cert_refids as $cert_refid) { 
@@ -98,8 +97,6 @@ if (isset($configObj->OPNsense->freeradius)) {
                     }
                 }
             }
-
-
         }
 
         $cert_refid = (string)$find_cert->crl;
