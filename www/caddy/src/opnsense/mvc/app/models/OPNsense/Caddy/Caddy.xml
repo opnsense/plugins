@@ -387,10 +387,6 @@
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
                 <HttpTlsServerName type="HostnameField"/>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <lb_policy type="OptionField">
                     <BlankDesc>random</BlankDesc>
                     <OptionValues>
@@ -411,6 +407,26 @@
                     <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </lb_try_duration>
                 <lb_try_interval type="IntegerField"/>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <PassiveHealthMaxFails type="IntegerField">
+                    <MinimumValue>2</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthMaxFails>
+                <PassiveHealthUnhealthyStatus type="TextField">
+                    <mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</mask>
+                    <ValidationMessage>Please enter a valid HTTP response code like 404 a status code class like 4xx.</ValidationMessage>
+                </PassiveHealthUnhealthyStatus>
+                <PassiveHealthUnhealthyLatency type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyLatency>
+                <PassiveHealthUnhealthyRequestCount type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyRequestCount>
                 <description type="DescriptionField"/>
             </handle>
             <accesslist type="ArrayField">
@@ -574,10 +590,6 @@
                         <v2>v2</v2>
                     </OptionValues>
                 </ProxyProtocol>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <lb_policy type="OptionField">
                     <BlankDesc>random</BlankDesc>
                     <OptionValues>
@@ -589,6 +601,14 @@
                         <uri_hash>uri_hash</uri_hash>
                     </OptionValues>
                 </lb_policy>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <PassiveHealthMaxFails type="IntegerField">
+                    <MinimumValue>2</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthMaxFails>
                 <RemoteIp type="NetworkField">
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>

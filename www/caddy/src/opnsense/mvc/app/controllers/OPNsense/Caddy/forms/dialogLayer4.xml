@@ -120,18 +120,29 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>layer4.PassiveHealthFailDuration</id>
-        <label>Upstream Fail Duration (s)</label>
-        <type>text</type>
-        <hint>off</hint>
-        <help><![CDATA[fail_duration enables a passive health check when multiple destinations in "Upstream Domain" are set. It is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>layer4.lb_policy</id>
         <label>Load Balance Policy</label>
         <type>dropdown</type>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>layer4.PassiveHealthFailDuration</id>
+        <label>Passive Health Fail Duration (s)</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>off</hint>
+        <help><![CDATA[fail_duration enables a passive health check when multiple destinations in "Upstream Domain" are set. It is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking. A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>layer4.PassiveHealthMaxFails</id>
+        <label>Passive Health Max Fails</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>1</hint>
+        <help><![CDATA[max_fails is the maximum number of failed requests within fail_duration that are needed before considering an upstream to be down.]]></help>
         <advanced>true</advanced>
     </field>
     <field>

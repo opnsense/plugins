@@ -412,9 +412,6 @@ http://{{ domain }} {
         {% if handle.HandleDirective == "reverse_proxy" %}
         {{ handle.HandleDirective }} {{ formatted_domains | join(' ') }} {
             {{ header_manipulation(handle) }}
-            {% if handle.PassiveHealthFailDuration|default("") %}
-                fail_duration {{ handle.PassiveHealthFailDuration }}s
-            {% endif %}
             {% if handle.lb_policy|default("") %}
                 lb_policy {{ handle.lb_policy }}
             {% endif %}
@@ -426,6 +423,21 @@ http://{{ domain }} {
             {% endif %}
             {% if handle.lb_try_interval|default("") %}
                 lb_try_interval {{ handle.lb_try_interval }}ms
+            {% endif %}
+            {% if handle.PassiveHealthFailDuration|default("") %}
+                fail_duration {{ handle.PassiveHealthFailDuration }}s
+            {% endif %}
+            {% if handle.PassiveHealthMaxFails|default("") %}
+                max_fails {{ handle.PassiveHealthMaxFails }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyStatus|default("") %}
+                unhealthy_status {{ handle.PassiveHealthUnhealthyStatus }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyLatency|default("") %}
+                unhealthy_latency {{ handle.PassiveHealthUnhealthyLatency }}ms
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyRequestCount|default("") %}
+                unhealthy_request_count {{ handle.PassiveHealthUnhealthyRequestCount }}
             {% endif %}
             {% set has_transport_options =
                 handle.HttpVersion or
