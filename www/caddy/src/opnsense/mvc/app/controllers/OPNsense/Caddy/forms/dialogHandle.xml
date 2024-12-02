@@ -191,7 +191,7 @@
         <label>Load Balance Try Duration (s)</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
-        <hint>0 </hint>
+        <hint>0</hint>
         <help><![CDATA[lb_try_duration is a duration value that defines how long to try selecting available backends for each request if the next available host is down. Clients will wait for up to this long while the load balancer tries to find an available upstream host. A reasonable starting point might be 5s since the HTTP transport's default dial timeout is 3s, so that should allow for at least one retry if the first selected upstream cannot be reached.]]></help>
         <advanced>true</advanced>
     </field>
