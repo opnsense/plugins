@@ -15,6 +15,7 @@ Plugin Changelog
 
 1.7.5
 
+* Add: Load Balancing options to Layer 4 Proxy and HTTP Handle
 * Add: Layer4 TLS Termination
 * Add: h2c protocol to HTTP Handler
 * Cleanup: Refactor caddy_certs.php to Trust model
