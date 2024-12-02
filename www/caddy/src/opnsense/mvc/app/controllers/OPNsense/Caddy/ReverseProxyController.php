@@ -38,11 +38,44 @@ class ReverseProxyController extends IndexController
     public function indexAction()
     {
         $this->view->pick('OPNsense/Caddy/reverse_proxy');
-        $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
-        $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
-        $this->view->formDialogHandle = $this->getForm("dialogHandle");
-        $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
-        $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
-        $this->view->formDialogHeader = $this->getForm("dialogHeader");
+
+        $formDialogReverseProxy = $this->getForm("dialogReverseProxy");
+        $this->view->formDialogReverseProxy = $this->preprocessFields($formDialogReverseProxy, 'reverse.');
+
+        $formDialogSubdomain = $this->getForm("dialogSubdomain");
+        $this->view->formDialogSubdomain = $this->preprocessFields($formDialogSubdomain, 'subdomain.');
+
+        $formDialogHandle = $this->getForm("dialogHandle");
+        $this->view->formDialogHandle = $this->preprocessFields($formDialogHandle, 'handle.');
+
+        $formDialogAccessList = $this->getForm("dialogAccessList");
+        $this->view->formDialogAccessList = $this->preprocessFields($formDialogAccessList, 'accesslist.');
+
+        $formDialogBasicAuth = $this->getForm("dialogBasicAuth");
+        $this->view->formDialogBasicAuth = $this->preprocessFields($formDialogBasicAuth, 'basicauth.');
+
+        $formDialogHeader = $this->getForm("dialogHeader");
+        $this->view->formDialogHeader = $this->preprocessFields($formDialogHeader, 'header.');
+    }
+
+    /**
+     * Preprocess fields to add 'column_id' by stripping prefixes
+     *
+     * @param array $fields The fields array to process
+     * @param string $prefixToRemove The prefix to strip from 'id'
+     * @return array The processed fields array
+     */
+    private function preprocessFields($fields, $prefixToRemove)
+    {
+        foreach ($fields as &$field) {
+            if (isset($field['id'])) {
+                if (strpos($field['id'], $prefixToRemove) === 0) {
+                    $field['column_id'] = substr($field['id'], strlen($prefixToRemove));
+                } else {
+                    $field['column_id'] = $field['id'];
+                }
+            }
+        }
+        return $fields;
     }
 }

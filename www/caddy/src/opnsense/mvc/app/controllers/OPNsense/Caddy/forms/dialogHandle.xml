@@ -19,6 +19,8 @@
         <id>handle.reverse</id>
         <label>Domain</label>
         <type>dropdown</type>
+        <data_visible>true</data_visible>
+        <column_visible>true</column_visible>
         <help><![CDATA[Select a domain to handle.]]></help>
     </field>
     <field>
