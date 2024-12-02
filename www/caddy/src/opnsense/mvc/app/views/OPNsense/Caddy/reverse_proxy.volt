@@ -342,75 +342,31 @@
 
     <!-- Combined Domains Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
+        <!-- Reverse Proxy Section -->
         <div style="padding-left: 16px;">
-            <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="DisableTls" data-type="string">{{ lang._('Protocol') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
-                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 Challenge') }}</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
-                            <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
-                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Certificate') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 Challenge Redirection') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseProxyBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div style="display: block;">
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'reverseProxyGrid',
+                    'edit_dialog': 'DialogReverseProxy',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogReverseProxy,
+                    'add_button_id': 'addReverseProxyBtn'
+                }) }}
             </div>
         </div>
 
-        <!-- Subdomains Tab -->
+        <!-- Subdomains Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 Challenge Redirection') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addSubdomainBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div style="display: block;">
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'reverseSubdomainGrid',
+                    'edit_dialog': 'DialogSubdomain',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogSubdomain,
+                    'add_button_id': 'addSubdomainBtn'
+                }) }}
             </div>
         </div>
     </div>
@@ -419,47 +375,14 @@
     <div id="handlesTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('HTTP Handlers') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="subdomain" data-type="string">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handler') }}</th>
-                            <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Path') }}</th>
-                            <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('HTTP Headers') }}</th>
-                            <th data-column-id="HandleDirective" data-type="string">{{ lang._('Directive') }}</th>
-                            <th data-column-id="HttpTls" data-type="string" data-visible="false">{{ lang._('Protocol') }}</th>
-                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
-                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
-                            <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Upstream Fail Duration') }}</th>
-                            <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
-                            <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
-                            <th data-column-id="HttpKeepalive" data-type="string" data-visible="false">{{ lang._('HTTP Keepalive') }}</th>
-                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS Trust Pool') }}</th>
-                            <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
-                            <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>
-                            <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS Insecure Skip Verify') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseHandleBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div style="display: block;">
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'reverseHandleGrid',
+                    'edit_dialog': 'DialogHandle',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogHandle,
+                    'add_button_id': 'addReverseHandleBtn'
+                }) }}
             </div>
         </div>
     </div>
@@ -470,31 +393,13 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
             <div style="display: block;">
-                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="accesslistName" data-type="string">{{ lang._('Name') }}</th>
-                            <th data-column-id="clientIps" data-type="string">{{ lang._('Client IPs') }}</th>
-                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">{{ lang._('Invert') }}</th>
-                            <th data-column-id="HttpResponseCode" data-type="string" data-visible="false">{{ lang._('HTTP Code') }}</th>
-                            <th data-column-id="HttpResponseMessage" data-type="string" data-visible="false">{{ lang._('HTTP Message') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'accessListGrid',
+                    'edit_dialog': 'DialogAccessList',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogAccessList,
+                    'add_button_id': 'addAccessListBtn'
+                }) }}
             </div>
         </div>
 
@@ -502,27 +407,13 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
             <div style="display: block;">
-                <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="basicauthuser" data-type="string">{{ lang._('User') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addBasicAuthBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'basicAuthGrid',
+                    'edit_dialog': 'DialogBasicAuth',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogBasicAuth,
+                    'add_button_id': 'addBasicAuthBtn'
+                }) }}
             </div>
         </div>
     </div>
@@ -531,31 +422,14 @@
     <div id="headerTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('HTTP Headers') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="HeaderUpDown" data-type="string">{{ lang._('Header') }}</th>
-                            <th data-column-id="HeaderType" data-type="string">{{ lang._('Header Type') }}</th>
-                            <th data-column-id="HeaderValue" data-type="string" data-visible="false">{{ lang._('Header Value') }}</th>
-                            <th data-column-id="HeaderReplace" data-type="string" data-visible="false">{{ lang._('Header Replace') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseHeaderBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div style="display: block;">
+                {{ partial("layout_partials/caddy_bootgrid_tables", {
+                    'table_id': 'reverseHeaderGrid',
+                    'edit_dialog': 'DialogHeader',
+                    'edit_alert': 'ConfigurationChangeMessage',
+                    'fields': formDialogHeader,
+                    'add_button_id': 'addHeaderBtn'
+                }) }}
             </div>
         </div>
     </div>
