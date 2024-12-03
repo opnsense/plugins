@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.4
+
+Fixed:
+* Cron job "Sync SSL certificate changes" not working (#4035)
+
 4.3
 
 Added:
