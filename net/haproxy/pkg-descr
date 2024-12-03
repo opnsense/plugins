@@ -10,6 +10,7 @@ Plugin Changelog
 
 Fixed:
 * Cron job "Sync SSL certificate changes" not working (#4035)
+* Template error with empty user group (#3364)
 
 4.3
 
