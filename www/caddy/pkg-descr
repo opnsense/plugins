@@ -13,6 +13,15 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.7.5
+
+* Add: Load Balancing options to Layer 4 Proxy and HTTP Handle
+* Add: Layer4 TLS Termination
+* Add: h2c protocol to HTTP Handler
+* Cleanup: Caddy Certificate widget hides unused automatic certificates
+* Cleanup: Widgets error handling improved
+* Cleanup: Refactor caddy_certs.php to Trust model
+
 1.7.4
 
 * Add: Layer4 OpenVPN matcher with mode, digest and static key support

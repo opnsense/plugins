@@ -399,18 +399,52 @@ http://{{ domain }} {
         {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
             rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
+        {# http:// is the empty default #}
+        {% set protocol = 'https://' if handle.HttpTls == "1" else 'h2c://' if handle.HttpTls == "2" else '' -%}
+        {% set formatted_domains = [] -%}
+        {% for domain in handle.ToDomain.split(',') -%}
+            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) -%}
+            {% set formatted_domain =
+                ( '[' ~ domain ~ ']' if is_ipv6 else domain ) ~
+                ( ':' ~ handle.ToPort if handle.ToPort else '' ) -%}
+            {% set _ = formatted_domains.append(protocol ~ formatted_domain) -%}
+        {% endfor -%}
         {% if handle.HandleDirective == "reverse_proxy" %}
-        {{ handle.HandleDirective }} {% for domain in handle.ToDomain.split(',') %}
-            {# Check if the domain is IPv6 and wrap in square brackets if necessary #}
-            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-            {# For each domain/IP, append the port if it's specified, followed by a space #}
-            {{- '[' if is_ipv6 else '' -}}{{ domain }}{{ ']' if is_ipv6 else '' -}}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}{% if not loop.last %} {% endif %}
-        {% endfor %} {
+        {{ handle.HandleDirective }} {{ formatted_domains | join(' ') }} {
             {{ header_manipulation(handle) }}
+            {% if handle.lb_policy|default("") %}
+                lb_policy {{ handle.lb_policy }}
+            {% endif %}
+            {% if handle.lb_retries|default("") %}
+                lb_retries {{ handle.lb_retries }}
+            {% endif %}
+            {% if handle.lb_try_duration|default("") %}
+                lb_try_duration {{ handle.lb_try_duration }}s
+            {% endif %}
+            {% if handle.lb_try_interval|default("") %}
+                lb_try_interval {{ handle.lb_try_interval }}ms
+            {% endif %}
             {% if handle.PassiveHealthFailDuration|default("") %}
                 fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% set has_transport_options = handle.HttpVersion or handle.HttpKeepalive or handle.HttpTls|default("0") == "1" or handle.HttpTlsInsecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName %}
+            {% if handle.PassiveHealthMaxFails|default("") %}
+                max_fails {{ handle.PassiveHealthMaxFails }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyStatus|default("") %}
+                unhealthy_status {{ handle.PassiveHealthUnhealthyStatus }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyLatency|default("") %}
+                unhealthy_latency {{ handle.PassiveHealthUnhealthyLatency }}ms
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyRequestCount|default("") %}
+                unhealthy_request_count {{ handle.PassiveHealthUnhealthyRequestCount }}
+            {% endif %}
+            {% set has_transport_options =
+                handle.HttpVersion or
+                handle.HttpKeepalive or
+                handle.HttpTlsInsecureSkipVerify|default("0") == "1" or
+                handle.HttpTlsTrustedCaCerts or
+                handle.HttpTlsServerName -%}
             {% if has_transport_options %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
@@ -428,32 +462,22 @@ http://{{ domain }} {
                             keepalive {{ handle.HttpKeepalive }}s
                         {% endif %}
                     {% endif %}
-                    {% if handle.HttpTls|default("0") == "1" %}
-                        tls
-                    {% endif %}
-                    {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
-                        tls_insecure_skip_verify
-                    {% endif %}
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                        tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                    {% if handle.HttpTlsServerName %}
-                        tls_server_name {{ handle.HttpTlsServerName }}
+                    {% if handle.HttpTls == "1" %}
+                        {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+                            tls_insecure_skip_verify
+                        {% endif %}
+                        {% if handle.HttpTlsTrustedCaCerts %}
+                            tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                        {% endif %}
+                        {% if handle.HttpTlsServerName %}
+                            tls_server_name {{ handle.HttpTlsServerName }}
+                        {% endif %}
                     {% endif %}
                 }
             {% endif %}
         }
-        {% else %}
-            {% set protocol = 'https://' if handle.HttpTls == "1" else 'http://' %}
-            {% set domain = handle.ToDomain.split(',')[0] %}
-            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-            {% set formatted_domain = ('[' ~ domain ~ ']') if is_ipv6 else domain %}
-            {% if handle.ToPort %}
-                {% set domain_with_port = formatted_domain ~ ':' ~ handle.ToPort %}
-            {% else %}
-                {% set domain_with_port = formatted_domain %}
-            {% endif %}
-            {{ handle.HandleDirective }} {{ protocol }}{{ domain_with_port }}{{ handle.ToPath|default("{uri}") }}
+        {% elif handle.HandleDirective == "redir" %}
+            {{ handle.HandleDirective }} {{ formatted_domains[0] }}{{ handle.ToPath|default("{uri}") }}
         {% endif %}
     }
 {% endmacro %}

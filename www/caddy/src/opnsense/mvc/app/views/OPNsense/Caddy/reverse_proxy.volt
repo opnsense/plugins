@@ -248,8 +248,9 @@
             }
         });
 
+        // Hide TLS specific options when http or h2c is selected
         $("#handle\\.HttpTls").change(function() {
-            if ($(this).val() === "0") {
+            if ($(this).val() != "1") {
                 $(".style_tls").closest('tr').hide();
             } else {
                 $(".style_tls").closest('tr').show();
@@ -266,6 +267,7 @@
             }
         });
 
+        // Hide TLS specific options when http is selected
         $("#reverse\\.DisableTls").change(function() {
             if ($(this).val() === "1") {
                 $(".style_tls").closest('tr').hide();
@@ -433,7 +435,6 @@
                             <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
                             <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
                             <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Upstream Fail Duration') }}</th>
                             <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
                             <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
                             <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
@@ -442,6 +443,15 @@
                             <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
                             <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>
                             <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS Insecure Skip Verify') }}</th>
+                            <th data-column-id="lb_policy" data-type="string" data-visible="false">{{ lang._('Load Balance Policy') }}</th>
+                            <th data-column-id="lb_retries" data-type="string" data-visible="false">{{ lang._('Load Balance Retries') }}</th>
+                            <th data-column-id="lb_try_duration" data-type="string" data-visible="false">{{ lang._('Load Balance Try Duration') }}</th>
+                            <th data-column-id="lb_try_interval" data-type="string" data-visible="false">{{ lang._('Load Balance Try Interval') }}</th>
+                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Passive Health Fail Duration') }}</th>
+                            <th data-column-id="PassiveHealthMaxFails" data-type="string" data-visible="false">{{ lang._('Passive Health Max Fails') }}</th>
+                            <th data-column-id="PassiveHealthUnhealthyStatus" data-type="string" data-visible="false">{{ lang._('Passive Health Unhealthy Status') }}</th>
+                            <th data-column-id="PassiveHealthUnhealthyLatency" data-type="string" data-visible="false">{{ lang._('Passive Health Unhealthy Latency') }}</th>
+                            <th data-column-id="PassiveHealthUnhealthyRequestCount" data-type="string" data-visible="false">{{ lang._('Passive Health Unhealthy Request Count') }}</th>
                             <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                             <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         </tr>
