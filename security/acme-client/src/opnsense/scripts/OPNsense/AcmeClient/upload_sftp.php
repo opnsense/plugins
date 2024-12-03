@@ -354,10 +354,12 @@ function getOptionsById($automation_id, $silent = false)
 
     if (is_object($action = Utils::getAutomationActionById($automation_id))) {
         if ($action->enabled && "configd_upload_sftp" === (string)$action->type) {
+            # Set default port if unset.
+            $sftp_port = isset($action->sftp_port) ? trim((string)$action->sftp_port) : '22';
             return [
                 "host" => trim((string)$action->sftp_host),
                 "host-key" => trim((string)$action->sftp_host_key),
-                "port" => trim((string)$action->sftp_port),
+                "port" => $sftp_port,
                 "identity-type" => trim((string)$action->sftp_identity_type),
                 "user" => trim((string)$action->sftp_user),
                 "remote-path" => trim((string)$action->sftp_remote_path),
