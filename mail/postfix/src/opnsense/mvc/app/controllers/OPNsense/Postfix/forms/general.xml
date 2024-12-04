@@ -248,6 +248,20 @@
         <help>Use Recipient Address Verification. Please keep in mind that this could put significant load onto the next server.</help>
     </field>
     <field>
+        <id>general.always_add_missing_headers</id>
+        <label>Always add missing headers</label>
+        <type>checkbox</type>
+        <help>Always add (Resent-) From:, To:, Date: or Message-ID: headers when not present.</help>
+    </field>
+    <field>
+        <id>general.local_header_rewrite_clients</id>
+        <label>Local header rewrite clients</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>false</allownew>
+        <help>Rewrite or add message headers in mail from these clients, updating incomplete addresses with the domain name in $myorigin or $mydomain, and adding missing headers.</help>
+    </field>
+    <field>
         <id>general.delay_warning_time</id>
         <label>Delay Warning Time</label>
         <type>text</type>
