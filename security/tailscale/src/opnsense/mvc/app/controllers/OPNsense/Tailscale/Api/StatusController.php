@@ -38,12 +38,10 @@ class StatusController extends ApiMutableModelControllerBase
 
     public function statusAction()
     {
-        $response = trim((new Backend())->configdRun('tailscale tailscale-status'));
-
-        if ($this->isJson($response)) {
-            return json_decode($response, true);
+        $response = json_decode(trim((new Backend())->configdRun('tailscale tailscale-status')), true);
+        if ($response !== null) {
+            return $response;
         }
-
     	return ['error' => 'Unable to determine Tailscale status, is the service running?'];
     }
 
