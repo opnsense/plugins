@@ -32,16 +32,4 @@ use OPNsense\Base\BaseModel;
 
 class Settings extends BaseModel
 {
-    public function getSubnetsAsString(): string
-    {
-        $nodes = $this->getNodes();
-
-        $cidr = [];
-        $subnets = $nodes['subnets']['subnet4'] ?? [];
-        foreach ($subnets as $subnet) {
-            $cidr[] = $subnet['subnet'];
-        }
-
-        return empty($cidr) ? '' : (string)implode(',', $cidr);
-    }
 }
