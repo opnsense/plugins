@@ -137,6 +137,7 @@ class Git extends Base implements IBackupProvider
         }
         if (!is_dir('{$targetdir}/.git')) {
             exec("{$git} init {$targetdir}");
+            exec("cd {$targetdir} && {$git} checkout -b {$mdl->branch}");
         }
         // XXX: since our git backup is plain text and already contains the private key, it doesn't really matter
         //      to keep the same key in the git directory (we're not going to push it)
@@ -162,7 +163,7 @@ class Git extends Base implements IBackupProvider
         exec("cd {$targetdir} && {$git} remote remove origin");
         exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
         $pushtxt = shell_exec(
-            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("master:{$mdl->branch}") .
+            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("{$mdl->branch}:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
         );
         if (strpos($pushtxt, '__exit_ok__')) {
