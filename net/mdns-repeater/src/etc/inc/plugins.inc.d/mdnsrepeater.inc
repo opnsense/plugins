@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright © 2017 Fabian Franz
+ * Copyright (c) 2017 Fabian Franz
  * Copyright (c) 2024 Cedrik Pischem
  * All rights reserved.
  *
