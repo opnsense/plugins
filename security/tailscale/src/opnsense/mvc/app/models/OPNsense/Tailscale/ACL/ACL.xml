@@ -1,0 +1,9 @@
+<acl>
+    <page-tailscale-config>
+        <name>Tailscale</name>
+        <patterns>
+            <pattern>ui/tailscale/*</pattern>
+            <pattern>api/tailscale/*</pattern>
+        </patterns>
+    </page-tailscale-config>
+</acl>
