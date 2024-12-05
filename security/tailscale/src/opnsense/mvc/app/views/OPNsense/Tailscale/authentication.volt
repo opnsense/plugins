@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $( document ).ready(function() {
         mapDataToFormUI({'frmAuthentication':"/api/tailscale/authentication/get"}).done(function(data) {
-            // place actions to run after load, for example update form styles.
+            updateServiceControlUI('tailscale');
         });
 
         $("#reconfigureAct").SimpleActionButton({
@@ -10,6 +10,9 @@
                 saveFormToEndpoint("/api/tailscale/authentication/set", 'frmAuthentication', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
                 return dfObj;
             },
+                onAction: function(data, status) {
+                updateServiceControlUI('tailscale');
+            }
         });
 
     });

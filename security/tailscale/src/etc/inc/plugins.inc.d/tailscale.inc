@@ -28,15 +28,14 @@
 
 function tailscale_enabled()
 {
-    $mdl = new \OPNsense\Tailscale\Settings();
-    return ! empty((string)$mdl->enabled);
+    return !empty((string)(new \OPNsense\Tailscale\Settings())->enabled);
 }
 
 function tailscale_services()
 {
     $services = [];
 
-    if (! tailscale_enabled()) {
+    if (!tailscale_enabled()) {
         return $services;
     }
 

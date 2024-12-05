@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $( document ).ready(function() {
         mapDataToFormUI({'frmSettings':"/api/tailscale/settings/get"}).done(function(data) {
-            // place actions to run after load, for example update form styles.
+            updateServiceControlUI('tailscale');
         });
 
         $("#grid-subnets").UIBootgrid(
@@ -20,6 +20,9 @@
                 saveFormToEndpoint("/api/tailscale/settings/set", 'frmSettings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
                 return dfObj;
             },
+            onAction: function(data, status) {
+                updateServiceControlUI('tailscale');
+            }
         });
 
     });

@@ -41,41 +41,5 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceTemplate = 'OPNsense/Tailscale';
     protected static $internalServiceName = 'tailscale';
-    
-    public function reconfigureAction()
-    {
-        if (! $this->request->isPost()) {
-             return ['result' => 'failed'];
-        }
-
-        $backend = new Backend();
-        $backend->configdRun('template reload ' . escapeshellarg(static::$internalServiceTemplate));
-        $backend->configdRun('tailscale restart');
-
-        return ['result' => 'ok'];
-    }
-
-    public function statusAction()
-    {
-        $mdl = $this->getModel();
-        $isEnabled = $mdl->enabled->__toString() === '1';
-
-	    $backend = new Backend();
-        $response = $backend->configdRun('tailscale status');
-        if (strpos($response, 'not running') > 0) {
-            if ($isEnabled) {
-                $status = 'stopped';
-            } else {
-                $status = 'disabled';
-            }
-        } elseif (strpos($response, 'is running') > 0) {
-            $status = 'running';
-        } elseif (! $isEnabled) {
-            $status = 'disabled';
-        } else {
-            $status = 'unknown';
-        }
-
-        return ['status' => 'ok', 'result' => $status];
-    }
 }
+
