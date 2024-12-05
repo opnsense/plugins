@@ -36,7 +36,7 @@ function tailscale_services()
 {
     $services = [];
 
-    if (! tailscale_enabled()) {
+    if (!tailscale_enabled()) {
         return $services;
     }
 
