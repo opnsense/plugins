@@ -35,13 +35,5 @@ class AuthenticationController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'authentication';
     protected static $internalModelClass = '\OPNsense\Tailscale\Authentication';
-
-    public function reloadAction()
-    {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $status = strtolower(trim((new Backend())->configdRun('template reload OPNsense/Tailscale')));
-        }
-        return ["status" => $status];
-    }
 }
+
