@@ -33,6 +33,7 @@
                 <subnet type="NetworkField">
                     <NetMaskRequired>Y</NetMaskRequired>
                     <AddressFamily>ipv4</AddressFamily>
+                    <Strict>Y</Strict>
                     <Required>Y</Required>
                 </subnet>
                 <description type="DescriptionField"/>
