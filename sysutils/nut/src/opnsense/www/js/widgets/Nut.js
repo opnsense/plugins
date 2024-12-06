@@ -71,6 +71,11 @@ export default class NutNetclient extends BaseTableWidget {
         // Fetch the UPS status data from the server.
         const { response: nut_ups_status_response } = await this.ajaxCall(`/api/nut/${'diagnostics/upsstatus'}`);
 
+        if (!nut_ups_status_response) {
+            $('#nut-table').html(`<a href="/ui/nut/index">${this.translations.misconfigured}</a>`);
+            return;
+        }
+
         // Parse the UPS status data into a key-value object.
         const nut_ups_status = nut_ups_status_response.split('\n').reduce((acc, line) => {
             const [key, value] = line.split(': ');

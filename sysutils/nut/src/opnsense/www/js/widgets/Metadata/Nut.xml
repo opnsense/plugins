@@ -31,6 +31,7 @@
             <status_boost>UPS is boosting voltage</status_boost>
             <status_fsd>Forced Shutdown</status_fsd>
             <unconfigured>Nut is not started. Click to configure Nut.</unconfigured>
+            <misconfigured>Nut is not returning a status. Click to reconfigure Nut.</misconfigured>
             <netclient_unconfigured>This widget only works with the Netclient driver. Click to configure the Netclient driver.</netclient_unconfigured>
             <netclient_remote_server>Remote NUT Server</netclient_remote_server>
             <time_hours>h</time_hours>
