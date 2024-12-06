@@ -2,9 +2,7 @@
     <nut>
         <filename>Nut.js</filename>
         <endpoints>
-            <endpoint>/api/nut/service/status</endpoint>
-            <endpoint>/api/nut/settings/get</endpoint>
-            <endpoint>/api/nut/diagnostics/upsstatus</endpoint>
+            <endpoint>/api/nut/*</endpoint>
         </endpoints>
         <translations>
             <title>NUT</title>

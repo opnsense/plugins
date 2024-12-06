@@ -25,9 +25,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-import BaseTableWidget from 'widget-base-table';
-
 export default class NutNetclient extends BaseTableWidget {
     constructor() {
         super();
@@ -54,7 +51,7 @@ export default class NutNetclient extends BaseTableWidget {
     // Periodically called to update the widget's data and UI.
     async onWidgetTick() {
         // Fetch the NUT service status from the server.
-        const nut_service_status = await this.ajaxCall('/api/nut/service/status');
+        const nut_service_status = await this.ajaxCall(`/api/nut/${'service/status'}`);
 
         // If the service is not running, display a message and stop further processing.
         if (!nut_service_status || nut_service_status.status !== 'running') {
@@ -63,7 +60,7 @@ export default class NutNetclient extends BaseTableWidget {
         }
 
         // Fetch the NUT settings from the server.
-        const nut_settings = await this.ajaxCall('/api/nut/settings/get');
+        const nut_settings = await this.ajaxCall(`/api/nut/${'settings/get'}`);
 
         // // If netclient is not enabled, display a message and stop further processing.
         // if (nut_settings.nut?.netclient?.enable !== "1") {
@@ -72,7 +69,7 @@ export default class NutNetclient extends BaseTableWidget {
         // }
 
         // Fetch the UPS status data from the server.
-        const { response: nut_ups_status_response } = await this.ajaxCall('/api/nut/diagnostics/upsstatus');
+        const { response: nut_ups_status_response } = await this.ajaxCall(`/api/nut/${'diagnostics/upsstatus'}`);
 
         // Parse the UPS status data into a key-value object.
         const nut_ups_status = nut_ups_status_response.split('\n').reduce((acc, line) => {
