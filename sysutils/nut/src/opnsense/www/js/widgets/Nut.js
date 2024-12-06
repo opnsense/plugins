@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Ben 'DollarSign23'
+ * Copyright (C) 2024 DollarSign23
  * Copyright (C) 2024 Nicola Pellegrini
  * All rights reserved.
  *
