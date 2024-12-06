@@ -17,16 +17,14 @@
 
     });
 </script>
-
 <div class="content-box">
     {{ partial("layout_partials/base_form",['fields':authenticationForm,'id':'frmAuthentication']) }}
 </div>
-
 <section class="page-content-main">
     <div class="content-box">
         <div class="col-md-12">
             <br/>
-            <div id="keaChangeMessage" class="alert alert-info" style="display: none" role="alert">
+            <div id="tailscaleChangeMessage" class="alert alert-info" style="display: none" role="alert">
                 {{ lang._('After changing settings, please remember to apply them') }}
             </div>
             <button class="btn btn-primary" id="reconfigureAct"

@@ -24,24 +24,18 @@
                 updateServiceControlUI('tailscale');
             }
         });
-
     });
-
-
 </script>
-
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#settings" id="tab_settings">{{ lang._('Settings') }}</a></li>
     <li><a data-toggle="tab" href="#subnets" id="tab_subnets"> {{ lang._('Advertised Routes') }} </a></li>
 </ul>
-
-
 <div class="tab-content content-box">
     <div id="settings"  class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':settingsForm,'id':'frmSettings'])}}
     </div>
     <div id="subnets" class="tab-pane fade in">
-        <table id="grid-subnets" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubnet" data-editAlert="keaChangeMessage">
+        <table id="grid-subnets" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubnet" data-editAlert="tailscaleChangeMessage">
             <thead>
                 <tr>
                   <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
