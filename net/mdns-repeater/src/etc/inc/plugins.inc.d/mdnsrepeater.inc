@@ -33,8 +33,10 @@ function mdnsrepeater_services()
 
     $services = [];
 
-    if (isset($config['OPNsense']['MDNSRepeater']['enabled']) &&
-        $config['OPNsense']['MDNSRepeater']['enabled'] == '1') {
+    if (
+        isset($config['OPNsense']['MDNSRepeater']['enabled']) &&
+        $config['OPNsense']['MDNSRepeater']['enabled'] == '1'
+    ) {
         $services[] = [
             'description' => gettext('mDNS Repeater'),
             'configd' => [
