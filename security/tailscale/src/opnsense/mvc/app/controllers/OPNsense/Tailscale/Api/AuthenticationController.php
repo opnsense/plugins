@@ -36,4 +36,3 @@ class AuthenticationController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'authentication';
     protected static $internalModelClass = '\OPNsense\Tailscale\Authentication';
 }
-

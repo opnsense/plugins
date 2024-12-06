@@ -29,10 +29,10 @@
             $.each(peers, function(peer, data) {
                 let tailscaleIp = '';
                 if (data.TailscaleIPs !== null && data.TailscaleIPs !== undefined) {
-                    tailscaleIp = data.TailscaleIPs.join(', '); 
+                    tailscaleIp = data.TailscaleIPs.join(', ');
 
                     console.log(tailscaleIp);
-                } 
+                }
 
                 let row = '<tr><td>' + data.HostName;
                 row += '</td><td>' + tailscaleIp;
@@ -44,7 +44,7 @@
             });
         }
 
-	
+
         function updateStatusInfo() {
             ajaxGet(url = "/api/tailscale/status/status/", sendData={},
                 callback = function (data, status) {
@@ -56,9 +56,9 @@
                         let skipKeys = [
                             'CertDomains',
                             'ClientVersion',
-                            'CurrentTailnet', 
+                            'CurrentTailnet',
                             'Health',
-                            'Self', 
+                            'Self',
                             'User'
                         ];
 

@@ -48,7 +48,7 @@ function tailscale_services()
             'stop' => ['tailscale stop'],
         ],
         'name' => 'tailscale',
-    ]; 
+    ];
 
     return $services;
 }
@@ -62,4 +62,3 @@ function tailscale_devices()
         'volatile' => true,
     ]];
 }
-

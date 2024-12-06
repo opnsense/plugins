@@ -42,4 +42,3 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Tailscale';
     protected static $internalServiceName = 'tailscale';
 }
-

@@ -88,6 +88,7 @@ security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
 security/stunnel -- Stunnel TLS proxy
+security/tailscale -- Tailscale makes creating software-defined networks easy (development only)
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh

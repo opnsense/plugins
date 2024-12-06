@@ -42,22 +42,23 @@ class StatusController extends ApiMutableModelControllerBase
         if ($response !== null) {
             return $response;
         }
-    	return ['error' => 'Unable to determine Tailscale status, is the service running?'];
+        return ['error' => 'Unable to determine Tailscale status, is the service running?'];
     }
 
     public function ipAction()
     {
         $response = trim((new Backend())->configdRun('tailscale tailscale-ip'));
-    	return ['result' => $response];
+        return ['result' => $response];
     }
 
     public function netAction()
     {
         $response = trim((new Backend())->configdRun('tailscale tailscale-netcheck'));
-    	return ['result' => $response];
+        return ['result' => $response];
     }
 
-    private function isJson($string) {
+    private function isJson($string)
+    {
         return is_string($string)
             && (is_object(json_decode($string))
             || is_array(json_decode($string)));

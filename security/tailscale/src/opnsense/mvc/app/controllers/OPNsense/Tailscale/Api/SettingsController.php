@@ -62,8 +62,8 @@ class SettingsController extends ApiMutableModelControllerBase
     public function reloadAction()
     {
         $mdl = $this->getModel();
-	    $enabled = $mdl->enabled->__toString() === '1';
-   	    $response = $this->toggleTailScaleService($enabled);
+        $enabled = $mdl->enabled->__toString() === '1';
+        $response = $this->toggleTailScaleService($enabled);
         return ['result ' => $response];
     }
 
