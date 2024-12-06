@@ -22,8 +22,8 @@
         <help>At least 2 interfaces must be selected. The maximum number of supported interfaces by the daemon is 5.</help>
     </field>
     <field>
-        <id>mdnsrepeater.blacklist</id>
-        <label>Blacklist</label>
+        <id>mdnsrepeater.blocklist</id>
+        <label>Blocklist</label>
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>

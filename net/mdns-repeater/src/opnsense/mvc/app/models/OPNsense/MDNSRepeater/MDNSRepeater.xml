@@ -16,13 +16,13 @@
             <Required>Y</Required>
             <Multiple>Y</Multiple>
         </interfaces>
-        <blacklist type="NetworkField">
+        <blocklist type="NetworkField">
             <NetMaskRequired>Y</NetMaskRequired>
             <AddressFamily>ipv4</AddressFamily>
             <FieldSeparator>,</FieldSeparator>
             <WildcardEnabled>N</WildcardEnabled>
             <AsList>Y</AsList>
             <ValidationMessage>Only valid IPv4 networks or individual addresses including subnet are allowed.</ValidationMessage>
-        </blacklist>
+        </blocklist>
     </items>
 </model>

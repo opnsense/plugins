@@ -10,9 +10,9 @@ required_files="/var/run/mdns-repeater.CARP_MASTER"
 {% do interface_list.append(physical_interface(i)) %}
 {% endfor %}
 {% set repeater_interfaces = interface_list | join(' ') %}
-{% if helpers.exists('OPNsense.MDNSRepeater.blacklist') and OPNsense.MDNSRepeater.blacklist != '' %}
-{% set blacklist_and_repeater_interfaces = "-b " + OPNsense.MDNSRepeater.blacklist.split(',') | join(' -b ') + " " + repeater_interfaces %}
-mdns_repeater_interfaces="{{ blacklist_and_repeater_interfaces }}"
+{% if helpers.exists('OPNsense.MDNSRepeater.blocklist') and OPNsense.MDNSRepeater.blocklist != '' %}
+{% set blocklist_and_repeater_interfaces = "-b " + OPNsense.MDNSRepeater.blocklist.split(',') | join(' -b ') + " " + repeater_interfaces %}
+mdns_repeater_interfaces="{{ blocklist_and_repeater_interfaces }}"
 {% else %}
 mdns_repeater_interfaces="{{ repeater_interfaces }}"
 {% endif %}
