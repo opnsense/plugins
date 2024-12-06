@@ -12,6 +12,12 @@
         <help>UDP port to listen on for Wireguard and peer-to-peer traffic.</help>
     </field>
     <field>
+        <id>settings.acceptDNS</id>
+        <label>Accept DNS</label>
+        <type>checkbox</type>
+        <help>Accept DNS configuration from the control server.</help>
+    </field>
+    <field>
         <id>settings.advertiseExitNode</id>
         <label>Advertise Exit Node</label>
         <type>checkbox</type>
