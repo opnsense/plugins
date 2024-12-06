@@ -11,16 +11,16 @@ tailscaled_exitnode_enable="YES"
 {%   endif %}
 {% set up_args = ["--reset"] %}
 {%   if helpers.exists('OPNsense.tailscale.settings.acceptSubnetRoutes') and OPNsense.tailscale.settings.acceptSubnetRoutes|default("0") == "1" %}
-{%     do up_args.append(" --accept-routes") %}
+{%     do up_args.append("--accept-routes") %}
 {%   endif %}
 {%   if helpers.exists('OPNsense.tailscale.settings.acceptDNS') and OPNsense.tailscale.settings.acceptDNS|default("0") == "1" %}
-{%     do up_args.append(" --accept-dns") %}
+{%     do up_args.append("--accept-dns") %}
 {%   endif %}
 {%   if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
-{%     do up_args.append(" --login-server=" + OPNsense.tailscale.authentication.loginServer) %}
+{%     do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
 {%   endif %}
 {%   if helpers.exists('OPNsense.tailscale.authentication.preAuthKey') %}
-{%     do up_args.append(" --auth-key=" + OPNsense.tailscale.authentication.preAuthKey) %}
+{%     do up_args.append("--auth-key=" + OPNsense.tailscale.authentication.preAuthKey) %}
 {%   endif %}
 {# loop through subnets to build list #}
 {%   if helpers.exists('OPNsense.tailscale.settings.subnets.subnet4') %}
@@ -29,7 +29,7 @@ tailscaled_exitnode_enable="YES"
 {%       do subnets.append(subnet_list.subnet) %}
 {%     endfor %}
 {%     set subnetString = subnets|join(',') %}
-{%     do up_args.append(" --advertise-routes=" + subnetString) %}
+{%     do up_args.append("--advertise-routes=" + subnetString) %}
 {%   endif %}
 tailscaled_up_args="{{ up_args|join(' ') }}"
 {% else %}
