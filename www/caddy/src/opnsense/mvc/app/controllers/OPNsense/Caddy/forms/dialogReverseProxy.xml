@@ -6,6 +6,7 @@
         <help><![CDATA[Enable this domain.]]></help>
     </field>
     <field>
+        <sequence>1</sequence>
         <id>reverse.description</id>
         <label>Description</label>
         <type>text</type>
@@ -48,6 +49,7 @@
         <type>text</type>
         <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables an ACME Client behind Caddy to serve "/.well-known/acme-challenge/" on port 80. Caddy will reverse proxy the HTTP-01 challenge for this domain, and will still issue a certificate using the TLS-ALPN-01 challenge or DNS-01 challenge for itself. This option can be used for High Availability when using Caddy with a master and backup OPNsense.]]></help>
         <advanced>true</advanced>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>reverse.DnsChallenge</id>
@@ -55,12 +57,14 @@
         <type>checkbox</type>
         <style>style_tls</style>
         <help><![CDATA[Enable the DNS-01 Challenge for this domain. Requires a "DNS Provider" in "General Settings". This is only needed for wildcard domains, or when the default challenges can not be used due to restrictive firewall policies.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>reverse.DynDns</id>
         <label>Dynamic DNS</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this domain will be automatically updated. A wildcard domain will create a "*.example.com" record. A base domain will create a "example.com" or "opn.example.com" record. Some providers need subdomains to set records for domains like "opn.example.com"; in that case use the checkbox in the subdomains tab.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <type>header</type>
@@ -72,6 +76,7 @@
         <label>Access List</label>
         <type>dropdown</type>
         <help><![CDATA[Select an Access List to restrict access to this domain. If unset, any local or remote client is allowed access.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>reverse.basicauth</id>
@@ -79,11 +84,13 @@
         <type>select_multiple</type>
         <size>5</size>
         <help><![CDATA[Select Users to restrict access to this domain. Basic Auth matches after Access Lists. If unset, any user is allowed access. When using CrowdSec, authorization failures will result in automatic bans.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>reverse.AccessLog</id>
         <label>HTTP Access Log</label>
         <type>checkbox</type>
         <help><![CDATA[Enable HTTP request logging for this domain and its subdomains. This option is mostly used for troubleshooting, audits and CrowdSec. It will log every single request.]]></help>
+        <data_visible>false</data_visible>
     </field>
 </form>

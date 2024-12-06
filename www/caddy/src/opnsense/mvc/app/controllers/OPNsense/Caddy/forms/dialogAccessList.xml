@@ -26,6 +26,7 @@
         <hint>abort</hint>
         <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list does not match. If empty, the connection is aborted with no response.]]></help>
         <advanced>true</advanced>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>accesslist.HttpResponseMessage</id>
@@ -33,6 +34,7 @@
         <type>text</type>
         <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code. If empty, the default HTTP response message for the chosen HTTP response code will be used.]]></help>
         <advanced>true</advanced>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>accesslist.description</id>

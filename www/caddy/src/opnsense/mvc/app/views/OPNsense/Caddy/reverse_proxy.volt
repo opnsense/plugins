@@ -345,29 +345,25 @@
         <!-- Reverse Proxy Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'reverseProxyGrid',
-                    'edit_dialog': 'DialogReverseProxy',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogReverseProxy,
-                    'add_button_id': 'addReverseProxyBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'reverseProxyGrid',
+                'edit_dialog': 'DialogReverseProxy',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogReverseProxy,
+                'add_button_id': 'addReverseProxyBtn'
+            }) }}
         </div>
 
         <!-- Subdomains Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'reverseSubdomainGrid',
-                    'edit_dialog': 'DialogSubdomain',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogSubdomain,
-                    'add_button_id': 'addSubdomainBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'reverseSubdomainGrid',
+                'edit_dialog': 'DialogSubdomain',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogSubdomain,
+                'add_button_id': 'addSubdomainBtn'
+            }) }}
         </div>
     </div>
 
@@ -375,15 +371,13 @@
     <div id="handlesTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('HTTP Handlers') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'reverseHandleGrid',
-                    'edit_dialog': 'DialogHandle',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogHandle,
-                    'add_button_id': 'addReverseHandleBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'reverseHandleGrid',
+                'edit_dialog': 'DialogHandle',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogHandle,
+                'add_button_id': 'addReverseHandleBtn'
+            }) }}
         </div>
     </div>
 
@@ -392,29 +386,25 @@
         <!-- Access Lists Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'accessListGrid',
-                    'edit_dialog': 'DialogAccessList',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogAccessList,
-                    'add_button_id': 'addAccessListBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'accessListGrid',
+                'edit_dialog': 'DialogAccessList',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogAccessList,
+                'add_button_id': 'addAccessListBtn'
+            }) }}
         </div>
 
         <!-- Basic Auth Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'basicAuthGrid',
-                    'edit_dialog': 'DialogBasicAuth',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogBasicAuth,
-                    'add_button_id': 'addBasicAuthBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'basicAuthGrid',
+                'edit_dialog': 'DialogBasicAuth',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogBasicAuth,
+                'add_button_id': 'addBasicAuthBtn'
+            }) }}
         </div>
     </div>
 
@@ -422,15 +412,13 @@
     <div id="headerTab" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('HTTP Headers') }}</h1>
-            <div style="display: block;">
-                {{ partial("layout_partials/caddy_bootgrid_tables", {
-                    'table_id': 'reverseHeaderGrid',
-                    'edit_dialog': 'DialogHeader',
-                    'edit_alert': 'ConfigurationChangeMessage',
-                    'fields': formDialogHeader,
-                    'add_button_id': 'addHeaderBtn'
-                }) }}
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'reverseHeaderGrid',
+                'edit_dialog': 'DialogHeader',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogHeader,
+                'add_button_id': 'addHeaderBtn'
+            }) }}
         </div>
     </div>
 </div>

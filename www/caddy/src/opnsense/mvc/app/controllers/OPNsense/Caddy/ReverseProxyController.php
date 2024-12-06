@@ -59,7 +59,7 @@ class ReverseProxyController extends IndexController
     }
 
     /**
-     * Preprocess fields to add 'column_id' by stripping prefixes
+     * Preprocess fields to add 'column_id' by stripping prefixes and sort by sequence
      *
      * @param array $fields The fields array to process
      * @param string $prefixToRemove The prefix to strip from 'id'
@@ -67,15 +67,20 @@ class ReverseProxyController extends IndexController
      */
     private function preprocessFields($fields, $prefixToRemove)
     {
+        // Add 'column_id' by stripping the prefix
         foreach ($fields as &$field) {
             if (isset($field['id'])) {
-                if (strpos($field['id'], $prefixToRemove) === 0) {
-                    $field['column_id'] = substr($field['id'], strlen($prefixToRemove));
-                } else {
-                    $field['column_id'] = $field['id'];
-                }
+                $field['column_id'] = strpos($field['id'], $prefixToRemove) === 0
+                    ? substr($field['id'], strlen($prefixToRemove))
+                    : $field['id'];
             }
         }
+
+        // Sort fields by 'sequence', defaulting to 0 if not set
+        usort($fields, function ($a, $b) {
+            return ($a['sequence'] ?? 0) <=> ($b['sequence'] ?? 0);
+        });
+
         return $fields;
     }
 }

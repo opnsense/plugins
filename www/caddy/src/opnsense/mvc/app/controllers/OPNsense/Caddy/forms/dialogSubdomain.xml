@@ -6,6 +6,7 @@
         <help><![CDATA[Enable this subdomain.]]></help>
     </field>
     <field>
+        <sequence>1</sequence>
         <id>subdomain.description</id>
         <label>Description</label>
         <type>text</type>
@@ -33,6 +34,7 @@
         <label>Dynamic DNS</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this subdomain will be automatically updated.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>subdomain.AcmePassthrough</id>
@@ -40,6 +42,7 @@
         <type>text</type>
         <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables an ACME Client behind Caddy to serve "/.well-known/acme-challenge/" on port 80. Caddy will reverse proxy the HTTP-01 challenge for this subdomain.]]></help>
         <advanced>true</advanced>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <type>header</type>
@@ -51,6 +54,7 @@
         <label>Access List</label>
         <type>dropdown</type>
         <help><![CDATA[Select an Access List to restrict access to this subdomain. If unset, any local or remote client is allowed access.]]></help>
+        <data_visible>false</data_visible>
     </field>
     <field>
         <id>subdomain.basicauth</id>
@@ -58,5 +62,6 @@
         <type>select_multiple</type>
         <size>5</size>
         <help><![CDATA[Select Users to restrict access to this subdomain. Basic Auth matches after Access Lists. If unset, any user is allowed access.]]></help>
+        <data_visible>false</data_visible>
     </field>
 </form>

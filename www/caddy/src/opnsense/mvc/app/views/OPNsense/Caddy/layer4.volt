@@ -136,43 +136,13 @@
     <div id="layer4Tab" class="tab-pane fade active in">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
-            <div style="display: block;">
-                <table id="Layer4Grid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="Sequence" data-type="string">{{ lang._('Sequence') }}</th>
-                            <th data-column-id="Type" data-type="string" data-visible="false">{{ lang._('Routing Type') }}</th>
-                            <th data-column-id="Protocol" data-type="string">{{ lang._('Protocol') }}</th>
-                            <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
-                            <th data-column-id="Matchers" data-type="string">{{ lang._('Matchers') }}</th>
-                            <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Invert Matchers') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromOpenvpnModes" data-type="string" data-visible="false">{{ lang._('OpenVPN Modes') }}</th>
-                            <th data-column-id="FromOpenvpnStaticKey" data-type="string" data-visible="false">{{ lang._('OpenVPN Static Key') }}</th>
-                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
-                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
-                            <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
-                            <th data-column-id="ProxyProtocol" data-type="string" data-visible="false">{{ lang._('Proxy Protocol') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'Layer4Grid',
+                'edit_dialog': 'DialogLayer4',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogLayer4,
+                'add_button_id': 'addLayer4Btn'
+            }) }}
         </div>
     </div>
 
@@ -181,28 +151,13 @@
         <div style="padding-left: 16px;">
             <!-- OpenVPN Matcher -->
             <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
-            <div style="display: block;">
-                <table id="Layer4OpenvpnGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4Openvpn" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addLayer4OpenvpnBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            {{ partial("layout_partials/bootgrid_tables", {
+                'table_id': 'Layer4OpenvpnGrid',
+                'edit_dialog': 'DialogLayer4Openvpn',
+                'edit_alert': 'ConfigurationChangeMessage',
+                'fields': formDialogLayer4Openvpn,
+                'add_button_id': 'addLayer4OpenvpnBtn'
+            }) }}
         </div>
     </div>
 </div>
