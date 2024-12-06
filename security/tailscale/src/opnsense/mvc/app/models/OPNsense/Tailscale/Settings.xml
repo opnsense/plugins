@@ -1,0 +1,37 @@
+<model>
+    <mount>//OPNsense/tailscale/settings</mount>
+    <description>Tailscale general settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <listenPort type="PortField">
+            <default>41641</default>
+            <Required>Y</Required>
+        </listenPort>
+        <acceptDNS type="BooleanField">
+            <default>1</default>
+            <Required>Y</Required>
+        </acceptDNS>
+        <advertiseExitNode type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </advertiseExitNode>
+        <acceptSubnetRoutes type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </acceptSubnetRoutes>
+        <subnets>
+            <subnet4 type="ArrayField">
+                <subnet type="NetworkField">
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <AddressFamily>ipv4</AddressFamily>
+                    <Strict>Y</Strict>
+                    <Required>Y</Required>
+                </subnet>
+                <description type="DescriptionField"/>
+            </subnet4>
+        </subnets>
+    </items>
+</model>
