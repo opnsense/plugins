@@ -52,3 +52,14 @@ function tailscale_services()
 
     return $services;
 }
+
+function tailscale_devices()
+{
+    return [[
+        'pattern' => '^tailscale0$',
+        'configurable' => false,
+        'spoofmac' => false,
+        'volatile' => true,
+    ]];
+}
+

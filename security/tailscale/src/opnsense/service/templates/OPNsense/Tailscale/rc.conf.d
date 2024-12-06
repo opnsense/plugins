@@ -3,6 +3,9 @@
 #
 {%  if not helpers.empty('OPNsense.tailscale.settings.enabled')  %}
 tailscaled_enable="YES"
+# Uncommenting the below breaks being able to access subnets 
+# see - https://github.com/tailscale/tailscale/issues/5573#issuecomment-1584695981 
+# tailscaled_env="TS_DEBUG_NETSTACK_SUBNETS=0"
 {%    if helpers.exists('OPNsense.tailscale.settings.listenPort') %}
 tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
