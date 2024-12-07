@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/chrony/general</mount>
     <description>Chrony configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -33,5 +33,17 @@
             <FieldSeparator>,</FieldSeparator>
             <asList>Y</asList>
         </allowednetworks>
+        <symmetric_auth type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </symmetric_auth>
+        <symmetric_keys_file>
+            <default></default>
+            <Required>N</Required>
+        </symmetric_keys_file>
+        <auth_servers>
+            <default></default>
+            <Required>N</Required>
+        </auth_servers>
     </items>
 </model>
