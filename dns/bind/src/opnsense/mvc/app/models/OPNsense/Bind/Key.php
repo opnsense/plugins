@@ -1,19 +1,16 @@
 <?php
 
 /*
-    Copyright (C) 2018-2019 Michael Muenz <m.muenz@gmail.com>
-    All rights reserved.
+    Copyright (C) 2024 Jeremy Boyle
 
+    All rights reserved.
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-
     1. Redistributions of source code must retain the above copyright notice,
        this list of conditions and the following disclaimer.
-
     2. Redistributions in binary form must reproduce the above copyright
        notice, this list of conditions and the following disclaimer in the
        documentation and/or other materials provided with the distribution.
-
     THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -28,17 +25,21 @@
 
 namespace OPNsense\Bind;
 
-class GeneralController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+
+class Key extends BaseModel
 {
-    public function indexAction()
+    /**
+     * @param $uuid string key uuid
+     * @return mixed key
+     */
+    public function getKey($uuid)
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->dnsblForm = $this->getForm("dnsbl");
-        $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
-        $this->view->formDialogEditBindKey = $this->getForm("dialogEditBindKey");
-        $this->view->formDialogEditBindPrimaryDomain = $this->getForm("dialogEditBindPrimaryDomain");
-        $this->view->formDialogEditBindSecondaryDomain = $this->getForm("dialogEditBindSecondaryDomain");
-        $this->view->formDialogEditBindRecord = $this->getForm("dialogEditBindRecord");
-        $this->view->pick('OPNsense/Bind/general');
+        foreach ($this->keys->key->iterateItems() as $key) {
+            if ($key->getAttribute('uuid') == $uuid) {
+                return $key;
+            }
+        }
+        return null;
     }
 }

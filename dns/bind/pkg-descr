@@ -8,6 +8,10 @@ WWW: https://www.isc.org
 
 Plugin Changelog
 ================
+1.34
+
+* Added page for management of keys for rndc control and transfer usage (contributed by Jeremy Jeremy-Boyle)
+* Fix out of sync journal with pre-start and pre-stop scripts (contributed by Jeremy Jeremy-Boyle)
 
 1.33
 
