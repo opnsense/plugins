@@ -309,10 +309,12 @@ function getOptionsById($automation_id)
 
     if (is_object($action = Utils::getAutomationActionById($automation_id))) {
         if ($action->enabled && "configd_remote_ssh" === (string)$action->type) {
+            # Set default port if unset.
+            $ssh_port = isset($action->remote_ssh_port) ? trim((string)$action->remote_ssh_port) : '22';
             return [
                 "host" => trim((string)$action->remote_ssh_host),
                 "host-key" => trim((string)$action->remote_ssh_host_key),
-                "port" => trim((string)$action->remote_ssh_port),
+                "port" => $ssh_port,
                 "identity-type" => trim((string)$action->remote_ssh_identity_type),
                 "user" => trim((string)$action->remote_ssh_user),
                 "run" => trim((string)$action->remote_ssh_command),
