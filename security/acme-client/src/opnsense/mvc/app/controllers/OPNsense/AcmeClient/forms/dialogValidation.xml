@@ -553,6 +553,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Fornex</label>
+        <type>header</type>
+        <style>table_dns table_dns_fornex</style>
+    </field>
+    <field>
+        <id>validation.dns_fornex_api_key</id>
+        <label>ApiKey</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Gandi LiveDNS</label>
         <type>header</type>
         <style>table_dns table_dns_gandi_livedns</style>
