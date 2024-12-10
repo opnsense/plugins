@@ -75,7 +75,6 @@ class DomainController extends ApiMutableModelControllerBase
 
     public function getDomainAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('domain', 'domains.domain', $uuid);
     }
 
