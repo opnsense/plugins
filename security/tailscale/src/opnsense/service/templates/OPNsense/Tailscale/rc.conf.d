@@ -30,6 +30,8 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.authentication.preAuthKey') %}
 {%      do up_args.append("--auth-key=" + OPNsense.tailscale.authentication.preAuthKey) %}
+{%    else %}
+{%      do up_args.append("--auth-key=non-specified") %}
 {%    endif %}
 {#  loop through subnets to build list #}
 {%    if helpers.exists('OPNsense.tailscale.settings.subnets.subnet4') %}
