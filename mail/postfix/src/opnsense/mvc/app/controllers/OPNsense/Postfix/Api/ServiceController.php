@@ -64,9 +64,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $mdlGeneral = new General();
             $backend = new Backend();
 
