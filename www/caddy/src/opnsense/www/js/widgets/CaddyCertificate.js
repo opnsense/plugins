@@ -61,7 +61,9 @@ export default class CaddyCertificate extends BaseTableWidget {
         const certificates = (await this.ajaxCall('/api/caddy/diagnostics/certificate')).content || [];
 
         // Display certificate if hostname in config and CN of stored cert on disk match
-        const matchingCertificates = certificates.filter(cert => domains.includes(cert.hostname));
+        const matchingCertificates = certificates.filter(cert =>
+            domains.some(domain => cert.hostname.replace('wildcard_', '*') === domain)
+        );
 
         if (matchingCertificates.length === 0) {
             this.displayError(`${this.translations.nocerts}`);
