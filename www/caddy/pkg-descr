@@ -15,7 +15,7 @@ Plugin Changelog
 
 1.7.6
 
-* Fix: Web UI can still restart/stop Caddy when running as `www` user
+* Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins#4402)
 
 1.7.5
 
