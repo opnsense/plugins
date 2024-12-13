@@ -25,7 +25,6 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
 namespace OPNsense\Caddy;
@@ -37,7 +36,38 @@ class Layer4Controller extends IndexController
     public function indexAction()
     {
         $this->view->pick('OPNsense/Caddy/layer4');
-        $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
-        $this->view->formDialogLayer4Openvpn = $this->getForm("dialogLayer4Openvpn");
+
+        // Preprocess forms with field sorting
+        $formDialogLayer4 = $this->getForm("dialogLayer4");
+        $this->view->formDialogLayer4 = $this->preprocessFields($formDialogLayer4, 'layer4.');
+
+        $formDialogLayer4Openvpn = $this->getForm("dialogLayer4Openvpn");
+        $this->view->formDialogLayer4Openvpn = $this->preprocessFields($formDialogLayer4Openvpn, 'layer4openvpn.');
+    }
+
+    /**
+     * Preprocess fields to add 'column_id' by stripping prefixes and sort by sequence
+     *
+     * @param array $fields The fields array to process
+     * @param string $prefixToRemove The prefix to strip from 'id'
+     * @return array The processed fields array
+     */
+    private function preprocessFields($fields, $prefixToRemove)
+    {
+        // Add 'column_id' by stripping the prefix
+        foreach ($fields as &$field) {
+            if (isset($field['id'])) {
+                $field['column_id'] = strpos($field['id'], $prefixToRemove) === 0
+                    ? substr($field['id'], strlen($prefixToRemove))
+                    : $field['id'];
+            }
+        }
+
+        // Sort fields by 'sequence', defaulting to 0 if not set
+        usort($fields, function ($a, $b) {
+            return ($a['sequence'] ?? 0) <=> ($b['sequence'] ?? 0);
+        });
+
+        return $fields;
     }
 }
