@@ -8,7 +8,6 @@
             return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
         }
 
-
 	function updateNetInfo() {
             ajaxGet(url = "/api/tailscale/status/net/", sendData={},
                 callback = function (data, status) {
@@ -44,7 +43,6 @@
             });
         }
 
-
         function updateStatusInfo() {
             ajaxGet(url = "/api/tailscale/status/status/", sendData={},
                 callback = function (data, status) {
@@ -78,14 +76,14 @@
                     } else {
                         $('#statusList > tbody').append('<tr><td colspan=2>Unable to fetch status, is Tailscale running?</td></tr>');
                     }
+
+                    updateServiceControlUI('tailscale');
                 }
             );
         }
 
-
         updateNetInfo();
         updateStatusInfo();
-
     });
 </script>
 
