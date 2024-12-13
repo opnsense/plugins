@@ -13,6 +13,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.7.6
+
+* Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins#4402)
+
 1.7.5
 
 * Add: Load Balancing options to Layer 4 Proxy and HTTP Handle
