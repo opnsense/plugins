@@ -1,0 +1,32 @@
+<form>
+  <field>
+    <id>prefixlist.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <help>Enable / Disable</help>
+  </field>
+  <field>
+    <id>prefixlist.name</id>
+    <label>Name</label>
+    <type>text</type>
+    <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
+  </field>
+  <field>
+    <id>prefixlist.seqnumber</id>
+    <label>Number</label>
+    <type>text</type>
+    <help>The ACL sequence number (10-99)</help>
+  </field>
+  <field>
+    <id>prefixlist.action</id>
+    <label>Action</label>
+    <type>select_multiple</type>
+    <help>Set permit for match or deny to negate the rule.</help>
+  </field>
+  <field>
+    <id>prefixlist.network</id>
+    <label>Network</label>
+    <type>text</type>
+    <help>The network pattern you want to match. It's not validated so please be careful!</help>
+  </field>
+</form>

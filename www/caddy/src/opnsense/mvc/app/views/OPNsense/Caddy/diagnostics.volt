@@ -35,29 +35,24 @@
          * @param {string} displaySelector - jQuery selector for the element where data should be displayed.
          */
         function fetchAndDisplay(url, displaySelector) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(response) {
-                    if (response.status === "success") {
-                        let formattedContent;
-                        if (typeof response.content === 'object') {
-                            // If the content is an object, stringify and format it
-                            formattedContent = JSON.stringify(response.content, null, 2);
-                        } else {
-                            // If the content is plain text (as with the Caddyfile), just use it directly
-                            formattedContent = response.content;
-                        }
-                        $(displaySelector).text(formattedContent);
+            ajaxGet(url, null, function(response, status) {
+                if (status === "success" && response.status === "success") {
+                    let formattedContent;
+                    if (typeof response.content === 'object') {
+                        // If the content is an object, stringify and format it
+                        formattedContent = JSON.stringify(response.content, null, 2);
                     } else {
-                        // If the response status is not 'success', display an error message
-                        $(displaySelector).text("{{ lang._('Failed to load content: ') }}" + response.message || "{{ lang._('Unknown error') }}");
+                        // If the content is plain text (as with the Caddyfile), just use it directly
+                        formattedContent = response.content;
                     }
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors from the AJAX request itself
-                    $(displaySelector).text("{{ lang._('AJAX error accessing the API: ') }}" + error);
+                    $(displaySelector).text(formattedContent);
+                } else {
+                    // If the response status is not 'success', display an error message
+                    $(displaySelector).text("{{ lang._('Failed to load content: ') }}" + (response.message || "{{ lang._('Unknown error') }}"));
                 }
+            }).fail(function(xhr, status, error) {
+                // Handle errors from the AJAX request itself
+                $(displaySelector).text("{{ lang._('AJAX error accessing the API: ') }}" + error);
             });
         }
 
@@ -123,20 +118,14 @@
 
         // Event handler for the Validate Caddyfile button
         $('#validateCaddyfile').click(function() {
-            $.ajax({
-                url: '/api/caddy/service/validate',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    if (data && data['status'].toLowerCase() === 'ok') {
-                        showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
-                    } else {
-                        showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
-                    }
-                },
-                error: function(xhr, status, error) {
-                    showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
+            ajaxGet('/api/caddy/service/validate', null, function(data, status) {
+                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                    showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
+                } else {
+                    showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
                 }
+            }).fail(function(xhr, status, error) {
+                showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
             });
         });
 
@@ -145,22 +134,19 @@
 
 <style>
     .custom-style .content-box {
-        padding: 20px; /* Adds padding around the contents of each tab */
+        padding: 10px;
     }
 
     .custom-style .display-area {
         overflow-y: scroll;
-        /* Dynamic height management using clamp for varying screen sizes */
         height: clamp(50px, 50vh, 4000px);
-        margin-bottom: 20px; /* Adds bottom margin to separate from the help text */
+        margin: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
     }
 
-    .custom-style .help-text {
-        margin-top: 10px;
-        margin-bottom: 20px;
-        line-height: 1.4;
-        /* Adjusting text size for readability on various displays */
-        font-size: clamp(12px, 1.5vw, 16px);
+    .custom-style .content-box .btn {
+        margin-left: 10px;
     }
 </style>
 
@@ -176,7 +162,6 @@
     <div id="caddyfileTab" class="tab-pane fade in active">
         <div class="content-box">
             <pre id="caddyfileDisplay" class="display-area"></pre>
-            <p class="help-text">{{ lang._("This is the generated configuration located at %sCaddyfile%s. It's the main configuration file to get support with. The validation button triggers a manual check for any configuration errors, which is the same check that is triggered by the Apply buttons automatically.") | format('<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">{{ lang._('Download') }}</button>
             <button class="btn btn-secondary" id="validateCaddyfile" type="button">{{ lang._('Validate Caddyfile') }}</button>
             <br/><br/>
@@ -186,7 +171,6 @@
     <div id="jsonConfigTab" class="tab-pane fade">
         <div class="content-box">
             <pre id="jsonDisplay" class="display-area"></pre>
-            <p class="help-text">{{ lang._("Shows the running Caddy configuration located in %sautosave.json%s. It is automatically adapted from the Caddyfile and also includes any custom imported configurations from %scaddy.d%s.") | format('<code>/var/db/caddy/config/caddy/', '</code>', '<code>/usr/local/etc/caddy/', '</code>') }}</p>
             <button class="btn btn-primary download-btn" id="downloadJSONConfig" type="button">{{ lang._('Download') }}</button>
             <br/><br/>
         </div>

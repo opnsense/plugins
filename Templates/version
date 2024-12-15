@@ -1,6 +1,7 @@
 {
     "product_abi": "%%PLUGIN_ABI%%",
     "product_arch": "%%PLUGIN_ARCH%%",
+    "product_conflicts": "%%PLUGIN_CONFLICTS%%",
     "product_email": "%%PLUGIN_MAINTAINER%%",
     "product_hash": "%%PLUGIN_HASH%%",
     "product_id": "%%PLUGIN_PKGNAME%%",

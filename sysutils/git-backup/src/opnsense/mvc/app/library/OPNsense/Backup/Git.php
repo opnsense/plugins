@@ -117,7 +117,7 @@ class Git extends Base implements IBackupProvider
     }
 
     /**
-     * Backup is responsible for initialising the local repo and pusing it to upstream.
+     * Backup is responsible for initialising the local repo and pushing it to upstream.
      * To ensure initial content, we should trigger a 'system event config_changed' which should enforce a
      * add + commit in our (newly created) repo.
      *

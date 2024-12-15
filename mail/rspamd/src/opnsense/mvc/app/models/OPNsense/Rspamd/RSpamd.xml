@@ -298,6 +298,9 @@
         <default></default>
         <Required>N</Required>
       </phishtank_map>
+      <exclusion type="CSVListField">
+        <Required>N</Required>
+      </exclusion>
     </phishing>
 
     <rate_limit>

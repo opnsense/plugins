@@ -823,6 +823,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Lima-City DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_limacity</style>
+    </field>
+    <field>
+        <id>validation.dns_limacity_apikey</id>
+        <label>API-Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>

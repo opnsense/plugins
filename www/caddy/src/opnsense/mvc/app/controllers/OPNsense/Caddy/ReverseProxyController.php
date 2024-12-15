@@ -41,7 +41,6 @@ class ReverseProxyController extends IndexController
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
         $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
         $this->view->formDialogHandle = $this->getForm("dialogHandle");
-        $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
         $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
         $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
         $this->view->formDialogHeader = $this->getForm("dialogHeader");

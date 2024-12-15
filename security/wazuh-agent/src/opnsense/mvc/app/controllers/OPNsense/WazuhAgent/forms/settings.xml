@@ -16,6 +16,20 @@
         <help>Specifies the IP address or the hostname of the Wazuh manager.</help>
     </field>
     <field>
+        <id>agent.general.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Specifies the transport protocol to use.</help>
+    </field>
+    <field>
+        <id>agent.general.port</id>
+        <label>Manager port</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specifies the port to use for communicating with the Wazuh manager.</help>
+    </field>
+    <field>
         <id>agent.logcollector.syslog_programs</id>
         <label>Applications</label>
         <type>select_multiple</type>
@@ -77,7 +91,7 @@
     </field>
     <field>
         <type>header</type>
-        <label>Authentication</label>
+        <label>Enrollment</label>
         <collapse>true</collapse>
     </field>
     <field>
@@ -85,6 +99,12 @@
         <label>Password</label>
         <type>password</type>
         <help>Password to use in authd.pass file.</help>
+    </field>
+    <field>
+        <id>agent.auth.port</id>
+        <label>Enrollment port</label>
+        <type>text</type>
+        <help>Specifies the port to use for communicating with the Wazuh manager during enrollment.</help>
     </field>
     <field>
         <type>header</type>

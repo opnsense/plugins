@@ -58,6 +58,8 @@ check:
 .  endif
 .endfor
 
+_PLUGIN_COMMENT:=	${PLUGIN_COMMENT}
+
 .if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
 .else
@@ -67,39 +69,46 @@ PLUGIN_DEVEL?=		yes
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
 
+.for CONFLICT in ${PLUGIN_CONFLICTS}
+PLUGIN_CONFLICTS+=	${CONFLICT}${PLUGIN_SUFFIX}
+.endfor
+
 .if !empty(PLUGIN_VARIANTS)
 PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
-.endif
-
-.if !empty(PLUGIN_VARIANT)
+.if "${PLUGIN_VARIANT}" == ""
+.error Plugin variant cannot be empty
+.else
 PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
 .if empty(PLUGIN_NAME)
 .error Plugin variant '${PLUGIN_VARIANT}' does not exist
 .endif
-.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
-PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS:N${PLUGIN_VARIANT}}
+PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}${PLUGIN_SUFFIX} \
+			${${_PLUGIN_VARIANT}_NAME}
 .endfor
 PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.if !empty(${PLUGIN_VARIANT}_COMMENT)
+_PLUGIN_COMMENT:=	${${PLUGIN_VARIANT}_COMMENT}
+.endif
+.endif
 .endif
 
 .if !empty(PLUGIN_NAME)
 PLUGIN_DIR?=		${.CURDIR:S/\// /g:[-2]}/${.CURDIR:S/\// /g:[-1]}
 .endif
 
-PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
-			${PLUGIN_PREFIX}${PLUGIN_NAME}
-.for CONFLICT in ${PLUGIN_CONFLICTS}
-PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
-			${PLUGIN_PREFIX}${CONFLICT}
-.endfor
-
 .if "${PLUGIN_DEVEL}" != ""
+PLUGIN_CONFLICTS+=	${PLUGIN_NAME}
 PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
 .else
+PLUGIN_CONFLICTS+=	${PLUGIN_NAME}${PLUGIN_SUFFIX}
 PLUGIN_PKGSUFFIX=	# empty
 .endif
 
+PLUGIN_CONFLICTS:=	${PLUGIN_CONFLICTS:S/^/${PLUGIN_PREFIX}/g:O}
+
 PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
+PLUGIN_PKGNAMES=	${PLUGIN_CONFLICTS} ${PLUGIN_PKGNAME}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -111,7 +120,7 @@ manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
 	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
-	@echo "comment: \"${PLUGIN_COMMENT}\""
+	@echo "comment: \"${_PLUGIN_COMMENT}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
 	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
 	@echo "www: \"${PLUGIN_WWW}\""
@@ -222,6 +231,11 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
 			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			gzip -cn "${DESTDIR}${LOCALBASE}/$${FILE}" > \
+			    "${DESTDIR}${LOCALBASE}/$${FILE}.gz"; \
+			rm "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
@@ -234,6 +248,9 @@ plist: check
 		elif [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
 			FILE="$${FILE%%.shadow}.sample"; \
 			PREFIX="@shadow "; \
+		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			FILE="$${FILE}.gz"; \
 		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
 	done
@@ -270,6 +287,9 @@ remove: check
 WRKDIR?=${.CURDIR}/work
 WRKSRC?=${WRKDIR}/src
 PKGDIR?=${WRKDIR}/pkg
+
+ensure-workdirs:
+	@mkdir -p ${WRKSRC} ${PKGDIR}
 
 package: check
 	@rm -rf ${WRKSRC}
@@ -357,6 +377,15 @@ lint-model:
 		done; \
 	done; fi
 
+ACLBIN?=	${.CURDIR}/../../../core/Scripts/dashboard-acl.sh
+
+lint-acl: check
+.if exists(${ACLBIN})
+	@${ACLBIN} ${.CURDIR}/../../../core
+.else
+	@echo "Did not find ACLBIN, please provide a core repository"; exit 1
+.endif
+
 lint-exec: check
 .for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
 .if exists(${DIR})
@@ -375,7 +404,7 @@ lint-php: check
 	@echo "Did not find LINTBIN, please provide a core repository"; exit 1
 .endif
 
-lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
+lint: lint-desc lint-shell lint-xml lint-model lint-acl lint-exec lint-php
 
 plist-fix:
 
@@ -436,5 +465,9 @@ test: check
 		    phpunit --configuration PHPunit.xml \
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
+
+commit: ensure-workdirs
+	@echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
+	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
 
 .PHONY:	check plist-fix

@@ -368,12 +368,18 @@
         <id>action.acme_vault_prefix</id>
         <label>Vault Prefix</label>
         <type>text</type>
-        <help>This specifies the prefix path in Vault.</help>
+        <help>This specifies the prefix path in Vault. If you select KV v2 you need to add .../data/... between the secret-mount-path and the path. Example: v1 prefix path: secret/acme, v2 prefix path: secret/data/acme.</help>
+    </field>
+    <field>
+        <id>action.acme_vault_token</id>
+        <label>Vault Token</label>
+        <type>password</type>
+        <help>This specifies the Vault token to authenticate with.</help>
     </field>
     <field>
         <id>action.acme_vault_kvv2</id>
         <label>Use KV v2</label>
         <type>checkbox</type>
-        <help>If checked version 2 of the kv store will be used, otherwise version 1.</help>
+        <help>If checked version 2 of the kv store will be used, otherwise version 1. If you use v2 please consider the comment in the field "Vault Prefix".</help>
     </field>
 </form>

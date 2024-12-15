@@ -1,31 +1,30 @@
 <?php
 
-/**
- *    Copyright (C) 2023-2024 Cedrik Pischem
- *    Copyright (C) 2015 Deciso B.V.
+/*
+ * Copyright (C) 2023-2024 Cedrik Pischem
+ * Copyright (C) 2015 Deciso B.V.
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Caddy\Api;
@@ -45,7 +44,6 @@ class ReverseProxyController extends ApiMutableModelControllerBase
      */
     public function getAllReverseDomainsAction()
     {
-        $this->sessionClose(); // Close session early for performance
         $result = array("rows" => array());
 
         $mdlCaddy = new \OPNsense\Caddy\Caddy();
@@ -209,40 +207,6 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
 
-
-    // Layer4 Section
-
-    public function searchLayer4Action()
-    {
-        return $this->searchBase("reverseproxy.layer4", null, 'description');
-    }
-
-    public function setLayer4Action($uuid)
-    {
-        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
-    }
-
-    public function addLayer4Action()
-    {
-        return $this->addBase("layer4", "reverseproxy.layer4");
-    }
-
-    public function getLayer4Action($uuid = null)
-    {
-        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
-    }
-
-    public function delLayer4Action($uuid)
-    {
-        return $this->delBase("reverseproxy.layer4", $uuid);
-    }
-
-    public function toggleLayer4Action($uuid, $enabled = null)
-    {
-        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
-    }
-
-
     // AccessList Section
 
     public function searchAccessListAction()
@@ -348,5 +312,71 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function delHeaderAction($uuid)
     {
         return $this->delBase("reverseproxy.header", $uuid);
+    }
+
+
+    // Layer4 Proxy Section
+
+    public function searchLayer4Action()
+    {
+        return $this->searchBase("reverseproxy.layer4", null, 'description');
+    }
+
+    public function setLayer4Action($uuid)
+    {
+        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function addLayer4Action()
+    {
+        return $this->addBase("layer4", "reverseproxy.layer4");
+    }
+
+    public function getLayer4Action($uuid = null)
+    {
+        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function delLayer4Action($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4", $uuid);
+    }
+
+    public function toggleLayer4Action($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
+    }
+
+
+    // Layer4 OpenVPN Section
+
+    public function searchLayer4OpenvpnAction()
+    {
+        return $this->searchBase("reverseproxy.layer4openvpn", null, 'description');
+    }
+
+    public function setLayer4OpenvpnAction($uuid)
+    {
+        return $this->setBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function addLayer4OpenvpnAction()
+    {
+        return $this->addBase("layer4openvpn", "reverseproxy.layer4openvpn");
+    }
+
+    public function getLayer4OpenvpnAction($uuid = null)
+    {
+        return $this->getBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function delLayer4OpenvpnAction($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function toggleLayer4OpenvpnAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4openvpn", $uuid, $enabled);
     }
 }

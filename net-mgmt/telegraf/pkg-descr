@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.12
+
+* Fix for mixed ping plugin config (contributed by Alex Baulé)
+
 1.12.11
 
 * Add OpenTelemetry output

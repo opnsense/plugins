@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             write_config();
             system_cron_configure();
             if (!empty($a_rfc2136[$_POST['id']]['enable'])) {
-                rfc2136_configure_do(false, '', $a_rfc2136[$_POST['id']]['host'], true);
+                rfc2136_configure_do(false, null, $a_rfc2136[$_POST['id']]['host'], true);
             }
         }
         exit;

@@ -6,11 +6,27 @@
         <help><![CDATA[Enable this domain.]]></help>
     </field>
     <field>
+        <id>reverse.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this domain.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Frontend</label>
+    </field>
+    <field>
+        <id>reverse.DisableTls</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[When choosing HTTP, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
+    </field>
+    <field>
         <id>reverse.FromDomain</id>
         <label>Domain</label>
         <type>text</type>
         <hint>example.com</hint>
-        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". Using a base domain enables automatic "Let's Encrypt" and "ZeroSSL" certificates by default. For a wildcard domain, use "*.example.com". Only use wildcard domains with wildcard certificates, which require a DNS Provider. Adding a wildcard domain and pressing "Apply" will activate the "Subdomain" Tab, in which subdomains can be configured.]]></help>
+        <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Using a wildcard domain with subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
@@ -20,50 +36,31 @@
         <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule. If the default ports have been changed in "General Settings", leaving this empty will use the chosen alternative ports instead.]]></help>
     </field>
     <field>
-        <id>reverse.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this domain.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>DNS</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>reverse.DynDns</id>
-        <label>Dynamic DNS</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this domain will be automatically updated.]]></help>
-    </field>
-    <field>
-        <type>header</type>
-        <label>Trust</label>
-        <collapse>true</collapse>
-    </field>
-    <field>
-        <id>reverse.DisableTls</id>
-        <label>Disable TLS</label>
-        <type>checkbox</type>
-        <help><![CDATA[Disable HTTP over TLS (HTTPS) for this domain. When disabling TLS, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
-    </field>
-    <field>
-        <id>reverse.DnsChallenge</id>
-        <label>DNS-01 Challenge</label>
-        <type>checkbox</type>
-        <help><![CDATA[Enable the DNS-01 challenge for this domain. Requires a "DNS Provider" in "General Settings". This is mostly only needed for wildcard domains, or when the HTTP-01 and TLS-ALPN-01 challenge can not be used due to restrictive firewall policies.]]></help>
+        <id>reverse.CustomCertificate</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <style>style_tls</style>
+        <help><![CDATA[Choose ACME to get automatic certificates with the built in ACME client; no additional plugin required. The "HTTP-01", "TLS-ALPN-01" or "DNS-01" challenge will be used to get automatic "Let's Encrypt" or "ZeroSSL" certificates. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain. Make sure the full chain has been imported.]]></help>
     </field>
     <field>
         <id>reverse.AcmePassthrough</id>
         <label>HTTP-01 Challenge Redirection</label>
         <type>text</type>
         <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables an ACME Client behind Caddy to serve "/.well-known/acme-challenge/" on port 80. Caddy will reverse proxy the HTTP-01 challenge for this domain, and will still issue a certificate using the TLS-ALPN-01 challenge or DNS-01 challenge for itself. This option can be used for High Availability when using Caddy with a master and backup OPNsense.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
-        <id>reverse.CustomCertificate</id>
-        <label>Custom Certificate</label>
-        <type>dropdown</type>
-        <help><![CDATA[Choose a custom certificate from "System - Trust - Certificates" for this domain. Make sure the full chain has been imported.]]></help>
+        <id>reverse.DnsChallenge</id>
+        <label>DNS-01 Challenge</label>
+        <type>checkbox</type>
+        <style>style_tls</style>
+        <help><![CDATA[Enable the DNS-01 Challenge for this domain. Requires a "DNS Provider" in "General Settings". This is only needed for wildcard domains, or when the default challenges can not be used due to restrictive firewall policies.]]></help>
+    </field>
+    <field>
+        <id>reverse.DynDns</id>
+        <label>Dynamic DNS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this domain will be automatically updated. A wildcard domain will create a "*.example.com" record. A base domain will create a "example.com" or "opn.example.com" record. Some providers need subdomains to set records for domains like "opn.example.com"; in that case use the checkbox in the subdomains tab.]]></help>
     </field>
     <field>
         <type>header</type>

@@ -6,10 +6,17 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.25
+
+* Add DigitalOcean support to native backend (contributed by Olly Baker)
+
+1.24
+
+* Refactored IP matching (contributed by Rob van Oostenrijk)
+
 1.23
 
 * Add dashboard widget
-* Refactored IP matching (contributed by Rob van Oostenrijk)
 
 1.22
 

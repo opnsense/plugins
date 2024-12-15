@@ -30,6 +30,7 @@
     <id>interface.cost_demoted</id>
     <label>Cost (when demoted)</label>
     <type>text</type>
+    <hint>65535</hint>
   </field>
   <field>
     <id>interface.carp_depend_on</id>

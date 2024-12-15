@@ -1,0 +1,41 @@
+<form>
+  <field>
+    <id>network.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+  </field>
+  <field>
+    <id>network.ipaddr</id>
+    <label>Network Address</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>network.netmask</id>
+    <label>Network Mask</label>
+    <type>text</type>
+  </field>
+  <field>
+    <id>network.area</id>
+    <label>Area</label>
+    <type>text</type>
+    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once.</help>
+  </field>
+  <field>
+    <id>network.arearange</id>
+    <label>Area Range</label>
+    <type>text</type>
+    <help>Here you can summarize a network for this area like fe80:1234::0/64</help>
+  </field>
+  <field>
+    <id>network.linkedPrefixlistIn</id>
+    <label>Prefix-List In</label>
+    <type>dropdown</type>
+    <help>Prefix-List for inbound direction</help>
+  </field>
+  <field>
+    <id>network.linkedPrefixlistOut</id>
+    <label>Prefix-List Out</label>
+    <type>dropdown</type>
+    <help>Prefix-List for outbound direction</help>
+  </field>
+</form>

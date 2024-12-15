@@ -1,0 +1,16 @@
+Tailscale is a mesh VPN alternative, based on WireGuard, that connects your
+computers, databases, and services together securely without any proxies.
+
+https://tailscale.com/
+
+Plugin Changelog
+================
+
+1.0
+
+* initial development release
+
+1.0_1
+
+* fixes to template to prevent auth key prompt when empty
+

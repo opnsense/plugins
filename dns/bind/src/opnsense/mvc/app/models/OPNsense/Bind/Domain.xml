@@ -6,11 +6,11 @@
         <domains>
             <domain type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <type type="OptionField">
-                    <default>primary</default>
+                    <Default>primary</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <primary>primary</primary>
@@ -18,12 +18,10 @@
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
-                    <Required>N</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <asList>Y</asList>
                 </primaryip>
                 <transferkeyalgo type="OptionField">
-                    <Required>N</Required>
                     <OptionValues>
                         <hmac-sha512>HMAC-SHA512</hmac-sha512>
                         <hmac-sha384>HMAC-SHA384</hmac-sha384>
@@ -33,21 +31,13 @@
                         <hmac-md5>HMAC-MD5</hmac-md5>
                     </OptionValues>
                 </transferkeyalgo>
-                <transferkeyname type="TextField">
-                    <Required>N</Required>
-                    <default></default>
-                </transferkeyname>
-                <transferkey type="TextField">
-                    <Required>N</Required>
-                    <default></default>
-                </transferkey>
+                <transferkeyname type="TextField"/>
+                <transferkey type="TextField"/>
                 <allownotifysecondary type="NetworkField">
-                    <Required>N</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <asList>Y</asList>
                 </allownotifysecondary>
                 <domainname type="TextField">
-                    <default></default>
                     <Required>Y</Required>
                 </domainname>
                 <allowtransfer type="ModelRelationField">
@@ -59,8 +49,8 @@
                         </template>
                     </Model>
                     <Multiple>Y</Multiple>
-                    <Required>N</Required>
                 </allowtransfer>
+                <allowrndctransfer type="BooleanField"/>
                 <allowquery type="ModelRelationField">
                     <Model>
                         <template>
@@ -70,56 +60,53 @@
                         </template>
                     </Model>
                     <Multiple>Y</Multiple>
-                    <Required>N</Required>
                 </allowquery>
                 <allowrndcupdate type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </allowrndcupdate>
-                <serial type="TextField">
-                    <Required>N</Required>
-                </serial>
+                <serial type="TextField"/>
                 <ttl type="IntegerField">
-                    <default>86400</default>
+                    <Default>86400</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>86400</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </ttl>
                 <refresh type="IntegerField">
-                    <default>21600</default>
+                    <Default>21600</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>86400</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </refresh>
                 <retry type="IntegerField">
-                    <default>3600</default>
+                    <Default>3600</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>86400</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </retry>
                 <expire type="IntegerField">
-                    <default>3542400</default>
+                    <Default>3542400</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>10000000</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 10000000.</ValidationMessage>
                 </expire>
                 <negative type="IntegerField">
-                    <default>3600</default>
+                    <Default>3600</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>86400</MaximumValue>
                     <ValidationMessage>Set a value between 60 and 86400.</ValidationMessage>
                 </negative>
                 <mailadmin type="TextField">
-                    <default>mail.opnsense.localdomain</default>
+                    <Default>mail.opnsense.localdomain</Default>
                     <Required>Y</Required>
                 </mailadmin>
                 <dnsserver type="HostnameField">
-                    <default>opnsense.localdomain</default>
+                    <Default>opnsense.localdomain</Default>
                     <Required>Y</Required>
                 </dnsserver>
             </domain>
