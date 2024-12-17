@@ -53,6 +53,9 @@ class AcmeSynologyDsm extends Base implements LeAutomationInterface
         if (!empty((string)$this->config->acme_synology_dsm_devicename)) {
             $this->acme_env['SYNO_DEVICE_NAME'] = (string)$this->config->acme_synology_dsm_devicename;
         }
+        if (!empty((string)$this->config->acme_synology_dsm_otpcode)) {
+            $this->acme_env['SYNO_OTP_CODE'] = (string)$this->config->acme_synology_dsm_otpcode;
+        }
         $this->acme_args[] = '--deploy-hook synology_dsm';
         return true;
     }

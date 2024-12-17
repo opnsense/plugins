@@ -13,9 +13,10 @@ Plugin Changelog
 Added:
 * Add support for MyDNS.JP DNS API (#4328)
 * Add support for fornex DNS API (#4389)
+* Add support for OTP Code to Synology deploy hook (#4045)
 
 Changed:
-* Convert synology_dsm deploy hook variables to uppercase (#4286)
+* Convert Synology deploy hook variables to uppercase (#4286)
 
 Fixed:
 * SFTP/SSH automation results in fatal PHP error (#4363)

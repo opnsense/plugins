@@ -1506,6 +1506,11 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_devicename>
+                <acme_synology_dsm_otpcode type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_otpcode>
                 <acme_fritzbox_url type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>
