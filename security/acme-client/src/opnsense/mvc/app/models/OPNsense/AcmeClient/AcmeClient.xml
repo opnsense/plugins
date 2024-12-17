@@ -461,6 +461,7 @@
                         <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
+                        <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
@@ -700,6 +701,9 @@
                 <dns_freedns_password type="TextField">
                     <Required>N</Required>
                 </dns_freedns_password>
+                <dns_fornex_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_fornex_api_key>
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
