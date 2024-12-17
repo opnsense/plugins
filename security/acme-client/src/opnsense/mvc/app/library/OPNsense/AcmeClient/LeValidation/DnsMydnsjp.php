@@ -26,10 +26,10 @@
  */
 
 namespace OPNsense\AcmeClient\LeValidation;
-  
+
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
-  
+
 class DnsMydnsjp extends Base implements LeValidationInterface
 {
     public function prepare()
