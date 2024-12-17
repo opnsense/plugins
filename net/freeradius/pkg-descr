@@ -34,6 +34,7 @@ Plugin Changelog
 1.9.22
 
 * Add Proxy configuration page: HomeServer, HomeServerPool, Realm
+* Fix TTLS-GTC and LDAP PAP-GTC
 
 1.9.21
 
