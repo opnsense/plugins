@@ -936,6 +936,21 @@
         <help>MailinaBox Server FQDN</help>
     </field>
     <field>
+        <label>MyDNS.JP</label>
+        <type>header</type>
+        <style>table_dns table_dns_mydnsjp</style>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_masterid</id>
+        <label>Master ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Mythic Beasts</label>
         <type>header</type>
         <style>table_dns table_dns_mythic_beasts</style>
