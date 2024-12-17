@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021 Frank Wall
+ * Copyright (C) 2021-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,20 +38,20 @@ class AcmeSynologyDsm extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $this->acme_env['SYNO_Certificate'] = 'OPNsense ACME cert ' . $this->cert_id;
-        $this->acme_env['SYNO_Hostname'] = (string)$this->config->acme_synology_dsm_hostname;
-        $this->acme_env['SYNO_Port'] = (string)$this->config->acme_synology_dsm_port;
-        $this->acme_env['SYNO_Scheme'] = (string)$this->config->acme_synology_dsm_scheme;
-        $this->acme_env['SYNO_Username'] = (string)$this->config->acme_synology_dsm_username;
-        $this->acme_env['SYNO_Password'] = (string)$this->config->acme_synology_dsm_password;
+        $this->acme_env['SYNO_CERTIFICATE'] = 'OPNsense ACME cert ' . $this->cert_id;
+        $this->acme_env['SYNO_HOSTNAME'] = (string)$this->config->acme_synology_dsm_hostname;
+        $this->acme_env['SYNO_PORT'] = (string)$this->config->acme_synology_dsm_port;
+        $this->acme_env['SYNO_SCHEME'] = (string)$this->config->acme_synology_dsm_scheme;
+        $this->acme_env['SYNO_USERNAME'] = (string)$this->config->acme_synology_dsm_username;
+        $this->acme_env['SYNO_PASSWORD'] = (string)$this->config->acme_synology_dsm_password;
         if (!empty((string)$this->config->acme_synology_dsm_create)) {
-            $this->acme_env['SYNO_Create'] = (string)$this->config->acme_synology_dsm_create;
+            $this->acme_env['SYNO_CREATE'] = (string)$this->config->acme_synology_dsm_create;
         }
         if (!empty((string)$this->config->acme_synology_dsm_deviceid)) {
-            $this->acme_env['SYNO_Device_ID'] = (string)$this->config->acme_synology_dsm_deviceid;
+            $this->acme_env['SYNO_DEVICE_ID'] = (string)$this->config->acme_synology_dsm_deviceid;
         }
         if (!empty((string)$this->config->acme_synology_dsm_devicename)) {
-            $this->acme_env['SYNO_Device_Name'] = (string)$this->config->acme_synology_dsm_devicename;
+            $this->acme_env['SYNO_DEVICE_NAME'] = (string)$this->config->acme_synology_dsm_devicename;
         }
         $this->acme_args[] = '--deploy-hook synology_dsm';
         return true;
