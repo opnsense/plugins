@@ -10,6 +10,13 @@ Plugin Changelog
 
 4.7
 
+Added:
+* Add support for MyDNS.JP DNS API (#4328)
+* Add support for fornex DNS API (#4389)
+
+Changed:
+* Convert synology_dsm deploy hook variables to uppercase (#4286)
+
 Fixed:
 * SFTP/SSH automation results in fatal PHP error (#4363)
 
