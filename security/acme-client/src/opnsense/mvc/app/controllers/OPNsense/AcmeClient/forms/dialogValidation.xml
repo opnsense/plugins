@@ -690,9 +690,15 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_inws_password</id>
+        <id>validation.dns_inwx_password</id>
         <label>Password</label>
         <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_inwx_shared_secret</id>
+        <label>Shared Secret</label>
+        <type>password</type>
+        <help>When 2FA is enabled, the Shared Secret must be provided. Note that this feature requires the package oath-toolkit, which must be installed manually.</help>
     </field>
     <field>
         <label>IONOS domain API</label>

@@ -317,7 +317,7 @@ function connectWithServer(array $options, &$error): ?SftpClient
     $identity_type = trim(($options["identity-type"] ?? "")) ?: SSHKeys::DEFAULT_IDENTITY_TYPE;
     $host = trim(($options["host"] ?? ""));
     $host_key = ($options["host-key"] ?? "");
-    $port = $options["port"] ?? 22;
+    $port = !empty($options["port"]) ? $options["port"] : SSHKeys::DEFAULT_PORT;
     $username = $options["user"];
 
     $sftp = new SftpClient(configPath(), $identity_type);

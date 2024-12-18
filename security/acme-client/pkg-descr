@@ -8,6 +8,21 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.7
+
+Added:
+* Add support for MyDNS.JP DNS API (#4328)
+* Add support for fornex DNS API (#4389)
+* Add support for OTP Code to Synology deploy hook (#4045)
+* Add support for Shared Secret to INWX DNS API (#3942)
+
+Changed:
+* Convert Synology deploy hook variables to uppercase (#4286)
+
+Fixed:
+* SFTP/SSH automation results in fatal PHP error (#4363)
+* Typo in INWX password field name
+
 4.6
 
 Added:
