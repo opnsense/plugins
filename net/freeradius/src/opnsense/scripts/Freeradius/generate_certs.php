@@ -80,17 +80,21 @@ if (isset($configObj->OPNsense->freeradius)) {
         $cert_refid = (string)$find_cert->ca;
         // if eap has a ca-certificate attached, search for its contents
         if ($cert_refid != "") {
-            foreach ($configObj->ca as $ca) {
-                if ($cert_refid == (string)$ca->refid) {
-                    // generate cert pem file
-                    $pem_content = trim(str_replace("\n\n", "\n", str_replace(
-                        "\r",
-                        "",
-                        base64_decode((string)$ca->crt)
-                    )));
-
-                    $pem_content .= "\n";
-                    $ca_pem_content .= $pem_content;
+            // multiple comma-separated refid values are possible
+            $cert_refids = explode(',', $cert_refid);
+            foreach ($cert_refids as $current_refid) {
+                foreach ($configObj->ca as $ca) {
+                    if ($current_refid == (string)$ca->refid) {
+                        // generate cert pem file
+                        $pem_content = trim(str_replace("\n\n", "\n", str_replace(
+                            "\r",
+                            "",
+                            base64_decode((string)$ca->crt)
+                        )));
+    
+                        $pem_content .= "\n";
+                        $ca_pem_content .= $pem_content;
+                    }
                 }
             }
         }
