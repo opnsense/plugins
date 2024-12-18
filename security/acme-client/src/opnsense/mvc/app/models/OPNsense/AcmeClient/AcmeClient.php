@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2024 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -100,5 +100,20 @@ class AcmeClient extends BaseModel
     {
         $backend = new Backend();
         return trim($backend->configdRun('firmware plugin ' . escapeshellarg($name)));
+    }
+
+    /**
+     * check if the specfied package is installed
+     * @param $name package name
+     * @return bool is the package installed
+     */
+    public function isPackageInstalled($name)
+    {
+        $backend = new Backend();
+        $_package_list = $backend->configdRun('firmware local');
+        if (preg_match("/^$name\|\|.*/m", $_package_list)) {
+          return 1;
+        }
+        return 0;
     }
 }

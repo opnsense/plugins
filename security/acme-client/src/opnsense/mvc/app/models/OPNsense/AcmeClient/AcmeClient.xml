@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -746,9 +746,16 @@
                 <dns_inwx_user type="TextField">
                     <Required>N</Required>
                 </dns_inwx_user>
+                <!-- TODO: old value, should be removed -->
                 <dns_inws_password type="TextField">
                     <Required>N</Required>
                 </dns_inws_password>
+                <dns_inwx_password type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_password>
+                <dns_inwx_shared_secret type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_shared_secret>
                 <dns_ionos_prefix type="TextField">
                     <Required>N</Required>
                 </dns_ionos_prefix>
