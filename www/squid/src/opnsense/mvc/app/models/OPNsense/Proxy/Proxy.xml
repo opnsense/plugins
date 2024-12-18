@@ -282,6 +282,12 @@
               <Mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</Mask>
               <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
             </sslnobumpsites>
+            <workers type="IntegerField">
+              <Default>1</Default>
+              <MinimumValue>1</MinimumValue>
+              <MaximumValue>100</MaximumValue>
+              <ValidationMessage>worker number needs to be an integer value between 1 and 100</ValidationMessage>
+            </workers>
             <ssl_crtd_storage_max_size type="IntegerField">
               <Required>Y</Required>
               <Default>4</Default>

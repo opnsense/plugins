@@ -340,6 +340,13 @@
                 <help>Create a list of sites which may not be inspected, for example bank sites. Prefix the domain with a . to accept all subdomains (e.g. .google.com).</help>
             </field>
             <field>
+                <id>proxy.forward.workers</id>
+                <label>Number of squid workers</label>
+                <type>text</type>
+                <help>Start N main Squid process daemons (i.e., SMP mode). Requires Restart. Default: 1</help>
+                <advanced>true</advanced>
+            </field>
+            <field>
                 <id>proxy.forward.ssl_crtd_storage_max_size</id>
                 <label>SSL cache size</label>
                 <type>text</type>
