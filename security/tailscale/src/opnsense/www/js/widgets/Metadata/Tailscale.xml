@@ -15,6 +15,7 @@
             <no>No</no>
             <noData>Could not fetch data</noData>
             <online>Online</online>
+            <peers>Peers</peers>
             <tailscaleIP>Tailscale IP</tailscaleIP>
             <yes>Yes</yes>
             <version>Version</version>

@@ -60,73 +60,94 @@ export default class Wireguard extends BaseTableWidget {
             return;
         }
 
-        if (!this.dataChanged('tailscale-data', tsData)) {
+        let statusData = this.parseData(tsData);
+        if (!this.dataChanged('tailscale-data', statusData)) {
             return;
         }
 
-        this.processStatus(tsData);
+        this.updateWidgetTable(statusData);
     }
 
-    processStatus(data) {
-        let rows = [];
+    parseData(data) {
+        let result = [];
+
+        result['version'] = data.Version;
+        result['backendState'] = data.BackendState;
+        result['dnsName'] = data.Self.DNSName;
         
-        let color = "text-success";
-        if (data.Self.Online === false) {
-            color = "text-danger";
-        }
+        result['online'] = (data.Self.Online === true) ?
+          this.translations.yes : this.translations.no; 
+            
+        result['exitNode'] = (data.Self.ExitNode === true) ?
+          this.translations.yes : this.translations.no; 
 
-        let onlineStatus = (data.Self.Online === true) ? 
-            this.translations.yes : this.translations.no; 
+        result['peerCount'] = Object.keys(data.Peer).length;
 
-        let row = [
-            `<div><i class="fa fa-circle ${color}"></i> ${this.translations.online}</div>`,
-            `<div>${onlineStatus}</div>`
-        ];
-        rows.push(row);
-
-        row = [
-            `<div>${this.translations.version}</div>`,
-            `<div>${data.Version}</div>`
-        ];
-        rows.push(row);
-
-        row = [
-            `<div>${this.translations.backendState}</div>`,
-            `<div>${data.BackendState}</div>`
-        ];
-        rows.push(row);
-      
-        row = [
-            `<div>${this.translations.dnsName}</div>`,
-            `<div>${data.Self.DNSName}</div>`
-        ];
-        rows.push(row);
- 
         let ipAddresses = [];
         data.TailscaleIPs.forEach(ip => {
             ipAddresses.push(ip);
         });
+        result['ipAddresses'] = ipAddresses;
+
+        return result;
+    }
+
+    updateWidgetTable(data) {
+        let rows = [];
+        
+        let color = "text-success";
+        if (data['online'] === false) {
+            color = "text-danger";
+        }
+
+        let row = [
+            `<div><i class="fa fa-circle ${color}"></i> ${this.translations.online}</div>`,
+            `<div>${data['online']}</div>`
+        ];
+        rows.push(row);
+         
+        // version
+        row = [
+            `<div>${this.translations.version}</div>`,
+            `<div>${data['version']}</div>`
+        ];
+        rows.push(row);
+
+        // backend state
+        row = [
+            `<div>${this.translations.backendState}</div>`,
+            `<div>${data['backendState']}</div>`
+        ];
+        rows.push(row);
+     
+        // dns name 
+        row = [
+            `<div>${this.translations.dnsName}</div>`,
+            `<div>${data['dnsName']}</div>`
+        ];
+        rows.push(row);
+
+        // ip addreses 
         row = [
             `<div>${this.translations.tailscaleIP}</div>`,
-            `<div>${ipAddresses.join('<br>')}</div>`
+            `<div>${data['ipAddresses'].join('<br>')}</div>`
         ];
         rows.push(row);
 
-        let exitNode = (data.Self.ExitNode === true) ? 
-            this.translations.yes : this.translations.no; 
+        // exit node
         row = [
             `<div>${this.translations.exitNode}</div>`,
-            `<div>${exitNode}</div>`
+            `<div>${data['exitNode']}</div>`
         ];
         rows.push(row);
-
-        let peerCount = Object.keys(data.Peer).length;
+        
+        // peers
         row = [
-            `<div>Peers</div>`,
-            `<div>${peerCount}</div>`
+            `<div>${this.translations.peers}</div>`,
+            `<div>${data['peerCount']}</div>`
         ];
         rows.push(row);
-
+        
         super.updateTable('tailscaleStatusTable', rows);
     }
 

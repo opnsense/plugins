@@ -8,7 +8,7 @@
             return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
         }
 
-	function updateNetInfo() {
+	    function updateNetInfo() {
             ajaxGet(url = "/api/tailscale/status/net/", sendData={},
                 callback = function (data, status) {
                     if (status == "success") {
@@ -33,7 +33,13 @@
                     console.log(tailscaleIp);
                 }
 
-                let row = '<tr><td>' + data.DNSName;
+                let color = 'text-success';
+                if (data.Online === false) {
+                    color = 'text-danger';
+                }
+
+                let onlineStatus = `<i class="fa fa-circle ${color}"></i> `;
+                let row = `<tr><td>${onlineStatus}` + data.DNSName;
                 row += '</td><td>' + tailscaleIp;
                 row += '</td><td>' + data.LastSeen;
                 row += '</td><td>' + data.OS;
