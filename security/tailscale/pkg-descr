@@ -6,6 +6,13 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
+1.1
+
+* add dashboard widget
+* change peer status list to DNSname instead of hostname
+* show online status for peers in status list
+* allow advertising of IPv6 routes
+
 1.0
 
 * initial release
