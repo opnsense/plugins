@@ -1,0 +1,24 @@
+<metadata>
+    <Tailscale>
+        <filename>Tailscale.js</filename>
+        <endpoints>
+            <endpoint>/api/tailscale/service/status</endpoint>
+            <endpoint>/api/tailscale/status/status</endpoint>
+        </endpoints>
+        <translations>
+            <title>Tailscale</title>
+            <serviceDisabled>Tailscale service is not running</serviceDisabled>
+            <backendState>Backend State</backendState>
+            <dnsName>DNS Name</dnsName>
+            <enabled>Enabled</enabled>
+            <exitNode>Exit Node</exitNode>
+            <no>No</no>
+            <noData>Could not fetch data</noData>
+            <online>Online</online>
+            <tailscaleIP>Tailscale IP</tailscaleIP>
+            <yes>Yes</yes>
+            <version>Version</version>
+        </translations>
+    </Tailscale>
+</metadata>
+
