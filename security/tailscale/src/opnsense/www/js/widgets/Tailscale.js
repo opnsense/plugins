@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class Wireguard extends BaseTableWidget {
+export default class Tailscale extends BaseTableWidget {
     constructor() {
         super();
     }
