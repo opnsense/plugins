@@ -8,7 +8,7 @@
             return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
         }
 
-	    function updateNetInfo() {
+        function updateNetInfo() {
             ajaxGet(url = "/api/tailscale/status/net/", sendData={},
                 callback = function (data, status) {
                     if (status == "success") {
