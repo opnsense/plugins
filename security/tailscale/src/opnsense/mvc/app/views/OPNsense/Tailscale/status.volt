@@ -33,7 +33,7 @@
                     console.log(tailscaleIp);
                 }
 
-                let row = '<tr><td>' + data.HostName;
+                let row = '<tr><td>' + data.DNSName;
                 row += '</td><td>' + tailscaleIp;
                 row += '</td><td>' + data.LastSeen;
                 row += '</td><td>' + data.OS;
@@ -114,7 +114,7 @@
         <table id="peerInfo" class="table table-striped table-condensed table-responsive">
             <thead>
                 <tr>
-                    <th>{{ lang._('Name') }}</th>
+                    <th>{{ lang._('Peer') }}</th>
                     <th>{{ lang._('Tailscale IPs') }}</th>
                     <th>{{ lang._('Last Seen') }}</th>
                     <th>{{ lang._('OS') }}</th>
