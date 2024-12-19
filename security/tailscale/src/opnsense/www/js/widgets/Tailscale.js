@@ -74,12 +74,12 @@ export default class Wireguard extends BaseTableWidget {
         result['version'] = data.Version;
         result['backendState'] = data.BackendState;
         result['dnsName'] = data.Self.DNSName;
-        
+
         result['online'] = (data.Self.Online === true) ?
-          this.translations.yes : this.translations.no; 
-            
+          this.translations.yes : this.translations.no;
+
         result['exitNode'] = (data.Self.ExitNode === true) ?
-          this.translations.yes : this.translations.no; 
+          this.translations.yes : this.translations.no;
 
         result['peerCount'] = Object.keys(data.Peer).length;
 
@@ -94,7 +94,7 @@ export default class Wireguard extends BaseTableWidget {
 
     updateWidgetTable(data) {
         let rows = [];
-        
+
         let color = "text-success";
         if (data['online'] === false) {
             color = "text-danger";
@@ -105,7 +105,7 @@ export default class Wireguard extends BaseTableWidget {
             `<div>${data['online']}</div>`
         ];
         rows.push(row);
-         
+
         // version
         row = [
             `<div>${this.translations.version}</div>`,
@@ -119,15 +119,15 @@ export default class Wireguard extends BaseTableWidget {
             `<div>${data['backendState']}</div>`
         ];
         rows.push(row);
-     
-        // dns name 
+
+        // dns name
         row = [
             `<div>${this.translations.dnsName}</div>`,
             `<div>${data['dnsName']}</div>`
         ];
         rows.push(row);
 
-        // ip addreses 
+        // ip addreses
         row = [
             `<div>${this.translations.tailscaleIP}</div>`,
             `<div>${data['ipAddresses'].join('<br>')}</div>`
@@ -140,14 +140,14 @@ export default class Wireguard extends BaseTableWidget {
             `<div>${data['exitNode']}</div>`
         ];
         rows.push(row);
-        
+
         // peers
         row = [
             `<div>${this.translations.peers}</div>`,
             `<div>${data['peerCount']}</div>`
         ];
         rows.push(row);
-        
+
         super.updateTable('tailscaleStatusTable', rows);
     }
 
@@ -157,4 +157,3 @@ export default class Wireguard extends BaseTableWidget {
         );
     }
 }
-
