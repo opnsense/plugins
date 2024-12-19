@@ -417,6 +417,8 @@ sweep: check
 	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
+glint: sweep style-fix plist-fix lint
+
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
