@@ -35,10 +35,10 @@
   * Fornex DNS API
   * @package OPNsense\AcmeClient
   */
- class DnsFornex extends Base implements LeValidationInterface
- {
-     public function prepare()
-     {
-         $this->acme_env['FORNEX_API_KEY'] = (string)$this->config->dns_fornex_api_key;
-     }
- }
+class DnsFornex extends Base implements LeValidationInterface
+{
+    public function prepare()
+    {
+        $this->acme_env['FORNEX_API_KEY'] = (string)$this->config->dns_fornex_api_key;
+    }
+}

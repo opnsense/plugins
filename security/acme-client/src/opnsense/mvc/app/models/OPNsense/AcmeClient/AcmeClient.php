@@ -112,7 +112,7 @@ class AcmeClient extends BaseModel
         $backend = new Backend();
         $_package_list = $backend->configdRun('firmware local');
         if (preg_match("/^$name\|\|.*/m", $_package_list)) {
-          return 1;
+            return 1;
         }
         return 0;
     }

@@ -38,4 +38,3 @@ class DnsMydnsjp extends Base implements LeValidationInterface
         $this->acme_env['MYDNSJP_Password'] = (string)$this->config->dns_mydnsjp_password;
     }
 }
-
