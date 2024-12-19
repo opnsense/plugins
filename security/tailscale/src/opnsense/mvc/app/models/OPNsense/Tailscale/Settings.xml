@@ -26,7 +26,6 @@
             <subnet4 type="ArrayField">
                 <subnet type="NetworkField">
                     <NetMaskRequired>Y</NetMaskRequired>
-                    <AddressFamily>ipv4</AddressFamily>
                     <Strict>Y</Strict>
                     <Required>Y</Required>
                 </subnet>
