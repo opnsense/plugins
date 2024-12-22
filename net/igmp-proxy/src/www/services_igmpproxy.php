@@ -96,7 +96,8 @@ legacy_html_escape_form_data($a_igmpproxy);
                     <tr>
                       <td><?=gettext("Name");?></td>
                       <td><?=gettext("Type");?></td>
-                      <td><?=gettext("Values");?></td>
+                      <td><?=gettext("Networks");?></td>
+                      <td><?=gettext("Whitelists");?></td>
                       <td><?=gettext("Description");?></td>
                       <td class="text-nowrap">
                         <a href="services_igmpproxy_edit.php" class="btn btn-primary btn-xs" data-toggle="tooltip" title="<?= html_safe(gettext('Add')) ?>">
@@ -115,6 +116,7 @@ legacy_html_escape_form_data($a_igmpproxy);
                       </td>
                       <td><?= $igmpentry['type'] ?></td>
                       <td><?= implode(', ', explode(' ', $igmpentry['address'])) ?></td>
+                      <td><?= implode(', ', explode(' ', $igmpentry['whitelist'])) ?></td>
                       <td><?= $igmpentry['descr'] ?></td>
                       <td class="text-nowrap">
                          <a href="services_igmpproxy_edit.php?id=<?=$i;?>" title="<?=gettext("Edit this IGMP entry"); ?>" class="btn btn-default btn-xs"><i class="fa fa-pencil fa-fw"></i></a>
