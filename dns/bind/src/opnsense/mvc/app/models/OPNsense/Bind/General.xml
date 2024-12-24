@@ -172,5 +172,8 @@
             <Required>Y</Required>
             <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
         </rndcsecret>
+        <dnssecpolicycustom type="TextField">
+            <Required>N</Required>
+        </dnssecpolicycustom>
     </items>
 </model>
