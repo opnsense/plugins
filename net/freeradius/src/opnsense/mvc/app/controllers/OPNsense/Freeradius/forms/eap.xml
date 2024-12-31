@@ -20,7 +20,7 @@
     <field>
         <id>eap.ca</id>
         <label>Root Certificate</label>
-        <type>dropdown</type>
+        <type>select_multiple</type>
         <help>Choose the Root CA. This CA will be trusted to issue client certificates for authentication.</help>
     </field>
     <field>
