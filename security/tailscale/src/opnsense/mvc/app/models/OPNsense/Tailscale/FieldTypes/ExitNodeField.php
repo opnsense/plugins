@@ -15,12 +15,12 @@ class ExitNodeField extends BaseListField
         if (empty(self::$internalCacheOptionList)) {
             $response = json_decode(trim((new Backend())->configdRun('tailscale tailscale-status')), true);
             $exitNodes = [];
+            $exitNodes[''] = 'None';
             foreach ($response['Peer'] as $peer) {
                 if ($peer['ExitNodeOption']) {
                     $exitNodes[$peer['HostName']] = $peer['HostName'];
                 }
             }
-            $exitNodes['foo'] = 'bar';
 
             self::$internalCacheOptionList = $exitNodes;
         }
