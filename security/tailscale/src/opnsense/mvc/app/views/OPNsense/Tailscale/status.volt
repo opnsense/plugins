@@ -76,6 +76,16 @@
                                 return true;
                             }
 
+                            if (key == 'ExitNodeStatus') {
+                                var newValue = value.TailscaleIPs[0];
+                                if (value.Online) {
+                                    newValue += ' (online)';
+                                } else {
+                                    newValue += ' (offline)';
+                                }
+                                value = newValue;
+                            }
+
                             $('#statusList > tbody').append('<tr><td>' + key + '</td>' +
                             '<td>' + value + '</td></tr>');
                         });

@@ -18,6 +18,10 @@
             <default>0</default>
             <Required>Y</Required>
         </advertiseExitNode>
+        <useExitNode type=".\ExitNodeField">
+            <default></default>
+            <Required>N</Required>
+        </useExitNode>
         <acceptSubnetRoutes type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
