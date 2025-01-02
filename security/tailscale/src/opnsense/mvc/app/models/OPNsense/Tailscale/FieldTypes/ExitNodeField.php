@@ -16,9 +16,12 @@ class ExitNodeField extends BaseListField
             $response = json_decode(trim((new Backend())->configdRun('tailscale tailscale-status')), true);
             $exitNodes = [];
             $exitNodes[''] = 'None';
-            foreach ($response['Peer'] as $peer) {
-                if ($peer['ExitNodeOption']) {
-                    $exitNodes[$peer['TailscaleIPs'][0]] = $peer['HostName'];
+
+            if (array_key_exists('Peer', $response)) {
+                foreach ($response['Peer'] as $peer) {
+                    if ($peer['ExitNodeOption']) {
+                        $exitNodes[$peer['TailscaleIPs'][0]] = $peer['HostName'];
+                    }
                 }
             }
 
