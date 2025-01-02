@@ -18,7 +18,7 @@ class ExitNodeField extends BaseListField
             $exitNodes[''] = 'None';
             foreach ($response['Peer'] as $peer) {
                 if ($peer['ExitNodeOption']) {
-                    $exitNodes[$peer['HostName']] = $peer['HostName'];
+                    $exitNodes[$peer['TailscaleIPs'][0]] = $peer['HostName'];
                 }
             }
 
