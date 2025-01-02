@@ -27,5 +27,3 @@ class ExitNodeField extends BaseListField
         $this->internalOptionList = self::$internalCacheOptionList;
     }
 }
-
-# vim:ts=4 sw=4 et:
