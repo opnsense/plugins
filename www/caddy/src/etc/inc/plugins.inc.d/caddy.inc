@@ -71,4 +71,3 @@ function caddy_syslog(): array
         ],
     ];
 }
-
