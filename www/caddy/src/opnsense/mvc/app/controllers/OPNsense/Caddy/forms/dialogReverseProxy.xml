@@ -25,14 +25,12 @@
         <id>reverse.FromDomain</id>
         <label>Domain</label>
         <type>text</type>
-        <hint>example.com</hint>
         <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Using a wildcard domain with subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
     </field>
     <field>
         <id>reverse.FromPort</id>
         <label>Port</label>
         <type>text</type>
-        <hint>443</hint>
         <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule. If the default ports have been changed in "General Settings", leaving this empty will use the chosen alternative ports instead.]]></help>
     </field>
     <field>
@@ -65,7 +63,6 @@
     <field>
         <type>header</type>
         <label>Access</label>
-        <collapse>true</collapse>
     </field>
     <field>
         <id>reverse.accesslist</id>

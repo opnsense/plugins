@@ -28,11 +28,6 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Handler</label>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
@@ -45,7 +40,6 @@
         <type>text</type>
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
@@ -119,14 +113,12 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <hint>192.168.1.1</hint>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
-        <hint>80</hint>
         <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
