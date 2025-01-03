@@ -405,6 +405,7 @@
                                 <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                             </password>
                             <filter type="JsonKeyValueStoreField">
+                                <ConfigdPopulateAct>blacklist categories list</ConfigdPopulateAct>
                                 <SourceField>filename</SourceField>
                                 <SourceFile>/usr/local/etc/squid/acl/%s.index</SourceFile>
                                 <SelectAll>Y</SelectAll>
