@@ -13,6 +13,16 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.0
+
+* Build: Update to caddy-v2.9.0 and update dependencies (opnsense/plugins/issues/4437)
+* Build: Fix caddy-l4 timeout issue (opnsense/plugins/issues/4384)
+* Build: Mark DNS Providers optional that are not included per default (opnsense/plugins/pull/4441)
+         digitalocean, route53, googleclouddns, netlify, ddnss, njalla, tencentcloud
+         dinahosting, civo, easydns, hosttech; must be added via https://caddyserver.com/docs/command-line#caddy-add-package
+* Cleanup: Refactor caddy.inc and add syslog function, change name from Caddy Web Server to Caddy (opnsense/plugins/issues/4426)
+* Cleanup: Some small UI tweaks (opnsense/plugins/pull/4442)
+
 1.7.6
 
 * Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins/pull/4403)
