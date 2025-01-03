@@ -36,7 +36,7 @@ function caddy_services(): array
     ) {
         return [
             [
-                'description' => gettext('Caddy Web Server'),
+                'description' => gettext('Caddy'),
                 'configd' => [
                     'restart' => ['caddy restart'],
                     'start' => ['caddy start'],
@@ -55,7 +55,7 @@ function caddy_xmlrpc_sync(): array
 {
     return [
         [
-            'description' => gettext('Caddy Web Server'),
+            'description' => gettext('Caddy'),
             'section' => 'Pischem.caddy',
             'id' => 'caddy',
             'services' => ['caddy'],
