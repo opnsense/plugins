@@ -98,7 +98,7 @@
             <id>caddy.general.TlsDnsProvider</id>
             <label>DNS Provider</label>
             <type>dropdown</type>
-            <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is mostly needed for Wildcard Certificates, and for Dynamic DNS. To use, enable the checkbox in a "Domain" or "Subdomain". For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
+            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be installed manually, see https://caddyserver.com/docs/command-line#caddy-add-package. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsApiKey</id>
