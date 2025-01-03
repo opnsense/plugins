@@ -65,7 +65,6 @@
     <field>
         <type>header</type>
         <label>Access</label>
-        <collapse>true</collapse>
     </field>
     <field>
         <id>reverse.accesslist</id>
