@@ -28,11 +28,6 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
     </field>
     <field>
-        <type>header</type>
-        <label>Handler</label>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
@@ -45,7 +40,6 @@
         <type>text</type>
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <type>header</type>
