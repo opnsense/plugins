@@ -1924,4 +1924,14 @@
         <label>Token</label>
         <type>password</type>
     </field>
+    <field>
+        <label>mijn.host</label>
+        <type>header</type>
+        <style>table_dns table_dns_mijnhost</style>
+    </field>
+    <field>
+        <id>validation.dns_mijnhost_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
 </form>
