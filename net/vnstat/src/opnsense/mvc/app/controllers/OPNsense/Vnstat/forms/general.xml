@@ -8,7 +8,7 @@
     <field>
         <id>general.interface</id>
         <label>Interface</label>
-        <type>select_multiple</type>
+        <type>dropdown</type>
         <help>Set the interface to listen on.</help>
     </field>
 </form>

@@ -9,7 +9,7 @@
         </enabled>
         <interface type="InterfaceField">
             <Required>N</Required>
-            <multiple>Y</multiple>
+            <multiple>N</multiple>
         </interface>
     </items>
 </model>
