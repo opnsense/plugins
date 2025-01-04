@@ -99,7 +99,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 
         if (!isset($config['OPNsense']['vnstat']['general']['interface_display'])) {
             // no interface configured, use script default (i.e. don't specify interface)
-            $response = $backend->configdRun("vnstat $type");
+            $response = $backend->configdpRun("vnstat", [ $type ]);
             return array("response" => $response);
         }
 
