@@ -114,5 +114,3 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array("response" => $result);
     }
 }
-
-// vim:set ts=4 sw=4 et:
