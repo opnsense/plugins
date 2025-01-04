@@ -11,5 +11,9 @@
             <Required>N</Required>
             <multiple>N</multiple>
         </interface>
+        <interface_display type="InterfaceField">
+            <Required>N</Required>
+            <multiple>Y</multiple>
+        </interface_display>
     </items>
 </model>

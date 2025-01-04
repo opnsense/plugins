@@ -32,6 +32,7 @@ namespace OPNsense\Vnstat\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Vnstat\General;
 
 /**
@@ -51,9 +52,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function hourlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat hourly");
-        return array("response" => $response);
+        return $this->getStatsForDisplayInterfaces('hourly');
     }
 
     /**
@@ -62,9 +61,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function dailyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat daily");
-        return array("response" => $response);
+        return $this->getStatsForDisplayInterfaces('daily');
     }
 
     /**
@@ -73,9 +70,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function monthlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat monthly");
-        return array("response" => $response);
+        return $this->getStatsForDisplayInterfaces('monthly');
     }
 
     /**
@@ -84,9 +79,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function yearlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat yearly");
-        return array("response" => $response);
+        return $this->getStatsForDisplayInterfaces('yearly');
     }
 
     /**
@@ -99,4 +92,27 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("vnstat resetdb");
         return array("response" => $response);
     }
+
+    private function getStatsForDisplayInterfaces(string $type) {
+        $config = Config::getInstance()->toArray();
+        $backend = new Backend();
+
+        if (!isset($config['OPNsense']['vnstat']['general']['interface_display'])) {
+            // no interface configured, use script default (i.e. don't specify interface)
+            $response = $backend->configdRun("vnstat $type");
+            return array("response" => $response);
+        }
+
+        // loop over configured interfaces, combining the output
+        $result = '';
+        foreach (explode(',', $config['OPNsense']['vnstat']['general']['interface_display']) as $interface) {
+            // map the OPNsense interface name to the kernel interface name that vnstat uses
+            if (isset($config['interfaces'][$interface]['if'])) {
+                $result .= $backend->configdpRun("vnstat", [ $type, $config['interfaces'][$interface]['if'] ]);
+            }
+        }
+        return array("response" => $result);
+    }
 }
+
+// vim:set ts=4 sw=4 et:
