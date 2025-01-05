@@ -2,6 +2,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -124,8 +125,8 @@ const EXITCODE_ERROR_UNKNOWN_COMMAND = 255;
 
 // Optional imports
 @include_once("config.inc");
-@include_once("certs.inc");
 @include_once("util.inc");
+require_once("script/load_phalcon.php");
 
 // Optional autoloader (for local dev environment)
 if (!function_exists("log_error")) {
@@ -135,6 +136,8 @@ if (!function_exists("log_error")) {
 }
 
 // Importing classes
+use OPNsense\Trust\Cert;
+use OPNsense\Trust\Store as CertStore;
 use OPNsense\AcmeClient\SftpUploader;
 use OPNsense\AcmeClient\SftpClient;
 use OPNsense\AcmeClient\SSHKeys;
@@ -519,17 +522,17 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
 function exportCertificates(array $cert_refids): array
 {
     $result = [];
-    $config = OPNsense\Core\Config::getInstance()->object();
-    foreach ($config->cert as $cert) {
+    $certModel = new Cert();
+    foreach ($certModel->cert->iterateItems() as $cert) {
         $refid = (string)$cert->refid;
         $item = [];
         if (in_array($refid, $cert_refids)) {
-            $item["cert"] = str_replace(["\n\n", "\r"], ["\n", ""], base64_decode($cert->crt));
-            $item["key"] = str_replace(["\n\n", "\r"], ["\n", ""], base64_decode($cert->prv));
+            $_tmp = CertStore::getCertificate($refid);
+            $item["cert"] = $_tmp["crt"];
+            $item["key"] = $_tmp["prv"];
             // check if a CA is linked
             if (!empty((string)$cert->caref)) {
-                $cert = (array)$cert;
-                $item["ca"] = ca_chain($cert);
+                $item["ca"] = $_tmp["ca"];;
                 // combine files to export a fullchain.pem
                 $item["fullchain"] = $item["cert"] . $item["ca"];
             }

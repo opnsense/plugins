@@ -18,10 +18,12 @@ Added:
 
 Changed:
 * Convert Synology deploy hook variables to uppercase (#4286)
+* Migrate to MVC Trust storage
 
 Fixed:
 * SFTP/SSH automation results in fatal PHP error (#4363)
 * Typo in INWX password field name
+* Certs not fully functional after import into Trust storage (#4401)
 
 4.6
 
