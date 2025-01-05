@@ -93,20 +93,26 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array("response" => $response);
     }
 
+    /**
+     * Get stats of the given type
+     * @param string $type Which type of statistics to return (hourly, daily, weekly, or monthly)
+     * @return array
+     */
     private function getStats(string $type) {
         $config = Config::getInstance()->toArray();
         $backend = new Backend();
 
         if (empty($config['OPNsense']['vnstat']['general']['separate_stats'])) {
-            // separate stats are not wanted, just get totals
+            // Separate stats are not wanted, just get totals - that's the default in vnstat itself,
+            // no need to specify anything here.
             $response = $backend->configdpRun("vnstat", [ $type ]);
             return array("response" => $response);
         }
 
-        // loop over configured interfaces, combining the output
+        // Loop over configured interfaces, concatenating the output of each.
         $result = '';
         foreach (explode(',', $config['OPNsense']['vnstat']['general']['interface']) as $interface) {
-            // map the OPNsense interface name to the kernel interface name that vnstat uses
+            // Map the OPNsense interface name to the kernel interface name that vnstat uses.
             if (isset($config['interfaces'][$interface]['if'])) {
                 $result .= $backend->configdpRun("vnstat", [ $type, $config['interfaces'][$interface]['if'] ]);
             }
