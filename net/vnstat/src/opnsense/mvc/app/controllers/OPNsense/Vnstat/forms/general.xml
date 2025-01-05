@@ -9,6 +9,13 @@
         <id>general.interface</id>
         <label>Interface</label>
         <type>select_multiple</type>
-        <help>Set the interface to listen on.</help>
+        <help>Set the interface(s) to display stats for.</help>
+    </field>
+    <field>
+        <id>general.separate_stats</id>
+        <label>Separate interface stats</label>
+        <type>checkbox</type>
+        <help>If checked, separate stats are shown for each configured interface.  If unchecked
+            a single set of stats is shown containing the sum of traffic on all configured interfaces.</help>
     </field>
 </form>
