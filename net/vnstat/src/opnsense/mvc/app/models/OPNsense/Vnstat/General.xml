@@ -12,7 +12,7 @@
             <Multiple>Y</Multiple>
         </interface>
         <separate_stats type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
         </separate_stats>
     </items>
