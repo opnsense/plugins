@@ -4,15 +4,15 @@
     <version>0.0.1</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <interface type="InterfaceField">
             <Required>N</Required>
-            <multiple>Y</multiple>
+            <Multiple>Y</Multiple>
         </interface>
         <separate_stats type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </separate_stats>
     </items>
