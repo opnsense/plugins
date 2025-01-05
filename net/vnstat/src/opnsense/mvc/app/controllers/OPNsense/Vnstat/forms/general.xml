@@ -15,7 +15,7 @@
         <id>general.separate_stats</id>
         <label>Separate interface stats</label>
         <type>checkbox</type>
-        <help>If checked, separate stats are shown for each configured interface.  If unchecked
+        <help>If checked, separate stats are shown for each configured interface.  If unchecked,
             a single set of stats is shown containing the sum of traffic on all configured interfaces.</help>
     </field>
 </form>
