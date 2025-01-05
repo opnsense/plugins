@@ -102,7 +102,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         $config = Config::getInstance()->toArray();
         $backend = new Backend();
 
-        if (empty($config['OPNsense']['vnstat']['general']['separate_stats'])) {
+        if (isset($config['OPNsense']['vnstat']['general']['separate_stats']) && !$config['OPNsense']['vnstat']['general']['separate_stats']) {
             // Separate stats are not wanted, just get totals - that's the default in vnstat itself,
             // no need to specify anything here.
             $response = $backend->configdpRun("vnstat", [ $type ]);
