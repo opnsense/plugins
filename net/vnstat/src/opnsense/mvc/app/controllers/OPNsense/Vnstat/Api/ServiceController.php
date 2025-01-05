@@ -52,7 +52,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function hourlyAction()
     {
-        return $this->getStatsForDisplayInterfaces('hourly');
+        return $this->getStats('hourly');
     }
 
     /**
@@ -61,7 +61,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function dailyAction()
     {
-        return $this->getStatsForDisplayInterfaces('daily');
+        return $this->getStats('daily');
     }
 
     /**
@@ -70,7 +70,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function monthlyAction()
     {
-        return $this->getStatsForDisplayInterfaces('monthly');
+        return $this->getStats('monthly');
     }
 
     /**
@@ -79,7 +79,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function yearlyAction()
     {
-        return $this->getStatsForDisplayInterfaces('yearly');
+        return $this->getStats('yearly');
     }
 
     /**
@@ -93,19 +93,19 @@ class ServiceController extends ApiMutableServiceControllerBase
         return array("response" => $response);
     }
 
-    private function getStatsForDisplayInterfaces(string $type) {
+    private function getStats(string $type) {
         $config = Config::getInstance()->toArray();
         $backend = new Backend();
 
-        if (!isset($config['OPNsense']['vnstat']['general']['interface_display'])) {
-            // no interface configured, use script default (i.e. don't specify interface)
+        if (empty($config['OPNsense']['vnstat']['general']['separate_stats'])) {
+            // separate stats are not wanted, just get totals
             $response = $backend->configdpRun("vnstat", [ $type ]);
             return array("response" => $response);
         }
 
         // loop over configured interfaces, combining the output
         $result = '';
-        foreach (explode(',', $config['OPNsense']['vnstat']['general']['interface_display']) as $interface) {
+        foreach (explode(',', $config['OPNsense']['vnstat']['general']['interface']) as $interface) {
             // map the OPNsense interface name to the kernel interface name that vnstat uses
             if (isset($config['interfaces'][$interface]['if'])) {
                 $result .= $backend->configdpRun("vnstat", [ $type, $config['interfaces'][$interface]['if'] ]);
