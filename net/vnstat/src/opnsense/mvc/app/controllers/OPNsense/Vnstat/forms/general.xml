@@ -7,14 +7,8 @@
     </field>
     <field>
         <id>general.interface</id>
-        <label>Default interface</label>
-        <type>dropdown</type>
-        <help>Set the default interface.</help>
-    </field>
-    <field>
-        <id>general.interface_display</id>
-        <label>Interfaces to display</label>
+        <label>Interface</label>
         <type>select_multiple</type>
-        <help>Set the interface(s) to display stats for.</help>
+        <help>Set the interface to listen on.</help>
     </field>
 </form>
