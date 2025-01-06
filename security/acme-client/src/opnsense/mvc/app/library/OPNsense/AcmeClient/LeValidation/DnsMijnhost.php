@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2022 Nikolaj Brinch Jørgensen
+ * Copyright (C) 2025 Peter Vos
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,10 +32,10 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * mijn.hosty DNS API
+ * mijn.host DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsMijnHost extends Base implements LeValidationInterface
+class DnsMijnhost extends Base implements LeValidationInterface
 {
     public function prepare()
     {

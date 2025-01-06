@@ -491,6 +491,7 @@
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
@@ -529,7 +530,6 @@
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
                         <dns_zonomi>zonomi.com</dns_zonomi>
-                        <dns_mijnhost>mijn.host</dns_mijnhost>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">

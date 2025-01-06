@@ -1933,5 +1933,6 @@
         <id>validation.dns_mijnhost_api_key</id>
         <label>API Key</label>
         <type>text</type>
+        <help><![CDATA[Please refer to the <a href="https://mijn.host/api/doc/">API documentation</a> for further information.]]></help>
     </field>
 </form>
