@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2016-2024 Frank Wall
+ * Copyright (C) 2016-2025 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * All rights reserved.
  *
@@ -28,12 +28,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Use legacy code to export certificates to the filesystem.
+require_once('script/load_phalcon.php');
 require_once("config.inc");
-require_once("certs.inc");
-require_once("legacy_bindings.inc");
 
 use OPNsense\Core\Config;
+use OPNsense\Trust\Store as CertStore;
 
 $export_path = '/tmp/haproxy/ssl/';
 
@@ -82,8 +81,9 @@ foreach ($configNodes as $key => $value) {
                                         $ocsp_conf = '';
                                         // CRLs require special export
                                         if ($type == 'crl') {
-                                            $crl =& lookup_crl($cert_refid);
-                                            $pem_content = base64_decode($crl['text']);
+                                            if (isset($cert->text)) {
+                                                $pem_content = base64_decode($cert->text);
+                                            }
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
                                             $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
@@ -91,9 +91,8 @@ foreach ($configNodes as $key => $value) {
                                             $ocsp_conf = hasOcspInfo($pem_content) ? ' [ocsp-update on]' : '';
                                             // check if a CA is linked
                                             if (!empty((string)$cert->caref)) {
-                                                $cert = (array)$cert;
-                                                $ca = ca_chain($cert);
                                                 // append the CA to the certificate data
+                                                $ca = CertStore::getCaChain((string)$cert->caref));
                                                 $pem_content .= "\n" . $ca;
                                                 // additionally export CA to it's own file,
                                                 // not required for HAProxy, but makes OCSP handling easier

@@ -6,6 +6,11 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.5
+
+Changed:
+* migrate cert export to Trust MVC
+
 4.4
 
 Fixed:
