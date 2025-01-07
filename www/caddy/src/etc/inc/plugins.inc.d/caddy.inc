@@ -26,48 +26,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function caddy_services(): array
+function caddy_services()
 {
     global $config;
 
+    $services = array();
+
     if (
         isset($config['Pischem']['caddy']['general']['enabled']) &&
-        $config['Pischem']['caddy']['general']['enabled'] === '1'
+        $config['Pischem']['caddy']['general']['enabled'] == 1
     ) {
-        return [
-            [
-                'description' => gettext('Caddy'),
-                'configd' => [
-                    'restart' => ['caddy restart'],
-                    'start' => ['caddy start'],
-                    'stop' => ['caddy stop'],
-                ],
-                'name' => 'caddy',
-                'pidfile' => '/var/run/caddy/caddy.pid',
-            ],
-        ];
+        $services[] = array(
+            'description' => gettext('Caddy'),
+            'configd' => array(
+                'restart' => array('caddy restart'),
+                'start' => array('caddy start'),
+                'stop' => array('caddy stop'),
+            ),
+            'name' => 'caddy',
+            'pidfile' => '/var/run/caddy/caddy.pid'
+        );
     }
 
-    return [];
+    return $services;
 }
 
-function caddy_xmlrpc_sync(): array
+function caddy_xmlrpc_sync()
 {
-    return [
-        [
-            'description' => gettext('Caddy'),
-            'section' => 'Pischem.caddy',
-            'id' => 'caddy',
-            'services' => ['caddy'],
-        ],
-    ];
+    $result = array();
+
+    $result[] = array(
+        'description' => gettext('Caddy'),
+        'section' => 'Pischem.caddy',
+        'id' => 'caddy',
+        'services' => ["caddy"],
+    );
+
+    return $result;
 }
 
-function caddy_syslog(): array
+function caddy_syslog()
 {
-    return [
-        'caddy' => [
-            'facility' => ['caddy'],
-        ],
-    ];
+    return ['caddy' => ['facility' => ['caddy']]];
 }
