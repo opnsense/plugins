@@ -206,7 +206,7 @@
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField">
-                    <BlankDesc>ACME (HTTP-01, TLS-ALPN-01)</BlankDesc>
+                    <BlankDesc>ACME</BlankDesc>
                 </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>

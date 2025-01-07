@@ -119,14 +119,12 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <hint>192.168.1.1</hint>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
-        <hint>80</hint>
         <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
