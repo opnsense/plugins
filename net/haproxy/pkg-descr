@@ -6,6 +6,12 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.4
+
+Fixed:
+* Cron job "Sync SSL certificate changes" not working (#4035)
+* Template error with empty user group (#3364)
+
 4.3
 
 Added:
