@@ -1,20 +1,28 @@
 <model>
-  <mount>//OPNsense/MDNSRepeater</mount>
-  <version>1.0.1</version>
-  <description>mdns-repeater settings</description>
-  <items>
-    <enabled type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </enabled>
-    <enablecarp type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </enablecarp>
-    <interfaces type="InterfaceField">
-      <Default>lan</Default>
-      <Required>Y</Required>
-      <Multiple>Y</Multiple>
-    </interfaces>
-  </items>
+    <mount>//OPNsense/MDNSRepeater</mount>
+    <version>1.0.1</version>
+    <description>mdns-repeater settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <enablecarp type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enablecarp>
+        <interfaces type="InterfaceField">
+            <Default>lan</Default>
+            <Required>Y</Required>
+            <Multiple>Y</Multiple>
+        </interfaces>
+        <blocklist type="NetworkField">
+            <NetMaskRequired>Y</NetMaskRequired>
+            <AddressFamily>ipv4</AddressFamily>
+            <FieldSeparator>,</FieldSeparator>
+            <WildcardEnabled>N</WildcardEnabled>
+            <AsList>Y</AsList>
+            <ValidationMessage>Only valid IPv4 networks or individual addresses including subnet are allowed.</ValidationMessage>
+        </blocklist>
+    </items>
 </model>
