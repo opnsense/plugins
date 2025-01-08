@@ -9,7 +9,7 @@
         <id>settings.listenPort</id>
         <label>Listen Port</label>
 	<type>text</type>
-        <help>UDP port to listen on for Wireguard and peer-to-peer traffic.</help>
+        <help>UDP port to listen on for WireGuard and peer-to-peer traffic.</help>
     </field>
     <field>
         <id>settings.acceptDNS</id>
