@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2014-2024 Deciso B.V.
+ # Copyright (c) 2014-2025 Deciso B.V.
  # Copyright (c) 2017 Fabian Franz
  # Copyright (c) 2017 Michael Muenz <m.muenz@gmail.com>
  # All rights reserved.
@@ -32,18 +32,17 @@
         mapDataToFormUI({'frm_ospf6_settings':"/api/quagga/ospf6settings/get"}).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
         });
 
-        updateServiceControlUI('quagga');
-
-        // link save button to API set action
-        $("#saveAct").SimpleActionButton({
+        $("#reconfigureAct").SimpleActionButton({
             onPreAction: function() {
                 const dfObj = new $.Deferred();
-                saveFormToEndpoint("/api/quagga/ospf6settings/set", 'frm_ospf6_settings', function(){
-                    dfObj.resolve();
-                });
+                saveFormToEndpoint("/api/quagga/ospf6settings/set", 'frm_ospf6_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
                 return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
             }
         });
 
@@ -53,11 +52,7 @@
             'set':'/api/quagga/ospf6settings/setNetwork/',
             'add':'/api/quagga/ospf6settings/addNetwork/',
             'del':'/api/quagga/ospf6settings/delNetwork/',
-            'toggle':'/api/quagga/ospf6settings/toggleNetwork/',
-            'options':{
-                selection:false,
-                multiSelect:false
-            }
+            'toggle':'/api/quagga/ospf6settings/toggleNetwork/'
         });
         $("#grid-interfaces").UIBootgrid({
             'search':'/api/quagga/ospf6settings/searchInterface',
@@ -65,11 +60,7 @@
             'set':'/api/quagga/ospf6settings/setInterface/',
             'add':'/api/quagga/ospf6settings/addInterface/',
             'del':'/api/quagga/ospf6settings/delInterface/',
-            'toggle':'/api/quagga/ospf6settings/toggleInterface/',
-            'options':{
-                selection:false,
-                multiSelect:false
-            }
+            'toggle':'/api/quagga/ospf6settings/toggleInterface/'
         });
         $("#grid-prefixlists").UIBootgrid({
             'search':'/api/quagga/ospf6settings/searchPrefixlist',
@@ -77,11 +68,7 @@
             'set':'/api/quagga/ospf6settings/setPrefixlist/',
             'add':'/api/quagga/ospf6settings/addPrefixlist/',
             'del':'/api/quagga/ospf6settings/delPrefixlist/',
-            'toggle':'/api/quagga/ospf6settings/togglePrefixlist/',
-            'options':{
-                selection:false,
-                multiSelect:false
-            }
+            'toggle':'/api/quagga/ospf6settings/togglePrefixlist/'
         });
         $("#grid-routemaps").UIBootgrid({
             'search':'/api/quagga/ospf6settings/searchRoutemap',
@@ -89,11 +76,7 @@
             'set':'/api/quagga/ospf6settings/setRoutemap/',
             'add':'/api/quagga/ospf6settings/addRoutemap/',
             'del':'/api/quagga/ospf6settings/delRoutemap/',
-            'toggle':'/api/quagga/ospf6settings/toggleRoutemap/',
-            'options':{
-                selection:false,
-                multiSelect:false
-            }
+            'toggle':'/api/quagga/ospf6settings/toggleRoutemap/'
         });
 
         // hook checkbox item with conditional options
@@ -142,10 +125,11 @@
           </tbody>
           <tfoot>
               <tr>
-                  <td colspan="5"></td>
-                  <td>
-                      <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                  </td>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
               </tr>
           </tfoot>
       </table>
@@ -168,9 +152,10 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -195,9 +180,10 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -223,9 +209,10 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
+                    <td></td>
                     <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -236,7 +223,7 @@
 <section class="page-content-main">
     <div class="content-box">
         <div class="col-md-12">
-            <button class="btn btn-primary __mb __mt" id="saveAct"
+            <button class="btn btn-primary __mb __mt" id="reconfigureAct"
                 data-endpoint='/api/quagga/service/reconfigure'
                 data-label="{{ lang._('Apply') }}"
                 data-error-title="{{ lang._('Error reconfiguring OSPFv3') }}"

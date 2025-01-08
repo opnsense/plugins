@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2015-2017 Deciso B.V.
+ * Copyright (C) 2015-2025 Deciso B.V.
  * Copyright (C) 2017 Fabian Franz
  * Copyright (C) 2017-2021 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
@@ -39,17 +39,11 @@ class BfdController extends ApiMutableModelControllerBase
 
     public function searchNeighborAction()
     {
-        return $this->searchBase(
-            'neighbors.neighbor',
-            array("enabled",
-                  "description",
-                  "address")
-        );
+        return $this->searchBase('neighbors.neighbor');
     }
 
     public function getNeighborAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('neighbor', 'neighbors.neighbor', $uuid);
     }
 

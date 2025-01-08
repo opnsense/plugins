@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2025 by Deciso B.V.
 This file is Copyright © 2017 by Fabian Franz
 All rights reserved.
 
@@ -27,33 +27,43 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
+<script>
+      $( document ).ready(function() {
+        mapDataToFormUI({'frm_rip_settings':"/api/quagga/rip/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
+        });
+
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/quagga/rip/set", 'frm_rip_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
+            }
+        });
+    });
+</script>
+
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields':ripForm,'id':'frm_rip_settings'])}}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
-    </div>
 </div>
 
-<script>
-$(document).ready(function() {
-  var data_get_map = {'frm_rip_settings':"/api/quagga/rip/get"};
-  mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
-  });
+<section class="page-content-main">
+  <div class="content-box">
+      <div class="col-md-12">
+          <br/>
+          <button class="btn btn-primary" id="reconfigureAct"
+                  data-endpoint='/api/quagga/service/reconfigure'
+                  data-label="{{ lang._('Apply') }}"
+                  data-error-title="{{ lang._('Error reconfiguring BFD') }}"
+                  type="button"
+          ></button>
+          <br/><br/>
+      </div>
+  </div>
+</section>
 
-  updateServiceControlUI('quagga');
-
-  // link save button to API set action
-  $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/rip/set",formid='frm_rip_settings',callback_ok=function(){
-        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-        ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          updateServiceControlUI('quagga');
-          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-        });
-      });
-  });
-});
-</script>
