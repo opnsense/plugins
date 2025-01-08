@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2024 Mikhail Kharisov
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,28 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeValidation;
+ namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeValidationInterface;
-use OPNsense\AcmeClient\LeUtils;
-use OPNsense\Core\Config;
+ use OPNsense\AcmeClient\LeValidationInterface;
+ use OPNsense\Core\Config;
 
-/**
- * INWX DNS API
- * @package OPNsense\AcmeClient
- */
-class DnsInwx extends Base implements LeValidationInterface
+ /**
+  * Fornex DNS API
+  * @package OPNsense\AcmeClient
+  */
+class DnsFornex extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['INWX_User'] = (string)$this->config->dns_inwx_user;
-        $this->acme_env['INWX_Password'] = (string)$this->config->dns_inwx_password;
-        if (!empty((string)$this->config->dns_inwx_shared_secret)) {
-            if ((string)$this->model->isPackageInstalled('oath-toolkit') != '1') {
-                LeUtils::log_error('Required package oath-toolkit is NOT installed. Please install the package or remove the INWX Shared Secret.');
-                return false;
-            }
-            $this->acme_env['INWX_Shared_Secret'] = (string)$this->config->dns_inwx_shared_secret;
-        }
+        $this->acme_env['FORNEX_API_KEY'] = (string)$this->config->dns_fornex_api_key;
     }
 }

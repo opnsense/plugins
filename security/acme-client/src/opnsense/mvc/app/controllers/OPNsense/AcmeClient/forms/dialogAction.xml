@@ -226,6 +226,12 @@
         <help>If Synology DSM has OTP enabled, then the device name has to be provided so that no OTP is required when running the automation.</help>
     </field>
     <field>
+        <id>action.acme_synology_dsm_otpcode</id>
+        <label>OTP Code</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then a OTP may be required.</help>
+    </field>
+    <field>
         <id>action.acme_synology_dsm_create</id>
         <label>Create certificates</label>
         <type>checkbox</type>

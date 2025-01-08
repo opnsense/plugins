@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017-2024 Frank Wall
+ * Copyright (C) 2017-2025 Frank Wall
  * Copyright (C) 2015 Deciso B.V.
  * Copyright (C) 2010 Jim Pingle <jimp@pfsense.org>
  * Copyright (C) 2008 Shrew Soft Inc. <mgrooms@shrew.net>
@@ -68,86 +68,6 @@ class LeUtils
         }
 
         return vsprintf($format, $args);
-    }
-
-    // Copied from system_camanager.php.
-    public static function local_ca_import(&$ca, $str, $key = "", $serial = 0)
-    {
-        // Get config object.
-        $config = Config::getInstance()->object();
-
-        $ca['crt'] = base64_encode($str);
-        if (!empty($key)) {
-            $ca['prv'] = base64_encode($key);
-        }
-        if (!empty($serial)) {
-            $ca['serial'] = $serial;
-        }
-        $subject = cert_get_subject($str, false);
-        $issuer = cert_get_issuer($str, false);
-
-        // Find my issuer unless self-signed
-        if ($issuer != $subject) {
-            $issuer_crt =& lookup_ca_by_subject($issuer);
-            if ($issuer_crt) {
-                $ca['caref'] = $issuer_crt['refid'];
-            }
-        }
-
-        /* Correct if child certificate was loaded first */
-        if (is_array($config['ca'])) {
-            foreach ($config['ca'] as & $oca) {
-                $issuer = cert_get_issuer($oca['crt']);
-                if ($ca['refid'] != $oca['refid'] && $issuer == $subject) {
-                    $oca['caref'] = $ca['refid'];
-                }
-            }
-        }
-        if (is_array($config['cert'])) {
-            foreach ($config['cert'] as & $cert) {
-                $issuer = cert_get_issuer($cert['crt']);
-                if ($issuer == $subject) {
-                    $cert['caref'] = $ca['refid'];
-                }
-            }
-        }
-        return true;
-    }
-
-    // copied from certs.inc
-    public static function local_cert_get_cn($crt, $decode = true)
-    {
-        $sub = self::local_cert_get_subject_array($crt, $decode);
-        if (is_array($sub)) {
-            foreach ($sub as $s) {
-                if (strtoupper($s['a']) == "CN") {
-                    return $s['v'];
-                }
-            }
-        }
-        return "";
-    }
-
-    // copied from certs.inc
-    public static function local_cert_get_subject_array($str_crt, $decode = true)
-    {
-        if ($decode) {
-            $str_crt = base64_decode($str_crt);
-        }
-        $inf_crt = openssl_x509_parse($str_crt);
-        $components = $inf_crt['subject'];
-
-        if (!is_array($components)) {
-            return;
-        }
-
-        $subject_array = array();
-
-        foreach ($components as $a => $v) {
-            $subject_array[] = array('a' => $a, 'v' => $v);
-        }
-
-        return $subject_array;
     }
 
     /**

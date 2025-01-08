@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
- * All rights reserved.
+ * Copyright (C) 2024 W516
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,25 +28,13 @@
 namespace OPNsense\AcmeClient\LeValidation;
 
 use OPNsense\AcmeClient\LeValidationInterface;
-use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
 
-/**
- * INWX DNS API
- * @package OPNsense\AcmeClient
- */
-class DnsInwx extends Base implements LeValidationInterface
+class DnsMydnsjp extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['INWX_User'] = (string)$this->config->dns_inwx_user;
-        $this->acme_env['INWX_Password'] = (string)$this->config->dns_inwx_password;
-        if (!empty((string)$this->config->dns_inwx_shared_secret)) {
-            if ((string)$this->model->isPackageInstalled('oath-toolkit') != '1') {
-                LeUtils::log_error('Required package oath-toolkit is NOT installed. Please install the package or remove the INWX Shared Secret.');
-                return false;
-            }
-            $this->acme_env['INWX_Shared_Secret'] = (string)$this->config->dns_inwx_shared_secret;
-        }
+        $this->acme_env['MYDNSJP_MasterID'] = (string)$this->config->dns_mydnsjp_masterid;
+        $this->acme_env['MYDNSJP_Password'] = (string)$this->config->dns_mydnsjp_password;
     }
 }
