@@ -273,7 +273,7 @@ class LeCertificate extends LeCommon
         // Serialize to config and save
         // Skip validation because the current in-memory model may not
         // know about the CA item that was just created.
-        $certModel->serializeToConfig(false,true);
+        $certModel->serializeToConfig(false, true);
         Config::getInstance()->save();
 
         /**
