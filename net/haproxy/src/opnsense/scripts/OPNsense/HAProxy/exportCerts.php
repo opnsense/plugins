@@ -92,7 +92,7 @@ foreach ($configNodes as $key => $value) {
                                             // check if a CA is linked
                                             if (!empty((string)$cert->caref)) {
                                                 // append the CA to the certificate data
-                                                $ca = CertStore::getCaChain((string)$cert->caref));
+                                                $ca = CertStore::getCaChain((string)$cert->caref);
                                                 $pem_content .= "\n" . $ca;
                                                 // additionally export CA to it's own file,
                                                 // not required for HAProxy, but makes OCSP handling easier
