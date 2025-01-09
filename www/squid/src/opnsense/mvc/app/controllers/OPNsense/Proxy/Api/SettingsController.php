@@ -50,7 +50,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchRemoteBlacklistsAction()
     {
-        $this->sessionClose();
         $mdlProxy = $this->getModel();
         $grid = new UIModelGrid($mdlProxy->forward->acl->remoteACLs->blacklists->blacklist);
         return $grid->fetchBindRequest(
@@ -153,7 +152,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchPACRuleAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.rule', array("enabled", "description", "proxies", "matches"), "description");
     }
 
@@ -164,7 +162,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function getPACRuleAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('rule', 'pac.rule', $uuid));
     }
 
@@ -217,7 +214,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchPACProxyAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.proxy', array("enabled","proxy_type", "name", "url", "description"), "description");
     }
 
@@ -228,7 +224,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function getPACProxyAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('proxy', 'pac.proxy', $uuid));
     }
 
@@ -270,7 +265,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchPACMatchAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.match', array("enabled", "name", "description", "negate", "match_type"), "name");
     }
 
@@ -281,7 +275,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function getPACMatchAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('match', 'pac.match', $uuid));
     }
 
