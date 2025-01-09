@@ -47,7 +47,6 @@ class ValidationsController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('validation', 'validations.validation', $uuid);
     }
 
