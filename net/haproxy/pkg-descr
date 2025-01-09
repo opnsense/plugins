@@ -9,6 +9,7 @@ Plugin Changelog
 4.5
 
 Changed:
+* upgrade to HAProxy 3.0 release series (#4411)
 * migrate cert export to Trust MVC
 
 4.4
