@@ -42,7 +42,6 @@ class AvpairController extends ApiMutableModelControllerBase
     }
     public function getAvpairAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('avpair', 'avpairs.avpair', $uuid);
     }
     public function addAvpairAction()

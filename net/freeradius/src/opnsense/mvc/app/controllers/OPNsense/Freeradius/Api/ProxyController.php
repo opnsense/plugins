@@ -78,7 +78,6 @@ class ProxyController extends ApiMutableModelControllerBase
 
     public function searchRealmAction()
     {
-        $this->sessionClose();
         $mdlRealm = $this->getModel();
         $grid = new UIModelGrid($mdlRealm->realms->realm);
         return $grid->fetchBindRequest(
@@ -204,7 +203,6 @@ class ProxyController extends ApiMutableModelControllerBase
     }
     public function searchHomeserverAction()
     {
-        $this->sessionClose();
         $mdlHomeserver = $this->getModel();
         $grid = new UIModelGrid($mdlHomeserver->homeservers->homeserver);
         return $grid->fetchBindRequest(
@@ -306,7 +304,6 @@ class ProxyController extends ApiMutableModelControllerBase
     }
     public function searchHomeserverpoolAction()
     {
-        $this->sessionClose();
         $mdlHomeserverpool = $this->getModel();
         $grid = new UIModelGrid($mdlHomeserverpool->homeserverpools->homeserverpool);
         return $grid->fetchBindRequest(
