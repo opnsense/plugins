@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023-2024 Cedrik Pischem
+ *    Copyright (C) 2023-2025 Cedrik Pischem
  *
  *    All rights reserved.
  *
@@ -37,7 +37,11 @@ class Layer4Controller extends IndexController
     public function indexAction()
     {
         $this->view->pick('OPNsense/Caddy/layer4');
-        $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
-        $this->view->formDialogLayer4Openvpn = $this->getForm("dialogLayer4Openvpn");
+
+        $this->view->formDialogLayer4 = $this->getForm('dialogLayer4');
+        $this->view->formGridLayer4 = $this->getFormGrid('dialogLayer4', null, 'ConfChangeMessage');
+
+        $this->view->formDialogLayer4Openvpn = $this->getForm('dialogLayer4Openvpn');
+        $this->view->formGridLayer4Openvpn = $this->getFormGrid('dialogLayer4Openvpn', null, 'ConfChangeMessage');
     }
 }

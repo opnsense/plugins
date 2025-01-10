@@ -4,6 +4,11 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable this handler.]]></help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <id>handle.description</id>
@@ -38,6 +43,9 @@
         <type>dropdown</type>
         <help><![CDATA[Choose a handling type: "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HandlePath</id>
@@ -46,6 +54,9 @@
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -58,6 +69,9 @@
         <type>dropdown</type>
         <help><![CDATA[Select an Access List to restrict access to this handler. If unset, any local or remote client is allowed access.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.ForwardAuth</id>
@@ -65,6 +79,11 @@
         <type>checkbox</type>
         <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -87,6 +106,9 @@
         <style>style_reverse_proxy</style>
         <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires HTTPS, and only establishes connections to webservers that also support HTTP/3.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.header</id>
@@ -97,6 +119,9 @@
         <style>style_reverse_proxy selectpicker</style>
         <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpKeepalive</id>
@@ -106,6 +131,9 @@
         <style>style_reverse_proxy</style>
         <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpTls</id>
@@ -133,6 +161,9 @@
         <type>text</type>
         <help><![CDATA[When directive is "reverse_proxy", enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path. When directive is "redir", add the path the request should be redirected to; leaving it empty will append {uri}.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpTlsInsecureSkipVerify</id>
@@ -140,6 +171,11 @@
         <type>checkbox</type>
         <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpTlsTrustedCaCerts</id>
@@ -147,6 +183,9 @@
         <type>dropdown</type>
         <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Choose a CA or self-signed certificate to trust from "System - Trust - Authorities". Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpTlsServerName</id>
@@ -154,6 +193,9 @@
         <type>text</type>
         <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.HttpNtlm</id>
@@ -161,6 +203,11 @@
         <type>checkbox</type>
         <style>style_tls style_reverse_proxy</style>
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -174,6 +221,9 @@
         <style>style_reverse_proxy</style>
         <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.lb_retries</id>
@@ -183,6 +233,9 @@
         <hint>off</hint>
         <help><![CDATA[lb_retries is how many times to retry selecting available backends for each request if the next available host is down. If lb_try_duration is also configured, then retries may stop early if the duration is reached. In other words, the retry duration takes precedence over the retry count.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.lb_try_duration</id>
@@ -192,6 +245,9 @@
         <hint>0</hint>
         <help><![CDATA[lb_try_duration is a duration value that defines how long to try selecting available backends for each request if the next available host is down. Clients will wait for up to this long while the load balancer tries to find an available upstream host. A reasonable starting point might be 5s since the HTTP transport's default dial timeout is 3s, so that should allow for at least one retry if the first selected upstream cannot be reached.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.lb_try_interval</id>
@@ -201,6 +257,9 @@
         <hint>250</hint>
         <help><![CDATA[lb_try_interval is a duration value that defines how long to wait between selecting the next host from the pool. Only relevant when a request to an upstream host fails. Be aware that setting this to 0 with a non-zero lb_try_duration can cause the CPU to spin if all backends are down and latency is very low.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.PassiveHealthFailDuration</id>
@@ -210,6 +269,9 @@
         <hint>off</hint>
         <help><![CDATA[fail_duration enables a passive health check when multiple destinations in "Upstream Domain" are set. It is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking. A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.PassiveHealthMaxFails</id>
@@ -219,6 +281,9 @@
         <hint>1</hint>
         <help><![CDATA[max_fails is the maximum number of failed requests within fail_duration that are needed before considering an upstream to be down.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyStatus</id>
@@ -228,6 +293,9 @@
         <hint>off</hint>
         <help><![CDATA[unhealthy_status counts a request as failed if the response comes back with one of these status codes. Can be a 3-digit status code or a status code class ending in xx, for example: 404 or 5xx.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyLatency</id>
@@ -237,6 +305,9 @@
         <hint>off</hint>
         <help><![CDATA[unhealthy_latency is a duration value in ms that counts a request as failed if it takes this long to get a response.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyRequestCount</id>
@@ -246,5 +317,8 @@
         <hint>off</hint>
         <help><![CDATA[unhealthy_request_count is the permissible number of simultaneous requests to a backend before marking it as down. In other words, if a particular backend is currently handling this many requests, then it is considered "overloaded" and other backends will be preferred instead. This should be a reasonably large number; configuring this means that the proxy will have a limit of unhealthy_request_count × upstreams_count total simultaneous requests, and any requests after that point will result in an error due to no upstreams being available.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
 </form>

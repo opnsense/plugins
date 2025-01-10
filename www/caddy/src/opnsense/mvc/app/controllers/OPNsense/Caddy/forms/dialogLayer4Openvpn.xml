@@ -9,5 +9,8 @@
         <label>Static Key</label>
         <type>textbox</type>
         <help>Paste an OpenVPN Static key.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
     </field>
 </fields>
