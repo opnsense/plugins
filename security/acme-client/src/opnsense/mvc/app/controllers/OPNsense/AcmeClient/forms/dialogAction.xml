@@ -188,7 +188,7 @@
         <id>action.acme_synology_dsm_hostname</id>
         <label>Synology Hostname</label>
         <type>text</type>
-        <help>Hostname of IP adress of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
+        <help>Hostname of IP address of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
     </field>
     <field>
         <id>action.acme_synology_dsm_port</id>
@@ -340,7 +340,7 @@
         <id>action.acme_truenas_hostname</id>
         <label>TrueNAS hostname</label>
         <type>text</type>
-        <help>Hostname or IP adress of TrueNAS Core Server.</help>
+        <help>Hostname or IP address of TrueNAS Core Server.</help>
     </field>
     <field>
         <id>action.acme_truenas_scheme</id>
