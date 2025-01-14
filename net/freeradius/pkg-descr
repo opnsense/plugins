@@ -11,13 +11,19 @@ security, particularly in the academic community, including eduroam.
 
 The server is fast, feature-rich, modular, and scalable.
 
+WWW: https://www.freeradius.org
+
 
 Plugin Changelog
 ================
 
+1.9.27
+
+* Allow EAP-TLS with multiple CAs (contributed by RasAlGhul)
+
 1.9.26
 
-* Added support for `require_message_authenticator` in client configuration (contributed by Patrick M. Hausen)
+* Added support for "require_message_authenticator" in client configuration (contributed by Patrick M. Hausen)
 
 1.9.25
 
@@ -119,6 +125,3 @@ Plugin Changelog
 * Add DHCP support, serving only for DHCP relays
 * Allow usage of remote MySQL server
 * Rework service status UI
-
-
-WWW: https://www.freeradius.org
