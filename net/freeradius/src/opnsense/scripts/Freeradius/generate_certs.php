@@ -91,7 +91,7 @@ if (isset($configObj->OPNsense->freeradius)) {
                             "",
                             base64_decode((string)$ca->crt)
                         )));
-    
+
                         $pem_content .= "\n";
                         $ca_pem_content .= $pem_content;
                     }
