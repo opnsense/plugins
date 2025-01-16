@@ -27,6 +27,9 @@ osudpbroadcastrelay_enable="YES"
 {%    if osudpbroadcastrelay.msearch_dial|default('0') == '1' %}
 {%     do Parameters.append("--msearch dial ") %}
 {%    endif %}
+{%    if osudpbroadcastrelay.msearch_proxy|default('0') == '1' %}
+{%     do Parameters.append("--msearch proxy ") %}
+{%    endif %}
 {%    if osudpbroadcastrelay.RevertTTL|default('0') == '1' %}
 {%     do Parameters.append("-t ") %}
 {%    endif %}

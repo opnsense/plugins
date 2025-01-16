@@ -50,6 +50,13 @@
       <help>Perform full DIAL protocol processing on M-SEARCH request. Create proxies for M-SEARCH, Locator and REST services.</help>
    </field>
    <field>
+      <id>udpbroadcastrelay.msearch_proxy</id>
+      <label>SSDP M-SEARCH 'proxy' mode</label>
+      <type>checkbox</type>
+      <help>Create a local proxy for the M-SEARCH request, send request out with subnet local address and proxy port.
+         Received responses are sent back to original requester with no processing.</help>
+   </field>
+   <field>
       <id>udpbroadcastrelay.description</id>
       <label>Description</label>
       <type>text</type>
