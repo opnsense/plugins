@@ -343,7 +343,7 @@
                 <id>proxy.forward.workers</id>
                 <label>Number of squid workers</label>
                 <type>text</type>
-                <help>Start N main Squid process daemons (i.e., SMP mode). Requires Restart. Default: 1</help>
+                <help>Start N main Squid process daemons (i.e., SMP mode). Requires Restart. Do not enable when using local cache! Default: 1</help>
                 <advanced>true</advanced>
             </field>
             <field>
