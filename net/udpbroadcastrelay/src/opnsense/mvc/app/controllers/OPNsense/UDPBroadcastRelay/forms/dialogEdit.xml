@@ -44,6 +44,12 @@
       <help><![CDATA[Use the ID to set the TTL Value of the packet (Original method) rather than DSCP, default is not ticked]]></help>
    </field>
    <field>
+      <id>udpbroadcastrelay.msearch_dial</id>
+      <label>SSDP M-SEARCH 'dial' mode</label>
+      <type>checkbox</type>
+      <help>Perform full DIAL protocol processing on M-SEARCH request. Create proxies for M-SEARCH, Locator and REST services.</help>
+   </field>
+   <field>
       <id>udpbroadcastrelay.description</id>
       <label>Description</label>
       <type>text</type>

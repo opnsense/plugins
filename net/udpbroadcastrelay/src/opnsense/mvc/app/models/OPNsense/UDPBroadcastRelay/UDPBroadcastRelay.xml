@@ -50,6 +50,10 @@
             <default>0</default>
             <Required>Y</Required>
          </RevertTTL>
+         <msearch_dial type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+         </msearch_dial>
          <description type="TextField">
             <Required>N</Required>
             <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
