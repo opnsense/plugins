@@ -532,7 +532,7 @@ function exportCertificates(array $cert_refids): array
             $item["key"] = $_tmp["prv"];
             // check if a CA is linked
             if (!empty((string)$cert->caref)) {
-                $item['ca'] = $_tmp['ca'];
+                $item['ca'] = $_tmp['ca']->crt;
 
                 // combine files to export a fullchain.pem
                 $item["fullchain"] = $item["cert"] . $item["ca"];
