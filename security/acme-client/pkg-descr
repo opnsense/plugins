@@ -10,6 +10,13 @@ Plugin Changelog
 
 4.8
 
+BREAKING CHANGE: Let's Encrypt ends support for the OCSP Must Staple
+extension on 30.01.2025. Issuance requests will fail if this option is
+still enabled past this date.
+
+Changed:
+* Add note regarding the support of OCSP
+
 Fixed:
 * SFTP automation unable to transfer certs (#4477)
 
