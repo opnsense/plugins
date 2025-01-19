@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.8
+
+Fixed:
+* SFTP automation unable to transfer certs (#4477)
+
 4.7
 
 Added:
