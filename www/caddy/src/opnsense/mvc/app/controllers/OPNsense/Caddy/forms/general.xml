@@ -36,7 +36,7 @@
             <id>caddy.general.HttpVersions</id>
             <label>HTTP Versions</label>
             <type>select_multiple</type>
-            <help><![CDATA[Select the HTTP Versions for the frontend listeners. By default, QUIC (HTTP/3) is disabled.]]></help>
+            <help><![CDATA[Select the HTTP versions for the frontend listeners. By default, QUIC (HTTP/3) is disabled.]]></help>
         </field>
         <field>
             <id>caddy.general.HttpPort</id>
