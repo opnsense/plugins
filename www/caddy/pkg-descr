@@ -22,6 +22,7 @@ Plugin Changelog
          dinahosting, civo, easydns, hosttech; must be added via https://caddyserver.com/docs/command-line#caddy-add-package
 * Cleanup: Refactor caddy.inc and add syslog function, change name from Caddy Web Server to Caddy (opnsense/plugins/issues/4426)
 * Cleanup: Some small UI tweaks (opnsense/plugins/pull/4442)
+* Change: Disable HTTP/3 to mitigate status 400 issue when reverse proxying the OPNsense WebGUI (opnsense/plugins/issues/4471)
 
 1.7.6
 

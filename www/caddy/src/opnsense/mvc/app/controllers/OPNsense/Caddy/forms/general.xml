@@ -33,10 +33,10 @@
             <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
         </field>
         <field>
-            <id>caddy.general.HttpVersion</id>
-            <label>HTTP Version</label>
+            <id>caddy.general.HttpVersions</id>
+            <label>HTTP Versions</label>
             <type>select_multiple</type>
-            <help><![CDATA[Select the HTTP Version for the frontend listeners. By default, QUIC (HTTP/3) is enabled. This means, UDP/443 will be used by Caddy. To free this protocol port combination for a different service, choose a different combination of protocols that does not include HTTP/3.]]></help>
+            <help><![CDATA[Select the HTTP versions for the frontend listeners. By default, QUIC (HTTP/3) is disabled.]]></help>
         </field>
         <field>
             <id>caddy.general.HttpPort</id>
