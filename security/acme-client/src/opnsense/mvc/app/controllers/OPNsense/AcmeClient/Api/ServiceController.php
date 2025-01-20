@@ -50,8 +50,6 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-start");
             return array("response" => $response);
@@ -67,8 +65,6 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-stop");
             return array("response" => $response);
@@ -84,8 +80,6 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-restart");
             return array("response" => $response);
@@ -128,9 +122,6 @@ class ServiceController extends ApiControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $force_restart = false;
 
             $mdlAcme = new AcmeClient();

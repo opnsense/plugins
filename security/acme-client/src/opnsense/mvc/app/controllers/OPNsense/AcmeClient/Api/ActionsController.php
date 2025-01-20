@@ -46,7 +46,6 @@ class ActionsController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('action', 'actions.action', $uuid);
     }
 

@@ -94,7 +94,6 @@ const EXITCODE_ERROR_UNKNOWN_COMMAND = 254;
 
 // Optional imports
 @include_once("config.inc");
-@include_once("certs.inc");
 @include_once("util.inc");
 
 // Optional autoloader (for local dev environment)

@@ -13,6 +13,17 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.0
+
+* Build: Update Caddy to version 2.9.x and update dependencies (opnsense/plugins/issues/4437)
+* Build: Fix caddy-l4 timeout issue (opnsense/plugins/issues/4384)
+* Build: Mark DNS Providers optional that are not included per default (opnsense/plugins/pull/4441)
+         digitalocean, route53, googleclouddns, netlify, ddnss, njalla, tencentcloud
+         dinahosting, civo, easydns, hosttech; must be added via https://caddyserver.com/docs/command-line#caddy-add-package
+* Cleanup: Refactor caddy.inc and add syslog function, change name from Caddy Web Server to Caddy (opnsense/plugins/issues/4426)
+* Cleanup: Some small UI tweaks (opnsense/plugins/pull/4442)
+* Change: Disable HTTP/3 to mitigate status 400 issue when reverse proxying the OPNsense WebGUI (opnsense/plugins/issues/4471)
+
 1.7.6
 
 * Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins/pull/4403)

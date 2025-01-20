@@ -69,10 +69,14 @@
         <help><![CDATA[Specify the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384.]]></help>
     </field>
     <field>
+        <label><![CDATA[NOTE: OCSP is not supported by all CAs.]]></label>
+        <type>info</type>
+    </field>
+    <field>
         <id>certificate.ocsp</id>
         <label>OCSP Must Staple</label>
         <type>checkbox</type>
-        <help>Generate and add OCSP Must Staple extension to the certificate.</help>
+        <help>Generate and add OCSP Must Staple extension to the certificate. When this option is enabled and issueance/renewal requests fail, then this extension is probably not supported by the CA.</help>
     </field>
     <field>
         <label>Advanced Settings</label>

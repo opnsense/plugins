@@ -1,6 +1,7 @@
 <?php
 
 /*
+ *    Copyright (C) 2025 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  *    All rights reserved.
@@ -38,38 +39,34 @@ class OspfsettingsController extends ApiMutableModelControllerBase
 
     public function searchNetworkAction()
     {
-        return $this->searchBase('networks.network', array("enabled", "ipaddr", "netmask", "area"));
+        return $this->searchBase('networks.network');
     }
     public function searchInterfaceAction()
     {
-        return $this->searchBase('interfaces.interface', array("enabled", "interfacename", "networktype", "authtype", "area"));
+        return $this->searchBase('interfaces.interface');
     }
     public function searchPrefixlistAction()
     {
-        return $this->searchBase('prefixlists.prefixlist', array("enabled", "name", "seqnumber", "action", "network" ));
+        return $this->searchBase('prefixlists.prefixlist');
     }
     public function searchRoutemapAction()
     {
-        return $this->searchBase('routemaps.routemap', array("enabled", "name", "action", "id", "match2", "set"));
+        return $this->searchBase('routemaps.routemap');
     }
     public function getNetworkAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('network', 'networks.network', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('interface', 'interfaces.interface', $uuid);
     }
     public function getPrefixlistAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
     public function getRoutemapAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
     public function addNetworkAction()
