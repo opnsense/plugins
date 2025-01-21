@@ -32,5 +32,9 @@
                 <description type="DescriptionField"/>
             </subnet4>
         </subnets>
+        <loginTimeout type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </loginTimeout>
     </items>
 </model>
