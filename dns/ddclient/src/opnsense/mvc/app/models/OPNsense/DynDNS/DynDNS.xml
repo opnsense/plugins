@@ -165,6 +165,11 @@
                         </check001>
                     </Constraints>
                 </checkip>
+                <dynipv6host type="TextField">
+                    <Required>N</Required>
+                    <mask>/^::(([0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4})?$/u</mask>
+                    <ValidationMessage>Entry is not a valid partial ipv6 address definition (e.g. ::1000).</ValidationMessage>
+                </dynipv6host>
                 <checkip_timeout type="IntegerField">
                     <Default>10</Default>
                     <Required>Y</Required>

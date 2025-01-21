@@ -92,6 +92,13 @@
         <type>dropdown</type>
     </field>
     <field>
+        <id>account.dynipv6host</id>
+        <label>Dynamic ipv6 partial address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Swap the host part of the ipv6 address with the given partial ipv6 address</help>
+    </field>
+    <field>
         <id>account.checkip_timeout</id>
         <label>Check ip timeout</label>
         <type>text</type>

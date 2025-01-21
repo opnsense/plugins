@@ -67,11 +67,12 @@ def extract_address(host, txt):
     return ""
 
 
-def checkip(service, proto='https', timeout='10', interface=None):
+def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=None):
     """ find ip address using external services defined in checkip_service_list
         :param proto: protocol
         :param timeout: timeout in seconds
         :param interface: bind to interface
+        :param dynipv6host: optional partial ipv6 address
         :return: str
     """
     if service.startswith('web_'):
@@ -95,6 +96,9 @@ def checkip(service, proto='https', timeout='10', interface=None):
                 if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6'):
                     try:
                         address = ipaddress.ip_address(parts[1])
+                        # alter dynamic ipv6 address
+                        if dynipv6host and isinstance(address, ipaddress.IPv6Address):
+                            address = ipaddress.ip_address(':'.join(parts[1].split(':')[:4]) + ':' + ':'.join(str(ipaddress.ip_address(dynipv6host).exploded).split(':')[4:]))
                         if address.is_global:
                             return str(address)
                     except ValueError:
