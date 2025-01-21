@@ -97,6 +97,13 @@
     <help>Enter how often the resource must be hit before adding it to the cache.</help>
   </field>
   <field>
+    <id>location.cache_valid</id>
+    <label>Cache: Force caching time</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Force caching of 200, 301 and 302 responses according to the request methods enabled for caching. Given in minutes; leave empty to rely on request/response headers from client and upstream.</help>
+  </field>
+  <field>
     <id>location.cache_background_update</id>
     <label>Cache: Background Update</label>
     <type>checkbox</type>

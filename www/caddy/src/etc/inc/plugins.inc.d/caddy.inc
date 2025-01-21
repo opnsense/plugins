@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2023-2024 Cedrik Pischem
+ * Copyright (C) 2023-2025 Cedrik Pischem
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ function caddy_services()
         $config['Pischem']['caddy']['general']['enabled'] == 1
     ) {
         $services[] = array(
-            'description' => gettext('Caddy Web Server'),
+            'description' => gettext('Caddy'),
             'configd' => array(
                 'restart' => array('caddy restart'),
                 'start' => array('caddy start'),
@@ -56,11 +56,16 @@ function caddy_xmlrpc_sync()
     $result = array();
 
     $result[] = array(
-        'description' => gettext('Caddy Web Server'),
+        'description' => gettext('Caddy'),
         'section' => 'Pischem.caddy',
         'id' => 'caddy',
         'services' => ["caddy"],
     );
 
     return $result;
+}
+
+function caddy_syslog()
+{
+    return ['caddy' => ['facility' => ['caddy']]];
 }

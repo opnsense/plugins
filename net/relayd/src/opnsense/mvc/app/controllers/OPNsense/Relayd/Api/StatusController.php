@@ -202,7 +202,6 @@ class StatusController extends ApiControllerBase
     {
         $result = ["result" => "failed", "function" => "toggle"];
         if ($this->request->isPost()) {
-            $this->sessionClose();
             $backend = new Backend();
             if (in_array($nodeType, ['redirect', 'table', 'host']) && in_array($action, ['enable', 'disable'])) {
                 if ($id != null && $id > 0) {

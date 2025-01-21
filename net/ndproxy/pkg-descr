@@ -1,0 +1,8 @@
+Ndproxy is a kernel module that implements IPv6 Neighbor Discovery proxying over Ethernet-like access networks.
+
+Plugin Changelog
+================
+
+1.0
+
+* Initial Release

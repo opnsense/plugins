@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>settings.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will activate the Tailscale service.</help>
+    </field>
+    <field>
+        <id>settings.listenPort</id>
+        <label>Listen Port</label>
+	<type>text</type>
+        <help>UDP port to listen on for WireGuard and peer-to-peer traffic.</help>
+    </field>
+    <field>
+        <id>settings.acceptDNS</id>
+        <label>Accept DNS</label>
+        <type>checkbox</type>
+        <help>Accept DNS configuration from the control server.</help>
+    </field>
+    <field>
+        <id>settings.advertiseExitNode</id>
+        <label>Advertise Exit Node</label>
+        <type>checkbox</type>
+        <help>Offer to be an exit node for outbound internet traffic from the Tailscale network.</help>
+    </field>
+    <field>
+        <id>settings.acceptSubnetRoutes</id>
+        <label>Accept Subnet Routes</label>
+        <type>checkbox</type>
+        <help>Accept subnet routes that other nodes advertise.</help>
+    </field>
+</form>

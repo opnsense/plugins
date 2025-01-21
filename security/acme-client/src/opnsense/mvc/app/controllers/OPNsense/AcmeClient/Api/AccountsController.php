@@ -48,7 +48,6 @@ class AccountsController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('account', 'accounts.account', $uuid);
     }
 

@@ -99,7 +99,6 @@ class AclController extends ApiMutableModelControllerBase
     public function applyAction()
     {
         if ($this->request->isPost()) {
-            $this->sessionClose();
             $backend = new Backend();
             $backend->configdRun('template reload Deciso/Proxy');
             $backend->configdRun('opnproxy sync_users');
@@ -116,7 +115,6 @@ class AclController extends ApiMutableModelControllerBase
             $src = !empty($src) ? $src : "-";
             $user = $this->request->getPost('user', null, '');
             $user = !empty($user) ? $user : "-";
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdpRun('opnproxy user test', [
                 $user, $this->request->getPost('uri'), $src

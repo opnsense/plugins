@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2024 Cedrik Pischem
+ # Copyright (c) 2024-2025 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -27,7 +27,7 @@
 <script>
     $(document).ready(function() {
         // Bootgrid Setup
-        $("#Layer4Grid").UIBootgrid({
+        $("#{{formGridLayer4['table_id']}}").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchLayer4/',
             get:'/api/caddy/ReverseProxy/getLayer4/',
             set:'/api/caddy/ReverseProxy/setLayer4/',
@@ -36,7 +36,7 @@
             toggle:'/api/caddy/ReverseProxy/toggleLayer4/',
         });
 
-        $("#Layer4OpenvpnGrid").UIBootgrid({
+        $("#{{formGridLayer4Openvpn['table_id']}}").UIBootgrid({
             search:'/api/caddy/ReverseProxy/searchLayer4Openvpn/',
             get:'/api/caddy/ReverseProxy/getLayer4Openvpn/',
             set:'/api/caddy/ReverseProxy/setLayer4Openvpn/',
@@ -95,9 +95,6 @@
             }
         });
 
-        // Hide all elements with style_matchers initially
-        $(".style_matchers").closest('tr').hide();
-
         $("#layer4\\.Matchers").change(function() {
             $(".style_matchers").closest('tr').hide();
             const selectedVal = $(this).val();
@@ -106,6 +103,14 @@
                 $(".matchers_domain").closest('tr').show();
             } else if (selectedVal === "openvpn") {
                 $(".matchers_openvpn").closest('tr').show();
+            }
+        });
+
+        $("#layer4\\.Type").change(function() {
+            if ($(this).val() === "global") {
+                $(".style_type").closest('tr').show();
+            } else {
+                $(".style_type").closest('tr').hide();
             }
         });
 
@@ -132,41 +137,7 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
             <div style="display: block;">
-                <table id="Layer4Grid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="Sequence" data-type="string">{{ lang._('Sequence') }}</th>
-                            <th data-column-id="Type" data-type="string" data-visible="false">{{ lang._('Routing Type') }}</th>
-                            <th data-column-id="Protocol" data-type="string">{{ lang._('Protocol') }}</th>
-                            <th data-column-id="FromPort" data-type="string" data-visible="false">{{ lang._('Local Port') }}</th>
-                            <th data-column-id="Matchers" data-type="string">{{ lang._('Matchers') }}</th>
-                            <th data-column-id="InvertMatchers" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Invert Matchers') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromOpenvpnModes" data-type="string" data-visible="false">{{ lang._('OpenVPN Modes') }}</th>
-                            <th data-column-id="FromOpenvpnStaticKey" data-type="string" data-visible="false">{{ lang._('OpenVPN Static Key') }}</th>
-                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
-                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
-                            <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
-                            <th data-column-id="ProxyProtocol" data-type="string" data-visible="false">{{ lang._('Proxy Protocol') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
             </div>
         </div>
     </div>
@@ -177,26 +148,7 @@
             <!-- OpenVPN Matcher -->
             <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
             <div style="display: block;">
-                <table id="Layer4OpenvpnGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4Openvpn" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addLayer4OpenvpnBtn" data-action="add" type="button" class="btn btn-xs btn-primary"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
             </div>
         </div>
     </div>
@@ -218,12 +170,12 @@
             <!-- Message Area for error/success messages -->
             <div id="messageArea" class="alert alert-info" style="display: none;"></div>
             <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
-            <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
+            <div id="ConfChangeMessage" class="alert alert-info" style="display: none;">
             {{ lang._('Please do not forget to apply the configuration.') }}
             </div>
         </div>
     </div>
 </section>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':'DialogLayer4','label':lang._('Edit Layer4 Route')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':'DialogLayer4Openvpn','label':lang._('Edit OpenVPN Static Key')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':formGridLayer4['edit_dialog_id'],'label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':formGridLayer4Openvpn['edit_dialog_id'],'label':lang._('Edit OpenVPN Static Key')])}}

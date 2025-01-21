@@ -94,7 +94,6 @@ const EXITCODE_ERROR_UNKNOWN_COMMAND = 254;
 
 // Optional imports
 @include_once("config.inc");
-@include_once("certs.inc");
 @include_once("util.inc");
 
 // Optional autoloader (for local dev environment)
@@ -189,7 +188,7 @@ function runRemoteCommand(array $options, &$error): ?array
     $identity_type = trim(($options["identity-type"] ?? ""));
     $host = trim(($options["host"] ?? ""));
     $host_key = ($options["host-key"] ?? "");
-    $port = $options["port"] ?? 22;
+    $port = !empty($options["port"]) ? $options["port"] : SSHKeys::DEFAULT_PORT;
     $username = $options["user"] ?? false;
     $command = $options["run"] ?? "";
 

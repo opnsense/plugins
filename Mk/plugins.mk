@@ -231,6 +231,11 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
 			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			gzip -cn "${DESTDIR}${LOCALBASE}/$${FILE}" > \
+			    "${DESTDIR}${LOCALBASE}/$${FILE}.gz"; \
+			rm "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
@@ -243,6 +248,9 @@ plist: check
 		elif [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
 			FILE="$${FILE%%.shadow}.sample"; \
 			PREFIX="@shadow "; \
+		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			FILE="$${FILE}.gz"; \
 		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
 	done
@@ -409,6 +417,8 @@ sweep: check
 	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
+glint: sweep style-fix plist-fix lint
+
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
@@ -459,7 +469,7 @@ test: check
 	fi
 
 commit: ensure-workdirs
-	@echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
+	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
 	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
 
 .PHONY:	check plist-fix

@@ -22,32 +22,41 @@
 {# Sort the configurations based on 'Sequence' #}
 {% set layer4_configs = unsorted_layer4_configs | sort(attribute='Sequence') %}
 
-{% macro define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) %}
-    proxy {% for domain in to_domains.split(',') %}
-        {% set is_ipv6 = (':' in domain) %}
-        {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ to_port }}{% if not loop.last %} {% endif %}
-    {% endfor %} {
-    {% if fail_duration %}
-        fail_duration {{ fail_duration }}s
+{% macro define_proxy(layer4) %}
+    {% if layer4.TerminateTls|default("0") == "1" %}
+    tls
     {% endif %}
-    {% if proxy_protocol %}
-        proxy_protocol {{ proxy_protocol }}
+    proxy {% for domain in layer4.ToDomain.split(',') %}
+        {% set is_ipv6 = (':' in domain) %}
+        {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+    {% endfor %} {
+    {% if layer4.lb_policy|default("") %}
+        lb_policy {{ layer4.lb_policy }}
+    {% endif %}
+    {% if layer4.PassiveHealthFailDuration|default("") %}
+        fail_duration {{ layer4.PassiveHealthFailDuration }}s
+    {% endif %}
+    {% if layer4.PassiveHealthMaxFails|default("") %}
+        max_fails {{ layer4.PassiveHealthMaxFails }}
+    {% endif %}
+    {% if layer4.ProxyProtocol %}
+        proxy_protocol {{ layer4.ProxyProtocol }}
     {% endif %}
     }
 {% endmacro %}
 
-{% macro configure_proxy(layer4, to_domains, to_port, remote_ips, fail_duration, proxy_protocol) %}
+{% macro configure_proxy(layer4) %}
     {% set content %}
-        {% if remote_ips %}
-            {% set ip_list = remote_ips.split(',') %}
+        {% if layer4.RemoteIp %}
+            {% set ip_list = layer4.RemoteIp.split(',') %}
             subroute {
                 @allowed_ips remote_ip {{ ip_list|join(' ') }}
                 route @allowed_ips {
-                    {{ define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) }}
+                    {{ define_proxy(layer4) }}
                 }
             }
         {% else %}
-            {{ define_proxy(layer4, to_domains, to_port, fail_duration, proxy_protocol) }}
+            {{ define_proxy(layer4) }}
         {% endif %}
     {% endset %}
     {{ content|trim }}
@@ -141,7 +150,7 @@
             {% if layer4.Matchers != 'any' %}
                 @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
                 route @{{ layer4['@uuid'] }} {
-                    {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                    {{ configure_proxy(layer4) }}
                 }
             {% endif %}
         {% endif %}
@@ -154,11 +163,11 @@
                     {% if layer4.Matchers != 'any' %}
                         @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
                         route @{{ layer4['@uuid'] }} {
-                            {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                            {{ configure_proxy(layer4) }}
                         }
                     {% else %}
                         route {
-                            {{ configure_proxy(layer4, layer4.ToDomain, layer4.ToPort, layer4.RemoteIp, layer4.PassiveHealthFailDuration, layer4.ProxyProtocol) }}
+                            {{ configure_proxy(layer4) }}
                         }
                     {% endif %}
                 {% endif %}
