@@ -240,7 +240,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchAction($nodeType = null)
     {
-        $this->sessionClose();
         if ($this->request->isPost() && $nodeType != null) {
             $this->validateNodeType($nodeType);
             $grid = new UIModelGrid($this->getModel()->$nodeType);
