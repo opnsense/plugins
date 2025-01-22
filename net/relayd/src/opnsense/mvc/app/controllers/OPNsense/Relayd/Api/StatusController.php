@@ -224,7 +224,9 @@ class StatusController extends ApiControllerBase
                 $relaydMdl->serializeToConfig();
                 Config::getInstance()->save();
                 // invoke service controller
-                return (new ServiceController())->reconfigureAction();
+                $srv = new ServiceController();
+                $srv->request = $this->request;
+                return $srv->reconfigureAction();
             }
         }
         return $result;
