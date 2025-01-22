@@ -5,6 +5,10 @@ content serving applications.
 Plugin Changelog
 ================
 
+1.1
+
+* Syslog corrections and implementation of "workers" (contributed by Andy Binder)
+
 1.0
 
 * Initial version based on the OPNsense 23.7.12 core code

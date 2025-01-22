@@ -56,7 +56,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getuserlistAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('userlist', 'userlist', $uuid);
     }
 
@@ -83,7 +82,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getcredentialAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('credential', 'credential', $uuid);
     }
 
@@ -110,7 +108,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getupstreamAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('upstream', 'upstream', $uuid);
     }
 
@@ -137,7 +134,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getupstreamserverAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('upstream_server', 'upstream_server', $uuid);
     }
 
@@ -183,7 +179,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getlocationAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('location', 'location', $uuid);
     }
 
@@ -210,7 +205,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getcustompolicyAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('custompolicy', 'custom_policy', $uuid);
     }
 
@@ -237,7 +231,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getresolverAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('resolver', 'resolver', $uuid);
     }
 
@@ -267,7 +260,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function gethttpserverAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('httpserver', 'http_server', $uuid);
     }
 
@@ -294,7 +286,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getstreamserverAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('streamserver', 'stream_server', $uuid);
     }
 
@@ -321,7 +312,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getnaxsiruleAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('naxsi_rule', 'naxsi_rule', $uuid);
     }
 
@@ -348,7 +338,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function gethttprewriteAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('httprewrite', 'http_rewrite', $uuid);
     }
 
@@ -448,7 +437,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getsecurityHeaderAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('security_header', 'security_header', $uuid);
     }
 
@@ -478,7 +466,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getlimitZoneAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('limit_zone', 'limit_zone', $uuid);
     }
 
@@ -505,7 +492,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function geterrorpageAction($uuid = null)
     {
-        $this->sessionClose();
         $data = $this->getBase('errorpage', 'errorpage', $uuid);
         // Decode base64 encoded page content
         $data['errorpage']['pagecontent'] = base64_decode($data['errorpage']['pagecontent']);
@@ -541,7 +527,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function gettlsFingerprintAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('tls_fingerprint', 'tls_fingerprint', $uuid);
     }
 
@@ -571,7 +556,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getlimitRequestConnectionAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('limit_request_connection', 'limit_request_connection', $uuid);
     }
 
@@ -600,7 +584,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getcachePathAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('cache_path', 'cache_path', $uuid);
     }
 
@@ -627,7 +610,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getsnifwdAction($uuid = null)
     {
-        $this->sessionClose();
         $base = $this->getBase('snihostname', 'sni_hostname_upstream_map', $uuid);
         return $this->convert_sni_fwd_for_client($base);
     }
@@ -672,7 +654,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getipaclAction($uuid = null)
     {
-        $this->sessionClose();
         $base = $this->getBase('ipacl', 'ip_acl', $uuid);
         return $this->convert_ipacl_for_client($base);
     }
@@ -827,7 +808,6 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function getsyslogTargetAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('syslog_target', 'syslog_target', $uuid);
     }
 

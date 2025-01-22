@@ -81,7 +81,7 @@
     {% endif %}
 
     servers {
-        protocols {{ generalSettings.HttpVersion.split(',') | join(' ') }}
+        protocols {{ generalSettings.HttpVersions.split(',') | join(' ') }}
         {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
