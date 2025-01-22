@@ -27,8 +27,7 @@
         <id>settings.useExitNode</id>
         <label>Use Exit Node</label>
         <type>dropdown</type>
-        <help>Route traffic to the specified exit node.  Note that this only affects traffic routed into your Tailscale interface,
-          which you will have to configure separately using firewall rules and hybrid outbound NAT rules.</help>
+        <help>Route traffic to the specified exit node. Note that this only affects traffic routed into your Tailscale interface, which you will have to configure separately using firewall rules and hybrid outbound NAT rules.</help>
     </field>
     <field>
         <id>settings.acceptSubnetRoutes</id>
