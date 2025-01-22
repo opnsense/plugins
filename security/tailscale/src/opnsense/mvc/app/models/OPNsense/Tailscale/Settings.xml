@@ -6,6 +6,10 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
+        <loginTimeout type="IntegerField">
+            <default>10</default>
+            <Required>Y</Required>
+        </loginTimeout>
         <listenPort type="PortField">
             <default>41641</default>
             <Required>Y</Required>
@@ -32,9 +36,5 @@
                 <description type="DescriptionField"/>
             </subnet4>
         </subnets>
-        <loginTimeout type="IntegerField">
-            <default>10</default>
-            <Required>Y</Required>
-        </loginTimeout>
     </items>
 </model>
