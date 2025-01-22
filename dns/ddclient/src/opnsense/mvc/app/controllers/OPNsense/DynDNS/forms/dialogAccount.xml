@@ -93,10 +93,10 @@
     </field>
     <field>
         <id>account.dynipv6host</id>
-        <label>Dynamic ipv6 partial address</label>
+        <label>Dynamic ipv6 host</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>Swap the host part of the ipv6 address with the given partial ipv6 address</help>
+        <help>Swap the interface identifier of the ipv6 address with the given partial ipv6 address</help>
     </field>
     <field>
         <id>account.checkip_timeout</id>

@@ -67,6 +67,24 @@ def extract_address(host, txt):
     return ""
 
 
+def transform_ip(ip, ipv6host=None):
+    """ Changes ipv6 addresses if interface identifier is given
+        :param ip: ip address
+        :param ipv6host: 64 bit interface identifier
+        :return str
+    """
+    if (
+        ipv6host and
+        isinstance(ip, ipaddress.IPv6Address)
+    ):
+        # extract 64 bit long prefix
+        prefix = ':'.join(str(ip).split(':')[:4])
+        # normalize 64 bit interface identifier
+        host = ':'.join(str(ipaddress.ip_address(ipv6host).exploded).split(':')[4:])
+        ip = ipaddress.ip_address(f"{prefix}:{host}")
+    return ip
+
+
 def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=None):
     """ find ip address using external services defined in checkip_service_list
         :param proto: protocol
@@ -85,8 +103,10 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
             params.append(interface)
         url = checkip_service_list[service] % proto
         params.append(url)
-        return extract_address(urlparse(url).hostname,
+        extracted_address = extract_address(urlparse(url).hostname,
             subprocess.run(params, capture_output=True, text=True).stdout)
+        address = ipaddress.ip_address(extracted_address)
+        return str(transform_ip(address, dynipv6host))
     elif service in ['if', 'if6'] and interface is not None:
         # return first non private IPv[4|6] interface address
         ifcfg = subprocess.run(['/sbin/ifconfig', interface], capture_output=True, text=True).stdout
@@ -96,11 +116,8 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
                 if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6'):
                     try:
                         address = ipaddress.ip_address(parts[1])
-                        # alter dynamic ipv6 address
-                        if dynipv6host and isinstance(address, ipaddress.IPv6Address):
-                            address = ipaddress.ip_address(':'.join(parts[1].split(':')[:4]) + ':' + ':'.join(str(ipaddress.ip_address(dynipv6host).exploded).split(':')[4:]))
                         if address.is_global:
-                            return str(address)
+                            return str(transform_ip(address, dynipv6host))
                     except ValueError:
                         continue
     else:
