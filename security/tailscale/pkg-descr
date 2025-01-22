@@ -8,6 +8,7 @@ Plugin Changelog
 
 1.2
 * add option to allow Tailscale to manage SSH connections
+* add option to disable SNAT routing (experimental)
 
 1.1
 
