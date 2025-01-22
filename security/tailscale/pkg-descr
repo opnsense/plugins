@@ -6,6 +6,9 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
+1.2
+* add option to allow Tailscale to manage SSH connections
+
 1.1
 
 * add dashboard widget

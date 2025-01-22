@@ -18,6 +18,13 @@
         <help>Accept DNS configuration from the control server.</help>
     </field>
     <field>
+        <id>settings.enableSSH</id>
+        <label>Enable SSH</label>
+        <advanced>true</advanced>
+        <type>checkbox</type>
+        <help>Allow Tailscale to manage SSH connections your tailnet.</help>
+    </field>
+    <field>
         <id>settings.advertiseExitNode</id>
         <label>Advertise Exit Node</label>
         <type>checkbox</type>

@@ -25,6 +25,11 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    else %}
 {%      do up_args.append("--accept-dns=false") %}
 {%    endif %}
+{%    if helpers.exists('OPNsense.tailscale.settings.enableSSH') and OPNsense.tailscale.settings.enableSSH|default("0") == "1" %}
+{%      do up_args.append("--ssh=true") %}
+{%    else %}
+{%      do up_args.append("--ssh=false") %}
+{%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
 {%      do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
 {%    endif %}

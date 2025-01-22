@@ -22,6 +22,10 @@
             <default>0</default>
             <Required>Y</Required>
         </acceptSubnetRoutes>
+        <enableSSH type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enableSSH>
         <subnets>
             <subnet4 type="ArrayField">
                 <subnet type="NetworkField">
