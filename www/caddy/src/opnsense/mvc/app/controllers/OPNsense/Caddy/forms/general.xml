@@ -227,6 +227,15 @@
             <type>text</type>
             <help><![CDATA[Enter the URI of the authz api endpoint.]]></help>
         </field>
+        <field>
+            <id>caddy.general.AuthCopyHeaders</id>
+            <label>Copy Headers</label>
+            <hint>Default Headers</hint>
+            <type>select_multiple</type>
+            <style>selectpicker</style>
+            <help><![CDATA["copy_headers" is a list of HTTP header fields to copy from the response to the original request, when the request has a success status code. When default, the correct headers for the chosen provider are copied automatically. If you change the default, you must select the headers manually.]]>
+        </help>
+    </field>
     </tab>
     <activetab>general-settings</activetab>
 </form>

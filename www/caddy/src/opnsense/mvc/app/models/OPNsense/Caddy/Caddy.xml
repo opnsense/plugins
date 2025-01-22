@@ -167,6 +167,27 @@
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
+            <AuthCopyHeaders type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <Authorization>Authorization</Authorization>
+                    <Remote-User>Remote-User (Authelia)</Remote-User>
+                    <Remote-Groups>Remote-Groups (Authelia)</Remote-Groups>
+                    <Remote-Name>Remote-Name (Authelia)</Remote-Name>
+                    <Remote-Email>Remote-Email (Authelia)</Remote-Email>
+                    <X-Authentik-Username>X-Authentik-Username (Authentik)</X-Authentik-Username>
+                    <X-Authentik-Groups>X-Authentik-Groups (Authentik)</X-Authentik-Groups>
+                    <X-Authentik-Email>X-Authentik-Email (Authentik)</X-Authentik-Email>
+                    <X-Authentik-Name>X-Authentik-Name (Authentik)</X-Authentik-Name>
+                    <X-Authentik-Uid>X-Authentik-Uid (Authentik)</X-Authentik-Uid>
+                    <X-Authentik-Jwt>X-Authentik-Jwt (Authentik)</X-Authentik-Jwt>
+                    <X-Authentik-Meta-Jwks>X-Authentik-Meta-Jwks (Authentik)</X-Authentik-Meta-Jwks>
+                    <X-Authentik-Meta-Outpost>X-Authentik-Meta-Outpost (Authentik)</X-Authentik-Meta-Outpost>
+                    <X-Authentik-Meta-Provider>X-Authentik-Meta-Provider (Authentik)</X-Authentik-Meta-Provider>
+                    <X-Authentik-Meta-App>X-Authentik-Meta-App (Authentik)</X-Authentik-Meta-App>
+                    <X-Authentik-Meta-Version>X-Authentik-Meta-Version (Authentik)</X-Authentik-Meta-Version>
+                </OptionValues>
+            </AuthCopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
