@@ -3,6 +3,11 @@
     <id>interface.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>interface.interfacename</id>
@@ -19,28 +24,43 @@
     <id>interface.authkey</id>
     <label>Authentication Key</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.authkey_id</id>
     <label>Authentication Key ID</label>
     <advanced>true</advanced>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.area</id>
     <label>Area</label>
     <type>text</type>
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.cost_demoted</id>
     <label>Cost (when demoted)</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.carp_depend_on</id>
@@ -48,41 +68,67 @@
     <type>dropdown</type>
     <help>The carp VHID to depend on, when this virtual address is not in master state,
       the interface cost will be set to the demoted cost (specified above).</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.hellointerval</id>
     <label>Hello Interval</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.deadinterval</id>
     <label>Dead Interval</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.retransmitinterval</id>
     <label>Retransmission Interval</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.transmitdelay</id>
     <label>Retransmission Delay</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.priority</id>
     <label>Priority</label>
     <type>text</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.bfd</id>
     <label>BFD</label>
     <type>checkbox</type>
     <help>You can enable BFD support for this interface. You will also need to configure BFD peers.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.networktype</id>
     <label>Network Type</label>
     <type>dropdown</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
 </form>
