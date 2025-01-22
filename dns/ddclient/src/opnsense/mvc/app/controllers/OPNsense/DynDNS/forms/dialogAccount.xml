@@ -96,7 +96,7 @@
         <label>Dynamic ipv6 host</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>Swap the interface identifier of the ipv6 address with the given partial ipv6 address</help>
+        <help>Swap the interface identifier of the ipv6 address with the given partial ipv6 address (the least significant 64 bits of the address)</help>
     </field>
     <field>
         <id>account.checkip_timeout</id>
