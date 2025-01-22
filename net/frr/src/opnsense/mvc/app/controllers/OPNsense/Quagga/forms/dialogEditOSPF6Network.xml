@@ -3,6 +3,11 @@
     <id>network.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>network.ipaddr</id>
@@ -25,17 +30,26 @@
     <label>Area Range</label>
     <type>text</type>
     <help>Here you can summarize a network for this area like fe80:1234::0/64</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>network.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
     <help>Prefix-List for inbound direction</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>network.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
     <help>Prefix-List for outbound direction</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
 </form>
