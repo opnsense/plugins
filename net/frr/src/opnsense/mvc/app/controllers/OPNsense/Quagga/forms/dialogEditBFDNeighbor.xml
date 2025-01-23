@@ -3,6 +3,11 @@
     <id>neighbor.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.description</id>
@@ -24,5 +29,9 @@
     (because it will take more than one hop) and to listen on the multihop port (4784).
     When using multi-hop mode echo-mode will not work (see RFC 5883 section 3).
     </help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
 </form>
