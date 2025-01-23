@@ -19,6 +19,9 @@
     <id>interface.authtype</id>
     <label>Authentication Type</label>
     <type>dropdown</type>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>interface.authkey</id>
@@ -42,17 +45,11 @@
     <label>Area</label>
     <type>text</type>
     <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once.</help>
-    <grid_view>
-      <visible>false</visible>
-    </grid_view>
   </field>
   <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
-    <grid_view>
-      <visible>false</visible>
-    </grid_view>
   </field>
   <field>
     <id>interface.cost_demoted</id>
@@ -127,8 +124,5 @@
     <id>interface.networktype</id>
     <label>Network Type</label>
     <type>dropdown</type>
-    <grid_view>
-      <visible>false</visible>
-    </grid_view>
   </field>
 </form>

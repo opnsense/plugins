@@ -28,15 +28,13 @@
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
+      <visible>false</visible>
     </grid_view>
   </field>
   <field>
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
-    <grid_view>
-      <visible>false</visible>
-    </grid_view>
   </field>
   <field>
     <id>interface.cost_demoted</id>
@@ -112,8 +110,5 @@
     <id>interface.networktype</id>
     <label>Network Type</label>
     <type>dropdown</type>
-    <grid_view>
-      <visible>false</visible>
-    </grid_view>
   </field>
 </form>

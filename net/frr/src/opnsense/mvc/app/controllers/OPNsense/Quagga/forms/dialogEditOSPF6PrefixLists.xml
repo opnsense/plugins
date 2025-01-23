@@ -18,7 +18,7 @@
   </field>
   <field>
     <id>prefixlist.seqnumber</id>
-    <label>Number</label>
+    <label>Sequence Number</label>
     <type>text</type>
     <help>The ACL sequence number (10-99)</help>
   </field>
