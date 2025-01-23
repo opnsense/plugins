@@ -45,9 +45,14 @@ class CaddyOverrideStatus extends AbstractStatus
             '/ui/caddy/reverse_proxy',
             '/ui/caddy/general'
         ];
+    }
 
-        if (count(glob('/usr/local/etc/caddy/caddy.d/*.*'))) {
-            $this->internalMessage = gettext('Custom configuration imports exist in "/usr/local/etc/caddy/caddy.d/".');
+    public function collectStatus()
+    {
+        if (count(glob('/usr/local/etc/caddy/caddy.d/*'))) {
+            $this->internalMessage = gettext(
+                'The configuration contains manual overwrites, these may interfere with the settings configured here.'
+            );
             $this->internalStatus = SystemStatusCode::NOTICE;
         }
     }
