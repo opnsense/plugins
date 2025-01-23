@@ -4,6 +4,11 @@
     <label>Enabled</label>
     <type>checkbox</type>
     <help>If this AS-Path list should be enabled.</help>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>aspath.description</id>

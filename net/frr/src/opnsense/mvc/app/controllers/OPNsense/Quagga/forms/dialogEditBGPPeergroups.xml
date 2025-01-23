@@ -3,6 +3,11 @@
     <id>peergroup.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.name</id>
@@ -14,23 +19,37 @@
     <id>peergroup.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
-    <help>Remote AS for tthis peergroup.</help>
+    <help>Remote AS for this peergroup.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>
     <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.nexthopself</id>
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
     <field>
     <id>peergroup.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.linkedPrefixlistIn</id>
