@@ -3,7 +3,6 @@
     <id>prefixlist.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
     <grid_view>
       <width>6em</width>
       <type>boolean</type>
@@ -14,7 +13,7 @@
     <id>prefixlist.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
+    <help>The name of your Prefix-List. If there should be multiple entries for the same prefix list, give them all the same name.</help>
   </field>
   <field>
     <id>prefixlist.seqnumber</id>
@@ -32,6 +31,6 @@
     <id>prefixlist.network</id>
     <label>Network</label>
     <type>text</type>
-    <help>The network pattern you want to match. It's not validated so please be careful!</help>
+    <help>The network pattern you want to match.</help>
   </field>
 </form>

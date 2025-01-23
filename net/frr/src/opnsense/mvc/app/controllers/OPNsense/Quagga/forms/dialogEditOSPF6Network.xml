@@ -13,23 +13,25 @@
     <id>network.ipaddr</id>
     <label>Network Address</label>
     <type>text</type>
+    <help>Specifies the IPv6 network address (e.g., fe80::1234) to include in OSPFv3.</help>
   </field>
   <field>
     <id>network.netmask</id>
     <label>Network Mask</label>
     <type>text</type>
+    <help>Defines the network prefix length (e.g., 64) for the specified IPv6 address range.</help>
   </field>
   <field>
     <id>network.area</id>
     <label>Area</label>
     <type>text</type>
-    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once.</help>
+    <help>Assigns the network to an OSPF area using an identifier like 0.0.0.0 (Backbone Area). The Backbone Area connects other areas, supporting inter-area communication, while additional areas (e.g., 0.0.0.1, 0.0.0.255) segment the network logically to limit routing updates. Only use Area in Interface tab or in Network tab once.</help>
   </field>
   <field>
     <id>network.arearange</id>
     <label>Area Range</label>
     <type>text</type>
-    <help>Here you can summarize a network for this area like fe80:1234::0/64</help>
+    <help>Summarizes multiple networks in the specified area, consolidating multiple networks into a single summarized route like fe80:1234::/56.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -38,7 +40,7 @@
     <id>network.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix-List for inbound direction</help>
+    <help>Filters inbound route advertisements using a prefix list.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -47,7 +49,7 @@
     <id>network.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix-List for outbound direction</help>
+    <help>Filters outbound route advertisements using a prefix list.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>

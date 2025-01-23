@@ -19,12 +19,13 @@
     <id>interface.area</id>
     <label>Area</label>
     <type>text</type>
-    <help>Area in wildcard mask style like 0.0.0.0 and no decimal 0</help>
+    <help>Assigns the network to an OSPF area using an identifier like 0.0.0.0 (Backbone Area). The Backbone Area connects other areas, supporting inter-area communication, while additional areas (e.g., 0.0.0.1, 0.0.0.255) segment the network logically to limit routing updates. Only use Area in Interface tab or in Network tab once.</help>
   </field>
   <field>
     <id>interface.passive</id>
     <label>Passive Interface</label>
     <type>checkbox</type>
+    <help>Disables OSPF Hello packets on the interface, preventing neighbor relationships (used for security or optimization).<help>
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
@@ -35,12 +36,14 @@
     <id>interface.cost</id>
     <label>Cost</label>
     <type>text</type>
+    <help>Sets the OSPF metric for path selection; lower costs are preferred paths within the area.</help>
   </field>
   <field>
     <id>interface.cost_demoted</id>
     <label>Cost (when demoted)</label>
     <type>text</type>
     <hint>65535</hint>
+    <help>Specifies metric cost when interface is in backup mode via CARP, deprioritizing paths dynamically.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -49,8 +52,7 @@
     <id>interface.carp_depend_on</id>
     <label>Depend on (carp)</label>
     <type>dropdown</type>
-    <help>The carp VHID to depend on, when this virtual address is not in master state,
-      the interface cost will be set to the demoted cost (specified above).</help>
+    <help>Links the interface cost to a CARP VHID, adjusting costs based on primary or backup status.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -59,6 +61,7 @@
     <id>interface.hellointerval</id>
     <label>Hello Interval</label>
     <type>text</type>
+    <help>Sets frequency (in seconds) of Hello packets to maintain OSPF neighbor relationships.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -67,6 +70,7 @@
     <id>interface.deadinterval</id>
     <label>Dead Interval</label>
     <type>text</type>
+    <help>Defines the timeout period for OSPF neighbors; after this period, the neighbor is marked as down.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -75,6 +79,7 @@
     <id>interface.retransmitinterval</id>
     <label>Retransmission Interval</label>
     <type>text</type>
+    <help>Time (seconds) to wait before resending Link-State Advertisements (LSAs) if acknowledgment is delayed.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -83,6 +88,7 @@
     <id>interface.transmitdelay</id>
     <label>Retransmission Delay</label>
     <type>text</type>
+    <help>Configures the hold time before LSAs are resent, accommodating slow or high-latency links.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -91,6 +97,7 @@
     <id>interface.priority</id>
     <label>Priority</label>
     <type>text</type>
+    <help>Determines the likelihood of becoming a Designated Router; higher values increase priority.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -99,7 +106,7 @@
     <id>interface.bfd</id>
     <label>BFD</label>
     <type>checkbox</type>
-    <help>You can enable BFD support for this interface. You will also need to configure BFD peers.</help>
+    <help>Activates Bidirectional Forwarding Detection for rapid link failure detection; peer configuration required.</help>
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
@@ -110,5 +117,6 @@
     <id>interface.networktype</id>
     <label>Network Type</label>
     <type>dropdown</type>
+    <help>Defines the OSPF network type, impacting adjacency and LSA flooding methods. "Broadcast Multi-Access": Assumes networks supporting multiple routers with broadcast capability (e.g., Ethernet). "Non-Broadcast Multi-Access (NBMA)"": For networks without broadcast support (e.g., Frame Relay); requires manual neighbor setup. "Point-to-Multipoint": Connects multiple routers over a single interface, treating each as a point-to-point link. "Point-to-Point": Directly connects two routers, simplifying adjacency and LSA transmission.</help>
   </field>
 </form>
