@@ -176,7 +176,7 @@
                     <Remote-Name>Remote-Name</Remote-Name>
                     <Remote-Email>Remote-Email</Remote-Email>
                     <X-Authentik-Username>X-Authentik-Username</X-Authentik-Username>
-                    <X-Authentik-Groups>X-Authentik-Group</X-Authentik-Groups>
+                    <X-Authentik-Groups>X-Authentik-Groups</X-Authentik-Groups>
                     <X-Authentik-Email>X-Authentik-Email</X-Authentik-Email>
                     <X-Authentik-Name>X-Authentik-Name</X-Authentik-Name>
                     <X-Authentik-Uid>X-Authentik-Uid</X-Authentik-Uid>
