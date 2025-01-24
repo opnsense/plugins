@@ -3,6 +3,6 @@
         <id>staticd.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the staticd service if the support of routing protocols is enabled in "General".</help>
+        <help>This will activate the staticd service.</help>
     </field>
 </form>

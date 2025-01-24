@@ -13,13 +13,13 @@
     <id>peergroup.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Specify the name of this peergroup.</help>
+    <help>Name of the peer group.</help>
   </field>
   <field>
     <id>peergroup.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
-    <help>Remote AS for this peergroup.</help>
+    <help>Remote AS for the peer group.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -28,7 +28,7 @@
     <id>peergroup.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>
-    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+    <help>Physical IPv4 interface facing the peer.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -37,15 +37,17 @@
     <id>peergroup.nexthopself</id>
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
+    <help>Sets the local router as the next hop for routes advertised to the neighbor, commonly used in Route Reflector setups.</help>
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
     </grid_view>
   </field>
-    <field>
+  <field>
     <id>peergroup.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+    <help>Enable sending of default routes to the peer group.</help>
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
@@ -55,24 +57,24 @@
     <id>peergroup.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix-List for inbound direction.</help>
+    <help>Prefix list to filter inbound prefixes from this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix-List for outbound direction.</help>
+    <help>Prefix list to filter outbound prefixes sent to this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-Map for inbound direction.</help>
+    <help>Route-map to apply to routes received from this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-Map for outbound direction.</help>
+    <help>Route-map to apply to routes advertised to this neighbor.</help>
   </field>
 </form>

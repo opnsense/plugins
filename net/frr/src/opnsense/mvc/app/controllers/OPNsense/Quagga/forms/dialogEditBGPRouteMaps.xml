@@ -3,7 +3,6 @@
     <id>routemap.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
     <grid_view>
       <width>6em</width>
       <type>boolean</type>
@@ -14,13 +13,13 @@
     <id>routemap.description</id>
     <label>Description</label>
     <type>text</type>
-    <help>Add an optional description for this route-map.</help>
+    <help>Optional description for the route-map.</help>
   </field>
   <field>
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Route-map name to match and set your patterns, it will be enabled via the neighbor configuration.</help>
+    <help>Name of the route-map, used in neighbor configuration.</help>
   </field>
   <field>
     <id>routemap.action</id>
@@ -32,7 +31,7 @@
     <id>routemap.id</id>
     <label>ID</label>
     <type>text</type>
-    <help>Route-map ID between 1 and 65535. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
+    <help>Route-map ID (1-65535). Sorting is managed automatically.</help>
   </field>
   <field>
     <id>routemap.match</id>
@@ -40,7 +39,7 @@
     <type>select_multiple</type>
     <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the AS-Path List.</help>
+    <help>Select the AS-Path List. If multiples with the same name exist, selecting one is enough.</help>
   </field>
   <field>
     <id>routemap.match2</id>
@@ -48,7 +47,7 @@
     <type>select_multiple</type>
     <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Prefix List.</help>
+    <help>Select the Prefix List. If multiples with the same name exist, selecting one is enough.</help>
   </field>
   <field>
     <id>routemap.match3</id>
@@ -56,12 +55,12 @@
     <type>select_multiple</type>
     <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Community List.</help>
+    <help>Select the Community List. If multiples with the same name exist, selecting one is enough.</help>
   </field>
     <field>
     <id>routemap.set</id>
     <label>Set</label>
     <type>text</type>
-    <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
+    <help>Free text field for setting attributes, e.g., “local-preference 300” or “community 1:1”.</help>
   </field>
 </form>

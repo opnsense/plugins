@@ -3,7 +3,6 @@
     <id>prefixlist.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>If this Prefix-List should be enabled.</help>
     <grid_view>
       <width>6em</width>
       <type>boolean</type>
@@ -20,7 +19,7 @@
     <id>prefixlist.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>The name of your Prefix-List, please choose one near to the result you want to achieve.</help>
+    <help>Name of the Prefix-List, descriptive of its purpose. If there should be multiple entries for the same prefix list, give them all the same name.</help>
   </field>
   <field>
     <id>prefixlist.version</id>
@@ -35,7 +34,7 @@
     <id>prefixlist.seqnumber</id>
     <label>Sequence Number</label>
     <type>text</type>
-    <help>The ACL sequence number (1-4294967294)</help>
+    <help>The ACL sequence number (1-4294967294).</help>
   </field>
   <field>
     <id>prefixlist.action</id>
@@ -47,6 +46,6 @@
     <id>prefixlist.network</id>
     <label>Network</label>
     <type>text</type>
-    <help>The network pattern you want to match. You can also add "ge" or "le" additions after the network statement. It's not validated so please be careful!</help>
+    <help>Specifies a network pattern to match, with optional ge (greater than or equal) and le (less than or equal) attributes to control the prefix length range. For example, a pattern like "192.168.0.0/16 ge 24 le 28" matches any route within the 192.168.0.0/16 block with prefix lengths from /24 to /28.</help>
   </field>
 </form>
