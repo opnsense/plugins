@@ -13,6 +13,12 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.1
+
+* Add: Optional "Authorization" header to forward_auth (opnsense/plugins/issues/4488)
+* Add: Persistent banner notification if custom imports are used (opnsense/plugins/issues/4244)
+* Cleanup: Implement reusable grid template in views (opnsense/plugins/pull/4454)
+
 1.8.0
 
 * Build: Update Caddy to version 2.9.x and update dependencies (opnsense/plugins/issues/4437)
