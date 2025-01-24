@@ -78,7 +78,7 @@ export default class Tailscale extends BaseTableWidget {
         result['online'] = (data.Self.Online === true) ?
           this.translations.yes : this.translations.no;
 
-        result['exitNode'] = (data.Self.ExitNode === true) ?
+        result['exitNode'] = (data.Self.ExitNodeOption === true) ?
           this.translations.yes : this.translations.no;
 
         result['peerCount'] = Object.keys(data.Peer).length;
