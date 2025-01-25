@@ -77,4 +77,16 @@
         <type>text</type>
         <help>Set the DNS server hosting this file. This should usually be the FQDN of your firewall where the BIND plugin is installed.</help>
     </field>
+    <field>
+        <id>domain.allowddnsupdate</id>
+        <label>Allow DDNS Updates from a dhcp server</label>
+        <type>checkbox</type>
+        <help>This will enable a ddns updates from a dhcp-server for this zone (key defined in "General").</help>
+    </field>
+    <field>
+        <id>domain.rpzzone</id>
+        <label>Use zone as RPZ (response policy zone)</label>
+        <type>checkbox</type>
+        <help>This will enable add this zone as RPZ zone. DNSBL > Enable DNSBL and RPZ has to be enabled for this to work.</help>
+    </field>
 </form>
