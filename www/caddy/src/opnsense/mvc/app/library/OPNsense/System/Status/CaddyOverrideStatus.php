@@ -1,9 +1,7 @@
-#!/usr/local/bin/php
 <?php
-
 /*
- * Copyright (C) 2016-2021 Frank Wall
- * Copyright (C) 2015 Deciso B.V.
+ * Copyright (C) 2025 Cedrik Pischem
+ * Copyright (C) 2025 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,33 +26,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// Use legacy code to export certificates to the filesystem.
-require_once("config.inc");
+namespace OPNsense\System\Status;
 
-use OPNsense\Core\Config;
+use OPNsense\System\AbstractStatus;
+use OPNsense\System\SystemStatusCode;
 
-$export_path = '/tmp/haproxy/lua/';
+class CaddyOverrideStatus extends AbstractStatus
+{
+    public function __construct()
+    {
+        $this->internalPriority = 2;
+        $this->internalPersistent = true;
+        $this->internalIsBanner = true;
+        $this->internalTitle = gettext('Caddy config override');
+        $this->internalScope = [
+            '/ui/caddy/layer4',
+            '/ui/caddy/diagnostics',
+            '/ui/caddy/reverse_proxy',
+            '/ui/caddy/general'
+        ];
+    }
 
-// traverse HAProxy Lua scripts
-$configObj = Config::getInstance()->object();
-if (isset($configObj->OPNsense->HAProxy->luas)) {
-    foreach ($configObj->OPNsense->HAProxy->luas->children() as $lua) {
-        if (!isset($lua->enabled)) {
-            continue;
+    public function collectStatus()
+    {
+        if (count(glob('/usr/local/etc/caddy/caddy.d/*'))) {
+            $this->internalMessage = gettext(
+                'The configuration contains manual overwrites, these may interfere with the settings configured here.'
+            );
+            $this->internalStatus = SystemStatusCode::NOTICE;
         }
-        $lua_name = (string)$lua->name;
-        $lua_id = (string)$lua->id;
-        $lua_filename_scheme = (string)$lua->filename_scheme;
-        if ($lua_filename_scheme != '' and $lua_filename_scheme === 'name') {
-            $_name_alnum = preg_replace("/[^A-Za-z0-9]/", '', $lua_name);
-            $lua_filename = $export_path . $_name_alnum . '.lua';
-        } else {
-            $lua_filename = $export_path . $lua_id . '.lua';
-        }
-        $lua_content = htmlspecialchars_decode(str_replace("\r", "", (string)$lua->content));
-        file_put_contents($lua_filename, $lua_content);
-        chmod($lua_filename, 0600);
-        chown($lua_filename, 'www');
-        echo "lua script exported to " . $lua_filename . "\n";
     }
 }

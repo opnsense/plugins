@@ -50,7 +50,6 @@ class TemplateController extends ApiMutableModelControllerBase
     public function setAction()
     {
         if ($this->request->isPost() && $this->request->hasPost("content")) {
-            $this->sessionClose();
             $mdl = $this->getModel();
             $mdl->error_pages->template = $this->request->getPost("content", "striptags");
             $result = $this->validate();

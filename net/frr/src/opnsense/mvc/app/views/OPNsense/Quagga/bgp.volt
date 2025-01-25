@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2024 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2025 by Deciso B.V.
 Copyright (C) 2017 Fabian Franz
 Copyright (C) 2017 - 2020 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
@@ -27,6 +27,77 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
+
+<script>
+    $(document).ready(function() {
+        mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
+        });
+
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/quagga/bgp/set", 'frm_bgp_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
+            }
+        });
+
+        $("#grid-neighbors").UIBootgrid({
+            'search':'/api/quagga/bgp/searchNeighbor',
+            'get':'/api/quagga/bgp/getNeighbor/',
+            'set':'/api/quagga/bgp/setNeighbor/',
+            'add':'/api/quagga/bgp/addNeighbor/',
+            'del':'/api/quagga/bgp/delNeighbor/',
+            'toggle':'/api/quagga/bgp/toggleNeighbor/'
+        });
+        $("#grid-aspaths").UIBootgrid({
+            'search':'/api/quagga/bgp/searchAspath',
+            'get':'/api/quagga/bgp/getAspath/',
+            'set':'/api/quagga/bgp/setAspath/',
+            'add':'/api/quagga/bgp/addAspath/',
+            'del':'/api/quagga/bgp/delAspath/',
+            'toggle':'/api/quagga/bgp/toggleAspath/'
+        });
+        $("#grid-prefixlists").UIBootgrid({
+            'search':'/api/quagga/bgp/searchPrefixlist',
+            'get':'/api/quagga/bgp/getPrefixlist/',
+            'set':'/api/quagga/bgp/setPrefixlist/',
+            'add':'/api/quagga/bgp/addPrefixlist/',
+            'del':'/api/quagga/bgp/delPrefixlist/',
+            'toggle':'/api/quagga/bgp/togglePrefixlist/'
+        });
+        $("#grid-communitylists").UIBootgrid({
+            'search':'/api/quagga/bgp/searchCommunitylist',
+            'get':'/api/quagga/bgp/getCommunitylist/',
+            'set':'/api/quagga/bgp/setCommunitylist/',
+            'add':'/api/quagga/bgp/addCommunitylist/',
+            'del':'/api/quagga/bgp/delCommunitylist/',
+            'toggle':'/api/quagga/bgp/toggleCommunitylist/'
+        });
+        $("#grid-routemaps").UIBootgrid({
+            'search':'/api/quagga/bgp/searchRoutemap',
+            'get':'/api/quagga/bgp/getRoutemap/',
+            'set':'/api/quagga/bgp/setRoutemap/',
+            'add':'/api/quagga/bgp/addRoutemap/',
+            'del':'/api/quagga/bgp/delRoutemap/',
+            'toggle':'/api/quagga/bgp/toggleRoutemap/'
+        });
+        $("#grid-peergroups").UIBootgrid({
+            'search':'/api/quagga/bgp/searchPeergroup',
+            'get':'/api/quagga/bgp/getPeergroup/',
+            'set':'/api/quagga/bgp/setPeergroup/',
+            'add':'/api/quagga/bgp/addPeergroup/',
+            'del':'/api/quagga/bgp/delPeergroup/',
+            'toggle':'/api/quagga/bgp/togglePeergroup/'
+        });
+    });
+</script>
+
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
@@ -41,10 +112,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
-            <div class="col-md-12">
-                <hr />
-                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
-            </div>
         </div>
     </div>
     <div id="neighbors" class="tab-pane fade in">
@@ -67,11 +134,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="10"></td>
-                    <td colspan="1">
+                    <td></td>
+                    <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -94,11 +160,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -122,11 +187,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -150,11 +214,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -181,10 +244,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -210,10 +273,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="10"></td>
-                    <td colspan="1">
+                    <td></td>
+                    <td>
                         <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
             </tfoot>
@@ -221,102 +284,20 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
 </div>
 
-<script>
-
-function quagga_update_status() {
-    updateServiceControlUI('quagga');
-}
-
-$(document).ready(function() {
-  var data_get_map = {'frm_bgp_settings':"/api/quagga/bgp/get"};
-  mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
-  });
-  quagga_update_status();
-
-  // link save button to API set action
-  $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_bgp_settings',callback_ok=function(){
-          $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-          ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-              quagga_update_status();
-              $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-          });
-      });
-  });
-
-  /* allow a user to manually reload the service (for forms which do not do it automatically) */
-  $('.reload_btn').click(function reload_handler() {
-    $(".reloadAct_progress").addClass("fa-spin");
-    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-        quagga_update_status();
-        $(".reloadAct_progress").removeClass("fa-spin");
-    });
-  });
-
-  $("#grid-neighbors").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchNeighbor',
-      'get':'/api/quagga/bgp/getNeighbor/',
-      'set':'/api/quagga/bgp/setNeighbor/',
-      'add':'/api/quagga/bgp/addNeighbor/',
-      'del':'/api/quagga/bgp/delNeighbor/',
-      'toggle':'/api/quagga/bgp/toggleNeighbor/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-aspaths").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchAspath',
-      'get':'/api/quagga/bgp/getAspath/',
-      'set':'/api/quagga/bgp/setAspath/',
-      'add':'/api/quagga/bgp/addAspath/',
-      'del':'/api/quagga/bgp/delAspath/',
-      'toggle':'/api/quagga/bgp/toggleAspath/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-prefixlists").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchPrefixlist',
-      'get':'/api/quagga/bgp/getPrefixlist/',
-      'set':'/api/quagga/bgp/setPrefixlist/',
-      'add':'/api/quagga/bgp/addPrefixlist/',
-      'del':'/api/quagga/bgp/delPrefixlist/',
-      'toggle':'/api/quagga/bgp/togglePrefixlist/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-communitylists").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchCommunitylist',
-      'get':'/api/quagga/bgp/getCommunitylist/',
-      'set':'/api/quagga/bgp/setCommunitylist/',
-      'add':'/api/quagga/bgp/addCommunitylist/',
-      'del':'/api/quagga/bgp/delCommunitylist/',
-      'toggle':'/api/quagga/bgp/toggleCommunitylist/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-routemaps").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap',
-      'get':'/api/quagga/bgp/getRoutemap/',
-      'set':'/api/quagga/bgp/setRoutemap/',
-      'add':'/api/quagga/bgp/addRoutemap/',
-      'del':'/api/quagga/bgp/delRoutemap/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-peergroups").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchPeergroup',
-      'get':'/api/quagga/bgp/getPeergroup/',
-      'set':'/api/quagga/bgp/setPeergroup/',
-      'add':'/api/quagga/bgp/addPeergroup/',
-      'del':'/api/quagga/bgp/delPeergroup/',
-      'toggle':'/api/quagga/bgp/togglePeergroup/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-    });
-</script>
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <button class="btn btn-primary" id="reconfigureAct"
+                    data-endpoint='/api/quagga/service/reconfigure'
+                    data-label="{{ lang._('Apply') }}"
+                    data-error-title="{{ lang._('Error reconfiguring BGP') }}"
+                    type="button"
+            ></button>
+            <br/><br/>
+        </div>
+    </div>
+</section>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS Paths')])}}

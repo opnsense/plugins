@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,42 +26,41 @@
                 <OptionValues>
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
-                    <digitalocean>DigitalOcean</digitalocean>
                     <gandi>Gandi</gandi>
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
                     <porkbun>Porkbun</porkbun>
-                    <route53>Route53</route53>
                     <acmedns>ACME-DNS</acmedns>
-                    <googleclouddns>Google Cloud DNS</googleclouddns>
                     <azure>Azure</azure>
                     <ovh>OVH</ovh>
                     <namecheap>Namecheap</namecheap>
-                    <netlify>Netlify</netlify>
                     <powerdns>PowerDNS</powerdns>
-                    <ddnss>DDNSS</ddnss>
-                    <njalla>Njalla</njalla>
                     <linode>Linode</linode>
-                    <tencentcloud>Tencent Cloud</tencentcloud>
-                    <dinahosting>Dinahosting</dinahosting>
                     <hexonet>Hexonet</hexonet>
                     <mailinabox>Mail-in-a-Box</mailinabox>
-                    <netcup>Netcup</netcup>
                     <rfc2136>RFC2136</rfc2136>
                     <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
                     <bunny>Bunny</bunny>
-                    <civo>Civo</civo>
                     <scaleway>Scaleway</scaleway>
                     <acmeproxy>ACME Proxy</acmeproxy>
                     <inwx>INWX</inwx>
                     <netcup>Netcup</netcup>
                     <namedotcom>Name.com</namedotcom>
-                    <easydns>EasyDNS</easydns>
                     <infomaniak>Infomaniak</infomaniak>
                     <directadmin>DirectAdmin</directadmin>
-                    <hosttech>Hosttech</hosttech>
                     <vultr>Vultr</vultr>
                     <hetzner>Hetzner</hetzner>
+                    <digitalocean>DigitalOcean (optional)</digitalocean>
+                    <route53>Route53 (optional)</route53>
+                    <googleclouddns>Google Cloud DNS (optional)</googleclouddns>
+                    <netlify>Netlify (optional)</netlify>
+                    <ddnss>DDNSS (optional)</ddnss>
+                    <njalla>Njalla (optional)</njalla>
+                    <tencentcloud>Tencent Cloud (optional)</tencentcloud>
+                    <dinahosting>Dinahosting (optional)</dinahosting>
+                    <civo>Civo (optional)</civo>
+                    <easydns>EasyDNS (optional)</easydns>
+                    <hosttech>Hosttech (optional)</hosttech>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -99,16 +98,16 @@
                 <ValidationMessage>Please enter a valid Grace Period between 1 and 20 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
-            <HttpVersion type="OptionField">
+            <HttpVersions type="OptionField">
                 <Required>Y</Required>
-                <Default>h1,h2,h3</Default>
+                <Default>h1,h2</Default>
                 <Multiple>Y</Multiple>
                 <OptionValues>
                     <h1>HTTP/1.1</h1>
                     <h2>HTTP/2</h2>
                     <h3>HTTP/3</h3>
                 </OptionValues>
-            </HttpVersion>
+            </HttpVersions>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
@@ -168,6 +167,27 @@
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
+            <AuthCopyHeaders type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <Authorization>Authorization</Authorization>
+                    <Remote-User>Remote-User</Remote-User>
+                    <Remote-Groups>Remote-Groups</Remote-Groups>
+                    <Remote-Name>Remote-Name</Remote-Name>
+                    <Remote-Email>Remote-Email</Remote-Email>
+                    <X-Authentik-Username>X-Authentik-Username</X-Authentik-Username>
+                    <X-Authentik-Groups>X-Authentik-Groups</X-Authentik-Groups>
+                    <X-Authentik-Email>X-Authentik-Email</X-Authentik-Email>
+                    <X-Authentik-Name>X-Authentik-Name</X-Authentik-Name>
+                    <X-Authentik-Uid>X-Authentik-Uid</X-Authentik-Uid>
+                    <X-Authentik-Jwt>X-Authentik-Jwt</X-Authentik-Jwt>
+                    <X-Authentik-Meta-Jwks>X-Authentik-Meta-Jwks</X-Authentik-Meta-Jwks>
+                    <X-Authentik-Meta-Outpost>X-Authentik-Meta-Outpost</X-Authentik-Meta-Outpost>
+                    <X-Authentik-Meta-Provider>X-Authentik-Meta-Provider</X-Authentik-Meta-Provider>
+                    <X-Authentik-Meta-App>X-Authentik-Meta-App</X-Authentik-Meta-App>
+                    <X-Authentik-Meta-Version>X-Authentik-Meta-Version</X-Authentik-Meta-Version>
+                </OptionValues>
+            </AuthCopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -206,7 +226,7 @@
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField">
-                    <BlankDesc>ACME (HTTP-01, TLS-ALPN-01)</BlankDesc>
+                    <BlankDesc>ACME</BlankDesc>
                 </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
