@@ -9,3 +9,31 @@ Sciences Network (ESnet).  Among its goals were a smaller, simpler
 code base (compared to its predecessor, iperf2) and a library version
 of the functionality that can be used in other programs.  Note that
 iperf3 does not interoperate with with iperf 2.x.
+
+Plugin Changelog
+================
+
+2.0
+
+* Complete rewrite in Python (min verson 3.8), with significant improvements.
+* added automatically open firewall port
+* added thread pool for improved connection handling
+* added port caching system to prevent port conflicts
+* added proper process management for iperf3 instances
+* added thread synchronisation with locks for resource access
+* added type hints for better code maintainability
+* added automatic cleanup of expired processes and ports
+* Improved firewall rule management
+* More efficient port allocation algorithm
+* Better error handling and recovery
+* Optimised XML parsing with caching
+* Reduced system calls and improved performance
+* Process termination issues from v1.0
+* Memory leaks from orphaned processes
+* Port allocation race conditions
+* Firewall rule cleanup reliability
+* Socket connection handling
+
+1.0
+
+* initial release

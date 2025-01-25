@@ -3,8 +3,8 @@
 . /etc/rc.subr
 name=iperf
 rcvar=iperf_enable
-command_interpreter=/usr/local/bin/ruby
-command=/usr/local/opnsense/scripts/iperf/ruby_iperf.rb
+command_interpreter=/usr/local/bin/python3
+command=/usr/local/opnsense/scripts/iperf/iperf.py
 iperf_user=root
 iperf_pidfile=/var/run/iperf.pid
 start_cmd="/usr/sbin/daemon -u $iperf_user -p $iperf_pidfile -f $command"
