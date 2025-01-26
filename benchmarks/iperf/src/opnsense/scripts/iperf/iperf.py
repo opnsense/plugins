@@ -63,10 +63,30 @@ instances: Dict[threading.Thread, dict] = {}  # Active iperf instances
 _port_cache: Dict[int, float] = {}            # Recently used ports with timestamps
 _port_cache_lock = threading.Lock()           # Synchronize port cache access
 _firewall_lock = threading.Lock()             # Synchronize firewall rule updates
+_active_interfaces: Dict[str, threading.Lock] = {}
+_interfaces_lock = threading.Lock()
 
 class IperfError(Exception):
     """Custom exception for iperf-related errors"""
     pass
+
+def acquire_interface(interface: str) -> bool:
+    """Try to acquire lock for an interface. Returns True if successful."""
+    with _interfaces_lock:
+        if interface not in _active_interfaces:
+            _active_interfaces[interface] = threading.Lock()
+        
+        # Try to acquire the lock without blocking
+        return _active_interfaces[interface].acquire(blocking=False)
+
+def release_interface(interface: str) -> None:
+    """Release the lock for an interface."""
+    with _interfaces_lock:
+        if interface in _active_interfaces:
+            try:
+                _active_interfaces[interface].release()
+            except RuntimeError:
+                pass  # Lock was already released
 
 def execute_firewall_command(cmd: List[str], input_data: str = None) -> None:
     """Execute pfctl command with thread safety"""
@@ -97,23 +117,40 @@ def get_current_rules() -> str:
     return process.stdout
 
 def execute_firewall_port(rule: str) -> None:
-    """Apply firewall rules to the iperf anchor"""
-    # Get existing rules
-    current_rules = get_current_rules()
-    
-    # Combine existing rules with new rules
-    if current_rules:
-        combined_rules = current_rules + "\n" + rule
-    else:
-        combined_rules = rule
-
-    if not combined_rules.endswith('\n'):
-        combined_rules += '\n'
-    
-    execute_firewall_command(['pfctl', '-a', 'iperf', '-f', '-'], input_data=combined_rules)
+    """Apply firewall rules to the iperf anchor while preserving existing rules"""
+    try:
+        # Get existing rules
+        current_rules = get_current_rules()
+        
+        # Create new ruleset
+        rules_list = []
+        
+        # Add existing rules, excluding empty lines and anchors
+        if current_rules:
+            for line in current_rules.splitlines():
+                if line.strip() and not line.startswith('@'):
+                    # Clean up the rule format
+                    cleaned_line = re.sub(r'^\[\d+\]\s*', '', line.strip())
+                    if 'pass' in cleaned_line:
+                        rules_list.append(cleaned_line)
+        
+        # Add new rule
+        rules_list.append(rule)
+        
+        # Combine rules with proper formatting
+        combined_rules = "\n".join(rules_list) + "\n"
+        
+        # Apply all rules at once
+        execute_firewall_command(['pfctl', '-a', 'iperf', '-f', '-'], input_data=combined_rules)
+        
+    except Exception as e:
+        raise IperfError(f"Failed to apply firewall rules: {e}")
 
 def create_firewall_rule(interface: str, port: int, label: str = None, log: str = 'log') -> str:
     """Generate pf rule for iperf traffic with optional label"""
+    # Prefix the label with the interface name
+    if label:
+        label = f"{interface}-{label}"
     label_str = f' label "{label}"' if label else ''
     return f"pass in {log} quick on {interface} inet proto tcp from any to (self) port {port} keep state{label_str}"
 
@@ -232,6 +269,7 @@ def find_available_port() -> int:
 def run_iperf3(port: int) -> dict:
     """Execute iperf3 server instance with proper process management"""
     cmd = ['iperf3', '-J', '-f', 'M', '-s', '-1', '-p', str(port)]
+    process = None
     
     try:
         process = subprocess.Popen(
@@ -241,41 +279,40 @@ def run_iperf3(port: int) -> dict:
             text=True
         )
         
-        try:
-            stdout, stderr = process.communicate(timeout=IPERF_TIMEOUT)
-            if process.returncode == 0:
-                return json.loads(stdout)
-            raise IperfError(f'iperf3 failed: {stderr}')
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.communicate()
-            raise IperfError('timeout')
-        finally:
-            # Ensure process cleanup
-            if process.poll() is None:
-                process.terminate()
-                try:
-                    process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.communicate()
+        stdout, stderr = process.communicate(timeout=IPERF_TIMEOUT)
+        if process.returncode == 0:
+            return json.loads(stdout)
+        raise IperfError(f'iperf3 failed: {stderr}')
+        
+    except subprocess.TimeoutExpired:
+        print(f"Iperf3 timeout on port {port}")
+        raise IperfError('timeout')
     except Exception as e:
+        print(f"Iperf3 error on port {port}: {str(e)}")
         raise IperfError(str(e))
+    finally:
+        if process:
+            try:
+                process.kill()
+                process.wait(timeout=5)
+            except Exception:
+                pass
 
 def run_test(data: dict, interface: str = 'any') -> Optional[dict]:
     """Execute complete iperf test with firewall management"""
     test_label = None
+    port = None
+    
     try:
         port = find_available_port()
         data[KEY_PORT] = port
 
-        # Generate a unique label for the rule
-        test_label = f"iperf-rule-{port}"
+        # Generate a unique label with interface prefix
+        test_label = f"iperf-rule-{port}"  # The interface prefix will be added in create_firewall_rule
         rule = create_firewall_rule(interface, port, label=test_label)
-        data['firewall_label'] = test_label
+        data['firewall_label'] = f"{interface}-{test_label}"  # Store the full label
         execute_firewall_port(rule)
        
-        # Run iperf3 
         result = run_iperf3(port)
         data['result'] = result
         return result
@@ -283,12 +320,12 @@ def run_test(data: dict, interface: str = 'any') -> Optional[dict]:
         data['result'] = {'error': str(e)}
         return None
     finally:
-        # Only attempt to remove the rule if we created one
         if test_label:
             try:
-                remove_firewall_rule_by_label(test_label)
+                # Use the full label with interface prefix for removal
+                remove_firewall_rule_by_label(f"{interface}-{test_label}")
             except Exception as e:
-                print(f"Failed to remove firewall rule with label {test_label}: {e}")
+                print(f"Failed to remove firewall rule with label {interface}-{test_label}: {e}")
 
 def handle_connection(conn: socket.socket) -> None:
     """Handle individual client connections and commands"""

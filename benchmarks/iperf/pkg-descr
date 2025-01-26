@@ -16,7 +16,7 @@ Plugin Changelog
 2.0
 
 * Complete rewrite in Python (min verson 3.8), with significant improvements.
-* added automatically open firewall port
+* added automatically create firewall rules
 * added thread pool for improved connection handling
 * added port caching system to prevent port conflicts
 * added proper process management for iperf3 instances
@@ -33,6 +33,7 @@ Plugin Changelog
 * Port allocation race conditions
 * Firewall rule cleanup reliability
 * Socket connection handling
+* Fixed issue with multiple instances on same interface
 
 1.0
 
