@@ -214,8 +214,6 @@ def run_test(data: dict, interface: str = 'any') -> Optional[dict]:
     try:
         port = find_available_port()
         data[KEY_PORT] = port
-        
-        flush_firewall_rules()
         execute_firewall_port(create_firewall_rule(interface, port))
         
         result = run_iperf3(port)
