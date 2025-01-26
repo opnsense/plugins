@@ -112,9 +112,10 @@ def execute_firewall_port(rule: str) -> None:
     
     execute_firewall_command(['pfctl', '-a', 'iperf', '-f', '-'], input_data=combined_rules)
 
-def create_firewall_rule(interface: str, port: int, log: str = 'log') -> str:
-    """Generate pf rule for iperf traffic"""
-    return f"pass in {log} quick on {interface} inet proto tcp from any to (self) port {port} keep state"
+def create_firewall_rule(interface: str, port: int, label: str = None, log: str = 'log') -> str:
+    """Generate pf rule for iperf traffic with optional label"""
+    label_str = f' label "{label}"' if label else ''
+    return f"pass in {log} quick on {interface} inet proto tcp from any to (self) port {port} keep state{label_str}"
 
 def flush_firewall_rules() -> None:
     """Clear all rules from the iperf anchor"""
@@ -127,6 +128,58 @@ def flush_firewall_rules() -> None:
 def flush_firewall_rules() -> None:
     """Clear all rules from the iperf anchor"""
     execute_firewall_command(['pfctl', '-a', 'iperf', '-F', 'rules'])
+
+def remove_firewall_rule_by_label(label: str) -> None:
+    """Remove firewall rules with the specified label"""
+    try:
+        # Get all current rules
+        current_rules = get_current_rules()
+        print(f"\nAttempting to remove rule with label: {label}")
+        print(f"Current rules:\n{current_rules}")
+        
+        if not current_rules.strip():
+            print("No current rules found")
+            return
+        
+        # Parse and clean rules
+        new_rules = []
+        found_rule = False
+        for line in current_rules.splitlines():
+            # Skip empty lines, comments, and anchors
+            if not line.strip() or line.startswith('#') or line.startswith('@'):
+                continue
+            
+            # Clean up the rule format
+            cleaned_line = re.sub(r'^\[\d+\]\s*', '', line.strip())
+            
+            # Check if this is the rule we want to remove
+            if f'label "{label}"' in cleaned_line:
+                print(f"Found rule to remove: {cleaned_line}")
+                found_rule = True
+                continue
+                
+            if 'pass' in cleaned_line:
+                new_rules.append(cleaned_line)
+        
+        if not found_rule:
+            print(f"Warning: Rule with label '{label}' not found")
+            return
+            
+        # Apply updated rules
+        if new_rules:
+            updated_rules = "\n".join(new_rules) + "\n"
+            print(f"Applying updated rules:\n{updated_rules}")
+            execute_firewall_command(['pfctl', '-a', 'iperf', '-f', '-'], input_data=updated_rules)
+        else:
+            print("No rules remaining, flushing iperf anchor")
+            execute_firewall_command(['pfctl', '-a', 'iperf', '-F', 'rules'])
+            
+        # Verify removal
+        final_rules = get_current_rules()
+        print(f"Rules after removal:\n{final_rules}")
+        
+    except Exception as e:
+        print(f"Failed to remove rule with label {label}: {str(e)}") 
 
 @lru_cache(maxsize=1)
 def get_forwarded_ports() -> Set[int]:
@@ -211,11 +264,18 @@ def run_iperf3(port: int) -> dict:
 
 def run_test(data: dict, interface: str = 'any') -> Optional[dict]:
     """Execute complete iperf test with firewall management"""
+    test_label = None
     try:
         port = find_available_port()
         data[KEY_PORT] = port
-        execute_firewall_port(create_firewall_rule(interface, port))
-        
+
+        # Generate a unique label for the rule
+        test_label = f"iperf-rule-{port}"
+        rule = create_firewall_rule(interface, port, label=test_label)
+        data['firewall_label'] = test_label
+        execute_firewall_port(rule)
+       
+        # Run iperf3 
         result = run_iperf3(port)
         data['result'] = result
         return result
@@ -223,7 +283,12 @@ def run_test(data: dict, interface: str = 'any') -> Optional[dict]:
         data['result'] = {'error': str(e)}
         return None
     finally:
-        flush_firewall_rules()
+        # Only attempt to remove the rule if we created one
+        if test_label:
+            try:
+                remove_firewall_rule_by_label(test_label)
+            except Exception as e:
+                print(f"Failed to remove firewall rule with label {test_label}: {e}")
 
 def handle_connection(conn: socket.socket) -> None:
     """Handle individual client connections and commands"""
@@ -298,8 +363,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    # Clean up any remaining firewall rules
+    # Clean up any remaining firewall rules in the iperf anchor ONLY
     try:
-        subprocess.run(['pfctl', '-F', 'rules'], check=True)
+        # Changed from ['pfctl', '-F', 'rules'] which would flush ALL rules!
+        subprocess.run(['pfctl', '-a', 'iperf', '-F', 'rules'], check=True)
     except subprocess.CalledProcessError:
         pass
