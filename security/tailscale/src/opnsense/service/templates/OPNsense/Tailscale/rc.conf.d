@@ -17,8 +17,6 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.settings.useExitNode') %}
 {%      do up_args.append("--exit-node=" + OPNsense.tailscale.settings.useExitNode) %}
-{%    else %}
-{%      do up_args.append("--exit-node=") %}
 {%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.settings.acceptSubnetRoutes') and OPNsense.tailscale.settings.acceptSubnetRoutes|default("0") == "1" %}
 {%      do up_args.append("--accept-routes") %}
