@@ -6,9 +6,16 @@
         <help>This will activate the Tailscale service.</help>
     </field>
     <field>
+        <id>settings.loginTimeout</id>
+        <label>Login timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum time to wait for successful login, in seconds. Set to 0 to wait indefinitely, however this may prevent OPNsense booting completely if the Tailscale control plane is unavailable. Default is 10 seconds.</help>
+    </field>
+    <field>
         <id>settings.listenPort</id>
         <label>Listen Port</label>
-	<type>text</type>
+        <type>text</type>
         <help>UDP port to listen on for WireGuard and peer-to-peer traffic.</help>
     </field>
     <field>
