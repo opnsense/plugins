@@ -10,11 +10,7 @@ tailscaled_enable="YES"
 tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
 {%    set up_args = [] %}
-{%    if helpers.exists('OPNsense.tailscale.settings.loginTimeout') %}
 {%      do up_args.append("--timeout=" + OPNsense.tailscale.settings.loginTimeout + "s") %}
-{%    else %}
-{%      do up_args.append("--timeout=10s") %}
-{%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.settings.advertiseExitNode') and OPNsense.tailscale.settings.advertiseExitNode|default("0") == "1" %}
 {%      do up_args.append("--advertise-exit-node") %}
 {%    else %}
