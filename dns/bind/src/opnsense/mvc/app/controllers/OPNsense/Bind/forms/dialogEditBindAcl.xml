@@ -14,9 +14,7 @@
     <field>
         <id>acl.networks</id>
         <label>Network List</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>List of networks for this ACL.</help>
+        <type>textbox</type>
+        <help>List of addresses and network prefixes, one address or prefix per line. Use a leading exclamation mark (!) for negation. These built in ACLs may also be used: any, none, localhost, and localnets. If more than one element in an ACL is found to match a given IP address or prefix, preference is given to the one that came first in the ACL definition.</help>
     </field>
 </form>

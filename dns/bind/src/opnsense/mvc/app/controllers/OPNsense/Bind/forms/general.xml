@@ -84,10 +84,8 @@
     <field>
         <id>general.filteraaaaacl</id>
         <label>ACL for filter-aaaa</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Specifies a list of client addresses for which AAAA filtering is to be applied.</help>
+        <type>textbox</type>
+        <help>Specifies a list of client addresses, one per line, for which AAAA filtering is to be applied.</help>
     </field>
     <field>
         <id>general.logsize</id>

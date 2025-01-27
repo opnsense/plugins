@@ -59,10 +59,7 @@
             <Default>0</Default>
             <Required>Y</Required>
         </filteraaaav6>
-        <filteraaaaacl type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
-        </filteraaaaacl>
+        <filteraaaaacl type=".\BindAddressMatchField"/>
         <logsize type="IntegerField">
             <Default>5</Default>
             <Required>Y</Required>
