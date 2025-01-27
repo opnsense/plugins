@@ -14,8 +14,7 @@ class ExitNodeField extends BaseListField
     {
         if (empty(self::$internalCacheOptionList)) {
             $response = json_decode(trim((new Backend())->configdRun('tailscale tailscale-status')), true);
-            $exitNodes = [];
-            $exitNodes[''] = 'None';
+            $exitNodes = ['' => gettext('None')];
 
             if (is_array($response) && array_key_exists('Peer', $response) && is_array($response['Peer'])) {
                 foreach ($response['Peer'] as $peer) {
