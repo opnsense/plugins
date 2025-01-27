@@ -6,6 +6,14 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
+1.2
+
+* add option to allow Tailscale to manage SSH connections
+* add option to disable SNAT routing (experimental)
+* add login timeout (10s default) for when login server is unavailable causing OPNsense to hang on boot (contributed by Ben Smithurst)
+* add exit node option (contributed by Ben Smithurst)
+* fix dashboard widget always showing exit node as no
+
 1.1
 
 * add dashboard widget

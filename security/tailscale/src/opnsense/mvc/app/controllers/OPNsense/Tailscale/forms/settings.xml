@@ -6,9 +6,16 @@
         <help>This will activate the Tailscale service.</help>
     </field>
     <field>
+        <id>settings.loginTimeout</id>
+        <label>Login timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum time to wait for successful login, in seconds. Set to 0 to wait indefinitely, however this may prevent OPNsense booting completely if the Tailscale control plane is unavailable. Default is 10 seconds.</help>
+    </field>
+    <field>
         <id>settings.listenPort</id>
         <label>Listen Port</label>
-	<type>text</type>
+        <type>text</type>
         <help>UDP port to listen on for WireGuard and peer-to-peer traffic.</help>
     </field>
     <field>
@@ -24,9 +31,29 @@
         <help>Offer to be an exit node for outbound internet traffic from the Tailscale network.</help>
     </field>
     <field>
+        <id>settings.useExitNode</id>
+        <label>Use Exit Node</label>
+        <type>dropdown</type>
+        <help>Route traffic to the specified exit node. Note that this only affects traffic routed into your Tailscale interface, which you will have to configure separately using firewall rules and hybrid outbound NAT rules.</help>
+    </field>
+    <field>
         <id>settings.acceptSubnetRoutes</id>
         <label>Accept Subnet Routes</label>
         <type>checkbox</type>
         <help>Accept subnet routes that other nodes advertise.</help>
+    </field>
+    <field>
+        <id>settings.enableSSH</id>
+        <label>Enable SSH</label>
+        <advanced>true</advanced>
+        <type>checkbox</type>
+        <help>Allow Tailscale to manage SSH connections in your tailnet.</help>
+    </field>
+    <field>
+        <id>settings.disableSNAT</id>
+        <label>Disable SNAT</label>
+        <advanced>true</advanced>
+        <type>checkbox</type>
+        <help>Disable source NAT to disable subnet routing (experimental).</help>
     </field>
 </form>
