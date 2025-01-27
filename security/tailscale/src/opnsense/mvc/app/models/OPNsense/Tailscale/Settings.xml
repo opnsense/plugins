@@ -28,6 +28,14 @@
             <default>0</default>
             <Required>Y</Required>
         </acceptSubnetRoutes>
+        <enableSSH type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enableSSH>
+        <disableSNAT type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </disableSNAT>
         <subnets>
             <subnet4 type="ArrayField">
                 <subnet type="NetworkField">

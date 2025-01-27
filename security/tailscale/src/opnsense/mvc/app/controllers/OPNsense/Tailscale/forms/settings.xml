@@ -42,4 +42,18 @@
         <type>checkbox</type>
         <help>Accept subnet routes that other nodes advertise.</help>
     </field>
+    <field>
+        <id>settings.enableSSH</id>
+        <label>Enable SSH</label>
+        <advanced>true</advanced>
+        <type>checkbox</type>
+        <help>Allow Tailscale to manage SSH connections in your tailnet.</help>
+    </field>
+    <field>
+        <id>settings.disableSNAT</id>
+        <label>Disable SNAT</label>
+        <advanced>true</advanced>
+        <type>checkbox</type>
+        <help>Disable source NAT to disable subnet routing (experimental).</help>
+    </field>
 </form>
