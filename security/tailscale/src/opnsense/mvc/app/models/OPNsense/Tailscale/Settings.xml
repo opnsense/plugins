@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/tailscale/settings</mount>
     <description>Tailscale general settings</description>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
