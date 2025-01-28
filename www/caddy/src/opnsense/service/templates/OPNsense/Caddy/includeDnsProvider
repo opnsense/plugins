@@ -184,8 +184,11 @@
     {% if dnsOptionalField2 %}insecure_requests {{ dnsOptionalField2 }}
     {% endif %}
 {% elif dnsProvider == 'cloudns' %}
-    {% if dnsApiKey %}auth_id {{ dnsApiKey }}
-    {% endif %}
+    {% if dnsOptionalField1 %}sub_auth_id {{ dnsOptionalField1 }}
+    {{ else }}
+        {% if dnsApiKey %}auth_id {{ dnsApiKey }}
+        {% endif %}
+    {{ endif }}
     {% if dnsSecretApiKey %}auth_password {{ dnsSecretApiKey }}
     {% endif %}
 {% endif %}

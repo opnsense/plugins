@@ -61,7 +61,7 @@
                     <civo>Civo (optional)</civo>
                     <easydns>EasyDNS (optional)</easydns>
                     <hosttech>Hosttech (optional)</hosttech>
-                    <cloudns>ClouDNS</cloudns>
+                    <cloudns>ClouDNS (optional)</cloudns>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
