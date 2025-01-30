@@ -513,6 +513,7 @@
                         <dns_rackspace>Rackspace</dns_rackspace>
                         <dns_rage4>rage4</dns_rage4>
                         <dns_regru>RegRu</dns_regru>
+                        <dns_scaleway>Scaleway</dns_scaleway>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
                         <dns_selfhost>Selfhost</dns_selfhost>
@@ -1307,6 +1308,9 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_scaleway_token type="TextField">
+                    <Required>N</Required>
+                </dns_scaleway_token>
             </validation>
         </validations>
         <actions>
