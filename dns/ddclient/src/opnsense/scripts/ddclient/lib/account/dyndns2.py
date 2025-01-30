@@ -23,6 +23,7 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 """
+import ipaddress
 import syslog
 import requests
 from requests.auth import HTTPBasicAuth
@@ -71,6 +72,8 @@ class DynDNS2(BaseAccount):
                 url = self.settings.get('server')
                 url = url.replace('__MYIP__', self.current_address)
                 url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
+                if self.current_address.find(':') > 0:
+                    url = url.replace('__IPV6PREFIX__', str(ipaddress.ip_network("%s/64" % self.current_address, strict=False)))
                 req = requests.request(
                     method=protocol,
                     url=url,
