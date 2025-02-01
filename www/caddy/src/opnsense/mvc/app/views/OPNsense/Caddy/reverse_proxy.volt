@@ -274,7 +274,7 @@
          */
 
         const addButton = $(`
-            <button data-action="add" type="button" class="btn btn-xs btn-primary" style="margin-top: 5px;">
+            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;">
                 <span class="fa fa-plus"></span>
             </button>
         `);
@@ -291,12 +291,15 @@
             "btnAddBasicAuth": { tab: "#accessTab", tableId: "{{formGridBasicAuth['table_id']}}" },
             "btnAddHeader": { tab: "#headerTab", tableId: "{{formGridHeader['table_id']}}" },
             "btnAddHandle": { tab: "#handlesTab", tableId: "{{formGridHandle['table_id']}}" },
-            "btnAddDomain": { tab: "#domainsTab", tableId: "{{formGridReverseProxy['table_id']}}" }
+            "btnAddDomain": { tab: "#domainsTab", tableId: "{{formGridReverseProxy['table_id']}}" },
+            "btnAddSubdomain": { tab: "#domainsTab", tableId: "{{formGridSubdomain['table_id']}}" }
         };
 
         appendButton("#select_reverse\\.accesslist, #select_subdomain\\.accesslist, #select_handle\\.accesslist", "btnAddAccessList");
         appendButton("#select_reverse\\.basicauth, #select_subdomain\\.basicauth", "btnAddBasicAuth");
         appendButton("#select_handle\\.header", "btnAddHeader");
+        appendButton("#select_handle\\.reverse", "btnAddDomain");
+        appendButton("#select_handle\\.subdomain", "btnAddSubdomain")
 
         // The same buttons can be triggered via URL hash from the "General Settings" page
         const hash = window.location.hash.substring(1);
@@ -308,6 +311,7 @@
         }
 
         $(document).on("click", "[id^='btnAdd']", function() {
+            // XXX: Close all open modals first. Overlapping modals seem to work but they are not used anywhere else.
             $(".modal").each(function() {
                 let closeButton = $(this).find("[data-dismiss='modal']");
                 if (closeButton.length) {

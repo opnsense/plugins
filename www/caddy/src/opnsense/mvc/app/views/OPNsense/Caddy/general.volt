@@ -116,7 +116,7 @@
 
         // Add buttons that redirect users to the correct model relation fields for better UX
         const addButton = $(`
-            <button data-action="add" type="button" class="btn btn-xs btn-primary" style="margin-top: 5px;">
+            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;">
                 <span class="fa fa-plus"></span>
             </button>
         `);
