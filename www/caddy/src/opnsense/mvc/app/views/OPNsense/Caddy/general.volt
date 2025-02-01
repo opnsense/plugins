@@ -113,7 +113,35 @@
                 setSpinner(generalId, 'stop');
             });
         });
+
+        // Add buttons that redirect users to the correct model relation fields for better UX
+        const addButton = $(`
+            <button data-action="add" type="button" class="btn btn-xs btn-primary" style="margin-top: 5px;">
+                <span class="fa fa-plus"></span>
+            </button>
+        `);
+
+        function appendButton(selectors, idPrefix) {
+            $(selectors).each(function(index) {
+                $(this).after(addButton.clone().attr("id", idPrefix + index));
+            });
+        }
+
+        appendButton("#select_caddy\\.general\\.accesslist", "btnAddAccessList");
+        appendButton("#select_caddy\\.general\\.ClientIpHeaders, #select_caddy\\.general\\.AuthCopyHeaders", "btnAddHeader");
+
+        $(document).on("click", "[id^='btnAddAccessList']", function(e) {
+            e.preventDefault();
+            window.location.href = "/ui/caddy/reverse_proxy#btnAddAccessList";
+        });
+
+        $(document).on("click", "[id^='btnAddHeader']", function(e) {
+            e.preventDefault();
+            window.location.href = "/ui/caddy/reverse_proxy#btnAddHeader";
+        });
+
     });
+
 </script>
 
 <!-- General Tab -->

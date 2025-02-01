@@ -226,28 +226,6 @@
             toggleVisibility(currentTab);
         });
 
-        // Add click event listener for "Add Handler" button
-        $("#addHandleBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#handlesTab") {
-                $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
-            } else {
-                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function() {
-                    $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
-                });
-            }
-        });
-
-        // Add click event listener for "Add Domain" button
-        $("#addDomainBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#domainsTab") {
-                $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
-            } else {
-                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function() {
-                    $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
-                });
-            }
-        });
-
         // Hide TLS specific options when http or h2c is selected
         $("#handle\\.HttpTls").change(function() {
             if ($(this).val() != "1") {
@@ -284,9 +262,75 @@
             }
         });
 
+        // Service Actions
         updateServiceControlUI('caddy');
         loadDomainFilters();
+
+        /**
+         * These "+" buttons are added below their respective selectpicker fields inside the modals.
+         * The button's ID is generated based on the prefix provided.
+         * When a button is clicked, it automatically redirects the user to the correct tab and opens the modal.
+         * An event listener can trigger the same buttons from other pages, e.g. from the General Settings.
+         */
+
+        const addButton = $(`
+            <button data-action="add" type="button" class="btn btn-xs btn-primary" style="margin-top: 5px;">
+                <span class="fa fa-plus"></span>
+            </button>
+        `);
+
+        function appendButton(selectors, idPrefix) {
+            $(selectors).each(function(index) {
+                $(this).after(addButton.clone().attr("id", idPrefix + index));
+            });
+        }
+
+        // Define button-to-tab mappings, also includes the "Step 1 - Add Domain" and "Step 2 - Add Handler" buttons.
+        const buttonMappings = {
+            "btnAddAccessList": { tab: "#accessTab", tableId: "{{formGridAccessList['table_id']}}" },
+            "btnAddBasicAuth": { tab: "#accessTab", tableId: "{{formGridBasicAuth['table_id']}}" },
+            "btnAddHeader": { tab: "#headerTab", tableId: "{{formGridHeader['table_id']}}" },
+            "btnAddHandle": { tab: "#handlesTab", tableId: "{{formGridHandle['table_id']}}" },
+            "btnAddDomain": { tab: "#domainsTab", tableId: "{{formGridReverseProxy['table_id']}}" }
+        };
+
+        appendButton("#select_reverse\\.accesslist, #select_subdomain\\.accesslist, #select_handle\\.accesslist", "btnAddAccessList");
+        appendButton("#select_reverse\\.basicauth, #select_subdomain\\.basicauth", "btnAddBasicAuth");
+        appendButton("#select_handle\\.header", "btnAddHeader");
+
+        // The same buttons can be triggered via URL hash from the "General Settings" page
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+            setTimeout(function() {
+                $(`#${hash}0`).trigger("click");
+                history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            }, 100);
+        }
+
+        $(document).on("click", "[id^='btnAdd']", function() {
+            $(".modal").each(function() {
+                let closeButton = $(this).find("[data-dismiss='modal']");
+                if (closeButton.length) {
+                    closeButton.click();
+                }
+            });
+
+            const buttonId = $(this).attr("id").replace(/\d+$/, "");
+            const mapping = buttonMappings[buttonId];
+
+            if (mapping) {
+                if ($('#maintabs .active a').attr('href') === mapping.tab) {
+                    $(`#${mapping.tableId} button[data-action="add"]`).click();
+                } else {
+                    $('#maintabs a[href="' + mapping.tab + '"]').tab('show').one('shown.bs.tab', function() {
+                        $(`#${mapping.tableId} button[data-action="add"]`).click();
+                    });
+                }
+            }
+        });
+
     });
+
 </script>
 
 <style>
@@ -327,8 +371,8 @@
     <div class="form-group common-filter" style="display: flex; justify-content: space-between; align-items: center;">
         <!-- Button group on the left -->
         <div>
-            <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
+            <button id="btnAddDomain" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
+            <button id="btnAddHandle" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
         </div>
         <!-- Selectpicker and Clear All on the right -->
         <div class="filter-actions" style="display: flex; flex-direction: column; align-items: flex-end;">
