@@ -121,10 +121,6 @@
             </button>
         `);
 
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
         function appendButton(selectors, idPrefix) {
             $(selectors).each(function(index) {
                 $(this).after(addButton.clone().attr("id", idPrefix + index));
@@ -143,6 +139,8 @@
             e.preventDefault();
             window.location.href = "/ui/caddy/reverse_proxy#btnAddHeader";
         });
+
+        $('[data-toggle="tooltip"]').tooltip();
 
     });
 

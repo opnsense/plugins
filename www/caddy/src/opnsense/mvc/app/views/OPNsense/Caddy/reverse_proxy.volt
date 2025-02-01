@@ -262,10 +262,6 @@
             }
         });
 
-        // Service Actions
-        updateServiceControlUI('caddy');
-        loadDomainFilters();
-
         /**
          * These "+" buttons are added below their respective selectpicker fields inside the modals.
          * The button's ID is generated based on the prefix provided.
@@ -278,10 +274,6 @@
                 <span class="fa fa-plus"></span>
             </button>
         `);
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
 
         function appendButton(selectors, idPrefix) {
             $(selectors).each(function(index) {
@@ -336,6 +328,10 @@
                 }
             }
         });
+
+        updateServiceControlUI('caddy');
+        loadDomainFilters();
+        $('[data-toggle="tooltip"]').tooltip();
 
     });
 
