@@ -65,7 +65,7 @@ class Netcup(BaseAccount):
                 return False
 
             self.domain = self.settings['hostnames'].split('.', self.settings['hostnames'].count('.')-1)[-1]
-            self.hostname = self.settings['hostnames'].rsplit('.', 2)[0] if self.domain is not self.settings['hostnames'] else '@'
+            self.hostname = self.settings['hostnames'].rsplit('.', 2)[0] if self.domain != self.settings['hostnames'] else '@'
 
             if self.settings['password'].count('|') == 1:
                 self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('|')
