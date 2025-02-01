@@ -116,10 +116,14 @@
 
         // Add buttons that redirect users to the correct model relation fields for better UX
         const addButton = $(`
-            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;">
+            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;" data-toggle="tooltip" title="{{ lang._('Create Item') }}">
                 <span class="fa fa-plus"></span>
             </button>
         `);
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 
         function appendButton(selectors, idPrefix) {
             $(selectors).each(function(index) {

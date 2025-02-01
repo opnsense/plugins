@@ -273,11 +273,15 @@
          * An event listener can trigger the same buttons from other pages, e.g. from the General Settings.
          */
 
-        const addButton = $(`
-            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;">
+         const addButton = $(`
+            <button data-action="add" type="button" class="btn btn-xs btn-secondary" style="margin-top: 5px;" data-toggle="tooltip" title="{{ lang._('Create Item') }}">
                 <span class="fa fa-plus"></span>
             </button>
         `);
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 
         function appendButton(selectors, idPrefix) {
             $(selectors).each(function(index) {
