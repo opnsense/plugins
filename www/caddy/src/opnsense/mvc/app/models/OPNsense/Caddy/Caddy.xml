@@ -61,6 +61,7 @@
                     <civo>Civo (optional)</civo>
                     <easydns>EasyDNS (optional)</easydns>
                     <hosttech>Hosttech (optional)</hosttech>
+                    <cloudns>ClouDNS (optional)</cloudns>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -167,6 +168,27 @@
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
+            <AuthCopyHeaders type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <Authorization>Authorization</Authorization>
+                    <Remote-User>Remote-User</Remote-User>
+                    <Remote-Groups>Remote-Groups</Remote-Groups>
+                    <Remote-Name>Remote-Name</Remote-Name>
+                    <Remote-Email>Remote-Email</Remote-Email>
+                    <X-Authentik-Username>X-Authentik-Username</X-Authentik-Username>
+                    <X-Authentik-Groups>X-Authentik-Groups</X-Authentik-Groups>
+                    <X-Authentik-Email>X-Authentik-Email</X-Authentik-Email>
+                    <X-Authentik-Name>X-Authentik-Name</X-Authentik-Name>
+                    <X-Authentik-Uid>X-Authentik-Uid</X-Authentik-Uid>
+                    <X-Authentik-Jwt>X-Authentik-Jwt</X-Authentik-Jwt>
+                    <X-Authentik-Meta-Jwks>X-Authentik-Meta-Jwks</X-Authentik-Meta-Jwks>
+                    <X-Authentik-Meta-Outpost>X-Authentik-Meta-Outpost</X-Authentik-Meta-Outpost>
+                    <X-Authentik-Meta-Provider>X-Authentik-Meta-Provider</X-Authentik-Meta-Provider>
+                    <X-Authentik-Meta-App>X-Authentik-Meta-App</X-Authentik-Meta-App>
+                    <X-Authentik-Meta-Version>X-Authentik-Meta-Version</X-Authentik-Meta-Version>
+                </OptionValues>
+            </AuthCopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">

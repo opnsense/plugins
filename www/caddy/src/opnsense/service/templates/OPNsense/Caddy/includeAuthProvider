@@ -12,7 +12,11 @@
     {% if generalSettings.AuthToUri %}
         uri {{ generalSettings.AuthToUri|default("") }}
     {% endif %}
-    copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    {% if generalSettings.AuthCopyHeaders|default("") == "" %}
+        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    {% else %}
+        copy_headers {{ generalSettings.AuthCopyHeaders.split(',') | join(' ') }}
+    {% endif %}
     }
 {% elif generalSettings.AuthProvider == 'authentik' %}
     reverse_proxy /outpost.goauthentik.io/* {{ auth_url }} {
@@ -24,6 +28,10 @@
     {% if generalSettings.AuthToUri %}
         uri {{ generalSettings.AuthToUri|default("") }}
     {% endif %}
-    copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Name X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-Jwks X-Authentik-Meta-Outpost X-Authentik-Meta-Provider X-Authentik-Meta-App X-Authentik-Meta-Version
+    {% if generalSettings.AuthCopyHeaders|default("") == "" %}
+        copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Name X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-Jwks X-Authentik-Meta-Outpost X-Authentik-Meta-Provider X-Authentik-Meta-App X-Authentik-Meta-Version
+    {% else %}
+       copy_headers {{ generalSettings.AuthCopyHeaders.split(',') | join(' ') }}
+    {% endif %}
     }
 {% endif %}

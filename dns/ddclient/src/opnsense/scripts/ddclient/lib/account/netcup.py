@@ -1,7 +1,6 @@
 """
     Copyright (c) 2023 Ingo Lafrenz <opnsense@der-ingo.de>
     Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
-    Copyright (c) 2024 Tobias Sdun <info@sduni.de>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -63,11 +62,10 @@ class Netcup(BaseAccount):
             hostnames = {}
             for hostname in all_hostnames:
                 domain = (hostname.split('.', hostname.count('.')-1)[-1]).strip(' \t\n\r')
-                hostname = (hostname.rsplit('.', 2)[0]).strip(' \t\n\r')
+                hostname = (hostname.rsplit('.', 2)[0]).strip(' \t\n\r') if self.domain != self.settings['hostnames'] else '@'
                 if domain not in hostnames:
                     hostnames[domain] = []
                 hostnames[domain].append(hostname)
-            
             if self.settings['password'].count('|') == 1:
                 self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('|')
 

@@ -3,17 +3,22 @@
 #
 {%  if not helpers.empty('OPNsense.tailscale.settings.enabled')  %}
 tailscaled_enable="YES"
-# Uncommenting the below breaks being able to access subnets
+{%    if helpers.exists('OPNsense.tailscale.settings.disableSNAT') and OPNsense.tailscale.settings.disableSNAT|default("0") == "1" %}
 # see - https://github.com/tailscale/tailscale/issues/5573#issuecomment-1584695981
-# tailscaled_env="TS_DEBUG_NETSTACK_SUBNETS=0"
+tailscaled_env="TS_DEBUG_NETSTACK_SUBNETS=0"
+{%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.settings.listenPort') %}
 tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
 {%    set up_args = [] %}
+{%      do up_args.append("--timeout=" + OPNsense.tailscale.settings.loginTimeout + "s") %}
 {%    if helpers.exists('OPNsense.tailscale.settings.advertiseExitNode') and OPNsense.tailscale.settings.advertiseExitNode|default("0") == "1" %}
 {%      do up_args.append("--advertise-exit-node") %}
 {%    else %}
 {%      do up_args.append("--advertise-exit-node=false") %}
+{%    endif %}
+{%    if helpers.exists('OPNsense.tailscale.settings.useExitNode') %}
+{%      do up_args.append("--exit-node=" + OPNsense.tailscale.settings.useExitNode) %}
 {%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.settings.acceptSubnetRoutes') and OPNsense.tailscale.settings.acceptSubnetRoutes|default("0") == "1" %}
 {%      do up_args.append("--accept-routes") %}
@@ -24,6 +29,11 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%      do up_args.append("--accept-dns") %}
 {%    else %}
 {%      do up_args.append("--accept-dns=false") %}
+{%    endif %}
+{%    if helpers.exists('OPNsense.tailscale.settings.enableSSH') and OPNsense.tailscale.settings.enableSSH|default("0") == "1" %}
+{%      do up_args.append("--ssh=true") %}
+{%    else %}
+{%      do up_args.append("--ssh=false") %}
 {%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
 {%      do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
