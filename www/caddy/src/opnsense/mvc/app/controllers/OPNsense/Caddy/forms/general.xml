@@ -59,6 +59,16 @@
             <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
         </field>
         <field>
+            <id>caddy.general.ClientIpHeaders</id>
+            <label>Client IP Headers</label>
+            <type>dropdown</type>
+            <type>select_multiple</type>
+            <size>5</size>
+            <style>selectpicker</style>
+            <hint>X-Forwarded-For</hint>
+            <help><![CDATA[Select one or multiple headers to extract the real client IP. Headers can be added in "Reverse Proxy - Headers". Caddy sets "X-Forwarded-For" by default.]]></help>
+        </field>
+        <field>
             <id>caddy.general.GracePeriod</id>
             <label>Grace Period</label>
             <type>text</type>
@@ -230,9 +240,11 @@
         <field>
             <id>caddy.general.AuthCopyHeaders</id>
             <label>Copy Headers</label>
+            <type>dropdown</type>
             <type>select_multiple</type>
+            <size>5</size>
             <style>selectpicker</style>
-            <help><![CDATA[If nothing is selected, the correct default headers for the chosen provider will be used. If you change the default, you must select the required headers manually. "copy_headers" is a list of HTTP header fields to copy from the response to the original request, when the request has a success status code.]]></help>
+            <help><![CDATA[Select headers to copy in addition to the default ones of the chosen provider. Headers can be added in "Reverse Proxy - Headers". As example, copying "Authorization" can pass Basic Auth credentials from the Auth Provider to the reverse proxied application.]]></help>
         </field>
     </tab>
     <activetab>general-settings</activetab>
