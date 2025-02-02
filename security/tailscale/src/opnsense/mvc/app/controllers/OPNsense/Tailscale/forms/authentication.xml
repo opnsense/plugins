@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>authentication.loginServer</id>
+        <label>Login Server</label>
+        <type>text</type>
+        <help>Base URL of login (control) server.</help>
+    </field>
+    <field>
+        <id>authentication.preAuthKey</id>
+        <label>Pre-authentication Key</label>
+        <type>text</type>
+        <help>Use a non-reusable auth key and disable expiration</help>
+    </field>
+</form>

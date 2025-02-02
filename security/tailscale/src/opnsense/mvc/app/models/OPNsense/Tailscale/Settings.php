@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 Cedrik Pischem
- *
+ *    Copyright (C) 2024 Sheridan Computers
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,18 +24,12 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-namespace OPNsense\Ndproxy;
+namespace OPNsense\Tailscale;
 
-use OPNsense\Base\IndexController;
+use OPNsense\Base\BaseModel;
 
-class GeneralController extends IndexController
+class Settings extends BaseModel
 {
-    public function indexAction()
-    {
-        $this->view->pick('OPNsense/Ndproxy/general');
-        $this->view->generalForm = $this->getForm("general");
-    }
 }

@@ -40,7 +40,6 @@ class SocksaclController extends ApiMutableModelControllerBase
     }
     public function getaclAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('policy', 'policy', $uuid);
     }
     public function addaclAction()

@@ -202,7 +202,6 @@ class StatusController extends ApiControllerBase
     {
         $result = ["result" => "failed", "function" => "toggle"];
         if ($this->request->isPost()) {
-            $this->sessionClose();
             $backend = new Backend();
             if (in_array($nodeType, ['redirect', 'table', 'host']) && in_array($action, ['enable', 'disable'])) {
                 if ($id != null && $id > 0) {
@@ -225,7 +224,9 @@ class StatusController extends ApiControllerBase
                 $relaydMdl->serializeToConfig();
                 Config::getInstance()->save();
                 // invoke service controller
-                return (new ServiceController())->reconfigureAction();
+                $srv = new ServiceController();
+                $srv->request = $this->request;
+                return $srv->reconfigureAction();
             }
         }
         return $result;

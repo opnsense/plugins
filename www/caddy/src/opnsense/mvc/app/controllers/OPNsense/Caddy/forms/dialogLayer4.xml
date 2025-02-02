@@ -4,6 +4,11 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable this Layer4 route.]]></help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <id>layer4.Sequence</id>
@@ -26,6 +31,9 @@
         <label>Routing Type</label>
         <type>dropdown</type>
         <help><![CDATA[Choose either "listener_wrappers" for multiplexing protocols on the default HTTP and HTTPS ports on OSI Layer 7, or "global" for raw TCP/UDP traffic routing on a custom "Local port" on OSI Layer 4 with optional OSI Layer 7 protocol matching.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>layer4.Protocol</id>
@@ -40,6 +48,9 @@
         <type>text</type>
         <style>style_type</style>
         <help><![CDATA[Choose a custom local port to listen on.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -65,6 +76,9 @@
         <type>dropdown</type>
         <style>style_matchers matchers_openvpn</style>
         <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>layer4.FromOpenvpnStaticKey</id>
@@ -74,6 +88,9 @@
         <hint>Any</hint>
         <size>5</size>
         <help><![CDATA[Select a Static Key to match. Multiple Static Keys are only supported for tls-crypt2_client mode.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>layer4.InvertMatchers</id>
@@ -81,6 +98,11 @@
         <type>checkbox</type>
         <help><![CDATA[Invert the sense of the matcher. E.g., if the protocol is TLS, inverting will match all traffic that is not TLS. When domains have been chosen, these will be equally inverted.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <id>layer4.TerminateTls</id>
@@ -88,6 +110,11 @@
         <type>checkbox</type>
         <style>style_matchers matchers_domain</style>
         <help><![CDATA[Terminate TLS before routing to the upstream. Since this requires a certificate, ensure there is a domain configured in "Reverse Proxy" that matches the SNI of "Domain". The best matching SAN or wildcard certificate will be used automatically for this route.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -108,18 +135,54 @@
         <help><![CDATA[Choose a custom port for the upstream destination.]]></help>
     </field>
     <field>
-        <id>layer4.PassiveHealthFailDuration</id>
-        <label>Upstream Fail Duration</label>
-        <type>text</type>
-        <help><![CDATA[Enables a passive health check when multiple destinations in "Upstream Domain" are set. "Fail Duration" is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking; the default is empty (off). A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>layer4.ProxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>
         <help><![CDATA[Add the HA Proxy Protocol header. Either version 1 or 2 can be chosen. The default is off, since it is only needed when the upstream can use the Proxy Protocol header.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Load Balancing</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>layer4.lb_policy</id>
+        <label>Load Balance Policy</label>
+        <type>dropdown</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>layer4.PassiveHealthFailDuration</id>
+        <label>Passive Health Fail Duration (s)</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>off</hint>
+        <help><![CDATA[fail_duration enables a passive health check when multiple destinations in "Upstream Domain" are set. It is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking. A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>layer4.PassiveHealthMaxFails</id>
+        <label>Passive Health Max Fails</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>1</hint>
+        <help><![CDATA[max_fails is the maximum number of failed requests within fail_duration that are needed before considering an upstream to be down.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -132,5 +195,8 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter one or multiple IP addresses and networks. Leaving this empty will allow any remote client to connect. If populated and the remote IP address of a client matches, the connection to the "Upstream Domain" is allowed, otherwise the connection is dropped. Due to restrictions with this matcher, this list can not be inverted.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
 </form>

@@ -9,7 +9,13 @@ required_files="/var/run/mdns-repeater.CARP_MASTER"
 {% for i in osifnames %}
 {% do interface_list.append(physical_interface(i)) %}
 {% endfor %}
-mdns_repeater_interfaces="{{ interface_list | join(' ') }}"
+{% set repeater_interfaces = interface_list | join(' ') %}
+{% if helpers.exists('OPNsense.MDNSRepeater.blocklist') and OPNsense.MDNSRepeater.blocklist != '' %}
+{% set blocklist_and_repeater_interfaces = "-b " + OPNsense.MDNSRepeater.blocklist.split(',') | join(' -b ') + " " + repeater_interfaces %}
+mdns_repeater_interfaces="{{ blocklist_and_repeater_interfaces }}"
+{% else %}
+mdns_repeater_interfaces="{{ repeater_interfaces }}"
+{% endif %}
 {% else %}
 mdns_repeater_enable="NO"
 {% endif %}

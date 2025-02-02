@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -45,7 +45,7 @@ VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 _PLUGIN_ABI!=	${VERSIONBIN} -a
 PLUGIN_ABI?=	${_PLUGIN_ABI}
 .else
-PLUGIN_ABI?=	24.7
+PLUGIN_ABI?=	25.1
 .endif
 
 PLUGIN_MAINS=	master main
@@ -160,4 +160,9 @@ log:
 push:
 	@git checkout ${PLUGIN_STABLE}
 	@git push
+	@git checkout ${PLUGIN_MAIN}
+
+reset:
+	@git checkout ${PLUGIN_STABLE}
+	@git reset --hard HEAD~1
 	@git checkout ${PLUGIN_MAIN}

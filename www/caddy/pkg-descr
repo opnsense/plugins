@@ -13,10 +13,36 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.1
+
+* Add: Optional "Authorization" header to forward_auth (opnsense/plugins/issues/4488)
+* Add: Persistent banner notification if custom imports are used (opnsense/plugins/issues/4244)
+* Cleanup: Implement reusable grid template in views (opnsense/plugins/pull/4454)
+
+1.8.0
+
+* Build: Update Caddy to version 2.9.x and update dependencies (opnsense/plugins/issues/4437)
+* Build: Fix caddy-l4 timeout issue (opnsense/plugins/issues/4384)
+* Build: Mark DNS Providers optional that are not included per default (opnsense/plugins/pull/4441)
+         digitalocean, route53, googleclouddns, netlify, ddnss, njalla, tencentcloud
+         dinahosting, civo, easydns, hosttech; must be added via https://caddyserver.com/docs/command-line#caddy-add-package
+* Cleanup: Refactor caddy.inc and add syslog function, change name from Caddy Web Server to Caddy (opnsense/plugins/issues/4426)
+* Cleanup: Some small UI tweaks (opnsense/plugins/pull/4442)
+* Change: Disable HTTP/3 to mitigate status 400 issue when reverse proxying the OPNsense WebGUI (opnsense/plugins/issues/4471)
+
+1.7.6
+
+* Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins/pull/4403)
+* Fix: Wildcard certificates displaying in Certificate Widget (opnsense/plugins/pull/4390)
+* Fix: http being correctly prepended on redirects (opnsense/plugins/pull/4385)
+
 1.7.5
 
+* Add: Load Balancing options to Layer 4 Proxy and HTTP Handle
 * Add: Layer4 TLS Termination
 * Add: h2c protocol to HTTP Handler
+* Cleanup: Caddy Certificate widget hides unused automatic certificates
+* Cleanup: Widgets error handling improved
 * Cleanup: Refactor caddy_certs.php to Trust model
 
 1.7.4

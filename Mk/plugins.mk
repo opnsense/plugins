@@ -417,6 +417,8 @@ sweep: check
 	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 
+glint: sweep style-fix plist-fix lint
+
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
@@ -467,7 +469,7 @@ test: check
 	fi
 
 commit: ensure-workdirs
-	@echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
+	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
 	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
 
 .PHONY:	check plist-fix
