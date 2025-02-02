@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
             updateServiceControlUI('quagga');
         });
 
-        $("#grid-neighbors").UIBootgrid({
+        $("#{{formGridEditBFDNeighbor['table_id']}}").UIBootgrid({
             'search':'/api/quagga/bfd/searchNeighbor',
             'get':'/api/quagga/bfd/getNeighbor/',
             'set':'/api/quagga/bfd/setNeighbor/',
@@ -65,32 +65,13 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 
 <div class="tab-content content-box tab-content">
+    <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':bfdForm,'id':'frm_bfd_settings'])}}
     </div>
+    <!-- Tab: Neighbors -->
     <div id="neighbors" class="tab-pane fade in">
-        <table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBFDNeighbor">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="description" data-type="string" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="address" data-type="string" data-visible="true">{{ lang._('Neighbor Address') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBFDNeighbor)}}
     </div>
 </div>
 
@@ -107,6 +88,9 @@ POSSIBILITY OF SUCH DAMAGE.
             <br/><br/>
         </div>
     </div>
+    <div id="BFDChangeMessage" class="alert alert-info" style="display: none" role="alert">
+        {{ lang._('After changing settings, please remember to apply them.') }}
+    </div>
 </section>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBFDNeighbor,'id':'DialogEditBFDNeighbor','label':lang._('Edit Neighbor')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBFDNeighbor,'id':formGridEditBFDNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}

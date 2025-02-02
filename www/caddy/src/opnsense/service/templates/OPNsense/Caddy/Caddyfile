@@ -171,7 +171,7 @@
     # The same providers have to be added to "OPNsense/Caddy/includeDnsProvider", best in the same order as in this array for maintainability.
     # For a new provider to work, it has to be compiled into the caddy binary.
     #}
-    {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin'] %}
+    {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin', 'cloudns'] %}
 
     {# Conditionally add the dynamic_dns section, acmedns provider is special, it does not support dynamic_dns. #}
     {% if dnsProvider and dynDnsDomains|length > 0 and dnsProvider != "acmedns" %}
