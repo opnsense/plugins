@@ -52,7 +52,7 @@ function crowdsec_firewall(Plugin $fw)
         array(
             'ipprotocol' => 'inet',
             'descr'      => 'CrowdSec (IPv4)',
-            'from'       => '$crowdsec_blacklists',     # $ to reference an alias
+            'from'       => '<crowdsec_blacklists>',
             'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
@@ -68,7 +68,7 @@ function crowdsec_firewall(Plugin $fw)
         array(
             'ipprotocol' => 'inet6',
             'descr'      => 'CrowdSec (IPv6)',
-            'from'       => '$crowdsec6_blacklists',    # $ to reference an alias
+            'from'       => '<crowdsec6_blacklists>',
             'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
