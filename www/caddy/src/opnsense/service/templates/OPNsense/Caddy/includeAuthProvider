@@ -8,8 +8,8 @@
     {% set auth_url = (generalSettings.AuthToTls|default("0") == "1" and 'https://' or 'http://') + (is_ipv6 and '[' or '') + generalSettings.AuthToDomain|default("") + (is_ipv6 and ']' or '') + (generalSettings.AuthToPort and ':' + generalSettings.AuthToPort or '') %}
 {% endif %}
 {% macro generate_copy_headers() %}
-    {% if generalSettings.AuthCopyHeaders %}
-        {% for header_uuid in generalSettings.AuthCopyHeaders.split(',') %}
+    {% if generalSettings.CopyHeaders %}
+        {% for header_uuid in generalSettings.CopyHeaders.split(',') %}
             {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
             {% if header and header.HeaderType %}
                 copy_headers {{ header.HeaderType }}
