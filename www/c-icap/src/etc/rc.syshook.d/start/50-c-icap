@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# start again to fix race with clamav (no need to restart)
-/usr/local/etc/rc.d/c-icap start
+# restart service to make sure c-icap starts after clamav is ready
+/usr/local/etc/rc.d/c-icap restart

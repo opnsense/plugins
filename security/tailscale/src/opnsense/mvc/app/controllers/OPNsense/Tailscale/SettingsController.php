@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 Cedrik Pischem
- *
+ *    Copyright (C) 2024 Sheridan Computers
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,16 +24,16 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-namespace OPNsense\Ndproxy\Api;
+namespace OPNsense\Tailscale;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Core\Config;
-
-class GeneralController extends ApiMutableModelControllerBase
+class SettingsController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'ndproxy';
-    protected static $internalModelClass = 'OPNsense\Ndproxy\Ndproxy';
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Tailscale/settings');
+        $this->view->settingsForm = $this->getForm('settings');
+        $this->view->formDialogSubnet = $this->getForm("dialogSubnet4");
+    }
 }

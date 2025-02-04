@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -461,6 +461,7 @@
                         <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
+                        <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
@@ -490,6 +491,7 @@
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
@@ -699,6 +701,9 @@
                 <dns_freedns_password type="TextField">
                     <Required>N</Required>
                 </dns_freedns_password>
+                <dns_fornex_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_fornex_api_key>
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
@@ -741,9 +746,16 @@
                 <dns_inwx_user type="TextField">
                     <Required>N</Required>
                 </dns_inwx_user>
+                <!-- TODO: old value, should be removed -->
                 <dns_inws_password type="TextField">
                     <Required>N</Required>
                 </dns_inws_password>
+                <dns_inwx_password type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_password>
+                <dns_inwx_shared_secret type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_shared_secret>
                 <dns_ionos_prefix type="TextField">
                     <Required>N</Required>
                 </dns_ionos_prefix>
@@ -906,6 +918,12 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_mydnsjp_masterid type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_masterid>
+                <dns_mydnsjp_password type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_password>
                 <dns_mythic_beasts_key type="TextField">
                     <Required>N</Required>
                 </dns_mythic_beasts_key>
@@ -1495,6 +1513,11 @@
                     <mask>/^.{1,1024}$/u</mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_devicename>
+                <acme_synology_dsm_otpcode type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_otpcode>
                 <acme_fritzbox_url type="TextField">
                     <Required>N</Required>
                     <mask>/^.{1,1024}$/u</mask>

@@ -48,7 +48,6 @@ class CertificatesController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('certificate', 'certificates.certificate', $uuid);
     }
 

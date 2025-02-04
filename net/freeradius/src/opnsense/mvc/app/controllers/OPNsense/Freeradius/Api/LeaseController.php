@@ -42,7 +42,6 @@ class LeaseController extends ApiMutableModelControllerBase
     }
     public function getLeaseAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('lease', 'leases.lease', $uuid);
     }
     public function addLeaseAction()

@@ -101,6 +101,8 @@ async def extract_certificate_info(cert_path):
 
         # Extract the hostname from the filename
         hostname = os.path.basename(cert_path).replace('.crt', '').lower()
+        if hostname.startswith("wildcard_"):
+            hostname = hostname.replace("wildcard_", "*", 1)
 
         return {'hostname': hostname, 'expiration_date': expiration_date_str, 'remaining_days': remaining_days}
     except asyncio.TimeoutError as e:

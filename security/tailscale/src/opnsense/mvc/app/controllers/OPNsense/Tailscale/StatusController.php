@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 Cedrik Pischem
- *
+ *    Copyright (C) 2024 Sheridan Computers
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -25,17 +24,14 @@
  *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *    POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-namespace OPNsense\Ndproxy\Api;
+namespace OPNsense\Tailscale;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-
-class ServiceController extends ApiMutableServiceControllerBase
+class StatusController extends \OPNsense\Base\IndexController
 {
-    protected static $internalServiceClass = '\OPNsense\Ndproxy\Ndproxy';
-    protected static $internalServiceTemplate = 'OPNsense/Ndproxy';
-    protected static $internalServiceEnabled = 'general.enabled';
-    protected static $internalServiceName = 'ndproxy';
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Tailscale/status');
+    }
 }

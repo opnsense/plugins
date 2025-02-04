@@ -1,0 +1,6 @@
+<model>
+    <mount>//OPNsense/tailscale/status</mount>
+    <description>Tailscale status settings</description>
+    <items>
+    </items>
+</model>

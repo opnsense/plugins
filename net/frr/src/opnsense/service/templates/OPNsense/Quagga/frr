@@ -13,8 +13,7 @@ if helpers.exists('OPNsense.quagga.bfd.enabled') and OPNsense.quagga.bfd.enabled
 if helpers.exists('OPNsense.quagga.bgp.enabled') and OPNsense.quagga.bgp.enabled == '1' %} bgpd{% endif %}{%
 if helpers.exists('OPNsense.quagga.ospf6.enabled') and OPNsense.quagga.ospf6.enabled == '1' %} ospf6d{% endif %}{%
 if helpers.exists('OPNsense.quagga.ripng.enabled') and OPNsense.quagga.ripng.enabled == '1' %} ripngd{% endif %}{%
-if helpers.exists('OPNsense.quagga.static.enabled') and OPNsense.quagga.static.enabled == '1' %} staticd{% endif %}{%
-if helpers.exists('OPNsense.quagga.isis.enabled') and OPNsense.quagga.isis.enabled == '1' %} isisd{% endif %}"
+if helpers.exists('OPNsense.quagga.static.enabled') and OPNsense.quagga.static.enabled == '1' %} staticd{% endif %}"
 frr_carp_demote="{%
     if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}{%
     if not helpers.empty('OPNsense.quagga.ospf6.carp_demote') %} ospf6d{% endif
