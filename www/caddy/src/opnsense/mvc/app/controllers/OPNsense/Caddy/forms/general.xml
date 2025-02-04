@@ -66,7 +66,7 @@
             <size>5</size>
             <style>selectpicker</style>
             <hint>X-Forwarded-For</hint>
-            <help><![CDATA[Select one or multiple headers to extract the real client IP. Headers can be added in "Reverse Proxy - Headers". Caddy sets "X-Forwarded-For" by default.]]></help>
+            <help><![CDATA[Select one or multiple headers to extract the real client IP. Headers can be added in "Reverse Proxy - Headers". As example, setting "X-Forwarded-For" and "Cf-Connecting-Ip" can extract the real client IP from Cloudflare.]]></help>
         </field>
         <field>
             <id>caddy.general.GracePeriod</id>
