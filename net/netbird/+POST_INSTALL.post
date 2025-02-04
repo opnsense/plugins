@@ -1,0 +1,3 @@
+chmod +x /usr/local/etc/rc.syshook.d/carp/30-netbird
+chmod +x /usr/local/opnsense/scripts/OPNsense/netbird/initialup.sh
+/etc/rc.d/os-release start

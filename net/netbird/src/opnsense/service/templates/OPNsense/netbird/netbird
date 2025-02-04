@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.netbird.general.Enabled') and OPNsense.netbird.general.Enabled|default("0") == '1' %}
+netbird_enable="YES"
+{% else %}
+netbird_enable="NO"
+{% endif %}
+osrelease_enable="YES"
