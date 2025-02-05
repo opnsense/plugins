@@ -57,37 +57,39 @@ class Netcup(BaseAccount):
                 syslog.syslog(syslog.LOG_ERR, "Incomplete FQDN offerred %s" % self.settings['hostnames'])
                 return False
 
-            syslog.syslog(syslog.LOG_DEBUG, f"Hostnames in settings: {str(self.settings['hostnames'])}")
-            all_hostnames = self.settings['hostnames'].split(',')
-            hostnames = {}
-            for hostname in all_hostnames:
-                domain = (hostname.split('.', hostname.count('.')-1)[-1]).strip(' \t\n\r')
-                hostname = (hostname.rsplit('.', 2)[0]).strip(' \t\n\r') if self.domain != self.settings['hostnames'] else '@'
-                if domain not in hostnames:
-                    hostnames[domain] = []
-                hostnames[domain].append(hostname)
             if self.settings['password'].count('|') == 1:
                 self.settings['APIPassword'], self.settings['APIKey'] = self.settings['password'].split('|')
-
-            if self.settings['APIPassword'] is None or self.settings['APIKey'] is None:
+            else:
                 syslog.syslog(syslog.LOG_ERR, "Unable to parse APIPassword|APIKey.")
                 return False
-
+            
             self.netcupAPISessionID = self._login()
             if not self.netcupAPISessionID:
                 return False
+            
+            hostnames = {}
+            for hostname in self.settings['hostnames'].split(','):
+
+                domain = (hostname.split('.', hostname.count('.')-1)[-1]).strip(' \t\n\r')
+                hostname = (hostname.rsplit('.', 2)[0]).strip(' \t\n\r') if domain != self.settings['hostnames'] else '@'
+
+                if domain not in hostnames:
+                    hostnames[domain] = []
+                hostnames[domain].append(hostname)
             
             for domain, subdomains in hostnames.items():
                 dnsZoneInfo = self._sendRequest(self._createRequestPayload(domain, 'infoDnsZone'))
                 if not dnsZoneInfo:
                     return False
+                
                 if str(self.settings['ttl']) != dnsZoneInfo['ttl']:
                     dnsZoneInfo['ttl'] = str(self.settings['ttl'])
                     self._sendRequest(self._createRequestPayload(domain, 'updateDnsZone', {'dnszone': dnsZoneInfo}))
                 dnsRecordsInfo = self._sendRequest(self._createRequestPayload(domain, 'infoDnsRecords'))
-                syslog.syslog(syslog.LOG_DEBUG, f'DNS Records Info: {dnsRecordsInfo}')
+
                 if not dnsRecordsInfo:
                     return False
+                
                 recordType = 'AAAA' if ':' in self.current_address else 'A'
                 for subdomain in subdomains:
                     self._updateIpAddress(subdomain, domain, recordType, dnsRecordsInfo)
