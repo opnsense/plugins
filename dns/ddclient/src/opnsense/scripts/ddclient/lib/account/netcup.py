@@ -45,7 +45,7 @@ class Netcup(BaseAccount):
 
     @staticmethod
     def known_services():
-        return Netcup._services
+        return {"netcup": "Netcup"}
 
     @staticmethod
     def match(account):
