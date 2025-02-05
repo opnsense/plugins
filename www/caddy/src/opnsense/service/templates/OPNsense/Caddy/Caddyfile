@@ -85,6 +85,14 @@
         {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
+        {% if generalSettings.ClientIpHeaders %}
+            {% for header_uuid in generalSettings.ClientIpHeaders.split(',') %}
+                {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+                {% if header and header.HeaderType %}
+                    client_ip_headers {{ header.HeaderType }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         {% if generalSettings.LogCredentials|default("0") == "1" %}
             log_credentials
         {% endif %}
