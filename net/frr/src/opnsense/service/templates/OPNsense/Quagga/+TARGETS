@@ -3,4 +3,5 @@ frr.conf:/usr/local/etc/frr/frr.conf
 vtysh.conf:/usr/local/etc/frr/vtysh.conf
 ospf6d_carp.conf:/usr/local/etc/frr/ospf6d_carp.conf
 ospfd_carp.conf:/usr/local/etc/frr/ospfd_carp.conf
+sa_policies.conf:/usr/local/etc/frr/sa_policies.conf
 syslog-ng-frr-events.conf:/usr/local/etc/syslog-ng.conf.d/frr-events.conf
