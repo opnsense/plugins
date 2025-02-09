@@ -172,5 +172,27 @@
             <Required>Y</Required>
             <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
         </rndcsecret>
+        <enableddnsupdates type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </enableddnsupdates>
+        <ddnsalgorithm type="OptionField">
+            <OptionValues>
+                <hmac-md5>HMAC-MD5</hmac-md5>
+                <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                <hmac-sha512>HMAC-SHA512</hmac-sha512>
+            </OptionValues>
+            <default>hmac-sh256</default>
+            <Multiple>N</Multiple>
+            <Required>N</Required>
+        </ddnsalgorithm>
+         <ddnssecret type="TextField">
+            <default></default>
+            <Required>N</Required>
+        </ddnssecret>
+        <dhcpstaticmappings type="BooleanField">
+            <default>0</default>
+            <Required>N</Required>
+        </dhcpstaticmappings>
     </items>
 </model>
