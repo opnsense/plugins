@@ -8,6 +8,10 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.9
+
+ * Update rule reference ($ -> <>) for opnsense 25.1
+
 1.0.8
 
 * Enable use_wal, remove warning
