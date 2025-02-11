@@ -6,6 +6,11 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.27
+
+* Add support for altering IPv6 addresses in native backend (contributed by SaarLAN-Pissbeutel)
+* Fix Netcup host/domain recognition (contributed by SaarLAN-Pissbeutel)
+
 1.26
 
 * Add ddclient TTL configuration in Gandi and GoDaddy (contributed by David PHAM-VAN)
