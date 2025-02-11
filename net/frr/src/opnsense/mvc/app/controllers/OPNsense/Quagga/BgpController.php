@@ -35,22 +35,22 @@ class BgpController extends \OPNsense\Base\IndexController
         $this->view->bgpForm = $this->getForm("bgp");
 
         $this->view->formDialogEditBGPNeighbor = $this->getForm("dialogEditBGPNeighbor");
-        $this->view->formGridEditBGPNeighbor = $this->getFormGrid("dialogEditBGPNeighbor", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPNeighbor = $this->getFormGrid("dialogEditBGPNeighbor");
 
         $this->view->formDialogEditBGPASPaths = $this->getForm("dialogEditBGPASPath");
-        $this->view->formGridEditBGPASPaths = $this->getFormGrid("dialogEditBGPASPath", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPASPaths = $this->getFormGrid("dialogEditBGPASPath");
 
         $this->view->formDialogEditBGPPrefixLists = $this->getForm("dialogEditBGPPrefixLists");
-        $this->view->formGridEditBGPPrefixLists = $this->getFormGrid("dialogEditBGPPrefixLists", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPPrefixLists = $this->getFormGrid("dialogEditBGPPrefixLists");
 
         $this->view->formDialogEditBGPCommunityLists = $this->getForm("dialogEditBGPCommunityLists");
-        $this->view->formGridEditBGPCommunityLists = $this->getFormGrid("dialogEditBGPCommunityLists", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPCommunityLists = $this->getFormGrid("dialogEditBGPCommunityLists");
 
         $this->view->formDialogEditBGPRouteMaps = $this->getForm("dialogEditBGPRouteMaps");
-        $this->view->formGridEditBGPRouteMaps = $this->getFormGrid("dialogEditBGPRouteMaps", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPRouteMaps = $this->getFormGrid("dialogEditBGPRouteMaps");
 
         $this->view->formDialogEditBGPPeergroups = $this->getForm("dialogEditBGPPeergroups");
-        $this->view->formGridEditBGPPeergroups = $this->getFormGrid("dialogEditBGPPeergroups", null, "BGPChangeMessage");
+        $this->view->formGridEditBGPPeergroups = $this->getFormGrid("dialogEditBGPPeergroups");
 
         $this->view->pick('OPNsense/Quagga/bgp');
     }
