@@ -229,10 +229,10 @@
         // Add click event listener for "Add Handler" button
         $("#addHandleBtn").on("click", function() {
             if ($('#maintabs .active a').attr('href') === "#handlesTab") {
-                $("#addReverseHandleBtn").click();
+                $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
             } else {
-                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseHandleBtn").click();
+                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function() {
+                    $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
                 });
             }
         });
@@ -240,10 +240,10 @@
         // Add click event listener for "Add Domain" button
         $("#addDomainBtn").on("click", function() {
             if ($('#maintabs .active a').attr('href') === "#domainsTab") {
-                $("#addReverseProxyBtn").click();
+                $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
             } else {
-                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseProxyBtn").click();
+                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function() {
+                    $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
                 });
             }
         });
@@ -332,7 +332,7 @@
         </div>
         <!-- Selectpicker and Clear All on the right -->
         <div class="filter-actions" style="display: flex; flex-direction: column; align-items: flex-end;">
-            <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">
+            <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="334px" data-size="7" title="{{ lang._('Filter by Domain') }}">
             </select>
             <a href="#" class="text-danger" id="clearDomains" style="margin-top: 5px;">
                 <i class="fa fa-times-circle"></i> <small>Clear All</small>

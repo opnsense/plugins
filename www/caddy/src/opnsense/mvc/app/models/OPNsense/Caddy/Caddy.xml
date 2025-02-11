@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -61,6 +61,7 @@
                     <civo>Civo (optional)</civo>
                     <easydns>EasyDNS (optional)</easydns>
                     <hosttech>Hosttech (optional)</hosttech>
+                    <cloudns>ClouDNS (optional)</cloudns>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -83,6 +84,17 @@
                     </reverseproxy>
                 </Model>
             </accesslist>
+            <ClientIpHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
+                <Multiple>Y</Multiple>
+            </ClientIpHeaders>
             <DisableSuperuser type="OptionField">
                 <Required>Y</Required>
                 <Default>0</Default>
@@ -167,27 +179,17 @@
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
-            <AuthCopyHeaders type="OptionField">
+            <CopyHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
                 <Multiple>Y</Multiple>
-                <OptionValues>
-                    <Authorization>Authorization</Authorization>
-                    <Remote-User>Remote-User</Remote-User>
-                    <Remote-Groups>Remote-Groups</Remote-Groups>
-                    <Remote-Name>Remote-Name</Remote-Name>
-                    <Remote-Email>Remote-Email</Remote-Email>
-                    <X-Authentik-Username>X-Authentik-Username</X-Authentik-Username>
-                    <X-Authentik-Groups>X-Authentik-Groups</X-Authentik-Groups>
-                    <X-Authentik-Email>X-Authentik-Email</X-Authentik-Email>
-                    <X-Authentik-Name>X-Authentik-Name</X-Authentik-Name>
-                    <X-Authentik-Uid>X-Authentik-Uid</X-Authentik-Uid>
-                    <X-Authentik-Jwt>X-Authentik-Jwt</X-Authentik-Jwt>
-                    <X-Authentik-Meta-Jwks>X-Authentik-Meta-Jwks</X-Authentik-Meta-Jwks>
-                    <X-Authentik-Meta-Outpost>X-Authentik-Meta-Outpost</X-Authentik-Meta-Outpost>
-                    <X-Authentik-Meta-Provider>X-Authentik-Meta-Provider</X-Authentik-Meta-Provider>
-                    <X-Authentik-Meta-App>X-Authentik-Meta-App</X-Authentik-Meta-App>
-                    <X-Authentik-Meta-Version>X-Authentik-Meta-Version</X-Authentik-Meta-Version>
-                </OptionValues>
-            </AuthCopyHeaders>
+            </CopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
