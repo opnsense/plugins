@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ifconfig tun30000 name ocvpn0
+ifconfig ocvpn0 group ocvpn
