@@ -41,4 +41,10 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Quagga';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'quagga';
+
+    protected function reconfigureForceRestart()
+    {
+        // frr can reload using frr-reload and frr8-pythontools
+        return 0;
+    }
 }
