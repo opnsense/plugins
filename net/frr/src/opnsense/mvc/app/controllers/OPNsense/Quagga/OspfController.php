@@ -35,16 +35,16 @@ class OspfController extends \OPNsense\Base\IndexController
         $this->view->generalForm = $this->getForm("ospf");
 
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
-        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPFNetwork", null, "OSPFChangeMessage");
+        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPFNetwork");
 
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
-        $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPFInterface", null, "OSPFChangeMessage");
+        $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPFInterface");
 
         $this->view->formDialogEditPrefixLists = $this->getForm("dialogEditOSPFPrefixLists");
-        $this->view->formGridEditPrefixLists = $this->getFormGrid("dialogEditOSPFPrefixLists", null, "OSPFChangeMessage");
+        $this->view->formGridEditPrefixLists = $this->getFormGrid("dialogEditOSPFPrefixLists");
 
         $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPFRouteMaps");
-        $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPFRouteMaps", null, "OSPFChangeMessage");
+        $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPFRouteMaps");
 
         $this->view->pick('OPNsense/Quagga/ospf');
     }

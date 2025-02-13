@@ -122,24 +122,7 @@
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
     </div>
 </div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <button class="btn btn-primary __mb __mt" id="reconfigureAct"
-                data-endpoint='/api/quagga/service/reconfigure'
-                data-label="{{ lang._('Apply') }}"
-                data-error-title="{{ lang._('Error reconfiguring OSPFv3') }}"
-                data-service-widget="quagga"
-                type="button"
-            ></button>
-        </div>
-    </div>
-    <div id="OSPF6ChangeMessage" class="alert alert-info" style="display: none" role="alert">
-        {{ lang._('After changing settings, please remember to apply them.') }}
-    </div>
-</section>
-
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
