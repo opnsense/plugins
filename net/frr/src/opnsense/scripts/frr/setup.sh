@@ -21,3 +21,21 @@ chown $user:$group /var/log/frr.log
 
 # register Security Associations
 /usr/local/opnsense/scripts/frr/register_sas
+
+# delete stale configuration files from frr.conf migration
+files_to_delete="
+    /etc/rc.d/watchfrr
+    /usr/local/etc/frr/bfdd.conf
+    /usr/local/etc/frr/bgpd.conf
+    /usr/local/etc/frr/ospfd.conf
+    /usr/local/etc/frr/ospf6d.conf
+    /usr/local/etc/frr/ripd.conf
+    /usr/local/etc/frr/staticd.conf
+    /usr/local/etc/frr/zebra.conf
+"
+
+for file in $files_to_delete; do
+    if [ -f "$file" ]; then
+        rm -f "$file"
+    fi
+done
