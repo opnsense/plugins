@@ -34,8 +34,4 @@ files_to_delete="
     /usr/local/etc/frr/zebra.conf
 "
 
-for file in $files_to_delete; do
-    if [ -f "$file" ]; then
-        rm -f "$file"
-    fi
-done
+rm -f $files_to_delete
