@@ -9,9 +9,10 @@
                 <Required>Y</Required>
             </Enabled>
             <ListenIP type="NetworkField">
+                <default>1.2.3.4</default>
                 <FieldSeparator>,</FieldSeparator>
-                <Required>Y</Required>
                 <asList>Y</asList>
+                <Required>Y</Required>
             </ListenIP>
             <ListenPort type="PortField">
                 <Default>3478</Default>

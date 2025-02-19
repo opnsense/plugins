@@ -2,7 +2,6 @@
     <field>
         <label>General Settings</label>
         <type>header</type>
-        <style>mode_table table_http table_ssl table_ssl_true</style>
     </field>
     <field>
         <id>turnserver.settings.Enabled</id>
@@ -13,9 +12,10 @@
     <field>
         <id>turnserver.settings.ListenIP</id>
         <label>Listen IPs</label>
-        <type>text</type>
-        <help>Listener IP address of relay server. Multiple listeners can be specified. Use 0.0.0.0 or :: to listen on all IPv4 or IPv6 addresses respectively.</help>
-        <hint>enter a valid IPv4/v6 address</hint>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[Listener IP address of relay server. Multiple listeners can be specified. Use 0.0.0.0 or :: to listen on all IPv4 or IPv6 addresses respectively.]]></help>
     </field>
     <field>
         <id>turnserver.settings.ListenPort</id>
