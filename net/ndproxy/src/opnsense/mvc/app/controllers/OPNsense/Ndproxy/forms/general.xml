@@ -19,7 +19,7 @@
         <id>ndproxy.general.ndproxy_downlink_mac_address</id>
         <label>Downlink MAC Address</label>
         <type>text</type>
-        <help><![CDATA[Enter the MAC address of the downlink interface that will distribute the external IPv6 prefix of the upstream interface. Usually, this is the LAN interface.]]></help>
+        <help><![CDATA[Enter the MAC address of the downlink interface. Usually, this is the WAN interface. When ndproxy runs on the same router that distributes the IPv6 prefix, uplink and downlink interface are identical.]]></help>
     </field>
     <field>
         <id>ndproxy.general.ndproxy_uplink_ipv6_addresses</id>
