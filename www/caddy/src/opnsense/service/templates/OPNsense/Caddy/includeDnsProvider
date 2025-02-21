@@ -6,6 +6,38 @@
 # It only includes DNS Providers that need specific settings and do not default to
 # "dns {{ dnsProvider }} {{ dnsApiKey }}"
 #}
+{% macro dnsProviderSpecialConfig() %}
+    [
+        'duckdns',
+        'porkbun',
+        'desec',
+        'route53',
+        'acmedns',
+        'googleclouddns',
+        'azure',
+        'ovh',
+        'namecheap',
+        'powerdns',
+        'ddnss',
+        'linode',
+        'tencentcloud',
+        'dinahosting',
+        'hexonet',
+        'mailinabox',
+        'netcup',
+        'rfc2136',
+        'dnsmadeeasy',
+        'civo',
+        'scaleway',
+        'acmeproxy',
+        'inwx',
+        'namedotcom',
+        'easydns',
+        'directadmin',
+        'cloudns'
+    ]
+{% endmacro %}
+{% if context_var == 'dnsProviderSpecialLogic' %}
 {% if dnsProvider == 'duckdns' %}
     {% if dnsApiKey %}api_token {{ dnsApiKey }}
     {% endif %}
@@ -190,4 +222,5 @@
     {% endif %}
     {% if dnsOptionalField1 %}sub_auth_id {{ dnsOptionalField1 }}
     {% endif %}
+{% endif %}
 {% endif %}
