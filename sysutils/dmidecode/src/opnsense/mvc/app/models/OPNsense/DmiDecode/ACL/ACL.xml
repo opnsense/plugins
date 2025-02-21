@@ -1,0 +1,8 @@
+<acl>
+  <service-dmidecode>
+    <name>Service: DMIDecode</name>
+    <patterns>
+      <pattern>api/dmidecode/service/get</pattern>
+    </patterns>
+  </service-dmidecode>
+</acl>
