@@ -24,26 +24,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class DMIDecode extends BaseTableWidget {
+export default class DmiDecode extends BaseTableWidget {
   constructor() {
     super();
-    this.title = 'DMIDecode Data';
-  }
-
-  getGridOptions() {
-    return {
-      sizeToContent: 650
-    }
+    this.title = 'DmiDecode Data';
   }
 
   getMarkup() {
     let $container = $('<div></div>');
     // make table for system output, add header
-    let $system_table = super.createTable('system-table', { headerPosition: 'none' });
+    let $system_table = super.createTable('system-table', { headerPosition: 'left' });
     $container.append(`<h3>${this.translations.system}</h3>`)
     $container.append($system_table);
     // same for bios output
-    let $bios_table = super.createTable('bios-table', { headerPosition: 'none' });
+    let $bios_table = super.createTable('bios-table', { headerPosition: 'left' });
     $container.append(`<h3>${this.translations.bios}</h3>`)
     $container.append($bios_table);
     return $container;
