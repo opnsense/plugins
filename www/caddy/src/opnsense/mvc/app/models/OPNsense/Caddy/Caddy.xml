@@ -71,6 +71,14 @@
             <TlsDnsOptionalField3 type="TextField"/>
             <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
+            <TlsDnsPropagationTimeoutPeriod type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationTimeoutPeriod>
+            <TlsDnsPropagationDelay type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationDelay>
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
