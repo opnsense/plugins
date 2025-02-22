@@ -164,7 +164,21 @@
             <id>caddy.general.TlsDnsPropagationTimeout</id>
             <label>Disable Propagation Timeout</label>
             <type>checkbox</type>
-            <help><![CDATA[Propagation Timeout is a duration value that sets the maximum time to wait for the DNS TXT records to appear when using the DNS challenge. The default is 2 minutes. Disabling this will set propagation_timeout to -1 (checking propagation infinitely) and additionally set a propagation_delay of 30s (wait time before starting propagation checks). This can help when the DNS Challenge continues to fail because the local DNS Server does not know the new DNS TXT records yet in the default timeframe of 2 minutes.]]></help>
+            <help><![CDATA[This will disable propagation_timeout.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsPropagationTimeoutPeriod</id>
+            <label>Propagation Timeout</label>
+            <type>text</type>
+            <hint>120</hint>
+            <help><![CDATA[propagation_timeout is a duration value in seconds that sets the maximum time to wait for the DNS TXT records to appear when using the DNS challenge.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsPropagationDelay</id>
+            <label>Propagation Delay</label>
+            <type>text</type>
+            <hint>0</hint>
+            <help><![CDATA[propagation_delay is a duration value in seconds that sets how long to wait before starting DNS TXT records propagation checks when using the DNS challenge.]]></help>
         </field>
     </tab>
     <tab id="general-dynamicdns" description="Dynamic DNS">
