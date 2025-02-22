@@ -159,7 +159,33 @@
                     Hosttech "api_token",
                     Vultr "api_token",
                     Hetzner "api_token",
-                    ClouDNS "auth_id".
+                    ClouDNS "auth_id",
+                    Gcore "api_token",
+                    Huawei Cloud "access_key_id",
+                    DNSExit "api_token",
+                    Nanelo "api_token",
+                    Katapult "api_token",
+                    Regfish "api_key",
+                    Leaseweb "api_token",
+                    DreamHost "api_key",
+                    Exoscale "api_key",
+                    TransIP "account_name",
+                    Selectel "user",
+                    LuaDNS "email",
+                    Hurricane Electric "api_key",
+                    Namesilo "api_token",
+                    Dode "api_token",
+                    Dynu "api_token",
+                    Glesys "project",
+                    NFSN "login",
+                    GoDaddy "api_token",
+                    Vercel "api_token",
+                    Loopia "username",
+                    DNSPod "api_token",
+                    Mythic Beasts "key_id",
+                    Dynv6 "api_token",
+                    AliDNS "access_key_id",
+                    Metaname "api_key",
                 ]]>
             </help>
         </field>
@@ -193,7 +219,19 @@
                     Name.com "server",
                     EasyDNS "api_key",
                     DirectAdmin "user",
-                    ClouDNS "auth_password".
+                    ClouDNS "auth_password",
+                    Huawei Cloud "secret_access_key",
+                    Exoscale "api_secret",
+                    TransIP "private_key_path",
+                    Selectel "password",
+                    LuaDNS "api_key",
+                    Dynu "own_domain",
+                    Glesys "api_key",
+                    NFSN "api_key",
+                    Loopia "password",
+                    Mythic Beasts "secret",
+                    AliDNS "access_key_secret",
+                    Metaname "account_reference",
                 ]]>
             </help>
         </field>
@@ -220,7 +258,8 @@
                     EasyDNS "api_url",
                     DirectAdmin "login_key",
                     RFC2136 "key",
-                    ClouDNS "sub_auth_id".
+                    ClouDNS "sub_auth_id",
+                    Selectel "account_id",
                 ]]>
             </help>
         </field>
@@ -239,7 +278,8 @@
                     DDNS "password",
                     INWX "endpoint_url",
                     DirectAdmin "insecure_requests",
-                    RFC2136 "server".
+                    RFC2136 "server",
+                    Selectel "project_name",
                 ]]>
             </help>
         </field>
@@ -251,7 +291,7 @@
                 <![CDATA[
                     Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider.
                     Route53 "region",
-                    Azure "resource_group_name".
+                    Azure "resource_group_name",
                 ]]>
             </help>
         </field>
@@ -262,7 +302,7 @@
             <help>
                 <![CDATA[
                     Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider.
-                    Route53 "session_token".
+                    Route53 "session_token",
                 ]]>
             </help>
         </field>

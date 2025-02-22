@@ -253,7 +253,7 @@
     {% endif %}
     {% if dnsSecretApiKey %}api_secret {{ dnsSecretApiKey }}
     {% endif %}
-{% elif dnsProvider == 'exoscale' %}
+{% elif dnsProvider == 'transip' %}
     {% if dnsApiKey %}account_name {{ dnsApiKey }}
     {% endif %}
     {% if dnsSecretApiKey %}private_key_path {{ dnsSecretApiKey }}
@@ -280,7 +280,7 @@
     {% endif %}
     {% if dnsSecretApiKey %}own_domain {{ dnsSecretApiKey }}
     {% endif %}
-{% elif dnsProvider == 'dynu' %}
+{% elif dnsProvider == 'glesys' %}
     {% if dnsApiKey %}project {{ dnsApiKey }}
     {% endif %}
     {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
