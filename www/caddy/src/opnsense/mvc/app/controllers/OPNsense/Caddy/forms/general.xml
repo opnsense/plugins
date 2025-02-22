@@ -108,7 +108,7 @@
             <id>caddy.general.TlsDnsProvider</id>
             <label>DNS Provider</label>
             <type>dropdown</type>
-            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be installed manually, see https://caddyserver.com/docs/command-line#caddy-add-package. Important: When the version of the caddy binary changes, the provider must be reinstalled. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
+            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be installed manually, see https://caddyserver.com/docs/command-line#caddy-add-package. Important: When the version of the caddy binary changes, "optional" provider must be reinstalled. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
         </field>
         <field>
             <type>header</type>
