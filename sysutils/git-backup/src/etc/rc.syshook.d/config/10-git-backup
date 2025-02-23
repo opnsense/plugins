@@ -67,21 +67,30 @@ if len(sys.argv) > 1:
             except AttributeError:
                 pass
 
-        hacred = bool(int(xmlroot.find('./system/backup/git/hacred').text))
+        hidesecrets = bool(int(xmlroot.find('./system/backup/git/hidesecrets').text))
 
         # snapshot provided config.xml into git staging and commit with extracted data
         os.chdir('/conf/backup/git/')
         subprocess.run(['cp', sys.argv[1], '/conf/backup/git/config.xml'])
 
-        # hide ha sync password if hacred
-        if (hacred):
+        # hide sensitive content if hidesecrets
+        if (hidesecrets):
             try:
                 conf_tree = ET.parse('/conf/backup/git/config.xml')
                 conf_xmlroot = conf_tree.getroot()
-                password = conf_xmlroot.find('./hasync/password')
-                if password is not None:
+                # Set password fields to ''
+                passwords = conf_xmlroot.iter('password')
+                for password in passwords:
                     password.text = ''
-                    conf_tree.write('/conf/backup/git/config.xml')
+                # Set certificates prv fields to ''
+                privkeys = conf_xmlroot.iter('prv')
+                for privkey in privkeys:
+                    privkey.text = ''
+                # Set ldap ldap_bindpw fields to ''
+                ldap_bindpws = conf_xmlroot.iter('ldap_bindpw')
+                for ldap_bindpw in ldap_bindpws:
+                    ldap_bindpw.text = ''
+                conf_tree.write('/conf/backup/git/config.xml')
             except (FileNotFoundError, ET.ParseError):
                 syslog.syslog(syslog.LOG_ERR, 'Could not parse or open /conf/backup/git/config.xml')
                 sys.exit(1)

@@ -86,10 +86,10 @@ class Git extends Base implements IBackupProvider
              "value" => null
            ],
            [
-              "name" => "hacred",
+              "name" => "hidesecrets",
               "type" => "checkbox",
-              "label" => gettext("Hide HA Sync Credential"),
-              "help" => gettext("When enabled, HA sync password will be hidden from backup."),
+              "label" => gettext("Hide all secrets from backup"),
+              "help" => gettext("When enabled, all secrets will be hidden from backup."),
               "value" => null
            ]
         ];
