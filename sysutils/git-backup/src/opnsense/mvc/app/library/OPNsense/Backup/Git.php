@@ -84,7 +84,14 @@ class Git extends Base implements IBackupProvider
              "type" => "password",
              "label" => gettext("Password"),
              "value" => null
-           ]
+           ],
+           [
+              "name" => "hacred",
+              "type" => "checkbox",
+              "label" => gettext("Hide HA Sync Credential"),
+              "help" => gettext("When enabled, HA sync password will be hidden from backup."),
+              "value" => null
+           ],
         ];
         $mdl = new GitSettings();
         foreach ($fields as &$field) {

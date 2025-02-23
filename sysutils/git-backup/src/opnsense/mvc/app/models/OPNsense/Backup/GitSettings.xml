@@ -49,5 +49,9 @@
         </user>
         <password type="TextField">
         </password>
+        <hacred type="BooleanField">
+          <Default>0</Default>
+          <Required>Y</Required>
+        </hacred>
     </items>
 </model>

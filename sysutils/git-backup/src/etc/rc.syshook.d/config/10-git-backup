@@ -67,9 +67,24 @@ if len(sys.argv) > 1:
             except AttributeError:
                 pass
 
+        hacred = bool(xmlroot.find('./system/backup/git/hacred').text)
+
         # snapshot provided config.xml into git staging and commit with extracted data
         os.chdir('/conf/backup/git/')
         subprocess.run(['cp', sys.argv[1], '/conf/backup/git/config.xml'])
+
+        # hide ha sync password if hacred
+        if (hacred):
+            try:
+                conf_tree = ET.parse('/conf/backup/git/config.xml')
+                conf_xmlroot = conf_tree.getroot()
+                password = conf_xmlroot.find('./system/backup/hasync/password')
+                password.text = ''
+                conf_tree.write
+            except (FileNotFoundError, ET.ParseError):
+                syslog.syslog(syslog.LOG_ERR, 'Could not parse or open /conf/backup/git/config.xml')
+                sys.exit(1)
+
         subprocess.run(['/usr/local/bin/git', 'add', 'config.xml'])
         message = "%s @ %s (%s)" % (metadata['./revision/description'], revdate, metadata['./revision/username'])
         subprocess.run(['/usr/local/bin/git', 'commit', '--author', "%s<%s>" % (fullname, user_email), '-m', message])
