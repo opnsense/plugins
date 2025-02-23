@@ -91,7 +91,7 @@ class Git extends Base implements IBackupProvider
               "label" => gettext("Hide HA Sync Credential"),
               "help" => gettext("When enabled, HA sync password will be hidden from backup."),
               "value" => null
-           ],
+           ]
         ];
         $mdl = new GitSettings();
         foreach ($fields as &$field) {

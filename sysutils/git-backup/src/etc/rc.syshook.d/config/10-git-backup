@@ -78,9 +78,10 @@ if len(sys.argv) > 1:
             try:
                 conf_tree = ET.parse('/conf/backup/git/config.xml')
                 conf_xmlroot = conf_tree.getroot()
-                password = conf_xmlroot.find('./system/backup/hasync/password')
-                password.text = ''
-                conf_tree.write
+                password = conf_xmlroot.find('./hasync/password')
+                if password is not None:
+                    password.text = ''
+                    conf_tree.write('/conf/backup/git/config.xml')
             except (FileNotFoundError, ET.ParseError):
                 syslog.syslog(syslog.LOG_ERR, 'Could not parse or open /conf/backup/git/config.xml')
                 sys.exit(1)
