@@ -67,7 +67,7 @@ if len(sys.argv) > 1:
             except AttributeError:
                 pass
 
-        hacred = bool(xmlroot.find('./system/backup/git/hacred').text)
+        hacred = bool(int(xmlroot.find('./system/backup/git/hacred').text))
 
         # snapshot provided config.xml into git staging and commit with extracted data
         os.chdir('/conf/backup/git/')
