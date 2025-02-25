@@ -1,0 +1,52 @@
+<model>
+    <mount>//system/backup/sftp</mount>
+    <version>1.0.0</version>
+    <description>OPNsense sftp Backup Settings</description>
+    <items>
+        <enabled type="BooleanField">
+          <Default>0</Default>
+          <Required>Y</Required>
+          <Constraints>
+              <check001>
+                  <reference>privkey.check001</reference>
+              </check001>
+              <check002>
+                  <reference>url.check001</reference>
+              </check002>
+          </Constraints>
+        </enabled>
+        <url type="TextField">
+            <Required>N</Required>
+            <mask>/^((sftp))?:\/\/.*[^\/]$/</mask>
+            <ValidationMessage>A valid location must be provided.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A backup location (url) is required.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </url>
+        <privkey type="TextField">
+            <Required>N</Required>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A private key is required.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </privkey>
+        <password type="TextField"/>
+        <passwordconfirm type="TextField" volatile="true"/>
+        <backupcount type="IntegerField">
+            <Default>60</Default>
+            <Require>Y</Require>
+            <MinimumValue>1</MinimumValue>
+        </backupcount>
+    </items>
+</model>
