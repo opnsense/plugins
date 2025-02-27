@@ -1924,4 +1924,14 @@
         <label>Token</label>
         <type>password</type>
     </field>
+    <field>
+        <label>scaleway</label>
+        <type>header</type>
+        <style>table_dns table_dns_scaleway</style>
+    </field>
+    <field>
+        <id>validation.dns_scaleway_token</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
 </form>

@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.9
+
+Added:
+* Add support for Scaleway DNS API (#4492)
+
 4.8
 
 BREAKING CHANGE: Let's Encrypt ends support for the OCSP Must Staple
