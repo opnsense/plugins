@@ -9,13 +9,13 @@
         <id>user.username</id>
         <label>Username</label>
         <type>text</type>
-        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ._-@/:</help>
+        <help><![CDATA[Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and _-.@/]]></help>
     </field>
     <field>
         <id>user.password</id>
         <label>Password</label>
         <type>password</type>
-        <help><![CDATA[Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=:& with up to 128 characters.]]></help>
+        <help><![CDATA[Set the password for the user. Allowed characters are 0-9, a-z, A-Z, spaces, and _-,;:!?.()[]{}@*/\&#%`^+<=>|~$ with up to 128 characters.]]></help>
     </field>
     <field>
         <id>user.passwordencryption</id>
