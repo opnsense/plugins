@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         });
 
-        $("#grid-networks").UIBootgrid({
+        $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/searchNetwork',
             'get':'/api/quagga/ospfsettings/getNetwork/',
             'set':'/api/quagga/ospfsettings/setNetwork/',
@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'del':'/api/quagga/ospfsettings/delNetwork/',
             'toggle':'/api/quagga/ospfsettings/toggleNetwork/'
         });
-        $("#grid-interfaces").UIBootgrid({
+        $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/searchInterface',
             'get':'/api/quagga/ospfsettings/getInterface/',
             'set':'/api/quagga/ospfsettings/setInterface/',
@@ -67,7 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'del':'/api/quagga/ospfsettings/delInterface/',
             'toggle':'/api/quagga/ospfsettings/toggleInterface/'
         });
-        $("#grid-prefixlists").UIBootgrid({
+        $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/searchPrefixlist',
             'get':'/api/quagga/ospfsettings/getPrefixlist/',
             'set':'/api/quagga/ospfsettings/setPrefixlist/',
@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'del':'/api/quagga/ospfsettings/delPrefixlist/',
             'toggle':'/api/quagga/ospfsettings/togglePrefixlist/'
         });
-        $("#grid-routemaps").UIBootgrid({
+        $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/searchRoutemap',
             'get':'/api/quagga/ospfsettings/getRoutemap/',
             'set':'/api/quagga/ospfsettings/setRoutemap/',
@@ -101,128 +101,23 @@ POSSIBILITY OF SUCH DAMAGE.
     </div>
     <!-- Tab: Networks -->
     <div id="networks" class="tab-pane fade in">
-      <table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
-          <thead>
-              <tr>
-                  <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                  <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
-                  <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
-                  <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
-                  <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-              </tr>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-              <tr>
-                  <td></td>
-                  <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                  </td>
-              </tr>
-          </tfoot>
-      </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
     </div>
     <!-- Tab: Interfaces -->
     <div id="interfaces" class="tab-pane fade in">
-        <table id="grid-interfaces" class="table table-responsive" data-editDialog="DialogEditInterface">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
-                    <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
-                    <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditInterface)}}
     </div>
     <!-- Tab: Prefixlists -->
     <div id="prefixlists" class="tab-pane fade in">
-        <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditPrefixLists">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Sequence Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditPrefixLists)}}
     </div>
     <!-- Tab: Routemaps -->
     <div id="routemaps" class="tab-pane fade in">
-        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditRouteMaps">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
-                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="match2" data-type="string" data-visible="true">{{ lang._('Prefix List') }}</th>
-                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
     </div>
 </div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <button class="btn btn-primary __mb __mt" id="reconfigureAct"
-                data-endpoint='/api/quagga/service/reconfigure'
-                data-label="{{ lang._('Apply') }}"
-                data-error-title="{{ lang._('Error reconfiguring OSPFv3') }}"
-                data-service-widget="quagga"
-                type="button"
-            ></button>
-        </div>
-    </div>
-</section>
-
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':'DialogEditPrefixLists','label':lang._('Edit Prefix Lists')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':'DialogEditRouteMaps','label':lang._('Edit Route Maps')])}}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
