@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2025 Cedrik Pischem
  * Copyright (C) 2025 Deciso B.V.
