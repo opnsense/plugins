@@ -45,7 +45,7 @@
         <passwordconfirm type="TextField" volatile="true"/>
         <backupcount type="IntegerField">
             <Default>60</Default>
-            <Require>Y</Require>
+            <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
         </backupcount>
     </items>
