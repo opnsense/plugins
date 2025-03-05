@@ -83,6 +83,7 @@ security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
+security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
@@ -106,6 +107,7 @@ sysutils/nextcloud-backup -- Track config changes using NextCloud
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
