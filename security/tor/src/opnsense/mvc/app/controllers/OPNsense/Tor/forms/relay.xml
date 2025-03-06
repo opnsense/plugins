@@ -96,6 +96,11 @@
     <help>If the relay type is a bridge, select the type of bridge transport.</help>
   </field>
   <field>
+    <id>relay.obfs4_port</id>
+    <label>Obfs4 Port</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>relay.publish</id>
     <label>Publish Server Descriptor</label>
     <type>checkbox</type>

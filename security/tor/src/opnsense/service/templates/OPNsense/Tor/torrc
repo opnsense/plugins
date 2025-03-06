@@ -254,6 +254,17 @@ ExitPolicy {{ policy.action }} {% if policy.network == 'any' %}*{% if 'v' in pol
 ExitPolicy reject *:*
 ExitPolicy reject6 *:*
 
+{% if helpers.exists('OPNsense.tor.relay.relay') and OPNsense.tor.relay.relay == '1' %}
+{%   if helpers.exists('OPNsense.tor.relay.bridge_types') and OPNsense.tor.relay.bridge_types != "None" %}
+{%     if OPNsense.tor.relay.bridge_types ==  "Obfs4" %}
+{%       if helpers.exists('OPNsense.tor.relay.obfs4_port') and OPNsense.tor.relay.obfs4_port != '' %}
+ServerTransportPlugin obfs4 exec /usr/local/bin/obfs4proxy
+ServerTransportListenAddr obfs4 0.0.0.0:{{ OPNsense.tor.relay.obfs4_port }}
+{%       endif %}
+{%     endif %}
+ExtORPort auto
+{%   endif %}
+{% endif %}
 
 BridgeRelay {{ OPNsense.tor.relay.relay|default('1') }}
 PublishServerDescriptor {{ OPNsense.tor.relay.publish|default('0') }}

@@ -80,6 +80,12 @@
         <snowflake>Snowflake</snowflake>
       </OptionValues>
     </bridge_type>
+    <obfs4_port type="IntegerField">
+      <MinimumValue>0</MinimumValue>
+      <Required>N</Required>
+      <MaximumValue>65535</MaximumValue>
+      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+    </obfs4_port>
     <exitrejectprivateip type="BooleanField">
         <default>1</default>
         <Required>Y</Required>
