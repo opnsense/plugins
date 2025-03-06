@@ -1,6 +1,6 @@
 <acl>
     <page-service-dmidecode>
-        <name>Service: DMIDecode</name>
+        <name>Service: DMI Decoder Widget</name>
         <patterns>
             <pattern>api/dmidecode/service/get</pattern>
         </patterns>
