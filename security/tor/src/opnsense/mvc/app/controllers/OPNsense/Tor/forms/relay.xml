@@ -89,6 +89,13 @@
     <help>A bridge is a private relay. It is not visible in the public directory. Uncheck this if you want to become a public relay.</help>
   </field>
   <field>
+    <id>relay.bridge_type</id>
+    <label>Bridge Transport</label>
+    <type>dropdown</type>
+    <style>dropdownstyle</style>
+    <help>If the relay type is a bridge, select the type of bridge transport.</help>
+  </field>
+  <field>
     <id>relay.publish</id>
     <label>Publish Server Descriptor</label>
     <type>checkbox</type>
