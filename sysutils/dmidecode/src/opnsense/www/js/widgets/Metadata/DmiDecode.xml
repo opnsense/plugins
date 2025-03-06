@@ -1,0 +1,20 @@
+<metadata>
+  <dmidecode>
+    <filename>DmiDecode.js</filename>
+    <endpoints>
+      <endpoint>/api/dmidecode/service/get</endpoint>
+    </endpoints>
+    <translations>
+      <title>Hardware Information</title>
+      <system>Platform</system>
+      <bios>BIOS</bios>
+      <Manufacturer>Manufacturer</Manufacturer>
+      <Product>Product Name</Product>
+      <Version>Version</Version>
+      <Serial>Serial Number</Serial>
+      <Family>Family</Family>
+      <Vendor>Vendor</Vendor>
+      <Release>Release Date</Release>
+    </translations>
+  </dmidecode>
+</metadata>

@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2019 Smart-Soft
+ * Copyright (C) 2025 Neil Merchant
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,27 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once("widgets/include/dmidecode.inc");
+namespace OPNsense\DmiDecode\Api;
 
-$hardwareData = parse_ini_string(configd_run("dmidecode system"), FALSE, INI_SCANNER_RAW);
-$biosData = parse_ini_string(configd_run("dmidecode bios"), FALSE, INI_SCANNER_RAW);
+use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
 
-?>
-<table class="table table-striped table-condensed">
-    <tbody>
-        <tr><th colspan="2"><?=gettext("Platform");?></th></tr>
-        <?php foreach($hardwareData as $key => $val) { ?>
-        <tr>
-            <td style="width: 30%;"><?=gettext($key);?></td>
-            <td><?=html_safe($val);?></td>
-        </tr>
-        <?php } ?>
-        <tr><th colspan="2"><?=gettext("BIOS");?></th></tr>
-        <?php foreach($biosData as $key => $val) { ?>
-        <tr>
-            <td style="width: 30%;"><?=gettext($key);?></td>
-            <td><?=html_safe($val);?></td>
-        </tr>
-        <?php } ?>
-    </tbody>
-</table>
+class ServiceController extends ApiControllerBase
+{
+    public function getAction()
+    {
+        $system = parse_ini_string(trim((new Backend())->configdRun('dmidecode system')), false, INI_SCANNER_RAW);
+        $bios = parse_ini_string(trim((new Backend())->configdRun('dmidecode bios')), false, INI_SCANNER_RAW);
+        $status = "ok";
+        return ["status" => $status, "system" => $system, "bios" => $bios];
+    }
+}
