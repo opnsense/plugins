@@ -1,6 +1,6 @@
 <metadata>
   <dmidecode>
-    <filename>DmiDecode.js</filename>
+    <filename>Dmidecode.js</filename>
     <endpoints>
       <endpoint>/api/dmidecode/service/get</endpoint>
     </endpoints>

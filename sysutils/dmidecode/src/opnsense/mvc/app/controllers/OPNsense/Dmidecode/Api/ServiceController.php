@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\DmiDecode\Api;
+namespace OPNsense\Dmidecode\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;

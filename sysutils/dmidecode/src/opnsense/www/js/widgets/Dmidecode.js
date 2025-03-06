@@ -24,10 +24,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class DmiDecode extends BaseTableWidget {
+export default class Dmidecode extends BaseTableWidget {
   constructor() {
     super();
-    this.title = 'DmiDecode Data';
+    this.title = 'DMI Data';
   }
 
   getMarkup() {
