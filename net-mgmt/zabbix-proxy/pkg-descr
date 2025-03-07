@@ -12,6 +12,10 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.12
+
+* Add plugin variant for Zabbix Proxy 7.2
+
 1.11
 
 * Add plugin variant for Zabbix Proxy 7
