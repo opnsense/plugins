@@ -174,12 +174,8 @@
         {% endfor %}
     {% endfor %}
 
-    {#
-    # Define special DNS Providers that have more than one API key, or special requirements that do not allow the use of the default.
-    # The same providers have to be added to "OPNsense/Caddy/includeDnsProvider", best in the same order as in this array for maintainability.
-    # For a new provider to work, it has to be compiled into the caddy binary.
-    #}
-    {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin', 'cloudns'] %}
+    {% import "OPNsense/Caddy/includeDnsProvider" as dns_includes %}
+    {% set dnsProviderSpecialConfig = dns_includes.dnsProviderSpecialConfig() %}
 
     {# Conditionally add the dynamic_dns section, acmedns provider is special, it does not support dynamic_dns. #}
     {% if dnsProvider and dynDnsDomains|length > 0 and dnsProvider != "acmedns" %}
@@ -187,6 +183,7 @@
             {# duckdns provider is special, it has a different configuration for dynamic dns than for the dns-01 challenge. #}
             {% if dnsProvider in dnsProviderSpecialConfig and dnsProvider != "duckdns" %}
                 provider {{ dnsProvider }} {
+                    {% set context_var = 'dnsProviderSpecialLogic' %}
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
             {% else %}
@@ -305,15 +302,6 @@ http://{{ domain }} {
 #   Purpose: Configures TLS settings based on the DNS provider, API keys, and optional fields.
 #            Sets up the Caddyfile to update TXT Records with the chosen DNS Provider and receive
 #            certificates with the DNS-01 challenge. Refer to Dynamic DNS section for more details.
-#   Parameters:
-#   - @param dnsProvider (string): The DNS provider used for the DNS challenge.
-#   - @param dnsApiKey (string): API key for the DNS provider, essential for authentication.
-#   - @param customCert (string, optional): The config extracted name of a certificate.
-#   - @param dnsChallenge (boolean): Indicates if a DNS challenge is used for certificate authentication.
-#   - @param dnsSecretApiKey (string, optional): A secret API key or token for additional security, depending on the provider.
-#   - @param TlsDnsOptionalField1 to 4 (string, optional): Additional fields for specific DNS provider configurations.
-#   - @param TlsDnsPropagationTimeout (boolean, optional): Disables Propagation Timeout for DNS Challenge.
-#   - @param TlsDnsPropagationResolvers (string, optional): Set custom nameserver for DNS Challenge.
 #}
 {% macro tls_configuration(
     customCert,
@@ -326,12 +314,15 @@ http://{{ domain }} {
     tlsDnsOptionalField3,
     tlsDnsOptionalField4,
     tlsDnsPropagationTimeout,
+    tlsDnsPropagationTimeoutPeriod,
+    tlsDnsPropagationDelay,
     tlsDnsPropagationResolvers
 ) %}
     {% if customCert or (dnsChallenge == "1" and dnsProvider) %}
         tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {% if not customCert and dnsChallenge == "1" and dnsProvider %}{
             issuer acme {
                 dns {{ dnsProvider }} {% if dnsProvider not in dnsProviderSpecialConfig %}{{ dnsApiKey }}{% else %}{
+                    {% set context_var = 'dnsProviderSpecialLogic' %}
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
                 {% endif %}
@@ -340,8 +331,12 @@ http://{{ domain }} {
                 resolvers {{ tlsDnsPropagationResolvers }}
                 {% endif %}
                 {% if tlsDnsPropagationTimeout|default("0") == "1" %}
-                propagation_delay 30s
                 propagation_timeout -1
+                {% elif tlsDnsPropagationTimeoutPeriod %}
+                propagation_timeout {{ tlsDnsPropagationTimeoutPeriod }}s
+                {% endif %}
+                {% if tlsDnsPropagationDelay %}
+                propagation_delay {{ tlsDnsPropagationDelay }}s
                 {% endif %}
             }
         }{% endif %}
@@ -597,19 +592,19 @@ http://{{ domain }} {
                     }
                 {% endif %}
             {% endif %}
-            {% set customCert = reverse.CustomCertificate|default("") %}
-            {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
             {{ tls_configuration(
-                customCert,
-                dnsChallenge,
-                dnsProvider,
-                dnsApiKey,
-                dnsSecretApiKey,
-                tlsDnsOptionalField1,
-                tlsDnsOptionalField2,
-                tlsDnsOptionalField3,
-                tlsDnsOptionalField4,
+                reverse.CustomCertificate|default(""),
+                reverse.DnsChallenge|default("0"),
+                generalSettings.TlsDnsProvider,
+                generalSettings.TlsDnsApiKey,
+                generalSettings.TlsDnsSecretApiKey,
+                generalSettings.TlsDnsOptionalField1,
+                generalSettings.TlsDnsOptionalField2,
+                generalSettings.TlsDnsOptionalField3,
+                generalSettings.TlsDnsOptionalField4,
                 generalSettings.TlsDnsPropagationTimeout,
+                generalSettings.TlsDnsPropagationTimeoutPeriod,
+                generalSettings.TlsDnsPropagationDelay,
                 generalSettings.TlsDnsPropagationResolvers
             ) }}
 

@@ -6,6 +6,53 @@
 # It only includes DNS Providers that need specific settings and do not default to
 # "dns {{ dnsProvider }} {{ dnsApiKey }}"
 #}
+{% macro dnsProviderSpecialConfig() %}
+    [
+        'duckdns',
+        'porkbun',
+        'desec',
+        'route53',
+        'acmedns',
+        'googleclouddns',
+        'azure',
+        'ovh',
+        'namecheap',
+        'powerdns',
+        'ddnss',
+        'linode',
+        'tencentcloud',
+        'dinahosting',
+        'hexonet',
+        'mailinabox',
+        'netcup',
+        'rfc2136',
+        'dnsmadeeasy',
+        'civo',
+        'scaleway',
+        'acmeproxy',
+        'inwx',
+        'namedotcom',
+        'easydns',
+        'directadmin',
+        'cloudns',
+        'huaweicloud',
+        'regfish',
+        'dreamhost',
+        'exoscale',
+        'transip',
+        'selectel',
+        'luadns',
+        'he',
+        'dynu',
+        'glesys',
+        'nfsn',
+        'loopia',
+        'mythicbeasts',
+        'alidns',
+        'metaname'
+    ]
+{% endmacro %}
+{% if context_var == 'dnsProviderSpecialLogic' %}
 {% if dnsProvider == 'duckdns' %}
     {% if dnsApiKey %}api_token {{ dnsApiKey }}
     {% endif %}
@@ -190,4 +237,78 @@
     {% endif %}
     {% if dnsOptionalField1 %}sub_auth_id {{ dnsOptionalField1 }}
     {% endif %}
+{% elif dnsProvider == 'huaweicloud' %}
+    {% if dnsApiKey %}access_key_id {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}secret_access_key {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'regfish' %}
+    {% if dnsApiKey %}api_key {{ dnsApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'dreamhost' %}
+    {% if dnsApiKey %}api_key {{ dnsApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'exoscale' %}
+    {% if dnsApiKey %}api_key {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}api_secret {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'transip' %}
+    {% if dnsApiKey %}account_name {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}private_key_path {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'selectel' %}
+    {% if dnsApiKey %}user {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
+    {% endif %}
+    {% if dnsOptionalField1 %}account_id {{ dnsOptionalField1 }}
+    {% endif %}
+    {% if dnsOptionalField2 %}project_name {{ dnsOptionalField2 }}
+    {% endif %}
+{% elif dnsProvider == 'luadns' %}
+    {% if dnsApiKey %}email {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'he' %}
+    {% if dnsApiKey %}api_key {{ dnsApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'dynu' %}
+    {% if dnsApiKey %}api_token {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}own_domain {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'glesys' %}
+    {% if dnsApiKey %}project {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'nfsn' %}
+    {% if dnsApiKey %}login {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}api_key {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'loopia' %}
+    {% if dnsApiKey %}username {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}password {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'mythicbeasts' %}
+    {% if dnsApiKey %}key_id {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}secret {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'alidns' %}
+    {% if dnsApiKey %}access_key_id {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}access_key_secret {{ dnsSecretApiKey }}
+    {% endif %}
+{% elif dnsProvider == 'metaname' %}
+    {% if dnsApiKey %}api_key {{ dnsApiKey }}
+    {% endif %}
+    {% if dnsSecretApiKey %}account_reference {{ dnsSecretApiKey }}
+    {% endif %}
+{% endif %}
 {% endif %}

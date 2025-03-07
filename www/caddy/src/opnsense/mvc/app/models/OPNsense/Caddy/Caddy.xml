@@ -62,6 +62,33 @@
                     <easydns>EasyDNS (optional)</easydns>
                     <hosttech>Hosttech (optional)</hosttech>
                     <cloudns>ClouDNS (optional)</cloudns>
+                    <gcore>Gcore (optional)</gcore>
+                    <huaweicloud>Huawei Cloud (optional)</huaweicloud>
+                    <dnsexit>DNSExit (optional)</dnsexit>
+                    <nanelo>Nanelo (optional)</nanelo>
+                    <katapult>Katapult (optional)</katapult>
+                    <regfish>Regfish (optional)</regfish>
+                    <leaseweb>Leaseweb (optional)</leaseweb>
+                    <dreamhost>DreamHost (optional)</dreamhost>
+                    <exoscale>Exoscale (optional)</exoscale>
+                    <transip>TransIP (optional)</transip>
+                    <selectel>Selectel (optional)</selectel>
+                    <dnsimple>DNSimple (optional)</dnsimple>
+                    <luadns>LuaDNS (optional)</luadns>
+                    <he>Hurricane Electric (optional)</he>
+                    <namesilo>Namesilo (optional)</namesilo>
+                    <dode>Dode (optional)</dode>
+                    <dynu>Dynu (optional)</dynu>
+                    <glesys>Glesys (optional)</glesys>
+                    <nfsn>NFSN (optional)</nfsn>
+                    <godaddy>GoDaddy (optional)</godaddy>
+                    <vercel>Vercel (optional)</vercel>
+                    <loopia>Loopia (optional)</loopia>
+                    <dnspod>DNSPod (optional)</dnspod>
+                    <mythicbeasts>Mythic Beasts (optional)</mythicbeasts>
+                    <dynv6>Dynv6 (optional)</dynv6>
+                    <alidns>AliDNS (optional)</alidns>
+                    <metaname>Metaname (optional)</metaname>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -71,6 +98,14 @@
             <TlsDnsOptionalField3 type="TextField"/>
             <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
+            <TlsDnsPropagationTimeoutPeriod type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationTimeoutPeriod>
+            <TlsDnsPropagationDelay type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationDelay>
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
