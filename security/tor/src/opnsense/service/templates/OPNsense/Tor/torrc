@@ -141,11 +141,13 @@ HiddenServicePort {{ acl.port}} {{ acl.target_host }}:{{ acl.target_port }}
 {%   endif %}
 {% endif %}
 
-{% if helpers.exists('OPNsense.tor.relay.enabled') and OPNsense.tor.relay.enabled == '1' %}
+{%   if helpers.exists('OPNsense.tor.relay.enabled') and OPNsense.tor.relay.enabled == '1' %}
+{% if OPNsense.tor.relay.relay == '1' and OPNsense.tor.relay.bridge_types != 'Webtunnel' %}
 ORPort {% if helpers.exists('OPNsense.tor.relay.host') and OPNsense.tor.relay.host != '' %}{{ OPNsense.tor.relay.host }}:{% endif%}{{ OPNsense.tor.relay.port|default('9001') }}
-{% if helpers.exists('OPNsense.tor.relay.hostv6') and OPNsense.tor.relay.hostv6 != '' %}
+{%   if helpers.exists('OPNsense.tor.relay.hostv6') and OPNsense.tor.relay.hostv6 != '' %}
 ORPort [{{ OPNsense.tor.relay.hostv6 }}]:{{ OPNsense.tor.relay.port|default('9001') }}
-{% endif%}
+{%   endif %}
+{% endif %}
 
 {% if helpers.exists('OPNsense.tor.relay.address') and OPNsense.tor.relay.address != '' %}
 Address {{ OPNsense.tor.relay.address }}
@@ -256,10 +258,18 @@ ExitPolicy reject6 *:*
 
 {% if helpers.exists('OPNsense.tor.relay.relay') and OPNsense.tor.relay.relay == '1' %}
 {%   if helpers.exists('OPNsense.tor.relay.bridge_types') and OPNsense.tor.relay.bridge_types != "None" %}
-{%     if OPNsense.tor.relay.bridge_types ==  "Obfs4" %}
+{%     if OPNsense.tor.relay.bridge_types == "Obfs4" %}
 {%       if helpers.exists('OPNsense.tor.relay.obfs4_port') and OPNsense.tor.relay.obfs4_port != '' %}
 ServerTransportPlugin obfs4 exec /usr/local/bin/obfs4proxy
 ServerTransportListenAddr obfs4 0.0.0.0:{{ OPNsense.tor.relay.obfs4_port }}
+{%       endif %}
+{%     if OPNsense.tor.relay.bridge_types == "Webtunnel" %}
+{%       if helpers.exists('OPNsense.tor.relay.webtunnel_site') and OPNsense.tor.relay.webtunnel_site != '' %}
+ORPort 127.0.0.1:auto
+AssumeReachable 1
+ServerTransportPlugin webtunnel exec /usr/local/bin/webtunnel
+ServerTransportListenAddr webtunnel 127.0.0.1:15000
+ServerTransportOptions webtunnel url={{ OPNsense.tor.relay.webtunnel_site }}
 {%       endif %}
 {%     endif %}
 ExtORPort auto

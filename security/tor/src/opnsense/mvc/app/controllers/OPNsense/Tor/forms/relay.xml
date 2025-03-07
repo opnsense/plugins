@@ -101,6 +101,11 @@
     <type>text</type>
   </field>
   <field>
+    <id>relay.webtunnel_site</id>
+    <label>Webtunnel URL</label>
+    <type>text</type>
+  </field>
+  <field>
     <id>relay.publish</id>
     <label>Publish Server Descriptor</label>
     <type>checkbox</type>

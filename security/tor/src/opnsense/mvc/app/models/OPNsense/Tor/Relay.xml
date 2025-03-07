@@ -86,6 +86,10 @@
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </obfs4_port>
+    <webtunnel_site type="TextField">
+      <Required>N</Required>
+      <mask>/^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\/?$/</mask>
+    </webtunnel_site>
     <exitrejectprivateip type="BooleanField">
         <default>1</default>
         <Required>Y</Required>
