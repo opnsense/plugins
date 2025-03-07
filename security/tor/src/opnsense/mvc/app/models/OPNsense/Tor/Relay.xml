@@ -77,7 +77,6 @@
         <none>None</none>
         <webtunnel>Webtunnel</webtunnel>
         <obfs4>Obfs4</obfs4>
-        <snowflake>Snowflake</snowflake>
       </OptionValues>
     </bridge_type>
     <obfs4_port type="IntegerField">
