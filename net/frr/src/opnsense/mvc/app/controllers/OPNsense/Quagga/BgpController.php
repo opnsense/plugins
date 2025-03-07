@@ -52,6 +52,9 @@ class BgpController extends \OPNsense\Base\IndexController
         $this->view->formDialogEditBGPPeergroups = $this->getForm("dialogEditBGPPeergroups");
         $this->view->formGridEditBGPPeergroups = $this->getFormGrid("dialogEditBGPPeergroups");
 
+        $this->view->formDialogEditBGPRedistribution = $this->getForm("dialogEditBGPRedistribution");
+        $this->view->formGridEditBGPRedistribution = $this->getFormGrid("dialogEditBGPRedistribution");
+
         $this->view->pick('OPNsense/Quagga/bgp');
     }
 }
