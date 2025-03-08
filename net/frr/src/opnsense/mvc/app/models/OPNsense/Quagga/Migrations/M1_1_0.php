@@ -37,31 +37,58 @@ class M1_1_0 extends BaseModelMigration
     {
         $config = Config::getInstance()->object();
 
-        if (!empty($config->OPNsense->quagga->bgp->redistribute)) {
-            $redistributeValues = explode(',', (string)$config->OPNsense->quagga->bgp->redistribute);
-            $redistributions = $model->getNodeByReference('redistributions.redistribution');
+        if ($model->getNodeByReference('redistributions') === null) {
+            $model->addChild('redistributions');
+        }
+        $redistributions = $model->getNodeByReference('redistributions.redistribution');
 
-            // Prevent duplicates
-            $existingRedistributions = [];
-            foreach ($redistributions->iterateItems() as $existing) {
-                if (!empty((string)$existing->redistribute)) {
-                    $existingRedistributions[] = (string)$existing->redistribute;
-                }
+        // We migrate multiple models at the same time
+        $protocols = ['bgp', 'ospf', 'ospf6'];
+
+        foreach ($protocols as $protocol) {
+            if (isset($config->OPNsense->quagga->{$protocol})) {
+                $this->migrateRedistribute(
+                    $redistributions,
+                    $config->OPNsense->quagga->{$protocol},
+                    $protocol
+                );
+            }
+        }
+    }
+
+    private function migrateRedistribute($redistributions, $configNode, $protocol)
+    {
+        if (!$configNode || empty($configNode->redistribute)) {
+            return;
+        }
+
+        $redistributeValues = explode(',', (string)$configNode->redistribute);
+        $redistributemap = isset($configNode->redistributemap) ? (string)$configNode->redistributemap : '';
+
+        if ($redistributions === null) {
+            $redistributions = $model->addChild('redistributions');
+        }
+
+        // Collect existing redistribution values to prevent duplicates
+        $existingRedistributions = [];
+        foreach ($redistributions->iterateItems() as $existing) {
+            if (!empty((string)$existing->redistribute)) {
+                $existingRedistributions[] = (string)$existing->redistribute;
+            }
+        }
+
+        foreach ($redistributeValues as $value) {
+            $value = trim($value);
+            if (empty($value) || in_array($value, $existingRedistributions, true)) {
+                continue;
             }
 
-            foreach ($redistributeValues as $value) {
-                $value = trim($value);
-                if (empty($value) || in_array($value, $existingRedistributions, true)) {
-                    continue;
-                }
-
-                // Create a new redistribution entry
-                $redistributionNode = $redistributions->add();
-                $redistributionNode->enabled = '1';
-                $redistributionNode->description = 'Migrated';
-                $redistributionNode->redistribute = $value;
-                $redistributionNode->linkedRoutemap = '';
-            }
+            // Create a new redistribution entry
+            $redistributionNode = $redistributions->add();
+            $redistributionNode->enabled = '1';
+            $redistributionNode->description = "Migrated route redistribution ($protocol)";
+            $redistributionNode->redistribute = $value;
+            $redistributionNode->linkedRoutemap = !empty($redistributemap) ? $redistributemap : '';
         }
     }
 

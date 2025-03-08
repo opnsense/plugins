@@ -83,8 +83,33 @@ POSSIBILITY OF SUCH DAMAGE.
             'del':'/api/quagga/ospfsettings/delRoutemap/',
             'toggle':'/api/quagga/ospfsettings/toggleRoutemap/'
         });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/searchRedistribution',
+            'get':'/api/quagga/ospfsettings/getRedistribution/',
+            'set':'/api/quagga/ospfsettings/setRedistribution/',
+            'add':'/api/quagga/ospfsettings/addRedistribution/',
+            'del':'/api/quagga/ospfsettings/delRedistribution/',
+            'toggle':'/api/quagga/ospfsettings/toggleRedistribution/'
+        });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
     });
 </script>
+
+<style>
+    .bootgrid-header .theading-text {
+        padding-left: 10px !important;
+    }
+</style>
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -98,6 +123,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
     <!-- Tab: Networks -->
     <div id="networks" class="tab-pane fade in">
@@ -121,3 +147,4 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}
