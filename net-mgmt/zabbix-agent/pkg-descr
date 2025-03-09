@@ -14,10 +14,12 @@ Plugin Changelog
 
 1.15
 
-* Plugin variant for Zabbix Agent 7.2
+Added:
+* Plugin variant for Zabbix Agent 7.2, 6.4 is EoL and was removed
 
 1.14
 
+Added:
 * Plugin variant for Zabbix Agent 7
 
 1.13

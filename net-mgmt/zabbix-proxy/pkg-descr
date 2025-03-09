@@ -14,7 +14,7 @@ Plugin Changelog
 
 1.12
 
-* Add plugin variant for Zabbix Proxy 7.2
+* Add plugin variant for Zabbix Proxy 7.2, 6.4 is EoL and was removed
 
 1.11
 
