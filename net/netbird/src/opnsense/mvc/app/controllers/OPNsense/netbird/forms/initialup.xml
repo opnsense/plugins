@@ -1,0 +1,25 @@
+<form>
+    <field>
+        <id>netbird.initial.mgmtservice</id>
+        <label>Management Service URL</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>netbird.initial.setupkey</id>
+        <label>Setup Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>netbird.initial.hostname</id>
+        <label>Hostname</label>
+        <type>text</type>
+        <help>If empty the system hostname excluding the domain part will be used.</help>
+    </field>
+        <field>
+        <id>netbird.initial.initsure</id>
+        <label>I know what I'm doing</label>
+        <type>checkbox</type>
+        <help>If you enable this checkbox and submit the form your old netbird config will be deleted. In case of an error it will get restored. Should something go terribly wrong you can find the backups
+        in the configuration folder. (/usr/local/etc/netbird)</help>
+    </field>
+</form>
