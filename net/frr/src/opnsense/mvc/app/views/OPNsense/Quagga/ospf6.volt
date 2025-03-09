@@ -110,8 +110,16 @@
 </script>
 
 <style>
-    .bootgrid-header .theading-text {
-        padding-left: 10px !important;
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
     }
 </style>
 

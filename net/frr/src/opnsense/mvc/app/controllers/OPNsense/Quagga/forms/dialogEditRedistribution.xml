@@ -20,6 +20,9 @@
         <label>Route-Map</label>
         <type>dropdown</type>
         <help>Optional Route-map to apply to this redistribution.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>redistribution.description</id>
