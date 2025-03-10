@@ -43,6 +43,9 @@ class Ospf6Controller extends \OPNsense\Base\IndexController
         $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPF6RouteMaps");
         $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPF6RouteMaps");
 
+        $this->view->formDialogEditRedistribution = $this->getForm("dialogEditRedistribution");
+        $this->view->formGridEditRedistribution = $this->getFormGrid("dialogEditRedistribution");
+
         $this->view->pick('OPNsense/Quagga/ospf6');
     }
 }

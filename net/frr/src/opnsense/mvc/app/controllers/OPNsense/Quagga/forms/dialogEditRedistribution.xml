@@ -1,0 +1,33 @@
+<form>
+    <field>
+        <id>redistribution.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>redistribution.redistribute</id>
+        <label>Route Redistribution</label>
+        <type>dropdown</type>
+        <help>Select routing sources to redistribute to other nodes.</help>
+    </field>
+    <field>
+        <id>redistribution.linkedRoutemap</id>
+        <label>Route-Map</label>
+        <type>dropdown</type>
+        <help>Optional Route-map to apply to this redistribution.</help>
+    </field>
+    <field>
+        <id>redistribution.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this redistribution.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+</form>
