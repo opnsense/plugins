@@ -1,7 +1,6 @@
 <?php
 
 /*
- * Copyright (C) 2019 Smart-Soft
  * Copyright (C) 2025 Neil Merchant
  * All rights reserved.
  *
@@ -38,7 +37,6 @@ class ServiceController extends ApiControllerBase
     {
         $system = parse_ini_string(trim((new Backend())->configdRun('dmidecode system')), false, INI_SCANNER_RAW);
         $bios = parse_ini_string(trim((new Backend())->configdRun('dmidecode bios')), false, INI_SCANNER_RAW);
-        $status = "ok";
-        return ["status" => $status, "system" => $system, "bios" => $bios];
+        return ['status' => 'ok', 'system' => $system, 'bios' => $bios];
     }
 }
