@@ -28,16 +28,16 @@
  *
  */
 
-namespace OPNsense\HelloWorld\Api;
+namespace OPNsense\OpenApi\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
- * Class SettingsController Handles settings related API actions for the HelloWorld module
- * @package OPNsense\Helloworld
+ * Class SettingsController Handles settings related API actions for the OpenApi module
+ * @package OPNsense\OpenApi
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelClass = 'OPNsense\HelloWorld\HelloWorld';
+    protected static $internalModelClass = 'OPNsense\OpenApi\OpenApi';
     protected static $internalModelName = 'openapi';
 }

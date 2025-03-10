@@ -28,10 +28,10 @@
  *
  */
 
-namespace OPNsense\HelloWorld;
+namespace OPNsense\OpenApi;
 
 use OPNsense\Base\BaseModel;
 
-class HelloWorld extends BaseModel
+class OpenApi extends BaseModel
 {
 }

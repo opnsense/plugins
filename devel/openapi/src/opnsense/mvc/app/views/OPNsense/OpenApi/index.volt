@@ -28,21 +28,21 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
-        mapDataToFormUI({'frm_GeneralSettings':"/api/helloworld/settings/get"}).done(function(data){
+        mapDataToFormUI({'frm_GeneralSettings':"/api/openapi/settings/get"}).done(function(data){
             // place actions to run after load, for example update form styles.
         });
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint("/api/helloworld/settings/set",'frm_GeneralSettings',function(){
+            saveFormToEndpoint("/api/openapi/settings/set",'frm_GeneralSettings',function(){
                 // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/helloworld/service/reload", sendData={},callback=function(data,status) {
+                ajaxCall(url="/api/openapi/service/reload", sendData={},callback=function(data,status) {
                     // action to run after reload
                 });
             });
         });
 
-        // use a SimpleActionButton() to call /api/helloworld/service/test
+        // use a SimpleActionButton() to call /api/openapi/service/test
         $("#testAct").SimpleActionButton({
             onAction: function(data) {
                 $("#responseMsg").removeClass("hidden").html(data['message']);
@@ -61,5 +61,5 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <div class="col-md-12">
     <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-    <button class="btn btn-primary" id="testAct" data-endpoint="/api/helloworld/service/test" data-label="{{ lang._('Test') }}"></button>
+    <button class="btn btn-primary" id="testAct" data-endpoint="/api/openapi/service/test" data-label="{{ lang._('Test') }}"></button>
 </div>

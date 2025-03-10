@@ -1,6 +1,7 @@
-PLUGIN_NAME=		helloworld
-PLUGIN_VERSION=		1.4
-PLUGIN_COMMENT=		A sample framework application
-PLUGIN_MAINTAINER=	ad@opnsense.org
+PLUGIN_NAME=		openapi
+PLUGIN_VERSION=		0.1
+PLUGIN_REVISION=	1
+PLUGIN_COMMENT=		Generate openapi spec
+PLUGIN_MAINTAINER=	opnsense@supposedlysentient.dev
 
 .include "../../Mk/plugins.mk"

@@ -1,7 +1,7 @@
 <model>
-    <mount>//OPNsense/helloworld</mount>
+    <mount>//OPNsense/openapi</mount>
     <description>
-        the OPNsense "Hello World" application
+        Plugin to generate an OpenApi spec
     </description>
     <items>
         <!-- container -->
