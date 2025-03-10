@@ -1,0 +1,2 @@
+turnserver.conf:/usr/local/etc/turnserver.conf
+rc.conf.d:/etc/rc.conf.d/turnserver
