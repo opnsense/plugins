@@ -1,29 +1,29 @@
 <form>
     <field>
-        <id>helloworld.general.Enabled</id>
+        <id>openapi.general.Enabled</id>
         <label>enabled</label>
         <type>checkbox</type>
         <help>Enable this feature</help>
     </field>
     <field>
-        <id>helloworld.general.SMTPHost</id>
+        <id>openapi.general.SMTPHost</id>
         <label>SMTPHost</label>
         <type>text</type>
         <help><![CDATA[ip address of the mail host]]></help>
         <hint>choose a valid IPv4/v6 address</hint>
     </field>
     <field>
-        <id>helloworld.general.FromEmail</id>
+        <id>openapi.general.FromEmail</id>
         <label>Email (from)</label>
         <type>text</type>
     </field>
     <field>
-        <id>helloworld.general.ToEmail</id>
+        <id>openapi.general.ToEmail</id>
         <label>Email (to)</label>
         <type>text</type>
     </field>
     <field>
-        <id>helloworld.general.Description</id>
+        <id>openapi.general.Description</id>
         <label>Description</label>
         <type>text</type>
     </field>

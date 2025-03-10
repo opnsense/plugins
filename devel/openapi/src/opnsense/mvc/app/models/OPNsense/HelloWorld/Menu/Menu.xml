@@ -1,5 +1,0 @@
-<menu>
-    <Lobby>
-        <HelloWorld VisibleName="Hello World!" cssClass="fa fa-comment-o fa-fw" url="/ui/helloworld"/>
-    </Lobby>
-</menu>
