@@ -1,0 +1,9 @@
+<menu>
+    <VPN>
+        <netbird order="200" VisibleName="Netbird" cssClass="fa fa-lock fa-fw">
+            <Settings order="40" VisibleName="Settings" url="/ui/netbird"/>
+            <ConStatus order="50" VisibleName="Connection Status" url="/ui/netbird/constatus"/>
+            <LogFile VisibleName="Log File" order="60" url="/ui/diagnostics/log/core/netbird"/>
+        </netbird>
+    </VPN>
+</menu>
