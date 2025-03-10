@@ -124,18 +124,21 @@
                         <ValidationMessage>Specify a positive cache size. (number of MB's)</ValidationMessage>
                         <Required>Y</Required>
                     </size>
-                    <l1 type="IntegerField">
-                        <Default>16</Default>
-                        <MinimumValue>1</MinimumValue>
-                        <ValidationMessage>Specify a positive number of first-level subdirectories.</ValidationMessage>
-                        <Required>Y</Required>
-                    </l1>
-                    <l2 type="IntegerField">
-                        <Default>256</Default>
-                        <MinimumValue>1</MinimumValue>
-                        <ValidationMessage>Specify a positive number of second-level subdirectories.</ValidationMessage>
-                        <Required>Y</Required>
-                    </l2>
+                    <swap_timeout type="IntegerField">
+                        <MinimumValue>0</MinimumValue>
+                        <ValidationMessage>Specify a valid swap-timeout.</ValidationMessage>
+                        <Required>N</Required>
+                    </swap_timeout>
+                    <max_swap_rate type="IntegerField">
+                        <MinimumValue>0</MinimumValue>
+                        <ValidationMessage>Specify a valid swap-rate.</ValidationMessage>
+                        <Required>N</Required>
+                    </max_swap_rate>
+                    <slot_size type="IntegerField">
+                        <MinimumValue>4096</MinimumValue>
+                        <ValidationMessage>Specify a multiple of operating system I/O page size.</ValidationMessage>
+                        <Required>N</Required>
+                    </slot_size>
                     <cache_linux_packages type="BooleanField">
                         <Default>0</Default>
                         <Required>Y</Required>
