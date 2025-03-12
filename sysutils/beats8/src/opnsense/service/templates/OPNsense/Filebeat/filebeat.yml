@@ -1,0 +1,460 @@
+######################## Filebeat Configuration ############################
+
+#==========================  Modules configuration =============================
+{% set filebeat_modules_enabled = (OPNsense.filebeat.modules.enabled|default('')).split(',') %}
+filebeat.modules:
+{% if 'suricata' in filebeat_modules_enabled %}
+#-------------------------------- Suricata Module --------------------------------
+- module: suricata
+  # EVE
+  eve:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    # Internal network configuration (advanced) can be added under this section.
+    #var.internal_networks:
+{% endif %}
+
+
+#=========================== Filebeat inputs =============================
+
+# List of inputs to fetch data.
+{% set filebeat_inputs_enabled = (OPNsense.filebeat.inputs.enabled|default('')).split(',') %}
+filebeat.inputs:
+# Each - is an input. Most options can be set at the input level, so
+# you can use different inputs for various configurations.
+# Below are the input specific configurations.
+
+# Type of the files. Based on this the way the file is read is decided.
+# The different types cannot be mixed in one input
+#
+# Possible options are:
+# * filestream: Reads every line of the log file
+# * log: Reads every line of the log file (deprecated)
+# * stdin: Reads the standard in
+
+#--------------------------- Filestream input ----------------------------
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: audit
+  tags: ['audit']
+
+  # Change to true to enable this input configuration.
+  enabled: {{ 'true' if 'audit' in filebeat_inputs_enabled else 'false' }}
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /var/log/audit/audit_*.log
+
+  ### Parsers configuration
+
+  #### Syslog configuration
+
+  parsers:
+    - syslog:
+        format: auto
+        log_errors: true
+        add_error_key: true
+
+#--------------------------- Filestream input ----------------------------
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: configd
+  tags: ['configd']
+
+  # Change to true to enable this input configuration.
+  enabled: {{ 'true' if 'configd' in filebeat_inputs_enabled else 'false' }}
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /var/log/configd/configd_*.log
+
+  ### Parsers configuration
+
+  #### Syslog configuration
+
+  parsers:
+    - syslog:
+        format: auto
+        log_errors: true
+        add_error_key: true
+
+#--------------------------- Filestream input ----------------------------
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: 'boot'
+  tags: ['boot']
+
+  # Change to true to enable this input configuration.
+  enabled: {{ 'true' if 'boot' in filebeat_inputs_enabled else 'false' }}
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /var/log/boot.log
+
+  close.reader.on_eof: true
+  prospector:
+    scanner:
+      resend_on_touch: true
+
+  ### Parsers configuration
+
+  #### Syslog configuration
+
+  parsers:
+    - syslog:
+        format: auto
+        log_errors: true
+        add_error_key: true
+
+#--------------------------- Filestream input ----------------------------
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: 'system'
+  tags: ['system']
+
+  # Change to true to enable this input configuration.
+  enabled: {{ 'true' if 'system' in filebeat_inputs_enabled else 'false' }}
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /var/log/system/system_*.log
+
+  ### Parsers configuration
+
+  #### Syslog configuration
+
+  parsers:
+    - syslog:
+        format: auto
+        log_errors: true
+        add_error_key: true
+
+#--------------------------- Filestream input ----------------------------
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: 'lighttpd'
+  tags: ['lighttpd']
+
+  # Change to true to enable this input configuration.
+  enabled: {{ 'true' if 'lighttpd' in filebeat_inputs_enabled else 'false' }}
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /var/log/lighttpd/lighttpd_*.log
+
+  ### Parsers configuration
+
+  #### Syslog configuration
+
+  parsers:
+    - syslog:
+        format: auto
+        log_errors: true
+        add_error_key: true
+
+# ================================== Outputs ===================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+# ---------------------------- Elasticsearch Output ----------------------------
+output.elasticsearch:
+  # Boolean flag to enable or disable the output module.
+  #enabled: true
+
+  # Array of hosts to connect to.
+  # Scheme and port can be left out and will be set to the default (http and 9200)
+  # In case you specify and additional path, the scheme is required: http://localhost:9200/path
+  # IPv6 addresses should always be defined as: https://[2001:db8::1]:9200
+  hosts: ["{{ OPNsense.filebeat.output.elasticsearch.hosts }}"]
+
+  # Performance presets configure other output fields to recommended values
+  # based on a performance priority.
+  # Options are "balanced", "throughput", "scale", "latency" and "custom".
+  # Default if unspecified: "custom"
+  preset: balanced
+
+  # Set gzip compression level. Set to 0 to disable compression.
+  # This field may conflict with performance presets. To set it
+  # manually use "preset: custom".
+  # The default is 1.
+  #compression_level: 1
+
+  # Configure escaping HTML symbols in strings.
+  #escape_html: false
+
+  # Protocol - either `http` (default) or `https`.
+  #protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  api_key: "{{ OPNsense.filebeat.output.elasticsearch.api_key }}"
+  #username: "elastic"
+  #password: "changeme"
+
+  # Dictionary of HTTP parameters to pass within the URL with index operations.
+  #parameters:
+    #param1: value1
+    #param2: value2
+
+  # Number of workers per Elasticsearch host.
+  # This field may conflict with performance presets. To set it
+  # manually use "preset: custom".
+  #worker: 1
+
+  # If set to true and multiple hosts are configured, the output plugin load
+  # balances published events onto all Elasticsearch hosts. If set to false,
+  # the output plugin sends all events to only one host (determined at random)
+  # and will switch to another host if the currently selected one becomes
+  # unreachable. The default value is true.
+  #loadbalance: true
+
+  # Optional data stream or index name. The default is "filebeat-%{[agent.version]}".
+  # In case you modify this pattern you must update setup.template.name and setup.template.pattern accordingly.
+  #index: "filebeat-%{[agent.version]}"
+
+  # Optional ingest pipeline. By default, no pipeline will be used.
+  #pipeline: ""
+
+  # Optional HTTP path
+  #path: "/elasticsearch"
+
+  # Custom HTTP headers to add to each request
+  #headers:
+  #  X-My-Header: Contents of the header
+
+  # Proxy server URL
+  #proxy_url: http://proxy:3128
+
+  # Whether to disable proxy settings for outgoing connections. If true, this
+  # takes precedence over both the proxy_url field and any environment settings
+  # (HTTP_PROXY, HTTPS_PROXY). The default is false.
+  #proxy_disable: false
+
+  # The number of times a particular Elasticsearch index operation is attempted. If
+  # the indexing operation doesn't succeed after this many retries, the events are
+  # dropped. The default is 3.
+  #max_retries: 3
+
+  # The maximum number of events to bulk in a single Elasticsearch bulk API index request.
+  # This field may conflict with performance presets. To set it
+  # manually use "preset: custom".
+  # The default is 1600.
+  #bulk_max_size: 1600
+
+  # The number of seconds to wait before trying to reconnect to Elasticsearch
+  # after a network error. After waiting backoff.init seconds, the Beat
+  # tries to reconnect. If the attempt fails, the backoff timer is increased
+  # exponentially up to backoff.max. After a successful connection, the backoff
+  # timer is reset. The default is 1s.
+  #backoff.init: 1s
+
+  # The maximum number of seconds to wait before attempting to connect to
+  # Elasticsearch after a network error. The default is 60s.
+  #backoff.max: 60s
+
+  # The maximum amount of time an idle connection will remain idle
+  # before closing itself.  Zero means use the default of 60s. The
+  # format is a Go language duration (example 60s is 60 seconds).
+  # This field may conflict with performance presets. To set it
+  # manually use "preset: custom".
+  # The default is 3s.
+  # idle_connection_timeout: 3s
+
+  # Configure HTTP request timeout before failing a request to Elasticsearch.
+  #timeout: 90
+
+  # Prevents filebeat from connecting to older Elasticsearch versions when set to `false`
+  #allow_older_versions: true
+
+  # Use SSL settings for HTTPS.
+  #ssl.enabled: true
+
+  # Controls the verification of certificates. Valid values are:
+  # * full, which verifies that the provided certificate is signed by a trusted
+  # authority (CA) and also verifies that the server's hostname (or IP address)
+  # matches the names identified within the certificate.
+  # * strict, which verifies that the provided certificate is signed by a trusted
+  # authority (CA) and also verifies that the server's hostname (or IP address)
+  # matches the names identified within the certificate. If the Subject Alternative
+  # Name is empty, it returns an error.
+  # * certificate, which verifies that the provided certificate is signed by a
+  # trusted authority (CA), but does not perform any hostname verification.
+  #  * none, which performs no verification of the server's certificate. This
+  # mode disables many of the security benefits of SSL/TLS and should only be used
+  # after very careful consideration. It is primarily intended as a temporary
+  # diagnostic mechanism when attempting to resolve TLS errors; its use in
+  # production environments is strongly discouraged.
+  # The default value is full.
+  ssl.verification_mode: {{ OPNsense.filebeat.output.elasticsearch.ssl.verification_mode|default('full') }}
+
+  # List of supported/valid TLS versions. By default all TLS versions from 1.1
+  # up to 1.3 are enabled.
+  #ssl.supported_protocols: [TLSv1.1, TLSv1.2, TLSv1.3]
+
+  # List of root certificates for HTTPS server verifications
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+
+  # Certificate for SSL client authentication
+  #ssl.certificate: "/etc/pki/client/cert.pem"
+
+  # Client certificate key
+  #ssl.key: "/etc/pki/client/cert.key"
+
+  # Optional passphrase for decrypting the certificate key.
+  #ssl.key_passphrase: ''
+
+  # Configure cipher suites to be used for SSL connections
+  #ssl.cipher_suites: []
+
+  # Configure curve types for ECDHE-based cipher suites
+  #ssl.curve_types: []
+
+  # Configure what types of renegotiation are supported. Valid options are
+  # never, once, and freely. Default is never.
+  #ssl.renegotiation: never
+
+  # Configure a pin that can be used to do extra validation of the verified certificate chain,
+  # this allow you to ensure that a specific certificate is used to validate the chain of trust.
+  #
+  # The pin is a base64 encoded string of the SHA-256 fingerprint.
+  #ssl.ca_sha256: ""
+
+  # A root CA HEX encoded fingerprint. During the SSL handshake if the
+  # fingerprint matches the root CA certificate, it will be added to
+  # the provided list of root CAs (`certificate_authorities`), if the
+  # list is empty or not defined, the matching certificate will be the
+  # only one in the list. Then the normal SSL validation happens.
+{% if not helpers.empty('OPNsense.filebeat.output.elasticsearch.ssl.ca_trusted_fingerprint') %}
+  ssl.ca_trusted_fingerprint: "{{ OPNsense.filebeat.output.elasticsearch.ssl.ca_trusted_fingerprint|replace(':','') }}"
+{% else %}
+  #ssl.ca_trusted_fingerprint: ""
+{% endif %}
+
+  # Enables restarting filebeat if any file listed by `key`,
+  # `certificate`, or `certificate_authorities` is modified.
+  # This feature IS NOT supported on Windows.
+  #ssl.restart_on_cert_change.enabled: false
+
+  # Period to scan for changes on CA certificate files
+  #ssl.restart_on_cert_change.period: 1m
+
+  # Enable Kerberos support. Kerberos is automatically enabled if any Kerberos setting is set.
+  #kerberos.enabled: true
+
+  # Authentication type to use with Kerberos. Available options: keytab, password.
+  #kerberos.auth_type: password
+
+  # Path to the keytab file. It is used when auth_type is set to keytab.
+  #kerberos.keytab: /etc/elastic.keytab
+
+  # Path to the Kerberos configuration.
+  #kerberos.config_path: /etc/krb5.conf
+
+  # Name of the Kerberos user.
+  #kerberos.username: elastic
+
+  # Password of the Kerberos user. It is used when auth_type is set to password.
+  #kerberos.password: changeme
+
+  # Kerberos realm.
+  #kerberos.realm: ELASTIC
+
+
+# ================================== Logging ===================================
+
+# There are four options for the log output: file, stderr, syslog, eventlog
+# The file output is the default.
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+#logging.level: info
+
+# Enable debug output for selected components. To enable all selectors use ["*"]
+# Other available selectors are "beat", "publisher", "service"
+# Multiple selectors can be chained.
+#logging.selectors: [ ]
+
+# Send all logging output to stderr. The default is false.
+#logging.to_stderr: false
+
+# Send all logging output to syslog. The default is false.
+logging.to_syslog: true
+
+# Send all logging output to Windows Event Logs. The default is false.
+#logging.to_eventlog: false
+
+# If enabled, Filebeat periodically logs its internal metrics that have changed
+# in the last period. For each metric that changed, the delta from the value at
+# the beginning of the period is logged. Also, the total values for
+# all non-zero internal metrics are logged on shutdown. The default is true.
+# This is disabled on FreeBSD due to procfs not providing /proc/curproc/stat
+logging.metrics.enabled: false
+
+# The period after which to log the internal metrics. The default is 30s.
+#logging.metrics.period: 30s
+
+# A list of metrics namespaces to report in the logs. Defaults to [stats].
+# `stats` contains general Beat metrics. `dataset` may be present in some
+# Beats and contains module or input metrics.
+#logging.metrics.namespaces: [stats]
+
+# Logging to rotating files. Set logging.to_files to false to disable logging to
+# files.
+logging.to_files: false
+logging.files:
+  # Configure the path where the logs are written. The default is the logs directory
+  # under the home path (the binary location).
+  #path: /var/log/filebeat
+
+  # The name of the files where the logs are written to.
+  #name: filebeat
+
+  # Configure log file size limit. If the limit is reached, log file will be
+  # automatically rotated.
+  #rotateeverybytes: 10485760 # = 10MB
+
+  # Number of rotated log files to keep. The oldest files will be deleted first.
+  #keepfiles: 7
+
+  # The permissions mask to apply when rotating log files. The default value is 0600.
+  # Must be a valid Unix-style file permissions mask expressed in octal notation.
+  #permissions: 0600
+
+  # Enable log file rotation on time intervals in addition to the size-based rotation.
+  # Intervals must be at least 1s. Values of 1m, 1h, 24h, 7*24h, 30*24h, and 365*24h
+  # are boundary-aligned with minutes, hours, days, weeks, months, and years as
+  # reported by the local system clock. All other intervals are calculated from the
+  # Unix epoch. Defaults to disabled.
+  #interval: 0
+
+  # Rotate existing logs on startup rather than appending them to the existing
+  # file. Defaults to true.
+  # rotateonstartup: true
