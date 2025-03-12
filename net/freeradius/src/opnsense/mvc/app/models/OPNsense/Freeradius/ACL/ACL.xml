@@ -19,7 +19,7 @@
       <name>Services: FreeRADIUS Logs</name>
       <patterns>
          <pattern>ui/diagnostics/log/core/radius/*</pattern>
-         <pattern>api/freeradius/*</pattern>
+         <pattern>api/diagnostics/log/core/radius/*</pattern>
       </patterns>
    </page-services-freeradius-logs>
 </acl>
