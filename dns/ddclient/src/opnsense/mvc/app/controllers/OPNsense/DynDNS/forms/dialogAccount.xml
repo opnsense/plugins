@@ -30,6 +30,7 @@
         <help>DynDNS Server hostname or uri to use (depending on the protocol).
          When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
          and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
+         If the current address is an IPv6 the tag __IPV6PREFIX__ will be replaced with the /64 prefix of the current address.
          </help>
         <style>optional_setting service_custom</style>
     </field>
