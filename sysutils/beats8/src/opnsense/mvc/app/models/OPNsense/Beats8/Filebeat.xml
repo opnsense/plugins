@@ -1,0 +1,55 @@
+<model>
+    <mount>//OPNsense/filebeat</mount>
+    <description>
+        Send logs to elasticsearch
+    </description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <modules>
+            <enabled type="OptionField">
+                <OptionValues>
+                    <suricata>Suricata (Intrusion Detection)</suricata>
+                </OptionValues>
+                <Multiple>Y</Multiple>
+            </enabled>
+        </modules>
+        <inputs>
+            <enabled type="OptionField">
+                <Default>audit</Default>
+                <OptionValues>
+                    <audit>Audit</audit>
+                    <configd>Backend</configd>
+                    <boot>Boot</boot>
+                    <system>General</system>
+                    <lighttpd>Web GUI</lighttpd>
+                </OptionValues>
+                <Multiple>Y</Multiple>
+            </enabled>
+        </inputs>
+        <output>
+            <elasticsearch>
+                <hosts type="TextField">
+                    <Required>Y</Required>
+                </hosts>
+                <api_key type="UpdateOnlyTextField">
+                    <Required>Y</Required>
+                </api_key>
+                <ssl>
+                    <verification_mode type="OptionField">
+                        <Default>Full</Default>
+                        <OptionValues>
+                            <strict>Strict</strict>
+                            <full>Full</full>
+                            <certificate>Certificate</certificate>
+                        </OptionValues>
+                        <Required>Y</Required>
+                    </verification_mode>
+                    <ca_trusted_fingerprint type="TextField"/>
+                </ssl>
+            </elasticsearch>
+        </output>
+    </items>
+</model>
