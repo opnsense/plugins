@@ -19,6 +19,7 @@ Plugin Changelog
 * Delete per daemon and old watchfrr files (opnsense/plugins/issues/4551)
 * Add help texts to all options and expose them in grid as columns (opnsense/plugins/pull/4494)
 * Replace deprecated passive-interface directive in ospf (opnsense/plugins/issues/4534)
+* Migrate ospf passive interface from general to per interface (opnsense/plugins/issues/4590)
 * Style cleanup and unify forms (opnsense/plugins/pull/4450)
 * Implement base_apply_button (opnsense/plugins/pull/4542)
 

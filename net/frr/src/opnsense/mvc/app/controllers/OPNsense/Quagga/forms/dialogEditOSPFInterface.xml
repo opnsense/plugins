@@ -16,6 +16,17 @@
     <help>Select an interface where this settings apply.</help>
   </field>
   <field>
+    <id>interface.passive</id>
+    <label>Passive Interface</label>
+    <type>checkbox</type>
+    <help>Disables OSPF Hello packets on the interface, preventing neighbor relationships (used for security or optimization).</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>interface.authtype</id>
     <label>Authentication Type</label>
     <type>dropdown</type>

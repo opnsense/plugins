@@ -26,12 +26,6 @@
         <help>Adjust the reference cost in Mbps for path calculation, useful when bundling interfaces for higher bandwidth.</help>
     </field>
     <field>
-        <id>ospf.passiveinterfaces</id>
-        <label>Passive Interfaces</label>
-        <type>select_multiple</type>
-        <help>Select the interfaces where no OSPF packets should be sent.</help>
-    </field>
-    <field>
         <id>ospf.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
