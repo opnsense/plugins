@@ -59,4 +59,4 @@ POSSIBILITY OF SUCH DAMAGE.
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
 </div>
 
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/unbound/service/reconfigureGeneral', 'data_service_widget': 'unbound'}) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/openapi/service/reconfigure'}) }}

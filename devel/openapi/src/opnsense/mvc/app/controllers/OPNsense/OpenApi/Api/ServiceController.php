@@ -30,39 +30,17 @@
 
 namespace OPNsense\OpenApi\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 
 /**
  * Class ServiceController
  * @package OPNsense\OpenApi
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * reconfigure OpenApi
-     */
-    public function reloadAction()
-    {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $status = strtolower(trim((new Backend())->configdRun('template reload OPNsense/OpenApi')));
-        }
-        return ["status" => $status];
-    }
-
-    /**
-     * test OpenApi
-     */
-    public function testAction()
-    {
-        if ($this->request->isPost()) {
-            $bckresult = json_decode(trim((new Backend())->configdRun("openapi test")), true);
-            if ($bckresult !== null) {
-                // only return valid json type responses
-                return $bckresult;
-            }
-        }
-        return ["message" => "unable to run config action"];
-    }
+    protected static $internalServiceName = 'openapi';
+    protected static $internalServiceClass = '\OPNsense\OpenApi\General';
+    protected static $internalServiceTemplate = 'OPNsense/OpenApi';
+    protected static $internalServiceEnabled = 'enabled';
 }
