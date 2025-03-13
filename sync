@@ -1,0 +1,17 @@
+#! /usr/bin/bash
+
+local="/gitroot/upstream/opnsense"
+remote="o:/gitroot/opnsense"
+
+if [[ "$1" == "push" ]]; then
+    src="$local/plugins"
+    dest="$remote/"
+elif [[ "$1" == "pull" ]]; then
+    src="$remote/plugins"
+    dest="$local/"
+else
+    echo "usage: $0 [push | pull]" 1>&2
+    exit 1
+fi
+
+rsync -r --owner --exclude=.git "$src" "$dest"
