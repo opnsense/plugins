@@ -34,9 +34,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
         // link save button to API set action
         $("#saveAct").click(function(){
-            saveFormToEndpoint("/api/openapi/settings/set",'frm_GeneralSettings',function(){
+            saveFormToEndpoint("/api/openapi/settings/set", 'frm_GeneralSettings', function(){
                 // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/openapi/service/reload", sendData={},callback=function(data,status) {
+                ajaxCall(url="/api/openapi/service/reconfigure", sendData={}, callback=function(data,status) {
                     // action to run after reload
                 });
             });

@@ -43,4 +43,9 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceClass = '\OPNsense\OpenApi\General';
     protected static $internalServiceTemplate = 'OPNsense/OpenApi';
     protected static $internalServiceEnabled = 'enabled';
+
+    protected function reconfigureForceRestart()
+    {
+        return 0;
+    }
 }
