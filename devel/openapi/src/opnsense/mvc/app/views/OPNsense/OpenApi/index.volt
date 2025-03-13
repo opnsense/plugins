@@ -55,11 +55,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 </div>
 
-<div  class="col-md-12">
+<div class="content-box __mb">
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
 </div>
 
-<div class="col-md-12">
-    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-    <button class="btn btn-primary" id="testAct" data-endpoint="/api/openapi/service/test" data-label="{{ lang._('Test') }}"></button>
-</div>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/unbound/service/reconfigureGeneral', 'data_service_widget': 'unbound'}) }}
