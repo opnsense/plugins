@@ -32,18 +32,6 @@
         <help>Select the interfaces where no OSPF packets should be sent.</help>
     </field>
     <field>
-        <id>ospf.redistribute</id>
-        <label>Route Redistribution</label>
-        <type>select_multiple</type>
-        <help>Select other routing sources to redistribute to other nodes.</help>
-    </field>
-    <field>
-        <id>ospf.redistributemap</id>
-        <label>Redistribution Map</label>
-        <type>dropdown</type>
-        <help>Route Map to set for Redistribution, can be used to send a specific network as advertisement when it is defined in a Prefix List attached to a Route Map.</help>
-    </field>
-    <field>
         <id>ospf.logadjacencychanges</id>
         <label>Log Adjacency Changes</label>
         <type>checkbox</type>

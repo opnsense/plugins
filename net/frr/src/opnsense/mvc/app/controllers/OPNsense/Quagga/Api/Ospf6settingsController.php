@@ -137,4 +137,29 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('routemaps.routemap', $uuid);
     }
+    public function searchRedistributionAction()
+    {
+        return $this->searchBase('redistributions.redistribution');
+    }
+    public function getRedistributionAction($uuid = null)
+    {
+        return $this->getBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function addRedistributionAction()
+    {
+        return $this->addBase('redistribution', 'redistributions.redistribution');
+    }
+    public function delRedistributionAction($uuid)
+    {
+        return $this->delBase('redistributions.redistribution', $uuid);
+    }
+    public function setRedistributionAction($uuid)
+    {
+        return $this->setBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function toggleRedistributionAction($uuid)
+    {
+        return $this->toggleBase('redistributions.redistribution', $uuid);
+    }
+
 }
