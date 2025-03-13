@@ -40,12 +40,73 @@ use OPNsense\Core\Backend;
 class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceName = 'openapi';
-    protected static $internalServiceClass = '\OPNsense\OpenApi\General';
+    protected static $internalServiceClass = '\OPNsense\OpenApi\OpenApi';
     protected static $internalServiceTemplate = 'OPNsense/OpenApi';
-    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceEnabled = 'Enabled';
 
     protected function reconfigureForceRestart()
     {
         return 0;
     }
+
+    // /**
+    //  * check if service is enabled according to model
+    //  */
+    // protected function serviceEnabled()
+    // {
+    //     if (empty(static::$internalServiceEnabled)) {
+    //         throw new \Exception('cannot check if service is enabled without internalServiceEnabled defined.');
+    //     }
+
+    //     return (string)($this->getModel())->getNodeByReference(static::$internalServiceEnabled) == '1';
+    // }
+
+    /**
+     * reconfigure with optional stop, generate config and start / reload
+     * @return array response message
+     * @throws \Exception when configd action fails
+     * @throws \ReflectionException when model can't be instantiated
+     */
+    public function reconfigureAction()
+    {
+        try {
+            $restart = $this->reconfigureForceRestart();
+            $enabled = $this->serviceEnabled();
+            $backend = new Backend();
+
+            if ($restart || !$enabled) {
+                $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' stop');
+            }
+
+            // if ($this->invokeInterfaceRegistration()) {
+            //     $backend->configdRun('interface invoke registration');
+            // }
+
+            // if (!empty(static::$internalServiceTemplate)) {
+            //     $result = trim($backend->configdpRun('template reload', [static::$internalServiceTemplate]) ?? '');
+            //     if ($result !== 'OK') {
+            //         throw new UserException(sprintf(
+            //             gettext('Template generation failed for internal service "%s". See backend log for details.'),
+            //             static::$internalServiceName
+            //         ), gettext('Configuration exception'));
+            //     }
+            // }
+
+            // if ($enabled) {
+            //     if ($restart || $this->statusAction()['status'] != 'running') {
+            //         $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' start');
+            //     } else {
+            //         $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' reload');
+            //     }
+            // }
+
+            return ['status' => $enabled];
+
+        } catch (Exception $e) {
+            return ['status' => $e->getMessage()];
+        }
+
+        return ['status' => 'failed'];
+    }
+
 }
