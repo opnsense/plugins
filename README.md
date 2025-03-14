@@ -98,6 +98,7 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/gdrive-backup -- Backup configurations using Google Drive (development only)
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
