@@ -1,14 +1,27 @@
-#!/usr/local/bin/python3
+#! /usr/bin/env python3
 
-import os
-import socket
-import smtplib
-import json
-from configparser import ConfigParser
+# https://github.com/globality-corp/openapi
+from openapi.model import Swagger, Info, Operation, PathItem, Paths, Response, Responses
 
-# set default timeout to 2 seconds
-socket.setdefaulttimeout(2)
+swagger = Swagger(
+    swagger="2.0",
+    info=Info(
+        title="Example",
+        version="1.0.0",
+    ),
+    basePath="/api",
+    paths=Paths({
+        "/hello": PathItem(
+            get=Operation(
+                responses=Responses({
+                    "200": Response(
+                        description="Returns hello",
+                    )
+                })
+            ),
+        ),
+    }),
+)
 
-result = {"enabled": True}
-
-print (json.dumps(result))
+with open("/usr/local/opnsense/www/openapi.json", mode="w") as file:
+    file.write(swagger.dumps())
