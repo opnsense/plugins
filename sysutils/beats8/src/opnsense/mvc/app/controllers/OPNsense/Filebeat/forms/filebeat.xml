@@ -1,0 +1,53 @@
+<form>
+    <field>
+        <id>filebeat.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable the Filebeat service.</help>
+    </field>
+    <field>
+        <id>filebeat.modules.enabled</id>
+        <label>Modules</label>
+        <type>select_multiple</type>
+        <help>The Filebeat modules to enable.</help>
+    </field>
+    <field>
+        <id>filebeat.inputs.enabled</id>
+        <label>Inputs</label>
+        <type>select_multiple</type>
+        <help>The Filebeat inputs to enable.</help>
+    </field>
+    <field>
+        <label>Elasticsearch</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>filebeat.output.elasticsearch.hosts</id>
+        <label>Host</label>
+        <type>text</type>
+        <help>The Elasticsearch host to which Filebeat should send its logs; Scheme and port can be left out and will be set to the default (http and 9200). In case you specify and additional path, the scheme is required: http://localhost:9200/path. IPv6 addresses should always be defined as: https://[2001:db8::1]:9200.</help>
+        <hint>localhost:9200</hint>
+    </field>
+    <field>
+        <id>filebeat.output.elasticsearch.api_key</id>
+        <label>API Key</label>
+        <type>password</type>
+        <help>The authentication API key in its id:api_key format.</help>
+        <hint>id:api_key</hint>
+    </field>
+    <field>
+        <id>filebeat.output.elasticsearch.ssl.verification_mode</id>
+        <label>SSL Verification</label>
+        <type>dropdown</type>
+        <help>Controls the verification of certificates. The full mode verifies that the provided certificate is signed by a trusted authority (CA) and also verifies that the server's hostname (or IP address) matches the names identified within the certificate. The strict mode is similar to full mode, but requires the Subject Alternative Name to be defined as well. The certificate mode verifies that the provided certificate is signed by a trusted authority (CA), but does not perform any hostname verification.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>filebeat.output.elasticsearch.ssl.ca_trusted_fingerprint</id>
+        <label>SSL Fingerprint</label>
+        <type>text</type>
+        <help>A HEX encoded root CA SHA256 fingerprint added to the list of trusted CAs before SSL validation happens.</help>
+        <hint>CA:FE:BA:BE:...</hint>
+        <advanced>true</advanced>
+    </field>
+</form>
