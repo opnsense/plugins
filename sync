@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 local="/gitroot/upstream/opnsense"
-remote="o:/gitroot/opnsense"
+remote="o:/usr"
 
 if [[ "$1" == "push" ]]; then
     src="$local/plugins"
