@@ -3,7 +3,9 @@ param
     [Parameter(Mandatory, Position = 0)]
     [uri]$Uri,
 
-    [Microsoft.PowerShell.Commands.WebRequestMethod]$Method = "Get"
+    [Microsoft.PowerShell.Commands.WebRequestMethod]$Method = "Get",
+
+    [object]$Body
 )
 
 if (-not $Uri.IsAbsoluteUri)
@@ -22,6 +24,16 @@ $Params = @{
     Headers = @{
         Authorization = "Basic $EncodedCred"
     }
+}
+
+if ($Body)
+{
+    if ($Body -isnot [string])
+    {
+        $Body = $Body | ConvertTo-Json -Depth 20
+    }
+    $Params.Body = $Body
+    $Params.ContentType = "application/json"
 }
 
 irm @Params

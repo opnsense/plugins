@@ -42,13 +42,16 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceName = 'openapi';
     protected static $internalServiceClass = '\OPNsense\OpenApi\OpenApi';
     protected static $internalServiceTemplate = 'OPNsense/OpenApi';
-    protected static $internalServiceEnabled = 'Enabled';
+    protected static $internalServiceEnabled = 'general.enabled';
 
     protected function reconfigureForceRestart()
     {
         return 0;
     }
-
+    protected function invokeInterfaceRegistration()
+    {
+        return true;
+    }
     // /**
     //  * check if service is enabled according to model
     //  */
@@ -72,15 +75,16 @@ class ServiceController extends ApiMutableServiceControllerBase
         try {
             $restart = $this->reconfigureForceRestart();
             $enabled = $this->serviceEnabled();
+            var_dump($this->getModel());
             $backend = new Backend();
 
             if ($restart || !$enabled) {
                 $backend->configdRun(escapeshellarg(static::$internalServiceName) . ' stop');
             }
 
-            // if ($this->invokeInterfaceRegistration()) {
-            //     $backend->configdRun('interface invoke registration');
-            // }
+            if ($this->invokeInterfaceRegistration()) {
+                $backend->configdRun('interface invoke registration');
+            }
 
             // if (!empty(static::$internalServiceTemplate)) {
             //     $result = trim($backend->configdpRun('template reload', [static::$internalServiceTemplate]) ?? '');

@@ -30,6 +30,7 @@
 
 namespace OPNsense\OpenApi\Api;
 
+use OPNsense\Core\Config;
 use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
@@ -38,6 +39,6 @@ use OPNsense\Base\ApiMutableModelControllerBase;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelClass = 'OPNsense\OpenApi\OpenApi';
+    protected static $internalModelClass = '\OPNsense\OpenApi\OpenApi';
     protected static $internalModelName = 'openapi';
 }
