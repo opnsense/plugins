@@ -60,9 +60,12 @@ if __name__ == '__main__':
     membership = dict()
     for group in xmlroot.findall('./system/group'):
         for member in group.findall('member'):
-            if member.text not in membership:
-                membership[member.text] = list()
-            membership[member.text].append(group.findtext('name'))
+            if  member.text is None:
+               continue
+            for item in member.text.split(','):
+                if item not in membership:
+                    membership[item] = list()
+                membership[item].append(group.findtext('name'))
 
     for user in xmlroot.findall('./system/user'):
         if args.username is None or args.username == user.findtext('name'):
