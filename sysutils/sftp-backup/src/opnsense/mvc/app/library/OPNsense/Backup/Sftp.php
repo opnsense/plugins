@@ -177,8 +177,9 @@ class Sftp extends Base implements IBackupProvider
         if (!is_dir($confdir)) {
             mkdir($confdir);
         }
-        if (!is_file($identfile) || file_get_contents($identfile) != $this->model->privkey) {
-            File::file_put_contents($identfile, trim(str_replace("\r", "", $this->model->privkey)) . "\n", 0600);
+        $this_key = trim(str_replace("\r", "", $this->model->privkey)) . "\n";
+        if (!is_file($identfile) || file_get_contents($identfile) != $this_key) {
+            File::file_put_contents($identfile, $this_key, 0600);
         }
         return $identfile;
     }
