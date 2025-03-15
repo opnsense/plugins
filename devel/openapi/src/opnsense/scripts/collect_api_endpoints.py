@@ -153,15 +153,10 @@ def source_url(repo, src_filename):
     else:
         return "https://github.com/opnsense/core/blob/master/%s" % "/".join(parts[parts.index('src'):])
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('source', help='source directory')
-    parser.add_argument('--repo', help='target repository', default="core")
-    cmd_args = parser.parse_args()
-
+def collect_api_modules(source: str):
     # collect all endpoints
     all_modules = dict()
-    for root, dirs, files in os.walk(cmd_args.source):
+    for root, dirs, files in os.walk(source):
         for fname in sorted(files):
             filename = os.path.join(root, fname)
             skip = False
@@ -176,11 +171,13 @@ if __name__ == '__main__':
                     if payload[0]['module'] not in all_modules:
                         all_modules[payload[0]['module']] = list()
                     all_modules[payload[0]['module']].append(payload)
+    return all_modules
 
+def render(modules: dict, repo: str):
     # writeout .rst files
-    for module_name in all_modules:
+    for module_name in modules:
         target_filename = "%s/source/development/api/%s/%s.rst" % (
-            os.path.dirname(__file__), cmd_args.repo, module_name
+            os.path.dirname(__file__), repo, module_name
         )
         print("update %s" % target_filename)
         template_data = {
@@ -188,7 +185,7 @@ if __name__ == '__main__':
             'title_underline': "".join('~' for x in range(len(module_name))),
             'controllers': []
         }
-        for controller in all_modules[module_name]:
+        for controller in modules[module_name]:
             payload = {
                 'type': controller[0]['type'],
                 'filename': controller[0]['filename'],
@@ -202,7 +199,7 @@ if __name__ == '__main__':
             if controller[0]['model_filename']:
                 payload['uses'].append({
                     'type': 'model',
-                    'link': source_url(cmd_args.repo, controller[0]['model_filename']),
+                    'link': source_url(repo, controller[0]['model_filename']),
                     'name': os.path.basename(controller[0]['model_filename'])
                 })
             template_data['controllers'].append(payload)
@@ -214,3 +211,12 @@ if __name__ == '__main__':
                 template_filename = "collect_api_endpoints.in"
             template = Template(open(template_filename, "r").read())
             f_out.write(template.render(template_data))
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('source', help='source directory')
+    parser.add_argument('--repo', help='target repository', default="core")
+    cmd_args = parser.parse_args()
+
+    modules = collect_api_modules(cmd_args.source)
+    render(modules, cmd_args.repo)
