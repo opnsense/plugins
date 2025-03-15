@@ -1,70 +1,28 @@
 #! /usr/bin/env python3
 
-import sys
+import json
+import os
 import re
-from typing import List
+import sys
+from typing import Dict, List
 
 # https://github.com/globality-corp/openapi
 from openapi.model import (
-    ApiKeySecurity,
-    BasicAuthenticationSecurity,
-    BodyParameter,
-    CollectionFormat,
-    CollectionFormatWithMulti,
-    Contact,
-    Definitions,
-    Examples,
-    ExternalDocs,
-    FileSchema,
     FormDataParameterSubSchema,
-    Header,
-    HeaderParameterSubSchema,
-    Headers,
     Info,
-    JsonReference,
-    License,
-    MediaTypeList,
-    MimeType,
-    Oauth2AccessCodeSecurity,
-    Oauth2ApplicationSecurity,
-    Oauth2ImplicitSecurity,
-    Oauth2PasswordSecurity,
-    Oauth2Scopes,
     Operation,
-    ParameterDefinitions,
     ParametersList,
     PathItem,
-    PathParameterSubSchema,
     Paths,
-    PrimitivesItems,
-    QueryParameterSubSchema,
     Response,
-    ResponseDefinitions,
     Responses,
-    Schema,
     SchemaAwareDict,
     SchemaAwareList,
     SchemaAwareString,
-    SchemesList,
-    Security,
-    SecurityDefinitions,
-    SecurityRequirement,
     Swagger,
-    Tag,
-    VendorExtension,
-    Xml,
 )
 
-from collect_api_endpoints import collect_api_modules, Endpoint
-
-
-def get_endpoints(path: str) -> List[Endpoint]:
-    collected_endpoints = collect_api_modules(path)
-    endpoints = []
-    for list_of_lists in collected_endpoints.values():
-        _endpoints = [m for sub_list in list_of_lists for m in sub_list]
-        endpoints.extend(_endpoints)
-    return endpoints
+from collect_api_endpoints import Endpoint, collect_api_modules
 
 
 def get_spec(endpoints: List[Endpoint]):
@@ -113,11 +71,13 @@ def get_spec(endpoints: List[Endpoint]):
 
             ops[method] = Operation(
                 parameters=ParametersList(params),
-                responses=Responses({
-                    "200": Response(
-                        description="TODO - parse description",
-                    )
-                })
+                responses=Responses(
+                    {
+                        "200": Response(
+                            description="TODO - parse description",
+                        )
+                    }
+                ),
             )
 
         paths[path] = PathItem(**ops)
@@ -129,7 +89,7 @@ def get_spec(endpoints: List[Endpoint]):
             version="1.0.0",
         ),
         basePath="/api",
-        paths = Paths(paths)
+        paths=Paths(paths),
     )
     spec.validate()
     return spec
@@ -145,8 +105,21 @@ if __name__ == "__main__":
         print(f"Usage: {sys.argv[0]} OUTPUT_FILE")
         exit(1)
 
-    source_path = "/usr/plugins"
+    endpoints_by_model: Dict[str, List[Endpoint]]
+
+    dot = os.path.dirname(__file__)
+    json_file = os.path.join(dot, "endpoints.json")
+    if os.path.isfile(json_file):
+        with open(json_file) as file:
+            endpoints_by_model = json.loads(file.read())
+    else:
+        source_path = "/usr/plugins"
+        endpoints_by_model = collect_api_modules(source_path)
+
+    endpoints = []
+    for e in endpoints_by_model.values():
+        endpoints.extend(e)
+
     output_file = sys.argv[1]
-    endpoints = get_endpoints(source_path)
     spec = get_spec(endpoints)
     write_spec(spec, output_file)

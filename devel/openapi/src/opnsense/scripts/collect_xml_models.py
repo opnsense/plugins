@@ -111,7 +111,7 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
 )
 
 
-def collect_models(model_filename: str):
+def collect_models(model_filename: str) -> Dict[str, Dict]:
     tree = ElementTree.parse(model_filename)
     root = tree.getroot()
 

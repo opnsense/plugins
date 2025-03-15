@@ -27,8 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import os
 import argparse
 import re
-from typing import List, TypedDict, Literal
-from jinja2 import Template
+from typing import List, TypedDict, Literal, Dict
 
 
 EXCLUDE_CONTROLLERS = ["Core/Api/FirmwareController.php"]
@@ -168,19 +167,7 @@ def parse_api_php(src_filename) -> List[Endpoint]:
     return sorted(result, key=lambda i: i["command"])
 
 
-def source_url(repo, src_filename):
-    parts = src_filename.split("/")
-    if repo == "plugins":
-        return "https://github.com/opnsense/plugins/blob/master/%s" % "/".join(
-            parts[parts.index("src") - 2 :]
-        )
-    else:
-        return "https://github.com/opnsense/core/blob/master/%s" % "/".join(
-            parts[parts.index("src") :]
-        )
-
-
-def collect_api_modules(source: str):
+def collect_api_modules(source: str) -> Dict[str, List[Endpoint]]:
     # collect all endpoints
     all_modules = dict()
     for root, dirs, files in os.walk(source):
@@ -205,60 +192,6 @@ def collect_api_modules(source: str):
                     module = endpoints[0]["module"]
                     if module not in all_modules:
                         all_modules[module] = list()
-                    all_modules[module].append(endpoints)  # TODO: extend, not append
+                    all_modules[module].extend(endpoints)
 
     return all_modules
-
-
-def render(modules: dict, repo: str):
-    # writeout .rst files
-    for module_name in modules:
-        target_filename = "%s/source/development/api/%s/%s.rst" % (
-            os.path.dirname(__file__),
-            repo,
-            module_name,
-        )
-        print("update %s" % target_filename)
-        template_data = {
-            "title": "%s" % module_name.title(),
-            "title_underline": "".join("~" for x in range(len(module_name))),
-            "controllers": [],
-        }
-        for controller in modules[module_name]:
-            payload = {
-                "type": controller[0]["type"],
-                "filename": controller[0]["filename"],
-                "is_abstract": controller[0]["is_abstract"],
-                "base_class": controller[0]["base_class"],
-                "endpoints": [],
-                "uses": [],
-            }
-            for endpoint in controller:
-                payload["endpoints"].append(endpoint)
-            if controller[0]["model_filename"]:
-                payload["uses"].append(
-                    {
-                        "type": "model",
-                        "link": source_url(repo, controller[0]["model_filename"]),
-                        "name": os.path.basename(controller[0]["model_filename"]),
-                    }
-                )
-            template_data["controllers"].append(payload)
-
-        with open(target_filename, "w") as f_out:
-            if os.path.isfile("%s.in" % target_filename):
-                template_filename = "%s.in" % target_filename
-            else:
-                template_filename = "collect_api_endpoints.in"
-            template = Template(open(template_filename, "r").read())
-            f_out.write(template.render(template_data))
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("source", help="source directory")
-    parser.add_argument("--repo", help="target repository", default="core")
-    cmd_args = parser.parse_args()
-
-    modules = collect_api_modules(cmd_args.source)
-    render(modules, cmd_args.repo)
