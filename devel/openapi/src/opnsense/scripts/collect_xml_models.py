@@ -3,12 +3,16 @@
 import json
 import os
 from collections import defaultdict
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Sequence, TypedDict, NotRequired
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
 
 EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
+
+SPECIAL_CASES = {
+    "/Tor/General.xml": "items"
+}
 
 VALIDATOR_TO_SPEC_TYPE = defaultdict(
     lambda: "string",
@@ -114,19 +118,47 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
 )
 
 
-def find_model_containers(element: Element) -> List[Element]:
+class PropertySchema(TypedDict):
+    type: str
+    required: NotRequired[List[str]]
+
+
+class ModelSchema(TypedDict):
+    type: str
+    required: NotRequired[List[str]]
+    properties: Dict[str, PropertySchema]
+
+
+def _find_model_elements_and_handle_special_case(model_filename: str, items_element: Element) -> List[Element]:
+    key = next((k for k in SPECIAL_CASES if model_filename.endswith(k)), None)
+    if key:
+        print("Found one!")
+        model_tag = SPECIAL_CASES[key]
+        if items_element.tag == model_tag:
+            return [items_element]
+        if isinstance(model_tag, str):
+            model_tag = [model_tag]
+        return [el for el in [items_element.find(tag) for tag in model_tag] if el]
+
+    return find_model_elements(items_element)
+
+
+def find_model_elements(element: Element) -> List[Element]:
+    if not [child for child in element]:
+        # raise ValueError(f"Looking for a model but we find ourselves at a leaf node")
+        return []
     if all("type" in child.attrib for child in element):
         return [element]
 
     elements = []
     for child in element:
-        elements.extend(find_model_containers(child))
+        elements.extend(find_model_elements(child))
     return elements
 
 
-def _parse_model_from_element(model_container: Element) -> Dict:
-    models = {}
-    for model_element in model_container:
+def _parse_model_from_element(model_element: Element) -> Dict:
+        models = {}
+    # for model_element in model_container:
         name = model_element.tag
         print(name)
         name = "" if name.lower() == "items" else name
@@ -135,8 +167,8 @@ def _parse_model_from_element(model_container: Element) -> Dict:
             raise ValueError(f"Model already defined at '{name}'")
 
         properties = {}
-        required_props: List[str] = []
-        model = {
+        required_props = []
+        model: ModelSchema = {
             "type": "object",
             "required": required_props,
             "properties": properties,
@@ -150,7 +182,7 @@ def _parse_model_from_element(model_container: Element) -> Dict:
                 raise ValueError(msg)
 
             spec_type = VALIDATOR_TO_SPEC_TYPE[field_type]
-            prop_def = {"type": spec_type}
+            prop_def: PropertySchema = {"type": spec_type}
 
             req_el = prop.find("Required")
             req_el = req_el if req_el is not None else prop.find("required")
@@ -160,7 +192,7 @@ def _parse_model_from_element(model_container: Element) -> Dict:
             properties[prop_name] = prop_def
 
         models[name] = model
-    return models
+        return models
 
 
 def parse_model(model_filename: str) -> Dict[str, Dict]:
@@ -180,12 +212,12 @@ def parse_model(model_filename: str) -> Dict[str, Dict]:
         if items_element is None:
             raise ValueError(f"Failed to find the <items> tag")
 
-        model_containers = find_model_containers(items_element)
+        model_elements = _find_model_elements_and_handle_special_case(model_filename, items_element)
 
         model_schema = {}
-        for model_container in model_containers:
-            print(model_container)
-            models = _parse_model_from_element(model_container)
+        for model_element in model_elements:
+            print(model_element)
+            models = _parse_model_from_element(model_element)
             for name, model_def in models.items():
                 name = f"{mount}.{name}" if name else mount  # e.g. relayd.general
                 model_schema[name] = model_def
@@ -195,7 +227,6 @@ def parse_model(model_filename: str) -> Dict[str, Dict]:
     except Exception as ex:
         ex.args = (f"{model_filename}: {ex}", *ex.args[1:])
         raise
-
 
 
 def collect_models(source: str):

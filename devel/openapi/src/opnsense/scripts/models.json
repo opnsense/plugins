@@ -1,0 +1,7401 @@
+{
+    "redis.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "protected_mode",
+            "log_level",
+            "syslog_enabled",
+            "syslog_facility",
+            "databases"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listen": {
+                "type": "array"
+            },
+            "protected_mode": {
+                "type": "boolean"
+            },
+            "port": {
+                "type": "integer"
+            },
+            "log_level": {
+                "type": "array"
+            },
+            "syslog_enabled": {
+                "type": "boolean"
+            },
+            "syslog_facility": {
+                "type": "array"
+            },
+            "databases": {
+                "type": "integer"
+            }
+        }
+    },
+    "redis.security": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "password": {
+                "type": "string"
+            },
+            "disable_commands": {
+                "type": "array"
+            }
+        }
+    },
+    "redis.limits": {
+        "type": "object",
+        "required": [
+            "maxmemory_policy"
+        ],
+        "properties": {
+            "maxclients": {
+                "type": "integer"
+            },
+            "maxmemory": {
+                "type": "integer"
+            },
+            "maxmemory_policy": {
+                "type": "array"
+            },
+            "maxmemory_samples": {
+                "type": "integer"
+            }
+        }
+    },
+    "redis.slowlog": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "slower_than": {
+                "type": "integer"
+            },
+            "max_len": {
+                "type": "integer"
+            }
+        }
+    },
+    "GridExample.addresses": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "address": {
+                "type": "array"
+            }
+        }
+    },
+    "helloworld.general": {
+        "type": "object",
+        "required": [
+            "Enabled",
+            "SMTPHost",
+            "FromEmail",
+            "ToEmail",
+            "Description"
+        ],
+        "properties": {
+            "Enabled": {
+                "type": "boolean"
+            },
+            "SMTPHost": {
+                "type": "string"
+            },
+            "FromEmail": {
+                "type": "string"
+            },
+            "ToEmail": {
+                "type": "string"
+            },
+            "Description": {
+                "type": "string"
+            }
+        }
+    },
+    "openapi.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "bind.acl.acls": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "acl": {
+                "type": "array"
+            }
+        }
+    },
+    "bind.dnsbl": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "forcesafegoogle",
+            "forcesafeduckduckgo",
+            "forcesafeyoutube",
+            "forcestrictbing"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "type": {
+                "type": "array"
+            },
+            "whitelists": {
+                "type": "array"
+            },
+            "forcesafegoogle": {
+                "type": "boolean"
+            },
+            "forcesafeduckduckgo": {
+                "type": "boolean"
+            },
+            "forcesafeyoutube": {
+                "type": "boolean"
+            },
+            "forcestrictbing": {
+                "type": "boolean"
+            }
+        }
+    },
+    "bind.domain.domains": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "domain": {
+                "type": "array"
+            }
+        }
+    },
+    "bind.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "disablev6",
+            "enablerpz",
+            "listenv4",
+            "listenv6",
+            "port",
+            "filteraaaav4",
+            "filteraaaav6",
+            "logsize",
+            "general_log_level",
+            "maxcachesize",
+            "dnssecvalidation",
+            "hidehostname",
+            "hideversion",
+            "disableprefetch",
+            "enableratelimiting",
+            "ratelimitexcept",
+            "rndcalgo",
+            "rndcsecret"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "disablev6": {
+                "type": "boolean"
+            },
+            "enablerpz": {
+                "type": "boolean"
+            },
+            "listenv4": {
+                "type": "string"
+            },
+            "listenv6": {
+                "type": "string"
+            },
+            "querysource": {
+                "type": "string"
+            },
+            "querysourcev6": {
+                "type": "string"
+            },
+            "transfersource": {
+                "type": "string"
+            },
+            "transfersourcev6": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "forwarders": {
+                "type": "string"
+            },
+            "filteraaaav4": {
+                "type": "boolean"
+            },
+            "filteraaaav6": {
+                "type": "boolean"
+            },
+            "filteraaaaacl": {
+                "type": "string"
+            },
+            "logsize": {
+                "type": "integer"
+            },
+            "general_log_level": {
+                "type": "array"
+            },
+            "maxcachesize": {
+                "type": "integer"
+            },
+            "recursion": {
+                "type": "array"
+            },
+            "allowtransfer": {
+                "type": "array"
+            },
+            "allowquery": {
+                "type": "array"
+            },
+            "dnssecvalidation": {
+                "type": "array"
+            },
+            "hidehostname": {
+                "type": "boolean"
+            },
+            "hideversion": {
+                "type": "boolean"
+            },
+            "disableprefetch": {
+                "type": "boolean"
+            },
+            "enableratelimiting": {
+                "type": "boolean"
+            },
+            "ratelimitcount": {
+                "type": "integer"
+            },
+            "ratelimitexcept": {
+                "type": "string"
+            },
+            "rndcalgo": {
+                "type": "array"
+            },
+            "rndcsecret": {
+                "type": "string"
+            }
+        }
+    },
+    "bind.record.records": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "record": {
+                "type": "array"
+            }
+        }
+    },
+    "DynDNS.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "verbose",
+            "allowipv6",
+            "daemon_delay",
+            "backend"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "verbose": {
+                "type": "boolean"
+            },
+            "allowipv6": {
+                "type": "boolean"
+            },
+            "daemon_delay": {
+                "type": "integer"
+            },
+            "backend": {
+                "type": "array"
+            }
+        }
+    },
+    "DynDNS.accounts": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "account": {
+                "type": "string"
+            }
+        }
+    },
+    "dnscryptproxy.cloak.cloaks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "cloak": {
+                "type": "array"
+            }
+        }
+    },
+    "dnscryptproxy.dnsbl": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "type": {
+                "type": "array"
+            }
+        }
+    },
+    "dnscryptproxy.forward.forwards": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "forward": {
+                "type": "array"
+            }
+        }
+    },
+    "dnscryptproxy.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "listen_addresses",
+            "allowprivileged",
+            "max_clients",
+            "ipv4_servers",
+            "ipv6_servers",
+            "dnscrypt_servers",
+            "doh_servers",
+            "require_dnssec",
+            "require_nolog",
+            "require_nofilter",
+            "force_tcp",
+            "timeout",
+            "keepalive",
+            "cert_refresh_delay",
+            "dnscrypt_ephemeral_keys",
+            "tls_disable_session_tickets",
+            "fallback_resolver",
+            "block_ipv6",
+            "cache",
+            "cache_size",
+            "cache_min_ttl",
+            "cache_max_ttl",
+            "cache_neg_min_ttl",
+            "cache_neg_max_ttl",
+            "query_logs"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listen_addresses": {
+                "type": "array"
+            },
+            "allowprivileged": {
+                "type": "boolean"
+            },
+            "max_clients": {
+                "type": "integer"
+            },
+            "ipv4_servers": {
+                "type": "boolean"
+            },
+            "ipv6_servers": {
+                "type": "boolean"
+            },
+            "dnscrypt_servers": {
+                "type": "boolean"
+            },
+            "doh_servers": {
+                "type": "boolean"
+            },
+            "require_dnssec": {
+                "type": "boolean"
+            },
+            "require_nolog": {
+                "type": "boolean"
+            },
+            "require_nofilter": {
+                "type": "boolean"
+            },
+            "force_tcp": {
+                "type": "boolean"
+            },
+            "proxy": {
+                "type": "string"
+            },
+            "timeout": {
+                "type": "integer"
+            },
+            "keepalive": {
+                "type": "integer"
+            },
+            "cert_refresh_delay": {
+                "type": "integer"
+            },
+            "dnscrypt_ephemeral_keys": {
+                "type": "boolean"
+            },
+            "tls_disable_session_tickets": {
+                "type": "boolean"
+            },
+            "fallback_resolver": {
+                "type": "string"
+            },
+            "block_ipv6": {
+                "type": "boolean"
+            },
+            "cache": {
+                "type": "boolean"
+            },
+            "cache_size": {
+                "type": "integer"
+            },
+            "cache_min_ttl": {
+                "type": "integer"
+            },
+            "cache_max_ttl": {
+                "type": "integer"
+            },
+            "cache_neg_min_ttl": {
+                "type": "integer"
+            },
+            "cache_neg_max_ttl": {
+                "type": "integer"
+            },
+            "serverlist": {
+                "type": "array"
+            },
+            "query_logs": {
+                "type": "boolean"
+            },
+            "disabled_serverlist": {
+                "type": "array"
+            },
+            "relaylist": {
+                "type": "array"
+            }
+        }
+    },
+    "dnscryptproxy.server.servers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "server": {
+                "type": "array"
+            }
+        }
+    },
+    "dnscryptproxy.whitelist.whitelists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "whitelist": {
+                "type": "array"
+            }
+        }
+    },
+    "QemuGuestAgent.general": {
+        "type": "object",
+        "required": [
+            "Enabled"
+        ],
+        "properties": {
+            "Enabled": {
+                "type": "boolean"
+            },
+            "LogDebug": {
+                "type": "boolean"
+            },
+            "DisabledRPCs": {
+                "type": "array"
+            }
+        }
+    },
+    "tftp.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "listen"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listen": {
+                "type": "string"
+            }
+        }
+    },
+    "postfix.address.addresses": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "address": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.antispam": {
+        "type": "object",
+        "required": [
+            "enable_rspamd",
+            "default_action"
+        ],
+        "properties": {
+            "enable_rspamd": {
+                "type": "boolean"
+            },
+            "default_action": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.domain.domains": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "domain": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "inet_interfaces",
+            "inet_port",
+            "ip_version",
+            "mynetworks",
+            "message_size_limit",
+            "tls_server_compatibility",
+            "tls_client_compatibility",
+            "tlswrappermode",
+            "smtpclient_security",
+            "smtpauth_enabled",
+            "enforce_recipient_check",
+            "extensive_helo_restrictions",
+            "extensive_sender_restrictions",
+            "reject_unknown_client_hostname",
+            "reject_non_fqdn_helo_hostname",
+            "reject_invalid_helo_hostname",
+            "reject_unknown_helo_hostname",
+            "reject_unauth_pipelining",
+            "reject_unknown_sender_domain",
+            "reject_unknown_recipient_domain",
+            "reject_non_fqdn_sender",
+            "reject_non_fqdn_recipient",
+            "permit_sasl_authenticated",
+            "permit_tls_clientcerts",
+            "permit_mynetworks",
+            "reject_unauth_destination",
+            "reject_unverified_recipient"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "myhostname": {
+                "type": "string"
+            },
+            "mydomain": {
+                "type": "string"
+            },
+            "myorigin": {
+                "type": "string"
+            },
+            "inet_interfaces": {
+                "type": "string"
+            },
+            "inet_port": {
+                "type": "array"
+            },
+            "ip_version": {
+                "type": "array"
+            },
+            "bind_address": {
+                "type": "string"
+            },
+            "bind_address6": {
+                "type": "string"
+            },
+            "mynetworks": {
+                "type": "array"
+            },
+            "banner": {
+                "type": "string"
+            },
+            "message_size_limit": {
+                "type": "integer"
+            },
+            "masquerade_domains": {
+                "type": "array"
+            },
+            "tls_server_compatibility": {
+                "type": "array"
+            },
+            "tls_client_compatibility": {
+                "type": "array"
+            },
+            "tlswrappermode": {
+                "type": "boolean"
+            },
+            "certificate": {
+                "type": "array"
+            },
+            "ca": {
+                "type": "array"
+            },
+            "smtpclient_security": {
+                "type": "array"
+            },
+            "relayhost": {
+                "type": "string"
+            },
+            "smtpauth_enabled": {
+                "type": "boolean"
+            },
+            "smtpauth_user": {
+                "type": "string"
+            },
+            "smtpauth_password": {
+                "type": "string"
+            },
+            "enforce_recipient_check": {
+                "type": "boolean"
+            },
+            "extensive_helo_restrictions": {
+                "type": "boolean"
+            },
+            "extensive_sender_restrictions": {
+                "type": "boolean"
+            },
+            "reject_unknown_client_hostname": {
+                "type": "boolean"
+            },
+            "reject_non_fqdn_helo_hostname": {
+                "type": "boolean"
+            },
+            "reject_invalid_helo_hostname": {
+                "type": "boolean"
+            },
+            "reject_unknown_helo_hostname": {
+                "type": "boolean"
+            },
+            "reject_unauth_pipelining": {
+                "type": "boolean"
+            },
+            "reject_unknown_sender_domain": {
+                "type": "boolean"
+            },
+            "reject_unknown_recipient_domain": {
+                "type": "boolean"
+            },
+            "reject_non_fqdn_sender": {
+                "type": "boolean"
+            },
+            "reject_non_fqdn_recipient": {
+                "type": "boolean"
+            },
+            "permit_sasl_authenticated": {
+                "type": "boolean"
+            },
+            "permit_tls_clientcerts": {
+                "type": "boolean"
+            },
+            "permit_mynetworks": {
+                "type": "boolean"
+            },
+            "reject_unauth_destination": {
+                "type": "boolean"
+            },
+            "reject_unverified_recipient": {
+                "type": "boolean"
+            },
+            "delay_warning_time": {
+                "type": "integer"
+            }
+        }
+    },
+    "postfix.headerchecks.headerchecks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "headercheck": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.recipient.recipients": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "recipient": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.recipientbcc.recipientbccs": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "recipientbcc": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.sender.senders": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "sender": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.senderbcc.senderbccs": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "senderbcc": {
+                "type": "array"
+            }
+        }
+    },
+    "postfix.sendercanonical.sendercanonicals": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "sendercanonical": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "enable_redis_plugin",
+            "enable_bayes_autolearn",
+            "historyrows",
+            "nameserver"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "enable_redis_plugin": {
+                "type": "boolean"
+            },
+            "enable_bayes_autolearn": {
+                "type": "boolean"
+            },
+            "rejectscore": {
+                "type": "integer"
+            },
+            "headerscore": {
+                "type": "integer"
+            },
+            "greylistscore": {
+                "type": "integer"
+            },
+            "subjectscore": {
+                "type": "integer"
+            },
+            "rewritesubject": {
+                "type": "string"
+            },
+            "historyrows": {
+                "type": "integer"
+            },
+            "nameserver": {
+                "type": "string"
+            }
+        }
+    },
+    "Rspamd.milter_headers": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "enable_extended_spam_headers",
+            "enable_authentication_results",
+            "enable_spamd_bar",
+            "skip_local",
+            "skip_authenticated"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "enable_extended_spam_headers": {
+                "type": "boolean"
+            },
+            "enable_authentication_results": {
+                "type": "boolean"
+            },
+            "enable_spamd_bar": {
+                "type": "boolean"
+            },
+            "skip_local": {
+                "type": "boolean"
+            },
+            "skip_authenticated": {
+                "type": "boolean"
+            },
+            "extended_headers_rcpt": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.graylist": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "expire": {
+                "type": "integer"
+            },
+            "timeout": {
+                "type": "integer"
+            },
+            "max_data_len": {
+                "type": "integer"
+            },
+            "ipv4mask": {
+                "type": "integer"
+            },
+            "ipv6mask": {
+                "type": "integer"
+            },
+            "whitelist_ip": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.dkim": {
+        "type": "object",
+        "required": [
+            "trusted_only",
+            "skip_multi",
+            "allow_envfrom_empty",
+            "allow_hdrfrom_mismatch",
+            "allow_hdrfrom_multiple",
+            "allow_username_mismatch",
+            "auth_only",
+            "sign_local",
+            "try_fallback",
+            "use_domain",
+            "use_esld"
+        ],
+        "properties": {
+            "cache_size": {
+                "type": "integer"
+            },
+            "cache_expire": {
+                "type": "integer"
+            },
+            "time_jitter": {
+                "type": "integer"
+            },
+            "trusted_only": {
+                "type": "boolean"
+            },
+            "skip_multi": {
+                "type": "boolean"
+            },
+            "allow_envfrom_empty": {
+                "type": "boolean"
+            },
+            "allow_hdrfrom_mismatch": {
+                "type": "boolean"
+            },
+            "allow_hdrfrom_multiple": {
+                "type": "boolean"
+            },
+            "allow_username_mismatch": {
+                "type": "boolean"
+            },
+            "auth_only": {
+                "type": "boolean"
+            },
+            "sign_local": {
+                "type": "boolean"
+            },
+            "try_fallback": {
+                "type": "boolean"
+            },
+            "use_domain": {
+                "type": "array"
+            },
+            "use_esld": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Rspamd.mx-check": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "expire": {
+                "type": "integer"
+            }
+        }
+    },
+    "Rspamd.phishing": {
+        "type": "object",
+        "required": [
+            "openphish_enabled",
+            "openphish_premium_enabled",
+            "phishtank_enabled"
+        ],
+        "properties": {
+            "openphish_enabled": {
+                "type": "boolean"
+            },
+            "openphish_map": {
+                "type": "string"
+            },
+            "openphish_premium_enabled": {
+                "type": "boolean"
+            },
+            "phishtank_enabled": {
+                "type": "boolean"
+            },
+            "phishtank_map": {
+                "type": "string"
+            },
+            "exclusion": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.per_recipient": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.per_ip": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.per_ip_from": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.bounce": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.bounce_ip": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.user": {
+        "type": "object",
+        "required": [
+            "time_unit"
+        ],
+        "properties": {
+            "count": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "integer"
+            },
+            "time_unit": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "Rspamd.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "Rspamd.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "Rspamd.spamtrap": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "fuzzy_learning",
+            "spam_learning"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "fuzzy_learning": {
+                "type": "boolean"
+            },
+            "spam_learning": {
+                "type": "boolean"
+            },
+            "spam_recipients": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.spf": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "spf_cache_size": {
+                "type": "integer"
+            },
+            "spf_cache_expire": {
+                "type": "integer"
+            }
+        }
+    },
+    "Rspamd.av": {
+        "type": "object",
+        "required": [
+            "force-reject",
+            "attachments-only"
+        ],
+        "properties": {
+            "force-reject": {
+                "type": "boolean"
+            },
+            "attachments-only": {
+                "type": "boolean"
+            },
+            "max-size": {
+                "type": "integer"
+            },
+            "whitelist": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.surbl": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "whitelist": {
+                "type": "array"
+            },
+            "exceptions": {
+                "type": "array"
+            }
+        }
+    },
+    "Rspamd.multimap": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "badfileextension": {
+                "type": "array"
+            },
+            "whitelistsender": {
+                "type": "array"
+            }
+        }
+    },
+    "collectd.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "hostname": {
+                "type": "string"
+            },
+            "fqdnlookup": {
+                "type": "boolean"
+            },
+            "interval": {
+                "type": "integer"
+            },
+            "p_network_enable": {
+                "type": "boolean"
+            },
+            "p_network_host": {
+                "type": "string"
+            },
+            "p_network_port": {
+                "type": "integer"
+            },
+            "p_network_username": {
+                "type": "string"
+            },
+            "p_network_password": {
+                "type": "string"
+            },
+            "p_network_encryption": {
+                "type": "boolean"
+            },
+            "p_graphite_enable": {
+                "type": "boolean"
+            },
+            "p_graphite_node": {
+                "type": "string"
+            },
+            "p_graphite_host": {
+                "type": "string"
+            },
+            "p_graphite_port": {
+                "type": "integer"
+            },
+            "p_graphite_prefix": {
+                "type": "string"
+            },
+            "p_graphite_postfix": {
+                "type": "string"
+            },
+            "p_graphite_separate_instances": {
+                "type": "boolean"
+            },
+            "p_contextswitch_enable": {
+                "type": "boolean"
+            },
+            "p_cpu_enable": {
+                "type": "boolean"
+            },
+            "p_cpu_percent": {
+                "type": "boolean"
+            },
+            "p_cpu_aggregates": {
+                "type": "boolean"
+            },
+            "p_disk_enable": {
+                "type": "boolean"
+            },
+            "p_df_enable": {
+                "type": "boolean"
+            },
+            "p_interface_enable": {
+                "type": "boolean"
+            },
+            "p_load_enable": {
+                "type": "boolean"
+            },
+            "p_memory_enable": {
+                "type": "boolean"
+            },
+            "p_swap_enable": {
+                "type": "boolean"
+            },
+            "p_processes_enable": {
+                "type": "boolean"
+            },
+            "p_uptime_enable": {
+                "type": "boolean"
+            },
+            "p_users_enable": {
+                "type": "boolean"
+            },
+            "p_tcpconns": {
+                "type": "boolean"
+            },
+            "p_ipstats": {
+                "type": "boolean"
+            }
+        }
+    },
+    "lldpd.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "cdp",
+            "fdp",
+            "edp",
+            "sonmp",
+            "agentx"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "cdp": {
+                "type": "boolean"
+            },
+            "fdp": {
+                "type": "boolean"
+            },
+            "edp": {
+                "type": "boolean"
+            },
+            "sonmp": {
+                "type": "boolean"
+            },
+            "agentx": {
+                "type": "boolean"
+            },
+            "interface": {
+                "type": "string"
+            }
+        }
+    },
+    "netsnmp.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "l3visibility",
+            "versionoid",
+            "enableagentx",
+            "enableobservium"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "community": {
+                "type": "string"
+            },
+            "syslocation": {
+                "type": "string"
+            },
+            "syscontact": {
+                "type": "string"
+            },
+            "l3visibility": {
+                "type": "boolean"
+            },
+            "versionoid": {
+                "type": "boolean"
+            },
+            "enableagentx": {
+                "type": "boolean"
+            },
+            "enableobservium": {
+                "type": "boolean"
+            },
+            "listen": {
+                "type": "string"
+            }
+        }
+    },
+    "netsnmp.user.users": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "user": {
+                "type": "array"
+            }
+        }
+    },
+    "netdata.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "listen",
+            "port"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listen": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            }
+        }
+    },
+    "nrpe.command.commands": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "command": {
+                "type": "array"
+            }
+        }
+    },
+    "nrpe.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "server_port",
+            "server_address",
+            "allowed_hosts",
+            "dont_blame_nrpe",
+            "allow_bash_command_substitution",
+            "command_timeout",
+            "connection_timeout"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "server_port": {
+                "type": "array"
+            },
+            "server_address": {
+                "type": "string"
+            },
+            "allowed_hosts": {
+                "type": "string"
+            },
+            "dont_blame_nrpe": {
+                "type": "boolean"
+            },
+            "allow_bash_command_substitution": {
+                "type": "boolean"
+            },
+            "command_timeout": {
+                "type": "integer"
+            },
+            "connection_timeout": {
+                "type": "integer"
+            }
+        }
+    },
+    "telegraf.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "wheelgroup",
+            "interval",
+            "roundinterval",
+            "metric_batch_size",
+            "metric_buffer_limit",
+            "collection_jitter",
+            "flush_interval",
+            "flush_jitter",
+            "omit_hostname",
+            "quiet",
+            "debug"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "wheelgroup": {
+                "type": "boolean"
+            },
+            "interval": {
+                "type": "integer"
+            },
+            "roundinterval": {
+                "type": "boolean"
+            },
+            "metric_batch_size": {
+                "type": "integer"
+            },
+            "metric_buffer_limit": {
+                "type": "integer"
+            },
+            "collection_jitter": {
+                "type": "integer"
+            },
+            "flush_interval": {
+                "type": "integer"
+            },
+            "flush_jitter": {
+                "type": "integer"
+            },
+            "hostname": {
+                "type": "string"
+            },
+            "omit_hostname": {
+                "type": "boolean"
+            },
+            "quiet": {
+                "type": "boolean"
+            },
+            "debug": {
+                "type": "boolean"
+            }
+        }
+    },
+    "telegraf.input": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "cpu": {
+                "type": "boolean"
+            },
+            "cpu_percpu": {
+                "type": "boolean"
+            },
+            "cpu_totalcpu": {
+                "type": "boolean"
+            },
+            "collect_cpu_time": {
+                "type": "boolean"
+            },
+            "disk": {
+                "type": "boolean"
+            },
+            "disk_mount_points": {
+                "type": "string"
+            },
+            "disk_ignore_fs": {
+                "type": "array"
+            },
+            "diskio": {
+                "type": "boolean"
+            },
+            "internet_speed": {
+                "type": "boolean"
+            },
+            "internet_speed_file": {
+                "type": "boolean"
+            },
+            "internet_speed_interval": {
+                "type": "integer"
+            },
+            "mem": {
+                "type": "boolean"
+            },
+            "processes": {
+                "type": "boolean"
+            },
+            "swap": {
+                "type": "boolean"
+            },
+            "system": {
+                "type": "boolean"
+            },
+            "network": {
+                "type": "boolean"
+            },
+            "pf": {
+                "type": "boolean"
+            },
+            "ping": {
+                "type": "boolean"
+            },
+            "ping_count": {
+                "type": "integer"
+            },
+            "ping_hosts": {
+                "type": "array"
+            },
+            "ping6": {
+                "type": "boolean"
+            },
+            "ping6_count": {
+                "type": "integer"
+            },
+            "ping6_hosts": {
+                "type": "array"
+            },
+            "haproxy": {
+                "type": "boolean"
+            },
+            "zfs": {
+                "type": "boolean"
+            },
+            "ntpq": {
+                "type": "boolean"
+            },
+            "ntpq_dns_lookup": {
+                "type": "boolean"
+            },
+            "intrusion_detection_alerts": {
+                "type": "boolean"
+            },
+            "unbound": {
+                "type": "boolean"
+            },
+            "apcupsd": {
+                "type": "boolean"
+            },
+            "apcupsd_server": {
+                "type": "string"
+            }
+        }
+    },
+    "telegraf.key.keys": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "key": {
+                "type": "array"
+            }
+        }
+    },
+    "telegraf.output": {
+        "type": "object",
+        "required": [
+            "mqtt_qos",
+            "mqtt_layout",
+            "mqtt_data_format",
+            "opentelemetry_compression"
+        ],
+        "properties": {
+            "influx_enable": {
+                "type": "boolean"
+            },
+            "influx_url": {
+                "type": "string"
+            },
+            "influx_database": {
+                "type": "string"
+            },
+            "influx_timeout": {
+                "type": "integer"
+            },
+            "influx_username": {
+                "type": "string"
+            },
+            "influx_password": {
+                "type": "string"
+            },
+            "influx_insecure_skip_verify": {
+                "type": "boolean"
+            },
+            "graphite_enable": {
+                "type": "boolean"
+            },
+            "graphite_server": {
+                "type": "string"
+            },
+            "graphite_prefix": {
+                "type": "string"
+            },
+            "graphite_template": {
+                "type": "string"
+            },
+            "graphite_ssl_disable": {
+                "type": "boolean"
+            },
+            "graphite_verify": {
+                "type": "boolean"
+            },
+            "graphite_tagsupport": {
+                "type": "boolean"
+            },
+            "graylog_enable": {
+                "type": "boolean"
+            },
+            "graylog_server": {
+                "type": "string"
+            },
+            "elastic_enable": {
+                "type": "boolean"
+            },
+            "elastic_url": {
+                "type": "string"
+            },
+            "elastic_username": {
+                "type": "string"
+            },
+            "elastic_password": {
+                "type": "string"
+            },
+            "elastic_timeout": {
+                "type": "integer"
+            },
+            "elastic_indexname": {
+                "type": "string"
+            },
+            "prometheus_enable": {
+                "type": "boolean"
+            },
+            "prometheus_listen": {
+                "type": "array"
+            },
+            "prometheus_exclude": {
+                "type": "array"
+            },
+            "prometheus_stringaslabel": {
+                "type": "boolean"
+            },
+            "influx_v2_enable": {
+                "type": "boolean"
+            },
+            "influx_v2_url": {
+                "type": "string"
+            },
+            "influx_v2_token": {
+                "type": "string"
+            },
+            "influx_v2_organization": {
+                "type": "string"
+            },
+            "influx_v2_bucket": {
+                "type": "string"
+            },
+            "influx_v2_insecure_skip_verify": {
+                "type": "boolean"
+            },
+            "influx_v2_timeout": {
+                "type": "integer"
+            },
+            "datadog_enable": {
+                "type": "boolean"
+            },
+            "datadog_url": {
+                "type": "string"
+            },
+            "datadog_apikey": {
+                "type": "string"
+            },
+            "mqtt_enable": {
+                "type": "boolean"
+            },
+            "mqtt_topic_prefix": {
+                "type": "string"
+            },
+            "mqtt_topic": {
+                "type": "string"
+            },
+            "mqtt_servers": {
+                "type": "array"
+            },
+            "mqtt_insecure_skip_verify": {
+                "type": "boolean"
+            },
+            "mqtt_client_id": {
+                "type": "string"
+            },
+            "mqtt_qos": {
+                "type": "array"
+            },
+            "mqtt_retain": {
+                "type": "boolean"
+            },
+            "mqtt_timeout": {
+                "type": "integer"
+            },
+            "mqtt_username": {
+                "type": "string"
+            },
+            "mqtt_password": {
+                "type": "string"
+            },
+            "mqtt_layout": {
+                "type": "array"
+            },
+            "mqtt_data_format": {
+                "type": "array"
+            },
+            "opentelemetry_enable": {
+                "type": "boolean"
+            },
+            "opentelemetry_server": {
+                "type": "string"
+            },
+            "opentelemetry_insecure_skip_verify": {
+                "type": "boolean"
+            },
+            "opentelemetry_timeout": {
+                "type": "integer"
+            },
+            "opentelemetry_compression": {
+                "type": "array"
+            }
+        }
+    },
+    "ZabbixAgent.local": {
+        "type": "object",
+        "required": [
+            "hostname"
+        ],
+        "properties": {
+            "hostname": {
+                "type": "string"
+            }
+        }
+    },
+    "ZabbixAgent.main": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "serverList",
+            "listenPort",
+            "listenIP",
+            "logFileSize",
+            "debugLevel",
+            "sudoRoot"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "serverList": {
+                "type": "array"
+            },
+            "listenPort": {
+                "type": "integer"
+            },
+            "listenIP": {
+                "type": "string"
+            },
+            "sourceIP": {
+                "type": "string"
+            },
+            "syslogEnable": {
+                "type": "boolean"
+            },
+            "logFileSize": {
+                "type": "integer"
+            },
+            "debugLevel": {
+                "type": "array"
+            },
+            "sudoRoot": {
+                "type": "boolean"
+            }
+        }
+    },
+    "ZabbixAgent.tuning": {
+        "type": "object",
+        "required": [
+            "startAgents",
+            "bufferSend",
+            "bufferSize",
+            "maxLinesPerSecond",
+            "timeout"
+        ],
+        "properties": {
+            "startAgents": {
+                "type": "integer"
+            },
+            "bufferSend": {
+                "type": "integer"
+            },
+            "bufferSize": {
+                "type": "integer"
+            },
+            "maxLinesPerSecond": {
+                "type": "integer"
+            },
+            "timeout": {
+                "type": "integer"
+            }
+        }
+    },
+    "ZabbixAgent.features": {
+        "type": "object",
+        "required": [
+            "enableActiveChecks",
+            "refreshActiveChecks",
+            "enableRemoteCommands",
+            "logRemoteCommands",
+            "encryption"
+        ],
+        "properties": {
+            "enableActiveChecks": {
+                "type": "boolean"
+            },
+            "activeCheckServers": {
+                "type": "array"
+            },
+            "refreshActiveChecks": {
+                "type": "integer"
+            },
+            "enableRemoteCommands": {
+                "type": "boolean"
+            },
+            "logRemoteCommands": {
+                "type": "boolean"
+            },
+            "encryption": {
+                "type": "boolean"
+            },
+            "encryptionidentity": {
+                "type": "string"
+            },
+            "encryptionpsk": {
+                "type": "string"
+            }
+        }
+    },
+    "ZabbixAgent.userparameters": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "userparameter": {
+                "type": "array"
+            }
+        }
+    },
+    "ZabbixAgent.aliases": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "alias": {
+                "type": "array"
+            }
+        }
+    },
+    "zabbixproxy.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "proxymode",
+            "remotecommands",
+            "hostname",
+            "syslogEnable",
+            "logFileSize",
+            "debugLevel",
+            "encryption"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "proxymode": {
+                "type": "boolean"
+            },
+            "remotecommands": {
+                "type": "boolean"
+            },
+            "server": {
+                "type": "string"
+            },
+            "serverport": {
+                "type": "string"
+            },
+            "hostname": {
+                "type": "string"
+            },
+            "listenport": {
+                "type": "string"
+            },
+            "listenip": {
+                "type": "string"
+            },
+            "sourceip": {
+                "type": "string"
+            },
+            "startpollers": {
+                "type": "string"
+            },
+            "startipmipollers": {
+                "type": "integer"
+            },
+            "startpollersunreachable": {
+                "type": "integer"
+            },
+            "starttrappers": {
+                "type": "integer"
+            },
+            "startpingers": {
+                "type": "integer"
+            },
+            "startdiscoverers": {
+                "type": "integer"
+            },
+            "startvmwarecollectors": {
+                "type": "integer"
+            },
+            "starthttppollers": {
+                "type": "integer"
+            },
+            "cachesize": {
+                "type": "string"
+            },
+            "historycachesize": {
+                "type": "string"
+            },
+            "historyindexcachesize": {
+                "type": "string"
+            },
+            "proxyofflinebuffer": {
+                "type": "integer"
+            },
+            "timeout": {
+                "type": "integer"
+            },
+            "configfrequency": {
+                "type": "integer"
+            },
+            "datasenderfrequency": {
+                "type": "integer"
+            },
+            "statsip": {
+                "type": "string"
+            },
+            "syslogEnable": {
+                "type": "boolean"
+            },
+            "logFileSize": {
+                "type": "integer"
+            },
+            "debugLevel": {
+                "type": "array"
+            },
+            "encryption": {
+                "type": "boolean"
+            },
+            "encryptionidentity": {
+                "type": "string"
+            },
+            "encryptionpsk": {
+                "type": "string"
+            }
+        }
+    },
+    "chrony.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "port",
+            "ntsclient",
+            "ntsnocert",
+            "peers"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "port": {
+                "type": "array"
+            },
+            "ntsclient": {
+                "type": "boolean"
+            },
+            "ntsnocert": {
+                "type": "boolean"
+            },
+            "peers": {
+                "type": "string"
+            },
+            "fallbackpeers": {
+                "type": "string"
+            },
+            "allowednetworks": {
+                "type": "string"
+            }
+        }
+    },
+    "freeradius.avpair.avpairs": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "avpair": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.client.clients": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "client": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.dhcp.dhcps": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "dhcp": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.eap": {
+        "type": "object",
+        "required": [
+            "default_eap_type",
+            "elliptic_curve",
+            "enable_client_cert",
+            "check_tls_names",
+            "tls_min_version"
+        ],
+        "properties": {
+            "default_eap_type": {
+                "type": "array"
+            },
+            "elliptic_curve": {
+                "type": "array"
+            },
+            "enable_client_cert": {
+                "type": "boolean"
+            },
+            "ca": {
+                "type": "array"
+            },
+            "certificate": {
+                "type": "array"
+            },
+            "crl": {
+                "type": "array"
+            },
+            "check_tls_names": {
+                "type": "boolean"
+            },
+            "tls_min_version": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "fallbackvlan_enabled",
+            "log_destination",
+            "dhcpenabled",
+            "mysqlserver",
+            "mysqlport",
+            "mysqluser",
+            "mysqlpassword",
+            "mysqldb",
+            "fallbackproxy"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "vlanassign": {
+                "type": "boolean"
+            },
+            "fallbackvlan_enabled": {
+                "type": "boolean"
+            },
+            "fallbackvlan_id": {
+                "type": "integer"
+            },
+            "ldap_enabled": {
+                "type": "boolean"
+            },
+            "exos": {
+                "type": "boolean"
+            },
+            "wispr": {
+                "type": "boolean"
+            },
+            "chillispot": {
+                "type": "boolean"
+            },
+            "mikrotik": {
+                "type": "boolean"
+            },
+            "sqlite": {
+                "type": "boolean"
+            },
+            "sessionlimit": {
+                "type": "boolean"
+            },
+            "log_destination": {
+                "type": "array"
+            },
+            "log_authentication_request": {
+                "type": "boolean"
+            },
+            "log_authbadpass": {
+                "type": "boolean"
+            },
+            "log_authgoodpass": {
+                "type": "boolean"
+            },
+            "dhcpenabled": {
+                "type": "boolean"
+            },
+            "dhcplistenip": {
+                "type": "string"
+            },
+            "mysql": {
+                "type": "boolean"
+            },
+            "mysqlserver": {
+                "type": "string"
+            },
+            "mysqlport": {
+                "type": "array"
+            },
+            "mysqluser": {
+                "type": "string"
+            },
+            "mysqlpassword": {
+                "type": "string"
+            },
+            "mysqldb": {
+                "type": "string"
+            },
+            "fallbackproxy": {
+                "type": "boolean"
+            }
+        }
+    },
+    "freeradius.ldap": {
+        "type": "object",
+        "required": [
+            "innertunnel",
+            "protocol",
+            "ldapstarttls"
+        ],
+        "properties": {
+            "innertunnel": {
+                "type": "boolean"
+            },
+            "protocol": {
+                "type": "array"
+            },
+            "server": {
+                "type": "string"
+            },
+            "serverport": {
+                "type": "string"
+            },
+            "ldapcert": {
+                "type": "array"
+            },
+            "ldapstarttls": {
+                "type": "boolean"
+            },
+            "identity": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "base_dn": {
+                "type": "string"
+            },
+            "user_filter": {
+                "type": "string"
+            },
+            "group_filter": {
+                "type": "string"
+            }
+        }
+    },
+    "freeradius.lease.leases": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "lease": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.proxy.homeservers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "homeserver": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.proxy.homeserverpools": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "homeserverpool": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.proxy.realms": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "realm": {
+                "type": "array"
+            }
+        }
+    },
+    "freeradius.user.users": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "user": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bfd.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bfd.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bfd.neighbors": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "neighbor": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.MaximumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.ospf": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.connected": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.kernel": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.rip": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.static": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.bgp.neighbors": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "neighbor": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.aspaths": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "aspath": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.prefixlists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "prefixlist": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.communitylists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "communitylist": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.routemaps": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "routemap": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.bgp.peergroups": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "peergroup": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "profile",
+            "enablecarp",
+            "enablesyslog",
+            "enablesnmp",
+            "sysloglevel",
+            "fwrules"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "profile": {
+                "type": "array"
+            },
+            "enablecarp": {
+                "type": "boolean"
+            },
+            "enablesyslog": {
+                "type": "boolean"
+            },
+            "enablesnmp": {
+                "type": "boolean"
+            },
+            "sysloglevel": {
+                "type": "array"
+            },
+            "fwrules": {
+                "type": "boolean"
+            }
+        }
+    },
+    "quagga.ospf.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.MaximumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.ValidationMessage": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.AllowDynamic": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.enable": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.bgp": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.connected": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.kernel": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.rip": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.static": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.source": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.display": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.group": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.Multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf.networks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "network": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf.interfaces": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "interface": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf.prefixlists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "prefixlist": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf.routemaps": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "routemap": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf6.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.connected": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.kernel": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.static": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.source": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.display": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.group": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.ValidationMessage": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.MaximumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.ospf6.networks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "network": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf6.interfaces": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "interface": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf6.prefixlists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "prefixlist": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.ospf6.routemaps": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "routemap": {
+                "type": "array"
+            }
+        }
+    },
+    "quagga.rip": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "version"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "version": {
+                "type": "integer"
+            },
+            "networks": {
+                "type": "array"
+            },
+            "passiveinterfaces": {
+                "type": "array"
+            },
+            "redistribute": {
+                "type": "array"
+            },
+            "defaultmetric": {
+                "type": "integer"
+            }
+        }
+    },
+    "quagga.static.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.static.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "quagga.static.routes": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "route": {
+                "type": "array"
+            }
+        }
+    },
+    "ftpproxies": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "ftpproxy": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "HAProxy.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "HAProxy.mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "HAProxy.ValidationMessage": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "HAProxy.peers": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "name1": {
+                "type": "string"
+            },
+            "listen1": {
+                "type": "string"
+            },
+            "port1": {
+                "type": "integer"
+            },
+            "name2": {
+                "type": "string"
+            },
+            "listen2": {
+                "type": "string"
+            },
+            "port2": {
+                "type": "integer"
+            }
+        }
+    },
+    "HAProxy.tuning": {
+        "type": "object",
+        "required": [
+            "root",
+            "sslServerVerify",
+            "maxDHSize",
+            "spreadChecks",
+            "bogusProxyEnabled",
+            "ocspUpdateEnabled",
+            "ssl_defaultsEnabled"
+        ],
+        "properties": {
+            "root": {
+                "type": "boolean"
+            },
+            "maxConnections": {
+                "type": "integer"
+            },
+            "nbthread": {
+                "type": "integer"
+            },
+            "resolversPrefer": {
+                "type": "array"
+            },
+            "sslServerVerify": {
+                "type": "array"
+            },
+            "maxDHSize": {
+                "type": "integer"
+            },
+            "bufferSize": {
+                "type": "integer"
+            },
+            "spreadChecks": {
+                "type": "integer"
+            },
+            "bogusProxyEnabled": {
+                "type": "boolean"
+            },
+            "luaMaxMem": {
+                "type": "integer"
+            },
+            "customOptions": {
+                "type": "string"
+            },
+            "ocspUpdateEnabled": {
+                "type": "boolean"
+            },
+            "ocspUpdateMinDelay": {
+                "type": "integer"
+            },
+            "ocspUpdateMaxDelay": {
+                "type": "integer"
+            },
+            "ssl_defaultsEnabled": {
+                "type": "boolean"
+            },
+            "ssl_bindOptions": {
+                "type": "array"
+            },
+            "ssl_minVersion": {
+                "type": "array"
+            },
+            "ssl_maxVersion": {
+                "type": "array"
+            },
+            "ssl_cipherList": {
+                "type": "string"
+            },
+            "ssl_cipherSuites": {
+                "type": "string"
+            },
+            "h2_initialWindowSize": {
+                "type": "integer"
+            },
+            "h2_initialWindowSizeOutgoing": {
+                "type": "integer"
+            },
+            "h2_initialWindowSizeIncoming": {
+                "type": "integer"
+            },
+            "h2_maxConcurrentStreams": {
+                "type": "integer"
+            },
+            "h2_maxConcurrentStreamsOutgoing": {
+                "type": "integer"
+            },
+            "h2_maxConcurrentStreamsIncoming": {
+                "type": "integer"
+            }
+        }
+    },
+    "HAProxy.defaults": {
+        "type": "object",
+        "required": [
+            "retries"
+        ],
+        "properties": {
+            "maxConnections": {
+                "type": "integer"
+            },
+            "maxConnectionsServers": {
+                "type": "integer"
+            },
+            "timeoutClient": {
+                "type": "string"
+            },
+            "timeoutConnect": {
+                "type": "string"
+            },
+            "timeoutCheck": {
+                "type": "string"
+            },
+            "timeoutServer": {
+                "type": "string"
+            },
+            "retries": {
+                "type": "integer"
+            },
+            "redispatch": {
+                "type": "array"
+            },
+            "init_addr": {
+                "type": "array"
+            },
+            "customOptions": {
+                "type": "string"
+            }
+        }
+    },
+    "HAProxy.logging": {
+        "type": "object",
+        "required": [
+            "host",
+            "facility"
+        ],
+        "properties": {
+            "host": {
+                "type": "string"
+            },
+            "facility": {
+                "type": "array"
+            },
+            "level": {
+                "type": "array"
+            },
+            "length": {
+                "type": "integer"
+            }
+        }
+    },
+    "HAProxy.stats": {
+        "type": "object",
+        "required": [
+            "port"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "port": {
+                "type": "integer"
+            },
+            "remoteEnabled": {
+                "type": "boolean"
+            },
+            "remoteBind": {
+                "type": "array"
+            },
+            "authEnabled": {
+                "type": "boolean"
+            },
+            "users": {
+                "type": "array"
+            },
+            "allowedUsers": {
+                "type": "array"
+            },
+            "allowedGroups": {
+                "type": "array"
+            },
+            "customOptions": {
+                "type": "string"
+            },
+            "prometheus_enabled": {
+                "type": "boolean"
+            },
+            "prometheus_bind": {
+                "type": "array"
+            },
+            "prometheus_path": {
+                "type": "string"
+            }
+        }
+    },
+    "HAProxy.cache": {
+        "type": "object",
+        "required": [
+            "totalMaxSize"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "totalMaxSize": {
+                "type": "integer"
+            },
+            "maxAge": {
+                "type": "integer"
+            },
+            "maxObjectSize": {
+                "type": "integer"
+            },
+            "processVary": {
+                "type": "boolean"
+            },
+            "maxSecondaryEntries": {
+                "type": "integer"
+            }
+        }
+    },
+    "HAProxy.frontends": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "frontend": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.backends": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "backend": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.servers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "server": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.healthchecks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "healthcheck": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.acls": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "acl": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.actions": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "action": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.luas": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "lua": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.fcgis": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "fcgi": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.errorfiles": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "errorfile": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.mapfiles": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "mapfile": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.groups": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "group": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.users": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "user": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.cpus": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "cpu": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.resolvers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "resolver": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.mailers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "mailer": {
+                "type": "array"
+            }
+        }
+    },
+    "HAProxy.cronjobs": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "syncCerts": {
+                "type": "boolean"
+            },
+            "syncCertsCron": {
+                "type": "array"
+            },
+            "updateOcsp": {
+                "type": "boolean"
+            },
+            "updateOcspCron": {
+                "type": "array"
+            },
+            "reloadService": {
+                "type": "boolean"
+            },
+            "reloadServiceCron": {
+                "type": "array"
+            },
+            "restartService": {
+                "type": "boolean"
+            },
+            "restartServiceCron": {
+                "type": "array"
+            }
+        }
+    },
+    "MDNSRepeater": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "enablecarp",
+            "interfaces"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "enablecarp": {
+                "type": "boolean"
+            },
+            "interfaces": {
+                "type": "array"
+            },
+            "blocklist": {
+                "type": "string"
+            }
+        }
+    },
+    "ndproxy.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "ndproxy_uplink_interface": {
+                "type": "array"
+            },
+            "ndproxy_downlink_mac_address": {
+                "type": "string"
+            },
+            "ndproxy_exception_ipv6_addresses": {
+                "type": "string"
+            },
+            "ndproxy_uplink_ipv6_addresses": {
+                "type": "string"
+            }
+        }
+    },
+    "ntopng.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "httpport"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "interface": {
+                "type": "array"
+            },
+            "httpport": {
+                "type": "array"
+            },
+            "httpsport": {
+                "type": "array"
+            },
+            "cert": {
+                "type": "array"
+            },
+            "dnsmode": {
+                "type": "array"
+            }
+        }
+    },
+    "radsecproxy.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "logLevel",
+            "logFullUsername",
+            "logMac",
+            "loopPrevention"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "logLevel": {
+                "type": "array"
+            },
+            "logFullUsername": {
+                "type": "array"
+            },
+            "logMac": {
+                "type": "array"
+            },
+            "loopPrevention": {
+                "type": "array"
+            },
+            "listenUdp": {
+                "type": "string"
+            },
+            "listenTcp": {
+                "type": "string"
+            },
+            "listenTls": {
+                "type": "string"
+            },
+            "listenDtls": {
+                "type": "string"
+            },
+            "sourceUdp": {
+                "type": "string"
+            },
+            "sourceTcp": {
+                "type": "string"
+            },
+            "sourceTls": {
+                "type": "string"
+            },
+            "sourceDtls": {
+                "type": "string"
+            }
+        }
+    },
+    "radsecproxy.clients": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "client": {
+                "type": "array"
+            }
+        }
+    },
+    "radsecproxy.servers": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "server": {
+                "type": "array"
+            }
+        }
+    },
+    "radsecproxy.tlsConfigs": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "tlsConfig": {
+                "type": "array"
+            }
+        }
+    },
+    "radsecproxy.realms": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "realm": {
+                "type": "array"
+            }
+        }
+    },
+    "radsecproxy.rewrites": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "rewrite": {
+                "type": "array"
+            }
+        }
+    },
+    "relayd.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "interval": {
+                "type": "integer"
+            },
+            "log": {
+                "type": "array"
+            },
+            "prefork": {
+                "type": "integer"
+            },
+            "timeout": {
+                "type": "integer"
+            }
+        }
+    },
+    "relayd.host": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "name",
+            "address"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "name": {
+                "type": "string"
+            },
+            "address": {
+                "type": "string"
+            },
+            "ipTTL": {
+                "type": "integer"
+            },
+            "priority": {
+                "type": "integer"
+            },
+            "retry": {
+                "type": "integer"
+            }
+        }
+    },
+    "relayd.table": {
+        "type": "object",
+        "required": [
+            "name",
+            "enabled",
+            "hosts"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "enabled": {
+                "type": "boolean"
+            },
+            "hosts": {
+                "type": "array"
+            }
+        }
+    },
+    "relayd.tablecheck": {
+        "type": "object",
+        "required": [
+            "name",
+            "type"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "type": {
+                "type": "array"
+            },
+            "path": {
+                "type": "string"
+            },
+            "host": {
+                "type": "string"
+            },
+            "code": {
+                "type": "integer"
+            },
+            "digest": {
+                "type": "string"
+            },
+            "data": {
+                "type": "string"
+            },
+            "expect": {
+                "type": "string"
+            },
+            "ssl": {
+                "type": "boolean"
+            }
+        }
+    },
+    "relayd.virtualserver": {
+        "type": "object",
+        "required": [
+            "name",
+            "enabled",
+            "type",
+            "listen_address",
+            "listen_proto",
+            "listen_startport",
+            "transport_type",
+            "transport_table",
+            "transport_tablemode",
+            "transport_tablecheck",
+            "backuptransport_tablemode"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "enabled": {
+                "type": "boolean"
+            },
+            "type": {
+                "type": "array"
+            },
+            "listen_address": {
+                "type": "string"
+            },
+            "listen_proto": {
+                "type": "array"
+            },
+            "listen_startport": {
+                "type": "array"
+            },
+            "listen_endport": {
+                "type": "array"
+            },
+            "listen_interface": {
+                "type": "array"
+            },
+            "transport_type": {
+                "type": "array"
+            },
+            "routing_interface": {
+                "type": "array"
+            },
+            "transport_table": {
+                "type": "array"
+            },
+            "transport_port": {
+                "type": "array"
+            },
+            "transport_interval": {
+                "type": "integer"
+            },
+            "transport_timeout": {
+                "type": "integer"
+            },
+            "transport_tablemode": {
+                "type": "array"
+            },
+            "transport_tablecheck": {
+                "type": "array"
+            },
+            "backuptransport_table": {
+                "type": "array"
+            },
+            "backuptransport_interval": {
+                "type": "integer"
+            },
+            "backuptransport_timeout": {
+                "type": "integer"
+            },
+            "backuptransport_tablecheck": {
+                "type": "array"
+            },
+            "backuptransport_tablemode": {
+                "type": "array"
+            },
+            "sessiontimeout": {
+                "type": "integer"
+            },
+            "stickyaddress": {
+                "type": "boolean"
+            },
+            "protocol": {
+                "type": "array"
+            }
+        }
+    },
+    "relayd.protocol": {
+        "type": "object",
+        "required": [
+            "name",
+            "type"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "type": {
+                "type": "array"
+            },
+            "options": {
+                "type": "string"
+            }
+        }
+    },
+    "shadowsocks.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "serveraddress",
+            "serverport",
+            "localport",
+            "cipher",
+            "tcpudpmode"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "serveraddress": {
+                "type": "string"
+            },
+            "serverport": {
+                "type": "integer"
+            },
+            "localport": {
+                "type": "integer"
+            },
+            "password": {
+                "type": "string"
+            },
+            "cipher": {
+                "type": "array"
+            },
+            "tcpudpmode": {
+                "type": "array"
+            }
+        }
+    },
+    "shadowsocks.local": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "serveraddress",
+            "serverport",
+            "localaddress",
+            "localport",
+            "cipher"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "serveraddress": {
+                "type": "string"
+            },
+            "serverport": {
+                "type": "integer"
+            },
+            "localaddress": {
+                "type": "string"
+            },
+            "localport": {
+                "type": "integer"
+            },
+            "password": {
+                "type": "string"
+            },
+            "cipher": {
+                "type": "array"
+            }
+        }
+    },
+    "siproxd.domain.domains": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "domain": {
+                "type": "array"
+            }
+        }
+    },
+    "siproxd.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "if_inbound",
+            "if_outbound",
+            "sip_listen_port",
+            "rtp_port_low",
+            "rtp_port_high",
+            "rtp_timeout",
+            "rtp_dscp",
+            "sip_dscp",
+            "rtp_input_dejitter",
+            "rtp_output_dejitter",
+            "tcp_timeout",
+            "tcp_connect_timeout",
+            "tcp_keepalive",
+            "use_rport"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "if_inbound": {
+                "type": "array"
+            },
+            "if_outbound": {
+                "type": "array"
+            },
+            "host_outbound": {
+                "type": "string"
+            },
+            "hosts_allow_reg": {
+                "type": "string"
+            },
+            "hosts_allow_sip": {
+                "type": "string"
+            },
+            "hosts_deny_sip": {
+                "type": "string"
+            },
+            "sip_listen_port": {
+                "type": "integer"
+            },
+            "rtp_port_low": {
+                "type": "integer"
+            },
+            "rtp_port_high": {
+                "type": "integer"
+            },
+            "rtp_timeout": {
+                "type": "integer"
+            },
+            "rtp_dscp": {
+                "type": "integer"
+            },
+            "sip_dscp": {
+                "type": "integer"
+            },
+            "rtp_input_dejitter": {
+                "type": "integer"
+            },
+            "rtp_output_dejitter": {
+                "type": "integer"
+            },
+            "proxy_auth_enable": {
+                "type": "boolean"
+            },
+            "tcp_timeout": {
+                "type": "integer"
+            },
+            "tcp_connect_timeout": {
+                "type": "integer"
+            },
+            "tcp_keepalive": {
+                "type": "integer"
+            },
+            "ua_string": {
+                "type": "string"
+            },
+            "use_rport": {
+                "type": "array"
+            },
+            "plugin_defaulttarget_enable": {
+                "type": "boolean"
+            },
+            "plugin_defaulttarget_log": {
+                "type": "boolean"
+            },
+            "plugin_defaulttarget_target": {
+                "type": "string"
+            },
+            "plugin_fix_bogus_via_enable": {
+                "type": "boolean"
+            },
+            "plugin_fix_bogus_via_networks": {
+                "type": "string"
+            },
+            "plugin_fix_DTAG_enable": {
+                "type": "boolean"
+            },
+            "plugin_fix_DTAG_networks": {
+                "type": "string"
+            },
+            "plugin_fbox_anoncall_enable": {
+                "type": "boolean"
+            },
+            "plugin_fbox_anoncall_networks": {
+                "type": "string"
+            },
+            "plugin_stun_server_enable": {
+                "type": "boolean"
+            },
+            "plugin_stun_server_host": {
+                "type": "string"
+            },
+            "plugin_stun_server_port": {
+                "type": "integer"
+            },
+            "plugin_stun_server_period": {
+                "type": "integer"
+            }
+        }
+    },
+    "siproxd.user.users": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "user": {
+                "type": "array"
+            }
+        }
+    },
+    "sslh": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "listen_addresses",
+            "mode",
+            "on_timeout"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listen_addresses": {
+                "type": "array"
+            },
+            "mode": {
+                "type": "array"
+            },
+            "timeout": {
+                "type": "integer"
+            },
+            "tls_target": {
+                "type": "string"
+            },
+            "ssh_target": {
+                "type": "string"
+            },
+            "openvpn_target": {
+                "type": "string"
+            },
+            "http_target": {
+                "type": "string"
+            },
+            "xmpp_target": {
+                "type": "string"
+            },
+            "tinc_target": {
+                "type": "string"
+            },
+            "anyprot_target": {
+                "type": "string"
+            },
+            "on_timeout": {
+                "type": "array"
+            },
+            "verbose": {
+                "type": "boolean"
+            },
+            "numeric": {
+                "type": "boolean"
+            }
+        }
+    },
+    "tayga.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "v4address",
+            "v4destination",
+            "v6destination",
+            "v6prefix",
+            "v4pool",
+            "v6routedisabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "v4address": {
+                "type": "string"
+            },
+            "v4destination": {
+                "type": "string"
+            },
+            "v6address": {
+                "type": "string"
+            },
+            "v6destination": {
+                "type": "string"
+            },
+            "v6prefix": {
+                "type": "string"
+            },
+            "v4pool": {
+                "type": "string"
+            },
+            "v6routedisabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "udpbroadcastrelays": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "udpbroadcastrelay": {
+                "type": "array"
+            }
+        }
+    },
+    "vnstat.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "interface": {
+                "type": "array"
+            }
+        }
+    },
+    "..wol": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "wolentry": {
+                "type": "array"
+            }
+        }
+    },
+    "zerotier.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "zerotier.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "zerotier.networks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "network": {
+                "type": "array"
+            }
+        }
+    },
+    "AcmeClient.settings": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "autoRenewal",
+            "challengePort",
+            "TLSchallengePort",
+            "restartTimeout",
+            "logLevel",
+            "showIntro"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "autoRenewal": {
+                "type": "boolean"
+            },
+            "UpdateCron": {
+                "type": "array"
+            },
+            "environment": {
+                "type": "array"
+            },
+            "challengePort": {
+                "type": "array"
+            },
+            "TLSchallengePort": {
+                "type": "array"
+            },
+            "restartTimeout": {
+                "type": "integer"
+            },
+            "haproxyIntegration": {
+                "type": "boolean"
+            },
+            "haproxyAclRef": {
+                "type": "array"
+            },
+            "haproxyActionRef": {
+                "type": "array"
+            },
+            "haproxyServerRef": {
+                "type": "array"
+            },
+            "haproxyBackendRef": {
+                "type": "array"
+            },
+            "logLevel": {
+                "type": "array"
+            },
+            "showIntro": {
+                "type": "boolean"
+            }
+        }
+    },
+    "AcmeClient.accounts": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "account": {
+                "type": "array"
+            }
+        }
+    },
+    "AcmeClient.certificates": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "certificate": {
+                "type": "array"
+            }
+        }
+    },
+    "AcmeClient.validations": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "validation": {
+                "type": "array"
+            }
+        }
+    },
+    "AcmeClient.actions": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "action": {
+                "type": "array"
+            }
+        }
+    },
+    "clamav.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "fc_enabled",
+            "enabletcp",
+            "fc_databasemirror",
+            "fc_timeout"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "fc_enabled": {
+                "type": "boolean"
+            },
+            "enabletcp": {
+                "type": "boolean"
+            },
+            "maxthreads": {
+                "type": "integer"
+            },
+            "maxqueue": {
+                "type": "integer"
+            },
+            "idletimeout": {
+                "type": "integer"
+            },
+            "maxdirrecursion": {
+                "type": "integer"
+            },
+            "followdirsym": {
+                "type": "boolean"
+            },
+            "followfilesym": {
+                "type": "boolean"
+            },
+            "disablecache": {
+                "type": "string"
+            },
+            "scanpe": {
+                "type": "boolean"
+            },
+            "scanelf": {
+                "type": "boolean"
+            },
+            "detectbroken": {
+                "type": "boolean"
+            },
+            "scanole2": {
+                "type": "boolean"
+            },
+            "ole2blockmarcros": {
+                "type": "boolean"
+            },
+            "scanpdf": {
+                "type": "boolean"
+            },
+            "scanswf": {
+                "type": "boolean"
+            },
+            "scanxmldocs": {
+                "type": "boolean"
+            },
+            "scanhwp3": {
+                "type": "boolean"
+            },
+            "scanmailfiles": {
+                "type": "boolean"
+            },
+            "scanhtml": {
+                "type": "boolean"
+            },
+            "scanarchive": {
+                "type": "boolean"
+            },
+            "arcblockenc": {
+                "type": "boolean"
+            },
+            "maxscansize": {
+                "type": "string"
+            },
+            "maxfilesize": {
+                "type": "string"
+            },
+            "maxrecursion": {
+                "type": "integer"
+            },
+            "maxfiles": {
+                "type": "integer"
+            },
+            "logverbose": {
+                "type": "boolean"
+            },
+            "fc_logverbose": {
+                "type": "boolean"
+            },
+            "fc_databasemirror": {
+                "type": "string"
+            },
+            "fc_timeout": {
+                "type": "string"
+            },
+            "fc_malwareexpert": {
+                "type": "boolean"
+            },
+            "fc_blurl": {
+                "type": "boolean"
+            },
+            "fc_jurlbla": {
+                "type": "boolean"
+            },
+            "fc_bofhland": {
+                "type": "boolean"
+            }
+        }
+    },
+    "clamav.url.lists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "list": {
+                "type": "array"
+            }
+        }
+    },
+    "crowdsec.general": {
+        "type": "object",
+        "required": [
+            "agent_enabled",
+            "lapi_enabled",
+            "firewall_bouncer_enabled",
+            "lapi_manual_configuration",
+            "lapi_listen_address",
+            "lapi_listen_port",
+            "rules_log",
+            "crowdsec_firewall_verbose"
+        ],
+        "properties": {
+            "agent_enabled": {
+                "type": "boolean"
+            },
+            "lapi_enabled": {
+                "type": "boolean"
+            },
+            "firewall_bouncer_enabled": {
+                "type": "boolean"
+            },
+            "lapi_manual_configuration": {
+                "type": "boolean"
+            },
+            "lapi_listen_address": {
+                "type": "string"
+            },
+            "lapi_listen_port": {
+                "type": "array"
+            },
+            "rules_log": {
+                "type": "boolean"
+            },
+            "rules_tag": {
+                "type": "string"
+            },
+            "crowdsec_firewall_verbose": {
+                "type": "boolean"
+            }
+        }
+    },
+    "maltrail.general": {
+        "type": "object",
+        "required": [
+            "heuristics",
+            "checkhostheader",
+            "updateperiod",
+            "adminpassword"
+        ],
+        "properties": {
+            "heuristics": {
+                "type": "boolean"
+            },
+            "checkhostheader": {
+                "type": "boolean"
+            },
+            "updateperiod": {
+                "type": "integer"
+            },
+            "adminpassword": {
+                "type": "string"
+            },
+            "monitorinterface": {
+                "type": "array"
+            },
+            "whitelist": {
+                "type": "array"
+            }
+        }
+    },
+    "maltrail.sensor": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "captureall",
+            "remoteport",
+            "syslogport"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "captureall": {
+                "type": "boolean"
+            },
+            "capturebuffer": {
+                "type": "integer"
+            },
+            "remoteserver": {
+                "type": "string"
+            },
+            "remoteport": {
+                "type": "array"
+            },
+            "syslogserver": {
+                "type": "string"
+            },
+            "syslogport": {
+                "type": "array"
+            }
+        }
+    },
+    "maltrail.server": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "addblocklistalias",
+            "listenaddress",
+            "listenport"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "addblocklistalias": {
+                "type": "boolean"
+            },
+            "listenaddress": {
+                "type": "string"
+            },
+            "listenport": {
+                "type": "array"
+            },
+            "loglistenaddress": {
+                "type": "string"
+            },
+            "loglistenport": {
+                "type": "array"
+            }
+        }
+    },
+    "openconnect.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "server",
+            "user",
+            "password",
+            "hash",
+            "allowinsecure",
+            "protocol"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "server": {
+                "type": "string"
+            },
+            "user": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "servercert": {
+                "type": "string"
+            },
+            "hash": {
+                "type": "array"
+            },
+            "group": {
+                "type": "string"
+            },
+            "clientcertificate": {
+                "type": "array"
+            },
+            "tokenmode": {
+                "type": "array"
+            },
+            "tokensecret": {
+                "type": "string"
+            },
+            "allowinsecure": {
+                "type": "boolean"
+            },
+            "protocol": {
+                "type": "array"
+            }
+        }
+    },
+    "softether.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "enablecarp"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "enablecarp": {
+                "type": "boolean"
+            },
+            "carpinterfaces": {
+                "type": "array"
+            }
+        }
+    },
+    "Stunnel.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "chroot",
+            "enable_ident_server"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "chroot": {
+                "type": "boolean"
+            },
+            "enable_ident_server": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Stunnel.services": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "service": {
+                "type": "array"
+            }
+        }
+    },
+    "tailscale.authentication": {
+        "type": "object",
+        "required": [
+            "loginServer",
+            "preAuthKey"
+        ],
+        "properties": {
+            "loginServer": {
+                "type": "string"
+            },
+            "preAuthKey": {
+                "type": "string"
+            }
+        }
+    },
+    "tailscale.settings.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tailscale.settings.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tailscale.settings.useExitNode": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tailscale.settings.subnets": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "subnet4": {
+                "type": "array"
+            }
+        }
+    },
+    "tailscale.status": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "Tinc.networks": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "network": {
+                "type": "array"
+            }
+        }
+    },
+    "Tinc.hosts": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "host": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.exitpolicy": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "policy": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.aclsockspolicy": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "policy": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.general.default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.MaximumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.ValidationMessage": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.err": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.warn": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.notice": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.info": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.debug": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.KISTLiteVanilla": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.VanillaKISTLite": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.KISTLite": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.Vanilla": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "tor.general.client_authentications": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "client_auth": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.hiddenservice": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "service": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.hiddenserviceacl": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "hiddenserviceacl": {
+                "type": "array"
+            }
+        }
+    },
+    "tor.relay": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "dir_frontpage",
+            "port",
+            "relay",
+            "exitrejectprivateip",
+            "publish",
+            "exitenabled",
+            "exitrejectlocalif"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "dir_frontpage": {
+                "type": "boolean"
+            },
+            "host": {
+                "type": "string"
+            },
+            "hostv6": {
+                "type": "string"
+            },
+            "outboundbind": {
+                "type": "string"
+            },
+            "outboundbindv6": {
+                "type": "string"
+            },
+            "port": {
+                "type": "integer"
+            },
+            "directory_port": {
+                "type": "integer"
+            },
+            "address": {
+                "type": "string"
+            },
+            "nick": {
+                "type": "string"
+            },
+            "contact_info": {
+                "type": "string"
+            },
+            "family": {
+                "type": "string"
+            },
+            "bandwithrate": {
+                "type": "integer"
+            },
+            "bandwithburst": {
+                "type": "integer"
+            },
+            "relay": {
+                "type": "boolean"
+            },
+            "exitrejectprivateip": {
+                "type": "boolean"
+            },
+            "publish": {
+                "type": "boolean"
+            },
+            "exitenabled": {
+                "type": "boolean"
+            },
+            "exitipv6": {
+                "type": "boolean"
+            },
+            "exitrejectlocalif": {
+                "type": "boolean"
+            }
+        }
+    },
+    "WazuhAgent.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "server_address",
+            "protocol",
+            "port",
+            "debug_level"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "server_address": {
+                "type": "string"
+            },
+            "protocol": {
+                "type": "array"
+            },
+            "port": {
+                "type": "integer"
+            },
+            "debug_level": {
+                "type": "array"
+            }
+        }
+    },
+    "WazuhAgent.auth": {
+        "type": "object",
+        "required": [
+            "port"
+        ],
+        "properties": {
+            "password": {
+                "type": "string"
+            },
+            "port": {
+                "type": "integer"
+            }
+        }
+    },
+    "WazuhAgent.logcollector": {
+        "type": "object",
+        "required": [
+            "remote_commands",
+            "suricata_eve_log"
+        ],
+        "properties": {
+            "remote_commands": {
+                "type": "boolean"
+            },
+            "syslog_programs": {
+                "type": "array"
+            },
+            "suricata_eve_log": {
+                "type": "boolean"
+            }
+        }
+    },
+    "WazuhAgent.rootcheck": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "WazuhAgent.syscollector": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "WazuhAgent.syscheck": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "WazuhAgent.active_response": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "remote_commands"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "remote_commands": {
+                "type": "boolean"
+            },
+            "fw_alias_ignore": {
+                "type": "array"
+            }
+        }
+    },
+    "apcupsd.general": {
+        "type": "object",
+        "required": [
+            "Enabled",
+            "UPSCable",
+            "UPSType",
+            "Polltime",
+            "Netserver",
+            "NetserverAddress",
+            "NetserverPort",
+            "OnBatteryDelay",
+            "BatteryLevel",
+            "Minutes",
+            "Timeout",
+            "Annoy",
+            "AnnoyDelay",
+            "KillDelay",
+            "UPSClass",
+            "UPSMode",
+            "NoLogon"
+        ],
+        "properties": {
+            "Enabled": {
+                "type": "boolean"
+            },
+            "UPSName": {
+                "type": "string"
+            },
+            "UPSCable": {
+                "type": "array"
+            },
+            "UPSType": {
+                "type": "array"
+            },
+            "Device": {
+                "type": "string"
+            },
+            "Polltime": {
+                "type": "integer"
+            },
+            "Netserver": {
+                "type": "boolean"
+            },
+            "NetserverAddress": {
+                "type": "string"
+            },
+            "NetserverPort": {
+                "type": "array"
+            },
+            "OnBatteryDelay": {
+                "type": "integer"
+            },
+            "BatteryLevel": {
+                "type": "integer"
+            },
+            "Minutes": {
+                "type": "integer"
+            },
+            "Timeout": {
+                "type": "integer"
+            },
+            "Annoy": {
+                "type": "integer"
+            },
+            "AnnoyDelay": {
+                "type": "integer"
+            },
+            "KillDelay": {
+                "type": "integer"
+            },
+            "UPSClass": {
+                "type": "array"
+            },
+            "UPSMode": {
+                "type": "array"
+            },
+            "NoLogon": {
+                "type": "array"
+            }
+        }
+    },
+    "..system.backup.git": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "branch"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "url": {
+                "type": "string"
+            },
+            "branch": {
+                "type": "string"
+            },
+            "privkey": {
+                "type": "string"
+            },
+            "user": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            }
+        }
+    },
+    "hwprobe.general": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            }
+        }
+    },
+    "..system.backup.mailer": {
+        "type": "object",
+        "required": [
+            "Enabled",
+            "SmtpPort",
+            "SmtpTLS"
+        ],
+        "properties": {
+            "Enabled": {
+                "type": "boolean"
+            },
+            "Receiver": {
+                "type": "string"
+            },
+            "SmtpHost": {
+                "type": "string"
+            },
+            "SmtpPort": {
+                "type": "array"
+            },
+            "SmtpTLS": {
+                "type": "boolean"
+            },
+            "SelfSigned": {
+                "type": "boolean"
+            },
+            "SmtpUsername": {
+                "type": "string"
+            },
+            "SmtpPassword": {
+                "type": "string"
+            },
+            "GpgEmail": {
+                "type": "string"
+            },
+            "GpgPublicKey": {
+                "type": "string"
+            }
+        }
+    },
+    "muninnode.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "hostname",
+            "port"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "hostname": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "allowednetworks": {
+                "type": "array"
+            }
+        }
+    },
+    "..system.backup.nextcloud": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "backupdir"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "url": {
+                "type": "string"
+            },
+            "user": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "password_encryption": {
+                "type": "string"
+            },
+            "backupdir": {
+                "type": "string"
+            }
+        }
+    },
+    "NodeExporter": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "listenaddress",
+            "listenport"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "listenaddress": {
+                "type": "string"
+            },
+            "listenport": {
+                "type": "array"
+            },
+            "cpu": {
+                "type": "boolean"
+            },
+            "exec": {
+                "type": "boolean"
+            },
+            "filesystem": {
+                "type": "boolean"
+            },
+            "loadavg": {
+                "type": "boolean"
+            },
+            "meminfo": {
+                "type": "boolean"
+            },
+            "netdev": {
+                "type": "boolean"
+            },
+            "time": {
+                "type": "boolean"
+            },
+            "devstat": {
+                "type": "boolean"
+            },
+            "interrupts": {
+                "type": "boolean"
+            },
+            "ntp": {
+                "type": "boolean"
+            },
+            "zfs": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Nut.general": {
+        "type": "object",
+        "required": [
+            "enable",
+            "mode",
+            "name",
+            "listen"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "mode": {
+                "type": "array"
+            },
+            "name": {
+                "type": "string"
+            },
+            "listen": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.account": {
+        "type": "object",
+        "required": [
+            "admin_password",
+            "mon_password"
+        ],
+        "properties": {
+            "admin_password": {
+                "type": "string"
+            },
+            "mon_password": {
+                "type": "string"
+            }
+        }
+    },
+    "Nut.usbhid": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.apcsmart": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.apcupsd": {
+        "type": "object",
+        "required": [
+            "enable",
+            "hostname"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "hostname": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.bcmxcpusb": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.blazerusb": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.blazerser": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.netclient": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "address": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "user": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            }
+        }
+    },
+    "Nut.qx": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.riello": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "Nut.snmp": {
+        "type": "object",
+        "required": [
+            "enable"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "array"
+            }
+        }
+    },
+    "puppetagent.general": {
+        "type": "object",
+        "required": [
+            "Enabled",
+            "FQDN",
+            "Environment",
+            "RunInterval",
+            "RunTimeout",
+            "UseCacheOnFailure"
+        ],
+        "properties": {
+            "Enabled": {
+                "type": "boolean"
+            },
+            "FQDN": {
+                "type": "string"
+            },
+            "Environment": {
+                "type": "string"
+            },
+            "RunInterval": {
+                "type": "string"
+            },
+            "RunTimeout": {
+                "type": "string"
+            },
+            "UseCacheOnFailure": {
+                "type": "boolean"
+            }
+        }
+    },
+    "..system.backup.sftp": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "backupcount"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "url": {
+                "type": "string"
+            },
+            "privkey": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "passwordconfirm": {
+                "type": "string"
+            },
+            "backupcount": {
+                "type": "integer"
+            }
+        }
+    },
+    "..Deciso.Proxy.ACL.policies": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "policy": {
+                "type": "array"
+            }
+        }
+    },
+    "..Deciso.Proxy.ACL.custom_policies": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "policy": {
+                "type": "array"
+            }
+        }
+    },
+    "cicap.antivirus": {
+        "type": "object",
+        "required": [
+            "enable_clamav",
+            "scanfiletypes",
+            "sendpercentdata",
+            "startsendpercentdataafter",
+            "allow204responses",
+            "passonerror",
+            "maxobjectsize"
+        ],
+        "properties": {
+            "enable_clamav": {
+                "type": "boolean"
+            },
+            "scanfiletypes": {
+                "type": "array"
+            },
+            "sendpercentdata": {
+                "type": "integer"
+            },
+            "startsendpercentdataafter": {
+                "type": "string"
+            },
+            "allow204responses": {
+                "type": "boolean"
+            },
+            "passonerror": {
+                "type": "boolean"
+            },
+            "maxobjectsize": {
+                "type": "string"
+            }
+        }
+    },
+    "cicap.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "timeout",
+            "maxkeepaliverequests",
+            "keepalivetimeout",
+            "startservers",
+            "maxservers",
+            "minsparethreads",
+            "maxsparethreads",
+            "threadsperchild",
+            "maxrequestsperchild",
+            "listenaddress",
+            "enable_accesslog",
+            "localSquid"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "timeout": {
+                "type": "integer"
+            },
+            "maxkeepaliverequests": {
+                "type": "integer"
+            },
+            "keepalivetimeout": {
+                "type": "integer"
+            },
+            "startservers": {
+                "type": "integer"
+            },
+            "maxservers": {
+                "type": "integer"
+            },
+            "minsparethreads": {
+                "type": "integer"
+            },
+            "maxsparethreads": {
+                "type": "integer"
+            },
+            "threadsperchild": {
+                "type": "integer"
+            },
+            "maxrequestsperchild": {
+                "type": "integer"
+            },
+            "listenaddress": {
+                "type": "string"
+            },
+            "serveradmin": {
+                "type": "string"
+            },
+            "servername": {
+                "type": "string"
+            },
+            "enable_accesslog": {
+                "type": "boolean"
+            },
+            "localSquid": {
+                "type": "boolean"
+            }
+        }
+    },
+    "..Pischem.caddy.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "DisableSuperuser",
+            "GracePeriod",
+            "HttpVersions",
+            "LogAccessPlainKeep",
+            "AuthToTls"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "EnableLayer4": {
+                "type": "boolean"
+            },
+            "HttpPort": {
+                "type": "array"
+            },
+            "HttpsPort": {
+                "type": "array"
+            },
+            "TlsEmail": {
+                "type": "string"
+            },
+            "TlsAutoHttps": {
+                "type": "array"
+            },
+            "TlsDnsProvider": {
+                "type": "array"
+            },
+            "TlsDnsApiKey": {
+                "type": "string"
+            },
+            "TlsDnsSecretApiKey": {
+                "type": "string"
+            },
+            "TlsDnsOptionalField1": {
+                "type": "string"
+            },
+            "TlsDnsOptionalField2": {
+                "type": "string"
+            },
+            "TlsDnsOptionalField3": {
+                "type": "string"
+            },
+            "TlsDnsOptionalField4": {
+                "type": "string"
+            },
+            "TlsDnsPropagationTimeout": {
+                "type": "boolean"
+            },
+            "TlsDnsPropagationTimeoutPeriod": {
+                "type": "integer"
+            },
+            "TlsDnsPropagationDelay": {
+                "type": "integer"
+            },
+            "TlsDnsPropagationResolvers": {
+                "type": "string"
+            },
+            "accesslist": {
+                "type": "array"
+            },
+            "ClientIpHeaders": {
+                "type": "array"
+            },
+            "DisableSuperuser": {
+                "type": "array"
+            },
+            "GracePeriod": {
+                "type": "integer"
+            },
+            "HttpVersions": {
+                "type": "array"
+            },
+            "LogCredentials": {
+                "type": "boolean"
+            },
+            "LogAccessPlain": {
+                "type": "boolean"
+            },
+            "LogAccessPlainKeep": {
+                "type": "integer"
+            },
+            "LogLevel": {
+                "type": "array"
+            },
+            "DynDnsSimpleHttp": {
+                "type": "string"
+            },
+            "DynDnsInterface": {
+                "type": "array"
+            },
+            "DynDnsInterval": {
+                "type": "integer"
+            },
+            "DynDnsIpVersions": {
+                "type": "array"
+            },
+            "DynDnsTtl": {
+                "type": "integer"
+            },
+            "DynDnsUpdateOnly": {
+                "type": "boolean"
+            },
+            "AuthProvider": {
+                "type": "array"
+            },
+            "AuthToDomain": {
+                "type": "string"
+            },
+            "AuthToPort": {
+                "type": "array"
+            },
+            "AuthToTls": {
+                "type": "array"
+            },
+            "AuthToUri": {
+                "type": "string"
+            },
+            "CopyHeaders": {
+                "type": "array"
+            }
+        }
+    },
+    "..Pischem.caddy.reverseproxy": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "reverse": {
+                "type": "array"
+            },
+            "subdomain": {
+                "type": "array"
+            },
+            "handle": {
+                "type": "array"
+            },
+            "accesslist": {
+                "type": "array"
+            },
+            "basicauth": {
+                "type": "array"
+            },
+            "header": {
+                "type": "array"
+            },
+            "layer4": {
+                "type": "array"
+            },
+            "layer4openvpn": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.general": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "ban_ttl"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "ban_ttl": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.webgui": {
+        "type": "object",
+        "required": [
+            "limitnetworks"
+        ],
+        "properties": {
+            "limitnetworks": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Nginx.http": {
+        "type": "object",
+        "required": [
+            "workerprocesses",
+            "workerconnections",
+            "reset_timedout",
+            "ban_response",
+            "log_perm_ban",
+            "bots_ua"
+        ],
+        "properties": {
+            "workerprocesses": {
+                "type": "integer"
+            },
+            "workerconnections": {
+                "type": "integer"
+            },
+            "sendfile": {
+                "type": "boolean"
+            },
+            "keepalive_timeout": {
+                "type": "integer"
+            },
+            "reset_timedout": {
+                "type": "boolean"
+            },
+            "default_type": {
+                "type": "string"
+            },
+            "server_names_hash_bucket_size": {
+                "type": "integer"
+            },
+            "server_names_hash_max_size": {
+                "type": "integer"
+            },
+            "ban_response": {
+                "type": "array"
+            },
+            "log_perm_ban": {
+                "type": "boolean"
+            },
+            "bots_ua": {
+                "type": "array"
+            },
+            "headers_more_enable": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Nginx.userlist": {
+        "type": "object",
+        "required": [
+            "name",
+            "users"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "users": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.credential": {
+        "type": "object",
+        "required": [
+            "username",
+            "password"
+        ],
+        "properties": {
+            "username": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            }
+        }
+    },
+    "Nginx.upstream": {
+        "type": "object",
+        "required": [
+            "description",
+            "serverentries",
+            "x_forwarded_host_verbatim",
+            "proxy_protocol",
+            "store",
+            "tls_enable",
+            "tls_session_reuse",
+            "tls_verify"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "serverentries": {
+                "type": "array"
+            },
+            "load_balancing_algorithm": {
+                "type": "array"
+            },
+            "keepalive": {
+                "type": "integer"
+            },
+            "keepalive_requests": {
+                "type": "integer"
+            },
+            "keepalive_timeout": {
+                "type": "integer"
+            },
+            "host_port": {
+                "type": "integer"
+            },
+            "x_forwarded_host_verbatim": {
+                "type": "boolean"
+            },
+            "proxy_protocol": {
+                "type": "boolean"
+            },
+            "store": {
+                "type": "boolean"
+            },
+            "tls_enable": {
+                "type": "boolean"
+            },
+            "tls_client_certificate": {
+                "type": "array"
+            },
+            "tls_name_override": {
+                "type": "string"
+            },
+            "tls_protocol_versions": {
+                "type": "array"
+            },
+            "tls_session_reuse": {
+                "type": "boolean"
+            },
+            "tls_trusted_certificate": {
+                "type": "array"
+            },
+            "tls_verify": {
+                "type": "boolean"
+            },
+            "tls_verify_depth": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.upstream_server": {
+        "type": "object",
+        "required": [
+            "description",
+            "server",
+            "port",
+            "priority"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "server": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "priority": {
+                "type": "integer"
+            },
+            "max_conns": {
+                "type": "integer"
+            },
+            "max_fails": {
+                "type": "integer"
+            },
+            "fail_timeout": {
+                "type": "integer"
+            },
+            "no_use": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.location": {
+        "type": "object",
+        "required": [
+            "description",
+            "urlpattern",
+            "enable_secrules",
+            "enable_learning_mode",
+            "cache_min_uses",
+            "cache_background_update",
+            "cache_lock",
+            "cache_revalidate",
+            "advanced_acl",
+            "php_enable",
+            "honeypot",
+            "websocket",
+            "upstream_keepalive",
+            "proxy_ignore_client_abort",
+            "proxy_request_buffering",
+            "proxy_buffering",
+            "proxy_ssl_server_name"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "urlpattern": {
+                "type": "string"
+            },
+            "matchtype": {
+                "type": "array"
+            },
+            "enable_secrules": {
+                "type": "boolean"
+            },
+            "enable_learning_mode": {
+                "type": "boolean"
+            },
+            "secrules_errorpage": {
+                "type": "array"
+            },
+            "xss_block_score": {
+                "type": "integer"
+            },
+            "sqli_block_score": {
+                "type": "integer"
+            },
+            "custom_policy": {
+                "type": "array"
+            },
+            "upstream": {
+                "type": "array"
+            },
+            "path_prefix": {
+                "type": "string"
+            },
+            "cache_path": {
+                "type": "array"
+            },
+            "cache_use_stale": {
+                "type": "array"
+            },
+            "cache_methods": {
+                "type": "array"
+            },
+            "cache_min_uses": {
+                "type": "integer"
+            },
+            "cache_valid": {
+                "type": "integer"
+            },
+            "cache_background_update": {
+                "type": "boolean"
+            },
+            "cache_lock": {
+                "type": "boolean"
+            },
+            "cache_revalidate": {
+                "type": "boolean"
+            },
+            "root": {
+                "type": "string"
+            },
+            "rewrites": {
+                "type": "array"
+            },
+            "index": {
+                "type": "array"
+            },
+            "autoindex": {
+                "type": "boolean"
+            },
+            "authbasic": {
+                "type": "string"
+            },
+            "authbasicuserfile": {
+                "type": "array"
+            },
+            "advanced_acl": {
+                "type": "boolean"
+            },
+            "force_https": {
+                "type": "string"
+            },
+            "php_enable": {
+                "type": "boolean"
+            },
+            "php_override_scriptname": {
+                "type": "string"
+            },
+            "limit_request_connections": {
+                "type": "array"
+            },
+            "max_body_size": {
+                "type": "string"
+            },
+            "body_buffer_size": {
+                "type": "string"
+            },
+            "honeypot": {
+                "type": "boolean"
+            },
+            "websocket": {
+                "type": "boolean"
+            },
+            "upstream_keepalive": {
+                "type": "boolean"
+            },
+            "proxy_buffer_size": {
+                "type": "integer"
+            },
+            "proxy_buffers_count": {
+                "type": "integer"
+            },
+            "proxy_buffers_size": {
+                "type": "integer"
+            },
+            "proxy_busy_buffers_size": {
+                "type": "integer"
+            },
+            "proxy_ignore_client_abort": {
+                "type": "boolean"
+            },
+            "proxy_request_buffering": {
+                "type": "boolean"
+            },
+            "proxy_buffering": {
+                "type": "boolean"
+            },
+            "proxy_read_timeout": {
+                "type": "integer"
+            },
+            "proxy_send_timeout": {
+                "type": "integer"
+            },
+            "ip_acl": {
+                "type": "array"
+            },
+            "satisfy": {
+                "type": "array"
+            },
+            "proxy_max_temp_file_size": {
+                "type": "integer"
+            },
+            "proxy_ssl_server_name": {
+                "type": "boolean"
+            },
+            "errorpages": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.custom_policy": {
+        "type": "object",
+        "required": [
+            "name",
+            "naxsi_rules",
+            "value",
+            "operator",
+            "action"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "naxsi_rules": {
+                "type": "array"
+            },
+            "value": {
+                "type": "integer"
+            },
+            "operator": {
+                "type": "array"
+            },
+            "action": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.naxsi_rule": {
+        "type": "object",
+        "required": [
+            "description",
+            "ruletype",
+            "identifier",
+            "match_type",
+            "negate",
+            "regex",
+            "args",
+            "url",
+            "headers",
+            "body",
+            "file_extension",
+            "raw_body",
+            "name"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "ruletype": {
+                "type": "array"
+            },
+            "message": {
+                "type": "string"
+            },
+            "identifier": {
+                "type": "array"
+            },
+            "dollar_url": {
+                "type": "string"
+            },
+            "match_value": {
+                "type": "string"
+            },
+            "match_type": {
+                "type": "array"
+            },
+            "negate": {
+                "type": "boolean"
+            },
+            "score": {
+                "type": "integer"
+            },
+            "regex": {
+                "type": "boolean"
+            },
+            "args": {
+                "type": "boolean"
+            },
+            "url": {
+                "type": "boolean"
+            },
+            "headers": {
+                "type": "boolean"
+            },
+            "body": {
+                "type": "boolean"
+            },
+            "dollar_args_var": {
+                "type": "string"
+            },
+            "dollar_body_var": {
+                "type": "string"
+            },
+            "dollar_headers_var": {
+                "type": "string"
+            },
+            "file_extension": {
+                "type": "boolean"
+            },
+            "raw_body": {
+                "type": "boolean"
+            },
+            "name": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Nginx.http_server": {
+        "type": "object",
+        "required": [
+            "servername",
+            "default_server",
+            "tls_reject_handshake",
+            "proxy_protocol",
+            "verify_client",
+            "access_log_format",
+            "error_log_level",
+            "log_handshakes",
+            "enable_acme_support",
+            "https_only",
+            "tls_protocols",
+            "tls_prefer_server_ciphers",
+            "ocsp_stapling",
+            "ocsp_verify",
+            "block_nonpublic_data",
+            "disable_bot_protection",
+            "disable_gzip",
+            "naxsi_extensive_log",
+            "sendfile",
+            "client_header_buffer_size",
+            "large_client_header_buffers_number",
+            "large_client_header_buffers_size",
+            "zero_rtt"
+        ],
+        "properties": {
+            "servername": {
+                "type": "array"
+            },
+            "syslog_targets": {
+                "type": "array"
+            },
+            "listen_http_address": {
+                "type": "array"
+            },
+            "listen_https_address": {
+                "type": "array"
+            },
+            "default_server": {
+                "type": "boolean"
+            },
+            "tls_reject_handshake": {
+                "type": "boolean"
+            },
+            "proxy_protocol": {
+                "type": "boolean"
+            },
+            "trusted_proxies": {
+                "type": "array"
+            },
+            "trusted_proxies_alias": {
+                "type": "array"
+            },
+            "real_ip_source": {
+                "type": "array"
+            },
+            "locations": {
+                "type": "array"
+            },
+            "rewrites": {
+                "type": "array"
+            },
+            "root": {
+                "type": "string"
+            },
+            "certificate": {
+                "type": "array"
+            },
+            "ca": {
+                "type": "array"
+            },
+            "verify_client": {
+                "type": "array"
+            },
+            "access_log_format": {
+                "type": "array"
+            },
+            "error_log_level": {
+                "type": "array"
+            },
+            "log_handshakes": {
+                "type": "boolean"
+            },
+            "enable_acme_support": {
+                "type": "boolean"
+            },
+            "charset": {
+                "type": "array"
+            },
+            "https_only": {
+                "type": "boolean"
+            },
+            "tls_protocols": {
+                "type": "array"
+            },
+            "tls_ciphers": {
+                "type": "string"
+            },
+            "tls_ecdh_curve": {
+                "type": "string"
+            },
+            "tls_prefer_server_ciphers": {
+                "type": "boolean"
+            },
+            "resolver": {
+                "type": "array"
+            },
+            "ocsp_stapling": {
+                "type": "boolean"
+            },
+            "ocsp_verify": {
+                "type": "boolean"
+            },
+            "block_nonpublic_data": {
+                "type": "boolean"
+            },
+            "disable_bot_protection": {
+                "type": "boolean"
+            },
+            "disable_gzip": {
+                "type": "boolean"
+            },
+            "naxsi_whitelist_srcip": {
+                "type": "array"
+            },
+            "naxsi_extensive_log": {
+                "type": "boolean"
+            },
+            "sendfile": {
+                "type": "boolean"
+            },
+            "client_header_buffer_size": {
+                "type": "integer"
+            },
+            "large_client_header_buffers_number": {
+                "type": "integer"
+            },
+            "large_client_header_buffers_size": {
+                "type": "integer"
+            },
+            "security_header": {
+                "type": "array"
+            },
+            "limit_request_connections": {
+                "type": "array"
+            },
+            "max_body_size": {
+                "type": "string"
+            },
+            "body_buffer_size": {
+                "type": "string"
+            },
+            "ip_acl": {
+                "type": "array"
+            },
+            "advanced_acl_server": {
+                "type": "array"
+            },
+            "satisfy": {
+                "type": "array"
+            },
+            "zero_rtt": {
+                "type": "boolean"
+            },
+            "errorpages": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.stream_server": {
+        "type": "object",
+        "required": [
+            "udp",
+            "proxy_protocol",
+            "verify_client",
+            "access_log_format",
+            "error_log_level",
+            "route_field"
+        ],
+        "properties": {
+            "listen_address": {
+                "type": "array"
+            },
+            "syslog_targets": {
+                "type": "array"
+            },
+            "udp": {
+                "type": "boolean"
+            },
+            "trusted_proxies": {
+                "type": "array"
+            },
+            "proxy_protocol": {
+                "type": "boolean"
+            },
+            "certificate": {
+                "type": "array"
+            },
+            "ca": {
+                "type": "array"
+            },
+            "verify_client": {
+                "type": "array"
+            },
+            "access_log_format": {
+                "type": "array"
+            },
+            "error_log_level": {
+                "type": "array"
+            },
+            "route_field": {
+                "type": "array"
+            },
+            "upstream": {
+                "type": "array"
+            },
+            "sni_upstream_map": {
+                "type": "array"
+            },
+            "ip_acl": {
+                "type": "array"
+            },
+            "proxy_responses": {
+                "type": "integer"
+            },
+            "proxy_connect_timeout": {
+                "type": "integer"
+            },
+            "proxy_timeout": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.sni_hostname_upstream_map": {
+        "type": "object",
+        "required": [
+            "description",
+            "data"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "data": {
+                "type": "string"
+            }
+        }
+    },
+    "Nginx.sni_hostname_upstream_map_item": {
+        "type": "object",
+        "required": [
+            "hostname",
+            "upstream"
+        ],
+        "properties": {
+            "hostname": {
+                "type": "string"
+            },
+            "upstream": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.ip_acl": {
+        "type": "object",
+        "required": [
+            "description",
+            "data"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "data": {
+                "type": "string"
+            },
+            "default_action": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.ip_acl_item": {
+        "type": "object",
+        "required": [
+            "network",
+            "action"
+        ],
+        "properties": {
+            "network": {
+                "type": "string"
+            },
+            "action": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.resolver": {
+        "type": "object",
+        "required": [
+            "description",
+            "address"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "address": {
+                "type": "array"
+            },
+            "valid": {
+                "type": "integer"
+            },
+            "ipv4_off": {
+                "type": "boolean"
+            },
+            "ipv6_off": {
+                "type": "boolean"
+            },
+            "timeout": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.http_rewrite": {
+        "type": "object",
+        "required": [
+            "description",
+            "source",
+            "destination"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "source": {
+                "type": "string"
+            },
+            "destination": {
+                "type": "string"
+            },
+            "flag": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.security_header": {
+        "type": "object",
+        "required": [
+            "description",
+            "content_type_options",
+            "strict_transport_security_include_subdomains",
+            "strict_transport_security_preload",
+            "enable_csp",
+            "csp_log_violations",
+            "csp_report_only",
+            "csp_default_src_enabled",
+            "csp_default_src_data_urls",
+            "csp_default_src_inline",
+            "csp_default_src_eval",
+            "csp_default_src_self",
+            "csp_default_src_blob",
+            "csp_default_src_mediastream",
+            "csp_default_src_filesystem",
+            "csp_default_src_none",
+            "csp_script_src_enabled",
+            "csp_script_src_data_urls",
+            "csp_script_src_inline",
+            "csp_script_src_eval",
+            "csp_script_src_self",
+            "csp_script_src_blob",
+            "csp_script_src_mediastream",
+            "csp_script_src_filesystem",
+            "csp_script_src_none",
+            "csp_img_src_enabled",
+            "csp_img_src_data_urls",
+            "csp_img_src_inline",
+            "csp_img_src_eval",
+            "csp_img_src_self",
+            "csp_img_src_blob",
+            "csp_img_src_mediastream",
+            "csp_img_src_filesystem",
+            "csp_img_src_none",
+            "csp_style_src_enabled",
+            "csp_style_src_data_urls",
+            "csp_style_src_inline",
+            "csp_style_src_eval",
+            "csp_style_src_self",
+            "csp_style_src_blob",
+            "csp_style_src_mediastream",
+            "csp_style_src_filesystem",
+            "csp_style_src_none",
+            "csp_media_src_enabled",
+            "csp_media_src_data_urls",
+            "csp_media_src_inline",
+            "csp_media_src_eval",
+            "csp_media_src_self",
+            "csp_media_src_blob",
+            "csp_media_src_mediastream",
+            "csp_media_src_filesystem",
+            "csp_media_src_none",
+            "csp_font_src_enabled",
+            "csp_font_src_data_urls",
+            "csp_font_src_inline",
+            "csp_font_src_eval",
+            "csp_font_src_self",
+            "csp_font_src_blob",
+            "csp_font_src_mediastream",
+            "csp_font_src_filesystem",
+            "csp_font_src_none",
+            "csp_frame_src_enabled",
+            "csp_frame_src_data_urls",
+            "csp_frame_src_inline",
+            "csp_frame_src_eval",
+            "csp_frame_src_self",
+            "csp_frame_src_blob",
+            "csp_frame_src_mediastream",
+            "csp_frame_src_filesystem",
+            "csp_frame_src_none",
+            "csp_frame_ancestors_enabled",
+            "csp_frame_ancestors_data_urls",
+            "csp_frame_ancestors_self",
+            "csp_frame_ancestors_blob",
+            "csp_frame_ancestors_mediastream",
+            "csp_frame_ancestors_filesystem",
+            "csp_frame_ancestors_none",
+            "csp_connect_src_enabled",
+            "csp_connect_src_none",
+            "csp_worker_src_enabled",
+            "csp_worker_src_data_urls",
+            "csp_worker_src_inline",
+            "csp_worker_src_eval",
+            "csp_worker_src_self",
+            "csp_worker_src_blob",
+            "csp_worker_src_filesystem",
+            "csp_worker_src_none",
+            "csp_form_action_enabled",
+            "csp_form_action_data_urls",
+            "csp_form_action_inline",
+            "csp_form_action_eval",
+            "csp_form_action_self",
+            "csp_form_action_blob",
+            "csp_form_action_mediastream",
+            "csp_form_action_filesystem",
+            "csp_form_action_none"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "referrer": {
+                "type": "array"
+            },
+            "xssprotection": {
+                "type": "array"
+            },
+            "content_type_options": {
+                "type": "boolean"
+            },
+            "strict_transport_security_time": {
+                "type": "integer"
+            },
+            "strict_transport_security_include_subdomains": {
+                "type": "boolean"
+            },
+            "strict_transport_security_preload": {
+                "type": "boolean"
+            },
+            "enable_csp": {
+                "type": "boolean"
+            },
+            "csp_log_violations": {
+                "type": "boolean"
+            },
+            "csp_report_only": {
+                "type": "boolean"
+            },
+            "csp_default_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_default_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_default_src_http_urls": {
+                "type": "array"
+            },
+            "csp_default_src_inline": {
+                "type": "boolean"
+            },
+            "csp_default_src_eval": {
+                "type": "boolean"
+            },
+            "csp_default_src_self": {
+                "type": "boolean"
+            },
+            "csp_default_src_blob": {
+                "type": "boolean"
+            },
+            "csp_default_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_default_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_default_src_none": {
+                "type": "boolean"
+            },
+            "csp_script_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_script_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_script_src_http_urls": {
+                "type": "array"
+            },
+            "csp_script_src_inline": {
+                "type": "boolean"
+            },
+            "csp_script_src_eval": {
+                "type": "boolean"
+            },
+            "csp_script_src_self": {
+                "type": "boolean"
+            },
+            "csp_script_src_blob": {
+                "type": "boolean"
+            },
+            "csp_script_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_script_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_script_src_none": {
+                "type": "boolean"
+            },
+            "csp_img_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_img_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_img_src_http_urls": {
+                "type": "array"
+            },
+            "csp_img_src_inline": {
+                "type": "boolean"
+            },
+            "csp_img_src_eval": {
+                "type": "boolean"
+            },
+            "csp_img_src_self": {
+                "type": "boolean"
+            },
+            "csp_img_src_blob": {
+                "type": "boolean"
+            },
+            "csp_img_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_img_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_img_src_none": {
+                "type": "boolean"
+            },
+            "csp_style_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_style_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_style_src_http_urls": {
+                "type": "array"
+            },
+            "csp_style_src_inline": {
+                "type": "boolean"
+            },
+            "csp_style_src_eval": {
+                "type": "boolean"
+            },
+            "csp_style_src_self": {
+                "type": "boolean"
+            },
+            "csp_style_src_blob": {
+                "type": "boolean"
+            },
+            "csp_style_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_style_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_style_src_none": {
+                "type": "boolean"
+            },
+            "csp_media_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_media_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_media_src_http_urls": {
+                "type": "array"
+            },
+            "csp_media_src_inline": {
+                "type": "boolean"
+            },
+            "csp_media_src_eval": {
+                "type": "boolean"
+            },
+            "csp_media_src_self": {
+                "type": "boolean"
+            },
+            "csp_media_src_blob": {
+                "type": "boolean"
+            },
+            "csp_media_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_media_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_media_src_none": {
+                "type": "boolean"
+            },
+            "csp_font_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_font_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_font_src_http_urls": {
+                "type": "array"
+            },
+            "csp_font_src_inline": {
+                "type": "boolean"
+            },
+            "csp_font_src_eval": {
+                "type": "boolean"
+            },
+            "csp_font_src_self": {
+                "type": "boolean"
+            },
+            "csp_font_src_blob": {
+                "type": "boolean"
+            },
+            "csp_font_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_font_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_font_src_none": {
+                "type": "boolean"
+            },
+            "csp_frame_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_frame_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_frame_src_http_urls": {
+                "type": "array"
+            },
+            "csp_frame_src_inline": {
+                "type": "boolean"
+            },
+            "csp_frame_src_eval": {
+                "type": "boolean"
+            },
+            "csp_frame_src_self": {
+                "type": "boolean"
+            },
+            "csp_frame_src_blob": {
+                "type": "boolean"
+            },
+            "csp_frame_src_mediastream": {
+                "type": "boolean"
+            },
+            "csp_frame_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_frame_src_none": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_enabled": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_data_urls": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_http_urls": {
+                "type": "array"
+            },
+            "csp_frame_ancestors_self": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_blob": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_mediastream": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_filesystem": {
+                "type": "boolean"
+            },
+            "csp_frame_ancestors_none": {
+                "type": "boolean"
+            },
+            "csp_connect_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_connect_src_http_urls": {
+                "type": "array"
+            },
+            "csp_connect_src_none": {
+                "type": "boolean"
+            },
+            "csp_worker_src_enabled": {
+                "type": "boolean"
+            },
+            "csp_worker_src_data_urls": {
+                "type": "boolean"
+            },
+            "csp_worker_src_http_urls": {
+                "type": "array"
+            },
+            "csp_worker_src_inline": {
+                "type": "boolean"
+            },
+            "csp_worker_src_eval": {
+                "type": "boolean"
+            },
+            "csp_worker_src_self": {
+                "type": "boolean"
+            },
+            "csp_worker_src_blob": {
+                "type": "boolean"
+            },
+            "csp_worker_src_filesystem": {
+                "type": "boolean"
+            },
+            "csp_worker_src_none": {
+                "type": "boolean"
+            },
+            "csp_form_action_enabled": {
+                "type": "boolean"
+            },
+            "csp_form_action_data_urls": {
+                "type": "boolean"
+            },
+            "csp_form_action_http_urls": {
+                "type": "array"
+            },
+            "csp_form_action_inline": {
+                "type": "boolean"
+            },
+            "csp_form_action_eval": {
+                "type": "boolean"
+            },
+            "csp_form_action_self": {
+                "type": "boolean"
+            },
+            "csp_form_action_blob": {
+                "type": "boolean"
+            },
+            "csp_form_action_mediastream": {
+                "type": "boolean"
+            },
+            "csp_form_action_filesystem": {
+                "type": "boolean"
+            },
+            "csp_form_action_none": {
+                "type": "boolean"
+            }
+        }
+    },
+    "Nginx.limit_zone": {
+        "type": "object",
+        "required": [
+            "description",
+            "key",
+            "rate_unit",
+            "size",
+            "rate"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "key": {
+                "type": "array"
+            },
+            "rate_unit": {
+                "type": "array"
+            },
+            "size": {
+                "type": "integer"
+            },
+            "rate": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.errorpage": {
+        "type": "object",
+        "required": [
+            "name",
+            "statuscodes"
+        ],
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "statuscodes": {
+                "type": "array"
+            },
+            "pagecontent": {
+                "type": "string"
+            },
+            "redirect": {
+                "type": "string"
+            },
+            "response": {
+                "type": "array"
+            }
+        }
+    },
+    "Nginx.tls_fingerprint": {
+        "type": "object",
+        "required": [
+            "description",
+            "user_agent",
+            "trusted",
+            "ciphers"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "user_agent": {
+                "type": "string"
+            },
+            "trusted": {
+                "type": "boolean"
+            },
+            "curves": {
+                "type": "string"
+            },
+            "ciphers": {
+                "type": "string"
+            }
+        }
+    },
+    "Nginx.limit_request_connection": {
+        "type": "object",
+        "required": [
+            "limit_zone",
+            "connection_count",
+            "nodelay",
+            "description"
+        ],
+        "properties": {
+            "limit_zone": {
+                "type": "array"
+            },
+            "connection_count": {
+                "type": "integer"
+            },
+            "burst": {
+                "type": "integer"
+            },
+            "nodelay": {
+                "type": "boolean"
+            },
+            "description": {
+                "type": "string"
+            }
+        }
+    },
+    "Nginx.ban": {
+        "type": "object",
+        "required": [
+            "ip"
+        ],
+        "properties": {
+            "ip": {
+                "type": "string"
+            },
+            "time": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.cache_path": {
+        "type": "object",
+        "required": [
+            "path",
+            "use_temp_path"
+        ],
+        "properties": {
+            "path": {
+                "type": "string"
+            },
+            "size": {
+                "type": "integer"
+            },
+            "inactive": {
+                "type": "integer"
+            },
+            "use_temp_path": {
+                "type": "boolean"
+            },
+            "max_size": {
+                "type": "integer"
+            }
+        }
+    },
+    "Nginx.syslog_target": {
+        "type": "object",
+        "required": [
+            "description",
+            "host",
+            "facility",
+            "severity",
+            "nohostname"
+        ],
+        "properties": {
+            "description": {
+                "type": "string"
+            },
+            "host": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "facility": {
+                "type": "array"
+            },
+            "severity": {
+                "type": "array"
+            },
+            "tag": {
+                "type": "string"
+            },
+            "nohostname": {
+                "type": "boolean"
+            }
+        }
+    },
+    "proxy.Default": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.Required": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.BlankDesc": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.opnsense": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.custom": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.MinimumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.MaximumValue": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.ValidationMessage": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.enable": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.Mask": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.file_extendend": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.file_json": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.syslog": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.syslog_json": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.on": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.off": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.transparent": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.delete": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.truncate": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.strip": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.deny": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.allow": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.encode": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.chop": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.useViaHeader": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.suppressVersion": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.local": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "directory",
+            "cache_mem",
+            "size",
+            "l1",
+            "l2",
+            "cache_linux_packages",
+            "cache_windows_updates"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "directory": {
+                "type": "string"
+            },
+            "cache_mem": {
+                "type": "integer"
+            },
+            "maximum_object_size": {
+                "type": "integer"
+            },
+            "maximum_object_size_in_memory": {
+                "type": "integer"
+            },
+            "memory_cache_mode": {
+                "type": "array"
+            },
+            "size": {
+                "type": "integer"
+            },
+            "l1": {
+                "type": "integer"
+            },
+            "l2": {
+                "type": "integer"
+            },
+            "cache_linux_packages": {
+                "type": "boolean"
+            },
+            "cache_windows_updates": {
+                "type": "boolean"
+            }
+        }
+    },
+    "proxy.traffic": {
+        "type": "object",
+        "required": [
+            "enabled"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "maxDownloadSize": {
+                "type": "integer"
+            },
+            "maxUploadSize": {
+                "type": "integer"
+            },
+            "OverallBandwidthTrotteling": {
+                "type": "integer"
+            },
+            "perHostTrotteling": {
+                "type": "integer"
+            }
+        }
+    },
+    "proxy.parentproxy": {
+        "type": "object",
+        "required": [
+            "enabled",
+            "enableauth",
+            "user",
+            "password"
+        ],
+        "properties": {
+            "enabled": {
+                "type": "boolean"
+            },
+            "host": {
+                "type": "string"
+            },
+            "enableauth": {
+                "type": "boolean"
+            },
+            "user": {
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            },
+            "port": {
+                "type": "array"
+            },
+            "localdomains": {
+                "type": "array"
+            },
+            "localips": {
+                "type": "array"
+            }
+        }
+    },
+    "proxy.Multiple": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.AllowDynamic": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.ipaddr": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.type": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.field1": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.reference": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.Type": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.whiteList": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.blackList": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.browser": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.mimeType": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.strict": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.moderate": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.blacklists": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "blacklist": {
+                "type": "array"
+            }
+        }
+    },
+    "proxy.source": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.display": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.origin": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "proxy.icap": {
+        "type": "object",
+        "required": [
+            "enable",
+            "SendClientIP",
+            "SendUsername",
+            "EncodeUsername",
+            "UsernameHeader",
+            "EnablePreview",
+            "PreviewSize",
+            "OptionsTTL"
+        ],
+        "properties": {
+            "enable": {
+                "type": "boolean"
+            },
+            "RequestURL": {
+                "type": "string"
+            },
+            "ResponseURL": {
+                "type": "string"
+            },
+            "SendClientIP": {
+                "type": "boolean"
+            },
+            "SendUsername": {
+                "type": "boolean"
+            },
+            "EncodeUsername": {
+                "type": "boolean"
+            },
+            "UsernameHeader": {
+                "type": "string"
+            },
+            "EnablePreview": {
+                "type": "boolean"
+            },
+            "PreviewSize": {
+                "type": "integer"
+            },
+            "OptionsTTL": {
+                "type": "integer"
+            },
+            "exclude": {
+                "type": "array"
+            }
+        }
+    },
+    "proxy.authentication": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "method": {
+                "type": "array"
+            },
+            "authEnforceGroup": {
+                "type": "array"
+            },
+            "realm": {
+                "type": "string"
+            },
+            "credentialsttl": {
+                "type": "integer"
+            },
+            "children": {
+                "type": "integer"
+            }
+        }
+    },
+    "proxy.pac": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "proxy": {
+                "type": "array"
+            },
+            "match": {
+                "type": "array"
+            },
+            "rule": {
+                "type": "array"
+            }
+        }
+    },
+    "proxy.error_pages": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "template": {
+                "type": "string"
+            }
+        }
+    },
+    "ProxySSO": {
+        "type": "object",
+        "required": [
+            "EnableSSO",
+            "ADKerberosImplementation"
+        ],
+        "properties": {
+            "EnableSSO": {
+                "type": "boolean"
+            },
+            "ADKerberosImplementation": {
+                "type": "array"
+            },
+            "KerberosHostName": {
+                "type": "string"
+            }
+        }
+    }
+}
