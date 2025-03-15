@@ -26,13 +26,13 @@ for model_filename in special_snowflakes:
 # from typing import Any, Dict, List
 # from xml.etree import ElementTree
 # from xml.etree.ElementTree import Element
-import collect_xml_models
-from collect_xml_models import *
+# import collect_xml_models
+# from collect_xml_models import *
 
 # model_filename = "/gitroot/upstream/opnsense/plugins/dns/bind/src/opnsense/mvc/app/models/OPNsense/Bind/Dnsbl.xml"
 # model_filename = "/gitroot/upstream/opnsense/plugins/dns/bind/src/opnsense/mvc/app/models/OPNsense/Bind/Domain.xml"
 
 
-tree = ElementTree.parse(model_filename)
-items_element: Element = tree.find("items")
-find_model_elements(items_element)
+# tree = ElementTree.parse(model_filename)
+# items_element: Element = tree.find("items")
+# find_model_elements(items_element)
