@@ -1,11 +1,14 @@
 #! /usr/bin/env python3
 
 import json
-import sys
+import os
 from collections import defaultdict
 from typing import Any, Dict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
+
+
+EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
 VALIDATOR_TO_SPEC_TYPE = defaultdict(
     lambda: "string",
@@ -111,7 +114,7 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
 )
 
 
-def collect_models(model_filename: str) -> Dict[str, Dict]:
+def parse_model(model_filename: str) -> Dict[str, Dict]:
     tree = ElementTree.parse(model_filename)
     root = tree.getroot()
 
@@ -170,11 +173,16 @@ def collect_models(model_filename: str) -> Dict[str, Dict]:
     return components
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} XML_MODEL_FILE")
-        exit(1)
-
-    model_filename = sys.argv[1]
-    models = collect_models(model_filename)
-    print(json.dumps(models))
+def collect_models(source: str):
+    models = {}
+    for root, _, files in os.walk(source, topdown=True):
+        path_segments = root.split("/")
+        if path_segments[-3] != "models":
+            continue
+        model_files = [os.path.join(root, f) for f in files if f.endswith(".xml")]
+        for model_file in model_files:
+            if any(x for x in EXCLUDE_MODELS if model_file.endswith(x)):
+                continue
+            models_from_file = parse_model(model_file)
+            models.update(models_from_file)
+    return models

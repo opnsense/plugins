@@ -4,34 +4,57 @@ import json
 import os
 import re
 import sys
-from typing import Dict, List
+from typing import Dict, List, Any
 
-# https://github.com/globality-corp/openapi
-from openapi.model import (
-    FormDataParameterSubSchema,
-    Info,
-    Operation,
-    ParametersList,
-    PathItem,
-    Paths,
-    Response,
-    Responses,
-    SchemaAwareDict,
-    SchemaAwareList,
-    SchemaAwareString,
-    Swagger,
-)
+from apispec import APISpec
+from openapi_spec_validator import validate
 
 from collect_api_endpoints import Endpoint, collect_api_modules
+from collect_xml_models import collect_models
+
+
+def get_endpoints(source_path: str) -> Dict[str, List[Endpoint]]:
+    dot = os.path.dirname(__file__)
+    json_file = os.path.join(dot, "endpoints.json")
+
+    if os.path.isfile(json_file):
+        with open(json_file) as file:
+            endpoints_by_model = json.loads(file.read())
+    else:
+        endpoints_by_model = collect_api_modules(source_path)
+        with open(json_file, mode="w") as file:
+            file.write(json.dumps(endpoints_by_model))
+
+    return endpoints_by_model
+
+
+def get_models(source_path: str) -> Dict[str, Dict]:
+    dot = os.path.dirname(__file__)
+    json_file = os.path.join(dot, "models.json")
+
+    if os.path.isfile(json_file):
+        with open(json_file) as file:
+            models = json.loads(file.read())
+    else:
+        models = collect_models(source_path)
+        with open(json_file, mode="w") as file:
+            file.write(json.dumps(models))
+
+    return models
 
 
 def get_spec(endpoints: List[Endpoint]):
     param_pattern = re.compile(r"^\$(?P<name>\w+)(=(?P<default>.*))?$")
 
-    models = {}
-    paths = {}
+    spec = APISpec(
+        title="OPNsense API",
+        version="25.1",
+        openapi_version="3.0.0",
+        info={"description": "API for managing your OPNsense firewall"},
+    )
+
     for endpoint in endpoints:
-        path = f'/{endpoint["module"]}/{endpoint["controller"]}/{endpoint["command"]}'
+        path = f'/api/{endpoint["module"]}/{endpoint["controller"]}/{endpoint["command"]}'
 
         model_filename = endpoint["model_filename"]
         # TODO: parse xml, generate json schema
@@ -47,15 +70,17 @@ def get_spec(endpoints: List[Endpoint]):
             name = m.group("name")
             default = m.group("default")
 
+            param_schema: Dict[str, Any] = {"type": "string"}  # fuck these cack-typed langs
             param_def = {
                 "name": name,
-                "type": "string",  # TODO: can we do better with these cack-typed langs?
-                "in": "formData",
+                "in": "query",
+                "schema": param_schema
             }
+
             if default is None:
                 param_def["required"] = True
             else:
-                param_def["default"] = default
+                param_schema["default"] = default
 
             param_defs.append(param_def)
 
@@ -63,41 +88,23 @@ def get_spec(endpoints: List[Endpoint]):
         method = endpoint.get("method", "GET").lower()
         methods = ["get", "post"] if method == "*" else [method]
         for method in methods:
-            params = []
-            for param_def in param_defs:
-                param = FormDataParameterSubSchema(**param_def)
-                param.validate()
-                params.append(param)
+            ops[method] = {
+                "parameters": param_defs,
+                "responses": {
+                    "200": {"description": "OK"}
+                }
+            }
 
-            ops[method] = Operation(
-                parameters=ParametersList(params),
-                responses=Responses(
-                    {
-                        "200": Response(
-                            description="TODO - parse description",
-                        )
-                    }
-                ),
-            )
+        spec.path(path=path, operations=ops)
 
-        paths[path] = PathItem(**ops)
-
-    spec = Swagger(
-        swagger="2.0",
-        info=Info(
-            title="OPNsense",
-            version="1.0.0",
-        ),
-        basePath="/api",
-        paths=Paths(paths),
-    )
-    spec.validate()
+    validate(spec.to_dict())  # type: ignore
     return spec
 
 
-def write_spec(spec: Swagger, path: str):
+def write_spec(spec: APISpec, path: str):
+    json_spec = json.dumps(spec.to_dict())
     with open(path, mode="w") as file:
-        file.write(spec.dumps())
+        file.write(json_spec)
 
 
 if __name__ == "__main__":
@@ -105,21 +112,15 @@ if __name__ == "__main__":
         print(f"Usage: {sys.argv[0]} OUTPUT_FILE")
         exit(1)
 
-    endpoints_by_model: Dict[str, List[Endpoint]]
+    source_path = "/gitroot/upstream/opnsense/plugins" #"/usr/plugins"  # TODO: param for this
+    output_file = sys.argv[1]
 
-    dot = os.path.dirname(__file__)
-    json_file = os.path.join(dot, "endpoints.json")
-    if os.path.isfile(json_file):
-        with open(json_file) as file:
-            endpoints_by_model = json.loads(file.read())
-    else:
-        source_path = "/usr/plugins"
-        endpoints_by_model = collect_api_modules(source_path)
-
+    endpoints_by_model = get_endpoints(source_path)
     endpoints = []
     for e in endpoints_by_model.values():
         endpoints.extend(e)
 
-    output_file = sys.argv[1]
+    models = get_models(source_path)
+
     spec = get_spec(endpoints)
     write_spec(spec, output_file)
