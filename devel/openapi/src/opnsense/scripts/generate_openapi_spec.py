@@ -115,12 +115,12 @@ if __name__ == "__main__":
     source_path = "/gitroot/upstream/opnsense/plugins" #"/usr/plugins"  # TODO: param for this
     output_file = sys.argv[1]
 
-    endpoints_by_model = get_endpoints(source_path)
-    endpoints = []
-    for e in endpoints_by_model.values():
-        endpoints.extend(e)
+    # endpoints_by_model = get_endpoints(source_path)
+    # endpoints = []
+    # for e in endpoints_by_model.values():
+    #     endpoints.extend(e)
 
     models = get_models(source_path)
 
-    spec = get_spec(endpoints)
-    write_spec(spec, output_file)
+    # spec = get_spec(endpoints)
+    # write_spec(spec, output_file)

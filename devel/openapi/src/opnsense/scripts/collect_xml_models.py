@@ -3,7 +3,7 @@
 import json
 import os
 from collections import defaultdict
-from typing import Any, Dict
+from typing import Any, Dict, List
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -114,63 +114,85 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
 )
 
 
-def parse_model(model_filename: str) -> Dict[str, Dict]:
-    tree = ElementTree.parse(model_filename)
-    root = tree.getroot()
+def find_model_containers(element: Element) -> List[Element]:
+    if not all("type" in child.attrib for child in element):
+        elements = []
+        for child in element:
+            elements.extend(find_model_containers(child))
+        return elements
+    return [element]
 
-    if root.tag != "model":
-        raise ValueError(f"Expected root element of {model_filename} to be a model tag")
 
-    mount_element = tree.find("mount")
-    if mount_element is None or mount_element.text is None:
-        raise ValueError(f"Failed to find the <mount> tag in {model_filename}")
-    mount = mount_element.text.replace("//OPNsense/", "").replace("/", ".")
+def _parse_model_from_element(model_container: Element) -> Dict:
+    models = {}
+    for model_element in model_container:
+        name = model_element.tag
+        name = "" if name.lower() == "items" else name
 
-    items_element: Element = tree.find("items")  # type: ignore
-    if items_element is None:
-        raise ValueError(f"Failed to find the <items> tag in {model_filename}")
-
-    components = {}
-    for model in items_element:
-        name = model.tag
-        component_name = f"{mount}.{name}"  # e.g. relayd.general
+        if name in models:
+            raise ValueError(f"Model already defined at '{name}'")
 
         properties = {}
-        for prop in model:
+        required_props: List[str] = []
+        model = {
+            "type": "object",
+            "required": required_props,
+            "properties": properties,
+        }
+
+        for prop in model_element:
             prop_name = prop.tag  # e.g. enabled, interval, log
             field_type = prop.attrib.get("type")
             if not field_type:
-                msg = f"Element <{prop_name}> does not have a type attribute in {model_filename}"
+                msg = f"Element <{prop_name}> does not have a type attribute"
                 raise ValueError(msg)
 
             spec_type = VALIDATOR_TO_SPEC_TYPE[field_type]
-            field_props: Dict[str, Any] = {"type": spec_type}
-
-            # TODO: enums
-            # enum_el = prop.find("OptionValues")
+            prop_def = {"type": spec_type}
 
             req_el = prop.find("Required")
             req_el = req_el if req_el is not None else prop.find("required")
             if req_el is not None and req_el.text and req_el.text.upper() == "Y":
-                field_props["required"] = True
+                required_props.append(prop_name)
 
-            # TODO: constraints
+            properties[prop_name] = prop_def
 
-            # type: number
-            # minimum: 0
-            # exclusiveMinimum: true
-            # maximum: 50
+        models[name] = model
+    return models
 
-            # type: string
-            # minLength: 3
-            # maxLength: 20
-            # pattern: '^\d{3}-\d{2}-\d{4}$'  # partial match by default
 
-            properties[prop_name] = field_props
+def parse_model(model_filename: str) -> Dict[str, Dict]:
+    try:
+        tree = ElementTree.parse(model_filename)
+        root = tree.getroot()
 
-        components[component_name] = {"properties": properties}
+        if root.tag != "model":
+            raise ValueError(f"Expected root element to be a model tag")
 
-    return components
+        mount_element = tree.find("mount")
+        if mount_element is None or mount_element.text is None:
+            raise ValueError(f"Failed to find the <mount> tag")
+        mount = mount_element.text.replace("//OPNsense/", "").replace("/", ".")
+
+        items_element: Element = tree.find("items")  # type: ignore
+        if items_element is None:
+            raise ValueError(f"Failed to find the <items> tag")
+
+        model_containers = find_model_containers(items_element)
+
+        model_schema = {}
+        for model_container in model_containers:
+            models = _parse_model_from_element(model_container)
+            for name, model_def in models.items():
+                name = f"{mount}.{name}" if name else mount  # e.g. relayd.general
+                model_schema[name] = model_def
+
+        return model_schema
+
+    except Exception as ex:
+        ex.args = (f"{model_filename}: {ex}", *ex.args[1:])
+        raise
+
 
 
 def collect_models(source: str):
