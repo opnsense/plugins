@@ -128,16 +128,18 @@ def parse_api_php(src_filename) -> List[Endpoint]:
             else:
                 method = "GET"
 
+            command = function[2][:-6]
+            parameters = function[3].replace(" ", "").replace('"', '""')
             requires_model = code_block.find("request->getPost(") > -1
 
             record: Endpoint = {
                 "method": method,
                 "module": module_name,
                 "controller": controller,
+                "command": command,
+                "parameters": parameters,
                 "is_abstract": is_abstract,
                 "base_class": base_class,
-                "command": function[2][:-6],
-                "parameters": function[3].replace(" ", "").replace('"', '""'),
                 "filename": base_filename,
                 "model_filename": model_filename,
                 "requires_model": requires_model,
@@ -148,20 +150,20 @@ def parse_api_php(src_filename) -> List[Endpoint]:
     if base_class in DEFAULT_BASE_METHODS:
         for item in DEFAULT_BASE_METHODS[base_class]:
             if item not in this_commands:
-                result.append(
-                    {
-                        "type": "Service",
-                        "method": item["method"],
-                        "module": module_name,
-                        "controller": controller,
-                        "is_abstract": False,
-                        "base_class": base_class,
-                        "command": item["command"],
-                        "parameters": item["parameters"],
-                        "filename": base_filename,
-                        "model_filename": model_filename,
-                    }
-                )
+                record: Endpoint = {
+                    "method": item["method"],  # type: ignore
+                    "module": module_name,
+                    "controller": controller,
+                    "command": item["command"],
+                    "parameters": item["parameters"],
+                    "is_abstract": False,
+                    "base_class": base_class,
+                    "filename": base_filename,
+                    "model_filename": model_filename,
+                    "requires_model": False,
+                    "type": "Service",
+                }
+                result.append(record)
 
     return sorted(result, key=lambda i: i["command"])
 
