@@ -1,12 +1,62 @@
 #! /usr/bin/env python3
 
 import sys
+import re
 from typing import List, Dict, TypedDict, Literal
 
 # https://github.com/globality-corp/openapi
-from openapi.model import Swagger, Info, Operation, PathItem, Paths, Response, Responses
+from openapi.model import (
+    ApiKeySecurity,
+    BasicAuthenticationSecurity,
+    BodyParameter,
+    CollectionFormat,
+    CollectionFormatWithMulti,
+    Contact,
+    Definitions,
+    Examples,
+    ExternalDocs,
+    FileSchema,
+    FormDataParameterSubSchema,
+    Header,
+    HeaderParameterSubSchema,
+    Headers,
+    Info,
+    JsonReference,
+    License,
+    MediaTypeList,
+    MimeType,
+    Oauth2AccessCodeSecurity,
+    Oauth2ApplicationSecurity,
+    Oauth2ImplicitSecurity,
+    Oauth2PasswordSecurity,
+    Oauth2Scopes,
+    Operation,
+    ParameterDefinitions,
+    ParametersList,
+    PathItem,
+    PathParameterSubSchema,
+    Paths,
+    PrimitivesItems,
+    QueryParameterSubSchema,
+    Response,
+    ResponseDefinitions,
+    Responses,
+    Schema,
+    SchemaAwareDict,
+    SchemaAwareList,
+    SchemaAwareString,
+    SchemesList,
+    Security,
+    SecurityDefinitions,
+    SecurityRequirement,
+    Swagger,
+    Tag,
+    VendorExtension,
+    Xml,
+)
 
 from collect_api_endpoints import collect_api_modules
+
 
 class Endpoint(TypedDict):
     method: Literal["GET"] | Literal["POST"] | Literal["*"]
@@ -31,6 +81,8 @@ def get_endpoints(path: str) -> List[Endpoint]:
 
 
 def get_spec(endpoints: List[Endpoint]):
+    param_pattern = re.compile(r"^\$(?P<name>\w+)(=(?P<default>.*))?$")
+
     models = {}
     paths = {}
     for endpoint in endpoints:
@@ -39,15 +91,41 @@ def get_spec(endpoints: List[Endpoint]):
         model_filename = endpoint["model_filename"]
         # TODO: parse xml, generate json schema
 
-        # parameters = endpoint["parameters"]
-        parameters = []  # TODO
+        param_strings = endpoint["parameters"]
+        param_strings = param_strings.split(",") if param_strings else []
+        param_defs = []
+        for p in param_strings:
+            m = re.match(param_pattern, p)
+            if not m:
+                raise ValueError(f"failed to parse parameter '{p}' at /api/{path}")
 
-        items = {}
+            name = m.group("name")
+            default = m.group("default")
+
+            param_def = {
+                "name": name,
+                "type": "string",  # TODO: can we do better with these cack-typed langs?
+                "in": "formData",
+            }
+            if default is None:
+                param_def["required"] = True
+            else:
+                param_def["default"] = default
+
+            param_defs.append(param_def)
+
+        ops = {}
         method = endpoint.get("method", "GET").lower()
         methods = ["get", "post"] if method == "*" else [method]
         for method in methods:
-            items[method] = Operation(
-                parameters=parameters,
+            params = []
+            for param_def in param_defs:
+                param = FormDataParameterSubSchema(**param_def)
+                param.validate()
+                params.append(param)
+
+            ops[method] = Operation(
+                parameters=ParametersList(params),
                 responses=Responses({
                     "200": Response(
                         description="TODO - parse description",
@@ -55,7 +133,7 @@ def get_spec(endpoints: List[Endpoint]):
                 })
             )
 
-        paths[path] = PathItem(**items)
+        paths[path] = PathItem(**ops)
 
     spec = Swagger(
         swagger="2.0",
@@ -66,9 +144,7 @@ def get_spec(endpoints: List[Endpoint]):
         basePath="/api",
         paths = Paths(paths)
     )
-
     spec.validate()
-
     return spec
 
 
