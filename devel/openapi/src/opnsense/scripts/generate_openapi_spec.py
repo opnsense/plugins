@@ -2,7 +2,7 @@
 
 import sys
 import re
-from typing import List, Dict, TypedDict, Literal
+from typing import List
 
 # https://github.com/globality-corp/openapi
 from openapi.model import (
@@ -55,20 +55,7 @@ from openapi.model import (
     Xml,
 )
 
-from collect_api_endpoints import collect_api_modules
-
-
-class Endpoint(TypedDict):
-    method: Literal["GET"] | Literal["POST"] | Literal["*"]
-    module: str
-    controller: str
-    command: str
-    parameters: str
-    is_abstract: bool
-    base_class: str
-    filename: str
-    model_filename: str | None
-    type: str
+from collect_api_endpoints import collect_api_modules, Endpoint
 
 
 def get_endpoints(path: str) -> List[Endpoint]:
