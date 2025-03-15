@@ -115,18 +115,20 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
 
 
 def find_model_containers(element: Element) -> List[Element]:
-    if not all("type" in child.attrib for child in element):
-        elements = []
-        for child in element:
-            elements.extend(find_model_containers(child))
-        return elements
-    return [element]
+    if all("type" in child.attrib for child in element):
+        return [element]
+
+    elements = []
+    for child in element:
+        elements.extend(find_model_containers(child))
+    return elements
 
 
 def _parse_model_from_element(model_container: Element) -> Dict:
     models = {}
     for model_element in model_container:
         name = model_element.tag
+        print(name)
         name = "" if name.lower() == "items" else name
 
         if name in models:
@@ -182,6 +184,7 @@ def parse_model(model_filename: str) -> Dict[str, Dict]:
 
         model_schema = {}
         for model_container in model_containers:
+            print(model_container)
             models = _parse_model_from_element(model_container)
             for name, model_def in models.items():
                 name = f"{mount}.{name}" if name else mount  # e.g. relayd.general
