@@ -3,11 +3,10 @@
 import json
 import os
 from collections import defaultdict
-from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Optional, Tuple, Literal, Callable, TypeAlias
+from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Tuple, Literal, Callable, TypeAlias
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from functools import partial
-from pydantic import BaseModel
 
 EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
@@ -86,6 +85,10 @@ FIELD_TO_SPEC_TYPE = defaultdict(
 )
 
 
+# class Schema(TypedDict)
+# class Builder:
+
+#     def push_schema(self, schema):
 SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
 StringFormat: TypeAlias = (
     Literal["date"] |       # RFC 3339, section 5.6, for example, 2017-07-21
@@ -96,30 +99,30 @@ StringFormat: TypeAlias = (
     str                     # extensible
 )
 
+TypedDict = object
 
-
-class SchemaType(BaseModel):
+class SchemaType(TypedDict):
     pass
 
-class Named(BaseModel):
+class Named(TypedDict):
     name: str
 
 class AnyValue(Named):
     pass
 
 #region mixins
-class Nullable(BaseModel):
-    nullable: Optional[bool]
+class Nullable(TypedDict):
+    nullable: NotRequired[bool]
 
-class MinMax(BaseModel):
-    minimum: Optional[int]
-    exclusiveMinimum: Optional[bool]
-    maximum: Optional[int]
-    exclusiveMaximum: Optional[bool]
+class MinMax(TypedDict):
+    minimum: NotRequired[int]
+    exclusiveMinimum: NotRequired[bool]
+    maximum: NotRequired[int]
+    exclusiveMaximum: NotRequired[bool]
 
-class MinMaxLength(BaseModel):
-    minLength: Optional[int]
-    maxLength: Optional[int]
+class MinMaxLength(TypedDict):
+    minLength: NotRequired[int]
+    maxLength: NotRequired[int]
 #endregion mixins
 
 class NamedType(Named):
@@ -127,19 +130,19 @@ class NamedType(Named):
 
 class Int(NamedType, MinMax):
     type: Literal["integer"]
-    format: Optional[Literal["int32"] | Literal["int64"]]
+    format: NotRequired[Literal["int32"] | Literal["int64"]]
 
 class Num(NamedType, MinMax):
     type: Literal["number"]
-    format: Optional[Literal["float"] | Literal["double"]]
+    format: NotRequired[Literal["float"] | Literal["double"]]
 
 class Bool(NamedType, Named, Nullable):
     type: Literal["boolean"]
 
 class String(NamedType):
     type: Literal["string"]
-    format: Optional[StringFormat]
-    pattern: Optional[str]  # partial match
+    format: NotRequired[StringFormat]
+    pattern: NotRequired[str]  # partial match
 
 Primitive: TypeAlias = Int | Num | Bool | String
 
@@ -149,10 +152,10 @@ class OneOf(Named):
 class AnyOf(Named):
     anyOf: List[NamedType]
 
-class ArrayItem(BaseModel):
+class ArrayItem(TypedDict):
     type: SpecType
 
-class Ref(BaseModel):
+class Ref(TypedDict):
     __ref__: str
 
 class Array(NamedType, SchemaType):
