@@ -276,6 +276,18 @@
                         <http value="1">http://</http>
                     </OptionValues>
                 </DisableTls>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
