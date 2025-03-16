@@ -1,0 +1,9 @@
+<acl>
+    <page-services-beats8>
+        <name>Services: Beats8</name>
+        <patterns>
+            <pattern>ui/filebeat/*</pattern>
+            <pattern>api/filebeat/*</pattern>
+        </patterns>
+    </page-services-beats8>
+</acl>
