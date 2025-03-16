@@ -1,0 +1,241 @@
+<model>
+    <mount>//OPNsense/StepCA/Initialize</mount>
+    <version>0.1.0</version>
+    <description>StepCA for OPNsense</description>
+    <items>
+        <root>
+            <Source type="OptionField">
+                <Required>Y</Required>
+                <default>yubikeyC</default>
+                <Sorted>N</Sorted>
+                <Multiple>N</Multiple>
+                <OptionValues>
+                    <trust>From Trust</trust>
+                    <yubikeyC>Create on Yubikey</yubikeyC>
+                    <yubikeyL>Load from Yubikey</yubikeyL>
+                </OptionValues>
+            </Source>
+            <TrustCertificate type="CertificateField">
+                <Required>N</Required>
+                <Type>ca</Type>
+                <Constraints>
+                  <check001>
+                    <ValidationMessage>This field must be set.</ValidationMessage>
+                    <type>SetIfConstraint</type>
+                    <field>Source</field>
+                    <check>trust</check>
+                  </check001>
+                </Constraints>
+            </TrustCertificate>
+            <YubikeySlot type="TextField">
+                <default>9a</default>
+                <Required>N</Required>
+                <mask>/^[0-9a-f]{2}$/u</mask>
+                <ValidationMessage>This does not look like a Yubikey slot</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyL</check>
+                    </check002>
+                </Constraints>
+            </YubikeySlot>
+            <CreateTemplate type="TextField">
+                <Required>Y</Required>
+                <default>"subject": "OPNsense StepCA Root",
+"issuer": "OPNsense StepCA Root",
+"keyUsage": ["certSign", "crlSign"],
+"basicConstraints": {
+    "isCA": true,
+    "maxPathLen": 1
+}</default>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </CreateTemplate>
+            <CreateKeyType type="OptionField">
+                <Required>N</Required>
+                <default>ECC-P384</default>
+                <Sorted>N</Sorted>
+                <Multiple>N</Multiple>
+                <OptionValues>
+                    <RSA-2048>RSA 2048</RSA-2048>
+                    <RSA-3072>RSA 3072</RSA-3072>
+                    <RSA-4096>RSA 4096</RSA-4096>
+                    <ECC-P256>ECC secp256r1</ECC-P256>
+                    <ECC-P384>ECC secp384r1</ECC-P384>
+                    <ECC-Ed25519>ECC Ed25519</ECC-Ed25519>
+                </OptionValues>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </CreateKeyType>
+            <Lifetime type="IntegerField">
+                <Required>N</Required>
+                <default>365</default>
+                <MinimumValue>1</MinimumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </Lifetime>
+        </root>
+        <intermediate>
+            <Source type="OptionField">
+                <Required>Y</Required>
+                <default>yubikeyC</default>
+                <Sorted>N</Sorted>
+                <Multiple>N</Multiple>
+                <OptionValues>
+                    <trust>From Trust</trust>
+                    <yubikeyC>Create on Yubikey</yubikeyC>
+                    <yubikeyL>Load from Yubikey</yubikeyL>
+                </OptionValues>
+            </Source>
+            <TrustCertificate type=".\CertificateField">
+                <Required>N</Required>
+                <Type>ca</Type>
+                <Constraints>
+                  <check001>
+                    <ValidationMessage>This field must be set.</ValidationMessage>
+                    <type>SetIfConstraint</type>
+                    <field>aSource</field>
+                    <check>trust</check>
+                  </check001>
+                </Constraints>
+            </TrustCertificate>
+            <YubikeySlot type="TextField">
+                <default>9c</default>
+                <Required>N</Required>
+                <mask>/^[0-9a-f]{2}$/u</mask>
+                <ValidationMessage>This does not look like a Yubikey slot</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyL</check>
+                    </check002>
+                </Constraints>
+            </YubikeySlot>
+            <CreateTemplate type="TextField">
+                <Required>Y</Required>
+                <default>"subject": "OPNsense StepCA Intermediate",
+"keyUsage": ["certSign", "crlSign"],
+"basicConstraints": {
+    "isCA": true,
+    "maxPathLen": 0
+}
+</default>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </CreateTemplate>
+            <CreateKeyType type="OptionField">
+                <Required>N</Required>
+                <default>ECC-P384</default>
+                <Sorted>N</Sorted>
+                <Multiple>N</Multiple>
+                <OptionValues>
+                    <RSA-2048>RSA 2048</RSA-2048>
+                    <RSA-3072>RSA 3072</RSA-3072>
+                    <RSA-4096>RSA 4096</RSA-4096>
+                    <ECC-P256>ECC secp256r1</ECC-P256>
+                    <ECC-P384>ECC secp384r1</ECC-P384>
+                    <ECC-Ed25519>ECC Ed25519</ECC-Ed25519>
+                </OptionValues>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </CreateKeyType>
+            <Lifetime type="IntegerField">
+                <Required>N</Required>
+                <default>365</default>
+                <MinimumValue>1</MinimumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                </Constraints>
+            </Lifetime>
+        </intermediate>
+        <yubikey>
+            <Pin type="TextField">
+                <default>123456</default>
+                <Required>N</Required>
+                <mask>/^.{4,}$/u</mask>
+                <ValidationMessage>This does not look like a Yubikey pin</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraintAbs</type>
+                        <field>root.Source</field>
+                        <check>yubikeyC</check>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraintAbs</type>
+                        <field>root.Source</field>
+                        <check>yubikeyL</check>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraintAbs</type>
+                        <field>intermediate.Source</field>
+                        <check>yubikeyC</check>
+                    </check003>
+                    <check004>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraintAbs</type>
+                        <field>intermediate.Source</field>
+                        <check>yubikeyL</check>
+                    </check004>
+                </Constraints>
+            </Pin>
+        </yubikey>
+        <Password type="UpdateOnlyTextField">
+            <default></default>
+            <Required>N</Required>
+        </Password>
+    </items>
+</model>
