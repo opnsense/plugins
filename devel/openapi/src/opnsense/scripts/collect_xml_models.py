@@ -3,10 +3,10 @@
 import json
 import os
 from collections import defaultdict
-from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Tuple
+from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Tuple, Literal, Callable, TypeAlias
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
-
+from functools import partial
 
 EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
@@ -14,21 +14,15 @@ SPECIAL_CASES = {
     "/Tor/General.xml": "items"
 }
 
-VALIDATOR_TO_SPEC_TYPE = defaultdict(
+FIELD_TO_SPEC_TYPE = defaultdict(
     lambda: "string",
     {
         "AccountField": "array",
-        # "AliasContentField": "string",
-        # "AliasesField": "string",
         "AliasField": "array",
-        # "AliasNameField": "string",
-        # "ApiKeyField": "string",
         "ArrayField": "array",
         "AuthenticationServerField": "array",
         "AuthGroupField": "array",
         "AutoNumberField": "integer",
-        # "Base64Field": "string",
-        # "BaseListField": "string",
         "BooleanField": "boolean",
         "CaContainerField": "object",
         "CAsField": "array",
@@ -44,39 +38,24 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
         "CountryField": "array",
         "CSVListField": "array",
         "CustomPolicyField": "object",
-        # "DescriptionField": "string",
-        # "DomainIPField": "string",
-        # "EmailField": "string",
         "ExitNodeField": "array",
-        # "ExpiresField": "string",
         "FilterRuleContainerField": "object",
         "FilterRuleField": "array",
         "GatewayField": "array",
-        # "GidField": "string",
         "GroupField": "array",
         "GroupMembershipField": "array",
-        # "GroupNameField": "string",
-        # "HostField": "string",
-        # "HostnameField": "string",
-        # "IKEAddressField": "string",
         "InstanceField": "array",
         "IntegerField": "integer",
         "InterfaceField": "array",
         "InterfaceField": "array",
         "InterfaceField": "array",
-        # "IPPortField": "string",
         "IPsecProposalField": "array",
         "JsonKeyValueStoreField": "array",
-        # "KeaPoolsField": "string",
         "LaggInterfaceField": "array",
-        # "LegacyLinkField": "string",
-        # "LinkAddressField": "string",
-        # "MacAddressField": "string",
         "MemberField": "array",
         "ModelRelationField": "array",
         "NeighborField": "array",
         "NetworkAliasField": "array",
-        # "NetworkField": "string",
         "NumericField": "number",
         "OpenVPNServerField": "array",
         "OptionField": "array",
@@ -87,138 +66,154 @@ VALIDATOR_TO_SPEC_TYPE = defaultdict(
         "PrivField": "array",
         "PrivField": "array",
         "ProtocolField": "array",
-        # "RangeAddressField": "string",
-        # "RemoteHostField": "string",
         "ScheduleField": "array",
         "ServerField": "array",
         "ServiceField": "array",
-        # "SimpleCustomField": "string",
         "SourceNatRuleContainerField": "object",
         "SourceNatRuleField": "array",
         "SPDField": "array",
-        # "StoreB64Field": "string",
-        # "TextField": "string",
         "TosField": "array",
         "TunableField": "array",
-        # "UidField": "string",
         "UnboundInterfaceField": "array",
-        # "UniqueIdField": "string",
-        # "UpdateOnlyTextField": "string",
-        # "UrlField": "string",
         "UserGroupField": "array",
-        # "UsernameField": "string",
         "VipField": "array",
         "VipInterfaceField": "array",
-        # "VipNetworkField": "string",
         "VirtualIPField": "array",
         "VlanInterfaceField": "array",
-        # "VPNIdField": "string",
         "VTIField": "array",
     },
 )
 
 
-class PropertySchema(TypedDict):
-    type: str
-    required: NotRequired[List[str]]
+# class Schema(TypedDict)
+# class Builder:
 
+#     def push_schema(self, schema):
+SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
+StringFormat: TypeAlias = (
+    Literal["date"] |       # RFC 3339, section 5.6, for example, 2017-07-21
+    Literal["date-time"] |  # RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z
+    Literal["password"] |   # a hint to UIs to mask the input
+    Literal["byte"] |       # base64
+    Literal["binary"] |     # file data
+    str                     # extensible
+)
 
-class ModelSchema(TypedDict):
-    type: str
-    required: NotRequired[List[str]]
-    properties: Dict[str, PropertySchema]
+TypedDict = object
 
+class SchemaType(TypedDict):
+    pass
 
-def _find_model_elements_and_handle_special_case(model_filename: str, items_element: Element) -> List[Element]:
-    key = next((k for k in SPECIAL_CASES if model_filename.endswith(k)), None)
-    if key:
-        model_tag = SPECIAL_CASES[key]
-        if items_element.tag == model_tag:
-            return [items_element]
-        if isinstance(model_tag, str):
-            model_tag = [model_tag]
-        return [el for el in [items_element.find(tag) for tag in model_tag] if el]
+class Named(TypedDict):
+    name: str
 
-    return find_model_elements(items_element)
+class AnyValue(Named):
+    pass
 
+#region mixins
+class Nullable(TypedDict):
+    nullable: NotRequired[bool]
 
-def find_model_elements(element: Element) -> List[Element]:
-    if not [child for child in element]:
-        # raise ValueError(f"Looking for a model but we find ourselves at a leaf node")
-        return []
-    if all("type" in child.attrib for child in element):
-        return [element]
+class MinMax(TypedDict):
+    minimum: NotRequired[int]
+    exclusiveMinimum: NotRequired[bool]
+    maximum: NotRequired[int]
+    exclusiveMaximum: NotRequired[bool]
 
-    elements = []
-    for child in element:
-        elements.extend(find_model_elements(child))
-    return elements
+class MinMaxLength(TypedDict):
+    minLength: NotRequired[int]
+    maxLength: NotRequired[int]
+#endregion mixins
 
+class NamedType(Named):
+    type: SpecType
 
-def _parse_property_from_element(element: Element) -> Tuple[str, bool, PropertySchema]:
-    prop_name = element.tag  # e.g. enabled, interval, log
-    field_type = element.attrib.get("type")
-    if not field_type or not field_type.endswith("Field"):
-        children = find_model_elements(element)
-        if not children:
-            msg = f"Element <{prop_name}> does not have a field type attribute"
-            raise ValueError(msg)
+class Int(NamedType, MinMax):
+    type: Literal["integer"]
+    format: NotRequired[Literal["int32"] | Literal["int64"]]
 
-        first_child_type = children[0].attrib["type"]
-        first_child_spec_type = VALIDATOR_TO_SPEC_TYPE[first_child_type]
-        if first_child_spec_type == "array":
-            if len(children) > 1:
-                msg = f"Element <{element.tag}> has multiple ArrayField children"
-                raise ValueError(msg)
+class Num(NamedType, MinMax):
+    type: Literal["number"]
+    format: NotRequired[Literal["float"] | Literal["double"]]
 
-        child_models = []
-        for child in children:
-            # field_type = child.attrib.get("type")
-            child_models.append(_parse_model_from_element(child))
+class Bool(NamedType, Named, Nullable):
+    type: Literal["boolean"]
 
-    spec_type = VALIDATOR_TO_SPEC_TYPE[field_type]
-    prop_def: PropertySchema = {"type": spec_type}
+class String(NamedType):
+    type: Literal["string"]
+    format: NotRequired[StringFormat]
+    pattern: NotRequired[str]  # partial match
 
-    req_el = element.find("Required")
-    req_el = req_el if req_el is not None else element.find("required")
-    is_required = req_el is not None and bool(req_el.text) and req_el.text.upper() == "Y"
+Primitive: TypeAlias = Int | Num | Bool | String
 
-    # TODO: defaults, constraints, objects and arrays
+class OneOf(Named):
+    oneOf: List[NamedType]
 
-    return prop_name, is_required, prop_def
+class AnyOf(Named):
+    anyOf: List[NamedType]
 
+class ArrayItem(TypedDict):
+    type: SpecType
 
-def _parse_model_from_element(model_element: Element) -> Dict[str, ModelSchema]:
-    models = {}
+class Ref(TypedDict):
+    __ref__: str
 
-    name = model_element.tag
-    name = "" if name.lower() == "items" else name
+class Array(NamedType, SchemaType):
+    type: Literal["array"]
+    items: ArrayItem | Ref
 
-    if name in models:
-        raise ValueError(f"Model already defined at '{name}'")
+class Enum()
 
-    properties = {}
-    required_props = []
-    model: ModelSchema = {
-        "type": "object",
-        "required": required_props,
-        "properties": properties,
+a: Array = {
+    "name": "stuff",
+    "type": "array",
+    "items": {
+        "type": "object"
     }
+}
+b: Bool = {
+    "name": "a",
+    "type": "boolean"
+}
 
-    for prop in model_element:
-        prop_name, is_required, prop_schema = _parse_property_from_element(prop)
-        properties[prop_name] = prop_schema
-        if is_required:
-            required_props.append(prop_name)
-
-    models[name] = model
-    return models
+def _walk(path: str, cls: type, spec: Dict, tree: Element) -> Dict:
+    _path = ".".join((path, tree.tag))
+    _type = tree.attrib.get("type", None)
+    # spec_type = FIELD_TO_SPEC_TYPE[_type] if _type is not None
 
 
-def parse_model(model_filename: str) -> Dict[str, ModelSchema]:
+    if spec_type is None:
+        # receiver = expect(None)
+
+    cls = TAG_TO_CLASS
+        def
+    elif spec_type == "string":
+        pass
+    elif spec_type == "boolean":
+        pass
+    elif spec_type == "integer":
+        pass
+    elif spec_type == "number":
+        pass
+    elif spec_type == "array":
+        pass
+    elif spec_type == "object":
+        pass
+    else:
+        raise ValueError(f"unknown spec_type {spec_type}")
+
+
+    schemas = []
+    for child in tree:
+        schema = _walk(_path, child)
+        schemas.append(schema)
+
+
+def parse_model(model_filename: str):
     try:
         tree = ElementTree.parse(model_filename)
         root = tree.getroot()
+        items: Element
 
         #region validation
         if root.tag != "model":
@@ -227,33 +222,21 @@ def parse_model(model_filename: str) -> Dict[str, ModelSchema]:
         mount_element = tree.find("mount")
         if mount_element is None or mount_element.text is None:
             raise ValueError(f"Failed to find the <mount> tag")
-        mount = mount_element.text.replace("//OPNsense/", "").replace("/", ".")
+        path = mount_element.text.replace("//OPNsense/", "").replace("/", ".").lower()
 
-        items_element: Element = tree.find("items")  # type: ignore
-        if items_element is None:
+        items = tree.find("items")  # type: ignore
+        if items is None:
             raise ValueError(f"Failed to find the <items> tag")
         #endregion validation
 
-        model_elements = _find_model_elements_and_handle_special_case(model_filename, items_element)
-
-        # the qualified name we will use in $ref will be the mount point in the config.xml.
-        # if there are container elements within the items element, the container tag will be appended.
-        # e.g.:
-        #   - relayd.general: this is the mount point, the properties are direct children of <items>
-        #   - bind.domain.domains: the mount point is bind.domain, <domains> is a direct child of <items>
-        qualified_model_schemas = {}
-        for model_element in model_elements:
-            print(model_element)
-            model_schemas = _parse_model_from_element(model_element)
-            for name, model_schema in model_schemas.items():
-                qual_name = (f"{mount}.{name}" if name else mount).lower()
-                qualified_model_schemas[qual_name] = model_schema
-
-        return qualified_model_schemas
+        return _walk(path, items)
 
     except Exception as ex:
         ex.args = (f"{model_filename}: {ex}", *ex.args[1:])
         raise
+
+
+
 
 
 def collect_models(source: str):

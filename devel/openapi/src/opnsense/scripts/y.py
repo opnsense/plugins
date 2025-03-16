@@ -34,5 +34,5 @@ for model_filename in special_snowflakes:
 
 
 # tree = ElementTree.parse(model_filename)
-# items_element: Element = tree.find("items")
-# find_model_elements(items_element)
+# items: Element = tree.find("items")
+# find_model_elements(items)
