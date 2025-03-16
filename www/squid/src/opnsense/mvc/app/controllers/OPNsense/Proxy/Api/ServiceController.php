@@ -84,8 +84,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function resetAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             return array('status' => $backend->configdRun('proxy reset'));
         } else {
@@ -101,8 +99,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function refreshTemplateAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             return array('status' => $backend->configdRun('template reload OPNsense/Proxy'));
         } else {
@@ -118,9 +114,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function fetchaclsAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $backend = new Backend();
             // generate template
             $backend->configdRun('template reload OPNsense/Proxy');
@@ -140,9 +133,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function downloadaclsAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $backend = new Backend();
             // generate template
             $backend->configdRun('template reload OPNsense/Proxy');

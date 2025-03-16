@@ -43,10 +43,15 @@ class ServiceController extends ApiControllerBase
         return $devices;
     }
 
-    public function listAction()
+    public function listAction($details = null)
     {
         if ($this->request->isPost()) {
-            return array("devices" => $this->getDevices());
+            $backend = new Backend();
+
+            $devices = empty($details) ? $this->getDevices() :
+                json_decode(trim($backend->configdRun('smart detailed list')), true);
+
+            return ['devices' => $devices];
         }
 
         return array("message" => "Unable to run list action");

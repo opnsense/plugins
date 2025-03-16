@@ -77,7 +77,6 @@ class UserController extends ApiMutableModelControllerBase
 
     public function searchUserAction()
     {
-        $this->sessionClose();
         $mdlUser = $this->getModel();
         $grid = new UIModelGrid($mdlUser->users->user);
         return $grid->fetchBindRequest(

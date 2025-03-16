@@ -7,10 +7,13 @@ WWW: https://miniupnp.tuxfamily.org/
 Plugin Changelog
 ================
 
+1.7
+
+* Add option to allow arbitrary number of UPnP/NAT-PMP rules (contributed by Kreeblah)
+
 1.6
 
 * Fix port maps not listed without description (contributed by Self-Hosting-Group)
-* Move to compatible newwanip_map event
 
 1.5
 

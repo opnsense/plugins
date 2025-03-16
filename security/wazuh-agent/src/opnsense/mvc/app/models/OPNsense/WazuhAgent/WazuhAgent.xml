@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/WazuhAgent</mount>
-    <version>1.0.0</version>
-    <description>
-        Wazuh Agent
-    </description>
+    <version>1.0.2</version>
+    <description>Wazuh Agent</description>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -14,6 +12,21 @@
                 <Required>Y</Required>
                 <IpAllowed>Y</IpAllowed>
             </server_address>
+            <protocol type="OptionField">
+                <default>tcp</default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <tcp>TCP</tcp>
+                    <udp>UDP</udp>
+                </OptionValues>
+            </protocol>
+            <port type="IntegerField">
+                <default>1514</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65536</MaximumValue>
+                <ValidationMessage>This must be a valid port number.</ValidationMessage>
+            </port>
             <debug_level type="OptionField">
                 <default>0</default>
                 <Required>Y</Required>
@@ -27,6 +40,13 @@
         <auth>
             <password type="TextField">
             </password>
+            <port type="IntegerField">
+                <default>1515</default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65536</MaximumValue>
+                <ValidationMessage>This must be a valid port number.</ValidationMessage>
+            </port>
         </auth>
         <logcollector>
             <remote_commands type="BooleanField">

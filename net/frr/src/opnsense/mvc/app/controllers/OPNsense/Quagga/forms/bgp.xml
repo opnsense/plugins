@@ -3,34 +3,34 @@
         <id>bgp.enabled</id>
         <label>enable</label>
         <type>checkbox</type>
-        <help>This will activate the bgp service.</help>
+        <help>This will activate the BGP service.</help>
     </field>
     <field>
         <id>bgp.asnumber</id>
         <label>BGP AS Number</label>
         <type>text</type>
-        <help>Your AS Number here</help>
+        <help>Your AS Number here.</help>
     </field>
     <field>
         <id>bgp.distance</id>
         <label>BGP AD Distance</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>BGP routes usually have an administrative distance of 20. Here you can adjust these values, e.g. when you want to prefer OSPF learned routes.</help>
+        <help>Adjust BGP administrative distance, typically set to 20. Useful if you want to prefer OSPF-learned routes.</help>
     </field>
     <field>
         <id>bgp.routerid</id>
         <label>Router ID</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>In some cases it might be clearer to set a fixed router-id.</help>
+        <help>Optional fixed router ID for BGP.</help>
     </field>
     <field>
         <id>bgp.graceful</id>
         <label>Graceful Restart</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>BGP graceful restart functionality as defined in RFC-4724 defines the mechanisms that allows BGP speaker to continue to forward data packets along known routes while the routing protocol information is being restored.</help>
+        <help>Enable BGP graceful restart as per RFC 4724, allowing packet forwarding during protocol restoration.</help>
     </field>
     <field>
         <id>bgp.networks</id>
@@ -38,7 +38,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Defines which networks, which are connected to this router, will be advertised over BGP. To announce all defined networks, Network Import-Check can be disabled in advanced settings if required.</help>
+        <help>Defines connected networks to be advertised over BGP. Disable Network Import-Check to announce all networks.</help>
     </field>
     <field>
         <id>bgp.networkimportcheck</id>
@@ -51,13 +51,12 @@
         <id>bgp.logneighborchanges</id>
         <label>Log Neighbor Changes</label>
         <type>checkbox</type>
-        <help>This will activate exetended logging of BGP neighbor changes.</help>
+        <help>Enable extended logging of BGP neighbor changes.</help>
     </field>
     <field>
         <id>bgp.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
-        <help>Select other routing sources, which should be redistributed to the other nodes.</help>
-        <hint>Type or select a route source.</hint>
+        <help>Select routing sources to redistribute to other nodes.</help>
     </field>
 </form>

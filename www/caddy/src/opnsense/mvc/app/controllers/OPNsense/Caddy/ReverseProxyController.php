@@ -1,8 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023-2024 Cedrik Pischem
- *    Copyright (C) 2015 Deciso B.V.
+ *    Copyright (C) 2023-2025 Cedrik Pischem
  *
  *    All rights reserved.
  *
@@ -38,12 +37,23 @@ class ReverseProxyController extends IndexController
     public function indexAction()
     {
         $this->view->pick('OPNsense/Caddy/reverse_proxy');
+
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
+        $this->view->formGridReverseProxy = $this->getFormGrid('dialogReverseProxy', null, 'ConfChangeMessage');
+
         $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
+        $this->view->formGridSubdomain = $this->getFormGrid('dialogSubdomain', null, 'ConfChangeMessage');
+
         $this->view->formDialogHandle = $this->getForm("dialogHandle");
-        $this->view->formDialogLayer4 = $this->getForm("dialogLayer4");
+        $this->view->formGridHandle = $this->getFormGrid('dialogHandle', null, 'ConfChangeMessage');
+
         $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
+        $this->view->formGridAccessList = $this->getFormGrid('dialogAccessList', null, 'ConfChangeMessage');
+
         $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
+        $this->view->formGridBasicAuth = $this->getFormGrid('dialogBasicAuth', null, 'ConfChangeMessage');
+
         $this->view->formDialogHeader = $this->getForm("dialogHeader");
+        $this->view->formGridHeader = $this->getFormGrid('dialogHeader', null, 'ConfChangeMessage');
     }
 }

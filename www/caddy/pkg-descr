@@ -13,6 +13,92 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.3
+
+* Add: Update DNS Providers with new optional choices (opnsense/plugins/issues/4543)
+* Add: propagation_timeout and propagation_delay (opnsense/plugins/issues/4544)
+
+1.8.2
+
+* Add: client_ip_headers (opnsense/plugins/issues/4517)
+* Add: CloudDNS provider (opnsense/plugins/pull/4507)
+* Change: Generalize forward_auth copy_headers directive. Existing configuration from (issues/4488) will be emptied. (opnsense/plugins/pull/4519)
+* Fix: Shortcut buttons in reverse_proxy.volt (opnsense/plugins/pull/4525)
+
+1.8.1
+
+* Add: Optional "Authorization" header to forward_auth (opnsense/plugins/issues/4488)
+* Add: Persistent banner notification if custom imports are used (opnsense/plugins/issues/4244)
+* Cleanup: Implement reusable grid template in views (opnsense/plugins/pull/4454)
+
+1.8.0
+
+* Build: Update Caddy to version 2.9.x and update dependencies (opnsense/plugins/issues/4437)
+* Build: Fix caddy-l4 timeout issue (opnsense/plugins/issues/4384)
+* Build: Mark DNS Providers optional that are not included per default (opnsense/plugins/pull/4441)
+         digitalocean, route53, googleclouddns, netlify, ddnss, njalla, tencentcloud
+         dinahosting, civo, easydns, hosttech; must be added via https://caddyserver.com/docs/command-line#caddy-add-package
+* Cleanup: Refactor caddy.inc and add syslog function, change name from Caddy Web Server to Caddy (opnsense/plugins/issues/4426)
+* Cleanup: Some small UI tweaks (opnsense/plugins/pull/4442)
+* Change: Disable HTTP/3 to mitigate status 400 issue when reverse proxying the OPNsense WebGUI (opnsense/plugins/issues/4471)
+
+1.7.6
+
+* Fix: Web UI can still restart/stop Caddy when running as `www` user (opnsense/plugins/pull/4403)
+* Fix: Wildcard certificates displaying in Certificate Widget (opnsense/plugins/pull/4390)
+* Fix: http being correctly prepended on redirects (opnsense/plugins/pull/4385)
+
+1.7.5
+
+* Add: Load Balancing options to Layer 4 Proxy and HTTP Handle
+* Add: Layer4 TLS Termination
+* Add: h2c protocol to HTTP Handler
+* Cleanup: Caddy Certificate widget hides unused automatic certificates
+* Cleanup: Widgets error handling improved
+* Cleanup: Refactor caddy_certs.php to Trust model
+
+1.7.4
+
+* Add: Layer4 OpenVPN matcher with mode, digest and static key support
+* Add: Layer4 Winbox matcher
+* Add: Layer4 QUIC matcher
+* Build: Update dependency to lang/go123
+* Build: Update caddy-l4 and caddy-dynamicdns module
+* Build: Fix that caddy-l4 does not stop when ssh is proxied
+* Build: DNS Providers: Update porkbun, dnsmadeeasy
+* Cleanup: Layer4 default route in listener_wrappers has been removed (obsolete)
+* Fix: Error when same Access List is set to wildcard and subdomain
+
+1.7.3
+
+* Add: Clear All button to Filter by Domain selectpicker
+* Change: Layer4 Proxy has own menu entry
+* Change: Domains and Subdomains are in same tab, Subdomains are not initially hidden anymore
+* Fix: WebGUI port conflict validation triggers too aggressively
+
+1.7.2
+
+* Add: Directive in HTTP Handler can be chosen, "reverse_proxy" and "redir"
+* Add: Layer4 routes feature. Routing Type "global" or "listener_wrapper" can be chosen
+* Add: Any Layer4 TCP/UDP traffic can be proxied without choosing a Layer 7 protocol matcher
+* Change: Layer4 routes are not ordered automatically anymore
+* Change: Layer4 "not tls sni" matcher has been replaced by generalized "Invert Matchers" checkbox
+* Build: Update Caddy Layer4 module, fixes TLS matcher in chromium based browsers
+* Fix: When Apply takes longer than 20 seconds, Caddy will be forcefully restarted
+
+1.7.1
+
+* Add: Frontend HTTP Version can be selected in General Settings, can be used to disable QUIC protocol
+* Add: Access Lists can now be defined per HTTP Handler in advanced mode
+* Change: Caddy Domains widget will now open links to managed websites in new browser tabs
+* Change: To select tls_insecure_skip_verify in a HTTP Handler, the protocol https:// must be chosen
+* Change: Abort from General Settings has been removed, it is now automatically added to all Access Lists
+* Cleanup: Caddyfile template logic for Access Lists has been rewritten
+* Cleanup: TLS checkboxes have been converted to dropdowns with http/https for clarity
+* Cleanup: Layer4, Domain and Handle dialogues have been cleaned up, some options are now hidden in advanced mode
+* Fix: Layer4 default ports did not render due to regression in previous version
+* Fix: Invert in Access Lists did not render due to regression in previous version
+
 1.7.0
 
 * Add: Layer4 protocols: DNS

@@ -3,7 +3,7 @@
         <name>Services: Wake on LAN</name>
         <patterns>
             <pattern>ui/wol/*</pattern>
-            <pattern>api/wol/*</pattern>
+            <pattern>api/wol/wol/*</pattern>
         </patterns>
     </page-services-wakeonlan>
 </acl>

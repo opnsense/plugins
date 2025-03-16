@@ -231,6 +231,11 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
 			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			gzip -cn "${DESTDIR}${LOCALBASE}/$${FILE}" > \
+			    "${DESTDIR}${LOCALBASE}/$${FILE}.gz"; \
+			rm "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
@@ -243,6 +248,9 @@ plist: check
 		elif [ "$${FILE%%.shadow}" != "$${FILE}" ]; then \
 			FILE="$${FILE%%.shadow}.sample"; \
 			PREFIX="@shadow "; \
+		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			FILE="$${FILE}.gz"; \
 		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
 	done
@@ -279,6 +287,9 @@ remove: check
 WRKDIR?=${.CURDIR}/work
 WRKSRC?=${WRKDIR}/src
 PKGDIR?=${WRKDIR}/pkg
+
+ensure-workdirs:
+	@mkdir -p ${WRKSRC} ${PKGDIR}
 
 package: check
 	@rm -rf ${WRKSRC}
@@ -366,6 +377,15 @@ lint-model:
 		done; \
 	done; fi
 
+ACLBIN?=	${.CURDIR}/../../../core/Scripts/dashboard-acl.sh
+
+lint-acl: check
+.if exists(${ACLBIN})
+	@${ACLBIN} ${.CURDIR}/../../../core
+.else
+	@echo "Did not find ACLBIN, please provide a core repository"; exit 1
+.endif
+
 lint-exec: check
 .for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
 .if exists(${DIR})
@@ -384,7 +404,7 @@ lint-php: check
 	@echo "Did not find LINTBIN, please provide a core repository"; exit 1
 .endif
 
-lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
+lint: lint-desc lint-shell lint-xml lint-model lint-acl lint-exec lint-php
 
 plist-fix:
 
@@ -396,6 +416,8 @@ sweep: check
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
 	find ${.CURDIR} -type f -depth 1 -print0 | \
 	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
+
+glint: sweep style-fix plist-fix lint
 
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
@@ -445,5 +467,9 @@ test: check
 		    phpunit --configuration PHPunit.xml \
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
+
+commit: ensure-workdirs
+	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
+	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
 
 .PHONY:	check plist-fix

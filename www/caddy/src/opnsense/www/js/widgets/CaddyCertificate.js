@@ -38,8 +38,8 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     getMarkup() {
-        let $container = $('<div></div>');
-        let $caddyCertificateTable = this.createTable('caddyCertificateTable', {
+        const $container = $('<div></div>');
+        const $caddyCertificateTable = this.createTable('caddyCertificateTable', {
             headerPosition: 'none'
         });
 
@@ -48,49 +48,54 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        // Check if Caddy is enabled
-        const caddyStatus = await this.ajaxCall('/api/caddy/reverse_proxy/get');
-        if (!caddyStatus.caddy.general || caddyStatus.caddy.general.enabled === "0") {
+        const proxyData = await this.ajaxCall('/api/caddy/reverse_proxy/get');
+        if (!proxyData.caddy.general || proxyData.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;
         }
 
-        // Fetch the certificate details
-        const response = await this.ajaxCall('/api/caddy/diagnostics/certificate');
-        if (response.status !== "success") {
+        const domains = Object.values(proxyData.caddy.reverseproxy?.reverse || [])
+            .map(proxy => proxy.FromDomain)
+            .filter(Boolean);
+
+        const certificates = (await this.ajaxCall('/api/caddy/diagnostics/certificate')).content || [];
+
+        // Display certificate if hostname in config and CN of stored cert on disk match
+        const matchingCertificates = certificates.filter(cert => domains.includes(cert.hostname));
+
+        if (matchingCertificates.length === 0) {
             this.displayError(`${this.translations.nocerts}`);
             return;
         }
 
-        // Process certificates if the response is successful
-        this.processCertificates(response.content);
+        this.clearError();
+        this.processCertificates(matchingCertificates);
     }
 
-    // Utility function to display errors within the widget
     displayError(message) {
         const $error = $(`<div class="error-message"><a href="/ui/caddy/general">${message}</a></div>`);
         $('#caddyCertificateTable').empty().append($error);
     }
 
-    processCertificates(certificates) {
-        if (!this.dataChanged('certificates', certificates)) {
-            return;
-        }
+    clearError() {
+        $('#caddyCertificateTable .error-message').remove();
+    }
 
+    processCertificates(certificates) {
         $('.caddy-certificate-tooltip').tooltip('hide');
 
-        let rows = certificates.map(certificate => {
-            let colorClass = 'text-success';
-            if (certificate.remaining_days === 0) {
-                colorClass = 'text-danger';
-            } else if (certificate.remaining_days < 14) {
-                colorClass = 'text-warning';
-            }
+        const rows = certificates.map(certificate => {
+            const colorClass = certificate.remaining_days === 0
+                ? 'text-danger'
+                : certificate.remaining_days < 14
+                ? 'text-warning'
+                : 'text-success';
 
-            let statusText = certificate.remaining_days === 0 ? this.translations.expired :
-                             this.translations.valid;
+            const statusText = certificate.remaining_days === 0
+                ? this.translations.expired
+                : this.translations.valid;
 
-            let row = `
+            const row = `
                 <div>
                     <i class="fa fa-lock ${colorClass} caddy-certificate-tooltip" style="cursor: pointer;"
                         data-tooltip="caddy-certificate-${certificate.hostname}" title="${statusText}">
@@ -98,19 +103,19 @@ export default class CaddyCertificate extends BaseTableWidget {
                     &nbsp;
                     <span><b>${certificate.hostname}</b></span>
                     <br/>
-                    <div style="margin-top: 5px; margin-bottom: 5px;"><i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days}, ${new Date(certificate.expiration_date).toLocaleString()}</div>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                        <i>${this.translations.expires}</i> ${certificate.remaining_days} ${this.translations.days},
+                        ${new Date(certificate.expiration_date).toLocaleString()}
+                    </div>
                 </div>`;
             return { html: row, expirationDate: new Date(certificate.expiration_date) };
         });
 
-        // Sort rows by expiration date from lowest to highest
         rows.sort((a, b) => a.expirationDate - b.expirationDate);
 
-        // Extract sorted HTML rows and update table
-        let sortedRows = rows.map(row => [row.html]);
+        const sortedRows = rows.map(row => [row.html]);
         super.updateTable('caddyCertificateTable', sortedRows);
 
-        // Initialize tooltips for new elements
-        $('.caddy-certificate-tooltip').tooltip({container: 'body'});
+        $('.caddy-certificate-tooltip').tooltip({ container: 'body' });
     }
 }

@@ -1,0 +1,24 @@
+(C) 2024 JSC Positive Technologies. All rights reserved.
+
+Definitions
+
+“Program” refers to any copyrightable work (including rule sets for open source network threat detection engine Suricata) and associated documentation files licensed under this License, accessible at: https://rules.ptsecurity.com “License” means the terms of this license agreement which apply to the Program.
+“Licensee” refers to individuals or legal entities accessing and/or using the Program.
+“Modify” a work (part of the work) means to make any change, including translation of the Program from one language into another, except for adaptation.
+“Copyright holder” means JSС Positive Technologies as the holder of the exclusive right to the Program.
+
+Legal Usage
+
+The Licensee is hereby granted free of charge the rights to use, copy, publish, distribute, sublicense, and/or sell copies of the Program for non-commercial and commercial use subject to the following conditions:
+· The above copyright notice shall be included in all copies or substantial portions of the Program.
+· Neither the name of the Copyright holder nor the names of its contributors may be used to endorse or promote programs in which the Program was integrated without specific prior written permission.
+· Redistributions of the Program must retain the above copyright notice and the full text of the License.
+No permission is hereby granted to the Licensee to modify the Program and distribute the modified Program. However, for the avoidance of doubt, the Licensee is granted the right to integrate the original Program into other programs and distribute such programs.
+
+Applicable law
+
+This License is governed by the laws of the Russian Federation. The rules of the article 1286.1 of the Civil Code of the Russian Federation are applicable to this License.
+
+Disclaimer
+
+THIS PROGRAM IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS”. UNDER NO CIRCUMSTANCES THE COPYRIGHT HOLDER IS LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES RESULTING FROM (I) THE LICENSEE'S USE OF THE PROGRAM; (II) THE LICENSEE'S INTERPRETATION AND APPLICATION OF ANY FILES, METHODS, OR ANY OTHER INFORMATION PROVIDED ON OR THROUGH THE PROGRAM; (III) THE FAILURE OF THE PROGRAM TO MEET THE LICENSEE'S EXPECTATIONS. IF, NOTWITHSTANDING THE OTHER PROVISIONS OF THIS LISENCE, THE COPYRIGHT HOLDER IS FORCED TO BEAR RESPONSIBILITY TO THE LICENSEE FOR ANY LOSSES RELATED TO THE LICENSEE'S USE OF THE PROGRAM, THE COPYRIGHT HOLDER’S LIABILITY SHALL IN NO CASE EXCEED THE EQUIVALENT OF 10 (TEN) U.S. DOLLARS.

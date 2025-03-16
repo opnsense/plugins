@@ -349,6 +349,9 @@
         <Required>Y</Required>
         <default>1</default>
       </cache_min_uses>
+      <cache_valid type="IntegerField">
+        <Required>N</Required>
+      </cache_valid>
       <cache_background_update type="BooleanField">
         <Required>Y</Required>
         <default>0</default>

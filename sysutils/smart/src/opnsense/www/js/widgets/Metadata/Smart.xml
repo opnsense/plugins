@@ -1,9 +1,9 @@
 <metadata>
     <smart>
         <filename>Smart.js</filename>
+        <link>/ui/smart</link>
         <endpoints>
-            <endpoint>/api/smart/service/list</endpoint>
-            <endpoint>/api/smart/service/info</endpoint>
+            <endpoint>/api/smart/service/*</endpoint>
         </endpoints>
         <translations>
             <title>SMART Status</title>

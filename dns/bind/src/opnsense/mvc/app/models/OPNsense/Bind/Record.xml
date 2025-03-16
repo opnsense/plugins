@@ -6,7 +6,7 @@
         <records>
             <record type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <domain type="ModelRelationField">
@@ -19,12 +19,9 @@
                         </template>
                     </Model>
                 </domain>
-                <name type="TextField">
-                    <default></default>
-                    <Required>N</Required>
-                </name>
+                <name type="TextField"/>
                 <type type="OptionField">
-                    <default>A</default>
+                    <Default>A</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <A>A</A>

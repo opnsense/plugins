@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.0</version>
+    <version>1.3.5</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,42 +26,69 @@
                 <OptionValues>
                     <cloudflare>Cloudflare</cloudflare>
                     <duckdns>Duck DNS</duckdns>
-                    <digitalocean>DigitalOcean</digitalocean>
                     <gandi>Gandi</gandi>
                     <ionos>IONOS</ionos>
                     <desec>Desec</desec>
                     <porkbun>Porkbun</porkbun>
-                    <route53>Route53</route53>
                     <acmedns>ACME-DNS</acmedns>
-                    <googleclouddns>Google Cloud DNS</googleclouddns>
                     <azure>Azure</azure>
                     <ovh>OVH</ovh>
                     <namecheap>Namecheap</namecheap>
-                    <netlify>Netlify</netlify>
                     <powerdns>PowerDNS</powerdns>
-                    <ddnss>DDNSS</ddnss>
-                    <njalla>Njalla</njalla>
                     <linode>Linode</linode>
-                    <tencentcloud>Tencent Cloud</tencentcloud>
-                    <dinahosting>Dinahosting</dinahosting>
                     <hexonet>Hexonet</hexonet>
                     <mailinabox>Mail-in-a-Box</mailinabox>
-                    <netcup>Netcup</netcup>
                     <rfc2136>RFC2136</rfc2136>
                     <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
                     <bunny>Bunny</bunny>
-                    <civo>Civo</civo>
                     <scaleway>Scaleway</scaleway>
                     <acmeproxy>ACME Proxy</acmeproxy>
                     <inwx>INWX</inwx>
                     <netcup>Netcup</netcup>
                     <namedotcom>Name.com</namedotcom>
-                    <easydns>EasyDNS</easydns>
                     <infomaniak>Infomaniak</infomaniak>
                     <directadmin>DirectAdmin</directadmin>
-                    <hosttech>Hosttech</hosttech>
                     <vultr>Vultr</vultr>
                     <hetzner>Hetzner</hetzner>
+                    <digitalocean>DigitalOcean (optional)</digitalocean>
+                    <route53>Route53 (optional)</route53>
+                    <googleclouddns>Google Cloud DNS (optional)</googleclouddns>
+                    <netlify>Netlify (optional)</netlify>
+                    <ddnss>DDNSS (optional)</ddnss>
+                    <njalla>Njalla (optional)</njalla>
+                    <tencentcloud>Tencent Cloud (optional)</tencentcloud>
+                    <dinahosting>Dinahosting (optional)</dinahosting>
+                    <civo>Civo (optional)</civo>
+                    <easydns>EasyDNS (optional)</easydns>
+                    <hosttech>Hosttech (optional)</hosttech>
+                    <cloudns>ClouDNS (optional)</cloudns>
+                    <gcore>Gcore (optional)</gcore>
+                    <huaweicloud>Huawei Cloud (optional)</huaweicloud>
+                    <dnsexit>DNSExit (optional)</dnsexit>
+                    <nanelo>Nanelo (optional)</nanelo>
+                    <katapult>Katapult (optional)</katapult>
+                    <regfish>Regfish (optional)</regfish>
+                    <leaseweb>Leaseweb (optional)</leaseweb>
+                    <dreamhost>DreamHost (optional)</dreamhost>
+                    <exoscale>Exoscale (optional)</exoscale>
+                    <transip>TransIP (optional)</transip>
+                    <selectel>Selectel (optional)</selectel>
+                    <dnsimple>DNSimple (optional)</dnsimple>
+                    <luadns>LuaDNS (optional)</luadns>
+                    <he>Hurricane Electric (optional)</he>
+                    <namesilo>Namesilo (optional)</namesilo>
+                    <dode>Dode (optional)</dode>
+                    <dynu>Dynu (optional)</dynu>
+                    <glesys>Glesys (optional)</glesys>
+                    <nfsn>NFSN (optional)</nfsn>
+                    <godaddy>GoDaddy (optional)</godaddy>
+                    <vercel>Vercel (optional)</vercel>
+                    <loopia>Loopia (optional)</loopia>
+                    <dnspod>DNSPod (optional)</dnspod>
+                    <mythicbeasts>Mythic Beasts (optional)</mythicbeasts>
+                    <dynv6>Dynv6 (optional)</dynv6>
+                    <alidns>AliDNS (optional)</alidns>
+                    <metaname>Metaname (optional)</metaname>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
@@ -71,6 +98,14 @@
             <TlsDnsOptionalField3 type="TextField"/>
             <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
+            <TlsDnsPropagationTimeoutPeriod type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationTimeoutPeriod>
+            <TlsDnsPropagationDelay type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationDelay>
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
@@ -84,15 +119,42 @@
                     </reverseproxy>
                 </Model>
             </accesslist>
-            <abort type="BooleanField"/>
-            <DisableSuperuser type="BooleanField"/>
+            <ClientIpHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
+                <Multiple>Y</Multiple>
+            </ClientIpHeaders>
+            <DisableSuperuser type="OptionField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <OptionValues>
+                    <root value="0">root (default)</root>
+                    <www value="1">www</www>
+                </OptionValues>
+            </DisableSuperuser>
             <GracePeriod type="IntegerField">
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
-                <MaximumValue>3600</MaximumValue>
-                <ValidationMessage>Please enter a valid Grace Period between 1 and 3600 seconds.</ValidationMessage>
+                <MaximumValue>20</MaximumValue>
+                <ValidationMessage>Please enter a valid Grace Period between 1 and 20 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
+            <HttpVersions type="OptionField">
+                <Required>Y</Required>
+                <Default>h1,h2</Default>
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <h1>HTTP/1.1</h1>
+                    <h2>HTTP/2</h2>
+                    <h3>HTTP/3</h3>
+                </OptionValues>
+            </HttpVersions>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">
@@ -140,11 +202,29 @@
             </AuthProvider>
             <AuthToDomain type="HostnameField"/>
             <AuthToPort type="PortField"/>
-            <AuthToTls type="BooleanField"/>
+            <AuthToTls type="OptionField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <OptionValues>
+                    <http value="0">http://</http>
+                    <https value="1">https://</https>
+                </OptionValues>
+            </AuthToTls>
             <AuthToUri type="TextField">
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
+            <CopyHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
+                <Multiple>Y</Multiple>
+            </CopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -182,11 +262,20 @@
                 </basicauth>
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
-                <CustomCertificate type="CertificateField"/>
+                <CustomCertificate type="CertificateField">
+                    <BlankDesc>ACME</BlankDesc>
+                </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
-                <DisableTls type="BooleanField"/>
+                <DisableTls type="OptionField">
+                    <Required>Y</Required>
+                    <Default>0</Default>
+                    <OptionValues>
+                        <https value="0">https://</https>
+                        <http value="1">http://</http>
+                    </OptionValues>
+                </DisableTls>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -245,8 +334,8 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.reverse</items>
-                            <display>FromDomain,FromPort</display>
-                            <display_format>%s %s</display_format>
+                            <display>DisableTls,FromDomain,FromPort</display>
+                            <display_format>%s%s %s</display_format>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -255,7 +344,7 @@
                         <reverseproxy>
                             <source>OPNsense.Caddy.Caddy</source>
                             <items>reverseproxy.subdomain</items>
-                            <display>FromDomain,FromPort</display>
+                            <display>FromDomain,description</display>
                             <display_format>%s %s</display_format>
                         </reverseproxy>
                     </Model>
@@ -272,6 +361,16 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </HandlePath>
+                <accesslist type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName,description</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                </accesslist>
                 <header type="ModelRelationField">
                     <Model>
                         <reverseproxy>
@@ -283,6 +382,14 @@
                     </Model>
                     <Multiple>Y</Multiple>
                 </header>
+                <HandleDirective type="OptionField">
+                    <Required>Y</Required>
+                    <Default>reverse_proxy</Default>
+                    <OptionValues>
+                        <reverse_proxy>reverse_proxy</reverse_proxy>
+                        <redir>redir</redir>
+                    </OptionValues>
+                </HandleDirective>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <FieldSeparator>,</FieldSeparator>
@@ -294,16 +401,18 @@
                     <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
                 </ToPath>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <ForwardAuth type="BooleanField"/>
-                <HttpTls type="BooleanField">
+                <HttpTls type="OptionField">
+                    <Required>Y</Required>
+                    <Default>0</Default>
+                    <OptionValues>
+                        <http value="0">http://</http>
+                        <https value="1">https://</https>
+                        <h2c value="2">h2c://</h2c>
+                    </OptionValues>
                     <Constraints>
                         <check001>
-                            <ValidationMessage>TLS and NTLM must be enabled at the same time.</ValidationMessage>
+                            <ValidationMessage>HTTPS and NTLM must be enabled at the same time.</ValidationMessage>
                             <type>DependConstraint</type>
                             <addFields>
                                 <field1>HttpNtlm</field1>
@@ -312,7 +421,7 @@
                     </Constraints>
                 </HttpTls>
                 <HttpVersion type="OptionField">
-                    <BlankDesc>HTTP/1.1, HTTP/2</BlankDesc>
+                    <BlankDesc>HTTP/1.1, HTTP/2 (default)</BlankDesc>
                     <OptionValues>
                         <http1>HTTP/1.1</http1>
                         <http2>HTTP/2</http2>
@@ -335,6 +444,46 @@
                     <Type>ca</Type>
                 </HttpTlsTrustedCaCerts>
                 <HttpTlsServerName type="HostnameField"/>
+                <lb_policy type="OptionField">
+                    <BlankDesc>random</BlankDesc>
+                    <OptionValues>
+                        <first>first</first>
+                        <round_robin>round_robin</round_robin>
+                        <least_conn>least_conn</least_conn>
+                        <ip_hash>ip_hash</ip_hash>
+                        <client_ip_hash>client_ip_hash</client_ip_hash>
+                        <uri_hash>uri_hash</uri_hash>
+                    </OptionValues>
+                </lb_policy>
+                <lb_retries type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_retries>
+                <lb_try_duration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_duration>
+                <lb_try_interval type="IntegerField"/>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <PassiveHealthMaxFails type="IntegerField">
+                    <MinimumValue>2</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthMaxFails>
+                <PassiveHealthUnhealthyStatus type="TextField">
+                    <mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</mask>
+                    <ValidationMessage>Please enter a valid HTTP response code like 404 a status code class like 4xx.</ValidationMessage>
+                </PassiveHealthUnhealthyStatus>
+                <PassiveHealthUnhealthyLatency type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyLatency>
+                <PassiveHealthUnhealthyRequestCount type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyRequestCount>
                 <description type="DescriptionField"/>
             </handle>
             <accesslist type="ArrayField">
@@ -397,8 +546,35 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
-                <FromDomain type="HostnameField">
+                <Sequence type="AutoNumberField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>99999</MaximumValue>
+                    <ValidationMessage>Please enter a value between 1 and 99999 or leave empty.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Sequence value has to be unique or empty.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </Sequence>
+                <Type type="OptionField">
                     <Required>Y</Required>
+                    <Default>listener_wrappers</Default>
+                    <OptionValues>
+                        <listener_wrappers>listener_wrappers</listener_wrappers>
+                        <global>global</global>
+                    </OptionValues>
+                </Type>
+                <Protocol type="OptionField">
+                    <Required>Y</Required>
+                    <Default>tcp</Default>
+                    <OptionValues>
+                        <tcp>TCP</tcp>
+                        <udp>UDP</udp>
+                    </OptionValues>
+                </Protocol>
+                <FromPort type="PortField"/>
+                <FromDomain type="HostnameField">
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
@@ -406,37 +582,64 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
                 </FromDomain>
+                <FromOpenvpnModes type="OptionField">
+                    <BlankDesc>Any</BlankDesc>
+                    <OptionValues>
+                        <auth_sha256_normal>tls-auth_sha256_normal</auth_sha256_normal>
+                        <auth_sha256_inverse>tls-auth_sha256_inverse</auth_sha256_inverse>
+                        <auth_sha512_normal>tls-auth_sha512_normal</auth_sha512_normal>
+                        <auth_sha512_inverse>tls-auth_sha512_inverse</auth_sha512_inverse>
+                        <crypt>tls-crypt</crypt>
+                        <crypt2_client>tls-crypt2_client</crypt2_client>
+                        <crypt2_server>tls-crypt2_server</crypt2_server>
+                    </OptionValues>
+                </FromOpenvpnModes>
+                <FromOpenvpnStaticKey type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.layer4openvpn</items>
+                            <display>description</display>
+                            <display_format>%s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </FromOpenvpnStaticKey>
                 <Matchers type="OptionField">
                     <Required>Y</Required>
                     <Default>tlssni</Default>
                     <OptionValues>
+                        <any>ANY</any>
                         <dns>DNS</dns>
+                        <http>HTTP</http>
                         <httphost>HTTP (Host Header)</httphost>
+                        <openvpn>OpenVPN</openvpn>
                         <postgres>Postgres</postgres>
                         <proxy_protocol>Proxy Protocol</proxy_protocol>
+                        <quic>QUIC</quic>
+                        <quicsni>QUIC (SNI Client Hello)</quicsni>
                         <rdp>RDP</rdp>
                         <socks4>SOCKSv4</socks4>
                         <socks5>SOCKSv5</socks5>
                         <ssh>SSH</ssh>
-                        <tlssni>TLS (SNI)</tlssni>
-                        <nottlssni>TLS (inverted SNI)</nottlssni>
+                        <tls>TLS</tls>
+                        <tlssni>TLS (SNI Client Hello)</tlssni>
+                        <winbox>Winbox</winbox>
+                        <wireguard>Wireguard</wireguard>
                         <xmpp>XMPP</xmpp>
                     </OptionValues>
                 </Matchers>
+                <InvertMatchers type="BooleanField"/>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
+                <TerminateTls type="BooleanField"/>
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
-                <PassiveHealthFailDuration type="IntegerField">
-                    <MinimumValue>1</MinimumValue>
-                    <MaximumValue>100</MaximumValue>
-                    <ValidationMessage>Please enter a value between 1 to 100.</ValidationMessage>
-                </PassiveHealthFailDuration>
                 <ProxyProtocol type="OptionField">
                     <BlankDesc>Off (default)</BlankDesc>
                     <OptionValues>
@@ -444,6 +647,25 @@
                         <v2>v2</v2>
                     </OptionValues>
                 </ProxyProtocol>
+                <lb_policy type="OptionField">
+                    <BlankDesc>random</BlankDesc>
+                    <OptionValues>
+                        <first>first</first>
+                        <round_robin>round_robin</round_robin>
+                        <least_conn>least_conn</least_conn>
+                        <ip_hash>ip_hash</ip_hash>
+                        <client_ip_hash>client_ip_hash</client_ip_hash>
+                        <uri_hash>uri_hash</uri_hash>
+                    </OptionValues>
+                </lb_policy>
+                <PassiveHealthFailDuration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthFailDuration>
+                <PassiveHealthMaxFails type="IntegerField">
+                    <MinimumValue>2</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthMaxFails>
                 <RemoteIp type="NetworkField">
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
@@ -452,6 +674,20 @@
                 </RemoteIp>
                 <description type="DescriptionField"/>
             </layer4>
+            <layer4openvpn type="ArrayField">
+                <StaticKey type="TextField">
+                    <Required>Y</Required>
+                </StaticKey>
+                <description type="DescriptionField">
+                    <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>Description must be unique.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </description>
+            </layer4openvpn>
         </reverseproxy>
     </items>
 </model>

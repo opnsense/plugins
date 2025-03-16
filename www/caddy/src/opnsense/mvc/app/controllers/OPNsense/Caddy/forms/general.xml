@@ -2,15 +2,20 @@
     <tab id="general-settings" description="General Settings">
         <field>
             <id>caddy.general.enabled</id>
-            <label>Enabled</label>
+            <label>Enable Caddy</label>
             <type>checkbox</type>
             <help><![CDATA[Enable or disable the Caddy web server.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.EnableLayer4</id>
+            <label>Enable Layer4 Proxy</label>
+            <type>checkbox</type>
+            <help><![CDATA[Enable Layer4 Proxy to stream TCP/UDP. Layer4 Proxy matches before the Reverse Proxy; both can be used concurrently. More information: https://github.com/mholt/caddy-l4]]></help>
         </field>
         <field>
             <id>caddy.general.TlsEmail</id>
             <label>ACME Email</label>
             <type>text</type>
-            <hint>info@example.com</hint>
             <help><![CDATA[Enter the email address for certificate notifications. This is required to receive automatic certificates from "Let's Encrypt" and "ZeroSSL".]]></help>
         </field>
         <field>
@@ -22,16 +27,16 @@
     </tab>
     <tab id="general-advanced" description="Advanced Settings">
         <field>
-            <id>caddy.general.EnableLayer4</id>
-            <label>Enable Layer4</label>
-            <type>checkbox</type>
-            <help><![CDATA[Enable Layer4 support to stream TCP/UDP. This feature is in active developement and the configuration can break or change in the future. The Layer4 app matches before the HTTP app. Deactivating this option will remove all Layer4 functionality completely. More information: https://github.com/mholt/caddy-l4]]></help>
+            <id>caddy.general.DisableSuperuser</id>
+            <label>System User</label>
+            <type>dropdown</type>
+            <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
         </field>
         <field>
-            <id>caddy.general.DisableSuperuser</id>
-            <label>Disable Superuser</label>
-            <type>checkbox</type>
-            <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
+            <id>caddy.general.HttpVersions</id>
+            <label>HTTP Versions</label>
+            <type>select_multiple</type>
+            <help><![CDATA[Select the HTTP versions for the frontend listeners. By default, QUIC (HTTP/3) is disabled.]]></help>
         </field>
         <field>
             <id>caddy.general.HttpPort</id>
@@ -54,17 +59,21 @@
             <help><![CDATA[Select an Access List to set IP ranges of Trusted Proxies. If Caddy is not the first server being connected to by clients (for example, when a "CDN" is in front of Caddy), configure "Trusted Proxies" with a list of IP ranges (CIDRs) from which incoming requests are trusted to have sent good values for these headers. Additionally, set the same Access List to the domains the Trusted Proxies connect to.]]></help>
         </field>
         <field>
-            <id>caddy.general.abort</id>
-            <label>Abort Connections</label>
-            <type>checkbox</type>
-            <help><![CDATA[Abort all connections that don't have a matching Handle or Access List. This option does not conflict with "Let's Encrypt" or "ZeroSSL". Disable it for troubleshooting purposes, e.g., testing if the "Domain" works and the automatic certificate has been installed. For production use, enabling this option is recommended.]]></help>
+            <id>caddy.general.ClientIpHeaders</id>
+            <label>Client IP Headers</label>
+            <type>dropdown</type>
+            <type>select_multiple</type>
+            <size>5</size>
+            <style>selectpicker</style>
+            <hint>X-Forwarded-For</hint>
+            <help><![CDATA[Select one or multiple headers to extract the real client IP. Headers can be added in "Reverse Proxy - Headers". As example, setting "X-Forwarded-For" and "Cf-Connecting-Ip" can extract the real client IP from Cloudflare.]]></help>
         </field>
         <field>
             <id>caddy.general.GracePeriod</id>
             <label>Grace Period</label>
             <type>text</type>
             <hint>10</hint>
-            <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. During the grace period, no new connections are accepted, idle connections are closed, and active connections are impatiently waited upon to finish their requests. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close.]]></help>
+            <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close. If the grace period is over and Caddy is unresponsive, there will be a forced kill and service restart.]]></help>
         </field>
     </tab>
     <tab id="general-logsettings" description="Log Settings">
@@ -99,48 +108,47 @@
             <id>caddy.general.TlsDnsProvider</id>
             <label>DNS Provider</label>
             <type>dropdown</type>
-            <help><![CDATA[Select the DNS provider for the DNS-01 Challenge and Dynamic DNS. This is mostly needed for Wildcard Certificates, and for Dynamic DNS. To use, enable the checkbox in a "Domain" or "Subdomain". For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
-        </field>
-        <field>
-            <id>caddy.general.TlsDnsApiKey</id>
-            <label>DNS API Standard Field</label>
-            <type>text</type>
-            <help><![CDATA[This is the standard field for the API Key. Field can be left empty if optional: Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Njalla "api_token", Google Cloud DNS "gcp_project", Azure "tenant_id", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url", DNS Made Easy "api_key", Bunny "access_key", Civo "api_token", Scaleway "secret_key", ACME Proxy "username", INWX "username", Netcup "customer_number", RFC2136 "key_name", Name.com "token", EasyDNS "api_token", Infomaniak "api_token", DirectAdmin "host", Hosttech "api_token", Vultr "api_token", Hetzner "api_token"]]></help>
+            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be installed manually, see https://caddyserver.com/docs/command-line#caddy-add-package. Important: When the version of the caddy binary changes, "optional" provider must be reinstalled. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
         </field>
         <field>
             <type>header</type>
-            <label>Additional Fields</label>
-            <collapse>true</collapse>
+            <label>API Fields</label>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsApiKey</id>
+            <label>API Field 1</label>
+            <type>text</type>
+            <help><![CDATA[This is the standard field for the API Key. Field can be left empty if optional for the chosen provider. Cloudflare "api_token", Duckdns "api_token", DigitalOcean "auth_token", Godaddy "api_token", Gandi "bearer_token", IONOS "api_token", deSEC "token", Route53 "access_key_id", Porkbun "api_key", ACME-DNS "username", Netlify "personal_access_token", Njalla "api_token", Google Cloud DNS "gcp_project", Azure "tenant_id", OVH "endpoint", Namecheap "api_key", PowerDNS "server_url", DDNSS "api_token", Linode "api_token", Tencent Cloud "secret_id", Dinahosting "username", Hexonet "username", Mail-in-a-Box "api_url", DNS Made Easy "api_key", Bunny "access_key", Civo "api_token", Scaleway "secret_key", ACME Proxy "username", INWX "username", Netcup "customer_number", RFC2136 "key_name", Name.com "token", EasyDNS "api_token", Infomaniak "api_token", DirectAdmin "host", Hosttech "api_token", Vultr "api_token", Hetzner "api_token", ClouDNS "auth_id", Gcore "api_token", Huawei Cloud "access_key_id", DNSExit "api_token", Nanelo "api_token", Katapult "api_token", Regfish "api_key", Leaseweb "api_token", DreamHost "api_key", Exoscale "api_key", TransIP "account_name", Selectel "user", LuaDNS "email", Hurricane Electric "api_key", Namesilo "api_token", Dode "api_token", Dynu "api_token", Glesys "project", NFSN "login", GoDaddy "api_token", Vercel "api_token", Loopia "username", DNSPod "api_token", Mythic Beasts "key_id", Dynv6 "api_token", AliDNS "access_key_id", Metaname "api_key"]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsSecretApiKey</id>
-            <label>DNS API Additional Field 1</label>
+            <label>API Field 2</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Duckdns "override_domain", Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Azure "client_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address", DNS Made Easy "secret_key", Scaleway "organization_id", ACME Proxy "password", INWX "password", Netcup "api_key", RFC2136 "key_alg", Name.com "server", EasyDNS "api_key", DirectAdmin "user".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider. Duckdns "override_domain", Route53 "secret_access_key", Porkbun "api_secret_key", ACME-DNS "password", Azure "client_id", OVH "application_key", Namecheap "user", PowerDNS "api_token", DDNSS "username", Linode "api_url", Tencent Cloud "secret_key", Dinahosting "password", Hexonet "password", Mail-in-a-Box "email_address", DNS Made Easy "secret_key", Scaleway "organization_id", ACME Proxy "password", INWX "password", Netcup "api_key", RFC2136 "key_alg", Name.com "server", EasyDNS "api_key", DirectAdmin "user", ClouDNS "auth_password", Huawei Cloud "secret_access_key", Exoscale "api_secret", TransIP "private_key_path", Selectel "password", LuaDNS "api_key", Dynu "own_domain", Glesys "api_key", NFSN "api_key", Loopia "password", Mythic Beasts "secret", AliDNS "access_key_secret", Metaname "account_reference"]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsOptionalField1</id>
-            <label>DNS API Additional Field 2</label>
+            <label>API Field 3</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "hosted_zone_id", ACME-DNS "subdomain", Azure "client_secret", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password", DNS Made Easy "api_endpoint", ACME Proxy "endpoint", INWX "shared_secret", Netcup "api_password", Name.com "user", EasyDNS "api_url", DirectAdmin "login_key", RFC2136 "key".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider. Route53 "hosted_zone_id", ACME-DNS "subdomain", Azure "client_secret", OVH "application_secret", Namecheap "api_endpoint", DDNSS "password", Linode "api_version", Mail-in-a-Box "password", DNS Made Easy "api_endpoint", ACME Proxy "endpoint", INWX "shared_secret", Netcup "api_password", Name.com "user", EasyDNS "api_url", DirectAdmin "login_key", RFC2136 "key", ClouDNS "sub_auth_id", Selectel "account_id"]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsOptionalField2</id>
-            <label>DNS API Additional Field 3</label>
+            <label>API Field 4</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "profile", ACME-DNS "server_url", Azure "subscription_id", OVH "consumer_key", Namecheap "client_ip", DDNS "password", INWX "endpoint_url", DirectAdmin "insecure_requests", RFC2136 "server".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider. Route53 "profile", ACME-DNS "server_url", Azure "subscription_id", OVH "consumer_key", Namecheap "client_ip", DDNS "password", INWX "endpoint_url", DirectAdmin "insecure_requests", RFC2136 "server", Selectel "project_name"]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsOptionalField3</id>
-            <label>DNS API Additional Field 4</label>
+            <label>API Field 5</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "region", Azure "resource_group_name".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider. Route53 "region", Azure "resource_group_name"]]></help>
         </field>
         <field>
             <id>caddy.general.TlsDnsOptionalField4</id>
-            <label>DNS API Additional Field 5</label>
+            <label>API Field 6</label>
             <type>text</type>
-            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional: Route53 "session_token".]]></help>
+            <help><![CDATA[Leave empty if your DNS Provider isn't specified here. Field can be left empty if optional for the chosen provider. Route53 "session_token"]]></help>
         </field>
         <field>
             <type>header</type>
@@ -156,7 +164,21 @@
             <id>caddy.general.TlsDnsPropagationTimeout</id>
             <label>Disable Propagation Timeout</label>
             <type>checkbox</type>
-            <help><![CDATA[Propagation Timeout is a duration value that sets the maximum time to wait for the DNS TXT records to appear when using the DNS challenge. The default is 2 minutes. Disabling this will set propagation_timeout to -1 (checking propagation infinitely) and additionally set a propagation_delay of 30s (wait time before starting propagation checks). This can help when the DNS Challenge continues to fail because the local DNS Server does not know the new DNS TXT records yet in the default timeframe of 2 minutes.]]></help>
+            <help><![CDATA[This will disable propagation_timeout.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsPropagationTimeoutPeriod</id>
+            <label>Propagation Timeout</label>
+            <type>text</type>
+            <hint>120</hint>
+            <help><![CDATA[propagation_timeout is a duration value in seconds that sets the maximum time to wait for the DNS TXT records to appear when using the DNS challenge.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsPropagationDelay</id>
+            <label>Propagation Delay</label>
+            <type>text</type>
+            <hint>0</hint>
+            <help><![CDATA[propagation_delay is a duration value in seconds that sets how long to wait before starting DNS TXT records propagation checks when using the DNS challenge.]]></help>
         </field>
     </tab>
     <tab id="general-dynamicdns" description="Dynamic DNS">
@@ -206,6 +228,12 @@
             <help><![CDATA[Select a Forward Auth Provider. It can be added inside a "Handler" by enabling the "Forward Auth" checkbox. For Authelia only the basic subdomain example is supported. More information: https://www.authelia.com/integration/proxies/caddy/#basic-examples. For Authentik custom headers are not supported. More information: https://docs.goauthentik.io/docs/providers/proxy/server_caddy]]></help>
         </field>
         <field>
+            <id>caddy.general.AuthToTls</id>
+            <label>Protocol</label>
+            <type>dropdown</type>
+            <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the Forward Auth Provider.]]></help>
+        </field>
+        <field>
             <id>caddy.general.AuthToDomain</id>
             <label>Forward Auth Domain</label>
             <type>text</type>
@@ -218,16 +246,19 @@
             <help><![CDATA[Enter the listen port of the chosen Forward Auth Provider.]]></help>
         </field>
         <field>
-            <id>caddy.general.AuthToTls</id>
-            <label>TLS</label>
-            <type>checkbox</type>
-            <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the Forward Auth Provider.]]></help>
-        </field>
-        <field>
             <id>caddy.general.AuthToUri</id>
             <label>Forward Auth URI</label>
             <type>text</type>
             <help><![CDATA[Enter the URI of the authz api endpoint.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.CopyHeaders</id>
+            <label>Copy Headers</label>
+            <type>dropdown</type>
+            <type>select_multiple</type>
+            <size>5</size>
+            <style>selectpicker</style>
+            <help><![CDATA[Select headers to copy in addition to the default of the chosen provider. Headers can be added in "Reverse Proxy - Headers". As example, copying "Authorization" can pass Basic Auth credentials from the Auth Provider to the reverse proxied application.]]></help>
         </field>
     </tab>
     <activetab>general-settings</activetab>

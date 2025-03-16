@@ -3,7 +3,7 @@
         <id>rip.enabled</id>
         <label>enable</label>
         <type>checkbox</type>
-        <help>This will activate the RIP service if the support of routing protocols is enabled in "General".</help>
+        <help>This will activate the RIP service.</help>
     </field>
     <field>
         <id>rip.version</id>
@@ -15,15 +15,13 @@
         <id>rip.passiveinterfaces</id>
         <label>Passive Interfaces</label>
         <type>select_multiple</type>
-        <help><![CDATA[Select the interfaces, where no RIP packets should be sent to.]]></help>
-        <hint>Type or select interface.</hint>
+        <help>Select the interfaces, where no RIP packets should be sent to, (e.g., WAN interface).</help>
     </field>
     <field>
         <id>rip.redistribute</id>
         <label>Route Redistribution</label>
         <type>select_multiple</type>
-        <help><![CDATA[Select other routing sources, which should be redistributed to the other nodes.]]></help>
-        <hint>Type or select a route source.</hint>
+        <help>Select other routing sources, which should be redistributed to the other nodes. A good choice is Connected Routes to automatically redistribute all locally attached routes to other routers with RIP. Otherwise use the Networks option to manually insert networks to distribute.</help>
     </field>
     <field>
         <id>rip.networks</id>
@@ -37,6 +35,6 @@
         <id>rip.defaultmetric</id>
         <label>Default Metric</label>
         <type>text</type>
-        <help>Set the default metric to a value between 1 and 16.</help>
+        <help>Set the default metric to a value between 1 and 16. Routes with lower metrics will be preferred, while higher metrics indicate less preferred or distant paths.</help>
     </field>
 </form>

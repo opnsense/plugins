@@ -33,10 +33,19 @@ class OspfController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->generalForm = $this->getForm("ospf");
+
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
+        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPFNetwork");
+
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPFInterface");
+        $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPFInterface");
+
         $this->view->formDialogEditPrefixLists = $this->getForm("dialogEditOSPFPrefixLists");
+        $this->view->formGridEditPrefixLists = $this->getFormGrid("dialogEditOSPFPrefixLists");
+
         $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPFRouteMaps");
+        $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPFRouteMaps");
+
         $this->view->pick('OPNsense/Quagga/ospf');
     }
 }

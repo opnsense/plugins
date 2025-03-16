@@ -76,45 +76,45 @@
     #   Purpose: The trusted proxy section is important when using CDNs so that headers are trusted.
     #            Credential logging is useful for troubleshooting basic auth.
     #}
-    {% set accessListUuid = generalSettings.accesslist %}
-    {% set logCredentials = generalSettings.LogCredentials %}
-    {% set enableLayer4 = generalSettings.EnableLayer4 %}
-
-    {% set hasAccessList = false %}
-    {% set hasLogCredentials = false %}
-    {% set hasEnableLayer4 = false %}
-
-    {% if accessListUuid %}
-        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accessListUuid) | first %}
-        {% if accessList %}
-            {% set hasAccessList = true %}
-        {% endif %}
+    {% if generalSettings.accesslist %}
+        {% set accessList = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', generalSettings.accesslist) | first %}
     {% endif %}
 
-    {% if logCredentials == '1' %}
-        {% set hasLogCredentials = true %}
-    {% endif %}
-
-    {% if enableLayer4 == '1' %}
-        {% set hasEnableLayer4 = true %}
-    {% endif %}
-
-    {% if hasAccessList or hasLogCredentials or hasEnableLayer4 %}
     servers {
-        {% if hasAccessList %}
+        protocols {{ generalSettings.HttpVersions.split(',') | join(' ') }}
+        {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}
-        {% if hasLogCredentials %}
+        {% if generalSettings.ClientIpHeaders %}
+            {% for header_uuid in generalSettings.ClientIpHeaders.split(',') %}
+                {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+                {% if header and header.HeaderType %}
+                    client_ip_headers {{ header.HeaderType }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if generalSettings.LogCredentials|default("0") == "1" %}
             log_credentials
         {% endif %}
-        {% if hasEnableLayer4 %}
+        {% if generalSettings.EnableLayer4|default("0") == "1" %}
             listener_wrappers {
-                {# Plug the Layer 4 template in #}
-                {% include "OPNsense/Caddy/includeLayer4" %}
-
+                layer4 {
+                    import /usr/local/etc/caddy/caddy.d/*.layer4listener
+                    {% set context_var = "listener_wrappers" %}
+                    {% include "OPNsense/Caddy/includeLayer4" %}
+                }
+                {# Route all other traffic to HTTP App #}
+                tls
             }
         {% endif %}
     }
+
+    {% if generalSettings.EnableLayer4|default("0") == "1" %}
+        layer4 {
+            import /usr/local/etc/caddy/caddy.d/*.layer4global
+            {% set context_var = "global" %}
+            {% include "OPNsense/Caddy/includeLayer4" %}
+        }
     {% endif %}
 
     {#
@@ -174,12 +174,8 @@
         {% endfor %}
     {% endfor %}
 
-    {#
-    # Define special DNS Providers that have more than one API key, or special requirements that do not allow the use of the default.
-    # The same providers have to be added to "OPNsense/Caddy/includeDnsProvider", best in the same order as in this array for maintainability.
-    # For a new provider to work, it has to be compiled into the caddy binary.
-    #}
-    {% set dnsProviderSpecialConfig = ['duckdns', 'porkbun', 'desec', 'route53', 'acmedns', 'googleclouddns', 'azure', 'ovh', 'namecheap', 'powerdns', 'ddnss', 'linode', 'tencentcloud', 'dinahosting', 'hexonet', 'mailinabox', 'netcup', 'rfc2136', 'dnsmadeeasy', 'civo', 'scaleway', 'acmeproxy', 'inwx', 'namedotcom', 'easydns', 'directadmin'] %}
+    {% import "OPNsense/Caddy/includeDnsProvider" as dns_includes %}
+    {% set dnsProviderSpecialConfig = dns_includes.dnsProviderSpecialConfig() %}
 
     {# Conditionally add the dynamic_dns section, acmedns provider is special, it does not support dynamic_dns. #}
     {% if dnsProvider and dynDnsDomains|length > 0 and dnsProvider != "acmedns" %}
@@ -187,6 +183,7 @@
             {# duckdns provider is special, it has a different configuration for dynamic dns than for the dns-01 challenge. #}
             {% if dnsProvider in dnsProviderSpecialConfig and dnsProvider != "duckdns" %}
                 provider {{ dnsProvider }} {
+                    {% set context_var = 'dnsProviderSpecialLogic' %}
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
             {% else %}
@@ -254,7 +251,7 @@
 #   There are no regressions to set these ports up.
 #}
 
-{% if enableLayer4|default("0") == "1" %}
+{% if generalSettings.EnableLayer4|default("0") == "1" %}
     # Layer4 default HTTP port
     {% if httpPort %}
         :{{ httpPort }} {
@@ -305,15 +302,6 @@ http://{{ domain }} {
 #   Purpose: Configures TLS settings based on the DNS provider, API keys, and optional fields.
 #            Sets up the Caddyfile to update TXT Records with the chosen DNS Provider and receive
 #            certificates with the DNS-01 challenge. Refer to Dynamic DNS section for more details.
-#   Parameters:
-#   - @param dnsProvider (string): The DNS provider used for the DNS challenge.
-#   - @param dnsApiKey (string): API key for the DNS provider, essential for authentication.
-#   - @param customCert (string, optional): The config extracted name of a certificate.
-#   - @param dnsChallenge (boolean): Indicates if a DNS challenge is used for certificate authentication.
-#   - @param dnsSecretApiKey (string, optional): A secret API key or token for additional security, depending on the provider.
-#   - @param TlsDnsOptionalField1 to 4 (string, optional): Additional fields for specific DNS provider configurations.
-#   - @param TlsDnsPropagationTimeout (boolean, optional): Disables Propagation Timeout for DNS Challenge.
-#   - @param TlsDnsPropagationResolvers (string, optional): Set custom nameserver for DNS Challenge.
 #}
 {% macro tls_configuration(
     customCert,
@@ -326,12 +314,15 @@ http://{{ domain }} {
     tlsDnsOptionalField3,
     tlsDnsOptionalField4,
     tlsDnsPropagationTimeout,
+    tlsDnsPropagationTimeoutPeriod,
+    tlsDnsPropagationDelay,
     tlsDnsPropagationResolvers
 ) %}
     {% if customCert or (dnsChallenge == "1" and dnsProvider) %}
         tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {% if not customCert and dnsChallenge == "1" and dnsProvider %}{
             issuer acme {
                 dns {{ dnsProvider }} {% if dnsProvider not in dnsProviderSpecialConfig %}{{ dnsApiKey }}{% else %}{
+                    {% set context_var = 'dnsProviderSpecialLogic' %}
                     {% include "OPNsense/Caddy/includeDnsProvider" %}
                 }
                 {% endif %}
@@ -340,8 +331,12 @@ http://{{ domain }} {
                 resolvers {{ tlsDnsPropagationResolvers }}
                 {% endif %}
                 {% if tlsDnsPropagationTimeout|default("0") == "1" %}
-                propagation_delay 30s
                 propagation_timeout -1
+                {% elif tlsDnsPropagationTimeoutPeriod %}
+                propagation_timeout {{ tlsDnsPropagationTimeoutPeriod }}s
+                {% endif %}
+                {% if tlsDnsPropagationDelay %}
+                propagation_delay {{ tlsDnsPropagationDelay }}s
                 {% endif %}
             }
         }{% endif %}
@@ -399,23 +394,65 @@ http://{{ domain }} {
 #}
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {{ handle_accesslist(handle.accesslist) }}
+        {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
         {% endif %}
-        {% if handle.ToPath|default("") != "" %}
+        {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
             rewrite * {{ handle.ToPath }}{uri}
         {% endif %}
-        reverse_proxy {% for domain in handle.ToDomain.split(',') %}
-            {# Check if the domain is IPv6 and wrap in square brackets if necessary #}
-            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) %}
-            {# For each domain/IP, append the port if it's specified, followed by a space #}
-            {{- '[' if is_ipv6 else '' -}}{{ domain }}{{ ']' if is_ipv6 else '' -}}{% if handle.ToPort %}:{{ handle.ToPort }}{% endif %}{% if not loop.last %} {% endif %}
-        {% endfor %} {
+        {# http:// is the empty default for reverse_proxy #}
+        {% set protocol = (
+            "http://" if handle.HttpTls == "0" and handle.HandleDirective == "redir" else
+            "https://" if handle.HttpTls == "1" else
+            "h2c://" if handle.HttpTls == "2" else
+            ''
+        ) %}
+        {% set formatted_domains = [] -%}
+        {% for domain in handle.ToDomain.split(',') -%}
+            {% set is_ipv6 = (':' in domain and domain.count(':') >= 2) -%}
+            {% set formatted_domain =
+                ( '[' ~ domain ~ ']' if is_ipv6 else domain ) ~
+                ( ':' ~ handle.ToPort if handle.ToPort else '' ) -%}
+            {% set _ = formatted_domains.append(protocol ~ formatted_domain) -%}
+        {% endfor -%}
+        {% if handle.HandleDirective == "reverse_proxy" %}
+        {{ handle.HandleDirective }} {{ formatted_domains | join(' ') }} {
             {{ header_manipulation(handle) }}
+            {% if handle.lb_policy|default("") %}
+                lb_policy {{ handle.lb_policy }}
+            {% endif %}
+            {% if handle.lb_retries|default("") %}
+                lb_retries {{ handle.lb_retries }}
+            {% endif %}
+            {% if handle.lb_try_duration|default("") %}
+                lb_try_duration {{ handle.lb_try_duration }}s
+            {% endif %}
+            {% if handle.lb_try_interval|default("") %}
+                lb_try_interval {{ handle.lb_try_interval }}ms
+            {% endif %}
             {% if handle.PassiveHealthFailDuration|default("") %}
                 fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}
-            {% set has_transport_options = handle.HttpVersion or handle.HttpKeepalive or handle.HttpTls|default("0") == "1" or handle.HttpTlsesecureSkipVerify|default("0") == "1" or handle.HttpTlsTrustedCaCerts or handle.HttpTlsServerName %}
+            {% if handle.PassiveHealthMaxFails|default("") %}
+                max_fails {{ handle.PassiveHealthMaxFails }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyStatus|default("") %}
+                unhealthy_status {{ handle.PassiveHealthUnhealthyStatus }}
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyLatency|default("") %}
+                unhealthy_latency {{ handle.PassiveHealthUnhealthyLatency }}ms
+            {% endif %}
+            {% if handle.PassiveHealthUnhealthyRequestCount|default("") %}
+                unhealthy_request_count {{ handle.PassiveHealthUnhealthyRequestCount }}
+            {% endif %}
+            {% set has_transport_options =
+                handle.HttpVersion or
+                handle.HttpKeepalive or
+                handle.HttpTlsInsecureSkipVerify|default("0") == "1" or
+                handle.HttpTlsTrustedCaCerts or
+                handle.HttpTlsServerName -%}
             {% if has_transport_options %}
                 {% if handle.HttpNtlm|default("0") == "1" %}
                 transport http_ntlm {
@@ -433,45 +470,55 @@ http://{{ domain }} {
                             keepalive {{ handle.HttpKeepalive }}s
                         {% endif %}
                     {% endif %}
-                    {% if handle.HttpTls|default("0") == "1" %}
-                        tls
-                    {% endif %}
-                    {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
-                        tls_insecure_skip_verify
-                    {% endif %}
-                    {% if handle.HttpTlsTrustedCaCerts %}
-                        tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
-                    {% endif %}
-                    {% if handle.HttpTlsServerName %}
-                        tls_server_name {{ handle.HttpTlsServerName }}
+                    {% if handle.HttpTls == "1" %}
+                        {% if handle.HttpTlsInsecureSkipVerify|default("0") == "1" %}
+                            tls_insecure_skip_verify
+                        {% endif %}
+                        {% if handle.HttpTlsTrustedCaCerts %}
+                            tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                        {% endif %}
+                        {% if handle.HttpTlsServerName %}
+                            tls_server_name {{ handle.HttpTlsServerName }}
+                        {% endif %}
                     {% endif %}
                 }
             {% endif %}
         }
+        {% elif handle.HandleDirective == "redir" %}
+            {{ handle.HandleDirective }} {{ formatted_domains[0] }}{{ handle.ToPath|default("{uri}") }}
+        {% endif %}
     }
 {% endmacro %}
 
 {#
 #   Macro: handle_accesslist
-#   Purpose: Manages the logic for access lists, including configuration and handling.
+#   Purpose: Manages the logic for access lists, used for handlers, domains and subdomains
 #   Parameters:
 #   @param accesslist (string): The UUID of the access list to be applied.
-#   @param content (string): The content to be wrapped in the access list handler.
-#   @param invert (boolean): A flag that inverts the logic of the access list.
+#   @param unique_suffix (string): A unique string to append to the access list, stripped of non-alphanumeric characters.
 #}
-{% macro handle_accesslist(accesslist, content, invert=false) %}
+{% macro handle_accesslist(accesslist, unique_suffix='') %}
+    {# Access list logic for dropping connections based on IP #}
     {% if accesslist %}
+        {% set sanitized_suffix = unique_suffix | regex_replace('[^a-zA-Z0-9]', '') %}
+        {% set unique_identifier = '@' + accesslist + ('_' + sanitized_suffix if sanitized_suffix else '') %}
+
         {% set accesslist_obj = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
-        {% set client_ips = accesslist_obj.clientIps.split(',') %}
-        {% set client_ips_space_separated = client_ips | join(' ') %}
-        @{{ accesslist_obj['@uuid'] }} {
-            {{ 'not' if invert or accesslist_obj.accesslistenvert|default("0") == "1" else '' }} client_ip {{ client_ips_space_separated }}
-        }
-        handle @{{ accesslist_obj['@uuid'] }} {
-            {{ content }}
-        }
-    {% else %}
-        {{ content }}
+        {% if accesslist_obj %}
+            {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
+            {{ unique_identifier }} {
+                {# Non-inverted access lists have "not" as default, inverted ones '' #}
+                {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
+            }
+            {# When IP is matched, abort or send response code. This will end processing and drop the request #}
+            handle {{ unique_identifier }} {
+                {% if accesslist_obj.HttpResponseCode %}
+                    respond {{ '"' + accesslist_obj.HttpResponseMessage + '"' if accesslist_obj.HttpResponseMessage else '' }} {{ accesslist_obj.HttpResponseCode }}
+                {% else %}
+                    abort
+                {% endif %}
+            }
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -491,25 +538,6 @@ http://{{ domain }} {
             {% endif %}
         {% endfor %}
     }
-    {% endif %}
-{% endmacro %}
-
-{#
-#   Macro: handle_response
-#   Purpose: Manages the response logic for access lists and aborts.
-#   Parameters:
-#   @param accesslist (object): The access list object containing response settings.
-#   @param general_abort (string): The global abort setting.
-#}
-{% macro handle_response(accesslist, general_abort) %}
-    {% if accesslist %}
-        {% if accesslist.HttpResponseCode or accesslist.HttpResponseMessage %}
-            respond {{ '"' + accesslist.HttpResponseMessage|default('') + '"' if accesslist.HttpResponseMessage else '' }} {{ accesslist.HttpResponseCode|default(403) }}
-        {% elif general_abort == "1" %}
-            abort
-        {% endif %}
-    {% elif general_abort == "1" %}
-        abort
     {% endif %}
 {% endmacro %}
 
@@ -564,19 +592,19 @@ http://{{ domain }} {
                     }
                 {% endif %}
             {% endif %}
-            {% set customCert = reverse.CustomCertificate|default("") %}
-            {% set dnsChallenge = reverse.DnsChallenge|default("0") %}
             {{ tls_configuration(
-                customCert,
-                dnsChallenge,
-                dnsProvider,
-                dnsApiKey,
-                dnsSecretApiKey,
-                tlsDnsOptionalField1,
-                tlsDnsOptionalField2,
-                tlsDnsOptionalField3,
-                tlsDnsOptionalField4,
+                reverse.CustomCertificate|default(""),
+                reverse.DnsChallenge|default("0"),
+                generalSettings.TlsDnsProvider,
+                generalSettings.TlsDnsApiKey,
+                generalSettings.TlsDnsSecretApiKey,
+                generalSettings.TlsDnsOptionalField1,
+                generalSettings.TlsDnsOptionalField2,
+                generalSettings.TlsDnsOptionalField3,
+                generalSettings.TlsDnsOptionalField4,
                 generalSettings.TlsDnsPropagationTimeout,
+                generalSettings.TlsDnsPropagationTimeoutPeriod,
+                generalSettings.TlsDnsPropagationDelay,
                 generalSettings.TlsDnsPropagationResolvers
             ) }}
 
@@ -587,25 +615,17 @@ http://{{ domain }} {
                     }
                     handle @{{ subdomain['@uuid'] }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-                        {% set subdomain_content %}
-                            {{ render_handles(subdomain_handles, subdomain.basicauth) }}
-                        {% endset %}
-                        {{ handle_accesslist(subdomain.accesslist, subdomain_content) }}
-
-                        {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', subdomain.accesslist) | first %}
-                        {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+                        {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
+                        {# All IPs not matched by accesslist will continue processing #}
+                        {{ render_handles(subdomain_handles, subdomain.basicauth) }}
                     }
                 {% endif %}
             {% endfor %}
 
-            {% set wildcard_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
-            {% set wildcard_content %}
-                {{ render_handles(wildcard_handles, reverse.basicauth) }}
-            {% endset %}
-            {{ handle_accesslist(reverse.accesslist, wildcard_content) }}
-
-            {% set accesslist = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', reverse.accesslist) | first %}
-            {{ handle_response(accesslist, Pischem.caddy.general.abort|default("0")) }}
+            {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
+            {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}
+            {# All IPs not matched by accesslist will continue processing #}
+            {{ render_handles(domain_handles, reverse.basicauth) }}
         }
     {% endif %}
 {% endfor %}

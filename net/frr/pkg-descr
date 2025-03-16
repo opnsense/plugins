@@ -12,6 +12,25 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.43
+
+* Use frr-reload instead of restarting the service on configuration changes (opnsense/plugins/issues/4529)
+* Migrate separate daemon config files into single frr.conf file (opnsense/plugins/issues/4510)
+* Delete per daemon and old watchfrr files (opnsense/plugins/issues/4551)
+* Add help texts to all options and expose them in grid as columns (opnsense/plugins/pull/4494)
+* Replace deprecated passive-interface directive in ospf (opnsense/plugins/issues/4534)
+* Style cleanup and unify forms (opnsense/plugins/pull/4450)
+* Implement base_apply_button (opnsense/plugins/pull/4542)
+
+1.42
+
+* Fix updatesource not rendering when interface has been selected
+* Add BFD multihop support for IPv4
+
+1.41
+
+* Set up networks, prefix lists, and route maps for OSPF6 (contributed by Mike Shuey)
+
 1.40
 
 * Add staticd to routing suite

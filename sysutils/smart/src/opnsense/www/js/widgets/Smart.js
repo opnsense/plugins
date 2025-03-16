@@ -41,31 +41,21 @@ export default class Smart extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        if (this.disks && this.disks.devices) {
-            for (const device of this.disks.devices) {
+        let disks = await this.ajaxCall(`/api/smart/service/${'list/detailed'}`, {}, 'POST');
+        if (disks && disks.devices) {
+            const rows = [];
+            for (const device of disks.devices) {
                 try {
-                    const data = await ajaxCall("/api/smart/service/info", { type: "H", device });
-                    const health = data.output.includes("PASSED");
-                    $(`#${device}`).css({ color: health ? "green" : "red", fontSize: '150%' });
-                    $(`#${device}`).text(health ? "OK" : "FAILED");
+                    const health = device.state.smart_status.passed;
+                    const text = health ? "OK" : "FAILED";
+                    const css = { color: health ? "green" : "red", fontSize: '150%' };
+                    const field = $(`<span id="${device.device}">`).text(text).css(css).prop('outerHTML');
+                    rows.push([[device.device], field]);
                 } catch (error) {
-                    super.updateTable('smart-table', [[["Error"], $(`<span>${this.translations.nosmart} ${device}: ${error}</span>`).prop('outerHTML')]]);
+                    super.updateTable('smart-table', [[["Error"], $(`<span>${this.translations.nosmart} ${device.device}: ${error}</span>`).prop('outerHTML')]]);
                 }
             }
-        }
-    }
-
-    async onMarkupRendered() {
-        try {
-            this.disks = await ajaxCall("/api/smart/service/list", {});
-            const rows = [];
-            for (const device of this.disks.devices) {
-                const field = $(`<span id="${device}">`).prop('outerHTML');
-                rows.push([[device], field]);
-            }
             super.updateTable('smart-table', rows);
-        } catch (error) {
-            super.updateTable('smart-table', [[["Error"], $(`<span>${this.translations.nodisk}: ${error}</span>`).prop('outerHTML')]]);
         }
     }
 }

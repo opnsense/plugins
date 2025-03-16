@@ -3,19 +3,23 @@
     <id>communitylist.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
     <field>
     <id>communitylist.description</id>
     <label>Description</label>
     <type>text</type>
-    <help>Add an optional description for this Community-List.</help>
+    <help>Optional description for the Community-List.</help>
   </field>
   <field>
     <id>communitylist.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>Set the number of your Community-List. 1-99 are standard lists while 100-500 are expanded lists.</help>
+    <help>Community-List number (1-99 for standard, 100-500 for expanded).</help>
   </field>
   <field>
     <id>communitylist.seqnumber</id>
@@ -33,6 +37,6 @@
     <id>communitylist.community</id>
     <label>Community</label>
     <type>text</type>
-    <help>The community you want to match. You can also regex and it is not validated so please be careful.</help>
+    <help>Community pattern to match, with optional regex.</help>
   </field>
 </form>

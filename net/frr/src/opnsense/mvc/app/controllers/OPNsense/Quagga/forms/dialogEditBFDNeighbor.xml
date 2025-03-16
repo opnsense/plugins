@@ -3,6 +3,11 @@
     <id>neighbor.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.description</id>
@@ -15,5 +20,15 @@
     <label>Peer-IP</label>
     <type>text</type>
     <help>Specify the IP of your neighbor.</help>
+  </field>
+  <field>
+    <id>neighbor.multihop</id>
+    <label>Multihop</label>
+    <type>checkbox</type>
+    <help>Multihop tells the BFD daemon that we should expect packets with TTL less than 254 (because it will take more than one hop) and to listen on the multihop port (4784). When using multi-hop mode echo-mode will not work (see RFC 5883 section 3).</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
 </form>

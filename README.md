@@ -55,6 +55,7 @@ net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
+net/ndproxy -- Neighbor Discovery Proxy
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -82,11 +83,13 @@ security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
+security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
 security/stunnel -- Stunnel TLS proxy
+security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
@@ -95,6 +98,7 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/gdrive-backup -- Backup configurations using Google Drive (development only)
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
@@ -104,6 +108,7 @@ sysutils/nextcloud-backup -- Track config changes using NextCloud
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
@@ -112,7 +117,7 @@ vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generat
 www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
-www/caddy -- Easy to configure Reverse Proxy with Automatic HTTPS and Dynamic DNS
+www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
 www/squid -- Squid is a caching proxy for the web
 www/web-proxy-sso -- Kerberos authentication module
