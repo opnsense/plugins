@@ -21,6 +21,21 @@ with open(f"{os.environ["HOME"]}/.pyrc") as file: exec(file.read())
 logger = logging.getLogger(f"{__file__}")
 logger.setLevel(logging.WARNING)
 logger.addHandler(logging.StreamHandler())
+time_logger = logger.getChild("timing")
+time_logger.setLevel(logging.DEBUG)
+
+
+def pithy(obj):
+    for attr in ("func.__name__", "name", "tag", "field_type"):
+        try:
+            _obj = obj
+            for attr in attr.split("."):
+                _obj = getattr(_obj, attr)
+            break
+        except AttributeError:
+            continue
+    s = str(_obj)
+    return f"{s[:20]}..." if len(s) > 22 else s
 
 
 def measure_time(func):
@@ -28,7 +43,10 @@ def measure_time(func):
         t1 = default_timer()
         result = func(*args, **kwargs)
         t2 = default_timer()
-        print(f'{func.__name__}() executed in {(t2-t1):.6f}s')
+        _args = ", ".join([pithy(a) for a in args])
+        _kwargs = ", ".join([f"{k}={v}" for k, v in kwargs.items()])
+        _params = ", ".join([p for p in (_args, _kwargs) if p])
+        time_logger.debug(f'{func.__name__}({_params}) executed in {(t2-t1):.6f}s')
         return result
     return wrapper
 
@@ -138,7 +156,7 @@ def parse_field_types(source_files: List[str], cache: Dict, module: str, field_t
         module_cache = cache[cache_key] = {}
     cached = module_cache.get(field_type, None)
     is_hit = cached is not None
-    logger.debug(f"{id(cache)}: {field_type}: cache {'hit' if is_hit else 'miss'} from {cache_key}")
+    # logger.debug(f"{field_type}: cache {'hit' if is_hit else 'miss'} from {cache_key}")
     if is_hit:
         return cached
 
@@ -180,8 +198,7 @@ def parse_field_types(source_files: List[str], cache: Dict, module: str, field_t
         logger.debug(f"Parsed {field_type} and found {field.child_tags} child tags")
 
     module_cache[field_type] = field
-    logger.debug(f"{id(cache)}: Cached {field_type} in {cache_key} module")
-    logger.debug(f"{id(cache)}: Cache for {cache_key} module holds {cache[cache_key].keys()}")
+    # logger.debug(f"Cached {field_type} in {cache_key} module")
     return field
 
 
@@ -206,6 +223,28 @@ def _walk(
     return field.new(name=element.tag)
 
 
+@measure_time
+def parse_xml_file(model_filename):
+    return ElementTree.parse(model_filename)
+
+
+@measure_time
+def parse_model_file(partial_field_type_parser, model_filename):
+    logger.debug("=========================================================")
+    logger.debug(f"Parsing {model_filename}")
+
+    relpath = re.sub('.*/models/', '', model_filename)
+    module = relpath.split("/")[1]
+    field_type_parser = partial(partial_field_type_parser, module)
+
+    tree = parse_xml_file(model_filename)
+    items = tree.find("items")
+    if items is None:
+        raise ValueError("items tag not found")
+
+    result = _walk(field_type_parser, items)
+    logger.info(repr(result))
+    logger.debug(f"Finished parsing {model_filename}")
 
 
 if __name__ == "__main__":
@@ -221,16 +260,5 @@ if __name__ == "__main__":
     field_files = get_fieldtype_files(source)
     partial_field_type_parser = partial(parse_field_types, field_files, {})
 
-    for model_filename in model_files:
-        relpath = re.sub('.*/models/', '', model_filename)
-        module = relpath.split("/")[1]
-        field_type_parser = partial(partial_field_type_parser, module)
-
-        tree = ElementTree.parse(model_filename)
-        items = tree.find("items")
-        if items is None:
-            raise ValueError("items tag not found")
-
-        logger.debug(f"Parsing {model_filename}")
-        result = _walk(field_type_parser, items)
-        logger.info(repr(result))
+    for model_filename in model_files[0:3]:
+        parse_model_file(partial_field_type_parser, model_filename)
