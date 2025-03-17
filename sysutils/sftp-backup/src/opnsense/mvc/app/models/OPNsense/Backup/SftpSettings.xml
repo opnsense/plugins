@@ -46,7 +46,11 @@
         <backupcount type="IntegerField">
             <Default>60</Default>
             <Required>Y</Required>
-            <MinimumValue>1</MinimumValue>
+            <MinimumValue>0</MinimumValue>
         </backupcount>
+        <prefixhostname type="BooleanField">
+          <Default>0</Default>
+          <Required>N</Required>
+        </prefixhostname>        
     </items>
 </model>
