@@ -11,37 +11,42 @@ use RecursiveDirectoryIterator;
 $config = include __DIR__ . "/src/opnsense/mvc/app/config/config.php";
 include __DIR__ . "/src/opnsense/mvc/app/config/loader.php";
 
-$json_flags = (JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-$json_pretty_flags = (JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
-
-$model_path = $config->__get("application")->modelsDir;
-$rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($model_path));
-$classes_to_load = array();
-
-foreach ($rii as $file) {
-    if ($file->isDir()) {continue;}
-    if (!str_ends_with($file, ".php")) {continue;}
-
-    $rel_path = preg_replace("/.*(?=OPNsense)/", "", $file);
-    $className = preg_replace("/\.php$/", "", $rel_path);
-    $className = preg_replace("/\//", "\\", $className);
-    $classes_to_load[] = $className;
-}
-
 
 class Model {
     private static $ignoreProperties = [
         "InternalReference", "Value", "Nodes", "ParentModel", "Changed", "AttributeValue"
     ];
+
     public $name;
     public $namespace;
+    public $parent;
     public $is_container;
     public $properties;
-    public function __construct(ReflectionClass $rc) {
-        $this->name = preg_replace("/.*\\\/", "", $rc->getName());
+
+    public function __construct(ReflectionClass $rc)
+    {
+        $this->name = $rc->getName();
         $this->namespace = $rc->getNamespaceName();
-        $this->is_container = $rc->getProperty("internalIsContainer")->getDefaultValue();
+
+        $parent = null;
+        $parent_name = null;
+        $parent_rc = $rc->getParentClass();
+        if ($parent_rc) {
+            $parent_name = $parent_rc->getName();
+            $parent = ModelRegistry::get($parent_name);
+        }
+        $this->parent = $parent_name;
+
+        $is_container = false;
+        try {
+            $is_container = $rc->getProperty("internalIsContainer")->getDefaultValue();
+        } catch (Exception $e) {
+            if ($parent) {
+                $is_container = $parent->is_container;
+            }
+        }
+        $this->is_container = $is_container;
+
         $props = [];
         foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             $method_name = $method->name;
@@ -56,16 +61,91 @@ class Model {
     }
 }
 
-$models = [];
-foreach ($classes_to_load as $c) {
-    $rc = new ReflectionClass($c);
-    if (!str_starts_with($rc->getNamespaceName(), "OPNsense")) {continue;}
 
-    $models[] = new Model($rc);
-    break;
+class ModelRegistry {
+    private static $registry = array();
+
+    public static function register(ReflectionClass $rc) {
+        $name = $rc->getName();
+        if (array_key_exists($name, ModelRegistry::$registry)) {
+            return;
+        }
+
+        $parent_rc = $rc->getParentClass();
+        $parent = null;
+        if ($parent_rc) {
+            self::register($parent_rc);
+            $parent = self::get($parent_rc->getName());
+        }
+
+        $model = new Model($rc, $parent);
+        self::$registry[$name] = $model;
+    }
+
+    public static function get(string $name) {
+        if (array_key_exists($name, ModelRegistry::$registry)) {
+            return ModelRegistry::$registry[$name];
+        }
+    }
+
+    public static function dump() {
+        return ModelRegistry::$registry;
+    }
 }
 
-echo json_encode($models, $json_pretty_flags);
-// echo json_encode($models, $json_flags);
+
+function find_model_classes(string $base_path)
+{
+    $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base_path));
+    $class_names = array();
+
+    foreach ($rii as $file) {
+        if (
+            $file->isDir() ||
+            !str_ends_with($file, ".php") ||
+            !preg_match("/\/FieldTypes\/\w+/", $file)
+        ) {continue;}
+
+        $rel_path = preg_replace("/.*(?=OPNsense)/", "", $file);
+        $class_name = preg_replace("/\.php$/", "", $rel_path);
+        $class_name = preg_replace("/\//", "\\", $class_name);
+        $class_names[] = $class_name;
+    }
+
+    return $class_names;
+}
+
+
+function register_models(array $class_names)
+{
+    foreach ($class_names as $c) {
+        $rc = new ReflectionClass($c);
+        ModelRegistry::register($rc);
+    }
+}
+
+
+function export_models($base_path, $output_path, $pretty = false)
+{
+    $json_flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+    if ($pretty) {
+        $json_flags = $json_flags | JSON_PRETTY_PRINT;
+    }
+
+    $class_names = find_model_classes($base_path);
+    register_models($class_names);
+
+    $models = ModelRegistry::dump();
+    $json = json_encode($models, $json_flags);
+
+    $fd = fopen($output_path, "w");
+    fwrite($fd, $json);
+    fclose($fd);
+}
+
+
+$output_path = __DIR__ . "/field_types.json";
+$base_path = $config->__get("application")->modelsDir;
+export_models($base_path, $output_path)
 
 ?>
