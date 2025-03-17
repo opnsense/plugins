@@ -105,7 +105,10 @@ class FieldType(FieldBase):
         return self.copy_with(type=type, **update)
 
     def new(self, *, name: str) -> "Field":
-        d = self.model_dump() #exclude={"properties", "child_tags"})
+        to_skip = {"properties", "child_tags"}
+        d = self.model_dump(exclude=to_skip)
+        for key in to_skip:
+            d[key] = getattr(self, key).copy()
         return Field(name=name, **d)
 
     def __repr__(self):
