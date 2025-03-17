@@ -232,10 +232,10 @@ class Sftp extends Base implements IBackupProvider
     {
         $cnf = Config::getInstance();
         if (!$this->model->enabled->isEmpty() && $cnf->isValid()) {
-            $config = $cnf->object();            
             if ($this->model->prefixhostname->isEmpty()) {
                 $fileprefix = "config-";
             } else {
+                $config = $cnf->object();
                 $fileprefix = sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain);
             }
             /**
