@@ -125,7 +125,7 @@ function register_models(array $class_names)
 }
 
 
-function export_models($base_path, $output_path, $pretty = false)
+function export_models($base_path, $output_file = null, $pretty = false)
 {
     $json_flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
     if ($pretty) {
@@ -136,16 +136,28 @@ function export_models($base_path, $output_path, $pretty = false)
     register_models($class_names);
 
     $models = ModelRegistry::dump();
-    $json = json_encode($models, $json_flags);
+    $json = json_encode($models, $json_flags) . "\n";
 
-    $fd = fopen($output_path, "w");
-    fwrite($fd, $json);
-    fclose($fd);
+    if ($output_file) {
+        $fd = fopen($output_file, "w");
+        fwrite($fd, $json);
+        fclose($fd);
+    } else {
+        return $json;
+    }
 }
 
 
-$output_path = __DIR__ . "/field_types.json";
+$opts = getopt("o:", ["output-file:"]);
+if (array_key_exists("o", $opts)) {
+    $output_file = $opts["o"];
+} elseif (array_key_exists("output-file", $opts)) {
+    $output_file = $opts["output-file"];
+} else {
+    $output_file = null;
+}
+
 $base_path = $config->__get("application")->modelsDir;
-export_models($base_path, $output_path)
+echo export_models($base_path, $output_file);
 
 ?>
