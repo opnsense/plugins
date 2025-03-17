@@ -65,9 +65,7 @@ special_snowflakes = [
 ]
 
 
-class FieldBase(BaseModel):
-    class Config:
-        frozen = True
+class FieldBase():
     type: str
     base: Optional["FieldType"]
     child_tags: List[str] = []
@@ -84,8 +82,20 @@ class FieldBase(BaseModel):
     def is_enum(self):
         return self.option_values is not None
 
-    def copy_with(self, **update):
-        return self.model_copy(deep=True, update=update)
+    def __dict_copy__(self):
+        d = self.__dict__.copy()
+        for k, v in d.items():
+            copy = getattr(v, "copy", None)
+            if copy:
+                d[k] = copy()
+        # return self.model_copy(deep=True, update=update)
+        return d
+
+    def copy_with(self, **update) -> Self:
+        d = self.__dict_copy__()
+        d.update(update)
+        return self.__class__(**d)
+
 
     def __prop_repr__(self):
         props = [
