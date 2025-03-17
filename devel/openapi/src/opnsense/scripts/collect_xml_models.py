@@ -3,7 +3,7 @@
 import json
 import os
 from collections import defaultdict
-from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Tuple, Literal, Callable, TypeAlias
+from typing import Any, Dict, List, Sequence, TypedDict, NotRequired, Tuple, Literal, Callable, TypeAlias, Self
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from functools import partial
@@ -158,55 +158,102 @@ class ArrayItem(TypedDict):
 class Ref(TypedDict):
     __ref__: str
 
-class Array(NamedType, SchemaType):
+class MixedArrayItem(TypedDict):
+    oneOf: List[NamedType | Ref]
+
+class Array(NamedType):
+    type: Literal["array"]
+    items: Self | ArrayItem | Ref
+
+class Object(NamedType):
     type: Literal["array"]
     items: ArrayItem | Ref
 
-class Enum()
-
-a: Array = {
-    "name": "stuff",
-    "type": "array",
-    "items": {
-        "type": "object"
-    }
-}
-b: Bool = {
-    "name": "a",
-    "type": "boolean"
-}
-
-def _walk(path: str, cls: type, spec: Dict, tree: Element) -> Dict:
-    _path = ".".join((path, tree.tag))
-    _type = tree.attrib.get("type", None)
+def _walk(path: str, tree: Element) -> Dict:
+    tag = tree.tag.lower()
+    _path = path if tag == "items" else ".".join((path, tag))
+    _type = tree.attrib.get("type", "ContainerField")  # BaseModel.php defaults to "ContainerField" when no type attribute in XML
     # spec_type = FIELD_TO_SPEC_TYPE[_type] if _type is not None
 
+    cls_map = defaultdict(
+        lambda: String,
+        {
+            "BooleanField": Bool,
+        }
+    )
+    cls = cls_map[_type] if _type is not None else None
 
-    if spec_type is None:
-        # receiver = expect(None)
+    print(_path)
 
-    cls = TAG_TO_CLASS
-        def
-    elif spec_type == "string":
-        pass
-    elif spec_type == "boolean":
-        pass
-    elif spec_type == "integer":
-        pass
-    elif spec_type == "number":
-        pass
-    elif spec_type == "array":
-        pass
-    elif spec_type == "object":
-        pass
-    else:
-        raise ValueError(f"unknown spec_type {spec_type}")
-
-
-    schemas = []
+    kwargs = {}
     for child in tree:
-        schema = _walk(_path, child)
-        schemas.append(schema)
+        r = _walk(_path, child)
+        kwargs.update(r)
+
+
+class BaseField:
+    def __init__(self, ref=None, tagname=None):
+        self.internalReference = ref
+        self.internalXMLTagName = tagname
+    @property
+    def __reference(self): self.internalReference  # model or prop mount path, e.g. "bind.dnsbl.general"
+    def addChildNode(self, tagName, fieldObject): pass
+    def setParentModel(self, model): pass
+    def isContainer(self): return False
+    def isArrayType(self): return False
+class ContainerField(BaseField): pass
+def __init__(self):
+    self.internalData = ContainerField()
+    items_element = None  # load xml and get the items tag
+    parseXml(self, items_element, config_data=None, internal_data=self.internalData)  # type: ignore
+
+def parseXml(self, xml: Element, config_data: Element, internal_data: BaseField):
+    for xmlNode in xml:
+        tagName = xmlNode.tag
+        xmlNodeType = xmlNode.attrib.get("type", None)  # BaseModel.php defaults to "ContainerField" when no type attribute in XML
+        if xmlNodeType is None:
+            field_rfcls = ContainerField
+        else:
+            if "\\" in xmlNodeType:
+                if xmlNodeType.startswith(".\\"):
+                    raise NotImplementedError("See BaseModel.php")
+                else:
+                    classname = xmlNodeType
+                field_rfcls = BaseField  # $this->getNewField($classname);
+            else:
+                field_rfcls = BaseField  # $this->getNewField("OPNsense\\Base\\FieldTypes\\" . $xmlNodeType);
+
+        new_ref = f"{internal_data.__reference}.{tagName}" if internal_data.__reference else tagName
+
+        fieldObject = field_rfcls(new_ref, tagName)  # type: ignore
+        fieldObject.setParentModel(self)
+        if xmlNode.attrib.get("volatile", None) == "true":
+            raise NotImplementedError("See BaseModel.php")
+
+#         // now add content to this model (recursive)
+        if not fieldObject.isContainer():
+            internal_data.addChildNode(tagName, fieldObject)
+            if len(xmlNode) > 0:
+                # the php model can have a custom parser
+                for fieldMethod in xmlNode:
+                    method_name = "set" + fieldMethod.tag
+                    def noop(_): pass
+                    method = getattr(field_rfcls, method_name, noop)
+                    method(parseOptionData(self, fieldMethod))
+        else:
+            config_section_data = None  # In BaseModel.php, this is read from config.xml
+            if fieldObject.isArrayType():
+                # handle Array types, recurring items
+                tagUUID = internal_data.generateUUID()
+                child_node = fieldObject.newContainerField(f"{fieldObject.__reference}.{tagUUID}", tagName)
+                child_node.setInternalIsVirtual()  # presumably because: There's no content in config.xml for this array node.
+                parseXml(self, xmlNode, config_section_data, child_node)
+                fieldObject.addChildNode(tagUUID, child_node)
+            else:
+                # All other node types (Text,Email,...)
+                parseXml(self, xmlNode, config_section_data, fieldObject)
+
+            internal_data.addChildNode(xmlNode.tag, fieldObject);
 
 
 def parse_model(model_filename: str):
@@ -222,13 +269,13 @@ def parse_model(model_filename: str):
         mount_element = tree.find("mount")
         if mount_element is None or mount_element.text is None:
             raise ValueError(f"Failed to find the <mount> tag")
-        path = mount_element.text.replace("//OPNsense/", "").replace("/", ".").lower()
 
         items = tree.find("items")  # type: ignore
         if items is None:
             raise ValueError(f"Failed to find the <items> tag")
         #endregion validation
 
+        path = mount_element.text.replace("//OPNsense/", "").replace("/", ".").lower()
         return _walk(path, items)
 
     except Exception as ex:
@@ -250,5 +297,5 @@ def collect_models(source: str):
             if any(x for x in EXCLUDE_MODELS if model_file.endswith(x)):
                 continue
             models_from_file = parse_model(model_file)
-            models.update(models_from_file)
+            # models.update(models_from_file)
     return models
