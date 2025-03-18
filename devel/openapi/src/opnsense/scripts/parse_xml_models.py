@@ -1,22 +1,20 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
-import subprocess
-from pprint import pprint
-from timeit import default_timer
 import json
-import os
-import sys
-import re
 import logging
+import os
+import subprocess
+import sys
 from collections import defaultdict
-from functools import partial
-from pydantic import BaseModel, SkipValidation
-from typing import *
+from timeit import default_timer
+from typing import (Any, Callable, Concatenate, Dict, List, NewType, Optional,
+                    ParamSpec, Self, Tuple, TypeVar,Type, )
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
-from collect_xml_models import *
 
-with open(f"{os.environ["HOME"]}/.pyrc") as file: exec(file.read())
+from pydantic import BaseModel
+
+EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
 
 logger = logging.getLogger(f"{__file__}")
@@ -26,33 +24,19 @@ time_logger = logger.getChild("timing")
 time_logger.setLevel(logging.DEBUG)
 
 
-ModuleName = NewType('ModuleName', str)
-
-
-# https://github.com/pydantic/pydantic/discussions/7915
-# https://sobolevn.me/2021/12/paramspec-guide
-P = ParamSpec('P')
-R = TypeVar('R')
-def factory(cls: Callable[P, R], /) -> Callable[[Callable[Concatenate[Any, P], R]], Callable[P, R]]:
-    def inner(func):
-        return func
-    return inner
-
-
-def pithy(obj):
-    for attr in ("func.__name__", "name", "tag", "field_type"):
-        try:
-            _obj = obj
-            for attr in attr.split("."):
-                _obj = getattr(_obj, attr)
-            break
-        except AttributeError:
-            continue
-    s = str(_obj)
-    return f"{s[:20]}..." if len(s) > 22 else s
-
-
 def measure_time(func):
+    def pithy(obj):
+        for attr in ("func.__name__", "name", "tag", "field_type"):
+            try:
+                _obj = obj
+                for attr in attr.split("."):
+                    _obj = getattr(_obj, attr)
+                break
+            except AttributeError:
+                continue
+        s = str(_obj)
+        return f"{s[:20]}..." if len(s) > 22 else s
+
     def wrapper(*args, **kwargs):
         t1 = default_timer()
         result = func(*args, **kwargs)
@@ -65,7 +49,11 @@ def measure_time(func):
     return wrapper
 
 
+ModuleName = NewType('ModuleName', str)
+
+
 class Model(BaseModel):
+    type: str
     name: str
     path: str
     value: Optional[str]
@@ -80,9 +68,8 @@ class FieldType(BaseModel):
     properties: List[str]
     is_container: bool
 
-    @factory(Model)
     def new(self, **kwargs) -> Model:
-        return Model(**kwargs)
+        return Model(type=self.name, **kwargs)
 
 
 class FieldTypeRegistry:
@@ -211,19 +198,23 @@ def get_model_xml_files(source: str):
     return found
 
 
-if __name__ == "__main__":
-    field_type_json_path = os.path.realpath("./field_types.json")
+def get_models(xml_file_filter: str | None = None) -> List[Model]:
     model_json_path = os.path.realpath("./models.json")
+
+    if os.path.isfile(model_json_path) and not xml_file_filter:
+        with open(model_json_path) as file:
+            model_json = file.read()
+        _models = json.loads(model_json)
+        models = [Model(**m) for m in _models]
+        return models
+
+    field_type_json_path = os.path.realpath("./field_types.json")
     FieldTypeRegistry.load(field_type_json_path)
 
     source = "/gitroot/upstream/opnsense" if "HOSTNAME" in os.environ else "/usr"
     xml_files = get_model_xml_files(source)
-
-    if len(sys.argv) > 1:
-        substring = sys.argv[1]
-        xml_files = [m for m in xml_files if substring in m]
-
-    logger.setLevel(logging.DEBUG)
+    if xml_file_filter:
+        xml_files = [m for m in xml_files if xml_file_filter in m]
 
     models = []
     for xml_file in xml_files:
@@ -235,7 +226,19 @@ if __name__ == "__main__":
 
         models.append(model.model_dump())
 
-    model_json = json.dumps(models)
-    model_json = json.dumps(models, indent=2)  # TODO: delete this before merging!
-    with open(model_json_path, mode="w") as file:
-        file.write(model_json)
+    # Don't write json if we don't have all the models
+    if not xml_file_filter:
+        # model_json = json.dumps(models)
+        model_json = json.dumps(models, indent=2)  # TODO: delete this before merging!
+        with open(model_json_path, mode="w") as file:
+            file.write(model_json)
+
+    return models
+
+
+if __name__ == "__main__":
+    xml_file_filter = sys.argv[1] if len(sys.argv) > 1 else None
+
+    logger.setLevel(logging.DEBUG)
+
+    get_models(xml_file_filter=xml_file_filter)

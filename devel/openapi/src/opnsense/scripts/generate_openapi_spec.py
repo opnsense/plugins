@@ -10,7 +10,7 @@ from apispec import APISpec
 from openapi_spec_validator import validate
 
 from collect_api_endpoints import Endpoint, collect_api_modules
-from collect_xml_models import collect_models
+from parse_xml_models import get_models
 
 
 def get_endpoints(source_path: str) -> Dict[str, List[Endpoint]]:
@@ -36,7 +36,7 @@ def get_models(source_path: str) -> Dict[str, Dict]:
         with open(json_file) as file:
             models = json.loads(file.read())
     else:
-        models = collect_models(source_path)
+        models = get_models(source_path)
         with open(json_file, mode="w") as file:
             file.write(json.dumps(models))
 
