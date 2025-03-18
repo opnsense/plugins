@@ -29,6 +29,16 @@ time_logger.setLevel(logging.DEBUG)
 ModuleName = NewType('ModuleName', str)
 
 
+# https://github.com/pydantic/pydantic/discussions/7915
+# https://sobolevn.me/2021/12/paramspec-guide
+P = ParamSpec('P')
+R = TypeVar('R')
+def factory(cls: Callable[P, R], /) -> Callable[[Callable[Concatenate[Any, P], R]], Callable[P, R]]:
+    def inner(func):
+        return func
+    return inner
+
+
 def pithy(obj):
     for attr in ("func.__name__", "name", "tag", "field_type"):
         try:
@@ -55,37 +65,24 @@ def measure_time(func):
     return wrapper
 
 
-def _walk(module: ModuleName, element: Element) -> Field:
-    field_type = element.attrib.get("type", "ContainerField")
-    is_legacy = field_type.startswith(".\\")
-    if is_legacy: raise NotImplementedError("TODO: handle legacy types")
+class Model(BaseModel):
+    name: str
+    path: str
+    value: Optional[str]
+    properties: List[Self]
+    option_values: Optional[List[str]] = None
 
-    field = FieldTypeRegistry.get(module, field_type)
-    if field is None:
-        raise ValueError(f"Unknown field type: {field_type}")
-    # is_parent_metadata = len(element) == 0 or element.tag == "OptionValues"
-
-    for child in element:
-        if not (
-            field.is_container or
-            child.tag in field.properties or
-            any([t.lower() == child.tag.lower() for t in field.properties])
-        ):
-            raise ValueError(f"{field_type} does not have a '{child.tag}' property")
-        prop = _walk(module, child)
-        field.properties.append(prop)
-
-    return field.new(name=element.tag)
-
-
-ModuleAndName = NamedTuple('ModuleAndName', [('module', str), ('name', str)])
 
 class FieldType(BaseModel):
     name: str
-    module: str
+    module: ModuleName
     parent: Optional[Self]
     properties: List[str]
     is_container: bool
+
+    @factory(Model)
+    def new(self, **kwargs) -> Model:
+        return Model(**kwargs)
 
 
 class FieldTypeRegistry:
@@ -139,7 +136,11 @@ class FieldTypeRegistry:
             return field_type
 
         if not os.path.exists(json_path):
-            subprocess.Popen(("php", os.path.realpath("./ParseModels.php"), f"-o='{json_path}'"))
+            # php_args = ["/usr/bin/php", os.path.realpath("./ParseFieldTypes.php"), f"-o='{json_path}'"]
+            # subprocess.Popen(php_args, cwd=os.path.dirname(__file__))
+            # # without shell, php errors on fopen.
+            php_args = f"/usr/bin/php {os.path.realpath("./ParseFieldTypes.php")} -o='{json_path}'"
+            subprocess.run(php_args, check=True, text=True, shell=True)
 
         with open(json_path) as file:
             field_json = file.read()
@@ -149,22 +150,54 @@ class FieldTypeRegistry:
             register_bottom_up(ft)
 
 
-@measure_time
+def _walk(module: ModuleName, path: str, element: Element) -> Model:
+    field_type = element.attrib.get("type", "ContainerField")
+    is_legacy = field_type.startswith(".\\")
+    if is_legacy:
+        raise NotImplementedError("TODO: handle legacy types")
+
+    field = FieldTypeRegistry.get(module, field_type)
+    if field is None:
+        raise ValueError(f"Unknown field type: {field_type}")
+
+    name = element.tag.lower()
+    value = element.text
+    value = value.strip() if value else value
+    child_path = path if name == "items" else f"{path}.{name}"
+
+    props = []
+    for child in element:
+        # if not (
+        #     field.is_container or
+        #     child.tag in field.properties or
+        #     any([t.lower() == child.tag.lower() for t in field.properties])
+        # ):
+        #     raise ValueError(f"{field_type} does not have a '{child.tag}' property")
+        prop = _walk(module, child_path, child)
+        props.append(prop)
+        # field.properties.append(prop)
+    option_values = []
+    return field.new(name=name, path=path, value=value, properties=props, option_values=option_values)
+
+
 def parse_xml_file(xml_file):
     logger.debug("=========================================================")
     logger.debug(f"Parsing {xml_file}")
 
-    relpath = re.sub('.*/models/', '', xml_file)
-    module = ModuleName(relpath.split("/")[1])
+    vendor, module, name = xml_file[0:-4].split("/")[-3:]
+    path = (f"{module}.{name}" if vendor == "OPNsense" else f"{vendor}.{module}.{name}").lower()
+    module = ModuleName(module)
 
     tree = ElementTree.parse(xml_file)
+
     items = tree.find("items")
     if items is None:
         raise ValueError("items tag not found")
 
-    result = _walk(module, items)
-    logger.info(repr(result))
+    model = _walk(module, path, items)
+    logger.info(repr(model))
     logger.debug(f"Finished parsing {xml_file}")
+    return model
 
 
 def get_model_xml_files(source: str):
@@ -180,6 +213,7 @@ def get_model_xml_files(source: str):
 
 if __name__ == "__main__":
     field_type_json_path = os.path.realpath("./field_types.json")
+    model_json_path = os.path.realpath("./models.json")
     FieldTypeRegistry.load(field_type_json_path)
 
     source = "/gitroot/upstream/opnsense" if "HOSTNAME" in os.environ else "/usr"
@@ -191,5 +225,17 @@ if __name__ == "__main__":
 
     logger.setLevel(logging.DEBUG)
 
-    for xml_file in xml_files[0:3]:
-        parse_xml_file(xml_file)
+    models = []
+    for xml_file in xml_files:
+        try:
+            model = parse_xml_file(xml_file)
+        except NotImplementedError as ex:  # TODO: delete this before merging!
+            logger.warning(ex)
+            continue
+
+        models.append(model.model_dump())
+
+    model_json = json.dumps(models)
+    model_json = json.dumps(models, indent=2)  # TODO: delete this before merging!
+    with open(model_json_path, mode="w") as file:
+        file.write(model_json)
