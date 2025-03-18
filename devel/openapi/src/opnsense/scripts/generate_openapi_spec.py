@@ -1,126 +1,179 @@
 #! /usr/bin/env python3
-
+from pprint import pprint
 import json
 import os
 import re
 import sys
-from typing import Dict, List, Any
+from collections import defaultdict
+from typing import *
 
 from apispec import APISpec
 from openapi_spec_validator import validate
 
-from collect_api_endpoints import Endpoint, collect_api_modules
-from parse_xml_models import get_models
+from parse_xml_models import get_models, Model, logger
 
 
-def get_endpoints(source_path: str) -> Dict[str, List[Endpoint]]:
-    dot = os.path.dirname(__file__)
-    json_file = os.path.join(dot, "endpoints.json")
+SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
+StringFormat: TypeAlias = (
+    Literal["date"] |       # RFC 3339, section 5.6, for example, 2017-07-21
+    Literal["date-time"] |  # RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z
+    Literal["password"] |   # a hint to UIs to mask the input
+    Literal["byte"] |       # base64
+    Literal["binary"] |     # file data
+    str                     # extensible
+)
 
-    if os.path.isfile(json_file):
-        with open(json_file) as file:
-            endpoints_by_model = json.loads(file.read())
-    else:
-        endpoints_by_model = collect_api_modules(source_path)
-        with open(json_file, mode="w") as file:
-            file.write(json.dumps(endpoints_by_model))
+FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
+    lambda: "string",
+    {
+        "AccountField": "array",
+        "AliasField": "array",
+        "ArrayField": "array",
+        "AuthenticationServerField": "array",
+        "AuthGroupField": "array",
+        "AutoNumberField": "integer",
+        "BooleanField": "boolean",
+        "CaContainerField": "object",
+        "CAsField": "array",
+        "CertificateContainerField": "object",
+        "CertificateField": "array",
+        "CertificatesField": "array",
+        "CharonLogLevelField": "array",
+        "CheckipField": "array",
+        "ClientField": "array",
+        "ConfigdActionsField": "array",
+        "ConnnectionField": "array",
+        "ContainerField": "object",
+        "CountryField": "array",
+        "CSVListField": "array",
+        "CustomPolicyField": "object",
+        "ExitNodeField": "array",
+        "FilterRuleContainerField": "object",
+        "FilterRuleField": "array",
+        "GatewayField": "array",
+        "GroupField": "array",
+        "GroupMembershipField": "array",
+        "InstanceField": "array",
+        "IntegerField": "integer",
+        "InterfaceField": "array",
+        "InterfaceField": "array",
+        "InterfaceField": "array",
+        "IPsecProposalField": "array",
+        "JsonKeyValueStoreField": "array",
+        "LaggInterfaceField": "array",
+        "MemberField": "array",
+        "ModelRelationField": "array",
+        "NeighborField": "array",
+        "NetworkAliasField": "array",
+        "NumericField": "number",
+        "OpenVPNServerField": "array",
+        "OptionField": "array",
+        "PolicyContentField": "array",
+        "PolicyRulesField": "array",
+        "PoolsField": "array",
+        "PortField": "array",
+        "PrivField": "array",
+        "PrivField": "array",
+        "ProtocolField": "array",
+        "ScheduleField": "array",
+        "ServerField": "array",
+        "ServiceField": "array",
+        "SourceNatRuleContainerField": "object",
+        "SourceNatRuleField": "array",
+        "SPDField": "array",
+        "TosField": "array",
+        "TunableField": "array",
+        "UnboundInterfaceField": "array",
+        "UserGroupField": "array",
+        "VipField": "array",
+        "VipInterfaceField": "array",
+        "VirtualIPField": "array",
+        "VlanInterfaceField": "array",
+        "VTIField": "array",
+    },
+)
 
-    return endpoints_by_model
+
+# def parse_constraint()
+
+def _walk_model(model: Model) -> Dict[str, Any]:
+    # model_dict = model_dict.copy()
+
+    _type: SpecType = FIELD_TO_SPEC_TYPE[model.type]
+    spec: Dict[str, Any] = {"type": _type}
 
 
-def get_models(source_path: str) -> Dict[str, Dict]:
-    dot = os.path.dirname(__file__)
-    json_file = os.path.join(dot, "models.json")
+    COMMON_ATTRIBUTES = [
+        "Default",
+        "ValidationMessage",
+        "Required",
+        "ChangeCase",
+        "Constraints"
+    ]
 
-    if os.path.isfile(json_file):
-        with open(json_file) as file:
-            models = json.loads(file.read())
-    else:
-        models = get_models(source_path)
-        with open(json_file, mode="w") as file:
-            file.write(json.dumps(models))
+    match _type:
+        case "array":
+            # logically, an object should be nested in the array, but that isn't done here.
+            # So we'll fudge the model to look like an object, then nest it ourselves.
+            # AFAICS, array types are always object, and arrays are never mixed.
+            md = model.model_dump(exclude={"type", "properties"})
+            md["type"] = "ContainerField"
+            md["properties"] = model.properties
+            _model = Model(**md)
 
-    return models
+            item_type = _walk_model(_model)
+            spec["items"] = item_type
+
+        case "object":
+            spec["properties"] = props = {}
+            required = []
+            for prop in model.properties:
+                pd = _walk_model(prop)
+                if pd.pop("required", False):
+                    required.append(prop.name)
+                props[prop.name] = pd
+            if required:
+                spec["required"] = required
+        # case "string":
+        # case "boolean":
+        # case "integer":
+        # case "number":
+        case _:
+            for prop in model.properties:
+                spec[prop.name] = prop.value
+
+    return spec
+
+def get_model_spec(model: Model):
+    # print(model)
+    model_dict = model.model_dump()
+    return _walk_model(model)
 
 
-def get_spec(endpoints: List[Endpoint]):
-    param_pattern = re.compile(r"^\$(?P<name>\w+)(=(?P<default>.*))?$")
-
+def get_spec(models: List[Model]):
     spec = APISpec(
         title="OPNsense API",
         version="25.1",
         openapi_version="3.0.0",
         info={"description": "API for managing your OPNsense firewall"},
     )
-
-    for endpoint in endpoints:
-        path = f'/api/{endpoint["module"]}/{endpoint["controller"]}/{endpoint["command"]}'
-
-        model_filename = endpoint["model_filename"]
-        # TODO: parse xml, generate json schema
-
-        param_strings = endpoint["parameters"]
-        param_strings = param_strings.split(",") if param_strings else []
-        param_defs = []
-        for p in param_strings:
-            m = re.match(param_pattern, p)
-            if not m:
-                raise ValueError(f"failed to parse parameter '{p}' at /api/{path}")
-
-            name = m.group("name")
-            default = m.group("default")
-
-            param_schema: Dict[str, Any] = {"type": "string"}  # fuck these cack-typed langs
-            param_def = {
-                "name": name,
-                "in": "query",
-                "schema": param_schema
-            }
-
-            if default is None:
-                param_def["required"] = True
-            else:
-                param_schema["default"] = default
-
-            param_defs.append(param_def)
-
-        ops = {}
-        method = endpoint.get("method", "GET").lower()
-        methods = ["get", "post"] if method == "*" else [method]
-        for method in methods:
-            ops[method] = {
-                "parameters": param_defs,
-                "responses": {
-                    "200": {"description": "OK"}
-                }
-            }
-
-        spec.path(path=path, operations=ops)
-
-    validate(spec.to_dict())  # type: ignore
+    for model in models:
+        component = get_model_spec(model)
+        spec.components.schema(model.path, component)
     return spec
 
-
-def write_spec(spec: APISpec, path: str):
-    json_spec = json.dumps(spec.to_dict())
-    with open(path, mode="w") as file:
-        file.write(json_spec)
-
-
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} OUTPUT_FILE")
-        exit(1)
+    # if len(sys.argv) != 2:
+    #     print(f"Usage: {sys.argv[0]} OUTPUT_FILE")
+    #     exit(1)
+    # output_file = sys.argv[1]
+    output_file = os.path.realpath("spec.json")
 
-    source_path = "/gitroot/upstream/opnsense/plugins" #"/usr/plugins"  # TODO: param for this
-    output_file = sys.argv[1]
 
-    # endpoints_by_model = get_endpoints(source_path)
-    # endpoints = []
-    # for e in endpoints_by_model.values():
-    #     endpoints.extend(e)
-
-    models = get_models(source_path)
+    models = get_models()
+    # spec = get_model_spec(models[14])
+    spec = get_spec(models[14:17])
+    print(spec.to_yaml())
 
     # spec = get_spec(endpoints)
     # write_spec(spec, output_file)
