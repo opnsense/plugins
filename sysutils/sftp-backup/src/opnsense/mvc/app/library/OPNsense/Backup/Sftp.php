@@ -270,8 +270,8 @@ class Sftp extends Base implements IBackupProvider
                 }
                 return $remote_backups;
             } else {
-                return array($target_filename);
-            }            
+                return $this->ls(sprintf('%s*.xml', $fileprefix)) ?: ['No backups for this device were found on the remote server.'];
+            }
         } else {
             /* disabled */
             return;
