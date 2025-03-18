@@ -7,6 +7,7 @@ tayga_v4pool={{ OPNsense.tayga.general.v4pool }}
 tayga_v6prefix={{ OPNsense.tayga.general.v6prefix }}
 tayga_v6address={{ OPNsense.tayga.general.v6address }}
 tayga_v6destination={{ OPNsense.tayga.general.v6destination }}
+tayga_customoptions={{ OPNsense.tayga.general.customoptions }}
 {% if helpers.exists('OPNsense.tayga.general.v6routedisabled') and OPNsense.tayga.general.v6routedisabled == '1' %}
 tayga_v6routedisabled="YES"
 {% else %}

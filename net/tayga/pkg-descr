@@ -7,6 +7,10 @@ networks where dedicated NAT64 hardware would be overkill.
 Plugin Changelog
 ================
 
+1.3
+
+* Support for custom Tayga options
+
 1.2
 
 * Custom IPv6 routing option

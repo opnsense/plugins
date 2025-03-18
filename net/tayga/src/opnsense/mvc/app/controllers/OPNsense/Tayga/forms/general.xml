@@ -47,4 +47,10 @@
         <type>checkbox</type>
         <help>This is an advanced setting for selective routing scenarios. It will prevent installing the route which routes the IPv6 Prefix to Tayga. This requires assigning and locking the nat64 interface, enabling dynamic gateway policy, configuring a dynamic IPv6 gateway and adding custom routes.</help>
     </field>
+    <field>
+        <id>general.customoptions</id>
+        <label>Custom Options</label>
+        <type>textbox</type>
+        <help>Add additional lines to the tayga.conf configuration file. Please use with caution and on your own risk, there is no validation!</help>
+    </field>
 </form>
