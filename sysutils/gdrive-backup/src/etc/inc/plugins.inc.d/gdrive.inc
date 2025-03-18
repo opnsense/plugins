@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Neil Merchant
+ * Copyright (C) 2025 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,17 +26,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Dmidecode\Api;
-
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
-
-class ServiceController extends ApiControllerBase
+/**
+ *  sync configuration via xmlrpc
+ * @return array
+ */
+function gdrive_xmlrpc_sync()
 {
-    public function getAction()
-    {
-        $system = parse_ini_string(trim((new Backend())->configdRun('dmidecode system')), false, INI_SCANNER_RAW);
-        $bios = parse_ini_string(trim((new Backend())->configdRun('dmidecode bios')), false, INI_SCANNER_RAW);
-        return ['status' => 'ok', 'system' => $system, 'bios' => $bios];
-    }
+    return [[
+        'description' => gettext('Backup - Google Drive'),
+        'section' => 'system.remotebackup',
+        'id' => 'remotebackup',
+    ]];
 }
