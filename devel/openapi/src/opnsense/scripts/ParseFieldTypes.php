@@ -8,8 +8,15 @@ use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
 
-$config = include __DIR__ . "/src/opnsense/mvc/app/config/config.php";
-include __DIR__ . "/src/opnsense/mvc/app/config/loader.php";
+if (str_starts_with(__DIR__, "/usr/")) {
+    $app_dir = __DIR__ . "/src/opnsense/mvc/app";
+} else {
+    // when developing, assume the core and plugins repos are side by side
+    $app_dir = preg_replace("/\/plugins\/.*/", "/core/src/opnsense/mvc/app", __DIR__);
+}
+
+$config = include $app_dir . "/config/config.php";
+include $app_dir . "/config/loader.php";
 
 
 class Model {
@@ -139,7 +146,8 @@ function export_models($base_path, $output_file = null, $pretty = false)
     $json = json_encode($models, $json_flags) . "\n";
 
     if ($output_file) {
-        $fd = fopen($output_file, "w");
+        // fails when called from python without shell
+        $fd = fopen($output_file, "w") or die("Failed to touch '" . $output_file . "'");
         fwrite($fd, $json);
         fclose($fd);
     } else {
