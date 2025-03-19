@@ -36,8 +36,6 @@ checkip_service_list = {
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
   'he': '%s://checkip.dns.he.net/',
   'icanhazip': '%s://icanhazip.com/',
-  'ip4only.me': '%s://ip4only.me/api/',
-  'ip6only.me': '%s://ip6only.me/api/',
   'ipify-ipv4': '%s://api.ipify.org/',
   'ipify-ipv6': '%s://api6.ipify.org/',
   'loopia': '%s://dns.loopia.se/checkip/checkip.php',
