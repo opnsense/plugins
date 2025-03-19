@@ -57,11 +57,15 @@ class Endpoint(BaseModel):
     command: str
     parameters: List[Parameter]
 
+    @property
+    def path(self):
+        return f"{self.module}/{self.controller}/{self.command}".lower()
+
     def __repr__(self):
-        r = f"[{self.method}] {self.module}/{self.controller}/{self.command}"
+        route = f"[{self.method}] {self.path}"
         if self.parameters:
-            return f"{r} ({', '.join(repr(p) for p in self.parameters)})"
-        return r
+            return f"{route} ({', '.join(repr(p) for p in self.parameters)})"
+        return route
 
 
 EndpointList = RootModel[List[Endpoint]]

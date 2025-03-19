@@ -11,6 +11,7 @@ from apispec import APISpec
 from openapi_spec_validator import validate
 
 from parse_xml_models import get_models, Model, logger
+from parse_endpoints import get_endpoints, Endpoint
 
 
 SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
@@ -151,16 +152,26 @@ def get_model_spec(model: Model):
     return _walk_model(model)
 
 
-def get_spec(models: List[Model]):
+def get_endpoint_spec(endpoint: Endpoint) -> Dict[str, Any]:
+    op = {}
+    method = endpoint.method.lower()
+    return op
+
+
+def get_spec(models: List[Model], endpoints: List[Endpoint]):
     spec = APISpec(
         title="OPNsense API",
         version="25.1",
         openapi_version="3.0.0",
         info={"description": "API for managing your OPNsense firewall"},
     )
-    for model in models:
+    for model in models[0:1]:
         component = get_model_spec(model)
         spec.components.schema(model.path, component)
+
+    for endpoint in endpoints[0:1]:
+        operation = get_endpoint_spec(endpoint)
+        spec.path(path=endpoint.path, operations=operation)
     return spec
 
 
@@ -168,7 +179,8 @@ if __name__ == "__main__":
     output_file = os.path.realpath("openapi.yml")
 
     models = get_models()
-    spec = get_spec(models)
+    endpoints = get_endpoints()
+    spec = get_spec(models, endpoints)
     yaml = spec.to_yaml()
 
     with open(output_file, "w") as file:
