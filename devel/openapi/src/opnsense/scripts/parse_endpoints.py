@@ -32,9 +32,6 @@ class Parameter(BaseModel):
         return self.name
 
 
-# ParameterList = RootModel[List[Parameter]]
-
-
 class Method(BaseModel):
     name: str
     method: HttpMethod | Literal["*"]
@@ -46,7 +43,7 @@ class Controller(BaseModel):
     namespace: str
     parent: str | None
     methods: List[Method]
-    # uses: str  # TODO
+    model: str | None
     is_abstract: bool
 
 
@@ -56,6 +53,7 @@ class Endpoint(BaseModel):
     controller: str
     command: str
     parameters: List[Parameter]
+    model: str | None
 
     @property
     def path(self):
@@ -84,7 +82,8 @@ def get_controllers() -> List[Controller]:
 
     controllers = []
     for c in json.loads(controller_json).values():
-        controllers.append(Controller(**c))
+        model_path = (c.pop("model") or "").replace("\\", ".").lower()
+        controllers.append(Controller(model=model_path, **c))
     return controllers
 
 
@@ -114,7 +113,8 @@ def get_endpoints() -> List[Endpoint]:
                     module=module,
                     controller=controller_name,
                     command=ep.name,
-                    parameters=ep.parameters
+                    parameters=ep.parameters,
+                    model=controller.model,
                 )
                 endpoints.append(endpoint)
 

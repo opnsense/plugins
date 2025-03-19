@@ -5,6 +5,7 @@ namespace Test;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
+use ReflectionException;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
@@ -15,7 +16,6 @@ if (str_starts_with(__DIR__, "/usr/")) {
     // when developing, assume the core and plugins repos are side by side
     $app_dir = preg_replace("/\/plugins\/.*/", "/core/src/opnsense/mvc/app", __DIR__);
 }
-// set_include_path(get_include_path() . PATH_SEPARATOR . $app_dir . "/../../../../contrib");
 
 $config = require $app_dir . "/config/config.php";
 set_include_path(get_include_path() . PATH_SEPARATOR . $app_dir . "/../../../../contrib");
@@ -37,6 +37,7 @@ class Parameter {
         }
     }
 }
+
 
 class Method {
     protected static $BASE_METHOD_HTTP_METHODS = [
@@ -84,7 +85,7 @@ class Controller {
     public $namespace;
     public $parent;
     public $methods;
-    public $uses;
+    public $model;
     public $is_abstract;
 
     public function __construct(ReflectionClass $rc)
@@ -126,6 +127,19 @@ class Controller {
             $methods[] = new Method($method_rc, $method_src);
         }
         $this->methods = $methods;
+
+        $model = null;
+        try {
+            $prop = $rc->getProperty("internalModelClass");
+            if ($prop) {
+                $model = $prop->getDefaultValue();
+            }
+        } catch (ReflectionException $e) {
+            if ($parent) {
+                $model = $parent->model;
+            }
+        }
+        $this->model = $model;
     }
 }
 

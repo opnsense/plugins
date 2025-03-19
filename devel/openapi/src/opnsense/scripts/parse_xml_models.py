@@ -173,7 +173,7 @@ def parse_xml_file(xml_file):
     logger.debug(f"Parsing {xml_file}")
 
     vendor, module, name = xml_file[0:-4].split("/")[-3:]
-    path = (f"{module}.{name}" if vendor == "OPNsense" else f"{vendor}.{module}.{name}").lower()
+    path = f"{vendor}.{module}.{name}".lower()
     module = ModuleName(module)
 
     tree = ElementTree.parse(xml_file)

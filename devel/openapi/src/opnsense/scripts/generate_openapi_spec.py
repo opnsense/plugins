@@ -5,7 +5,8 @@ import os
 import re
 import sys
 from collections import defaultdict
-from typing import *
+from typing import (Any, Callable, Concatenate, Dict, List, Literal, NewType,
+                    Optional, ParamSpec, Self, Tuple, Type, TypedDict, TypeVar, TypeAlias)
 
 from apispec import APISpec
 from openapi_spec_validator import validate
@@ -95,22 +96,9 @@ FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
 )
 
 
-# def parse_constraint()
-
 def _walk_model(model: Model) -> Dict[str, Any]:
-    # model_dict = model_dict.copy()
-
     _type: SpecType = FIELD_TO_SPEC_TYPE[model.type]
     spec: Dict[str, Any] = {"type": _type}
-
-
-    COMMON_ATTRIBUTES = [
-        "Default",
-        "ValidationMessage",
-        "Required",
-        "ChangeCase",
-        "Constraints"
-    ]
 
     match _type:
         case "array":
@@ -147,16 +135,25 @@ def _walk_model(model: Model) -> Dict[str, Any]:
 
 
 def get_model_spec(model: Model):
-    # print(model)
-    model_dict = model.model_dump()
     return _walk_model(model)
 
 
 def get_endpoint_spec(endpoint: Endpoint) -> Dict[str, Any]:
-    op = {}
     method = endpoint.method.lower()
+    model_path = endpoint.model
+    schema = {"schema": model_path} if model_path else {}
+    op = {
+        method: {
+            "responses": {
+                "200": {
+                    "content": {
+                        "application/json": schema
+                    }
+                }
+            }
+        }
+    }
     return op
-
 
 def get_spec(models: List[Model], endpoints: List[Endpoint]):
     spec = APISpec(
@@ -165,11 +162,11 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
         openapi_version="3.0.0",
         info={"description": "API for managing your OPNsense firewall"},
     )
-    for model in models[0:1]:
+    for model in models:
         component = get_model_spec(model)
         spec.components.schema(model.path, component)
 
-    for endpoint in endpoints[0:1]:
+    for endpoint in endpoints:
         operation = get_endpoint_spec(endpoint)
         spec.path(path=endpoint.path, operations=operation)
     return spec
