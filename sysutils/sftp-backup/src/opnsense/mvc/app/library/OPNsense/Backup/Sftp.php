@@ -177,8 +177,9 @@ class Sftp extends Base implements IBackupProvider
         if (!is_dir($confdir)) {
             mkdir($confdir);
         }
-        if (!is_file($identfile) || file_get_contents($identfile) != $this->model->privkey) {
-            File::file_put_contents($identfile, trim(str_replace("\r", "", $this->model->privkey)) . "\n", 0600);
+        $this_key = trim(str_replace("\r", "", $this->model->privkey)) . "\n";
+        if (!is_file($identfile) || file_get_contents($identfile) != $this_key) {
+            File::file_put_contents($identfile, $this_key, 0600);
         }
         return $identfile;
     }
@@ -186,13 +187,13 @@ class Sftp extends Base implements IBackupProvider
     /**
      * @return list of files on remote location
      */
-    private function ls($pattern='')
+    private function ls($pattern = '')
     {
         $result = [];
-        foreach (explode("\n", $this->sftpCmd('ls -lnt '. $pattern)['stdout']) as $line) {
+        foreach (explode("\n", $this->sftpCmd('ls -lnt ' . $pattern)['stdout']) as $line) {
             $parts = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY);
             if (count($parts) >= 7) {
-                $result[] = $parts[count($parts)-1];
+                $result[] = $parts[count($parts) - 1];
             }
         }
         return $result;
@@ -248,7 +249,7 @@ class Sftp extends Base implements IBackupProvider
         /* cleanup */
         rsort($remote_backups);
         if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
-            for ($i = $this->model->backupcount->getCurrentValue() ; $i < count($remote_backups); $i++) {
+            for ($i = $this->model->backupcount->getCurrentValue(); $i < count($remote_backups); $i++) {
                 $this->del($remote_backups[$i]);
             }
             $remote_backups = $this->ls('config-*.xml');
