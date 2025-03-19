@@ -196,13 +196,13 @@ class Sftp extends Base implements IBackupProvider
     /**
      * @return list of files on remote location
      */
-    private function ls($pattern='')
+    private function ls($pattern = '')
     {
         $result = [];
-        foreach (explode("\n", $this->sftpCmd('ls -lnt '. $pattern)['stdout']) as $line) {
+        foreach (explode("\n", $this->sftpCmd('ls -lnt ' . $pattern)['stdout']) as $line) {
             $parts = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY);
             if (count($parts) >= 7) {
-                $result[] = $parts[count($parts)-1];
+                $result[] = $parts[count($parts) - 1];
             }
         }
         return $result;
@@ -260,7 +260,7 @@ class Sftp extends Base implements IBackupProvider
                 $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
             }
             /* cleanup only if backup count is > 0*/
-            if ($this->model->backupcount->getCurrentValue() > 0) {
+            if ($this->model->backupcount->asFloat() > 0) {
                 rsort($remote_backups);
                 if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
                     for ($i = $this->model->backupcount->getCurrentValue() ; $i < count($remote_backups); $i++) {
@@ -270,7 +270,7 @@ class Sftp extends Base implements IBackupProvider
                 }
                 return $remote_backups;
             } else {
-                return $this->ls(sprintf('%s*.xml', $fileprefix)) ?: ['No backups for this device were found on the remote server.'];
+                return $this->ls(sprintf('%s*.xml', $fileprefix)) ?: [];
             }
         } else {
             /* disabled */

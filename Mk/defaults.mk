@@ -157,6 +157,11 @@ rebase:
 log:
 	@git log --stat -p ${PLUGIN_STABLE}
 
+pull:
+	@git checkout ${PLUGIN_STABLE}
+	@git pull
+	@git checkout ${PLUGIN_MAIN}
+
 push:
 	@git checkout ${PLUGIN_STABLE}
 	@git push
