@@ -87,14 +87,25 @@ foreach ((new Caddy())->reverseproxy->handle->iterateItems() as $handleItem) {
     }
 }
 
+foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
+    $caCertField = (string)$reverseItem->ClientAuthTrustPool;
+
+    if (!empty($caCertField)) {
+        $refs = array_map('trim', explode(',', $caCertField));
+        foreach ($refs as $ref) {
+            if (!empty($ref)) {
+                $caCertRefs[] = $ref;
+            }
+        }
+    }
+}
+
 $caCertRefs = array_unique($caCertRefs);
 
 foreach ((new Ca())->ca->iterateItems() as $caItem) {
     $refid = (string)$caItem->refid;
-
     if (in_array($refid, $caCertRefs, true)) {
         $caCert = base64_decode((string)$caItem->crt);
-
         $writeFileIfChanged($tempDir . $refid . '.pem', $caCert);
     }
 }
