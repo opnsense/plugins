@@ -72,13 +72,14 @@ class FieldType(BaseModel):
         return Model(type=self.name, **kwargs)
 
 
+def explode_php_name(class_name: str) -> Tuple[ModuleName, str]:
+    segments = class_name.split("\\")
+    # TODO: what about vendors other than OPNsense? e.g. Deciso\\Proxy
+    return ModuleName(segments[-3]), segments[-1]
+
+
 class FieldTypeRegistry:
     _cache: Dict[ModuleName, Dict[str, FieldType]] = {}
-
-    @staticmethod
-    def explode_php_name(php_name) -> Tuple[ModuleName, str]:
-        segments = php_name.split("\\")
-        return ModuleName(segments[-3]), segments[-1]
 
     @classmethod
     def get(cls, module: ModuleName, name: str) -> FieldType | None:
@@ -95,7 +96,7 @@ class FieldTypeRegistry:
     def load(cls, json_path):
         def register_bottom_up(ft):
             php_name = ft["name"]
-            module, name = cls.explode_php_name(php_name)
+            module, name = explode_php_name(php_name)
 
             field_type = cls.get(module, name)
             if field_type:

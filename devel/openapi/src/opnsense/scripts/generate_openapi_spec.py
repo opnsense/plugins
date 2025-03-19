@@ -144,6 +144,7 @@ def _walk_model(model: Model) -> Dict[str, Any]:
 
     return spec
 
+
 def get_model_spec(model: Model):
     # print(model)
     model_dict = model.model_dump()
@@ -162,18 +163,14 @@ def get_spec(models: List[Model]):
         spec.components.schema(model.path, component)
     return spec
 
-if __name__ == "__main__":
-    # if len(sys.argv) != 2:
-    #     print(f"Usage: {sys.argv[0]} OUTPUT_FILE")
-    #     exit(1)
-    # output_file = sys.argv[1]
-    output_file = os.path.realpath("spec.json")
 
+if __name__ == "__main__":
+    output_file = os.path.realpath("openapi.yml")
 
     models = get_models()
-    # spec = get_model_spec(models[14])
-    spec = get_spec(models[14:17])
-    print(spec.to_yaml())
+    spec = get_spec(models)
+    yaml = spec.to_yaml()
 
-    # spec = get_spec(endpoints)
-    # write_spec(spec, output_file)
+    with open(output_file, "w") as file:
+        file.write(yaml)
+    print(yaml)
