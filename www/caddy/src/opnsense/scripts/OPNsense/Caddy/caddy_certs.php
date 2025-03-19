@@ -93,7 +93,6 @@ foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
     if (!empty($caCertField)) {
         $refs = array_map('trim', explode(',', $caCertField));
         foreach ($refs as $ref) {
-
             if (!empty($ref)) {
                 $caCertRefs[] = $ref;
             }
