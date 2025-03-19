@@ -13,6 +13,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.4
+
+* Add: Client Auth (mTLS) to domains (opnsense/plugins/issues/4089)
+
 1.8.3
 
 * Add: Update DNS Providers with new optional choices (opnsense/plugins/issues/4543)

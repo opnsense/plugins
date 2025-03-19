@@ -306,6 +306,8 @@ http://{{ domain }} {
 {% macro tls_configuration(
     customCert,
     dnsChallenge,
+    clientAuthTrustPool,
+    clientAuthMode,
     dnsProvider,
     dnsApiKey,
     dnsSecretApiKey,
@@ -318,8 +320,9 @@ http://{{ domain }} {
     tlsDnsPropagationDelay,
     tlsDnsPropagationResolvers
 ) %}
-    {% if customCert or (dnsChallenge == "1" and dnsProvider) %}
-        tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {% if not customCert and dnsChallenge == "1" and dnsProvider %}{
+    {% if customCert or (dnsChallenge == "1" and dnsProvider) or clientAuthTrustPool %}
+        tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {
+            {% if not customCert and (dnsChallenge == "1" and dnsProvider) %}
             issuer acme {
                 dns {{ dnsProvider }} {% if dnsProvider not in dnsProviderSpecialConfig %}{{ dnsApiKey }}{% else %}{
                     {% set context_var = 'dnsProviderSpecialLogic' %}
@@ -339,7 +342,19 @@ http://{{ domain }} {
                 propagation_delay {{ tlsDnsPropagationDelay }}s
                 {% endif %}
             }
-        }{% endif %}
+            {% endif %}
+
+            {% if clientAuthTrustPool %}
+                client_auth {
+                    {% for ca in clientAuthTrustPool.split(',') %}
+                    trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ ca.strip() }}.pem
+                    {% endfor %}
+                    {% if clientAuthMode %}
+                    mode {{ clientAuthMode }}
+                    {% endif %}
+                }
+            {% endif %}
+        }
     {% endif %}
 {% endmacro %}
 
@@ -595,6 +610,8 @@ http://{{ domain }} {
             {{ tls_configuration(
                 reverse.CustomCertificate|default(""),
                 reverse.DnsChallenge|default("0"),
+                reverse.ClientAuthTrustPool|default(""),
+                reverse.ClientAuthMode|default(""),
                 generalSettings.TlsDnsProvider,
                 generalSettings.TlsDnsApiKey,
                 generalSettings.TlsDnsSecretApiKey,
