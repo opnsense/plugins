@@ -33,7 +33,7 @@ $config = include $app_dir . "/config/config.php";
 include $app_dir . "/config/loader.php";
 
 
-class Model {
+class Field {
     private static $ignoreProperties = [
         "InternalReference", "Value", "Nodes", "ParentModel", "Changed", "AttributeValue"
     ];
@@ -54,7 +54,7 @@ class Model {
         $parent_rc = $rc->getParentClass();
         if ($parent_rc) {
             $parent_name = $parent_rc->getName();
-            $parent = ModelRegistry::get($parent_name);
+            $parent = FieldRegistry::get($parent_name);
         }
         $this->parent = $parent_name;
 
@@ -83,12 +83,12 @@ class Model {
 }
 
 
-class ModelRegistry {
+class FieldRegistry {
     private static $registry = array();
 
     public static function register(ReflectionClass $rc) {
         $name = $rc->getName();
-        if (array_key_exists($name, ModelRegistry::$registry)) {
+        if (array_key_exists($name, FieldRegistry::$registry)) {
             return;
         }
 
@@ -99,23 +99,23 @@ class ModelRegistry {
             $parent = self::get($parent_rc->getName());
         }
 
-        $model = new Model($rc, $parent);
-        self::$registry[$name] = $model;
+        $field = new Field($rc, $parent);
+        self::$registry[$name] = $field;
     }
 
     public static function get(string $name) {
-        if (array_key_exists($name, ModelRegistry::$registry)) {
-            return ModelRegistry::$registry[$name];
+        if (array_key_exists($name, FieldRegistry::$registry)) {
+            return FieldRegistry::$registry[$name];
         }
     }
 
     public static function dump() {
-        return ModelRegistry::$registry;
+        return FieldRegistry::$registry;
     }
 }
 
 
-function find_model_classes(string $base_path)
+function find_field_classes(string $base_path)
 {
     $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base_path));
     $class_names = array();
@@ -137,27 +137,27 @@ function find_model_classes(string $base_path)
 }
 
 
-function register_models(array $class_names)
+function register_fields(array $class_names)
 {
     foreach ($class_names as $c) {
         $rc = new ReflectionClass($c);
-        ModelRegistry::register($rc);
+        FieldRegistry::register($rc);
     }
 }
 
 
-function export_models($base_path, $output_file = null, $pretty = false)
+function export_fields($base_path, $output_file = null, $pretty = false)
 {
     $json_flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
     if ($pretty) {
         $json_flags = $json_flags | JSON_PRETTY_PRINT;
     }
 
-    $class_names = find_model_classes($base_path);
-    register_models($class_names);
+    $class_names = find_field_classes($base_path);
+    register_fields($class_names);
 
-    $models = ModelRegistry::dump();
-    $json = json_encode($models, $json_flags) . "\n";
+    $fields = FieldRegistry::dump();
+    $json = json_encode($fields, $json_flags) . "\n";
 
     if ($output_file) {
         // fails when called from python without shell
@@ -180,6 +180,6 @@ if (array_key_exists("o", $opts)) {
 }
 
 $base_path = $config->__get("application")->modelsDir;
-echo export_models($base_path, $output_file, true);
+echo export_fields($base_path, $output_file, true);
 
 ?>
