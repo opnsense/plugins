@@ -1,5 +1,21 @@
 #! /usr/bin/env python3
 
+"""
+Build a dataclass for each API endpoint.
+
+It's intended to be imported by `generate_openapi_spec.py`, but CLI args will be added.
+
+We start by using PHP to parse the Controller classes, caching them to JSON. We need the classes
+because some of the spec comes from the class and some from the method, but the methods are the
+meat of the endpoint.
+
+Since the end goal is to emit OpenApi spec, we need paths to place the models in the schema. We
+use the path of the XML file for this, so we end up with, e.g.,
+"schemas/opnsense.captiveportal.captiveportal".
+
+Then we cache the models as JSON.
+"""
+
 import json
 import os
 import re
@@ -15,12 +31,14 @@ HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
 
 
 class PhpParameter(TypedDict):
+    """Output from ParseControllers.php"""
     name: str
     has_default: bool
     default: Any
 
 
 class PhpMethod(TypedDict):
+    """Output from ParseControllers.php"""
     name: str
     method: HttpMethod | Literal["*"]
     parameters: List[PhpParameter]
@@ -28,6 +46,7 @@ class PhpMethod(TypedDict):
 
 
 class PhpController(TypedDict):
+    """Output from ParseControllers.php"""
     name: str
     parent: str
     methods: List[PhpMethod]
@@ -37,6 +56,7 @@ class PhpController(TypedDict):
 
 
 class Parameter(BaseModel):
+    """Munge the output from ParseControllers.php"""
     name: str
     has_default: bool
     default: Any
@@ -49,6 +69,7 @@ class Parameter(BaseModel):
 
 
 class Method(BaseModel):
+    """Munge the output from ParseControllers.php"""
     description: str
     name: str
     method: HttpMethod | Literal["*"]
@@ -66,6 +87,7 @@ class Method(BaseModel):
 
 
 class Controller(BaseModel):
+    """Munge the output from ParseControllers.php"""
     name: str
     description: str
     parent: str | None
@@ -91,6 +113,7 @@ class Controller(BaseModel):
 
 
 class Endpoint(BaseModel):
+    """This is the data for the paths in the OpenApi spec"""
     description: str
     method: HttpMethod
     module: str
@@ -101,6 +124,7 @@ class Endpoint(BaseModel):
 
     @property
     def path(self):
+        """API path, not file path"""
         return f"/{self.module}/{self.controller}/{self.command}".lower()
 
     def __repr__(self):

@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Parse Field classes using reflection. Because regex is not ideal for parsing source code.
+ * We do the absolute bare minimum in PHP because it suffers from being PHP.
+ *
+ * Called from `parse_xml_models.py`.
+ *
+ * USAGE:
+ *      php ParseFieldTypes.php [ARGS]
+ *
+ * ARGS:
+ *      -o, --output-file      path to write a JSON file
+ */
+
 namespace Test;
 
 use ReflectionClass;
@@ -8,6 +21,7 @@ use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
 
+// TODO: remove this when I figure out how to use Make
 if (str_starts_with(__DIR__, "/usr/")) {
     $app_dir = __DIR__ . "/src/opnsense/mvc/app";
 } else {

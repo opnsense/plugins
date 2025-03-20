@@ -1,4 +1,13 @@
 #! /usr/bin/env python3
+
+"""
+Build an OpenApi spec.
+
+It's intended to be called by configd, but CLI args will be added.
+
+Calls `parse_endpoints.py` and `parse_xml_models.py` if their cached JSON output is not found.
+"""
+
 import os
 from collections import defaultdict
 from typing import Any, Dict, List, Literal, TypeAlias
@@ -19,6 +28,7 @@ StringFormat: TypeAlias = (
     str                     # extensible
 )
 
+# Given a Field class from PHP, get the OpenApi data type
 FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
     lambda: "string",
     {
@@ -90,6 +100,8 @@ FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
 )
 
 
+# OpenApi primitives can only have these constraints. Any other tags in the XML need to be
+# understood and processed (e.g. OptionValues implies an enum).
 PRIMITIVE_VALIDATORS: Dict[str, List[str]] = {
     "string": [
         "minLength",
@@ -97,18 +109,22 @@ PRIMITIVE_VALIDATORS: Dict[str, List[str]] = {
         "format",
         "pattern",
     ],
-    "boolean": [],
+    "boolean": [],  # TODO
     "integer": [
         "minimum",
         "exclusiveMinimum",
         "maximum",
         "exclusiveMaximum",
     ],
-    "number": [],
+    "number": [],  # TODO
 }
 
 
 def _walk_model(model: Model) -> Dict[str, Any]:
+    """
+    Does the heavy lifting. The output becomes the schema for the request body or response, for
+    endpoints that use this model.
+    """
     _type: SpecType = FIELD_TO_SPEC_TYPE[model.type]
     spec: Dict[str, Any] = {"type": _type}
 
@@ -135,22 +151,22 @@ def _walk_model(model: Model) -> Dict[str, Any]:
                 props[prop.name] = pd
             if required:
                 spec["required"] = required
-        # case "string":
-        # case "boolean":
-        # case "integer":
-        # case "number":
+
         case _:
             for prop in model.properties:
                 # also: nullable, readOnly, writeOnly
                 if prop.name in PRIMITIVE_VALIDATORS[_type]:
                     spec[prop.name] = prop.value
-                else: pass
+                else:
+                    # TODO: collect these and handle them. E.g. Mask, Multiple. They ought to be
+                    # in the FieldType.
                     # logger.warning(f"{prop.name} is not valid for {_type}")
+                    pass
 
     return spec
 
 
-def get_model_spec(model: Model):
+def get_model_spec(model: Model) -> Dict[str, Any]:
     return _walk_model(model)
 
 
@@ -169,7 +185,7 @@ def get_endpoint_spec(endpoint: Endpoint) -> Dict[str, Any]:
     return {method: {"responses": responses}}
 
 
-def get_spec(models: List[Model], endpoints: List[Endpoint]):
+def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
     spec = APISpec(
         title="OPNsense API",
         version="25.1",
@@ -177,11 +193,14 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
         info={"description": "API for managing your OPNsense firewall"},
     )
 
-    # TODO: PROOF OF CONCEPT, testing a single route
+    #region Testing against a single endpoint
+    # TODO: delete
     models = [m for m in models if m.path == "opnsense.captiveportal.captiveportal"]
     endpoints = [ep for ep in endpoints if ep.path.startswith("/captiveportal")]
+    #endregion Testing against a single endpoint
 
-    # TODO: stop banging my head on apispec library
+    # TODO: figure out why apispec library doesn't like a bare status response
+    # TODO: figure out if there's any consistent pattern to non-model responses
     dummy_spec = {"type": "string"}
     spec.components.schema("dummy", dummy_spec)
 

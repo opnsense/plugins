@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Parse Field classes using reflection. Because regex is not ideal for parsing source code.
+ * We do the absolute bare minimum in PHP because it suffers from being PHP.
+ *
+ * Called from `parse_endpoints.py`.
+ *
+ * USAGE:
+ *      php ParseControllers.php [ARGS]
+ *
+ * ARGS:
+ *      -o, --output-file      path to write a JSON file
+ */
+
 namespace Test;
 
 use Exception;
@@ -11,6 +24,7 @@ use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
 
+// TODO: remove this when I figure out how to use Make
 if (str_starts_with(__DIR__, "/usr/")) {
     $app_dir = __DIR__ . "/src/opnsense/mvc/app";
 } else {
@@ -19,7 +33,10 @@ if (str_starts_with(__DIR__, "/usr/")) {
 }
 
 $config = require $app_dir . "/config/config.php";
+
+// TODO: remove this when I figure out how to use Make
 set_include_path(get_include_path() . PATH_SEPARATOR . $app_dir . "/../../../../contrib");
+
 require $app_dir . "/config/loader.php";
 
 
@@ -128,6 +145,7 @@ class Method {
         $name = preg_replace("/Action\$/", "", $method->name);
         $this->name = $name;
 
+        // See comment in Controller .ctor
         $http_method = "GET";
         preg_match_all('/(?<=this->).*(?=\()/', $src, $matches);
         foreach ($matches[0] as $call) {
@@ -192,6 +210,12 @@ class Controller {
 
         $this->is_abstract = $rc->isAbstract();
 
+        // A route does not define an HTTP method - all routes accept all methods. Looking at
+        // `collect_api_endpoints.py` in the `docs` repo suggests an algo to determine the HTTP
+        // method. It's guesswork based on regexing source code. This is the corpus to regex.
+        //
+        // A library exists to generate an AST, but I don't want the dependency or the performance
+        // hit. Maybe in future.
         $filename = $rc->getFileName();
         $fd = fopen($filename, "r") or die("Failed to read '" . $filename . "'");
         $src = fread($fd, 1000000);
@@ -201,12 +225,13 @@ class Controller {
         $methods = [];
         if ($parent) {$methods = $parent->methods or [];}
         foreach ($rc->getMethods(ReflectionMethod::IS_PUBLIC) as $method_rc) {
-            // skip inherited
+            // skip inherited to keep JSON size down
             if ($method_rc->getDeclaringClass()->getName() != $name) {continue;}
 
             $method_name = $method_rc->name;
-            if (!str_ends_with($method_name, "Action")) {continue;}
+            if (!str_ends_with($method_name, "Action")) {continue;}  // algorithm in Dispatcher.php
 
+            // get the body of the method as raw source code - see earlier comment
             $start = $method_rc->getStartLine();
             $length = $method_rc->getEndLine() - $start;
             $method_src = implode("\n", array_slice($src_lines, $start, $length));
@@ -250,6 +275,10 @@ class Controller {
 }
 
 
+/**
+ * Inheritance matters, so we need the parent before the child. This registry lets us recurse
+ * the inheritance tree form child to parent, so that when we instantiate, the parent is available.
+ */
 class ControllerRegistry {
     private static $registry = array();
 
@@ -262,6 +291,7 @@ class ControllerRegistry {
         $parent_rc = $rc->getParentClass();
         $parent = null;
         if ($parent_rc) {
+            // recurse
             self::register($parent_rc);
             $parent = self::get($parent_rc->getName());
         }
@@ -282,6 +312,11 @@ class ControllerRegistry {
 }
 
 
+/**
+ * Search for source code paths that look like API controllers. We're relying on consistency of
+ * naming, which appears to be all consistent as of v25.1. Therefore, the filename tells us the
+ * class name.
+ */
 function find_controller_classes(string $base_path)
 {
     $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base_path));
@@ -313,6 +348,9 @@ function register_controllers(array $class_names)
 }
 
 
+/**
+ *Do The Thing, then either write JSON to file or return JSON to stdout.
+ */
 function export_controllers($base_path, $output_file = null, $pretty = false)
 {
     $json_flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
