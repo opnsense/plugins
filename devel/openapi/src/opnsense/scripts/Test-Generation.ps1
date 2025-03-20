@@ -24,6 +24,12 @@ if (-not $SpecFile)
     $SpecFile = "$RepoBase/devel/openapi/src/opnsense/scripts/openapi.yml" | Resolve-Path
 }
 
+openapi-spec-validator $SpecFile
+if (-not $?)
+{
+    throw "Failed validation"
+}
+
 if (-not $OutPath)
 {
     $OutPath = "$RepoBase/../powershell/"

@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use Exception;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
@@ -20,6 +21,72 @@ if (str_starts_with(__DIR__, "/usr/")) {
 $config = require $app_dir . "/config/config.php";
 set_include_path(get_include_path() . PATH_SEPARATOR . $app_dir . "/../../../../contrib");
 require $app_dir . "/config/loader.php";
+
+
+abstract class DocComment {
+    public $description = "";
+}
+
+
+class ClassDocComment extends DocComment {
+    public $package = "";
+
+    // public function __construct(ReflectionClass $class) {
+
+    // }
+}
+
+
+class MethodDocIsInherited extends Exception {}
+
+
+class MethodDocComment extends DocComment {
+    public $params = [];
+    public $throws = [];
+    public $return = "";
+
+    // public function __construct(ReflectionMethod $method) {
+    //     $doc = $method->getDocComment();
+    public function __construct(string $doc) {
+        if ($doc === false) {
+            return;
+        }
+
+        $description = [];
+        foreach (explode("\n", $doc) as $line) {
+            $line = trim($line);
+            if ($line == "/**" || $line == "*/") {continue;}
+            $line = substr($line, 2);
+
+            if ($line == "@inheritdoc") {
+                // $controller = $method->getDeclaringClass();
+                // $parent_rc = $controller->getParentClass();
+                // $parent = ControllerRegistry::get($parent_rc->getName());
+                // $parent_method =
+
+                // $this->description = $line;
+                // return;
+
+                throw new MethodDocIsInherited();
+            }
+
+            if (str_starts_with($line, "@")) {
+                $line = substr($line, 1);
+                [$prop, $descr] = explode(" ", $line, 2);
+                $plural = $prop . "s";
+                if (property_exists($this, $plural)) {
+                    $this->$plural[] = $descr;
+                } else {
+                    $this->$prop = $descr;
+                }
+
+            } else {
+                $description[] = $line;
+            }
+        }
+        $this->description = implode(" ", $description);
+    }
+}
 
 
 class Parameter {
@@ -78,7 +145,23 @@ class Method {
         }
         $this->parameters = $params;
 
-        $this->doc = $method->getDocComment() or "";
+        // $doc = $method->getDocComment();
+        // if (!$doc) {$doc = "";}
+        // $this->doc = $doc;
+        // $this->doc = new MethodDocComment($method->getDocComment());
+        try {
+            $this->doc = new MethodDocComment($method->getDocComment());
+        } catch (MethodDocIsInherited $e) {
+            $controller_rc = $method->getDeclaringClass();
+            $parent_rc = $controller_rc->getParentClass();
+            $parent = ControllerRegistry::get($parent_rc->getName());
+            foreach ($parent->methods as $pm) {
+                if ($pm->name == $name) {
+                    $this->doc = $pm->doc;
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -145,7 +228,23 @@ class Controller {
         }
         $this->model = $model;
 
-        $this->doc = $rc->getDocComment() or "";
+        // $doc = $rc->getDocComment();
+        // if (!$doc) {$doc = "";}
+        // $this->doc = $doc;
+
+        // try {
+        //     $this->doc = new MethodDocComment($method);
+        // } catch (MethodDocIsInherited $e) {
+        //     $controller_rc = $method->getDeclaringClass();
+        //     $parent_rc = $controller_rc->getParentClass();
+        //     $parent = ControllerRegistry::get($parent_rc->getName());
+        //     foreach ($parent->methods as $pm) {
+        //         if ($pm->name == $name) {
+        //             $this->doc = $pm->doc;
+        //             break;
+        //         }
+        //     }
+        // }
     }
 }
 
@@ -247,6 +346,6 @@ if (array_key_exists("o", $opts)) {
 }
 
 $base_path = $config->__get("application")->controllersDir;
-echo export_controllers($base_path, $output_file);
+echo export_controllers($base_path, $output_file, true);
 
 ?>

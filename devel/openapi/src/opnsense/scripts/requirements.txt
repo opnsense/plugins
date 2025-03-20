@@ -1,0 +1,4 @@
+# Python libraries used
+# TODO: figure out how to add to the package
+apispec>=6.8.1,<6.9
+openapi-spec-validator>=0.7.1,<0.8

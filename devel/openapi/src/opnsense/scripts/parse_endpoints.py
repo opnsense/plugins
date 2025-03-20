@@ -5,6 +5,7 @@ import logging
 import os
 import subprocess
 import sys
+import re
 from collections import defaultdict
 from pprint import pprint
 from timeit import default_timer
@@ -16,6 +17,17 @@ from xml.etree.ElementTree import Element
 from pydantic import BaseModel, RootModel
 
 from parse_xml_models import ModuleName, logger, explode_php_name
+
+
+# class PhpParamDoc(BaseModel):
+#     name: str
+#     type: str
+#     description: str
+
+
+# class PhpDoc(BaseModel):
+#     description: str
+#     parameters: List
 
 
 HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
@@ -33,6 +45,7 @@ class Parameter(BaseModel):
 
 
 class Method(BaseModel):
+    description: str
     name: str
     method: HttpMethod | Literal["*"]
     parameters: List[Parameter]
@@ -45,6 +58,7 @@ class Controller(BaseModel):
     methods: List[Method]
     model: str | None
     is_abstract: bool
+    # doc: str
 
 
 class Endpoint(BaseModel):
@@ -68,6 +82,22 @@ class Endpoint(BaseModel):
 
 
 EndpointList = RootModel[List[Endpoint]]
+
+
+# def parse_php_doc(doc: str) -> PhpDoc:
+#     lines = [l.strip() for l in doc.split("\n")]
+#     lines = [re.sub(r"^\*\s*", "", l) for l in lines if l not in ("/**", "*/")]
+#     params = []
+#     for param_doc in [l.replace("@param ", "") for l in lines if l.startswith("@param")]:
+#         _type, name, p_descr = param_doc.split(" ", maxsplit=3)
+#         params.append(PhpParamDoc(type=_type, name=name.replace("@", ""), description=p_descr))
+#     descr = " ".join([l for l in lines if not l.startswith("@")])
+#     return PhpDoc(description=descr, parameters=params)
+
+
+def parse_php_doc(doc: Dict) -> PhpDoc:
+
+    return PhpDoc(description=descr, parameters=params)
 
 
 def get_controllers() -> List[Controller]:
@@ -107,6 +137,7 @@ def get_endpoints() -> List[Endpoint]:
         module, controller_name = explode_php_name(controller.name)
 
         for ep in controller.methods:
+            doc = parse_php_doc(ep.doc)
             http_methods: List[HttpMethod] = ["GET", "POST"] if ep.method == "*" else [ep.method]
             for http_method in http_methods:
                 endpoint = Endpoint(
@@ -116,6 +147,7 @@ def get_endpoints() -> List[Endpoint]:
                     command=ep.name,
                     parameters=ep.parameters,
                     model=controller.model,
+                    description=doc.description,
                 )
                 endpoints.append(endpoint)
 

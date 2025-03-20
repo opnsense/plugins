@@ -163,6 +163,7 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
         info={"description": "API for managing your OPNsense firewall"},
     )
 
+    # TODO: PROOF OF CONCEPT, testing a single route
     models = [m for m in models if m.path == "opnsense.captiveportal.captiveportal"]
     endpoints = [ep for ep in endpoints if ep.path.startswith("/captiveportal")]
 
