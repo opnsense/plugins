@@ -155,6 +155,7 @@ def _walk(module: ModuleName, path: str, element: Element) -> Model:
 
     props = []
     for child in element:
+        # TODO: figure out how to handle tags that don't have setXxx methods in the PHP model
         # if not (
         #     field.is_container or
         #     child.tag in field.properties or

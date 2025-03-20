@@ -149,26 +149,27 @@ class Method {
         // if (!$doc) {$doc = "";}
         // $this->doc = $doc;
         // $this->doc = new MethodDocComment($method->getDocComment());
-        try {
-            $this->doc = new MethodDocComment($method->getDocComment());
-        } catch (MethodDocIsInherited $e) {
-            $controller_rc = $method->getDeclaringClass();
-            $parent_rc = $controller_rc->getParentClass();
-            $parent = ControllerRegistry::get($parent_rc->getName());
-            foreach ($parent->methods as $pm) {
-                if ($pm->name == $name) {
-                    $this->doc = $pm->doc;
-                    break;
-                }
-            }
-        }
+
+        // try {
+        //     $this->doc = new MethodDocComment($method->getDocComment());
+        // } catch (MethodDocIsInherited $e) {
+        //     $controller_rc = $method->getDeclaringClass();
+        //     $parent_rc = $controller_rc->getParentClass();
+        //     $parent = ControllerRegistry::get($parent_rc->getName());
+        //     foreach ($parent->methods as $pm) {
+        //         if ($pm->name == $name) {
+        //             $this->doc = $pm->doc;
+        //             break;
+        //         }
+        //     }
+        // }
+        $this->doc = $method->getDocComment();
     }
 }
 
 
 class Controller {
     public $name;
-    public $namespace;
     public $parent;
     public $methods;
     public $model;
@@ -179,7 +180,6 @@ class Controller {
     {
         $name = $rc->getName();
         $this->name = $name;
-        $this->namespace = $rc->getNamespaceName();
 
         $parent = null;
         $parent_name = null;
@@ -228,6 +228,7 @@ class Controller {
         }
         $this->model = $model;
 
+        $this->doc = $rc->getDocComment();
         // $doc = $rc->getDocComment();
         // if (!$doc) {$doc = "";}
         // $this->doc = $doc;

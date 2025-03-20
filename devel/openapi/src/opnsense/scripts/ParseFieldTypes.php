@@ -166,6 +166,6 @@ if (array_key_exists("o", $opts)) {
 }
 
 $base_path = $config->__get("application")->modelsDir;
-echo export_models($base_path, $output_file);
+echo export_models($base_path, $output_file, true);
 
 ?>

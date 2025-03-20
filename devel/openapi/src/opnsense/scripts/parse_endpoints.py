@@ -19,6 +19,8 @@ from pydantic import BaseModel, RootModel
 from parse_xml_models import ModuleName, logger, explode_php_name
 
 
+HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
+
 # class PhpParamDoc(BaseModel):
 #     name: str
 #     type: str
@@ -29,8 +31,27 @@ from parse_xml_models import ModuleName, logger, explode_php_name
 #     description: str
 #     parameters: List
 
+class PhpParameter(TypedDict):
+    name: str
+    has_default: bool
+    default: Any
 
-HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
+
+class PhpMethod(TypedDict):
+    name: str
+    method: HttpMethod | Literal["*"]
+    parameters: List[PhpParameter]
+    doc: str | Literal[False]
+
+
+class PhpController(TypedDict):
+    name: str
+    parent: str
+    methods: List[PhpMethod]
+    model: str
+    is_abstract: bool
+    doc: str | Literal[False]
+
 
 class Parameter(BaseModel):
     name: str
@@ -53,12 +74,11 @@ class Method(BaseModel):
 
 class Controller(BaseModel):
     name: str
-    namespace: str
+    description: str
     parent: str | None
     methods: List[Method]
     model: str | None
     is_abstract: bool
-    # doc: str
 
 
 class Endpoint(BaseModel):
@@ -84,20 +104,41 @@ class Endpoint(BaseModel):
 EndpointList = RootModel[List[Endpoint]]
 
 
-# def parse_php_doc(doc: str) -> PhpDoc:
-#     lines = [l.strip() for l in doc.split("\n")]
-#     lines = [re.sub(r"^\*\s*", "", l) for l in lines if l not in ("/**", "*/")]
-#     params = []
-#     for param_doc in [l.replace("@param ", "") for l in lines if l.startswith("@param")]:
-#         _type, name, p_descr = param_doc.split(" ", maxsplit=3)
-#         params.append(PhpParamDoc(type=_type, name=name.replace("@", ""), description=p_descr))
-#     descr = " ".join([l for l in lines if not l.startswith("@")])
-#     return PhpDoc(description=descr, parameters=params)
+def parse_php_doc(doc: str) -> str:
+    # TODO: parse @param / @throws / @return
+    # TODO: handle @inheritdoc (ugh, do I need a registry?)
+    lines = [l.strip() for l in doc.split("\n")]
+    lines = [re.sub(r"^\*\s*", "", l) for l in lines if l not in ("/**", "*/")]
+    descr_lines = []
+    for line in (l for l in lines):
+        if line.startswith("@"): break
+        descr_lines.append(line)
+    return " ".join(descr_lines)  # TODO: handle double linebreak
 
 
-def parse_php_doc(doc: Dict) -> PhpDoc:
+def unpack_method(method: PhpMethod) -> Method:
+    parameters: List[PhpParameter] = method.pop("parameters")  # type: ignore
+    doc: str = method.pop("doc")  # type: ignore
+    return Method(
+        description=parse_php_doc(doc) if doc else "",
+        parameters=[Parameter(**p) for p in parameters],
+        **method,  # type: ignore
+    )
 
-    return PhpDoc(description=descr, parameters=params)
+
+def unpack_controller(ctrl: PhpController) -> Controller:
+    ctrl = ctrl.copy()
+    model: str | None = ctrl.pop("model")  # type: ignore
+    parent: str | None = ctrl.pop("parent")  # type: ignore
+    methods: List[PhpMethod] = ctrl.pop("methods")  # type: ignore
+    doc: str = ctrl.pop("doc")  # type: ignore
+    return Controller(
+        model=model.replace("\\", ".").lower() if model else None,
+        description=parse_php_doc(doc) if doc else "",
+        parent=parent.replace("\\", ".").lower() if parent else None,
+        methods=[unpack_method(m) for m in methods],
+        **ctrl,  # type: ignore
+    )
 
 
 def get_controllers() -> List[Controller]:
@@ -111,10 +152,11 @@ def get_controllers() -> List[Controller]:
     with open(controller_json_path) as file:
         controller_json = file.read()
 
+    controller_dicts_by_name: Dict[str, PhpController] = json.loads(controller_json)
+
     controllers = []
-    for c in json.loads(controller_json).values():
-        model_path = (c.pop("model") or "").replace("\\", ".").lower()
-        controllers.append(Controller(model=model_path, **c))
+    for c in controller_dicts_by_name.values():
+        controllers.append(unpack_controller(c))
     return controllers
 
 
@@ -137,7 +179,6 @@ def get_endpoints() -> List[Endpoint]:
         module, controller_name = explode_php_name(controller.name)
 
         for ep in controller.methods:
-            doc = parse_php_doc(ep.doc)
             http_methods: List[HttpMethod] = ["GET", "POST"] if ep.method == "*" else [ep.method]
             for http_method in http_methods:
                 endpoint = Endpoint(
@@ -147,7 +188,7 @@ def get_endpoints() -> List[Endpoint]:
                     command=ep.name,
                     parameters=ep.parameters,
                     model=controller.model,
-                    description=doc.description,
+                    description=ep.description,
                 )
                 endpoints.append(endpoint)
 
