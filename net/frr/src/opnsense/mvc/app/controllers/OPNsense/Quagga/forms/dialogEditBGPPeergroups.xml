@@ -16,6 +16,15 @@
     <help>Name of the peer group.</help>
   </field>
   <field>
+    <id>peergroup.remote_as_mode</id>
+    <label>Remote AS mode</label>
+    <type>dropdown</type>
+    <help>"Use Remote AS Number" will use the number specified in the "Remote AS" field, while "External" or "Internal" will ignore it in favor of the alternative "remote-as internal" and "remote-as external" settings.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>peergroup.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
