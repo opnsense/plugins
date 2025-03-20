@@ -1,8 +1,0 @@
-<form>
-    <field>
-        <id>openapi.general.enabled</id>
-        <label>Enable OpenApi</label>
-        <type>checkbox</type>
-        <help>Enable generating and serving OpenApi spec</help>
-    </field>
-</form>
