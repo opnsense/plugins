@@ -162,6 +162,10 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
         openapi_version="3.0.0",
         info={"description": "API for managing your OPNsense firewall"},
     )
+
+    models = [m for m in models if m.path == "opnsense.captiveportal.captiveportal"]
+    endpoints = [ep for ep in endpoints if ep.path.startswith("captiveportal")]
+
     for model in models:
         component = get_model_spec(model)
         spec.components.schema(model.path, component)
