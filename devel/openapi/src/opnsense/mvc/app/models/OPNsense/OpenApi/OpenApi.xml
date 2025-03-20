@@ -4,9 +4,7 @@
         Plugin to generate an OpenApi spec
     </description>
     <items>
-        <!-- container -->
         <general>
-            <!-- fields -->
             <enabled type="BooleanField">
                 <Default>1</Default>
                 <Required>Y</Required>

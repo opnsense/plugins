@@ -19,14 +19,7 @@ from parse_endpoints import Endpoint, get_endpoints
 from parse_xml_models import Model, get_models
 
 SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
-StringFormat: TypeAlias = (
-    Literal["date"] |       # RFC 3339, section 5.6, for example, 2017-07-21
-    Literal["date-time"] |  # RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z
-    Literal["password"] |   # a hint to UIs to mask the input
-    Literal["byte"] |       # base64
-    Literal["binary"] |     # file data
-    str                     # extensible
-)
+
 
 # Given a Field class from PHP, get the OpenApi data type
 FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
