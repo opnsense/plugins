@@ -1,14 +1,10 @@
 #! /usr/bin/env python3
 
 import json
-import logging
 import os
 import subprocess
 import sys
-from collections import defaultdict
-from timeit import default_timer
-from typing import (Any, Callable, Concatenate, Dict, List, NewType, Optional,
-                    ParamSpec, Self, Tuple, TypeVar,Type, )
+from typing import Dict, List, NewType, Optional, Self, Tuple
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 

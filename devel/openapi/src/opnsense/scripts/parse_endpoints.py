@@ -1,23 +1,15 @@
 #! /usr/bin/env python3
 
 import json
-import logging
 import os
-import subprocess
-import sys
 import re
-from collections import defaultdict
+import subprocess
 from pprint import pprint
-from timeit import default_timer
-from typing import (Any, Callable, Concatenate, Dict, List, Literal, NewType,
-                    Optional, ParamSpec, Self, Tuple, Type, TypedDict, TypeVar, TypeAlias)
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element
+from typing import Any, Dict, List, Literal, Self, TypeAlias, TypedDict
 
 from pydantic import BaseModel, RootModel
 
-from parse_xml_models import ModuleName, explode_php_name
-
+from parse_xml_models import explode_php_name
 
 HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
 

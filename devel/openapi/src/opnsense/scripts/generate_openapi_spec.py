@@ -1,20 +1,13 @@
 #! /usr/bin/env python3
-from pprint import pprint
-import json
 import os
-import re
-import sys
 from collections import defaultdict
-from typing import (Any, Callable, Concatenate, Dict, List, Literal, NewType,
-                    Optional, ParamSpec, Self, Tuple, Type, TypedDict, TypeVar, TypeAlias)
+from typing import Any, Dict, List, Literal, TypeAlias
 
-from apispec import APISpec
-# from openapi_spec_validator import validate, validate_spec
 import openapi_spec_validator as oasv
+from apispec import APISpec
 
-from parse_xml_models import get_models, Model
-from parse_endpoints import get_endpoints, Endpoint
-
+from parse_endpoints import Endpoint, get_endpoints
+from parse_xml_models import Model, get_models
 
 SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
 StringFormat: TypeAlias = (
