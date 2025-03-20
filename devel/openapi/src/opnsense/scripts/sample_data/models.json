@@ -1,0 +1,129 @@
+[
+    {
+        "type": "ContainerField",
+        "name": "items",
+        "path": "opnsense.auth.priv",
+        "value": "",
+        "properties": [
+            {
+                "type": "ModelRelationField",
+                "name": "users",
+                "path": "opnsense.auth.priv",
+                "value": "",
+                "properties": [
+                    {
+                        "type": "ContainerField",
+                        "name": "model",
+                        "path": "opnsense.auth.priv.users",
+                        "value": "",
+                        "properties": [
+                            {
+                                "type": "ContainerField",
+                                "name": "user",
+                                "path": "opnsense.auth.priv.users.model",
+                                "value": "",
+                                "properties": [
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "source",
+                                        "path": "opnsense.auth.priv.users.model.user",
+                                        "value": "OPNsense.Auth.User",
+                                        "properties": [],
+                                        "option_values": []
+                                    },
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "items",
+                                        "path": "opnsense.auth.priv.users.model.user",
+                                        "value": "user",
+                                        "properties": [],
+                                        "option_values": []
+                                    },
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "display",
+                                        "path": "opnsense.auth.priv.users.model.user",
+                                        "value": "name",
+                                        "properties": [],
+                                        "option_values": []
+                                    }
+                                ],
+                                "option_values": []
+                            }
+                        ],
+                        "option_values": []
+                    },
+                    {
+                        "type": "ContainerField",
+                        "name": "multiple",
+                        "path": "opnsense.auth.priv.users",
+                        "value": "Y",
+                        "properties": [],
+                        "option_values": []
+                    }
+                ],
+                "option_values": []
+            },
+            {
+                "type": "ModelRelationField",
+                "name": "groups",
+                "path": "opnsense.auth.priv",
+                "value": "",
+                "properties": [
+                    {
+                        "type": "ContainerField",
+                        "name": "model",
+                        "path": "opnsense.auth.priv.groups",
+                        "value": "",
+                        "properties": [
+                            {
+                                "type": "ContainerField",
+                                "name": "user",
+                                "path": "opnsense.auth.priv.groups.model",
+                                "value": "",
+                                "properties": [
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "source",
+                                        "path": "opnsense.auth.priv.groups.model.user",
+                                        "value": "OPNsense.Auth.Group",
+                                        "properties": [],
+                                        "option_values": []
+                                    },
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "items",
+                                        "path": "opnsense.auth.priv.groups.model.user",
+                                        "value": "group",
+                                        "properties": [],
+                                        "option_values": []
+                                    },
+                                    {
+                                        "type": "ContainerField",
+                                        "name": "display",
+                                        "path": "opnsense.auth.priv.groups.model.user",
+                                        "value": "name",
+                                        "properties": [],
+                                        "option_values": []
+                                    }
+                                ],
+                                "option_values": []
+                            }
+                        ],
+                        "option_values": []
+                    },
+                    {
+                        "type": "ContainerField",
+                        "name": "multiple",
+                        "path": "opnsense.auth.priv.groups",
+                        "value": "Y",
+                        "properties": [],
+                        "option_values": []
+                    }
+                ],
+                "option_values": []
+            }
+        ],
+        "option_values": []
+    }
+]
