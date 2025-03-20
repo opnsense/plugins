@@ -12,7 +12,7 @@ from apispec import APISpec
 # from openapi_spec_validator import validate, validate_spec
 import openapi_spec_validator as oasv
 
-from parse_xml_models import get_models, Model, logger
+from parse_xml_models import get_models, Model
 from parse_endpoints import get_endpoints, Endpoint
 
 
@@ -151,8 +151,8 @@ def _walk_model(model: Model) -> Dict[str, Any]:
                 # also: nullable, readOnly, writeOnly
                 if prop.name in PRIMITIVE_VALIDATORS[_type]:
                     spec[prop.name] = prop.value
-                else:
-                    logger.warning(f"{prop.name} is not valid for {_type}")
+                else: pass
+                    # logger.warning(f"{prop.name} is not valid for {_type}")
 
     return spec
 

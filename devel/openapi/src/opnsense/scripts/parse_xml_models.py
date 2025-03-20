@@ -17,38 +17,6 @@ from pydantic import BaseModel, RootModel
 EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
 
-logger = logging.getLogger(f"{__file__}")
-logger.setLevel(logging.WARNING)
-logger.addHandler(logging.StreamHandler())
-time_logger = logger.getChild("timing")
-time_logger.setLevel(logging.DEBUG)
-
-
-def measure_time(func):
-    def pithy(obj):
-        for attr in ("func.__name__", "name", "tag", "field_type"):
-            try:
-                _obj = obj
-                for attr in attr.split("."):
-                    _obj = getattr(_obj, attr)
-                break
-            except AttributeError:
-                continue
-        s = str(_obj)
-        return f"{s[:20]}..." if len(s) > 22 else s
-
-    def wrapper(*args, **kwargs):
-        t1 = default_timer()
-        result = func(*args, **kwargs)
-        t2 = default_timer()
-        _args = ", ".join([pithy(a) for a in args])
-        _kwargs = ", ".join([f"{k}={v}" for k, v in kwargs.items()])
-        _params = ", ".join([p for p in (_args, _kwargs) if p])
-        time_logger.debug(f'{func.__name__}({_params}) executed in {(t2-t1):.6f}s')
-        return result
-    return wrapper
-
-
 ModuleName = NewType('ModuleName', str)
 
 
@@ -221,7 +189,7 @@ def get_models(
         try:
             model = parse_xml_file(xml_file)
         except NotImplementedError as ex:  # TODO: delete this before merging!
-            logger.warning(ex)
+            # logger.warning(ex)
             continue
 
         models.append(model)
@@ -238,8 +206,6 @@ def get_models(
 if __name__ == "__main__":
     # partial string match. E.g. `parse_xml_models.py Auth`` will filter by files with "Auth" in the path.
     xml_file_filter = sys.argv[1] if len(sys.argv) > 1 else None
-
-    logger.setLevel(logging.DEBUG)
 
     # TODO: make CLI param
     field_type_json_path = os.path.realpath("./field_types.json")

@@ -16,7 +16,7 @@ from xml.etree.ElementTree import Element
 
 from pydantic import BaseModel, RootModel
 
-from parse_xml_models import ModuleName, logger, explode_php_name
+from parse_xml_models import ModuleName, explode_php_name
 
 
 HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
@@ -191,6 +191,4 @@ def get_endpoints() -> List[Endpoint]:
 
 
 if __name__ == "__main__":
-    logger.setLevel(logging.DEBUG)
-
     pprint(get_endpoints())
