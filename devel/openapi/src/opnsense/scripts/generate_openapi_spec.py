@@ -164,7 +164,7 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
     )
 
     models = [m for m in models if m.path == "opnsense.captiveportal.captiveportal"]
-    endpoints = [ep for ep in endpoints if ep.path.startswith("captiveportal")]
+    endpoints = [ep for ep in endpoints if ep.path.startswith("/captiveportal")]
 
     for model in models:
         component = get_model_spec(model)

@@ -54,6 +54,7 @@ class Method {
     public $name;
     public $method;  // HTTP method!
     public $parameters = [];
+    public $doc;
 
     public function __construct(ReflectionMethod $method, string $src)
     {
@@ -76,6 +77,8 @@ class Method {
             $params[] = new Parameter($param_rc);
         }
         $this->parameters = $params;
+
+        $this->doc = $method->getDocComment() or "";
     }
 }
 
@@ -87,6 +90,7 @@ class Controller {
     public $methods;
     public $model;
     public $is_abstract;
+    public $doc;
 
     public function __construct(ReflectionClass $rc)
     {
@@ -140,6 +144,8 @@ class Controller {
             }
         }
         $this->model = $model;
+
+        $this->doc = $rc->getDocComment() or "";
     }
 }
 

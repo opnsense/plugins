@@ -3,107 +3,91 @@ info:
   title: OPNsense API
   version: '25.1'
 paths:
-  captiveportal/accesscontroller/logon:
+  /captiveportal/accesscontroller/logon:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/accesscontroller/logoff:
+  /captiveportal/accesscontroller/logoff:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/accesscontroller/status:
+  /captiveportal/accesscontroller/status:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/accesscontroller/api:
+  /captiveportal/accesscontroller/api:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/servicecontroller/reconfigure:
+  /captiveportal/servicecontroller/reconfigure:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/servicecontroller/gettemplate:
+  /captiveportal/servicecontroller/gettemplate:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/servicecontroller/savetemplate:
+  /captiveportal/servicecontroller/savetemplate:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/servicecontroller/deltemplate:
+  /captiveportal/servicecontroller/deltemplate:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/servicecontroller/searchtemplates:
+  /captiveportal/servicecontroller/searchtemplates:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/sessioncontroller/list:
+  /captiveportal/sessioncontroller/list:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/sessioncontroller/search:
+  /captiveportal/sessioncontroller/search:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/sessioncontroller/zones:
+  /captiveportal/sessioncontroller/zones:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/sessioncontroller/disconnect:
+  /captiveportal/sessioncontroller/disconnect:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/sessioncontroller/connect:
+  /captiveportal/sessioncontroller/connect:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/settingscontroller/get:
-    get:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/set:
-    post:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/getzone:
+  /captiveportal/settingscontroller/get:
     get:
       responses:
         '200':
@@ -111,7 +95,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/setzone:
+  /captiveportal/settingscontroller/set:
     post:
       responses:
         '200':
@@ -119,7 +103,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/addzone:
+  /captiveportal/settingscontroller/getzone:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
+  /captiveportal/settingscontroller/setzone:
     post:
       responses:
         '200':
@@ -127,7 +119,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/delzone:
+  /captiveportal/settingscontroller/addzone:
     post:
       responses:
         '200':
@@ -135,7 +127,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/togglezone:
+  /captiveportal/settingscontroller/delzone:
     post:
       responses:
         '200':
@@ -143,7 +135,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/settingscontroller/searchzones:
+  /captiveportal/settingscontroller/togglezone:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
+  /captiveportal/settingscontroller/searchzones:
     get:
       responses:
         '200':
@@ -158,43 +158,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/.opnsense.captiveportal.captiveportal'
-  captiveportal/vouchercontroller/listproviders:
+  /captiveportal/vouchercontroller/listproviders:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/listvouchergroups:
+  /captiveportal/vouchercontroller/listvouchergroups:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/listvouchers:
+  /captiveportal/vouchercontroller/listvouchers:
     get:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/dropvouchergroup:
+  /captiveportal/vouchercontroller/dropvouchergroup:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/dropexpiredvouchers:
+  /captiveportal/vouchercontroller/dropexpiredvouchers:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/generatevouchers:
+  /captiveportal/vouchercontroller/generatevouchers:
     post:
       responses:
         '200':
           content:
             application/json: {}
-  captiveportal/vouchercontroller/expirevoucher:
+  /captiveportal/vouchercontroller/expirevoucher:
     post:
       responses:
         '200':

@@ -48,6 +48,7 @@ class Controller(BaseModel):
 
 
 class Endpoint(BaseModel):
+    description: str
     method: HttpMethod
     module: str
     controller: str
@@ -57,7 +58,7 @@ class Endpoint(BaseModel):
 
     @property
     def path(self):
-        return f"{self.module}/{self.controller}/{self.command}".lower()
+        return f"/{self.module}/{self.controller}/{self.command}".lower()
 
     def __repr__(self):
         route = f"[{self.method}] {self.path}"
