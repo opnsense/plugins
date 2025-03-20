@@ -21,15 +21,6 @@ from parse_xml_models import ModuleName, logger, explode_php_name
 
 HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
 
-# class PhpParamDoc(BaseModel):
-#     name: str
-#     type: str
-#     description: str
-
-
-# class PhpDoc(BaseModel):
-#     description: str
-#     parameters: List
 
 class PhpParameter(TypedDict):
     name: str
@@ -71,6 +62,16 @@ class Method(BaseModel):
     method: HttpMethod | Literal["*"]
     parameters: List[Parameter]
 
+    @classmethod
+    def from_php(cls, method: PhpMethod) -> Self:
+        parameters: List[PhpParameter] = method.pop("parameters")  # type: ignore
+        doc: str = method.pop("doc")  # type: ignore
+        return Method(
+            description=parse_php_doc(doc) if doc else "",
+            parameters=[Parameter(**p) for p in parameters],
+            **method,  # type: ignore
+        )
+
 
 class Controller(BaseModel):
     name: str
@@ -79,6 +80,22 @@ class Controller(BaseModel):
     methods: List[Method]
     model: str | None
     is_abstract: bool
+
+    @classmethod
+    def from_php(cls, ctrl: PhpController) -> Self:
+        ctrl = ctrl.copy()
+        model: str | None = ctrl.pop("model")  # type: ignore
+        parent: str | None = ctrl.pop("parent")  # type: ignore
+        methods: List[PhpMethod] = ctrl.pop("methods")  # type: ignore
+        doc: str = ctrl.pop("doc")  # type: ignore
+
+        return cls(
+            model=model.replace("\\", ".").lower() if model else None,
+            description=parse_php_doc(doc) if doc else "",
+            parent=parent.replace("\\", ".").lower() if parent else None,
+            methods=[Method.from_php(m) for m in methods],
+            **ctrl,  # type: ignore
+        )
 
 
 class Endpoint(BaseModel):
@@ -116,31 +133,6 @@ def parse_php_doc(doc: str) -> str:
     return " ".join(descr_lines)  # TODO: handle double linebreak
 
 
-def unpack_method(method: PhpMethod) -> Method:
-    parameters: List[PhpParameter] = method.pop("parameters")  # type: ignore
-    doc: str = method.pop("doc")  # type: ignore
-    return Method(
-        description=parse_php_doc(doc) if doc else "",
-        parameters=[Parameter(**p) for p in parameters],
-        **method,  # type: ignore
-    )
-
-
-def unpack_controller(ctrl: PhpController) -> Controller:
-    ctrl = ctrl.copy()
-    model: str | None = ctrl.pop("model")  # type: ignore
-    parent: str | None = ctrl.pop("parent")  # type: ignore
-    methods: List[PhpMethod] = ctrl.pop("methods")  # type: ignore
-    doc: str = ctrl.pop("doc")  # type: ignore
-    return Controller(
-        model=model.replace("\\", ".").lower() if model else None,
-        description=parse_php_doc(doc) if doc else "",
-        parent=parent.replace("\\", ".").lower() if parent else None,
-        methods=[unpack_method(m) for m in methods],
-        **ctrl,  # type: ignore
-    )
-
-
 def get_controllers() -> List[Controller]:
     controller_json_path = os.path.realpath("./controllers.json")
 
@@ -156,7 +148,7 @@ def get_controllers() -> List[Controller]:
 
     controllers = []
     for c in controller_dicts_by_name.values():
-        controllers.append(unpack_controller(c))
+        controllers.append(Controller.from_php(c))
     return controllers
 
 
@@ -172,7 +164,6 @@ def get_endpoints() -> List[Endpoint]:
 
     endpoints = []
     for controller in get_controllers():
-        pprint(controller)
         if controller.is_abstract:
             continue
 

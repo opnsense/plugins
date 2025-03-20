@@ -9,7 +9,8 @@ from typing import (Any, Callable, Concatenate, Dict, List, Literal, NewType,
                     Optional, ParamSpec, Self, Tuple, Type, TypedDict, TypeVar, TypeAlias)
 
 from apispec import APISpec
-from openapi_spec_validator import validate
+# from openapi_spec_validator import validate, validate_spec
+import openapi_spec_validator as oasv
 
 from parse_xml_models import get_models, Model, logger
 from parse_endpoints import get_endpoints, Endpoint
@@ -96,6 +97,24 @@ FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
 )
 
 
+PRIMITIVE_VALIDATORS: Dict[str, List[str]] = {
+    "string": [
+        "minLength",
+        "maxLength",
+        "format",
+        "pattern",
+    ],
+    "boolean": [],
+    "integer": [
+        "minimum",
+        "exclusiveMinimum",
+        "maximum",
+        "exclusiveMaximum",
+    ],
+    "number": [],
+}
+
+
 def _walk_model(model: Model) -> Dict[str, Any]:
     _type: SpecType = FIELD_TO_SPEC_TYPE[model.type]
     spec: Dict[str, Any] = {"type": _type}
@@ -129,7 +148,11 @@ def _walk_model(model: Model) -> Dict[str, Any]:
         # case "number":
         case _:
             for prop in model.properties:
-                spec[prop.name] = prop.value
+                # also: nullable, readOnly, writeOnly
+                if prop.name in PRIMITIVE_VALIDATORS[_type]:
+                    spec[prop.name] = prop.value
+                else:
+                    logger.warning(f"{prop.name} is not valid for {_type}")
 
     return spec
 
@@ -140,20 +163,18 @@ def get_model_spec(model: Model):
 
 def get_endpoint_spec(endpoint: Endpoint) -> Dict[str, Any]:
     method = endpoint.method.lower()
-    model_path = endpoint.model
-    schema = {"schema": model_path} if model_path else {}
-    op = {
-        method: {
-            "responses": {
-                "200": {
-                    "content": {
-                        "application/json": schema
-                    }
-                }
-            }
-        }
-    }
-    return op
+
+    if endpoint.model:
+        description = endpoint.model  # TODO: model description. This is just the name.
+        ref = endpoint.model
+    else:
+        description = "OK"
+        ref = "dummy"
+
+    content = {"application/json": {"schema": ref}}
+    responses = {"200": {"description": description, "content": content}}
+    return {method: {"responses": responses}}
+
 
 def get_spec(models: List[Model], endpoints: List[Endpoint]):
     spec = APISpec(
@@ -167,22 +188,37 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]):
     models = [m for m in models if m.path == "opnsense.captiveportal.captiveportal"]
     endpoints = [ep for ep in endpoints if ep.path.startswith("/captiveportal")]
 
+    # TODO: stop banging my head on apispec library
+    dummy_spec = {"type": "string"}
+    spec.components.schema("dummy", dummy_spec)
+
     for model in models:
         component = get_model_spec(model)
         spec.components.schema(model.path, component)
 
     for endpoint in endpoints:
         operation = get_endpoint_spec(endpoint)
-        spec.path(path=endpoint.path, operations=operation)
+        spec.path(path=endpoint.path, description=endpoint.description, operations=operation)
     return spec
 
 
-if __name__ == "__main__":
-    output_file = os.path.realpath("openapi.yml")
+def validate_spec(spec: APISpec):
+    oasv.validate_spec(spec.to_dict())  # type: ignore
 
-    models = get_models()
+
+if __name__ == "__main__":
+    # TODO: make CLI param
+    output_file = os.path.realpath("openapi.yml")
+    field_type_json_path = os.path.realpath("./field_types.json")
+    model_json_path = os.path.realpath("./models.json")
+
+    models = get_models(field_type_json_path, model_json_path)
     endpoints = get_endpoints()
     spec = get_spec(models, endpoints)
+
+    # As of now: apispec is prepending "." to component refs, which breaks the schema.
+    # validate_spec(spec)
+
     yaml = spec.to_yaml()
 
     with open(output_file, "w") as file:

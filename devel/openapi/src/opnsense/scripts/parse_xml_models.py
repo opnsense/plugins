@@ -12,7 +12,7 @@ from typing import (Any, Callable, Concatenate, Dict, List, NewType, Optional,
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 EXCLUDE_MODELS = ["mvc/app/models/OPNsense/iperf/FakeInstance.xml"]
 
@@ -164,15 +164,11 @@ def _walk(module: ModuleName, path: str, element: Element) -> Model:
         #     raise ValueError(f"{field_type} does not have a '{child.tag}' property")
         prop = _walk(module, child_path, child)
         props.append(prop)
-        # field.properties.append(prop)
     option_values = []
     return field.new(name=name, path=path, value=value, properties=props, option_values=option_values)
 
 
 def parse_xml_file(xml_file):
-    logger.debug("=========================================================")
-    logger.debug(f"Parsing {xml_file}")
-
     vendor, module, name = xml_file[0:-4].split("/")[-3:]
     path = f"{vendor}.{module}.{name}".lower()
     module = ModuleName(module)
@@ -184,8 +180,6 @@ def parse_xml_file(xml_file):
         raise ValueError("items tag not found")
 
     model = _walk(module, path, items)
-    logger.info(repr(model))
-    logger.debug(f"Finished parsing {xml_file}")
     return model
 
 
@@ -200,8 +194,13 @@ def get_model_xml_files(source: str):
     return found
 
 
-def get_models(xml_file_filter: str | None = None) -> List[Model]:
-    model_json_path = os.path.realpath("./models.json")
+ModelList = RootModel[List[Model]]
+
+def get_models(
+    field_type_json_path: str,
+    model_json_path: str,
+    xml_file_filter: str | None = None
+) -> List[Model]:
 
     if os.path.isfile(model_json_path) and not xml_file_filter:
         with open(model_json_path) as file:
@@ -210,10 +209,9 @@ def get_models(xml_file_filter: str | None = None) -> List[Model]:
         models = [Model(**m) for m in _models]
         return models
 
-    field_type_json_path = os.path.realpath("./field_types.json")
     FieldTypeRegistry.load(field_type_json_path)
 
-    source = "/gitroot/upstream/opnsense" if "HOSTNAME" in os.environ else "/usr"
+    source = "/gitroot/upstream/opnsense" if "HOSTNAME" in os.environ else "/usr"  # TODO: remove once I understand the build system
     xml_files = get_model_xml_files(source)
     if xml_file_filter:
         xml_files = [m for m in xml_files if xml_file_filter in m]
@@ -226,12 +224,11 @@ def get_models(xml_file_filter: str | None = None) -> List[Model]:
             logger.warning(ex)
             continue
 
-        models.append(model.model_dump())
+        models.append(model)
 
     # Don't write json if we don't have all the models
     if not xml_file_filter:
-        # model_json = json.dumps(models)
-        model_json = json.dumps(models, indent=2)  # TODO: delete this before merging!
+        model_json = ModelList(models).model_dump_json()
         with open(model_json_path, mode="w") as file:
             file.write(model_json)
 
@@ -239,8 +236,13 @@ def get_models(xml_file_filter: str | None = None) -> List[Model]:
 
 
 if __name__ == "__main__":
+    # partial string match. E.g. `parse_xml_models.py Auth`` will filter by files with "Auth" in the path.
     xml_file_filter = sys.argv[1] if len(sys.argv) > 1 else None
 
     logger.setLevel(logging.DEBUG)
 
-    get_models(xml_file_filter=xml_file_filter)
+    # TODO: make CLI param
+    field_type_json_path = os.path.realpath("./field_types.json")
+    model_json_path = os.path.realpath("./models.json")
+
+    get_models(field_type_json_path, model_json_path, xml_file_filter=xml_file_filter)
