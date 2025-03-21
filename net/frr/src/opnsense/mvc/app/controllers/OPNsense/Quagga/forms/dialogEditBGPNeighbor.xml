@@ -210,9 +210,9 @@
   </field>
   <field>
     <id>neighbor.allowas_in</id>
-    <label>Allowas In</label>
-    <type>text</type>
-    <help>Accept incoming routes with AS path containing AS number with the same value as the current system AS. Accepts values from 1 to 10, the exact value 'origin', or leave empty to disable.</help>
+    <label>Allow AS In</label>
+    <type>dropdown</type>
+    <help>Accept incoming routes with AS path containing AS number with the same value as the current system AS.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
