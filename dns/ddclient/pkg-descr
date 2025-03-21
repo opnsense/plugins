@@ -10,6 +10,7 @@ Plugin Changelog
 
 * Add support for altering IPv6 addresses in native backend (contributed by SaarLAN-Pissbeutel)
 * Fix Netcup host/domain recognition (contributed by SaarLAN-Pissbeutel)
+* Removed defunct ip4only.me and ip6only.me
 
 1.26
 

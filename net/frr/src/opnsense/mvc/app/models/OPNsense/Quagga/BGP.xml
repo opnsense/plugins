@@ -51,6 +51,13 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </address>
+                        <remote_as_mode type="OptionField">
+                                <BlankDesc>Use Remote AS Number</BlankDesc>
+                                <OptionValues>
+                                        <internal>Internal</internal>
+                                        <external>External</external>
+                                </OptionValues>
+                        </remote_as_mode>
                         <remoteas type="IntegerField">
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
@@ -406,8 +413,14 @@
                         <name type="TextField">
                                 <Required>Y</Required>
                         </name>
+                        <remote_as_mode type="OptionField">
+                                <BlankDesc>Use Remote AS Number</BlankDesc>
+                                <OptionValues>
+                                        <internal>Internal</internal>
+                                        <external>External</external>
+                                </OptionValues>
+                        </remote_as_mode>
                         <remoteas type="IntegerField">
-                                <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>

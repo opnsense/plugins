@@ -16,6 +16,7 @@ Plugin Changelog
 
 * Add route-map functionality to route redistribution in bgp (opnsense/plugins/issues/4570)
 * Add route-map functionality to route redistribution in ospf/ospf6 (opnsense/plugins/issues/4580)
+* Add BGP remote-as internal and external (opnsense/plugins/issues/4609)
 
 1.43
 
