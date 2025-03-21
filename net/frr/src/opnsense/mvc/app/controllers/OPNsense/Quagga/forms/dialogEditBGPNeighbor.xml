@@ -218,6 +218,15 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.allowas_in</id>
+    <label>Allow AS In</label>
+    <type>dropdown</type>
+    <help>Accept incoming routes with AS path containing AS number with the same value as the current system AS.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.disable_connected_check</id>
     <label>Disable Connected Check</label>
     <type>checkbox</type>
