@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.44
+
+* Add BGP remote-as internal and external (opnsense/plugins/issues/4609)
+
 1.43
 
 * Use frr-reload instead of restarting the service on configuration changes (opnsense/plugins/issues/4529)
