@@ -1,0 +1,110 @@
+[
+    {
+        "description": "Retrieve model settings",
+        "method": "GET",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "get",
+        "parameters": [],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "Update model settings",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "set",
+        "parameters": [],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "GET",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "search",
+        "parameters": [],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "search",
+        "parameters": [],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "GET",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "get",
+        "parameters": [
+            {
+                "name": "uuid",
+                "has_default": true,
+                "default": 42
+            }
+        ],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "add",
+        "parameters": [],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "set",
+        "parameters": [
+            {
+                "name": "uuid",
+                "has_default": true,
+                "default": null
+            }
+        ],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "GroupController",
+        "command": "del",
+        "parameters": [
+            {
+                "name": "uuid",
+                "has_default": false,
+                "default": null
+            }
+        ],
+        "model": "opnsense.auth.group"
+    },
+    {
+        "description": "Retrieve model settings",
+        "method": "GET",
+        "module": "Auth",
+        "controller": "PrivController",
+        "command": "get",
+        "parameters": [],
+        "model": "opnsense.auth.priv"
+    },
+    {
+        "description": "Update model settings",
+        "method": "POST",
+        "module": "Auth",
+        "controller": "PrivController",
+        "command": "set",
+        "parameters": [],
+        "model": "opnsense.auth.priv"
+    }
+]

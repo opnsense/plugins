@@ -1,0 +1,230 @@
+info:
+  description: API for managing your OPNsense firewall
+  title: OPNsense API
+  version: '25.1'
+paths:
+  /captiveportal/accesscontroller/logon:
+    post:
+      responses:
+        '200':
+          content:
+            application/json: {}
+    description: logon client to zone, must use post type of request
+  /captiveportal/accesscontroller/logoff:
+    get:
+      responses:
+        '200':
+          content:
+            application/json: {}
+    description: logoff client
+  /captiveportal/accesscontroller/status:
+    get:
+      responses:
+        '200':
+          content:
+            application/json: {}
+    description: retrieve session info
+  /captiveportal/accesscontroller/api:
+    get:
+      responses:
+        '200':
+          content:
+            application/json: {}
+    description: 'RFC 8908: Captive Portal API status object  The URI for this endpoint
+      can be provisioned to the client as defined by RFC 7710.  Request and response
+      must set media type as "application/captive+json".  Response contains the following
+      fields: - captive: boolean: client is currently in a state of captivity. - user-portal-url:
+      string: URL to login web portal (must be HTTPS). - seconds-remaining: number:
+      seconds until session expires, only relevant if hardtimeout set.  Fields not
+      implemented here but possible in the future: - venue-info-url: string: Information
+      page (must be HTTPS) - can-extend-session: boolean: hint that client system
+      can access user-portal-url to extend session. - bytes-remaining: number: no.
+      of bytes after which session expires.  Response must set Cache-Control to ''private''
+      or ''no-store'''
+  /captiveportal/servicecontroller/reconfigure:
+    post:
+      responses:
+        '200':
+          content:
+            application/json: {}
+    description: reconfigure captive portal
+openapi: 3.0.0
+components:
+  schemas:
+    opnsense.captiveportal.captiveportal:
+      type: object
+      properties:
+        zones:
+          type: object
+          properties:
+            zone:
+              type: array
+              items:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: '1'
+                  zoneid:
+                    type: integer
+                    minimumvalue: '0'
+                    maximumvalue: '19'
+                    validationmessage: Maximum number of zones reached
+                  interfaces:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        required:
+                          type: object
+                          properties: {}
+                        multiple:
+                          type: object
+                          properties: {}
+                        default:
+                          type: object
+                          properties: {}
+                        filters:
+                          type: object
+                          properties:
+                            enable:
+                              type: object
+                              properties: {}
+                            ipaddr:
+                              type: object
+                              properties: {}
+                        validationmessage:
+                          type: object
+                          properties: {}
+                  interfaces_inbound:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        multiple:
+                          type: object
+                          properties: {}
+                        filters:
+                          type: object
+                          properties:
+                            enable:
+                              type: object
+                              properties: {}
+                  authservers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        multiple:
+                          type: object
+                          properties: {}
+                  alwayssendaccountingreqs:
+                    type: boolean
+                    default: '0'
+                  authenforcegroup:
+                    type: array
+                    items:
+                      type: object
+                      properties: {}
+                  idletimeout:
+                    type: integer
+                    default: '0'
+                    minimumvalue: '0'
+                    maximumvalue: '10080'
+                    validationmessage: Idle timeout, in minutes, must be between 0
+                      (no timeout) and 10080 (a week)
+                  hardtimeout:
+                    type: integer
+                    default: '0'
+                    minimumvalue: '0'
+                    maximumvalue: '10080'
+                    validationmessage: Hard timeout, in minutes, must be between 0
+                      (no timeout) and 10080 (a week)
+                  concurrentlogins:
+                    type: boolean
+                    default: '1'
+                  certificate:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        validationmessage:
+                          type: object
+                          properties: {}
+                  servername:
+                    type: string
+                    mask: /^([0-9a-zA-Z.,_\-]){0,1024}$/u
+                    validationmessage: Please enter a valid servername, ip address
+                      or leave this option blank
+                  allowedaddresses:
+                    type: string
+                    fieldseparator: ','
+                    aslist: Y
+                    wildcardenabled: N
+                  allowedmacaddresses:
+                    type: string
+                    aslist: Y
+                  extendedpreauthdata:
+                    type: boolean
+                    default: '0'
+                  template:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        model:
+                          type: object
+                          properties:
+                            template:
+                              type: object
+                              properties:
+                                source:
+                                  type: object
+                                  properties: {}
+                                items:
+                                  type: object
+                                  properties: {}
+                                display:
+                                  type: object
+                                  properties: {}
+                        validationmessage:
+                          type: object
+                          properties: {}
+                  description:
+                    type: string
+                required:
+                - enabled
+                - zoneid
+                - alwayssendaccountingreqs
+                - idletimeout
+                - hardtimeout
+                - concurrentlogins
+                - extendedpreauthdata
+                - description
+        templates:
+          type: object
+          properties:
+            template:
+              type: array
+              items:
+                type: object
+                properties:
+                  fileid:
+                    type: string
+                    mask: /[0-9a-zA-Z\-]{1,255}/u
+                    validationmessage: Fileid should be an internally generated unique
+                      number
+                  name:
+                    type: string
+                    mask: /^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u
+                    validationmessage: Template name should be a string between 1
+                      and 255 characters
+                  content:
+                    type: string
+                    mask: /[0-9a-zA-Z\+\=\/]{20,}/u
+                    validationmessage: File content should be in (base64 encoded)
+                      zip format
+                required:
+                - fileid
+                - name
+                - content

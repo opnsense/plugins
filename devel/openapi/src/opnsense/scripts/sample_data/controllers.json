@@ -1,0 +1,167 @@
+{
+    "OPNsense\\Mvc\\Controller": {
+        "name": "OPNsense\\Mvc\\Controller",
+        "parent": null,
+        "methods": [],
+        "model": null,
+        "is_abstract": true,
+        "doc": false
+    },
+    "OPNsense\\Base\\ControllerRoot": {
+        "name": "OPNsense\\Base\\ControllerRoot",
+        "parent": "OPNsense\\Mvc\\Controller",
+        "methods": [],
+        "model": null,
+        "is_abstract": false,
+        "doc": "/**\n * Class ControllerRoot wrap shared OPNsense controller features (auth, logging)\n * @package OPNsense\\Base\n */"
+    },
+    "OPNsense\\Base\\ApiControllerBase": {
+        "name": "OPNsense\\Base\\ApiControllerBase",
+        "parent": "OPNsense\\Base\\ControllerRoot",
+        "methods": [],
+        "model": null,
+        "is_abstract": false,
+        "doc": "/**\n * Class ApiControllerBase, inherit this class to implement API calls\n * @package OPNsense\\Base\n */"
+    },
+    "OPNsense\\Base\\ApiMutableModelControllerBase": {
+        "name": "OPNsense\\Base\\ApiMutableModelControllerBase",
+        "parent": "OPNsense\\Base\\ApiControllerBase",
+        "methods": [
+            {
+                "name": "get",
+                "method": "GET",
+                "parameters": [],
+                "doc": "/**\n     * Retrieve model settings\n     * @return array settings\n     * @throws \\ReflectionException when not bound to a valid model\n     */"
+            },
+            {
+                "name": "set",
+                "method": "POST",
+                "parameters": [],
+                "doc": "/**\n     * Update model settings\n     * @return array status / validation errors\n     * @throws \\OPNsense\\Base\\ValidationException on validation issues\n     * @throws \\ReflectionException when binding to the model class fails\n     * @throws UserException when denied write access\n     */"
+            }
+        ],
+        "model": null,
+        "is_abstract": true,
+        "doc": "/**\n * Class ApiMutableModelControllerBase, inherit this class to implement\n * an API that exposes a model with get and set actions.\n * You need to implement a method to create new blank model\n * objecs (newModelObject) as well as a method to return\n * the name of the model.\n * @package OPNsense\\Base\n */"
+    },
+    "OPNsense\\Auth\\Api\\GroupController": {
+        "name": "OPNsense\\Auth\\Api\\GroupController",
+        "parent": "OPNsense\\Base\\ApiMutableModelControllerBase",
+        "methods": [
+            {
+                "name": "get",
+                "method": "GET",
+                "parameters": [],
+                "doc": "/**\n     * Retrieve model settings\n     * @return array settings\n     * @throws \\ReflectionException when not bound to a valid model\n     */"
+            },
+            {
+                "name": "set",
+                "method": "POST",
+                "parameters": [],
+                "doc": "/**\n     * Update model settings\n     * @return array status / validation errors\n     * @throws \\OPNsense\\Base\\ValidationException on validation issues\n     * @throws \\ReflectionException when binding to the model class fails\n     * @throws UserException when denied write access\n     */"
+            },
+            {
+                "name": "search",
+                "method": "*",
+                "parameters": [],
+                "doc": false
+            },
+            {
+                "name": "get",
+                "method": "GET",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "has_default": true,
+                        "default": 42
+                    }
+                ],
+                "doc": false
+            },
+            {
+                "name": "add",
+                "method": "POST",
+                "parameters": [],
+                "doc": false
+            },
+            {
+                "name": "set",
+                "method": "POST",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "has_default": true,
+                        "default": null
+                    }
+                ],
+                "doc": false
+            },
+            {
+                "name": "del",
+                "method": "POST",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "has_default": false,
+                        "default": null
+                    }
+                ],
+                "doc": false
+            }
+        ],
+        "model": "OPNsense\\Auth\\Group",
+        "is_abstract": false,
+        "doc": "/**\n * Class GroupController\n * @package OPNsense\\Auth\\Api\n */"
+    },
+    "OPNsense\\Auth\\Api\\PrivController": {
+        "name": "OPNsense\\Auth\\Api\\PrivController",
+        "parent": "OPNsense\\Base\\ApiMutableModelControllerBase",
+        "methods": [
+            {
+                "name": "get",
+                "method": "GET",
+                "parameters": [],
+                "doc": "/**\n     * Retrieve model settings\n     * @return array settings\n     * @throws \\ReflectionException when not bound to a valid model\n     */"
+            },
+            {
+                "name": "set",
+                "method": "POST",
+                "parameters": [],
+                "doc": "/**\n     * Update model settings\n     * @return array status / validation errors\n     * @throws \\OPNsense\\Base\\ValidationException on validation issues\n     * @throws \\ReflectionException when binding to the model class fails\n     * @throws UserException when denied write access\n     */"
+            },
+            {
+                "name": "search",
+                "method": "GET",
+                "parameters": [],
+                "doc": false
+            },
+            {
+                "name": "getItem",
+                "method": "GET",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "has_default": false,
+                        "default": null
+                    }
+                ],
+                "doc": false
+            },
+            {
+                "name": "setItem",
+                "method": "POST",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "has_default": false,
+                        "default": null
+                    }
+                ],
+                "doc": false
+            }
+        ],
+        "model": "OPNsense\\Auth\\Priv",
+        "is_abstract": false,
+        "doc": "/**\n * Class PrivController\n * @package OPNsense\\Auth\\Api\n */"
+    }
+}

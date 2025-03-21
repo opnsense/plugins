@@ -1,0 +1,116 @@
+{
+    "OPNsense\\Base\\FieldTypes\\BaseField": {
+        "name": "OPNsense\\Base\\FieldTypes\\BaseField",
+        "namespace": "OPNsense\\Base\\FieldTypes",
+        "parent": null,
+        "is_container": true,
+        "properties": [
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Auth\\FieldTypes\\ApiKeyField": {
+        "name": "OPNsense\\Auth\\FieldTypes\\ApiKeyField",
+        "namespace": "OPNsense\\Auth\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\BaseField",
+        "is_container": false,
+        "properties": [
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Base\\FieldTypes\\TextField": {
+        "name": "OPNsense\\Base\\FieldTypes\\TextField",
+        "namespace": "OPNsense\\Base\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\BaseField",
+        "is_container": false,
+        "properties": [
+            "Mask",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Auth\\FieldTypes\\ExpiresField": {
+        "name": "OPNsense\\Auth\\FieldTypes\\ExpiresField",
+        "namespace": "OPNsense\\Auth\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\TextField",
+        "is_container": false,
+        "properties": [
+            "Mask",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Base\\FieldTypes\\IntegerField": {
+        "name": "OPNsense\\Base\\FieldTypes\\IntegerField",
+        "namespace": "OPNsense\\Base\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\BaseField",
+        "is_container": false,
+        "properties": [
+            "MaximumValue",
+            "MinimumValue",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Auth\\FieldTypes\\GidField": {
+        "name": "OPNsense\\Auth\\FieldTypes\\GidField",
+        "namespace": "OPNsense\\Auth\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\IntegerField",
+        "is_container": false,
+        "properties": [
+            "MaximumValue",
+            "MinimumValue",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Base\\FieldTypes\\BaseListField": {
+        "name": "OPNsense\\Base\\FieldTypes\\BaseListField",
+        "namespace": "OPNsense\\Base\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\BaseField",
+        "is_container": false,
+        "properties": [
+            "Multiple",
+            "BlankDesc",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    },
+    "OPNsense\\Auth\\FieldTypes\\GroupMembershipField": {
+        "name": "OPNsense\\Auth\\FieldTypes\\GroupMembershipField",
+        "namespace": "OPNsense\\Auth\\FieldTypes",
+        "parent": "OPNsense\\Base\\FieldTypes\\BaseListField",
+        "is_container": false,
+        "properties": [
+            "Multiple",
+            "BlankDesc",
+            "Default",
+            "ValidationMessage",
+            "Required",
+            "ChangeCase",
+            "Constraints"
+        ]
+    }
+}
