@@ -3192,7 +3192,7 @@ tbody.collapse.in {
   .dropdown-menu.pull-right {
     right: 0;
     left: auto;
-	background-color: #e5e5e5;}
+	background-color: #222;}
 
   .dropdown-menu .divider {
     height: 1px;
@@ -3717,6 +3717,10 @@ tbody.collapse.in {
     .navbar {
       border-radius: 0; } }
 
+.navbar-header {
+  padding-top: 12px;
+}
+
 .navbar-header:before, .navbar-header:after {
   content: " ";
   display: table; }
@@ -3806,18 +3810,12 @@ tbody.collapse.in {
   margin-bottom: 0;
   border-width: 1px 0 0; }
 
-.navbar-brand {
-  float: left;
-  padding: 15px 20px;
-  font-size: 18px;
-  height: 50px; }
-  .navbar-brand:hover, .navbar-brand:focus {
-    text-decoration: none; }
-
-  @media (min-width: 768px) {
-    .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
-      margin-left: -20px; } }
-
+.navbar-brand img.brand-logo {
+  height: 30px;
+}
+.navbar-brand img.brand-icon {
+  height: 30px;
+}
 .navbar-toggle {
   position: relative;
   float: left;
@@ -4718,8 +4716,8 @@ a.list-group-item-danger {
 
 .panel-footer {
   padding: 10px 15px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #ddd;
+  background-color: #2d2d2d;
+  border-top: 1px solid #191919;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px; }
 
@@ -6058,6 +6056,7 @@ button.toggle-sidebar {
   margin-top: 18px;
   float:left;
   outline:none;
+  padding-left: 20px;
 }
 
 /* COLLAPSE SIDEBAR END*/
@@ -6219,9 +6218,6 @@ button.toggle-sidebar {
 
 .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a, .nav-tabs.nav-justified > li > a {
   border-radius: 0 !important; }
-
-.navbar-brand {
-  padding: 10px 20px; }
 
 .label-opnsense {
   /* emulates btn */
