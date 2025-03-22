@@ -18,9 +18,14 @@
   vertical-align: middle;
   width: 180px;
 }
-
+.bootgrid-header .search .fa-solid,
+.bootgrid-footer .search .fa-solid {
+  top: 0;
+}
 .bootgrid-header .search .fa,
-.bootgrid-footer .search .fa {
+.bootgrid-header .search .fa-solid,
+.bootgrid-footer .search .fa,
+.bootgrid-footer .search .fa-solid {
   display: table-cell;
 }
 .bootgrid-header .search.search-field::-ms-clear,
@@ -39,9 +44,6 @@
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu {
-  color: #fff;
-  background-color: #1c2931;
-  border-color: #191919;
   text-align: left;
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item,
@@ -56,9 +58,9 @@
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover,
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-  color: #fff;
+  color: #FFF;
   text-decoration: none;
-  background-color: #ff7e25;
+  background-color: #dd630d;
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
@@ -78,7 +80,7 @@
   outline: 0;
 }
 .bootgrid-table th > .column-header-anchor {
-  color: #FFF;
+  color: #e8f1f9;
   cursor: not-allowed;
   display: block;
   position: relative;
@@ -97,18 +99,14 @@
   white-space: nowrap;
 }
 .bootgrid-table th > .column-header-anchor > .icon {
-  color: #000;
   display: block;
   position: absolute;
   right: 0;
   top: 2px;
 }
-.bootgrid-table th > .column-header-anchor > .glyphicon {
-  color: #000;
-}
 .bootgrid-table th:hover,
 .bootgrid-table th:active {
-  background: #f2fafe;
+  background: #fafafa;
 }
 .bootgrid-table td {
   overflow: hidden;
@@ -119,7 +117,7 @@
 }
 .bootgrid-table td.loading,
 .bootgrid-table td.no-results {
-  background: none;
+  background: #172229;
   text-align: center;
 }
 .bootgrid-table th.select-cell,
