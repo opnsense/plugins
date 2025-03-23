@@ -67,48 +67,35 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Generalized helper function for searching across different sections of the reverse proxy setup.
-     * This function mostly helps when model relation fields are used.
-     * It filters entries based on UUIDs provided as an argument. The section or key used for the UUID
-     * can be specified, allowing for direct or indirect UUID referencing.
+     * Build a UUID filter function.
      *
-     * @param string $modelPath The data model path identifier, pointing to section of model being searched.
-     * @param string $uuidSearchBase The request parameter name for the comma-separated list of UUIDs.
-     * @param string|null $uuidReferenceKey Attribute key used to fetch the UUID for filtering.
-     *                                      If null, uses item's own UUID.
-     * @return array Filtered search results.
+     * @param array $uuidList Array of UUIDs to match.
+     * @param string|null $referenceField Optional field to extract UUID from.
+     *
+     * @return callable|null
      */
-    private function searchActionHelper($modelPath, $uuidSearchBase, $uuidReferenceKey = null)
+    private function buildFilterFunction(array $uuidList, ?string $referenceField = null): ?callable
     {
-        // Fetch the comma-separated UUIDs string from the request using the provided parameter name.
-        $uuidList = $this->request->get($uuidSearchBase);
-        // Ensure the retrieved UUID list is a string and not empty before attempting to explode it.
-        $uuidArray = (!empty($uuidList) && is_string($uuidList)) ? explode(',', $uuidList) : [];
+        if (empty($uuidList)) {
+            return null;
+        }
 
-        // Define a filter function to determine which items to include based on the UUID.
-        $filterFunction = function ($modelItem) use ($uuidArray, $uuidReferenceKey) {
-            // Extract UUID from the item, using the specified UUID key if provided, else default to direct UUID access.
-            if ($uuidReferenceKey !== null) {
-                $modelUUID = (string)$modelItem->$uuidReferenceKey;
-            } else {
-                $modelUUID = (string)$modelItem->getAttributes()['uuid'];
-            }
-            // Include the item if the UUID array is empty or if the item's UUID is in the array.
-            return empty($uuidArray) || in_array($modelUUID, $uuidArray, true);
+        return function ($record) use ($uuidList, $referenceField): bool {
+            $uuid = $referenceField !== null
+                ? (string)($record->{$referenceField} ?? '')
+                : (string)($record->getAttributes()['uuid'] ?? '');
+
+            return in_array($uuid, $uuidList, true);
         };
-
-        // Perform the search using the specified model path and the filter function, returning the results.
-        // Note: This uses the existing search function of the ApiMutableModelControllerBase
-        return $this->searchBase($modelPath, null, 'description', $filterFunction);
     }
-
 
     // ReverseProxy Section
 
     public function searchReverseProxyAction()
     {
-        // For domains, use their domain UUIDs directly, $uuidReferenceKey null added for explicit clarity
-        return $this->searchActionHelper("reverseproxy.reverse", "reverseUuids", null);
+        $reverseUuids = $this->request->get('reverseUuids') ?? [];
+        $filter_funct = $this->buildFilterFunction($reverseUuids);
+        return $this->searchBase('reverseproxy.reverse', null, null, $filter_funct);
     }
 
     public function setReverseProxyAction($uuid)
@@ -141,9 +128,9 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchSubdomainAction()
     {
-        // For subdomains, compare 'reverseUuids' (which contain domain UUIDs)
-        // to 'reverse' (which contain the same domain UUIDs due to model relation field)
-        return $this->searchActionHelper("reverseproxy.subdomain", "reverseUuids", "reverse");
+        $reverseUuids = $this->request->get('reverseUuids') ?? [];
+        $filter_funct = $this->buildFilterFunction($reverseUuids, 'reverse');
+        return $this->searchBase('reverseproxy.subdomain', null, null, $filter_funct);
     }
 
     public function setSubdomainAction($uuid)
@@ -174,12 +161,11 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     // Handler Section
 
-    // Adjusted for search filter dropdown, using helper function
     public function searchHandleAction()
     {
-        // For handles, compare 'reverseUuids' (which contain domain UUIDs)
-        // to 'reverse' (which contain the same domain UUIDs due to model relation field)
-        return $this->searchActionHelper("reverseproxy.handle", "reverseUuids", "reverse");
+        $reverseUuids = $this->request->get('reverseUuids') ?? [];
+        $filter_funct = $this->buildFilterFunction($reverseUuids, 'reverse');
+        return $this->searchBase('reverseproxy.handle', null, null, $filter_funct);
     }
 
     public function setHandleAction($uuid)

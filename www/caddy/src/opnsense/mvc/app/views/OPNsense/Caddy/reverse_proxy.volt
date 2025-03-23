@@ -104,7 +104,7 @@
         function addDomainFilterToRequest(request) {
             let selectedDomains = $('#reverseFilter').val();
             if (selectedDomains && selectedDomains.length > 0) {
-                request['reverseUuids'] = selectedDomains.join(',');
+                request['reverseUuids'] = selectedDomains;
             }
             return request;
         }
