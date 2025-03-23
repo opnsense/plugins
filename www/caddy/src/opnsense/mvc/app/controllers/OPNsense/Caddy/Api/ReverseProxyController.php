@@ -197,7 +197,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchAccessListAction()
     {
-        return $this->searchBase("reverseproxy.accesslist", null, 'description');
+        return $this->searchBase("reverseproxy.accesslist");
     }
 
     public function setAccessListAction($uuid)
@@ -225,7 +225,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchBasicAuthAction()
     {
-        return $this->searchBase("reverseproxy.basicauth", null, 'description');
+        return $this->searchBase("reverseproxy.basicauth");
     }
 
     public function setBasicAuthAction($uuid)
@@ -277,7 +277,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchHeaderAction()
     {
-        return $this->searchBase("reverseproxy.header", null, 'description');
+        return $this->searchBase("reverseproxy.header");
     }
 
     public function setHeaderAction($uuid)
@@ -305,7 +305,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchLayer4Action()
     {
-        return $this->searchBase("reverseproxy.layer4", null, 'description');
+        return $this->searchBase("reverseproxy.layer4");
     }
 
     public function setLayer4Action($uuid)
@@ -338,7 +338,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
     public function searchLayer4OpenvpnAction()
     {
-        return $this->searchBase("reverseproxy.layer4openvpn", null, 'description');
+        return $this->searchBase("reverseproxy.layer4openvpn");
     }
 
     public function setLayer4OpenvpnAction($uuid)
