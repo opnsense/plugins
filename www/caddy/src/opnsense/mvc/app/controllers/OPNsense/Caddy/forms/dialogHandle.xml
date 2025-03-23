@@ -116,7 +116,7 @@
         <type>dropdown</type>
         <type>select_multiple</type>
         <size>5</size>
-        <style>style_reverse_proxy selectpicker</style>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
         <advanced>true</advanced>
         <grid_view>
@@ -181,7 +181,7 @@
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trust Pool</label>
         <type>dropdown</type>
-        <style>style_tls style_reverse_proxy</style>
+        <style>selectpicker style_tls style_reverse_proxy</style>
         <help><![CDATA[Choose a CA or self-signed certificate to trust from "System - Trust - Authorities". Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -218,7 +218,7 @@
         <id>handle.lb_policy</id>
         <label>Load Balance Policy</label>
         <type>dropdown</type>
-        <style>style_reverse_proxy</style>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
         <advanced>true</advanced>
         <grid_view>

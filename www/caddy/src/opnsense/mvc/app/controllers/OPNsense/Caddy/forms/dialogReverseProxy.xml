@@ -42,7 +42,7 @@
         <id>reverse.CustomCertificate</id>
         <label>Certificate</label>
         <type>dropdown</type>
-        <style>style_tls</style>
+        <style>selectpicker style_tls</style>
         <help><![CDATA[Choose ACME to get automatic certificates with the built in ACME client; no additional plugin required. The "HTTP-01", "TLS-ALPN-01" or "DNS-01" challenge will be used to get automatic "Let's Encrypt" or "ZeroSSL" certificates. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain. Make sure the full chain has been imported.]]></help>
         <grid_view>
             <visible>false</visible>

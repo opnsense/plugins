@@ -39,7 +39,7 @@
         <id>layer4.Protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
-        <style>style_type</style>
+        <style>selectpicker style_type</style>
         <help><![CDATA[Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.]]></help>
     </field>
     <field>
@@ -74,7 +74,7 @@
         <id>layer4.FromOpenvpnModes</id>
         <label>OpenVPN Mode</label>
         <type>dropdown</type>
-        <style>style_matchers matchers_openvpn</style>
+        <style>selectpicker style_matchers matchers_openvpn</style>
         <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -84,7 +84,7 @@
         <id>layer4.FromOpenvpnStaticKey</id>
         <label>OpenVPN Static Key</label>
         <type>select_multiple</type>
-        <style>style_matchers selectpicker matchers_openvpn</style>
+        <style>selectpicker style_matchers matchers_openvpn</style>
         <hint>Any</hint>
         <size>5</size>
         <help><![CDATA[Select a Static Key to match. Multiple Static Keys are only supported for tls-crypt2_client mode.]]></help>
@@ -153,7 +153,7 @@
         <id>layer4.lb_policy</id>
         <label>Load Balance Policy</label>
         <type>dropdown</type>
-        <style>style_reverse_proxy</style>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
         <advanced>true</advanced>
         <grid_view>
