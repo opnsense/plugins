@@ -116,7 +116,7 @@
         <type>dropdown</type>
         <type>select_multiple</type>
         <size>5</size>
-        <style>style_reverse_proxy selectpicker</style>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[Select one or multiple headers. Caddy sets "X-Forwarded-For", "X-Forwarded-Proto" and "X-Forwarded-Host" by default, adding them here is not needed. Setting a wrong configuration can be a security risk or break functionality.]]></help>
         <advanced>true</advanced>
         <grid_view>

@@ -74,7 +74,7 @@
         <id>layer4.FromOpenvpnModes</id>
         <label>OpenVPN Mode</label>
         <type>dropdown</type>
-        <style>style_matchers selectpicker matchers_openvpn</style>
+        <style>selectpicker style_matchers matchers_openvpn</style>
         <help><![CDATA[Select the mode matching the OpenVPN Server or Client.]]></help>
         <grid_view>
             <visible>false</visible>

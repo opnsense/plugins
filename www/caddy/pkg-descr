@@ -16,6 +16,7 @@ Plugin Changelog
 1.8.4
 
 * Add: Client Auth (mTLS) to domains (opnsense/plugins/issues/4089)
+* Fix: Some selectpickers had incorrect style (opnsense/plugins/pull/4616)
 
 1.8.3
 
