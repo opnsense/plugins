@@ -1,0 +1,13 @@
+Beats is the platform for building lightweight, open source data
+shippers for many types of operational data you want to enrich with
+Logstash, search and analyze in Elasticsearch, and visualize in Kibana.
+
+Filebeat is a lightweight, open source shipper for log file data. As the
+next-generation Logstash Forwarder, Filebeat tails logs and quickly
+sends this information to Logstash for further parsing and enrichment or
+to Elasticsearch for centralized storage and analysis.
+
+The OPNsense Beats plugin only initializes Elasticsearch;
+It doesn't load Kibana dashboards.
+
+WWW: https://www.elastic.co/guide/en/beats
