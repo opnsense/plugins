@@ -1,1 +1,0 @@
-filebeat_enable="{{ 'YES' if not helpers.empty('OPNsense.filebeat.enabled') else 'NO' }}"
