@@ -158,5 +158,4 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('redistributions.redistribution', $uuid);
     }
-
 }

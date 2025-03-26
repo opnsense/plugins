@@ -246,5 +246,4 @@ class BgpController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase('redistributions.redistribution', $uuid);
     }
-
 }
