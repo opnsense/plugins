@@ -263,7 +263,7 @@ class Sftp extends Base implements IBackupProvider
             if ($this->model->backupcount->asFloat() > 0) {
                 rsort($remote_backups);
                 if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
-                    for ($i = $this->model->backupcount->getCurrentValue() ; $i < count($remote_backups); $i++) {
+                    for ($i = $this->model->backupcount->getCurrentValue(); $i < count($remote_backups); $i++) {
                         $this->del($remote_backups[$i]);
                     }
                     $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
