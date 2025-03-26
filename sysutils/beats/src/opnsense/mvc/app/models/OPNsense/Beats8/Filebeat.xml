@@ -1,8 +1,6 @@
 <model>
     <mount>//OPNsense/filebeat</mount>
-    <description>
-        Send logs to elasticsearch
-    </description>
+    <description>Send logs to Elasticsearch</description>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
