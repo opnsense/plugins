@@ -410,6 +410,7 @@ http://{{ domain }} {
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {{ handle_accesslist(handle.accesslist) }}
+        {{ render_basic_auth(handle.basicauth) }}
         {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
@@ -542,9 +543,8 @@ http://{{ domain }} {
 #   Purpose: Renders the basic authentication configuration.
 #   Parameters:
 #   @param basicauth_uuids (string): A comma-separated list of UUIDs for basic authentication.
-#   @param matcher (string, optional): Optional matcher (e.g. a path).
 #}
-{% macro render_basic_auth(basicauth_uuids, matcher='') %}
+{% macro render_basic_auth(basicauth_uuids) %}
     {% if basicauth_uuids %}
     basic_auth{% if matcher %} {{ matcher }}{% endif %} {
         {% for uuid in basicauth_uuids.split(',') %}
@@ -568,13 +568,11 @@ http://{{ domain }} {
 {% macro render_handles(handles) %}
     {% for handle in handles %}
         {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
-            {{ render_basic_auth(handle.basicauth, handle.HandlePath) }}
             {{ reverse_proxy_configuration(handle) }}
         {% endif %}
     {% endfor %}
     {% for handle in handles %}
         {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
-            {{ render_basic_auth(handle.basicauth) }}
             {{ reverse_proxy_configuration(handle) }}
         {% endif %}
     {% endfor %}
