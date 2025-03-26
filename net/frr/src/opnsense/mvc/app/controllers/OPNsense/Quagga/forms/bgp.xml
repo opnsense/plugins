@@ -53,10 +53,4 @@
         <type>checkbox</type>
         <help>Enable extended logging of BGP neighbor changes.</help>
     </field>
-    <field>
-        <id>bgp.redistribute</id>
-        <label>Route Redistribution</label>
-        <type>select_multiple</type>
-        <help>Select routing sources to redistribute to other nodes.</help>
-    </field>
 </form>

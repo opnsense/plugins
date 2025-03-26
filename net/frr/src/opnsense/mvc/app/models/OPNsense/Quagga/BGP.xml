@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.0.9</version>
+    <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -37,18 +37,6 @@
             <default></default>
             <Required>N</Required>
         </networks>
-        <redistribute type="OptionField">
-                <Required>N</Required>
-                <multiple>Y</multiple>
-                <default></default>
-                <OptionValues>
-                        <ospf>Open Shortest Path First (OSPF)</ospf>
-                        <connected>Connected routes (directly attached subnet or host)</connected>
-                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <rip>Routing Information Protocol (RIP)</rip>
-                        <static>Statically configured routes</static>
-                </OptionValues>
-        </redistribute>
         <neighbors>
                 <neighbor type="ArrayField">
                         <enabled type="BooleanField">
@@ -63,6 +51,13 @@
                                 <default></default>
                                 <Required>Y</Required>
                         </address>
+                        <remote_as_mode type="OptionField">
+                                <BlankDesc>Use Remote AS Number</BlankDesc>
+                                <OptionValues>
+                                        <internal>Internal</internal>
+                                        <external>External</external>
+                                </OptionValues>
+                        </remote_as_mode>
                         <remoteas type="IntegerField">
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
@@ -148,6 +143,21 @@
                                 <default>0</default>
                                 <Required>N</Required>
                         </asoverride>
+                        <allowas_in type="OptionField">
+                                <OptionValues>
+                                        <val1 value="1">1</val1>
+                                        <val2 value="2">2</val2>
+                                        <val3 value="3">3</val3>
+                                        <val4 value="4">4</val4>
+                                        <val5 value="5">5</val5>
+                                        <val6 value="6">6</val6>
+                                        <val7 value="7">7</val7>
+                                        <val8 value="8">8</val8>
+                                        <val9 value="9">9</val9>
+                                        <val10 value="10">10</val10>
+                                        <origin>origin</origin>
+                                </OptionValues>
+                        </allowas_in>
                         <disable_connected_check type="BooleanField">
                                 <default>0</default>
                                 <Required>N</Required>
@@ -418,8 +428,14 @@
                         <name type="TextField">
                                 <Required>Y</Required>
                         </name>
+                        <remote_as_mode type="OptionField">
+                                <BlankDesc>Use Remote AS Number</BlankDesc>
+                                <OptionValues>
+                                        <internal>Internal</internal>
+                                        <external>External</external>
+                                </OptionValues>
+                        </remote_as_mode>
                         <remoteas type="IntegerField">
-                                <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
@@ -480,5 +496,36 @@
                         </linkedRoutemapOut>
             </peergroup>
         </peergroups>
+        <redistributions>
+                <redistribution type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <description type="DescriptionField"/>
+                        <redistribute type="OptionField">
+                                <Required>Y</Required>
+                                <Default>connected</Default>
+                                <OptionValues>
+                                        <ospf>Open Shortest Path First (OSPF)</ospf>
+                                        <connected>Connected routes (directly attached subnet or host)</connected>
+                                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                                        <rip>Routing Information Protocol (RIP)</rip>
+                                        <static>Statically configured routes</static>
+                                </OptionValues>
+                        </redistribute>
+                        <linkedRoutemap type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.bgp</source>
+                                                <items>routemaps.routemap</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                        </linkedRoutemap>
+                </redistribution>
+        </redistributions>
     </items>
 </model>

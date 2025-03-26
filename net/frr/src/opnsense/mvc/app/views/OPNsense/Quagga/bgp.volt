@@ -95,8 +95,41 @@ POSSIBILITY OF SUCH DAMAGE.
             'del':'/api/quagga/bgp/delPeergroup/',
             'toggle':'/api/quagga/bgp/togglePeergroup/'
         });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/searchRedistribution',
+            'get':'/api/quagga/bgp/getRedistribution/',
+            'set':'/api/quagga/bgp/setRedistribution/',
+            'add':'/api/quagga/bgp/addRedistribution/',
+            'del':'/api/quagga/bgp/delRedistribution/',
+            'toggle':'/api/quagga/bgp/toggleRedistribution/'
+        });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
     });
 </script>
+
+<style>
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
+    }
+</style>
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -112,6 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
     <!-- Tab: Neighbors -->
     <div id="neighbors" class="tab-pane fade in">
@@ -145,3 +179,4 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPCommunityLists,'id':formGridEditBGPCommunityLists['edit_dialog_id'],'label':lang._('Edit Community Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':formGridEditBGPRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPeergroups,'id':formGridEditBGPPeergroups['edit_dialog_id'],'label':lang._('Edit Peer Groups')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}

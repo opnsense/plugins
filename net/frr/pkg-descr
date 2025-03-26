@@ -12,6 +12,13 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.44
+
+* Add BGP allowas-in (opnsense/plugins/issues/4586)
+* Add route-map functionality to route redistribution in bgp (opnsense/plugins/issues/4570)
+* Add route-map functionality to route redistribution in ospf/ospf6 (opnsense/plugins/issues/4580)
+* Add BGP remote-as internal and external (opnsense/plugins/issues/4609)
+
 1.43
 
 * Use frr-reload instead of restarting the service on configuration changes (opnsense/plugins/issues/4529)
