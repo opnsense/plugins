@@ -542,10 +542,11 @@ http://{{ domain }} {
 #   Purpose: Renders the basic authentication configuration.
 #   Parameters:
 #   @param basicauth_uuids (string): A comma-separated list of UUIDs for basic authentication.
+#   @param matcher (string, optional): Optional matcher (e.g. a path).
 #}
-{% macro render_basic_auth(basicauth_uuids) %}
+{% macro render_basic_auth(basicauth_uuids, matcher='') %}
     {% if basicauth_uuids %}
-    basic_auth {
+    basic_auth{% if matcher %} {{ matcher }}{% endif %} {
         {% for uuid in basicauth_uuids.split(',') %}
             {% set basicauth = helpers.toList('Pischem.caddy.reverseproxy.basicauth') | selectattr('@uuid', 'equalto', uuid) | first %}
             {% if basicauth %}
@@ -564,15 +565,16 @@ http://{{ domain }} {
 #   @param handles (list): A list of handle objects to be rendered.
 #   @param basicauth_uuids (string): A comma-separated list of UUIDs for basic authentication.
 #}
-{% macro render_handles(handles, basicauth_uuids=None) %}
-    {{ render_basic_auth(basicauth_uuids) }}
+{% macro render_handles(handles) %}
     {% for handle in handles %}
         {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
+            {{ render_basic_auth(handle.basicauth, handle.HandlePath) }}
             {{ reverse_proxy_configuration(handle) }}
         {% endif %}
     {% endfor %}
     {% for handle in handles %}
         {% if handle.enabled|default("0") == "1" and not handle.HandlePath %}
+            {{ render_basic_auth(handle.basicauth) }}
             {{ reverse_proxy_configuration(handle) }}
         {% endif %}
     {% endfor %}
@@ -634,7 +636,8 @@ http://{{ domain }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
                         {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
                         {# All IPs not matched by accesslist will continue processing #}
-                        {{ render_handles(subdomain_handles, subdomain.basicauth) }}
+                        {{ render_basic_auth(subdomain.basicauth) }}
+                        {{ render_handles(subdomain_handles) }}
                     }
                 {% endif %}
             {% endfor %}
@@ -642,7 +645,8 @@ http://{{ domain }} {
             {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
             {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}
             {# All IPs not matched by accesslist will continue processing #}
-            {{ render_handles(domain_handles, reverse.basicauth) }}
+            {{ render_basic_auth(reverse.basicauth) }}
+            {{ render_handles(domain_handles) }}
         }
     {% endif %}
 {% endfor %}

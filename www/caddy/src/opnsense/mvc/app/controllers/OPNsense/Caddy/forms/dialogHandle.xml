@@ -74,6 +74,16 @@
         </grid_view>
     </field>
     <field>
+        <id>handle.basicauth</id>
+        <label>Basic Auth</label>
+        <type>select_multiple</type>
+        <size>5</size>
+        <help><![CDATA[Select Users to restrict access to this path. If unset, any user is allowed access.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
         <id>handle.ForwardAuth</id>
         <label>Forward Auth</label>
         <type>checkbox</type>
@@ -103,7 +113,7 @@
         <id>handle.HttpVersion</id>
         <label>HTTP Version</label>
         <type>dropdown</type>
-        <style>style_reverse_proxy</style>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires HTTPS, and only establishes connections to webservers that also support HTTP/3.]]></help>
         <advanced>true</advanced>
         <grid_view>
