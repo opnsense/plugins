@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: arp-ndp-logging
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=arp-ndp-logging
+
+rcvar=arp_ndp_logging_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -P ${pidfile} /usr/local/bin/python3 /usr/local/bin/arp-ndp-logging.py"
+
+load_rc_config ${name}
+
+: ${arp_ndp_logging_enable="NO"}
+
+run_rc_command $1

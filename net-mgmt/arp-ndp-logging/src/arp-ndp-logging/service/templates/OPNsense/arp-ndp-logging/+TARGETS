@@ -1,0 +1,2 @@
+arp-ndp-logging:/etc/rc.conf.d/arp-ndp-logging
+arp-ndp-logging.conf:/usr/local/etc/arp-ndp-logging.conf
