@@ -559,11 +559,9 @@ http://{{ domain }} {
 
 {#
 #   Macro: render_handles
-#   Purpose: Renders the handles in the correct order (path-specific first, then catch-all),
-#            including basic authentication configuration.
+#   Purpose: Renders the handles in the correct order (path-specific first, then catch-all).
 #   Parameters:
 #   @param handles (list): A list of handle objects to be rendered.
-#   @param basicauth_uuids (string): A comma-separated list of UUIDs for basic authentication.
 #}
 {% macro render_handles(handles) %}
     {% for handle in handles %}
