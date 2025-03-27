@@ -7,12 +7,12 @@
  * License: BSD 2-Clause
  */
 
-namespace OPNsense\Opnarplog\Api;
+namespace OPNsense\ArpNdpLogging\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelClass = '\OPNsense\Opnarplog\General';
+    protected static $internalModelClass = '\OPNsense\ArpNdpLogging\General';
     protected static $internalModelName = 'general';
 }

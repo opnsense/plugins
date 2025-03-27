@@ -24,10 +24,10 @@ from io import StringIO
 from datetime import datetime
 
 
-CONFIG_FILE = "/usr/local/etc/opnarplog.conf"
-DB_FILE = "/var/db/opnarplog/opnarplog.db"
-LOG_FILE = "/var/log/opnarplog.log"
-MAC_VENDOR_FILE = "/var/db/opnarplog/oui.csv"
+CONFIG_FILE = "/usr/local/etc/arp-ndp-logging.conf"
+DB_FILE = "/var/db/arp-ndp-logging/arp-ndp-logging.db"
+LOG_FILE = "/var/log/arp-ndp-logging.log"
+MAC_VENDOR_FILE = "/var/db/arp-ndp-logging/oui.csv"
 
 # Create directories
 os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
@@ -415,7 +415,7 @@ if __name__ == "__main__":
     # check if the log need to be rotated
     rotate_log()
 
-    logging.info("*** Starting OPNarplog ***")
+    logging.info("*** Starting ARP/NDP Logging ***")
 
     logging.info(f"protocols: {protocols}")
     logging.info(f"interfaces: {interfaces}")

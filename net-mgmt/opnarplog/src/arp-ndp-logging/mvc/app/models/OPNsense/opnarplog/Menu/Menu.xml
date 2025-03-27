@@ -1,8 +1,8 @@
 <menu>
   <Services>
-    <OPNarplog VisibleName="OPNarplog" cssClass="fa fa-eye fa-fw">
-      <General VisibleName="General" url="/ui/opnarplog/general/index" />
-      <LogFile VisibleName="Log File" url="/ui/diagnostics/log/core/opnarplog" />
-    </OPNarplog>
+    <ArpNdpLogging VisibleName="ARP/NDP Logging" cssClass="fa fa-eye fa-fw">
+      <General VisibleName="General" url="/ui/arp-ndp-logging/general/index" />
+      <LogFile VisibleName="Log File" url="/ui/diagnostics/log/core/arp-ndp-logging" />
+    </ArpNdpLogging>
   </Services>
 </menu>

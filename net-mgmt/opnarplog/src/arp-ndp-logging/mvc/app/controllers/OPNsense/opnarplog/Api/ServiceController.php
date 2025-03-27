@@ -7,18 +7,18 @@
  * License: BSD 2-Clause
  */
 
-namespace OPNsense\Opnarplog\Api;
+namespace OPNsense\ArpNdpLogging\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\Opnarplog\General;
+use OPNsense\ArpNdpLogging\General;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\Opnarplog\General';
-    protected static $internalServiceTemplate = 'OPNsense/Opnarplog';
+    protected static $internalServiceClass = '\OPNsense\ArpNdpLogging\General';
+    protected static $internalServiceTemplate = 'OPNsense/ArpNdpLogging';
     protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'opnarplog';
+    protected static $internalServiceName = 'arp-ndp-logging';
 
     /**
      * remove database folder
@@ -27,7 +27,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     public function resetdbAction()
     {
         $backend = new Backend();
-        $response = $backend->configdRun("opnarplog resetdb");
+        $response = $backend->configdRun("arp-ndp-logging resetdb");
         return array("response" => $response);
     }
 

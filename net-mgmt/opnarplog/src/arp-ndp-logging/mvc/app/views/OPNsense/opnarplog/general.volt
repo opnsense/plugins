@@ -11,9 +11,9 @@
         <tr>
             <td>
                 <p>⚠️ Enabling this plugin will NOT automatically send mail notifications</p>
-                <p><a id="help_for_general.install" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> To get alerted by mail, you have to set up <a href="/ui/monit" target="_blank">Monit</a> with a Service and Service Test that monitors the <code>/var/log/opnarplog.log</code> logfile.</p>
+                <p><a id="help_for_general.install" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> To get alerted by mail, you have to set up <a href="/ui/monit" target="_blank">Monit</a> with a Service and Service Test that monitors the <code>/var/log/arp-ndp-logging.log</code> logfile.</p>
                 <p>Click <a id="help_for_general.install" href="#" class="showhelp">here</a> to display the mail alerting setup instructions at the end of this page.</p>
-                <p>Do you like this plugin? Consider to <a href="https://github.md0.eu/links/opnsense-opnarplog" target="_blank">make a donation</a>.</p>
+                <p>Do you like this plugin? Consider to <a href="https://github.md0.eu/links/opnsense-arp-ndp-logging" target="_blank">make a donation</a>.</p>
             </td>
         </tr>
     </table>
@@ -77,7 +77,7 @@ $DESCRIPTION
             <li>
                 <p>Go to the <code>Service Tests Settings</code> tab. Add a new test, fill out the fields and then save:</p>
                 <ul>
-                    <li>Name: <code>OPNarplog_common</code> or whatever you like</li>
+                    <li>Name: <code>ArpNdpLogging_common</code> or whatever you like</li>
                     <li>Condition: <code>content = "detected"</code></li>
                     <li>Action: <code>Alert</code></li>
                 </ul>
@@ -86,12 +86,12 @@ $DESCRIPTION
                 <p>Go to the <code>Service Settings</code> tab. Add a new service, fill out the fields and then save:</p>
                 <ul>
                     <li>Enable service checks: ☑</li>
-                    <li>Name: <code>OPNarplog_common</code> or whatever you like</li>
+                    <li>Name: <code>ArpNdpLogging_common</code> or whatever you like</li>
                     <li>Type: <code>File</code></li>
-                    <li>Path: <code>/var/log/opnarplog.log</code></li>
+                    <li>Path: <code>/var/log/arp-ndp-logging.log</code></li>
                     <li>Start: leave empty</li>
                     <li>Stop: leave empty</li>
-                    <li>Tests: Select <code>OPNarplog_common</code> or whatever you inserted in step 2</li>
+                    <li>Tests: Select <code>ArpNdpLogging_common</code> or whatever you inserted in step 2</li>
                     <li>Depends: leave empty</li>
                     <li>Description: Not needed, but you can insert whatever you like</li>
                 </ul>
@@ -105,19 +105,19 @@ $DESCRIPTION
 
 <script>
     $(function() {
-        var data_get_map = {'frm_general_settings':"/api/opnarplog/general/get"};
+        var data_get_map = {'frm_general_settings':"/api/arp-ndp-logging/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
 
-        updateServiceControlUI('opnarplog');
+        updateServiceControlUI('arp-ndp-logging');
 
         $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/opnarplog/general/set", formid='frm_general_settings',callback_ok=function(){
+            saveFormToEndpoint(url="/api/arp-ndp-logging/general/set", formid='frm_general_settings',callback_ok=function(){
             $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/opnarplog/service/reconfigure", sendData={}, callback=function(data,status) {
-                    updateServiceControlUI('opnarplog');
+                ajaxCall(url="/api/arp-ndp-logging/service/reconfigure", sendData={}, callback=function(data,status) {
+                    updateServiceControlUI('arp-ndp-logging');
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
             });
@@ -129,10 +129,10 @@ $DESCRIPTION
                 '{{ lang._('Do you want to reset the database?') }}',
                 '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
                     $("#resetdbAct_progress").addClass("fa fa-spinner fa-pulse");
-                    ajaxCall(url="/api/opnarplog/service/stop", sendData={}, callback=function(data,status) {
-                        ajaxCall(url="/api/opnarplog/service/resetdb", sendData={}, callback=function(data,status) {
-                            ajaxCall(url="/api/opnarplog/service/start", sendData={}, callback=function(data,status) {
-                            updateServiceControlUI('opnarplog');
+                    ajaxCall(url="/api/arp-ndp-logging/service/stop", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/arp-ndp-logging/service/resetdb", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/arp-ndp-logging/service/start", sendData={}, callback=function(data,status) {
+                            updateServiceControlUI('arp-ndp-logging');
                             $("#resetdbAct_progress").removeClass("fa fa-spinner fa-pulse");
                         });
                     });

@@ -7,7 +7,7 @@
  * License: BSD 2-Clause
  */
 
-namespace OPNsense\Opnarplog;
+namespace OPNsense\ArpNdpLogging;
 
 use OPNsense\Base\BaseModel;
 

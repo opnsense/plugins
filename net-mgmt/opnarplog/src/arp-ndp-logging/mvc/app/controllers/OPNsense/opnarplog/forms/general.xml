@@ -3,7 +3,7 @@
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>Enable or disable OPNarplog. This will not automatically enable any mail notifications, see notes below</help>
+        <help>Enable or disable ARP/NDP Logging. This will not automatically enable any mail notifications, see notes below</help>
     </field>
     <field>
         <id>general.protocols</id>

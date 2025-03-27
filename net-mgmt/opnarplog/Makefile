@@ -1,4 +1,4 @@
-PLUGIN_NAME=		OPNarplog
+PLUGIN_NAME=		ARP/NDP logging
 PLUGIN_VERSION=		0.1
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		arpwatch alternative for OPNsense

@@ -1,9 +1,9 @@
 <acl>
-   <page-opnarplog-config>
-      <name>Services: OPNarplog</name>
+   <page-arp-ndp-logging-config>
+      <name>Services: ARP/NDP Logging</name>
       <patterns>
-         <pattern>ui/opnarplog/*</pattern>
-         <pattern>api/opnarplog/*</pattern>
+         <pattern>ui/arp-ndp-logging/*</pattern>
+         <pattern>api/arp-ndp-logging/*</pattern>
       </patterns>
-   </page-opnarplog-config>
+   </page-arp-ndp-logging-config>
 </acl>

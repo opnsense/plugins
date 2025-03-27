@@ -29,17 +29,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Opnarplog\FieldTypes;
+namespace OPNsense\ArpNdpLogging\FieldTypes;
 
 use OPNsense\Base\FieldTypes\BaseListField;
 use OPNsense\Core\Config;
 
 /**
- * Class OpnarplogDomainField
- * @package OPNsense\Opnarplog\FieldTypes
+ * Class ArpNdpLoggingDomainField
+ * @package OPNsense\ArpNdpLogging\FieldTypes
  * Created from src\opnsense\mvc\app\models\OPNsense\Unbound\FieldTypes\UnboundInterfaceField.php
  */
-class OpnarplogInterfaceField extends BaseListField
+class ArpNdpLoggingInterfaceField extends BaseListField
 {
     /**
      * Iterate over all interfaces in the configuration and only exclude virtual interfaces.

@@ -7,22 +7,22 @@
  * License: BSD 2-Clause
  */
 
-function opnarplog_services()
+function arp_ndp_logging_services()
 {
     global $config;
 
     $services = array();
 
-    if (isset($config['OPNsense']['opnarplog']['general']['enabled']) && $config['OPNsense']['opnarplog']['general']['enabled'] == 1) {
+    if (isset($config['OPNsense']['_'][_general']['enabled']) && $config['OPNsense']['arp-ndp-logging']['general']['enabled'] == 1) {
         $services[] = array(
-            'description' => gettext('OPNarplog Daemon'),
+            'description' => gettext('ARP/NDP Logging Daemon'),
             'configd' => array(
-                'restart' => array('opnarplog restart'),
-                'start' => array('opnarplog start'),
-                'stop' => array('opnarplog stop'),
+                'restart' => array('arp-ndp-logging restart'),
+                'start' => array('arp-ndp-logging start'),
+                'stop' => array('arp-ndp-logging stop'),
             ),
-            'name' => 'opnarplog',
-            'pidfile' => '/var/run/opnarplog.pid',
+            'name' => 'arp-ndp-logging',
+            'pidfile' => '/var/run/arp-ndp-logging.pid',
         );
     }
 

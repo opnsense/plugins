@@ -1,6 +1,6 @@
 <model>
-    <mount>//OPNsense/opnarplog/general</mount>
-    <description>OPNarplog general configuration</description>
+    <mount>//OPNsense/arp-ndp-logging/general</mount>
+    <description>ARP/NDP Logging general configuration</description>
     <version>0.0.1</version>
     <items>
         <enabled type="BooleanField">
@@ -16,7 +16,7 @@
                 <opt3 value="ipv6_only">IPv6 only</opt3>
             </OptionValues>
         </protocols>
-        <interfaces type=".\OpnarplogInterfaceField">
+        <interfaces type=".\ArpNdpLoggingInterfaceField">
             <Required>N</Required>
             <Multiple>Y</Multiple>
         </interfaces>
