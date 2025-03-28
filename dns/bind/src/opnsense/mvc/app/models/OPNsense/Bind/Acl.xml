@@ -20,10 +20,8 @@
                         </check001>
                     </Constraints>
                 </name>
-                <networks type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
+                <networks type=".\BindAddressMatchField">
                     <Required>Y</Required>
-                    <asList>Y</asList>
                 </networks>
             </acl>
         </acls>
