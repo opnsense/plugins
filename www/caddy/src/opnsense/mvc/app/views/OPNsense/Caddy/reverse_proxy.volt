@@ -27,72 +27,68 @@
 <script>
     $(document).ready(function() {
         // Bootgrid Setup
-        $("#{{formGridReverseProxy['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchReverseProxy/',
-            get:'/api/caddy/ReverseProxy/getReverseProxy/',
-            set:'/api/caddy/ReverseProxy/setReverseProxy/',
-            add:'/api/caddy/ReverseProxy/addReverseProxy/',
-            del:'/api/caddy/ReverseProxy/delReverseProxy/',
-            toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
-            options: {
-                requestHandler: addDomainFilterToRequest,
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
+        let all_grids = {};
 
-        $("#{{formGridSubdomain['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchSubdomain/',
-            get:'/api/caddy/ReverseProxy/getSubdomain/',
-            set:'/api/caddy/ReverseProxy/setSubdomain/',
-            add:'/api/caddy/ReverseProxy/addSubdomain/',
-            del:'/api/caddy/ReverseProxy/delSubdomain/',
-            toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
-            options: {
-                requestHandler: addDomainFilterToRequest,
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let grid_ids = [];
 
-        $("#{{formGridHandle['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHandle/',
-            get:'/api/caddy/ReverseProxy/getHandle/',
-            set:'/api/caddy/ReverseProxy/setHandle/',
-            add:'/api/caddy/ReverseProxy/addHandle/',
-            del:'/api/caddy/ReverseProxy/delHandle/',
-            toggle:'/api/caddy/ReverseProxy/toggleHandle/',
-            options: {
-                requestHandler: addDomainFilterToRequest
+            switch (e.target.hash) {
+                case '#domainsTab':
+                    grid_ids = [
+                        "{{formGridReverseProxy['table_id']}}",
+                        "{{formGridSubdomain['table_id']}}"
+                    ];
+                    break;
+                case '#handlesTab':
+                    grid_ids = ["{{formGridHandle['table_id']}}"];
+                    break;
+                case '#accessTab':
+                    grid_ids = [
+                        "{{formGridAccessList['table_id']}}",
+                        "{{formGridBasicAuth['table_id']}}"
+                    ];
+                    break;
+                case '#headerTab':
+                    grid_ids = ["{{formGridHeader['table_id']}}"];
+                    break;
             }
-        });
 
-        $("#{{formGridAccessList['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchAccessList/',
-            get:'/api/caddy/ReverseProxy/getAccessList/',
-            set:'/api/caddy/ReverseProxy/setAccessList/',
-            add:'/api/caddy/ReverseProxy/addAccessList/',
-            del:'/api/caddy/ReverseProxy/delAccessList/',
-            options:{
-                rowCount: [4,7,14,20,50,100,-1]
+            if (grid_ids.length > 0) {
+                grid_ids.forEach(function(grid_id) {
+                    if (!all_grids[grid_id]) {
+                        const entity = grid_id.replace(/^dialog/, '');
+
+                        all_grids[grid_id] = $("#" + grid_id)
+                        .addClass("resizable")
+                        .UIBootgrid({
+                            search: `/api/caddy/ReverseProxy/search${entity}/`,
+                            get: `/api/caddy/ReverseProxy/get${entity}/`,
+                            set: `/api/caddy/ReverseProxy/set${entity}/`,
+                            add: `/api/caddy/ReverseProxy/add${entity}/`,
+                            del: `/api/caddy/ReverseProxy/del${entity}/`,
+                            toggle: `/api/caddy/ReverseProxy/toggle${entity}/`,
+                            options: {
+                                requestHandler: addDomainFilterToRequest,
+                                triggerEditFor: getUrlHash('edit'),
+                                initialSearchPhrase: getUrlHash('search'),
+                                resizableColumns: true,
+                            }
+                        });
+                    }
+                    // insert buttons and selectpicker
+                    if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
+                        let header = $("#" + grid_id + "-header");
+                        let $actionBar = header.find('.actionBar');
+                        if ($actionBar.length) {
+                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search'));
+                            $('#add_handle_container').detach().insertBefore($('#add_filter_container'));
+                            $('#add_domain_container').detach().insertBefore($('#add_handle_container'));
+
+                            $('#add_filter_container, #add_handle_container, #add_domain_container').show();
+                        }
+                    }
+                });
             }
-        });
-
-        $("#{{formGridBasicAuth['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchBasicAuth/',
-            get:'/api/caddy/ReverseProxy/getBasicAuth/',
-            set:'/api/caddy/ReverseProxy/setBasicAuth/',
-            add:'/api/caddy/ReverseProxy/addBasicAuth/',
-            del:'/api/caddy/ReverseProxy/delBasicAuth/',
-            options:{
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
-
-        $("#{{formGridHeader['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHeader/',
-            get:'/api/caddy/ReverseProxy/getHeader/',
-            set:'/api/caddy/ReverseProxy/setHeader/',
-            add:'/api/caddy/ReverseProxy/addHeader/',
-            del:'/api/caddy/ReverseProxy/delHeader/',
         });
 
         /**
@@ -146,29 +142,6 @@
             });
         }
 
-        /**
-         * Controls the visibility of the selectpicker and add buttons based on the active tab.
-         *
-         * @param {string} tab - The currently active tab.
-         */
-        function toggleVisibility(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab') {
-                $("#addDomainBtn").show();
-                $("#addHandleBtn").show();
-                $('.common-filter').show();
-            } else {
-                $("#addDomainBtn").hide();
-                $("#addHandleBtn").hide();
-                $('.common-filter').hide();
-            }
-        }
-
-        function reloadGrids() {
-            $("#{{formGridReverseProxy['table_id']}}").bootgrid("reload");
-            $("#{{formGridSubdomain['table_id']}}").bootgrid("reload");
-            $("#{{formGridHandle['table_id']}}").bootgrid("reload");
-        }
-
         // Hide message area when starting new actions
         $('input, select, textarea').on('change', function() {
             $("#messageArea").hide();
@@ -203,27 +176,11 @@
             }
         });
 
-        $("#clearDomains").on("click", function(e) {
-            e.preventDefault();
-            $('#reverseFilter').val([]);
-            $('#reverseFilter').selectpicker('refresh');
-
-            reloadGrids();
-        });
-
         // Reload Bootgrid on filter change
         $('#reverseFilter').on('changed.bs.select', function() {
-            reloadGrids();
-        });
-
-        // Initialize visibility based on the active tab on page load
-        let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
-        toggleVisibility(activeTab);
-
-        // Change event when switching tabs
-        $('#maintabs a').on('click', function (e) {
-            let currentTab = $(this).attr('href').replace('#', '');
-            toggleVisibility(currentTab);
+            $("#{{formGridReverseProxy['table_id']}}").bootgrid("reload");
+            $("#{{formGridSubdomain['table_id']}}").bootgrid("reload");
+            $("#{{formGridHandle['table_id']}}").bootgrid("reload");
         });
 
         // Add click event listener for "Add Handler" button
@@ -286,34 +243,42 @@
 
         updateServiceControlUI('caddy');
         loadDomainFilters();
+        $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
     });
 </script>
 
 <style>
-    .common-filter {
-        align-items: center;
-        margin-top: 20px;
-        margin-right: 5px;
-        padding: 0 15px;
+    #add_filter_container {
+        margin-left: 10px;
+        margin-right: 20px;
     }
-
-    .filter-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+    #add_domain_container {
+        float: left;
     }
-
-    #clearDomains {
-        margin-top: 5px;
+    #add_handle_container {
+        margin-left: 10px;
+        float: left;
     }
-
+    .actionBar {
+        padding-left: 0px;
+    }
     .custom-header {
         font-weight: 800;
         font-size: 16px;
         font-style: italic;
     }
-
 </style>
+
+<div id="add_domain_container" class="btn-group" style="display: none;">
+    <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
+</div>
+<div id="add_handle_container" class="btn-group" style="display: none;">
+    <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
+</div>
+<div id="add_filter_container" class="btn-group" style="display: none;">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="7" title="{{ lang._('Filter by Domain') }}">
+    </select>
+</div>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
@@ -323,23 +288,6 @@
 </ul>
 
 <div class="tab-content content-box">
-    <!-- Container using flexbox -->
-    <div class="form-group common-filter" style="display: flex; justify-content: space-between; align-items: center;">
-        <!-- Button group on the left -->
-        <div>
-            <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
-        </div>
-        <!-- Selectpicker and Clear All on the right -->
-        <div class="filter-actions" style="display: flex; flex-direction: column; align-items: flex-end;">
-            <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="334px" data-size="7" title="{{ lang._('Filter by Domain') }}">
-            </select>
-            <a href="#" class="text-danger" id="clearDomains" style="margin-top: 5px;">
-                <i class="fa fa-times-circle"></i> <small>Clear All</small>
-            </a>
-        </div>
-    </div>
-
     <!-- Combined Domains Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
