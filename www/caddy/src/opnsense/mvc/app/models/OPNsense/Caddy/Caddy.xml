@@ -383,6 +383,17 @@
                         </reverseproxy>
                     </Model>
                 </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
                 <header type="ModelRelationField">
                     <Model>
                         <reverseproxy>
