@@ -8,6 +8,7 @@
             <width>6em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
+            <sequence>10</sequence>
         </grid_view>
     </field>
     <field>
@@ -15,6 +16,9 @@
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this subdomain.]]></help>
+        <grid_view>
+            <sequence>40</sequence>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -25,6 +29,9 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
+        <grid_view>
+            <sequence>20</sequence>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.FromDomain</id>
@@ -32,6 +39,9 @@
         <type>text</type>
         <hint>opn.example.com</hint>
         <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports and protocols as their parent wildcard domain.]]></help>
+        <grid_view>
+            <sequence>30</sequence>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.DynDns</id>

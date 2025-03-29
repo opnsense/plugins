@@ -8,6 +8,7 @@
             <width>6em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
+            <sequence>10</sequence>
         </grid_view>
     </field>
     <field>
@@ -15,6 +16,9 @@
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this handler.]]></help>
+        <grid_view>
+            <sequence>80</sequence>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -25,12 +29,18 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a domain to handle.]]></help>
+        <grid_view>
+            <sequence>20</sequence>
+        </grid_view>
     </field>
     <field>
         <id>handle.subdomain</id>
         <label>Subdomain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
+        <grid_view>
+            <sequence>30</sequence>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -104,6 +114,9 @@
         <label>Directive</label>
         <type>dropdown</type>
         <help><![CDATA[Choose a handling directive: "reverse_proxy" will proxy all HTTP traffic to the selected upstream. "redir" will create a HTTP redirect.]]></help>
+        <grid_view>
+            <sequence>40</sequence>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -150,6 +163,9 @@
         <label>Protocol</label>
         <type>dropdown</type>
         <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
+        <grid_view>
+            <sequence>50</sequence>
+        </grid_view>
     </field>
     <field>
         <id>handle.ToDomain</id>
@@ -158,12 +174,18 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
+        <grid_view>
+            <sequence>60</sequence>
+        </grid_view>
     </field>
     <field>
         <id>handle.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
         <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
+        <grid_view>
+            <sequence>70</sequence>
+        </grid_view>
     </field>
     <field>
         <id>handle.ToPath</id>

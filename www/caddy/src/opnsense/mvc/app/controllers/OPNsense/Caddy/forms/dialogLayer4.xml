@@ -8,6 +8,7 @@
             <width>6em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
+            <sequence>10</sequence>
         </grid_view>
     </field>
     <field>
@@ -15,12 +16,18 @@
         <label>Sequence</label>
         <type>text</type>
         <help><![CDATA[Rules are sorted based on the sequence number, higher number means lower priority. Rules without a sequence number will be processed first.]]></help>
+        <grid_view>
+            <sequence>20</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.description</id>
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this Layer4 route.]]></help>
+        <grid_view>
+            <sequence>80</sequence>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -41,6 +48,9 @@
         <type>dropdown</type>
         <style>selectpicker style_type</style>
         <help><![CDATA[Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.]]></help>
+        <grid_view>
+            <sequence>30</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.FromPort</id>
@@ -61,6 +71,9 @@
         <label>Matchers</label>
         <type>dropdown</type>
         <help><![CDATA[Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.]]></help>
+        <grid_view>
+            <sequence>40</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.FromDomain</id>
@@ -69,6 +82,9 @@
         <style>style_matchers tokenize matchers_domain</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
+        <grid_view>
+            <sequence>50</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.FromOpenvpnModes</id>
@@ -127,12 +143,18 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy.]]></help>
+        <grid_view>
+            <sequence>60</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.ToPort</id>
         <label>Upstream Port</label>
         <type>text</type>
         <help><![CDATA[Choose a custom port for the upstream destination.]]></help>
+        <grid_view>
+            <sequence>70</sequence>
+        </grid_view>
     </field>
     <field>
         <id>layer4.ProxyProtocol</id>
