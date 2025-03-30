@@ -259,11 +259,10 @@
         $("#handle\\.HandleDirective").change(function() {
             if ($(this).val() === "redir") {
                 $(".style_reverse_proxy").prop('disabled', true);
-                $("#handle\\.header").selectpicker('refresh');
             } else {
                 $(".style_reverse_proxy").prop('disabled', false);
-                $("#handle\\.header").selectpicker('refresh');
             }
+            $("#handle\\.header, #handle\\.HttpVersion, #handle\\.HttpTlsTrustedCaCerts, #handle\\.lb_policy").selectpicker('refresh');
         });
 
         // Hide TLS specific options when http is selected
