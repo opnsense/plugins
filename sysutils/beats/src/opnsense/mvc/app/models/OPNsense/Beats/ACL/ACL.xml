@@ -1,0 +1,9 @@
+<acl>
+    <page-services-beats>
+        <name>Services: Beats</name>
+        <patterns>
+            <pattern>ui/beats/*</pattern>
+            <pattern>api/beats/*</pattern>
+        </patterns>
+    </page-services-beats>
+</acl>

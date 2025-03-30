@@ -26,19 +26,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Filebeat;
+namespace OPNsense\Beats;
 
-/**
- * Class IndexController
- * @package OPNsense\Filebeat
- */
-class IndexController extends \OPNsense\Base\IndexController
+use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
+
+class Filebeat extends BaseModel
 {
-    public function indexAction()
+    /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
     {
-        // pick the template to serve to our users.
-        $this->view->pick('OPNsense/Beats8/filebeat');
-        // fetch form data "general" in
-        $this->view->generalForm = $this->getForm("filebeat");
+        $messages = parent::performValidation($validateFullModel);
+
+        if ($validateFullModel || $this->modules->enabled->isFieldChanged() || $this->inputs->enabled->isFieldChanged()) {
+            if ($this->modules->enabled->isEmpty() && $this->inputs->enabled->isEmpty()) {
+                $messages->appendMessage(
+                    new Message(
+                        gettext("Either an input or module needs to be specified."),
+                        $this->modules->enabled->__reference
+                    )
+                );
+                $messages->appendMessage(
+                    new Message(
+                        gettext("Either an input or module needs to be specified."),
+                        $this->inputs->enabled->__reference
+                    )
+                );
+            }
+        }
+
+        return $messages;
     }
 }
