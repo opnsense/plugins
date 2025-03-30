@@ -157,7 +157,7 @@
          */
         function showAlert(message, type = "error") {
             const alertClass = type === "error" ? "alert-danger" : "alert-success";
-            const messageArea = $("#messageArea");
+            const messageArea = $("#change_message_base_form");
 
             messageArea.stop(true, true).hide();
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
@@ -188,7 +188,7 @@
 
         // Hide message area when starting new actions
         $('input, select, textarea').on('change', function() {
-            $("#messageArea").hide();
+            $("#change_message_base_form").hide();
         });
 
         // Reconfigure button with custom validation
@@ -431,27 +431,7 @@
 
 </div>
 
-<!-- Reconfigure Button -->
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint="/api/caddy/service/reconfigure"
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-            <!-- Message Area for error/success messages -->
-            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
-            <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
-            <div id="ConfChangeMessage" class="alert alert-info" style="display: none;">
-            {{ lang._('Please do not forget to apply the configuration.') }}
-            </div>
-        </div>
-    </div>
-</section>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure'}) }}
 
 {% if entrypoint == 'reverse_proxy' %}
 

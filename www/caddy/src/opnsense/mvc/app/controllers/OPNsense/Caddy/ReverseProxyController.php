@@ -40,21 +40,21 @@ class ReverseProxyController extends IndexController
         $this->view->pick('OPNsense/Caddy/reverse_proxy');
 
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");
-        $this->view->formGridReverseProxy = $this->getFormGrid('dialogReverseProxy', null, 'ConfChangeMessage');
+        $this->view->formGridReverseProxy = $this->getFormGrid('dialogReverseProxy');
 
         $this->view->formDialogSubdomain = $this->getForm("dialogSubdomain");
-        $this->view->formGridSubdomain = $this->getFormGrid('dialogSubdomain', null, 'ConfChangeMessage');
+        $this->view->formGridSubdomain = $this->getFormGrid('dialogSubdomain');
 
         $this->view->formDialogHandle = $this->getForm("dialogHandle");
-        $this->view->formGridHandle = $this->getFormGrid('dialogHandle', null, 'ConfChangeMessage');
+        $this->view->formGridHandle = $this->getFormGrid('dialogHandle');
 
         $this->view->formDialogAccessList = $this->getForm("dialogAccessList");
-        $this->view->formGridAccessList = $this->getFormGrid('dialogAccessList', null, 'ConfChangeMessage');
+        $this->view->formGridAccessList = $this->getFormGrid('dialogAccessList');
 
         $this->view->formDialogBasicAuth = $this->getForm("dialogBasicAuth");
-        $this->view->formGridBasicAuth = $this->getFormGrid('dialogBasicAuth', null, 'ConfChangeMessage');
+        $this->view->formGridBasicAuth = $this->getFormGrid('dialogBasicAuth');
 
         $this->view->formDialogHeader = $this->getForm("dialogHeader");
-        $this->view->formGridHeader = $this->getFormGrid('dialogHeader', null, 'ConfChangeMessage');
+        $this->view->formGridHeader = $this->getFormGrid('dialogHeader');
     }
 }
