@@ -36,7 +36,8 @@ class Layer4Controller extends IndexController
 {
     public function indexAction()
     {
-        $this->view->pick('OPNsense/Caddy/layer4');
+        $this->view->entrypoint = 'layer4';
+        $this->view->pick('OPNsense/Caddy/reverse_proxy');
 
         $this->view->formDialogLayer4 = $this->getForm('dialogLayer4');
         $this->view->formGridLayer4 = $this->getFormGrid('dialogLayer4', null, 'ConfChangeMessage');

@@ -36,6 +36,7 @@ class ReverseProxyController extends IndexController
 {
     public function indexAction()
     {
+        $this->view->entrypoint = 'reverse_proxy';
         $this->view->pick('OPNsense/Caddy/reverse_proxy');
 
         $this->view->formDialogReverseProxy = $this->getForm("dialogReverseProxy");

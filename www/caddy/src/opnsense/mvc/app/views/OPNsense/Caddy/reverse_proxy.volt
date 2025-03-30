@@ -30,28 +30,44 @@
         let all_grids = {};
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let entrypoint = "{{ entrypoint }}";
             let grid_ids = [];
+
+{% if entrypoint == 'reverse_proxy' %}
 
             switch (e.target.hash) {
                 case '#domainsTab':
                     grid_ids = [
-                        "{{formGridReverseProxy['table_id']}}",
-                        "{{formGridSubdomain['table_id']}}"
+                        "{{ formGridReverseProxy['table_id'] }}",
+                        "{{ formGridSubdomain['table_id'] }}"
                     ];
                     break;
                 case '#handlesTab':
-                    grid_ids = ["{{formGridHandle['table_id']}}"];
+                    grid_ids = ["{{ formGridHandle['table_id'] }}"];
                     break;
                 case '#accessTab':
                     grid_ids = [
-                        "{{formGridAccessList['table_id']}}",
-                        "{{formGridBasicAuth['table_id']}}"
+                        "{{ formGridAccessList['table_id'] }}",
+                        "{{ formGridBasicAuth['table_id'] }}"
                     ];
                     break;
                 case '#headerTab':
-                    grid_ids = ["{{formGridHeader['table_id']}}"];
+                    grid_ids = ["{{ formGridHeader['table_id'] }}"];
                     break;
             }
+
+{% elseif entrypoint == 'layer4' %}
+
+            switch (e.target.hash) {
+                case '#layer4Tab':
+                    grid_ids = ["{{ formGridLayer4['table_id'] }}"];
+                    break;
+                case '#matcherTab':
+                    grid_ids = ["{{ formGridLayer4Openvpn['table_id'] }}"];
+                    break;
+            }
+
+{% endif %}
 
             if (grid_ids.length > 0) {
                 grid_ids.forEach(function(grid_id) {
@@ -75,6 +91,9 @@
                             }
                         });
                     }
+
+{% if entrypoint == 'reverse_proxy' %}
+
                     // insert buttons and selectpicker
                     if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
                         let header = $("#" + grid_id + "-header");
@@ -87,6 +106,9 @@
                             $('#add_filter_container, #add_handle_container, #add_domain_container').show();
                         }
                     }
+
+{% endif %}
+
                 });
             }
         });
@@ -176,6 +198,8 @@
             }
         });
 
+{% if entrypoint == 'reverse_proxy' %}
+
         // Reload Bootgrid on filter change
         $('#reverseFilter').on('changed.bs.select', function() {
             $("#{{formGridReverseProxy['table_id']}}").bootgrid("reload");
@@ -233,6 +257,8 @@
             }
         });
 
+{% elseif entrypoint == 'layer4' %}
+
         $("#layer4\\.Matchers").change(function() {
             if ($(this).val() !== "tlssni" && $(this).val() !== "httphost") {
                 $(".style_matchers").closest('tr').hide();
@@ -240,6 +266,8 @@
                 $(".style_matchers").closest('tr').show();
             }
         });
+
+{% endif %}
 
         updateServiceControlUI('caddy');
         loadDomainFilters();
@@ -281,13 +309,22 @@
 </div>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
-    <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
-    <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
-    <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
+    {% if entrypoint == 'reverse_proxy' %}
+        <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
+        <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
+        <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
+        <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
+    {% elseif entrypoint == 'layer4' %}
+        <li id="tab-layer4" class="active"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
+        <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Layer7 Matcher Settings') }}</a></li>
+    {% endif %}
 </ul>
 
+
 <div class="tab-content content-box">
+
+{% if entrypoint == 'reverse_proxy' %}
+
     <!-- Combined Domains Tab -->
     <div id="domainsTab" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
@@ -345,6 +382,32 @@
             </div>
         </div>
     </div>
+
+{% elseif entrypoint == 'layer4' %}
+
+    <!-- Layer4 Tab -->
+    <div id="layer4Tab" class="tab-pane fade active in">
+        <div style="padding-left: 16px;">
+            <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
+            <div style="display: block;">
+                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Layer7 Tab -->
+    <div id="matcherTab" class="tab-pane fade">
+        <div style="padding-left: 16px;">
+            <!-- OpenVPN Matcher -->
+            <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+            <div style="display: block;">
+                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
 </div>
 
 <!-- Reconfigure Button -->
@@ -369,9 +432,18 @@
     </div>
 </section>
 
+{% if entrypoint == 'reverse_proxy' %}
+
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':formGridReverseProxy['edit_dialog_id'],'label':lang._('Edit Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':formGridSubdomain['edit_dialog_id'],'label':lang._('Edit Subdomain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':formGridHandle['edit_dialog_id'],'label':lang._('Edit Handler')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':formGridAccessList['edit_dialog_id'],'label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':formGridBasicAuth['edit_dialog_id'],'label':lang._('Edit Basic Auth')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':formGridHeader['edit_dialog_id'],'label':lang._('Edit Header')])}}
+
+{% elseif entrypoint == 'layer4' %}
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':formGridLayer4['edit_dialog_id'],'label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':formGridLayer4Openvpn['edit_dialog_id'],'label':lang._('Edit OpenVPN Static Key')])}}
+
+{% endif %}
