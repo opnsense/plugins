@@ -27,25 +27,21 @@
 <script>
     $(document).ready(function() {
         // Update the URL hash when tabs are clicked
-        function activateTabFromHash() {
-            const hash = window.location.hash;
-            if (hash && $(`#maintabs a[href="${hash}"]`).length) {
-                $(`#maintabs a[href="${hash}"]`).tab('show');
-            }
+        if (location.hash) {
+            $(`#maintabs a[href="${location.hash}"]`).tab('show');
         }
 
-        activateTabFromHash();
-
-        $(window).on('hashchange', function () {
-            activateTabFromHash();
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const hash = e.target.hash;
+            if (history.replaceState) {
+                history.replaceState(null, null, hash);
+            } else {
+                location.hash = hash;
+            }
         });
 
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            if (history.replaceState) {
-                history.replaceState(null, null, e.target.hash);
-            } else {
-                window.location.hash = e.target.hash; // fallback
-            }
+        $(window).on('hashchange', function () {
+            $(`#maintabs a[href="${location.hash}"]`).tab('show');
         });
 
         // Bootgrid Setup
