@@ -26,6 +26,28 @@
 
 <script>
     $(document).ready(function() {
+        // Update the URL hash when tabs are clicked
+        function activateTabFromHash() {
+            const hash = window.location.hash;
+            if (hash && $(`#maintabs a[href="${hash}"]`).length) {
+                $(`#maintabs a[href="${hash}"]`).tab('show');
+            }
+        }
+
+        activateTabFromHash();
+
+        $(window).on('hashchange', function () {
+            activateTabFromHash();
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (history.replaceState) {
+                history.replaceState(null, null, e.target.hash);
+            } else {
+                window.location.hash = e.target.hash; // fallback
+            }
+        });
+
         // Bootgrid Setup
         let all_grids = {};
 
@@ -36,22 +58,22 @@
 {% if entrypoint == 'reverse_proxy' %}
 
             switch (e.target.hash) {
-                case '#domainsTab':
+                case '#domains':
                     grid_ids = [
                         "{{ formGridReverseProxy['table_id'] }}",
                         "{{ formGridSubdomain['table_id'] }}"
                     ];
                     break;
-                case '#handlesTab':
+                case '#handlers':
                     grid_ids = ["{{ formGridHandle['table_id'] }}"];
                     break;
-                case '#accessTab':
+                case '#access':
                     grid_ids = [
                         "{{ formGridAccessList['table_id'] }}",
                         "{{ formGridBasicAuth['table_id'] }}"
                     ];
                     break;
-                case '#headerTab':
+                case '#headers':
                     grid_ids = ["{{ formGridHeader['table_id'] }}"];
                     break;
             }
@@ -59,10 +81,10 @@
 {% elseif entrypoint == 'layer4' %}
 
             switch (e.target.hash) {
-                case '#layer4Tab':
+                case '#routes':
                     grid_ids = ["{{ formGridLayer4['table_id'] }}"];
                     break;
-                case '#matcherTab':
+                case '#matchers':
                     grid_ids = ["{{ formGridLayer4Openvpn['table_id'] }}"];
                     break;
             }
@@ -209,10 +231,10 @@
 
         // Add click event listener for "Add Handler" button
         $("#addHandleBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#handlesTab") {
+            if ($('#maintabs .active a').attr('href') === "#handlers") {
                 $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
             } else {
-                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function() {
+                $('#maintabs a[href="#handlers"]').tab('show').one('shown.bs.tab', function() {
                     $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
                 });
             }
@@ -220,10 +242,10 @@
 
         // Add click event listener for "Add Domain" button
         $("#addDomainBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#domainsTab") {
+            if ($('#maintabs .active a').attr('href') === "#domains") {
                 $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
             } else {
-                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function() {
+                $('#maintabs a[href="#domains"]').tab('show').one('shown.bs.tab', function() {
                     $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
                 });
             }
@@ -310,23 +332,22 @@
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     {% if entrypoint == 'reverse_proxy' %}
-        <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
-        <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
-        <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
-        <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
+        <li id="tab-domains" class="active"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+        <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
+        <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
+        <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
     {% elseif entrypoint == 'layer4' %}
-        <li id="tab-layer4" class="active"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
-        <li id="tab-matcher"><a data-toggle="tab" href="#matcherTab">{{ lang._('Layer7 Matcher Settings') }}</a></li>
+        <li id="tab-layer4" class="active"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
+        <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
     {% endif %}
 </ul>
-
 
 <div class="tab-content content-box">
 
 {% if entrypoint == 'reverse_proxy' %}
 
     <!-- Combined Domains Tab -->
-    <div id="domainsTab" class="tab-pane fade in active">
+    <div id="domains" class="tab-pane fade in active">
         <div style="padding-left: 16px;">
             <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
@@ -345,7 +366,7 @@
     </div>
 
     <!-- Handle Tab -->
-    <div id="handlesTab" class="tab-pane fade">
+    <div id="handlers" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
             <div style="display: block;">
@@ -355,7 +376,7 @@
     </div>
 
     <!-- Combined Access Tab -->
-    <div id="accessTab" class="tab-pane fade">
+    <div id="access" class="tab-pane fade">
         <!-- Access Lists Section -->
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
@@ -374,7 +395,7 @@
     </div>
 
     <!-- Header Tab -->
-    <div id="headerTab" class="tab-pane fade">
+    <div id="headers" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Headers') }}</h1>
             <div style="display: block;">
@@ -386,7 +407,7 @@
 {% elseif entrypoint == 'layer4' %}
 
     <!-- Layer4 Tab -->
-    <div id="layer4Tab" class="tab-pane fade active in">
+    <div id="routes" class="tab-pane fade active in">
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
             <div style="display: block;">
@@ -396,7 +417,7 @@
     </div>
 
     <!-- Layer7 Tab -->
-    <div id="matcherTab" class="tab-pane fade">
+    <div id="matchers" class="tab-pane fade">
         <div style="padding-left: 16px;">
             <!-- OpenVPN Matcher -->
             <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
