@@ -53,7 +53,7 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         foreach ((new \OPNsense\Caddy\Caddy())->reverseproxy->reverse->iterateItems() as $item) {
             if (!empty($item->FromDomain)) {
                 $port = (string)$item->FromPort;
-                $combined = (string)$item->FromDomain . ($port !== '' ? ':' . $port : '');                
+                $combined = (string)$item->FromDomain . ($port !== '' ? ':' . $port : '');
 
                 $result['domains']['items'][] = [
                     'value' => (string)$item->getAttributes()['uuid'],
