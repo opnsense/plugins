@@ -38,30 +38,31 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     protected static $internalModelUseSafeDelete = true;
 
     /**
-     * Function for search filter dropdown
-     *
-     * @return array containing rows of domain and port combinations.
+     * Return selectpicker options for reverse proxy domains and ports
      */
     public function getAllReverseDomainsAction()
     {
-        $result = array("rows" => array());
+        $result = [
+            'domains' => [
+                'label' => gettext('Domains'),
+                'icon'  => 'fa fa-globe text-success',
+                'items' => []
+            ]
+        ];
 
-        $mdlCaddy = new \OPNsense\Caddy\Caddy();
-        $reverseNodes = $mdlCaddy->reverseproxy->reverse->iterateItems();
-
-        foreach ($reverseNodes as $item) {
+        foreach ((new \OPNsense\Caddy\Caddy())->reverseproxy->reverse->iterateItems() as $item) {
             if (!empty($item->FromDomain)) {
-                // Conditionally concatenate port if it exists
-                $domain = (string)$item->FromDomain;
                 $port = (string)$item->FromPort;
-                $combinedDomainPort = $domain . (!empty($port) ? ':' . $port : '');
+                $combined = (string)$item->FromDomain . ($port !== '' ? ':' . $port : '');                
 
-                $result['rows'][] = array(
-                    'id' => (string)$item->getAttributes()['uuid'],
-                    'domainPort' => $combinedDomainPort  // Combined domain and port, conditionally adding port
-                );
+                $result['domains']['items'][] = [
+                    'value' => (string)$item->getAttributes()['uuid'],
+                    'label' => $combined
+                ];
             }
         }
+
+        usort($result['domains']['items'], fn($a, $b) => strcasecmp($a['label'], $b['label']));
 
         return $result;
     }

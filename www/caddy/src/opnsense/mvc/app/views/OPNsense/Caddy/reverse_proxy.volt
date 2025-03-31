@@ -149,25 +149,8 @@
             $("#messageArea").hide();
         });
 
-        /**
-         * Loads domain filters from the server and populates the filter dropdown.
-         */
-        function loadDomainFilters() {
-            ajaxGet('/api/caddy/ReverseProxy/getAllReverseDomains', null, function(data, status) {
-                let select = $('#reverseFilter');
-                select.empty();
-                if (status === "success" && data && data.rows) {
-                    data.rows.forEach(function(item) {
-                        select.append($('<option>').val(item.id).text(item.domainPort));
-                    });
-                } else {
-                    select.html(`<option value="">{{ lang._('Failed to load data') }}</option>`);
-                }
-                select.selectpicker('refresh');
-            }).fail(function() {
-                $('#reverseFilter').html(`<option value="">{{ lang._('Failed to load data') }}</option>`).selectpicker('refresh');
-            });
-        }
+        // Populate domain filter selectpicker
+        $('#reverseFilter').fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains');
 
         // Reconfigure button with custom validation
         $("#reconfigureAct").SimpleActionButton({
@@ -269,7 +252,6 @@
 {% endif %}
 
         updateServiceControlUI('caddy');
-        loadDomainFilters();
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
         $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
     });
