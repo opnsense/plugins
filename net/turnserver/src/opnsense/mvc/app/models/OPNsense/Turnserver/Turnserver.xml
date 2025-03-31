@@ -1,0 +1,97 @@
+<model>
+    <mount>//OPNsense/turnserver</mount>
+    <version>1.0.0</version>
+    <description>The coturn STUN/TURN Server</description>
+    <items>
+        <settings>
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+            <ListenIP type="NetworkField">
+                <default>127.0.0.1</default>
+                <FieldSeparator>,</FieldSeparator>
+                <asList>Y</asList>
+                <Required>Y</Required>
+            </ListenIP>
+            <ListenPort type="PortField">
+                <Default>3478</Default>
+                <Required>Y</Required>
+            </ListenPort>
+            <MinPort type="PortField">
+                <Default>49152</Default>
+                <Required>Y</Required>
+            </MinPort>
+            <MaxPort type="PortField">
+                <Default>65535</Default>
+                <Required>Y</Required>
+            </MaxPort>
+            <TlsEnabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </TlsEnabled>
+            <TlsCertificate type="CertificateField">
+                <Required>N</Required>
+                <Multiple>N</Multiple>
+                <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+            </TlsCertificate>
+            <TlsPort type="PortField">
+                <Default>5349</Default>
+                <Required>Y</Required>
+            </TlsPort>
+            <UseAuthSecret type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </UseAuthSecret>
+            <StaticAuthSecret type="TextField">
+                <Required>N</Required>
+                <mask>/^.{16,128}$/u</mask>
+                <ValidationMessage>Should be a string between 16 and 128 characters.</ValidationMessage>
+            </StaticAuthSecret>
+            <Realm type="TextField">
+                <Required>N</Required>
+                <mask>/^.{1,128}$/u</mask>
+                <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
+            </Realm>
+            <FingerprintsEnabled type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </FingerprintsEnabled>
+            <UserQuota type="IntegerField">
+                <default>0</default>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>1000000000</MaximumValue>
+                <ValidationMessage>Please specify a value between 0 and 1000000000.</ValidationMessage>
+                <Required>Y</Required>
+            </UserQuota>
+            <TotalQuota type="IntegerField">
+                <default>0</default>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>1000000000</MaximumValue>
+                <ValidationMessage>Please specify a value between 0 and 1000000000.</ValidationMessage>
+                <Required>Y</Required>
+            </TotalQuota>
+            <StaleNonce type="IntegerField">
+                <default>600</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>1000000000</MaximumValue>
+                <ValidationMessage>Please specify a value between 1 and 1000000000.</ValidationMessage>
+                <Required>Y</Required>
+            </StaleNonce>
+            <ChannelLifetime type="IntegerField">
+                <default>600</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>1000000000</MaximumValue>
+                <ValidationMessage>Please specify a value between 1 and 1000000000.</ValidationMessage>
+                <Required>Y</Required>
+            </ChannelLifetime>
+            <PermissionLifetime type="IntegerField">
+                <default>300</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>1000000000</MaximumValue>
+                <ValidationMessage>Please specify a value between 1 and 1000000000.</ValidationMessage>
+                <Required>Y</Required>
+            </PermissionLifetime>
+        </settings>
+    </items>
+</model>
