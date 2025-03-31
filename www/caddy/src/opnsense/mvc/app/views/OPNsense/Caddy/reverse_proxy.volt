@@ -183,11 +183,13 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-        // Reload Bootgrid on filter change
-        $('#reverseFilter').on('changed.bs.select', function() {
-            $("#{{formGridReverseProxy['table_id']}}").bootgrid("reload");
-            $("#{{formGridSubdomain['table_id']}}").bootgrid("reload");
-            $("#{{formGridHandle['table_id']}}").bootgrid("reload");
+        // Safe reload on filter change, ensures all grids are initalized beforehand
+        $('#reverseFilter').change(function () {
+            Object.keys(all_grids).forEach(function (grid_id) {
+                if (['ReverseProxy', 'Subdomain', 'Handle'].includes(grid_id)) {
+                    all_grids[grid_id].bootgrid('reload');
+                }
+            });
         });
 
         // Add click event listener for "Add Handler" button
