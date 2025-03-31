@@ -45,29 +45,22 @@
         });
 
         // Bootgrid Setup
-        let all_grids = {};
+        const all_grids = {};
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            let entrypoint = "{{ entrypoint }}";
             let grid_ids = [];
 
 {% if entrypoint == 'reverse_proxy' %}
 
             switch (e.target.hash) {
                 case '#domains':
-                    grid_ids = [
-                        "{{ formGridReverseProxy['table_id'] }}",
-                        "{{ formGridSubdomain['table_id'] }}"
-                    ];
+                    grid_ids = ["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"];
                     break;
                 case '#handlers':
                     grid_ids = ["{{ formGridHandle['table_id'] }}"];
                     break;
                 case '#access':
-                    grid_ids = [
-                        "{{ formGridAccessList['table_id'] }}",
-                        "{{ formGridBasicAuth['table_id'] }}"
-                    ];
+                    grid_ids = ["{{ formGridAccessList['table_id'] }}", "{{ formGridBasicAuth['table_id'] }}"];
                     break;
                 case '#headers':
                     grid_ids = ["{{ formGridHeader['table_id'] }}"];
@@ -90,19 +83,22 @@
             if (grid_ids.length > 0) {
                 grid_ids.forEach(function(grid_id) {
                     if (!all_grids[grid_id]) {
-                        const entity = grid_id.replace(/^dialog/, '');
-
                         all_grids[grid_id] = $("#" + grid_id)
-                        .addClass("resizable")
                         .UIBootgrid({
-                            search: `/api/caddy/ReverseProxy/search${entity}/`,
-                            get: `/api/caddy/ReverseProxy/get${entity}/`,
-                            set: `/api/caddy/ReverseProxy/set${entity}/`,
-                            add: `/api/caddy/ReverseProxy/add${entity}/`,
-                            del: `/api/caddy/ReverseProxy/del${entity}/`,
-                            toggle: `/api/caddy/ReverseProxy/toggle${entity}/`,
+                            search: `/api/caddy/ReverseProxy/search${grid_id}/`,
+                            get: `/api/caddy/ReverseProxy/get${grid_id}/`,
+                            set: `/api/caddy/ReverseProxy/set${grid_id}/`,
+                            add: `/api/caddy/ReverseProxy/add${grid_id}/`,
+                            del: `/api/caddy/ReverseProxy/del${grid_id}/`,
+                            toggle: `/api/caddy/ReverseProxy/toggle${grid_id}/`,
                             options: {
-                                requestHandler: addDomainFilterToRequest,
+                                requestHandler: function (request) {
+                                    const selectedDomains = $('#reverseFilter').val();
+                                    if (selectedDomains && selectedDomains.length > 0) {
+                                        request['reverseUuids'] = selectedDomains.join(',');
+                                    }
+                                    return request;
+                                },
                                 triggerEditFor: getUrlHash('edit'),
                                 initialSearchPhrase: getUrlHash('search'),
                                 resizableColumns: true,
@@ -114,8 +110,8 @@
 
                     // insert buttons and selectpicker
                     if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
-                        let header = $("#" + grid_id + "-header");
-                        let $actionBar = header.find('.actionBar');
+                        const header = $("#" + grid_id + "-header");
+                        const $actionBar = header.find('.actionBar');
                         if ($actionBar.length) {
                             $('#add_filter_container').detach().insertBefore($actionBar.find('.search'));
                             $('#add_handle_container').detach().insertBefore($('#add_filter_container'));
@@ -132,20 +128,6 @@
         });
 
         /**
-         * Modifies the search request to include domain filter.
-         *
-         * @param {Object} request - The original request object.
-         * @returns {Object} The modified request object with domain filter.
-         */
-        function addDomainFilterToRequest(request) {
-            let selectedDomains = $('#reverseFilter').val();
-            if (selectedDomains && selectedDomains.length > 0) {
-                request['reverseUuids'] = selectedDomains.join(',');
-            }
-            return request;
-        }
-
-        /**
          * Displays an alert message to the user.
          *
          * @param {string} message - The message to display.
@@ -153,7 +135,7 @@
          */
         function showAlert(message, type = "error") {
             const alertClass = type === "error" ? "alert-danger" : "alert-success";
-            const messageArea = $("#change_message_base_form");
+            const messageArea = $("#messageArea");
 
             messageArea.stop(true, true).hide();
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
@@ -161,6 +143,11 @@
                 $(this).html('');
             });
         }
+
+        // Hide message area when starting new actions
+        $('input, select, textarea').on('change', function() {
+            $("#messageArea").hide();
+        });
 
         /**
          * Loads domain filters from the server and populates the filter dropdown.
@@ -181,11 +168,6 @@
                 $('#reverseFilter').html(`<option value="">{{ lang._('Failed to load data') }}</option>`).selectpicker('refresh');
             });
         }
-
-        // Hide message area when starting new actions
-        $('input, select, textarea').on('change', function() {
-            $("#change_message_base_form").hide();
-        });
 
         // Reconfigure button with custom validation
         $("#reconfigureAct").SimpleActionButton({
@@ -288,6 +270,7 @@
 
         updateServiceControlUI('caddy');
         loadDomainFilters();
+        $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
         $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
     });
 </script>
