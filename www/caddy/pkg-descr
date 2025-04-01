@@ -16,6 +16,7 @@ Plugin Changelog
 1.8.5
 
 * Add: basic_auth per handler (opnsense/plugins/issues/4619)
+* Change: the ACL has been changed to "page-caddy" in "System: Access: Privileges". Privilege must be reassigned if used. (opnsense/plugins/issues/4623)
 
 1.8.4
 
