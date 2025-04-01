@@ -26,15 +26,42 @@ class Parameter {
 
 
 class Method {
+    protected static $BASE_METHOD_HTTP_METHODS = [
+        "request->isPost" => "POST",
+        "request->hasPost" => "POST",
+        "request->getPost" => "POST",
+        "delBase" => "POST",
+        "addBase" => "POST",
+        "setBase" => "POST",
+        "toggleBase" => "POST",
+        "searchBase" => "*",  // in the existing script, this means GET and POST are both accepted
+        // "searchBase" => "POST"  // would be simpler; I can live with it (or GET)
+    ];
+
     public $name;
     public $method;  // HTTP method!
     public $parameters = [];
     public $doc;
 
-    public function __construct(ReflectionMethod $rmethod)
+    public function __construct(ReflectionMethod $rmethod, string $src)
     {
+        // Presence in source code of, e.g., "this->request->getPost(" implies POST.
+        // See comment in Controller ctor.
+        // I will make the regex more defensive.
+        $matches = null;
+        $after_deref = "(?<=\$this->)";  // lookbehind
+        $before_bracket = "(?=\()";      // lookahead
+        $call = "\S+";                   // non-space; further refinement needed
+        $pattern = "/" . $after_deref . $call . $before_bracket . "/";
+        preg_match_all($pattern, $src, $matches);
+
         $http_method = "GET";
-        // omitted: detecting POST methods using algorithm from existing script
+        foreach ($matches[0] as $call) {
+            if (array_key_exists($call, self::$BASE_METHOD_HTTP_METHODS)) {
+                $http_method = self::$BASE_METHOD_HTTP_METHODS[$call];
+                break;
+            }
+        }
 
         $params = [];
         $rparams = $rmethod->getParameters();
@@ -75,13 +102,38 @@ class Controller {
         $this->is_abstract = $rclass->isAbstract();
         $this->doc = $rclass->getDocComment();
 
+        /**
+         * A route does not define an HTTP method - all routes accept all methods.
+         *
+         * `collect_api_endpoints.py` in the `docs` repo looks for method calls that imply
+         * POST. This makes me nervous. There is no way to defend against, e.g.:
+         *     if (request->isPost()) {throw WrongMethod("ha ha sucker")}
+         *
+         * In my view, when Ad talks about complexity and maintenance, this is the danger.
+         *
+         * I presume that unusual usage would be picked up in plugin code review, though. So I
+         * assume: it's been working for years, it's good enough.
+         *
+         * I considered nikic/PHP-Parser, but I don't think it's worth adding a dependency.
+         */
+        $filename = $rclass->getFileName();
+        $fd = fopen($filename, "r") or die("Failed to read '" . $filename . "'");
+        $src = fread($fd, 1000000);
+        fclose($fd);
+        $src_lines = explode("\n", $src);
+
         $methods = [];
         if ($parent) {$methods = $parent->methods or [];}
         foreach ($rclass->getMethods(ReflectionMethod::IS_PUBLIC) as $rmethod) {
             $method_name = $rmethod->name;
             if (!str_ends_with($method_name, "Action")) {continue;}  // algorithm in Dispatcher.php
 
-            $methods[] = new Method($rmethod);
+            // get the body of the method as raw source code - see earlier comment
+            $start = $rmethod->getStartLine();
+            $length = $rmethod->getEndLine() - $start;
+            $method_src = implode("\n", array_slice($src_lines, $start, $length));
+
+            $methods[] = new Method($rmethod, $method_src);
         }
         $this->methods = $methods;
     }
