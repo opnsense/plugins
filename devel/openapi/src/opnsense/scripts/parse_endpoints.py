@@ -12,6 +12,8 @@ import subprocess
 from typing import Any, List, Literal, Self, TypeAlias, TypedDict
 from pydantic import BaseModel
 
+from parse_xml_models import get_openapi_schema_path
+
 
 HttpMethod: TypeAlias = Literal["GET"] | Literal["POST"]
 
@@ -127,7 +129,12 @@ def get_endpoints() -> List[Endpoint]:
         if controller.is_abstract:
             continue
 
-        # omitted: regex split helper. E.g. ("Deciso", "Proxy") or ("OPNsense", "CaptivePortal")
+        model_schema_path = None
+        if controller.model:
+            vendor, module, name = controller.model.split("\\")
+            model_schema_path = get_openapi_schema_path(vendor, module, name)
+
+        # omitted: regex split helper. E.g. ("Auth", "User") or ("Firewall", "SourceNat")
         module, controller_name = explode_php_name(controller.name)
 
         for method in controller.methods:
@@ -138,7 +145,7 @@ def get_endpoints() -> List[Endpoint]:
                     path=f"/{module}/{controller_name}/{method.name}".lower(),
                     method=http_method,
                     parameters=method.parameters,
-                    model=controller.model,
+                    model=model_schema_path,
                 )
                 endpoints.append(endpoint)
 

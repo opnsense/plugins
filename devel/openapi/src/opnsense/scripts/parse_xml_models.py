@@ -15,8 +15,7 @@ EXCLUDE_MODEL = "mvc/app/models/OPNsense/iperf/FakeInstance.xml"
 
 
 def get_openapi_schema_path(vendor: str, module: str, name: str) -> str:
-    # Component path in the OpenApi schema; API ops will $ref to it.
-    # TODO: Endpoint.model comes from this source of truth
+    """Component path in the OpenApi schema; API ops will $ref to it."""
     return f"{vendor}.{module}.{name}".lower()
 
 
@@ -56,7 +55,8 @@ def _walk_xml(element: XmlElement) -> XmlNode:
 
 
 def parse_xml_file(xml_file: str) -> Model:
-    vendor, module, name = xml_file[0:-4].split("/")[-3:]
+    path_without_ext = xml_file[0:-4]
+    vendor, module, name = path_without_ext.split("/")[-3:]
     schema_path = get_openapi_schema_path(vendor, module, name)
 
     tree = ElementTree.parse(xml_file)
