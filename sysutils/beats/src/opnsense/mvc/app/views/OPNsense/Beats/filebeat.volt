@@ -26,19 +26,19 @@
 
 <script>
     $( document ).ready(function() {
-        mapDataToFormUI({'frm_GeneralSettings':"/api/filebeat/settings/get"}).done(function(data){
-            updateServiceControlUI('filebeat');
+        mapDataToFormUI({'frm_GeneralSettings':"/api/beats/settings/get"}).done(function(data){
+            updateServiceControlUI('beats');
             $('.selectpicker').selectpicker('refresh');
         });
 
         $("#reconfigureAct").SimpleActionButton({
             onPreAction: function() {
                 const dfObj = new $.Deferred();
-                saveFormToEndpoint("/api/filebeat/settings/set", 'frm_GeneralSettings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                saveFormToEndpoint("/api/beats/settings/set", 'frm_GeneralSettings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
                 return dfObj;
             },
             onAction: function(data, status) {
-                updateServiceControlUI('filebeat');
+                updateServiceControlUI('beats');
             }
         });
     });
@@ -48,4 +48,4 @@
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
 </div>
 
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/filebeat/service/reconfigure'}) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/beats/service/reconfigure'}) }}

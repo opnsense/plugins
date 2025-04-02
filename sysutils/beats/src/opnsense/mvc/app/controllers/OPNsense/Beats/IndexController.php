@@ -26,16 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Filebeat\Api;
-
-use OPNsense\Base\ApiMutableModelControllerBase;
+namespace OPNsense\Beats;
 
 /**
- * Class SettingsController Handles settings related API actions for the HelloWorld module
+ * Class IndexController
  * @package OPNsense\Filebeat
  */
-class SettingsController extends ApiMutableModelControllerBase
+class IndexController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelClass = 'OPNsense\Beats8\Filebeat';
-    protected static $internalModelName = 'filebeat';
+    public function indexAction()
+    {
+        // pick the template to serve to our users.
+        $this->view->pick('OPNsense/Beats/filebeat');
+        // fetch form data "general" in
+        $this->view->generalForm = $this->getForm("filebeat");
+    }
 }
