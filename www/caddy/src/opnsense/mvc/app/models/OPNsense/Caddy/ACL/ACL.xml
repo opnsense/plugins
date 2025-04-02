@@ -5,6 +5,8 @@
         <patterns>
             <pattern>ui/caddy/*</pattern>
             <pattern>api/caddy/*</pattern>
+            <pattern>ui/diagnostics/log/core/caddy/*</pattern>
+            <pattern>api/diagnostics/log/core/caddy/*</pattern>
         </patterns>
     </page-caddy>
 </acl>
