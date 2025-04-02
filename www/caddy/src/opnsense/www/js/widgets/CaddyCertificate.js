@@ -48,7 +48,7 @@ export default class CaddyCertificate extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        const proxyData = await this.ajaxCall('/api/caddy/reverse_proxy/get');
+        const proxyData = await this.ajaxCall(`/api/caddy/reverse_proxy/${'get'}`);
         if (!proxyData.caddy.general || proxyData.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;
@@ -58,7 +58,7 @@ export default class CaddyCertificate extends BaseTableWidget {
             .map(proxy => proxy.FromDomain)
             .filter(Boolean);
 
-        const certificates = (await this.ajaxCall('/api/caddy/diagnostics/certificate')).content || [];
+        const certificates = (await this.ajaxCall(`/api/caddy/diagnostics/${'certificate'}`)).content || [];
 
         // Display certificate if hostname in config and CN of stored cert on disk match
         const matchingCertificates = certificates.filter(cert => domains.includes(cert.hostname));
