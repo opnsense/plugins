@@ -14,14 +14,45 @@
  *      -o, --output-file      path to write a JSON file
  */
 
-// omitted: import/use/namespace ceremony
+namespace OPNsense\OpenApi\Parsing;
 
+use Exception;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionParameter;
+use ReflectionException;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+
+
+// TODO: remove this when I figure out how to use Make
+if (str_starts_with(__DIR__, "/usr/")) {
+    $app_dir = __DIR__ . "/src/opnsense/mvc/app";
+} else {
+    // when developing, assume the core and plugins repos are side by side
+    $app_dir = preg_replace("/\/plugins\/.*/", "/core/src/opnsense/mvc/app", __DIR__);
+}
+
+$config = require $app_dir . "/config/config.php";
+
+// TODO: remove this when I figure out how to use Make
+set_include_path(get_include_path() . PATH_SEPARATOR . $app_dir . "/../../../../contrib");
+
+require $app_dir . "/config/loader.php";
 class Parameter {
     public $name;
     public $has_default;
     public $default;
 
-    public function __construct(ReflectionParameter $rparam) { /** omitted */ }
+    public function __construct(ReflectionParameter $rparam) {
+        $this->name = $rparam->name;
+        if ($rparam->isDefaultValueAvailable()) {
+            $this->has_default = true;
+            $this->default = $rparam->getDefaultValue();
+        } else {
+            $this->has_default = false;
+        }
+    }
 }
 
 
@@ -45,6 +76,8 @@ class Method {
 
     public function __construct(ReflectionMethod $rmethod, string $src)
     {
+        $name = preg_replace("/Action\$/", "", $rmethod->name);
+
         // Presence in source code of, e.g., "this->request->getPost(" implies POST.
         // See comment in Controller ctor.
         // I will make the regex more defensive.
@@ -69,11 +102,21 @@ class Method {
             $params[] = new Parameter($rparam);
         }
 
-        $this->name = preg_replace("/Action\$/", "", $rmethod->name);
+        $doc = $rmethod->getDocComment();
+        if (preg_match("/@inheritdoc/", $doc)) {
+            $rclass = $rmethod->getDeclaringClass();
+            $rparent = $rclass->getParentClass();
+            $parent = ControllerRegistry::get($rparent->getName());
+            $parent_method = array_filter($parent->methods, function ($method) use ($name) {
+                return $method->name === $name;
+            })[0];
+            $doc = $parent_method->doc;
+        }
+
+        $this->name = $name;
         $this->method = $http_method;
         $this->parameters = $params;
-        $this->doc = $rmethod->getDocComment();
-        // omitted: handle @inheritdoc using ControllerRegistry
+        $this->doc = $doc;
     }
 }
 
@@ -96,11 +139,33 @@ class Controller {
             $parent = ControllerRegistry::get($parent_name);
         }
 
+        $model = null;
+        try {
+            $prop = $rclass->getProperty("internalModelClass");
+            if ($prop) {
+                $model = $prop->getDefaultValue();
+            }
+        } catch (ReflectionException $e) {
+            if ($parent) {
+                $model = $parent->model;
+            }
+        }
+
+        if ($model && $model[0] == "\\") {
+            $model = substr($model, 1);
+        }
+
+        $doc = $rclass->getDocComment();
+        if (preg_match("/@inheritdoc/", $doc)) {
+            // there's only one class with no parent, and it doesn't use @inheritdoc
+            $doc = $parent->doc;
+        }
+
         $this->name = $rclass->getName();
         $this->parent = $parent_name;
-        $this->model = $model;  // omitted: get internalModelClass (may be inherited)
+        $this->model = $model;
         $this->is_abstract = $rclass->isAbstract();
-        $this->doc = $rclass->getDocComment();
+        $this->doc = $doc;
 
         /**
          * A route does not define an HTTP method - all routes accept all methods.
@@ -177,7 +242,26 @@ class ControllerRegistry {
  * Search for source code paths that look like API controllers. We're relying on consistency of
  * naming, which is 100% consistent as of v25.1. Therefore, the filename tells us the class name.
  */
-function find_controller_classes(string $base_path) { /** omitted */ }
+function find_controller_classes(string $base_path)
+{
+    $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base_path));
+    $class_names = array();
+
+    foreach ($rii as $file) {
+        if (
+            $file->isDir() ||
+            !str_ends_with($file, ".php") ||
+            !preg_match("/\/Api\/\w+Controller/", $file)
+        ) {continue;}
+
+        $rel_path = preg_replace("/.*(?=OPNsense)/", "", $file);
+        $class_name = preg_replace("/\.php$/", "", $rel_path);
+        $class_name = preg_replace("/\//", "\\", $class_name);
+        $class_names[] = $class_name;
+    }
+
+    return $class_names;
+}
 
 
 function register_controllers(array $class_names)
@@ -192,9 +276,12 @@ function register_controllers(array $class_names)
 /**
  * Do The Thing, then either write JSON to file or return JSON to stdout.
  */
-function export_controllers(string $base_path, ?string $output_file = null)
+function export_controllers($base_path, $output_file = null, $pretty = false)
 {
     $json_flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+    if ($pretty) {
+        $json_flags = $json_flags | JSON_PRETTY_PRINT;
+    }
 
     $class_names = find_controller_classes($base_path);
     register_controllers($class_names);
