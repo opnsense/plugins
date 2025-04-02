@@ -1,5 +1,5 @@
 <menu>
     <Services>
-        <Turnserver VisibleName="Turnserver" cssClass="fa fa-comment-o fa-fw" url="/ui/turnserver"/>
+        <Turnserver cssClass="fa fa-comment-o fa-fw" url="/ui/turnserver"/>
     </Services>
 </menu>
