@@ -4,3 +4,4 @@
 .sass-cache
 venv
 /*/*/work
+.vscode/**
