@@ -4,12 +4,13 @@
 Find XML model files and parse into intermediate DTOs.
 """
 
+import json
 import os
 from typing import List
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element as XmlElement
 
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 EXCLUDE_MODEL = "mvc/app/models/OPNsense/iperf/FakeInstance.xml"
 
@@ -80,14 +81,30 @@ def get_model_xml_files(base_path: str) -> List[str]:
     return found
 
 
-def get_models() -> List[Model]:
-    base_path = "/usr"  # good enough for now
+def get_models(
+    base_path: str = "/usr",  # good enough for now
+    json_path: str = "./models.json"
+) -> List[Model]:
+
+    if os.path.isfile(json_path):
+        with open(json_path) as file:
+            model_json = file.read()
+        _models = json.loads(model_json)
+        models = [Model(**m) for m in _models]
+        return models
+
     xml_files = get_model_xml_files(base_path)
 
     models = []
     for xml_file in xml_files:
         model = parse_xml_file(xml_file)
         models.append(model)
+
+    ModelList = RootModel[List[Model]]
+    model_json = ModelList(models).model_dump_json()
+    with open(json_path, mode="w") as file:
+        file.write(model_json)
+
     return models
 
 
