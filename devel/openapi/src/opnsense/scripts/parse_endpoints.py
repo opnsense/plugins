@@ -9,8 +9,8 @@ Called by `generate_openapi_spec.py`.
 import json
 import os
 import subprocess
-from typing import Any, List, Literal, Self, TypeAlias, TypedDict
-from pydantic import BaseModel
+from typing import Any, Dict, List, Literal, Self, TypeAlias, TypedDict
+from pydantic import BaseModel, RootModel
 
 from parse_xml_models import get_openapi_schema_path
 
@@ -46,7 +46,13 @@ class Parameter(BaseModel):
     name: str
     has_default: bool
     default: Any
-    # No from_php method needed, already matches the PHP DTO.
+
+    def __repr__(self):
+        if self.has_default:
+            default = "null" if self.default is None else str(self.default)
+            return f"{self.name}={default}"
+        return self.name
+
 
 class Method(BaseModel):
     description: str
@@ -56,8 +62,13 @@ class Method(BaseModel):
 
     @classmethod
     def from_php(cls, method: PhpMethod) -> Self:
-        # omitted: pick description out of PHP doc comment.
-        return cls(**method)
+        parameters: List[PhpParameter] = method.pop("parameters")  # type: ignore
+        doc: str = method.pop("doc")  # type: ignore
+        return cls(
+            description=doc or "",  # TODO: parse PHP doc comment
+            parameters=[Parameter(**p) for p in parameters],
+            **method,  # type: ignore
+        )
 
 class Controller(BaseModel):
     name: str
@@ -68,8 +79,21 @@ class Controller(BaseModel):
 
     @classmethod
     def from_php(cls, ctrl: PhpController) -> Self:
-        # omitted: replace PHP backslashes
-        return cls(**ctrl)
+        ctrl = ctrl.copy()
+        model: str | None = ctrl.pop("model")  # type: ignore
+        methods: List[PhpMethod] = ctrl.pop("methods")  # type: ignore
+        doc: str = ctrl.pop("doc")  # type: ignore
+
+        if model:
+            vendor, _module, name = model.split("\\")
+            model = get_openapi_schema_path(vendor, _module, name)
+
+        return cls(
+            model=model,
+            description=doc or "",  # TODO
+            methods=[Method.from_php(m) for m in methods],
+            **ctrl,  # type: ignore
+        )
 
 #endregion intermediate DTOs
 
@@ -96,6 +120,12 @@ class Endpoint(BaseModel):
         """Can be any unique string (can be shared between http methods)"""
         return self.path.replace("/", "_")
 
+    def __repr__(self):
+        route = f"[{self.method}] {self.path}"
+        if self.parameters:
+            return f"{route} ({', '.join(repr(p) for p in self.parameters)})"
+        return route
+
 
 def get_controllers(json_path: str = "./controllers.json") -> List[Controller]:
     """
@@ -114,28 +144,39 @@ def get_controllers(json_path: str = "./controllers.json") -> List[Controller]:
         # I suspect I'm missing something about BSD or about PHP...
         subprocess.run(php_incantation, shell=True)
 
-    controllers = []
     with open(json_path) as file:
-        ... # iterate and call Controller.from_php()
+        controller_json = file.read()
 
+    controller_dicts_by_name: Dict[str, PhpController] = json.loads(controller_json)
+
+    controllers = []
+    for c in controller_dicts_by_name.values():
+        controllers.append(Controller.from_php(c))
     return controllers
 
 
-def get_endpoints() -> List[Endpoint]:
-    # I'm also caching as JSON here, but will measure performance to see if it's needed
+def get_controller_url_segments(class_name: str):
+    """Expects, e.g. OPNsense\\Proxy\\Api\\AclController"""
+    segments = class_name.split("\\")
+    return segments[-3], segments[-1].replace("Controller", "")
+
+
+def get_endpoints(json_path: str = "./endpoints.json") -> List[Endpoint]:
+    json_path = os.path.realpath(json_path)
+
+    if os.path.isfile(json_path):
+        with open(json_path) as file:
+            endpoint_json = file.read()
+        _endpoints = json.loads(endpoint_json)
+        endpoints = [Endpoint(**ep) for ep in _endpoints]
+        return endpoints
 
     endpoints = []
     for controller in get_controllers():
         if controller.is_abstract:
             continue
 
-        model_schema_path = None
-        if controller.model:
-            vendor, module, name = controller.model.split("\\")
-            model_schema_path = get_openapi_schema_path(vendor, module, name)
-
-        # omitted: regex split helper. E.g. ("Auth", "User") or ("Firewall", "SourceNat")
-        module, controller_name = explode_php_name(controller.name)
+        module, controller_name = get_controller_url_segments(controller.name)
 
         for method in controller.methods:
             http_methods: List[HttpMethod] = ["GET", "POST"] if method.method == "*" else [method.method]
@@ -145,9 +186,14 @@ def get_endpoints() -> List[Endpoint]:
                     path=f"/{module}/{controller_name}/{method.name}".lower(),
                     method=http_method,
                     parameters=method.parameters,
-                    model=model_schema_path,
+                    model=controller.model,
                 )
                 endpoints.append(endpoint)
+
+    EndpointList = RootModel[List[Endpoint]]
+    endpoint_json = EndpointList(endpoints).model_dump_json()
+    with open(json_path, "w") as file:
+        file.write(endpoint_json)
 
     return endpoints
 
