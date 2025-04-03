@@ -1,0 +1,52 @@
+#!/usr/local/bin/php
+<?php
+
+
+require_once('config.inc');
+require_once('util.inc');
+require_once('interfaces.inc');
+
+
+$model = new \OPNsense\netbird\Netbird();
+$enabled = $model->general->Enabled->__toString();
+
+
+if(!$enabled) {
+    exit(0);
+}
+
+$carpif = $model->general->CarpIf->__toString();
+
+if($carpif == '') {
+    exit(0);
+}
+
+$target_vhid = $model->general->VHID;
+$subsystem = !empty($argv[1]) ? $argv[1] : '';
+$type = !empty($argv[2]) ? $argv[2] : '';
+
+if ($type != 'MASTER' && $type != 'BACKUP') {
+    exit(1);
+}
+
+if (!strstr($subsystem, '@')) {
+    exit(1);
+}
+
+list ($vhid, $iface) = explode('@', $subsystem);
+$friendly = convert_real_interface_to_friendly_interface_name($iface);
+
+
+if ($carpif != $friendly || $vhid != $target_vhid) {
+    exit(0);
+}
+
+switch ($type) {
+    case 'MASTER':
+        shell_exec('/usr/local/bin/netbird up');
+        break;
+    case 'BACKUP':
+        shell_exec('/usr/local/bin/netbird down');
+        break;
+}
+
