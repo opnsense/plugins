@@ -99,10 +99,34 @@
                                     }
                                     return request;
                                 },
-                                triggerEditFor: getUrlHash('edit'),
-                                initialSearchPhrase: getUrlHash('search'),
-                                resizableColumns: true,
-                            }
+                                formatters: {
+                                    model_relation_domain: function (column, row) {
+                                        const raw = row["reverse"] || "";
+                                        const parts = raw.trim().split(" ");
+
+                                        if (parts.length === 2) {
+                                            return `${parts[0]}:${parts[1]}`;
+                                        }
+
+                                        return raw;
+                                    },
+                                    reverse_domain: function (column, row) {
+                                        const tls = row["DisableTls"];
+                                        const domain = row["FromDomain"];
+                                        const port = row["FromPort"] ? `:${row["FromPort"]}` : "";
+
+                                        return `${tls}${domain}${port}`;
+                                    },
+                                    upstream_domain: function (column, row) {
+                                        const tls = row["HttpTls"] ? row["HttpTls"] : "";
+                                        const domain = row["ToDomain"];
+                                        const port = row["ToPort"] ? `:${row["ToPort"]}` : "";
+                                        const path = row["ToPath"] ? row["ToPath"] : "";
+
+                                        return `${tls}${domain}${port}${path}`;
+                                    },
+                                },
+                            },
                         });
                     }
 
@@ -114,10 +138,7 @@
                         const $actionBar = header.find('.actionBar');
                         if ($actionBar.length) {
                             $('#add_filter_container').detach().insertBefore($actionBar.find('.search'));
-                            $('#add_handle_container').detach().insertBefore($('#add_filter_container'));
-                            $('#add_domain_container').detach().insertBefore($('#add_handle_container'));
-
-                            $('#add_filter_container, #add_handle_container, #add_domain_container').show();
+                            $('#add_filter_container').show();
                         }
                     }
 
@@ -173,7 +194,6 @@
             },
             onAction: function(data, status) {
                 if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
                     updateServiceControlUI('caddy');
                 } else {
                     showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
@@ -192,66 +212,53 @@
             });
         });
 
-        // Add click event listener for "Add Handler" button
-        $("#addHandleBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#handlers") {
-                $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
-            } else {
-                $('#maintabs a[href="#handlers"]').tab('show').one('shown.bs.tab', function() {
-                    $(`#{{formGridHandle['table_id']}} button[data-action="add"]`).click();
-                });
-            }
-        });
-
-        // Add click event listener for "Add Domain" button
-        $("#addDomainBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#domains") {
-                $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
-            } else {
-                $('#maintabs a[href="#domains"]').tab('show').one('shown.bs.tab', function() {
-                    $(`#{{formGridReverseProxy['table_id']}} button[data-action="add"]`).click();
-                });
-            }
-        });
-
-        // Hide TLS specific options when http or h2c is selected
-        $("#handle\\.HttpTls").change(function() {
-            if ($(this).val() != "1") {
-                $(".style_tls").closest('tr').hide();
-            } else {
-                $(".style_tls").closest('tr').show();
-            }
-        });
-
-        $("#handle\\.HandleDirective").change(function() {
-            if ($(this).val() === "redir") {
-                $(".style_reverse_proxy").prop('disabled', true);
-            } else {
-                $(".style_reverse_proxy").prop('disabled', false);
-            }
-            $("#handle\\.header, #handle\\.HttpVersion, #handle\\.HttpTlsTrustedCaCerts, #handle\\.lb_policy").selectpicker('refresh');
-        });
-
-        // Hide TLS specific options when http is selected
-        $("#reverse\\.DisableTls").change(function() {
-            if ($(this).val() === "1") {
-                $(".style_tls").closest('tr').hide();
-            } else {
-                $(".style_tls").closest('tr').show();
-            }
-        });
-
-{% elseif entrypoint == 'layer4' %}
-
-        $("#layer4\\.Matchers").change(function() {
-            if ($(this).val() !== "tlssni" && $(this).val() !== "httphost") {
-                $(".style_matchers").closest('tr').hide();
-            } else {
-                $(".style_matchers").closest('tr').show();
-            }
-        });
-
 {% endif %}
+
+        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type").on("keyup change", function () {
+            const http_tls = String($("#handle\\.HttpTls").val() || "")
+            const handle_directive = String($("#handle\\.HandleDirective").val() || "")
+            const disable_tls = String($("#reverse\\.DisableTls").val() || "")
+            const layer4_matchers = String($("#layer4\\.Matchers").val() || "")
+            const layer4_type = String($("#layer4\\.Type").val() || "")
+
+            const styleVisibility = [
+                {
+                    class: "style_tls_reverse",
+                    visible: disable_tls === "0"
+                },
+                {
+                    class: "style_tls_handle",
+                    visible: http_tls === "1" && handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_reverse_proxy",
+                    visible: handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_domain",
+                    visible: layer4_matchers === "tlssni" || layer4_matchers === "httphost"
+                },
+                {
+                    class: "style_openvpn",
+                    visible: layer4_matchers === "openvpn"
+                },
+                {
+                    class: "style_type",
+                    visible: layer4_type === "global"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
 
         updateServiceControlUI('caddy');
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
@@ -281,27 +288,27 @@
     }
 </style>
 
-<div id="add_domain_container" class="btn-group" style="display: none;">
-    <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-</div>
-<div id="add_handle_container" class="btn-group" style="display: none;">
-    <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
-</div>
 <div id="add_filter_container" class="btn-group" style="display: none;">
     <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="7" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    {% if entrypoint == 'reverse_proxy' %}
-        <li id="tab-domains" class="active"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
-        <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
-        <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
-        <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
-    {% elseif entrypoint == 'layer4' %}
-        <li id="tab-layer4" class="active"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
-        <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
-    {% endif %}
+
+{% if entrypoint == 'reverse_proxy' %}
+
+    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
+    <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
+    <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
+
+{% elseif entrypoint == 'layer4' %}
+
+    <li id="tab-layer4" class="active"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
+
+{% endif %}
+
 </ul>
 
 <div class="tab-content content-box">

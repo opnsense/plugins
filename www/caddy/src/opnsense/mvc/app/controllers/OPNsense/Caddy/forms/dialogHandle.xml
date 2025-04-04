@@ -17,6 +17,7 @@
         <type>text</type>
         <help><![CDATA[Enter a description for this handler.]]></help>
         <grid_view>
+            <width>20em</width>
             <sequence>80</sequence>
         </grid_view>
     </field>
@@ -30,6 +31,7 @@
         <type>dropdown</type>
         <help><![CDATA[Select a domain to handle.]]></help>
         <grid_view>
+            <formatter>model_relation_domain</formatter>
             <sequence>20</sequence>
         </grid_view>
     </field>
@@ -40,6 +42,7 @@
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
         <grid_view>
             <sequence>30</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -50,8 +53,10 @@
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
+        <advanced>true</advanced>
         <help><![CDATA[Choose a handling type: "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
         <grid_view>
+            <sequence>34</sequence>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -62,6 +67,7 @@
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
         <grid_view>
+            <sequence>36</sequence>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -69,11 +75,13 @@
         <type>header</type>
         <label>Access</label>
         <collapse>true</collapse>
+        <style>style_reverse_proxy</style>
     </field>
     <field>
         <id>handle.accesslist</id>
         <label>Access List</label>
         <type>dropdown</type>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[Select an Access List to restrict access to this handler. If unset, any local or remote client is allowed access.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -84,6 +92,7 @@
         <label>Basic Auth</label>
         <type>select_multiple</type>
         <size>5</size>
+        <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[Select Users to restrict access to this path. If unset, any user is allowed access.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -93,6 +102,7 @@
         <id>handle.ForwardAuth</id>
         <label>Forward Auth</label>
         <type>checkbox</type>
+        <style>style_reverse_proxy</style>
         <help><![CDATA[Enable or disable Forward Auth. Requires an "Auth Provider" in "General Settings". Headers are set automatically to the standard of the chosen provider. Enabling this option will additionally generate the forward_auth directive in front of the reverse_proxy directive inside the scope of this handler.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -110,12 +120,15 @@
         <type>dropdown</type>
         <help><![CDATA[Choose a handling directive: "reverse_proxy" will proxy all HTTP traffic to the selected upstream. "redir" will create a HTTP redirect.]]></help>
         <grid_view>
-            <sequence>40</sequence>
+            <width>10em</width>
+            <sequence>15</sequence>
         </grid_view>
     </field>
     <field>
         <type>header</type>
-        <label>Upstream</label>
+        <label>Transport</label>
+        <collapse>true</collapse>
+        <style>style_reverse_proxy</style>
     </field>
     <field>
         <id>handle.HttpVersion</id>
@@ -123,7 +136,6 @@
         <type>dropdown</type>
         <style>selectpicker style_reverse_proxy</style>
         <help><![CDATA[The default versions are highly recommended. Choose a HTTP version for the upstream destination. HTTP/3 (HTTP over QUIC) requires HTTPS, and only establishes connections to webservers that also support HTTP/3.]]></help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -147,10 +159,13 @@
         <hint>120</hint>
         <style>style_reverse_proxy</style>
         <help><![CDATA[Leave empty to use default. Keepalive is either 0 (off) or a duration value that specifies how long to keep connections open (timeout) in seconds.]]></help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Upstream</label>
     </field>
     <field>
         <id>handle.HttpTls</id>
@@ -158,6 +173,7 @@
         <type>dropdown</type>
         <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
         <grid_view>
+            <ignore>true</ignore>
             <sequence>50</sequence>
         </grid_view>
     </field>
@@ -169,6 +185,7 @@
         <allownew>true</allownew>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
         <grid_view>
+            <formatter>upstream_domain</formatter>
             <sequence>60</sequence>
         </grid_view>
     </field>
@@ -178,6 +195,7 @@
         <type>text</type>
         <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
         <grid_view>
+            <ignore>true</ignore>
             <sequence>70</sequence>
         </grid_view>
     </field>
@@ -187,6 +205,7 @@
         <type>text</type>
         <help><![CDATA[When directive is "reverse_proxy", enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path. When directive is "redir", add the path the request should be redirected to; leaving it empty will append {uri}.]]></help>
         <grid_view>
+            <ignore>true</ignore>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -194,7 +213,7 @@
         <id>handle.HttpTlsInsecureSkipVerify</id>
         <label>TLS Insecure Skip Verify</label>
         <type>checkbox</type>
-        <style>style_tls style_reverse_proxy</style>
+        <style>style_tls_handle</style>
         <help><![CDATA[Caddy uses HTTP by default to connect to the Upstream. If the Upstream is only reachable via HTTPS, this option disables the TLS handshake verification. This makes the connection insecure and vulnerable to man-in-the-middle attacks. In private networks the risk is low, though do not use in production if possible. It is advised to either use plain HTTP, or proper TLS handling by using the options in "Trust".]]></help>
         <grid_view>
             <visible>false</visible>
@@ -206,7 +225,7 @@
         <id>handle.HttpTlsTrustedCaCerts</id>
         <label>TLS Trust Pool</label>
         <type>dropdown</type>
-        <style>selectpicker style_tls style_reverse_proxy</style>
+        <style>selectpicker style_tls_handle</style>
         <help><![CDATA[Choose a CA or self-signed certificate to trust from "System - Trust - Authorities". Useful if the upstream destination only accepts TLS connections and offers a self signed certificate. Adding that certificate here will allow for the encrypted connection to succeed.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -216,7 +235,7 @@
         <id>handle.HttpTlsServerName</id>
         <label>TLS Server Name</label>
         <type>text</type>
-        <style>style_tls style_reverse_proxy</style>
+        <style>style_tls_handle</style>
         <help><![CDATA[Enter a hostname or IP address that matches the SAN "Subject Alternative Name" of the offered upstream certificate. This will change the SNI "Server Name Indication" of Caddy. Setting an IP address as "Upstream Domain", enabling "TLS" and selecting a "TLS Trust Pool", would make the SAN of the offered upstream certificate not match with the SNI of Caddy, since it will be an IP address instead of a hostname. Setting the hostname of the certificate here, fixes this issue. Please note that only SAN certificates are supported; CN "Common Name" will not work.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -226,7 +245,7 @@
         <id>handle.HttpNtlm</id>
         <label>NTLM</label>
         <type>checkbox</type>
-        <style>style_tls style_reverse_proxy</style>
+        <style>style_tls_handle</style>
         <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -238,6 +257,7 @@
         <type>header</type>
         <label>Load Balancing</label>
         <collapse>true</collapse>
+        <style>style_reverse_proxy</style>
     </field>
     <field>
         <id>handle.lb_policy</id>

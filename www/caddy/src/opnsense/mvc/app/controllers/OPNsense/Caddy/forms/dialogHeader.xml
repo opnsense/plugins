@@ -34,5 +34,8 @@
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this header.]]></help>
+        <grid_view>
+            <width>20em</width>
+        </grid_view>
     </field>
 </form>

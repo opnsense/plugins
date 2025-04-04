@@ -17,6 +17,7 @@
         <type>text</type>
         <help><![CDATA[Enter a description for this subdomain.]]></help>
         <grid_view>
+            <width>20em</width>
             <sequence>40</sequence>
         </grid_view>
     </field>
@@ -30,6 +31,8 @@
         <type>dropdown</type>
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
         <grid_view>
+            <visible>false</visible>
+            <formatter>model_relation_domain</formatter>
             <sequence>20</sequence>
         </grid_view>
     </field>

@@ -72,7 +72,6 @@
                 if (status !== "success" || data.status !== 'ok') {
                     showAlert("{{ lang._('Error applying configuration: ') }}" + JSON.stringify(data), "error");
                 } else {
-                    showAlert("{{ lang._('Configuration applied successfully.') }}", "success");
                     updateServiceControlUI('caddy');
                 }
                 setSpinner(generalId, 'stop');
