@@ -188,7 +188,11 @@ class Controller {
         $src_lines = explode("\n", $src);
 
         $methods = [];
-        if ($parent) {$methods = $parent->methods or [];}
+        if ($parent) {
+            foreach ($parent->methods as $m) {
+                $methods[$m->name] = $m;
+            }
+        }
         foreach ($rclass->getMethods(ReflectionMethod::IS_PUBLIC) as $rmethod) {
             $method_name = $rmethod->name;
             if (!str_ends_with($method_name, "Action")) {continue;}  // algorithm in Dispatcher.php
@@ -198,9 +202,10 @@ class Controller {
             $length = $rmethod->getEndLine() - $start;
             $method_src = implode("\n", array_slice($src_lines, $start, $length));
 
-            $methods[] = new Method($rmethod, $method_src);
+            $method = new Method($rmethod, $method_src);
+            $methods[$method->name] = $method;
         }
-        $this->methods = $methods;
+        $this->methods = array_values($methods);
     }
 }
 
