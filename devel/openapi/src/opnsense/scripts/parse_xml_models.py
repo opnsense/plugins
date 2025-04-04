@@ -49,7 +49,7 @@ def _walk_xml(element: XmlElement) -> XmlNode:
 
     return XmlNode(
         type=field_type,
-        name=element.tag.lower(),
+        name=element.tag,
         value=value,
         properties=props
     )
