@@ -147,10 +147,10 @@ def get_controllers(json_path: str = "./controllers.json") -> List[Controller]:
     with open(json_path) as file:
         controller_json = file.read()
 
-    controller_dicts_by_name: Dict[str, PhpController] = json.loads(controller_json)
+    php_controllers: List[PhpController] = json.loads(controller_json)
 
     controllers = []
-    for c in controller_dicts_by_name.values():
+    for c in php_controllers:
         controllers.append(Controller.from_php(c))
     return controllers
 

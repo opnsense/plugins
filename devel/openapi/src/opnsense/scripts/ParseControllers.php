@@ -238,7 +238,7 @@ class ControllerRegistry {
     }
 
     public static function dump() {
-        return ControllerRegistry::$registry;
+        return array_values(ControllerRegistry::$registry);
     }
 }
 
