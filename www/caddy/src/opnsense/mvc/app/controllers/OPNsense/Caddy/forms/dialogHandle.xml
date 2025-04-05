@@ -28,6 +28,9 @@
         <label>Subdomain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
+        <grid_view>
+            <formatter>model_relation_subdomain</formatter>
+        </grid_view>
     </field>
     <field>
         <type>header</type>

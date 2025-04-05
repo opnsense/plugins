@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023-2024 Cedrik Pischem
+ # Copyright (c) 2023-2025 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,

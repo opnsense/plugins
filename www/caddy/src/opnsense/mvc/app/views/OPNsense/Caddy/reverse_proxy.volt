@@ -118,14 +118,26 @@
                                 },
                                 formatters: {
                                     model_relation_domain: function (column, row) {
-                                        const raw = row["reverse"] || "";
-                                        const parts = raw.trim().split(" ");
+                                        const reverse = row["reverse"] || "";
+                                        const parts = reverse.trim().split(" ");
 
+                                        let output = reverse.trim();
                                         if (parts.length === 2) {
-                                            return `${parts[0]}:${parts[1]}`;
+                                            output = `${parts[0]}:${parts[1]}`;
+                                        }
+                                        if (!row["subdomain"] && row["HandlePath"]) {
+                                            output += row["HandlePath"];
                                         }
 
-                                        return raw;
+                                        return output;
+                                    },
+                                    model_relation_subdomain: function (column, row) {
+                                        let output = row["subdomain"].trim() || "";
+                                        if (row["subdomain"] && row["HandlePath"]) {
+                                            output += row["HandlePath"];
+                                        }
+
+                                        return output;
                                     },
                                     from_domain: function (column, row) {
                                         const tls = row["DisableTls"];
