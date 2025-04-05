@@ -141,21 +141,28 @@ class Endpoint(BaseModel):
     """
 
     description: str
-    path: str
+    module: str
+    controller: str
+    name: str
     method: HttpMethod
     parameters: List[Parameter]
     model: str | None
 
+
+    @property
+    def path(self) -> str:
+        path = f"/{self.module}/{self.controller}/{self.name}".lower()
+        params = [f"{{{p.name}}}" for p in self.parameters]
+        return "/".join([path] + params)
+
     @property
     def operation_id(self) -> str:
-        """Can be any unique string (can be shared between http methods)"""
-        return self.path.replace("/", "_")
+        suffix = "_Post" if self.method == "POST" else ""
+        name = self.name[0].capitalize() + self.name[1:]
+        return f"{self.module}{self.controller}{name}{suffix}"
 
     def __repr__(self):
-        route = f"[{self.method}] {self.path}"
-        if self.parameters:
-            return f"{route} ({', '.join(repr(p) for p in self.parameters)})"
-        return route
+        return self.path
 
 
 def get_controllers(json_path: str = "./controllers.json") -> List[Controller]:
@@ -214,7 +221,9 @@ def get_endpoints(json_path: str = "./endpoints.json") -> List[Endpoint]:
             for http_method in http_methods:
                 endpoint = Endpoint(
                     description=method.description,
-                    path=f"/{module}/{controller_name}/{method.name}".lower(),
+                    module=module,
+                    controller=controller_name,
+                    name=method.name,
                     method=http_method,
                     parameters=method.parameters,
                     model=controller.model,

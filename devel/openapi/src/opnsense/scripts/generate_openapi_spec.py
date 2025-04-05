@@ -235,21 +235,14 @@ def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
         },
     }
 
-    op: Dict[str, Any] = {"responses": responses}
+    op: Dict[str, Any] = {
+        "operationId": endpoint.operation_id,
+        "responses": responses,
+    }
     if endpoint.parameters:
         op["parameters"] = [get_parameter(p) for p in endpoint.parameters]
 
     return {method: op}
-
-
-def get_path_spec(endpoint: Endpoint) -> Dict[str, Any]:
-    params = [f"{{{p.name}}}" for p in endpoint.parameters]
-    path = "/".join([endpoint.path] + params)
-    return {
-        "path": path,
-        "description": endpoint.description,
-        "operations": get_operation(endpoint),
-    }
 
 
 # The APISpec library is looking less like it's worth the import. It saves little effort, and
@@ -280,7 +273,8 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
         spec.components.schema(model.schema_path, component)
 
     for endpoint in endpoints:
-        spec.path(**get_path_spec(endpoint))
+        operation = get_operation(endpoint)
+        spec.path(path=endpoint.path, description=endpoint.description, operations=operation)
 
     return spec
 
