@@ -155,6 +155,8 @@
                                 },
                             },
                         });
+
+                        $("#" + grid_id).wrap('<div class="bootgrid-box"></div>');
                     }
 
 {% if entrypoint == 'reverse_proxy' %}
@@ -313,10 +315,35 @@
         font-size: 16px;
         font-style: italic;
     }
+    /* Prevent bootgrid to break out of content box*/
+    .content-box {
+        overflow-x: auto;
+    }
+    .bootgrid-header,
+    .bootgrid-box,
+    .bootgrid-footer {
+        width: 100%;
+        background: none;
+        border: none;
+        max-width: 100%;
+        /* Prevents the grid from collapsing all dynamic columns completely */
+        min-width: 700px;
+    }
+    /* Not all dropdowns support data-container="body", ensure minimal vertical space for them */
+    .bootgrid-box {
+        min-height: 150px;
+    }
+    /* Limit size of grid dropdown */
+    .actions .dropdown-menu.pull-right {
+        max-height: 200px;
+        min-width: max-content;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
-    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="7" title="{{ lang._('Filter by Domain') }}">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="7" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 

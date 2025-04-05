@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this domain.]]></help>
         <grid_view>
-            <width>3em</width>
+            <width>2em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -89,9 +89,6 @@
         <label>Description</label>
         <type>text</type>
         <help><![CDATA[Enter a description for this domain.]]></help>
-        <grid_view>
-            <width>20em</width>
-        </grid_view>
     </field>
     <field>
         <type>header</type>
