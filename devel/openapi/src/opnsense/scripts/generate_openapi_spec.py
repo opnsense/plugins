@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Literal, TypeAlias
 import openapi_spec_validator as oasv
 from apispec import APISpec
 
-from parse_endpoints import Endpoint, get_endpoints
+from parse_endpoints import Endpoint, Parameter, get_endpoints
 from parse_xml_models import Model, XmlNode, get_models
 
 SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
@@ -208,6 +208,15 @@ def get_model_spec(node: XmlNode) -> Dict[str, Any]:
     return spec
 
 
+def get_parameter(param: Parameter) -> Dict:
+    return {
+        "in": "path",
+        "name": param.name,
+        "schema": {"type": "string"},  # TODO
+        "required": True,  # to support optional path params, you need another operation without the param :-(
+    }
+
+
 def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
     method = endpoint.method.lower()
     model = endpoint.model or "status"
@@ -225,7 +234,22 @@ def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
             },
         },
     }
-    return {method: {"responses": responses}}
+
+    op: Dict[str, Any] = {"responses": responses}
+    if endpoint.parameters:
+        op["parameters"] = [get_parameter(p) for p in endpoint.parameters]
+
+    return {method: op}
+
+
+def get_path_spec(endpoint: Endpoint) -> Dict[str, Any]:
+    params = [f"{{{p.name}}}" for p in endpoint.parameters]
+    path = "/".join([endpoint.path] + params)
+    return {
+        "path": path,
+        "description": endpoint.description,
+        "operations": get_operation(endpoint),
+    }
 
 
 # The APISpec library is looking less like it's worth the import. It saves little effort, and
@@ -256,8 +280,7 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
         spec.components.schema(model.schema_path, component)
 
     for endpoint in endpoints:
-        operation = get_operation(endpoint)
-        spec.path(path=endpoint.path, description=endpoint.description, operations=operation)
+        spec.path(**get_path_spec(endpoint))
 
     return spec
 
