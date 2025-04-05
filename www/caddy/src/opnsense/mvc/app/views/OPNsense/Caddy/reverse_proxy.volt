@@ -80,6 +80,12 @@
 
 {% endif %}
 
+            const labels = {
+                upstream: "{{ lang._('Upstream') }}",
+                domain: '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}",
+                subdomain: '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}",
+            };
+
             if (grid_ids.length > 0) {
                 grid_ids.forEach(function(grid_id) {
                     if (!all_grids[grid_id]) {
@@ -101,58 +107,50 @@
                                 },
                                 headerFormatters: {
                                     enabled: function (column) { return "" },
-                                    ToDomain: function (column) { return "{{ lang._('Upstream') }}" },
+                                    ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
                                         if (grid_id === "Subdomain") {
-                                            return '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}";
+                                            return labels.subdomain;
                                         } else {
-                                            return '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}";
+                                            return labels.domain;
                                         }
                                     },
                                     reverse: function (column) {
-                                        return '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}";
+                                        return labels.domain;
                                     },
                                     subdomain: function (column) {
-                                        return '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}";
+                                        return labels.subdomain;
                                     },
                                 },
                                 formatters: {
                                     model_relation_domain: function (column, row) {
-                                        const reverse = row["reverse"] || "";
-                                        const parts = reverse.trim().split(" ");
-
-                                        let output = reverse.trim();
-                                        if (parts.length === 2) {
-                                            output = `${parts[0]}:${parts[1]}`;
+                                        let result = (row[column.id] || "").trim();
+                                        if (column.id === "reverse") {
+                                            result = result.replace(" ", ":");
+                                            if (!row["subdomain"] && row["HandlePath"]) {
+                                                result += row["HandlePath"];
+                                            }
+                                        } else if (column.id === "subdomain") {
+                                            if (row["subdomain"] && row["HandlePath"]) {
+                                                result += row["HandlePath"];
+                                            }
                                         }
-                                        if (!row["subdomain"] && row["HandlePath"]) {
-                                            output += row["HandlePath"];
-                                        }
-
-                                        return output;
-                                    },
-                                    model_relation_subdomain: function (column, row) {
-                                        let output = row["subdomain"].trim() || "";
-                                        if (row["subdomain"] && row["HandlePath"]) {
-                                            output += row["HandlePath"];
-                                        }
-
-                                        return output;
+                                        return result;
                                     },
                                     from_domain: function (column, row) {
-                                        const tls = row["DisableTls"];
-                                        const domain = row["FromDomain"];
-                                        const port = row["FromPort"] ? `:${row["FromPort"]}` : "";
-
-                                        return `${tls}${domain}${port}`;
+                                        return (
+                                            (row["DisableTls"] || "") +
+                                            (row["FromDomain"] || "") +
+                                            (row["FromPort"] ? `:${row["FromPort"]}` : "")
+                                        );
                                     },
                                     to_domain: function (column, row) {
-                                        const tls = row["HttpTls"] ? row["HttpTls"] : "";
-                                        const domain = row["ToDomain"];
-                                        const port = row["ToPort"] ? `:${row["ToPort"]}` : "";
-                                        const path = row["ToPath"] ? row["ToPath"] : "";
-
-                                        return `${tls}${domain}${port}${path}`;
+                                        return (
+                                            (row["HttpTls"] || "") +
+                                            (row["ToDomain"] || "") +
+                                            (row["ToPort"] ? `:${row["ToPort"]}` : "") +
+                                            (row["ToPath"] || "")
+                                        );
                                     },
                                 },
                             },
