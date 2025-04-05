@@ -5,20 +5,9 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>3em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
-            <sequence>10</sequence>
-        </grid_view>
-    </field>
-    <field>
-        <id>subdomain.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this subdomain.]]></help>
-        <grid_view>
-            <width>20em</width>
-            <sequence>40</sequence>
         </grid_view>
     </field>
     <field>
@@ -33,7 +22,6 @@
         <grid_view>
             <visible>false</visible>
             <formatter>model_relation_domain</formatter>
-            <sequence>20</sequence>
         </grid_view>
     </field>
     <field>
@@ -42,9 +30,6 @@
         <type>text</type>
         <hint>opn.example.com</hint>
         <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports and protocols as their parent wildcard domain.]]></help>
-        <grid_view>
-            <sequence>30</sequence>
-        </grid_view>
     </field>
     <field>
         <id>subdomain.DynDns</id>
@@ -65,6 +50,15 @@
         <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this subdomain.]]></help>
+        <grid_view>
+            <width>20em</width>
         </grid_view>
     </field>
     <field>

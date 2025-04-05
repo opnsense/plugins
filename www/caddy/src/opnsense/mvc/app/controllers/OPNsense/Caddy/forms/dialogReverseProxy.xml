@@ -5,20 +5,9 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this domain.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>3em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
-            <sequence>10</sequence>
-        </grid_view>
-    </field>
-    <field>
-        <id>reverse.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this domain.]]></help>
-        <grid_view>
-            <width>20em</width>
-            <sequence>50</sequence>
         </grid_view>
     </field>
     <field>
@@ -31,8 +20,7 @@
         <type>dropdown</type>
         <help><![CDATA[When choosing HTTP, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
         <grid_view>
-            <ignore>true</ignore>
-            <sequence>20</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -41,8 +29,7 @@
         <type>text</type>
         <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Using a wildcard domain with subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
         <grid_view>
-            <formatter>reverse_domain</formatter>
-            <sequence>30</sequence>
+            <formatter>from_domain</formatter>
         </grid_view>
     </field>
     <field>
@@ -51,8 +38,7 @@
         <type>text</type>
         <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule. If the default ports have been changed in "General Settings", leaving this empty will use the chosen alternative ports instead.]]></help>
         <grid_view>
-            <ignore>true</ignore>
-            <sequence>40</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -96,6 +82,15 @@
             <visible>false</visible>
             <type>boolean</type>
             <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>reverse.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this domain.]]></help>
+        <grid_view>
+            <width>20em</width>
         </grid_view>
     </field>
     <field>

@@ -5,20 +5,9 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this handler.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>3em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
-            <sequence>10</sequence>
-        </grid_view>
-    </field>
-    <field>
-        <id>handle.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this handler.]]></help>
-        <grid_view>
-            <width>20em</width>
-            <sequence>80</sequence>
         </grid_view>
     </field>
     <field>
@@ -32,7 +21,6 @@
         <help><![CDATA[Select a domain to handle.]]></help>
         <grid_view>
             <formatter>model_relation_domain</formatter>
-            <sequence>20</sequence>
         </grid_view>
     </field>
     <field>
@@ -40,10 +28,6 @@
         <label>Subdomain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
-        <grid_view>
-            <sequence>30</sequence>
-            <visible>false</visible>
-        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -53,10 +37,9 @@
         <id>handle.HandleType</id>
         <label>Handler</label>
         <type>dropdown</type>
-        <advanced>true</advanced>
         <help><![CDATA[Choose a handling type: "handle" (default) will keep the path in all requests. "handle_path" will strip the path from all requests.]]></help>
+        <advanced>true</advanced>
         <grid_view>
-            <sequence>34</sequence>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -67,7 +50,6 @@
         <hint>any</hint>
         <help><![CDATA[Enter a path to handle. Choose a pattern like "/*" or "/example/*". Leave empty to handle any paths (recommended). Any request matching this pattern will be handled by the chosen directive.]]></help>
         <grid_view>
-            <sequence>36</sequence>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -119,10 +101,6 @@
         <label>Directive</label>
         <type>dropdown</type>
         <help><![CDATA[Choose a handling directive: "reverse_proxy" will proxy all HTTP traffic to the selected upstream. "redir" will create a HTTP redirect.]]></help>
-        <grid_view>
-            <width>10em</width>
-            <sequence>15</sequence>
-        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -173,8 +151,7 @@
         <type>dropdown</type>
         <help><![CDATA[Enable or disable HTTP over TLS (HTTPS) to communicate with the upstream destination. Caddy uses HTTP with the upstream destination by default.]]></help>
         <grid_view>
-            <ignore>true</ignore>
-            <sequence>50</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -185,8 +162,7 @@
         <allownew>true</allownew>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy. A health check can be activated by populating "Upstream Fail Duration" in advanced mode. When directive is "redir", only the first domain will be evaluated.]]></help>
         <grid_view>
-            <formatter>upstream_domain</formatter>
-            <sequence>60</sequence>
+            <formatter>to_domain</formatter>
         </grid_view>
     </field>
     <field>
@@ -195,8 +171,7 @@
         <type>text</type>
         <help><![CDATA[Leave empty to use the default port or choose a custom port for the upstream destination.]]></help>
         <grid_view>
-            <ignore>true</ignore>
-            <sequence>70</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -205,7 +180,6 @@
         <type>text</type>
         <help><![CDATA[When directive is "reverse_proxy", enter a path prefix like "/guacamole" that should be prepended to the upstream request. This is useful for destinations that have a virtual directory as their base path. When directive is "redir", add the path the request should be redirected to; leaving it empty will append {uri}.]]></help>
         <grid_view>
-            <ignore>true</ignore>
             <visible>false</visible>
         </grid_view>
     </field>
@@ -251,6 +225,15 @@
             <visible>false</visible>
             <type>boolean</type>
             <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this handler.]]></help>
+        <grid_view>
+            <width>20em</width>
         </grid_view>
     </field>
     <field>

@@ -95,9 +95,26 @@
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
                                     if (selectedDomains && selectedDomains.length > 0) {
-                                        request['reverseUuids'] = selectedDomains.join(',');
+                                        request['domainUuids'] = selectedDomains;
                                     }
                                     return request;
+                                },
+                                headerFormatters: {
+                                    enabled: function (column) { return "" },
+                                    ToDomain: function (column) { return "{{ lang._('Upstream') }}" },
+                                    FromDomain: function (column) {
+                                        if (grid_id === "Subdomain") {
+                                            return '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}";
+                                        } else {
+                                            return '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}";
+                                        }
+                                    },
+                                    reverse: function (column) {
+                                        return '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}";
+                                    },
+                                    subdomain: function (column) {
+                                        return '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}";
+                                    },
                                 },
                                 formatters: {
                                     model_relation_domain: function (column, row) {
@@ -110,14 +127,14 @@
 
                                         return raw;
                                     },
-                                    reverse_domain: function (column, row) {
+                                    from_domain: function (column, row) {
                                         const tls = row["DisableTls"];
                                         const domain = row["FromDomain"];
                                         const port = row["FromPort"] ? `:${row["FromPort"]}` : "";
 
                                         return `${tls}${domain}${port}`;
                                     },
-                                    upstream_domain: function (column, row) {
+                                    to_domain: function (column, row) {
                                         const tls = row["HttpTls"] ? row["HttpTls"] : "";
                                         const domain = row["ToDomain"];
                                         const port = row["ToPort"] ? `:${row["ToPort"]}` : "";

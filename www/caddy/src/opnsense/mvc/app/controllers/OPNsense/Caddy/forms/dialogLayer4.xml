@@ -5,10 +5,9 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this Layer4 route.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>3em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
-            <sequence>10</sequence>
         </grid_view>
     </field>
     <field>
@@ -17,18 +16,7 @@
         <type>text</type>
         <help><![CDATA[Rules are sorted based on the sequence number, higher number means lower priority. Rules without a sequence number will be processed first.]]></help>
         <grid_view>
-            <width>6em</width>
-            <sequence>20</sequence>
-        </grid_view>
-    </field>
-    <field>
-        <id>layer4.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this Layer4 route.]]></help>
-        <grid_view>
-            <width>20em</width>
-            <sequence>80</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -51,8 +39,7 @@
         <style>selectpicker style_type</style>
         <help><![CDATA[Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.]]></help>
         <grid_view>
-            <width>6em</width>
-            <sequence>30</sequence>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -74,9 +61,6 @@
         <label>Matchers</label>
         <type>dropdown</type>
         <help><![CDATA[Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.]]></help>
-        <grid_view>
-            <sequence>40</sequence>
-        </grid_view>
     </field>
     <field>
         <id>layer4.FromDomain</id>
@@ -85,9 +69,6 @@
         <style>tokenize style_domain</style>
         <allownew>true</allownew>
         <help><![CDATA[Enter one or multiple domains to route via SNI or Host Header. Wildcard domains and host wildcards are allowed, e.g. "*.example.com" and "*".]]></help>
-        <grid_view>
-            <sequence>50</sequence>
-        </grid_view>
     </field>
     <field>
         <id>layer4.FromOpenvpnModes</id>
@@ -147,8 +128,7 @@
         <allownew>true</allownew>
         <help><![CDATA[Enter a domain name or IP address of the upstream destination. If multiple are chosen, they will be load balanced with the default random policy.]]></help>
         <grid_view>
-            <formatter>upstream_domain</formatter>
-            <sequence>60</sequence>
+            <formatter>to_domain</formatter>
         </grid_view>
     </field>
     <field>
@@ -157,7 +137,7 @@
         <type>text</type>
         <help><![CDATA[Choose a custom port for the upstream destination.]]></help>
         <grid_view>
-            <ignore>true</ignore>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -165,15 +145,23 @@
         <label>Proxy Protocol</label>
         <type>dropdown</type>
         <help><![CDATA[Add the HA Proxy Protocol header. Either version 1 or 2 can be chosen. The default is off, since it is only needed when the upstream can use the Proxy Protocol header.]]></help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>
     </field>
     <field>
+        <id>layer4.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this Layer4 route.]]></help>
+        <grid_view>
+            <width>20em</width>
+        </grid_view>
+    </field>
+    <field>
         <type>header</type>
         <label>Load Balancing</label>
-        <advanced>true</advanced>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>layer4.lb_policy</id>
@@ -181,7 +169,6 @@
         <type>dropdown</type>
         <style>selectpicker</style>
         <help><![CDATA[lb_policy is the name of the load balancing policy, along with any options. For policies that involve hashing, the highest-random-weight (HRW) algorithm is used to ensure that a client or request with the same hash key is mapped to the same upstream, even if the list of upstreams change.]]></help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>
