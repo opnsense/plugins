@@ -5,16 +5,10 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>2em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
-    </field>
-    <field>
-        <id>subdomain.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this subdomain.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -25,6 +19,10 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <formatter>model_relation_domain</formatter>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.FromDomain</id>
@@ -53,6 +51,12 @@
         <grid_view>
             <visible>false</visible>
         </grid_view>
+    </field>
+    <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this subdomain.]]></help>
     </field>
     <field>
         <type>header</type>
