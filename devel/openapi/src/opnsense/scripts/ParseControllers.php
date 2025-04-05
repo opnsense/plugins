@@ -80,11 +80,10 @@ class Method {
 
         // Presence in source code of, e.g., "this->request->getPost(" implies POST.
         // See comment in Controller ctor.
-        // I will make the regex more defensive.
         $matches = null;
-        $after_deref = "(?<=\$this->)";  // lookbehind
-        $before_bracket = "(?=\()";      // lookahead
-        $call = "\S+";                   // non-space; further refinement needed
+        $after_deref = "(?<=\\\$this->)";   // lookbehind for "$this->"
+        $before_bracket = "(?=\()";         // lookahead for "("
+        $call = "\S+";                      // non-space
         $pattern = "/" . $after_deref . $call . $before_bracket . "/";
         preg_match_all($pattern, $src, $matches);
 
@@ -131,6 +130,8 @@ class Controller {
 
     public function __construct(ReflectionClass $rclass)
     {
+        $name = $rclass->getName();
+
         $parent = null;
         $parent_name = null;
         $rparent = $rclass->getParentClass();
@@ -161,7 +162,7 @@ class Controller {
             $doc = $parent->doc;
         }
 
-        $this->name = $rclass->getName();
+        $this->name = $name;
         $this->parent = $parent_name;
         $this->model = $model;
         $this->is_abstract = $rclass->isAbstract();
@@ -194,6 +195,9 @@ class Controller {
             }
         }
         foreach ($rclass->getMethods(ReflectionMethod::IS_PUBLIC) as $rmethod) {
+            // skip inherited (we already added them)
+            if ($rmethod->getDeclaringClass()->name != $name) {continue;}
+
             $method_name = $rmethod->name;
             if (!str_ends_with($method_name, "Action")) {continue;}  // algorithm in Dispatcher.php
 
