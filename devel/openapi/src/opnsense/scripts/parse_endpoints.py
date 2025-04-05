@@ -8,6 +8,7 @@ Called by `generate_openapi_spec.py`.
 
 import json
 import os
+import re
 import subprocess
 from typing import Any, Dict, List, Literal, Self, TypeAlias, TypedDict
 from pydantic import BaseModel, RootModel
@@ -42,8 +43,36 @@ class PhpController(TypedDict):
 
 #region intermediate DTOs
 # These do validation and throw nice errors. The errors are why they exist.
+class DocComment(BaseModel):
+    description: str
+    param_descriptions: Dict[str, str]
+
+    @classmethod
+    def from_php(cls, doc: str) -> Self:
+        lines = [l.strip() for l in doc.split("\n")]
+        lines = [re.sub(r"^\*\s*", "", l) for l in lines if l not in ("/**", "/*", "*/")]
+
+        descr_lines = []
+        param_descr = {}
+        pattern = re.compile(r"@param\s+(?P<type>\S*)\s*\$(?P<name>\S+)\s*(?P<descr>.*)")
+        for line in lines:
+            if not line.startswith("@"):
+                descr_lines.append(line)
+                continue
+
+            m = pattern.match(line)
+            if m:
+                param_descr[m.group("name")] = m.group("descr")
+
+        return cls(
+            description=" ".join(descr_lines),
+            param_descriptions=param_descr,
+        )
+
+
 class Parameter(BaseModel):
     name: str
+    description: str
     has_default: bool
     default: Any
 
@@ -63,10 +92,12 @@ class Method(BaseModel):
     @classmethod
     def from_php(cls, method: PhpMethod) -> Self:
         parameters: List[PhpParameter] = method.pop("parameters")  # type: ignore
-        doc: str = method.pop("doc")  # type: ignore
+        doc: str = method.pop("doc") or ""  # type: ignore
+        comment = DocComment.from_php(doc)
+        param_descr = comment.param_descriptions
         return cls(
-            description=doc or "",  # TODO: parse PHP doc comment
-            parameters=[Parameter(**p) for p in parameters],
+            description=comment.description,
+            parameters=[Parameter(**p, description=param_descr.get(p["name"], "")) for p in parameters],
             **method,  # type: ignore
         )
 
