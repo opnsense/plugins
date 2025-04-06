@@ -31,6 +31,7 @@ class PhpMethod(TypedDict):
     method: HttpMethod | Literal["*"]
     parameters: List[PhpParameter]
     doc: str | Literal[False]
+    model_path_map: str | None
 
 class PhpController(TypedDict):
     name: str
@@ -88,6 +89,7 @@ class Method(BaseModel):
     name: str
     method: HttpMethod | Literal["*"]
     parameters: List[Parameter]
+    model_path_map: str | None
 
     @classmethod
     def from_php(cls, method: PhpMethod) -> Self:
@@ -147,7 +149,7 @@ class Endpoint(BaseModel):
     method: HttpMethod
     parameters: List[Parameter]
     model: str | None
-
+    model_path_map: str | None
 
     @property
     def path(self) -> str:
@@ -227,6 +229,7 @@ def get_endpoints(json_path: str = "./endpoints.json") -> List[Endpoint]:
                     method=http_method,
                     parameters=method.parameters,
                     model=controller.model,
+                    model_path_map=method.model_path_map,
                 )
                 endpoints.append(endpoint)
 

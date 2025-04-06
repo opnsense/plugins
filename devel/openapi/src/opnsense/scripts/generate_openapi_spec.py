@@ -219,19 +219,33 @@ def get_parameter(param: Parameter) -> Dict:
 
 def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
     method = endpoint.method.lower()
-    model = endpoint.model or "status"
-    ref = f"#/components/schemas/{model}"
+
+    client_prop = None
+    if endpoint.model and endpoint.model_path_map:
+        client_prop, model_path = endpoint.model_path_map.split(":", maxsplit=2)
+        model_path = endpoint.model + "/properties/" + model_path.replace(".", "/properties/")
+    else:
+        model_path = endpoint.model or "status"
+
+    schema = {"$ref": f"#/components/schemas/{model_path}"}
+    if client_prop:
+        schema = {
+            "type": "object",
+            "properties": {
+                client_prop: schema,
+            }
+        }
+
+    content = {
+        "application/json": {
+            "schema": schema
+        },
+    }
 
     responses = {
         "200": {
             "description": endpoint.description,
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "$ref": ref,
-                    }
-                },
-            },
+            "content": content,
         },
     }
 

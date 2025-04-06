@@ -73,6 +73,7 @@ class Method {
     public $method;  // HTTP method!
     public $parameters = [];
     public $doc;
+    public $model_path_map;
 
     public function __construct(ReflectionMethod $rmethod, string $src)
     {
@@ -93,6 +94,30 @@ class Method {
                 $http_method = self::$BASE_METHOD_HTTP_METHODS[$call];
                 break;
             }
+        }
+
+        $matches = null;
+        $pattern = "/\\\$this->(search|get|add|del|set|toggle)Base\(([^\)]*)\)/";
+        preg_match_all($pattern, $src, $matches);
+
+        $model_path_map = null;
+        if ($matches[0]) {
+            // Multiple calls to delBase in IPsec\Api\ConnectionsController and
+            // Unbound\Api\SettingsController. In both cases, the earlier calls are
+            // "cascade deletes", and it seems probable that the last call is always
+            // going to be the "main" model change. So we'll take the last match
+            // for each capture group.
+            $call = array_slice($matches[0], -1)[0];
+            $base_method = array_slice($matches[1], -1)[0] . "Base";
+            $args = preg_split("/,\s*/", trim(array_slice($matches[2], -1)[0]));
+
+            if (in_array($base_method, ["addBase", "setBase", "getBase"])) {
+                $model_path_map = $args[0] . ":" . $args[1];
+            } else {
+                $model_path_map = ":" . $args[0];
+            }
+
+            $model_path_map = preg_replace("/\"|'/", "", $model_path_map);
         }
 
         $params = [];
@@ -116,6 +141,7 @@ class Method {
         $this->method = $http_method;
         $this->parameters = $params;
         $this->doc = $doc;
+        $this->model_path_map = $model_path_map;
     }
 }
 
