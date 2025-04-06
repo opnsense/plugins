@@ -16,7 +16,7 @@ import openapi_spec_validator as oasv
 from apispec import APISpec
 
 from parse_endpoints import Endpoint, Parameter, get_endpoints
-from parse_xml_models import Model, XmlNode, get_models
+from parse_xml_models import XmlModel, XmlNode, get_models
 
 
 # XML tags that are not properties
@@ -66,7 +66,7 @@ def get_model_spec(node: XmlNode) -> Dict[str, Any]:
 
     props = []
     quals = []
-    for child in node.properties:
+    for child in node.children:
         if child.name in QUALIFIERS:
             quals.append(child)
         else:
@@ -87,7 +87,7 @@ def get_model_spec(node: XmlNode) -> Dict[str, Any]:
             raise ValueError("enum expected to be primitive")
         spec = {
             "type": "string",
-            "enum": [p.name for p in props[0].properties],
+            "enum": [p.name for p in props[0].children],
         }
     elif is_primitive:
         spec = {
@@ -188,7 +188,7 @@ def get_operation(endpoint: Endpoint, component_schemas: Dict[str, Dict]) -> Dic
     return {method: op}
 
 
-def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
+def get_spec(models: List[XmlModel], endpoints: List[Endpoint]) -> APISpec:
     spec = APISpec(
         title="OPNsense API",
         version="25.1",
