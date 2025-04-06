@@ -293,14 +293,34 @@ def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
         spec.components.schema(model.schema_path, component)
 
     for endpoint in endpoints:
-        operation = get_operation(endpoint)
+        operation = get_operation(endpoint, spec.components.schemas)
         spec.path(path=endpoint.path, description=endpoint.description, operations=operation)
 
     return spec
 
 
 def validate_spec(spec: APISpec):
-    oasv.validate_spec(spec.to_dict())  # type: ignore
+    from referencing import Resource
+    from referencing.exceptions import Unresolvable
+    try:
+        oasv.validate_spec(spec.to_dict())  # type: ignore
+    except KeyboardInterrupt:
+        raise
+    except Unresolvable as ex:
+        args = []
+        for arg in ex.args:
+            if isinstance(arg, Resource):
+                contents = str(arg.contents)
+                if len(contents) > 400:
+                    contents = f"{contents[0:400]}..."
+                arg = arg.__class__(contents=contents, specification=arg._specification)
+            args.append(arg)
+        raise ex.__class__(*args).with_traceback(None) from None
+    except Exception as ex:
+        msg = str(ex)
+        if len(msg) > 400:
+            msg = f"{msg[0:400]}..."
+        raise Exception(msg).with_traceback(None) from None
 
 
 if __name__ == "__main__":
