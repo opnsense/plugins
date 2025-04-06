@@ -73,6 +73,7 @@ class Method {
     public $method;  // HTTP method!
     public $parameters = [];
     public $doc;
+    public $requires_body;
     public $model_path_map;
 
     public function __construct(ReflectionMethod $rmethod, string $src)
@@ -89,11 +90,12 @@ class Method {
         preg_match_all($pattern, $src, $matches);
 
         $http_method = "GET";
+        $requires_body = False;
         foreach ($matches[0] as $call) {
             if (array_key_exists($call, self::$BASE_METHOD_HTTP_METHODS)) {
                 $http_method = self::$BASE_METHOD_HTTP_METHODS[$call];
-                break;
             }
+            $requires_body = $requires_body || $call === "request->getPost";
         }
 
         $matches = null;
@@ -141,6 +143,7 @@ class Method {
         $this->method = $http_method;
         $this->parameters = $params;
         $this->doc = $doc;
+        $this->requires_body = $requires_body;
         $this->model_path_map = $model_path_map;
     }
 }

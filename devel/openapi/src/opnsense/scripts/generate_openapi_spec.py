@@ -256,6 +256,12 @@ def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
     if endpoint.parameters:
         op["parameters"] = [get_parameter(p) for p in endpoint.parameters]
 
+    if method == "post" and endpoint.requires_body:
+        op["requestBody"] = {
+            "required": True,
+            "content": content,
+        }
+
     return {method: op}
 
 
