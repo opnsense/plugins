@@ -349,23 +349,27 @@
 
     // Repopulate the filter selectpicker when domain data changes, keeping user selections intact
     $(document).ajaxSuccess(function(event, xhr, settings) {
-        const matchPrefix = /^\/api\/caddy\/ReverseProxy\/(add|set|del)(Subdomain|ReverseProxy)\//;
+        const domain_changed = ['add', 'set', 'del']
+            .flatMap(action => ['Subdomain', 'ReverseProxy']
+            .map(type => `/api/caddy/ReverseProxy/${action}${type}/`))
+            .some(prefix => settings.url.startsWith(prefix));
 
-        if (matchPrefix.test(settings.url)) {
+        if (domain_changed) {
             const $filter = $('#reverseFilter');
-            const selectedValues = $filter.val() || [];
+            const selected_values = $filter.val() || [];
 
             $filter
                 .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
                 .done(function () {
                     // Keep only options that still exist
-                    const validSelections = selectedValues.filter(val =>
+                    const valid_selections = selected_values.filter(val =>
                         $filter.find(`option[value="${val}"]`).length > 0
                     );
 
                     // Restore previous selection
-                    $filter.selectpicker('val', validSelections);
+                    $filter.selectpicker('val', valid_selections);
                     $filter.selectpicker('refresh');
+                    $filter.trigger('change');
                 });
         }
     });
