@@ -26,22 +26,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Filebeat\Api;
+namespace OPNsense\Beats\Api;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
- * Class ServiceController
- * @package OPNsense\Filebeat
+ * Class SettingsController Handles settings related API actions for the HelloWorld module
+ * @package OPNsense\Beats
  */
-class ServiceController extends ApiMutableServiceControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\Beats8\Filebeat';
-    protected static $internalServiceTemplate = 'OPNsense/Filebeat';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'filebeat';
-    protected function reconfigureForceRestart()
-    {
-        return 0;
-    }
+    protected static $internalModelClass = 'OPNsense\Beats\Filebeat';
+    protected static $internalModelName = 'filebeat';
 }

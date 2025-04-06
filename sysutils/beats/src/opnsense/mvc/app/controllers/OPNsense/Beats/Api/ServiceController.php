@@ -26,37 +26,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Beats8;
+namespace OPNsense\Beats\Api;
 
-use OPNsense\Base\BaseModel;
-use OPNsense\Base\Messages\Message;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
-class Filebeat extends BaseModel
+/**
+ * Class ServiceController
+ * @package OPNsense\Beats
+ */
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function performValidation($validateFullModel = false)
+    protected static $internalServiceClass = '\OPNsense\Beats\Filebeat';
+    protected static $internalServiceTemplate = 'OPNsense/Beats';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'beats';
+    protected function reconfigureForceRestart()
     {
-        $messages = parent::performValidation($validateFullModel);
-
-        if ($validateFullModel || $this->modules->enabled->isFieldChanged() || $this->inputs->enabled->isFieldChanged()) {
-            if ($this->modules->enabled->isEmpty() && $this->inputs->enabled->isEmpty()) {
-                $messages->appendMessage(
-                    new Message(
-                        gettext("Either an input or module needs to be specified."),
-                        $this->modules->enabled->__reference
-                    )
-                );
-                $messages->appendMessage(
-                    new Message(
-                        gettext("Either an input or module needs to be specified."),
-                        $this->inputs->enabled->__reference
-                    )
-                );
-            }
-        }
-
-        return $messages;
+        return 0;
     }
 }
