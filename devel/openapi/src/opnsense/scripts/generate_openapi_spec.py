@@ -10,7 +10,7 @@ Calls `parse_endpoints.py` and `parse_xml_models.py` if their cached JSON output
 
 import os
 from collections import defaultdict
-from typing import Any, Dict, List, Literal, TypeAlias
+from typing import Any, Dict, List, Literal, Tuple, TypeAlias
 
 import openapi_spec_validator as oasv
 from apispec import APISpec
@@ -18,128 +18,41 @@ from apispec import APISpec
 from parse_endpoints import Endpoint, Parameter, get_endpoints
 from parse_xml_models import Model, XmlNode, get_models
 
-SpecType: TypeAlias = Literal["string"] | Literal["boolean"] | Literal["integer"] | Literal["number"] | Literal["array"] | Literal["object"]
 
-# Given a Field class from PHP, get the OpenApi data type
-FIELD_TO_SPEC_TYPE: Dict[str, SpecType] = defaultdict(
-    lambda: "string",
-    {
-        "AccountField": "array",
-        "AliasField": "array",
-        "ArrayField": "array",
-        "AuthenticationServerField": "array",
-        "AuthGroupField": "array",
-        "AutoNumberField": "integer",
-        "BooleanField": "boolean",
-        "CaContainerField": "object",
-        "CAsField": "array",
-        "CertificateContainerField": "object",
-        "CertificateField": "array",
-        "CertificatesField": "array",
-        "CharonLogLevelField": "array",
-        "CheckipField": "array",
-        "ClientField": "array",
-        "ConfigdActionsField": "array",
-        "ConnnectionField": "array",
-        "ContainerField": "object",
-        "CountryField": "array",
-        "CSVListField": "array",
-        "CustomPolicyField": "object",
-        "ExitNodeField": "array",
-        "FilterRuleContainerField": "object",
-        "FilterRuleField": "array",
-        "GatewayField": "array",
-        "GroupField": "array",
-        "GroupMembershipField": "array",
-        "InstanceField": "array",
-        "IntegerField": "integer",
-        "InterfaceField": "array",
-        "InterfaceField": "array",
-        "InterfaceField": "array",
-        "IPsecProposalField": "array",
-        "JsonKeyValueStoreField": "array",
-        "LaggInterfaceField": "array",
-        "MemberField": "array",
-        "ModelRelationField": "array",
-        "NeighborField": "array",
-        "NetworkAliasField": "array",
-        "NumericField": "number",
-        "OpenVPNServerField": "array",
-        "OptionField": "array",
-        "PolicyContentField": "array",
-        "PolicyRulesField": "array",
-        "PoolsField": "array",
-        "PortField": "array",
-        "PrivField": "array",
-        "PrivField": "array",
-        "ProtocolField": "array",
-        "ScheduleField": "array",
-        "ServerField": "array",
-        "ServiceField": "array",
-        "SourceNatRuleContainerField": "object",
-        "SourceNatRuleField": "array",
-        "SPDField": "array",
-        "TosField": "array",
-        "TunableField": "array",
-        "UnboundInterfaceField": "array",
-        "UserGroupField": "array",
-        "VipField": "array",
-        "VipInterfaceField": "array",
-        "VirtualIPField": "array",
-        "VlanInterfaceField": "array",
-        "VTIField": "array",
-    },
-)
+# XML tags that are not properties
+QUALIFIERS = [
+    "Mask",  # regex pattern
+    "ValidationMessage", # blah
+    "Constraints", # more complex
+    "Default",
+    "Required",
+    "Multiple",
+    "BlankDesc",
+]
 
 
-# OpenApi primitives can only have these constraints. Any other tags in the XML need to be
-# understood and processed (e.g. OptionValues implies an enum).
-PRIMITIVE_VALIDATORS: Dict[str, List[str]] = {
-    "string": [
-        "minLength",
-        "maxLength",
-        "format",
-        "pattern",
-    ],
-    "boolean": [],  # TODO
-    "integer": [
-        "minimum",
-        "exclusiveMinimum",
-        "maximum",
-        "exclusiveMaximum",
-    ],
-    "number": [],  # TODO
-}
-
-CONSTRAINTS: Dict[str, List[str]] = {
-}
-
-
-def get_spec_type(node: XmlNode) -> SpecType | None:
-    """
-    If the element hs a type attribute, we can look it up. But some elements are freeform objects
-    without a type attribute.
-
-    ASSUMPTION: elements without a type, where no children have a type either, are not objects;
-    they are either properties of objects, or property constraints, or property modifiers
-    """
-    field_type = node.type
-
-    if field_type is None:
-        def has_typed_children(node: XmlNode) -> bool:
-            return (
-                node.type is not None or
-                any(has_typed_children(child) for child in node.properties) or
-                False
-            )
-        if has_typed_children(node):
-            return "object"
-        return None
-    return FIELD_TO_SPEC_TYPE[field_type]
+ARRAY_FIELD_TYPES = [
+    "AliasField",
+    "ArrayField",
+    "CAsField",
+    "CertificatesField",
+    "ClientField",
+    "ConnnectionField",
+    "FilterRuleField",
+    "GatewayField",
+    "GroupField",
+    "InstanceField",
+    "NeighborField",
+    "PolicyRulesField",
+    "ServerField",
+    "SourceNatRuleField",
+    "SPDField",
+    "TunableField",
+    "VipField",
+    "VTIField"
+]
 
 
-# Played around with ways to type this output, and it doesn't seem worth it.
-# A dict is wanted, and the logic is all in here.
 def get_model_spec(node: XmlNode) -> Dict[str, Any]:
     """
     Does the heavy lifting. The output becomes the schema for the request body or response, for
@@ -151,64 +64,51 @@ def get_model_spec(node: XmlNode) -> Dict[str, Any]:
     - the parent is a property or primitive
     """
 
-    spec: Dict[str, Any] = {}
+    props = []
+    quals = []
+    for child in node.properties:
+        if child.name in QUALIFIERS:
+            quals.append(child)
+        else:
+            props.append(child)
 
-    _type = get_spec_type(node)
-    if _type is not None:
-        spec["type"] = _type
+    is_primitive = not any(props)
+    is_multiple = any(q for q in quals if q.name == "Multiple")
+    is_array = is_multiple
+    is_enum = any(p for p in props if p.name == "OptionValues")
 
-    match _type:
-        case None:
-            pass
+    has_single_child = len(props) == 1
+    if has_single_child:
+        prop = props[0]
+        is_array = is_multiple or prop.type in ARRAY_FIELD_TYPES
 
-        case "array":
-            # In an OpenApi spec, the element is defined by the `items` property of the
-            # array, but in the XML, a single tag defines the element and the array of it.
-            # So, hack a new node so we can isolate the logic with a recursive call.
-            #
-            # AFAICS, array types are always object, and arrays are never mixed.
-            # Arrays of primitives are defined by the Multiple attribute, so will not
-            # hit this case.
+    if is_enum:
+        if not has_single_child:
+            raise ValueError("enum expected to be primitive")
+        spec = {
+            "type": "string",
+            "enum": [p.name for p in props[0].properties],
+        }
+    elif is_primitive:
+        spec = {
+            "type": "string",
+        }
+    else:
+        _props = {prop.name: get_model_spec(prop) for prop in props}
+        spec = {
+            "type": "object",
+            "properties": _props,
+        }
 
-            item_node = XmlNode(
-                type="ContainerField",
-                name=node.name,
-                value=node.value,
-                properties=node.properties,
-            )
-
-            item_type = get_model_spec(item_node)
-            spec["items"] = item_type
-
-        case "object":
-            spec["properties"] = props = {}
-            required = []
-            for prop in node.properties:
-                pd = get_model_spec(prop)
-                if pd.pop("required", False):
-                    required.append(prop.name)
-                props[prop.name] = pd
-            if required:
-                spec["required"] = required
-
-        case _:
-            for prop in node.properties:
-                # also: nullable, readOnly, writeOnly
-                if prop.name in PRIMITIVE_VALIDATORS[_type]:
-                    spec[prop.name] = prop.value
-                else:
-                    # TODO: collect these and handle them. E.g. Mask, Multiple. They ought to be
-                    # in the FieldType.
-                    # logger.warning(f"{prop.name} is not valid for {_type}")
-                    pass
-
-
-    # props = [get_model_spec(prop) for prop in node.properties]
-    # spec["properties"] = props
+    if is_array or is_multiple:
+        spec = {
+            "type": "array",
+            "items": spec,
+        }
     return spec
 
 
-def get_parameter(param: Parameter) -> Dict:
+def get_path_parameter_spec(param: Parameter) -> Dict:
     return {
         "in": "path",
         "name": param.name,
@@ -217,16 +117,38 @@ def get_parameter(param: Parameter) -> Dict:
     }
 
 
-def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
-    method = endpoint.method.lower()
+def resolve_component_path(
+    endpoint: Endpoint,
+    component_schemas: Dict[str, Dict]
+) -> Tuple[str | None, str | None]:
 
     client_prop = None
     if endpoint.model and endpoint.model_path_map:
         client_prop, model_path = endpoint.model_path_map.split(":", maxsplit=2)
-        model_path = endpoint.model + "/properties/" + model_path.replace(".", "/properties/")
+        breadcrumbs = model_path.split(".")
+        tree: Dict[str, Dict] = component_schemas.get(endpoint.model)  # type: ignore
+        model_path = endpoint.model
+        while breadcrumbs:
+            prop = breadcrumbs[0]
+            if "properties" in tree:
+                tree = tree["properties"][prop]
+                model_path = f"{model_path}/properties/{prop}"
+                breadcrumbs = breadcrumbs[1:]
+            elif "items" in tree:
+                tree = tree["items"]
+                model_path = f"{model_path}/items"
+            else:
+                raise KeyError(f"could not find {prop} in {model_path}")
     else:
-        model_path = endpoint.model or "status"
+        model_path = endpoint.model
 
+    return client_prop, model_path
+
+
+def get_operation(endpoint: Endpoint, component_schemas: Dict[str, Dict]) -> Dict[str, Any]:
+    client_prop, model_path = resolve_component_path(endpoint, component_schemas)
+
+    model_path = model_path or "status"
     schema = {"$ref": f"#/components/schemas/{model_path}"}
     if client_prop:
         schema = {
@@ -249,13 +171,14 @@ def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
         },
     }
 
-    op: Dict[str, Any] = {
+    op = {
         "operationId": endpoint.operation_id,
         "responses": responses,
     }
     if endpoint.parameters:
-        op["parameters"] = [get_parameter(p) for p in endpoint.parameters]
+        op["parameters"] = [get_path_parameter_spec(p) for p in endpoint.parameters]
 
+    method = endpoint.method.lower()
     if method == "post" and endpoint.requires_body:
         op["requestBody"] = {
             "required": True,
@@ -265,10 +188,6 @@ def get_operation(endpoint: Endpoint) -> Dict[str, Any]:
     return {method: op}
 
 
-# The APISpec library is looking less like it's worth the import. It saves little effort, and
-# doesn't validate the spec.
-# Left in for now, but will likely just build a dict directly.
-from apispec import APISpec
 def get_spec(models: List[Model], endpoints: List[Endpoint]) -> APISpec:
     spec = APISpec(
         title="OPNsense API",
