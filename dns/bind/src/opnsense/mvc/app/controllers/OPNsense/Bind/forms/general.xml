@@ -195,4 +195,16 @@
         <advanced>true</advanced>
         <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>DNSSEC</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.dnssecpolicycustom</id>
+        <label>custom DNSSEC policy</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Configure <code>dnssec-policy "custom" { ... };</code> with the parameters specified within this field. This 'dnssec-policy' can be assigned to primary zones.<br>Example:<br><code>keys {</code><br><code>&nbsp;&nbsp;ksk key-directory lifetime unlimited algorithm 15;</code><br><code>&nbsp;&nbsp;zsk key-directory lifetime P60D algorithm 15;</code><br><code>};</code><br><code>nsec3param;</code>]]></help>
+    </field>
 </form>
