@@ -230,6 +230,13 @@
         // Populate domain filter selectpicker
         $('#reverseFilter').fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains');
 
+        // Clear domain filter selectpicker
+        $('#reverseFilterClear').on('click', function () {
+            $('#reverseFilter').selectpicker('val', []);
+            $('#reverseFilter').selectpicker('refresh');
+            $('#reverseFilter').trigger('change');
+        });
+
         // Reconfigure button with custom validation
         $("#reconfigureAct").SimpleActionButton({
             onPreAction: function() {
@@ -410,9 +417,19 @@
         overflow-y: auto;
         overflow-x: hidden;
     }
+    #reverseFilterClear {
+        border-right: none;
+    }
+    #add_filter_container .bootstrap-select > .dropdown-toggle {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
+    <button type="button" id="reverseFilterClear" class="btn btn-default" title="Clear Selection">
+        <i class="fa fa-fw fa-times"></i>
+    </button>
     <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>

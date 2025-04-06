@@ -28,7 +28,8 @@ Plugin Changelog
     * Grids format domains and upstreams with protocol, domain, port and path in a single line
     * Layer4 and Reverse Proxy now use the same volt template
     * Search handler buttons added to domain and subdomain grids
-    * Step buttons have been removed since they are redundant
+    * Step buttons (Add Domain, Add Handler) have been removed since they are redundant
+    * Success messages on configuration apply have been removed, only errors will be shown
     * Tabs use URL hash to preserve selection on refresh
 
 1.8.4
