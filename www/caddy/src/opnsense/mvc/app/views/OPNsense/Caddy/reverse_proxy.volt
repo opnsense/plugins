@@ -97,13 +97,18 @@
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
                             commands.search_handlers = {
                                 method: function () {
-                                    const rowUuid = $(this).data("row-id");
-                                    if (!rowUuid) return;
+                                    const row_uuid = $(this).data("row-id");
+                                    if (!row_uuid) return;
 
+                                    // Refresh selectpicker with latest data
                                     $('#reverseFilter')
-                                        .selectpicker('val', [rowUuid])
-                                        .selectpicker('refresh')
-                                        .trigger('change');
+                                        .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                                        .done(function () {
+                                            $('#reverseFilter')
+                                                .selectpicker('val', [row_uuid])
+                                                .selectpicker('refresh')
+                                                .trigger('change');
+                                        });
 
                                     $('#maintabs a[href="#handlers"]').tab('show');
                                 },
@@ -345,33 +350,6 @@
         updateServiceControlUI('caddy');
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
         $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
-    });
-
-    // Repopulate the filter selectpicker when domain data changes, keeping user selections intact
-    $(document).ajaxSuccess(function(event, xhr, settings) {
-        const domain_changed = ['add', 'set', 'del']
-            .flatMap(action => ['Subdomain', 'ReverseProxy']
-            .map(type => `/api/caddy/ReverseProxy/${action}${type}/`))
-            .some(prefix => settings.url.startsWith(prefix));
-
-        if (domain_changed) {
-            const $filter = $('#reverseFilter');
-            const selected_values = $filter.val() || [];
-
-            $filter
-                .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
-                .done(function () {
-                    // Keep only options that still exist
-                    const valid_selections = selected_values.filter(val =>
-                        $filter.find(`option[value="${val}"]`).length > 0
-                    );
-
-                    // Restore previous selection
-                    $filter.selectpicker('val', valid_selections);
-                    $filter.selectpicker('refresh');
-                    $filter.trigger('change');
-                });
-        }
     });
 
 </script>
