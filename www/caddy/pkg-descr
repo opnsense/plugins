@@ -27,6 +27,7 @@ Plugin Changelog
     * Grids now lazy load on tab switch for improved performance
     * Grids format domains and upstreams with protocol, domain, port and path in a single line
     * Layer4 and Reverse Proxy now use the same volt template
+    * Search handler buttons added to domain and subdomain grids
     * Step buttons have been removed since they are redundant
     * Tabs use URL hash to preserve selection on refresh
 

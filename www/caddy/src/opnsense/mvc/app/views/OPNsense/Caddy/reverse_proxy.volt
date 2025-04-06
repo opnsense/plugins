@@ -89,6 +89,32 @@
             if (grid_ids.length > 0) {
                 grid_ids.forEach(function(grid_id) {
                     if (!all_grids[grid_id]) {
+                        // Define commands only for the specific grids
+                        let commands = {};
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                        if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
+                            commands.search_handlers = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    $('#reverseFilter')
+                                        .selectpicker('val', [rowUuid])
+                                        .selectpicker('refresh')
+                                        .trigger('change');
+
+                                    $('#maintabs a[href="#handlers"]').tab('show');
+                                },
+                                classname: 'fa fa-fw fa-search',
+                                title: "{{ lang._('Search Handlers') }}",
+                                sequence: 20
+                            };
+                        }
+
+{% endif %}
+
                         all_grids[grid_id] = $("#" + grid_id)
                         .UIBootgrid({
                             search: `/api/caddy/ReverseProxy/search${grid_id}/`,
@@ -154,9 +180,11 @@
                                     },
                                 },
                             },
+                            commands: commands
                         });
 
                         $("#" + grid_id).wrap('<div class="bootgrid-box"></div>');
+
                     }
 
 {% if entrypoint == 'reverse_proxy' %}
@@ -311,6 +339,30 @@
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
         $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
     });
+
+    // Repopulate the filter selectpicker when domain data changes, keeping user selections intact
+    $(document).ajaxSuccess(function(event, xhr, settings) {
+        const matchPrefix = /^\/api\/caddy\/ReverseProxy\/(add|set|del)(Subdomain|ReverseProxy)\//;
+
+        if (matchPrefix.test(settings.url)) {
+            const $filter = $('#reverseFilter');
+            const selectedValues = $filter.val() || [];
+
+            $filter
+                .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                .done(function () {
+                    // Keep only options that still exist
+                    const validSelections = selectedValues.filter(val =>
+                        $filter.find(`option[value="${val}"]`).length > 0
+                    );
+
+                    // Restore previous selection
+                    $filter.selectpicker('val', validSelections);
+                    $filter.selectpicker('refresh');
+                });
+        }
+    });
+
 </script>
 
 <style>
@@ -393,7 +445,7 @@
             <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy)}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '9em'})}}
             </div>
         </div>
 
@@ -401,7 +453,7 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain)}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '9em'})}}
             </div>
         </div>
     </div>
