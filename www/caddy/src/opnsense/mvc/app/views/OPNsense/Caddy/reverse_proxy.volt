@@ -235,10 +235,28 @@
         // Safe reload on filter change, ensures all grids are initalized beforehand
         $('#reverseFilter').change(function () {
             Object.keys(all_grids).forEach(function (grid_id) {
-                if (['ReverseProxy', 'Subdomain', 'Handle'].includes(grid_id)) {
+                if ([
+                    '{{ formGridReverseProxy["table_id"] }}',
+                    '{{ formGridSubdomain["table_id"] }}',
+                    '{{ formGridHandle["table_id"] }}'
+                ].includes(grid_id)) {
                     all_grids[grid_id].bootgrid('reload');
                 }
+
             });
+        });
+
+        // Autofill domain and subdomain when add dialog is opened
+        $('#{{ formGridHandle["edit_dialog_id"] }}, #{{ formGridSubdomain["edit_dialog_id"] }}').on('opnsense_bootgrid_mapped', function(e, actionType) {
+            if (actionType === 'add') {
+                const selectedDomains = $('#reverseFilter').val();
+
+                if (selectedDomains && selectedDomains.length > 0) {
+                    $('#handle\\.reverse, #handle\\.subdomain, #subdomain\\.reverse')
+                        .selectpicker('val', selectedDomains)
+                        .selectpicker('refresh');
+                }
+            }
         });
 
 {% endif %}
@@ -343,7 +361,7 @@
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
-    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="7" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 
