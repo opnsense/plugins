@@ -126,15 +126,16 @@
                                     const rowUuid = $(this).data("row-id");
                                     if (!rowUuid) return;
 
-                                    const open_add_dialog = function (selectValues) {
+                                    open_add_dialog = function (selectValues) {
                                         update_filter(selectValues);
 
-                                        setTimeout(function () {
+                                        // Ensure selectpicker has values selected before click on add button
+                                        $('#reverseFilter').one('changed.bs.select', function (e) {
                                             $("#" + "{{ formGridHandle['table_id'] }}")
                                                 .closest('.bootgrid-box')
                                                 .find("button[data-action='add']")
                                                 .trigger('click');
-                                        }, 200);
+                                        });
                                     };
 
                                     // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
@@ -154,7 +155,6 @@
                                 sequence: 10
                             };
                         }
-
 
 {% endif %}
 
@@ -384,6 +384,9 @@
                 });
             });
         });
+
+        // Trigger bootgrid setup for handlers tab too (even if not active) to ensure command buttons always work
+        $('a[href="#handlers"]').trigger('shown.bs.tab');
 
         updateServiceControlUI('caddy');
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
