@@ -97,20 +97,34 @@
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
                             commands.search_handlers = {
                                 method: function () {
-                                    const row_uuid = $(this).data("row-id");
-                                    if (!row_uuid) return;
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
 
-                                    // Refresh selectpicker with latest data
-                                    $('#reverseFilter')
-                                        .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
-                                        .done(function () {
-                                            $('#reverseFilter')
-                                                .selectpicker('val', [row_uuid])
-                                                .selectpicker('refresh')
-                                                .trigger('change');
+                                    const update_filter = function (values) {
+                                        $('#reverseFilter')
+                                            // Refresh selectpicker with latest data so button always works even on new domains
+                                            .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                                            .done(function () {
+                                                $('#reverseFilter')
+                                                    .selectpicker('val', values)
+                                                    .selectpicker('refresh')
+                                                    .trigger('change');
+                                            });
+
+                                        $('#maintabs a[href="#handlers"]').tab('show');
+                                    };
+
+                                    // Resolve reverse domains if this is a subdomain row
+                                    if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
+                                        ajaxGet(`/api/caddy/ReverseProxy/get{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
+                                            const reverseUuids = rowData?.subdomain?.reverse || {};
+                                            const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
+                                            const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
+                                            update_filter(selectValues);
                                         });
-
-                                    $('#maintabs a[href="#handlers"]').tab('show');
+                                    } else {
+                                        update_filter([rowUuid]);
+                                    }
                                 },
                                 classname: 'fa fa-fw fa-search',
                                 title: "{{ lang._('Search Handlers') }}",
