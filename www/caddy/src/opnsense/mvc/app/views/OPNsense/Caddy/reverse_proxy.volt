@@ -95,42 +95,66 @@
 {% if entrypoint == 'reverse_proxy' %}
 
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
-                            commands.search_handlers = {
+                            const update_filter = function (selectValues) {
+                                $('#reverseFilter')
+                                    // Refresh selectpicker with latest data so button always works even on new domains
+                                    .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                                    .done(function () {
+                                        $('#reverseFilter')
+                                            .selectpicker('val', selectValues)
+                                            .selectpicker('refresh')
+                                            .trigger('change');
+                                    });
+
+                                $('#maintabs a[href="#handlers"]').tab('show');
+                            };
+
+                            commands.search_handler = {
                                 method: function () {
                                     const rowUuid = $(this).data("row-id");
                                     if (!rowUuid) return;
 
-                                    const update_filter = function (values) {
-                                        $('#reverseFilter')
-                                            // Refresh selectpicker with latest data so button always works even on new domains
-                                            .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
-                                            .done(function () {
-                                                $('#reverseFilter')
-                                                    .selectpicker('val', values)
-                                                    .selectpicker('refresh')
-                                                    .trigger('change');
-                                            });
+                                    update_filter([rowUuid]);
+                                },
+                                classname: 'fa fa-fw fa-search',
+                                title: "{{ lang._('Search Handler') }}",
+                                sequence: 20
+                            };
 
-                                        $('#maintabs a[href="#handlers"]').tab('show');
+                            commands.add_handler = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    const open_add_dialog = function (selectValues) {
+                                        update_filter(selectValues);
+
+                                        setTimeout(function () {
+                                            $("#" + "{{ formGridHandle['table_id'] }}")
+                                                .closest('.bootgrid-box')
+                                                .find("button[data-action='add']")
+                                                .trigger('click');
+                                        }, 200);
                                     };
 
-                                    // Resolve reverse domains if this is a subdomain row
+                                    // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
                                     if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
                                         ajaxGet(`/api/caddy/ReverseProxy/get{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
                                             const reverseUuids = rowData?.subdomain?.reverse || {};
                                             const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
                                             const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
-                                            update_filter(selectValues);
+                                            open_add_dialog(selectValues);
                                         });
                                     } else {
-                                        update_filter([rowUuid]);
+                                        open_add_dialog([rowUuid]);
                                     }
                                 },
-                                classname: 'fa fa-fw fa-search',
-                                title: "{{ lang._('Search Handlers') }}",
-                                sequence: 20
+                                classname: 'fa fa-fw fa-plus',
+                                title: "{{ lang._('Add Handler') }}",
+                                sequence: 10
                             };
                         }
+
 
 {% endif %}
 
@@ -458,7 +482,7 @@
             <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '9em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '11em'})}}
             </div>
         </div>
 
@@ -466,7 +490,7 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '9em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '11em'})}}
             </div>
         </div>
     </div>
