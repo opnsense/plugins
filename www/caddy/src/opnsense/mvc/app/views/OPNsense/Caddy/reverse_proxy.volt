@@ -451,7 +451,7 @@
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
     <button type="button" id="reverseFilterClear" class="btn btn-default" title="Clear Selection">
-        <i class="fa fa-fw fa-times"></i>
+        <i class="fa fa-fw fa-filter-circle-xmark"></i>
     </button>
     <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
