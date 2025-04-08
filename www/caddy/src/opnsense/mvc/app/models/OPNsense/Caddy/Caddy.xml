@@ -25,31 +25,31 @@
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
                     <cloudflare>Cloudflare</cloudflare>
-                    <duckdns>Duck DNS</duckdns>
-                    <gandi>Gandi</gandi>
-                    <ionos>IONOS</ionos>
-                    <desec>Desec</desec>
-                    <porkbun>Porkbun</porkbun>
-                    <acmedns>ACME-DNS</acmedns>
-                    <azure>Azure</azure>
-                    <ovh>OVH</ovh>
-                    <namecheap>Namecheap</namecheap>
-                    <powerdns>PowerDNS</powerdns>
-                    <linode>Linode</linode>
-                    <hexonet>Hexonet</hexonet>
-                    <mailinabox>Mail-in-a-Box</mailinabox>
-                    <rfc2136>RFC2136</rfc2136>
-                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
-                    <bunny>Bunny</bunny>
-                    <scaleway>Scaleway</scaleway>
-                    <acmeproxy>ACME Proxy</acmeproxy>
-                    <inwx>INWX</inwx>
-                    <netcup>Netcup</netcup>
-                    <namedotcom>Name.com</namedotcom>
-                    <infomaniak>Infomaniak</infomaniak>
-                    <directadmin>DirectAdmin</directadmin>
-                    <vultr>Vultr</vultr>
-                    <hetzner>Hetzner</hetzner>
+                    <duckdns>Duck DNS (optional)</duckdns>
+                    <gandi>Gandi (optional)</gandi>
+                    <ionos>IONOS (optional)</ionos>
+                    <desec>Desec (optional)</desec>
+                    <porkbun>Porkbun (optional)</porkbun>
+                    <acmedns>ACME-DNS (optional)</acmedns>
+                    <azure>Azure (optional)</azure>
+                    <ovh>OVH (optional)</ovh>
+                    <namecheap>Namecheap (optional)</namecheap>
+                    <powerdns>PowerDNS (optional)</powerdns>
+                    <linode>Linode (optional)</linode>
+                    <hexonet>Hexonet (optional)</hexonet>
+                    <mailinabox>Mail-in-a-Box (optional)</mailinabox>
+                    <rfc2136>RFC2136 (optional)</rfc2136>
+                    <dnsmadeeasy>DNS Made Easy (optional)</dnsmadeeasy>
+                    <bunny>Bunny (optional)</bunny>
+                    <scaleway>Scaleway (optional)</scaleway>
+                    <acmeproxy>ACME Proxy (optional)</acmeproxy>
+                    <inwx>INWX (optional)</inwx>
+                    <netcup>Netcup (optional)</netcup>
+                    <namedotcom>Name.com (optional)</namedotcom>
+                    <infomaniak>Infomaniak (optional)</infomaniak>
+                    <directadmin>DirectAdmin (optional)</directadmin>
+                    <vultr>Vultr (optional)</vultr>
+                    <hetzner>Hetzner (optional)</hetzner>
                     <digitalocean>DigitalOcean (optional)</digitalocean>
                     <route53>Route53 (optional)</route53>
                     <googleclouddns>Google Cloud DNS (optional)</googleclouddns>
