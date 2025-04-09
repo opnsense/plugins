@@ -24,7 +24,7 @@
             <TlsDnsProvider type="OptionField">
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
-                    <cloudflare>Cloudflare</cloudflare>
+                    <cloudflare>Cloudflare (embedded)</cloudflare>
                     <duckdns>Duck DNS (optional)</duckdns>
                     <gandi>Gandi (optional)</gandi>
                     <ionos>IONOS (optional)</ionos>
