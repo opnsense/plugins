@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.arp_ndp_logging.general.enabled') and OPNsense.arp_ndp_logging.general.enabled == '1' %}
+arp_ndp_logging_enable="YES"
+{% else %}
+arp_ndp_logging_enable="NO"
+{% endif %}
