@@ -31,7 +31,7 @@
                 <advanced>true</advanced>
             </field>
             <field>
-                <id>nginx.http.enabled</id>
+                <id>nginx.http.sendfile</id>
                 <label>Enable sendfile</label>
                 <type>checkbox</type>
                 <help>Enable sendfile support (faster).</help>
@@ -56,13 +56,25 @@
             </field>
             <field>
                 <id>nginx.http.server_names_hash_bucket_size</id>
-                <label>Hash Bucket Size</label>
+                <label>Server Names Hash Bucket Size</label>
                 <type>text</type>
                 <advanced>true</advanced>
             </field>
             <field>
                 <id>nginx.http.server_names_hash_max_size</id>
                 <label>Server Names Hash Max Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.variables_hash_bucket_size</id>
+                <label>Variables Hash Bucket Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.variables_hash_max_size</id>
+                <label>Variables Hash Max Size</label>
                 <type>text</type>
                 <advanced>true</advanced>
             </field>

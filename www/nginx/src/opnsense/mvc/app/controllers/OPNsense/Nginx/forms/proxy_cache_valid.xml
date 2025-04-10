@@ -1,0 +1,22 @@
+<form>
+  <field>
+    <id>proxy_cache_valid.description</id>
+    <label>Description</label>
+    <type>text</type>
+    <help>Brief description for reference.</help>
+  </field>
+  <field>
+    <id>proxy_cache_valid.code</id>
+    <label>Code(s)</label>
+    <allownew>true</allownew>
+    <style>tokenize</style>
+    <type>select_multiple</type>
+    <help>Enter a Respone codes or use "any" to cache any responses.</help>
+  </field>
+  <field>
+    <id>proxy_cache_valid.valid</id>
+    <label>Caching Time</label>
+    <type>text</type>
+    <help>Specify caching time in minutes.</help>
+  </field>
+</form>
