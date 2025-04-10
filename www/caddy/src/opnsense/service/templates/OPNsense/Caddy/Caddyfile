@@ -410,6 +410,7 @@ http://{{ domain }} {
 {% macro reverse_proxy_configuration(handle) %}
     {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
         {{ handle_accesslist(handle.accesslist) }}
+        {{ render_basic_auth(handle.basicauth) }}
         {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
             {% include "OPNsense/Caddy/includeAuthProvider" %}
@@ -558,14 +559,11 @@ http://{{ domain }} {
 
 {#
 #   Macro: render_handles
-#   Purpose: Renders the handles in the correct order (path-specific first, then catch-all),
-#            including basic authentication configuration.
+#   Purpose: Renders the handles in the correct order (path-specific first, then catch-all).
 #   Parameters:
 #   @param handles (list): A list of handle objects to be rendered.
-#   @param basicauth_uuids (string): A comma-separated list of UUIDs for basic authentication.
 #}
-{% macro render_handles(handles, basicauth_uuids=None) %}
-    {{ render_basic_auth(basicauth_uuids) }}
+{% macro render_handles(handles) %}
     {% for handle in handles %}
         {% if handle.enabled|default("0") == "1" and handle.HandlePath %}
             {{ reverse_proxy_configuration(handle) }}
@@ -634,7 +632,8 @@ http://{{ domain }} {
                         {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
                         {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
                         {# All IPs not matched by accesslist will continue processing #}
-                        {{ render_handles(subdomain_handles, subdomain.basicauth) }}
+                        {{ render_basic_auth(subdomain.basicauth) }}
+                        {{ render_handles(subdomain_handles) }}
                     }
                 {% endif %}
             {% endfor %}
@@ -642,7 +641,8 @@ http://{{ domain }} {
             {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
             {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}
             {# All IPs not matched by accesslist will continue processing #}
-            {{ render_handles(domain_handles, reverse.basicauth) }}
+            {{ render_basic_auth(reverse.basicauth) }}
+            {{ render_handles(domain_handles) }}
         }
     {% endif %}
 {% endfor %}

@@ -13,6 +13,25 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+1.8.5
+
+* Add: basic_auth per handler (opnsense/plugins/issues/4619)
+* Change: the ACL has been changed to "page-caddy" in "System: Access: Privileges". Privilege must be reassigned if used. (opnsense/plugins/issues/4623)
+* Change: standalone certificate widget has been removed, use system default certificate widget instead. (opnsense/plugins/pull/4637)
+* Cleanup: UI improvements (opnsense/plugins/pull/4634)
+    * Cleanup of styles, formatters, and dialog layouts
+    * Dialog element hiding logic was improved
+    * "Filter by Domain" can filter subdomains
+    * "Filter by Domain" will preselect domain and subdomain in handler add dialog
+    * Grids are now responsive with automatic overflow on small screens
+    * Grids now lazy load on tab switch for improved performance
+    * Grids format domains and upstreams with protocol, domain, port and path in a single line
+    * "Layer4 Proxy" and "Reverse Proxy" now use the same volt template
+    * "Search Handler" and "Add Handler" buttons added to domain and subdomain grids
+    * Step buttons (Add Domain, Add Handler) have been removed since they are redundant
+    * Success messages on configuration apply have been removed, only errors will be shown
+    * Tabs use URL hash to preserve selection on refresh
+
 1.8.4
 
 * Add: Client Auth (mTLS) to domains (opnsense/plugins/issues/4089)
