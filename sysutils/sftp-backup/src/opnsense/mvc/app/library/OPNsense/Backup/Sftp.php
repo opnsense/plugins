@@ -75,10 +75,19 @@ class Sftp extends Base implements IBackupProvider
                 "value" => null
            ],
            [
+                "name" => "prefixhostname",
+                "type" => "checkbox",
+                "label" => gettext("Prefix hostname to backupfile"),
+                "help" => gettext("Normally the config xml will be written as config-stamp.xml, with this option set " .
+                "the filename will use the systems host and domain name."),
+                "value" => null
+           ],
+           [
                 "name" => "backupcount",
                 "type" => "text",
                 "label" => gettext("Backup Count"),
-                "value" => null
+                "help" => gettext("Amount of backups to be kept at remote location. Set to 0 to upload latest only without housekeeping"),
+                "value" => 60
            ],
            [
                 "name" => "password",
@@ -221,41 +230,52 @@ class Sftp extends Base implements IBackupProvider
      */
     public function backup()
     {
-        if ($this->model->enabled->isEmpty()) {
+        $cnf = Config::getInstance();
+        if (!$this->model->enabled->isEmpty() && $cnf->isValid()) {
+            if ($this->model->prefixhostname->isEmpty()) {
+                $fileprefix = "config-";
+            } else {
+                $config = $cnf->object();
+                $fileprefix = sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain);
+            }
+            /**
+             * Collect most recent backup, since /conf/backup/ always contains the latests, we can use the filename
+             * for easy comparison.
+             **/
+            $all_backups = glob('/conf/backup/config-*.xml');
+            $most_recent = $all_backups[count($all_backups) - 1];
+            $confdata = file_get_contents($most_recent);
+            if (!$this->model->password->isEmpty()) {
+                $confdata = $this->encrypt($confdata, (string)$this->model->password);
+            }
+            $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
+            $target_filename = strtolower(preg_replace('/^config-/', $fileprefix, basename($most_recent)));
+
+            if (!in_array($target_filename, $remote_backups)) {
+                syslog(LOG_NOTICE, "backup configuration as " . $target_filename);
+                $tmpfilename = sprintf("/conf/backup/sftp/%s", $target_filename);
+                File::file_put_contents($tmpfilename, $confdata, 0600);
+                $this->put($tmpfilename, $target_filename);
+                unlink($tmpfilename);
+                $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
+            }
+            /* cleanup only if backup count is > 0*/
+            if ($this->model->backupcount->asFloat() > 0) {
+                rsort($remote_backups);
+                if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
+                    for ($i = $this->model->backupcount->getCurrentValue(); $i < count($remote_backups); $i++) {
+                        $this->del($remote_backups[$i]);
+                    }
+                    $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
+                }
+                return $remote_backups;
+            } else {
+                return $this->ls(sprintf('%s*.xml', $fileprefix)) ?: [];
+            }
+        } else {
             /* disabled */
             return;
         }
-        /**
-         * Collect most recent backup, since /conf/backup/ always contains the latests, we can use the filename
-         * for easy comparison.
-         **/
-        $all_backups = glob('/conf/backup/config-*.xml');
-        $most_recent = $all_backups[count($all_backups) - 1];
-        $confdata = file_get_contents($most_recent);
-        if (!$this->model->password->isEmpty()) {
-            $confdata = $this->encrypt($confdata, (string)$this->model->password);
-        }
-        /* backup filename when not already on remote location */
-        $remote_backups = $this->ls('config-*.xml');
-        $target_filename = basename($most_recent);
-        if (!in_array($target_filename, $remote_backups)) {
-            syslog(LOG_NOTICE, "backup configuration as " . $target_filename);
-            $tmpfilename = sprintf("/conf/backup/sftp/%s", $target_filename);
-            File::file_put_contents($tmpfilename, $confdata, 0600);
-            $this->put($tmpfilename, $target_filename);
-            unlink($tmpfilename);
-            $remote_backups = $this->ls('config-*.xml');
-        }
-        /* cleanup */
-        rsort($remote_backups);
-        if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
-            for ($i = $this->model->backupcount->getCurrentValue(); $i < count($remote_backups); $i++) {
-                $this->del($remote_backups[$i]);
-            }
-            $remote_backups = $this->ls('config-*.xml');
-        }
-
-        return $remote_backups;
     }
 
     /**
