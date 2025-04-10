@@ -1050,7 +1050,7 @@ h6, .h6 {
     font-size: 75%; }
 
 h1, .h1 {
-  font-size: 22px;
+  font-size: 21px;
   text-transform: uppercase; }
 
 h2, .h2 {
@@ -4058,7 +4058,7 @@ tbody.collapse.in {
       line-height: 1.428571429;
       text-decoration: none;
       color: #bac3ca;
-      background-color: #273946;
+      background-color: #1d2c37;
       border: 1px solid #191919;
       margin-left: -1px;
       cursor: pointer; }
@@ -4093,7 +4093,7 @@ tbody.collapse.in {
   .pagination > .disabled > a:hover,
   .pagination > .disabled > a:focus {
     color: #bac3ca;
-    background-color: #273946;
+    background-color: #1d2c37;
     cursor: not-allowed; }
 
 
