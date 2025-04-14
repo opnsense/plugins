@@ -219,9 +219,9 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <td style="width:22%">
+                      <th style="width:22%">
                         <strong><?=gettext("UPnP IGD & PCP/NAT-PMP Settings");?></strong>
-                      </td>
+                      </th>
                       <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
                         <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
@@ -231,7 +231,7 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle text-muted"></i></a> <?=gettext("Enable");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable">
@@ -253,7 +253,7 @@ include("head.inc");
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
-                         <?=gettext("This protocol is often used by Apple-compatible systems.");?>
+                         <?=gettext("These protocols are often used by Apple-compatible systems.");?>
                        </div>
                       </td>
                     </tr>
@@ -289,7 +289,7 @@ include("head.inc");
 <?php
                         endforeach;?>
                        </select>
-                       <div class="hidden" data-for="help_for_ext_iface">
+                       <div class="hidden" data-for="help_for_iface_array">
                          <?=gettext("You can select multiple interfaces here.");?>
                        </div>
                       </td>
@@ -318,29 +318,26 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_stun_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('STUN port') ?></td>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('STUN port') ?></td>
                       <td>
                         <input name="stun_port" type="text" placeholder="3478" value="<?= !empty($pconfig['stun_port']) ? $pconfig['stun_port'] : ''  ?>" />
-                        <div class="hidden" data-for="help_for_stun_port">
-                          <?= gettext('STUN port used to predict external WAN IP.') ?>
-                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Download Speed");?></td>
+                      <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Download speed");?></td>
                       <td>
-                        <input name="download" type="text" value="<?=$pconfig['download'];?>" />
+                        <input name="download" type="text" placeholder="<?=gettext('Default interface link speed');?>" value="<?=$pconfig['download'];?>" />
                         <div class="hidden" data-for="help_for_download">
-                          <?=gettext("(Kbits/second)");?>
+                          <?=gettext("Report maximum download speed in kbit/s.");?>
                         </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_upload" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Upload Speed");?></td>
+                      <td><a id="help_for_upload" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Upload speed");?></td>
                       <td>
-                        <input name="upload" type="text" value="<?=$pconfig['upload'];?>" />
+                        <input name="upload" type="text" placeholder="<?=gettext('Default interface link speed');?>" value="<?=$pconfig['upload'];?>" />
                         <div class="hidden" data-for="help_for_upload">
-                          <?=gettext("(Kbits/second)");?>
+                          <?=gettext("Report maximum upload speed in kbit/s.");?>
                         </div>
                       </td>
                     </tr>
@@ -368,15 +365,6 @@ include("head.inc");
                        </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
-                      <td>
-                       <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
-                       <div class="hidden" data-for="help_for_permdefault">
-                         <?=gettext("By default deny access to service?");?>
-                       </div>
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -392,6 +380,15 @@ include("head.inc");
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
+                      <td>
+                       <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_permdefault">
+                         <?=gettext("By default deny access to service?");?>
+                       </div>
+                      </td>
+                    </tr>
                     <tr>
                       <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
                       <td>
@@ -412,8 +409,9 @@ include("head.inc");
                         <input name="<?= html_safe($permuser) ?>" type="text" value="<?= isset($pconfig[$permuser]) ? $pconfig[$permuser] : '' ?>" />
 <?php if ($i == 1): ?>
                         <div class="hidden" data-for="help_for_permuser">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cidr] [int port or range]");?><br/>
-                          <?=gettext("Example: allow 1024-65535 192.168.0.0/24 1024-65535");?>
+                          <?=gettext("ACL specify which client addresses and ports can be mapped, IPv6 always allowed.");?><br/>
+                          <?=gettext("Format: (allow or deny) (ext port or range) (int IP or IP/netmask) (int port or range)");?><br/>
+                          <?=gettext("Example: allow 1024-65535 192.168.1.0/24 1024-65535");?>
                         </div>
 <?php endif ?>
                       </td>
