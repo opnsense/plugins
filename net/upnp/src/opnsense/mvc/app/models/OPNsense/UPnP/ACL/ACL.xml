@@ -6,7 +6,7 @@
         </patterns>
     </page-service-upnp>
     <page-status-upnpstatus>
-        <name>Status: Universal Plug and Play</name>
+        <name>Services: Universal Plug and Play: Active Port Maps</name>
         <patterns>
             <pattern>status_upnp.php*</pattern>
         </patterns>
