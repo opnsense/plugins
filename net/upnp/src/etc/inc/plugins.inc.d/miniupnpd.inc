@@ -198,7 +198,10 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            $config_text .= "secure_mode=yes\n";
+            if (!empty($upnp_config['allow_third_party_mapping'])) {
+                $config_text .= "secure_mode=no\n";
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            }
 
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {
