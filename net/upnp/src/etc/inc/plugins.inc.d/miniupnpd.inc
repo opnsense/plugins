@@ -55,7 +55,7 @@ function miniupnpd_services()
 
     $pconfig = [];
     $pconfig['name'] = 'miniupnpd';
-    $pconfig['description'] = gettext('Universal Plug and Play');
+    $pconfig['description'] = gettext('UPnP IGD & PCP/NAT-PMP');
     $pconfig['php']['restart'] = ['miniupnpd_stop', 'miniupnpd_start'];
     $pconfig['php']['start'] = ['miniupnpd_start'];
     $pconfig['php']['stop'] = ['miniupnpd_stop'];

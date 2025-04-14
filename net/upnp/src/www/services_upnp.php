@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // sync to config
         $config['installedpackages']['miniupnpd']['config'] = $upnp;
 
-        write_config('Modified Universal Plug and Play settings');
+        write_config('Modified UPnP IGD & PCP settings');
         miniupnpd_configure_do();
         filter_configure();
         header(url_safe('Location: /services_upnp.php'));
@@ -221,7 +221,7 @@ include("head.inc");
                   <thead>
                     <tr>
                       <th style="width:22%">
-                        <strong><?=gettext("UPnP IGD & PCP/NAT-PMP Settings");?></strong>
+                        <strong><?=gettext("Service Settings");?></strong>
                       </th>
                       <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
