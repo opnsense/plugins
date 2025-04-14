@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig = [];
 
     $copy_fields = [
+        'allow_third_party_mapping',
         'download',
         'enable',
         'enable_natpmp',
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // save form data
         $upnp = [];
         // boolean types
-        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault'] as $fieldname) {
+        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'allow_third_party_mapping'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
@@ -329,6 +330,15 @@ include("head.inc");
                       <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override WAN address");?></td>
                       <td>
                         <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_allow_third_party_mapping" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow third-party mapping");?></td>
+                      <td>
+                        <input name="allow_third_party_mapping" type="checkbox" value="yes" <?=!empty($pconfig['allow_third_party_mapping']) ? "checked=\"checked\"" : ""; ?> />
+                        <div class="hidden" data-for="help_for_allow_third_party_mapping">
+                          <?=gettext("Allow adding port maps for non-requesting IP addresses.");?>
+                        </div>
                       </td>
                     </tr>
                     <tr>
