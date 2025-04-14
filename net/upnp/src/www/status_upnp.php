@@ -32,7 +32,7 @@ require_once("interfaces.inc");
 require_once("plugins.inc.d/miniupnpd.inc");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['clear'])) {
+    if (!empty($_POST['delete-all'])) {
         miniupnpd_stop();
         miniupnpd_start();
         header(url_safe('Location: /status_upnp.php'));
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $rdr_entries = array();
-exec("/sbin/pfctl -aminiupnpd -sn", $rdr_entries, $pf_ret);
+exec("/sbin/pfctl -a miniupnpd -s nat -P", $rdr_entries, $pf_ret);
 
 $service_hook = 'miniupnpd';
 include("head.inc");
@@ -62,16 +62,16 @@ include("head.inc");
 <?php
           else: ?>
           <div class="table-responsive">
-            <table class="table table-striped table-condensed table-hover">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <td><?=gettext("Ext. Port")?></td>
-                  <td><?=gettext("Internal IP")?></td>
-                  <td><?=gettext("Int. Port")?></td>
-                  <td><?=gettext("Protocol")?></td>
-                  <td><?=gettext("Source IP")?></td>
-                  <td><?=gettext("Source Port")?></td>
-                  <td><?=gettext("Description")?></td>
+                  <th><?=gettext("Internal IP")?></th>
+                  <th><?=gettext("Int. Port")?></th>
+                  <th><?=gettext("Ext. Port")?></th>
+                  <th><?=gettext("Protocol")?></th>
+                  <th><?=gettext("Source IP")?></th>
+                  <th><?=gettext("Source Port")?></th>
+                  <th><?=gettext("Description")?></th>
                 </tr>
               </thead>
               <tbody>
@@ -82,9 +82,9 @@ include("head.inc");
                   }
               ?>
                 <tr>
-                  <td><?= html_safe($matches['extport']) ?></td>
                   <td><?= html_safe($matches['intaddr']) ?></td>
                   <td><?= html_safe($matches['intport']) ?></td>
+                  <td><?= html_safe($matches['extport']) ?></td>
                   <td><?= html_safe(strtoupper($matches['proto'])) ?></td>
                   <td><?= html_safe($matches['srcaddr']) ?></td>
                   <td><?= html_safe($matches['srcport'] ?: "any") ?></td>
@@ -92,17 +92,17 @@ include("head.inc");
                 </tr>
 <?php
               endforeach;?>
+                <tr>
+                  <td colspan="7">
+                    <form method="post">
+                      <button type="submit" name="delete-all" class="btn btn-primary pull-right" value="delete-all">
+                        <i class="fa fa-trash"></i>
+                        <?=gettext("Delete all port maps")?>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
               </tbody>
-              <tfoot>
-                  <tr>
-                    <td colspan="7">
-                      <form method="post">
-                        <button type="submit" name="clear" id="clear" class="btn btn-primary" value="Clear"><?=gettext("Clear");?></button>
-                        <?=gettext("all currently connected sessions");?>.
-                      </form>
-                    </td>
-                  </tr>
-              </tfoot>
             </table>
           </div>
 <?php
