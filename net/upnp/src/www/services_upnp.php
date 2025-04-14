@@ -294,20 +294,22 @@ include("head.inc");
                        </div>
                       </td>
                     </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section class="col-xs-12">
+            <div class="content-box">
+              <div class="table-responsive">
+                <table class="table table-striped opnsense_standard_table_form">
+                  <thead>
                     <tr>
-                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
-                      <td>
-                        <select name="overridesubnet" class="selectpicker" id="overridesubnet">
-                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
-<?php for ($i = 32; $i >= 1; $i--): ?>
-                          <option value="<?= $i ?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == $i ? 'selected="selected"' : '' ?>><?= $i ?></option>
-<?php endfor ?>
-                        </select>
-                        <div class="hidden" data-for="help_for_overridesubnet">
-                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
-                        </div>
-                      </td>
+                      <th style="width:22%"><?=gettext("Advanced Settings")?></th>
+                      <th style="width:78%"></th>
                     </tr>
+                  </thead>
+                  <tbody>
                     <tr>
                       <td><a id="help_for_stun_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('STUN server') ?></td>
                       <td>
@@ -321,6 +323,26 @@ include("head.inc");
                       <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('STUN port') ?></td>
                       <td>
                         <input name="stun_port" type="text" placeholder="3478" value="<?= !empty($pconfig['stun_port']) ? $pconfig['stun_port'] : ''  ?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override WAN address");?></td>
+                      <td>
+                        <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
+                      <td>
+                        <select name="overridesubnet" class="selectpicker" id="overridesubnet">
+                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
+<?php for ($i = 32; $i >= 1; $i--): ?>
+                          <option value="<?= $i ?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == $i ? 'selected="selected"' : '' ?>><?= $i ?></option>
+<?php endfor ?>
+                        </select>
+                        <div class="hidden" data-for="help_for_overridesubnet">
+                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -339,12 +361,6 @@ include("head.inc");
                         <div class="hidden" data-for="help_for_upload">
                           <?=gettext("Report maximum upload speed in kbit/s.");?>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override WAN address");?></td>
-                      <td>
-                        <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
                       </td>
                     </tr>
                     <tr>
@@ -417,16 +433,6 @@ include("head.inc");
                       </td>
                     </tr>
 <?php endforeach ?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-          <section class="col-xs-12">
-            <div class="content-box">
-              <div class="table-responsive">
-                <table class="table table-striped">
-                  <tbody>
                     <tr>
                      <td style="width:22%; vertical-align:top">&nbsp;</td>
                      <td style="width:78%">
