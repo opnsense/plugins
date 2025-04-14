@@ -241,7 +241,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP IGD Port Mapping");?></td>
+                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP IGD port mapping");?></td>
                       <td>
                        <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_upnp">
@@ -250,7 +250,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow PCP/NAT-PMP Port Mapping");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow PCP/NAT-PMP port mapping");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -259,7 +259,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_ext_iface" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("External Interface");?></td>
+                      <td><a id="help_for_ext_iface" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("External interface");?></td>
                       <td>
                        <select class="selectpicker" name="ext_iface">
 <?php
@@ -271,12 +271,12 @@ include("head.inc");
                         endforeach;?>
                        </select>
                        <div class="hidden" data-for="help_for_ext_iface">
-                         <?=gettext("Select only your primary WAN interface (interface with your default route). Only one interface is allowed here, not multiple.");?>
+                         <?=gettext("The WAN interface containing the default gateway.");?>
                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_iface_array" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interfaces (generally LAN)");?></td>
+                      <td><a id="help_for_iface_array" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Internal interfaces");?></td>
                       <td>
                        <select class="selectpicker" name="iface_array[]" multiple="multiple">
                          <option value="lo0" <?=!empty($pconfig['iface_array']) && in_array('lo0', $pconfig['iface_array']) ? "selected=\"selected\"" : "";?>>
@@ -291,7 +291,7 @@ include("head.inc");
                         endforeach;?>
                        </select>
                        <div class="hidden" data-for="help_for_iface_array">
-                         <?=gettext("You can select multiple interfaces here.");?>
+                         <?=gettext("Select one or more internal interfaces, such as LAN.");?>
                        </div>
                       </td>
                     </tr>
@@ -342,7 +342,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
+                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Internal interface subnet override");?></td>
                       <td>
                         <select name="overridesubnet" class="selectpicker" id="overridesubnet">
                           <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
@@ -351,7 +351,7 @@ include("head.inc");
 <?php endfor ?>
                         </select>
                         <div class="hidden" data-for="help_for_overridesubnet">
-                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
+                          <?=gettext("You can override a single IPv4 LAN subnet. Useful if you are rebroadcasting service traffic across networks.");?>
                         </div>
                       </td>
                     </tr>
@@ -374,20 +374,20 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log packets");?></td>
+                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Firewall logs");?></td>
                       <td>
                        <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_logpackets">
-                         <?=gettext("Log packets handled by service rules?");?>
+                         <?=gettext("Log mapped connections.");?>
                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Use system time");?></td>
+                      <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Report system uptime");?></td>
                       <td>
                        <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_sysuptime">
-                         <?=gettext("Use system uptime instead of service uptime?");?>
+                         <?=gettext("Report system instead of service uptime.");?>
                        </div>
                       </td>
                     </tr>
@@ -411,7 +411,7 @@ include("head.inc");
                       <td>
                        <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_permdefault">
-                         <?=gettext("By default deny access to service?");?>
+                         <?=gettext("Deny access to service by default.");?>
                        </div>
                       </td>
                     </tr>
