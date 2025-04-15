@@ -336,6 +336,9 @@
                         .selectpicker('val', selectedDomains)
                         .selectpicker('refresh');
                 }
+
+                // Trigger to filter the dropdowns if subdomains are selected
+                $("#handle\\.subdomain").trigger("change");
             }
         });
 
@@ -385,6 +388,26 @@
                     style.visible ? $(this).show() : $(this).hide();
                 });
             });
+        });
+
+        // When subdomain is selected in handler show only wildcard domains
+        $("#handle\\.subdomain").on("change", function () {
+            const subdomainSelected = $("#handle\\.subdomain").val() !== "";
+
+            $("#handle\\.reverse").find("option").each(function () {
+                const isWildcard = $(this).text().includes("*.");
+                $(this).toggle(!subdomainSelected || isWildcard);
+            });
+
+            if (subdomainSelected) {
+                const selectedText = $("#handle\\.reverse").find("option:selected").text();
+                if (!selectedText.includes("*.")) {
+                    // Clear selection if not a wildcard
+                    $("#handle\\.reverse").val("").change();
+                }
+            }
+
+            $("#handle\\.reverse").selectpicker("refresh");
         });
 
         // Trigger bootgrid setup for handlers tab too (even if not active) to ensure command buttons always work
