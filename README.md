@@ -64,7 +64,7 @@ net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
-net/turnserver -- The coturn STUN/TURN Server (development only)
+net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
 net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
 net/vnstat -- Network traffic monitor
