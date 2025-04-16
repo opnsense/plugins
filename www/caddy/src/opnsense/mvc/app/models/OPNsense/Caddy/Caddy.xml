@@ -302,6 +302,9 @@
                             <items>reverseproxy.reverse</items>
                             <display>FromDomain,FromPort</display>
                             <display_format>%s %s</display_format>
+                            <filters>
+                                <FromDomain>/^\*\./</FromDomain>
+                            </filters>
                         </reverseproxy>
                     </Model>
                 </reverse>
