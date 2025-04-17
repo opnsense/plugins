@@ -323,7 +323,9 @@
 
             });
 
-            $('#reverseFilterIcon').toggleClass('text-success', ($(this).val() || []).length > 0);
+            $('#reverseFilterIcon')
+                .toggleClass('text-success fa-filter-circle-xmark', ($(this).val() || []).length > 0)
+                .toggleClass('fa-filter', !($(this).val() || []).length);
         });
 
         // Autofill domain and subdomain when add dialog is opened
@@ -475,8 +477,8 @@
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
-    <button type="button" id="reverseFilterClear" class="btn btn-default" title="Clear Selection">
-        <i id="reverseFilterIcon" class="fa fa-fw fa-filter-circle-xmark"></i>
+    <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
+        <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
     </button>
     <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
