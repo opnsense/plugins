@@ -116,12 +116,14 @@
         <id>turnserver.settings.ChannelLifetime</id>
         <label>Channel Lifetime</label>
         <type>text</type>
-        <help>The lifetime for the channel (in seconds). Default value is 600 secs (10 minutes).</help>
+        <help>The lifetime for the channel (in seconds). Default value is 600 secs (10 minutes). MUST NOT be changed, because this would violate RFC 5766.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>turnserver.settings.PermissionLifetime</id>
         <label>Permission Lifetime</label>
         <type>text</type>
-        <help>The permission lifetime (in seconds). Default value is 300 secs (5 minutes).</help>
+        <help>The permission lifetime (in seconds). Default value is 300 secs (5 minutes). MUST NOT be changed, because this would violate RFC 5766.</help>
+        <advanced>true</advanced>
     </field>
 </form>
