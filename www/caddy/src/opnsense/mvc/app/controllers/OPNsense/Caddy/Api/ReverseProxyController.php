@@ -69,7 +69,6 @@ class ReverseProxyController extends ApiMutableModelControllerBase
 
         foreach ((new \OPNsense\Caddy\Caddy())->reverseproxy->subdomain->iterateItems() as $subdomain) {
             if (!empty($subdomain->FromDomain)) {
-
                 $result['subdomains']['items'][] = [
                     'value' => (string)$subdomain->getAttributes()['uuid'],
                     'label' => (string)$subdomain->FromDomain
