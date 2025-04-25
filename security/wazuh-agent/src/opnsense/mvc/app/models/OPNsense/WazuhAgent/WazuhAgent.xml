@@ -12,6 +12,10 @@
                 <Required>Y</Required>
                 <IpAllowed>Y</IpAllowed>
             </server_address>
+            <agent_name type="HostnameField">
+                <Required>N</Required>
+                <IpAllowed>N</IpAllowed>
+            </agent_name>
             <protocol type="OptionField">
                 <default>tcp</default>
                 <Required>Y</Required>
