@@ -29,6 +29,9 @@ import ipaddress
 from urllib.parse import urlparse
 
 checkip_service_list = {
+  'akamai': '%s://whatismyip.akamai.com',
+  'akamai-ipv4': '%s://ipv4.whatismyip.akamai.com',
+  'akamai-ipv6': '%s://ipv6.whatismyip.akamai.com',
   'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
   'cloudflare-ipv4': '%s://1.1.1.1/cdn-cgi/trace',
   'cloudflare-ipv6': '%s://[2606:4700:4700::1111]/cdn-cgi/trace',
