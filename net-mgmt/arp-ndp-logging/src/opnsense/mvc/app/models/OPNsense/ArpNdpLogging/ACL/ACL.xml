@@ -1,0 +1,9 @@
+<acl>
+   <page-arpndplogging-config>
+      <name>Services: ARP/NDP Logging</name>
+      <patterns>
+         <pattern>ui/arpndplogging/*</pattern>
+         <pattern>api/arpndplogging/*</pattern>
+      </patterns>
+   </page-arpndplogging-config>
+</acl>
