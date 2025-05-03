@@ -1,5 +1,4 @@
 {
-    "github.com/caddy-dns/cloudflare": "caddy-dns/cloudflare",
     "github.com/caddy-dns/duckdns": "caddy-dns/duckdns",
     "github.com/caddy-dns/gandi": "caddy-dns/gandi",
     "github.com/caddy-dns/azure": "caddy-dns/azure",
