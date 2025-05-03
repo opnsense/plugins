@@ -1,0 +1,248 @@
+#!/usr/local/bin/php
+<?
+// kate: space-indent off; indent-width 4; mixedindent off; syntax PHP (HTML)
+include "config.inc";
+openlog('abuseipdb', LOG_PID, LOG_LOCAL0);
+syslog(LOG_NOTICE, "abuseipdb system daemon starting.");
+
+## Exit if we're disabled.
+if ( $config['OPNsense']['abuseipdb']["general"]["enabled"] != 1 ) {
+	syslog(LOG_ERROR, "abuseipdb disabled in config. Exiting...");
+	exit;
+}
+
+## Exit if we have no filter ID set.
+if ( ! $config['OPNsense']['abuseipdb']["general"]["filter_id"] ) {
+	syslog(LOG_ERROR, "No firewall filter id set. Exiting...");
+	exit;
+}
+
+## Import config
+$flush_on_start =	$config['OPNsense']['abuseipdb']["general"]["flush_on_start"];
+$api_key =			$config['OPNsense']['abuseipdb']["general"]["api_key"];
+$hits_num =			$config['OPNsense']['abuseipdb']["general"]["packet_count"];
+$hits_time =		$config['OPNsense']['abuseipdb']["general"]["packet_timeframe"];
+$log_interval =		$config['OPNsense']['abuseipdb']["general"]["log_interval"];
+$filter_id =		$config['OPNsense']['abuseipdb']["general"]["filter_id"];
+
+## Write the PID to disk.
+file_put_contents("/var/run/abuseipdb.pid", getmypid());
+register_shutdown_function('cleanup_on_exit');
+
+## Open up the pf log - /var/log/filter/latest.log
+$log = "/var/log/filter/latest.log";
+$file = new SplFileObject($log);
+
+## Find the EOF of the log
+$file->seek(PHP_INT_MAX);
+$eof = $file->key();
+$file = null;
+
+## Init known hosts array
+$known_ips = array();
+$report_queue = array();
+
+## Handle 429 responses from abuseipdb.
+$ratelimit_delay = 5;
+$ratelimit_delay_max = 180;
+$ratelimit_expires = 0;
+
+## Init the last log time.
+$log_last = 0;
+
+## Prime the blocklist if we have an API Key.
+if ( $api_key != "" ) {
+	get_blocklist($api_key, $flush_on_start);
+}
+
+while (1) {
+	sleep(1);
+
+	## If the log file doesn't exist, just sleep.
+	if ( ! file_exists($log) ) { continue; }
+
+	## Process from the last EOF marker...
+	$file = new SplFileObject($log);
+	$file->seek($eof);
+
+	## Seek to last eof...
+	while (!$file->eof()) {
+		$elements = explode(',', $file->current());
+
+		## Check if this is our drop rule..
+		if ( $elements[3] == $filter_id ) {
+			## Process IPv4 line.
+			if ( $elements[8] == 4 && ( $elements[16] == 'tcp' || $elements[16] == 'udp' ) ) {
+				$src = $elements[18];
+				$src_port = $elements[20];
+				$dest = $elements[19];
+				$dest_port = $elements[21];
+				$prot = $elements[16];
+			}
+			
+			## Process IPv6 line.
+			if ( $elements[8] == 6 ) {
+				$src = $elements[15];
+				$src_port = $elements[17];
+				$dest = $elements[16];
+				$dest_port = $elements[18];
+			}
+
+			if ( ! $known_ips[$src] ) {
+				$known_ips[$src] = array();
+			}
+
+			if ( filter_var($src, FILTER_VALIDATE_IP) ) {
+				array_push($known_ips[$src], time());
+			}
+		}
+		$file->next();
+	}
+	$eof = $file->key();
+	$file = null;
+
+	$compare_time = time();
+	$known_ips_new = array();
+	## Expire any old timestamps
+	foreach ( $known_ips as $ip => $timestamps ) {
+		$index = 0;
+		foreach ( $timestamps as $timestamp ) {
+			if ( $timestamp + $hits_time > $compare_time ) {
+				if ( ! $known_ips_new[$ip] ) {
+					$known_ips_new[$ip] = array();
+				}
+				array_push($known_ips_new[$ip], $timestamp);
+			}
+		}
+	}
+	$known_ips = $known_ips_new;
+	unset($known_ips_new);
+
+	foreach ( $known_ips as $ip => $timestamps ) {
+		## Process anything with more than $hits_num entries.
+		if ( count($timestamps) > $hits_num ) {
+			## Add to the firewall alias.
+			shell_exec("pfctl -q -t abuseipdb -T add $ip");
+			syslog(LOG_INFO, "Added $ip to blocklist");
+
+			if ( $api_key != "" ) {
+				$duration = $known_ips[$ip][count($known_ips[$ip]) -1] - $known_ips[$ip][0] + 1;
+				$data = [
+					'ip' => $ip,
+					'timestamp' => date('c', $known_ips[$ip][0]),
+					'categories' => "14",
+					'comment' => "Honeypot hits: " . count($timestamps) . " hits in $duration second(s)"
+				];
+				array_push($report_queue, $data);
+			}
+			unset($known_ips[$ip]);
+		}
+	}
+
+	## Process any reports.
+	if ( $api_key != "" ) {
+		if ( time() > $ratelimit_expires ) {
+			$report_queue_new = array();
+
+			foreach ( $report_queue as $report ) {
+				if ( time() > $ratelimit_expires ) {
+					$headers = ["Key: $api_key", "Accept: application/json"];
+					$url = "https://api.abuseipdb.com/api/v2/report";
+					list($result, $ret_code) = http_req("POST", $url, $headers, $report);
+					if ( $ret_code == 200 ) {
+						syslog(LOG_INFO, "API: Reported " . $report["ip"] . " successfully");
+						$ratelimit_expires = 0;
+						$ratelimit_delay= 5;
+					} else {
+						array_push($report_queue_new, $report);
+						$ratelimit_delay *= 2;
+						if ( $ratelimit_delay >= $ratelimit_delay_max ) {
+							$ratelimit_delay = $ratelimit_delay_max;
+						}
+						$ratelimit_expires = time() + $ratelimit_delay;
+						syslog(LOG_NOTICE, "API: Got status code: $ret_code - Waiting " . ( $ratelimit_expires - time()) . " seconds before retry...");
+					}
+				} else {
+					## We're still rate limited, just push the report back into the queue
+					array_push($report_queue_new, $report);
+				}
+			}
+
+			$report_queue = $report_queue_new;
+			unset($report_queue_new);
+		}
+	}
+
+	if ( time() > $log_last + $log_interval ) {
+		$log_last = time();
+		if ( count($report_queue) != 0 ) {
+			syslog(LOG_NOTICE, "Tracking " . count($known_ips) . " hosts, API ratelimit active. " . count($report_queue) . " report(s) outstanding");
+		} else {
+			syslog(LOG_INFO, "Tracking " . count($known_ips) . " hosts");
+		}
+	}
+}
+
+function get_blocklist($api_key, $flush_on_start) {
+	syslog(LOG_INFO, "Downloading initial blocklist...");
+	$data = [ 'confidenceMinimum' => 100, 'limit' => 9999999 ];
+	$headers = ["Key: $api_key", "Accept: application/json"];
+	$url = "https://api.abuseipdb.com/api/v2/blacklist";
+	list($result, $resp_code) = http_req("GET", $url, $headers, $data);
+
+	## Process the list if we got one back.
+	if ( $resp_code == 200 ) {
+		## Clear the current table...
+		if ( $flush_on_start == 1 ) {
+			syslog(LOG_NOTICE, "Clearing current table for initial priming...");
+			shell_exec("pfctl -t abuseipdb -T flush");
+		}
+		$addresses = array();
+		$blocklist = json_decode($result, true);
+		foreach ($blocklist["data"] as $entry) {
+			if ( $entry["ipAddress"] ) {
+				## Ensure we have a valid IP and no surprises
+				if ( filter_var($entry["ipAddress"], FILTER_VALIDATE_IP) ) {
+					array_push($addresses, $entry["ipAddress"]);
+				}
+			}
+
+			if ( count($addresses) >= 500 ) {
+				shell_exec("pfctl -q -t abuseipdb -T add " . implode(" ", $addresses));
+				$addresses = array();
+			}
+		}
+
+		## Flush any left over entries to pfctl...
+		if ( count($addresses) != 0 ) {
+			shell_exec("pfctl -q -t abuseipdb -T add " . implode(" ", $addresses));
+		}
+		syslog(LOG_INFO, "Imported " . count($blocklist["data"]) . " entries on startup...");
+	} else {
+		syslog(LOG_NOTICE, "API: Got reply code: $resp_code. Not importing anything...");
+	}
+}
+
+function http_req($method, $url, &$headers, &$data) {
+	if ( $method == "GET" ) {
+		$url = sprintf("%s?%s", $url, http_build_query($data));
+	}
+	$ch = curl_init($url);
+	if ( $method == "POST" ) {
+		curl_setopt($ch,CURLOPT_POST, true);
+		curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($data));
+	}
+	curl_setopt($ch,CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+	$result = curl_exec($ch);
+
+	return array($result, curl_getinfo($ch, CURLINFO_HTTP_CODE));
+}
+
+function cleanup_on_exit() {
+	unlink("/var/run/abuseipdb.pid");
+	closelog();
+	exit;
+}
+
+?>
