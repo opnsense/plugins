@@ -304,21 +304,21 @@ http://{{ domain }} {
 #            certificates with the DNS-01 challenge. Refer to Dynamic DNS section for more details.
 #}
 {% macro tls_configuration(
-    customCert,
-    dnsChallenge,
-    clientAuthTrustPool,
-    clientAuthMode,
-    dnsProvider,
-    dnsApiKey,
-    dnsSecretApiKey,
-    tlsDnsOptionalField1,
-    tlsDnsOptionalField2,
-    tlsDnsOptionalField3,
-    tlsDnsOptionalField4,
-    tlsDnsPropagationTimeout,
-    tlsDnsPropagationTimeoutPeriod,
-    tlsDnsPropagationDelay,
-    tlsDnsPropagationResolvers
+    customCert="",
+    dnsChallenge="0",
+    clientAuthTrustPool="",
+    clientAuthMode="",
+    dnsProvider="",
+    dnsApiKey="",
+    dnsSecretApiKey="",
+    tlsDnsOptionalField1="",
+    tlsDnsOptionalField2="",
+    tlsDnsOptionalField3="",
+    tlsDnsOptionalField4="",
+    tlsDnsPropagationTimeout="",
+    tlsDnsPropagationTimeoutPeriod="",
+    tlsDnsPropagationDelay="",
+    tlsDnsPropagationResolvers=""
 ) %}
     {% if customCert or (dnsChallenge == "1" and dnsProvider) or clientAuthTrustPool %}
         tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {
@@ -586,13 +586,10 @@ http://{{ domain }} {
 #   - render_handles: Renders the handles in the correct order, including basic authentication.
 #   - reverse_proxy_configuration: Sets up the handle with reverse proxy configurations.
 #   - handle_response: Manages the response logic for access lists and aborts.
-#   Important Details:
-#   - Order of Path specific Handles: Prioritizes order of specific path handles over catch-all handles.
-#   - Order of Wildcard Domains and Subdomains: Handles for wildcard domains come after all subdomains.
 #}
+
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" %}
-        # Reverse Proxy Domain: "{{ reverse['@uuid'] }}"
         {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
             {% if reverse.AccessLog|default("0") == "1" %}
                 {% if generalSettings.LogAccessPlain|default("0") == "0" %}
@@ -606,44 +603,58 @@ http://{{ domain }} {
                 {% endif %}
             {% endif %}
             {{ tls_configuration(
-                reverse.CustomCertificate|default(""),
-                reverse.DnsChallenge|default("0"),
-                reverse.ClientAuthTrustPool|default(""),
-                reverse.ClientAuthMode|default(""),
-                generalSettings.TlsDnsProvider,
-                generalSettings.TlsDnsApiKey,
-                generalSettings.TlsDnsSecretApiKey,
-                generalSettings.TlsDnsOptionalField1,
-                generalSettings.TlsDnsOptionalField2,
-                generalSettings.TlsDnsOptionalField3,
-                generalSettings.TlsDnsOptionalField4,
-                generalSettings.TlsDnsPropagationTimeout,
-                generalSettings.TlsDnsPropagationTimeoutPeriod,
-                generalSettings.TlsDnsPropagationDelay,
-                generalSettings.TlsDnsPropagationResolvers
+                customCert=reverse.CustomCertificate|default(""),
+                dnsChallenge=reverse.DnsChallenge|default("0"),
+                clientAuthTrustPool=reverse.ClientAuthTrustPool|default(""),
+                clientAuthMode=reverse.ClientAuthMode|default(""),
+                dnsProvider=generalSettings.TlsDnsProvider,
+                dnsApiKey=generalSettings.TlsDnsApiKey,
+                dnsSecretApiKey=generalSettings.TlsDnsSecretApiKey,
+                tlsDnsOptionalField1=generalSettings.TlsDnsOptionalField1,
+                tlsDnsOptionalField2=generalSettings.TlsDnsOptionalField2,
+                tlsDnsOptionalField3=generalSettings.TlsDnsOptionalField3,
+                tlsDnsOptionalField4=generalSettings.TlsDnsOptionalField4,
+                tlsDnsPropagationTimeout=generalSettings.TlsDnsPropagationTimeout,
+                tlsDnsPropagationTimeoutPeriod=generalSettings.TlsDnsPropagationTimeoutPeriod,
+                tlsDnsPropagationDelay=generalSettings.TlsDnsPropagationDelay,
+                tlsDnsPropagationResolvers=generalSettings.TlsDnsPropagationResolvers
             ) }}
-
-            {% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
-                {% if subdomain.enabled|default("0") == "1" and subdomain.reverse == reverse['@uuid'] %}
-                    @{{ subdomain['@uuid'] }} {
-                        host {{ subdomain.FromDomain }}
-                    }
-                    handle @{{ subdomain['@uuid'] }} {
-                        {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
-                        {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
-                        {# All IPs not matched by accesslist will continue processing #}
-                        {{ render_basic_auth(subdomain.basicauth) }}
-                        {{ render_handles(subdomain_handles) }}
-                    }
-                {% endif %}
-            {% endfor %}
-
             {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
             {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}
-            {# All IPs not matched by accesslist will continue processing #}
             {{ render_basic_auth(reverse.basicauth) }}
             {{ render_handles(domain_handles) }}
         }
+
+    {% endif %}
+{% endfor %}
+
+{% for subdomain in helpers.toList('Pischem.caddy.reverseproxy.subdomain') %}
+    {% if subdomain.enabled|default("0") == "1" %}
+        {% set reverse = helpers.toList('Pischem.caddy.reverseproxy.reverse') | selectattr('@uuid', 'equalto', subdomain.reverse) | first %}
+        {% if reverse and reverse.enabled|default("0") == "1" %}
+            {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+                {% if reverse.AccessLog|default("0") == "1" %}
+                    {% if generalSettings.LogAccessPlain|default("0") == "0" %}
+                        log {{ subdomain['@uuid'] }}
+                    {% else %}
+                        log {
+                            output file /var/log/caddy/access/{{ subdomain['@uuid'] }}.log {
+                                roll_keep_for {{ generalSettings.LogAccessPlainKeep|default("10") }}d
+                            }
+                        }
+                    {% endif %}
+                {% endif %}
+                {{ tls_configuration(
+                    clientAuthTrustPool=subdomain.ClientAuthTrustPool|default(""),
+                    clientAuthMode=subdomain.ClientAuthMode|default("")
+                ) }}
+                {% set subdomain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('subdomain', 'equalto', subdomain['@uuid']) | list %}
+                {{ handle_accesslist(subdomain.accesslist, subdomain.FromDomain) }}
+                {{ render_basic_auth(subdomain.basicauth) }}
+                {{ render_handles(subdomain_handles) }}
+            }
+
+        {% endif %}
     {% endif %}
 {% endfor %}
 
