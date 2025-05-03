@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023-2024 Cedrik Pischem
+ *    Copyright (C) 2023-2025 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -38,4 +38,69 @@ class GeneralController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'caddy';
     protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
+
+    /**
+     * Trigger a custom Caddy build using a hardcoded version and user selected modules.
+     *
+     * @return array JSON response with status and message.
+     */
+    public function buildBinaryAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => gettext('POST required')];
+        }
+
+        $mdl = new \OPNsense\Caddy\Caddy();
+
+        $version = 'v2.10.0';
+
+        // User-defined modules
+        $userModules = (string)$mdl->general->CaddyModules;
+
+        // Always-included default modules
+        $defaultModules = [
+            "github.com/caddyserver/ntlm-transport",
+            "github.com/mholt/caddy-dynamicdns",
+            "github.com/mholt/caddy-l4",
+            "github.com/mholt/caddy-ratelimit",
+            "github.com/caddy-dns/cloudflare"
+        ];
+
+        // Merge + deduplicate
+        $allModules = array_filter(array_unique(array_merge(
+            explode(",", $userModules),
+            $defaultModules
+        )));
+
+        $modules = implode(",", $allModules);
+
+        (new \OPNsense\Core\Backend())->configdRun("caddy build_binary {$version} {$modules}");
+
+        return [
+            'status' => 'started',
+            'message' => sprintf(
+                gettext("Build started for Caddy %s with modules: %s"),
+                $version,
+                $modules
+            )
+        ];
+    }
+
+    /**
+     * Return the current status of the background Caddy build process.
+     *
+     * @return array JSON-compatible status response
+     */
+    public function buildStatusAction()
+    {
+        $response = (new \OPNsense\Core\Backend())->configdRun('caddy build_status');
+
+        $result = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE || $result === null) {
+            $result = [];
+        }
+
+        return $result;
+    }
+
 }

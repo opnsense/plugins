@@ -225,6 +225,12 @@
                 </Model>
                 <Multiple>Y</Multiple>
             </CopyHeaders>
+            <CaddyModules type="JsonKeyValueStoreField">
+                <BlankDesc>Default</BlankDesc>
+                <SourceFile>/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_build_modules.json</SourceFile>
+                <SortByValue>Y</SortByValue>
+                <Multiple>Y</Multiple>
+            </CaddyModules>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">

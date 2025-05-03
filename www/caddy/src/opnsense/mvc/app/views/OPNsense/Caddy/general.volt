@@ -35,6 +35,7 @@
 
         /**
          * Displays an alert message to the user.
+         * Info messages persists, all other messages fade away.
          *
          * @param {string} message - The message to display.
          * @param {string} [type="error"] - The type of alert (error or success).
@@ -43,10 +44,13 @@
             const alertClass = type === "error" ? "alert-danger" : "alert-success";
             const messageArea = $("#messageArea");
             messageArea.stop(true, true).hide();
-            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-            messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                $(this).html('');
-            });
+            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message).fadeIn(500);
+
+            if (type !== "info") {
+                messageArea.delay(15000).fadeOut(500, function () {
+                    $(this).html('');
+                });
+            }
         }
 
         /**
@@ -90,28 +94,86 @@
             showAlert(message, type);
         }
 
-        // Event binding for saving forms
-        $('[id*="save_general-"]').on('click', function() {
-            const generalId = this.form.id;
-            setSpinner(generalId, 'start');
-            saveFormToEndpoint("/api/caddy/general/set", generalId, function() {
-                // Validate Caddyfile after saving the form
-                ajaxGet("/api/caddy/service/validate", {}, function(data, status) {
-                    if (status === "success" && data && data.status.toLowerCase() === 'ok') {
-                        reconfigureService(generalId);
-                    } else {
-                        handleError("error", data.message || "{{ lang._('Validation Error') }}");
-                        setSpinner(generalId, 'stop');
+        /**
+         * Polls the backend continously for the current Caddy build status.
+         * Displays a status message only when the status changes to avoid UI spam.
+         * Automatically stops polling when the build completes (success or error).
+         *
+         * @param {string} formId - The ID of the form used to control the spinner state.
+         */
+         function pollCaddyBuildStatus(formId) {
+            let lastStatus = null;
+
+            // Find and disable the matching Apply button
+            const $applyButton = $(`#${formId}`).find('[id^="save_general-"]');
+            $applyButton.prop('disabled', true);
+
+            const interval = setInterval(() => {
+                ajaxGet("/api/caddy/general/build_status", {}, function (data, status) {
+                    if (status === "success" && data.status) {
+                        if (data.status !== lastStatus) {
+                            lastStatus = data.status;
+
+                            const msg = "{{ lang._('Build status') }}: " + data.status + " - " + (data.message || "");
+                            const alertType = data.status === "success" ? "success" : (data.status === "error" ? "error" : "info");
+                            showAlert(msg, alertType);
+                        }
+
+                        if (data.status === "success" || data.status === "error") {
+                            clearInterval(interval);
+                            setSpinner(formId, 'stop');
+                            $applyButton.prop('disabled', false);  // Re-enable button
+                        }
                     }
-                }).fail(function() {
-                    handleError("error", "{{ lang._('Validation request failed.') }}");
-                    setSpinner(generalId, 'stop');
                 });
-            }, true, function(errorData) {
-                handleError("error", errorData.message || "{{ lang._('Validation Error') }}");
-                setSpinner(generalId, 'stop');
+            }, 5000);
+        }
+
+        // Event binding for saving forms
+        $('[id^="save_general-"]').on('click', function () {
+            const formId = this.form.id;
+            const buttonId = this.id;
+
+            // Trigger build only for save button with ID starting with 'save_general-modules'
+            const triggerBuild = buttonId.startsWith("save_general-modules");
+
+            setSpinner(formId, 'start');
+
+            saveFormToEndpoint("/api/caddy/general/set", formId, function () {
+                if (triggerBuild) {
+                    ajaxCall("/api/caddy/general/build_binary", {}, function (data, status) {
+                        if (status === "success") {
+                            showAlert("{{ lang._('Caddy build started...') }}", "success");
+                            pollCaddyBuildStatus(formId);
+                        } else {
+                            showAlert("{{ lang._('Failed to start Caddy build.') }}", "error");
+                            setSpinner(formId, 'stop');
+                        }
+                    }, "post");
+                } else {
+                    ajaxGet("/api/caddy/service/validate", {}, function (data, status) {
+                        if (status === "success" && data && data.status.toLowerCase() === 'ok') {
+                            reconfigureService(formId);
+                        } else {
+                            handleError("error", data.message || "{{ lang._('Validation Error') }}");
+                            setSpinner(formId, 'stop');
+                        }
+                    }).fail(function () {
+                        handleError("error", "{{ lang._('Validation request failed.') }}");
+                        setSpinner(formId, 'stop');
+                    });
+                }
+            }, true, function (errorData) {
+                showAlert(errorData.message || "{{ lang._('Validation Error') }}", "error");
+                setSpinner(formId, 'stop');
             });
         });
+
+        // Rename "Apply" button to "Build" for the Modules tab
+        $('#save_general-modules')
+            .val("Build")
+            .html('<b>Build</b> <i id="frm_general-modules_progress" class=""></i>');
+
     });
 </script>
 

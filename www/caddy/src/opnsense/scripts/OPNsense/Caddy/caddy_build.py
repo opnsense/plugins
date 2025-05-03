@@ -37,9 +37,10 @@ from pathlib import Path
 from shutil import which
 
 LOCK_FILE = Path("/tmp/caddy_build.lock")
-LOG_FILE = Path("/tmp/caddy_build.log")
-FINAL_BINARY = Path("/usr/local/bin/caddy")
+STATUS_FILE = Path("/tmp/caddy_build.status")
 BUILD_OUTPUT = Path("/tmp/caddy")
+LOG_FILE = Path("/var/log/caddy/caddy_build.log")
+FINAL_BINARY = Path("/usr/local/bin/caddy")
 
 def acquire_lock() -> int:
     '''
@@ -84,7 +85,7 @@ def parse_args():
     '''
     parser = argparse.ArgumentParser(description='Build custom Caddy binary using xcaddy.')
     parser.add_argument('--version', required=True, help='Caddy version to build')
-    parser.add_argument('--modules', nargs='*', help='Space separated list of modules to include')
+    parser.add_argument('--modules', type=str, help='Comma-separated list of modules to include')
     return parser.parse_args()
 
 def build_caddy(version: str, modules: list[str]) -> int:
@@ -126,46 +127,50 @@ def install_binary() -> None:
     shutil.move(str(BUILD_OUTPUT), FINAL_BINARY)
     FINAL_BINARY.chmod(0o755)
 
-def log_and_print(message: str, status: str = "info", log_path: Path = LOG_FILE) -> dict:
+def write_status(status: str, message: str) -> None:
     '''
-    Write message and status to the log file and console as json.
+    Write a single-line JSON status update to the status file.
     '''
     data = {"status": status, "message": message}
+    STATUS_FILE.write_text(json.dumps(data) + "\n")
 
-    with open(log_path, 'a') as log:
-        log.write(json.dumps(data) + '\n')
-
-    return data
+def detach_to_background():
+    '''
+    If not already forked, fork the script into the background and exit parent.
+    '''
+    if os.getenv("CADDY_BUILD_FORKED") != "1":
+        env = os.environ.copy()
+        env["CADDY_BUILD_FORKED"] = "1"
+        subprocess.Popen(
+            [sys.executable] + sys.argv,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            env=env,
+            start_new_session=True
+        )
+        sys.exit(0)
 
 def main():
-    '''
-    Main execution flow:
-    - Acquire build lock
-    - Check prerequisites
-    - Parse arguments
-    - Build Caddy
-    - Install binary if successful
-    - Throw success or error
-    - Release lock
-    '''
+    detach_to_background()
+
+    # now in forked child
     lock_fd = acquire_lock()
     try:
+        write_status("running", "Build in progress")
         check_prerequisites()
         args = parse_args()
-        result = build_caddy(args.version, args.modules)
+        modules = args.modules.split(',') if args.modules else []
+        result = build_caddy(args.version, modules)
 
         if result == 0:
             try:
                 install_binary()
-                msg = log_and_print("Build and installation successful.", status="success")
-                print(json.dumps(msg))
+                write_status("success", "Build and installation successful.")
             except Exception as e:
-                msg = log_and_print(f"Install failed: {e}", status="error")
-                print(json.dumps(msg))
+                write_status("error", f"Install failed: {e}")
                 sys.exit(1)
         else:
-            msg = log_and_print(f"Build failed with exit code {result}.", status="error")
-            print(json.dumps(msg))
+            write_status("error", f"Build failed with exit code {result}. Check {LOG_FILE}")
 
         sys.exit(result)
     finally:

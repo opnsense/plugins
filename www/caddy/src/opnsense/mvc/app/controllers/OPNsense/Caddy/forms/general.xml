@@ -108,7 +108,7 @@
             <id>caddy.general.TlsDnsProvider</id>
             <label>DNS Provider</label>
             <type>dropdown</type>
-            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be installed manually, see https://caddyserver.com/docs/command-line#caddy-add-package. Important: When the version of the caddy binary changes, "optional" provider must be reinstalled. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
+            <help><![CDATA[Select the DNS Provider for the DNS-01 Challenge and Dynamic DNS. Providers marked as "optional" must be build into the caddy binary, use the "Modules" tab. Important: When the version of the caddy binary changes, "optional" providers must be rebuild. For more information, visit https://github.com/caddy-dns where each module is community maintained.]]></help>
         </field>
         <field>
             <type>header</type>
@@ -259,6 +259,16 @@
             <size>5</size>
             <style>selectpicker</style>
             <help><![CDATA[Select headers to copy in addition to the default of the chosen provider. Headers can be added in "Reverse Proxy - Headers". As example, copying "Authorization" can pass Basic Auth credentials from the Auth Provider to the reverse proxied application.]]></help>
+        </field>
+    </tab>
+    <tab id="general-modules" description="Modules">
+        <field>
+            <id>caddy.general.CaddyModules</id>
+            <label>Modules</label>
+            <type>dropdown</type>
+            <type>select_multiple</type>
+            <size>10</size>
+            <help><![CDATA[Add additional modules and build a new caddy binary with xcaddy on this host. Depending on CPU speed and bandwidth this might take a few minutes, please be patient. If the build fails, inspect the build log in /var/log/caddy/caddy_build.log and report it to the module maintainer.]]></help>
         </field>
     </tab>
     <activetab>general-settings</activetab>
