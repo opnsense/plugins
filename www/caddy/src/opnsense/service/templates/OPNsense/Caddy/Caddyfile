@@ -1,5 +1,5 @@
 {#
-# Copyright (c) 2023-2024 Cedrik Pischem
+# Copyright (c) 2023-2025 Cedrik Pischem
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -218,6 +218,19 @@
             update_only
         {% endif %}
     }
+    {% endif %}
+
+    {#
+    #   Section: Encrypted ClientHello (ECH) Configuration
+    #            https://caddyserver.com/docs/caddyfile/options#ech
+    #}
+    {% if generalSettings.TlsDnsEchDomain|default("") and dnsProvider %}
+        dns {{ dnsProvider }} {% if dnsProvider not in dnsProviderSpecialConfig %}{{ dnsApiKey }}{% else %}{
+            {% set context_var = 'dnsProviderSpecialLogic' %}
+            {% include "OPNsense/Caddy/includeDnsProvider" %}
+        }
+        {% endif +%}
+        ech {{ generalSettings.TlsDnsEchDomain }}
     {% endif %}
 
     {#

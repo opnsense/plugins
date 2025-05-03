@@ -109,6 +109,9 @@
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
+            <TlsDnsEchDomain type="HostnameField">
+                <IpAllowed>N</IpAllowed>
+            </TlsDnsEchDomain>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
