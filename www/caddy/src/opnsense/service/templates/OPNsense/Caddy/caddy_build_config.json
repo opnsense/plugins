@@ -8,8 +8,10 @@
         "github.com/caddy-dns/cloudflare@006ebb07b34945b53dd0bb31a7a823ef2e8ccc56"
     ],
     "user_modules": [
-{% for module in Pischem.caddy.general.CaddyModules.split(',') %}
+{%  if Pischem.caddy.general.CaddyModules -%}
+{%      for module in Pischem.caddy.general.CaddyModules.split(',') %}
         "{{ module }}"{% if not loop.last %},{% endif +%}
-{% endfor %}
+{%      endfor %}
+{%  endif %}
     ]
 }
