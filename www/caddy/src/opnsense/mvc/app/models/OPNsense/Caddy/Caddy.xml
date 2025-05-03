@@ -227,7 +227,7 @@
             </CopyHeaders>
             <CaddyModules type="JsonKeyValueStoreField">
                 <BlankDesc>Default</BlankDesc>
-                <SourceFile>/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_build_modules.json</SourceFile>
+                <SourceFile>/usr/local/opnsense/mvc/app/models/OPNsense/Caddy/caddy_build_modules.json</SourceFile>
                 <SortByValue>Y</SortByValue>
                 <Multiple>Y</Multiple>
             </CaddyModules>
