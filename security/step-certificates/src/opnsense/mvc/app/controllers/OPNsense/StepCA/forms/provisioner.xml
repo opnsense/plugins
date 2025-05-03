@@ -1,0 +1,131 @@
+<form>
+    <field>
+        <id>provisioner.Enabled</id>
+        <label>Enable Provisioner</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>provisioner.Provisioner</id>
+        <label>Provisioner Type</label>
+        <type>dropdown</type>
+        <help>Provisioner Type</help>
+    </field>
+    <field>
+        <id>provisioner.Name</id>
+        <label>Provisioner Name</label>
+        <type>text</type>
+        <help>A string used to identify the provider</help>
+    </field>
+    <field>
+        <id>provisioner.ForceCN</id>
+        <label>ForceCN</label>
+        <type>checkbox</type>
+        <style>prov-hide acme</style>
+        <help>Force one of the SANs to become the Common Name, if a common name is not provided.</help>
+    </field>
+    <field>
+        <id>provisioner.Challenges</id>
+        <label>Challenges</label>
+        <type>select_multiple</type>
+        <style>tokenize prov-hide acme</style>
+        <help>Which ACME challenge types are allowed</help>
+    </field>
+    <field>
+        <id>provisioner.AttestationRoots</id>
+        <label>TPM Attestation Roots</label>
+        <type>dropdown</type>
+        <style>prov-hide acme</style>
+        <help>Root Certificate. Private key must be available if intermediate is being created</help>
+    </field>
+    <field>
+        <id>provisioner.CreateTemplate</id>
+        <label>Leaf cert Template</label>
+        <type>textbox</type>
+        <style>prov-hide acme</style>
+        <help>Template for CA issued (leaf) certificate. See https://smallstep.com/docs/step-ca/templates</help>
+    </field>
+    <field>
+        <id>provisioner.claims.minTLSCertDuration</id>
+        <label>minTLSCertDuration</label>
+        <type>text</type>
+        <style>prov-hide acme</style>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.maxTLSCertDuration</id>
+        <label>maxTLSCertDuration</label>
+        <type>text</type>
+        <style>prov-hide acme</style>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.defaultTLSCertDuration</id>
+        <label>defaultTLSCertDuration</label>
+        <type>text</type>
+        <style>prov-hide acme</style>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.disableRenewal</id>
+        <label>disableRenewal</label>
+        <type>checkbox</type>
+        <style>prov-hide acme</style>
+        <help>do not allow any certificates to be renewed. The default is false.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.allowRenewalAfterExpiry</id>
+        <label>allowRenewalAfterExpiry</label>
+        <type>checkbox</type>
+        <style>prov-hide acme</style>
+        <help>☠️ allow expired certificates to be renewed. The default is false. This option adds security risk; proceed with caution and consider alternatives.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.minUserSSHCertDuration</id>
+        <label>minUserSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide</style>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.maxUserSSHCertDuration</id>
+        <label>maxUserSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide</style>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.defaultUserSSHCertDuration</id>
+        <label>defaultUserSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide</style>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.minHostSSHCertDuration</id>
+        <label>minHostSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide</style>
+        <help>do not allow certificates with a duration less than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.maxHostSSHCertDuration</id>
+        <label>maxHostSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide</style>
+        <help>do not allow certificates with a duration greater than this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.defaultHostSSHCertDuration</id>
+        <label>defaultHostSSHCertDuration</label>
+        <type>text</type>
+        <style>prov-hide jtw</style>
+        <help>if no certificate validity period is specified, use this value.</help>
+    </field>
+    <field>
+        <id>provisioner.claims.enableSSHCA</id>
+        <label>enableSSHCA</label>
+        <type>checkbox</type>
+        <style>prov-hide jwt</style>
+        <help>enable this provisioner to generate SSH Certificates. The default value is false.</help>
+    </field>
+</form>
