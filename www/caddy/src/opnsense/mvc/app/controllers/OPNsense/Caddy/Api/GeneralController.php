@@ -40,9 +40,9 @@ class GeneralController extends ApiMutableModelControllerBase
     protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
 
     /**
-     * Trigger a custom Caddy build using a hardcoded version and user selected modules.
+     * Trigger a Caddy build via configd, using the pre-generated configuration file.
      *
-     * @return array JSON response with status and message.
+     * @return array JSON response
      */
     public function buildBinaryAction()
     {
@@ -50,46 +50,26 @@ class GeneralController extends ApiMutableModelControllerBase
             return ['status' => 'error', 'message' => gettext('POST required')];
         }
 
-        $mdl = new \OPNsense\Caddy\Caddy();
+        $backend = new \OPNsense\Core\Backend();
 
-        $version = 'v2.10.0';
+        // Regenerate the build configuration file
+        $backend->configdRun("template reload OPNsense/Caddy");
 
-        // User-defined modules
-        $userModules = (string)$mdl->general->CaddyModules;
+        // Trigger the Caddy build process with build configuration file
+        $response = $backend->configdRun("caddy build_binary");
 
-        // Always-included default modules
-        $defaultModules = [
-            "github.com/caddyserver/ntlm-transport",
-            "github.com/mholt/caddy-dynamicdns",
-            "github.com/mholt/caddy-l4",
-            "github.com/mholt/caddy-ratelimit",
-            "github.com/caddy-dns/cloudflare"
-        ];
+        $result = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE || $result === null) {
+            $result = [];
+        }
 
-        // Merge + deduplicate
-        $allModules = array_filter(array_unique(array_merge(
-            explode(",", $userModules),
-            $defaultModules
-        )));
-
-        $modules = implode(",", $allModules);
-
-        (new \OPNsense\Core\Backend())->configdRun("caddy build_binary {$version} {$modules}");
-
-        return [
-            'status' => 'started',
-            'message' => sprintf(
-                gettext("Build started for Caddy %s with modules: %s"),
-                $version,
-                $modules
-            )
-        ];
+        return $result;
     }
 
     /**
      * Return the current status of the background Caddy build process.
      *
-     * @return array JSON-compatible status response
+     * @return array JSON response
      */
     public function buildStatusAction()
     {

@@ -1,2 +1,3 @@
 Caddyfile:/usr/local/etc/caddy/Caddyfile
 rc.conf.d/caddy:/etc/rc.conf.d/caddy
+caddy_build_config.json:/usr/local/etc/caddy/caddy_build_config.json

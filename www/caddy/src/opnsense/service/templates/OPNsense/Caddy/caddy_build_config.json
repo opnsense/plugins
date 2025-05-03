@@ -1,0 +1,15 @@
+{
+    "version": "v2.10.0",
+    "default_modules": [
+        "github.com/caddyserver/ntlm-transport@e0c1e46a30093fa243d06a83964da5573ee6a51f",
+        "github.com/mholt/caddy-dynamicdns@7c818ab3fc3485a72a346f85c77810725f19f9cf",
+        "github.com/mholt/caddy-l4@6e5f5e311ead9de02c96c44e071947ab273b1f59",
+        "github.com/mholt/caddy-ratelimit@12435ecef5dbb1b137eb68002b85d775a9d5cdb2",
+        "github.com/caddy-dns/cloudflare@89f16b99c18ef49c8bb470a82f895bce01cbaece"
+    ],
+    "user_modules": [
+{% for module in Pischem.caddy.general.CaddyModules.split(',') %}
+        "{{ module }}"{% if not loop.last %},{% endif +%}
+{% endfor %}
+    ]
+}

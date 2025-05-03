@@ -26,7 +26,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-import argparse
 import subprocess
 import sys
 import fcntl
@@ -36,6 +35,7 @@ import json
 from pathlib import Path
 from shutil import which
 
+CONFIG_FILE = Path("/usr/local/etc/caddy/caddy_build_config.json")
 LOCK_FILE = Path("/tmp/caddy_build.lock")
 STATUS_FILE = Path("/tmp/caddy_build.status")
 BUILD_OUTPUT = Path("/tmp/caddy")
@@ -43,9 +43,7 @@ LOG_FILE = Path("/var/log/caddy/caddy_build.log")
 FINAL_BINARY = Path("/usr/local/bin/caddy")
 
 def acquire_lock() -> int:
-    '''
-    Acquire a non-blocking exclusive file lock to prevent parallel builds.
-    '''
+    '''Acquire a non-blocking exclusive file lock to prevent parallel builds.'''
     lock_fd = os.open(LOCK_FILE, os.O_CREAT | os.O_RDWR)
     try:
         fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -58,16 +56,12 @@ def acquire_lock() -> int:
         sys.exit(1)
 
 def release_lock(lock_fd: int) -> None:
-    '''
-    Release the file lock and close the lock file descriptor.
-    '''
+    '''Release the file lock and close the lock file descriptor.'''
     fcntl.flock(lock_fd, fcntl.LOCK_UN)
     os.close(lock_fd)
 
 def check_prerequisites() -> None:
-    '''
-    Ensure required tools (xcaddy and go) are available. Exit and log error if missing.
-    '''
+    '''Ensure required tools (xcaddy and go) are available. Exit and log error if missing.'''
     missing = []
     if which("xcaddy") is None:
         missing.append("xcaddy")
@@ -79,27 +73,28 @@ def check_prerequisites() -> None:
         print(f"Missing required tool(s): {', '.join(missing)}", file=sys.stderr)
         sys.exit(1)
 
-def parse_args():
+def load_build_config() -> tuple[str, list[str]]:
     '''
-    Parse command-line arguments for the Caddy version and optional module list.
+    Load Caddy build configuration including version, default modules, and user modules.
+    Returns a tuple of version and a full combined module list.
     '''
-    parser = argparse.ArgumentParser(description='Build custom Caddy binary using xcaddy.')
-    parser.add_argument('--version', required=True, help='Caddy version to build')
-    parser.add_argument('--modules', type=str, help='Comma-separated list of modules to include')
-    return parser.parse_args()
+    if not CONFIG_FILE.exists():
+        raise FileNotFoundError(f"Config file not found: {CONFIG_FILE}")
+    with CONFIG_FILE.open("r") as f:
+        config = json.load(f)
+        version = config.get("version", "")
+        default_modules = config.get("default_modules", [])
+        user_modules = config.get("user_modules", [])
+        all_modules = sorted(set(default_modules + user_modules))
+        return version, all_modules
 
 def build_caddy(version: str, modules: list[str]) -> int:
-    '''
-    Run the xcaddy build command with the given version and modules.
-    Log stdout and stderr to a file.
-    Returns the xcaddy process exit code.
-    '''
-    # Clean up any previous build binary
+    '''Run the xcaddy build command with the given version and modules.'''
     if BUILD_OUTPUT.exists():
         BUILD_OUTPUT.unlink()
 
     cmd = ['xcaddy', 'build', version, '--output', str(BUILD_OUTPUT)]
-    for module in modules or []:
+    for module in modules:
         cmd.extend(['--with', module])
 
     with open(LOG_FILE, 'w') as log:
@@ -114,13 +109,10 @@ def build_caddy(version: str, modules: list[str]) -> int:
         return process.wait()
 
 def install_binary() -> None:
-    '''
-    Move the compiled Caddy binary to the final target path and make it executable.
-    '''
+    '''Move the compiled Caddy binary to the final target path and make it executable.'''
     if not BUILD_OUTPUT.exists():
         raise FileNotFoundError("Compiled binary not found after build.")
 
-    # Check if we can write to the destination directory
     if not os.access(FINAL_BINARY.parent, os.W_OK):
         raise PermissionError(f"Cannot write to {FINAL_BINARY.parent}. Run as root.")
 
@@ -128,16 +120,12 @@ def install_binary() -> None:
     FINAL_BINARY.chmod(0o755)
 
 def write_status(status: str, message: str) -> None:
-    '''
-    Write a single-line JSON status update to the status file.
-    '''
+    '''Write a single-line JSON status update to the status file.'''
     data = {"status": status, "message": message}
     STATUS_FILE.write_text(json.dumps(data) + "\n")
 
 def detach_to_background():
-    '''
-    If not already forked, fork the script into the background and exit parent.
-    '''
+    '''If not already forked, fork the script into the background and exit parent.'''
     if os.getenv("CADDY_BUILD_FORKED") != "1":
         env = os.environ.copy()
         env["CADDY_BUILD_FORKED"] = "1"
@@ -152,27 +140,28 @@ def detach_to_background():
 
 def main():
     detach_to_background()
-
-    # now in forked child
     lock_fd = acquire_lock()
+    write_status("running", "Build in progress")
+
     try:
-        write_status("running", "Build in progress")
         check_prerequisites()
-        args = parse_args()
-        modules = args.modules.split(',') if args.modules else []
-        result = build_caddy(args.version, modules)
+        version, all_modules = load_build_config()
+        result = build_caddy(version, all_modules)
 
-        if result == 0:
-            try:
-                install_binary()
-                write_status("success", "Build and installation successful.")
-            except Exception as e:
-                write_status("error", f"Install failed: {e}")
-                sys.exit(1)
-        else:
+        if result != 0:
             write_status("error", f"Build failed with exit code {result}. Check {LOG_FILE}")
+            sys.exit(result)
 
-        sys.exit(result)
+        install_binary()
+        write_status("success", "Build and installation successful.")
+        sys.exit(0)
+
+    except Exception as e:
+        write_status("error", f"Build process failed: {e}")
+        with open(LOG_FILE, 'a') as log:
+            log.write(f"Unhandled exception: {e}\n")
+        sys.exit(1)
+
     finally:
         release_lock(lock_fd)
 
