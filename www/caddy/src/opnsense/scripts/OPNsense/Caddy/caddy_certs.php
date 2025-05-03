@@ -100,6 +100,19 @@ foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
     }
 }
 
+foreach ((new Caddy())->reverseproxy->subdomain->iterateItems() as $subdomainItem) {
+    $caCertField = (string)$subdomainItem->ClientAuthTrustPool;
+
+    if (!empty($caCertField)) {
+        $refs = array_map('trim', explode(',', $caCertField));
+        foreach ($refs as $ref) {
+            if (!empty($ref)) {
+                $caCertRefs[] = $ref;
+            }
+        }
+    }
+}
+
 $caCertRefs = array_unique($caCertRefs);
 
 foreach ((new Ca())->ca->iterateItems() as $caItem) {

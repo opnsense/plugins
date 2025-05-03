@@ -337,6 +337,18 @@
                 <description type="DescriptionField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
