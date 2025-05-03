@@ -122,7 +122,7 @@ class BaseAccount:
             dynipv6host = self.settings['dynipv6host'] if self.settings.get('dynipv6host' ,'').strip() != '' else None
         )
 
-        if self._current_address == None:
+        if not self._current_address:
             syslog.syslog(
                 syslog.LOG_WARNING,
                 "Account %s no global IP address detected, check config if warning persists" % (self.description)
