@@ -1,0 +1,3 @@
+This package adds a backup option for GitHub and GitHub Enterprise.
+
+Due to the sensitivity of the config files it is recommended to use a self hosted GitHub instance.
