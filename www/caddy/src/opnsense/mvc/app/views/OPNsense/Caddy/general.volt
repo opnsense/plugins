@@ -107,10 +107,11 @@
             // Localized status messages
             const localizedStatusMap = {
                 "running": "{{ lang._('Build running. Please be patient, this might take a few minutes.') }}",
-                "success": "{{ lang._('Build completed successfully. Services restarted if it was running.') }}",
-                "error": "{{ lang._('Build failed. Check /var/log/caddy/caddy_build.log for more information.') }}"
+                "success": "{{ lang._('Build completed successfully. Service restarted if it was running.') }}",
+                "error": "{{ lang._('Build failed. Check /var/log/caddy/caddy_build.log for more information. Binary was not replaced.') }}"
             };
 
+            // Find and disable the matching Apply button
             const $applyButton = $(`#${formId}`).find('[id^="save_general-"]');
             $applyButton.prop('disabled', true);
 
