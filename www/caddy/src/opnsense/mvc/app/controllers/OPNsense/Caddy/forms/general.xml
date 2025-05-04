@@ -1,5 +1,9 @@
 <form>
-    <tab id="general-settings" description="General Settings">
+    <tab id="general-settings" description="Settings">
+        <field>
+            <type>header</type>
+            <label>General</label>
+        </field>
         <field>
             <id>caddy.general.enabled</id>
             <label>Enable Caddy</label>
@@ -24,8 +28,11 @@
             <type>dropdown</type>
             <help><![CDATA[Select the Auto HTTPS option. "On (default)" creates automatic certificates using "Let's Encrypt" or "ZeroSSL". "Off" turns all automatic certificate requests off.]]></help>
         </field>
-    </tab>
-    <tab id="general-advanced" description="Advanced Settings">
+        <field>
+            <type>header</type>
+            <label>Advanced</label>
+            <collapse>true</collapse>
+        </field>
         <field>
             <id>caddy.general.DisableSuperuser</id>
             <label>System User</label>
@@ -75,8 +82,10 @@
             <hint>10</hint>
             <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close. If the grace period is over and Caddy is unresponsive, there will be a forced kill and service restart.]]></help>
         </field>
-    </tab>
-    <tab id="general-logsettings" description="Log Settings">
+        <field>
+            <type>header</type>
+            <label>Log</label>
+        </field>
         <field>
             <id>caddy.general.LogLevel</id>
             <label>Log Level</label>
@@ -101,6 +110,17 @@
             <hint>10</hint>
             <type>text</type>
             <help><![CDATA[Specify how many days to keep the JSON access logs.]]></help>
+        </field>
+    </tab>
+    <tab id="general-modules" description="Modules">
+        <field>
+            <id>caddy.general.CaddyModules</id>
+            <label>Modules</label>
+            <type>dropdown</type>
+            <type>select_multiple</type>
+            <size>10</size>
+            <hint>Default</hint>
+            <help><![CDATA[Add additional modules and build a new caddy binary with xcaddy on this host. Depending on CPU speed and bandwidth this might take a few minutes, please be patient. If the build fails, inspect the build log in /var/log/caddy/caddy_build.log and report it to the module maintainer. The binary is only replaced when the build succeeds. To restore the default, deselect all modules and rebuild. Please note that most additional modules apart from caddy-dns providers are not supported in the GUI, use custom configuration files instead. If you want to automatically rebuild caddy with the current settings - e.g., after firmware updates - schedule a cron job.]]></help>
         </field>
     </tab>
     <tab id="general-dnsprovider" description="DNS Provider">
@@ -259,16 +279,6 @@
             <size>5</size>
             <style>selectpicker</style>
             <help><![CDATA[Select headers to copy in addition to the default of the chosen provider. Headers can be added in "Reverse Proxy - Headers". As example, copying "Authorization" can pass Basic Auth credentials from the Auth Provider to the reverse proxied application.]]></help>
-        </field>
-    </tab>
-    <tab id="general-modules" description="Modules">
-        <field>
-            <id>caddy.general.CaddyModules</id>
-            <label>Modules</label>
-            <type>dropdown</type>
-            <type>select_multiple</type>
-            <size>10</size>
-            <help><![CDATA[Add additional modules and build a new caddy binary with xcaddy on this host. Depending on CPU speed and bandwidth this might take a few minutes, please be patient. If the build fails, inspect the build log in /var/log/caddy/caddy_build.log and report it to the module maintainer.]]></help>
         </field>
     </tab>
     <activetab>general-settings</activetab>

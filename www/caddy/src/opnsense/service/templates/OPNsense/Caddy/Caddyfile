@@ -34,6 +34,12 @@
 {% else %}
 # caddy_user=root
 {% endif %}
+{# Print as comments which modules are compiled #}
+{% if Pischem.caddy.general.CaddyModules -%}
+{%     for module in Pischem.caddy.general.CaddyModules.split(',') %}
+# {{ module }}{% if not loop.last %}{% endif +%}
+{%     endfor %}
+{% endif %}
 
 # Global Options
 {

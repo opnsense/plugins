@@ -41,6 +41,21 @@ STATUS_FILE = Path("/tmp/caddy_build.status")
 BUILD_OUTPUT = Path("/tmp/caddy")
 LOG_FILE = Path("/var/log/caddy/caddy_build.log")
 FINAL_BINARY = Path("/usr/local/bin/caddy")
+PID_FILE = Path("/var/run/caddy/caddy.pid")
+
+
+def log_message(level: str, message: str) -> None:
+    '''Append a message to the log file with the given level (e.g., ERROR, WARNING, INFO).'''
+    with open(LOG_FILE, 'a') as log:
+        log.write(f"{level}: {message}\n")
+
+
+def exit_with_error(message: str, code: int = 1) -> None:
+    '''Log an error, print it to stderr, and exit with a given code.'''
+    log_message("ERROR", message)
+    print(message, file=sys.stderr)
+    sys.exit(code)
+
 
 def acquire_lock() -> int:
     '''Acquire a non-blocking exclusive file lock to prevent parallel builds.'''
@@ -49,16 +64,14 @@ def acquire_lock() -> int:
         fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         return lock_fd
     except BlockingIOError:
-        with open(LOG_FILE, 'a') as log:
-            log.write("ERROR: Another build is already running.\n")
-        print("Another build is already running.", file=sys.stderr)
-        os.close(lock_fd)
-        sys.exit(1)
+        exit_with_error("Another build is already running.")
+
 
 def release_lock(lock_fd: int) -> None:
     '''Release the file lock and close the lock file descriptor.'''
     fcntl.flock(lock_fd, fcntl.LOCK_UN)
     os.close(lock_fd)
+
 
 def check_prerequisites() -> None:
     '''Ensure required tools (xcaddy and go) are available. Exit and log error if missing.'''
@@ -68,10 +81,8 @@ def check_prerequisites() -> None:
     if which("go") is None:
         missing.append("go")
     if missing:
-        with open(LOG_FILE, 'a') as log:
-            log.write(f"ERROR: Missing required tool(s): {', '.join(missing)}\n")
-        print(f"Missing required tool(s): {', '.join(missing)}", file=sys.stderr)
-        sys.exit(1)
+        exit_with_error(f"Missing required tool(s): {', '.join(missing)}")
+
 
 def load_build_config() -> tuple[str, list[str]]:
     '''
@@ -87,6 +98,7 @@ def load_build_config() -> tuple[str, list[str]]:
         user_modules = config.get("user_modules", [])
         all_modules = sorted(set(default_modules + user_modules))
         return version, all_modules
+
 
 def build_caddy(version: str, modules: list[str]) -> int:
     '''Run the xcaddy build command with the given version and modules.'''
@@ -108,6 +120,7 @@ def build_caddy(version: str, modules: list[str]) -> int:
         )
         return process.wait()
 
+
 def install_binary() -> None:
     '''Move the compiled Caddy binary to the final target path and make it executable.'''
     if not BUILD_OUTPUT.exists():
@@ -119,10 +132,12 @@ def install_binary() -> None:
     shutil.move(str(BUILD_OUTPUT), FINAL_BINARY)
     FINAL_BINARY.chmod(0o755)
 
+
 def write_status(status: str, message: str) -> None:
     '''Write a single-line JSON status update to the status file.'''
     data = {"status": status, "message": message}
     STATUS_FILE.write_text(json.dumps(data) + "\n")
+
 
 def detach_to_background():
     '''If not already forked, fork the script into the background and exit parent.'''
@@ -138,10 +153,52 @@ def detach_to_background():
         )
         sys.exit(0)
 
+
+def replace_binary_safely() -> None:
+    '''Stop Caddy if running, replace the binary, and start it again if it was running.'''
+    was_running = PID_FILE.exists()
+
+    if was_running:
+        try:
+            subprocess.run(
+                ["/usr/local/sbin/configctl", "caddy", "stop"],
+                check=True,
+                capture_output=True,
+                text=True
+            )
+            log_message("INFO", "Caddy stopped successfully before binary replacement.")
+        except subprocess.CalledProcessError as e:
+            log_message("WARNING", f"Failed to stop Caddy: {e}")
+            log_message("STDOUT", e.stdout)
+            log_message("STDERR", e.stderr)
+
+    try:
+        install_binary()
+    except Exception as e:
+        if was_running:
+            log_message("INFO", "Attempting to restart Caddy after failed install.")
+            subprocess.run(["/usr/local/sbin/configctl", "caddy", "start"])
+        raise
+
+    if was_running:
+        try:
+            subprocess.run(
+                ["/usr/local/sbin/configctl", "caddy", "start"],
+                check=True,
+                capture_output=True,
+                text=True
+            )
+            log_message("INFO", "Caddy started successfully after binary replacement.")
+        except subprocess.CalledProcessError as e:
+            log_message("WARNING", f"Failed to start Caddy: {e}")
+            log_message("STDOUT", e.stdout)
+            log_message("STDERR", e.stderr)
+
+
 def main():
     detach_to_background()
     lock_fd = acquire_lock()
-    write_status("running", "Build in progress")
+    write_status("running", "Build in progress. Please be patient, this might take a few minutes.")
 
     try:
         check_prerequisites()
@@ -149,17 +206,16 @@ def main():
         result = build_caddy(version, all_modules)
 
         if result != 0:
-            write_status("error", f"Build failed with exit code {result}. Check {LOG_FILE}")
+            write_status("error", f"Build failed with exit code {result}. Check {LOG_FILE}. Binary was not replaced.")
             sys.exit(result)
 
-        install_binary()
-        write_status("success", "Build and installation successful.")
+        replace_binary_safely()
+        write_status("success", "Build successful.")
         sys.exit(0)
 
     except Exception as e:
         write_status("error", f"Build process failed: {e}")
-        with open(LOG_FILE, 'a') as log:
-            log.write(f"Unhandled exception: {e}\n")
+        log_message("ERROR", f"Unhandled exception: {e}")
         sys.exit(1)
 
     finally:

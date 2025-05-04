@@ -126,7 +126,7 @@
                         }
                     }
                 });
-            }, 5000);
+            }, 10000);
         }
 
         // Event binding for saving forms
@@ -143,7 +143,6 @@
                 if (triggerBuild) {
                     ajaxCall("/api/caddy/general/build_binary", {}, function (data, status) {
                         if (status === "success") {
-                            showAlert("{{ lang._('Caddy build started...') }}", "success");
                             pollCaddyBuildStatus(formId);
                         } else {
                             showAlert("{{ lang._('Failed to start Caddy build.') }}", "error");
