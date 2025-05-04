@@ -35,22 +35,26 @@
 
         /**
          * Displays an alert message to the user.
-         * Info messages persists, all other messages fade away.
          *
          * @param {string} message - The message to display.
          * @param {string} [type="error"] - The type of alert (error or success).
          */
         function showAlert(message, type = "error") {
-            const alertClass = type === "error" ? "alert-danger" : "alert-success";
+            const alertClass = type === "error" ? "alert-danger" :
+                            type === "success" ? "alert-success" :
+                            "alert-info";
             const messageArea = $("#messageArea");
-            messageArea.stop(true, true).hide();
-            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message).fadeIn(500);
 
-            if (type !== "info") {
-                messageArea.delay(30000).fadeOut(500, function () {
-                    $(this).html('');
-                });
-            }
+            // Compose message with close button
+            const closeButton = '<button type="button" class="close" onclick="$(\'#messageArea\').hide().html(\'\');">&times;</button>';
+            const fullMessage = closeButton + message;
+
+            messageArea.stop(true, true).hide();
+            messageArea
+                .removeClass("alert-success alert-danger alert-info")
+                .addClass("alert-dismissible fade in " + alertClass)
+                .html(fullMessage)
+                .fadeIn(300);
         }
 
         /**
@@ -192,6 +196,8 @@
     {{ partial("layout_partials/base_tabs_content", ['formData': generalForm]) }}
     <!-- Message Area for error/success messages -->
     <div style="max-width: 98%; margin: 10px auto;">
-        <div id="messageArea" class="alert alert-info" style="display: none;"></div>
+        <div id="messageArea" class="alert alert-info alert-dismissible fade in" style="display: none;">
+            <button type="button" class="close" onclick="$('#messageArea').hide();">&times;</button>
+        </div>
     </div>
 </div>
