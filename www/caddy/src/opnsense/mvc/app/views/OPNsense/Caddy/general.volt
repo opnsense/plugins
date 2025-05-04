@@ -47,7 +47,7 @@
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message).fadeIn(500);
 
             if (type !== "info") {
-                messageArea.delay(15000).fadeOut(500, function () {
+                messageArea.delay(30000).fadeOut(500, function () {
                     $(this).html('');
                 });
             }
@@ -104,7 +104,13 @@
          function pollCaddyBuildStatus(formId) {
             let lastStatus = null;
 
-            // Find and disable the matching Apply button
+            // Localized status messages
+            const localizedStatusMap = {
+                "running": "{{ lang._('Build running. Please be patient, this might take a few minutes.') }}",
+                "success": "{{ lang._('Build completed successfully. Services restarted if it was running.') }}",
+                "error": "{{ lang._('Build failed. Check /var/log/caddy/caddy_build.log for more information.') }}"
+            };
+
             const $applyButton = $(`#${formId}`).find('[id^="save_general-"]');
             $applyButton.prop('disabled', true);
 
@@ -114,7 +120,8 @@
                         if (data.status !== lastStatus) {
                             lastStatus = data.status;
 
-                            const msg = "{{ lang._('Build status') }}: " + data.status + " - " + (data.message || "");
+                            const localizedStatus = localizedStatusMap[data.status] || "{{ lang._('Unknown status') }}";
+                            const msg = "{{ lang._('Status') }}: " + localizedStatus;
                             const alertType = data.status === "success" ? "success" : (data.status === "error" ? "error" : "info");
                             showAlert(msg, alertType);
                         }
@@ -122,7 +129,7 @@
                         if (data.status === "success" || data.status === "error") {
                             clearInterval(interval);
                             setSpinner(formId, 'stop');
-                            $applyButton.prop('disabled', false);  // Re-enable button
+                            $applyButton.prop('disabled', false);
                         }
                     }
                 });
@@ -170,8 +177,7 @@
 
         // Rename "Apply" button to "Build" for the Modules tab
         $('#save_general-modules')
-            .val("Build")
-            .html('<b>Build</b> <i id="frm_general-modules_progress" class=""></i>');
+            .html('<b>{{ lang._("Build") }}</b> <i id="frm_general-modules_progress" class=""></i>');
 
     });
 </script>
