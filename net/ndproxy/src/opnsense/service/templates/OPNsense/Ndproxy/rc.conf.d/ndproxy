@@ -2,6 +2,8 @@
 {% set generalSettings = helpers.getNodeByTag('OPNsense.ndproxy.general') %}
 {% if generalSettings.enabled|default("0") == "1" %}
 ndproxy_enable="YES"
+{# Always disable promiscuous mode forced by port since it should be controlled via interface settings if needed. #}
+ndproxy_promisc_enable="NO"
 {%     if generalSettings.ndproxy_uplink_interface %}
 ndproxy_uplink_interface="{{ helpers.physical_interface(generalSettings.ndproxy_uplink_interface) }}"
 {%     endif %}
@@ -17,5 +19,3 @@ ndproxy_uplink_ipv6_addresses="{{ generalSettings.ndproxy_uplink_ipv6_addresses 
 {% else %}
 ndproxy_enable="NO"
 {% endif %}
-{# Always disable promiscuous mode forced by port since it should be controlled via interface settings if needed. #}
-ndproxy_promisc_enable="NO"
