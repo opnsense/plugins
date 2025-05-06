@@ -3,6 +3,10 @@ Ndproxy is a kernel module that implements IPv6 Neighbor Discovery proxying over
 Plugin Changelog
 ================
 
+1.1
+
+* Promiscuous mode for the Uplink Interface is no longer enabled
+
 1.0
 
 * Initial Release
