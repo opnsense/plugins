@@ -1,0 +1,10 @@
+<acl>
+    <page-xcaddy-general>
+        <name>Services: XCaddy: General Settings</name>
+        <description>Allow access to XCaddy General Settings</description>
+        <patterns>
+            <pattern>ui/xcaddy/*</pattern>
+            <pattern>api/xcaddy/*</pattern>
+        </patterns>
+    </page-xcaddy-general>
+</acl>

@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <XCaddy cssClass="fa fa-globe fa-fw">
+            <General order="10" url="/ui/xcaddy/general"/>
+        </XCaddy>
+    </Services>
+</menu>

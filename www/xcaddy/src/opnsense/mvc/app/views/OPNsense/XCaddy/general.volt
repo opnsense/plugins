@@ -1,0 +1,129 @@
+{#
+ # Copyright (c) 2025 Cedrik Pischem
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1. Redistributions of source code must retain the above copyright notice,
+ #    this list of conditions and the following disclaimer.
+ #
+ # 2. Redistributions in binary form must reproduce the above copyright notice,
+ #    this list of conditions and the following disclaimer in the documentation
+ #    and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
+
+ <script>
+    $(document).ready(function () {
+        // Load form data
+        mapDataToFormUI({'frm_GeneralSettings': "/api/xcaddy/general/get"}).done(function () {
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        // Show alert messages
+        function showAlert(message, type = "error") {
+            const alertClass = type === "error" ? "alert-danger"
+                           : type === "success" ? "alert-success"
+                           : "alert-info";
+            const closeButton = '<button type="button" class="close" onclick="$(\'#messageArea\').hide().html(\'\');">&times;</button>';
+            const fullMessage = closeButton + message;
+
+            $("#messageArea").stop(true, true).hide()
+                .removeClass("alert-success alert-danger alert-info")
+                .addClass("alert-dismissible fade in " + alertClass)
+                .html(fullMessage)
+                .fadeIn(300);
+        }
+
+        // Spinner control
+        function setSpinner(action) {
+            const $icon = $("#frm_GeneralSettings_progress");
+            if (action === 'start') {
+                $icon.addClass("fa fa-spinner fa-pulse");
+            } else {
+                $icon.removeClass("fa fa-spinner fa-pulse");
+            }
+        }
+
+        // Poll build status
+        function pollCaddyBuildStatus() {
+            let lastStatus = null;
+            const statusMap = {
+                "running": "{{ lang._('Build running. Please be patient, this might take a few minutes.') }}",
+                "success": "{{ lang._('Build completed successfully. Service restarted if it was running.') }}",
+                "error": "{{ lang._('Build failed. Check /tmp/caddy_build.log for more information. Binary was not replaced.') }}"
+            };
+
+            const $button = $("#buildCaddyBinary").prop("disabled", true);
+
+            const interval = setInterval(() => {
+                ajaxGet("/api/xcaddy/general/build_status", {}, function (data, status) {
+                    if (status === "success" && data.status) {
+                        if (data.status !== lastStatus) {
+                            lastStatus = data.status;
+                            const msg = "{{ lang._('Status') }}: " + (statusMap[data.status] || "{{ lang._('Unknown status') }}");
+                            const type = data.status === "success" ? "success" : (data.status === "error" ? "error" : "info");
+                            showAlert(msg, type);
+                        }
+
+                        if (data.status === "success" || data.status === "error") {
+                            clearInterval(interval);
+                            setSpinner('stop');
+                            $button.prop("disabled", false);
+                        }
+                    }
+                });
+            }, 10000);
+        }
+
+        // Build button click
+        $("#buildCaddyBinary").click(function () {
+            setSpinner('start');
+
+            saveFormToEndpoint("/api/xcaddy/general/set", 'frm_GeneralSettings', function () {
+                ajaxCall("/api/xcaddy/general/build_binary", {}, function (data, status) {
+                    if (status === "success") {
+                        pollCaddyBuildStatus();
+                    } else {
+                        showAlert("{{ lang._('Failed to start Caddy build.') }}", "error");
+                        setSpinner('stop');
+                    }
+                }, "post");
+            }, true, function (errorData) {
+                showAlert(errorData.message || "{{ lang._('Validation Error') }}", "error");
+                setSpinner('stop');
+            });
+        });
+    });
+</script>
+
+<div class="content-box">
+    {{ partial("layout_partials/base_form", ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
+</div>
+
+<section class="page-content-main">
+    <div class="content-box">
+        <div class="col-md-12">
+            <br/>
+            <button class="btn btn-primary" id="buildCaddyBinary" type="button">
+                <b>{{ lang._('Build') }}</b> <i id="frm_GeneralSettings_progress"></i>
+            </button>
+            <br/><br/>
+            <div id="messageArea" class="alert alert-info alert-dismissible fade in" style="display: none;">
+                <button type="button" class="close" onclick="$('#messageArea').hide();">&times;</button>
+            </div>
+        </div>
+    </div>
+</section>
