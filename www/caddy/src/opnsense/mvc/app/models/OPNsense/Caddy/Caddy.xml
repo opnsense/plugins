@@ -530,6 +530,14 @@
                     <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
+                <RequestMatcher type="OptionField">
+                    <Required>Y</Required>
+                    <Default>client_ip</Default>
+                    <OptionValues>
+                        <client_ip>client_ip</client_ip>
+                        <remote_ip>remote_ip</remote_ip>
+                    </OptionValues>
+                </RequestMatcher>
                 <description type="DescriptionField"/>
             </accesslist>
             <basicauth type="ArrayField">
