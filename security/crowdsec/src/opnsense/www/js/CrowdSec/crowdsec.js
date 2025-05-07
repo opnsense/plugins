@@ -8,7 +8,7 @@ const CrowdSec = (function () {
 
   const crowdsec_path = '/usr/local/etc/crowdsec/';
   const _refreshTemplate =
-    '<button class="btn btn-default" type="button" title="Refresh"><span class="icon glyphicon glyphicon-refresh"></span></button>';
+    '<button class="btn btn-default" type="button" title="Refresh"><span class="icon fa fa-refresh"></span></button>';
 
   const _dataFormatters = {
     yesno: function (column, row) {
