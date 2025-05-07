@@ -40,7 +40,7 @@ LOCK_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build.lock")
 STATUS_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build.status")
 BUILD_OUTPUT = Path("/usr/local/etc/xcaddy/caddy")
 FINAL_BINARY = Path("/usr/local/bin/caddy")
-LOG_FILE = Path("/var/log/xcaddy/caddy_build.log")
+LOG_FILE = Path("/var/log/xcaddy/xcaddy_build.log")
 PID_FILE = Path("/var/run/caddy/caddy.pid")
 
 def ensure_directories_exist() -> None:

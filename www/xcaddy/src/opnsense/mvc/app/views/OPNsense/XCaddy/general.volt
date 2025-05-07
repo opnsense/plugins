@@ -32,11 +32,13 @@
             $('.selectpicker').selectpicker('refresh');
         });
 
-        // Show alert messages
         function showAlert(message, type = "error") {
-            const alertClass = type === "error" ? "alert-danger"
-                           : type === "success" ? "alert-success"
-                           : "alert-info";
+            // Normalize success to info
+            if (type === "success") {
+                type = "info";
+            }
+
+            const alertClass = type === "error" ? "alert-danger" : "alert-info";
             const closeButton = '<button type="button" class="close" onclick="$(\'#messageArea\').hide().html(\'\');">&times;</button>';
             const fullMessage = closeButton + message;
 
@@ -62,8 +64,8 @@
             let lastStatus = null;
             const statusMap = {
                 "running": "{{ lang._('Build running. Please be patient, this might take a few minutes.') }}",
-                "success": "{{ lang._('Build completed successfully. Service restarted if it was running.') }}",
-                "error": "{{ lang._('Build failed. Check /tmp/caddy_build.log for more information. Binary was not replaced.') }}"
+                "success": "{{ lang._('Build completed successfully. Caddy was restarted if it was running.') }}",
+                "error": "{{ lang._('Build failed. Check /var/log/xcaddy for more information. Binary was not replaced.') }}"
             };
 
             const $button = $("#buildCaddyBinary").prop("disabled", true);
@@ -95,6 +97,7 @@
             saveFormToEndpoint("/api/xcaddy/general/set", 'frm_GeneralSettings', function () {
                 ajaxCall("/api/xcaddy/general/build_binary", {}, function (data, status) {
                     if (status === "success") {
+                        showAlert("{{ lang._('Requesting a new Caddy build.') }}", "info");
                         pollCaddyBuildStatus();
                     } else {
                         showAlert("{{ lang._('Failed to start Caddy build.') }}", "error");
