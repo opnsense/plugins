@@ -180,6 +180,16 @@
             <hint>0</hint>
             <help><![CDATA[propagation_delay is a duration value in seconds that sets how long to wait before starting DNS TXT records propagation checks when using the DNS challenge.]]></help>
         </field>
+        <field>
+            <type>header</type>
+            <label>ECH</label>
+        </field>
+        <field>
+            <id>caddy.general.TlsDnsEchDomain</id>
+            <label>ECH Domain</label>
+            <type>text</type>
+            <help><![CDATA[Enables Encrypted ClientHello (ECH) by using the specified public domain name as the plaintext server name (SNI) in TLS handshakes. More information: https://caddyserver.com/docs/caddyfile/options#ech]]></help>
+        </field>
     </tab>
     <tab id="general-dynamicdns" description="Dynamic DNS">
         <field>

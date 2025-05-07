@@ -109,6 +109,9 @@
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
+            <TlsDnsEchDomain type="HostnameField">
+                <IpAllowed>N</IpAllowed>
+            </TlsDnsEchDomain>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
@@ -337,6 +340,18 @@
                 <description type="DescriptionField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
