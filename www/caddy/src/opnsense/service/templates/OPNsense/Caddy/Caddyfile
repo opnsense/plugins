@@ -524,7 +524,7 @@ http://{{ domain }} {
             {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
             {{ unique_identifier }} {
                 {# Non-inverted access lists have "not" as default, inverted ones '' #}
-                {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} client_ip {{ client_ips }}
+                {{ 'not' if accesslist_obj.accesslistInvert|default("0") == "0" else '' }} {{ accesslist_obj.RequestMatcher }} {{ client_ips }}
             }
             {# When IP is matched, abort or send response code. This will end processing and drop the request #}
             handle {{ unique_identifier }} {

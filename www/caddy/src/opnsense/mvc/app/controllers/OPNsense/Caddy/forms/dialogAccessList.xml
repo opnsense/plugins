@@ -45,6 +45,13 @@
         </grid_view>
     </field>
     <field>
+        <id>accesslist.RequestMatcher</id>
+        <label>Request Matcher</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the request matcher that will be applied to this access list.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>accesslist.description</id>
         <label>Description</label>
         <type>text</type>
