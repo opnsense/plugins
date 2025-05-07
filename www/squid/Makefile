@@ -1,6 +1,5 @@
 PLUGIN_NAME=		squid
-PLUGIN_VERSION=		1.1
-PLUGIN_REVISION=	1
+PLUGIN_VERSION=		1.2
 PLUGIN_COMMENT=		Squid is a caching proxy for the web
 PLUGIN_DEPENDS=		squid squid-langpack
 PLUGIN_TIER=		2
