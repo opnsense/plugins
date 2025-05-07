@@ -82,4 +82,21 @@ class GeneralController extends ApiMutableModelControllerBase
         return $result;
     }
 
+    /**
+     * Return the current status of the background Caddy build process.
+     *
+     * @return array JSON response
+     */
+    public function updateModulesAction()
+    {
+        $response = (new \OPNsense\Core\Backend())->configdRun('xcaddy update_modules');
+
+        $result = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE || $result === null) {
+            $result = [];
+        }
+
+        return $result;
+    }
+
 }
