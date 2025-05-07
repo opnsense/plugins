@@ -5,7 +5,6 @@
         <type>dropdown</type>
         <type>select_multiple</type>
         <size>10</size>
-        <hint>Default</hint>
-        <help><![CDATA[Add additional modules and build a new caddy binary with xcaddy on this host. Depending on CPU speed and bandwidth this might take a few minutes, please be patient. If the build fails, inspect the build log in /var/log/caddy/caddy_build.log and report it to the module maintainer. The binary is only replaced when the build succeeds. To restore the default, deselect all modules and rebuild. Please note that most additional modules apart from caddy-dns providers are not supported in the GUI, use custom configuration files instead. If you want to automatically rebuild caddy with the current settings - e.g., after firmware updates - schedule a cron job.]]></help>
+        <help><![CDATA[Add additional modules and build a new caddy binary with xcaddy on this host. Depending on CPU speed and bandwidth this might take a few minutes, please be patient. If the build fails, inspect the build log in /var/log/xcaddy and report it to the module maintainer. The binary is only replaced when the build succeeds. To restore the default, deselect all modules and rebuild. Please note that most additional modules apart from caddy-dns providers are not supported in the os-caddy GUI, use custom configuration files instead. If you want to automatically rebuild caddy with the current settings - e.g., after firmware updates - schedule a cron job.]]></help>
     </field>
 </form>

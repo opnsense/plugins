@@ -50,8 +50,8 @@
         }
 
         // Spinner control
-        function setSpinner(action) {
-            const $icon = $("#frm_GeneralSettings_progress");
+        function setSpinner(action, target = "#frm_GeneralSettings_progress") {
+            const $icon = $(target);
             if (action === 'start') {
                 $icon.addClass("fa fa-spinner fa-pulse");
             } else {
@@ -68,8 +68,6 @@
                 "error": "{{ lang._('Build failed. Check /var/log/xcaddy for more information. Binary was not replaced.') }}"
             };
 
-            const $button = $("#buildCaddyBinary").prop("disabled", true);
-
             const interval = setInterval(() => {
                 ajaxGet("/api/xcaddy/general/build_status", {}, function (data, status) {
                     if (status === "success" && data.status) {
@@ -83,7 +81,6 @@
                         if (data.status === "success" || data.status === "error") {
                             clearInterval(interval);
                             setSpinner('stop');
-                            $button.prop("disabled", false);
                         }
                     }
                 });
@@ -109,8 +106,37 @@
                 setSpinner('stop');
             });
         });
+
+        // Update Modules button click
+        $("#updateCaddyModules").click(function () {
+            setSpinner('start', '#updateModules_progress');
+
+            ajaxCall("/api/xcaddy/general/updateModules", {}, function (data, status) {
+                setSpinner('stop', '#updateModules_progress');
+
+                if (status === "success" && data.status === "success") {
+                    const count = data.count || 0;
+                    showAlert("{{ lang._('Module list updated successfully.') }} ({{ lang._('Modules') }}: " + count + ")", "success");
+                    // Refresh form and selectpicker after update
+                    mapDataToFormUI({'frm_GeneralSettings': "/api/xcaddy/general/get"}).done(function () {
+                        formatTokenizersUI();
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                } else {
+                    const message = data.message || "{{ lang._('Failed to update module list.') }}";
+                    showAlert("{{ lang._('Error') }}: " + message, "error");
+                }
+            }, "post");
+        });
+
     });
 </script>
+
+<style>
+    .button-spaced {
+        margin-right: 10px;
+    }
+</style>
 
 <div class="content-box">
     {{ partial("layout_partials/base_form", ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
@@ -120,8 +146,11 @@
     <div class="content-box">
         <div class="col-md-12">
             <br/>
-            <button class="btn btn-primary" id="buildCaddyBinary" type="button">
+            <button class="btn btn-primary button-spaced" id="buildCaddyBinary" type="button">
                 <b>{{ lang._('Build') }}</b> <i id="frm_GeneralSettings_progress"></i>
+            </button>
+            <button class="btn btn-secondary" id="updateCaddyModules" type="button">
+                <b>{{ lang._('Update Modules') }}</b> <i id="updateModules_progress"></i>
             </button>
             <br/><br/>
             <div id="messageArea" class="alert alert-info alert-dismissible fade in" style="display: none;">

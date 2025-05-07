@@ -5,7 +5,7 @@
     <items>
         <general>
             <modules type="JsonKeyValueStoreField">
-                <SourceFile>/usr/local/opnsense/mvc/app/models/OPNsense/XCaddy/xcaddy_build_modules.json</SourceFile>
+                <SourceFile>/usr/local/etc/xcaddy/xcaddy_build_modules.json</SourceFile>
                 <SortByValue>Y</SortByValue>
                 <Multiple>Y</Multiple>
             </modules>

@@ -26,8 +26,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-#!/usr/bin/env python3
-
 # Executed manually or via optional cron job to update the modules file
 
 import requests
@@ -36,7 +34,17 @@ import sys
 from pathlib import Path
 
 API_URL = "https://caddyserver.com/api/packages"
-OUTPUT_FILE = Path("/usr/local/opnsense/mvc/app/models/OPNsense/XCaddy/xcaddy_build_modules.json")
+OUTPUT_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build_modules.json")
+
+
+def ensure_directories_exist() -> None:
+    '''Ensure all parent directories for required paths exist.'''
+    paths = [
+        OUTPUT_FILE,
+    ]
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+
 
 def fetch_plugin_data():
     try:
@@ -46,6 +54,7 @@ def fetch_plugin_data():
     except requests.RequestException as e:
         print(f"Error fetching plugin data: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def generate_plugin_map(plugins):
     plugin_map = {}
@@ -59,20 +68,36 @@ def generate_plugin_map(plugins):
                 plugin_map[path] = simplified
     return plugin_map
 
+
 def save_plugin_map(plugin_map):
     try:
         OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
         with OUTPUT_FILE.open("w") as f:
             json.dump(plugin_map, f, indent=4)
-        print(f"Plugin map saved to {OUTPUT_FILE}")
     except IOError as e:
-        print(f"Error saving plugin map: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise RuntimeError(f"Error saving plugin map: {e}")
+
 
 def main():
-    plugins = fetch_plugin_data()
-    plugin_map = generate_plugin_map(plugins)
-    save_plugin_map(plugin_map)
+    try:
+        plugins = fetch_plugin_data()
+        plugin_map = generate_plugin_map(plugins)
+        ensure_directories_exist()
+        save_plugin_map(plugin_map)
 
-if __name__ == "__main__":
+        print(json.dumps({
+            "status": "success",
+            "message": f"Plugin map saved to {OUTPUT_FILE}",
+            "count": len(plugin_map)
+        }))
+        sys.exit(0)
+
+    except Exception as e:
+        print(json.dumps({
+            "status": "error",
+            "message": str(e)
+        }))
+        sys.exit(1)
+
+if __name__ == '__main__':
     main()

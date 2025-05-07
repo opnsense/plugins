@@ -99,18 +99,16 @@ def check_prerequisites() -> None:
 
 def load_build_config() -> tuple[str, list[str]]:
     '''
-    Load Caddy build configuration including version, default modules, and user modules.
-    Returns a tuple of version and a full combined module list.
+    Load Caddy build configuration including version and modules.
+    Returns a tuple of version and a module list.
     '''
     if not CONFIG_FILE.exists():
         raise FileNotFoundError(f"Config file not found: {CONFIG_FILE}")
     with CONFIG_FILE.open("r") as f:
         config = json.load(f)
         version = config.get("version", "")
-        default_modules = config.get("default_modules", [])
-        user_modules = config.get("user_modules", [])
-        all_modules = sorted(set(default_modules + user_modules))
-        return version, all_modules
+        modules = config.get("modules", [])
+        return version, modules
 
 
 def build_caddy(version: str, modules: list[str]) -> int:
@@ -209,6 +207,11 @@ def replace_binary_safely() -> None:
 
 
 def main():
+    '''
+    As we cannot reliably determine which version to build, since it would also depend on certain
+    commit hashes of modules and specific go versions, we always build latest release tags.
+    For more specific builds, we can always overwrite the template with a custom configuration file instead.
+    '''
     detach_to_background()
     ensure_directories_exist()
     lock_fd = acquire_lock()
