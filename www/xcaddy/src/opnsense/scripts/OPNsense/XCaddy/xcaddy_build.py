@@ -141,6 +141,7 @@ def install_binary() -> None:
 
     shutil.move(str(BUILD_OUTPUT), FINAL_BINARY)
     FINAL_BINARY.chmod(0o755)
+    log_message("INFO", f"Installed new Caddy binary to {FINAL_BINARY}")
 
 
 def write_status(status: str, message: str) -> None:
@@ -168,8 +169,24 @@ def detach_to_background():
 
 
 def replace_binary_safely() -> None:
-    '''Stop Caddy if running, replace the binary, and start it again if it was running.'''
-    was_running = PID_FILE.exists()
+    '''
+    Test if caddy is installed and running, stop it, replace the binary, and restart if needed.
+    If caddy is not installed, just install the binary.
+    '''
+    caddy_installed = False
+    try:
+        result = subprocess.run(
+            ["/usr/local/sbin/configctl", "firmware", "plugin", "caddy"],
+            check=True,
+            capture_output=True,
+            text=True
+        )
+        caddy_installed = result.stdout.strip() == "1"
+    except subprocess.CalledProcessError as e:
+        log_message("WARNING", f"Could not verify Caddy plugin: {e}")
+        caddy_installed = False
+
+    was_running = PID_FILE.exists() if caddy_installed else False
 
     if was_running:
         try:
