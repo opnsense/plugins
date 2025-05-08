@@ -1,7 +1,7 @@
 <acl>
     <page-xcaddy-general>
-        <name>Services: XCaddy: General Settings</name>
-        <description>Allow access to XCaddy General Settings</description>
+        <name>Services: Caddy: Modules</name>
+        <description>Allow access to Caddy Modules</description>
         <patterns>
             <pattern>ui/xcaddy/*</pattern>
             <pattern>api/xcaddy/*</pattern>
