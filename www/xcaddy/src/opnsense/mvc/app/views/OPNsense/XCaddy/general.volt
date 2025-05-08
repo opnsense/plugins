@@ -73,7 +73,10 @@
                     if (status === "success" && data.status) {
                         if (data.status !== lastStatus) {
                             lastStatus = data.status;
-                            const msg = "{{ lang._('Status') }}: " + (statusMap[data.status] || "{{ lang._('Unknown status') }}");
+                            let msg = "{{ lang._('Status') }}: " + (statusMap[data.status] || "{{ lang._('Unknown status') }}");
+                            if (data.ts) {
+                                msg += "<br><small>" + data.ts + "</small>";
+                            }
                             const type = data.status === "success" ? "success" : (data.status === "error" ? "error" : "info");
                             showAlert(msg, type);
                         }
@@ -111,7 +114,7 @@
         $("#updateCaddyModules").click(function () {
             setSpinner('start', '#updateModules_progress');
 
-            ajaxCall("/api/xcaddy/general/updateModules", {}, function (data, status) {
+            ajaxCall("/api/xcaddy/general/update_modules", {}, function (data, status) {
                 setSpinner('stop', '#updateModules_progress');
 
                 if (status === "success" && data.status === "success") {
@@ -127,6 +130,15 @@
                     showAlert("{{ lang._('Error') }}: " + message, "error");
                 }
             }, "post");
+        });
+
+        // Resume build polling on page load if a build is already running
+        ajaxGet("/api/xcaddy/general/build_status", {}, function (data, status) {
+            if (status === "success" && data.status === "running") {
+                showAlert("{{ lang._('Build already running. Fetching status.') }}", "info");
+                setSpinner('start');
+                pollCaddyBuildStatus();
+            }
         });
 
     });

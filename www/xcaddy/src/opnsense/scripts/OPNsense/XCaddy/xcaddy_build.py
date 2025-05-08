@@ -32,11 +32,12 @@ import fcntl
 import os
 import shutil
 import json
+import datetime
 from pathlib import Path
 from shutil import which
 
 CONFIG_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build_config.json")
-LOCK_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build.lock")
+LOCK_FILE = Path("/tmp/xcaddy_build.lock")
 STATUS_FILE = Path("/usr/local/etc/xcaddy/xcaddy_build.status")
 BUILD_OUTPUT = Path("/usr/local/etc/xcaddy/caddy")
 FINAL_BINARY = Path("/usr/local/bin/caddy")
@@ -47,11 +48,9 @@ def ensure_directories_exist() -> None:
     '''Ensure all parent directories for required paths exist.'''
     paths = [
         CONFIG_FILE,
-        LOCK_FILE,
         STATUS_FILE,
         BUILD_OUTPUT,
         LOG_FILE,
-        PID_FILE
     ]
     for path in paths:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -145,8 +144,11 @@ def install_binary() -> None:
 
 
 def write_status(status: str, message: str) -> None:
-    '''Write a single-line JSON status update to the status file.'''
-    data = {"status": status, "message": message}
+    data = {
+        "ts": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "status": status,
+        "message": message
+    }
     STATUS_FILE.write_text(json.dumps(data) + "\n")
 
 

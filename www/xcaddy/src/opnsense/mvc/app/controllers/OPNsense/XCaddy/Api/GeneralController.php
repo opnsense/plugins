@@ -72,18 +72,37 @@ class GeneralController extends ApiMutableModelControllerBase
      */
     public function buildStatusAction()
     {
-        $response = (new \OPNsense\Core\Backend())->configdRun('xcaddy build_status');
+        $backend = new \OPNsense\Core\Backend();
+        $response = $backend->configdRun('xcaddy build_status');
+
+        if (empty($response)) {
+            return ['status' => 'none', 'message' => gettext('No status available.')];
+        }
 
         $result = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE || $result === null) {
-            $result = [];
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($result)) {
+            return ['status' => 'error', 'message' => gettext('Invalid status file format.')];
+        }
+
+        // Check for stale build
+        if (isset($result['status'], $result['ts']) && $result['status'] === 'running') {
+            $buildTime = strtotime($result['ts']);
+            if ($buildTime !== false) {
+                $age = time() - $buildTime;
+                if ($age > 1200) {
+                    $backend->configdRun('xcaddy build_status_clear');
+                    $result['status'] = 'info';
+                    $result['message'] = gettext('Stale build status detected and cleared.');
+                    unset($result['ts']);
+                }
+            }
         }
 
         return $result;
     }
 
     /**
-     * Return the current status of the background Caddy build process.
+     * Update modules that the build process can use
      *
      * @return array JSON response
      */
