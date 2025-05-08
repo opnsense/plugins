@@ -1,6 +1,6 @@
 PLUGIN_NAME=		clamav
 PLUGIN_VERSION=		1.8
-PLUGIN_REVISION=	2
+PLUGIN_REVISION=	3
 PLUGIN_COMMENT=		Antivirus engine for detecting malicious threats
 PLUGIN_DEPENDS=		clamav
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
