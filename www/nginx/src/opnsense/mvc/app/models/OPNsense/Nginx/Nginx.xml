@@ -1841,6 +1841,10 @@
           </check001>
         </Constraints>
       </pagecontent>
+      <extension type="TextField">
+        <default>html</default>
+        <Required>Y</Required>
+      </extension>
       <redirect type="UrlField">
         <Required>N</Required>
         <Constraints>

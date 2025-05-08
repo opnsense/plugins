@@ -19,6 +19,13 @@
         <help>The HTML page content to display.</help>
     </field>
     <field>
+        <id>errorpage.extension</id>
+        <label>File Extension</label>
+        <type>text</type>
+        <help>Allow to change error file extension to, i.e. json</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>errorpage.redirect</id>
         <label>Redirect Target</label>
         <type>text</type>

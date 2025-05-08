@@ -296,7 +296,7 @@ foreach ($nginx->location->iterateItems() as $location) {
 foreach ($nginx->errorpage->iterateItems() as $errorpage) {
     $uuid = str_replace('-', '', $errorpage->getAttributes()['uuid']);
     if (in_array($uuid, $used_errorpages)) {
-        $filename = "error_$uuid.html";
+        $filename = "error_$uuid.$errorpage->extension";
         $content = base64_decode((string)$errorpage->pagecontent);
         // Does error page have a content?
         if (strlen($content) > 0) {
