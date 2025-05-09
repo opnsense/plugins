@@ -1,6 +1,6 @@
 <model>
   <mount>//OPNsense/Nginx</mount>
-  <version>1.34</version>
+  <version>1.35</version>
   <description>nginx web server, reverse proxy and waf</description>
   <items>
     <general>
@@ -56,6 +56,14 @@
         <Required>N</Required>
         <MinimumValue>1</MinimumValue>
       </server_names_hash_max_size>
+      <variables_hash_max_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </variables_hash_max_size>
+      <variables_hash_bucket_size type="IntegerField">
+        <Required>N</Required>
+        <MinimumValue>1</MinimumValue>
+      </variables_hash_bucket_size>
       <ban_response type="OptionField">
         <multiple>N</multiple>
         <OptionValues>
@@ -352,6 +360,18 @@
       <cache_valid type="IntegerField">
         <Required>N</Required>
       </cache_valid>
+      <proxy_cache_valid type="ModelRelationField">
+        <Model>
+          <template>
+            <source>OPNsense.Nginx.Nginx</source>
+            <items>proxy_cache_valid</items>
+            <display>description</display>
+          </template>
+        </Model>
+        <ValidationMessage>Selected caching time settings not found</ValidationMessage>
+        <Required>N</Required>
+        <multiple>Y</multiple>
+      </proxy_cache_valid>
       <cache_background_update type="BooleanField">
         <Required>Y</Required>
         <default>0</default>
@@ -557,6 +577,15 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </errorpages>
+      <proxy_intercept_errors type="OptionField">
+        <default>Inherit</default>
+        <Required>Y</Required>
+        <OptionValues>
+          <Inherit>Inherit</Inherit>
+          <on>On</on>
+          <off>Off</off>
+        </OptionValues>
+      </proxy_intercept_errors>
     </location>
 
     <custom_policy type="ArrayField">
@@ -827,6 +856,7 @@
       <ca type="CertificateField">
         <Type>ca</Type>
         <Required>N</Required>
+        <multiple>Y</multiple>
       </ca>
       <verify_client type="OptionField">
         <default>Off</default>
@@ -881,6 +911,10 @@
         <default>0</default>
         <Required>Y</Required>
       </https_only>
+      <http2 type="BooleanField">
+        <default>1</default>
+        <Required>Y</Required>
+      </http2>
       <tls_protocols type="OptionField">
         <multiple>Y</multiple>
         <Sorted>Y</Sorted>
@@ -1038,6 +1072,10 @@
         <Required>N</Required>
         <multiple>Y</multiple>
       </errorpages>
+      <proxy_intercept_errors type="BooleanField">
+        <default>0</default>
+        <Required>Y</Required>
+      </proxy_intercept_errors>
     </http_server>
 
     <stream_server type="ArrayField">
@@ -1954,6 +1992,24 @@
         <MinimumValue>1</MinimumValue>
       </max_size>
     </cache_path>
+
+    <proxy_cache_valid type="ArrayField">
+      <description type="TextField">
+        <Required>Y</Required>
+        <mask>/^[^" \t]+$/i</mask>
+      </description>
+      <code type="CSVListField">
+        <Required>Y</Required>
+        <default>any</default>
+        <multiple>Y</multiple>
+        <mask>/(^\d{3}(,\d{3})*$)|(^any$)/</mask>
+        <ValidationMessage>Please use three digit response code(s) or use "any" word.</ValidationMessage>
+      </code>
+      <valid type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <Required>Y</Required>
+      </valid>
+    </proxy_cache_valid>
 
     <syslog_target type="ArrayField">
       <description type="TextField">

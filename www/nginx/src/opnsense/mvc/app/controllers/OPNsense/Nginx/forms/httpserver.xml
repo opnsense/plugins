@@ -113,7 +113,8 @@
   <field>
     <id>httpserver.ca</id>
     <label>Client CA Certificate</label>
-    <type>dropdown</type>
+    <type>select_multiple</type>
+    <help>Trusted CA certificates</help>
   </field>
   <field>
     <id>httpserver.verify_client</id>
@@ -164,6 +165,13 @@
     <label>HTTPS Only</label>
     <type>checkbox</type>
     <help>If the request scheme is not HTTPS, redirect to use HTTPS for this server.</help>
+  </field>
+  <field>
+    <id>httpserver.http2</id>
+    <label>HTTP/2</label>
+    <type>checkbox</type>
+    <help>Enable the HTTP/2 protocol.</help>
+    <advanced>true</advanced>
   </field>
   <field>
     <id>httpserver.tls_protocols</id>
@@ -319,5 +327,12 @@
     <style>selectpicker</style>
     <type>select_multiple</type>
     <help>Select custom error pages to display instead of the default builtin error pages. If at least one error page is selected here, all default error pages will be disabled.</help>
+  </field>
+  <field>
+    <id>httpserver.proxy_intercept_errors</id>
+    <label>Intercept errors</label>
+    <type>checkbox</type>
+    <help>Intercept responses with codes greater than or equal to 300 and redirect to processing with custom error pages.</help>
+    <advanced>true</advanced>
   </field>
 </form>
