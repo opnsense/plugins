@@ -78,8 +78,8 @@ def configure_bouncer(settings):
     config = load_config(config_path)
 
     config['log_dir'] = '/var/log/crowdsec'
-    config['blacklists_ipv4'] = 'crowdsec_blacklists'
-    config['blacklists_ipv6'] = 'crowdsec6_blacklists'
+    config['blacklists_ipv4'] = 'crowdsec_blocklists'
+    config['blacklists_ipv6'] = 'crowdsec6_blocklists'
     config['retry_initial_connect'] = True
     config['pf'] = {'anchor_name': ''}
 

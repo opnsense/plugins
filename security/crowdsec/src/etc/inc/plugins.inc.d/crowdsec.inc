@@ -43,7 +43,7 @@ function crowdsec_firewall(Plugin $fw)
         $rules_tag = $general['rules_tag'];
     }
 
-    add_alias_if_not_exist('crowdsec_blacklists', 'CrowdSec (IPv4)', 'IPv4');
+    add_alias_if_not_exist('crowdsec_blocklists', 'CrowdSec (IPv4)', 'IPv4');
 
     // https://github.com/opnsense/core/blob/master/src/opnsense/mvc/app/library/OPNsense/Firewall/FilterRule.php
 
@@ -52,7 +52,7 @@ function crowdsec_firewall(Plugin $fw)
         array(
             'ipprotocol' => 'inet',
             'descr'      => 'CrowdSec (IPv4) in',
-            'from'       => '<crowdsec_blacklists>',
+            'from'       => '<crowdsec_blocklists>',
             'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
@@ -66,7 +66,7 @@ function crowdsec_firewall(Plugin $fw)
         array(
             'ipprotocol' => 'inet',
             'descr'      => 'CrowdSec (IPv4) out',
-            'to'         => '<crowdsec_blacklists>',
+            'to'         => '<crowdsec_blocklists>',
             'direction'  => 'out',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
@@ -75,14 +75,14 @@ function crowdsec_firewall(Plugin $fw)
         )
     );
 
-    add_alias_if_not_exist('crowdsec6_blacklists', 'CrowdSec (IPv6)', 'IPv6');
+    add_alias_if_not_exist('crowdsec6_blocklists', 'CrowdSec (IPv6)', 'IPv6');
 
     $fw->registerFilterRule(
         1, /* priority */
         array(
             'ipprotocol' => 'inet6',
             'descr'      => 'CrowdSec (IPv6) in',
-            'from'       => '<crowdsec6_blacklists>',
+            'from'       => '<crowdsec6_blocklists>',
             'direction'  => 'in',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
@@ -96,7 +96,7 @@ function crowdsec_firewall(Plugin $fw)
         array(
             'ipprotocol' => 'inet6',
             'descr'      => 'CrowdSec (IPv6) out',
-            'to'         => '<crowdsec6_blacklists>',
+            'to'         => '<crowdsec6_blocklists>',
             'direction'  => 'out',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
