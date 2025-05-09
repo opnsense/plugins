@@ -1338,7 +1338,7 @@
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
-                        <configd_reload_caddy>Reload Caddy (OPNsense plugin)</configd_reload_nginx>
+                        <configd_reload_caddy>Reload Caddy (OPNsense plugin)</configd_reload_caddy>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
