@@ -51,9 +51,23 @@ function crowdsec_firewall(Plugin $fw)
         1, /* priority */
         array(
             'ipprotocol' => 'inet',
-            'descr'      => 'CrowdSec (IPv4)',
+            'descr'      => 'CrowdSec (IPv4) in',
             'from'       => '<crowdsec_blacklists>',
             'direction'  => 'in',
+            'type'       => 'block',
+            'log'        => $rules_log_enabled,
+            'tag'        => $rules_tag,
+            'quick'      => true
+        )
+    );
+
+    $fw->registerFilterRule(
+        1, /* priority */
+        array(
+            'ipprotocol' => 'inet',
+            'descr'      => 'CrowdSec (IPv4) out',
+            'to'         => '<crowdsec_blacklists>',
+            'direction'  => 'out',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
             'tag'        => $rules_tag,
@@ -67,9 +81,23 @@ function crowdsec_firewall(Plugin $fw)
         1, /* priority */
         array(
             'ipprotocol' => 'inet6',
-            'descr'      => 'CrowdSec (IPv6)',
+            'descr'      => 'CrowdSec (IPv6) in',
             'from'       => '<crowdsec6_blacklists>',
             'direction'  => 'in',
+            'type'       => 'block',
+            'log'        => $rules_log_enabled,
+            'tag'        => $rules_tag,
+            'quick'      => true
+        )
+    );
+
+    $fw->registerFilterRule(
+        1, /* priority */
+        array(
+            'ipprotocol' => 'inet6',
+            'descr'      => 'CrowdSec (IPv6) out',
+            'to'         => '<crowdsec6_blacklists>',
+            'direction'  => 'out',
             'type'       => 'block',
             'log'        => $rules_log_enabled,
             'tag'        => $rules_tag,
