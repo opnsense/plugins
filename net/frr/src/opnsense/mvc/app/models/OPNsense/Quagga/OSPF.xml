@@ -103,6 +103,34 @@
                         </linkedPrefixlistOut>
                 </network>
         </networks>
+        <neighbors>
+                <neighbor type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <description type="TextField">
+                                <default></default>
+                                <Required>N</Required>
+                        </description>
+                        <address type="NetworkField">
+                                <default></default>
+                                <Required>Y</Required>
+                        </address>
+                        <pollinterval type="IntegerField">
+                                <default></default>
+                                <Required>N</Required>
+                                <MinimumValue>1</MinimumValue>
+                                <MaximumValue>65535</MaximumValue>
+                        </pollinterval>
+                        <priority type="IntegerField">
+                                <default></default>
+                                <Required>N</Required>
+                                <MinimumValue>0</MinimumValue>
+                                <MaximumValue>255</MaximumValue>
+                        </priority>
+                </neighbor>
+        </neighbors>
         <interfaces>
                 <interface type="ArrayField">
                         <enabled type="BooleanField">
