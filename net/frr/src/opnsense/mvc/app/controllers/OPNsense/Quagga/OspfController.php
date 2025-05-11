@@ -34,6 +34,9 @@ class OspfController extends \OPNsense\Base\IndexController
     {
         $this->view->generalForm = $this->getForm("ospf");
 
+        $this->view->formDialogEditOSPFNeighbor = $this->getForm("dialogEditOSPFNeighbor");
+        $this->view->formGridEditOSPFNeighbor = $this->getFormGrid("dialogEditOSPFNeighbor");
+
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
         $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPFNetwork");
 
