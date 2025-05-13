@@ -12,7 +12,7 @@
                 <domain type="HostnameField">
                     <Required>Y</Required>
                 </domain>
-                <dnsserver type="HostnameField">
+                <dnsserver type="CSVListField">
                     <Required>Y</Required>
                 </dnsserver>
             </forward>
