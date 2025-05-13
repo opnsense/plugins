@@ -17,7 +17,6 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP addresses to forward the domain, with optional port, e.g. 192.168
-.8.1, [2001::1]:53 or 192.168.1.7:5353.</help>
+        <help>Set the IP addresses to forward the domain, with optional port, e.g. 192.168.8.1, [2001::1]:53 or 192.168.1.7:5353.</help>
     </field>
 </form>
