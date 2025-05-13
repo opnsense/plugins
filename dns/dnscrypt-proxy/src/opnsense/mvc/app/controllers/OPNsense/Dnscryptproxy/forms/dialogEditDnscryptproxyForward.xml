@@ -13,8 +13,10 @@
     </field>
     <field>
         <id>forward.dnsserver</id>
-        <label>DNS Server</label>
-        <type>text</type>
+        <label>DNS Server(s)</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
         <help>Set the IP addresses to forward the domain.</help>
     </field>
 </form>
