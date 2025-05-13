@@ -47,6 +47,11 @@
       <ValidationMessage>A tag must only contain numbers and letters and must be between 1 and 63 characters.</ValidationMessage>
     </rules_tag>
 
+    <enroll_key type="TextField">
+      <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
+      <ValidationMessage>The enrollment key can only contain numbers and letters and must be between 1 and 63 characters. Did you take it from app.crowdsec.net?</ValidationMessage>
+    </enroll_key>
+
     <crowdsec_firewall_verbose type="BooleanField">
       <default>0</default>
       <Required>Y</Required>

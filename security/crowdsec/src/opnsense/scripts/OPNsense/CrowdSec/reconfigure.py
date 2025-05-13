@@ -2,6 +2,7 @@
 
 import logging
 import json
+import subprocess
 import urllib.parse
 from typing import cast, Any
 import yaml
@@ -90,6 +91,19 @@ def configure_bouncer(settings: dict[str, str]):
     save_config(config_path, config)
 
 
+def enroll(settings: dict[str, str]):
+    enroll_key = settings.get('enroll_key')
+    if enroll_key:
+        p = subprocess.run(['cscli', 'capi', 'status'], check=True, text=True, stdout=subprocess.PIPE)
+        if "instance is enrolled" in p.stdout:
+            logging.info("crowdsec instance is already enrolled")
+            return
+        logging.info("enrolling crowdsec instance, please accept the enrollment on https://app.crowdsec.net")
+        _ = subprocess.run(
+                ['cscli', 'console', 'enroll', '-e', 'context', enroll_key],
+                check=True, text=True)
+
+
 def main():
     try:
         with open('/usr/local/etc/crowdsec/opnsense/settings.json') as f:
@@ -101,6 +115,7 @@ def main():
     configure_agent(settings)
     configure_lapi(settings)
     configure_lapi_credentials(settings)
+    enroll(settings)
     configure_bouncer(settings)
 
 

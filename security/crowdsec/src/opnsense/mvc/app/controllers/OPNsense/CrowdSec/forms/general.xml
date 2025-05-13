@@ -27,6 +27,14 @@
       packets from the attacking IP addresses.</help>
   </field>
 
+  <!-- enroll_key  -->
+  <field>
+    <id>general.enroll_key</id>
+    <label>Enrollment key from https://app.crowdsec.net</label>
+    <type>text</type>
+    <help>Click "Enroll command" on the console and copy the key here.</help>
+  </field>
+
   <!-- lapi_manual_configuration -->
   <field>
     <id>general.lapi_manual_configuration</id>
