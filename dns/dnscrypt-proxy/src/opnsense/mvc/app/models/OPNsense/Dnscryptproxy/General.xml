@@ -7,8 +7,9 @@
             <default>0</default>
             <Required>Y</Required>
         </enabled>
-        <listen_addresses type="CSVListField">
+        <listen_addresses type="IPPortField">
             <default>0.0.0.0:5353</default>
+            <AsList>Y</AsList>
             <Required>Y</Required>
         </listen_addresses>
         <allowprivileged type="BooleanField">
