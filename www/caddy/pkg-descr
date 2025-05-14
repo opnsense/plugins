@@ -1,11 +1,4 @@
-Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution.
-By default, Caddy automatically obtains and renews TLS certificates (Let's Encrypt and ZeroSSL) for all your sites.
-It's the most advanced HTTPS server in the world.
-
-* Reverse Proxy HTTP, HTTPS and WebSockets
-* Route UDP/TCP traffic with the included Layer4 module: https://github.com/mholt/caddy-l4
-* Dynamic DNS module included: https://github.com/mholt/caddy-dynamicdns
-* Large selection of DNS Providers available: https://github.com/caddy-dns
+Fast and extensible multi-platform HTTP/1-2-3 web server with automatic HTTPS
 
 WWW: https://caddyserver.com/
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
