@@ -9,6 +9,7 @@ Plugin Changelog
 
 * Change cache_dir from "ufs" to "rock" (contributed by Andy Binder)
 * Authenticate before blocklist (contributed by Andy Binder)
+* Do not reject no-bump sites when certificate validation fails (contributed by Michael Muenz)
 
 1.1
 
