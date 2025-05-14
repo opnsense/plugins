@@ -40,6 +40,7 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Beats';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'beats';
+
     protected function reconfigureForceRestart()
     {
         return 0;
