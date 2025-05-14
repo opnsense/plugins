@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.45
+
+* Add neighbor config to OSPF (contributed by Andy Binder)
+
 1.44
 
 * Add BGP allowas-in (opnsense/plugins/issues/4586)
