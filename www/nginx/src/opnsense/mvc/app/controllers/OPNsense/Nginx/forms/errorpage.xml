@@ -22,7 +22,7 @@
         <id>errorpage.extension</id>
         <label>File Extension</label>
         <type>text</type>
-        <help>Allow to change error file extension to, i.e. json</help>
+        <help>Change the file extension if necessary. Response MIME type will be set according to the extension.</help>
         <advanced>true</advanced>
     </field>
     <field>
