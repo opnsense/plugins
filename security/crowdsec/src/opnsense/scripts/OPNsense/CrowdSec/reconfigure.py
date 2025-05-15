@@ -94,14 +94,26 @@ def configure_bouncer(settings: dict[str, str]):
 def enroll(settings: dict[str, str]):
     enroll_key = settings.get('enroll_key')
     if enroll_key:
-        p = subprocess.run(['cscli', 'capi', 'status'], check=True, text=True, stdout=subprocess.PIPE)
-        if "instance is enrolled" in p.stdout:
-            logging.info("crowdsec instance is already enrolled")
+        try:
+            p = subprocess.run(['cscli', 'capi', 'status'], check=True, text=True, stdout=subprocess.PIPE)
+            if "instance is enrolled" in p.stdout:
+                logging.info("crowdsec instance is already enrolled")
+                return
+        except subprocess.CalledProcessError:
             return
-        logging.info("enrolling crowdsec instance, please accept the enrollment on https://app.crowdsec.net")
-        _ = subprocess.run(
-                ['cscli', 'console', 'enroll', '-e', 'context', enroll_key],
-                check=True, text=True)
+        except Exception as e:
+            logging.error("could not run command 'cscli' to perform enrollment: %s", e)
+
+        try:
+            logging.info("enrolling crowdsec instance, please accept the enrollment on https://app.crowdsec.net")
+            _ = subprocess.run(
+                    ['cscli', 'console', 'enroll', '-e', 'context', enroll_key],
+                    check=True, text=True)
+        except subprocess.CalledProcessError as e:
+            logging.error("enrollment failed: %s", e)
+            return
+        except Exception as e:
+            logging.error("could not run command 'cscli' to perform enrollment: %s", e)
 
 
 def main():

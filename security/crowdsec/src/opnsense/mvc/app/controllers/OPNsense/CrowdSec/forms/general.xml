@@ -32,7 +32,7 @@
     <id>general.enroll_key</id>
     <label>Enrollment key from https://app.crowdsec.net</label>
     <type>text</type>
-    <help>Click "Enroll command" on the console and copy the key here.</help>
+    <help>Click "Enroll command" on the the website and copy the key here.</help>
   </field>
 
   <!-- lapi_manual_configuration -->
@@ -72,6 +72,16 @@
     <help>Where to listen for LAPI connections: port. The default value is
       8080, but you can change it to avoid conflicts with existing
       services.</help>
+  </field>
+
+  <!-- rules_enabled -->
+  <field>
+    <id>general.rules_enabled</id>
+    <label>Create blocklist rules</label>
+    <type>checkbox</type>
+    <help>Generate block rules from the Crowdsec blocklists.
+    They are applied t all interfaces, ipv4/v6, ingress and egress.
+    If you disable this, you'll have to write your own rules to block anything.</help>
   </field>
 
   <!-- rules_log -->
