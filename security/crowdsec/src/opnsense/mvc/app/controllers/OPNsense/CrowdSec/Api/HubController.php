@@ -15,19 +15,19 @@ use OPNsense\Core\Backend;
 class HubController extends ApiControllerBase
 {
     /**
-     * retrieve the registered hub items
+     * Retrieve the registered hub items
+     *
      * @return dictionary of items, by type
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec hub-items")), true);
-        if ($bckresult !== null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec hub-items")), true);
+        if ($result !== null) {
             // only return valid json type responses
-            return $bckresult;
+            return $result;
         }
-        return array("message" => "unable to list hub items");
+        return ["message" => "unable to list hub items"];
     }
 }

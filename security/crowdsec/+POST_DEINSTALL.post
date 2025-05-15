@@ -41,8 +41,8 @@ function removeAlias($name)
     }
 }
 
-removeAlias('crowdsec_blacklists');
-removeAlias('crowdsec6_blacklists');
+removeAlias('crowdsec_blocklists');
+removeAlias('crowdsec6_blocklists');
 EOT
 
 

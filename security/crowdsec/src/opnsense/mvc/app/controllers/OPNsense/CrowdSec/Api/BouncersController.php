@@ -15,19 +15,19 @@ use OPNsense\Core\Backend;
 class BouncersController extends ApiControllerBase
 {
     /**
-     * retrieve list of bouncers
+     * Retrieve list of bouncers
+     *
      * @return array of bouncers
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec bouncers-list")), true);
-        if ($bckresult !== null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
+        if ($result !== null) {
             // only return valid json type responses
-            return $bckresult;
+            return $result;
         }
-        return array("message" => "unable to list bouncers");
+        return ["message" => "unable to list bouncers"];
     }
 }

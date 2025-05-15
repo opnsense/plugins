@@ -45,7 +45,6 @@ ul.nav>li>a {
     <li><a data-toggle="tab" id="postoverflows_tab" href="#postoverflows">Postoverflows</a></li>
     <li class="spaced"><a data-toggle="tab" id="alerts_tab" href="#alerts">Alerts</a></li>
     <li><a data-toggle="tab" id="decisions_tab" href="#decisions">Decisions</a></li>
-    <li class="pull-right"><a data-toggle="tab" id="debug_tab" href="#debug" style="display:none">Debug</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -223,13 +222,8 @@ ul.nav>li>a {
         </table>
     </div>
 
-    <div id="debug" class="tab-pane fade in">
-        <pre>
-        </pre>
-    </div>
-
     <!-- Modal popup to confirm decision deletion -->
-    <div class="modal fade" id="delete-decision-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="remove-decision-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -243,7 +237,7 @@ ul.nav>li>a {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="delete-decision-confirm">Yes, delete</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="remove-decision-confirm">Yes, delete</button>
                 </div>
             </div>
         </div>
