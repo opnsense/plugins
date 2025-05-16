@@ -422,6 +422,12 @@
                 <allownew>true</allownew>
             </field>
             <field>
+                <id>proxy.forward.acl.allowWhitelistBannedHosts</id>
+                <label>Whitelist access for banned hosts</label>
+                <type>checkbox</type>
+                <help>Allows banned hosts to access domains listed in whitelist.</help>
+            </field>
+            <field>
                 <id>proxy.forward.acl.whiteList</id>
                 <label>Whitelist</label>
                 <type>select_multiple</type>
