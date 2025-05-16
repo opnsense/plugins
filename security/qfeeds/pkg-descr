@@ -1,0 +1,2 @@
+Q-Feeds Threat Intelligence Plugin for OPNsense.
+Fetches Indicators of Compromise (IOCs) from Q-Feeds and creates/upates OPNsense aliases for use in firewall rules. Includes a modern GUI, automatic updates, log viewing, and advanced cleanup features. 
