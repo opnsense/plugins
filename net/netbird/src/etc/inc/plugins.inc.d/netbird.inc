@@ -2,8 +2,7 @@
 
 function netbird_enabled()
 {
-    $mdlNetbird = new \OPNsense\netbird\Netbird();
-    return $mdlNetbird->general->Enabled->__toString() == 1;
+    return !(new \OPNsense\netbird\Netbird())->general->Enabled->isEmpty();
 }
 
 function netbird_services()
