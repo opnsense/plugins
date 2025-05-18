@@ -4,6 +4,5 @@ PLUGIN_DEPENDS=	    netbird
 PLUGIN_COMMENT=		Netbird plugin
 PLUGIN_MAINTAINER=	opn-netbird@sun-ri.se
 PLUGIN_WWW=		    https:/netbird.io
-PLUGIN_DEVEL=       no
-PLUGIN_SUFFIX=
+PLUGIN_DEVEL=       yes
 .include "../../Mk/plugins.mk"
