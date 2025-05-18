@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.4</version>
+    <version>1.3.7</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -25,55 +25,24 @@
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
                     <cloudflare>Cloudflare</cloudflare>
-                    <duckdns>Duck DNS</duckdns>
-                    <gandi>Gandi</gandi>
-                    <ionos>IONOS</ionos>
-                    <desec>Desec</desec>
-                    <porkbun>Porkbun</porkbun>
-                    <acmedns>ACME-DNS</acmedns>
-                    <azure>Azure</azure>
-                    <ovh>OVH</ovh>
-                    <namecheap>Namecheap</namecheap>
-                    <powerdns>PowerDNS</powerdns>
-                    <linode>Linode</linode>
-                    <hexonet>Hexonet</hexonet>
-                    <mailinabox>Mail-in-a-Box</mailinabox>
-                    <rfc2136>RFC2136</rfc2136>
-                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
-                    <bunny>Bunny</bunny>
-                    <scaleway>Scaleway</scaleway>
-                    <acmeproxy>ACME Proxy</acmeproxy>
-                    <inwx>INWX</inwx>
-                    <netcup>Netcup</netcup>
-                    <namedotcom>Name.com</namedotcom>
-                    <infomaniak>Infomaniak</infomaniak>
-                    <directadmin>DirectAdmin</directadmin>
-                    <vultr>Vultr</vultr>
-                    <hetzner>Hetzner</hetzner>
-                    <digitalocean>DigitalOcean (optional)</digitalocean>
-                    <route53>Route53 (optional)</route53>
-                    <googleclouddns>Google Cloud DNS (optional)</googleclouddns>
-                    <netlify>Netlify (optional)</netlify>
-                    <ddnss>DDNSS (optional)</ddnss>
-                    <njalla>Njalla (optional)</njalla>
-                    <tencentcloud>Tencent Cloud (optional)</tencentcloud>
-                    <dinahosting>Dinahosting (optional)</dinahosting>
-                    <civo>Civo (optional)</civo>
-                    <easydns>EasyDNS (optional)</easydns>
-                    <hosttech>Hosttech (optional)</hosttech>
-                    <cloudns>ClouDNS (optional)</cloudns>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
-            <TlsDnsSecretApiKey type="TextField"/>
-            <TlsDnsOptionalField1 type="TextField"/>
-            <TlsDnsOptionalField2 type="TextField"/>
-            <TlsDnsOptionalField3 type="TextField"/>
-            <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
+            <TlsDnsPropagationTimeoutPeriod type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationTimeoutPeriod>
+            <TlsDnsPropagationDelay type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Please enter a minimum number of 1 or leave empty for default.</ValidationMessage>
+            </TlsDnsPropagationDelay>
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
+            <TlsDnsEchDomain type="HostnameField">
+                <IpAllowed>N</IpAllowed>
+            </TlsDnsEchDomain>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
@@ -84,6 +53,17 @@
                     </reverseproxy>
                 </Model>
             </accesslist>
+            <ClientIpHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
+                <Multiple>Y</Multiple>
+            </ClientIpHeaders>
             <DisableSuperuser type="OptionField">
                 <Required>Y</Required>
                 <Default>0</Default>
@@ -168,27 +148,17 @@
                 <Mask>/^(\/.*)?$/u</Mask>
                 <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
             </AuthToUri>
-            <AuthCopyHeaders type="OptionField">
+            <CopyHeaders type="ModelRelationField">
+                <Model>
+                    <reverseproxy>
+                        <source>OPNsense.Caddy.Caddy</source>
+                        <items>reverseproxy.header</items>
+                        <display>HeaderType,description</display>
+                        <display_format>%s %s</display_format>
+                    </reverseproxy>
+                </Model>
                 <Multiple>Y</Multiple>
-                <OptionValues>
-                    <Authorization>Authorization</Authorization>
-                    <Remote-User>Remote-User</Remote-User>
-                    <Remote-Groups>Remote-Groups</Remote-Groups>
-                    <Remote-Name>Remote-Name</Remote-Name>
-                    <Remote-Email>Remote-Email</Remote-Email>
-                    <X-Authentik-Username>X-Authentik-Username</X-Authentik-Username>
-                    <X-Authentik-Groups>X-Authentik-Groups</X-Authentik-Groups>
-                    <X-Authentik-Email>X-Authentik-Email</X-Authentik-Email>
-                    <X-Authentik-Name>X-Authentik-Name</X-Authentik-Name>
-                    <X-Authentik-Uid>X-Authentik-Uid</X-Authentik-Uid>
-                    <X-Authentik-Jwt>X-Authentik-Jwt</X-Authentik-Jwt>
-                    <X-Authentik-Meta-Jwks>X-Authentik-Meta-Jwks</X-Authentik-Meta-Jwks>
-                    <X-Authentik-Meta-Outpost>X-Authentik-Meta-Outpost</X-Authentik-Meta-Outpost>
-                    <X-Authentik-Meta-Provider>X-Authentik-Meta-Provider</X-Authentik-Meta-Provider>
-                    <X-Authentik-Meta-App>X-Authentik-Meta-App</X-Authentik-Meta-App>
-                    <X-Authentik-Meta-Version>X-Authentik-Meta-Version</X-Authentik-Meta-Version>
-                </OptionValues>
-            </AuthCopyHeaders>
+            </CopyHeaders>
         </general>
         <reverseproxy>
             <reverse type="ArrayField">
@@ -227,7 +197,7 @@
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField">
-                    <BlankDesc>ACME</BlankDesc>
+                    <BlankDesc>Auto HTTPS</BlankDesc>
                 </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
@@ -240,6 +210,18 @@
                         <http value="1">http://</http>
                     </OptionValues>
                 </DisableTls>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </reverse>
             <subdomain type="ArrayField">
                 <enabled type="BooleanField">
@@ -254,6 +236,9 @@
                             <items>reverseproxy.reverse</items>
                             <display>FromDomain,FromPort</display>
                             <display_format>%s %s</display_format>
+                            <filters>
+                                <FromDomain>/^\*\./</FromDomain>
+                            </filters>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -286,6 +271,18 @@
                 <description type="DescriptionField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
@@ -335,6 +332,17 @@
                         </reverseproxy>
                     </Model>
                 </accesslist>
+                <basicauth type="ModelRelationField">
+                    <Model>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.basicauth</items>
+                            <display>basicauthuser,description</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
+                    </Model>
+                    <Multiple>Y</Multiple>
+                </basicauth>
                 <header type="ModelRelationField">
                     <Model>
                         <reverseproxy>
@@ -468,6 +476,14 @@
                     <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
+                <RequestMatcher type="OptionField">
+                    <Required>Y</Required>
+                    <Default>client_ip</Default>
+                    <OptionValues>
+                        <client_ip>client_ip</client_ip>
+                        <remote_ip>remote_ip</remote_ip>
+                    </OptionValues>
+                </RequestMatcher>
                 <description type="DescriptionField"/>
             </accesslist>
             <basicauth type="ArrayField">

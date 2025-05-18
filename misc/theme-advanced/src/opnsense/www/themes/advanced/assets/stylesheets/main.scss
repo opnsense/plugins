@@ -149,10 +149,6 @@ body {
     touch-action: manipulation;
 }
 
-.widget-sort-handle {
-    touch-action: none;
-}
-
 .page-head {
     position: fixed;
     z-index: map-get($zindex, header);
@@ -198,7 +194,7 @@ body {
             font-size: 12px;
             font-weight: 400;
             display: inline-block;
-            content: "AdvancedOPN Theme";
+            content: "Advanced Theme";
             color: #fafafa;
         }
 
@@ -1090,11 +1086,6 @@ select {
     appearance: none;
 }
 
-#grid-log th[data-column-id="__timestamp__"],
-#filter-log-entries th[data-column-id="__timestamp__"] {
-    min-width: 3.5em;
-}
-
 .table-responsive {
     @media screen and (max-width: $screen-xs-max) {
         margin-bottom: 0;
@@ -1267,4 +1258,30 @@ div[data-for*="help_for"] {
         margin-top: -4px;
         margin-bottom: -4px;
     }
+}
+
+/**
+* HACKS
+*/
+.widget-sort-handle {
+    touch-action: none;
+}
+
+.bootgrid-table {
+    table-layout: auto !important;
+}
+
+table#tunable.bootgrid-table td {
+    white-space: normal !important;
+}
+
+@media (min-width: $screen-lg-desktop) {
+    table#grid-leases tr td:nth-child(3) {
+        width: 15% !important;
+    }
+}
+
+#grid-log th[data-column-id="__timestamp__"],
+#filter-log-entries th[data-column-id="__timestamp__"] {
+    min-width: 3.5em;
 }

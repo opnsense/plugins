@@ -187,6 +187,31 @@ class BgpController extends ApiMutableModelControllerBase
         return $this->setBase('peergroup', 'peergroups.peergroup', $uuid);
     }
 
+    public function searchRedistributionAction()
+    {
+        return $this->searchBase('redistributions.redistribution');
+    }
+
+    public function getRedistributionAction($uuid = null)
+    {
+        return $this->getBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+
+    public function addRedistributionAction()
+    {
+        return $this->addBase('redistribution', 'redistributions.redistribution');
+    }
+
+    public function delRedistributionAction($uuid)
+    {
+        return $this->delBase('redistributions.redistribution', $uuid);
+    }
+
+    public function setRedistributionAction($uuid)
+    {
+        return $this->setBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+
     public function toggleCommunitylistAction($uuid)
     {
         return $this->toggleBase('communitylists.communitylist', $uuid);
@@ -215,5 +240,10 @@ class BgpController extends ApiMutableModelControllerBase
     public function togglePeergroupAction($uuid)
     {
         return $this->toggleBase('peergroups.peergroup', $uuid);
+    }
+
+    public function toggleRedistributionAction($uuid)
+    {
+        return $this->toggleBase('redistributions.redistribution', $uuid);
     }
 }
