@@ -81,5 +81,4 @@ class DiagnosticsController extends ApiMutableModelControllerBase
         // Return the response as an array which gets automatically encoded to JSON
         return ["status" => "success", "content" => $responseArray['content']];
     }
-
 }

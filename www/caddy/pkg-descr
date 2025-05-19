@@ -1,17 +1,24 @@
-Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution.
-By default, Caddy automatically obtains and renews TLS certificates (Let's Encrypt and ZeroSSL) for all your sites.
-It's the most advanced HTTPS server in the world.
-
-* Reverse Proxy HTTP, HTTPS and WebSockets
-* Route UDP/TCP traffic with the included Layer4 module: https://github.com/mholt/caddy-l4
-* Dynamic DNS module included: https://github.com/mholt/caddy-dynamicdns
-* Large selection of DNS Providers available: https://github.com/caddy-dns
+Fast and extensible multi-platform HTTP/1-2-3 web server with automatic HTTPS
 
 WWW: https://caddyserver.com/
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
 Plugin Changelog
 ================
+
+2.0.0
+
+* Attention - Breaking Change: All DNS Providers except Cloudflare have been removed and will not come back (opnsense/plugins/pull/4691)
+              Going forward, if DNS-01 challenge or Dynamic DNS is a requirement, you could use os-acme-client and os-ddclient.
+              Another option is to migrate to Cloudflare, as this module will stay a core component.
+
+* Add: Request Matcher option to Access List (contributed by spawntty) (opnsense/plugins/pull/4680)
+* Add: ECH can configure encrypted client hello with Cloudflare (opnsense/plugins/pull/4673)
+* Add: Client Auth (mTLS) to subdomains (opnsense/plugins/pull/4673)
+* Build: Update to caddy-v2.10.0 (opnsense/tools/pull/469)
+* Change: Render subdomains in a new pattern in the Caddyfile to adhere to caddy-v2.10.0 standard (opnsense/plugins/pull/4673)
+* Change: Show only wildcard domains in subdomain selection (opnsense/plugins/pull/4646)
+* Fix: Missing translation and toggle filter icon (opnsense/plugins/pull/4648)
 
 1.8.5
 

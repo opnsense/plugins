@@ -323,7 +323,9 @@
 
             });
 
-            $('#reverseFilterIcon').toggleClass('text-success', ($(this).val() || []).length > 0);
+            $('#reverseFilterIcon')
+                .toggleClass('text-success fa-filter-circle-xmark', ($(this).val() || []).length > 0)
+                .toggleClass('fa-filter', !($(this).val() || []).length);
         });
 
         // Autofill domain and subdomain when add dialog is opened
@@ -336,6 +338,9 @@
                         .selectpicker('val', selectedDomains)
                         .selectpicker('refresh');
                 }
+
+                // Trigger to filter the dropdowns if subdomains are selected
+                $("#handle\\.subdomain").trigger("change");
             }
         });
 
@@ -385,6 +390,26 @@
                     style.visible ? $(this).show() : $(this).hide();
                 });
             });
+        });
+
+        // When subdomain is selected in handler show only wildcard domains
+        $("#handle\\.subdomain").on("change", function () {
+            const subdomainSelected = $("#handle\\.subdomain").val() !== "";
+
+            $("#handle\\.reverse").find("option").each(function () {
+                const isWildcard = $(this).text().includes("*.");
+                $(this).toggle(!subdomainSelected || isWildcard);
+            });
+
+            if (subdomainSelected) {
+                const selectedText = $("#handle\\.reverse").find("option:selected").text();
+                if (!selectedText.includes("*.")) {
+                    // Clear selection if not a wildcard
+                    $("#handle\\.reverse").val("").change();
+                }
+            }
+
+            $("#handle\\.reverse").selectpicker("refresh");
         });
 
         // Trigger bootgrid setup for handlers tab too (even if not active) to ensure command buttons always work
@@ -452,8 +477,8 @@
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
-    <button type="button" id="reverseFilterClear" class="btn btn-default" title="Clear Selection">
-        <i id="reverseFilterIcon" class="fa fa-fw fa-filter-circle-xmark"></i>
+    <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
+        <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
     </button>
     <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>

@@ -1,7 +1,7 @@
 <model>
     <mount>//Pischem/caddy</mount>
     <description>Caddy Reverse Proxy</description>
-    <version>1.3.5</version>
+    <version>1.3.7</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -25,78 +25,9 @@
                 <BlankDesc>None (default)</BlankDesc>
                 <OptionValues>
                     <cloudflare>Cloudflare</cloudflare>
-                    <duckdns>Duck DNS</duckdns>
-                    <gandi>Gandi</gandi>
-                    <ionos>IONOS</ionos>
-                    <desec>Desec</desec>
-                    <porkbun>Porkbun</porkbun>
-                    <acmedns>ACME-DNS</acmedns>
-                    <azure>Azure</azure>
-                    <ovh>OVH</ovh>
-                    <namecheap>Namecheap</namecheap>
-                    <powerdns>PowerDNS</powerdns>
-                    <linode>Linode</linode>
-                    <hexonet>Hexonet</hexonet>
-                    <mailinabox>Mail-in-a-Box</mailinabox>
-                    <rfc2136>RFC2136</rfc2136>
-                    <dnsmadeeasy>DNS Made Easy</dnsmadeeasy>
-                    <bunny>Bunny</bunny>
-                    <scaleway>Scaleway</scaleway>
-                    <acmeproxy>ACME Proxy</acmeproxy>
-                    <inwx>INWX</inwx>
-                    <netcup>Netcup</netcup>
-                    <namedotcom>Name.com</namedotcom>
-                    <infomaniak>Infomaniak</infomaniak>
-                    <directadmin>DirectAdmin</directadmin>
-                    <vultr>Vultr</vultr>
-                    <hetzner>Hetzner</hetzner>
-                    <digitalocean>DigitalOcean (optional)</digitalocean>
-                    <route53>Route53 (optional)</route53>
-                    <googleclouddns>Google Cloud DNS (optional)</googleclouddns>
-                    <netlify>Netlify (optional)</netlify>
-                    <ddnss>DDNSS (optional)</ddnss>
-                    <njalla>Njalla (optional)</njalla>
-                    <tencentcloud>Tencent Cloud (optional)</tencentcloud>
-                    <dinahosting>Dinahosting (optional)</dinahosting>
-                    <civo>Civo (optional)</civo>
-                    <easydns>EasyDNS (optional)</easydns>
-                    <hosttech>Hosttech (optional)</hosttech>
-                    <cloudns>ClouDNS (optional)</cloudns>
-                    <gcore>Gcore (optional)</gcore>
-                    <huaweicloud>Huawei Cloud (optional)</huaweicloud>
-                    <dnsexit>DNSExit (optional)</dnsexit>
-                    <nanelo>Nanelo (optional)</nanelo>
-                    <katapult>Katapult (optional)</katapult>
-                    <regfish>Regfish (optional)</regfish>
-                    <leaseweb>Leaseweb (optional)</leaseweb>
-                    <dreamhost>DreamHost (optional)</dreamhost>
-                    <exoscale>Exoscale (optional)</exoscale>
-                    <transip>TransIP (optional)</transip>
-                    <selectel>Selectel (optional)</selectel>
-                    <dnsimple>DNSimple (optional)</dnsimple>
-                    <luadns>LuaDNS (optional)</luadns>
-                    <he>Hurricane Electric (optional)</he>
-                    <namesilo>Namesilo (optional)</namesilo>
-                    <dode>Dode (optional)</dode>
-                    <dynu>Dynu (optional)</dynu>
-                    <glesys>Glesys (optional)</glesys>
-                    <nfsn>NFSN (optional)</nfsn>
-                    <godaddy>GoDaddy (optional)</godaddy>
-                    <vercel>Vercel (optional)</vercel>
-                    <loopia>Loopia (optional)</loopia>
-                    <dnspod>DNSPod (optional)</dnspod>
-                    <mythicbeasts>Mythic Beasts (optional)</mythicbeasts>
-                    <dynv6>Dynv6 (optional)</dynv6>
-                    <alidns>AliDNS (optional)</alidns>
-                    <metaname>Metaname (optional)</metaname>
                 </OptionValues>
             </TlsDnsProvider>
             <TlsDnsApiKey type="TextField"/>
-            <TlsDnsSecretApiKey type="TextField"/>
-            <TlsDnsOptionalField1 type="TextField"/>
-            <TlsDnsOptionalField2 type="TextField"/>
-            <TlsDnsOptionalField3 type="TextField"/>
-            <TlsDnsOptionalField4 type="TextField"/>
             <TlsDnsPropagationTimeout type="BooleanField"/>
             <TlsDnsPropagationTimeoutPeriod type="IntegerField">
                 <MinimumValue>1</MinimumValue>
@@ -109,6 +40,9 @@
             <TlsDnsPropagationResolvers type="NetworkField">
                 <NetMaskAllowed>N</NetMaskAllowed>
             </TlsDnsPropagationResolvers>
+            <TlsDnsEchDomain type="HostnameField">
+                <IpAllowed>N</IpAllowed>
+            </TlsDnsEchDomain>
             <accesslist type="ModelRelationField">
                 <Model>
                     <reverseproxy>
@@ -263,7 +197,7 @@
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <CustomCertificate type="CertificateField">
-                    <BlankDesc>ACME</BlankDesc>
+                    <BlankDesc>Auto HTTPS</BlankDesc>
                 </CustomCertificate>
                 <AccessLog type="BooleanField"/>
                 <DynDns type="BooleanField"/>
@@ -302,6 +236,9 @@
                             <items>reverseproxy.reverse</items>
                             <display>FromDomain,FromPort</display>
                             <display_format>%s %s</display_format>
+                            <filters>
+                                <FromDomain>/^\*\./</FromDomain>
+                            </filters>
                         </reverseproxy>
                     </Model>
                 </reverse>
@@ -334,6 +271,18 @@
                 <description type="DescriptionField"/>
                 <DynDns type="BooleanField"/>
                 <AcmePassthrough type="HostnameField"/>
+                <ClientAuthMode type="OptionField">
+                    <BlankDesc>require_and_verify</BlankDesc>
+                    <OptionValues>
+                        <request>request</request>
+                        <require>require</require>
+                        <verify_if_given>verify_if_given</verify_if_given>
+                    </OptionValues>
+                </ClientAuthMode>
+                <ClientAuthTrustPool type="CertificateField">
+                    <Type>ca</Type>
+                    <Multiple>Y</Multiple>
+                </ClientAuthTrustPool>
             </subdomain>
             <handle type="ArrayField">
                 <enabled type="BooleanField">
@@ -527,6 +476,14 @@
                     <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
+                <RequestMatcher type="OptionField">
+                    <Required>Y</Required>
+                    <Default>client_ip</Default>
+                    <OptionValues>
+                        <client_ip>client_ip</client_ip>
+                        <remote_ip>remote_ip</remote_ip>
+                    </OptionValues>
+                </RequestMatcher>
                 <description type="DescriptionField"/>
             </accesslist>
             <basicauth type="ArrayField">
