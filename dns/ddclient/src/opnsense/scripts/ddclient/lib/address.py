@@ -65,7 +65,7 @@ def extract_address(host, txt):
                     return match.group()
                 except ValueError:
                     pass
-    return None
+    return ""
 
 
 def checkip(service, proto='https', timeout='10', interface=None):
