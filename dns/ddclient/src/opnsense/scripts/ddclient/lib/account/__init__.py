@@ -121,7 +121,7 @@ class BaseAccount:
             interface = self.settings['interface'] if self.settings.get('interface' ,'').strip() != '' else None
         )
 
-        if self._current_address == None or self._current_address == "":
+        if not self._current_address:
             syslog.syslog(
                 syslog.LOG_WARNING,
                 "Account %s no global IP address detected, check config if warning persists" % (self.description)
