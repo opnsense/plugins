@@ -355,6 +355,10 @@
                 <bannedHosts type="CSVListField">
                     <Mask>/^([\/0-9a-fA-F.:,])*/u</Mask>
                 </bannedHosts>
+                <allowWhitelistBannedHosts type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </allowWhitelistBannedHosts>
                 <whiteList type="CSVListField"/>
                 <blackList type="CSVListField"/>
                 <browser type="CSVListField"/>
