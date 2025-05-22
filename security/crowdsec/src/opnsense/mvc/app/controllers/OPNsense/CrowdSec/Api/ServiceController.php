@@ -30,11 +30,12 @@ class ServiceController extends ApiControllerBase
                 }
             }
         }
-        return array("status" => $status);
+        return ["status" => $status];
     }
 
     /**
-     * retrieve status of crowdsec
+     * Retrieve status of crowdsec
+     *
      * @return array
      * @throws \Exception
      */
@@ -59,20 +60,9 @@ class ServiceController extends ApiControllerBase
             $firewall_status = "running";
         }
 
-        return array(
+        return [
             "crowdsec-status" => $status,
             "crowdsec-firewall-status" => $firewall_status,
-        );
-    }
-
-    /**
-     * return debug information
-     * @return array
-     */
-    public function debugAction()
-    {
-        $backend = new Backend();
-        $response = $backend->configdRun("crowdsec debug");
-        return array("message" => $response);
+        ];
     }
 }

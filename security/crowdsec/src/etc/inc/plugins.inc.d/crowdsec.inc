@@ -43,39 +43,69 @@ function crowdsec_firewall(Plugin $fw)
         $rules_tag = $general['rules_tag'];
     }
 
-    add_alias_if_not_exist('crowdsec_blacklists', 'CrowdSec (IPv4)', 'IPv4');
+    add_alias_if_not_exist('crowdsec_blocklists', 'CrowdSec (IPv4)', 'IPv4');
+    add_alias_if_not_exist('crowdsec6_blocklists', 'CrowdSec (IPv6)', 'IPv6');
 
     // https://github.com/opnsense/core/blob/master/src/opnsense/mvc/app/library/OPNsense/Firewall/FilterRule.php
 
-    $fw->registerFilterRule(
-        1, /* priority */
-        array(
-            'ipprotocol' => 'inet',
-            'descr'      => 'CrowdSec (IPv4)',
-            'from'       => '<crowdsec_blacklists>',
-            'direction'  => 'in',
-            'type'       => 'block',
-            'log'        => $rules_log_enabled,
-            'tag'        => $rules_tag,
-            'quick'      => true
-        )
-    );
+    // if missing, default to true
+    if (!isset($general['rules_enabled']) || $general['rules_enabled'] != 0) {
+        $fw->registerFilterRule(
+            1, /* priority */
+            array(
+                'ipprotocol' => 'inet',
+                'descr'      => 'CrowdSec (IPv4) in',
+                'from'       => '<crowdsec_blocklists>',
+                'direction'  => 'in',
+                'type'       => 'block',
+                'log'        => $rules_log_enabled,
+                'tag'        => $rules_tag,
+                'quick'      => true
+            )
+        );
 
-    add_alias_if_not_exist('crowdsec6_blacklists', 'CrowdSec (IPv6)', 'IPv6');
+        $fw->registerFilterRule(
+            1, /* priority */
+            array(
+                'ipprotocol' => 'inet',
+                'descr'      => 'CrowdSec (IPv4) out',
+                'to'         => '<crowdsec_blocklists>',
+                'direction'  => 'out',
+                'type'       => 'block',
+                'log'        => $rules_log_enabled,
+                'tag'        => $rules_tag,
+                'quick'      => true
+            )
+        );
 
-    $fw->registerFilterRule(
-        1, /* priority */
-        array(
-            'ipprotocol' => 'inet6',
-            'descr'      => 'CrowdSec (IPv6)',
-            'from'       => '<crowdsec6_blacklists>',
-            'direction'  => 'in',
-            'type'       => 'block',
-            'log'        => $rules_log_enabled,
-            'tag'        => $rules_tag,
-            'quick'      => true
-        )
-    );
+        $fw->registerFilterRule(
+            1, /* priority */
+            array(
+                'ipprotocol' => 'inet6',
+                'descr'      => 'CrowdSec (IPv6) in',
+                'from'       => '<crowdsec6_blocklists>',
+                'direction'  => 'in',
+                'type'       => 'block',
+                'log'        => $rules_log_enabled,
+                'tag'        => $rules_tag,
+                'quick'      => true
+            )
+        );
+
+        $fw->registerFilterRule(
+            1, /* priority */
+            array(
+                'ipprotocol' => 'inet6',
+                'descr'      => 'CrowdSec (IPv6) out',
+                'to'         => '<crowdsec6_blocklists>',
+                'direction'  => 'out',
+                'type'       => 'block',
+                'log'        => $rules_log_enabled,
+                'tag'        => $rules_tag,
+                'quick'      => true
+            )
+        );
+    }
 }
 
 function crowdsec_services()

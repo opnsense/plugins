@@ -15,19 +15,19 @@ use OPNsense\Core\Backend;
 class AlertsController extends ApiControllerBase
 {
     /**
-     * retrieve list of alerts
+     * Retrieve list of alerts
+     *
      * @return array of alerts
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec alerts-list")), true);
-        if ($bckresult !== null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec alerts-list")), true);
+        if ($result !== null) {
             // only return valid json type responses
-            return $bckresult;
+            return $result;
         }
-        return array("message" => "unable to list alerts");
+        return ["message" => "unable to list alerts"];
     }
 }
