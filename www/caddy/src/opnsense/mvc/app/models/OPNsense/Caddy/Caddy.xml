@@ -461,10 +461,7 @@
                     <mask>/^(\/.*)?$/u</mask>
                     <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
                 </health_uri>
-                <health_upstream type="IPPortField">
-                    <required>N</required>
-                    <ValidationMessage>Please enter a valid ip:port.</ValidationMessage>
-                </health_upstream>
+                <health_upstream type="IPPortField"/>
                 <health_port type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
