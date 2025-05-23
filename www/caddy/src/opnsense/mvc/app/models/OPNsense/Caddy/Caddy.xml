@@ -457,6 +457,41 @@
                     <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthUnhealthyRequestCount>
                 <description type="DescriptionField"/>
+                <health_uri type="TextField">
+                    <mask>/^\/[^\?\#]*(\?[^\#]*)?$/u</mask>
+                    <ValidationMessage>Please enter a valid URI.</ValidationMessage>
+                </health_uri>
+                <health_upstream type="TextField">
+                    <mask>/^((\d{1,3}\.){3}\d{1,3}):(\d{1,5})$/u</mask>
+                    <ValidationMessage>Please enter a valid ip:port.</ValidationMessage>
+                </health_upstream>
+                <health_port type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please enter a minimum value of 1-65535 or leave empty for defaults.</ValidationMessage>
+                </health_port>
+                <health_interval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </health_interval>
+                <health_passes type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </health_passes>
+                <health_fails type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </health_fails>
+                <health_timeout type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </health_timeout>
+                <health_status type="TextField">
+                    <mask>/^\d{3}$|^\d{1}xx$/u</mask>
+                    <ValidationMessage>Please enter a 3-digit status code or a status code ending in xx or leave empty for defaults.</ValidationMessage>
+                </health_status>
+                <health_body type="TextField"/>
+                <health_follow_redirects type="BooleanField"/>
             </handle>
             <accesslist type="ArrayField">
                 <accesslistName type="DescriptionField">
