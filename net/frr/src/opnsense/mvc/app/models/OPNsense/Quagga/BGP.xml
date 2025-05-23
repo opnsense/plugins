@@ -439,6 +439,13 @@
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
+                        <listenranges type="NetworkField">
+                                <FieldSeparator>,</FieldSeparator>
+                                <AsList>Y</AsList>
+                                <Strict>Y</Strict>
+                                <NetMaskRequired>Y</NetMaskRequired>
+                                <ValidationMessage>Please enter one or multiple valid IP networks in CIDR notation.</ValidationMessage>
+                        </listenranges>
                         <updatesource type="InterfaceField">
                                 <AllowDynamic>Y</AllowDynamic>
                                 <filters>
