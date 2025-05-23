@@ -442,7 +442,7 @@ http://{{ domain }} {
             {% if handle.health_body|default("") %}
                 health_uri {{ handle.health_body }}
             {% endif %}
-            {% if handle.health_follow_redirects|default(false) %}
+            {% if handle.health_follow_redirects|default("0") == "1" %}
                 health_follow_redirects
             {% endif %}
             {% if handle.PassiveHealthFailDuration|default("") %}
