@@ -1,0 +1,12 @@
+ARP/NDP Logging is a versatile network monitoring tool that tracks and logs changes in ARP (Address Resolution Protocol) and NDP (Neighbor Discovery Protocol) tables, capturing key details such as IPv4 and IPv6 addresses, hostnames, MAC addresses, and interface changes. The plugin is configurable, allowing administrators to selectively enable or disable tracking for different modifications based on specific needs, whether it’s for IP address shifts, hostname updates, new MAC detections, or interface changes. This customization and comprehensive logging ensure precise, up-to-date network visibility, ideal for securing networks and managing dynamic device inventories effectively.
+
+LICENSE: BSD 2-Clause
+
+WWW: https://github.com/opnsense/plugins
+
+Plugin Changelog
+================
+
+0.1
+
+* Initial release
