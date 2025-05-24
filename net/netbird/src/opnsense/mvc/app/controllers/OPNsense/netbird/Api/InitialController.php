@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  * Copyright (C) 2025 squared GmbH
