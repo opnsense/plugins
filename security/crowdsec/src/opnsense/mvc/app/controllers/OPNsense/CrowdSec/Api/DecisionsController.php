@@ -15,36 +15,35 @@ use OPNsense\Core\Backend;
 class DecisionsController extends ApiControllerBase
 {
     /**
-     * retrieve list of decisions
+     * Retrieve list of decisions
+     *
      * @return array of decisions
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec decisions-list")), true);
-        if ($bckresult !== null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec decisions-list")), true);
+        if ($result !== null) {
             // only return valid json type responses
-            return $bckresult;
+            return $result;
         }
-        return array("message" => "unable to list decisions");
+        return ["message" => "unable to list decisions"];
     }
 
     public function deleteAction($decision_id)
     {
         if ($this->request->isDelete()) {
-            $backend = new Backend();
-            $bckresult = $backend->configdRun("crowdsec decisions-delete ${decision_id}");
-            if ($bckresult !== null) {
+            $result = (new Backend())->configdRun("crowdsec decisions-delete ${decision_id}");
+            if ($result !== null) {
                 // why does the action return \n\n for empty output?
-                if (trim($bckresult) === '') {
-                    return array("message" => "OK");
+                if (trim($result) === '') {
+                    return ["message" => "OK"];
                 }
                 // TODO handle error
-                return array("message" => $bckresult);
+                return ["message" => result];
             }
-            return array("message" => "OK");
+            return ["message" => "OK"];
         } else {
             $this->response->setStatusCode(405, "Method Not Allowed");
             $this->response->setHeader("Allow", "DELETE");
