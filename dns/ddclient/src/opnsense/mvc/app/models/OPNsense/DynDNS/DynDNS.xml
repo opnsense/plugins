@@ -139,6 +139,9 @@
                     <Default>web_dyndns</Default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
                     <OptionValues>
+                        <web_akamai>akamai</web_akamai>
+                        <web_akamai_ipv4 value="akamai-ipv4">akamai-ipv4</web_akamai_ipv4>
+                        <web_akamai_ipv6 value="akamai-ipv6">akamai-ipv6</web_akamai_ipv6>
                         <web_cloudflare>cloudflare</web_cloudflare>
                         <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
                         <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
