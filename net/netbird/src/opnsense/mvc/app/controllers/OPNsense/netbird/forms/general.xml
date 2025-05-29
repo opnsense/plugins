@@ -1,0 +1,56 @@
+<form>
+    <field>
+        <id>netbird.general.Enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable Netbird</help>
+    </field>
+    <field>
+        <id>netbird.general.WgPort</id>
+        <label>Wireguard Port</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>netbird.general.DisableDNS</id>
+        <label>Disable Netbird DNS lookups</label>
+        <type>checkbox</type>
+        <help>Disables DNS lookups for the Netbird network.</help>
+    </field>
+    <field>
+        <id>netbird.general.DisableServerRoutes</id>
+        <label>Disable Server Routes</label>
+        <type>checkbox</type>
+        <help>Prevents Netbird from being a routing peer for other Netbird peers.</help>
+    </field>
+    <field>
+        <id>netbird.general.DisableClientRoutes</id>
+        <label>Disable Client Routes</label>
+        <type>checkbox</type>
+        <help>Prevents Netbird from setting client routes to other remote peers.</help>
+    </field>
+    <field>
+        <id>netbird.general.QuantumEnabled</id>
+        <label>Rosenpass Enabled</label>
+        <type>checkbox</type>
+        <help>Enable Rosenpass</help>
+    </field>
+    <field>
+        <id>netbird.general.QuantumPermissive</id>
+        <label>Rosenpass Permissive Mode</label>
+        <type>checkbox</type>
+        <help>Enable Rosenpass permissive mode</help>
+    </field>
+    <field>
+        <id>netbird.general.CarpIf</id>
+        <label>CARP Interface</label>
+        <type>dropdown</type>
+        <help>If set to none Netbird up is executed and auto connect is enabled. If an interface is selected auto
+            connect is disabled. Please trigger a CARP event or execute Netbird up manually on the MASTER node.
+        </help>
+    </field>
+    <field>
+        <id>netbird.general.VHID</id>
+        <label>CARP VHID</label>
+        <type>text</type>
+    </field>
+</form>
