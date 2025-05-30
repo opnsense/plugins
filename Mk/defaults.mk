@@ -66,7 +66,6 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-
 .for REPLACEMENT in ABI PHP PYTHON
 . if empty(PLUGIN_${REPLACEMENT})
 .  warning Cannot build without PLUGIN_${REPLACEMENT} set

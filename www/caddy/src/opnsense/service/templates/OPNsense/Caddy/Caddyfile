@@ -415,6 +415,36 @@ http://{{ domain }} {
             {% if handle.lb_try_interval|default("") %}
                 lb_try_interval {{ handle.lb_try_interval }}ms
             {% endif %}
+            {% if handle.health_uri|default("") %}
+                health_uri {{ handle.health_uri }}
+            {% endif %}
+            {% if handle.health_upstream|default("") %}
+                health_upstream {{ handle.health_upstream }}
+            {% endif %}
+            {% if handle.health_port|default("") %}
+                health_port {{ handle.health_port }}
+            {% endif %}
+            {% if handle.health_interval|default("") %}
+                health_interval {{ handle.health_interval }}s
+            {% endif %}
+            {% if handle.health_passes|default("") %}
+                health_passes {{ handle.health_passes }}
+            {% endif %}
+            {% if handle.health_fails|default("") %}
+                health_fails {{ handle.health_fails }}
+            {% endif %}
+            {% if handle.health_timeout|default("") %}
+                health_timeout {{ handle.health_timeout }}s
+            {% endif %}
+            {% if handle.health_status|default("") %}
+                health_status {{ handle.health_status }}
+            {% endif %}
+            {% if handle.health_body|default("") %}
+                health_body {{ handle.health_body }}
+            {% endif %}
+            {% if handle.health_follow_redirects|default("0") == "1" %}
+                health_follow_redirects
+            {% endif %}
             {% if handle.PassiveHealthFailDuration|default("") %}
                 fail_duration {{ handle.PassiveHealthFailDuration }}s
             {% endif %}

@@ -3,7 +3,7 @@
 
 <script>
     $( document ).ready(function() {
-        var data_get_map = {'frm_GeneralSettings':"/api/crowdsec/general/get"};
+        const data_get_map = {'frm_GeneralSettings':"/api/crowdsec/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
             // place actions to run after load, for example update form styles.
         });
@@ -64,8 +64,8 @@
         <a href="https://doc.crowdsec.net/docs/next/user_guides/multiserver_setup">any other agent</a>
         connected to the same LAPI node. Other types of remediation are possible (ex. captcha test for scraping attempts).</p>
 
-	We recommend you to <a href="https://app.crowdsec.net/">register to the Console</a>. This helps you manage your instances,
-	and us to have better overall metrics.
+        We recommend you to <a href="https://app.crowdsec.net/">register to the Console</a>. This helps you manage your instances,
+        and us to have better overall metrics.
 
         <p>Please refer to the <a href="https://crowdsec.net/blog/category/tutorial/">tutorials</a> to explore
         the possibilities.</p>
@@ -148,16 +148,16 @@
         <p>
             It might be a good idea to have a secondary IP from which you can
             connect, should anything go wrong.
-	</p>
+        </p>
 
-	<pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i &lt;your_ip_address&gt;</code></pre>
+        <pre><code>[root@OPNsense ~]# cscli decisions add -t ban -d 2m -i &lt;your_ip_address&gt;</code></pre>
 
-	<p>
-	    This is a more secure way to test than attempting to brute-force
-	    yourself: the default ban period is 4 hours, and Crowdsec reads the
-	    logs from the beginning, so it could ban you even if you failed ssh
-	    login 10 times in 30 seconds two hours before installing it.
-	</p>
+        <p>
+            This is a more secure way to test than attempting to brute-force
+            yourself: the default ban period is 4 hours, and Crowdsec reads the
+            logs from the beginning, so it could ban you even if you failed ssh
+            login 10 times in 30 seconds two hours before installing it.
+        </p>
 
         <div>
             <a class="btn btn-default btn-info" href="https://github.com/crowdsecurity/crowdsec">

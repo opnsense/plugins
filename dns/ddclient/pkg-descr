@@ -11,6 +11,7 @@ Plugin Changelog
 * Add support for altering IPv6 addresses in native backend (contributed by SaarLAN-Pissbeutel)
 * Add Akamai to checkip providers (contributed by Rajiv Aaron Manglani)
 * Fix Netcup host/domain recognition (contributed by SaarLAN-Pissbeutel)
+* Empty IP send to DNS provider and replace dyndns by dynu (contributed by Meliox)
 * Removed defunct ip4only.me and ip6only.me
 
 1.26
