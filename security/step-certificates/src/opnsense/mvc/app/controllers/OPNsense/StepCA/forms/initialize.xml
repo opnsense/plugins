@@ -1,0 +1,91 @@
+<form>
+    <field>
+        <id>Initialize.root.Source</id>
+        <label>Root Certificate Source</label>
+        <type>dropdown</type>
+        <style>selectSource</style>
+        <help>Select existing CA from Trust. Or (create and) load existing CA from KMS into Trust</help>
+    </field>
+    <field>
+        <id>Initialize.root.TrustCertificate</id>
+        <label>Root Cert Source</label>
+        <type>dropdown</type>
+        <style>keyR swR</style>
+        <help>Root Certificate. Private key must be available if intermediate is being created</help>
+    </field>
+    <field>
+        <id>Initialize.root.CreateKeyType</id>
+        <label>Key pair type</label>
+        <type>dropdown</type>
+        <style>keyR ykcR</style>
+        <help>What keytype to create</help>
+    </field>
+    <field>
+        <id>Initialize.root.Lifetime</id>
+        <label>Lifetime (days)</label>
+        <type>text</type>
+        <style>keyR ykcR</style>
+    </field>
+    <field>
+        <id>Initialize.root.YubikeySlot</id>
+        <label>Root cert slot (PIV)</label>
+        <type>text</type>
+        <style>keyR yklR ykcR</style>
+        <help>Slot Storing CA Root certificate and key</help>
+    </field>
+    <field>
+        <id>Initialize.root.CreateTemplate</id>
+        <label>Root cert Template</label>
+        <type>textbox</type>
+        <style>keyR ykcR</style>
+        <help>Template for CA Root certificate. See https://smallstep.com/docs/step-ca/templates</help>
+    </field>
+    <field>
+        <id>Initialize.intermediate.Source</id>
+        <label>Intermediate Certificate Source</label>
+        <type>dropdown</type>
+        <style>selectSource</style>
+        <help>Load (pre-created) or Generate new Intermediate CA key and certificate</help>
+    </field>
+    <field>
+        <id>Initialize.intermediate.TrustCertificate</id>
+        <label>Intermediate Cert Source</label>
+        <type>dropdown</type>
+        <style>keyI swI</style>
+        <help>Intermediate Certificates with private keys</help>
+    </field>
+    <field>
+        <id>Initialize.intermediate.CreateKeyType</id>
+        <label>Key pair type</label>
+        <type>dropdown</type>
+        <style>keyI ykcI</style>
+        <help>What keytype to create</help>
+    </field>
+    <field>
+        <id>Initialize.intermediate.Lifetime</id>
+        <label>Lifetime (days)</label>
+        <type>text</type>
+        <style>keyI ykcI</style>
+    </field>
+    <field>
+        <id>Initialize.intermediate.YubikeySlot</id>
+        <label>Intermediate cert slot (PIV)</label>
+        <type>text</type>
+        <style>keyI yklI ykcI</style>
+        <help>Slot Storing CA Intermediate certificate and key</help>
+    </field>
+    <field>
+        <id>Initialize.intermediate.CreateTemplate</id>
+        <label>Intermediate cert Template</label>
+        <type>textbox</type>
+        <style>keyI ykcI</style>
+        <help>Template for CA Intermediate certificate. See https://smallstep.com/docs/step-ca/templates</help>
+    </field>
+    <field>
+        <id>Initialize.yubikey.Pin</id>
+        <label>Yubikey pin</label>
+        <type>text</type>
+        <style>keyR keyI ykR yklI ykcI</style>
+        <help>Yubikey pin</help>
+    </field>
+</form>
