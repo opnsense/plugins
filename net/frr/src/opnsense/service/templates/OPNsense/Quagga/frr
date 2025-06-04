@@ -6,7 +6,7 @@ frr_enable="YES"
 {% if helpers.exists('OPNsense.quagga.general.enablecarp') and OPNsense.quagga.general.enablecarp == '1' %}
 start_precmd="ifconfig | grep 'carp: MASTER'"
 {% endif %}
-frr_daemons="zebra{%
+frr_daemons="mgmtd zebra{%
 if helpers.exists('OPNsense.quagga.ospf.enabled') and OPNsense.quagga.ospf.enabled == '1' %} ospfd{% endif %}{%
 if helpers.exists('OPNsense.quagga.rip.enabled') and OPNsense.quagga.rip.enabled == '1' %} ripd{% endif %}{%
 if helpers.exists('OPNsense.quagga.bfd.enabled') and OPNsense.quagga.bfd.enabled == '1' %} bfdd{% endif %}{%
