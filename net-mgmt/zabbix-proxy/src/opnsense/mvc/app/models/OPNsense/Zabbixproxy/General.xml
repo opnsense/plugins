@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/zabbixproxy/general</mount>
     <description>Zabbix Proxy configuration</description>
-    <version>2.0.4</version>
+    <version>2.0.5</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -106,6 +106,28 @@
             <asList>Y</asList>
             <Required>N</Required>
         </statsip>
+        <vmwarecachesize type="TextField">
+            <default>8M</default>
+            <Required>N</Required>
+        </vmwarecachesize>
+        <vmwarefrequency type="IntegerField">
+            <default></default>
+            <MinimumValue>10</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+            <Required>N</Required>
+        </vmwarefrequency>
+        <vmwareperffrequency type="IntegerField">
+            <default></default>
+            <MinimumValue>10</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+            <Required>N</Required>
+        </vmwareperffrequency>
+        <vmwaretimeout type="IntegerField">
+            <default></default>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>300</MaximumValue>
+            <Required>N</Required>
+        </vmwaretimeout>
         <syslogEnable type="BooleanField">
             <default>0</default>
             <Required>Y</Required>
