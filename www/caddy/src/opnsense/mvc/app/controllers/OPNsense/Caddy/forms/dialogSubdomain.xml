@@ -5,16 +5,10 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>2em</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
-    </field>
-    <field>
-        <id>subdomain.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this subdomain.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -25,6 +19,10 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <formatter>model_relation_domain</formatter>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.FromDomain</id>
@@ -55,6 +53,12 @@
         </grid_view>
     </field>
     <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this subdomain.]]></help>
+    </field>
+    <field>
         <type>header</type>
         <label>Access</label>
     </field>
@@ -73,6 +77,25 @@
         <type>select_multiple</type>
         <size>5</size>
         <help><![CDATA[Select Users to restrict access to this subdomain. Basic Auth matches after Access Lists. If unset, any user is allowed access.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.ClientAuthTrustPool</id>
+        <label>Client Auth Trust Pool</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Choose multiple CAs or self-signed certificates from "System - Trust - Authorities". Client Auth is activated as soon as at least one certificate has been chosen. Important: Certificate revocation lists are not evaluated. If you need granular control, provide individual self-signed certificates for each device, and unset them to block access. Though keep in mind that if no certificate is left in this field, Client Auth will be deactivated.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.ClientAuthMode</id>
+        <label>Client Auth Mode</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help><![CDATA["request" - Ask clients for a certificate, but allow even if there isn't one; do not verify it. "require" - Require clients to present a certificate, but do not verify it. "verify_if_given" - Ask clients for a certificate; allow even if there isn't one, but verify it if there is. "require_and_verify" - Require clients to present a valid certificate that is verified.]]></help>
         <grid_view>
             <visible>false</visible>
         </grid_view>

@@ -32,16 +32,19 @@ class Ospf6Controller extends \OPNsense\Base\IndexController
         $this->view->ospf6Form = $this->getForm("ospf6");
 
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPF6Network");
-        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPF6Network", null, "OSPF6ChangeMessage");
+        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPF6Network");
 
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPF6Interface");
-        $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPF6Interface", null, "OSPF6ChangeMessage");
+        $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPF6Interface");
 
         $this->view->formDialogEditPrefixLists = $this->getForm("dialogEditOSPF6PrefixLists");
-        $this->view->formGridEditPrefixLists = $this->getFormGrid("dialogEditOSPF6PrefixLists", null, "OSPF6ChangeMessage");
+        $this->view->formGridEditPrefixLists = $this->getFormGrid("dialogEditOSPF6PrefixLists");
 
         $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPF6RouteMaps");
-        $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPF6RouteMaps", null, "OSPF6ChangeMessage");
+        $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPF6RouteMaps");
+
+        $this->view->formDialogEditRedistribution = $this->getForm("dialogEditRedistribution");
+        $this->view->formGridEditRedistribution = $this->getFormGrid("dialogEditRedistribution");
 
         $this->view->pick('OPNsense/Quagga/ospf6');
     }

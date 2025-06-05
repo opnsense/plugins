@@ -35,7 +35,7 @@ class BfdController extends \OPNsense\Base\IndexController
         $this->view->bfdForm = $this->getForm("bfd");
 
         $this->view->formDialogEditBFDNeighbor = $this->getForm("dialogEditBFDNeighbor");
-        $this->view->formGridEditBFDNeighbor = $this->getFormGrid("dialogEditBFDNeighbor", null, "BFDChangeMessage");
+        $this->view->formGridEditBFDNeighbor = $this->getFormGrid("dialogEditBFDNeighbor");
 
         $this->view->pick('OPNsense/Quagga/bfd');
     }

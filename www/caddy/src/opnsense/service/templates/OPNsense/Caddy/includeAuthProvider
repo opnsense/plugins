@@ -7,16 +7,26 @@
     {% set is_ipv6 = (':' in generalSettings.AuthToDomain and generalSettings.AuthToDomain.count(':') >= 2) %}
     {% set auth_url = (generalSettings.AuthToTls|default("0") == "1" and 'https://' or 'http://') + (is_ipv6 and '[' or '') + generalSettings.AuthToDomain|default("") + (is_ipv6 and ']' or '') + (generalSettings.AuthToPort and ':' + generalSettings.AuthToPort or '') %}
 {% endif %}
+{% macro generate_copy_headers() %}
+    {% if generalSettings.CopyHeaders %}
+        {% for header_uuid in generalSettings.CopyHeaders.split(',') %}
+            {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+            {% if header and header.HeaderType %}
+                copy_headers {{ header.HeaderType }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
 {% if generalSettings.AuthProvider == 'authelia' %}
     forward_auth {{ auth_url }} {
     {% if generalSettings.AuthToUri %}
         uri {{ generalSettings.AuthToUri|default("") }}
     {% endif %}
-    {% if generalSettings.AuthCopyHeaders|default("") == "" %}
-        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-    {% else %}
-        copy_headers {{ generalSettings.AuthCopyHeaders.split(',') | join(' ') }}
-    {% endif %}
+        copy_headers Remote-User
+        copy_headers Remote-Groups
+        copy_headers Remote-Name
+        copy_headers Remote-Email
+        {{ generate_copy_headers() }}
     }
 {% elif generalSettings.AuthProvider == 'authentik' %}
     reverse_proxy /outpost.goauthentik.io/* {{ auth_url }} {
@@ -28,10 +38,17 @@
     {% if generalSettings.AuthToUri %}
         uri {{ generalSettings.AuthToUri|default("") }}
     {% endif %}
-    {% if generalSettings.AuthCopyHeaders|default("") == "" %}
-        copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Name X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-Jwks X-Authentik-Meta-Outpost X-Authentik-Meta-Provider X-Authentik-Meta-App X-Authentik-Meta-Version
-    {% else %}
-       copy_headers {{ generalSettings.AuthCopyHeaders.split(',') | join(' ') }}
-    {% endif %}
+        copy_headers X-Authentik-Username
+        copy_headers X-Authentik-Groups
+        copy_headers X-Authentik-Email
+        copy_headers X-Authentik-Name
+        copy_headers X-Authentik-Uid
+        copy_headers X-Authentik-Jwt
+        copy_headers X-Authentik-Meta-Jwks
+        copy_headers X-Authentik-Meta-Outpost
+        copy_headers X-Authentik-Meta-Provider
+        copy_headers X-Authentik-Meta-App
+        copy_headers X-Authentik-Meta-Version
+        {{ generate_copy_headers() }}
     }
 {% endif %}

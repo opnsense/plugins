@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf6</mount>
     <description>OSPFv3 Routing configuration</description>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
             <default>0</default>
@@ -11,25 +11,6 @@
             <default>0</default>
             <Required>Y</Required>
         </carp_demote>
-        <redistribute type="OptionField">
-                <multiple>Y</multiple>
-                <OptionValues>
-                        <connected>Connected routes (directly attached subnet or host)</connected>
-                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <static>Statically configured routes</static>
-                </OptionValues>
-        </redistribute>
-        <redistributemap type="ModelRelationField">
-                <Model>
-                        <template>
-                                <source>OPNsense.quagga.ospf6</source>
-                                <items>routemaps.routemap</items>
-                                <display>name</display>
-                                <group>name</group>
-                        </template>
-                </Model>
-                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-        </redistributemap>
         <routerid type="TextField">
                 <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
         </routerid>
@@ -224,5 +205,36 @@
                         <set type="TextField"/>
                 </routemap>
         </routemaps>
+        <redistributions>
+                <redistribution type="ArrayField">
+                        <enabled type="BooleanField">
+                                <default>1</default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <description type="DescriptionField"/>
+                        <redistribute type="OptionField">
+                                <Required>Y</Required>
+                                <Default>connected</Default>
+                                <OptionValues>
+                                        <bgp>Border Gateway Protocol (BGP)</bgp>
+                                        <connected>Connected routes (directly attached subnet or host)</connected>
+                                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                                        <rip>Routing Information Protocol (RIP)</rip>
+                                        <static>Statically configured routes</static>
+                                </OptionValues>
+                        </redistribute>
+                        <linkedRoutemap type="ModelRelationField">
+                                <Model>
+                                        <template>
+                                                <source>OPNsense.quagga.ospf6</source>
+                                                <items>routemaps.routemap</items>
+                                                <display>name</display>
+                                                <group>name</group>
+                                        </template>
+                                </Model>
+                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
+                        </linkedRoutemap>
+                </redistribution>
+        </redistributions>
     </items>
 </model>

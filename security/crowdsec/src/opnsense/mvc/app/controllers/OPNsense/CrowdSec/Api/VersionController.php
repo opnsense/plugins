@@ -15,14 +15,14 @@ use OPNsense\Core\Backend;
 class VersionController extends ApiControllerBase
 {
     /**
-     * retrieve version description
+     * Retrieve version description
+     *
      * @return version description
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function getAction()
     {
-        $backend = new Backend();
-        return $backend->configdRun("crowdsec version");
+        return (new Backend())->configdRun("crowdsec version");
     }
 }

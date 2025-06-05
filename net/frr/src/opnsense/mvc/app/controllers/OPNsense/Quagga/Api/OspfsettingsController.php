@@ -37,6 +37,31 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'ospf';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
 
+    public function searchNeighborAction()
+    {
+        return $this->searchBase('neighbors.neighbor');
+    }
+
+    public function getNeighborAction($uuid = null)
+    {
+        return $this->getBase('neighbor', 'neighbors.neighbor', $uuid);
+    }
+
+    public function addNeighborAction()
+    {
+        return $this->addBase('neighbor', 'neighbors.neighbor');
+    }
+
+    public function delNeighborAction($uuid)
+    {
+        return $this->delBase('neighbors.neighbor', $uuid);
+    }
+
+    public function setNeighborAction($uuid)
+    {
+        return $this->setBase('neighbor', 'neighbors.neighbor', $uuid);
+    }
+
     public function searchNetworkAction()
     {
         return $this->searchBase('networks.network');
@@ -117,6 +142,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
+    public function toggleNeighborAction($uuid)
+    {
+        return $this->toggleBase('neighbors.neighbor', $uuid);
+    }
     public function toggleNetworkAction($uuid)
     {
         return $this->toggleBase('networks.network', $uuid);
@@ -132,5 +161,30 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function toggleRoutemapAction($uuid)
     {
         return $this->toggleBase('routemaps.routemap', $uuid);
+    }
+
+    public function searchRedistributionAction()
+    {
+        return $this->searchBase('redistributions.redistribution');
+    }
+    public function getRedistributionAction($uuid = null)
+    {
+        return $this->getBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function addRedistributionAction()
+    {
+        return $this->addBase('redistribution', 'redistributions.redistribution');
+    }
+    public function delRedistributionAction($uuid)
+    {
+        return $this->delBase('redistributions.redistribution', $uuid);
+    }
+    public function setRedistributionAction($uuid)
+    {
+        return $this->setBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function toggleRedistributionAction($uuid)
+    {
+        return $this->toggleBase('redistributions.redistribution', $uuid);
     }
 }

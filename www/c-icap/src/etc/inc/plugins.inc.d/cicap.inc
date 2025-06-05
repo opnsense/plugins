@@ -26,6 +26,15 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+function cicap_syslog()
+{
+    return [
+        'cicap' => [
+            'facility' => ['c-icap']
+        ]
+    ];
+}
+
 function cicap_services()
 {
     global $config;

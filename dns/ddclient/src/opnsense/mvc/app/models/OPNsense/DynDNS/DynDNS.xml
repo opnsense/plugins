@@ -139,15 +139,17 @@
                     <Default>web_dyndns</Default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
                     <OptionValues>
+                        <web_akamai>akamai</web_akamai>
+                        <web_akamai_ipv4 value="akamai-ipv4">akamai-ipv4</web_akamai_ipv4>
+                        <web_akamai_ipv6 value="akamai-ipv6">akamai-ipv6</web_akamai_ipv6>
                         <web_cloudflare>cloudflare</web_cloudflare>
                         <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
                         <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
-                        <web_dyndns>dyndns</web_dyndns>
+                        <web_dynu_ipv4 value="dynu-ipv4">dynu-ipv4</web_dynu_ipv4>
+                        <web_dynu_ipv6 value="dynu-ipv6">dynu-ipv6</web_dynu_ipv6>
                         <web_freedns>freedns</web_freedns>
                         <web_he>he</web_he>
                         <web_icanhazip>icanhazip</web_icanhazip>
-                        <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
-                        <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
                         <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
                         <web_ipify_ipv6 value="web_ipify-ipv6">ipify-ipv6</web_ipify_ipv6>
                         <web_loopia>loopia</web_loopia>

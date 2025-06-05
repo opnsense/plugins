@@ -71,23 +71,5 @@
         {{ partial('layout_partials/base_bootgrid_table', formGridEditSTATICRoute)}}
     </div>
 </div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint='/api/quagga/service/reconfigure'
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring STATIC') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-        </div>
-    </div>
-    <div id="STATICChangeMessage" class="alert alert-info" style="display: none" role="alert">
-        {{ lang._('After changing settings, please remember to apply them.') }}
-    </div>
-</section>
-
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSTATICRoute,'id':formGridEditSTATICRoute['edit_dialog_id'],'label':lang._('Edit Routes')])}}
