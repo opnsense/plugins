@@ -50,6 +50,12 @@
         <help>Let DNSCrypt-Proxy use servers with DNS-over-HTTPS protocol enabled.</help>
     </field>
     <field>
+        <id>general.odoh_servers</id>
+        <label>Use Oblivious-DNS-over-HTTPS Servers</label>
+        <type>checkbox</type>
+        <help>Let DNSCrypt-Proxy use servers with Oblivious-DNS-over-HTTPS protocol enabled. Note: If checked you must provide ODoH target and relay servers manually!</help>
+    </field>
+    <field>
         <id>general.require_dnssec</id>
         <label>Require DNSSEC</label>
         <type>checkbox</type>
