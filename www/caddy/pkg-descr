@@ -6,6 +6,11 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.0.1
+
+Add: Active health checks to handlers (contributed by zaben903) (opnsense/plugins/pull/4721)
+Fix: Add handler command sometimes clearing domain selection in open dialogue
+
 2.0.0
 
 * Attention - Breaking Change: All DNS Providers except Cloudflare have been removed and will not come back (opnsense/plugins/pull/4691)
