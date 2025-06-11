@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/proxy</mount>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <description>Squid web proxy settings</description>
     <items>
         <general>
@@ -355,6 +355,10 @@
                 <bannedHosts type="CSVListField">
                     <Mask>/^([\/0-9a-fA-F.:,])*/u</Mask>
                 </bannedHosts>
+                <allowWhitelistBannedHosts type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </allowWhitelistBannedHosts>
                 <whiteList type="CSVListField"/>
                 <blackList type="CSVListField"/>
                 <browser type="CSVListField"/>
