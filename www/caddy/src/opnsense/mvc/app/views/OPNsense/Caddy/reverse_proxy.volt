@@ -394,17 +394,14 @@
 
         // When subdomain is selected in handler show only wildcard domains
         $("#handle\\.subdomain").on("change", function () {
-            const subdomainSelected = $("#handle\\.subdomain").val() !== "";
+            if (!$(this).val()) {
+                $("#handle\\.reverse option").show();
+            } else {
+                $("#handle\\.reverse option").each(function () {
+                    $(this).toggle($(this).text().includes("*."));
+                });
 
-            $("#handle\\.reverse").find("option").each(function () {
-                const isWildcard = $(this).text().includes("*.");
-                $(this).toggle(!subdomainSelected || isWildcard);
-            });
-
-            if (subdomainSelected) {
-                const selectedText = $("#handle\\.reverse").find("option:selected").text();
-                if (!selectedText.includes("*.")) {
-                    // Clear selection if not a wildcard
+                if (!$("#handle\\.reverse option:selected").text().includes("*.")) {
                     $("#handle\\.reverse").val("").change();
                 }
             }
