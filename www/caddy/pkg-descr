@@ -9,7 +9,7 @@ Plugin Changelog
 2.0.1
 
 Add: Active health checks to handlers (contributed by zaben903) (opnsense/plugins/pull/4721)
-Fix: Add handler command sometimes clearing domain selection in open dialogue
+Fix: Add handler command sometimes clearing domain selection in open dialogue (opnsense/plugins/pull/4748)
 
 2.0.0
 
