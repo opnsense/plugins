@@ -9,6 +9,7 @@ Plugin Changelog
 ================
 
 1.0.10
+
  * changed alias names crowdsec*blacklists -> crowdsec*blocklists
  * added rules for outgoing connections too
  * added enroll_key to settings for automatic enrollment
