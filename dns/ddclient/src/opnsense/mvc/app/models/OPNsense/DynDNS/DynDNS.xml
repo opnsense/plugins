@@ -46,6 +46,7 @@
                         <changeip>Changeip</changeip>
                         <cloudflare>Cloudflare</cloudflare>
                         <cloudns>ClouDNS</cloudns>
+                        <desecio>deSEC.io</desecio>
                         <digitalocean>Digitalocean</digitalocean>
                         <dinahosting>dinahosting</dinahosting>
                         <dnsmadeeasy>DNS Made Easy (digicert)</dnsmadeeasy>
@@ -145,6 +146,8 @@
                         <web_cloudflare>cloudflare</web_cloudflare>
                         <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
                         <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
+                        <web_desecio_ipv4 value="desecio-ipv4">desecio-ipv4</web_desecio_ipv4>
+                        <web_desecio_ipv6 value="desecio-ipv6">desecio-ipv6</web_desecio_ipv4>
                         <web_dynu_ipv4 value="dynu-ipv4">dynu-ipv4</web_dynu_ipv4>
                         <web_dynu_ipv6 value="dynu-ipv6">dynu-ipv6</web_dynu_ipv6>
                         <web_freedns>freedns</web_freedns>
