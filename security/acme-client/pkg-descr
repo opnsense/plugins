@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.10
+
+Fixed:
+* acme.sh is always called with "--days 1" (#4711)
+
 4.9
 
 Added:
