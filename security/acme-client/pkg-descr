@@ -15,6 +15,7 @@ Added:
 
 Fixed:
 * acme.sh is always called with "--days 1" (#4711)
+* avoid startup error: "rmdir... Not a directory" (#4743)
 
 4.9
 
