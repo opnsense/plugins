@@ -10,6 +10,9 @@ Plugin Changelog
 
 4.10
 
+Added:
+* new automation to reload www/caddy (#4692)
+
 Fixed:
 * acme.sh is always called with "--days 1" (#4711)
 
