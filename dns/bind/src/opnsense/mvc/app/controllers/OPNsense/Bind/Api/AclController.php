@@ -34,6 +34,7 @@ class AclController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'acl';
     protected static $internalModelClass = '\OPNsense\Bind\Acl';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchAclAction()
     {
@@ -63,5 +64,10 @@ class AclController extends ApiMutableModelControllerBase
     public function toggleAclAction($uuid)
     {
         return $this->toggleBase('acls.acl', $uuid);
+    }
+
+    protected function checkAndThrowValueInUse($token, $contains = true, $only_mvc = false, $exclude_refs = [])
+    {
+        parent::checkAndThrowValueInUse($token, $contains, $only_mvc, $exclude_refs);
     }
 }
