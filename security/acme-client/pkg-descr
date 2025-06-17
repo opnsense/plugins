@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * new automation to reload www/caddy (#4692)
+* add support for Websupport.sk DNS API (#4540)
 
 Changed:
 * automatically resolve cron job mismatch (#4627)
