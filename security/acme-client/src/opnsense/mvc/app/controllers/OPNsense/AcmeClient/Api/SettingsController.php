@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017-2021 Frank Wall
+ *    Copyright (C) 2017-2025 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -59,39 +59,79 @@ class SettingsController extends ApiMutableModelControllerBase
             $mdlAcme = $this->getModel();
             $backend = new Backend();
 
-            // Setup cronjob if AcmeClient and AutoRenewal is enabled.
+            // Setup cron job if AcmeClient and AutoRenewal is enabled.
             if (
-                (string)$mdlAcme->settings->UpdateCron == "" and
                 (string)$mdlAcme->settings->autoRenewal == "1" and
                 (string)$mdlAcme->settings->enabled == "1"
             ) {
-                $mdlCron = new Cron();
-                // NOTE: Only configd actions are valid commands for cronjobs
-                //       and they *must* provide a description that is not empty.
-                $cron_uuid = $mdlCron->newDailyJob(
-                    "AcmeClient",
-                    "acmeclient cron-auto-renew",
-                    "AcmeClient Cronjob for Certificate AutoRenewal",
-                    "*",
-                    "1"
-                );
-                $mdlAcme->settings->UpdateCron = $cron_uuid;
+                // Check if a cron job UUID is available.
+                $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
+                $cron_found = 0;
+                if ($cron_uuid != "") {
+                    // Try to get cron job data from system config.
+                    $cron_job = (new Cron())->getNodeByReference('jobs.job.' . $cron_uuid);
+                    if ($cron_job != null) {
+                        // Cron job found, no changes required.
+                        $cron_found = 1;
+                        $this->getLogger()->notice("AcmeClient: successfully validated cron job");
+                    } else {
+                        // Cron job NOT found. This should not happen, try to fix
+                        // this automatically.
+                        $this->getLogger()->error("AcmeClient: cron job with stored UUID not found in system config: ${cron_uuid}");
 
-                // Save updated configuration.
-                if ($mdlCron->performValidation()->count() == 0) {
-                    $mdlCron->serializeToConfig();
-                    // save data to config, do not validate because the current in memory model doesn't know about the
-                    // cron item just created.
-                    $mdlAcme->serializeToConfig($validateFullModel = false, $disable_validation = true);
-                    Config::getInstance()->save();
-                    // Refresh the crontab
-                    $backend->configdRun('template reload OPNsense/Cron');
-                    // (res)start daemon
-                    $backend->configdRun("cron restart");
-                    $result['result'] = "new";
-                    $result['uuid'] = $cron_uuid;
-                } else {
-                    $result['result'] = "unable to add cron";
+                        // Search for existing AcmeClient cron job.
+                        foreach ((new Cron())->getNodeByReference('jobs.job')->iterateItems() as $cron) {
+                            $_uuid = $cron->getAttributes()["uuid"];
+                            $_origin = (string)$cron->origin;
+                            if ($_origin == 'AcmeClient') {
+                                // Found a matching AcmeClient cron job.
+                                $cron_found = 1;
+                                $this->getLogger()->notice("AcmeClient: found existing AcmeClient cron job, fixing inconsistency in config (new UUID: ${_uuid})");
+                                // Update UUID in Acme Client config.
+                                $mdlAcme->settings->UpdateCron = $_uuid;
+                                // Save updated configuration.
+                                // TODO: need to disable validation?
+                                $mdlAcme->serializeToConfig();
+                                Config::getInstance()->save();
+                                $result['result'] = "new";
+                                $result['uuid'] = $_uuid;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // No matching cron job found. Create a new one.
+                if ($cron_found == 0) {
+                    $this->getLogger()->notice("AcmeClient: no cron job for AutoRenewal found, creating a new one");
+                    $mdlCron = new Cron();
+                    // NOTE: Only configd actions are valid commands for cronjobs
+                    //       and they *must* provide a description that is not empty.
+                    $cron_uuid = $mdlCron->newDailyJob(
+                        "AcmeClient",
+                        "acmeclient cron-auto-renew",
+                        "AcmeClient Cronjob for Certificate AutoRenewal",
+                        "*",
+                        "1"
+                    );
+                    $mdlAcme->settings->UpdateCron = $cron_uuid;
+
+                    // Save updated configuration.
+                    if ($mdlCron->performValidation()->count() == 0) {
+                        $mdlCron->serializeToConfig();
+                        // save data to config, do not validate because the current in memory model doesn't know about the
+                        // cron item just created.
+                        $mdlAcme->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                        Config::getInstance()->save();
+                        // Refresh the crontab
+                        $backend->configdRun('template reload OPNsense/Cron');
+                        // (res)start daemon
+                        $backend->configdRun("cron restart");
+                        $result['result'] = "new";
+                        $result['uuid'] = $cron_uuid;
+                    } else {
+                        $result['result'] = "unable to add cron";
+                    }
                 }
             // Delete cronjob if AcmeClient or AutoRenewal is disabled.
             } elseif (
@@ -99,6 +139,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 ((string)$mdlAcme->settings->autoRenewal == "0" or
                 (string)$mdlAcme->settings->enabled == "0")
             ) {
+                $this->getLogger()->notice("AcmeClient: plugin or AutoRenewal is disabled, removing existing cron job");
                 // Get UUID, clean existin entry
                 $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
                 $mdlAcme->settings->UpdateCron = "";

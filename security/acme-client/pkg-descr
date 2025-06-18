@@ -8,6 +8,20 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.10
+
+Added:
+* new automation to reload www/caddy (#4692)
+* add support for Websupport.sk DNS API (#4540)
+
+Changed:
+* automatically resolve cron job mismatch (#4627)
+
+Fixed:
+* acme.sh is always called with "--days 1" (#4711)
+* avoid startup error: "rmdir... Not a directory" (#4743)
+* fails to create/update cron job on UUID mismatch (#4627)
+
 4.9
 
 Added:

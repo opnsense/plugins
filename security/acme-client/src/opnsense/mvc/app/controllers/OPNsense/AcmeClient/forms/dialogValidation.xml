@@ -1780,6 +1780,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>Websupport.sk</label>
+        <type>header</type>
+        <style>table_dns table_dns_websupport</style>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_key</id>
+        <label>Identifier</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_secret</id>
+        <label>Secret key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>

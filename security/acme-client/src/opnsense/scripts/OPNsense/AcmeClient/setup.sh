@@ -20,7 +20,10 @@ chmod 750 ${ACME_BASE} ${ACME_BASE}/*
 # This should guard against manual misconfiguration.
 for link in ${ACME_LINKS}; do
     # First remove any existing file/directory.
-    if [ -f "${ACME_BASE}/home/${link}" ]; then
+    if [ -L "${ACME_BASE}/home/${link}" ]; then
+        # Already a symlink, skip this enty.
+        continue
+    elif [ -f "${ACME_BASE}/home/${link}" ]; then
         rm ${ACME_BASE}/home/${link}
     elif [ -d "${ACME_BASE}/home/${link}" ]; then
         rmdir ${ACME_BASE}/home/${link}
