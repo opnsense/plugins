@@ -88,7 +88,9 @@ security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ru
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
+security/openvpn-legacy -- OpenVPN legacy support (development only)
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
+security/strongswan-legacy -- IPsec legacy support (development only)
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
@@ -115,7 +117,7 @@ sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
 www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
