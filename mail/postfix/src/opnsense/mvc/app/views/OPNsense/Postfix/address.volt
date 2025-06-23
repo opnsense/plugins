@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-addresses").UIBootgrid(
-            {   'search':'/api/postfix/address/searchAddress',
+            {   'search':'/api/postfix/address/search_address',
                 'get':'/api/postfix/address/get_address/',
                 'set':'/api/postfix/address/set_address/',
                 'add':'/api/postfix/address/add_address/',

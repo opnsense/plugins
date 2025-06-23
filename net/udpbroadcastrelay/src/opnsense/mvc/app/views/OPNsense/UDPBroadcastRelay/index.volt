@@ -55,7 +55,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-proxies").UIBootgrid(
-                {   'search':'/api/udpbroadcastrelay/settings/searchRelay',
+                {   'search':'/api/udpbroadcastrelay/settings/search_relay',
                     'get':'/api/udpbroadcastrelay/settings/get_relay/',
                     'set':'/api/udpbroadcastrelay/settings/set_relay/',
                     'add':'/api/udpbroadcastrelay/settings/add_relay/',

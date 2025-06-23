@@ -112,7 +112,7 @@ $( document ).ready(function() {
     });
 
     $("#grid-lists").UIBootgrid(
-        {   'search':'/api/clamav/url/searchUrl',
+        {   'search':'/api/clamav/url/search_url',
             'get':'/api/clamav/url/get_url/',
             'set':'/api/clamav/url/set_url/',
             'add':'/api/clamav/url/add_url/',

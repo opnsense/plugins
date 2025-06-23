@@ -60,7 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_neighbor/'
         });
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchNetwork',
+            'search':'/api/quagga/ospfsettings/search_network',
             'get':'/api/quagga/ospfsettings/get_network/',
             'set':'/api/quagga/ospfsettings/set_network/',
             'add':'/api/quagga/ospfsettings/add_network/',
@@ -68,7 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_network/'
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchInterface',
+            'search':'/api/quagga/ospfsettings/search_interface',
             'get':'/api/quagga/ospfsettings/get_interface/',
             'set':'/api/quagga/ospfsettings/set_interface/',
             'add':'/api/quagga/ospfsettings/add_interface/',
@@ -76,7 +76,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_interface/'
         });
         $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchPrefixlist',
+            'search':'/api/quagga/ospfsettings/search_prefixlist',
             'get':'/api/quagga/ospfsettings/get_prefixlist/',
             'set':'/api/quagga/ospfsettings/set_prefixlist/',
             'add':'/api/quagga/ospfsettings/add_prefixlist/',
@@ -84,7 +84,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/'
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRoutemap',
+            'search':'/api/quagga/ospfsettings/search_routemap',
             'get':'/api/quagga/ospfsettings/get_routemap/',
             'set':'/api/quagga/ospfsettings/set_routemap/',
             'add':'/api/quagga/ospfsettings/add_routemap/',
@@ -92,7 +92,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_routemap/'
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRedistribution',
+            'search':'/api/quagga/ospfsettings/search_redistribution',
             'get':'/api/quagga/ospfsettings/get_redistribution/',
             'set':'/api/quagga/ospfsettings/set_redistribution/',
             'add':'/api/quagga/ospfsettings/add_redistribution/',

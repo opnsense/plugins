@@ -127,7 +127,7 @@ $( document ).ready(function() {
     });
 
     $("#grid-users").UIBootgrid(
-        {   'search':'/api/siproxd/user/searchUser',
+        {   'search':'/api/siproxd/user/search_user',
             'get':'/api/siproxd/user/get_user/',
             'set':'/api/siproxd/user/set_user/',
             'add':'/api/siproxd/user/add_user/',
@@ -137,7 +137,7 @@ $( document ).ready(function() {
     );
 
     $("#grid-domains").UIBootgrid(
-        {   'search':'/api/siproxd/domain/searchDomain',
+        {   'search':'/api/siproxd/domain/search_domain',
             'get':'/api/siproxd/domain/get_domain/',
             'set':'/api/siproxd/domain/set_domain/',
             'add':'/api/siproxd/domain/add_domain/',

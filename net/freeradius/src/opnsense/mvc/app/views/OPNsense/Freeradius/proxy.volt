@@ -43,7 +43,7 @@ $( document ).ready(function() {
          *************************************************************************************************************/
 
         $("#grid-homeservers").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchHomeserver',
+            {   'search':'/api/freeradius/proxy/search_homeserver',
                 'get':'/api/freeradius/proxy/get_homeserver/',
                 'set':'/api/freeradius/proxy/set_homeserver/',
                 'add':'/api/freeradius/proxy/add_homeserver/',
@@ -55,7 +55,7 @@ $( document ).ready(function() {
             }
         );
         $("#grid-homeserverpools").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchHomeserverpool',
+            {   'search':'/api/freeradius/proxy/search_homeserverpool',
                 'get':'/api/freeradius/proxy/get_homeserverpool/',
                 'set':'/api/freeradius/proxy/set_homeserverpool/',
                 'add':'/api/freeradius/proxy/add_homeserverpool/',
@@ -67,7 +67,7 @@ $( document ).ready(function() {
             }
         );
         $("#grid-realms").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchRealm',
+            {   'search':'/api/freeradius/proxy/search_realm',
                 'get':'/api/freeradius/proxy/get_realm/',
                 'set':'/api/freeradius/proxy/set_realm/',
                 'add':'/api/freeradius/proxy/add_realm/',

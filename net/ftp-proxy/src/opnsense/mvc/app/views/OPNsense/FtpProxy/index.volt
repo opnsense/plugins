@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-proxies").UIBootgrid(
-                {   'search':'/api/ftpproxy/settings/searchProxy',
+                {   'search':'/api/ftpproxy/settings/search_proxy',
                     'get':'/api/ftpproxy/settings/get_proxy/',
                     'set':'/api/ftpproxy/settings/set_proxy/',
                     'add':'/api/ftpproxy/settings/add_proxy/',

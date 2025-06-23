@@ -330,7 +330,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         // Handle HAProxy integration (no-op if not applicable)
-                        ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data,status) {
                             ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
                                 // reload grid after sign
                                 $("#"+gridId).bootgrid("reload");
@@ -440,7 +440,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");
             // Handle HAProxy integration (no-op if not applicable)
-            ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+            ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/acmeclient/service/signallcerts", sendData={}, callback=function(data,status) {
                     // when done, disable progress animation.
                     //$("#signallcertsAct_progress").removeClass("fa fa-spinner fa-pulse");

@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-clients").UIBootgrid(
-            {   'search':'/api/freeradius/client/searchClient',
+            {   'search':'/api/freeradius/client/search_client',
                 'get':'/api/freeradius/client/get_client/',
                 'set':'/api/freeradius/client/set_client/',
                 'add':'/api/freeradius/client/add_client/',

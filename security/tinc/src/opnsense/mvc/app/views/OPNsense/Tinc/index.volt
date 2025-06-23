@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-networks").UIBootgrid(
-            {   search:'/api/tinc/settings/searchNetwork',
+            {   search:'/api/tinc/settings/search_network',
                 get:'/api/tinc/settings/get_network/',
                 set:'/api/tinc/settings/set_network/',
                 add:'/api/tinc/settings/set_network/',
@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-hosts").UIBootgrid(
-                {   search:'/api/tinc/settings/searchHost',
+                {   search:'/api/tinc/settings/search_host',
                     get:'/api/tinc/settings/get_host/',
                     set:'/api/tinc/settings/set_host/',
                     add:'/api/tinc/settings/set_host/',
