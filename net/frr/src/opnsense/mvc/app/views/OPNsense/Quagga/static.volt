@@ -35,11 +35,11 @@
 
         $("#{{formGridEditSTATICRoute['table_id']}}").UIBootgrid({
             'search':'/api/quagga/static/searchRoute',
-            'get':'/api/quagga/static/getRoute/',
-            'set':'/api/quagga/static/setRoute/',
-            'add':'/api/quagga/static/addRoute/',
-            'del':'/api/quagga/static/delRoute/',
-            'toggle':'/api/quagga/static/toggleRoute/'
+            'get':'/api/quagga/static/get_route/',
+            'set':'/api/quagga/static/set_route/',
+            'add':'/api/quagga/static/add_route/',
+            'del':'/api/quagga/static/del_route/',
+            'toggle':'/api/quagga/static/toggle_route/'
         });
 
         $("#reconfigureAct").SimpleActionButton({

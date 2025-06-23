@@ -113,11 +113,11 @@ $( document ).ready(function() {
 
     $("#grid-lists").UIBootgrid(
         {   'search':'/api/clamav/url/searchUrl',
-            'get':'/api/clamav/url/getUrl/',
-            'set':'/api/clamav/url/setUrl/',
-            'add':'/api/clamav/url/addUrl/',
-            'del':'/api/clamav/url/delUrl/',
-            'toggle':'/api/clamav/url/toggleUrl/'
+            'get':'/api/clamav/url/get_url/',
+            'set':'/api/clamav/url/set_url/',
+            'add':'/api/clamav/url/add_url/',
+            'del':'/api/clamav/url/del_url/',
+            'toggle':'/api/clamav/url/toggle_url/'
         }
     );
 

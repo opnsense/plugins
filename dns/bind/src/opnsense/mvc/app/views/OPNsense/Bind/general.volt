@@ -355,20 +355,20 @@ $(document).ready(function() {
 
     $("#grid-acls").UIBootgrid({
         'search': '/api/bind/acl/searchAcl',
-        'get': '/api/bind/acl/getAcl/',
-        'set': '/api/bind/acl/setAcl/',
-        'add': '/api/bind/acl/addAcl/',
-        'del': '/api/bind/acl/delAcl/',
-        'toggle': '/api/bind/acl/toggleAcl/'
+        'get': '/api/bind/acl/get_acl/',
+        'set': '/api/bind/acl/set_acl/',
+        'add': '/api/bind/acl/add_acl/',
+        'del': '/api/bind/acl/del_acl/',
+        'toggle': '/api/bind/acl/toggle_acl/'
     });
 
     $("#grid-primary-domains").UIBootgrid({
         'search': '/api/bind/domain/searchPrimaryDomain',
-        'get': '/api/bind/domain/getDomain/',
-        'set': '/api/bind/domain/setDomain/',
-        'add': '/api/bind/domain/addPrimaryDomain/',
-        'del': '/api/bind/domain/delDomain/',
-        'toggle': '/api/bind/domain/toggleDomain/',
+        'get': '/api/bind/domain/get_domain/',
+        'set': '/api/bind/domain/set_domain/',
+        'add': '/api/bind/domain/add_primary_domain/',
+        'del': '/api/bind/domain/del_domain/',
+        'toggle': '/api/bind/domain/toggle_domain/',
         commands: {
             'bind-checkzone': {
                 'title': "Check & preview",
@@ -415,11 +415,11 @@ $(document).ready(function() {
 
     $("#grid-secondary-domains").UIBootgrid({
         'search': '/api/bind/domain/searchSecondaryDomain',
-        'get': '/api/bind/domain/getDomain/',
-        'set': '/api/bind/domain/setDomain/',
-        'add': '/api/bind/domain/addSecondaryDomain/',
-        'del': '/api/bind/domain/delDomain/',
-        'toggle': '/api/bind/domain/toggleDomain/',
+        'get': '/api/bind/domain/get_domain/',
+        'set': '/api/bind/domain/set_domain/',
+        'add': '/api/bind/domain/add_secondary_domain/',
+        'del': '/api/bind/domain/del_domain/',
+        'toggle': '/api/bind/domain/toggle_domain/',
         options: {
             selection: false,
             multiSelect: false,
@@ -435,11 +435,11 @@ $(document).ready(function() {
 
     $("#grid-primary-records").UIBootgrid({
         'search': '/api/bind/record/searchRecord',
-        'get': '/api/bind/record/getRecord/',
-        'set': '/api/bind/record/setRecord/',
-        'add': '/api/bind/record/addRecord/',
-        'del': '/api/bind/record/delRecord/',
-        'toggle': '/api/bind/record/toggleRecord/',
+        'get': '/api/bind/record/get_record/',
+        'set': '/api/bind/record/set_record/',
+        'add': '/api/bind/record/add_record/',
+        'del': '/api/bind/record/del_record/',
+        'toggle': '/api/bind/record/toggle_record/',
         options: {
             useRequestHandlerOnGet: true,
             requestHandler: function(request) {

@@ -34,8 +34,8 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         function openDialog(uuid) {
             var editDlg = "DialogEdit";
-            var setUrl = "/api/ftpproxy/settings/setProxy/";
-            var getUrl = "/api/ftpproxy/settings/getProxy/";
+            var setUrl = "/api/ftpproxy/settings/set_proxy/";
+            var getUrl = "/api/ftpproxy/settings/get_proxy/";
             var urlMap = {};
             urlMap['frm_' + editDlg] = getUrl + uuid;
             mapDataToFormUI(urlMap).done(function () {
@@ -57,11 +57,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-proxies").UIBootgrid(
                 {   'search':'/api/ftpproxy/settings/searchProxy',
-                    'get':'/api/ftpproxy/settings/getProxy/',
-                    'set':'/api/ftpproxy/settings/setProxy/',
-                    'add':'/api/ftpproxy/settings/addProxy/',
-                    'del':'/api/ftpproxy/settings/delProxy/',
-                    'toggle':'/api/ftpproxy/settings/toggleProxy/',
+                    'get':'/api/ftpproxy/settings/get_proxy/',
+                    'set':'/api/ftpproxy/settings/set_proxy/',
+                    'add':'/api/ftpproxy/settings/add_proxy/',
+                    'del':'/api/ftpproxy/settings/del_proxy/',
+                    'toggle':'/api/ftpproxy/settings/toggle_proxy/',
                     'options':{selection:false, multiSelect:false}
                 }
         );

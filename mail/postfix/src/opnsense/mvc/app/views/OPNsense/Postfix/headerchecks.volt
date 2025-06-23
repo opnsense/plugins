@@ -35,11 +35,11 @@
 
         $("#grid-headerchecks").UIBootgrid(
             {   'search':'/api/postfix/headerchecks/searchHeaderchecks',
-                'get':'/api/postfix/headerchecks/getHeadercheck/',
-                'set':'/api/postfix/headerchecks/setHeadercheck/',
-                'add':'/api/postfix/headerchecks/addHeadercheck/',
-                'del':'/api/postfix/headerchecks/delHeadercheck/',
-                'toggle':'/api/postfix/headerchecks/toggleHeadercheck/'
+                'get':'/api/postfix/headerchecks/get_headercheck/',
+                'set':'/api/postfix/headerchecks/set_headercheck/',
+                'add':'/api/postfix/headerchecks/add_headercheck/',
+                'del':'/api/postfix/headerchecks/del_headercheck/',
+                'toggle':'/api/postfix/headerchecks/toggle_headercheck/'
             }
         );
 

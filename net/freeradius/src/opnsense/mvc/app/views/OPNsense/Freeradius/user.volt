@@ -34,21 +34,21 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-users").UIBootgrid(
             {   'search':'/api/freeradius/user/searchUser',
-                'get':'/api/freeradius/user/getUser/',
-                'set':'/api/freeradius/user/setUser/',
-                'add':'/api/freeradius/user/addUser/',
-                'del':'/api/freeradius/user/delUser/',
-                'toggle':'/api/freeradius/user/toggleUser/'
+                'get':'/api/freeradius/user/get_user/',
+                'set':'/api/freeradius/user/set_user/',
+                'add':'/api/freeradius/user/add_user/',
+                'del':'/api/freeradius/user/del_user/',
+                'toggle':'/api/freeradius/user/toggle_user/'
             }
         );
 
         $("#grid-avpairs").UIBootgrid(
             {   'search':'/api/freeradius/avpair/searchAvpair',
-                'get':'/api/freeradius/avpair/getAvpair/',
-                'set':'/api/freeradius/avpair/setAvpair/',
-                'add':'/api/freeradius/avpair/addAvpair/',
-                'del':'/api/freeradius/avpair/delAvpair/',
-                'toggle':'/api/freeradius/avpair/toggleAvpair/'
+                'get':'/api/freeradius/avpair/get_avpair/',
+                'set':'/api/freeradius/avpair/set_avpair/',
+                'add':'/api/freeradius/avpair/add_avpair/',
+                'del':'/api/freeradius/avpair/del_avpair/',
+                'toggle':'/api/freeradius/avpair/toggle_avpair/'
             }
         );
 

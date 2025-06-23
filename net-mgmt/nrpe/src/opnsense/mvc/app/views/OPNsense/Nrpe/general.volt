@@ -87,11 +87,11 @@ $(function() {
 
     $("#grid-command").UIBootgrid(
         {   'search':'/api/nrpe/command/searchCommand',
-            'get':'/api/nrpe/command/getCommand/',
-            'set':'/api/nrpe/command/setCommand/',
-            'add':'/api/nrpe/command/addCommand/',
-            'del':'/api/nrpe/command/delCommand/',
-            'toggle':'/api/nrpe/command/toggleCommand/'
+            'get':'/api/nrpe/command/get_command/',
+            'set':'/api/nrpe/command/set_command/',
+            'add':'/api/nrpe/command/add_command/',
+            'del':'/api/nrpe/command/del_command/',
+            'toggle':'/api/nrpe/command/toggle_command/'
         }
     );
 

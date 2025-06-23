@@ -36,11 +36,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-senders").UIBootgrid(
             {   'search':'/api/postfix/sender/searchSender',
-                'get':'/api/postfix/sender/getSender/',
-                'set':'/api/postfix/sender/setSender/',
-                'add':'/api/postfix/sender/addSender/',
-                'del':'/api/postfix/sender/delSender/',
-                'toggle':'/api/postfix/sender/toggleSender/'
+                'get':'/api/postfix/sender/get_sender/',
+                'set':'/api/postfix/sender/set_sender/',
+                'add':'/api/postfix/sender/add_sender/',
+                'del':'/api/postfix/sender/del_sender/',
+                'toggle':'/api/postfix/sender/toggle_sender/'
             }
         );
 
