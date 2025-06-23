@@ -28,12 +28,12 @@
 
     $( document ).ready(function() {
         $("#grid-addresses").UIBootgrid(
-            {   search:'/api/gridexample/settings/searchItem/',
-                get:'/api/gridexample/settings/getItem/',
-                set:'/api/gridexample/settings/setItem/',
-                add:'/api/gridexample/settings/addItem/',
-                del:'/api/gridexample/settings/delItem/',
-                toggle:'/api/gridexample/settings/toggleItem/'
+            {   search:'/api/gridexample/settings/search_item/',
+                get:'/api/gridexample/settings/get_item/',
+                set:'/api/gridexample/settings/set_item/',
+                add:'/api/gridexample/settings/add_item/',
+                del:'/api/gridexample/settings/del_item/',
+                toggle:'/api/gridexample/settings/toggle_item/'
             }
         );
     });

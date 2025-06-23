@@ -90,11 +90,11 @@ $( document ).ready(function() {
 
     $("#grid-users").UIBootgrid(
         {   'search':'/api/netsnmp/user/searchUser',
-            'get':'/api/netsnmp/user/getUser/',
-            'set':'/api/netsnmp/user/setUser/',
-            'add':'/api/netsnmp/user/addUser/',
-            'del':'/api/netsnmp/user/delUser/',
-            'toggle':'/api/netsnmp/user/toggleUser/'
+            'get':'/api/netsnmp/user/get_user/',
+            'set':'/api/netsnmp/user/set_user/',
+            'add':'/api/netsnmp/user/add_user/',
+            'del':'/api/netsnmp/user/del_user/',
+            'toggle':'/api/netsnmp/user/toggle_user/'
         }
     );
 

@@ -1,12 +1,12 @@
 <script>
     $( document ).ready(function() {
         $("#grid-addresses").UIBootgrid(
-            {   search:'/api/radsecproxy/tls/searchItem/',
-                get:'/api/radsecproxy/tls/getItem/',
-                set:'/api/radsecproxy/tls/setItem/',
-                add:'/api/radsecproxy/tls/addItem/',
-                del:'/api/radsecproxy/tls/delItem/',
-                toggle:'/api/radsecproxy/tls/toggleItem/'
+            {   search:'/api/radsecproxy/tls/search_item/',
+                get:'/api/radsecproxy/tls/get_item/',
+                set:'/api/radsecproxy/tls/set_item/',
+                add:'/api/radsecproxy/tls/add_item/',
+                del:'/api/radsecproxy/tls/del_item/',
+                toggle:'/api/radsecproxy/tls/toggle_item/'
             }
         );
         updateServiceControlUI('radsecproxy');

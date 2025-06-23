@@ -53,19 +53,19 @@
 
         $("#grid-remote-blacklists").UIBootgrid(
                 {   'search':'/api/proxy/settings/searchRemoteBlacklists',
-                    'get':'/api/proxy/settings/getRemoteBlacklist/',
-                    'set':'/api/proxy/settings/setRemoteBlacklist/',
-                    'add':'/api/proxy/settings/addRemoteBlacklist/',
-                    'del':'/api/proxy/settings/delRemoteBlacklist/',
-                    'toggle':'/api/proxy/settings/toggleRemoteBlacklist/'
+                    'get':'/api/proxy/settings/get_remote_blacklist/',
+                    'set':'/api/proxy/settings/set_remote_blacklist/',
+                    'add':'/api/proxy/settings/add_remote_blacklist/',
+                    'del':'/api/proxy/settings/del_remote_blacklist/',
+                    'toggle':'/api/proxy/settings/toggle_remote_blacklist/'
                 }
         );
         $("#grid-pac-match").UIBootgrid(
                 {   'search':'/api/proxy/settings/searchPACMatch',
-                    'get':'/api/proxy/settings/getPACMatch/',
-                    'set':'/api/proxy/settings/setPACMatch/',
-                    'add':'/api/proxy/settings/addPACMatch/',
-                    'del':'/api/proxy/settings/delPACMatch/',
+                    'get':'/api/proxy/settings/get_pac_match/',
+                    'set':'/api/proxy/settings/set_pac_match/',
+                    'add':'/api/proxy/settings/add_pac_match/',
+                    'del':'/api/proxy/settings/del_pac_match/',
                     'options': {
                         responseHandler: function (response) {
                             // concatenate fields for not.
@@ -82,19 +82,19 @@
         );
         $("#grid-pac-rule").UIBootgrid(
                 {   'search':'/api/proxy/settings/searchPACRule',
-                    'get':'/api/proxy/settings/getPACRule/',
-                    'set':'/api/proxy/settings/setPACRule/',
-                    'add':'/api/proxy/settings/addPACRule/',
-                    'del':'/api/proxy/settings/delPACRule/',
-                    'toggle':'/api/proxy/settings/togglePACRule/'
+                    'get':'/api/proxy/settings/get_pac_rule/',
+                    'set':'/api/proxy/settings/set_pac_rule/',
+                    'add':'/api/proxy/settings/add_pac_rule/',
+                    'del':'/api/proxy/settings/del_pac_rule/',
+                    'toggle':'/api/proxy/settings/toggle_pac_rule/'
                 }
         );
         $("#grid-pac-proxy").UIBootgrid(
                 {   'search':'/api/proxy/settings/searchPACProxy',
-                    'get':'/api/proxy/settings/getPACProxy/',
-                    'set':'/api/proxy/settings/setPACProxy/',
-                    'add':'/api/proxy/settings/addPACProxy/',
-                    'del':'/api/proxy/settings/delPACProxy/'
+                    'get':'/api/proxy/settings/get_pac_proxy/',
+                    'set':'/api/proxy/settings/set_pac_proxy/',
+                    'add':'/api/proxy/settings/add_pac_proxy/',
+                    'del':'/api/proxy/settings/del_pac_proxy/'
                 }
         );
 

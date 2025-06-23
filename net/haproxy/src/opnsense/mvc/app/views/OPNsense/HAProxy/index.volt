@@ -50,11 +50,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-frontends").UIBootgrid(
             {   search:'/api/haproxy/settings/searchFrontends',
-                get:'/api/haproxy/settings/getFrontend/',
-                set:'/api/haproxy/settings/setFrontend/',
-                add:'/api/haproxy/settings/addFrontend/',
-                del:'/api/haproxy/settings/delFrontend/',
-                toggle:'/api/haproxy/settings/toggleFrontend/',
+                get:'/api/haproxy/settings/get_frontend/',
+                set:'/api/haproxy/settings/set_frontend/',
+                add:'/api/haproxy/settings/add_frontend/',
+                del:'/api/haproxy/settings/del_frontend/',
+                toggle:'/api/haproxy/settings/toggle_frontend/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -63,11 +63,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-backends").UIBootgrid(
             {   search:'/api/haproxy/settings/searchBackends',
-                get:'/api/haproxy/settings/getBackend/',
-                set:'/api/haproxy/settings/setBackend/',
-                add:'/api/haproxy/settings/addBackend/',
-                del:'/api/haproxy/settings/delBackend/',
-                toggle:'/api/haproxy/settings/toggleBackend/',
+                get:'/api/haproxy/settings/get_backend/',
+                set:'/api/haproxy/settings/set_backend/',
+                add:'/api/haproxy/settings/add_backend/',
+                del:'/api/haproxy/settings/del_backend/',
+                toggle:'/api/haproxy/settings/toggle_backend/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -76,11 +76,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-servers").UIBootgrid(
             {   search:'/api/haproxy/settings/searchServers',
-                get:'/api/haproxy/settings/getServer/',
-                set:'/api/haproxy/settings/setServer/',
-                add:'/api/haproxy/settings/addServer/',
-                del:'/api/haproxy/settings/delServer/',
-                toggle:'/api/haproxy/settings/toggleServer/',
+                get:'/api/haproxy/settings/get_server/',
+                set:'/api/haproxy/settings/set_server/',
+                add:'/api/haproxy/settings/add_server/',
+                del:'/api/haproxy/settings/del_server/',
+                toggle:'/api/haproxy/settings/toggle_server/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -89,10 +89,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-healthchecks").UIBootgrid(
             {   search:'/api/haproxy/settings/searchHealthchecks',
-                get:'/api/haproxy/settings/getHealthcheck/',
-                set:'/api/haproxy/settings/setHealthcheck/',
-                add:'/api/haproxy/settings/addHealthcheck/',
-                del:'/api/haproxy/settings/delHealthcheck/',
+                get:'/api/haproxy/settings/get_healthcheck/',
+                set:'/api/haproxy/settings/set_healthcheck/',
+                add:'/api/haproxy/settings/add_healthcheck/',
+                del:'/api/haproxy/settings/del_healthcheck/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -101,10 +101,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-actions").UIBootgrid(
             {   search:'/api/haproxy/settings/searchActions',
-                get:'/api/haproxy/settings/getAction/',
-                set:'/api/haproxy/settings/setAction/',
-                add:'/api/haproxy/settings/addAction/',
-                del:'/api/haproxy/settings/delAction/',
+                get:'/api/haproxy/settings/get_action/',
+                set:'/api/haproxy/settings/set_action/',
+                add:'/api/haproxy/settings/add_action/',
+                del:'/api/haproxy/settings/del_action/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -113,10 +113,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-acls").UIBootgrid(
             {   search:'/api/haproxy/settings/searchAcls',
-                get:'/api/haproxy/settings/getAcl/',
-                set:'/api/haproxy/settings/setAcl/',
-                add:'/api/haproxy/settings/addAcl/',
-                del:'/api/haproxy/settings/delAcl/',
+                get:'/api/haproxy/settings/get_acl/',
+                set:'/api/haproxy/settings/set_acl/',
+                add:'/api/haproxy/settings/add_acl/',
+                del:'/api/haproxy/settings/del_acl/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -125,11 +125,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-users").UIBootgrid(
             {   search:'/api/haproxy/settings/searchUsers',
-                get:'/api/haproxy/settings/getUser/',
-                set:'/api/haproxy/settings/setUser/',
-                add:'/api/haproxy/settings/addUser/',
-                del:'/api/haproxy/settings/delUser/',
-                toggle:'/api/haproxy/settings/toggleUser/',
+                get:'/api/haproxy/settings/get_user/',
+                set:'/api/haproxy/settings/set_user/',
+                add:'/api/haproxy/settings/add_user/',
+                del:'/api/haproxy/settings/del_user/',
+                toggle:'/api/haproxy/settings/toggle_user/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -138,11 +138,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-groups").UIBootgrid(
             {   search:'/api/haproxy/settings/searchGroups',
-                get:'/api/haproxy/settings/getGroup/',
-                set:'/api/haproxy/settings/setGroup/',
-                add:'/api/haproxy/settings/addGroup/',
-                del:'/api/haproxy/settings/delGroup/',
-                toggle:'/api/haproxy/settings/toggleGroup/',
+                get:'/api/haproxy/settings/get_group/',
+                set:'/api/haproxy/settings/set_group/',
+                add:'/api/haproxy/settings/add_group/',
+                del:'/api/haproxy/settings/del_group/',
+                toggle:'/api/haproxy/settings/toggle_group/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -151,11 +151,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-luas").UIBootgrid(
             {   search:'/api/haproxy/settings/searchLuas',
-                get:'/api/haproxy/settings/getLua/',
-                set:'/api/haproxy/settings/setLua/',
-                add:'/api/haproxy/settings/addLua/',
-                del:'/api/haproxy/settings/delLua/',
-                toggle:'/api/haproxy/settings/toggleLua/',
+                get:'/api/haproxy/settings/get_lua/',
+                set:'/api/haproxy/settings/set_lua/',
+                add:'/api/haproxy/settings/add_lua/',
+                del:'/api/haproxy/settings/del_lua/',
+                toggle:'/api/haproxy/settings/toggle_lua/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -164,10 +164,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-fcgis").UIBootgrid(
             {   search:'/api/haproxy/settings/searchFcgis',
-                get:'/api/haproxy/settings/getFcgi/',
-                set:'/api/haproxy/settings/setFcgi/',
-                add:'/api/haproxy/settings/addFcgi/',
-                del:'/api/haproxy/settings/delFcgi/',
+                get:'/api/haproxy/settings/get_fcgi/',
+                set:'/api/haproxy/settings/set_fcgi/',
+                add:'/api/haproxy/settings/add_fcgi/',
+                del:'/api/haproxy/settings/del_fcgi/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -176,10 +176,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-errorfiles").UIBootgrid(
             {   search:'/api/haproxy/settings/searchErrorfiles',
-                get:'/api/haproxy/settings/getErrorfile/',
-                set:'/api/haproxy/settings/setErrorfile/',
-                add:'/api/haproxy/settings/addErrorfile/',
-                del:'/api/haproxy/settings/delErrorfile/',
+                get:'/api/haproxy/settings/get_errorfile/',
+                set:'/api/haproxy/settings/set_errorfile/',
+                add:'/api/haproxy/settings/add_errorfile/',
+                del:'/api/haproxy/settings/del_errorfile/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -188,10 +188,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-mapfiles").UIBootgrid(
             {   search:'/api/haproxy/settings/searchMapfiles',
-                get:'/api/haproxy/settings/getMapfile/',
-                set:'/api/haproxy/settings/setMapfile/',
-                add:'/api/haproxy/settings/addMapfile/',
-                del:'/api/haproxy/settings/delMapfile/',
+                get:'/api/haproxy/settings/get_mapfile/',
+                set:'/api/haproxy/settings/set_mapfile/',
+                add:'/api/haproxy/settings/add_mapfile/',
+                del:'/api/haproxy/settings/del_mapfile/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -200,11 +200,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-cpus").UIBootgrid(
             {   search:'/api/haproxy/settings/searchCpus',
-                get:'/api/haproxy/settings/getCpu/',
-                set:'/api/haproxy/settings/setCpu/',
-                add:'/api/haproxy/settings/addCpu/',
-                del:'/api/haproxy/settings/delCpu/',
-                toggle:'/api/haproxy/settings/toggleCpu/',
+                get:'/api/haproxy/settings/get_cpu/',
+                set:'/api/haproxy/settings/set_cpu/',
+                add:'/api/haproxy/settings/add_cpu/',
+                del:'/api/haproxy/settings/del_cpu/',
+                toggle:'/api/haproxy/settings/toggle_cpu/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -213,11 +213,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-resolvers").UIBootgrid(
             {   search:'/api/haproxy/settings/searchResolvers',
-                get:'/api/haproxy/settings/getResolver/',
-                set:'/api/haproxy/settings/setResolver/',
-                add:'/api/haproxy/settings/addResolver/',
-                del:'/api/haproxy/settings/delResolver/',
-                toggle:'/api/haproxy/settings/toggleResolver/',
+                get:'/api/haproxy/settings/get_resolver/',
+                set:'/api/haproxy/settings/set_resolver/',
+                add:'/api/haproxy/settings/add_resolver/',
+                del:'/api/haproxy/settings/del_resolver/',
+                toggle:'/api/haproxy/settings/toggle_resolver/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }
@@ -226,11 +226,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-mailers").UIBootgrid(
             {   search:'/api/haproxy/settings/searchMailers',
-                get:'/api/haproxy/settings/getMailer/',
-                set:'/api/haproxy/settings/setMailer/',
-                add:'/api/haproxy/settings/addMailer/',
-                del:'/api/haproxy/settings/delMailer/',
-                toggle:'/api/haproxy/settings/toggleMailer/',
+                get:'/api/haproxy/settings/get_mailer/',
+                set:'/api/haproxy/settings/set_mailer/',
+                add:'/api/haproxy/settings/add_mailer/',
+                del:'/api/haproxy/settings/del_mailer/',
+                toggle:'/api/haproxy/settings/toggle_mailer/',
                 options: {
                     rowCount:[10,25,50,100,500,1000]
                 }

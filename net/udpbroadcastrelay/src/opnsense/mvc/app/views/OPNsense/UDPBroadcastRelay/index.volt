@@ -33,8 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         function openDialog(uuid) {
             var editDlg = "DialogEdit";
-            var setUrl = "/api/udpbroadcastrelay/settings/setRelay/";
-            var getUrl = "/api/udpbroadcastrelay/settings/getRelay/";
+            var setUrl = "/api/udpbroadcastrelay/settings/set_relay/";
+            var getUrl = "/api/udpbroadcastrelay/settings/get_relay/";
             var urlMap = {};
             urlMap['frm_' + editDlg] = getUrl + uuid;
             mapDataToFormUI(urlMap).done(function () {
@@ -56,11 +56,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-proxies").UIBootgrid(
                 {   'search':'/api/udpbroadcastrelay/settings/searchRelay',
-                    'get':'/api/udpbroadcastrelay/settings/getRelay/',
-                    'set':'/api/udpbroadcastrelay/settings/setRelay/',
-                    'add':'/api/udpbroadcastrelay/settings/addRelay/',
-                    'del':'/api/udpbroadcastrelay/settings/delRelay/',
-                    'toggle':'/api/udpbroadcastrelay/settings/toggleRelay/',
+                    'get':'/api/udpbroadcastrelay/settings/get_relay/',
+                    'set':'/api/udpbroadcastrelay/settings/set_relay/',
+                    'add':'/api/udpbroadcastrelay/settings/add_relay/',
+                    'del':'/api/udpbroadcastrelay/settings/del_relay/',
+                    'toggle':'/api/udpbroadcastrelay/settings/toggle_relay/',
                     'options':{selection:false, multiSelect:false}
                 }
         );

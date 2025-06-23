@@ -98,7 +98,7 @@
                             const update_filter = function (selectValues) {
                                 $('#reverseFilter')
                                     // Refresh selectpicker with latest data so button always works even on new domains
-                                    .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                                    .fetch_options('/api/caddy/reverse_proxy/getAllReverseDomains')
                                     .done(function () {
                                         $('#reverseFilter')
                                             .selectpicker('val', selectValues)
@@ -140,7 +140,7 @@
 
                                     // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
                                     if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
-                                        ajaxGet(`/api/caddy/ReverseProxy/get{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
+                                        ajaxGet(`/api/caddy/reverse_proxy/get{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
                                             const reverseUuids = rowData?.subdomain?.reverse || {};
                                             const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
                                             const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
@@ -160,12 +160,12 @@
 
                         all_grids[grid_id] = $("#" + grid_id)
                         .UIBootgrid({
-                            search: `/api/caddy/ReverseProxy/search${grid_id}/`,
-                            get: `/api/caddy/ReverseProxy/get${grid_id}/`,
-                            set: `/api/caddy/ReverseProxy/set${grid_id}/`,
-                            add: `/api/caddy/ReverseProxy/add${grid_id}/`,
-                            del: `/api/caddy/ReverseProxy/del${grid_id}/`,
-                            toggle: `/api/caddy/ReverseProxy/toggle${grid_id}/`,
+                            search: `/api/caddy/reverse_proxy/search${grid_id}/`,
+                            get: `/api/caddy/reverse_proxy/get${grid_id}/`,
+                            set: `/api/caddy/reverse_proxy/set${grid_id}/`,
+                            add: `/api/caddy/reverse_proxy/add${grid_id}/`,
+                            del: `/api/caddy/reverse_proxy/del${grid_id}/`,
+                            toggle: `/api/caddy/reverse_proxy/toggle${grid_id}/`,
                             options: {
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
@@ -271,7 +271,7 @@
         });
 
         // Populate domain filter selectpicker
-        $('#reverseFilter').fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains');
+        $('#reverseFilter').fetch_options('/api/caddy/reverse_proxy/getAllReverseDomains');
 
         // Clear domain filter selectpicker
         $('#reverseFilterClear').on('click', function () {

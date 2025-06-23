@@ -36,11 +36,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-senderbccs").UIBootgrid(
             {   'search':'/api/postfix/senderbcc/searchSenderbcc',
-                'get':'/api/postfix/senderbcc/getSenderbcc/',
-                'set':'/api/postfix/senderbcc/setSenderbcc/',
-                'add':'/api/postfix/senderbcc/addSenderbcc/',
-                'del':'/api/postfix/senderbcc/delSenderbcc/',
-                'toggle':'/api/postfix/senderbcc/toggleSenderbcc/'
+                'get':'/api/postfix/senderbcc/get_senderbcc/',
+                'set':'/api/postfix/senderbcc/set_senderbcc/',
+                'add':'/api/postfix/senderbcc/add_senderbcc/',
+                'del':'/api/postfix/senderbcc/del_senderbcc/',
+                'toggle':'/api/postfix/senderbcc/toggle_senderbcc/'
             }
         );
 

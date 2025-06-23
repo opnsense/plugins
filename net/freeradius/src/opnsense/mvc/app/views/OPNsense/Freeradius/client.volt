@@ -38,11 +38,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-clients").UIBootgrid(
             {   'search':'/api/freeradius/client/searchClient',
-                'get':'/api/freeradius/client/getClient/',
-                'set':'/api/freeradius/client/setClient/',
-                'add':'/api/freeradius/client/addClient/',
-                'del':'/api/freeradius/client/delClient/',
-                'toggle':'/api/freeradius/client/toggleClient/'
+                'get':'/api/freeradius/client/get_client/',
+                'set':'/api/freeradius/client/set_client/',
+                'add':'/api/freeradius/client/add_client/',
+                'del':'/api/freeradius/client/del_client/',
+                'toggle':'/api/freeradius/client/toggle_client/'
             }
         );
 

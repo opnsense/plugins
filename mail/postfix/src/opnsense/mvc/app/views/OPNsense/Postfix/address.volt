@@ -36,11 +36,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-addresses").UIBootgrid(
             {   'search':'/api/postfix/address/searchAddress',
-                'get':'/api/postfix/address/getAddress/',
-                'set':'/api/postfix/address/setAddress/',
-                'add':'/api/postfix/address/addAddress/',
-                'del':'/api/postfix/address/delAddress/',
-                'toggle':'/api/postfix/address/toggleAddress/'
+                'get':'/api/postfix/address/get_address/',
+                'set':'/api/postfix/address/set_address/',
+                'add':'/api/postfix/address/add_address/',
+                'del':'/api/postfix/address/del_address/',
+                'toggle':'/api/postfix/address/toggle_address/'
             }
         );
 
