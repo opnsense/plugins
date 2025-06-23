@@ -41,7 +41,7 @@ $( document ).ready(function() {
 
 
   var grid = $("#grid-wol-settings").UIBootgrid(
-      { 'search':'/api/wol/wol/searchHost',
+      { 'search':'/api/wol/wol/search_host',
         'get':'/api/wol/wol/get_host/',
         'set':'/api/wol/wol/set_host/',
         'add':'/api/wol/wol/add_host/',

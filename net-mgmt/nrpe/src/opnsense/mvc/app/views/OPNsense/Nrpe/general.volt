@@ -86,7 +86,7 @@ $(function() {
     });
 
     $("#grid-command").UIBootgrid(
-        {   'search':'/api/nrpe/command/searchCommand',
+        {   'search':'/api/nrpe/command/search_command',
             'get':'/api/nrpe/command/get_command/',
             'set':'/api/nrpe/command/set_command/',
             'add':'/api/nrpe/command/add_command/',

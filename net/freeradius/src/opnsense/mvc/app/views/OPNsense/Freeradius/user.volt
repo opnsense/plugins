@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
         updateServiceControlUI('freeradius');
 
         $("#grid-users").UIBootgrid(
-            {   'search':'/api/freeradius/user/searchUser',
+            {   'search':'/api/freeradius/user/search_user',
                 'get':'/api/freeradius/user/get_user/',
                 'set':'/api/freeradius/user/set_user/',
                 'add':'/api/freeradius/user/add_user/',
@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-avpairs").UIBootgrid(
-            {   'search':'/api/freeradius/avpair/searchAvpair',
+            {   'search':'/api/freeradius/avpair/search_avpair',
                 'get':'/api/freeradius/avpair/get_avpair/',
                 'set':'/api/freeradius/avpair/set_avpair/',
                 'add':'/api/freeradius/avpair/add_avpair/',

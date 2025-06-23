@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBFDNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bfd/searchNeighbor',
+            'search':'/api/quagga/bfd/search_neighbor',
             'get':'/api/quagga/bfd/get_neighbor/',
             'set':'/api/quagga/bfd/set_neighbor/',
             'add':'/api/quagga/bfd/add_neighbor/',

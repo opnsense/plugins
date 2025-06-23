@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBGPNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchNeighbor',
+            'search':'/api/quagga/bgp/search_neighbor',
             'get':'/api/quagga/bgp/get_neighbor/',
             'set':'/api/quagga/bgp/set_neighbor/',
             'add':'/api/quagga/bgp/add_neighbor/',
@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_neighbor/'
         });
         $("#{{formGridEditBGPASPaths['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchAspath',
+            'search':'/api/quagga/bgp/search_aspath',
             'get':'/api/quagga/bgp/get_aspath/',
             'set':'/api/quagga/bgp/set_aspath/',
             'add':'/api/quagga/bgp/add_aspath/',
@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_aspath/'
         });
         $("#{{formGridEditBGPPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchPrefixlist',
+            'search':'/api/quagga/bgp/search_prefixlist',
             'get':'/api/quagga/bgp/get_prefixlist/',
             'set':'/api/quagga/bgp/set_prefixlist/',
             'add':'/api/quagga/bgp/add_prefixlist/',
@@ -72,7 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_prefixlist/'
         });
         $("#{{formGridEditBGPCommunityLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchCommunitylist',
+            'search':'/api/quagga/bgp/search_communitylist',
             'get':'/api/quagga/bgp/get_communitylist/',
             'set':'/api/quagga/bgp/set_communitylist/',
             'add':'/api/quagga/bgp/add_communitylist/',
@@ -80,7 +80,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_communitylist/'
         });
         $("#{{formGridEditBGPRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchRoutemap',
+            'search':'/api/quagga/bgp/search_routemap',
             'get':'/api/quagga/bgp/get_routemap/',
             'set':'/api/quagga/bgp/set_routemap/',
             'add':'/api/quagga/bgp/add_routemap/',
@@ -88,7 +88,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_routemap/'
         });
         $("#{{formGridEditBGPPeergroups['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchPeergroup',
+            'search':'/api/quagga/bgp/search_peergroup',
             'get':'/api/quagga/bgp/get_peergroup/',
             'set':'/api/quagga/bgp/set_peergroup/',
             'add':'/api/quagga/bgp/add_peergroup/',
@@ -96,7 +96,7 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/bgp/toggle_peergroup/'
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchRedistribution',
+            'search':'/api/quagga/bgp/search_redistribution',
             'get':'/api/quagga/bgp/get_redistribution/',
             'set':'/api/quagga/bgp/set_redistribution/',
             'add':'/api/quagga/bgp/add_redistribution/',

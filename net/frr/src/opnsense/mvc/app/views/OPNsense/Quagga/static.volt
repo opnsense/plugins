@@ -34,7 +34,7 @@
         });
 
         $("#{{formGridEditSTATICRoute['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/static/searchRoute',
+            'search':'/api/quagga/static/search_route',
             'get':'/api/quagga/static/get_route/',
             'set':'/api/quagga/static/set_route/',
             'add':'/api/quagga/static/add_route/',

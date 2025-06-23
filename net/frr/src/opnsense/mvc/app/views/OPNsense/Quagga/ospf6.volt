@@ -47,7 +47,7 @@
         });
 
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchNetwork',
+            'search':'/api/quagga/ospf6settings/search_network',
             'get':'/api/quagga/ospf6settings/get_network/',
             'set':'/api/quagga/ospf6settings/set_network/',
             'add':'/api/quagga/ospf6settings/add_network/',
@@ -55,7 +55,7 @@
             'toggle':'/api/quagga/ospf6settings/toggle_network/'
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchInterface',
+            'search':'/api/quagga/ospf6settings/search_interface',
             'get':'/api/quagga/ospf6settings/get_interface/',
             'set':'/api/quagga/ospf6settings/set_interface/',
             'add':'/api/quagga/ospf6settings/add_interface/',
@@ -63,7 +63,7 @@
             'toggle':'/api/quagga/ospf6settings/toggle_interface/'
         });
         $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchPrefixlist',
+            'search':'/api/quagga/ospf6settings/search_prefixlist',
             'get':'/api/quagga/ospf6settings/get_prefixlist/',
             'set':'/api/quagga/ospf6settings/set_prefixlist/',
             'add':'/api/quagga/ospf6settings/add_prefixlist/',
@@ -71,7 +71,7 @@
             'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/'
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchRoutemap',
+            'search':'/api/quagga/ospf6settings/search_routemap',
             'get':'/api/quagga/ospf6settings/get_routemap/',
             'set':'/api/quagga/ospf6settings/set_routemap/',
             'add':'/api/quagga/ospf6settings/add_routemap/',
@@ -79,7 +79,7 @@
             'toggle':'/api/quagga/ospf6settings/toggle_routemap/'
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchRedistribution',
+            'search':'/api/quagga/ospf6settings/search_redistribution',
             'get':'/api/quagga/ospf6settings/get_redistribution/',
             'set':'/api/quagga/ospf6settings/set_redistribution/',
             'add':'/api/quagga/ospf6settings/add_redistribution/',

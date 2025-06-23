@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-recipientbccs").UIBootgrid(
-            {   'search':'/api/postfix/recipientbcc/searchRecipientbcc',
+            {   'search':'/api/postfix/recipientbcc/search_recipientbcc',
                 'get':'/api/postfix/recipientbcc/get_recipientbcc/',
                 'set':'/api/postfix/recipientbcc/set_recipientbcc/',
                 'add':'/api/postfix/recipientbcc/add_recipientbcc/',

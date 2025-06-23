@@ -186,7 +186,7 @@ $( document ).ready(function() {
     });
 
     $("#grid-forwards").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/forward/searchForward',
+        {   'search':'/api/dnscryptproxy/forward/search_forward',
             'get':'/api/dnscryptproxy/forward/get_forward/',
             'set':'/api/dnscryptproxy/forward/set_forward/',
             'add':'/api/dnscryptproxy/forward/add_forward/',
@@ -196,7 +196,7 @@ $( document ).ready(function() {
     );
 
     $("#grid-cloaks").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/cloak/searchCloak',
+        {   'search':'/api/dnscryptproxy/cloak/search_cloak',
             'get':'/api/dnscryptproxy/cloak/get_cloak/',
             'set':'/api/dnscryptproxy/cloak/set_cloak/',
             'add':'/api/dnscryptproxy/cloak/add_cloak/',
@@ -206,7 +206,7 @@ $( document ).ready(function() {
     );
 
     $("#grid-whitelists").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/whitelist/searchWhitelist',
+        {   'search':'/api/dnscryptproxy/whitelist/search_whitelist',
             'get':'/api/dnscryptproxy/whitelist/get_whitelist/',
             'set':'/api/dnscryptproxy/whitelist/set_whitelist/',
             'add':'/api/dnscryptproxy/whitelist/add_whitelist/',
@@ -216,7 +216,7 @@ $( document ).ready(function() {
     );
 
     $("#grid-servers").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/server/searchServer',
+        {   'search':'/api/dnscryptproxy/server/search_server',
             'get':'/api/dnscryptproxy/server/get_server/',
             'set':'/api/dnscryptproxy/server/set_server/',
             'add':'/api/dnscryptproxy/server/add_server/',

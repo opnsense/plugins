@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-senderbccs").UIBootgrid(
-            {   'search':'/api/postfix/senderbcc/searchSenderbcc',
+            {   'search':'/api/postfix/senderbcc/search_senderbcc',
                 'get':'/api/postfix/senderbcc/get_senderbcc/',
                 'set':'/api/postfix/senderbcc/set_senderbcc/',
                 'add':'/api/postfix/senderbcc/add_senderbcc/',

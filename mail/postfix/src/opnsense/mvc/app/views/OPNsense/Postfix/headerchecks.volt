@@ -34,7 +34,7 @@
          *************************************************************************************************************/
 
         $("#grid-headerchecks").UIBootgrid(
-            {   'search':'/api/postfix/headerchecks/searchHeaderchecks',
+            {   'search':'/api/postfix/headerchecks/search_headerchecks',
                 'get':'/api/postfix/headerchecks/get_headercheck/',
                 'set':'/api/postfix/headerchecks/set_headercheck/',
                 'add':'/api/postfix/headerchecks/add_headercheck/',

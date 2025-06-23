@@ -89,7 +89,7 @@ $( document ).ready(function() {
     });
 
     $("#grid-users").UIBootgrid(
-        {   'search':'/api/netsnmp/user/searchUser',
+        {   'search':'/api/netsnmp/user/search_user',
             'get':'/api/netsnmp/user/get_user/',
             'set':'/api/netsnmp/user/set_user/',
             'add':'/api/netsnmp/user/add_user/',

@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
          **********************************************************************/
 
         $("#grid-frontends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchFrontends',
+            {   search:'/api/haproxy/settings/search_frontends',
                 get:'/api/haproxy/settings/get_frontend/',
                 set:'/api/haproxy/settings/set_frontend/',
                 add:'/api/haproxy/settings/add_frontend/',
@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-backends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchBackends',
+            {   search:'/api/haproxy/settings/search_backends',
                 get:'/api/haproxy/settings/get_backend/',
                 set:'/api/haproxy/settings/set_backend/',
                 add:'/api/haproxy/settings/add_backend/',
@@ -75,7 +75,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-servers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchServers',
+            {   search:'/api/haproxy/settings/search_servers',
                 get:'/api/haproxy/settings/get_server/',
                 set:'/api/haproxy/settings/set_server/',
                 add:'/api/haproxy/settings/add_server/',
@@ -88,7 +88,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-healthchecks").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchHealthchecks',
+            {   search:'/api/haproxy/settings/search_healthchecks',
                 get:'/api/haproxy/settings/get_healthcheck/',
                 set:'/api/haproxy/settings/set_healthcheck/',
                 add:'/api/haproxy/settings/add_healthcheck/',
@@ -100,7 +100,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-actions").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchActions',
+            {   search:'/api/haproxy/settings/search_actions',
                 get:'/api/haproxy/settings/get_action/',
                 set:'/api/haproxy/settings/set_action/',
                 add:'/api/haproxy/settings/add_action/',
@@ -112,7 +112,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-acls").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchAcls',
+            {   search:'/api/haproxy/settings/search_acls',
                 get:'/api/haproxy/settings/get_acl/',
                 set:'/api/haproxy/settings/set_acl/',
                 add:'/api/haproxy/settings/add_acl/',
@@ -124,7 +124,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-users").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchUsers',
+            {   search:'/api/haproxy/settings/search_users',
                 get:'/api/haproxy/settings/get_user/',
                 set:'/api/haproxy/settings/set_user/',
                 add:'/api/haproxy/settings/add_user/',
@@ -137,7 +137,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-groups").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchGroups',
+            {   search:'/api/haproxy/settings/search_groups',
                 get:'/api/haproxy/settings/get_group/',
                 set:'/api/haproxy/settings/set_group/',
                 add:'/api/haproxy/settings/add_group/',
@@ -150,7 +150,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-luas").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchLuas',
+            {   search:'/api/haproxy/settings/search_luas',
                 get:'/api/haproxy/settings/get_lua/',
                 set:'/api/haproxy/settings/set_lua/',
                 add:'/api/haproxy/settings/add_lua/',
@@ -163,7 +163,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-fcgis").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchFcgis',
+            {   search:'/api/haproxy/settings/search_fcgis',
                 get:'/api/haproxy/settings/get_fcgi/',
                 set:'/api/haproxy/settings/set_fcgi/',
                 add:'/api/haproxy/settings/add_fcgi/',
@@ -175,7 +175,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-errorfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchErrorfiles',
+            {   search:'/api/haproxy/settings/search_errorfiles',
                 get:'/api/haproxy/settings/get_errorfile/',
                 set:'/api/haproxy/settings/set_errorfile/',
                 add:'/api/haproxy/settings/add_errorfile/',
@@ -187,7 +187,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-mapfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMapfiles',
+            {   search:'/api/haproxy/settings/search_mapfiles',
                 get:'/api/haproxy/settings/get_mapfile/',
                 set:'/api/haproxy/settings/set_mapfile/',
                 add:'/api/haproxy/settings/add_mapfile/',
@@ -199,7 +199,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-cpus").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchCpus',
+            {   search:'/api/haproxy/settings/search_cpus',
                 get:'/api/haproxy/settings/get_cpu/',
                 set:'/api/haproxy/settings/set_cpu/',
                 add:'/api/haproxy/settings/add_cpu/',
@@ -212,7 +212,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-resolvers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchResolvers',
+            {   search:'/api/haproxy/settings/search_resolvers',
                 get:'/api/haproxy/settings/get_resolver/',
                 set:'/api/haproxy/settings/set_resolver/',
                 add:'/api/haproxy/settings/add_resolver/',
@@ -225,7 +225,7 @@ POSSIBILITY OF SUCH DAMAGE.
         );
 
         $("#grid-mailers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMailers',
+            {   search:'/api/haproxy/settings/search_mailers',
                 get:'/api/haproxy/settings/get_mailer/',
                 set:'/api/haproxy/settings/set_mailer/',
                 add:'/api/haproxy/settings/add_mailer/',

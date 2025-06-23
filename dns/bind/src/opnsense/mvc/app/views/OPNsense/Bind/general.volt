@@ -354,7 +354,7 @@ $(document).ready(function() {
     updateServiceControlUI('bind');
 
     $("#grid-acls").UIBootgrid({
-        'search': '/api/bind/acl/searchAcl',
+        'search': '/api/bind/acl/search_acl',
         'get': '/api/bind/acl/get_acl/',
         'set': '/api/bind/acl/set_acl/',
         'add': '/api/bind/acl/add_acl/',
@@ -363,7 +363,7 @@ $(document).ready(function() {
     });
 
     $("#grid-primary-domains").UIBootgrid({
-        'search': '/api/bind/domain/searchPrimaryDomain',
+        'search': '/api/bind/domain/search_primary_domain',
         'get': '/api/bind/domain/get_domain/',
         'set': '/api/bind/domain/set_domain/',
         'add': '/api/bind/domain/add_primary_domain/',
@@ -414,7 +414,7 @@ $(document).ready(function() {
     });
 
     $("#grid-secondary-domains").UIBootgrid({
-        'search': '/api/bind/domain/searchSecondaryDomain',
+        'search': '/api/bind/domain/search_secondary_domain',
         'get': '/api/bind/domain/get_domain/',
         'set': '/api/bind/domain/set_domain/',
         'add': '/api/bind/domain/add_secondary_domain/',
@@ -434,7 +434,7 @@ $(document).ready(function() {
     });
 
     $("#grid-primary-records").UIBootgrid({
-        'search': '/api/bind/record/searchRecord',
+        'search': '/api/bind/record/search_record',
         'get': '/api/bind/record/get_record/',
         'set': '/api/bind/record/set_record/',
         'add': '/api/bind/record/add_record/',

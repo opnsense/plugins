@@ -41,7 +41,7 @@ $( document ).ready(function() {
      **********************************************************************/
 
     $("#grid-userparameters").UIBootgrid(
-        {   search:'/api/zabbixagent/settings/searchUserparameters',
+        {   search:'/api/zabbixagent/settings/search_userparameters',
             get:'/api/zabbixagent/settings/get_userparameter/',
             set:'/api/zabbixagent/settings/set_userparameter/',
             add:'/api/zabbixagent/settings/add_userparameter/',
@@ -54,7 +54,7 @@ $( document ).ready(function() {
     );
 
     $("#grid-aliases").UIBootgrid(
-        {   search:'/api/zabbixagent/settings/searchAliases',
+        {   search:'/api/zabbixagent/settings/search_aliases',
             get:'/api/zabbixagent/settings/get_alias/',
             set:'/api/zabbixagent/settings/set_alias/',
             add:'/api/zabbixagent/settings/add_alias/',

@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-dhcps").UIBootgrid(
-            {   'search':'/api/freeradius/dhcp/searchDhcp',
+            {   'search':'/api/freeradius/dhcp/search_dhcp',
                 'get':'/api/freeradius/dhcp/get_dhcp/',
                 'set':'/api/freeradius/dhcp/set_dhcp/',
                 'add':'/api/freeradius/dhcp/add_dhcp/',
