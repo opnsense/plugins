@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -146,13 +146,26 @@ manifest: check
 	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
 
-scripts: check scripts-pre scripts-auto scripts-manual scripts-post
+# Package scripts generation handling 101:
+#
+# "auto" generates automatic hooks that a plugin may need in order to
+# reload on the fly. ".pre" and ".post" suffixed files can be used to
+# extend the auto-generated content.
+#
+# "manual" overwrites the automatic script and also ignores ".pre" and
+# ".post" files since they do not make sense in manual mode.
+#
+# Furthermore, variable replacement via %%PLUGINS_VAR%% takes place in
+# "manual" as well as ".pre" and ".post" scripts provided.
+
+scripts: check scripts-pre scripts-auto scripts-post scripts-manual
 
 scripts-pre:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		rm -f ${DESTDIR}/$${SCRIPT}; \
 		if [ -f ${.CURDIR}/$${SCRIPT}.pre ]; then \
-			cp ${.CURDIR}/$${SCRIPT}.pre ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.pre > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -203,17 +216,19 @@ scripts-auto:
 		done \
 	fi
 
-scripts-manual:
-	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
-		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
-			cp ${.CURDIR}/$${SCRIPT} ${DESTDIR}/$${SCRIPT}; \
-		fi; \
-	done
-
 scripts-post:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f ${.CURDIR}/$${SCRIPT}.post ]; then \
-			cat ${.CURDIR}/$${SCRIPT}.post >> ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.post >> \
+			    ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
+scripts-manual:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT} > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
