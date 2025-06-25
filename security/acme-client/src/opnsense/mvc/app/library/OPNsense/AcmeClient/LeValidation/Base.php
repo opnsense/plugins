@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -286,6 +286,6 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      */
     public function setRenewal(int $interval = 60)
     {
-        $this->acme_args[] = LeUtils::execSafe('--days %s', (string)$interval);
+        $this->acme_args[] = LeUtils::execSafe('--days %s', $interval);
     }
 }
