@@ -175,7 +175,7 @@
         <customdirectives type="TextField">
             <Required>N</Required>
             <default></default>
-            <mask>/^.{0,2048}$/u</mask>
+            <mask>/^[\s\S]{0,2048}$/u</mask>
             <ValidationMessage>Custom directives should not exceed 2048 characters.</ValidationMessage>
         </customdirectives>
     </items>
