@@ -5,6 +5,7 @@ duckduckgo.db:/usr/local/etc/namedb/primary/duckduckgo.db
 google.db:/usr/local/etc/namedb/primary/google.db
 named:/etc/rc.conf.d/named
 named.conf:/usr/local/etc/namedb/named.conf
+00-README.conf:/usr/local/etc/namedb/named.conf.d/00-README.conf
 rndc.conf:/usr/local/etc/namedb/rndc.conf
 whitelist.db:/usr/local/etc/namedb/primary/whitelist.db
 whitelist.inc:/usr/local/etc/namedb/whitelist.inc
