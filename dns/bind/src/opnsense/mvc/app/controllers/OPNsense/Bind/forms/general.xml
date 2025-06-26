@@ -195,4 +195,17 @@
         <advanced>true</advanced>
         <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>Custom Directives</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.customdirectives</id>
+        <label>Custom Directives</label>
+        <type>textbox</type>
+        <style>height:100px</style>
+        <advanced>true</advanced>
+        <help>Additional BIND configuration directives that will be appended to named.conf. Use this for advanced configurations not available in the GUI (e.g., "server 192.168.1.1 { edns no; };").</help>
+    </field>
 </form>
