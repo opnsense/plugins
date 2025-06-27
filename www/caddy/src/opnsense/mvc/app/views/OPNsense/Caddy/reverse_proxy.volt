@@ -44,10 +44,6 @@
             $(`#maintabs a[href="${location.hash}"]`).tab('show');
         });
 
-        function to_snake_case(str) {
-            return str.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
-        }
-
         // Bootgrid Setup
         const all_grids = {};
 
@@ -161,15 +157,14 @@
                         }
 
 {% endif %}
-                        const api_grid_id = to_snake_case(grid_id);
                         all_grids[grid_id] = $("#" + grid_id)
                         .UIBootgrid({
-                            search: `/api/caddy/reverse_proxy/search_${api_grid_id}/`,
-                            get: `/api/caddy/reverse_proxy/get_${api_grid_id}/`,
-                            set: `/api/caddy/reverse_proxy/set_${api_grid_id}/`,
-                            add: `/api/caddy/reverse_proxy/add_${api_grid_id}/`,
-                            del: `/api/caddy/reverse_proxy/del_${api_grid_id}/`,
-                            toggle: `/api/caddy/reverse_proxy/toggle_${api_grid_id}/`,
+                            search: `/api/caddy/reverse_proxy/search_${grid_id}/`,
+                            get: `/api/caddy/reverse_proxy/get_${grid_id}/`,
+                            set: `/api/caddy/reverse_proxy/set_${grid_id}/`,
+                            add: `/api/caddy/reverse_proxy/add_${grid_id}/`,
+                            del: `/api/caddy/reverse_proxy/del_${grid_id}/`,
+                            toggle: `/api/caddy/reverse_proxy/toggle_${grid_id}/`,
                             options: {
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
@@ -182,7 +177,7 @@
                                     enabled: function (column) { return "" },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
-                                        if (grid_id === "Subdomain") {
+                                        if (grid_id === "subdomain") {
                                             return labels.subdomain;
                                         } else {
                                             return labels.domain;
