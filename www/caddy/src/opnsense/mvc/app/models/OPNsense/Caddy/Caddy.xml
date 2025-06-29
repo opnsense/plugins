@@ -89,6 +89,22 @@
                     <h3>HTTP/3</h3>
                 </OptionValues>
             </HttpVersions>
+            <timeout_read_body type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <ValidationMessage>Please enter a minimum value of 0 or leave empty for defaults.</ValidationMessage>
+            </timeout_read_body>
+            <timeout_read_header type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <ValidationMessage>Please enter a minimum value of 0 or leave empty for defaults.</ValidationMessage>
+            </timeout_read_header>
+            <timeout_write type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <ValidationMessage>Please enter a minimum value of 0 or leave empty for defaults.</ValidationMessage>
+            </timeout_write>
+            <timeout_idle type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <ValidationMessage>Please enter a minimum value of 0 or leave empty for defaults.</ValidationMessage>
+            </timeout_idle>
             <LogCredentials type="BooleanField"/>
             <LogAccessPlain type="BooleanField"/>
             <LogAccessPlainKeep type="IntegerField">

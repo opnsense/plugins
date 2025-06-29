@@ -93,8 +93,28 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
+
         {% if generalSettings.LogCredentials|default("0") == "1" %}
             log_credentials
+        {% endif %}
+        {% if generalSettings.timeout_read_body or
+            generalSettings.timeout_read_header or
+            generalSettings.timeout_write or
+            generalSettings.timeout_idle %}
+        timeouts {
+            {% if generalSettings.timeout_read_body %}
+                read_body {{ generalSettings.timeout_read_body }}s
+            {% endif %}
+            {% if generalSettings.timeout_read_header %}
+                read_header {{ generalSettings.timeout_read_header }}s
+            {% endif %}
+            {% if generalSettings.timeout_write %}
+                write {{ generalSettings.timeout_write }}s
+            {% endif %}
+            {% if generalSettings.timeout_idle %}
+                idle {{ generalSettings.timeout_idle }}s
+            {% endif %}
+        }
         {% endif %}
         {% if generalSettings.EnableLayer4|default("0") == "1" %}
             listener_wrappers {
