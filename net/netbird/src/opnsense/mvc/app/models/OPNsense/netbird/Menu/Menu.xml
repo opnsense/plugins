@@ -2,7 +2,7 @@
     <VPN>
         <Netbird cssClass="fa fa-lock fa-fw">
             <Settings order="40" url="/ui/netbird"/>
-            <ConStatus order="50" VisibleName="Connection Status" url="/ui/netbird/constatus"/>
+            <ConStatus order="50" VisibleName="Status" url="/ui/netbird/constatus"/>
             <LogFile VisibleName="Log File" order="60" url="/ui/diagnostics/log/core/netbird"/>
         </netbird>
     </VPN>
