@@ -50,38 +50,6 @@
         }
 
         /**
-         * Manages the spinner icon.
-         * @param {string} generalId - The ID of the general form.
-         * @param {string} action - The action to perform ("start" or "stop").
-         */
-        function setSpinner(generalId, action) {
-            const $progressIcon = $("#" + generalId + "_progress");
-            if (action === 'start') {
-                $progressIcon.addClass("fa fa-spinner fa-pulse");
-            } else if (action === 'stop') {
-                $progressIcon.removeClass("fa fa-spinner fa-pulse");
-            }
-        }
-
-        /**
-         * Reconfigures the service.
-         * @param {string} generalId - The ID of the general form (used for controlling the spinner).
-         */
-        function reconfigureService(generalId) {
-            ajaxCall("/api/caddy/service/reconfigure", {}, function(data, status) {
-                if (status !== "success" || data.status !== 'ok') {
-                    showAlert("{{ lang._('Error applying configuration: ') }}" + JSON.stringify(data), "error");
-                } else {
-                    updateServiceControlUI('caddy');
-                }
-                setSpinner(generalId, 'stop');
-            }).fail(function() {
-                handleError("error", "{{ lang._('Reconfiguration request failed.') }}");
-                setSpinner(generalId, 'stop');
-            });
-        }
-
-        /**
          * Centralizes error handling.
          * @param {string} type - The type of error.
          * @param {string} message - The error message.
@@ -91,27 +59,48 @@
         }
 
         // Event binding for saving forms
-        $('[id*="save_general-"]').on('click', function() {
-            const generalId = this.form.id;
-            setSpinner(generalId, 'start');
-            saveFormToEndpoint("/api/caddy/general/set", generalId, function() {
-                // Validate Caddyfile after saving the form
-                ajaxGet("/api/caddy/service/validate", {}, function(data, status) {
-                    if (status === "success" && data && data.status.toLowerCase() === 'ok') {
-                        reconfigureService(generalId);
-                    } else {
-                        handleError("error", data.message || "{{ lang._('Validation Error') }}");
-                        setSpinner(generalId, 'stop');
-                    }
-                }).fail(function() {
-                    handleError("error", "{{ lang._('Validation request failed.') }}");
-                    setSpinner(generalId, 'stop');
-                });
-            }, true, function(errorData) {
-                handleError("error", errorData.message || "{{ lang._('Validation Error') }}");
-                setSpinner(generalId, 'stop');
+        $('[id^="save_general-"]').each(function () {
+            const $btn = $(this);
+            const formId = this.id.replace(/^save_/, 'frm_');
+
+            $btn.attr({
+                'data-label'    : "{{ lang._('Apply') }}",
+                'data-endpoint' : "/api/caddy/service/reconfigure",
+                'data-service-widget' : "caddy"
+            });
+
+            $btn.SimpleActionButton({
+                onPreAction: function () {
+                    const dfObj = new $.Deferred();
+
+                    saveFormToEndpoint(
+                        "/api/caddy/general/set",
+                        formId,
+                        function () {
+                            ajaxGet("/api/caddy/service/validate", null, function (data, status) {
+                                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                                    dfObj.resolve();
+                                } else {
+                                    showAlert(data?.message || "{{ lang._('Validation Error') }}", "error");
+                                    dfObj.reject();
+                                }
+                            }).fail(function(xhr, status, error) {
+                                showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
+                                dfObj.reject();
+                            });
+                        },
+                        true,
+                        function (errorData) {
+                            showAlert(errorData.message || "{{ lang._('Validation Error') }}", "error");
+                            dfObj.reject();
+                        }
+                    );
+
+                    return dfObj.promise();
+                }
             });
         });
+
     });
 </script>
 

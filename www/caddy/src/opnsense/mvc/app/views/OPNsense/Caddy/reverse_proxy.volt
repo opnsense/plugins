@@ -297,13 +297,6 @@
                 });
 
                 return dfObj.promise();
-            },
-            onAction: function(data, status) {
-                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    updateServiceControlUI('caddy');
-                } else {
-                    showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
-                }
             }
         });
 
@@ -587,7 +580,7 @@
 
 </div>
 
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure'}) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure', 'data_service_widget': 'caddy'}) }}
 
 {% if entrypoint == 'reverse_proxy' %}
 
