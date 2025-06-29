@@ -49,7 +49,7 @@ function netbird_services()
             'stop' => array('netbird stop'),
         ),
         'name' => 'netbird',
-        'pidfile' => '/var/run/netbird.pid'
+        'pidfile' => '/var/run/netbird.pid',
     );
 
     return $services;
