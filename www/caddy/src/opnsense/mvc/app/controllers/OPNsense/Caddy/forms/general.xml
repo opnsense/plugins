@@ -27,10 +27,18 @@
     </tab>
     <tab id="general-advanced" description="Advanced Settings">
         <field>
+            <type>header</type>
+            <label>Security Settings</label>
+        </field>
+        <field>
             <id>caddy.general.DisableSuperuser</id>
             <label>System User</label>
             <type>dropdown</type>
             <help><![CDATA[Run this service as "www" user and group, instead of "root". This setting increases security, but comes with the hard restriction that the well-known port range can not be used anymore. After enabling and saving this setting, the service has to be totally restarted. For this, please disable Caddy and press Apply. Afterwards enable Caddy and press Apply. This setting is reversible by following the same steps.]]></help>
+        </field>
+        <field>
+            <type>header</type>
+            <label>HTTP Settings</label>
         </field>
         <field>
             <id>caddy.general.HttpVersions</id>
@@ -51,6 +59,10 @@
             <type>text</type>
             <hint>443</hint>
             <help><![CDATA[If the default HTTPS port is changed to e.g. 8443, then a port forward from port 443 to 8443 is necessary to issue automatic certificates with the TLS-ALPN-01 challenge and serve clients the reverse proxied resources.]]></help>
+        </field>
+        <field>
+            <type>header</type>
+            <label>Server Settings</label>
         </field>
         <field>
             <id>caddy.general.accesslist</id>
@@ -74,6 +86,34 @@
             <type>text</type>
             <hint>10</hint>
             <help><![CDATA[Defines the grace period for shutting down Caddy during a reload in seconds. If clients do not finish their requests within the grace period, the server will be forcefully terminated to allow the reload to complete and free up resources. This can influence how long "Apply" of new configurations take, since Caddy waits for all open connections to close. If the grace period is over and Caddy is unresponsive, there will be a forced kill and service restart.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.timeout_read_body</id>
+            <label>Read Body Timeout</label>
+            <type>text</type>
+            <hint>no timout</hint>
+            <help><![CDATA[read_body is a duration value in seconds that sets how long to allow a read from a client's upload. Setting this to a short, non-zero value can mitigate slowloris attacks, but may also affect legitimately slow clients.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.timeout_read_header</id>
+            <label>Read Header Timeout</label>
+            <type>text</type>
+            <hint>no timout</hint>
+            <help><![CDATA[read_header is a duration value in seconds that sets how long to allow a read from a client's request headers.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.timeout_write</id>
+            <label>Write Timeout</label>
+            <type>text</type>
+            <hint>no timout</hint>
+            <help><![CDATA[write is a duration value in seconds that sets how long to allow a write to a client. Note that setting this to a small value when serving large files may negatively affect legitimately slow clients.]]></help>
+        </field>
+        <field>
+            <id>caddy.general.timeout_idle</id>
+            <label>Idle Timeout</label>
+            <type>text</type>
+            <hint>300</hint>
+            <help><![CDATA[idle is a duration value in seconds that sets the maximum time to wait for the next request when keep-alives are enabled. Defaults value helps to avoid resource exhaustion.]]></help>
         </field>
     </tab>
     <tab id="general-logsettings" description="Log Settings">
