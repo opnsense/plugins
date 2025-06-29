@@ -20,6 +20,12 @@
         <help>List of domains to whitelist. It will add a entry for the domains itself and all sub domains.</help>
     </field>
     <field>
+        <id>dnsbl.rpzlocal</id>
+        <label>Enable Local RPZ Zone</label>
+        <type>checkbox</type>
+        <help>This will enable a local RPZ Zone.</help>
+    </field>
+    <field>
         <id>dnsbl.forcesafegoogle</id>
         <label>Enable Google SafeSearch</label>
         <type>checkbox</type>
