@@ -155,7 +155,7 @@ manifest: check
 # "manual" overwrites the automatic script and also ignores ".pre" and
 # ".post" files since they do not make sense in manual mode.
 #
-# Furthermore, variable replacement via %%PLUGINS_VAR%% takes place in
+# Furthermore, variable replacement via %%PLUGIN_VAR%% takes place in
 # "manual" as well as ".pre" and ".post" scripts provided.
 
 scripts: check scripts-pre scripts-auto scripts-post scripts-manual
