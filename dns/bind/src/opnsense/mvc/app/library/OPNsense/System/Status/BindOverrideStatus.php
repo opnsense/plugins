@@ -47,7 +47,7 @@ class BindOverrideStatus extends AbstractStatus
 
     public function collectStatus()
     {
-        if (count(glob('/usr/local/etc/namedb/named.conf.d/*')>1)) {
+        if (count(glob('/usr/local/etc/namedb/named.conf.d/*'))>1) {
             $this->internalMessage = gettext(
                 'The configuration contains manual overwrites, these may interfere with the settings configured here.'
             );
