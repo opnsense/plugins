@@ -69,6 +69,12 @@
               Leave blank to not change path after login.</help>
     </field>
     <field>
+        <id>action.sftp_modtime</id>
+        <label>Preserve Modification Time</label>
+        <type>checkbox</type>
+        <help>Preserves modification times from the source file. Note that this is not supported by all SFTP servers and may cause the upload to fail, e.g. on VMware</help>
+    </field>
+    <field>
         <id>action.sftp_chmod</id>
         <label>Permission (Public Keys)</label>
         <type>text</type>

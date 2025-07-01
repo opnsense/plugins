@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.2.0</version>
+    <version>4.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -1410,6 +1410,10 @@
                     <mask>/^0[0-9]{3}$/u</mask>
                     <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
                 </sftp_chmod_key>
+                <sftp_modtime type="BooleanField">
+                    <Required>N</Required>
+                    <default>0</default>
+                </sftp_modtime>
                 <sftp_filename_cert type="TextField">
                     <Required>N</Required>
                     <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>

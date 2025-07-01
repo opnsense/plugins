@@ -13,10 +13,12 @@ Plugin Changelog
 Added:
 * new automation to reload www/caddy (#4692)
 * add support for Websupport.sk DNS API (#4540)
+* add SFTP option: Preserve Modification Time (#3862)
 
 Changed:
 * automatically fix account config if CERT_HOME is set (#4622)
 * automatically resolve cron job mismatch (#4627)
+* change default SFTP options to NOT preserve modification time (#3862)
 
 Fixed:
 * deploy hooks may use the old CERT_HOME (#4622)

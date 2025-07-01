@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -27,6 +28,8 @@
  */
 
 namespace OPNsense\AcmeClient;
+
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Handles file uploads via SFTP.
@@ -67,9 +70,10 @@ class SftpUploader
      * @param string $remote_file the remote path to copy the file to or empty to use the files name.
      * @param bool $chmod the 4 digit unix permission to apply or false to leave it unchanged.
      * @param bool $chgrp the numeric group on the remote server to apply or false to leave it unchanged.
+     * @param bool $modtime a boolean to indicate that the modification times should be preserved.
      * @return string the name of the normalized local file.
      */
-    public function addFile(string $local_file, $remote_file = "", $chmod = false, $chgrp = false): string
+    public function addFile(string $local_file, $remote_file = "", $chmod = false, $chgrp = false, $modtime = false): string
     {
         Utils::requireThat(is_file($local_file) && is_readable($local_file), "Not a file or not readable: '$local_file'");
         $local_file = realpath($local_file);
@@ -80,7 +84,8 @@ class SftpUploader
             "source" => $local_file,
             "target" => $remote_file,
             "mode" => $chmod,
-            "group" => $chgrp
+            "group" => $chgrp,
+            "modtime" => $modtime
         ];
 
         return $local_file;
@@ -94,9 +99,10 @@ class SftpUploader
      * @param int $content_last_modified the unix timestamp when the content was last modified (is preserved when chmod is also specified).
      * @param bool $chmod the 4 digit unix permission to apply or false to leave it unchanged.
      * @param bool $chgrp the numeric group on the remote server to apply or false to leave it unchanged.
+     * @param bool $modtime a boolean to indicate that the modification times should be preserved.
      * @return string the name of the remote file.
      */
-    public function addContent(string $content, string $remote_file = "", $content_last_modified = 0, $chmod = false, $chgrp = false): string
+    public function addContent(string $content, string $remote_file = "", $content_last_modified = 0, $chmod = false, $chgrp = false, $modtime = false): string
     {
         $local_file = $this->temporaryFile();
         Utils::requireThat($local_file, "Failed creating temporary file for '$remote_file'");
@@ -113,7 +119,7 @@ class SftpUploader
             $remote_file = basename($local_file);
         }
 
-        $local_file = $this->addFile($local_file, $remote_file, $chmod, $chgrp);
+        $local_file = $this->addFile($local_file, $remote_file, $chmod, $chgrp, $modtime);
         $this->pending_files[$local_file]["delete_source"] = true;
 
         return $remote_file;
@@ -252,16 +258,24 @@ class SftpUploader
                 $chmod = $file["mode"] ?? "";
                 $chmod = preg_match('/^0\d{3}$/', $chmod) ? (string)$chmod : false;
 
+                // Preserving the modification time is not supported by all SFTP servers.
+                $preserve = $file["modtime"];
+                if ($preserve !== false) {
+                    LeUtils::log("Sftp upload will try to preserve file modification time");
+                } else {
+                    LeUtils::log("Sftp upload will not preserve file modification time");
+                }
 
                 // Initial upload when permissions are properly set.
                 $should_upload_with_permission_change =
                     $chmod !== false
                     && isset($remote_files[$remote_filename]);
 
+                // Upload file.
                 if (!$remote_is_readonly) {
                     $preserve_times_and_mod = $chmod !== false;
 
-                    if ($error = $this->sftp->put($local_file, $remote_filename, $preserve_times_and_mod)->lastError()) {
+                    if ($error = $this->sftp->put($local_file, $remote_filename, $preserve)->lastError()) {
                         if ($error["permission_denied"] !== true) {
                             $should_upload_with_permission_change = false;
                         }
@@ -281,11 +295,13 @@ class SftpUploader
                 if ($should_upload_with_permission_change && $this->isFileOwnedByConnection($remote_file, $connection)) {
                     Utils::log()->info("Trying to upload file '{$local_file}' to '{$file["target"]}' with adjusted permissions");
 
+                    // Change file permission to make it writable.
                     if ($error = $this->sftp->chmod($remote_filename, '0600')->lastError()) {
                         Utils::log()->error("Failed changing permission to '0600' for '{$file["target"]}'. ", $error);
                         $this->sftp->clearError();
                     }
 
+                    // Try again to upload file.
                     if ($error = $this->sftp->put($local_file, $remote_filename)->lastError()) {
                         Utils::log()->error("Failed uploading file (with adjusted permissions) '{$local_file}' to '{$file["target"]}'", $error);
                         return self::UPLOAD_ERROR_NO_PERMISSION;
