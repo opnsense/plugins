@@ -15,9 +15,11 @@ Added:
 * add support for Websupport.sk DNS API (#4540)
 
 Changed:
+* automatically fix account config if CERT_HOME is set (#4622)
 * automatically resolve cron job mismatch (#4627)
 
 Fixed:
+* deploy hooks may use the old CERT_HOME (#4622)
 * acme.sh is always called with "--days 1" (#4711)
 * avoid startup error: "rmdir... Not a directory" (#4743)
 * fails to create/update cron job on UUID mismatch (#4627)

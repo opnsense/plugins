@@ -618,6 +618,8 @@ class LeCertificate extends LeCommon
             $this->loadConfig(self::CONFIG_PATH, $this->uuid);
         }
         LeUtils::log('account is registered: ' . (string)$account->config->name);
+        // Always check (and fix) account config
+        $account->fixConfig();
         return true;
     }
 

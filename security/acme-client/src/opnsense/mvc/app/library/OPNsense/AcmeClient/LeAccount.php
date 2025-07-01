@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -224,15 +224,15 @@ class LeAccount extends LeCommon
                 return false;
             }
 
-            // Fix account config
-            $this->fixConfig();
-
             // Update account status.
             LeUtils::log('account registration successful for ' . $this->config->name);
             $this->setStatus(200);
         } else {
             LeUtils::log_debug('account already registered: ' . (string)$this->config->name, $this->debug);
         }
+
+        // Always check (and fix) account config
+        $this->fixConfig();
 
         return true;
     }
@@ -251,18 +251,21 @@ class LeAccount extends LeCommon
                 // Parse config file and remove property
                 $account_conf = parse_ini_file($account_conf_file);
                 if (isset($account_conf['CERT_HOME'])) {
+                    LeUtils::log('fixing invalid account config (CERT_HOME): ' . $this->config->name);
                     unset($account_conf['CERT_HOME']);
-                }
 
-                // Convert array back to ini file format
-                $new_account_conf = array();
-                foreach ($account_conf as $key => $value) {
-                    $new_account_conf[] = "{$key}='{$value}'";
-                }
+                    // Convert array back to ini file format
+                    $new_account_conf = array();
+                    foreach ($account_conf as $key => $value) {
+                        $new_account_conf[] = "{$key}='{$value}'";
+                    }
 
-                // Write changes back to file
-                file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
-                chmod($account_conf_file, 0600);
+                    // Write changes back to file
+                    file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
+                    chmod($account_conf_file, 0600);
+                } else {
+                    LeUtils::log('account config is valid (CERT_HOME): ' . $this->config->name);
+                }
             }
         }
     }
