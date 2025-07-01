@@ -1,7 +1,7 @@
 <form>
     <field>
         <id>helloworld.general.Enabled</id>
-        <label>enabled</label>
+        <label>Enabled</label>
         <type>checkbox</type>
         <help>Enable this feature</help>
     </field>

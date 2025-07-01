@@ -1,0 +1,40 @@
+<form>
+    <field>
+        <id>generalgrid.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this entry.</help>
+        <!-- Configure the grid column for enabled button-->
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>generalgrid.SMTPHost</id>
+        <label>SMTPHost</label>
+        <type>text</type>
+        <help><![CDATA[ip address of the mail host]]></help>
+        <hint>choose a valid IPv4/v6 address</hint>
+    </field>
+    <field>
+        <id>generalgrid.FromEmail</id>
+        <label>Email (from)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>generalgrid.ToEmail</id>
+        <label>Email (to)</label>
+        <type>text</type>
+        <!-- Hide this column per default -->
+        <grid_view>
+            <visible>false</visible> 
+        </grid_view>
+    </field>
+    <field>
+        <id>generalgrid.Description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

@@ -65,4 +65,12 @@ class ServiceController extends ApiControllerBase
         }
         return ["message" => "unable to run config action"];
     }
+
+    /**
+     * reconfigure HelloWorld via reconfigureAct, non operational example to show base_apply_button purpose
+     */
+    public function reconfigureAction()
+    {
+        return ["status" => "ok"];
+    }
 }

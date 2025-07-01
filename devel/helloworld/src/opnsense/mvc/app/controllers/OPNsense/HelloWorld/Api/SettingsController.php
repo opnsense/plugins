@@ -34,10 +34,36 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
  * Class SettingsController Handles settings related API actions for the HelloWorld module
- * @package OPNsense\Helloworld
+ * @package OPNsense\HelloWorld
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = 'OPNsense\HelloWorld\HelloWorld';
     protected static $internalModelName = 'helloworld';
+
+    /* generalgrid endpoints */
+    public function searchGeneralGridAction()
+    {
+        return $this->searchBase('generalgrids');
+    }
+
+    public function getGeneralGridAction($uuid = null)
+    {
+        return $this->getBase('generalgrid', 'generalgrids', $uuid);
+    }
+
+    public function setGeneralGridAction($uuid)
+    {
+        return $this->setBase('generalgrid', 'generalgrids', $uuid);
+    }
+
+    public function addGeneralGridAction()
+    {
+        return $this->addBase('generalgrid', 'generalgrids');
+    }
+
+    public function delGeneralGridAction($uuid)
+    {
+        return $this->delBase('generalgrids', $uuid);
+    }
 }

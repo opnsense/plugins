@@ -48,18 +48,52 @@ POSSIBILITY OF SUCH DAMAGE.
                 $("#responseMsg").removeClass("hidden").html(data['message']);
             }
         });
+
+        // use SimpleActionButton() to call /api/helloworld/service/reconfigure
+        $("#reconfigureAct").SimpleActionButton({
+            onAction: function(data) {
+                $("#responseMsg").removeClass("hidden").html(data['message']);
+            }
+        });
+
+        // set up the base_bootgrid_table
+        $("#{{formGridGeneral['table_id']}}").UIBootgrid({
+            'search':'/api/helloworld/settings/search_general_grid',
+            'get':'/api/helloworld/settings/get_general_grid/',
+            'set':'/api/helloworld/settings/set_general_grid/',
+            'add':'/api/helloworld/settings/add_general_grid/',
+            'del':'/api/helloworld/settings/del_general_grid/',
+            'toggle':'/api/helloworld/settings/toggle_general_grid/'
+        });
     });
 </script>
 
-<div class="alert alert-info hidden" role="alert" id="responseMsg">
+<!-- Navigation bar -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#baseform">{{ lang._('Form') }}</a></li>
+    <li><a data-toggle="tab" href="#basetable">{{ lang._('Table') }}</a></li>
+</ul>
 
+<!-- Tab content container -->
+<div class="tab-content content-box">
+    <!-- Tab: base_form example -->
+    <div id="baseform" class="tab-pane fade in active">
+        {{ partial("layout_partials/base_form", ['fields':generalForm, 'id':'frm_GeneralSettings']) }}
+        <div class="col-md-12">
+            <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
+            <button class="btn btn-primary" id="testAct" data-endpoint="/api/helloworld/service/test" data-label="{{ lang._('Test') }}"></button>
+            <div class="alert alert-info hidden" role="alert" id="responseMsg"></div>
+        </div>
+    </div>
+    <!-- Tab: base_bootgrid_table example -->
+    <div id="basetable" class="tab-pane fade in">
+        <!-- auto creates a bootgrid from the data in formGridGeneral -->
+        {{ partial('layout_partials/base_bootgrid_table', formGridGeneral) }}
+        <!-- general purpose apply button, used to trigger reconfigureAct -->
+        {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/helloworld/service/reconfigure'}) }}
+    </div>
 </div>
 
-<div  class="col-md-12">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}
-</div>
 
-<div class="col-md-12">
-    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b></button>
-    <button class="btn btn-primary" id="testAct" data-endpoint="/api/helloworld/service/test" data-label="{{ lang._('Test') }}"></button>
-</div>
+<!-- base_dialog used by the base_bootgrid_table -->
+{{ partial("layout_partials/base_dialog",['fields':formDialogGeneral,'id':formGridGeneral['edit_dialog_id'],'label':lang._('Edit General')])}}

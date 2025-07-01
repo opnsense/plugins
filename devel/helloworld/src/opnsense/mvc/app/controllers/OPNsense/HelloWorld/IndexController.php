@@ -42,5 +42,9 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->pick('OPNsense/HelloWorld/index');
         // fetch form data "general" in
         $this->view->generalForm = $this->getForm("general");
+        // form dialog data for grid example
+        $this->view->formDialogGeneral = $this->getForm("dialogGeneral");
+        // convert dialogGeneral for grid table
+        $this->view->formGridGeneral = $this->getFormGrid("dialogGeneral");
     }
 }
