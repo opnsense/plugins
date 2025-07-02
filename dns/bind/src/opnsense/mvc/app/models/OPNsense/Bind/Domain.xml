@@ -17,9 +17,9 @@
                         <secondary>secondary</secondary>
                     </OptionValues>
                 </type>
-                <primaryip type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
-                    <asList>Y</asList>
+                <primaryip type="CSVListField">
+                    <mask>/^(([0-9a-fA-F.:\[\]]+(:+[0-9])?([,]){0,1}))*/u</mask>
+                    <ValidationMessage>Please provide a valid ip address and optional port, i.e. 192.168.0.33, 10.0.0.99:53530, 2001:0db8:0000:0000:0000:ff00:0042:8329 or [::1]:53530.</ValidationMessage>
                 </primaryip>
                 <transferkeyalgo type="OptionField">
                     <OptionValues>
