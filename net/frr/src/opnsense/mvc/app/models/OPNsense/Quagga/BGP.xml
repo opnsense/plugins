@@ -4,11 +4,11 @@
     <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <asnumber type="IntegerField">
-            <default>65551</default>
+            <Default>65551</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967295</MaximumValue>
@@ -19,36 +19,36 @@
         </distance>
         <routerid type="TextField">
             <Required>N</Required>
-            <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+            <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </routerid>
         <graceful type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </graceful>
         <networkimportcheck type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </networkimportcheck>
         <logneighborchanges type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </logneighborchanges>
         <networks type="CSVListField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </networks>
         <neighbors>
                 <neighbor type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                         </description>
                         <address type="NetworkField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </address>
                         <remote_as_mode type="OptionField">
@@ -66,7 +66,7 @@
                                 <Required>N</Required>
                         </password>
                         <weight type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                                 <MinimumValue>0</MinimumValue>
                                 <MaximumValue>65535</MaximumValue>
@@ -75,49 +75,49 @@
                                 <Required>N</Required>
                         </localip>
                         <updatesource type="InterfaceField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
-                                <multiple>N</multiple>
+                                <Multiple>N</Multiple>
                                 <AllowDynamic>Y</AllowDynamic>
                                 <filters>
                                         <enable>/^(?!0).*$/</enable>
                                 </filters>
                         </updatesource>
                         <linklocalinterface type="InterfaceField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
-                                <multiple>N</multiple>
+                                <Multiple>N</Multiple>
                                 <AllowDynamic>Y</AllowDynamic>
                                 <filters>
                                         <enable>/^(?!0).*$/</enable>
                                 </filters>
                         </linklocalinterface>
                         <nexthopself type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </nexthopself>
                         <nexthopselfall type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </nexthopselfall>
                         <multihop type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </multihop>
                         <multiprotocol type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </multiprotocol>
                         <rrclient type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </rrclient>
                         <soft_reconfiguration_inbound type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </soft_reconfiguration_inbound>
                         <bfd type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </bfd>
                         <keepalive type="IntegerField">
@@ -136,11 +136,11 @@
                                 <MaximumValue>65000</MaximumValue>
                         </connecttimer>
                         <defaultoriginate type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </defaultoriginate>
                         <asoverride type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </asoverride>
                         <allowas_in type="OptionField">
@@ -159,11 +159,11 @@
                                 </OptionValues>
                         </allowas_in>
                         <disable_connected_check type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </disable_connected_check>
                         <attributeunchanged type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                                 <OptionValues>
                                         <as-path>as-path</as-path>
@@ -240,21 +240,21 @@
         <aspaths>
                 <aspath type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                         </description>
                         <number type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>0</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </number>
                         <action type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
@@ -262,7 +262,7 @@
                                 </OptionValues>
                         </action>
                         <as type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </as>
                 </aspath>
@@ -270,21 +270,21 @@
         <prefixlists>
                 <prefixlist type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                         </description>
                         <name type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
-                                <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+                                <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
                                 <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <version type="OptionField">
-                                <default>IPv4</default>
+                                <Default>IPv4</Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                     <IPv4>IPv4</IPv4>
@@ -292,13 +292,13 @@
                                 </OptionValues>
                         </version>
                         <seqnumber type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967294</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
@@ -306,7 +306,7 @@
                                 </OptionValues>
                         </action>
                         <network type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </network>
                 </prefixlist>
@@ -314,28 +314,28 @@
         <communitylists>
                 <communitylist type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                         </description>
                         <number type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>500</MaximumValue>
                                 <ValidationMessage>Set a number between 1 and 500.</ValidationMessage>
                         </number>
                         <seqnumber type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>10</MinimumValue>
                                 <MaximumValue>99</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
@@ -343,7 +343,7 @@
                                 </OptionValues>
                         </action>
                         <community type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </community>
                 </communitylist>
@@ -351,21 +351,21 @@
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
                         </description>
                         <name type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
-                                <mask>/^[a-zA-Z0-9._-]{1,64}$/</mask>
+                                <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
                                 <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <action type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
@@ -373,7 +373,7 @@
                                 </OptionValues>
                         </action>
                         <id type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>65535</MaximumValue>
@@ -422,7 +422,7 @@
         <peergroups>
                 <peergroup type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <name type="TextField">
@@ -506,7 +506,7 @@
         <redistributions>
                 <redistribution type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="DescriptionField"/>

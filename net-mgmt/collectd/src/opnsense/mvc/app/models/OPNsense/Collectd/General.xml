@@ -4,141 +4,141 @@
     <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <hostname type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-	    <mask>/^.{1,64}$/u</mask>
+	    <Mask>/^.{1,64}$/u</Mask>
         </hostname>
         <fqdnlookup type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </fqdnlookup>
         <interval type="IntegerField">
-            <default>10</default>
+            <Default>10</Default>
             <Required>N</Required>
         </interval>
         <p_network_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </p_network_enable>
         <p_network_host type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-	    <mask>/^([0-9a-zA-Z\-\.]){1,1024}$/u</mask>
+	    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+	    <Mask>/^([0-9a-zA-Z\-\.]){1,1024}$/u</Mask>
         </p_network_host>
         <p_network_port type="IntegerField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
 	    <MinimumValue>1</MinimumValue>
 	    <MaximumValue>65535</MaximumValue>
         </p_network_port>
         <p_network_username type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
         </p_network_username>
             <p_network_password type="TextField">
-                <default></default>
+                <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</Mask>
         </p_network_password>
             <p_network_encryption type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
             <Required>N</Required>
         </p_network_encryption>
         <p_graphite_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </p_graphite_enable>
         <p_graphite_node type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </p_graphite_node>
         <p_graphite_host type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-	    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+	    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </p_graphite_host>
         <p_graphite_port type="IntegerField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
 	    <MinimumValue>1</MinimumValue>
 	    <MaximumValue>65535</MaximumValue>
         </p_graphite_port>
         <p_graphite_prefix type="TextField">
-            <default>collectd</default>
+            <Default>collectd</Default>
             <Required>N</Required>
         </p_graphite_prefix>
         <p_graphite_postfix type="TextField">
-            <default>collectd</default>
+            <Default>collectd</Default>
             <Required>N</Required>
         </p_graphite_postfix>
         <p_graphite_separate_instances type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </p_graphite_separate_instances>
         <p_contextswitch_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_contextswitch_enable>
         <p_cpu_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_cpu_enable>
         <p_cpu_percent type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_cpu_percent>
         <p_cpu_aggregates type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_cpu_aggregates>
         <p_disk_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_disk_enable>
         <p_df_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_df_enable>
         <p_interface_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_interface_enable>
         <p_load_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_load_enable>
         <p_memory_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_memory_enable>
         <p_swap_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_swap_enable>
         <p_processes_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_processes_enable>
         <p_uptime_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_uptime_enable>
         <p_users_enable type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </p_users_enable>
         <p_tcpconns type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </p_tcpconns>
         <p_ipstats type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </p_ipstats>
     </items>

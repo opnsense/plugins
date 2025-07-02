@@ -5,7 +5,7 @@
     <items>
         <general>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
             <server_address type="HostnameField">
@@ -17,7 +17,7 @@
                 <IpAllowed>N</IpAllowed>
             </agent_name>
             <protocol type="OptionField">
-                <default>tcp</default>
+                <Default>tcp</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <tcp>TCP</tcp>
@@ -25,14 +25,14 @@
                 </OptionValues>
             </protocol>
             <port type="IntegerField">
-                <default>1514</default>
+                <Default>1514</Default>
                 <Required>Y</Required>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65536</MaximumValue>
                 <ValidationMessage>This must be a valid port number.</ValidationMessage>
             </port>
             <debug_level type="OptionField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <val0 value="0">no debug</val0>
@@ -45,7 +45,7 @@
             <password type="TextField">
             </password>
             <port type="IntegerField">
-                <default>1515</default>
+                <Default>1515</Default>
                 <Required>Y</Required>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65536</MaximumValue>
@@ -54,13 +54,13 @@
         </auth>
         <logcollector>
             <remote_commands type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </remote_commands>
             <syslog_programs type="JsonKeyValueStoreField">
                 <Required>N</Required>
                 <Multiple>Y</Multiple>
-                <default>filterlog,openvpn,unbound,audit,sshd</default>
+                <Default>filterlog,openvpn,unbound,audit,sshd</Default>
                 <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
                 <SourceFile>/tmp/syslog_applications.json</SourceFile>
                 <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
@@ -68,35 +68,35 @@
                 <ValidationMessage>Specify valid source applications.</ValidationMessage>
             </syslog_programs>
             <suricata_eve_log type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </suricata_eve_log>
         </logcollector>
         <rootcheck>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
         </rootcheck>
         <syscollector>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
         </syscollector>
         <syscheck>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
         </syscheck>
         <active_response>
             <enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
             <remote_commands type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </remote_commands>
             <fw_alias_ignore type="ModelRelationField">

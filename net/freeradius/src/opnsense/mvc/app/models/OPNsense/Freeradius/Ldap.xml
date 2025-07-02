@@ -4,11 +4,11 @@
     <version>1.0.1</version>
     <items>
         <innertunnel type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </innertunnel>
         <protocol type="OptionField">
-            <default>LDAPS</default>
+            <Default>LDAPS</Default>
             <Required>Y</Required>
             <OptionValues>
                 <LDAP>LDAP</LDAP>
@@ -26,7 +26,7 @@
             <Required>N</Required>
         </ldapcert>
         <ldapstarttls type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </ldapstarttls>
         <identity type="TextField">
@@ -36,15 +36,15 @@
             <Required>N</Required>
         </password>
         <base_dn type="TextField">
-            <default>dc=example,dc=domain,dc=com</default>
+            <Default>dc=example,dc=domain,dc=com</Default>
             <Required>N</Required>
         </base_dn>
         <user_filter type="TextField">
-            <default>(uid=%{%{Stripped-User-Name}:-%{User-Name}})</default>
+            <Default>(uid=%{%{Stripped-User-Name}:-%{User-Name}})</Default>
             <Required>N</Required>
         </user_filter>
         <group_filter type="TextField">
-            <default>(objectClass=posixGroup)</default>
+            <Default>(objectClass=posixGroup)</Default>
             <Required>N</Required>
         </group_filter>
     </items>

@@ -4,17 +4,17 @@
     <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <carp_demote type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </carp_demote>
         <routerid type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+            <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </routerid>
         <costreference type="IntegerField">
             <Required>N</Required>
@@ -23,15 +23,15 @@
             <ValidationMessage>Must be a number between 1 and 4294967.</ValidationMessage>
         </costreference>
         <logadjacencychanges type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </logadjacencychanges>
         <originate type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </originate>
         <originatealways type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </originatealways>
         <originatemetric type="IntegerField">
@@ -42,8 +42,8 @@
         </originatemetric>
         <passiveinterfaces type="InterfaceField">
                 <Required>N</Required>
-                <multiple>Y</multiple>
-                <default></default>
+                <Multiple>Y</Multiple>
+                <Default></Default>
                 <AllowDynamic>Y</AllowDynamic>
                 <filters>
                     <enable>/^(?!0).*$/</enable>
@@ -52,21 +52,21 @@
         <networks>
                 <network type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <ipaddr type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                                <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
                         </ipaddr>
                         <area type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                                <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
                         </area>
                         <netmask type="IntegerField">
-                                <default>24</default>
+                                <Default>24</Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>Y</Required>
                                 <MaximumValue>32</MaximumValue>
@@ -106,7 +106,7 @@
         <neighbors>
                 <neighbor type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="DescriptionField">
@@ -130,13 +130,13 @@
         <interfaces>
                 <interface type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <interfacename type="InterfaceField">
                                  <Required>N</Required>
-                                 <multiple>N</multiple>
-                                 <default></default>
+                                 <Multiple>N</Multiple>
+                                 <Default></Default>
                                  <AllowDynamic>Y</AllowDynamic>
                                  <filters>
                                          <enable>/^(?!0).*$/</enable>
@@ -144,39 +144,39 @@
                         </interfacename>
                         <authtype type="OptionField">
                                 <Required>N</Required>
-                                <multiple>N</multiple>
-                                <default></default>
+                                <Multiple>N</Multiple>
+                                <Default></Default>
                                 <OptionValues>
                                         <message-digest>MD5</message-digest>
                                         <plain>plain</plain>
                                 </OptionValues>
                         </authtype>
                         <authkey type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
-                                <mask>/^\S+$/</mask>
+                                <Mask>/^\S+$/</Mask>
                         </authkey>
                         <authkey_id type="IntegerField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>255</MaximumValue>
                                 <Required>Y</Required>
                                 <ValidationMessage>The authentication key ID must be between 1 and 255.</ValidationMessage>
                         </authkey_id>
                         <area type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                                <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
                         </area>
                         <cost type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>1</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>65535</MaximumValue>
                                 <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
                         </cost>
                         <cost_demoted type="IntegerField">
-                                <default>65535</default>
+                                <Default>65535</Default>
                                 <MinimumValue>1</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>65535</MaximumValue>
@@ -187,48 +187,48 @@
                             <Required>N</Required>
                         </carp_depend_on>
                         <hellointerval type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Hello interval must be between 0 and 4294967295.</ValidationMessage>
                         </hellointerval>
                         <deadinterval type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Dead interval must be between 0 and 4294967295.</ValidationMessage>
                         </deadinterval>
                         <retransmitinterval type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Retransmit interval must be between 0 and 4294967295.</ValidationMessage>
                         </retransmitinterval>
                         <transmitdelay type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Transmit delay must be between 0 and 4294967295.</ValidationMessage>
                         </transmitdelay>
                         <priority type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <MinimumValue>0</MinimumValue>
                                 <Required>N</Required>
                                 <MaximumValue>4294967295</MaximumValue>
                                 <ValidationMessage>Priority must be between 0 and 4294967295.</ValidationMessage>
                         </priority>
                         <bfd type="BooleanField">
-                                <default>0</default>
+                                <Default>0</Default>
                                 <Required>N</Required>
                         </bfd>
                         <networktype type="OptionField">
                                 <Required>N</Required>
-                                <multiple>N</multiple>
-                                <default></default>
+                                <Multiple>N</Multiple>
+                                <Default></Default>
                                 <OptionValues>
                                         <broadcast>Broadcast multi-access network</broadcast>
                                         <non-broadcast>NBMA network</non-broadcast>
@@ -241,23 +241,23 @@
         <prefixlists>
                 <prefixlist type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <name type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
-                                <mask>/^([0-9a-zA-Z\._\-]){1,64}$/u</mask>
+                                <Mask>/^([0-9a-zA-Z\._\-]){1,64}$/u</Mask>
                                 <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
                         </name>
                         <seqnumber type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>10</MinimumValue>
                                 <MaximumValue>99</MaximumValue>
                         </seqnumber>
                         <action type="OptionField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <OptionValues>
                                         <permit>Permit</permit>
@@ -265,7 +265,7 @@
                                 </OptionValues>
                         </action>
                         <network type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </network>
                 </prefixlist>
@@ -273,11 +273,11 @@
         <routemaps>
                 <routemap type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <name type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </name>
                         <action type="OptionField">
@@ -288,7 +288,7 @@
                                 </OptionValues>
                         </action>
                         <id type="IntegerField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                                 <MinimumValue>10</MinimumValue>
                                 <MaximumValue>99</MaximumValue>
@@ -313,7 +313,7 @@
         <redistributions>
                 <redistribution type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <description type="DescriptionField"/>

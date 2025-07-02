@@ -19,7 +19,7 @@
                 </type>
                 <primaryip type="NetworkField">
                     <FieldSeparator>,</FieldSeparator>
-                    <asList>Y</asList>
+                    <AsList>Y</AsList>
                 </primaryip>
                 <transferkeyalgo type="OptionField">
                     <OptionValues>
@@ -35,7 +35,7 @@
                 <transferkey type="TextField"/>
                 <allownotifysecondary type="NetworkField">
                     <FieldSeparator>,</FieldSeparator>
-                    <asList>Y</asList>
+                    <AsList>Y</AsList>
                 </allownotifysecondary>
                 <domainname type="TextField">
                     <Required>Y</Required>

@@ -4,11 +4,11 @@
     <version>0.0.1</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <listen type="HostnameField">
-            <default>127.0.0.1</default>
+            <Default>127.0.0.1</Default>
             <Required>Y</Required>
         </listen>
     </items>

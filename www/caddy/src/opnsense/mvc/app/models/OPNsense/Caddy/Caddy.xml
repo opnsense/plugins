@@ -461,7 +461,7 @@
                     <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthMaxFails>
                 <PassiveHealthUnhealthyStatus type="TextField">
-                    <mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</mask>
+                    <Mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</Mask>
                     <ValidationMessage>Please enter a valid HTTP response code like 404 a status code class like 4xx.</ValidationMessage>
                 </PassiveHealthUnhealthyStatus>
                 <PassiveHealthUnhealthyLatency type="IntegerField">
@@ -474,7 +474,7 @@
                 </PassiveHealthUnhealthyRequestCount>
                 <description type="DescriptionField"/>
                 <health_uri type="TextField">
-                    <mask>/^(\/.*)?$/u</mask>
+                    <Mask>/^(\/.*)?$/u</Mask>
                     <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
                 </health_uri>
                 <health_upstream type="IPPortField"/>
@@ -500,7 +500,7 @@
                     <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </health_timeout>
                 <health_status type="TextField">
-                    <mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</mask>
+                    <Mask>/^(100|[1-5][0-9]{2}|[1-5]xx)$/u</Mask>
                     <ValidationMessage>Please enter a 3-digit status code or a status code ending in xx or leave empty for defaults.</ValidationMessage>
                 </health_status>
                 <health_body type="TextField"/>

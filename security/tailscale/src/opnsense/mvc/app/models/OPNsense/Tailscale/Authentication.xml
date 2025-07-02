@@ -3,7 +3,7 @@
     <description>Tailscale authentication settings</description>
     <items>
         <loginServer type="UrlField">
-            <default>https://controlplane.tailscale.com</default>
+            <Default>https://controlplane.tailscale.com</Default>
             <Required>Y</Required>
             <ValidationMessage>Please enter a valid URL</ValidationMessage>
         </loginServer>

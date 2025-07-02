@@ -6,38 +6,38 @@
         <!-- local settings that should NOT be synced to another node -->
         <local>
             <hostname type="TextField">
-                <default>Zabbix agent</default>
+                <Default>Zabbix agent</Default>
                 <Required>Y</Required>
-                <mask>/^.{1,255}$/u</mask>
+                <Mask>/^.{1,255}$/u</Mask>
                 <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
             </hostname>
         </local>
         <settings>
             <main>
                 <enabled type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </enabled>
                 <serverList type="CSVListField">
-                    <default>127.0.0.1</default>
+                    <Default>127.0.0.1</Default>
                     <Required>Y</Required>
-                    <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</mask>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</Mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid Zabbix server addresses, i.e. zabbix.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
                 </serverList>
                 <listenPort type="IntegerField">
-                    <default>10050</default>
+                    <Default>10050</Default>
                     <MinimumValue>1024</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <Required>Y</Required>
                 </listenPort>
                 <listenIP type="NetworkField">
-                    <default>0.0.0.0</default>
+                    <Default>0.0.0.0</Default>
                     <Required>Y</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                     <NetMaskAllowed>N</NetMaskAllowed>
-                    <asList>Y</asList>
+                    <AsList>Y</AsList>
                     <FieldSeparator>,</FieldSeparator>
                     <ValidationMessage>Please provide one or more valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
                 </listenIP>
@@ -47,17 +47,17 @@
                     <ValidationMessage>Please provide a valid IP address, i.e. 10.0.0.1.</ValidationMessage>
                 </sourceIP>
                 <syslogEnable type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>N</Required>
                 </syslogEnable>
                 <logFileSize type="IntegerField">
-                    <default>100</default>
+                    <Default>100</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>5000</MaximumValue>
                     <Required>Y</Required>
                 </logFileSize>
                 <debugLevel type="OptionField">
-                    <default>val_3</default>
+                    <Default>val_3</Default>
                     <OptionValues>
                         <val_0>basic information (0)</val_0>
                         <val_1>critical information (1)</val_1>
@@ -69,41 +69,41 @@
                     <Required>Y</Required>
                 </debugLevel>
                 <sudoRoot type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </sudoRoot>
             </main>
             <tuning>
                 <startAgents type="IntegerField">
-                    <default>3</default>
+                    <Default>3</Default>
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>20</MaximumValue>
                     <Required>Y</Required>
                     <ValidationMessage>Should be a number between 0 and 20.</ValidationMessage>
                 </startAgents>
                 <bufferSend type="IntegerField">
-                    <default>5</default>
+                    <Default>5</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>3600</MaximumValue>
                     <Required>Y</Required>
                     <ValidationMessage>Should be a number between 1 and 3600.</ValidationMessage>
                 </bufferSend>
                 <bufferSize type="IntegerField">
-                    <default>100</default>
+                    <Default>100</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>10000</MaximumValue>
                     <Required>Y</Required>
                     <ValidationMessage>Should be a number between 1 and 10000.</ValidationMessage>
                 </bufferSize>
                 <maxLinesPerSecond type="IntegerField">
-                    <default>100</default>
+                    <Default>100</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>10000</MaximumValue>
                     <Required>Y</Required>
                     <ValidationMessage>Should be a number between 1 and 10000.</ValidationMessage>
                 </maxLinesPerSecond>
                 <timeout type="IntegerField">
-                    <default>3</default>
+                    <Default>3</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>30</MaximumValue>
                     <Required>Y</Required>
@@ -112,43 +112,43 @@
             </tuning>
             <features>
                 <enableActiveChecks type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enableActiveChecks>
                 <activeCheckServers type="CSVListField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</mask>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</Mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid active check receivers, i.e. 10.0.0.1:10051, zabbix.example.com or [::1]:30051.</ValidationMessage>
                 </activeCheckServers>
                 <refreshActiveChecks type="IntegerField">
-                    <default>120</default>
+                    <Default>120</Default>
                     <MinimumValue>10</MinimumValue>
                     <MaximumValue>3600</MaximumValue>
                     <Required>Y</Required>
                     <ValidationMessage>Should be a number between 10 and 3600.</ValidationMessage>
                 </refreshActiveChecks>
                 <enableRemoteCommands type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </enableRemoteCommands>
                 <logRemoteCommands type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </logRemoteCommands>
                 <encryption type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </encryption>
                 <encryptionidentity type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
-                    <mask>/^.{1,128}$/</mask>
+                    <Mask>/^.{1,128}$/</Mask>
                     <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
                 </encryptionidentity>
                 <encryptionpsk type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
                 </encryptionpsk>
             </features>
@@ -159,21 +159,21 @@
                     <Required>Y</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <key type="TextField">
-                    <mask>/^[^\t^,^;^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <Mask>/^[^\t^,^;^\[^\]^\{^\}]{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </key>
                 <command type="TextField">
-                    <mask>/^[^\t]{1,4096}$/u</mask>
+                    <Mask>/^[^\t]{1,4096}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </command>
                 <acceptParams type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </acceptParams>
             </userparameter>
@@ -184,21 +184,21 @@
                     <Required>Y</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <key type="TextField">
-                    <mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</mask>
+                    <Mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </key>
                 <sourceKey type="TextField">
-                    <mask>/^[^\t]{1,4096}$/u</mask>
+                    <Mask>/^[^\t]{1,4096}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 4096 characters.</ValidationMessage>
                     <Required>Y</Required>
                 </sourceKey>
                 <acceptParams type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </acceptParams>
             </alias>

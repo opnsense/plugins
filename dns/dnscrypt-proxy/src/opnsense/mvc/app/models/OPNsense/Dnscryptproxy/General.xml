@@ -4,130 +4,130 @@
     <version>0.1.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <listen_addresses type="CSVListField">
-            <default>0.0.0.0:5353</default>
+            <Default>0.0.0.0:5353</Default>
             <Required>Y</Required>
         </listen_addresses>
         <allowprivileged type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </allowprivileged>
         <max_clients type="IntegerField">
-            <default>250</default>
+            <Default>250</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>10000</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 10000.</ValidationMessage>
         </max_clients>
         <ipv4_servers type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </ipv4_servers>
         <ipv6_servers type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </ipv6_servers>
         <dnscrypt_servers type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </dnscrypt_servers>
         <doh_servers type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </doh_servers>
         <require_dnssec type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </require_dnssec>
         <require_nolog type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </require_nolog>
         <require_nofilter type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </require_nofilter>
         <force_tcp type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </force_tcp>
         <proxy type="TextField">
             <Required>N</Required>
         </proxy>
         <timeout type="IntegerField">
-            <default>2500</default>
+            <Default>2500</Default>
             <Required>Y</Required>
             <MinimumValue>100</MinimumValue>
             <MaximumValue>10000</MaximumValue>
             <ValidationMessage>Choose a number between 100 and 10000.</ValidationMessage>
         </timeout>
         <keepalive type="IntegerField">
-            <default>30</default>
+            <Default>30</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>600</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 600.</ValidationMessage>
         </keepalive>
         <cert_refresh_delay type="IntegerField">
-            <default>240</default>
+            <Default>240</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>3600</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 3600.</ValidationMessage>
         </cert_refresh_delay>
         <dnscrypt_ephemeral_keys type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </dnscrypt_ephemeral_keys>
         <tls_disable_session_tickets type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </tls_disable_session_tickets>
         <fallback_resolver type="TextField">
-            <default>9.9.9.9:53</default>
+            <Default>9.9.9.9:53</Default>
             <Required>Y</Required>
         </fallback_resolver>
         <block_ipv6 type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </block_ipv6>
         <cache type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </cache>
         <cache_size type="IntegerField">
-            <default>512</default>
+            <Default>512</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>20480</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 20480.</ValidationMessage>
         </cache_size>
         <cache_min_ttl type="IntegerField">
-            <default>600</default>
+            <Default>600</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>3600</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 3600.</ValidationMessage>
         </cache_min_ttl>
         <cache_max_ttl type="IntegerField">
-            <default>86400</default>
+            <Default>86400</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>86400</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 86400.</ValidationMessage>
         </cache_max_ttl>
         <cache_neg_min_ttl type="IntegerField">
-            <default>60</default>
+            <Default>60</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>3600</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 3600.</ValidationMessage>
         </cache_neg_min_ttl>
         <cache_neg_max_ttl type="IntegerField">
-            <default>600</default>
+            <Default>600</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>86400</MaximumValue>
@@ -137,12 +137,12 @@
             <Required>N</Required>
         </serverlist>
         <query_logs type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </query_logs>
         <disabled_serverlist type="CSVListField">
-            <mask>/^[A-Za-z0-9\._\-]{1,70}(,[A-Za-z0-9\._\-]{1,70})*$/</mask>
-            <default></default>
+            <Mask>/^[A-Za-z0-9\._\-]{1,70}(,[A-Za-z0-9\._\-]{1,70})*$/</Mask>
+            <Default></Default>
             <Required>N</Required>
             <ValidationMessage>Please use valid server names.</ValidationMessage>
         </disabled_serverlist>
