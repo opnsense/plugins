@@ -167,7 +167,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . "--{$acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
         // Run acme.sh command
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);

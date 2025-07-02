@@ -19,12 +19,18 @@ Changed:
 * automatically fix account config if CERT_HOME is set (#4622)
 * automatically resolve cron job mismatch (#4627)
 * change default SFTP options to NOT preserve modification time (#3862)
+* migrate SFTP/SSH operations to AcmeClient logging
+* add detailed SFTP/SSH logging when debug logging is enabled
+* add new log messages and improve existing ones
 
 Fixed:
 * deploy hooks may use the old CERT_HOME (#4622)
 * acme.sh is always called with "--days 1" (#4711)
 * avoid startup error: "rmdir... Not a directory" (#4743)
 * fails to create/update cron job on UUID mismatch (#4627)
+
+Removed:
+* remove stdout (CLI) logging from SFTP library
 
 4.9
 

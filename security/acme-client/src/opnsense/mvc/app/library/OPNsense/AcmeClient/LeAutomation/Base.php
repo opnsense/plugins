@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -131,7 +131,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . implode(' ', $this->acme_args);
 
         // Run acme.sh command
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
 
         // acme.sh records the last used deploy hook and would automatically
@@ -156,7 +156,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
                 if (!file_put_contents($filename, $contents)) {
                     LeUtils::log_error('clearing recorded deploy hook from acme.sh failed (' . $filename . ')');
                 } else {
-                    LeUtils::log_debug('cleared recorded deploy deploy hook from acme.sh (' . $filename . ')', $this->debug);
+                    LeUtils::log_debug('cleared recorded deploy deploy hook from acme.sh (' . $filename . ')');
                 }
             }
         }
