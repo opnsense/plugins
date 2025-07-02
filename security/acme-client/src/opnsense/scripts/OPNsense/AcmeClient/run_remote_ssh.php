@@ -2,6 +2,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2022 Juergen Kellerer
  * All rights reserved.
  *
@@ -107,6 +108,7 @@ if (!function_exists("log_error")) {
 use OPNsense\AcmeClient\Process;
 use OPNsense\AcmeClient\SSHKeys;
 use OPNsense\AcmeClient\Utils;
+use OPNsense\AcmeClient\LeUtils;
 
 // Implementing logic
 function commandShowIdentity(array &$options): int
@@ -127,7 +129,7 @@ function commandShowIdentity(array &$options): int
         echo file_get_contents($id_file);
         return EXITCODE_SUCCESS;
     } else {
-        Utils::log()->error("Failed getting identity. See log output for details.");
+        LeUtils::log_error("SSH failed getting identity. See log output for details.");
     }
     return EXITCODE_ERROR;
 }
@@ -156,14 +158,14 @@ function commandTestConnection(array &$options): int
 function commandRunRemote(array &$options): int
 {
     if (empty($options["run"])) {
-        Utils::log()->error("SSH: Command is empty, nothing to do.");
+        LeUtils::log_error("SSH: Command is empty, nothing to do.");
         return EXITCODE_ERROR;
     }
 
     $lines = runRemoteCommand($options, $error);
     if (!$error) {
         $host = $options["host"] . (($port = ($options["port"] ?? false)) ? ":$port" : "");
-        Utils::log()->info("SSH [$host]> {$options["run"]}:" . PHP_EOL . join(PHP_EOL, $lines));
+        LeUtils::log_debug("SSH [$host]> {$options["run"]}:" . PHP_EOL . join(PHP_EOL, $lines));
         return EXITCODE_SUCCESS;
     }
 
@@ -244,7 +246,7 @@ function runRemoteCommand(array $options, &$error): ?array
             "exit_code" => $exit_code
         ]);
         $error["connect_failed"] = $exit_code == 255;
-        Utils::log()->error("SSH failed with '$exit_code': $cl", $error);
+        LeUtils::log_error("SSH failed with '$exit_code': $cl", $error);
     }
 
     return $result;
@@ -253,7 +255,7 @@ function runRemoteCommand(array $options, &$error): ?array
 function buildSSHArguments(SSHKeys $ssh_keys, $host, $username, $identity_type = "", $host_key = "", $port = SSHKeys::DEFAULT_PORT): array
 {
     if (empty(trim($host)) || empty(trim($username))) {
-        Utils::log()->error("Failed connecting to '$host'. Hostname or username is missing.");
+        LeUtils::log_error("Failed connecting to '$host'. Hostname or username is missing.");
         return [false, ["invalid_parameters" => true]];
     }
 
@@ -263,7 +265,7 @@ function buildSSHArguments(SSHKeys $ssh_keys, $host, $username, $identity_type =
 
     $trust = $ssh_keys->trustHost($host, $host_key, $port);
     if ($trust["ok"] !== true) {
-        Utils::log()->error("Failed establishing trust in '$host'; Cause: {$trust["error"]}");
+        LeUtils::log_error("Failed establishing trust in '$host'; Cause: {$trust["error"]}");
         unset($trust["ok"]);
         return [false, array_merge($trust, ["host_not_trusted" => true])];
     } else {
@@ -288,7 +290,7 @@ function buildSSHArguments(SSHKeys $ssh_keys, $host, $username, $identity_type =
             "-oPreferredAuthentications=publickey"
         );
     } else {
-        Utils::log()->error("Failed adding client identity ($identity). Connect will likely fail.");
+        LeUtils::log_error("Failed adding SSH client identity ($identity). Connect will likely fail.");
     }
 
     // Adding the host
@@ -304,7 +306,7 @@ function help()
 
 function getOptionsById($automation_id)
 {
-    Utils::log()->info("Reading options from automation: $automation_id");
+    LeUtils::log_debug("Reading options from automation: $automation_id");
 
     if (is_object($action = Utils::getAutomationActionById($automation_id))) {
         if ($action->enabled && "configd_remote_ssh" === (string)$action->type) {
@@ -317,10 +319,10 @@ function getOptionsById($automation_id)
                 "run" => trim((string)$action->remote_ssh_command),
             ];
         } else {
-            Utils::log()->error("Ignoring disabled or invalid automation '$automation_id'");
+            LeUtils::log_error("Ignoring disabled or invalid automation '$automation_id'");
         }
     } else {
-        Utils::log()->error("No upload automation found with uuid = '$automation_id'");
+        LeUtils::log_error("No upload automation found with uuid = '$automation_id'");
     }
 
     return false;

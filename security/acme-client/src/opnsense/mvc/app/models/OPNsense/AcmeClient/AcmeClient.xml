@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.2.0</version>
+    <version>4.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -525,6 +525,7 @@
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
+                        <dns_websupport>Websupport.sk</dns_websupport>
                         <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
@@ -1247,6 +1248,12 @@
                 <dns_nic_secret type="TextField">
                     <Required>N</Required>
                 </dns_nic_secret>
+                <dns_websupport_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_websupport_api_key>
+                <dns_websupport_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_websupport_api_secret>
                 <dns_world4you_username type="TextField">
                     <Required>N</Required>
                 </dns_world4you_username>
@@ -1403,6 +1410,10 @@
                     <Mask>/^0[0-9]{3}$/u</Mask>
                     <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
                 </sftp_chmod_key>
+                <sftp_modtime type="BooleanField">
+                    <Required>N</Required>
+                    <default>0</default>
+                </sftp_modtime>
                 <sftp_filename_cert type="TextField">
                     <Required>N</Required>
                     <Mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</Mask>
