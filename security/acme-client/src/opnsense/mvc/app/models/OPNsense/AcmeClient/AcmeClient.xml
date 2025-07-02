@@ -1351,6 +1351,7 @@
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
+                        <acme_proxmoxbs>Upload certificate to Proxmox Backup Environment</acme_proxmoxbs>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
@@ -1601,6 +1602,44 @@
                     <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_tokenkey>
+                <acme_proxmoxbs_user type="TextField">
+                    <default>root</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_user>
+                <acme_proxmoxbs_server type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_server>
+                <acme_proxmoxbs_port type="PortField">
+                    <default>8007</default>
+                    <Required>N</Required>
+                </acme_proxmoxbs_port>
+                <acme_proxmoxbs_nodename type="TextField">
+                    <Required>N</Required>
+                    <default>localhost</default>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_nodename>
+                <acme_proxmoxbs_realm type="TextField">
+                    <default>pam</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_realm>
+                <acme_proxmoxbs_tokenid type="TextField">
+                    <default>acme</default>
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_tokenid>
+                <acme_proxmoxbs_tokenkey type="TextField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_tokenkey>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
