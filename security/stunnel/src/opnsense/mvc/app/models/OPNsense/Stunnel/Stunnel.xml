@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <description>
         Stunnel TLS encryption proxy
     </description>
@@ -48,6 +48,8 @@
                 <protocol type="OptionField">
                     <OptionValues>
                         <imap>IMAP</imap>
+                        <ldap>LDAP</ldap>
+                        <nntp>NNTP</nntp>
                         <pop3>POP3</pop3>
                         <smtp>SMTP</smtp>
                     </OptionValues>
