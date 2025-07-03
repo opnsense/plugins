@@ -334,6 +334,47 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_acme_proxmoxbs</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_user</id>
+        <label>Proxmox BS user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_server</id>
+        <label>Proxmox BS server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox BS node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_port</id>
+        <label>Proxmox BS server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8007.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_realm</id>
+        <label>Proxmox BS realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenid</id>
+        <label>Proxmox BS token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenkey</id>
+        <label>Proxmox BS token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
