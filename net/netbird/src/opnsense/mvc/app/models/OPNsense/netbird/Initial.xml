@@ -1,0 +1,34 @@
+<model>
+    <mount>//OPNsense/netbird-initial</mount>
+    <description>
+        Netbird initial setup
+    </description>
+    <items>
+        <!-- container -->
+        <initial>
+            <!-- fields -->
+            <setupkey type="TextField">
+                <Required>N</Required>
+                <default>00000000-0000-0000-0000-000000000000</default>
+                <Mask>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i</Mask>
+                <ValidationMessage>Please specify a valid setup key.</ValidationMessage>
+            </setupkey>
+            <mgmtservice type="UrlField">
+                <Required>Y</Required>
+                <default>https://api.netbird.io:443</default>
+            </mgmtservice>
+            <hostname type="HostnameField">
+                <Required>N</Required>
+                <IpAllowed>N</IpAllowed>
+                <HostWildcardAllowed>N</HostWildcardAllowed>
+                <FqdnWildcardAllowed>N</FqdnWildcardAllowed>
+                <ZoneRootAllowed>N</ZoneRootAllowed>
+                <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
+            </hostname>
+            <initsure type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </initsure>
+        </initial>
+    </items>
+</model>
