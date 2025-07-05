@@ -1,0 +1,54 @@
+<model>
+    <mount>//OPNsense/arpndplogging/general</mount>
+    <description>ArpNdpLogging general configuration</description>
+    <version>0.0.1</version>
+    <items>
+        <enabled type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enabled>
+        <protocols type="OptionField">
+            <Default>IPv4 and IPv6</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <opt1 value="all">IPv4 and IPv6</opt1>
+                <opt2 value="ipv4_only">IPv4 only</opt2>
+                <opt3 value="ipv6_only">IPv6 only</opt3>
+            </OptionValues>
+        </protocols>
+        <interfaces type=".\ArpNdpLoggingInterfaceField">
+            <Required>N</Required>
+            <Multiple>Y</Multiple>
+        </interfaces>
+        <suppress_mac type="CSVListField">
+            <Required>N</Required>
+            <Multiple>Y</Multiple>
+        </suppress_mac>
+        <log_new_entries type="BooleanField">
+            <default>1</default>
+        </log_new_entries>
+        <log_mac_changes type="BooleanField">
+            <default>1</default>
+        </log_mac_changes>
+        <log_ipv4_changes type="BooleanField">
+            <default>0</default>
+        </log_ipv4_changes>
+        <log_ipv6_changes type="BooleanField">
+            <default>0</default>
+        </log_ipv6_changes>
+        <log_hostname_changes type="BooleanField">
+            <default>0</default>
+        </log_hostname_changes>
+        <log_interface_changes type="BooleanField">
+            <default>0</default>
+        </log_interface_changes>
+        <retention_days type="IntegerField">
+            <Default>30</Default>
+            <Required>Y</Required>
+            <advanced>true</advanced>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>365</MaximumValue>
+            <ValidationMessage>Retention needs to be an integer value between 1 and 365</ValidationMessage>
+        </retention_days>
+    </items>
+</model>
