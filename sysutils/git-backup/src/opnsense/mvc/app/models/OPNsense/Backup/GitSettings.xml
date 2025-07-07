@@ -30,7 +30,7 @@
             </Constraints>
         </url>
         <branch type="TextField">
-          <Default>master</Default>
+          <Default>main</Default>
           <Required>Y</Required>
         </branch>
         <privkey type="TextField">
