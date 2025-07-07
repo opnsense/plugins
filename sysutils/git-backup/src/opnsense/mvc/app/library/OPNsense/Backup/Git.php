@@ -162,7 +162,7 @@ class Git extends Base implements IBackupProvider
         exec("cd {$targetdir} && {$git} remote remove origin");
         exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
         $pushtxt = shell_exec(
-            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("{$mdl->branch}:{$mdl->branch}") .
+            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("main:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
         );
         if (strpos($pushtxt, '__exit_ok__')) {
