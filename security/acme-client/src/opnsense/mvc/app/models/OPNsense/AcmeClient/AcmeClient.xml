@@ -1350,7 +1350,7 @@
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
-                        <acme_proxmoxbs>Upload certificate to Proxmox Backup Environment</acme_proxmoxbs>
+                        <acme_proxmoxbs>Upload certificate to Proxmox Backup Server</acme_proxmoxbs>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
