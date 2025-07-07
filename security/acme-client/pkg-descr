@@ -12,6 +12,7 @@ Plugin Changelog
 
 Added:
 * new automation to reload www/caddy (#4692)
+* new automation to upload to Proxmox Backup Server (#4785)
 * add support for Websupport.sk DNS API (#4540)
 * add SFTP option: Preserve Modification Time (#3862)
 
@@ -28,6 +29,7 @@ Fixed:
 * acme.sh is always called with "--days 1" (#4711)
 * avoid startup error: "rmdir... Not a directory" (#4743)
 * fails to create/update cron job on UUID mismatch (#4627)
+* accounts/certificates not visible on 25.7 alpha (#4790)
 
 Removed:
 * remove stdout (CLI) logging from SFTP library
