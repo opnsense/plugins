@@ -140,7 +140,9 @@ POSSIBILITY OF SUCH DAMAGE.
         /**
          * copy actions for selected items from opnsense_bootgrid_plugin.js
          */
-        var grid_certificates = $("#grid-certificates").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
+        const grid_certificates = $("#grid-certificates").UIBootgrid($.extend(gridParams, { options: gridopt }));
+
+        $("#grid_certificates").on("loaded.rs.jquery.bootgrid", function (e)
         {
             // toggle all rendered tooltips (once for all)
             $('.bootgrid-tooltip').tooltip();
