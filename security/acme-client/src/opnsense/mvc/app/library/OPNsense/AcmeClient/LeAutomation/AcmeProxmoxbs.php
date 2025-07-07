@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Yann Demoulin based on AcmeProxmoxve.php file
+ * Copyright (C) 2025 Yann Demoulin
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
