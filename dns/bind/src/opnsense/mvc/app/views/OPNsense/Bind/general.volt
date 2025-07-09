@@ -33,6 +33,7 @@
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
     <li><a data-toggle="tab" href="#primary-domains">{{ lang._('Primary Zones') }}</a></li>
     <li><a data-toggle="tab" href="#secondary-domains">{{ lang._('Secondary Zones') }}</a></li>
+    <li><a data-toggle="tab" href="#forward-domains">{{ lang._('Forward Zones') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -189,11 +190,48 @@
             <br /><br />
         </div>
     </div>
+    <div id="forward-domains" class="tab-pane fade in">
+        <div class="col-md-12">
+            <h2>{{ lang._('Zones') }}</h2>
+        </div>
+        <div id="forward-domains-area" class="table-responsive">
+            <table id="grid-forward-domains" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindForwardDomain">
+                <thead>
+                    <tr>
+                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
+                        <th data-column-id="forwardserver" data-type="string" data-visible="true">{{ lang._('Forwarder IPs') }}</th>
+                        <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5"></td>
+                        <td>
+                            <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <hr/>
+        <div class="col-md-12">
+            <div id="ChangeMessage" class="alert alert-info" style="display: none" role="alert">
+                {{ lang._('After changing settings, please remember to apply them with the button below') }}
+            </div>
+            <button class="btn btn-primary saveAct_domain" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_domain_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindPrimaryDomain,'id':'dialogEditBindPrimaryDomain','label':lang._('Edit Primary Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindSecondaryDomain,'id':'dialogEditBindSecondaryDomain','label':lang._('Edit Secondary Zone')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindForwardDomain,'id':'dialogEditBindForwardDomain','label':lang._('Edit Forward Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRecord,'id':'dialogEditBindRecord','label':lang._('Edit Record')])}}
 
 <style>
@@ -430,6 +468,26 @@ $(document).ready(function() {
         let ids = $("#grid-secondary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-secondary-domains").bootgrid('select', [ids[0].uuid]);
+        }
+    });
+
+    $("#grid-forward-domains").UIBootgrid({
+        'search': '/api/bind/domain/search_forward_domain',
+        'get': '/api/bind/domain/get_domain/',
+        'set': '/api/bind/domain/set_domain/',
+        'add': '/api/bind/domain/add_forward_domain/',
+        'del': '/api/bind/domain/del_domain/',
+        'toggle': '/api/bind/domain/toggle_domain/',
+        options: {
+            selection: false,
+            multiSelect: false,
+            rowSelect: false,
+            rowCount: [7, 14, 20, 50, 100, -1]
+        }
+    }).on("loaded.rs.jquery.bootgrid", function(e) {
+        let ids = $("#grid-forward-domains").bootgrid("getCurrentRows");
+        if (ids.length > 0) {
+            $("#grid-forward-domains").bootgrid('select', [ids[0].uuid]);
         }
     });
 
