@@ -21,6 +21,10 @@
                     <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </primaryip>
+                <forwardserver type="NetworkField">
+                    <FieldSeparator>,</FieldSeparator>
+                    <AsList>Y</AsList>
+                </forwardserver>
                 <transferkeyalgo type="OptionField">
                     <OptionValues>
                         <hmac-sha512>HMAC-SHA512</hmac-sha512>
