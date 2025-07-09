@@ -15,6 +15,7 @@
                     <OptionValues>
                         <primary>primary</primary>
                         <secondary>secondary</secondary>
+                        <forward>forward</forward>
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
