@@ -8,13 +8,8 @@
                 <Default>1</Default>
                 <Required>Y</Required>
             </Enabled>
-            <LogDebug type="BooleanField">
-                <Default>0</Default>
-                <Required>N</Required>
-            </LogDebug>
+            <LogDebug type="BooleanField"/>
             <DisabledRPCs type="OptionField">
-                <Required>N</Required>
-                <Default></Default>
                 <Sorted>Y</Sorted>
                 <Multiple>Y</Multiple>
                 <OptionValues>

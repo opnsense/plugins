@@ -45,7 +45,7 @@ VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 _PLUGIN_ABI!=	${VERSIONBIN} -a
 PLUGIN_ABI?=	${_PLUGIN_ABI}
 .else
-PLUGIN_ABI?=	25.1
+PLUGIN_ABI?=	25.7
 .endif
 
 PLUGIN_MAINS=	master main
