@@ -49,11 +49,6 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->searchSecondaryDomainAction();
     }
 
-    public function searchForwardDomainAction()
-    {
-        return $this->searchForwardDomainAction();
-    }
-
     public function searchPrimaryDomainAction()
     {
         return $this->searchBase(
