@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this zone.</help>
+    </field>
+    <field>
+        <id>domain.domainname</id>
+        <label>Zone Name</label>
+        <type>text</type>
+        <help>Set the name for this zone. Both forward and reverse zones may be specified, i.e. example.com or 0.168.192.in-addr.arpa.</help>
+    </field>
+    <field>
+        <id>domain.forwardserver</id>
+        <label>Primary IP</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set the IP address of server to forward requests to.</help>
+    </field>
+</form>

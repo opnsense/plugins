@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/domain</mount>
     <description>BIND domain configuration</description>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <items>
         <domains>
             <domain type="ArrayField">
@@ -15,12 +15,15 @@
                     <OptionValues>
                         <primary>primary</primary>
                         <secondary>secondary</secondary>
+                        <forward>forward</forward>
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </primaryip>
+                <forwardserver type="NetworkField">
+                    <AsList>Y</AsList>
+                </forwardserver>
                 <transferkeyalgo type="OptionField">
                     <OptionValues>
                         <hmac-sha512>HMAC-SHA512</hmac-sha512>
@@ -34,7 +37,6 @@
                 <transferkeyname type="TextField"/>
                 <transferkey type="TextField"/>
                 <allownotifysecondary type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </allownotifysecondary>
                 <domainname type="TextField">
