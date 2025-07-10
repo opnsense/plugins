@@ -21,7 +21,6 @@
                     </Constraints>
                 </name>
                 <networks type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
                     <AsList>Y</AsList>
                 </networks>

@@ -19,7 +19,6 @@
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </primaryip>
                 <forwardserver type="NetworkField">
@@ -38,7 +37,6 @@
                 <transferkeyname type="TextField"/>
                 <transferkey type="TextField"/>
                 <allownotifysecondary type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                 </allownotifysecondary>
                 <domainname type="TextField">

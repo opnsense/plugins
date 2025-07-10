@@ -17,13 +17,11 @@
         </enablerpz>
         <listenv4 type="NetworkField">
             <Default>0.0.0.0</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <AsList>Y</AsList>
         </listenv4>
         <listenv6 type="NetworkField">
             <Default>::</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <AsList>Y</AsList>
         </listenv6>
@@ -48,7 +46,6 @@
             <Required>Y</Required>
         </port>
         <forwarders type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </forwarders>
         <filteraaaav4 type="BooleanField">
@@ -60,7 +57,6 @@
             <Required>Y</Required>
         </filteraaaav6>
         <filteraaaaacl type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </filteraaaaacl>
         <logsize type="IntegerField">
@@ -152,7 +148,6 @@
         </ratelimitcount>
         <ratelimitexcept type="NetworkField">
             <Default>0.0.0.0,::</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
             <AsList>Y</AsList>
         </ratelimitexcept>
