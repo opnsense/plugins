@@ -21,13 +21,19 @@ class AlertsController extends ApiControllerBase
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
-    public function getAction()
+    public function searchAction(): array
     {
-        $result = json_decode(trim((new Backend())->configdRun("crowdsec alerts-list")), true);
-        if ($result !== null) {
-            // only return valid json type responses
-            return $result;
+        $rows = json_decode(trim((new Backend())->configdRun("crowdsec alerts-list")), true);
+        if ($rows === null) {
+            return ["message" => "unable to retrieve data"];
         }
-        return ["message" => "unable to list alerts"];
+
+        $total = sizeof($rows);
+        return [
+            "total" => $total,
+            "rowCount" => $total,
+            "current" => 1,
+            "rows" => $rows
+        ];
     }
 }

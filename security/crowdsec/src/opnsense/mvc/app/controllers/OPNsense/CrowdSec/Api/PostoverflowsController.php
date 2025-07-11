@@ -12,18 +12,18 @@ use OPNsense\Core\Backend;
 /**
  * @package OPNsense\CrowdSec
  */
-class BouncersController extends ApiControllerBase
+class PostoverflowsController extends ApiControllerBase
 {
     /**
-     * Retrieve list of bouncers
+     * Retrieve the installed postoverflows
      *
-     * @return array of bouncers
+     * @return dictionary of items, by type
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
     public function searchAction(): array
     {
-        $rows = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
+        $rows = json_decode(trim((new Backend())->configdRun("crowdsec postoverflows-list")), true);
         if ($rows === null) {
             return ["message" => "unable to retrieve data"];
         }
@@ -33,7 +33,7 @@ class BouncersController extends ApiControllerBase
             "total" => $total,
             "rowCount" => $total,
             "current" => 1,
-            "rows" => $rows
+            "rows" => $rows["postoverflows"]
         ];
     }
 }

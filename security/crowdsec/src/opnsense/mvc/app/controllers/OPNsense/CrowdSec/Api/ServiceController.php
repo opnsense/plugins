@@ -44,24 +44,30 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("crowdsec crowdsec-status");
 
-        $status = "unknown";
-        if (strpos($response, "not running") > 0) {
-            $status = "stopped";
-        } elseif (strpos($response, "is running") > 0) {
-            $status = "running";
+        $crowdsec_status = "unknown";
+        if (strpos($response, "not running") !== false) {
+            $crowdsec_status = "stopped";
+        } elseif (strpos($response, "is running") !== false) {
+            $crowdsec_status = "running";
         }
 
         $response = $backend->configdRun("crowdsec crowdsec-firewall-status");
 
         $firewall_status = "unknown";
-        if (strpos($response, "not running") > 0) {
+        if (strpos($response, "not running") !== false) {
             $firewall_status = "stopped";
-        } elseif (strpos($response, "is running") > 0) {
+        } elseif (strpos($response, "is running") !== false) {
             $firewall_status = "running";
         }
 
+        $status = "unknown";
+        if ($crowdsec_status == $firewall_status) {
+            $status = $crowdsec_status;
+        }
+
         return [
-            "crowdsec-status" => $status,
+            "status" => $status,
+            "crowdsec-status" => $crowdsec_status,
             "crowdsec-firewall-status" => $firewall_status,
         ];
     }
