@@ -174,7 +174,6 @@
                                     return request;
                                 },
                                 headerFormatters: {
-                                    enabled: function (column) { return "" },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
                                         if (grid_id === "subdomain") {
@@ -207,14 +206,14 @@
                                     },
                                     from_domain: function (column, row) {
                                         return (
-                                            (row["DisableTls"] || "") +
+                                            (row["$DisableTls"] || "") +
                                             (row["FromDomain"] || "") +
                                             (row["FromPort"] ? `:${row["FromPort"]}` : "")
                                         );
                                     },
                                     to_domain: function (column, row) {
                                         return (
-                                            (row["HttpTls"] || "") +
+                                            (row["$HttpTls"] || "") +
                                             (row["ToDomain"] || "") +
                                             (row["ToPort"] ? `:${row["ToPort"]}` : "") +
                                             (row["ToPath"] || "")
@@ -501,7 +500,7 @@
             <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '11em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
             </div>
         </div>
 
@@ -509,7 +508,7 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '11em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
             </div>
         </div>
     </div>
