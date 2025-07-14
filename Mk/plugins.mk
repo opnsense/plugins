@@ -62,6 +62,8 @@ _PLUGIN_COMMENT:=	${PLUGIN_COMMENT}
 
 .if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
+.else
+PLUGIN_DEVEL?=		yes
 .endif
 
 PLUGIN_PREFIX?=		os-
