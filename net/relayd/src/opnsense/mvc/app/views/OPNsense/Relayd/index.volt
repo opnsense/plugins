@@ -44,16 +44,6 @@
       }
 
       /**
-       * chain std_bootgrid_reload from opnsense_bootgrid_plugin.js
-       * to get the isSubsystemDirty state on "UIBootgrid" changes
-       */
-      var opn_std_bootgrid_reload = std_bootgrid_reload;
-      std_bootgrid_reload = function(gridId) {
-         opn_std_bootgrid_reload(gridId);
-         isSubsystemDirty();
-      };
-
-      /**
        * apply changes and reload relayd
        */
       $('#btnApplyConfig').unbind('click').click(function(){
@@ -128,6 +118,11 @@
             endpoints['toggle'] = '/api/relayd/settings/toggle/' + element + '/';
          }
          $("#grid-" + element).UIBootgrid(endpoints);
+
+         // get the isSubsystemDirty state on "UIBootgrid" changes
+         $("#grid-" + element).on("loaded.rs.jquery.bootgrid", function () {
+            isSubsystemDirty();
+         });
       });
 
       // show/hide options depending on other options
