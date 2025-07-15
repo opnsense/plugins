@@ -50,6 +50,9 @@
         <type>dropdown</type>
         <help><![CDATA[Set the request matcher that will be applied to this access list.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>accesslist.description</id>
