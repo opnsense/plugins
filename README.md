@@ -88,9 +88,9 @@ security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ru
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
-security/openvpn-legacy -- OpenVPN legacy support (development only)
+security/openvpn-legacy -- OpenVPN legacy support
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
-security/strongswan-legacy -- IPsec legacy support (development only)
+security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
@@ -102,7 +102,7 @@ sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
-sysutils/gdrive-backup -- Backup configurations using Google Drive (development only)
+sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
