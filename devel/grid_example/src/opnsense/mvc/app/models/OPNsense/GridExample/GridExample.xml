@@ -13,6 +13,7 @@
                 <email type="EmailField">
                     <Required>Y</Required>
                 </email>
+                <description type="DescriptionField"/>
             </address>
         </addresses>
     </items>
