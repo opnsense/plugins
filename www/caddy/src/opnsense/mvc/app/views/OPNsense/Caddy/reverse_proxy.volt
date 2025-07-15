@@ -206,14 +206,14 @@
                                     },
                                     from_domain: function (column, row) {
                                         return (
-                                            (row["$DisableTls"] || "") +
+                                            (row["%DisableTls"] || "") +
                                             (row["FromDomain"] || "") +
                                             (row["FromPort"] ? `:${row["FromPort"]}` : "")
                                         );
                                     },
                                     to_domain: function (column, row) {
                                         return (
-                                            (row["$HttpTls"] || "") +
+                                            (row["%HttpTls"] || "") +
                                             (row["ToDomain"] || "") +
                                             (row["ToPort"] ? `:${row["ToPort"]}` : "") +
                                             (row["ToPath"] || "")
