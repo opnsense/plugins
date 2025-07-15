@@ -2,9 +2,8 @@
 <?php
 
 /*
+ * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
- * Copyright (C) 2025 squared GmbH
- * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
