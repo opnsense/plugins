@@ -21,7 +21,6 @@
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
         <grid_view>
             <visible>false</visible>
-            <formatter>model_relation_domain</formatter>
         </grid_view>
     </field>
     <field>
