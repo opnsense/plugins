@@ -41,12 +41,12 @@ $( document ).ready(function() {
      **********************************************************************/
 
     $("#grid-userparameters").UIBootgrid(
-        {   search:'/api/zabbixagent/settings/searchUserparameters',
-            get:'/api/zabbixagent/settings/getUserparameter/',
-            set:'/api/zabbixagent/settings/setUserparameter/',
-            add:'/api/zabbixagent/settings/addUserparameter/',
-            del:'/api/zabbixagent/settings/delUserparameter/',
-            toggle:'/api/zabbixagent/settings/toggleUserparameter/',
+        {   search:'/api/zabbixagent/settings/search_userparameters',
+            get:'/api/zabbixagent/settings/get_userparameter/',
+            set:'/api/zabbixagent/settings/set_userparameter/',
+            add:'/api/zabbixagent/settings/add_userparameter/',
+            del:'/api/zabbixagent/settings/del_userparameter/',
+            toggle:'/api/zabbixagent/settings/toggle_userparameter/',
             options: {
                 rowCount:[10,25,50,100,500,1000]
             }
@@ -54,12 +54,12 @@ $( document ).ready(function() {
     );
 
     $("#grid-aliases").UIBootgrid(
-        {   search:'/api/zabbixagent/settings/searchAliases',
-            get:'/api/zabbixagent/settings/getAlias/',
-            set:'/api/zabbixagent/settings/setAlias/',
-            add:'/api/zabbixagent/settings/addAlias/',
-            del:'/api/zabbixagent/settings/delAlias/',
-            toggle:'/api/zabbixagent/settings/toggleAlias/',
+        {   search:'/api/zabbixagent/settings/search_aliases',
+            get:'/api/zabbixagent/settings/get_alias/',
+            set:'/api/zabbixagent/settings/set_alias/',
+            add:'/api/zabbixagent/settings/add_alias/',
+            del:'/api/zabbixagent/settings/del_alias/',
+            toggle:'/api/zabbixagent/settings/toggle_alias/',
             options: {
                 rowCount:[10,25,50,100,500,1000]
             }
