@@ -4,6 +4,9 @@
         <label>Header</label>
         <type>dropdown</type>
         <help><![CDATA["header_up" sets, adds (with the "+" prefix), deletes (with the "-" prefix), or performs a replacement (by using two arguments, a search and replacement) in a request header going upstream to the backend. "header_down" sets, adds (with the "+" prefix), deletes (with the "-" prefix), or performs a replacement (by using two arguments, a search and replacement) in a response header coming downstream from the backend. For more information: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy#headers]]></help>
+        <grid_view>
+            <width>120</width>
+        </grid_view>
     </field>
     <field>
         <id>header.HeaderType</id>

@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
         <grid_view>
-            <width>2em</width>
+            <width>100</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>

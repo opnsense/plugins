@@ -11,6 +11,7 @@ Plugin Changelog
 Add: Global server timeout options (opnsense/plugins/pull/4778)
 Cleanup: Change all camelCase to snake_case in api notations (opnsense/plugins/pull/4767,4768,4776)
 Cleanup: Use SimpleActionButton in general.volt (opnsense/plugins/pull/4779)
+Cleanup: Change em into px, fix key/value display in formatter (opnsense/plugins/pull/4807)
 
 2.0.1
 
