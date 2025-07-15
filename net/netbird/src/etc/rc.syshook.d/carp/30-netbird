@@ -33,17 +33,13 @@ require_once('util.inc');
 require_once('interfaces.inc');
 
 
-$model = new \OPNsense\netbird\Netbird();
-$enabled = $model->general->Enabled->__toString();
+$model = new \OPNsense\Netbird\Netbird();
 
-
-if(!$enabled) {
+if ($model->general->Enabled->isEmpty()) {
     exit(0);
 }
 
-$carpif = $model->general->CarpIf->__toString();
-
-if($carpif == '') {
+if (!$model->general->CarpIf->isEqual('')) {
     exit(0);
 }
 

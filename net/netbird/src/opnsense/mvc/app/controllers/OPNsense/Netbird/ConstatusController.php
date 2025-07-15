@@ -28,16 +28,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\netbird\Api;
-
-use OPNsense\Base\ApiMutableModelControllerBase;
+namespace OPNsense\Netbird;
 
 /**
- * netbird settings controller
- * @package OPNsense\netbird
+ * Class ConstatusController
+ * @package OPNsense\Netbird
  */
-class SettingsController extends ApiMutableModelControllerBase
+class ConstatusController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'netbird';
-    protected static $internalModelClass = 'OPNsense\netbird\Netbird';
+    public function indexAction()
+    {
+        $this->view->pick('OPNsense/Netbird/constatus');
+    }
 }

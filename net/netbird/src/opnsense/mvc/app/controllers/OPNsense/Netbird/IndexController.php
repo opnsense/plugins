@@ -28,10 +28,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\netbird;
+namespace OPNsense\Netbird;
 
-use OPNsense\Base\BaseModel;
-
-class Netbird extends BaseModel
+/**
+ * Class IndexController
+ * @package OPNsense\Netbird
+ */
+class IndexController extends \OPNsense\Base\IndexController
 {
+    public function indexAction()
+    {
+        $this->view->generalForm = $this->getForm('general');
+        $this->view->initialUpForm = $this->getForm('initialup');
+        $this->view->pick('OPNsense/Netbird/index');
+    }
 }

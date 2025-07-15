@@ -28,24 +28,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\netbird\Api;
+namespace OPNsense\Netbird\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
-use OPNsense\netbird\Initial;
-use OPNsense\netbird\Netbird;
+use OPNsense\Netbird\Initial;
+use OPNsense\Netbird\Netbird;
 
 /**
  * Class ServiceController
- * @package OPNsense\netbird
+ * @package OPNsense\Netbird
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
     const NETBIRD_CONFIG_JSON = '/usr/local/etc/netbird/config.json';
-    protected static $internalServiceClass = '\OPNsense\netbird\Netbird';
+    protected static $internalServiceClass = '\OPNsense\Netbird\Netbird';
     protected static $internalServiceEnabled = 'general.Enabled';
-    protected static $internalServiceTemplate = 'OPNsense/netbird';
+    protected static $internalServiceTemplate = 'OPNsense/Netbird';
     protected static $internalServiceName = 'netbird';
 
     public function conStatusAction(): string
@@ -206,7 +206,7 @@ class ServiceController extends ApiMutableServiceControllerBase
             try {
                 $mdlNetbird = new Netbird();
                 $backend = new Backend();
-                if (trim($backend->configdRun('template reload OPNsense/netbird')) == "OK") {
+                if (trim($backend->configdRun('template reload OPNsense/Netbird')) == "OK") {
                     $status = "ok";
                 }
 
