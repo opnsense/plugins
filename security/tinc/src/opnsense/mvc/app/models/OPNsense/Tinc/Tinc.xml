@@ -13,12 +13,12 @@
                 </id>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z]){1,50}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z]){1,50}$/u</Mask>
                     <ValidationMessage>The name should contain only alphanumeric characters.</ValidationMessage>
                 </name>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z\_]){1,1024}$/u</Mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extaddress type="HostnameField">
@@ -127,7 +127,7 @@
                 </network>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z\_]){1,1024}$/u</Mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extport type="IntegerField">
