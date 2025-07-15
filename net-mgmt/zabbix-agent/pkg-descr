@@ -12,6 +12,15 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.16
+
+Changed:
+* snake_case use in API URLs
+* Model style updates
+
+Removed:
+* Plugin variant for Zabbix Agent 5.0 is EoL and was removed
+
 1.15
 
 Added:
