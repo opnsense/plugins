@@ -90,7 +90,7 @@ security/maltrail -- Malicious traffic detection system
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
-security/strongswan-legacy -- IPsec legacy support (development only)
+security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
