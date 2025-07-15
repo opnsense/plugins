@@ -54,4 +54,3 @@ function netbird_services()
 
     return $services;
 }
-

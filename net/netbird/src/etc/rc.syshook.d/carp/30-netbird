@@ -75,4 +75,3 @@ switch ($type) {
         shell_exec('/usr/local/bin/netbird down');
         break;
 }
-
