@@ -190,20 +190,6 @@
                                     },
                                 },
                                 formatters: {
-                                    model_relation_domain: function (column, row) {
-                                        let result = (row[column.id] || "").trim();
-                                        if (column.id === "reverse") {
-                                            result = result.replace(" ", ":");
-                                            if (!row["subdomain"] && row["HandlePath"]) {
-                                                result += row["HandlePath"];
-                                            }
-                                        } else if (column.id === "subdomain") {
-                                            if (row["subdomain"] && row["HandlePath"]) {
-                                                result += row["HandlePath"];
-                                            }
-                                        }
-                                        return result;
-                                    },
                                     from_domain: function (column, row) {
                                         return (
                                             (row["%DisableTls"] || "") +
