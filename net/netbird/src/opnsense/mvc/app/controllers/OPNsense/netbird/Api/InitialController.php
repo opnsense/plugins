@@ -40,5 +40,4 @@ class InitialController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'netbird';
     protected static $internalModelClass = 'OPNsense\netbird\Initial';
-
 }

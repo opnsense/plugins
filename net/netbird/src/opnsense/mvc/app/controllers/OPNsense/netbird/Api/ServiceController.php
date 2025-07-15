@@ -36,7 +36,6 @@ use OPNsense\Core\Config;
 use OPNsense\netbird\Initial;
 use OPNsense\netbird\Netbird;
 
-
 /**
  * Class ServiceController
  * @package OPNsense\netbird
@@ -119,7 +118,6 @@ class ServiceController extends ApiMutableServiceControllerBase
             if (!empty($sortBy) && $request->get("sort")[$sortBy[0]] == "desc") {
                 $sortDescending = true;
             }
-
         }
         $sortValues = array();
         foreach ($detailsFlat as $detail) {
@@ -140,8 +138,7 @@ class ServiceController extends ApiMutableServiceControllerBase
                 foreach ($value as $subkey => $subvalue) {
                     if ($key == "routes") {
                         $result[$key] = implode("<br />", $value);
-                    }
-                    else {
+                    } else {
                         $result[$key . "." . $subkey] = $subvalue;
                     }
                 }
@@ -171,10 +168,10 @@ class ServiceController extends ApiMutableServiceControllerBase
         $hostname = $mdlInitial->initial->hostname->__toString();
         if ($hostname == "") {
             $hostname = gethostname();
-            if(!$hostname){
+            if (!$hostname) {
                 $hostname = "OPNsense";
-            }else{
-                if(str_contains($hostname, ".")){
+            } else {
+                if (str_contains($hostname, ".")) {
                     $hostname = explode(".", $hostname)[0];
                 }
             }
@@ -283,7 +280,6 @@ class ServiceController extends ApiMutableServiceControllerBase
                 } elseif ($value == "false") {
                     $page[$i][$key] = 0;
                 }
-
             }
         }
         return $page;
