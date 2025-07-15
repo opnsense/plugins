@@ -15,96 +15,40 @@
             <Default>0</Default>
             <Required>Y</Required>
         </remotecommands>
-        <server type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </server>
-        <serverport type="TextField">
-            <Default>10051</Default>
-            <Required>N</Required>
-        </serverport>
+        <server type="TextField"/>
+        <serverport type="TextField"/>
         <hostname type="TextField">
             <Default>Zabbix proxy</Default>
             <Required>Y</Required>
         </hostname>
-        <listenport type="TextField">
-            <Default>10051</Default>
-            <Required>N</Required>
-        </listenport>
+        <listenport type="TextField"/>
         <listenip type="NetworkField">
-            <Default></Default>
             <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
-            <Required>N</Required>
         </listenip>
-        <sourceip type="NetworkField">
-            <Default></Default>
-            <Required>N</Required>
-        </sourceip>
-        <startpollers type="TextField">
-            <Default>5</Default>
-            <Required>N</Required>
-        </startpollers>
-        <startipmipollers type="IntegerField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </startipmipollers>
-        <startpollersunreachable type="IntegerField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </startpollersunreachable>
-        <starttrappers type="IntegerField">
-            <Default>5</Default>
-            <Required>N</Required>
-        </starttrappers>
-        <startpingers type="IntegerField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </startpingers>
-        <startdiscoverers type="IntegerField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </startdiscoverers>
-        <startvmwarecollectors type="IntegerField">
-            <Required>N</Required>
-        </startvmwarecollectors>
-        <starthttppollers type="IntegerField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </starthttppollers>
-        <cachesize type="TextField">
-            <Default>8M</Default>
-            <Required>N</Required>
-        </cachesize>
-        <historycachesize type="TextField">
-            <Default>16M</Default>
-            <Required>N</Required>
-        </historycachesize>
-        <historyindexcachesize type="TextField">
-            <Default>4M</Default>
-            <Required>N</Required>
-        </historyindexcachesize>
+        <sourceip type="NetworkField"/>
+        <startpollers type="TextField"/>
+        <startipmipollers type="IntegerField"/>
+        <startpollersunreachable type="IntegerField"/>
+        <starttrappers type="IntegerField"/>
+        <startpingers type="IntegerField"/>
+        <startdiscoverers type="IntegerField"/>
+        <startvmwarecollectors type="IntegerField"/>
+        <starthttppollers type="IntegerField"/>
+        <cachesize type="TextField"/>
+        <historycachesize type="TextField"/>
+        <historyindexcachesize type="TextField"/>
         <proxyofflinebuffer type="IntegerField">
-            <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>720</MaximumValue>
             <ValidationMessage>Set a number between 1 and 720.</ValidationMessage>
         </proxyofflinebuffer>
-        <timeout type="IntegerField">
-            <Default>4</Default>
-            <Required>N</Required>
-        </timeout>
-        <configfrequency type="IntegerField">
-            <Required>N</Required>
-        </configfrequency>
-        <datasenderfrequency type="IntegerField">
-            <Required>N</Required>
-        </datasenderfrequency>
+        <timeout type="IntegerField"/>
+        <configfrequency type="IntegerField"/>
+        <datasenderfrequency type="IntegerField"/>
         <statsip type="NetworkField">
-            <Default></Default>
             <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
-            <Required>N</Required>
         </statsip>
         <syslogEnable type="BooleanField">
             <Default>0</Default>
@@ -133,14 +77,10 @@
             <Required>Y</Required>
         </encryption>
         <encryptionidentity type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^.{1,128}$/</Mask>
             <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
         </encryptionidentity>
         <encryptionpsk type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^[A-Fa-f0-9]{32,512}$/</Mask>
             <ValidationMessage>Should be a hexadecimal string between 32 and 512 characters.</ValidationMessage>
         </encryptionpsk>
