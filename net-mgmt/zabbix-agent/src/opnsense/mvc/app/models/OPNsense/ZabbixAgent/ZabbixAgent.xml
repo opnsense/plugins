@@ -46,10 +46,7 @@
                     <NetMaskAllowed>N</NetMaskAllowed>
                     <ValidationMessage>Please provide a valid IP address, i.e. 10.0.0.1.</ValidationMessage>
                 </sourceIP>
-                <syslogEnable type="BooleanField">
-                    <Default>0</Default>
-                    <Required>N</Required>
-                </syslogEnable>
+                <syslogEnable type="BooleanField"/>
                 <logFileSize type="IntegerField">
                     <Default>100</Default>
                     <MinimumValue>1</MinimumValue>
@@ -142,15 +139,10 @@
                     <Required>Y</Required>
                 </encryption>
                 <encryptionidentity type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
                     <Mask>/^.{1,128}$/</Mask>
                     <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
                 </encryptionidentity>
-                <encryptionpsk type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </encryptionpsk>
+                <encryptionpsk type="TextField"/>
             </features>
         </settings>
         <userparameters>
