@@ -8,8 +8,6 @@
         <initial>
             <!-- fields -->
             <setupkey type="TextField">
-                <Required>N</Required>
-                <default>00000000-0000-0000-0000-000000000000</default>
                 <Mask>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i</Mask>
                 <ValidationMessage>Please specify a valid setup key.</ValidationMessage>
             </setupkey>
