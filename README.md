@@ -56,6 +56,7 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndproxy -- Neighbor Discovery Proxy
+net/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
