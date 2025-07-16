@@ -21,7 +21,7 @@ class VersionController extends ApiControllerBase
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
-    public function getAction()
+    public function getAction(): string
     {
         return (new Backend())->configdRun("crowdsec version");
     }

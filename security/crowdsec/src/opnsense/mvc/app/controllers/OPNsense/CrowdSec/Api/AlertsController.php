@@ -15,6 +15,48 @@ use OPNsense\Core\Backend;
 class AlertsController extends ApiControllerBase
 {
     /**
+    * Format scope and value as "scope:value"
+    *
+    * @param array $source Array with 'scope' and 'value' keys (can be a decision)
+    * @return string Formatted string
+    */
+    private function formatScopeValue(array $source): string
+    {
+        $scope = $source['scope'] ?? '';
+        if ($source['value'] !== '') {
+            $scope = $scope . ':' . $source['value'];
+        }
+        return $scope;
+    }
+
+    /**
+     * Summarize decision types as "type1:count1 type2:count2 ..."
+     *
+     * @param array $decisions List of decision arrays
+     * @return string Summary string
+     */
+    private function formatDecisions(array $decisions): string
+    {
+        $counts = [];
+
+        foreach ($decisions as $decision) {
+            if (!isset($decision['type'])) {
+                continue;
+            }
+
+            $type = $decision['type'];
+            $counts[$type] = ($counts[$type] ?? 0) + 1;
+        }
+
+        $parts = [];
+        foreach ($counts as $type => $count) {
+            $parts[] = "{$type}:{$count}";
+        }
+
+        return implode(' ', $parts);
+    }
+
+    /**
      * Retrieve list of alerts
      *
      * @return array of alerts
@@ -23,17 +65,24 @@ class AlertsController extends ApiControllerBase
      */
     public function searchAction(): array
     {
-        $rows = json_decode(trim((new Backend())->configdRun("crowdsec alerts-list")), true);
-        if ($rows === null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec alerts-list")), true);
+        if ($result === null) {
             return ["message" => "unable to retrieve data"];
         }
 
-        $total = sizeof($rows);
-        return [
-            "total" => $total,
-            "rowCount" => $total,
-            "current" => 1,
-            "rows" => $rows
-        ];
+        $rows = [];
+        foreach ($result as $alert) {
+            $rows[] = [
+                'id'          => $alert['id'],
+                'value'       => $this->formatScopeValue($alert['source']),
+                'reason'      => $alert['scenario'],
+                'country'     => $alert['source']['cn'],
+                'as'          => $alert['source']['as_name'],
+                'decisions'   => $this->formatDecisions($alert['decisions'] ?? []),
+                'created'  => $alert['created_at'],
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 }

@@ -13,15 +13,9 @@
                 selection: false,
                 multiSelect: false,
                 formatters: {
-                    "created": function(column, row) {
-                        return CrowdSec.formatters.datetime(row.created_at);
-                    },
-                    "last_seen": function(column, row) {
-                        return CrowdSec.formatters.datetime(row.last_pull);
-                    },
-                    "valid": function(column, row) {
-                        return CrowdSec.formatters.yesno(!row.revoked);
-                    },
+                    "created": CrowdSec.formatters.datetime,
+                    "last_seen": CrowdSec.formatters.datetime,
+                    "valid": CrowdSec.formatters.yesno,
                 },
             }
         });
@@ -38,7 +32,7 @@
             <th data-column-id="version">Version</th>
             <th data-column-id="created" data-formatter="created" data-visible="false">Created</th>
             <th data-column-id="valid" data-formatter="valid">Valid</th>
-            <th data-column-id="ip_address" data-formatter="ip_address">IP Address</th>
+            <th data-column-id="ip_address">IP Address</th>
             <th data-column-id="last_seen" data-formatter="last_seen">Last Seen</th>
             <th data-column-id="os" data-visible="false">OS</th>
         </tr>

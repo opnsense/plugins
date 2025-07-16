@@ -6,14 +6,13 @@
 const CrowdSec = (function () {
   'use strict';
 
-  const config_dir_path = "/usr/local/etc/crowdsec/";
-
   function _humanizeDate(text) {
     return moment(text).fromNow();
   }
 
   const formatters = {
-    yesno: function(val) {
+    yesno: function(column, row) {
+      const val = row[column.id];
       if (val) {
         return '<i class="fa fa-check text-success"></i>';
       } else {
@@ -21,11 +20,8 @@ const CrowdSec = (function () {
       }
     },
 
-    trimpath: function (val) {
-      return val ? val.replace(config_dir_path, '') : '';
-    },
-
-    datetime: function (val) {
+    datetime: function (column, row) {
+      const val = row[column.id];
       const parsed = moment(val);
       if (!val) {
         return '';

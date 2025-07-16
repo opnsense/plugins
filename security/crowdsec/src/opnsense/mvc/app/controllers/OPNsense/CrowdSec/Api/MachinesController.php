@@ -23,17 +23,24 @@ class MachinesController extends ApiControllerBase
      */
     public function searchAction(): array
     {
-        $rows = json_decode(trim((new Backend())->configdRun("crowdsec machines-list")), true);
-        if ($rows === null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec machines-list")), true);
+        if ($result === null) {
             return ["message" => "unable to retrieve data"];
         }
 
-        $total = sizeof($rows);
-        return [
-            "total" => $total,
-            "rowCount" => $total,
-            "current" => 1,
-            "rows" => $rows
-        ];
+        $rows = [];
+        foreach ($result as $machine) {
+            $rows[] = [
+                'name' => $machine['machineId'],
+                'ip_address' => $machine['ipAddress'],
+                'version' => $machine['version'],
+                'validated' => $machine['isValidated'],
+                'created' => $machine['created_at'],
+                'last_seen' => $machine['last_heartbeat'],
+                'os' => $machine['os'],
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 }

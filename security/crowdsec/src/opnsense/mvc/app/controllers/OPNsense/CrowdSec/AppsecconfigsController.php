@@ -6,13 +6,13 @@
 namespace OPNsense\CrowdSec;
 
 /**
- * Class AppsecrulesController
+ * Class AppsecconfigsController
  * @package OPNsense\CrowdSec
  */
-class AppsecrulesController extends \OPNsense\Base\IndexController
+class AppsecconfigsController extends \OPNsense\Base\IndexController
 {
-    public function indexAction()
+    public function indexAction(): void
     {
-        $this->view->pick('OPNsense/CrowdSec/appsecrulescontroller');
+        $this->view->pick('OPNsense/CrowdSec/appsecconfigs');
     }
 }

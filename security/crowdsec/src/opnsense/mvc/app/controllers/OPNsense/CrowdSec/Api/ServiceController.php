@@ -16,8 +16,10 @@ class ServiceController extends ApiControllerBase
 {
     /**
      * reconfigure CrowdSec
+     *
+     * @return array Status result
      */
-    public function reloadAction()
+    public function reloadAction(): array
     {
         $status = "failed";
         if ($this->request->isPost()) {
@@ -36,7 +38,11 @@ class ServiceController extends ApiControllerBase
     /**
      * Retrieve status of crowdsec
      *
-     * @return array
+     * @return array{
+     *     status: string,
+     *     crowdsec-status: string,
+     *     crowdsec-firewall-status: string
+     * }
      * @throws \Exception
      */
     public function statusAction()

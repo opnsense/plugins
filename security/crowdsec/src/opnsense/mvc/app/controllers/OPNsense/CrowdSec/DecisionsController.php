@@ -11,7 +11,7 @@ namespace OPNsense\CrowdSec;
  */
 class DecisionsController extends \OPNsense\Base\IndexController
 {
-    public function indexAction()
+    public function indexAction(): void
     {
         $this->view->pick('OPNsense/CrowdSec/decisions');
     }

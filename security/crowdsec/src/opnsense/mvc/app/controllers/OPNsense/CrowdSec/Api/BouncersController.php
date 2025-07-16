@@ -23,17 +23,25 @@ class BouncersController extends ApiControllerBase
      */
     public function searchAction(): array
     {
-        $rows = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
-        if ($rows === null) {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
+        if ($result === null) {
             return ["message" => "unable to retrieve data"];
         }
 
-        $total = sizeof($rows);
-        return [
-            "total" => $total,
-            "rowCount" => $total,
-            "current" => 1,
-            "rows" => $rows
-        ];
+        $rows = [];
+        foreach ($result as $bouncer) {
+            $rows[] = [
+                'name' => $bouncer['name'],
+                'type' => $bouncer['type'],
+                'version' => $bouncer['version'],
+                'created' => $bouncer['created_at'],
+                'valid' => $bouncer['revoked'] !== true,
+                'ip_address' => $bouncer['ip_address'],
+                'last_seen' => $bouncer['last_pull'],
+                'os' => $bouncer['os'],
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 }

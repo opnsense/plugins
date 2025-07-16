@@ -49,6 +49,21 @@ function unrollDecisions(array $alerts): array
 class DecisionsController extends ApiControllerBase
 {
     /**
+    * Format scope and value as "scope:value"
+    *
+    * @param array $source Array with 'scope' and 'value' keys
+    * @return string Formatted string
+    */
+    private function formatScopeValue(array $source): string
+    {
+        $scope = $source['scope'] ?? '';
+        if ($source['value'] !== '') {
+            $scope = $scope . ':' . $source['value'];
+        }
+        return $scope;
+    }
+
+    /**
      * Retrieve list of decisions
      *
      * @return array of decisions
@@ -62,18 +77,30 @@ class DecisionsController extends ApiControllerBase
             return ["message" => "unable to retrieve data"];
         }
 
-        $rows = unrollDecisions($result);
+        $decisions = unrollDecisions($result);
 
-        $total = sizeof($rows);
-        return [
-            "total" => $total,
-             "rowCount" => $total,
-             "current" => 1,
-            "rows" => $rows
-        ];
+        $rows = [];
+        foreach ($decisions as $dec) {
+            $alert_source = $dec['alert_source'] ?? [];
+
+            $rows[] = [
+                'id'           => $dec['id'],
+                'source'       => $dec['origin'],
+                'scope_value'  => $this->formatScopeValue($dec),
+                'reason'       => $dec['scenario'],
+                'action'       => $dec['type'],
+                'country'      => $alert_source['cn'] ?? '',
+                'as'           => $alert_source['as_name'] ?? '',
+                'events_count' => $dec['alert_events_count'],
+                'expiration'   => $dec['duration'],
+                'alert_id'     => $dec['alert_id'],
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 
-    public function delAction($decision_id)
+    public function delAction($decision_id): array
     {
         if ($this->request->isPost()) {
             $result = (new Backend())->configdRun("crowdsec decisions-delete ${decision_id}");
