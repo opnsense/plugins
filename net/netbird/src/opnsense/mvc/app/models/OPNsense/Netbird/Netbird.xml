@@ -1,0 +1,46 @@
+<model>
+    <mount>//OPNsense/netbird</mount>
+    <version>0.8.1</version>
+    <description>Netbird plugin</description>
+    <items>
+        <!-- container -->
+        <general>
+            <!-- fields -->
+            <Enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </Enabled>
+            <WgPort type="IntegerField">
+                <Required>Y</Required>
+                <default>51820</default>
+            </WgPort>
+            <QuantumEnabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </QuantumEnabled>
+            <DisableDNS type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </DisableDNS>
+            <DisableServerRoutes type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </DisableServerRoutes>
+            <DisableClientRoutes type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </DisableClientRoutes>
+            <QuantumPermissive type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </QuantumPermissive>
+            <CarpIf type="InterfaceField">
+                <Required>N</Required>
+            </CarpIf>
+            <VHID type="IntegerField">
+                <Required>N</Required>
+                <default>1</default>
+            </VHID>
+        </general>
+    </items>
+</model>
