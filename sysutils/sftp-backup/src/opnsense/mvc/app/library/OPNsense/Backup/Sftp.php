@@ -236,7 +236,7 @@ class Sftp extends Base implements IBackupProvider
                 $fileprefix = "config-";
             } else {
                 $config = $cnf->object();
-                $fileprefix = sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain);
+                $fileprefix = strtolower(sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain));
             }
             /**
              * Collect most recent backup, since /conf/backup/ always contains the latests, we can use the filename
