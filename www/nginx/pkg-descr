@@ -17,6 +17,7 @@ Plugin Changelog
 * Migrate from the deprecated 'listen … http2' directive to the 'http2' directive
 * Limit CSP log file size (migration notice: if you want to keep CSP violations logged, you will need to enable logging in the security policy)
 * Add basic support for forced caching (contributed by Eirik Øverby)
+* Add ability to override SNI for streams (contributed by DodoLeDev)
 
 1.33
 
