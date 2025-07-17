@@ -6,9 +6,16 @@ import subprocess
 import urllib.parse
 from typing import cast, Any
 import yaml
+import ipaddress
 
 logging.basicConfig(level=logging.INFO)
 
+
+def is_ipv6(str):
+    try:
+        return ipaddress.ip_address(str).version == 6
+    except:
+        return False
 
 def load_config(filename: str) -> dict[str, Any]:
     with open(filename) as fin:
@@ -27,6 +34,8 @@ def get_netloc(settings: dict[str, str]):
     # defaults if config has not been saved yet
     listen_address = settings.get('lapi_listen_address', '127.0.0.1')
     listen_port = settings.get('lapi_listen_port', '8080')
+    if is_ipv6(listen_address):
+        listen_address = "[" + listen_address + "]"
     return '{}:{}'.format(listen_address, listen_port)
 
 

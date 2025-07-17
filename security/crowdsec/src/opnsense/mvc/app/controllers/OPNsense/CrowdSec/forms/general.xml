@@ -60,9 +60,8 @@
       This is written in /usr/local/etc/crowdsec/config.yaml,
       local_api_credentials.yaml and bouncers/crowdsec-firewall-bouncer.yaml.
       To enable TLS, add the certificate information to config.yaml and change
-      http to https in the other two files. Comments in YAML will not be preserved.
-
-      IPv6 addresses must be enclosed in brackets [::1]</help>
+      http to https in the other two files. Comments in YAML will not be
+      preserved.</help>
   </field>
 
   <!-- lapi_listen_port -->
