@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2019 Deciso B.V.
+ *    Copyright (C) 2019-2025 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -43,7 +43,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        return $this->searchBase("addresses.address", array('enabled', 'email'), "email");
+        return $this->searchBase("addresses.address", null, "email");
     }
 
     public function setItemAction($uuid)
@@ -70,4 +70,5 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("addresses.address", $uuid, $enabled);
     }
+
 }
