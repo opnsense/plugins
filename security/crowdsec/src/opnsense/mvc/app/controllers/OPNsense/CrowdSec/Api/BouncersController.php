@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -32,13 +31,13 @@ class BouncersController extends ApiControllerBase
         foreach ($result as $bouncer) {
             $rows[] = [
                 'name' => $bouncer['name'],
-                'type' => $bouncer['type'],
-                'version' => $bouncer['version'],
-                'created' => $bouncer['created_at'],
-                'valid' => $bouncer['revoked'] !== true,
-                'ip_address' => $bouncer['ip_address'],
-                'last_seen' => $bouncer['last_pull'],
-                'os' => $bouncer['os'],
+                'type' => $bouncer['type'] ?? '',
+                'version' => $bouncer['version'] ?? '',
+                'created' => $bouncer['created_at'] ?? '',
+                'valid' => ($bouncer['revoked'] ?? false) !== true,
+                'ip_address' => $bouncer['ip_address'] ?? '',
+                'last_seen' => $bouncer['last_pull'] ?? '',
+                'os' => $bouncer['os'] ?? '',
             ];
         }
 

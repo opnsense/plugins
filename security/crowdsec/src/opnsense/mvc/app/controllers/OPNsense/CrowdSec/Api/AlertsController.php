@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -72,14 +71,15 @@ class AlertsController extends ApiControllerBase
 
         $rows = [];
         foreach ($result as $alert) {
+            $source = $alert['source'] ?? [];
             $rows[] = [
                 'id'          => $alert['id'],
-                'value'       => $this->formatScopeValue($alert['source']),
-                'reason'      => $alert['scenario'],
-                'country'     => $alert['source']['cn'],
-                'as'          => $alert['source']['as_name'],
+                'value'       => $this->formatScopeValue($source ?? []),
+                'reason'      => $alert['scenario'] ?? '',
+                'country'     => $source['cn'] ?? '',
+                'as'          => $source['as_name'] ?? '',
                 'decisions'   => $this->formatDecisions($alert['decisions'] ?? []),
-                'created'  => $alert['created_at'],
+                'created'  => $alert['created_at'] ?? '',
             ];
         }
 

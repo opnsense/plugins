@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\CrowdSec\Util;
 
 use OPNsense\Core\Backend;
@@ -36,10 +35,10 @@ class ScenariosController extends ApiControllerBase
         foreach ($items as $item) {
             $rows[] = [
                 'name' => $item['name'],
-                'status' => $item['status'],
-                'local_version' => $item['local_version'],
-                'local_path' => Util::trimLocalPath($item['local_path']),
-                'description' => $item['description'],
+                'status' => $item['status'] ?? '',
+                'local_version' => $item['local_version'] ?? '',
+                'local_path' => Util::trimLocalPath($item['local_path'] ?? ''),
+                'description' => $item['description'] ?? '',
             ];
         }
 

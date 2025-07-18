@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 
@@ -85,14 +84,14 @@ class DecisionsController extends ApiControllerBase
 
             $rows[] = [
                 'id'           => $dec['id'],
-                'source'       => $dec['origin'],
+                'source'       => $dec['origin'] ?? '',
                 'scope_value'  => $this->formatScopeValue($dec),
-                'reason'       => $dec['scenario'],
-                'action'       => $dec['type'],
+                'reason'       => $dec['scenario'] ?? '',
+                'action'       => $dec['type'] ?? '',
                 'country'      => $alert_source['cn'] ?? '',
                 'as'           => $alert_source['as_name'] ?? '',
-                'events_count' => $dec['alert_events_count'],
-                'expiration'   => $dec['duration'],
+                'events_count' => $dec['alert_events_count'] ?? '',
+                'expiration'   => $dec['duration'] ?? '',
                 'alert_id'     => $dec['alert_id'],
             ];
         }
@@ -103,7 +102,7 @@ class DecisionsController extends ApiControllerBase
     public function delAction($decision_id): array
     {
         if ($this->request->isPost()) {
-            $result = (new Backend())->configdRun("crowdsec decisions-delete ${decision_id}");
+            $result = (new Backend())->configdRun("crowdsec decisions-delete {$decision_id}");
             if ($result === null) {
                 return ["result" => "deleted"];
             }

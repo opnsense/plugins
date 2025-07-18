@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -32,12 +31,12 @@ class MachinesController extends ApiControllerBase
         foreach ($result as $machine) {
             $rows[] = [
                 'name' => $machine['machineId'],
-                'ip_address' => $machine['ipAddress'],
-                'version' => $machine['version'],
-                'validated' => $machine['isValidated'],
-                'created' => $machine['created_at'],
-                'last_seen' => $machine['last_heartbeat'],
-                'os' => $machine['os'],
+                'ip_address' => $machine['ipAddress'] ?? '',
+                'version' => $machine['version'] ?? '',
+                'validated' => $machine['isValidated'] ?? false,
+                'created' => $machine['created_at'] ?? '',
+                'last_seen' => $machine['last_heartbeat'] ?? '',
+                'os' => $machine['os'] ?? '',
             ];
         }
 
