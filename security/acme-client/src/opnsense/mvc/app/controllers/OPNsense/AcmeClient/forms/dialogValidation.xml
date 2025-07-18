@@ -1234,6 +1234,39 @@
         <type>text</type>
     </field>
     <field>
+        <label>Selectel V2</label>
+        <type>header</type>
+        <style>table_dns table_dns_selectelv2</style>
+    </field>
+    <field>
+        <id>validation.dns_selectelv2_token_lifetime</id>
+        <label>Token lifetime</label>
+        <type>text</type>
+        <help>Token lifetime in minutes (0-1440)</help>
+    </field>
+    <field>
+        <id>validation.dns_selectelv2_account_id</id>
+        <label>Account ID</label>
+        <type>text</type>
+        <help>Account number, can be seen in the upper right corner on the provider's website</help>
+    </field>
+    <field>
+        <id>validation.dns_selectelv2_project_name</id>
+        <label>Project name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_selectelv2_login_name</id>
+        <label>Service username</label>
+        <type>text</type>
+        <help>Service username, can be seen in the <a href="https://my.selectel.ru/iam/users_management/users?type=service">control panel</a></help>
+    </field>
+    <field>
+        <id>validation.dns_selectelv2_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Selfhost</label>
         <type>header</type>
         <style>table_dns table_dns_selfhost</style>
