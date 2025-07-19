@@ -136,7 +136,7 @@ class ServiceController extends ApiMutableServiceControllerBase
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 foreach ($value as $subkey => $subvalue) {
-                    if ($key == "routes") {
+                    if ($key == "networks") {
                         $result[$key] = implode("<br />", $value);
                     } else {
                         $result[$key . "." . $subkey] = $subvalue;
