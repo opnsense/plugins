@@ -11,7 +11,7 @@ namespace OPNsense\CrowdSec;
  */
 class GeneralController extends \OPNsense\Base\IndexController
 {
-    public function indexAction()
+    public function indexAction(): void
     {
         $this->view->pick('OPNsense/CrowdSec/general');
         $this->view->generalForm = $this->getForm("general");
