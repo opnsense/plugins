@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -21,13 +20,27 @@ class BouncersController extends ApiControllerBase
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
-    public function getAction()
+    public function searchAction(): array
     {
         $result = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
-        if ($result !== null) {
-            // only return valid json type responses
-            return $result;
+        if ($result === null) {
+            return ["message" => "unable to retrieve data"];
         }
-        return ["message" => "unable to list bouncers"];
+
+        $rows = [];
+        foreach ($result as $bouncer) {
+            $rows[] = [
+                'name' => $bouncer['name'],
+                'type' => $bouncer['type'] ?? '',
+                'version' => $bouncer['version'] ?? '',
+                'created' => $bouncer['created_at'] ?? '',
+                'valid' => ($bouncer['revoked'] ?? false) !== true,
+                'ip_address' => $bouncer['ip_address'] ?? '',
+                'last_seen' => $bouncer['last_pull'] ?? '',
+                'os' => $bouncer['os'] ?? '',
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 }
