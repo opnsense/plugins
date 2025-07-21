@@ -6,16 +6,12 @@ import subprocess
 import urllib.parse
 from typing import cast, Any
 import yaml
-import ipaddress
 
 logging.basicConfig(level=logging.INFO)
 
 
-def is_ipv6(str):
-    try:
-        return ipaddress.ip_address(str).version == 6
-    except:
-        return False
+def is_ipv6(ip: str) -> bool:
+    return ":" in ip
 
 def load_config(filename: str) -> dict[str, Any]:
     with open(filename) as fin:
