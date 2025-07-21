@@ -114,8 +114,8 @@
         <tr>
             <th data-column-id="fqdn" data-type="string" data-identifier="false"
                 data-visible="true">{{ lang._('FQDN') }}</th>
-            <th data-column-id="routes" data-type="string" data-identifier="false"
-                data-visible="true">{{ lang._('Routes') }}</th>
+            <th data-column-id="networks" data-type="string" data-identifier="false"
+                data-visible="true">{{ lang._('Networks') }}</th>
             <th data-width="8%" data-column-id="netbirdIp" data-type="string" data-identifier="false"
                 data-visible="true">{{ lang._('IP') }}</th>
             <th data-width="5%" data-column-id="direct" data-type="string" data-identifier="false"
