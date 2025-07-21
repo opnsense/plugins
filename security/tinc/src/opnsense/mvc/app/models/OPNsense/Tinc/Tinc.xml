@@ -73,7 +73,6 @@
                 <cipher type="JsonKeyValueStoreField">
                     <Required>Y</Required>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
                     <Default>aes-256-cbc</Default>
                 </cipher>
                 <mode type="OptionField">
@@ -164,7 +163,6 @@
                 <cipher type="JsonKeyValueStoreField">
                     <Required>Y</Required>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
                     <Default>aes-256-cbc</Default>
                 </cipher>
                 <connectTo type="BooleanField">
