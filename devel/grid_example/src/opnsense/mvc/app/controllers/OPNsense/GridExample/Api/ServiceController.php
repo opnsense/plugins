@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2019-2025 Deciso B.V.
+ *    Copyright (C) 2015-2025 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -28,19 +28,22 @@
  *
  */
 
-namespace OPNsense\GridExample;
+namespace OPNsense\GridExample\Api;
+
+use OPNsense\Base\ApiControllerBase;
 
 /**
- * Class IndexController
+ * Class ServiceController
  * @package OPNsense\GridExample
  */
-class IndexController extends \OPNsense\Base\IndexController
+class ServiceController extends ApiControllerBase
 {
-    public function indexAction()
+    /**
+     * non operational reconfigure for base_apply_button
+     */
+    public function reconfigureAction()
     {
-        $this->view->pick('OPNsense/GridExample/index');
-        $this->view->formDialogAddress = $this->getForm("dialogAddress");
-        // convert dialog for grid table
-        $this->view->formGridAddress = $this->getFormGrid("dialogAddress");
+        sleep(1); // simulate something happening
+        return ["status" => "ok"];
     }
 }
