@@ -70,5 +70,4 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->toggleBase("addresses.address", $uuid, $enabled);
     }
-
 }

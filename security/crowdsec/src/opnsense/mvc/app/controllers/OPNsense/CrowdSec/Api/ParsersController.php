@@ -7,7 +7,6 @@ namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\CrowdSec\Util;
-
 use OPNsense\Core\Backend;
 
 /**

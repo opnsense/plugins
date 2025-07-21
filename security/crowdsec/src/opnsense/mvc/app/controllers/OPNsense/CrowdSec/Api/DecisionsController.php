@@ -8,7 +8,6 @@ namespace OPNsense\CrowdSec\Api;
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
 
-
 function unrollDecisions(array $alerts): array
 {
     $result = [];
