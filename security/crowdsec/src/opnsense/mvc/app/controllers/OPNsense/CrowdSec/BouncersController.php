@@ -6,13 +6,13 @@
 namespace OPNsense\CrowdSec;
 
 /**
- * Class OverviewController
+ * Class BouncersController
  * @package OPNsense\CrowdSec
  */
-class OverviewController extends \OPNsense\Base\IndexController
+class BouncersController extends \OPNsense\Base\IndexController
 {
     public function indexAction(): void
     {
-        $this->view->pick('OPNsense/CrowdSec/overview');
+        $this->view->pick('OPNsense/CrowdSec/bouncers');
     }
 }
