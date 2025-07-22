@@ -271,8 +271,7 @@
             <div class="table-responsive" id="peersDetail"></div>
         </div>
     </div>
-</section>
-<section class="page-content-main">
+    <br>
     <div class="content-box">
         <div class="col-md-12">
             <h2>{{ lang._('Package Versions') }}</h2>
