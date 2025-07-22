@@ -1,4 +1,4 @@
-{% if helpers.exists('OPNsense.netbird.general.Enabled') and OPNsense.netbird.general.Enabled|default("0") == '1' %}
+{% if helpers.exists('OPNsense.netbird.general.enable') and OPNsense.netbird.general.enable|default("0") == '1' %}
 netbird_enable="YES"
 {% else %}
 netbird_enable="NO"

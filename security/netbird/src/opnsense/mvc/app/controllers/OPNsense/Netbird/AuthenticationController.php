@@ -4,6 +4,7 @@
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  * Copyright (C) 2025 squared GmbH
  * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +32,14 @@
 namespace OPNsense\Netbird;
 
 /**
- * Class ConstatusController
+ * Class AuthenticationController
  * @package OPNsense\Netbird
  */
-class ConstatusController extends \OPNsense\Base\IndexController
+class AuthenticationController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->pick('OPNsense/Netbird/constatus');
+        $this->view->authenticationForm = $this->getForm("authentication");
+        $this->view->pick('OPNsense/Netbird/authentication');
     }
 }

@@ -1,0 +1,6 @@
+<model>
+    <mount>//OPNsense/netbird/status</mount>
+    <description>NetBird status</description>
+    <items>
+    </items>
+</model>

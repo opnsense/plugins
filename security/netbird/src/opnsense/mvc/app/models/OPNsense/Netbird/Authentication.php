@@ -4,6 +4,7 @@
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  * Copyright (C) 2025 squared GmbH
  * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +33,6 @@ namespace OPNsense\Netbird;
 
 use OPNsense\Base\BaseModel;
 
-class Initial extends BaseModel
+class Authentication extends BaseModel
 {
 }

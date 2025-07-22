@@ -33,34 +33,70 @@ namespace OPNsense\Netbird\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Netbird\Authentication;
 
 /**
- * netbird settings controller
+ * netbird authentication controller
  * @package OPNsense\Netbird
  */
-class SettingsController extends ApiMutableModelControllerBase
+class AuthenticationController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'settings';
-    protected static $internalModelClass = '\OPNsense\Netbird\Settings';
+    protected static $internalModelName = 'authentication';
+    protected static $internalModelClass = '\OPNsense\Netbird\Authentication';
 
-    public function syncAction()
+    public function getAction(): array
+    {
+        $mdl = new Authentication();
+
+        $managementUrl = $mdl->managementUrl->__toString();
+        $setupKey = $mdl->setupKey->__toString();
+
+        $defaultKey = '00000000-0000-0000-0000-000000000000';
+        if (!empty($setupKey) && $setupKey !== $defaultKey) {
+            $visiblePart = substr($setupKey, 0, 4);
+            $maskedKey = $visiblePart . str_repeat('*', max(4, strlen($setupKey) - 4));
+        }else{
+            $maskedKey = $defaultKey;
+        }
+
+        return [
+            'authentication' => [
+                'managementUrl' => $managementUrl,
+                'setupKey' => $maskedKey
+            ]
+        ];
+    }
+
+    public function upAction()
     {
         $backend = new Backend();
-
-        $result = $backend->configdRun("netbird sync-config");
-        if (stripos($result, 'done') === false) {
-            return [
-                'result' => 'failed to sync config: ' . $result,
-            ];
-        }
+        $mdl = new Authentication();
 
         $status = json_decode($backend->configdRun("netbird status-json"), true);
         $connected = $status['management']['connected'] ?? false;
+
         if (json_last_error() === JSON_ERROR_NONE && $connected === true) {
             $backend->configdRun("netbird down");
-            $backend->configdRun("netbird up");
         }
 
-        return ['result' => 'synced'];
+        $managementUrl = $mdl->managementUrl->__toString();
+        $setupKey = $mdl->setupKey->__toString();
+
+        $result = $backend->configdpRun("netbird up-setup-key", array($managementUrl, $setupKey));
+        return ['result' => trim($result)];
+    }
+
+    public function downAction(): array
+    {
+        $backend = new Backend();
+
+        $status = json_decode($backend->configdRun("netbird status-json"), true);
+        $connected = $status['management']['connected'] ?? false;
+
+        if (json_last_error() === JSON_ERROR_NONE && $connected === true) {
+            $result = $backend->configdRun("netbird down");
+            return ['result' => trim($result)];
+        }
+        return ['result' => 'already disconnected or not running'];
     }
 }
