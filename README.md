@@ -56,7 +56,6 @@ net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndproxy -- Neighbor Discovery Proxy
-net/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -88,6 +87,7 @@ security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (ne
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
+security/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
 security/softether -- Cross-platform Multi-protocol VPN Program (development only)
