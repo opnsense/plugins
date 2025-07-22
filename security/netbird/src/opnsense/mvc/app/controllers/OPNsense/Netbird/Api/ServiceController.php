@@ -29,18 +29,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\NetBird\Api;
+namespace OPNsense\Netbird\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 
 /**
  * Class ServiceController
- * @package OPNsense\NetBird
+ * @package OPNsense\Netbird
  */
 class ServiceController extends ApiMutableServiceControllerBase
 {
-    protected static $internalServiceClass = '\OPNsense\NetBird\Settings';
+    protected static $internalServiceClass = '\OPNsense\Netbird\Settings';
     protected static $internalServiceEnabled = 'general.enable';
-    protected static $internalServiceTemplate = 'OPNsense/NetBird';
+    protected static $internalServiceTemplate = 'OPNsense/Netbird';
     protected static $internalServiceName = 'netbird';
 }
