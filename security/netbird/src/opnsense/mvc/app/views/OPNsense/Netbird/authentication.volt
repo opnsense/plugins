@@ -32,24 +32,17 @@
         ajaxGet('/api/netbird/status/status', {}, (data) => {
             const $connectBtn = $("#connectBtn");
             const $disconnectBtn = $("#disconnectBtn");
-            const $status = $("#status");
 
             $("#netbird-actions").removeClass("hidden");
 
-            let message, type;
+            const isConnected = data.management?.connected === true;
+            const message = isConnected ? "NetBird is connected" : "NetBird is not connected";
+            const type = isConnected ? "info" : "warning";
 
-            if (data.length === 0) {
-                message = "NetBird service is not running. Please start the service and refresh the page";
-                type = "danger";
-            } else {
-                const isConnected = data.management?.connected === true;
-                message = isConnected ? "NetBird is connected" : "NetBird is not connected";
-                type = isConnected ? "info" : "warning";
+            $connectBtn.toggleClass("hidden", isConnected);
+            $disconnectBtn.toggleClass("hidden", !isConnected);
 
-                $connectBtn.toggleClass("hidden", isConnected);
-                $disconnectBtn.toggleClass("hidden", !isConnected);
-            }
-            $status.removeClass().addClass("alert alert-" + type).text(message).show();
+            $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
         });
     }
 
