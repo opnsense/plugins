@@ -204,6 +204,8 @@
                     <Mask>/^(.){1,255}$/u</Mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
+                <current_ip type="TextField" volatile="true"/>
+                <current_mtime type="TextField" volatile="true"/>
             </account>
         </accounts>
     </items>
