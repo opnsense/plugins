@@ -35,7 +35,7 @@
             updateServiceControlUI('netbird');
         });
 
-        $("#sync").SimpleActionButton({
+        $("#reconfigureAct").SimpleActionButton({
             onPreAction: () => {
                 const dfObj = new $.Deferred();
                 saveFormToEndpoint("/api/netbird/settings/set", 'frmSettings', () => {
@@ -54,17 +54,4 @@
 <div class="content-box">
     {{ partial("layout_partials/base_form",['fields':settingsForm,'id':'frmSettings']) }}
 </div>
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="sync"
-                    data-endpoint='/api/netbird/settings/sync'
-                    data-label="{{ lang._('Save') }}"
-                    data-error-title="{{ lang._('Error syncing NetBird settings') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-        </div>
-    </div>
-</section>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/netbird/settings/sync', 'data_service_widget': 'netbird'}) }}
