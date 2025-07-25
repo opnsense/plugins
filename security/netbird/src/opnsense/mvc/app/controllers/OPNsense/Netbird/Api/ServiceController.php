@@ -1,9 +1,6 @@
 <?php
 
 /*
- * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
- * Copyright (C) 2025 squared GmbH
- * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
  * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
