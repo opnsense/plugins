@@ -55,7 +55,7 @@ class AuthenticationController extends ApiMutableModelControllerBase
         if (!empty($setupKey) && $setupKey !== $defaultKey) {
             $visiblePart = substr($setupKey, 0, 4);
             $maskedKey = $visiblePart . str_repeat('*', max(4, strlen($setupKey) - 4));
-        }else{
+        } else {
             $maskedKey = $defaultKey;
         }
 

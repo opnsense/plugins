@@ -201,7 +201,7 @@
             ajaxGet('/api/netbird/status/status', {}, (data) => {
                 const status = getPeerConnectionStatus(data);
                 const details = getPeersDetail(data);
-                
+
                 const isConnected = data.management?.connected === true;
                 $peersDetailContainer.toggleClass("hidden", !isConnected);
                 const renderPreTable = (content, maxHeight = null) => {
