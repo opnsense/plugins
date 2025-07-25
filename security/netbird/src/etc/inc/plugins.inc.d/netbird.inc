@@ -31,7 +31,7 @@
 
 function netbird_enabled()
 {
-    return !empty((string)(new \OPNsense\Netbird\Settings())->general->enable);
+    return !(new \OPNsense\Netbird\Settings())->general->enable->isEmpty();
 }
 
 function netbird_services()
