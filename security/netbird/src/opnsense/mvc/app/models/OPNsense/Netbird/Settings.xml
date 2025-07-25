@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/netbird/settings</mount>
     <description>NetBird settings</description>
+    <version>1.0.0</version>
     <items>
         <general>
             <enable type="BooleanField">

@@ -1,6 +1,7 @@
 <model>
     <mount>//OPNsense/netbird/authentication</mount>
     <description>NetBird authentication</description>
+    <version>1.0.0</version>
     <items>
         <managementUrl type="UrlField">
             <Required>Y</Required>
