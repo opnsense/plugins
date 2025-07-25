@@ -4,6 +4,7 @@
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  * Copyright (C) 2025 squared GmbH
  * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,16 +29,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Netbird;
+namespace OPNsense\Netbird\Api;
+
+use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 /**
- * Class ConstatusController
+ * Class StatusController
  * @package OPNsense\Netbird
  */
-class ConstatusController extends \OPNsense\Base\IndexController
+class StatusController extends ApiMutableModelControllerBase
 {
-    public function indexAction()
+    protected static $internalModelClass = '\OPNsense\Netbird\Status';
+    protected static $internalModelName = 'Netbird';
+
+    public function statusAction(): array
     {
-        $this->view->pick('OPNsense/Netbird/constatus');
+        $backend =  new Backend();
+        $status = json_decode($backend->configdRun("netbird status-json"), true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($status)) {
+            return $status;
+        }
+        return [];
     }
 }

@@ -4,6 +4,7 @@
  * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  * Copyright (C) 2025 squared GmbH
  * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,27 +31,40 @@
 
 function netbird_enabled()
 {
-    return !(new \OPNsense\Netbird\Netbird())->general->Enabled->isEmpty();
+    return !(new \OPNsense\Netbird\Settings())->general->enable->isEmpty();
 }
 
 function netbird_services()
 {
-    $services = array();
-
+    $services = [];
     if (!netbird_enabled()) {
         return $services;
     }
 
-    $services[] = array(
-        'description' => gettext('Netbird'),
-        'configd' => array(
-            'restart' => array('netbird restart'),
-            'start' => array('netbird start'),
-            'stop' => array('netbird stop'),
-        ),
+    $services[] = [
+        'description' => gettext('NetBird'),
+        'configd' => [
+            'restart' => ['netbird restart'],
+            'start' => ['netbird start'],
+            'stop' => ['netbird stop'],
+        ],
         'name' => 'netbird',
         'pidfile' => '/var/run/netbird.pid',
-    );
+    ];
 
     return $services;
+}
+
+function netbird_configure()
+{
+    return [
+        'netbird_sync_config' => ['netbird_configure_do']
+    ];
+}
+
+function netbird_configure_do($verbose = false)
+{
+    service_log('Sync NetBird config...', $verbose);
+    (new \OPNsense\Netbird\Settings())->syncConfig();
+    service_log("done.\n", $verbose);
 }

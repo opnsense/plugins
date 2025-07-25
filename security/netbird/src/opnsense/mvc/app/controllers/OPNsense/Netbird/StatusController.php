@@ -1,9 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
- * Copyright (C) 2025 squared GmbH
- * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +29,13 @@
 namespace OPNsense\Netbird;
 
 /**
- * Class IndexController
+ * Class StatusController
  * @package OPNsense\Netbird
  */
-class IndexController extends \OPNsense\Base\IndexController
+class StatusController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->generalForm = $this->getForm('general');
-        $this->view->initialUpForm = $this->getForm('initialup');
-        $this->view->pick('OPNsense/Netbird/index');
+        $this->view->pick('OPNsense/Netbird/status');
     }
 }

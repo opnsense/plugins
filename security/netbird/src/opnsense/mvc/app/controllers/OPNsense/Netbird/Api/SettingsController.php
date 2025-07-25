@@ -1,9 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
- * Copyright (C) 2025 squared GmbH
- * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +29,35 @@
 namespace OPNsense\Netbird\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Core\Backend;
 
 /**
- * Netbird settings controller
+ * netbird settings controller
  * @package OPNsense\Netbird
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelName = 'netbird';
-    protected static $internalModelClass = 'OPNsense\Netbird\Netbird';
+    protected static $internalModelName = 'settings';
+    protected static $internalModelClass = '\OPNsense\Netbird\Settings';
+
+    public function syncAction()
+    {
+        $backend = new Backend();
+
+        $result = $backend->configdRun("netbird sync-config");
+        if (stripos($result, 'done') === false) {
+            return [
+                'result' => 'failed to sync config: ' . $result,
+            ];
+        }
+
+        $status = json_decode($backend->configdRun("netbird status-json"), true);
+        $connected = $status['management']['connected'] ?? false;
+        if (json_last_error() === JSON_ERROR_NONE && $connected === true) {
+            $backend->configdRun("netbird down");
+            $backend->configdRun("netbird up");
+        }
+
+        return ['result' => 'synced'];
+    }
 }

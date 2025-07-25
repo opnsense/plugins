@@ -1,9 +1,10 @@
 <menu>
     <VPN>
-        <Netbird cssClass="fa fa-lock fa-fw">
-            <Settings order="40" url="/ui/netbird"/>
-            <ConStatus order="50" VisibleName="Status" url="/ui/netbird/constatus"/>
-            <LogFile VisibleName="Log File" order="60" url="/ui/diagnostics/log/core/netbird"/>
-        </Netbird>
+        <NetBird cssClass="fa fa-lock fa-fw">
+            <Authentication order="10" url="/ui/netbird/authentication"/>
+            <Settings order="20" url="/ui/netbird/settings"/>
+            <Status order="30" url="/ui/netbird/status"/>
+            <LogFile order="40" VisibleName="Log File" url="/ui/diagnostics/log/core/netbird"/>
+        </NetBird>
     </VPN>
 </menu>
