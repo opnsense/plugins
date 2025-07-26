@@ -43,36 +43,36 @@ $( document ).ready(function() {
          *************************************************************************************************************/
 
         $("#grid-homeservers").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchHomeserver',
-                'get':'/api/freeradius/proxy/getHomeserver/',
-                'set':'/api/freeradius/proxy/setHomeserver/',
-                'add':'/api/freeradius/proxy/addHomeserver/',
-                'del':'/api/freeradius/proxy/delHomeserver/',
-                'toggle':'/api/freeradius/proxy/toggleHomeserver/',
+            {   'search':'/api/freeradius/proxy/search_homeserver',
+                'get':'/api/freeradius/proxy/get_homeserver/',
+                'set':'/api/freeradius/proxy/set_homeserver/',
+                'add':'/api/freeradius/proxy/add_homeserver/',
+                'del':'/api/freeradius/proxy/del_homeserver/',
+                'toggle':'/api/freeradius/proxy/toggle_homeserver/',
             options: {
                 rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
         $("#grid-homeserverpools").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchHomeserverpool',
-                'get':'/api/freeradius/proxy/getHomeserverpool/',
-                'set':'/api/freeradius/proxy/setHomeserverpool/',
-                'add':'/api/freeradius/proxy/addHomeserverpool/',
-                'del':'/api/freeradius/proxy/delHomeserverpool/',
-                'toggle':'/api/freeradius/proxy/toggleHomeserverpool/',
+            {   'search':'/api/freeradius/proxy/search_homeserverpool',
+                'get':'/api/freeradius/proxy/get_homeserverpool/',
+                'set':'/api/freeradius/proxy/set_homeserverpool/',
+                'add':'/api/freeradius/proxy/add_homeserverpool/',
+                'del':'/api/freeradius/proxy/del_homeserverpool/',
+                'toggle':'/api/freeradius/proxy/toggle_homeserverpool/',
             options: {
                 rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
         $("#grid-realms").UIBootgrid(
-            {   'search':'/api/freeradius/proxy/searchRealm',
-                'get':'/api/freeradius/proxy/getRealm/',
-                'set':'/api/freeradius/proxy/setRealm/',
-                'add':'/api/freeradius/proxy/addRealm/',
-                'del':'/api/freeradius/proxy/delRealm/',
-                'toggle':'/api/freeradius/proxy/toggleRealm/',
+            {   'search':'/api/freeradius/proxy/search_realm',
+                'get':'/api/freeradius/proxy/get_realm/',
+                'set':'/api/freeradius/proxy/set_realm/',
+                'add':'/api/freeradius/proxy/add_realm/',
+                'del':'/api/freeradius/proxy/del_realm/',
+                'toggle':'/api/freeradius/proxy/toggle_realm/',
             options: {
                 rowCount:[10,25,50,100,500,1000]
                 }

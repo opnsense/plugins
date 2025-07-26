@@ -4,11 +4,11 @@
   <items>
     <policy type="ArrayField">
       <enabled type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </enabled>
       <type type="OptionField">
-        <default>both</default>
+        <Default>both</Default>
         <Required>Y</Required>
         <OptionValues>
           <both>both</both>
@@ -32,7 +32,7 @@
         <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
       </endport>
       <action type="OptionField">
-          <default>accept</default>
+          <Default>accept</Default>
           <Required>Y</Required>
           <OptionValues>
             <accept>Accept</accept>

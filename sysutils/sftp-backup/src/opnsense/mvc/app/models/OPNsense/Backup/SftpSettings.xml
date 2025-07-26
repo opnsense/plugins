@@ -17,7 +17,7 @@
         </enabled>
         <url type="TextField">
             <Required>N</Required>
-            <mask>/^((sftp))?:\/\/.*[^\/]$/</mask>
+            <Mask>/^((sftp))?:\/\/.*[^\/]$/</Mask>
             <ValidationMessage>A valid location must be provided.</ValidationMessage>
             <Constraints>
                 <check001>

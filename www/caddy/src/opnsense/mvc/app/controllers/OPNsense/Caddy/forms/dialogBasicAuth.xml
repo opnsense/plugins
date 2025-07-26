@@ -10,6 +10,9 @@
         <label>Password</label>
         <type>text</type>
         <help><![CDATA[Enter a password. It will be hashed with bcrypt. It can only be set and changed but will not be visible anymore.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
     </field>
     <field>
         <id>basicauth.description</id>

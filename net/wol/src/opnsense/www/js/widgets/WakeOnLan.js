@@ -47,7 +47,7 @@ export default class WakeOnLan extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        const data = await this.ajaxCall('/api/wol/wol/searchHost');
+        const data = await this.ajaxCall('/api/wol/wol/search_host');
 
         let rows = [];
         if (data.total == 0) {
@@ -62,7 +62,7 @@ export default class WakeOnLan extends BaseTableWidget {
 
           //NOTE: this ARP list call is the most expensive one and can grow substantialy in big networks
           //With previous widget it had been done on the backend side with direct exec of 'arp -an | grep ...'
-          const arp = await this.ajaxCall(`/api/diagnostics/interface/getArp${''}`);
+          const arp = await this.ajaxCall(`/api/diagnostics/interface/get_arp${''}`);
 
           for(let it = 0; it < data.rows.length; it++){
               const item = data.rows[it];

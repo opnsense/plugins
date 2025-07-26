@@ -6,6 +6,19 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.0.2
+
+Add: Global server timeout options (opnsense/plugins/pull/4778)
+Cleanup: Change all camelCase to snake_case in api notations (opnsense/plugins/pull/4767,4768,4776)
+Cleanup: Use SimpleActionButton in general.volt (opnsense/plugins/pull/4779)
+Cleanup: Change em into px, fix key/value display in formatter (opnsense/plugins/pull/4807)
+Cleanup: Remove obsolete model_relation_domain formatter (opnsense/plugins/pull/4813)
+
+2.0.1
+
+Add: Active health checks to handlers (contributed by zaben903) (opnsense/plugins/pull/4721)
+Fix: Add handler command sometimes clearing domain selection in open dialogue (opnsense/plugins/pull/4748)
+
 2.0.0
 
 * Attention - Breaking Change: All DNS Providers except Cloudflare have been removed and will not come back (opnsense/plugins/pull/4691)

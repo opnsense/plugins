@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
         <grid_view>
-            <width>2em</width>
+            <width>100</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -21,7 +21,6 @@
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
         <grid_view>
             <visible>false</visible>
-            <formatter>model_relation_domain</formatter>
         </grid_view>
     </field>
     <field>

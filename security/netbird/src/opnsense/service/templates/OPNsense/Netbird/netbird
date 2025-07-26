@@ -1,0 +1,5 @@
+{% if OPNsense.netbird.general.enable == '1' %}
+netbird_enable="YES"
+{% else %}
+netbird_enable="NO"
+{% endif %}

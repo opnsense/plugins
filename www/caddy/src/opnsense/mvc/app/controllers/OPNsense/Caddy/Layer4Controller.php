@@ -40,9 +40,9 @@ class Layer4Controller extends IndexController
         $this->view->pick('OPNsense/Caddy/reverse_proxy');
 
         $this->view->formDialogLayer4 = $this->getForm('dialogLayer4');
-        $this->view->formGridLayer4 = $this->getFormGrid('dialogLayer4', 'Layer4');
+        $this->view->formGridLayer4 = $this->getFormGrid('dialogLayer4', 'layer4');
 
         $this->view->formDialogLayer4Openvpn = $this->getForm('dialogLayer4Openvpn');
-        $this->view->formGridLayer4Openvpn = $this->getFormGrid('dialogLayer4Openvpn', 'Layer4Openvpn');
+        $this->view->formGridLayer4Openvpn = $this->getFormGrid('dialogLayer4Openvpn', 'layer4_openvpn');
     }
 }

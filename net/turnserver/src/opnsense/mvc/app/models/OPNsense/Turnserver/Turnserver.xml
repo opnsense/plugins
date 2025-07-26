@@ -11,7 +11,7 @@
             <ListenIP type="NetworkField">
                 <Default>127.0.0.1</Default>
                 <FieldSeparator>,</FieldSeparator>
-                <asList>Y</asList>
+                <AsList>Y</AsList>
                 <Required>Y</Required>
             </ListenIP>
             <ListenPort type="PortField">
@@ -44,12 +44,12 @@
             </UseAuthSecret>
             <StaticAuthSecret type="TextField">
                 <Required>N</Required>
-                <mask>/^.{16,128}$/u</mask>
+                <Mask>/^.{16,128}$/u</Mask>
                 <ValidationMessage>Should be a string between 16 and 128 characters.</ValidationMessage>
             </StaticAuthSecret>
             <Realm type="TextField">
                 <Required>N</Required>
-                <mask>/^.{1,128}$/u</mask>
+                <Mask>/^.{1,128}$/u</Mask>
                 <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
             </Realm>
             <FingerprintsEnabled type="BooleanField">

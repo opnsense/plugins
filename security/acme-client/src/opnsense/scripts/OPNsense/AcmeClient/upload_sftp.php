@@ -142,6 +142,7 @@ use OPNsense\AcmeClient\SftpUploader;
 use OPNsense\AcmeClient\SftpClient;
 use OPNsense\AcmeClient\SSHKeys;
 use OPNsense\AcmeClient\Utils;
+use OPNsense\AcmeClient\LeUtils;
 
 // Implementing logic
 function commandShowIdentity(array &$options): int
@@ -162,7 +163,7 @@ function commandShowIdentity(array &$options): int
         echo file_get_contents($id_file);
         return EXITCODE_SUCCESS;
     } else {
-        Utils::log()->error("Failed getting identity. See log output for details.");
+        LeUtils::log_error("SFTP failed getting identity. See log output for details.");
     }
     return EXITCODE_ERROR;
 }
@@ -214,7 +215,7 @@ function commandTestConnection(array &$options): int
 
         if ($remove_file) {
             if ($error = $sftp->clearError()->rm($filename)->lastError(3)) {
-                Utils::log()->error("Failed removing upload test file '$filename'", $error);
+                LeUtils::log_error("SFTP failed removing upload test file '$filename'", $error);
             }
         }
 
@@ -261,7 +262,7 @@ function commandUpload(array &$options): int
     } elseif (isset($options["host"])) {
         return uploadCertificatesToHost($options);
     } else {
-        Utils::log()->error("No work to do, neither --host nor --certificates is present.");
+        LeUtils::log_error("No work to do, neither --host nor --certificates is present.");
         return EXITCODE_ERROR_NOTHING_TO_UPLOAD;
     }
 }
@@ -270,7 +271,7 @@ function uploadCertificatesToHost(array $options): int
 {
     $sftp = connectWithServer($options, $error);
     if ($sftp === null) {
-        Utils::log()->error("Aborting after connect failure.");
+        LeUtils::log_error("SFTP aborting after connect failure.");
         return ($error["connect_failed"] ?? false)
             ? EXITCODE_ERROR
             : EXITCODE_ERROR_NO_PERMISSION;
@@ -289,7 +290,7 @@ function uploadCertificatesToHost(array $options): int
             $result = $uploader->upload();
 
             if ($result != SftpUploader::UPLOAD_SUCCESS) {
-                Utils::log()->error("Failed on " . json_encode($uploader->current(), JSON_UNESCAPED_SLASHES));
+                LeUtils::log_error("SFTP failed on " . json_encode($uploader->current(), JSON_UNESCAPED_SLASHES));
 
                 switch ($result) {
                     case SftpUploader::UPLOAD_ERROR_NO_PERMISSION:
@@ -336,7 +337,7 @@ function connectWithServer(array $options, &$error): ?SftpClient
         if ($err = $sftp->cd($remote_path)->lastError()) {
             $error = $err;
             $error["change_home_dir_failed"] = true;
-            Utils::log()->error("Failed cd into '{$remote_path}'", $err);
+            LeUtils::log_error("SFTP failed cd into '{$remote_path}'", $err);
             return null;
         }
     }
@@ -352,7 +353,7 @@ function help()
 function getOptionsById($automation_id, $silent = false)
 {
     if (!$silent) {
-        Utils::log()->info("Reading options from automation: $automation_id");
+        LeUtils::log_debug("Reading options from automation: $automation_id");
     }
 
     if (is_object($action = Utils::getAutomationActionById($automation_id))) {
@@ -367,6 +368,7 @@ function getOptionsById($automation_id, $silent = false)
                 "chgrp" => trim((string)$action->sftp_chgrp),
                 "chmod" => trim((string)$action->sftp_chmod),
                 "chmod-key" => trim((string)$action->sftp_chmod_key),
+                "modtime" => trim((string)$action->sftp_modtime),
                 "cert-name" => trim((string)$action->sftp_filename_cert),
                 "key-name" => trim((string)$action->sftp_filename_key),
                 "ca-name" => trim((string)$action->sftp_filename_ca),
@@ -374,10 +376,10 @@ function getOptionsById($automation_id, $silent = false)
                 "certificates" => "", // defaults to all (= empty), may be overridden via CLI
             ];
         } elseif (!$silent) {
-            Utils::log()->error("Ignoring disabled or invalid automation '$automation_id'");
+            LeUtils::log_error("SFTP ignoring disabled or invalid automation '$automation_id'");
         }
     } else {
-        Utils::log()->error("No upload automation found with uuid = '$automation_id'");
+        LeUtils::log_error("No SFTP upload automation found with uuid = '$automation_id'");
     }
 
     return false;
@@ -388,19 +390,20 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
     $chmod = isset($options["chmod"]) ? ($options["chmod"] ?: DEFAULT_CERT_MODE) : false;
     $chmod_key = isset($options["chmod-key"]) ? ($options["chmod-key"] ?: DEFAULT_KEY_MODE) : false;
     $chgrp = ($options["chgrp"] ?? "") ?: false;
+    $modtime = ($options["modtime"] ?? "") ?: false;
 
     if (isset($options["certificates"])) {
         $cert_ids = preg_split('/[,;\s]+/', $options["certificates"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
 
         foreach (findCertificates($cert_ids) as $cert) {
             if (!isset($cert["content"])) {
-                Utils::log()->error("Ignoring upload for cert '{$cert["name"]}', since it is not available in trust storage.");
+                LeUtils::log_error("Ignoring SFTP upload for cert '{$cert["name"]}', since it is not available in trust storage.");
                 continue;
             }
 
             foreach ($cert["content"] as $name => $content) {
                 if (empty($content)) {
-                    Utils::log()->error("Content for '{$name}.pem' in cert '{$cert["name"]}' is empty, skipping it.");
+                    LeUtils::log_error("Content for '{$name}.pem' in cert '{$cert["name"]}' is empty, skipping SFTP upload.");
                     continue;
                 }
 
@@ -441,27 +444,27 @@ function addFilesToUpload(array $options, SftpUploader &$uploader)
                         ? $chmod_key
                         : $chmod;
 
-                    $uploader->addContent($content, $target_path, $cert["updated"], $mod, $chgrp);
+                    $uploader->addContent($content, $target_path, $cert["updated"], $mod, $chgrp, $modtime);
                 } else {
-                    Utils::log()->error("Cannot add '{$name}.pem' since the upload path '$target_path' is invalid.");
+                    LeUtils::log_error("Cannot add '{$name}.pem' to SFTP upload since the upload path '$target_path' is invalid.");
                 }
             }
         }
 
         if (empty($uploader->pending())) {
-            Utils::log()->error("Didn't find any certificates to upload (cert-ids: " . (empty($cert_ids) ? "*all*" : join(", ", $cert_ids)) . ").");
+            LeUtils::log_error("Could not find any certificates for SFTP upload (cert-ids: " . (empty($cert_ids) ? "*all*" : join(", ", $cert_ids)) . ").");
         }
     } elseif (isset($options["files"])) {
         $files = preg_split('/[,;\s]+/', $options["files"] ?: "", 0, PREG_SPLIT_NO_EMPTY);
         foreach ($files as $file) {
-            $uploader->addFile($file, "", $chmod, $chgrp);
+            $uploader->addFile($file, "", $chmod, $chgrp, $modtime);
         }
 
         if (empty($uploader->pending())) {
-            Utils::log()->error("Didn't files to upload (files: " . join(", ", $files) . ").");
+            LeUtils::log_error("Could not find files for SFTP upload (files: " . join(", ", $files) . ").");
         }
     } else {
-        Utils::log()->error("Neither '--certificates' nor '--files' was specified. Have nothing to upload.");
+        LeUtils::log_error("Neither '--certificates' nor '--files' was specified. Have nothing to upload.");
     }
 }
 
@@ -489,7 +492,7 @@ function findCertificates(array $certificate_ids_or_names, $load_content = true)
         ) {
             if ($cert->enabled == 0) {
                 if (!empty($certificate_ids_or_names)) {
-                    Utils::log()->error("Certificate '{$name}' (id: $id) is disabled, skipping it.");
+                    LeUtils::log_error("Certificate '{$name}' (id: $id) is disabled, skipping SFTP upload.");
                 }
 
                 continue;

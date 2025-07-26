@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -27,6 +28,8 @@
  */
 
 namespace OPNsense\AcmeClient;
+
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Utility class to execute shell processes and handle their IO.
@@ -64,7 +67,7 @@ class Process
             register_shutdown_function(function () use (&$open_processes) {
                 foreach ($open_processes as $handle) {
                     if (is_resource($handle)) {
-                        Utils::log()->error("Terminating process: " . json_encode(proc_get_status($handle)));
+                        LeUtils::log_error("Terminating process: " . json_encode(proc_get_status($handle)));
                         @proc_terminate($handle);
                     }
                 }
@@ -102,7 +105,7 @@ class Process
 
             self::manageOpenedProcess($this->handle);
         } else {
-            Utils::log()->error("Failed opening '$cmd' in '$cwd'");
+            LeUtils::log_error("Failed opening '$cmd' in '$cwd'");
         }
     }
 
@@ -181,7 +184,7 @@ class Process
     {
         // Read up-to 10k remaining lines from STDOUT/ERR to release locks before closing.
         for ($i = 0; ($line = $this->get(0)) && $i < 10000; $i++) {
-            Utils::log()->error("WARN: process: $line");
+            LeUtils::log_error("WARN: process: $line");
         }
 
         if ($this->isRunning()) {

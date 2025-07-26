@@ -15,6 +15,7 @@ Plugin Changelog
 1.12.12
 
 * Fix for mixed ping plugin config (contributed by Alex Baulé)
+* Fix incompatibility with obsolete dns_lookup setting
 
 1.12.11
 

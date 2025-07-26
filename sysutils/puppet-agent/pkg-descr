@@ -9,6 +9,11 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+1.2
+
+Changed:
+* switch to Puppet 8 (#4800)
+
 1.1
 
 Added:

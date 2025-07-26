@@ -4,7 +4,7 @@
     <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <interface type="InterfaceField">
@@ -14,7 +14,7 @@
         </interface>
         <httpport type="PortField">
             <Required>Y</Required>
-            <default>3000</default>
+            <Default>3000</Default>
         </httpport>
         <httpsport type="PortField">
             <Required>N</Required>

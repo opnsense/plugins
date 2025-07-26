@@ -127,22 +127,22 @@ $( document ).ready(function() {
     });
 
     $("#grid-users").UIBootgrid(
-        {   'search':'/api/siproxd/user/searchUser',
-            'get':'/api/siproxd/user/getUser/',
-            'set':'/api/siproxd/user/setUser/',
-            'add':'/api/siproxd/user/addUser/',
-            'del':'/api/siproxd/user/delUser/',
-            'toggle':'/api/siproxd/user/toggleUser/'
+        {   'search':'/api/siproxd/user/search_user',
+            'get':'/api/siproxd/user/get_user/',
+            'set':'/api/siproxd/user/set_user/',
+            'add':'/api/siproxd/user/add_user/',
+            'del':'/api/siproxd/user/del_user/',
+            'toggle':'/api/siproxd/user/toggle_user/'
         }
     );
 
     $("#grid-domains").UIBootgrid(
-        {   'search':'/api/siproxd/domain/searchDomain',
-            'get':'/api/siproxd/domain/getDomain/',
-            'set':'/api/siproxd/domain/setDomain/',
-            'add':'/api/siproxd/domain/addDomain/',
-            'del':'/api/siproxd/domain/delDomain/',
-            'toggle':'/api/siproxd/domain/toggleDomain/'
+        {   'search':'/api/siproxd/domain/search_domain',
+            'get':'/api/siproxd/domain/get_domain/',
+            'set':'/api/siproxd/domain/set_domain/',
+            'add':'/api/siproxd/domain/add_domain/',
+            'del':'/api/siproxd/domain/del_domain/',
+            'toggle':'/api/siproxd/domain/toggle_domain/'
         }
     );
 

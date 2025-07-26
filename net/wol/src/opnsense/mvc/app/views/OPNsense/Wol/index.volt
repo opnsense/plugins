@@ -41,11 +41,11 @@ $( document ).ready(function() {
 
 
   var grid = $("#grid-wol-settings").UIBootgrid(
-      { 'search':'/api/wol/wol/searchHost',
-        'get':'/api/wol/wol/getHost/',
-        'set':'/api/wol/wol/setHost/',
-        'add':'/api/wol/wol/addHost/',
-        'del':'/api/wol/wol/delHost/',
+      { 'search':'/api/wol/wol/search_host',
+        'get':'/api/wol/wol/get_host/',
+        'set':'/api/wol/wol/set_host/',
+        'add':'/api/wol/wol/add_host/',
+        'del':'/api/wol/wol/del_host/',
         'options':{
             selection:false,
             multiSelect:false,

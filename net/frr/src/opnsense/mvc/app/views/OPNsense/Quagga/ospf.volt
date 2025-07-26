@@ -60,44 +60,44 @@ POSSIBILITY OF SUCH DAMAGE.
             'toggle':'/api/quagga/ospfsettings/toggle_neighbor/'
         });
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchNetwork',
-            'get':'/api/quagga/ospfsettings/getNetwork/',
-            'set':'/api/quagga/ospfsettings/setNetwork/',
-            'add':'/api/quagga/ospfsettings/addNetwork/',
-            'del':'/api/quagga/ospfsettings/delNetwork/',
-            'toggle':'/api/quagga/ospfsettings/toggleNetwork/'
+            'search':'/api/quagga/ospfsettings/search_network',
+            'get':'/api/quagga/ospfsettings/get_network/',
+            'set':'/api/quagga/ospfsettings/set_network/',
+            'add':'/api/quagga/ospfsettings/add_network/',
+            'del':'/api/quagga/ospfsettings/del_network/',
+            'toggle':'/api/quagga/ospfsettings/toggle_network/'
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchInterface',
-            'get':'/api/quagga/ospfsettings/getInterface/',
-            'set':'/api/quagga/ospfsettings/setInterface/',
-            'add':'/api/quagga/ospfsettings/addInterface/',
-            'del':'/api/quagga/ospfsettings/delInterface/',
-            'toggle':'/api/quagga/ospfsettings/toggleInterface/'
+            'search':'/api/quagga/ospfsettings/search_interface',
+            'get':'/api/quagga/ospfsettings/get_interface/',
+            'set':'/api/quagga/ospfsettings/set_interface/',
+            'add':'/api/quagga/ospfsettings/add_interface/',
+            'del':'/api/quagga/ospfsettings/del_interface/',
+            'toggle':'/api/quagga/ospfsettings/toggle_interface/'
         });
         $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchPrefixlist',
-            'get':'/api/quagga/ospfsettings/getPrefixlist/',
-            'set':'/api/quagga/ospfsettings/setPrefixlist/',
-            'add':'/api/quagga/ospfsettings/addPrefixlist/',
-            'del':'/api/quagga/ospfsettings/delPrefixlist/',
-            'toggle':'/api/quagga/ospfsettings/togglePrefixlist/'
+            'search':'/api/quagga/ospfsettings/search_prefixlist',
+            'get':'/api/quagga/ospfsettings/get_prefixlist/',
+            'set':'/api/quagga/ospfsettings/set_prefixlist/',
+            'add':'/api/quagga/ospfsettings/add_prefixlist/',
+            'del':'/api/quagga/ospfsettings/del_prefixlist/',
+            'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/'
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRoutemap',
-            'get':'/api/quagga/ospfsettings/getRoutemap/',
-            'set':'/api/quagga/ospfsettings/setRoutemap/',
-            'add':'/api/quagga/ospfsettings/addRoutemap/',
-            'del':'/api/quagga/ospfsettings/delRoutemap/',
-            'toggle':'/api/quagga/ospfsettings/toggleRoutemap/'
+            'search':'/api/quagga/ospfsettings/search_routemap',
+            'get':'/api/quagga/ospfsettings/get_routemap/',
+            'set':'/api/quagga/ospfsettings/set_routemap/',
+            'add':'/api/quagga/ospfsettings/add_routemap/',
+            'del':'/api/quagga/ospfsettings/del_routemap/',
+            'toggle':'/api/quagga/ospfsettings/toggle_routemap/'
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRedistribution',
-            'get':'/api/quagga/ospfsettings/getRedistribution/',
-            'set':'/api/quagga/ospfsettings/setRedistribution/',
-            'add':'/api/quagga/ospfsettings/addRedistribution/',
-            'del':'/api/quagga/ospfsettings/delRedistribution/',
-            'toggle':'/api/quagga/ospfsettings/toggleRedistribution/'
+            'search':'/api/quagga/ospfsettings/search_redistribution',
+            'get':'/api/quagga/ospfsettings/get_redistribution/',
+            'set':'/api/quagga/ospfsettings/set_redistribution/',
+            'add':'/api/quagga/ospfsettings/add_redistribution/',
+            'del':'/api/quagga/ospfsettings/del_redistribution/',
+            'toggle':'/api/quagga/ospfsettings/toggle_redistribution/'
         });
 
         const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");

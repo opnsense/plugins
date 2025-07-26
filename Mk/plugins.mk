@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -100,6 +100,7 @@ PLUGIN_DIR?=		${.CURDIR:S/\// /g:[-2]}/${.CURDIR:S/\// /g:[-1]}
 .if "${PLUGIN_DEVEL}" != ""
 PLUGIN_CONFLICTS+=	${PLUGIN_NAME}
 PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
+PLUGIN_TIER=		4
 .else
 PLUGIN_CONFLICTS+=	${PLUGIN_NAME}${PLUGIN_SUFFIX}
 PLUGIN_PKGSUFFIX=	# empty
@@ -146,13 +147,26 @@ manifest: check
 	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
 
-scripts: check scripts-pre scripts-auto scripts-manual scripts-post
+# Package scripts generation handling 101:
+#
+# "auto" generates automatic hooks that a plugin may need in order to
+# reload on the fly. ".pre" and ".post" suffixed files can be used to
+# extend the auto-generated content.
+#
+# "manual" overwrites the automatic script and also ignores ".pre" and
+# ".post" files since they do not make sense in manual mode.
+#
+# Furthermore, variable replacement via %%PLUGIN_VAR%% takes place in
+# "manual" as well as ".pre" and ".post" scripts provided.
+
+scripts: check scripts-pre scripts-auto scripts-post scripts-manual
 
 scripts-pre:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		rm -f ${DESTDIR}/$${SCRIPT}; \
 		if [ -f ${.CURDIR}/$${SCRIPT}.pre ]; then \
-			cp ${.CURDIR}/$${SCRIPT}.pre ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.pre > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -203,17 +217,19 @@ scripts-auto:
 		done \
 	fi
 
-scripts-manual:
-	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
-		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
-			cp ${.CURDIR}/$${SCRIPT} ${DESTDIR}/$${SCRIPT}; \
-		fi; \
-	done
-
 scripts-post:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f ${.CURDIR}/$${SCRIPT}.post ]; then \
-			cat ${.CURDIR}/$${SCRIPT}.post >> ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.post >> \
+			    ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
+scripts-manual:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT} > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -375,6 +391,17 @@ lint-model:
 		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and OptionValues[default[not(@value)] or multiple[not(@value)] or required[not(@value)]]]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
 			echo "$${MODEL}: $${LINE} option element default/multiple/required without value attribute"; \
 		done; \
+		(xmllint $${MODEL} --xpath '//*[@type="CSVListField" and Mask and (not(MaskPerItem) or MaskPerItem=N)]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+			echo "$${MODEL}: $${LINE} uses Mask regex with MaskPerItem=N"; \
+		done; \
+		for TYPE in .\\AliasesField .\\DomainIPField HostnameField IPPortField NetworkField MacAddressField .\\RangeAddressField; do \
+			(xmllint $${MODEL} --xpath '//*[@type="'$${TYPE}'" and FieldSeparator=","]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+				echo "$${MODEL}: $${LINE} FieldSeparator=, is the default"; \
+			done; \
+			(xmllint $${MODEL} --xpath '//*[@type="'$${TYPE}'" and AsList="N"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
+				echo "$${MODEL}: $${LINE} AsList=N is the default"; \
+			done; \
+		done; \
 	done; fi
 
 ACLBIN?=	${.CURDIR}/../../../core/Scripts/dashboard-acl.sh
@@ -454,12 +481,16 @@ style-python: check
 	fi
 
 style-model:
-	@for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
-	    -name "*.xml"); do \
-		perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
-		perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
-		perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
-	done
+	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
+		for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
+		    -name "*.xml"); do \
+			perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
+			perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
+			perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
+			perl -i -pe 's/<mask>(.*?)<\/mask>/<Mask>$$1<\/Mask>/g' $${MODEL}; \
+			perl -i -pe 's/<asList>(.*?)<\/asList>/<AsList>$$1<\/AsList>/g' $${MODEL}; \
+		done; \
+	fi
 
 test: check
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \

@@ -3,9 +3,9 @@
   <description>Fake model for the API - will be never stored to config (only used for defaults, validation etc.).</description>
   <items>
     <interface type="InterfaceField">
-      <default>lan</default>
+      <Default>lan</Default>
       <Required>Y</Required>
-      <multiple>N</multiple>
+      <Multiple>N</Multiple>
     </interface>
   </items>
 </model>

@@ -4,34 +4,34 @@
     <version>1.2.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <v4address type="NetworkField">
-            <default>192.168.255.1</default>
+            <Default>192.168.255.1</Default>
             <Required>Y</Required>
         </v4address>
         <v4destination type="NetworkField">
-            <default>192.168.254.1</default>
+            <Default>192.168.254.1</Default>
             <Required>Y</Required>
         </v4destination>
         <v6address type="NetworkField">
             <Required>N</Required>
         </v6address>
         <v6destination type="NetworkField">
-            <default>2001:db8:1:ffff::1</default>
+            <Default>2001:db8:1:ffff::1</Default>
             <Required>Y</Required>
         </v6destination>
         <v6prefix type="NetworkField">
-            <default>64:ff9b::/96</default>
+            <Default>64:ff9b::/96</Default>
             <Required>Y</Required>
         </v6prefix>
         <v4pool type="NetworkField">
-            <default>192.168.255.0/24</default>
+            <Default>192.168.255.0/24</Default>
             <Required>Y</Required>
         </v4pool>
         <v6routedisabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </v6routedisabled>
     </items>

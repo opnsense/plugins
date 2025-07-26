@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this handler.]]></help>
         <grid_view>
-            <width>2em</width>
+            <width>100</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -19,18 +19,12 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a domain to handle.]]></help>
-        <grid_view>
-            <formatter>model_relation_domain</formatter>
-        </grid_view>
     </field>
     <field>
         <id>handle.subdomain</id>
         <label>Subdomain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
-        <grid_view>
-            <formatter>model_relation_domain</formatter>
-        </grid_view>
     </field>
     <field>
         <type>header</type>

@@ -14,7 +14,10 @@ Plugin Changelog
 
 1.45
 
-* Add neighbor config to OSPF (contributed by Andy Binder)
+* Add neighbor config to OSPF (contributed by Andy Binder) (opnsense/plugins/pull/4694)
+* Add BGP listen range to peer groups (opnsense/plugins/pull/4722)
+* Fix peer group activation (opnsense/plugins/pull/4777)
+* Switch to FRR 10 (opnsense/plugins/pull/4741)
 
 1.44
 

@@ -98,7 +98,7 @@
                             const update_filter = function (selectValues) {
                                 $('#reverseFilter')
                                     // Refresh selectpicker with latest data so button always works even on new domains
-                                    .fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains')
+                                    .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
                                     .done(function () {
                                         $('#reverseFilter')
                                             .selectpicker('val', selectValues)
@@ -140,7 +140,7 @@
 
                                     // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
                                     if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
-                                        ajaxGet(`/api/caddy/ReverseProxy/get{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
+                                        ajaxGet(`/api/caddy/reverse_proxy/get_{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
                                             const reverseUuids = rowData?.subdomain?.reverse || {};
                                             const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
                                             const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
@@ -157,15 +157,14 @@
                         }
 
 {% endif %}
-
                         all_grids[grid_id] = $("#" + grid_id)
                         .UIBootgrid({
-                            search: `/api/caddy/ReverseProxy/search${grid_id}/`,
-                            get: `/api/caddy/ReverseProxy/get${grid_id}/`,
-                            set: `/api/caddy/ReverseProxy/set${grid_id}/`,
-                            add: `/api/caddy/ReverseProxy/add${grid_id}/`,
-                            del: `/api/caddy/ReverseProxy/del${grid_id}/`,
-                            toggle: `/api/caddy/ReverseProxy/toggle${grid_id}/`,
+                            search: `/api/caddy/reverse_proxy/search_${grid_id}/`,
+                            get: `/api/caddy/reverse_proxy/get_${grid_id}/`,
+                            set: `/api/caddy/reverse_proxy/set_${grid_id}/`,
+                            add: `/api/caddy/reverse_proxy/add_${grid_id}/`,
+                            del: `/api/caddy/reverse_proxy/del_${grid_id}/`,
+                            toggle: `/api/caddy/reverse_proxy/toggle_${grid_id}/`,
                             options: {
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
@@ -175,10 +174,9 @@
                                     return request;
                                 },
                                 headerFormatters: {
-                                    enabled: function (column) { return "" },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
-                                        if (grid_id === "Subdomain") {
+                                        if (grid_id === "subdomain") {
                                             return labels.subdomain;
                                         } else {
                                             return labels.domain;
@@ -192,30 +190,16 @@
                                     },
                                 },
                                 formatters: {
-                                    model_relation_domain: function (column, row) {
-                                        let result = (row[column.id] || "").trim();
-                                        if (column.id === "reverse") {
-                                            result = result.replace(" ", ":");
-                                            if (!row["subdomain"] && row["HandlePath"]) {
-                                                result += row["HandlePath"];
-                                            }
-                                        } else if (column.id === "subdomain") {
-                                            if (row["subdomain"] && row["HandlePath"]) {
-                                                result += row["HandlePath"];
-                                            }
-                                        }
-                                        return result;
-                                    },
                                     from_domain: function (column, row) {
                                         return (
-                                            (row["DisableTls"] || "") +
+                                            (row["%DisableTls"] || "") +
                                             (row["FromDomain"] || "") +
                                             (row["FromPort"] ? `:${row["FromPort"]}` : "")
                                         );
                                     },
                                     to_domain: function (column, row) {
                                         return (
-                                            (row["HttpTls"] || "") +
+                                            (row["%HttpTls"] || "") +
                                             (row["ToDomain"] || "") +
                                             (row["ToPort"] ? `:${row["ToPort"]}` : "") +
                                             (row["ToPath"] || "")
@@ -271,7 +255,7 @@
         });
 
         // Populate domain filter selectpicker
-        $('#reverseFilter').fetch_options('/api/caddy/ReverseProxy/getAllReverseDomains');
+        $('#reverseFilter').fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains');
 
         // Clear domain filter selectpicker
         $('#reverseFilterClear').on('click', function () {
@@ -298,13 +282,6 @@
                 });
 
                 return dfObj.promise();
-            },
-            onAction: function(data, status) {
-                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    updateServiceControlUI('caddy');
-                } else {
-                    showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
-                }
             }
         });
 
@@ -394,17 +371,14 @@
 
         // When subdomain is selected in handler show only wildcard domains
         $("#handle\\.subdomain").on("change", function () {
-            const subdomainSelected = $("#handle\\.subdomain").val() !== "";
+            if (!$(this).val()) {
+                $("#handle\\.reverse option").show();
+            } else {
+                $("#handle\\.reverse option").each(function () {
+                    $(this).toggle($(this).text().includes("*."));
+                });
 
-            $("#handle\\.reverse").find("option").each(function () {
-                const isWildcard = $(this).text().includes("*.");
-                $(this).toggle(!subdomainSelected || isWildcard);
-            });
-
-            if (subdomainSelected) {
-                const selectedText = $("#handle\\.reverse").find("option:selected").text();
-                if (!selectedText.includes("*.")) {
-                    // Clear selection if not a wildcard
+                if (!$("#handle\\.reverse option:selected").text().includes("*.")) {
                     $("#handle\\.reverse").val("").change();
                 }
             }
@@ -512,7 +486,7 @@
             <!-- Reverse Proxy -->
             <h1 class="custom-header">{{ lang._('Domains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '11em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
             </div>
         </div>
 
@@ -520,7 +494,7 @@
         <div style="padding-left: 16px;">
             <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
             <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '11em'})}}
+                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
             </div>
         </div>
     </div>
@@ -591,7 +565,7 @@
 
 </div>
 
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure'}) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure', 'data_service_widget': 'caddy'}) }}
 
 {% if entrypoint == 'reverse_proxy' %}
 

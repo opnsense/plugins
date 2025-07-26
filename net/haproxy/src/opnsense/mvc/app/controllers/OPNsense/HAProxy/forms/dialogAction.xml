@@ -87,9 +87,9 @@
     </field>
     <field>
         <id>action.http_request_redirect</id>
-        <label>HTTP Redirect</label>
+        <label>Redirect Command</label>
         <type>text</type>
-        <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. See <a href="http://docs.haproxy.org/3.0/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. A full redirect command is required, e.g. "location https://www.example.net/" or "scheme https code 301". See <a href="http://docs.haproxy.org/3.0/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <label>Parameters</label>

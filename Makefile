@@ -44,7 +44,7 @@ list:
 .endfor
 
 # shared targets that are sane to run from the root directory
-TARGETS=	clean glint lint plist-fix revision style style-fix style-python sweep test
+TARGETS=	clean glint lint plist-fix revision style style-fix style-model style-python sweep test
 
 .for TARGET in ${TARGETS}
 ${TARGET}:

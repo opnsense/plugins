@@ -5,11 +5,11 @@
   <items>
     <general>
       <enable type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable>
       <mode type="OptionField">
-        <default>standalone</default>
+        <Default>standalone</Default>
         <Required>Y</Required>
         <OptionValues>
           <standalone>standalone</standalone>
@@ -17,13 +17,13 @@
         </OptionValues>
       </mode>
       <name type="TextField">
-        <default>UPSName</default>
+        <Default>UPSName</Default>
         <Required>Y</Required>
-        <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+        <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
         <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
       </name>
       <listen type="CSVListField">
-        <default>127.0.0.1,::1</default>
+        <Default>127.0.0.1,::1</Default>
         <Required>Y</Required>
       </listen>
     </general>
@@ -31,42 +31,42 @@
     <account>
       <admin_password type="TextField">
         <Required>Y</Required>
-        <default>Password</default>
+        <Default>Password</Default>
       </admin_password>
       <mon_password type="TextField">
         <Required>Y</Required>
-        <default>Password</default>
+        <Default>Password</Default>
       </mon_password>
     </account>
 
     <usbhid>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </usbhid>
     <apcsmart>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </apcsmart>
     <apcupsd>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <hostname type="HostnameField">
         <Required>Y</Required>
-        <default>localhost</default>
+        <Default>localhost</Default>
       </hostname>
       <port type="PortField">
         <Required>N</Required>
@@ -75,44 +75,44 @@
     <bcmxcpusb>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </bcmxcpusb>
     <blazerusb>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </blazerusb>
     <blazerser>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </blazerser>
     <netclient>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <address type="HostnameField">
-        <default></default>
+        <Default></Default>
         <Required>N</Required>
       </address>
       <port type="PortField">
-        <default>3493</default>
+        <Default>3493</Default>
         <Required>N</Required>
       </port>
       <user type="TextField">
@@ -125,30 +125,30 @@
     <qx>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </qx>
     <riello>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>port=auto</default>
+        <Default>port=auto</Default>
         <Required>N</Required>
       </args>
     </riello>
     <snmp>
       <enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </enable>
       <args type="CSVListField">
-        <default>community=public</default>
+        <Default>community=public</Default>
         <Required>N</Required>
       </args>
     </snmp>

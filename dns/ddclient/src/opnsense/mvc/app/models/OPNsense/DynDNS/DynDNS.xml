@@ -105,16 +105,16 @@
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
-                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
+                    <Mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</Mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
                     <Required>N</Required>
-                    <mask>/^[^\n]*$/</mask>
+                    <Mask>/^[^\n]*$/</Mask>
                 </password>
                 <resourceId type="TextField">
                     <Required>N</Required>
-                    <mask>/^[^\n]*$/</mask>
+                    <Mask>/^[^\n]*$/</Mask>
                     <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
                 </resourceId>
                 <hostnames type="HostnameField">
@@ -169,7 +169,7 @@
                 </checkip>
                 <dynipv6host type="TextField">
                     <Required>N</Required>
-                    <mask>/^::(([0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4})?$/u</mask>
+                    <Mask>/^::(([0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4})?$/u</Mask>
                     <ValidationMessage>Entry is not a valid partial ipv6 address definition (e.g. ::1000).</ValidationMessage>
                 </dynipv6host>
                 <checkip_timeout type="IntegerField">
@@ -201,9 +201,11 @@
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^(.){1,255}$/u</mask>
+                    <Mask>/^(.){1,255}$/u</Mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
+                <current_ip type="TextField" volatile="true"/>
+                <current_mtime type="TextField" volatile="true"/>
             </account>
         </accounts>
     </items>

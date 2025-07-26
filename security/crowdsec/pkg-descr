@@ -8,7 +8,13 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.11
+
+ * convert tables to UIBootGrid (required for opnsense 25.7)
+ * separate page for each table
+
 1.0.10
+
  * changed alias names crowdsec*blacklists -> crowdsec*blocklists
  * added rules for outgoing connections too
  * added enroll_key to settings for automatic enrollment

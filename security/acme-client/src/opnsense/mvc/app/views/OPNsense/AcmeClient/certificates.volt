@@ -140,7 +140,9 @@ POSSIBILITY OF SUCH DAMAGE.
         /**
          * copy actions for selected items from opnsense_bootgrid_plugin.js
          */
-        var grid_certificates = $("#grid-certificates").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
+        const grid_certificates = $("#grid-certificates").UIBootgrid($.extend(gridParams, { options: gridopt }));
+
+        $("#grid_certificates").on("loaded.rs.jquery.bootgrid", function (e)
         {
             // toggle all rendered tooltips (once for all)
             $('.bootgrid-tooltip').tooltip();
@@ -330,7 +332,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
                         // Handle HAProxy integration (no-op if not applicable)
-                        ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+                        ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data,status) {
                             ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
                                 // reload grid after sign
                                 $("#"+gridId).bootgrid("reload");
@@ -440,7 +442,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#signallcertsAct").click(function(){
             //$("#signallcertsAct_progress").addClass("fa fa-spinner fa-pulse");
             // Handle HAProxy integration (no-op if not applicable)
-            ajaxCall(url="/api/acmeclient/settings/fetchHAProxyIntegration", sendData={}, callback=function(data,status) {
+            ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data,status) {
                 ajaxCall(url="/api/acmeclient/service/signallcerts", sendData={}, callback=function(data,status) {
                     // when done, disable progress animation.
                     //$("#signallcertsAct_progress").removeClass("fa fa-spinner fa-pulse");

@@ -27,12 +27,12 @@
 <script>
     $( document ).ready(function() {
         $("#grid-services").UIBootgrid(
-            {   search:'/api/stunnel/services/searchItem/',
-                get:'/api/stunnel/services/getItem/',
-                set:'/api/stunnel/services/setItem/',
-                add:'/api/stunnel/services/addItem/',
-                del:'/api/stunnel/services/delItem/',
-                toggle:'/api/stunnel/services/toggleItem/'
+            {   search:'/api/stunnel/services/search_item/',
+                get:'/api/stunnel/services/get_item/',
+                set:'/api/stunnel/services/set_item/',
+                add:'/api/stunnel/services/add_item/',
+                del:'/api/stunnel/services/del_item/',
+                toggle:'/api/stunnel/services/toggle_item/'
             }
         );
         $("#reconfigureAct").SimpleActionButton({

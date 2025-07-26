@@ -79,7 +79,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 // save data for this tab
                 saveFormToEndpoint(url="/api/haproxy/maintenance/set",formid=frm_id,callback_ok=function(){
                     // Handle cron integration
-                    ajaxCall(url="/api/haproxy/maintenance/fetchCronIntegration", sendData={}, callback=function(data,status) {
+                    ajaxCall(url="/api/haproxy/maintenance/fetch_cron_integration", sendData={}, callback=function(data,status) {
                     });
 
                     // when done, disable progress animation
@@ -127,7 +127,7 @@ POSSIBILITY OF SUCH DAMAGE.
         }
 
         function showDiffDialog(payload) {
-            $.post('/api/haproxy/maintenance/certDiff', payload, function(data) {
+            $.post('/api/haproxy/maintenance/cert_diff', payload, function(data) {
                 BootstrapDialog.show({
                     type: BootstrapDialog.TYPE_INFO,
                     title: "{{ lang._('Diff between configured and active SSL certificates') }}",
@@ -143,7 +143,7 @@ POSSIBILITY OF SUCH DAMAGE.
         }
 
         function applyDiffDialog(payload, requested_count) {
-            $.post('/api/haproxy/maintenance/certActions', payload, function(data_actions) {
+            $.post('/api/haproxy/maintenance/cert_actions', payload, function(data_actions) {
                 question = ''
                 question += `<pre>${data_actions}</pre>`;
                 question += '<b>{{ lang._('Apply SSL certificates to HAProxy?') }}</b></br></br>';
@@ -151,7 +151,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                     question,
                     '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                    $.post('/api/haproxy/maintenance/certSync', payload, function(data) {
+                    $.post('/api/haproxy/maintenance/cert_sync', payload, function(data) {
                         modified_count = data.result.add_count + data.result.remove_count + data.result.update_count;
 
                         if (requested_count != modified_count) {
@@ -176,7 +176,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
         $("#grid-certificates").bootgrid('destroy');
         var grid_certificates = $("#grid-certificates").UIBootgrid({
-            search: '/api/haproxy/maintenance/searchCertificateDiff',
+            search: '/api/haproxy/maintenance/search_certificate_diff',
             options: {
                 ajax: true,
                 selection: true,
@@ -262,7 +262,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             var payload = {};
-            $.post('/api/haproxy/maintenance/certSyncBulk', payload, function(data) {
+            $.post('/api/haproxy/maintenance/cert_sync_bulk', payload, function(data) {
                 modified_count = data.result.add_count + data.result.remove_count + data.result.update_count;
                 if (requested_count != modified_count) {
                     var error_msg = syncErrorMessage(data.result.modified, data.result.deleted);
@@ -286,7 +286,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // grid-status
         $("#grid-status").bootgrid('destroy');
         var grid_status = $("#grid-status").UIBootgrid({
-            search: '/api/haproxy/maintenance/searchServer',
+            search: '/api/haproxy/maintenance/search_server',
             options: {
                 ajax: true,
                 selection: true,
@@ -328,7 +328,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                     question,
                     '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        $.post('/api/haproxy/maintenance/serverState', payload, function(data) {
+                        $.post('/api/haproxy/maintenance/server_state', payload, function(data) {
                             if (data.status != 'ok') {
                                 BootstrapDialog.show({
                                     type: BootstrapDialog.TYPE_DANGER,
@@ -372,7 +372,7 @@ POSSIBILITY OF SUCH DAMAGE.
                       'weight': $("#newWeight").val()
                     };
 
-                    $.post('/api/haproxy/maintenance/serverWeight', payload, function(data) {
+                    $.post('/api/haproxy/maintenance/server_weight', payload, function(data) {
                         if (data.status != 'ok') {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
@@ -415,7 +415,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     stdDialogConfirm('{{ lang._('Confirmation Required') }}',
                         question,
                         '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                            $.post('/api/haproxy/maintenance/serverStateBulk', payload, function(data) {
+                            $.post('/api/haproxy/maintenance/server_state_bulk', payload, function(data) {
                                 if (data.status != 'ok') {
                                     BootstrapDialog.show({
                                         type: BootstrapDialog.TYPE_DANGER,
@@ -465,7 +465,7 @@ POSSIBILITY OF SUCH DAMAGE.
                               'weight': $("#newBulkWeight").val()
                             };
 
-                            $.post('/api/haproxy/maintenance/serverWeightBulk', payload, function(data) {
+                            $.post('/api/haproxy/maintenance/server_weight_bulk', payload, function(data) {
                                 if (data.status != 'ok') {
                                     BootstrapDialog.show({
                                         type: BootstrapDialog.TYPE_DANGER,
