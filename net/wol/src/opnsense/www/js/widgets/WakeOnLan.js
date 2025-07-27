@@ -66,7 +66,7 @@ export default class WakeOnLan extends BaseTableWidget {
 
           for(let it = 0; it < data.rows.length; it++){
               const item = data.rows[it];
-              let is_active = this.checkActive(arp, item.mac, item.interface);
+              let is_active = this.checkActive(arp, item.mac, item["%interface"]);
               let row = [
                   `${item.descr.length !== 0 ? item.descr + '<br/>': ''} ${item.mac}`,
                   `${item.interface}`,
