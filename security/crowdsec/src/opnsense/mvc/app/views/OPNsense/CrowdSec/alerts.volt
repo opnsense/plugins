@@ -52,7 +52,7 @@
             <th data-column-id="country">Country</th>
             <th data-column-id="as">AS</th>
             <th data-column-id="decisions">Decisions</th>
-            <th data-column-id="created_at" data-formatter="created">Created</th>
+            <th data-column-id="created" data-formatter="created">Created</th>
         </tr>
     </thead>
     <tbody>
