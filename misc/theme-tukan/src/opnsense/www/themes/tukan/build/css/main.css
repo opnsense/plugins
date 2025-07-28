@@ -2053,8 +2053,8 @@ th {
     font-family: 'SourceSansProSemibold';
     font-weight: normal;
     border-bottom: 1px solid #5e5e5e;
-    background-color: #45565f;
-    color: #FFF;}
+    background-color: #fff;
+    color: #000;}
   .table > tbody + tbody {
     border-top: 2px solid #5e5e5e; }
   .table .table {
