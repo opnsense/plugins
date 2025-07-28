@@ -5,6 +5,11 @@ and filtering services.
 Plugin Changelog
 ================
 
+1.9
+
+* Fix issue with localserver ACL defintion
+* Yield maintainership to Andy Binder
+
 1.8
 
 * Move logging to syslog (contributed by Andy Binder)
