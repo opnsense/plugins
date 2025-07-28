@@ -1,0 +1,42 @@
+<model>
+    <mount>//OPNsense/bind/key</mount>
+    <description>BIND KEY configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <keys>
+            <key type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^[0-9a-zA-Z_\-]{1,32}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, A-Z, _ and -.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A Key with this name already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </name>
+                <algo type="OptionField">
+                    <Required>Y</Required>
+                    <Default>hmac-sha256</Default>
+                    <OptionValues>
+                        <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                        <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                        <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                        <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                        <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                        <hmac-md5>HMAC-MD5</hmac-md5>
+                    </OptionValues>
+                </algo>
+                <secret type="Base64Field">
+                    <Required>Y</Required>
+                    <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
+                </secret>
+            </key>
+        </keys>
+    </items>
+</model>

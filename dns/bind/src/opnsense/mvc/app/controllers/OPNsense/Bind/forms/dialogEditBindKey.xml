@@ -1,0 +1,28 @@
+<form>
+    <field>
+        <id>key.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the key.</help>
+    </field>
+    <field>
+        <id>key.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this key key.</help>
+    </field>
+    <field>
+        <id>key.algo</id>
+        <label>Algorithm</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Set the authentication algorithm for the key. This requires a restart of the Bind Service.</help>
+    </field>
+    <field>
+        <id>key.secret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>The base64-encoded key. This requires a restart of the Bind Service.</help>
+    </field>
+</form>

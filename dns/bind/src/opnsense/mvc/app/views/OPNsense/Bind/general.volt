@@ -31,6 +31,7 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
+    <li><a data-toggle="tab" href="#keys">{{ lang._('Keys') }}</a></li>
     <li><a data-toggle="tab" href="#primary-domains">{{ lang._('Primary Zones') }}</a></li>
     <li><a data-toggle="tab" href="#secondary-domains">{{ lang._('Secondary Zones') }}</a></li>
     <li><a data-toggle="tab" href="#forward-domains">{{ lang._('Forward Zones') }}</a></li>
@@ -81,6 +82,36 @@
         <div class="col-md-12">
             <hr />
             <button class="btn btn-primary" id="saveAct_acl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_acl_progress"></i></button>
+            <br /><br />
+        </div>
+    </div>
+    <div id="keys" class="tab-pane fade in">
+        <div id="keys-area" class="table-responsive">
+            <table id="grid-keys" class="table table-condensed table-hover table-striped" data-editDialog="dialogEditBindKey">
+                <thead>
+                    <tr>
+                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                        <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td>
+                            <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                            <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <hr />
+            <button class="btn btn-primary" id="saveAct_key" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_key_progress"></i></button>
             <br /><br />
         </div>
     </div>
@@ -229,6 +260,7 @@
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindKey,'id':'dialogEditBindKey','label':lang._('Edit KEY')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindPrimaryDomain,'id':'dialogEditBindPrimaryDomain','label':lang._('Edit Primary Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindSecondaryDomain,'id':'dialogEditBindSecondaryDomain','label':lang._('Edit Secondary Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindForwardDomain,'id':'dialogEditBindForwardDomain','label':lang._('Edit Forward Zone')])}}
@@ -400,6 +432,15 @@ $(document).ready(function() {
         'toggle': '/api/bind/acl/toggle_acl/'
     });
 
+    $("#grid-keys").UIBootgrid({
+        'search': '/api/bind/key/searchKey',
+        'get': '/api/bind/key/getKey/',
+        'set': '/api/bind/key/setKey/',
+        'add': '/api/bind/key/addKey/',
+        'del': '/api/bind/key/delKey/',
+        'toggle': '/api/bind/key/toggleKey/'
+    });
+
     $("#grid-primary-domains").UIBootgrid({
         'search': '/api/bind/domain/search_primary_domain',
         'get': '/api/bind/domain/get_domain/',
@@ -546,6 +587,16 @@ $(document).ready(function() {
             ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
                 updateServiceControlUI('bind');
                 $("#saveAct_acl_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
+    });
+
+    $("#saveAct_key").click(function() {
+        saveFormToEndpoint(url = "/api/bind/key/set", formid = 'frm_general_settings', callback_ok = function() {
+            $("#saveAct_key_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
+                updateServiceControlUI('bind');
+                $("#saveAct_key_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
