@@ -1,9 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
- * Copyright (C) 2025 squared GmbH
- * Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,16 +26,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Netbird\Api;
-
-use OPNsense\Base\ApiMutableModelControllerBase;
+namespace OPNsense\Netbird;
 
 /**
- * netbird settings controller
+ * Class SettingsController
  * @package OPNsense\Netbird
  */
-class InitialController extends ApiMutableModelControllerBase
+class SettingsController extends \OPNsense\Base\IndexController
 {
-    protected static $internalModelName = 'netbird';
-    protected static $internalModelClass = 'OPNsense\Netbird\Initial';
+    public function indexAction()
+    {
+        $this->view->settingsForm = $this->getForm("settings");
+        $this->view->pick('OPNsense/Netbird/settings');
+    }
 }

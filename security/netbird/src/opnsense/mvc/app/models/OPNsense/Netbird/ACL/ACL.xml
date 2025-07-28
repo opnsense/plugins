@@ -1,6 +1,6 @@
 <acl>
     <page-vpn-netbird>
-        <name>VPN: Netbird</name>
+        <name>VPN: NetBird</name>
         <patterns>
             <pattern>ui/netbird/*</pattern>
             <pattern>api/netbird/*</pattern>

@@ -1,9 +1,7 @@
-#!/usr/local/bin/php
 <?php
 
 /*
- * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
- * Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
+ * Copyright (C) 2025 NetBird GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,46 +26,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once('config.inc');
-require_once('util.inc');
-require_once('interfaces.inc');
+namespace OPNsense\Netbird;
 
-
-$model = new \OPNsense\Netbird\Netbird();
-
-if ($model->general->Enabled->isEmpty()) {
-    exit(0);
-}
-
-if (!$model->general->CarpIf->isEqual('')) {
-    exit(0);
-}
-
-$target_vhid = $model->general->VHID;
-$subsystem = !empty($argv[1]) ? $argv[1] : '';
-$type = !empty($argv[2]) ? $argv[2] : '';
-
-if ($type != 'MASTER' && $type != 'BACKUP') {
-    exit(1);
-}
-
-if (!strstr($subsystem, '@')) {
-    exit(1);
-}
-
-list ($vhid, $iface) = explode('@', $subsystem);
-$friendly = convert_real_interface_to_friendly_interface_name($iface);
-
-
-if ($carpif != $friendly || $vhid != $target_vhid) {
-    exit(0);
-}
-
-switch ($type) {
-    case 'MASTER':
-        shell_exec('/usr/local/bin/netbird up');
-        break;
-    case 'BACKUP':
-        shell_exec('/usr/local/bin/netbird down');
-        break;
+/**
+ * Class AuthenticationController
+ * @package OPNsense\Netbird
+ */
+class AuthenticationController extends \OPNsense\Base\IndexController
+{
+    public function indexAction()
+    {
+        $this->view->authenticationForm = $this->getForm("authentication");
+        $this->view->pick('OPNsense/Netbird/authentication');
+    }
 }
