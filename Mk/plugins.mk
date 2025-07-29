@@ -31,6 +31,8 @@ PLUGINSDIR?=		${.CURDIR}/../..
 SCRIPTSDIR=		${PLUGINSDIR}/Scripts
 TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
+.include "lint.mk"
+
 .if exists(${GIT}) && exists(${GITVERSION})
 PLUGIN_COMMIT!=		${GITVERSION}
 .else
@@ -349,15 +351,6 @@ clean: check
 	    git clean -xdqf ${.CURDIR}/src; \
 	fi
 	@rm -rf ${.CURDIR}/work
-
-COREREFDIR=	${.CURDIR}/../../../core
-
-.-include "${COREREFDIR}/Mk/lint.mk"
-
-lint-desc: check
-	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
-		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
-	fi
 
 plist-fix:
 
