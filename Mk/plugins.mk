@@ -52,7 +52,10 @@ PLUGIN_REVISION?=	0
 PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
 			PLUGIN_MAINTAINER
 
+.include "common.mk"
 .include "lint.mk"
+.include "style.mk"
+.include "sweep.mk"
 
 check:
 .for PLUGIN_REQUIRE in ${PLUGIN_REQUIRES}
@@ -353,64 +356,10 @@ clean: check
 	fi
 	@rm -rf ${.CURDIR}/work
 
-plist-fix:
-
-sweep: check
-	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
-	    xargs -0 -n1 rm
-	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
-	    ! -name "*.ser" -type f -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
-	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
-
-glint: sweep style-fix plist-fix lint
+glint: sweep lint
 
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
-
-STYLEDIRS?=	src/etc/inc src/opnsense
-
-style: check
-	@: > ${.CURDIR}/.style.out
-.for STYLEDIR in ${STYLEDIRS}
-	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		(phpcs --standard=${PLUGINSDIR}/ruleset.xml \
-		    ${.CURDIR}/${STYLEDIR} || true) > \
-		    ${.CURDIR}/.style.out; \
-	fi
-.endfor
-	@echo -n "Total number of style warnings: "
-	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
-	@echo -n "Total number of style errors:   "
-	@grep '| ERROR' ${.CURDIR}/.style.out | wc -l
-	@cat ${.CURDIR}/.style.out
-	@rm ${.CURDIR}/.style.out
-
-style-fix: check
-.for STYLEDIR in ${STYLEDIRS}
-	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		phpcbf --standard=${PLUGINSDIR}/ruleset.xml \
-		    ${.CURDIR}/${STYLEDIR} || true; \
-	fi
-.endfor
-
-style-python: check
-	@if [ -d ${.CURDIR}/src ]; then \
-		pycodestyle --ignore=E501 ${.CURDIR}/src || true; \
-	fi
-
-style-model:
-	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then \
-		for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
-		    -name "*.xml"); do \
-			perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
-			perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
-			perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
-			perl -i -pe 's/<mask>(.*?)<\/mask>/<Mask>$$1<\/Mask>/g' $${MODEL}; \
-			perl -i -pe 's/<asList>(.*?)<\/asList>/<AsList>$$1<\/AsList>/g' $${MODEL}; \
-		done; \
-	fi
 
 test: check
 	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
@@ -423,4 +372,4 @@ commit: ensure-workdirs
 	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
 	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
 
-.PHONY:	check plist-fix
+.PHONY:	check
