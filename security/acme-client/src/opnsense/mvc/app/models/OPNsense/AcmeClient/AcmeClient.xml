@@ -226,7 +226,7 @@
                             </filters>
                         </accounts>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </account>
@@ -241,7 +241,7 @@
                             </filters>
                         </validations>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </validationMethod>
@@ -271,7 +271,7 @@
                             </filters>
                         </actions>
                     </Model>
-                    <ValidationMessage>Related automation not found</ValidationMessage>
+                    <ValidationMessage>Related automation not found.</ValidationMessage>
                     <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
@@ -389,7 +389,7 @@
                             </filters>
                         </frontends>
                     </Model>
-                    <ValidationMessage>Related HAProxy frontend not found</ValidationMessage>
+                    <ValidationMessage>Related HAProxy frontend not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </http_haproxyFrontends>
@@ -1413,7 +1413,7 @@
                 </sftp_chmod_key>
                 <sftp_modtime type="BooleanField">
                     <Required>N</Required>
-                    <default>0</default>
+                    <Default>0</Default>
                 </sftp_modtime>
                 <sftp_filename_cert type="TextField">
                     <Required>N</Required>
@@ -1603,41 +1603,41 @@
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_tokenkey>
                 <acme_proxmoxbs_user type="TextField">
-                    <default>root</default>
+                    <Default>root</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_user>
                 <acme_proxmoxbs_server type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_server>
                 <acme_proxmoxbs_port type="PortField">
-                    <default>8007</default>
+                    <Default>8007</Default>
                     <Required>N</Required>
                 </acme_proxmoxbs_port>
                 <acme_proxmoxbs_nodename type="TextField">
                     <Required>N</Required>
-                    <default>localhost</default>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Default>localhost</Default>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_nodename>
                 <acme_proxmoxbs_realm type="TextField">
-                    <default>pam</default>
+                    <Default>pam</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_realm>
                 <acme_proxmoxbs_tokenid type="TextField">
-                    <default>acme</default>
+                    <Default>acme</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenid>
                 <acme_proxmoxbs_tokenkey type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenkey>
                 <acme_truenas_apikey type="TextField">
