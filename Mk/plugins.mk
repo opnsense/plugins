@@ -24,15 +24,13 @@
 # SUCH DAMAGE.
 
 all: check
-	@cat ${.CURDIR}/pkg-descr | ${PAGER}
+	@cat ${.CURDIR}/${PLUGIN_DESC} | ${PAGER}
 
 .include "defaults.mk"
 
 PLUGINSDIR?=		${.CURDIR}/../..
 SCRIPTSDIR=		${PLUGINSDIR}/Scripts
 TEMPLATESDIR=		${PLUGINSDIR}/Templates
-
-.include "lint.mk"
 
 .if exists(${GIT}) && exists(${GITVERSION})
 PLUGIN_COMMIT!=		${GITVERSION}
@@ -53,6 +51,8 @@ PLUGIN_REVISION?=	0
 
 PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
 			PLUGIN_MAINTAINER
+
+.include "lint.mk"
 
 check:
 .for PLUGIN_REQUIRE in ${PLUGIN_REQUIRES}

@@ -150,9 +150,8 @@ The make targets for the root directory:
 * clean:	remove all changes and unknown files
 * lint:		run syntax checks
 * list:		print a list of all plugin directories with comments
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes
 
 The make targets for any plugin directory:
 
@@ -163,6 +162,5 @@ The make targets for any plugin directory:
 * package:	creates a package
 * upgrade:	upgrades existing package
 * remove:	remove known files from target directory
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes

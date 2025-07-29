@@ -24,8 +24,3 @@
 # SUCH DAMAGE.
 
 .-include "${PLUGINSDIR}/../core/Mk/lint.mk"
-
-lint-desc: check
-	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
-		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
-	fi
