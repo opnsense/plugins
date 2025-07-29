@@ -24,6 +24,7 @@
 # SUCH DAMAGE.
 
 all: check
+	@cat ${.CURDIR}/pkg-descr | ${PAGER}
 
 .include "defaults.mk"
 
