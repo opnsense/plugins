@@ -23,9 +23,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-COREREFDIR=	${PLUGINSDIR}/../core
-
-.-include "${COREREFDIR}/Mk/lint.mk"
+.-include "${PLUGINSDIR}/../core/Mk/lint.mk"
 
 lint-desc: check
 	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
