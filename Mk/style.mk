@@ -23,6 +23,8 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-CORE_PYTHON_DOT=       ${PLUGIN_PYTHON:C/./&./1}
+CORE_PYTHON_DOT=${PLUGIN_PYTHON:C/./&./1}
 
 .-include "${PLUGINSDIR}/../core/Mk/style.mk"
+
+style-php: ensure-workdirs

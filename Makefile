@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -29,7 +29,6 @@ all:
 .include "Mk/defaults.mk"
 
 CATEGORIES!=	ls -1d [a-z0-9]*
-CATEGORIES:=	${CATEGORIES:Nruleset.xml}
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
