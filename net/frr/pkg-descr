@@ -18,6 +18,7 @@ Plugin Changelog
 * Add BGP listen range to peer groups (opnsense/plugins/pull/4722)
 * Fix peer group activation (opnsense/plugins/pull/4777)
 * Switch to FRR 10 (opnsense/plugins/pull/4741)
+* Further adjustments for FRR 10
 
 1.44
 
