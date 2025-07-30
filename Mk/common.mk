@@ -23,4 +23,9 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+WRKDIR?=${.CURDIR}/work
+WRKSRC?=${WRKDIR}/src
+PKGDIR?=${WRKDIR}/pkg
+MFCDIR?=/tmp/mfc.dir
+
 .-include "${PLUGINSDIR}/../core/Mk/common.mk"

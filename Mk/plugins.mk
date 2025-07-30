@@ -305,13 +305,6 @@ remove: check
 		fi; \
 	done
 
-WRKDIR?=${.CURDIR}/work
-WRKSRC?=${WRKDIR}/src
-PKGDIR?=${WRKDIR}/pkg
-
-ensure-workdirs:
-	@mkdir -p ${WRKSRC} ${PKGDIR}
-
 package: check
 	@rm -rf ${WRKSRC}
 	@mkdir -p ${WRKSRC} ${PKGDIR}
@@ -367,8 +360,9 @@ test: check
 		    ${.CURDIR}/src/opnsense/mvc/tests; \
 	fi
 
-commit: ensure-workdirs
+commit:
+	@mkdir -p ${MFCDIR}
 	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
-	    ${WRKDIR}/.commitmsg && git commit -eF ${WRKDIR}/.commitmsg .
+	    ${MFCDIR}/.commitmsg && git commit -eF ${MFCDIR}/.commitmsg .
 
 .PHONY:	check

@@ -26,5 +26,3 @@
 CORE_PYTHON_DOT=${PLUGIN_PYTHON:C/./&./1}
 
 .-include "${PLUGINSDIR}/../core/Mk/style.mk"
-
-style-php: ensure-workdirs
