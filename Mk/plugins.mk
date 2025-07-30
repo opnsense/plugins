@@ -23,14 +23,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+PLUGINSDIR?=		${.CURDIR}/../..
+
 all: check
 	@cat ${.CURDIR}/${PLUGIN_DESC} | ${PAGER}
 
 .include "defaults.mk"
-
-PLUGINSDIR?=		${.CURDIR}/../..
-SCRIPTSDIR=		${PLUGINSDIR}/Scripts
-TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
 .if exists(${GIT}) && exists(${GITVERSION})
 PLUGIN_COMMIT!=		${GITVERSION}
@@ -53,6 +51,7 @@ PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
 			PLUGIN_MAINTAINER
 
 .include "common.mk"
+.include "git.mk"
 .include "lint.mk"
 .include "style.mk"
 .include "sweep.mk"
