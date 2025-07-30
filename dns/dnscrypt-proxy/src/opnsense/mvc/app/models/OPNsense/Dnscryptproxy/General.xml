@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/dnscryptproxy/general</mount>
     <description>dnscrypt-proxy configuration</description>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -38,6 +38,10 @@
             <Default>1</Default>
             <Required>Y</Required>
         </doh_servers>
+        <odoh_servers type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </odoh_servers>
         <require_dnssec type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -54,9 +58,7 @@
             <Default>0</Default>
             <Required>Y</Required>
         </force_tcp>
-        <proxy type="TextField">
-            <Required>N</Required>
-        </proxy>
+        <proxy type="TextField"/>
         <timeout type="IntegerField">
             <Default>2500</Default>
             <Required>Y</Required>
@@ -133,21 +135,15 @@
             <MaximumValue>86400</MaximumValue>
             <ValidationMessage>Choose a number between 1 and 86400.</ValidationMessage>
         </cache_neg_max_ttl>
-        <serverlist type="CSVListField">
-            <Required>N</Required>
-        </serverlist>
+        <serverlist type="CSVListField"/>
         <query_logs type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>
         </query_logs>
         <disabled_serverlist type="CSVListField">
             <Mask>/^[A-Za-z0-9\._\-]{1,70}(,[A-Za-z0-9\._\-]{1,70})*$/</Mask>
-            <Default></Default>
-            <Required>N</Required>
             <ValidationMessage>Please use valid server names.</ValidationMessage>
         </disabled_serverlist>
-        <relaylist type="CSVListField">
-            <Required>N</Required>
-        </relaylist>
+        <relaylist type="CSVListField"/>
     </items>
 </model>
