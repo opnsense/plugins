@@ -50,7 +50,7 @@ $( document ).ready(function() {
             selection:false,
             multiSelect:false,
             formatters: {
-              "commandswithwake": function (column, row) {
+              "commands": function (column, row) {
                 return "<button type=\"button\" class=\"btn btn-xs btn-default command-wake\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clock-o\"></span></button> " +
                     "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                     "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
@@ -111,7 +111,7 @@ $( document ).ready(function() {
                 <th data-column-id="interface" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
                 <th data-column-id="mac" data-type="string" data-visible="true">{{ lang._('MAC') }}</th>
                 <th data-column-id="descr" data-type="string" data-identifier="true">{{ lang._('Description') }}</th>
-                <th data-column-id="commands" data-formatter="commandswithwake" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="130">{{ lang._('Commands') }}</th>
             </tr>
         </thead>
         <tbody>
