@@ -6,4 +6,12 @@
          <pattern>api/freeradius/*</pattern>
       </patterns>
    </page-services-freeradius>
+
+   <page-services-freeradius-users>
+      <name>Services: FreeRADIUS Users</name>
+      <patterns>
+         <pattern>ui/freeradius/user/*</pattern>
+         <pattern>api/freeradius/*</pattern>
+      </patterns>
+   </page-services-freeradius-users>
 </acl>
