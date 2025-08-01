@@ -92,3 +92,9 @@ SED_REPLACE=	# empty
 .for REPLACEMENT in ${REPLACEMENTS}
 SED_REPLACE+=	-e "s=%%${REPLACEMENT}%%=${${REPLACEMENT}}=g"
 .endfor
+
+WRKDIR?=	${.CURDIR}/work
+MFCDIR?=	/tmp/mfc.dir
+PKGDIR?=	${WRKDIR}/pkg
+WRKSRC?=	${WRKDIR}/src
+TESTDIR?=	${.CURDIR}/src/opnsense/mvc/tests

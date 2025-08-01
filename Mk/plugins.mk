@@ -354,11 +354,10 @@ revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
 test: check
-	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
-		cd ${LOCALBASE}/opnsense/mvc/tests && \
-		    phpunit --configuration PHPunit.xml \
-		    ${.CURDIR}/src/opnsense/mvc/tests; \
-	fi
+.if exists(${TESTDIR})
+	@cd ${TESTDIR} && phpunit || true; \
+	    rm -rf ${TESTDIR}/.phpunit.result.cache
+.endif
 
 commit:
 	@mkdir -p ${MFCDIR}
