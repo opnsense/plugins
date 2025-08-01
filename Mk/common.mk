@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -23,46 +23,4 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-PLUGINSDIR?=	${.CURDIR}
-
-CATEGORIES!=	ls -1d [a-z0-9]*
-
-.for CATEGORY in ${CATEGORIES}
-_${CATEGORY}!=	ls -1d ${CATEGORY}/*
-PLUGIN_DIRS+=	${_${CATEGORY}}
-.endfor
-
-all:
-	@cat ${.CURDIR}/README.md | ${PAGER}
-
-.include "Mk/defaults.mk"
-.include "Mk/common.mk"
-.include "Mk/git.mk"
-
-list:
-.for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_COMMENT) \
-	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_DEVEL _PLUGIN_DEVEL=)" ]; then echo "(development only)"; fi) \
-	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_OBSOLETE)" ]; then echo "(pending removal)"; fi)
-.endfor
-
-# shared targets that are sane to run from the root directory
-TARGETS=	clean glint lint revision style sweep test
-
-.for TARGET in ${TARGETS}
-${TARGET}:
-.  for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ">>> Entering ${PLUGIN_DIR}"
-	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
-.  endfor
-.endfor
-
-license:
-	@${.CURDIR}/Scripts/license . > ${.CURDIR}/LICENSE
-
-readme.md:
-	@MAKE=${MAKE} Scripts/update-list.sh
-
-sync: readme.md license
-
-.PHONY: license readme.md sync
+.-include "${PLUGINSDIR}/../core/Mk/common.mk"
