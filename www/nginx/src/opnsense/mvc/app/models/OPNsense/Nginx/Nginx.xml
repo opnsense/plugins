@@ -204,7 +204,7 @@
       <server type="HostnameField">
         <Required>Y</Required>
       </server>
-      <port type="PortField">
+      <port type="TextField">
         <Required>Y</Required>
       </port>
       <priority type="IntegerField">
