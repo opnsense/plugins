@@ -38,7 +38,6 @@
     <label>Address Family</label>
     <type>dropdown</type>
     <type>select_multiple</type>
-    <style>selectpicker</style>
     <help>Select which address families to activate for this peer group.</help>
   </field>
   <field>
