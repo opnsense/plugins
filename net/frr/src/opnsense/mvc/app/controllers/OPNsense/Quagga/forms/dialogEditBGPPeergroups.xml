@@ -34,7 +34,7 @@
     </grid_view>
   </field>
   <field>
-    <id>peergroup.address_family</id>
+    <id>peergroup.family</id>
     <label>Address Family</label>
     <type>dropdown</type>
     <type>select_multiple</type>

@@ -439,7 +439,7 @@
                                 <MinimumValue>1</MinimumValue>
                                 <MaximumValue>4294967295</MaximumValue>
                         </remoteas>
-                        <address_family type="OptionField">
+                        <family type="OptionField">
                                 <Required>Y</Required>
                                 <Default>ipv4</Default>
                                 <Multiple>Y</Multiple>
@@ -447,7 +447,7 @@
                                         <ipv4>IPv4</ipv4>
                                         <ipv6>IPv6</ipv6>
                                 </OptionValues>
-                        </address_family>
+                        </family>
                         <listenranges type="NetworkField">
                                 <FieldSeparator>,</FieldSeparator>
                                 <AsList>Y</AsList>
