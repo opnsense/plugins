@@ -34,6 +34,13 @@
     </grid_view>
   </field>
   <field>
+    <id>peergroup.family</id>
+    <label>Address Family</label>
+    <type>dropdown</type>
+    <type>select_multiple</type>
+    <help>Select which address families to activate for this peer group.</help>
+  </field>
+  <field>
     <id>peergroup.listenranges</id>
     <label>Listen Ranges</label>
     <type>select_multiple</type>
