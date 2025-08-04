@@ -13,7 +13,7 @@
             saveFormToEndpoint(url="/api/crowdsec/general/set",formid='frm_GeneralSettings',callback_ok=function(){
                 $("#settingsSavedMsg").text("Saving settings....").removeClass("hidden");
                 // action to run after successful save, for example reconfigure service.
-                ajaxCall(url="/api/crowdsec/service/reload", sendData={},callback=function(data,status) {
+                ajaxCall(url="/api/crowdsec/service/reconfigure", sendData={},callback=function(data,status) {
                     $("#settingsSavedMsg").html(
                         '<i class="fa fa-check text-success"></i> Settings have been saved, services restarted.'
                     ).removeClass("hidden");
