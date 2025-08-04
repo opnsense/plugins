@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.46
+
+* Add address family selection to peer groups (opnsense/plugins/pull/4861)
+
 1.45
 
 * Add neighbor config to OSPF (contributed by Andy Binder) (opnsense/plugins/pull/4694)
@@ -19,7 +23,6 @@ Plugin Changelog
 * Fix peer group activation (opnsense/plugins/pull/4777)
 * Switch to FRR 10 (opnsense/plugins/pull/4741)
 * Further adjustments for FRR 10
-* Add address family selection to peer groups (opnsense/plugins/pull/4861)
 
 1.44
 
