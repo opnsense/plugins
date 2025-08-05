@@ -12,6 +12,10 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.13
+
+* Fix and document memory_saving_mode formerly enable_file_download (contribited by @sopex)
+
 1.12.12
 
 * Fix for mixed ping plugin config (contributed by Alex Baulé)
