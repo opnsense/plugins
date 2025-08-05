@@ -51,10 +51,10 @@
             <Default>1</Default>
             <Required>N</Required>
         </scanelf>
-        <alertbroken type="BooleanField">
+        <detectbroken type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
-        </alertbroken>
+        </detectbroken>
         <scanole2 type="BooleanField">
             <Default>1</Default>
             <Required>N</Required>
