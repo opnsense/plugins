@@ -70,7 +70,7 @@
         <help>Executable and Linking Format is a standard format for UN*X executables.</help>
     </field>
     <field>
-        <id>general.alertbroken</id>
+        <id>general.detectbroken</id>
         <label>Detect broken executables</label>
         <type>checkbox</type>
         <help>With this option ClamAV will alert on broken executables (both PE and ELF) and mark them as Broken.</help>
