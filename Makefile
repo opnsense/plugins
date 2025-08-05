@@ -25,7 +25,8 @@
 
 PLUGINSDIR?=	${.CURDIR}
 
-CATEGORIES!=	ls -1d [a-z0-9]*
+_CATEGORIES!=	ls -1d [a-z0-9]*
+CATEGORIES?=	${_CATEGORIES}
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
