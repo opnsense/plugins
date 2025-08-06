@@ -56,10 +56,10 @@
         <help>Enable the collection of data about the internet speed on the system.</help>
     </field>
     <field>
-        <id>input.internet_speed_file</id>
-        <label>Internet Speed File Download</label>
+        <id>input.internet_speed_saving</id>
+        <label>Internet Speed Test saving mode</label>
         <type>checkbox</type>
-        <help>Enable the file download speed test.</help>
+        <help>Not recommended if speed tests work. Reduces memory and computation needs, but accuracy is compromised at connections above 30Mbps.</help>
     </field>
     <field>
         <id>input.internet_speed_interval</id>
