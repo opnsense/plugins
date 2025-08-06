@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/input</mount>
     <description>Telegraf inputs configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <cpu type="BooleanField">
             <Default>1</Default>

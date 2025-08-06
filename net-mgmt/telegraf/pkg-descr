@@ -14,7 +14,7 @@ Plugin Changelog
 
 1.12.13
 
-* Fix and document memory_saving_mode formerly enable_file_download (contributed by sopex)
+* Implement memory_saving_mode formerly named enable_file_download (contributed by sopex)
 
 1.12.12
 
