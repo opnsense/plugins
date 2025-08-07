@@ -110,6 +110,29 @@ POSSIBILITY OF SUCH DAMAGE.
             );
         }
 
+        $("#interface\\.networktype").on("keyup change", function () {
+
+            const networktype = String($("#interface\\.networktype").val() || "")
+ 
+            const styleVisibility = [
+                {
+                    class: "style_networktype",
+                    visible: networktype === "point-to-multipoint"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
+
     });
 </script>
 
