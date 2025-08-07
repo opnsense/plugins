@@ -18,7 +18,8 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/CrowdSec';
     protected static $internalServiceName = 'crowdsec';
 
-    protected function ServiceEnabled() {
+    protected function ServiceEnabled()
+    {
         $mdl = $this->getModel();
 
         return (
