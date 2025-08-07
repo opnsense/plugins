@@ -80,7 +80,7 @@
     <label>Create blocklist rules</label>
     <type>checkbox</type>
     <help>Generate block rules from the Crowdsec blocklists.
-    They are applied t all interfaces, ipv4/v6, ingress and egress.
+    They are applied to all interfaces, ipv4/v6, ingress and egress.
     If you disable this, you'll have to write your own rules to block anything.</help>
   </field>
 
