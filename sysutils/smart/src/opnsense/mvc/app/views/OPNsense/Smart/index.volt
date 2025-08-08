@@ -138,7 +138,8 @@
 			<label><input type="radio" name="type" value="H" checked="checked" />{{ lang._('Health') }}</label>&nbsp;
 			<label><input type="radio" name="type" value="c" />{{ lang._('SMART Capabilities') }}</label>&nbsp;
 			<label><input type="radio" name="type" value="A" />{{ lang._('Attributes') }}</label>&nbsp;
-			<label><input type="radio" name="type" value="a" />{{ lang._('All') }}</label>
+			<label><input type="radio" name="type" value="a" />{{ lang._('All') }}</label>&nbsp;
+			<label><input type="radio" name="type" value="x" />{{ lang._('Extended') }}</label>
 		    </div>
 		    </td>
 		</tr>

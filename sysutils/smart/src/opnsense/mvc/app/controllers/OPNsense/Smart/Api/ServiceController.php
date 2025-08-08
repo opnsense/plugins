@@ -68,7 +68,7 @@ class ServiceController extends ApiControllerBase
                 return array("message" => "Invalid device name");
             }
 
-            $valid_info_types = array("i", "H", "c", "A", "a");
+            $valid_info_types = array("i", "H", "c", "A", "a", "x");
 
             if (!in_array($type, $valid_info_types)) {
                 return array("message" => "Invalid info type");
