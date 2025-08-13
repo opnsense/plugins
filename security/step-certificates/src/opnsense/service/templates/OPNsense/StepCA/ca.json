@@ -1,0 +1,154 @@
+{#- ############################### -#}
+{#-        GLOBAL VARIABLES         -#}
+{#- ############################### -#}
+
+{%- set keySource = OPNsense.StepCA.Initialize.intermediate.Source|default("trust") %}
+{%- set dbType = OPNsense.StepCA.CA.db.DB|default("badgerv2") %}
+
+{#- ############################### -#}
+{#-             MACROS              -#}
+{#- ############################### -#}
+
+{%- macro privkey() -%}
+    {%- if keySource.startswith("yubikey") -%}
+        "yubikey:slot-id={{ OPNsense.StepCA.Initialize.intermediate.YubikeySlot }}"
+    {%- else -%}
+        "/usr/local/etc/step/ca/secrets/intermediate_ca_key"
+    {%- endif %}
+{%- endmacro %}
+
+{%- macro kms() -%}
+    {%- if keySource.startswith("yubikey") -%}
+    "kms": {
+        "type": "yubikey",
+        "pin": "{{ OPNsense.StepCA.Initialize.yubikey.Pin }}"
+    },
+    {%- endif %}
+{%- endmacro %}
+
+{%- macro dbSource() -%}
+    {%- if dbType == "badgerv2" -%}
+        "dataSource": "/usr/local/etc/step/ca/db"
+    {%- elif dbType == "bbolt" -%}
+        "dataSource": "./stepdb"
+    {%- else -%}
+        "dataSource": "{{ OPNsense.StepCA.CA.db.DBUrl }}",
+        "database": "{{ OPNsense.StepCA.CA.db.Database }}"
+    {%- endif -%}
+{% endmacro %}
+
+{%- macro hostPolicy(type, node, indentCnt, comma) -%}
+    {%- set policy = dict() -%}
+    {%- if node.allow.DNSNames | length > 0 or node.allow.IPNames | length > 0  -%}
+        {%- set _ = policy.update({"allow": dict()}) -%}
+        {%- if node.allow.DNSNames|length > 0 %}{% set _ = policy.allow.update({"dns": node.allow.DNSNames.split(',')}) %}{% endif -%}
+        {%- if node.allow.IPNames |length > 0 %}{% set _ = policy.allow.update({"ip":  node.allow.IPNames.split(',') }) %}{% endif -%}
+    {%- endif -%}
+    {%- if node.deny.DNSNames | length > 0 or node.deny.IPNames | length > 0  -%}
+        {%- set _ = policy.update({"deny": dict()}) -%}
+        {%- if node.deny.DNSNames|length > 0 %}{% set _ = policy.deny.update({"dns": node.deny.DNSNames.split(',')}) %}{% endif -%}
+        {%- if node.deny.IPNames |length > 0 %}{% set _ = policy.deny.update({"ip":  node.deny.IPNames.split(',') }) %}{% endif -%}
+    {%- endif -%}
+    {%- if policy|length > 0 %}"{{ type}}":{{ policy | tojson(4) | indent(indentCnt) }}{{comma}}{% endif -%}
+{%- endmacro -%}
+
+{%- macro claims(node, indentCnt) %}
+{%- if node.allowRenewalAfterExpiry|default("0") == "1"  -%}
+    {%- set _ = node.update({"allowRenewalAfterExpiry": true}) -%}
+{%- else -%}
+    {%- set _ = node.pop("allowRenewalAfterExpiry", None) -%}
+{%- endif -%}
+{%- if node.disableRenewal|default("0") == "1"  -%}
+    {%- set _ = node.update({"disableRenewal": true}) -%}
+{%- else -%}
+    {%- set _ = node.pop("disableRenewal", None) -%}
+{%- endif -%}
+{%- if node.enableSSHCA|default("0") == "1"  -%}
+    {%- set _ = node.update({"enableSSHCA": true}) -%}
+{%- else -%}
+    {%- set _ = node.pop("enableSSHCA", None) -%}
+{%- endif -%}
+{{ node | tojson(4) | indent(indentCnt )}}
+{%- endmacro -%}
+
+{%- macro provisioners() %}
+    {%- for prov in helpers.toList('OPNsense.StepCA.CA.provisioners.provisioner') %}
+    {%- if prov.Enabled == "1" %}
+        {%- if not loop.first%},{%- endif -%}
+        {%- if prov.Provisioner == "acme" %}
+
+        {
+            "type": "ACME",
+            "name": "{{prov.Name}}",
+            "forceCN": {% if prov.ForceCN == 1 %}true{%else%}false{%- endif -%},
+            "claims": {{ claims(prov.claims,16) }},
+            "termsOfService": "",
+            "website": "",
+            "caaIdentities": [],
+            "challenges": {{ prov.Challenges.split(',') | tojson() }},
+            {%if 'device-attest-01' in prov.Challenges -%}
+            "attestationFormats": [ {{ prov.Attestation.split(',') | tojson() }}],
+            "attestationRoots": "",
+            {%- endif -%}
+            "options": {
+                "x509": {
+                    "templateFile": "/usr/local/etc/step/ca/templates/leaf.{{prov.Name}}.tpl"
+                }
+            }
+        }
+        {%- endif -%}
+    {%- endif -%}
+    {%- endfor %}
+{%- endmacro%}
+
+{#- ############################### -#}
+{#-             ca.json             -#}
+{#- ############################### -#}
+
+{
+    "root": "/usr/local/etc/step/ca/certs/root_ca.crt",
+    "federatedRoots": null,
+    "crt": "/usr/local/etc/step/ca/certs/intermediate_ca.crt",
+    "key": {{ privkey() }},
+    {#"ssh": {
+        "hostKey": "/examples/pki/secrets/secrets.host.key",
+        "userKey": "/examples/pki/secrets/secrets.user.key"
+    },#}
+    {{ kms() }}
+    "address": "{{ OPNsense.StepCA.CA.Address }}",
+    "insecureAddress": "",
+    "dnsNames": {{ OPNsense.StepCA.CA.DNSNames.split(',') | tojson() }},
+    "logger": {
+        "format": "text"
+    },
+    "db": {
+        "type": "{{ dbType }}",
+        {{ dbSource() }}
+    },
+    "authority": {
+        "claims": {{ claims(OPNsense.StepCA.CA.authority.claims, 8)}},
+        "policy": {
+            {{ hostPolicy("x509", OPNsense.StepCA.CA.authority.policy.x509, 12, ',')}}
+            "ssh": {
+                {# "user": {
+                    "allow": {
+                        "email": ["@local"]
+                    },
+                    "deny": {
+                        "email": ["root@local"]
+                    }}, -#}
+                {{ hostPolicy("host", OPNsense.StepCA.CA.authority.policy.ssh.host, 16, '')}}
+            }
+        },
+        "provisioners": [ {{ provisioners() }}]
+    },
+    "tls": {
+        "cipherSuites": [
+            "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+        ],
+        "minVersion": 1.2,
+        "maxVersion": 1.3,
+        "renegotiation": false
+    }
+}
