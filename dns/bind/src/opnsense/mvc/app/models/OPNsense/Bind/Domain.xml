@@ -21,6 +21,10 @@
                 <primaryip type="NetworkField">
                     <AsList>Y</AsList>
                 </primaryip>
+                <forwardonly type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </forwardonly>
                 <forwardserver type="NetworkField">
                     <AsList>Y</AsList>
                 </forwardserver>
