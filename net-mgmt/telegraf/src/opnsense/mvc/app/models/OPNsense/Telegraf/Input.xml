@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/input</mount>
     <description>Telegraf inputs configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <cpu type="BooleanField">
             <Default>1</Default>
@@ -39,10 +39,10 @@
             <Default>0</Default>
             <Required>N</Required>
         </internet_speed>
-        <internet_speed_file type="BooleanField">
+        <internet_speed_saving type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
-        </internet_speed_file>
+        </internet_speed_saving>
         <internet_speed_interval type="IntegerField">
             <Default>360</Default>
             <Required>N</Required>
