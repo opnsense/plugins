@@ -73,7 +73,7 @@
         <id>general.detectbroken</id>
         <label>Detect broken executables</label>
         <type>checkbox</type>
-        <help>With this option clamav will try to detect broken executables (both PE and ELF) and mark them as Broken.</help>
+        <help>With this option ClamAV will alert on broken executables (both PE and ELF) and mark them as Broken.</help>
     </field>
     <field>
         <id>general.scanole2</id>
