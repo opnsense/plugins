@@ -236,6 +236,12 @@
                                         <point-to-point>Point-to-point network</point-to-point>
                                 </OptionValues>
                         </networktype>
+                        <p2mpoptions type="OptionField">
+                                <OptionValues>
+                                        <delay-reflood>Delay reflood</delay-reflood>
+                                        <non-broadcast>Non-broadcast</non-broadcast>
+                                </OptionValues>
+                        </p2mpoptions>
                 </interface>
         </interfaces>
         <prefixlists>
