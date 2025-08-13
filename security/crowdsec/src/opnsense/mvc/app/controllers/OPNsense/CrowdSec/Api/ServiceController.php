@@ -5,76 +5,41 @@
 
 namespace OPNsense\CrowdSec\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 
 /**
  * Class ServiceController
  * @package OPNsense\CrowdSec
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * reconfigure CrowdSec
-     *
-     * @return array Status result
-     */
-    public function reloadAction(): array
+    protected static $internalServiceClass = '\OPNsense\CrowdSec\General';
+    protected static $internalServiceTemplate = 'OPNsense/CrowdSec';
+    protected static $internalServiceName = 'crowdsec';
+
+    protected function ServiceEnabled()
     {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $bckresult = trim($backend->configdRun('template reload OPNsense/CrowdSec'));
-            if ($bckresult == "OK") {
-                $bckresult = trim($backend->configdRun('crowdsec reconfigure'));
-                if ($bckresult == "OK") {
-                    $status = "ok";
-                }
-            }
-        }
-        return ["status" => $status];
+        $mdl = $this->getModel();
+
+        return (
+            $mdl->agent_enabled->__toString() === "1" ||
+            $mdl->lapi_enabled->__toString() === "1" ||
+            $mdl->firewall_bouncer_enabled->__toString() === "1"
+        );
     }
 
-    /**
-     * Retrieve status of crowdsec
-     *
-     * @return array{
-     *     status: string,
-     *     crowdsec-status: string,
-     *     crowdsec-firewall-status: string
-     * }
-     * @throws \Exception
-     */
-    public function statusAction()
+    public function reconfigureAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("crowdsec crowdsec-status");
+        // Run the default reconfigure logic
+        $result = parent::reconfigureAction();
 
-        $crowdsec_status = "unknown";
-        if (strpos($response, "not running") !== false) {
-            $crowdsec_status = "stopped";
-        } elseif (strpos($response, "is running") !== false) {
-            $crowdsec_status = "running";
+        // Now we generate the config.yaml and config-firewall-bouncer.yaml files
+        if (isset($result['status']) && $result['status'] === 'ok') {
+            $backend = new Backend();
+            $backend->configdRun('crowdsec reconfigure');
         }
 
-        $response = $backend->configdRun("crowdsec crowdsec-firewall-status");
-
-        $firewall_status = "unknown";
-        if (strpos($response, "not running") !== false) {
-            $firewall_status = "stopped";
-        } elseif (strpos($response, "is running") !== false) {
-            $firewall_status = "running";
-        }
-
-        $status = "unknown";
-        if ($crowdsec_status == $firewall_status) {
-            $status = $crowdsec_status;
-        }
-
-        return [
-            "status" => $status,
-            "crowdsec-status" => $crowdsec_status,
-            "crowdsec-firewall-status" => $firewall_status,
-        ];
+        return $result;
     }
 }
