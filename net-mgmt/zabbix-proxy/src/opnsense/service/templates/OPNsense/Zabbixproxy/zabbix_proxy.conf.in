@@ -84,6 +84,18 @@ HistoryCacheSize={{ OPNsense.zabbixproxy.general.historycachesize }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.historyindexcachesize') and OPNsense.zabbixproxy.general.historyindexcachesize != '' %}
 HistoryIndexCacheSize={{ OPNsense.zabbixproxy.general.historyindexcachesize }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarecachesize') and OPNsense.zabbixproxy.general.vmwarecachesize != '' %}
+VMwareCacheSize={{ OPNsense.zabbixproxy.general.vmwarecachesize }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarefrequency') and OPNsense.zabbixproxy.general.vmwarefrequency != '' %}
+VMwareFrequency={{ OPNsense.zabbixproxy.general.vmwarefrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwareperffrequency') and OPNsense.zabbixproxy.general.vmwareperffrequency != '' %}
+VMwarePerfFrequency={{ OPNsense.zabbixproxy.general.vmwareperffrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwaretimeout') and OPNsense.zabbixproxy.general.vmwaretimeout != '' %}
+VMwareTimeout={{ OPNsense.zabbixproxy.general.vmwaretimeout }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.timeout') and OPNsense.zabbixproxy.general.timeout != '' %}
 Timeout={{ OPNsense.zabbixproxy.general.timeout }}
 {% endif %}
