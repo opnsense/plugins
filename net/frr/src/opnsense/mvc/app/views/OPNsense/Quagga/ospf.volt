@@ -121,7 +121,7 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#interface\\.networktype").on("keyup change", function () {
 
             const networktype = String($("#interface\\.networktype").val() || "")
- 
+
             const styleVisibility = [
                 {
                     class: "style_networktype",

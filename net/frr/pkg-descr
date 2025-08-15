@@ -208,9 +208,9 @@ Plugin Changelog
 
 1.12
 
-* Add passive-interface to OSPFv3 (by Michael Muenz)
-* Allow to set area per interface for OSPFv2 (by @twoequaldots)
-* Allow to set ebgp-multihop in BGP (by @bpeavy and Greg Goodrich)
+* Add passive-interface to OSPFv3 (contributed by Michael Muenz)
+* Allow to set area per interface for OSPFv2 (contributed by twoequaldots)
+* Allow to set ebgp-multihop in BGP (contributed by bpeavy and Greg Goodrich)
 
 1.11
 
