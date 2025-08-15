@@ -99,8 +99,8 @@
                         <th data-column-id="retry" data-type="string" data-visible="true">{{ lang._('Retry') }}</th>
                         <th data-column-id="expire" data-type="string" data-visible="true">{{ lang._('Expire') }}</th>
                         <th data-column-id="negative" data-type="string" data-visible="true">{{ lang._('Negative TTL') }}</th>
-                        <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                         <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                     </tr>
                 </thead>
                 <tbody>
