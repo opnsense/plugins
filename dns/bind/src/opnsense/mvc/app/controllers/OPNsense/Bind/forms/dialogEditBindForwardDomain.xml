@@ -9,14 +9,39 @@
         <id>domain.domainname</id>
         <label>Zone Name</label>
         <type>text</type>
-        <help>Set the name for this zone. Both forward and reverse zones may be specified, i.e. example.com or 0.168.192.in-addr.arpa.</help>
+        <help><![CDATA[
+              Set the name for this zone.
+              <br/>Both forward and reverse zones may be specified.
+              <br/>Examples include:
+              <br/>example.com
+              <br/>0.168.192.in-addr.arpa
+              ]]></help>
+    </field>
+    <field>
+        <id>domain.forwardonly</id>
+        <label>Forward Only</label>
+        <type>checkbox</type>
+        <help><![CDATA[
+              Disables recursion if forwarding fails.
+              <br/>The default is to attempt forwarders first and only perform
+              <br/>recursive lookups if forwarding fails. This setting is only
+              <br/>meaningful if the list of forwarders is not empty.
+              <br/>Can be used to override global forwarding behaviour for this
+              <br/>domain by specifying the same servers below.
+              <br/>This directive is explictily set to either forward only; or
+              <br/>forward first; to avoid any furtherance of doubt.
+              ]]></help>
     </field>
     <field>
         <id>domain.forwardserver</id>
-        <label>Primary IP</label>
+        <label>Forwarder IPs</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP address of server to forward requests to.</help>
+        <help><![CDATA[
+              Set any combination of IPv4 and IPv6 addresses for which to
+              <br/>forward queries to for this domain.
+              <br/>Used to override global forwarders for this domain.
+              ]]></help>
     </field>
 </form>

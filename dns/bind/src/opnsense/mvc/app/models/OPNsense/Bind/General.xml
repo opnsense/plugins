@@ -15,16 +15,40 @@
             <Default>1</Default>
             <Required>Y</Required>
         </enablerpz>
-        <listenv4 type="NetworkField">
-            <Default>0.0.0.0</Default>
-            <Required>Y</Required>
-            <AsList>Y</AsList>
+        <listenv4 type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
         </listenv4>
-        <listenv6 type="NetworkField">
-            <Default>::</Default>
-            <Required>Y</Required>
-            <AsList>Y</AsList>
+        <listenv6 type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
         </listenv6>
+        <port type="PortField">
+            <Default>53530</Default>
+            <Required>Y</Required>
+        </port>
+        <allowquery type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+        </allowquery>
         <querysource type="NetworkField">
             <AddressFamily>ipv4</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
@@ -33,6 +57,49 @@
             <AddressFamily>ipv6</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </querysourcev6>
+        <enablerecursion type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </enablerecursion>
+        <recursionallowedacls type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+            <ValidationMessage>Choose an ACL.</ValidationMessage>
+        </recursionallowedacls>
+        <allowcachequeries type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+            <ValidationMessage>Choose an ACL.</ValidationMessage>
+        </allowcachequeries>
+        <forwardonly type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </forwardonly>
+        <forwarders type="NetworkField">
+            <AsList>Y</AsList>
+        </forwarders>
+        <allowtransfer type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
+        </allowtransfer>
         <transfersource type="NetworkField">
             <AddressFamily>ipv4</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
@@ -41,13 +108,14 @@
             <AddressFamily>ipv6</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </transfersourcev6>
-        <port type="PortField">
-            <Default>53530</Default>
+        <dnssecvalidation type="OptionField">
+            <OptionValues>
+                <no>No</no>
+                <auto>Auto</auto>
+            </OptionValues>
+            <Default>no</Default>
             <Required>Y</Required>
-        </port>
-        <forwarders type="NetworkField">
-            <AsList>Y</AsList>
-        </forwarders>
+        </dnssecvalidation>
         <filteraaaav4 type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -56,8 +124,15 @@
             <Default>0</Default>
             <Required>Y</Required>
         </filteraaaav6>
-        <filteraaaaacl type="NetworkField">
-            <AsList>Y</AsList>
+        <filteraaaaacl type="ModelRelationField">
+            <Model>
+                <template>
+                    <source>OPNsense.Bind.Acl</source>
+                    <items>acls.acl</items>
+                    <display>name</display>
+                </template>
+            </Model>
+            <Multiple>Y</Multiple>
         </filteraaaaacl>
         <logsize type="IntegerField">
             <Default>5</Default>
@@ -79,6 +154,14 @@
             <Required>Y</Required>
             <Default>info</Default>
         </general_log_level>
+        <hidehostname type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </hidehostname>
+        <hideversion type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </hideversion>
         <maxcachesize type="IntegerField">
             <Default>80</Default>
             <Required>Y</Required>
@@ -86,7 +169,25 @@
             <MaximumValue>99</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 99.</ValidationMessage>
         </maxcachesize>
-        <recursion type="ModelRelationField">
+        <disableprefetch type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disableprefetch>
+        <enableratelimiting type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enableratelimiting>
+        <ratelimitrespps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitrespps>
+        <ratelimitwindow type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>3600</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 3600.</ValidationMessage>
+        </ratelimitwindow>
+        <ratelimitexempt type="ModelRelationField">
             <Model>
                 <template>
                     <source>OPNsense.Bind.Acl</source>
@@ -96,61 +197,66 @@
             </Model>
             <Multiple>Y</Multiple>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
-        </recursion>
-        <allowtransfer type="ModelRelationField">
-            <Model>
-                <template>
-                    <source>OPNsense.Bind.Acl</source>
-                    <items>acls.acl</items>
-                    <display>name</display>
-                </template>
-            </Model>
-            <Multiple>Y</Multiple>
-        </allowtransfer>
-        <allowquery type="ModelRelationField">
-            <Model>
-                <template>
-                    <source>OPNsense.Bind.Acl</source>
-                    <items>acls.acl</items>
-                    <display>name</display>
-                </template>
-            </Model>
-            <Multiple>Y</Multiple>
-        </allowquery>
-        <dnssecvalidation type="OptionField">
-            <OptionValues>
-                <no>No</no>
-                <auto>Auto</auto>
-            </OptionValues>
-            <Default>no</Default>
-            <Required>Y</Required>
-        </dnssecvalidation>
-        <hidehostname type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </hidehostname>
-        <hideversion type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </hideversion>
-        <disableprefetch type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </disableprefetch>
-        <enableratelimiting type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </enableratelimiting>
-        <ratelimitcount type="IntegerField">
+        </ratelimitexempt>
+        <ratelimitipv4prefixlength type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>32</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 32.</ValidationMessage>
+        </ratelimitipv4prefixlength>
+        <ratelimitipv6prefixlength type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>128</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 128.</ValidationMessage>
+        </ratelimitipv6prefixlength>
+        <ratelimitnodataps type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>1000</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
-        </ratelimitcount>
-        <ratelimitexcept type="NetworkField">
-            <Default>0.0.0.0,::</Default>
-            <Required>Y</Required>
-            <AsList>Y</AsList>
-        </ratelimitexcept>
+        </ratelimitnodataps>
+        <ratelimitnxdomsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitnxdomsps>
+        <ratelimitrefsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitrefsps>
+        <ratelimiterrsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimiterrsps>
+        <ratelimitallps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitallps>
+        <ratelimitslip type="IntegerField">
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10</MaximumValue>
+            <ValidationMessage>Choose a value between 0 and 10.</ValidationMessage>
+        </ratelimitslip>
+        <ratelimitscale type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitscale>
+        <ratelimitmaxtbl type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>100000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 100,000.</ValidationMessage>
+        </ratelimitmaxtbl>
+        <ratelimitmintbl type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>100000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 100,000.</ValidationMessage>
+        </ratelimitmintbl>
+        <ratelimittry type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </ratelimittry>
         <rndcalgo type="OptionField">
             <Required>Y</Required>
             <Default>hmac-sha256</Default>
