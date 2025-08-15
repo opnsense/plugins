@@ -73,9 +73,9 @@
                                 <OptionValues>
                                         <standard>standard</standard>
                                         <stub>stub</stub>
-                                        <stub-no-summary>stub no-summary</stub-no-summary>
+                                        <stub-no-summary value="stub no-summary">stub no-summary</stub-no-summary>
                                         <nssa>nssa</nssa>
-                                        <nssa-no-summary>nssa no-summary</nssa-no-summary>
+                                        <nssa-no-summary value="nssa no-summary">nssa no-summary</nssa-no-summary>
                                 </OptionValues>
                         </type>
                 </area>
