@@ -49,6 +49,37 @@
                     <enable>/^(?!0).*$/</enable>
                 </filters>
         </passiveinterfaces>
+        <areas>
+                <area type="ArrayField">
+                        <enabled type="BooleanField">
+                                <Default>1</Default>
+                                <Required>Y</Required>
+                        </enabled>
+                        <id type="NetworkField">
+                                <Required>Y</Required>
+                                <AddressFamily>ipv4</AddressFamily>
+                                <NetMaskAllowed>N</NetMaskAllowed>
+                                <ValidationMessage>Please enter area ID in dotted (e.g. 0.0.0.1) format.</ValidationMessage>
+                                <Constraints>
+                                        <check001>
+                                                <type>UniqueConstraint</type>
+                                                <ValidationMessage>The area ID must be unique.</ValidationMessage>
+                                        </check001>
+                                </Constraints>
+                        </id>
+                        <type type="OptionField">
+                                <Required>Y</Required>
+                                <Default>standard</Default>
+                                <OptionValues>
+                                        <standard>standard</standard>
+                                        <stub>stub</stub>
+                                        <stub-no-summary value="stub no-summary">stub no-summary</stub-no-summary>
+                                        <nssa>nssa</nssa>
+                                        <nssa-no-summary value="nssa no-summary">nssa no-summary</nssa-no-summary>
+                                </OptionValues>
+                        </type>
+                </area>
+        </areas>
         <networks>
                 <network type="ArrayField">
                         <enabled type="BooleanField">

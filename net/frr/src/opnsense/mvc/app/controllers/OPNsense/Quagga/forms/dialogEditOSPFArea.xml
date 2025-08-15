@@ -1,0 +1,24 @@
+<form>
+    <field>
+        <id>area.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>area.id</id>
+        <label>Area ID</label>
+        <type>text</type>
+        <help>Enter area ID in dotted (e.g. 0.0.0.1) format.</help>
+    </field>
+    <field>
+        <id>area.type</id>
+        <label>Area Type</label>
+        <type>dropdown</type>
+        <help>Select area behavior.</help>
+    </field>
+</form>

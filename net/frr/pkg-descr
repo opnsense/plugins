@@ -15,7 +15,8 @@ Plugin Changelog
 1.46
 
 * Add address family selection to peer groups (opnsense/plugins/pull/4861)
-* Add OSPF point-to-multipoint options (contributed by Andy Binder)
+* Add OSPF point-to-multipoint options (contributed by Andy Binder) (opnsense/plugins/pull/4879)
+* Add OSPF area configuration options (opnsense/plugins/pull/4880)
 
 1.45
 
