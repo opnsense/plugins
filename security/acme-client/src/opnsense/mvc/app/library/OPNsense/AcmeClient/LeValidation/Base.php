@@ -139,6 +139,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
 
         LeUtils::log('using challenge type: ' . (string)$this->config->name);
 
+        // Prepare validation (sets environment variables)
+        $this->prepare();
+
         // Issue or renew
         $acme_action = $renew == true ? 'renew' : 'issue';
 
