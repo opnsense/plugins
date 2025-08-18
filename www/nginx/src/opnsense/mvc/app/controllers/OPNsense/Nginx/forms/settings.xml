@@ -11,7 +11,7 @@
                 <id>nginx.general.ban_ttl</id>
                 <label>Autoblock TTL (minutes)</label>
                 <type>text</type>
-                <help>Set autoblock lifetime in minutes. The default is 72 hours. Set to 0 for infinite.</help>
+                <help>Set autoblock lifetime in minutes, the default is 4320 (72 hours). Set to 0 for infinite.</help>
                 <advanced>true</advanced>
             </field>
         </subtab>
