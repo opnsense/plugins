@@ -98,7 +98,7 @@
                     <Default>ignore</Default>
                     <OptionValues>
                         <ignore>no preference [default]</ignore>
-                        <Required>enforce verify</Required>
+                        <required>enforce verify</required>
                         <none>disable verify</none>
                     </OptionValues>
                 </sslServerVerify>
