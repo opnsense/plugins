@@ -642,7 +642,7 @@
                     <OptionValues>
                         <none>none</none>
                         <optional>optional</optional>
-                        <Required>required</Required>
+                        <required>required</required>
                     </OptionValues>
                 </ssl_clientAuthVerify>
                 <ssl_clientAuthCAs type="CertificateField">
