@@ -240,6 +240,7 @@ scripts-manual:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
+	@if [ -d ${.CURDIR}/contrib ]; then ${MAKE} DESTDIR=$$(readlink -f ${DESTDIR}) -C ${.CURDIR}/contrib install; fi
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - "$${FILE}" | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
@@ -261,7 +262,10 @@ install: check
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
+	@(if [ -d ${.CURDIR}/contrib ]; then \
+		${MAKE} -C ${.CURDIR}/contrib plist; \
+	 fi; \
+	 (cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
 		FILE="$${FILE%%.in}"; PREFIX=""; \
 		if [ "$${FILE%%.sample}" != "$${FILE}" ]; then \
@@ -274,8 +278,9 @@ plist: check
 			FILE="$${FILE}.gz"; \
 		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
-	done
-	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
+	 done; \
+	 echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}" \
+	) | sort
 
 description: check
 	@if [ -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
