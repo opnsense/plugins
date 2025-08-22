@@ -1,0 +1,75 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable or disable ARP/NDP Logging. This will not automatically enable any mail notifications, see notes below</help>
+    </field>
+    <field>
+        <id>general.protocols</id>
+        <label>Protocols</label>
+        <type>dropdown</type>
+        <help>Select the protocols you want to watch</help>
+    </field>
+    <field>
+        <id>general.interfaces</id>
+        <label>Interfaces</label>
+        <type>select_multiple</type>
+        <help>Leave empty to track on all interfaces or add the interfaces you want to track</help>
+        <hint>All (default)</hint>
+    </field>
+    <field>
+        <id>general.suppress_mac</id>
+        <label>Suppress MAC address</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>
+            <![CDATA[Add MAC addresses you want to exclude from the notifications in the following format: xx:xx:xx:xx:xx<br>
+            The firewall MAC addresses are already excluded]]>
+        </help>
+    </field>
+    <field>
+        <id>general.log_new_entries</id>
+        <label>Log new MAC/IP address entries</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of new entries</help>
+    </field>
+    <field>
+        <id>general.log_mac_changes</id>
+        <label>Log MAC address changes</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of MAC address changes (helps to find duplicates or spoofing)</help>
+    </field>
+    <field>
+        <id>general.log_ipv4_changes</id>
+        <label>Log IPv4 address changes</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of IPv4 address changes</help>
+    </field>
+    <field>
+        <id>general.log_ipv6_changes</id>
+        <label>Log IPv6 address changes</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of IPv6 address changes</help>
+    </field>
+    <field>
+        <id>general.log_hostname_changes</id>
+        <label>Log hostname changes</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of hostname changes</help>
+    </field>
+    <field>
+        <id>general.log_interface_changes</id>
+        <label>Log interface changes</label>
+        <type>checkbox</type>
+        <help>Enable or disable the logging of interface changes</help>
+    </field>
+    <field>
+        <id>general.retention_days</id>
+        <label>Retention</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>After how many days should an inactive MAC address be deleted from the database? After this period the device is recognized as new</help>
+    </field>
+</form>
