@@ -26,11 +26,6 @@
 
 <script>
     $(document).ready(function() {
-        // Update the URL hash when tabs are clicked
-        if (location.hash) {
-            $(`#maintabs a[href="${location.hash}"]`).tab('show');
-        }
-
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             const hash = e.target.hash;
             if (history.replaceState) {
@@ -41,11 +36,17 @@
         });
 
         $(window).on('hashchange', function () {
-            $(`#maintabs a[href="${location.hash}"]`).tab('show');
+            const $targetTab = $(`#maintabs a[href="${location.hash}"]`);
+            if ($targetTab.length) {
+                $targetTab.tab('show');
+            }
         });
 
         // Bootgrid Setup
         const all_grids = {};
+
+        // block change-driven grid reloads during programmatic updates of reverseFilter selectpicker
+        let suppressFilterReload = false;
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             let grid_ids = [];
@@ -96,17 +97,32 @@
 
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
                             const update_filter = function (selectValues) {
-                                $('#reverseFilter')
-                                    // Refresh selectpicker with latest data so button always works even on new domains
+                                suppressFilterReload = true;
+
+                                return $('#reverseFilter')
                                     .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
                                     .done(function () {
                                         $('#reverseFilter')
                                             .selectpicker('val', selectValues)
-                                            .selectpicker('refresh')
-                                            .trigger('change');
-                                    });
+                                            .selectpicker('refresh');
 
-                                $('#maintabs a[href="#handlers"]').tab('show');
+                                        // manually update icon (since we skip .change())
+                                        const hasSelection = Array.isArray(selectValues) && selectValues.length > 0;
+                                        $('#reverseFilterIcon')
+                                            .toggleClass('text-success fa-filter-circle-xmark', hasSelection)
+                                            .toggleClass('fa-filter', !hasSelection);
+
+                                        $('#maintabs a[href="#handlers"]').tab('show');
+
+                                        // manually reload just the handlers grid
+                                        const grid_id = "{{ formGridHandle['table_id'] }}";
+                                        if (all_grids[grid_id]) {
+                                            all_grids[grid_id].bootgrid('reload');
+                                        }
+                                    })
+                                    .always(function () {
+                                        suppressFilterReload = false;
+                                    });
                             };
 
                             commands.search_handler = {
@@ -316,6 +332,7 @@
 
         // Safe reload on filter change, ensures all grids are initalized beforehand
         $('#reverseFilter').change(function () {
+            if (suppressFilterReload) return;
             Object.keys(all_grids).forEach(function (grid_id) {
                 if ([
                     '{{ formGridReverseProxy["table_id"] }}',
@@ -413,12 +430,18 @@
             $("#handle\\.reverse").selectpicker("refresh");
         });
 
-        // Trigger bootgrid setup for handlers tab too (even if not active) to ensure command buttons always work
-        $('a[href="#handlers"]').trigger('shown.bs.tab');
+        // Trigger initial tab
+        const $tabs = $('#maintabs a[data-toggle="tab"]');
+        const $initial = $tabs.filter(`[href="${location.hash}"]`).first();
+        ($initial.length ? $initial : $tabs.first()).tab('show');
+
+        // Trigger handlers tab too (even if not active) to ensure command buttons always work
+        $(document).one('ajaxStop', function () {
+            $('a[href="#handlers"]').triggerHandler('shown.bs.tab');
+        });
 
         updateServiceControlUI('caddy');
         $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
-        $('a[data-toggle="tab"].active, #maintabs li.active a').trigger('shown.bs.tab');
     });
 
 </script>
@@ -452,7 +475,7 @@
     <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
         <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
     </button>
-    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="300px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 
@@ -460,14 +483,14 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li id="tab-domains"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
     <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
     <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
     <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
 
 {% elseif entrypoint == 'layer4' %}
 
-    <li id="tab-layer4" class="active"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-layer4"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
     <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
 
 {% endif %}
