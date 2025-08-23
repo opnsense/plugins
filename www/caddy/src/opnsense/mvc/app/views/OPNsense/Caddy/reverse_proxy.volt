@@ -132,7 +132,6 @@
                                         // Ensure selectpicker has values selected before click on add button
                                         $('#reverseFilter').one('changed.bs.select', function (e) {
                                             $("#" + "{{ formGridHandle['table_id'] }}")
-                                                .closest('.bootgrid-box')
                                                 .find("button[data-action='add']")
                                                 .trigger('click');
                                         });
@@ -157,6 +156,7 @@
                         }
 
 {% endif %}
+
                         all_grids[grid_id] = $("#" + grid_id)
                         .UIBootgrid({
                             search: `/api/caddy/reverse_proxy/search_${grid_id}/`,
@@ -165,7 +165,35 @@
                             add: `/api/caddy/reverse_proxy/add_${grid_id}/`,
                             del: `/api/caddy/reverse_proxy/del_${grid_id}/`,
                             toggle: `/api/caddy/reverse_proxy/toggle_${grid_id}/`,
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                            tabulatorOptions: {
+                                groupBy: grid_id === "{{ formGridHandle['table_id'] }}"
+                                    ? ["%reverse", "%subdomain"]
+                                    : (grid_id === "{{ formGridSubdomain['table_id'] }}" ? "%reverse" : false),
+                                groupHeader: (value, count, data, group) => {
+                                    const isNested = group.getParentGroup() !== false;
+
+                                    if (isNested && !value) {
+                                        return ''; // remove empty subdomain group headers
+                                    }
+
+                                    const iconClass = isNested
+                                        ? 'text-warning'
+                                        : 'text-success';
+
+                                    const countValue = `<span class="badge chip">${count}</span>`;
+
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                },
+                            },
+
+{% endif %}
+
                             options: {
+                                responsive: true,
+                                rowCount: [20,50,200,500,1000,-1],
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
                                     if (selectedDomains && selectedDomains.length > 0) {
@@ -174,6 +202,9 @@
                                     return request;
                                 },
                                 headerFormatters: {
+                                    enabled: function (column) {
+                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';;
+                                    },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
                                         if (grid_id === "subdomain") {
@@ -209,9 +240,6 @@
                             },
                             commands: commands
                         });
-
-                        $("#" + grid_id).wrap('<div class="bootgrid-box"></div>');
-
                     }
 
 {% if entrypoint == 'reverse_proxy' %}
@@ -221,8 +249,7 @@
                         const header = $("#" + grid_id + "-header");
                         const $actionBar = header.find('.actionBar');
                         if ($actionBar.length) {
-                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search'));
-                            $('#add_filter_container').show();
+                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search')).show();
                         }
                     }
 
@@ -398,48 +425,19 @@
 
 <style>
     #add_filter_container {
-        margin-left: 10px;
-        margin-right: 20px;
-    }
-    #add_domain_container {
         float: left;
     }
-    #add_handle_container {
-        margin-left: 10px;
-        float: left;
-    }
-    .actionBar {
-        padding-left: 0px;
-    }
-    .custom-header {
-        font-weight: 800;
-        font-size: 16px;
-        font-style: italic;
-    }
-    /* Prevent bootgrid to break out of content box*/
-    .content-box {
-        overflow-x: auto;
-    }
-    .bootgrid-header,
-    .bootgrid-box,
-    .bootgrid-footer {
-        width: 100%;
-        background: none;
-        border: none;
-        max-width: 100%;
-        /* Prevents the grid from collapsing all dynamic columns completely */
-        min-width: 700px;
-    }
-    /* Not all dropdowns support data-container="body", ensure minimal vertical space for them */
-    .bootgrid-box {
-        min-height: 150px;
-    }
-    /* Limit size of grid dropdown */
     .actions .dropdown-menu.pull-right {
-        max-height: 200px;
+        max-height: 400px;
         min-width: max-content;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+    .custom-header {
+        padding-left: 20px;
+        font-weight: 800;
+        font-size: 16px;
+        font-style: italic;
     }
     #reverseFilterClear {
         border-right: none;
@@ -482,83 +480,50 @@
 
     <!-- Combined Domains Tab -->
     <div id="domains" class="tab-pane fade in active">
-        <div style="padding-left: 16px;">
-            <!-- Reverse Proxy -->
-            <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
-            </div>
-        </div>
+        <!-- Reverse Proxy -->
+        <h1 class="custom-header">{{ lang._('Domains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
 
         <!-- Subdomains Tab -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
     </div>
 
     <!-- Handle Tab -->
     <div id="handlers" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridHandle)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHandle)}}
     </div>
 
     <!-- Combined Access Tab -->
     <div id="access" class="tab-pane fade">
         <!-- Access Lists Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridAccessList)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridAccessList)}}
 
         <!-- Basic Auth Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridBasicAuth)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridBasicAuth)}}
     </div>
 
     <!-- Header Tab -->
     <div id="headers" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Headers') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridHeader)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Headers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHeader)}}
     </div>
 
 {% elseif entrypoint == 'layer4' %}
 
     <!-- Layer4 Tab -->
     <div id="routes" class="tab-pane fade active in">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
     </div>
 
     <!-- Layer7 Tab -->
     <div id="matchers" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <!-- OpenVPN Matcher -->
-            <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
     </div>
 
 {% endif %}
