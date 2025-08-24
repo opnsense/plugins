@@ -11,6 +11,7 @@
             <EnableLayer4 type="BooleanField"/>
             <HttpPort type="PortField"/>
             <HttpsPort type="PortField"/>
+            <BindLoopback type="BooleanField"/>
             <TlsEmail type="EmailField"/>
             <TlsAutoHttps type="OptionField">
                 <BlankDesc>On (default)</BlankDesc>
