@@ -65,7 +65,12 @@
 {% set grouped_configs = {} %}
 {% for layer4 in layer4_configs %}
     {% if layer4.FromPort and layer4.Protocol and layer4.enabled == "1"  %}
-        {% set key = layer4.Protocol ~ '/:' ~ layer4.FromPort %}
+        {% if loopback_on %}
+            {% set key = layer4.Protocol ~ '/127.0.0.1:' ~ layer4.FromPort
+                ~ ' ' ~ layer4.Protocol ~ '/[::1]:' ~ layer4.FromPort %}
+        {% else %}
+            {% set key = layer4.Protocol ~ '/:' ~ layer4.FromPort %}
+        {% endif %}
         {% if not key in grouped_configs %}
             {% set _ = grouped_configs.update({key: []}) %}
         {% endif %}
