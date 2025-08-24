@@ -99,7 +99,7 @@
                 {% if layer4.FromOpenvpnStaticKey %}
                     group_key_direction {{ direction }}
                     {% for key_uuid in key_list %}
-                    group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    group_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
                     {% endfor %}
                 {% endif %}
                 }
@@ -111,7 +111,7 @@
                     modes crypt
                 {% if layer4.FromOpenvpnStaticKey %}
                     {% for key_uuid in key_list %}
-                    group_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    group_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
                     {% endfor %}
                 {% endif %}
                 }
@@ -121,7 +121,7 @@
                     modes crypt2
                     {% if layer4.FromOpenvpnStaticKey %}
                         {% for key_uuid in key_list %}
-                    client_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    client_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
                         {% endfor %}
                     {% endif %}
                 }
@@ -133,7 +133,7 @@
                     modes crypt2
                     {% if layer4.FromOpenvpnStaticKey %}
                         {% for key_uuid in key_list %}
-                    server_key_file /var/db/caddy/data/caddy/certificates/temp/{{ key_uuid.strip() }}.key
+                    server_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
                         {% endfor %}
                     {% endif %}
                 }
