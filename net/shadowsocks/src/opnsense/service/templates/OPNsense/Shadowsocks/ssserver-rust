@@ -1,0 +1,6 @@
+{% if helpers.exists('OPNsense.shadowsocks.general.enabled') and OPNsense.shadowsocks.general.enabled == '1' %}
+ssserver_rust_enable="YES"
+ssserver_rust_flags=""
+{% else %}
+ssserver_rust_enable="NO"
+{% endif %}
