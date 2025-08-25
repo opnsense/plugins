@@ -41,7 +41,7 @@ function shadowsocks_services()
                 'stop' => array('shadowsocks stop'),
             ),
             'name' => 'shadowsocks',
-            'pidfile' => '/var/run/shadowsocks-libev.pid'
+            'pidfile' => '/var/run/ssserver_rust.pid'
         );
     }
 
@@ -54,7 +54,7 @@ function shadowsocks_services()
                 'stop' => array('shadowsockslocal stop'),
             ),
             'name' => 'shadowsockslocal',
-            'pidfile' => '/var/run/ss-local.pid'
+            'pidfile' => '/var/run/sslocal_rust.pid'
         );
     }
 
