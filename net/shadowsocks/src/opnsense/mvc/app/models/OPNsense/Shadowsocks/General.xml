@@ -26,12 +26,9 @@
             <MaximumValue>65535</MaximumValue>
             <ValidationMessage>Please provide a valid port number between 1 and 65535.</ValidationMessage>
         </localport>
-        <password type="TextField">
-            <Default>password</Default>
-            <Required>N</Required>
-        </password>
+        <password type="TextField"/>
         <cipher type="OptionField">
-            <Default>AES-256-CFB</Default>
+            <Default>aes-256-cfb</Default>
             <Required>Y</Required>
             <OptionValues>
                 <aes-256-cfb>AES-256-CFB</aes-256-cfb>
