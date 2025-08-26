@@ -1,4 +1,4 @@
-shadowsocks_libev:/etc/rc.conf.d/shadowsocks_libev
-shadowsocks.conf:/usr/local/etc/shadowsocks-libev/config.json
-ss_local:/etc/rc.conf.d/ss_local
-ss_local.conf:/usr/local/etc/shadowsocks-libev/local.json
+ssserver:/etc/rc.conf.d/ssserver_rust
+shadowsocks.conf:/usr/local/etc/shadowsocks-rust/config.json
+sslocal:/etc/rc.conf.d/sslocal_rust
+sslocal.conf:/usr/local/etc/shadowsocks-rust/local.json
