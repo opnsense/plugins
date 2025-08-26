@@ -1,4 +1,4 @@
-ssserver-rust:/etc/rc.conf.d/ssserver_rust
+ssserver:/etc/rc.conf.d/ssserver_rust
 shadowsocks.conf:/usr/local/etc/shadowsocks-rust/config.json
-sslocal-rust:/etc/rc.conf.d/sslocal_rust
+sslocal:/etc/rc.conf.d/sslocal_rust
 sslocal.conf:/usr/local/etc/shadowsocks-rust/local.json
