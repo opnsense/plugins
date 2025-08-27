@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: arpndplogging
+# REQUIRE: SERVERS
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=arpndplogging
+
+rcvar=arpndplogging_enable
+pidfile=/var/run/${name}.pid
+command=/usr/sbin/daemon
+command_args="-f -P ${pidfile} /usr/local/bin/python3 /usr/local/bin/arpndplogging.py"
+
+load_rc_config ${name}
+
+: ${arpndplogging_enable="NO"}
+
+run_rc_command $1
