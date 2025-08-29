@@ -15,6 +15,7 @@ Plugin Changelog
 1.47
 
 * Add OSPF area configuration options (opnsense/plugins/pull/4880)
+* Updated model definitions and indent
 
 1.46
 
