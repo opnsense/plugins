@@ -6,4 +6,4 @@ Plugin Changelog
 1.2
 
 * Switch to shadowsocks-rust
-* Fix compatiblity of plugin (contributed by eguun)
+* Fix compatibility of plugin (contributed by eguun)
