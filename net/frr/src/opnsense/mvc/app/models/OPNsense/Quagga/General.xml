@@ -9,7 +9,6 @@
         </enabled>
         <profile type="OptionField">
             <Required>Y</Required>
-            <Multiple>N</Multiple>
             <Default>traditional</Default>
             <OptionValues>
                 <traditional>Traditional</traditional>
@@ -30,7 +29,6 @@
         </enablesnmp>
         <sysloglevel type="OptionField">
             <Required>Y</Required>
-            <Multiple>N</Multiple>
             <Default>notifications</Default>
             <OptionValues>
                 <critical>Critical</critical>
