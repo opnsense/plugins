@@ -56,7 +56,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_frontend/',
                 toggle:'/api/haproxy/settings/toggle_frontend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -69,7 +68,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_backend/',
                 toggle:'/api/haproxy/settings/toggle_backend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -82,7 +80,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_server/',
                 toggle:'/api/haproxy/settings/toggle_server/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -94,7 +91,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_healthcheck/',
                 del:'/api/haproxy/settings/del_healthcheck/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -106,7 +102,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_action/',
                 del:'/api/haproxy/settings/del_action/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -118,7 +113,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_acl/',
                 del:'/api/haproxy/settings/del_acl/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -131,7 +125,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_user/',
                 toggle:'/api/haproxy/settings/toggle_user/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -144,7 +137,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_group/',
                 toggle:'/api/haproxy/settings/toggle_group/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -157,7 +149,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_lua/',
                 toggle:'/api/haproxy/settings/toggle_lua/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -169,7 +160,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_fcgi/',
                 del:'/api/haproxy/settings/del_fcgi/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -181,7 +171,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_errorfile/',
                 del:'/api/haproxy/settings/del_errorfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -193,7 +182,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 add:'/api/haproxy/settings/add_mapfile/',
                 del:'/api/haproxy/settings/del_mapfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -206,7 +194,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_cpu/',
                 toggle:'/api/haproxy/settings/toggle_cpu/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -219,7 +206,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_resolver/',
                 toggle:'/api/haproxy/settings/toggle_resolver/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -232,7 +218,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/haproxy/settings/del_mailer/',
                 toggle:'/api/haproxy/settings/toggle_mailer/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );

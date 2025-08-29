@@ -182,7 +182,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 selection: true,
                 multiSelect: true,
                 keepSelection: true,
-                rowCount:[10,25,50,100,500,1000],
                 searchSettings: {
                     delay: 250,
                     characters: 1
@@ -292,7 +291,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 selection: true,
                 multiSelect: true,
                 keepSelection: true,
-                rowCount:[10,25,50,100,500,1000],
                 searchSettings: {
                     delay: 250,
                     characters: 1

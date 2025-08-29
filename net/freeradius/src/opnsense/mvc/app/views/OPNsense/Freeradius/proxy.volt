@@ -50,7 +50,6 @@ $( document ).ready(function() {
                 'del':'/api/freeradius/proxy/del_homeserver/',
                 'toggle':'/api/freeradius/proxy/toggle_homeserver/',
             options: {
-                rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -62,7 +61,6 @@ $( document ).ready(function() {
                 'del':'/api/freeradius/proxy/del_homeserverpool/',
                 'toggle':'/api/freeradius/proxy/toggle_homeserverpool/',
             options: {
-                rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -74,7 +72,6 @@ $( document ).ready(function() {
                 'del':'/api/freeradius/proxy/del_realm/',
                 'toggle':'/api/freeradius/proxy/toggle_realm/',
             options: {
-                rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
