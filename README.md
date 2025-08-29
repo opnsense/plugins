@@ -90,7 +90,6 @@ security/maltrail -- Malicious traffic detection system
 security/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
-security/softether -- Cross-platform Multi-protocol VPN Program (development only)
 security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
