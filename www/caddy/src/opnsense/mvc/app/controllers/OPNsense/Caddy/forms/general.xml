@@ -65,6 +65,12 @@
             <label>Server Settings</label>
         </field>
         <field>
+            <id>caddy.general.BindLoopback</id>
+            <label>Bind to loopback interface</label>
+            <type>checkbox</type>
+            <help><![CDATA[Bind the service to the default loopback interface instead of binding to all interfaces. Use destination NAT rules to redirect packets to this socket.]]></help>
+        </field>
+        <field>
             <id>caddy.general.accesslist</id>
             <label>Trusted Proxies</label>
             <type>dropdown</type>

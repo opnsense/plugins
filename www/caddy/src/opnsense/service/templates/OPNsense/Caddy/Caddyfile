@@ -35,6 +35,9 @@
 # caddy_user=root
 {% endif %}
 
+{# Used in Caddyfile and includeLayer4 #}
+{% set loopback_on = generalSettings.BindLoopback|default("0") == "1" %}
+
 # Global Options
 {
     {#
@@ -69,6 +72,9 @@
     {% endif %}
     {% if httpsPort %}
         https_port {{ httpsPort }}
+    {% endif %}
+    {% if loopback_on %}
+        default_bind ::1 127.0.0.1
     {% endif %}
 
     {#
@@ -241,29 +247,29 @@
 # Reverse Proxy Configuration
 
 {#
-#   When Layer4 is active, set default ports.
-#   Caddy does not set them up automatically under certain conditions.
-#   For example when AutoHTTPS would be off, or no domains have been configured.
-#   There are no regressions to set these ports up.
+#   Always set default HTTP/HTTPS listeners as catch-all.
+#   Loopback bind is optional, default is binding to all interfaces.
 #}
-
-{% if generalSettings.EnableLayer4|default("0") == "1" %}
-    # Layer4 default HTTP port
-    {% if httpPort %}
-        :{{ httpPort }} {
-        }
-    {% else %}
-        :80 {
-        }
-    {% endif %}
-    # Layer4 default HTTPS port
-    {% if httpsPort %}
-        :{{ httpsPort }} {
-        }
-    {% else %}
-        :443 {
-        }
-    {% endif %}
+{% set loopback_on = (generalSettings.BindLoopback|default("0") == "1") %}
+# Default HTTP port
+{% if httpPort %}
+    :{{ httpPort }} {
+        {% if loopback_on %}bind ::1 127.0.0.1{% endif %}
+    }
+{% else %}
+    :80 {
+        {% if loopback_on %}bind ::1 127.0.0.1{% endif %}
+    }
+{% endif %}
+# Default HTTPS port
+{% if httpsPort %}
+    :{{ httpsPort }} {
+        {% if loopback_on %}bind ::1 127.0.0.1{% endif %}
+    }
+{% else %}
+    :443 {
+        {% if loopback_on %}bind ::1 127.0.0.1{% endif %}
+    }
 {% endif %}
 
 {#
@@ -608,6 +614,9 @@ http://{{ domain }} {
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" %}
         {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+            {% if loopback_on %}
+                bind ::1 127.0.0.1
+            {% endif %}
             {% if reverse.AccessLog|default("0") == "1" %}
                 {% if generalSettings.LogAccessPlain|default("0") == "0" %}
                     log {{ reverse['@uuid'] }}
@@ -645,6 +654,9 @@ http://{{ domain }} {
         {% set reverse = helpers.toList('Pischem.caddy.reverseproxy.reverse') | selectattr('@uuid', 'equalto', subdomain.reverse) | first %}
         {% if reverse and reverse.enabled|default("0") == "1" %}
             {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+                {% if loopback_on %}
+                    bind ::1 127.0.0.1
+                {% endif %}
                 {% if reverse.AccessLog|default("0") == "1" %}
                     {% if generalSettings.LogAccessPlain|default("0") == "0" %}
                         log {{ subdomain['@uuid'] }}
