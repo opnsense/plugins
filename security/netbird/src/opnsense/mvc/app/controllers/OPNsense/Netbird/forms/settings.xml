@@ -21,7 +21,7 @@
     </field>
     <field>
         <id>settings.firewall.allowConfig</id>
-        <label>Enable firewal</label>
+        <label>Enable Firewall</label>
         <type>checkbox</type>
         <help>Allow the client to filter traffic with its built-in firewall. If disabled, you must assign the NetBird interface and manage firewall rules via OPNsense firewall management.
             Additionally, NetBird routing and DNS may not function as intended.</help>
