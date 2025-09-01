@@ -44,9 +44,9 @@ function netbird_services()
     $services[] = [
         'description' => gettext('NetBird'),
         'configd' => [
-            'restart' => ['netbird restart'],
-            'start' => ['netbird start'],
-            'stop' => ['netbird stop'],
+            'restart' => ['netbird service restart'],
+            'start' => ['netbird service start'],
+            'stop' => ['netbird service stop'],
         ],
         'name' => 'netbird',
         'pidfile' => '/var/run/netbird.pid',
