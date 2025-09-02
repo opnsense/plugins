@@ -27,14 +27,12 @@
 #
 
 # Detect configured caddy_user/group (defaults)
-CADDY_USER=root
-CADDY_GROUP=wheel
-[ -r /etc/rc.conf.d/caddy ] && . /etc/rc.conf.d/caddy
-[ -n "$caddy_user" ]  && CADDY_USER="$caddy_user"
-[ -n "$caddy_group" ] && CADDY_GROUP="$caddy_group"
+. /etc/rc.conf.d/caddy
+CADDY_USER="${caddy_user:-root}"
+CADDY_GROUP="${caddy_group:-wheel}"
 
 # Canary to detect root->www switch (disable superuser) permission issues
-# The storage instance will always exist, its a good assumption
+# The storage instance will always exist, it's a good assumption
 CANARY="/var/db/caddy/data/caddy/instance.uuid"
 
 # Define directories
@@ -66,7 +64,7 @@ if [ -f "$CANARY" ]; then
     CANARY_USER="$(stat -f '%Su' "$CANARY")"
     CANARY_GROUP="$(stat -f '%Sg' "$CANARY")"
 
-    if [ "$CANARY_USER" = "$EXPECTED_USER" ] && [ "$CANARY_GROUP" = "$EXPECTED_GROUP" ]; then
+    if [ "$CANARY_USER" = "$EXPECTED_USER" -a "$CANARY_GROUP" = "$EXPECTED_GROUP" ]; then
         exit 0
     fi
 fi
