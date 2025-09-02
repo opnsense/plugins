@@ -9,8 +9,9 @@ Plugin Changelog
 2.0.3
 
 Add: Tabulator groupBy of domain and subdomain (opnsense/plugins/pull/4909)
-Fix: Tabulator 'Data Load Response Blocked' warning
 Cleanup: Grid HTML and style
+Fix: Tabulator 'Data Load Response Blocked' warning
+Fix: setup.sh interaction with caddy storage and permissions (opnsense/plugins/pull/4911)
 
 2.0.2
 
