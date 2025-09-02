@@ -12,6 +12,7 @@ Add: Tabulator groupBy of domain and subdomain (opnsense/plugins/pull/4909)
 Cleanup: Grid HTML and style
 Fix: Tabulator 'Data Load Response Blocked' warning
 Fix: setup.sh interaction with caddy storage and permissions (opnsense/plugins/pull/4911)
+Fix: Emit subdomain http access logs when wildcard parent has logging enabled (opnsense/plugins/issues/4914)
 
 2.0.2
 
