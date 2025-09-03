@@ -1,5 +1,6 @@
 {% if helpers.exists('OPNsense.shadowsocks.local.enabled') and OPNsense.shadowsocks.local.enabled == '1' %}
 sslocal_rust_enable="YES"
+sslocal_rust_args="-c /usr/local/etc/shadowsocks-rust/local.json"
 {% else %}
 sslocal_rust_enable="NO"
 {% endif %}
