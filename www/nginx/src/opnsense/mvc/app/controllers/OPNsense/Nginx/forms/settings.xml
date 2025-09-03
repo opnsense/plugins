@@ -12,6 +12,7 @@
                 <label>Autoblock TTL (minutes)</label>
                 <type>text</type>
                 <help>Set autoblock lifetime in minutes. Set to 0 for infinite.</help>
+                <hint>4320</hint>
                 <advanced>true</advanced>
             </field>
         </subtab>
