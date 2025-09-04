@@ -40,6 +40,10 @@
         <whitelists type="CSVListField">
             <Required>N</Required>
         </whitelists>
+        <rpzlocal type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </rpzlocal>
         <forcesafegoogle type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
