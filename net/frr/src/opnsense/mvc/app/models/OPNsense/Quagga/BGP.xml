@@ -18,7 +18,6 @@
             <MaximumValue>255</MaximumValue>
         </distance>
         <routerid type="TextField">
-            <Required>N</Required>
             <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </routerid>
         <graceful type="BooleanField">
@@ -33,515 +32,418 @@
             <Default>0</Default>
             <Required>Y</Required>
         </logneighborchanges>
-        <networks type="CSVListField">
-            <Default></Default>
-            <Required>N</Required>
-        </networks>
+        <networks type="CSVListField"/>
         <neighbors>
-                <neighbor type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                        </description>
-                        <address type="NetworkField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                        </address>
-                        <remote_as_mode type="OptionField">
-                                <BlankDesc>Use Remote AS Number</BlankDesc>
-                                <OptionValues>
-                                        <internal>Internal</internal>
-                                        <external>External</external>
-                                </OptionValues>
-                        </remote_as_mode>
-                        <remoteas type="IntegerField">
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>4294967295</MaximumValue>
-                        </remoteas>
-                        <password type="TextField">
-                                <Required>N</Required>
-                        </password>
-                        <weight type="IntegerField">
-                                <Default></Default>
-                                <Required>N</Required>
-                                <MinimumValue>0</MinimumValue>
-                                <MaximumValue>65535</MaximumValue>
-                        </weight>
-                        <localip type="NetworkField">
-                                <Required>N</Required>
-                        </localip>
-                        <updatesource type="InterfaceField">
-                                <Default></Default>
-                                <Required>N</Required>
-                                <Multiple>N</Multiple>
-                                <AllowDynamic>Y</AllowDynamic>
-                                <filters>
-                                        <enable>/^(?!0).*$/</enable>
-                                </filters>
-                        </updatesource>
-                        <linklocalinterface type="InterfaceField">
-                                <Default></Default>
-                                <Required>N</Required>
-                                <Multiple>N</Multiple>
-                                <AllowDynamic>Y</AllowDynamic>
-                                <filters>
-                                        <enable>/^(?!0).*$/</enable>
-                                </filters>
-                        </linklocalinterface>
-                        <nexthopself type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </nexthopself>
-                        <nexthopselfall type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </nexthopselfall>
-                        <multihop type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </multihop>
-                        <multiprotocol type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </multiprotocol>
-                        <rrclient type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </rrclient>
-                        <soft_reconfiguration_inbound type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </soft_reconfiguration_inbound>
-                        <bfd type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </bfd>
-                        <keepalive type="IntegerField">
-                                <Required>N</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>1000</MaximumValue>
-                        </keepalive>
-                        <holddown type="IntegerField">
-                                <Required>N</Required>
-                                <MinimumValue>3</MinimumValue>
-                                <MaximumValue>3000</MaximumValue>
-                        </holddown>
-                        <connecttimer type="IntegerField">
-                                <Required>N</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>65000</MaximumValue>
-                        </connecttimer>
-                        <defaultoriginate type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </defaultoriginate>
-                        <asoverride type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </asoverride>
-                        <allowas_in type="OptionField">
-                                <OptionValues>
-                                        <val1 value="1">1</val1>
-                                        <val2 value="2">2</val2>
-                                        <val3 value="3">3</val3>
-                                        <val4 value="4">4</val4>
-                                        <val5 value="5">5</val5>
-                                        <val6 value="6">6</val6>
-                                        <val7 value="7">7</val7>
-                                        <val8 value="8">8</val8>
-                                        <val9 value="9">9</val9>
-                                        <val10 value="10">10</val10>
-                                        <origin>origin</origin>
-                                </OptionValues>
-                        </allowas_in>
-                        <disable_connected_check type="BooleanField">
-                                <Default>0</Default>
-                                <Required>N</Required>
-                        </disable_connected_check>
-                        <attributeunchanged type="OptionField">
-                                <Default></Default>
-                                <Required>N</Required>
-                                <OptionValues>
-                                        <as-path>as-path</as-path>
-                                        <next-hop>next-hop</next-hop>
-                                        <med>med</med>
-                                </OptionValues>
-                        </attributeunchanged>
-                        <linkedPrefixlistIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistIn>
-                        <linkedPrefixlistOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistOut>
-                        <linkedRoutemapIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedRoutemapIn>
-                        <linkedRoutemapOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedRoutemapOut>
-                        <peergroup type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>peergroups.peergroup</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Peer Group item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                        </peergroup>
-                </neighbor>
+            <neighbor type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField"/>
+                <address type="NetworkField">
+                    <Required>Y</Required>
+                </address>
+                <remote_as_mode type="OptionField">
+                    <BlankDesc>Use Remote AS Number</BlankDesc>
+                    <OptionValues>
+                        <internal>Internal</internal>
+                        <external>External</external>
+                    </OptionValues>
+                </remote_as_mode>
+                <remoteas type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                </remoteas>
+                <password type="TextField"/>
+                <weight type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                </weight>
+                <localip type="NetworkField"/>
+                <updatesource type="InterfaceField">
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </updatesource>
+                <linklocalinterface type="InterfaceField">
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </linklocalinterface>
+                <nexthopself type="BooleanField"/>
+                <nexthopselfall type="BooleanField"/>
+                <multihop type="BooleanField"/>
+                <multiprotocol type="BooleanField"/>
+                <rrclient type="BooleanField"/>
+                <soft_reconfiguration_inbound type="BooleanField"/>
+                <bfd type="BooleanField"/>
+                <keepalive type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>1000</MaximumValue>
+                </keepalive>
+                <holddown type="IntegerField">
+                    <MinimumValue>3</MinimumValue>
+                    <MaximumValue>3000</MaximumValue>
+                </holddown>
+                <connecttimer type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65000</MaximumValue>
+                </connecttimer>
+                <defaultoriginate type="BooleanField"/>
+                <asoverride type="BooleanField"/>
+                <allowas_in type="OptionField">
+                    <OptionValues>
+                        <val1 value="1">1</val1>
+                        <val2 value="2">2</val2>
+                        <val3 value="3">3</val3>
+                        <val4 value="4">4</val4>
+                        <val5 value="5">5</val5>
+                        <val6 value="6">6</val6>
+                        <val7 value="7">7</val7>
+                        <val8 value="8">8</val8>
+                        <val9 value="9">9</val9>
+                        <val10 value="10">10</val10>
+                        <origin>origin</origin>
+                    </OptionValues>
+                </allowas_in>
+                <disable_connected_check type="BooleanField"/>
+                <attributeunchanged type="OptionField">
+                    <OptionValues>
+                        <as-path>as-path</as-path>
+                        <next-hop>next-hop</next-hop>
+                        <med>med</med>
+                    </OptionValues>
+                </attributeunchanged>
+                <linkedPrefixlistIn type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistIn>
+                <linkedPrefixlistOut type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistOut>
+                <linkedRoutemapIn type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemapIn>
+                <linkedRoutemapOut type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemapOut>
+                <peergroup type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>peergroups.peergroup</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Peer Group item not found.</ValidationMessage>
+                </peergroup>
+            </neighbor>
         </neighbors>
         <aspaths>
-                <aspath type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                        </description>
-                        <number type="IntegerField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <MinimumValue>0</MinimumValue>
-                                <MaximumValue>4294967295</MaximumValue>
-                        </number>
-                        <action type="OptionField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <as type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                        </as>
-                </aspath>
+            <aspath type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField"/>
+                <number type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                </number>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <as type="TextField">
+                    <Required>Y</Required>
+                </as>
+            </aspath>
         </aspaths>
         <prefixlists>
-                <prefixlist type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                        </description>
-                        <name type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
-                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-                        </name>
-                        <version type="OptionField">
-                                <Default>IPv4</Default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                    <IPv4>IPv4</IPv4>
-                                    <IPv6>IPv6</IPv6>
-                                </OptionValues>
-                        </version>
-                        <seqnumber type="IntegerField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>4294967294</MaximumValue>
-                        </seqnumber>
-                        <action type="OptionField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <network type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                        </network>
-                </prefixlist>
+            <prefixlist type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField"/>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
+                    <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+                </name>
+                <version type="OptionField">
+                    <Default>IPv4</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <IPv4>IPv4</IPv4>
+                        <IPv6>IPv6</IPv6>
+                    </OptionValues>
+                </version>
+                <seqnumber type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4294967294</MaximumValue>
+                </seqnumber>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <network type="TextField">
+                    <Required>Y</Required>
+                </network>
+            </prefixlist>
         </prefixlists>
         <communitylists>
-                <communitylist type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                        </description>
-                        <number type="IntegerField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>500</MaximumValue>
-                                <ValidationMessage>Set a number between 1 and 500.</ValidationMessage>
-                        </number>
-                        <seqnumber type="IntegerField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
-                        </seqnumber>
-                        <action type="OptionField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <community type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                        </community>
-                </communitylist>
+            <communitylist type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField"/>
+                <number type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>500</MaximumValue>
+                    <ValidationMessage>Set a number between 1 and 500.</ValidationMessage>
+                </number>
+                <seqnumber type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                </seqnumber>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <community type="TextField">
+                    <Required>Y</Required>
+                </community>
+            </communitylist>
         </communitylists>
         <routemaps>
-                <routemap type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                        </description>
-                        <name type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
-                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-                        </name>
-                        <action type="OptionField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <id type="IntegerField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>65535</MaximumValue>
-                        </id>
-                        <match type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>aspaths.aspath</items>
-                                                <display>number</display>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>Y</Multiple>
-                                <Required>N</Required>
-                        </match>
-                        <match2 type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related item PrefixList not found</ValidationMessage>
-                                <Multiple>Y</Multiple>
-                                <Required>N</Required>
-                        </match2>
-                        <match3 type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>communitylists.communitylist</items>
-                                                <display>number</display>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related item CommunityList not found</ValidationMessage>
-                                <Multiple>Y</Multiple>
-                                <Required>N</Required>
-                        </match3>
-                        <set type="TextField">
-                                <Required>N</Required>
-                        </set>
-                </routemap>
+            <routemap type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField"/>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[a-zA-Z0-9._-]{1,64}$/</Mask>
+                    <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+                </name>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <id type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                </id>
+                <match type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>aspaths.aspath</items>
+                            <display>number</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                </match>
+                <match2 type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item PrefixList not found.</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                </match2>
+                <match3 type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>communitylists.communitylist</items>
+                            <display>number</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item CommunityList not found.</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                </match3>
+                <set type="TextField"/>
+            </routemap>
         </routemaps>
         <peergroups>
-                <peergroup type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <name type="TextField">
-                                <Required>Y</Required>
-                        </name>
-                        <remote_as_mode type="OptionField">
-                                <BlankDesc>Use Remote AS Number</BlankDesc>
-                                <OptionValues>
-                                        <internal>Internal</internal>
-                                        <external>External</external>
-                                </OptionValues>
-                        </remote_as_mode>
-                        <remoteas type="IntegerField">
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>4294967295</MaximumValue>
-                        </remoteas>
-                        <family type="OptionField">
-                                <Required>Y</Required>
-                                <Default>ipv4</Default>
-                                <Multiple>Y</Multiple>
-                                <OptionValues>
-                                        <ipv4>IPv4</ipv4>
-                                        <ipv6>IPv6</ipv6>
-                                </OptionValues>
-                        </family>
-                        <listenranges type="NetworkField">
-                                <FieldSeparator>,</FieldSeparator>
-                                <AsList>Y</AsList>
-                                <Strict>Y</Strict>
-                                <NetMaskRequired>Y</NetMaskRequired>
-                                <ValidationMessage>Please enter one or multiple valid IP networks in CIDR notation.</ValidationMessage>
-                        </listenranges>
-                        <updatesource type="InterfaceField">
-                                <AllowDynamic>Y</AllowDynamic>
-                                <filters>
-                                        <enable>/^(?!0).*$/</enable>
-                                        <type>/^(?!group).*$/</type>
-                                </filters>
-                        </updatesource>
-                        <nexthopself type="BooleanField"/>
-                        <defaultoriginate type="BooleanField"/>
-                        <linkedPrefixlistIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                        </linkedPrefixlistIn>
-                        <linkedPrefixlistOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistOut>
-                        <linkedRoutemapIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                        </linkedRoutemapIn>
-                        <linkedRoutemapOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                        </linkedRoutemapOut>
+            <peergroup type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <remote_as_mode type="OptionField">
+                    <BlankDesc>Use Remote AS Number</BlankDesc>
+                    <OptionValues>
+                        <internal>Internal</internal>
+                        <external>External</external>
+                    </OptionValues>
+                </remote_as_mode>
+                <remoteas type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                </remoteas>
+                <family type="OptionField">
+                    <Required>Y</Required>
+                    <Default>ipv4</Default>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <ipv4>IPv4</ipv4>
+                        <ipv6>IPv6</ipv6>
+                    </OptionValues>
+                </family>
+                <listenranges type="NetworkField">
+                    <AsList>Y</AsList>
+                    <Strict>Y</Strict>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <ValidationMessage>Please enter one or multiple valid IP networks in CIDR notation.</ValidationMessage>
+                </listenranges>
+                <updatesource type="InterfaceField">
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                        <type>/^(?!group).*$/</type>
+                    </filters>
+                </updatesource>
+                <nexthopself type="BooleanField"/>
+                <defaultoriginate type="BooleanField"/>
+                <linkedPrefixlistIn type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistIn>
+                <linkedPrefixlistOut type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistOut>
+                <linkedRoutemapIn type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemapIn>
+                <linkedRoutemapOut type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemapOut>
             </peergroup>
         </peergroups>
         <redistributions>
-                <redistribution type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="DescriptionField"/>
-                        <redistribute type="OptionField">
-                                <Required>Y</Required>
-                                <Default>connected</Default>
-                                <OptionValues>
-                                        <ospf>Open Shortest Path First (OSPF)</ospf>
-                                        <connected>Connected routes (directly attached subnet or host)</connected>
-                                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                                        <rip>Routing Information Protocol (RIP)</rip>
-                                        <static>Statically configured routes</static>
-                                </OptionValues>
-                        </redistribute>
-                        <linkedRoutemap type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.bgp</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                        </linkedRoutemap>
-                </redistribution>
+            <redistribution type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <redistribute type="OptionField">
+                    <Required>Y</Required>
+                    <Default>connected</Default>
+                    <OptionValues>
+                        <ospf>Open Shortest Path First (OSPF)</ospf>
+                        <connected>Connected routes (directly attached subnet or host)</connected>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                        <rip>Routing Information Protocol (RIP)</rip>
+                        <static>Statically configured routes</static>
+                    </OptionValues>
+                </redistribute>
+                <linkedRoutemap type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.bgp</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemap>
+            </redistribution>
         </redistributions>
     </items>
 </model>

@@ -13,12 +13,8 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
-                <description type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </description>
+                <description type="TextField"/>
                 <address type="NetworkField">
-                    <Default></Default>
                     <Required>Y</Required>
                 </address>
                 <multihop type="BooleanField">
