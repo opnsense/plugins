@@ -18,6 +18,7 @@ Plugin Changelog
 * Add proxy_intercept_errors directive support
 * Add Variables hashes size support
 * Add proxy_cache_valid directive support with response codes and multiple selection options
+* Clean up model definition file
 
 1.34
 
