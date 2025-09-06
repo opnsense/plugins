@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -28,23 +29,7 @@
 
 namespace OPNsense\AcmeClient;
 
-// Optional include to get "log_error"
-@include_once("util.inc");
-
-// Syslog level used for verbose info log.
-// Change to "LOG_NOTICE" to make log output visible in the UI.
-const SYSLOG_INFO_LEVEL = LOG_INFO;
-
-/**
- * Interface for logging.
- * @package OPNsense\AcmeClient
- */
-interface ILogger
-{
-    function info($message);
-
-    function error($message, $error = null);
-}
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Shared utilities.
@@ -52,55 +37,10 @@ interface ILogger
  */
 class Utils
 {
-    public static function &log($reconfigure_to_stdout = false): ILogger
-    {
-        static $logger;
-
-        if (!$logger || $reconfigure_to_stdout) {
-            if (!$reconfigure_to_stdout && function_exists("log_error")) {
-                $logger = new class implements ILogger
-                {
-                    function info($message)
-                    {
-                        syslog(SYSLOG_INFO_LEVEL, basename(__FILE__) . ": INFO: $message");
-                    }
-
-                    function error($message, $error = null)
-                    {
-                        log_error(
-                            $error
-                                ? ("$message ; Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES))
-                                : $message
-                        );
-                    }
-                };
-            } else {
-                $logger = new class implements ILogger
-                {
-                    function info($message)
-                    {
-                        echo "INFO: {$message}" . PHP_EOL;
-                    }
-
-                    function error($message, $error = null)
-                    {
-                        echo "ERROR: "
-                            . ($error
-                                ? ("$message ; Cause: " . json_encode($error, JSON_UNESCAPED_SLASHES))
-                                : $message)
-                            . PHP_EOL;
-                    }
-                };
-            }
-        }
-
-        return $logger;
-    }
-
     public static function requireThat($expression, $message)
     {
         if (!$expression) {
-            self::log()->error("FATAL: $message");
+            LeUtils::log_error("FATAL: $message");
             throw new \AssertionError($message);
         }
         return $expression;
@@ -193,7 +133,6 @@ class Utils
     {
         static $options = [
             "-h, --help          Print commandline help",
-            "--log               Enable log to stdout (instead of syslog)",
             "--automation-id     Read options from the action specified by id or uuid",
             "--no-error          Always exit with 0 (original exit codes are still logged)",
         ];
@@ -241,7 +180,7 @@ class Utils
     {
         global $argv;
         $command = self::getSelectedCLICommand($commands);
-        $options = ["help", "log", "no-error"];
+        $options = ["help", "no-error"];
 
         $has_automation_id = preg_match('/--automation-id=\S+/', join(" ", $argv));
         if ($has_automation_id) {
@@ -255,10 +194,6 @@ class Utils
             if (isset($options["h"]) || isset($options["help"])) {
                 $help();
             } else {
-                if (isset($options["log"])) {
-                    self::log(true)->info("Logging to stdout enabled");
-                }
-
                 $options = array_filter($options, function ($value) {
                     return !is_string($value)
                         || (!empty($value = trim($value)) && $value !== "__default_value");
@@ -268,7 +203,7 @@ class Utils
                     if (is_array($config = $optionsByActionId($options["automation-id"]))) {
                         $options = array_merge($config, $options);
                     } else {
-                        self::log()->error("No usable config found for automation-id {$options["automation-id"]}");
+                        LeUtils::log_error("No usable config found for automation-id {$options["automation-id"]}");
                         exit(1);
                     }
                 }
@@ -277,7 +212,7 @@ class Utils
                     $code = $runner($options);
 
                     if ($code != $exit_success) {
-                        self::log()->error("Command execution failed, exit code $code. Last input was: " . json_encode($options, JSON_UNESCAPED_SLASHES));
+                        LeUtils::log_error("Command execution failed, exit code $code. Last input was: " . json_encode($options, JSON_UNESCAPED_SLASHES));
                     }
 
                     exit(isset($options["no-error"]) ? $exit_success : $code);
@@ -290,7 +225,7 @@ class Utils
                 $help();
             } else {
                 $cmd = join(" ", $argv);
-                self::log()->error("Parsing of '$cmd' failed at argument '{$argv[$index]}'");
+                LeUtils::log_error("Parsing of '$cmd' failed at argument '{$argv[$index]}'");
             }
             exit(1);
         }

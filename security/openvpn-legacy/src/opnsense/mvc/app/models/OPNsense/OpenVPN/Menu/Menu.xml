@@ -1,0 +1,12 @@
+<menu>
+    <VPN>
+        <OpenVPN>
+            <Servers VisibleName="Servers [legacy]" order="20" url="/vpn_openvpn_server.php">
+                <Edit url="/vpn_openvpn_server.php?*" visibility="hidden"/>
+            </Servers>
+            <Clients VisibleName="Clients [legacy]" order="22" url="/vpn_openvpn_client.php">
+                <Edit url="/vpn_openvpn_client.php?*" visibility="hidden"/>
+            </Clients>
+        </OpenVPN>
+    </VPN>
+</menu>

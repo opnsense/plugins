@@ -8,14 +8,14 @@
         <general>
             <!-- fields -->
             <Enabled type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </Enabled>
             <SMTPHost type="NetworkField">
                 <Required>Y</Required>
             </SMTPHost>
             <FromEmail type="EmailField">
-                <default>sample@example.com</default>
+                <Default>sample@example.com</Default>
                 <Required>Y</Required>
             </FromEmail>
             <ToEmail type="EmailField">

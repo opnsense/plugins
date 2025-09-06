@@ -26,6 +26,7 @@ Plugin Changelog
 * Migrate from the deprecated 'listen … http2' directive to the 'http2' directive
 * Limit CSP log file size (migration notice: if you want to keep CSP violations logged, you will need to enable logging in the security policy)
 * Add basic support for forced caching (contributed by Eirik Øverby)
+* Add ability to override SNI for streams (contributed by DodoLeDev)
 
 1.33
 
@@ -163,8 +164,8 @@ Plugin Changelog
 1.14
 
 * add load balancer algorithm option (ip_hash)
-* fix URL flag not stored (contributed by jkellerer) [1]
-* allow to whitelist specific source IPs in the web application firewall (contributed by Julio Cesar Camargo) [2]
+* fix URL flag not stored (contributed by jkellerer)[1]
+* allow to whitelist specific source IPs in the web application firewall (contributed by Julio Cesar Camargo)[2]
 
 [1] https://github.com/opnsense/plugins/pull/1375
 [2] https://github.com/opnsense/plugins/pull/1310
@@ -227,7 +228,7 @@ Plugin Changelog
 
 * Add proxy options for ignore client abort and disabling buffering
 * Add logviewer support for streams
-* Fix charset is not defined bug (contributed by ccesario [1])
+* Fix charset is not defined bug (contributed by ccesario)[1]
 * Add an existence check for locations
 * Add PROXY protocol for HTTP and Streams frontend
 * Add PROXY backend support for Streams
@@ -238,14 +239,14 @@ Plugin Changelog
 1.4 (Development only)
 
 * move upstreams from HTTP to their own menu because they are used for TCP load balancing as well
-* add TCP load balancing [1]
+* add TCP load balancing[1]
 * add support for IP based ACLs
-* add log rotation (contributed by Julius Cesar Camargo [2])
+* add log rotation (contributed by Julius Cesar Camargo)[2]
 * add support for satisfy, body size limitation
-* change: allow to disable internal bot protection (contributed by @fzoske) [3]
+* change: allow to disable internal bot protection (contributed by fzoske)[3]
 * change: do not save when no change in the list happened to prevent filling the log history
 * fix: translate a german string in upstream server to english
-* replace headers instead of just adding our own (duplication issue #971), suppress X-Powered-By from Upstream [4]
+* replace headers instead of just adding our own (duplication issue #971), suppress X-Powered-By from Upstream[4]
 
 [1] https://github.com/opnsense/plugins/pull/930
 [2] https://github.com/opnsense/plugins/pull/982
@@ -261,13 +262,13 @@ Plugin Changelog
 * add limiter support
 * add permanent ban feature (use alias in firewall rules)
 * add caching feature (local file system)
-* add path prefix support (contributed by @ccesario )
+* add path prefix support (contributed by ccesario)
 * add port to upstream server table
 * add support to download waf rules
 * improvement: export full chain instead of only the server certificate (fixes some issues with some tools which need it)
 * web interface (allow HTTP/2 server push to increase performance)
 * support for (secure) web sockets in reverse proxy mode
-* bugfix: fix issues with multiple hostnames (IPv6 issues with TLS SNI by @ccesario )
+* bugfix: fix issues with multiple hostnames  due to IPv6 issues with TLS SNI (contributed by ccesario)
 * bugfix: warning in certificate rendering
 
 1.1

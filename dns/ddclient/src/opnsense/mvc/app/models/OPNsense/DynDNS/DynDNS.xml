@@ -105,16 +105,16 @@
                 </server>
                 <username type="TextField">
                     <Required>N</Required>
-                    <mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</mask>
+                    <Mask>/^([a-zA-Z0-9\-.@_:+\%])*$/u</Mask>
                     <ValidationMessage>The username contains invalid characters.</ValidationMessage>
                 </username>
                 <password type="UpdateOnlyTextField">
                     <Required>N</Required>
-                    <mask>/^[^\n]*$/</mask>
+                    <Mask>/^[^\n]*$/</Mask>
                 </password>
                 <resourceId type="TextField">
                     <Required>N</Required>
-                    <mask>/^[^\n]*$/</mask>
+                    <Mask>/^[^\n]*$/</Mask>
                     <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
                 </resourceId>
                 <hostnames type="HostnameField">
@@ -139,15 +139,17 @@
                     <Default>web_dyndns</Default>
                     <ValidationMessage>An IP service type is required.</ValidationMessage>
                     <OptionValues>
+                        <web_akamai>akamai</web_akamai>
+                        <web_akamai_ipv4 value="akamai-ipv4">akamai-ipv4</web_akamai_ipv4>
+                        <web_akamai_ipv6 value="akamai-ipv6">akamai-ipv6</web_akamai_ipv6>
                         <web_cloudflare>cloudflare</web_cloudflare>
                         <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
                         <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
-                        <web_dyndns>dyndns</web_dyndns>
+                        <web_dynu_ipv4 value="dynu-ipv4">dynu-ipv4</web_dynu_ipv4>
+                        <web_dynu_ipv6 value="dynu-ipv6">dynu-ipv6</web_dynu_ipv6>
                         <web_freedns>freedns</web_freedns>
                         <web_he>he</web_he>
                         <web_icanhazip>icanhazip</web_icanhazip>
-                        <web_ip4only_me value="web_ip4only.me">ip4only.me</web_ip4only_me>
-                        <web_ip6only_me value="web_ip6only.me">ip6only.me</web_ip6only_me>
                         <web_ipify_ipv4 value="web_ipify-ipv4">ipify-ipv4</web_ipify_ipv4>
                         <web_ipify_ipv6 value="web_ipify-ipv6">ipify-ipv6</web_ipify_ipv6>
                         <web_loopia>loopia</web_loopia>
@@ -167,7 +169,7 @@
                 </checkip>
                 <dynipv6host type="TextField">
                     <Required>N</Required>
-                    <mask>/^::(([0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4})?$/u</mask>
+                    <Mask>/^::(([0-9a-fA-F]{1,4}:){0,3}[0-9a-fA-F]{1,4})?$/u</Mask>
                     <ValidationMessage>Entry is not a valid partial ipv6 address definition (e.g. ::1000).</ValidationMessage>
                 </dynipv6host>
                 <checkip_timeout type="IntegerField">
@@ -199,9 +201,11 @@
                 </interface>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^(.){1,255}$/u</mask>
+                    <Mask>/^(.){1,255}$/u</Mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
+                <current_ip type="TextField" volatile="true"/>
+                <current_mtime type="TextField" volatile="true"/>
             </account>
         </accounts>
     </items>

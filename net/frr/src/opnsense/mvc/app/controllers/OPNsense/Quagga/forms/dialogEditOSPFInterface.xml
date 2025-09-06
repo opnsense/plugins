@@ -135,4 +135,14 @@
     <type>dropdown</type>
     <help>Defines the OSPF network type, impacting adjacency and LSA flooding methods. "Broadcast Multi-Access": Assumes networks supporting multiple routers with broadcast capability (e.g., Ethernet). "Non-Broadcast Multi-Access (NBMA)"": For networks without broadcast support (e.g., Frame Relay); requires manual neighbor setup. "Point-to-Multipoint": Connects multiple routers over a single interface, treating each as a point-to-point link. "Point-to-Point": Directly connects two routers, simplifying adjacency and LSA transmission.</help>
   </field>
+  <field>
+    <id>interface.p2mpoptions</id>
+    <label>P2MP options</label>
+    <type>dropdown</type>
+    <style>selectpicker style_networktype</style>
+    <help>Only for point-to-multipoint network type! non-broadcast: Disables multicast/broadcast, OSPF neighbors must be manually configured. delay-reflood: Delays LSA flooding until retransmission timer expires if no ACK received.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
 </form>

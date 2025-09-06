@@ -37,12 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBFDNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bfd/searchNeighbor',
-            'get':'/api/quagga/bfd/getNeighbor/',
-            'set':'/api/quagga/bfd/setNeighbor/',
-            'add':'/api/quagga/bfd/addNeighbor/',
-            'del':'/api/quagga/bfd/delNeighbor/',
-            'toggle':'/api/quagga/bfd/toggleNeighbor/'
+            'search':'/api/quagga/bfd/search_neighbor',
+            'get':'/api/quagga/bfd/get_neighbor/',
+            'set':'/api/quagga/bfd/set_neighbor/',
+            'add':'/api/quagga/bfd/add_neighbor/',
+            'del':'/api/quagga/bfd/del_neighbor/',
+            'toggle':'/api/quagga/bfd/toggle_neighbor/'
         });
 
         $("#reconfigureAct").SimpleActionButton({

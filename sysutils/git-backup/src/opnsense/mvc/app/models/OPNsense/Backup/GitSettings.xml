@@ -17,7 +17,7 @@
         </enabled>
         <url type="TextField">
             <Required>N</Required>
-            <mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</mask>
+            <Mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</Mask>
             <ValidationMessage>A valid git location must be provided. e.g. ssh://server/project.git, https://server/project.git</ValidationMessage>
             <Constraints>
                 <check001>

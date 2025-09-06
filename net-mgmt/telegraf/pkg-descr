@@ -12,9 +12,14 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.13
+
+* Implement memory_saving_mode formerly named enable_file_download (contributed by sopex)
+
 1.12.12
 
 * Fix for mixed ping plugin config (contributed by Alex Baulé)
+* Fix incompatibility with obsolete dns_lookup setting
 
 1.12.11
 
@@ -89,8 +94,8 @@ Plugin Changelog
 
 1.8.1
 
-* Fix 'flush interval' templating by @Jontron123
-* Add ability to disable TLS for Graphite by @primemaster
+* Fix 'flush interval' templating (contributed by Jontron123)
+* Add ability to disable TLS for Graphite (contributed by primemaster)
 
 1.8.0
 

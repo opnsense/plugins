@@ -5,15 +5,15 @@
   <items>
     <general>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <enable_redis_plugin type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_redis_plugin>
       <enable_bayes_autolearn type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_bayes_autolearn>
       <rejectscore type="IntegerField">
@@ -120,47 +120,47 @@
         <Required>N</Required>
       </rewritesubject>
       <historyrows type="IntegerField">
-        <default>200</default>
+        <Default>200</Default>
         <Required>Y</Required>
         <MinimumValue>1</MinimumValue>
         <MaximumValue>100000</MaximumValue>
         <ValidationMessage>Choose a value between 1 and 100000.</ValidationMessage>
       </historyrows>
       <nameserver type="HostnameField">
-        <default>127.0.0.1</default>
+        <Default>127.0.0.1</Default>
         <Required>Y</Required>
         <FieldSeparator>,</FieldSeparator>
-        <asList>Y</asList>
+        <AsList>Y</AsList>
       </nameserver>
     </general>
 
     <milter_headers>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <enable_extended_spam_headers type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_extended_spam_headers>
       <enable_authentication_results type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_authentication_results>
       <enable_spamd_bar type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_spamd_bar>
       <skip_local type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </skip_local>
       <skip_authenticated type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </skip_authenticated>
       <extended_headers_rcpt type="CSVListField">
-        <mask>/[a-z0-9\.\-_@,]+/i</mask>
+        <Mask>/[a-z0-9\.\-_@,]+/i</Mask>
         <Required>N</Required>
       </extended_headers_rcpt>
     </milter_headers>
@@ -182,18 +182,18 @@
         <Required>N</Required>
         <MaximumValue>32</MaximumValue>
         <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
-        <default>19</default>
+        <Default>19</Default>
       </ipv4mask>
       <ipv6mask type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
         <MaximumValue>128</MaximumValue>
-        <default>64</default>
+        <Default>64</Default>
         <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
       </ipv6mask>
       <whitelist_ip type="CSVListField">
         <Required>N</Required>
-        <mask>/^([a-fA-F0-9\.:\[\]\/]*?,)*([a-fA-F0-9\.:\[\]\/]*)$/</mask>
+        <Mask>/^([a-fA-F0-9\.:\[\]\/]*?,)*([a-fA-F0-9\.:\[\]\/]*)$/</Mask>
       </whitelist_ip>
     </graylist>
 
@@ -214,44 +214,44 @@
         <ValidationMessage>A valid time jitter must be set.</ValidationMessage>
       </time_jitter>
       <trusted_only type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </trusted_only>
       <skip_multi type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </skip_multi>
       <!-- dkim signing -->
       <allow_envfrom_empty type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </allow_envfrom_empty>
       <allow_hdrfrom_mismatch type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </allow_hdrfrom_mismatch>
       <allow_hdrfrom_multiple type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </allow_hdrfrom_multiple>
       <allow_username_mismatch type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </allow_username_mismatch>
       <auth_only type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </auth_only>
       <sign_local type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </sign_local>
       <try_fallback type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </try_fallback>
       <use_domain type="OptionField">
-        <default>header</default>
+        <Default>header</Default>
         <Required>Y</Required>
         <OptionValues>
           <header>Header</header>
@@ -259,43 +259,43 @@
         </OptionValues>
       </use_domain>
       <use_esld type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </use_esld>
     </dkim>
 
     <mx-check>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <expire type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <default>86400</default>
+        <Default>86400</Default>
         <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
       </expire>
     </mx-check>
 
     <phishing>
       <openphish_enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </openphish_enabled>
       <openphish_map type="TextField">
-        <default></default>
+        <Default></Default>
         <Required>N</Required>
       </openphish_map>
       <openphish_premium_enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </openphish_premium_enabled>
       <phishtank_enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </phishtank_enabled>
       <phishtank_map type="TextField">
-        <default></default>
+        <Default></Default>
         <Required>N</Required>
       </phishtank_map>
       <exclusion type="CSVListField">
@@ -316,7 +316,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -337,7 +337,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -358,7 +358,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -379,7 +379,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -400,7 +400,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -421,7 +421,7 @@
           <ValidationMessage>The time must be a positive integer.</ValidationMessage>
         </time>
         <time_unit type="OptionField">
-          <default>m</default>
+          <Default>m</Default>
           <Required>Y</Required>
           <OptionValues>
             <s>Seconds</s>
@@ -431,26 +431,26 @@
         </time_unit>
       </user>
       <whitelisted_rcpts type="CSVListField">
-        <default>postmaster,mailer-daemon</default>
+        <Default>postmaster,mailer-daemon</Default>
       </whitelisted_rcpts>
       <max_rcpt type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
-        <default>20</default>
+        <Default>20</Default>
       </max_rcpt>
     </rate_limit>
 
     <spamtrap>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <fuzzy_learning type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </fuzzy_learning>
       <spam_learning type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </spam_learning>
       <spam_recipients type="CSVListField">
@@ -462,7 +462,7 @@
       <spf_cache_size type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <default>2</default>
+        <Default>2</Default>
         <ValidationMessage>A valid cache size in kilobytes must be set.</ValidationMessage>
       </spf_cache_size>
       <spf_cache_expire type="IntegerField">
@@ -474,16 +474,16 @@
 
     <av>
       <force-reject type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </force-reject>
       <attachments-only type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </attachments-only>
       <max-size type="IntegerField">
         <MinimumValue>1</MinimumValue>
-        <default>20000000</default>
+        <Default>20000000</Default>
         <Required>N</Required>
         <ValidationMessage>A valid maximum size in bytes must be set.</ValidationMessage>
       </max-size>
@@ -504,7 +504,7 @@
     <multimap>
       <badfileextension type="CSVListField">
         <Required>N</Required>
-        <default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</default>
+        <Default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</Default>
       </badfileextension>
       <whitelistsender type="CSVListField">
         <Required>N</Required>

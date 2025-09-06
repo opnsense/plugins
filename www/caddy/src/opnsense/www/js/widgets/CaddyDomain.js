@@ -48,7 +48,7 @@ export default class CaddyDomain extends BaseTableWidget {
 
     async onWidgetTick() {
         // Check if caddy is enabled
-        const data = await this.ajaxCall('/api/caddy/reverse_proxy/get');
+        const data = await this.ajaxCall(`/api/caddy/reverse_proxy/${'get'}`);
         if (!data.caddy.general || data.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;

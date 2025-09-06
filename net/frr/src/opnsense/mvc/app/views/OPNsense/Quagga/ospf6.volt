@@ -47,36 +47,44 @@
         });
 
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchNetwork',
-            'get':'/api/quagga/ospf6settings/getNetwork/',
-            'set':'/api/quagga/ospf6settings/setNetwork/',
-            'add':'/api/quagga/ospf6settings/addNetwork/',
-            'del':'/api/quagga/ospf6settings/delNetwork/',
-            'toggle':'/api/quagga/ospf6settings/toggleNetwork/'
+            'search':'/api/quagga/ospf6settings/search_network',
+            'get':'/api/quagga/ospf6settings/get_network/',
+            'set':'/api/quagga/ospf6settings/set_network/',
+            'add':'/api/quagga/ospf6settings/add_network/',
+            'del':'/api/quagga/ospf6settings/del_network/',
+            'toggle':'/api/quagga/ospf6settings/toggle_network/'
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchInterface',
-            'get':'/api/quagga/ospf6settings/getInterface/',
-            'set':'/api/quagga/ospf6settings/setInterface/',
-            'add':'/api/quagga/ospf6settings/addInterface/',
-            'del':'/api/quagga/ospf6settings/delInterface/',
-            'toggle':'/api/quagga/ospf6settings/toggleInterface/'
+            'search':'/api/quagga/ospf6settings/search_interface',
+            'get':'/api/quagga/ospf6settings/get_interface/',
+            'set':'/api/quagga/ospf6settings/set_interface/',
+            'add':'/api/quagga/ospf6settings/add_interface/',
+            'del':'/api/quagga/ospf6settings/del_interface/',
+            'toggle':'/api/quagga/ospf6settings/toggle_interface/'
         });
         $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchPrefixlist',
-            'get':'/api/quagga/ospf6settings/getPrefixlist/',
-            'set':'/api/quagga/ospf6settings/setPrefixlist/',
-            'add':'/api/quagga/ospf6settings/addPrefixlist/',
-            'del':'/api/quagga/ospf6settings/delPrefixlist/',
-            'toggle':'/api/quagga/ospf6settings/togglePrefixlist/'
+            'search':'/api/quagga/ospf6settings/search_prefixlist',
+            'get':'/api/quagga/ospf6settings/get_prefixlist/',
+            'set':'/api/quagga/ospf6settings/set_prefixlist/',
+            'add':'/api/quagga/ospf6settings/add_prefixlist/',
+            'del':'/api/quagga/ospf6settings/del_prefixlist/',
+            'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/'
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/searchRoutemap',
-            'get':'/api/quagga/ospf6settings/getRoutemap/',
-            'set':'/api/quagga/ospf6settings/setRoutemap/',
-            'add':'/api/quagga/ospf6settings/addRoutemap/',
-            'del':'/api/quagga/ospf6settings/delRoutemap/',
-            'toggle':'/api/quagga/ospf6settings/toggleRoutemap/'
+            'search':'/api/quagga/ospf6settings/search_routemap',
+            'get':'/api/quagga/ospf6settings/get_routemap/',
+            'set':'/api/quagga/ospf6settings/set_routemap/',
+            'add':'/api/quagga/ospf6settings/add_routemap/',
+            'del':'/api/quagga/ospf6settings/del_routemap/',
+            'toggle':'/api/quagga/ospf6settings/toggle_routemap/'
+        });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospf6settings/search_redistribution',
+            'get':'/api/quagga/ospf6settings/get_redistribution/',
+            'set':'/api/quagga/ospf6settings/set_redistribution/',
+            'add':'/api/quagga/ospf6settings/add_redistribution/',
+            'del':'/api/quagga/ospf6settings/del_redistribution/',
+            'toggle':'/api/quagga/ospf6settings/toggle_redistribution/'
         });
 
         // hook checkbox item with conditional options
@@ -87,10 +95,33 @@
                 $(".ospf6_originate").closest('tr').hide();
             }
         });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
     });
 </script>
 
-
+<style>
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
+    }
+</style>
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -104,6 +135,7 @@
     <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':ospf6Form,'id':'frm_ospf6_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
     <!-- Tab: Networks -->
     <div id="networks" class="tab-pane fade in">
@@ -127,3 +159,4 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}

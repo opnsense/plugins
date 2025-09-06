@@ -5,11 +5,11 @@
   <items>
     <general>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <ban_ttl type="IntegerField">
-        <default>0</default>
+        <Default>0</Default>
         <MinimumValue>0</MinimumValue>
         <Required>Y</Required>
       </ban_ttl>
@@ -17,32 +17,32 @@
 
     <webgui>
       <limitnetworks type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </limitnetworks>
     </webgui>
 
     <http>
       <workerprocesses type="IntegerField">
-        <default>1</default>
+        <Default>1</Default>
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
       </workerprocesses>
       <workerconnections type="IntegerField">
-        <default>1024</default>
+        <Default>1024</Default>
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
       </workerconnections>
       <sendfile type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>N</Required>
       </sendfile>
       <keepalive_timeout type="IntegerField">
-        <default>60</default>
+        <Default>60</Default>
         <Required>N</Required>
       </keepalive_timeout>
       <reset_timedout type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </reset_timedout>
       <default_type type="TextField">
@@ -65,21 +65,21 @@
         <MinimumValue>1</MinimumValue>
       </variables_hash_bucket_size>
       <ban_response type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <http_403 value="403">403 Forbidden</http_403>
           <http_444 value="444">444 Terminate Connection</http_444>
         </OptionValues>
         <Required>Y</Required>
-        <default>403</default>
+        <Default>403</Default>
       </ban_response>
       <log_perm_ban type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </log_perm_ban>
       <bots_ua type="CSVListField">
         <Required>Y</Required>
-        <default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</default>
+        <Default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</Default>
       </bots_ua>
       <headers_more_enable type="BooleanField">
         <Required>N</Required>
@@ -100,7 +100,7 @@
         </Model>
         <ValidationMessage>Selected user not found</ValidationMessage>
         <Required>Y</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </users>
     </userlist>
 
@@ -127,7 +127,7 @@
         </Model>
         <ValidationMessage>Selected server not found</ValidationMessage>
         <Required>Y</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </serverentries>
       <load_balancing_algorithm type="OptionField">
         <OptionValues>
@@ -153,20 +153,20 @@
         <Required>N</Required>
       </host_port>
       <x_forwarded_host_verbatim type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </x_forwarded_host_verbatim>
       <proxy_protocol type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </proxy_protocol>
       <store type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </store>
       <tls_enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </tls_enable>
       <tls_client_certificate type="CertificateField">
         <Type>cert</Type>
@@ -176,7 +176,7 @@
         <Required>N</Required>
       </tls_name_override>
       <tls_protocol_versions type="OptionField">
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <OptionValues>
           <TLSv1 value="TLSv1">TLSv1</TLSv1>
           <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
@@ -187,20 +187,20 @@
       </tls_protocol_versions>
       <tls_session_reuse type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </tls_session_reuse>
       <tls_trusted_certificate type="CertificateField">
         <Type>ca</Type>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <Required>N</Required>
       </tls_trusted_certificate>
       <tls_verify type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </tls_verify>
       <tls_verify_depth type="IntegerField">
         <Required>N</Required>
-        <default>1</default>
+        <Default>1</Default>
         <MinimumValue>1</MinimumValue>
       </tls_verify_depth>
     </upstream>
@@ -254,11 +254,11 @@
         <Required>N</Required>
       </matchtype>
       <enable_secrules type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_secrules>
       <enable_learning_mode type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enable_learning_mode>
       <secrules_errorpage type="ModelRelationField">
@@ -274,7 +274,7 @@
         </Model>
         <ValidationMessage>Selected error page(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </secrules_errorpage>
       <xss_block_score type="IntegerField">
         <Required>N</Required>
@@ -292,7 +292,7 @@
         </Model>
         <ValidationMessage>Selected server not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </custom_policy>
       <upstream type="ModelRelationField">
         <Model>
@@ -304,11 +304,11 @@
         </Model>
         <ValidationMessage>Selected upstream not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </upstream>
       <path_prefix type="TextField">
         <Required>N</Required>
-        <mask>/^[^" \t]+$/</mask>
+        <Mask>/^[^" \t]+$/</Mask>
       </path_prefix>
       <cache_path type="ModelRelationField">
         <Model>
@@ -320,10 +320,10 @@
         </Model>
         <ValidationMessage>Selected cache directory not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </cache_path>
       <cache_use_stale type="OptionField">
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <OptionValues>
           <error>Error</error>
           <timeout>Timeout</timeout>
@@ -340,7 +340,7 @@
         <Required>N</Required>
       </cache_use_stale>
       <cache_methods type="OptionField">
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <OptionValues>
           <POST>Post</POST>
           <!-- it seems like it does not like the others required for REST - syntax error
@@ -355,7 +355,7 @@
       </cache_methods>
       <cache_min_uses type="IntegerField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </cache_min_uses>
       <cache_valid type="IntegerField">
         <Required>N</Required>
@@ -374,15 +374,15 @@
       </proxy_cache_valid>
       <cache_background_update type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </cache_background_update>
       <cache_lock type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </cache_lock>
       <cache_revalidate type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </cache_revalidate>
       <root type="TextField">
         <Required>N</Required>
@@ -397,7 +397,7 @@
         </Model>
         <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </rewrites>
       <index type="CSVListField">
         <Required>N</Required>
@@ -418,10 +418,10 @@
         </Model>
         <ValidationMessage>Selected user file not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </authbasicuserfile>
       <advanced_acl type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </advanced_acl>
       <force_https type="TextField">
@@ -429,7 +429,7 @@
       </force_https>
       <php_enable type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </php_enable>
       <php_override_scriptname type="TextField">
         <Required>N</Required>
@@ -444,25 +444,25 @@
         </Model>
         <ValidationMessage>Selected limit zone not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </limit_request_connections>
       <max_body_size type="TextField">
         <Required>N</Required>
-        <mask>/^\d+[kmg]$/i</mask>
+        <Mask>/^\d+[kmg]$/i</Mask>
         <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
       </max_body_size>
       <body_buffer_size type="TextField">
         <Required>N</Required>
-        <mask>/^\d+[kmg]$/i</mask>
+        <Mask>/^\d+[kmg]$/i</Mask>
         <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
       </body_buffer_size>
       <honeypot type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </honeypot>
       <websocket type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
         <Constraints>
             <check001>
                 <ValidationMessage>WebSocket and Upstream Keepalive support can not be combined.</ValidationMessage>
@@ -475,7 +475,7 @@
       </websocket>
       <upstream_keepalive type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
         <Constraints>
             <check001>
                 <reference>websocket.check001</reference>
@@ -520,15 +520,15 @@
       </proxy_busy_buffers_size>
       <proxy_ignore_client_abort type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </proxy_ignore_client_abort>
       <proxy_request_buffering type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </proxy_request_buffering>
       <proxy_buffering type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </proxy_buffering>
       <proxy_read_timeout type="IntegerField">
         <Required>N</Required>
@@ -548,7 +548,7 @@
         </Model>
         <ValidationMessage>Selected ACL not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </ip_acl>
       <satisfy type="OptionField">
         <OptionValues>
@@ -563,7 +563,7 @@
       </proxy_max_temp_file_size>
       <proxy_ssl_server_name type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </proxy_ssl_server_name>
       <errorpages type="ModelRelationField">
         <Model>
@@ -575,7 +575,7 @@
         </Model>
         <ValidationMessage>Selected error page(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </errorpages>
       <proxy_intercept_errors type="OptionField">
         <default>Inherit</default>
@@ -602,14 +602,14 @@
         </Model>
         <ValidationMessage>Selected rule not found</ValidationMessage>
         <Required>Y</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </naxsi_rules>
       <value type="IntegerField">
         <Required>Y</Required>
       </value>
       <operator type="OptionField">
         <Required>Y</Required>
-        <default>&gt;=</default>
+        <Default>&gt;=</Default>
         <OptionValues>
           <option1 value="&gt;=">Bigger or Equal</option1>
           <option2 value="&gt;">Bigger</option2>
@@ -619,7 +619,7 @@
       </operator>
       <action type="OptionField">
         <Required>Y</Required>
-        <default>BLOCK</default>
+        <Default>BLOCK</Default>
         <OptionValues>
           <BLOCK>Block Request</BLOCK>
           <ALLOW>Allow Request</ALLOW>
@@ -678,7 +678,7 @@
       </match_value>
       <match_type type="OptionField">
         <Required>Y</Required>
-        <default>id</default>
+        <Default>id</Default>
         <OptionValues>
           <id>Blacklist</id>
           <wl>Whitelist</wl>
@@ -694,7 +694,7 @@
       </negate>
       <score type="IntegerField">
         <Required>N</Required>
-        <default>8</default>
+        <Default>8</Default>
         <Constraints>
           <check001>
             <ValidationMessage>This field must be set.</ValidationMessage>
@@ -711,14 +711,14 @@
         <Required>Y</Required>
       </args>
       <url type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </url>
       <headers type="BooleanField">
         <Required>Y</Required>
       </headers>
       <body type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </body>
       <dollar_args_var type="TextField">
@@ -755,13 +755,13 @@
         </Model>
         <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </syslog_targets>
       <listen_http_address type="CSVListField">
         <Required>N</Required>
-        <multiple>Y</multiple>
-        <default>80,[::]:80</default>
-        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <Multiple>Y</Multiple>
+        <Default>80,[::]:80</Default>
+        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
         <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
         <Constraints>
           <check001>
@@ -771,14 +771,14 @@
       </listen_http_address>
       <listen_https_address type="CSVListField">
         <Required>N</Required>
-        <multiple>Y</multiple>
-        <default>443,[::]:443</default>
-        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <Multiple>Y</Multiple>
+        <Default>443,[::]:443</Default>
+        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
         <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
       </listen_https_address>
       <default_server type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
         <Constraints>
           <check001>
             <type>NgxUniqueDefaultServerConstraint</type>
@@ -786,17 +786,17 @@
         </Constraints>
       </default_server>
       <tls_reject_handshake type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </tls_reject_handshake>
       <proxy_protocol type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </proxy_protocol>
       <trusted_proxies type="CSVListField">
         <Required>N</Required>
-        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
-        <multiple>Y</multiple>
+        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+        <Multiple>Y</Multiple>
       </trusted_proxies>
       <trusted_proxies_alias type="ModelRelationField">
         <Model>
@@ -811,7 +811,7 @@
         </Model>
         <ValidationMessage>Selected alias not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </trusted_proxies_alias>
       <real_ip_source type="OptionField">
         <OptionValues>
@@ -832,7 +832,7 @@
         </Model>
         <ValidationMessage>Selected location(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </locations>
       <rewrites type="ModelRelationField">
         <Model>
@@ -844,7 +844,7 @@
         </Model>
         <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </rewrites>
       <root type="TextField">
         <Required>N</Required>
@@ -859,7 +859,7 @@
         <multiple>Y</multiple>
       </ca>
       <verify_client type="OptionField">
-        <default>Off</default>
+        <Default>Off</Default>
         <OptionValues>
           <off>Off</off>
           <on>On</on>
@@ -869,7 +869,7 @@
         <Required>Y</Required>
       </verify_client>
       <access_log_format type="OptionField">
-        <default>main</default>
+        <Default>main</Default>
         <OptionValues>
           <main>Default</main>
           <main_ext>Extended</main_ext>
@@ -879,7 +879,7 @@
         <Required>Y</Required>
       </access_log_format>
       <error_log_level type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <emerg value="emerg">Emergency</emerg>
           <alert value="alert">Alert</alert>
@@ -890,25 +890,25 @@
           <info value="info">Informational</info>
         </OptionValues>
         <Required>Y</Required>
-        <default>error</default>
+        <Default>error</Default>
       </error_log_level>
       <log_handshakes type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </log_handshakes>
       <enable_acme_support type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </enable_acme_support>
       <charset type="OptionField">
-        <default>utf-8</default>
+        <Default>utf-8</Default>
         <OptionValues>
           <utf-8>utf-8</utf-8>
         </OptionValues>
         <Required>N</Required>
       </charset>
       <https_only type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </https_only>
       <http2 type="BooleanField">
@@ -916,26 +916,26 @@
         <Required>Y</Required>
       </http2>
       <tls_protocols type="OptionField">
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <Sorted>Y</Sorted>
         <OptionValues>
           <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
           <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
         </OptionValues>
         <Required>Y</Required>
-        <default>TLSv1.2,TLSv1.3</default>
+        <Default>TLSv1.2,TLSv1.3</Default>
       </tls_protocols>
       <tls_ciphers type="TextField">
-        <default>ECDHE-ECDSA-CAMELLIA256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CAMELLIA256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-CAMELLIA128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-CAMELLIA128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CAMELLIA256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CAMELLIA256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-CAMELLIA128-SHA256:ECDHE-RSA-AES128-SHA256</default>
+        <Default>ECDHE-ECDSA-CAMELLIA256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CAMELLIA256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-CAMELLIA128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-CAMELLIA128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CAMELLIA256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CAMELLIA256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-CAMELLIA128-SHA256:ECDHE-RSA-AES128-SHA256</Default>
         <Required>N</Required>
-        <mask>/^((((!|\+|-)?[A-Z][A-Z\d\+-]+)|(@STRENGTH)):?)*$/i</mask>
+        <Mask>/^((((!|\+|-)?[A-Z][A-Z\d\+-]+)|(@STRENGTH)):?)*$/i</Mask>
       </tls_ciphers>
       <tls_ecdh_curve type="TextField">
         <Required>N</Required>
-        <mask>/^(([A-Z\d-]+):?)*$/i</mask>
+        <Mask>/^(([A-Z\d-]+):?)*$/i</Mask>
       </tls_ecdh_curve>
       <tls_prefer_server_ciphers type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </tls_prefer_server_ciphers>
       <resolver type="ModelRelationField">
@@ -948,54 +948,54 @@
         </Model>
         <ValidationMessage>Selected resolver not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </resolver>
       <ocsp_stapling type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </ocsp_stapling>
       <ocsp_verify type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </ocsp_verify>
       <block_nonpublic_data type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </block_nonpublic_data>
       <disable_bot_protection type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </disable_bot_protection>
       <disable_gzip type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </disable_gzip>
       <naxsi_whitelist_srcip type="CSVListField">
         <Required>N</Required>
-        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
-        <multiple>Y</multiple>
+        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+        <Multiple>Y</Multiple>
       </naxsi_whitelist_srcip>
       <naxsi_extensive_log type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </naxsi_extensive_log>
       <sendfile type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </sendfile>
       <client_header_buffer_size type="IntegerField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
         <MinimumValue>1</MinimumValue>
       </client_header_buffer_size>
       <large_client_header_buffers_number type="IntegerField">
         <Required>Y</Required>
-        <default>4</default>
+        <Default>4</Default>
         <MinimumValue>1</MinimumValue>
       </large_client_header_buffers_number>
       <large_client_header_buffers_size type="IntegerField">
         <Required>Y</Required>
-        <default>8</default>
+        <Default>8</Default>
         <MinimumValue>1</MinimumValue>
       </large_client_header_buffers_size>
       <security_header type="ModelRelationField">
@@ -1008,7 +1008,7 @@
         </Model>
         <ValidationMessage>Selected security rule not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </security_header>
       <limit_request_connections type="ModelRelationField">
         <Model>
@@ -1020,16 +1020,16 @@
         </Model>
         <ValidationMessage>Selected limit zone not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </limit_request_connections>
       <max_body_size type="TextField">
         <Required>N</Required>
-        <mask>/^\d+[kmg]$/i</mask>
+        <Mask>/^\d+[kmg]$/i</Mask>
         <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
       </max_body_size>
       <body_buffer_size type="TextField">
         <Required>N</Required>
-        <mask>/^\d+[kmg]$/i</mask>
+        <Mask>/^\d+[kmg]$/i</Mask>
         <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
       </body_buffer_size>
       <ip_acl type="ModelRelationField">
@@ -1042,12 +1042,12 @@
         </Model>
         <ValidationMessage>Selected ACL not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </ip_acl>
       <advanced_acl_server type="AuthenticationServerField">
         <Required>N</Required>
-        <multiple>N</multiple>
-        <default>Local Database</default>
+        <Multiple>N</Multiple>
+        <Default>Local Database</Default>
       </advanced_acl_server>
       <satisfy type="OptionField">
         <OptionValues>
@@ -1058,7 +1058,7 @@
       </satisfy>
       <zero_rtt type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </zero_rtt>
       <errorpages type="ModelRelationField">
         <Model>
@@ -1070,7 +1070,7 @@
         </Model>
         <ValidationMessage>Selected error page(s) not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </errorpages>
       <proxy_intercept_errors type="BooleanField">
         <default>0</default>
@@ -1081,8 +1081,8 @@
     <stream_server type="ArrayField">
       <listen_address type="CSVListField">
         <Required>N</Required>
-        <multiple>Y</multiple>
-        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</mask>
+        <Multiple>Y</Multiple>
+        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
         <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
       </listen_address>
       <syslog_targets type="ModelRelationField">
@@ -1095,19 +1095,19 @@
         </Model>
         <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </syslog_targets>
       <udp type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </udp>
       <trusted_proxies type="CSVListField">
         <Required>N</Required>
-        <mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</mask>
-        <multiple>Y</multiple>
+        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+        <Multiple>Y</Multiple>
       </trusted_proxies>
       <proxy_protocol type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </proxy_protocol>
       <certificate type="CertificateField">
@@ -1119,7 +1119,7 @@
         <Required>N</Required>
       </ca>
       <verify_client type="OptionField">
-        <default>Off</default>
+        <Default>Off</Default>
         <OptionValues>
           <off>Off</off>
           <on>On</on>
@@ -1129,7 +1129,7 @@
         <Required>Y</Required>
       </verify_client>
       <access_log_format type="OptionField">
-        <default>main</default>
+        <Default>main</Default>
         <OptionValues>
           <main>Default</main>
           <main_ext>Extended</main_ext>
@@ -1139,7 +1139,7 @@
         <Required>Y</Required>
       </access_log_format>
       <error_log_level type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <emerg value="emerg">Emergency</emerg>
           <alert value="alert">Alert</alert>
@@ -1150,10 +1150,10 @@
           <info value="info">Informational (default)</info>
         </OptionValues>
         <Required>Y</Required>
-        <default>info</default>
+        <Default>info</Default>
       </error_log_level>
       <route_field type="OptionField">
-        <default>upstream</default>
+        <Default>upstream</Default>
         <OptionValues>
           <upstream>Upstream</upstream>
           <sni_upstream_map>SNI Upstream Mapping</sni_upstream_map>
@@ -1170,7 +1170,7 @@
         </Model>
         <ValidationMessage>Selected upstream not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <Constraints>
           <check001>
             <ValidationMessage>This field must be set.</ValidationMessage>
@@ -1190,7 +1190,7 @@
         </Model>
         <ValidationMessage>Selected upstream not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <Constraints>
           <check001>
             <ValidationMessage>This field must be set.</ValidationMessage>
@@ -1210,7 +1210,7 @@
         </Model>
         <ValidationMessage>Selected ACL not found</ValidationMessage>
         <Required>N</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </ip_acl>
       <proxy_responses type="IntegerField">
         <Required>N</Required>
@@ -1239,7 +1239,7 @@
               <display>hostname</display>
             </template>
           </Model>
-          <multiple>Y</multiple>
+          <Multiple>Y</Multiple>
           -->
           <Required>Y</Required>
       </data>
@@ -1258,7 +1258,7 @@
           </template>
         </Model>
         <Required>Y</Required>
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
       </upstream>
     </sni_hostname_upstream_map_item>
 
@@ -1275,7 +1275,7 @@
               <display>description</display>
             </template>
           </Model>
-          <multiple>Y</multiple>
+          <Multiple>Y</Multiple>
           -->
         <Required>Y</Required>
       </data>
@@ -1293,7 +1293,7 @@
         <Required>Y</Required>
       </network>
       <action type="OptionField">
-        <default>deny</default>
+        <Default>deny</Default>
         <OptionValues>
           <deny>Deny Access</deny>
           <allow>Allow Access</allow>
@@ -1305,12 +1305,12 @@
     <resolver type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
-        <mask>/^[^" \t]+$/i</mask>
+        <Mask>/^[^" \t]+$/i</Mask>
       </description>
       <address type="CSVListField">
         <Required>Y</Required>
-        <multiple>Y</multiple>
-        <mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</mask>
+        <Multiple>Y</Multiple>
+        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</Mask>
         <ValidationMessage>Please provide a valid resolver address, i.e. 8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353.</ValidationMessage>
       </address>
       <valid type="IntegerField">
@@ -1346,14 +1346,14 @@
     <http_rewrite type="ArrayField">
       <description type="TextField">
         <Required>Y</Required>
-        <mask>/^[^" \t]+$/i</mask>
+        <Mask>/^[^" \t]+$/i</Mask>
       </description>
       <source type="TextField">
         <Required>Y</Required>
       </source>
       <destination type="TextField">
         <Required>Y</Required>
-        <mask>/^[^" \t]+$/i</mask>
+        <Mask>/^[^" \t]+$/i</Mask>
       </destination>
       <flag type="OptionField">
         <OptionValues>
@@ -1371,7 +1371,7 @@
         <Required>Y</Required>
       </description>
       <referrer type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <no-referrer>No Referrer</no-referrer>
           <no-referrer-when-downgrade>No Referrer When Downgrading</no-referrer-when-downgrade>
@@ -1385,7 +1385,7 @@
         <Required>N</Required>
       </referrer>
       <xssprotection type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <val1 value="1; mode=block">Block</val1>
           <val2 value="0">Off</val2>
@@ -1401,411 +1401,411 @@
       </strict_transport_security_time>
       <strict_transport_security_include_subdomains type="BooleanField">
         <Required>Y</Required>
-        <default>1</default>
+        <Default>1</Default>
       </strict_transport_security_include_subdomains>
       <strict_transport_security_preload type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </strict_transport_security_preload>
       <enable_csp type="BooleanField">
         <Required>Y</Required>
       </enable_csp>
       <csp_log_violations type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_log_violations>
       <csp_report_only type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_report_only>
       <csp_default_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_enabled>
       <csp_default_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_data_urls>
       <csp_default_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_default_src_http_urls>
       <csp_default_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_inline>
       <csp_default_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_eval>
       <csp_default_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_self>
       <csp_default_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_blob>
       <csp_default_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_mediastream>
       <csp_default_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_filesystem>
       <csp_default_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_default_src_none>
       <csp_script_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_enabled>
       <csp_script_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_data_urls>
       <csp_script_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_script_src_http_urls>
       <csp_script_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_inline>
       <csp_script_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_eval>
       <csp_script_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_self>
       <csp_script_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_blob>
       <csp_script_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_mediastream>
       <csp_script_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_filesystem>
       <csp_script_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_script_src_none>
       <csp_img_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_enabled>
       <csp_img_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_data_urls>
       <csp_img_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_img_src_http_urls>
       <csp_img_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_inline>
       <csp_img_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_eval>
       <csp_img_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_self>
       <csp_img_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_blob>
       <csp_img_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_mediastream>
       <csp_img_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_filesystem>
       <csp_img_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_img_src_none>
       <csp_style_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_enabled>
       <csp_style_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_data_urls>
       <csp_style_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_style_src_http_urls>
       <csp_style_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_inline>
       <csp_style_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_eval>
       <csp_style_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_self>
       <csp_style_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_blob>
       <csp_style_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_mediastream>
       <csp_style_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_filesystem>
       <csp_style_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_style_src_none>
       <csp_media_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_enabled>
       <csp_media_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_data_urls>
       <csp_media_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_media_src_http_urls>
       <csp_media_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_inline>
       <csp_media_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_eval>
       <csp_media_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_self>
       <csp_media_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_blob>
       <csp_media_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_mediastream>
       <csp_media_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_filesystem>
       <csp_media_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_media_src_none>
       <csp_font_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_enabled>
       <csp_font_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_data_urls>
       <csp_font_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_font_src_http_urls>
       <csp_font_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_inline>
       <csp_font_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_eval>
       <csp_font_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_self>
       <csp_font_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_blob>
       <csp_font_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_mediastream>
       <csp_font_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_filesystem>
       <csp_font_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_font_src_none>
       <csp_frame_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_enabled>
       <csp_frame_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_data_urls>
       <csp_frame_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_frame_src_http_urls>
       <csp_frame_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_inline>
       <csp_frame_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_eval>
       <csp_frame_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_self>
       <csp_frame_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_blob>
       <csp_frame_src_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_mediastream>
       <csp_frame_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_filesystem>
       <csp_frame_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_src_none>
       <csp_frame_ancestors_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_enabled>
       <csp_frame_ancestors_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_data_urls>
       <csp_frame_ancestors_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_frame_ancestors_http_urls>
       <csp_frame_ancestors_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_self>
       <csp_frame_ancestors_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_blob>
       <csp_frame_ancestors_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_mediastream>
       <csp_frame_ancestors_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_filesystem>
       <csp_frame_ancestors_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_frame_ancestors_none>
       <csp_connect_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_connect_src_enabled>
       <csp_connect_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_connect_src_http_urls>
       <csp_connect_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_connect_src_none>
       <csp_worker_src_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_enabled>
       <csp_worker_src_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_data_urls>
       <csp_worker_src_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_worker_src_http_urls>
       <csp_worker_src_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_inline>
       <csp_worker_src_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_eval>
       <csp_worker_src_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_self>
       <csp_worker_src_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_blob>
       <csp_worker_src_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_filesystem>
       <csp_worker_src_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_worker_src_none>
       <csp_form_action_enabled type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_enabled>
       <csp_form_action_data_urls type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_data_urls>
       <csp_form_action_http_urls type="CSVListField">
         <Required>N</Required>
       </csp_form_action_http_urls>
       <csp_form_action_inline type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_inline>
       <csp_form_action_eval type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_eval>
       <csp_form_action_self type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_self>
       <csp_form_action_blob type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_blob>
       <csp_form_action_mediastream type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_mediastream>
       <csp_form_action_filesystem type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_filesystem>
       <csp_form_action_none type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </csp_form_action_none>
     </security_header>
 
@@ -1814,14 +1814,14 @@
         <Required>Y</Required>
       </description>
       <key type="OptionField">
-        <default>binary_remote_addr</default>
+        <Default>binary_remote_addr</Default>
         <OptionValues>
           <binary_remote_addr>Remote IP Address</binary_remote_addr>
         </OptionValues>
         <Required>Y</Required>
       </key>
       <rate_unit type="OptionField">
-        <default>r/s</default>
+        <Default>r/s</Default>
         <OptionValues>
           <val1 value="r/s">Requests Per Second</val1>
           <val2 value="r/m">Requests Per Minute</val2>
@@ -1830,12 +1830,12 @@
       </rate_unit>
       <size type="IntegerField">
         <Required>Y</Required>
-        <default>10</default>
+        <Default>10</Default>
         <MinimumValue>1</MinimumValue>
       </size>
       <rate type="IntegerField">
         <Required>Y</Required>
-        <default>20</default>
+        <Default>20</Default>
         <MinimumValue>1</MinimumValue>
       </rate>
     </limit_zone>
@@ -1845,7 +1845,7 @@
         <Required>Y</Required>
       </name>
       <statuscodes type="OptionField">
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
         <OptionValues>
           <status_400 value="400">400 Bad Request</status_400>
           <status_401 value="401">401 Unauthorized</status_401>
@@ -1867,7 +1867,7 @@
         <Required>Y</Required>
       </statuscodes>
       <pagecontent type="Base64Field">
-        <default>PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xIiAvPgogICAgPHRpdGxlPkVycm9yPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxoMT5FcnJvcjwvaDE+CiAgICA8cD5Tb3JyeSwgYnV0IHNvbWV0aGluZyB3ZW50IHdyb25nLjwvcD4KPC9ib2R5Pgo8L2h0bWw+</default>
+        <Default>PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xIiAvPgogICAgPHRpdGxlPkVycm9yPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxoMT5FcnJvcjwvaDE+CiAgICA8cD5Tb3JyeSwgYnV0IHNvbWV0aGluZyB3ZW50IHdyb25nLjwvcD4KPC9ib2R5Pgo8L2h0bWw+</Default>
         <Constraints>
           <check001>
             <type>SingleSelectConstraint</type>
@@ -1888,7 +1888,7 @@
         </Constraints>
       </redirect>
       <response type="OptionField">
-        <multiple>N</multiple>
+        <Multiple>N</Multiple>
         <OptionValues>
           <status_200 value="200">200 OK</status_200>
           <status_300 value="300">300 Multiple Choice</status_300>
@@ -1913,18 +1913,18 @@
         <Required>Y</Required>
       </user_agent>
       <trusted type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </trusted>
       <curves type="TextField">
         <!-- OpenSSL curve list like the one used for configuring the supported ciphers by the web server -->
         <Required>N</Required>
-        <mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</mask>
+        <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
       </curves>
       <ciphers type="TextField">
         <!-- OpenSSL cipher list like the one used for configuring the supported ciphers by the web server -->
         <Required>Y</Required>
-        <mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</mask>
+        <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
       </ciphers>
     </tls_fingerprint>
 
@@ -1939,20 +1939,20 @@
         </Model>
         <ValidationMessage>Selected limit zone not found</ValidationMessage>
         <Required>Y</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </limit_zone>
       <connection_count type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
-        <default>5</default>
+        <Default>5</Default>
       </connection_count>
       <burst type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <Required>N</Required>
-        <default>20</default>
+        <Default>20</Default>
       </burst>
       <nodelay type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </nodelay>
       <description type="TextField">
@@ -1973,11 +1973,11 @@
     <cache_path type="ArrayField">
       <path type="TextField">
         <Required>Y</Required>
-        <mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</mask>
+        <Mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</Mask>
       </path>
       <size type="IntegerField">
         <MinimumValue>10</MinimumValue>
-        <default>10</default>
+        <Default>10</Default>
       </size>
       <inactive type="IntegerField">
         <Required>N</Required>
@@ -1985,7 +1985,7 @@
       </inactive>
       <use_temp_path type="BooleanField">
         <Required>Y</Required>
-        <default>0</default>
+        <Default>0</Default>
       </use_temp_path>
       <max_size type="IntegerField">
         <Required>N</Required>
@@ -2049,7 +2049,7 @@
           <local7>local7</local7>
         </OptionValues>
         <Required>Y</Required>
-        <default>local7</default>
+        <Default>local7</Default>
       </facility>
       <severity type="OptionField">
         <OptionValues>
@@ -2063,15 +2063,15 @@
           <emerg>emerg</emerg>
         </OptionValues>
         <Required>Y</Required>
-        <default>error</default>
+        <Default>error</Default>
       </severity>
       <tag type="TextField">
         <Required>N</Required>
-        <mask>/[a-z][a-z0-9]*/i</mask>
+        <Mask>/[a-z][a-z0-9]*/i</Mask>
       </tag>
       <nohostname type="BooleanField">
         <Required>Y</Required>
-        <default>N</default>
+        <Default>N</Default>
       </nohostname>
     </syslog_target>
   </items>

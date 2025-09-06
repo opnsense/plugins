@@ -34,6 +34,12 @@ class OspfController extends \OPNsense\Base\IndexController
     {
         $this->view->generalForm = $this->getForm("ospf");
 
+        $this->view->formDialogEditOSPFArea = $this->getForm("dialogEditOSPFArea");
+        $this->view->formGridEditOSPFArea = $this->getFormGrid("dialogEditOSPFArea");
+
+        $this->view->formDialogEditOSPFNeighbor = $this->getForm("dialogEditOSPFNeighbor");
+        $this->view->formGridEditOSPFNeighbor = $this->getFormGrid("dialogEditOSPFNeighbor");
+
         $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPFNetwork");
         $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPFNetwork");
 
@@ -45,6 +51,9 @@ class OspfController extends \OPNsense\Base\IndexController
 
         $this->view->formDialogEditRouteMaps = $this->getForm("dialogEditOSPFRouteMaps");
         $this->view->formGridEditRouteMaps = $this->getFormGrid("dialogEditOSPFRouteMaps");
+
+        $this->view->formDialogEditRedistribution = $this->getForm("dialogEditRedistribution");
+        $this->view->formGridEditRedistribution = $this->getFormGrid("dialogEditRedistribution");
 
         $this->view->pick('OPNsense/Quagga/ospf');
     }
