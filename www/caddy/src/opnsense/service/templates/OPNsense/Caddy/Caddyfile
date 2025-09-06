@@ -312,7 +312,7 @@ http://{{ domain }} {
     tlsDnsPropagationResolvers=""
 ) %}
     {% if customCert or (dnsChallenge == "1" and dnsProvider) or clientAuthTrustPool %}
-        tls {% if customCert %}/var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.pem /var/db/caddy/data/caddy/certificates/temp/{{ customCert }}.key{% endif %} {
+        tls {% if customCert %}/usr/local/etc/caddy/certificates/{{ customCert }}.pem /usr/local/etc/caddy/certificates/{{ customCert }}.key{% endif %} {
             {% if not customCert and (dnsChallenge == "1" and dnsProvider) %}
             issuer acme {
                 dns {{ dnsProvider }} {{ dnsApiKey }}
@@ -334,7 +334,7 @@ http://{{ domain }} {
             {% if clientAuthTrustPool %}
                 client_auth {
                     {% for ca in clientAuthTrustPool.split(',') %}
-                    trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ ca.strip() }}.pem
+                    trust_pool file /usr/local/etc/caddy/certificates/{{ ca.strip() }}.pem
                     {% endfor %}
                     {% if clientAuthMode %}
                     mode {{ clientAuthMode }}
@@ -508,7 +508,7 @@ http://{{ domain }} {
                             tls_insecure_skip_verify
                         {% endif %}
                         {% if handle.HttpTlsTrustedCaCerts %}
-                            tls_trust_pool file /var/db/caddy/data/caddy/certificates/temp/{{ handle.HttpTlsTrustedCaCerts }}.pem
+                            tls_trust_pool file /usr/local/etc/caddy/certificates/{{ handle.HttpTlsTrustedCaCerts }}.pem
                         {% endif %}
                         {% if handle.HttpTlsServerName %}
                             tls_server_name {{ handle.HttpTlsServerName }}
@@ -647,7 +647,7 @@ http://{{ domain }} {
             {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
                 {% if reverse.AccessLog|default("0") == "1" %}
                     {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-                        log {{ subdomain['@uuid'] }}
+                        log {{ reverse['@uuid'] }}
                     {% else %}
                         log {
                             output file /var/log/caddy/access/{{ subdomain['@uuid'] }}.log {

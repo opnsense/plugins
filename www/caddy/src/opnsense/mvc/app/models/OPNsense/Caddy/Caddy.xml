@@ -76,7 +76,7 @@
                 <Default>10</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>20</MaximumValue>
-                <ValidationMessage>Please enter a valid Grace Period between 1 and 20 seconds.</ValidationMessage>
+                <ValidationMessage>Please enter a valid grace period between 1 and 20 seconds.</ValidationMessage>
                 <Required>Y</Required>
             </GracePeriod>
             <HttpVersions type="OptionField">
@@ -162,7 +162,7 @@
             </AuthToTls>
             <AuthToUri type="TextField">
                 <Mask>/^(\/.*)?$/u</Mask>
-                <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
+                <ValidationMessage>Please enter a valid URI that starts with '/'.</ValidationMessage>
             </AuthToUri>
             <CopyHeaders type="ModelRelationField">
                 <Model>
@@ -336,7 +336,7 @@
                 </HandleType>
                 <HandlePath type="TextField">
                     <Mask>/^(\/.*)?$/u</Mask>
-                    <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid path that starts with '/'.</ValidationMessage>
                 </HandlePath>
                 <accesslist type="ModelRelationField">
                     <Model>
@@ -380,14 +380,13 @@
                 </HandleDirective>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
                 <ToPort type="PortField"/>
                 <ToPath type="TextField">
                     <Mask>/^(\/.*)?$/u</Mask>
-                    <ValidationMessage>Please enter a valid Path that starts with '/'.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid path that starts with '/'.</ValidationMessage>
                 </ToPath>
                 <ForwardAuth type="BooleanField"/>
                 <HttpTls type="OptionField">
@@ -475,7 +474,7 @@
                 <description type="DescriptionField"/>
                 <health_uri type="TextField">
                     <Mask>/^(\/.*)?$/u</Mask>
-                    <ValidationMessage>Please enter a valid 'URI' that starts with '/'.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid URI that starts with '/'.</ValidationMessage>
                 </health_uri>
                 <health_upstream type="IPPortField"/>
                 <health_port type="IntegerField">
@@ -512,7 +511,6 @@
                 </accesslistName>
                 <clientIps type="NetworkField">
                     <Required>Y</Required>
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
                     <ValidationMessage>Please enter one or multiple valid IP addresses or networks.</ValidationMessage>
@@ -521,7 +519,7 @@
                 <HttpResponseCode type="IntegerField">
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>599</MaximumValue>
-                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599</ValidationMessage>
+                    <ValidationMessage>Please enter a valid HTTP response code between 100 and 599.</ValidationMessage>
                 </HttpResponseCode>
                 <HttpResponseMessage type="DescriptionField"/>
                 <RequestMatcher type="OptionField">
@@ -606,7 +604,6 @@
                     <IpAllowed>N</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
                     <HostWildcardAllowed>Y</HostWildcardAllowed>
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple hostnames or FQDNs.</ValidationMessage>
                 </FromDomain>
@@ -660,7 +657,6 @@
                 <InvertMatchers type="BooleanField"/>
                 <ToDomain type="HostnameField">
                     <Required>Y</Required>
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <ValidationMessage>Please enter one or multiple valid IP addresses, hostnames or FQDNs.</ValidationMessage>
                 </ToDomain>
@@ -695,7 +691,6 @@
                     <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthMaxFails>
                 <RemoteIp type="NetworkField">
-                    <FieldSeparator>,</FieldSeparator>
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
                     <ValidationMessage>Please enter one or multiple valid IP addresses or networks.</ValidationMessage>
