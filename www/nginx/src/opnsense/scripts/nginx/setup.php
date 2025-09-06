@@ -120,14 +120,24 @@ if (isset($nginx['http_server'])) {
                 $cert['prv']
             );
             if (!empty($http_server['ca'])) {
-                foreach ($http_server['ca'] as $caref) {
-                    $ca = find_ca($caref);
-                    if (isset($ca)) {
-                        export_pem_file(
-                            KEY_DIRECTORY . $hostname . '_ca.pem',
-                            $ca['crt']
-                        );
+                syslog(LOG_DEBUG, "NGINX setup: Setting up the CA certs for {$hostname}.");
+                $ca_certs = [];
+                foreach ($http_server['ca'] as $carefs) {
+                    foreach(explode(',', $carefs) as $caref) {
+                        syslog(LOG_DEBUG, "NGINX setup: Searching for {$caref} CA data");
+                        $ca = find_ca($caref);
+                        if (isset($ca)) {
+                            syslog(LOG_DEBUG, "NGINX setup: client auth CA found. Adding to the list");
+                            $ca_certs[] = base64_decode($ca['crt']);
+                        }
                     }
+                }
+                if (count($ca_certs) > 0) {
+                    export_pem_file(
+                        KEY_DIRECTORY . $hostname . '_ca.pem',
+                        '',
+                        implode("\n", $ca_certs)
+                    );
                 }
             }
         }
