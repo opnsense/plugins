@@ -48,7 +48,6 @@ $( document ).ready(function() {
             del:'/api/zabbixagent/settings/del_userparameter/',
             toggle:'/api/zabbixagent/settings/toggle_userparameter/',
             options: {
-                rowCount:[10,25,50,100,500,1000]
             }
         }
     );
@@ -61,7 +60,6 @@ $( document ).ready(function() {
             del:'/api/zabbixagent/settings/del_alias/',
             toggle:'/api/zabbixagent/settings/toggle_alias/',
             options: {
-                rowCount:[10,25,50,100,500,1000]
             }
         }
     );
