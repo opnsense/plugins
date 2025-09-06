@@ -1491,10 +1491,7 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd_generic_command>
-                <acme_synology_dsm_hostname type="HostnameField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </acme_synology_dsm_hostname>
+                <acme_synology_dsm_hostname type="HostnameField"/>
                 <acme_synology_dsm_port type="PortField">
                     <Default>5000</Default>
                     <Required>N</Required>
