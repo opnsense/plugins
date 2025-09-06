@@ -87,7 +87,7 @@ security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (ne
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
-security/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
+security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
 security/strongswan-legacy -- IPsec legacy support
