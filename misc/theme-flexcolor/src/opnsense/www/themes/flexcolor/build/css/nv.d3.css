@@ -1,12 +1,14 @@
 /* nvd3 version 1.8.6 (https://github.com/novus/nvd3) 2017-08-23 */
+@import url('default_scheme.css');
 .nvd3 .nv-axis {
     pointer-events:none;
     opacity: 1;
+	fill: var(--text);
 }
 
 .nvd3 .nv-axis path {
     fill: none;
-    stroke: #FFF;
+    stroke: var(--text);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -21,7 +23,7 @@
 
 .nvd3 .nv-axis line {
     fill: none;
-    stroke: #E6E6E6;
+    stroke: var(--text);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -192,6 +194,9 @@
 
 .nvd3 .nv-controlsWrap .nv-legend .nv-check-box .nv-check {
     opacity: 0;
+    stroke-width: 1;
+    fill: var(--nv3daxis);
+    stroke: var(--nv3daxis);
 }
 
 /* line plus bar */
@@ -231,16 +236,12 @@
     fill-opacity: .95 !important;
     stroke-opacity: .95 !important;
 }
-
-
 .nvd3 .nv-point-paths path {
     stroke: #aaa;
     stroke-opacity: 0;
     fill: #eee;
     fill-opacity: 0;
 }
-
-
 .nvd3 .nv-indexLine {
     cursor: ew-resize;
 }
@@ -273,7 +274,7 @@ svg.nvd3-svg {
 
 .nvd3 text {
   font: normal 12px Arial, sans-serif;
-	fill:#FFF;
+	fill: var(--text);
 }
 
 .nvd3 .title {
@@ -288,7 +289,7 @@ svg.nvd3-svg {
 .nvd3.nv-noData {
   font-size: 18px;
   font-weight: bold;
-	fill:#fff;
+	fill: var(--text);
 }
 
 
@@ -315,11 +316,11 @@ svg.nvd3-svg {
     cursor: pointer;
 }
 
-.nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
+/* .nv-controlsWrap.nvd3-svg circle.nv-legend-symbol {
   stroke-width: 1 !important;
   fill: rgb(255, 255, 255) !important;
   stroke: rgb(231, 231, 231) !important;
-}
+}*//
 
 .nvd3 .nv-legend .nv-disabled circle {
     fill-opacity: 0;
@@ -331,9 +332,9 @@ svg.nvd3-svg {
 }
 
 .nvd3 .nv-brushBackground rect {
-    stroke: #000;
+    stroke: var(--pbg);
     stroke-width: .4;
-    fill: #fff;
+    fill: var(--text);
     fill-opacity: .7;
 }
 
@@ -409,12 +410,12 @@ svg.nvd3-svg {
 }
 
 .nvd3.nv-pie .nv-slice text {
-    stroke: #000;
+    stroke: var(--highlighted);
     stroke-width: 0;
 }
 
 .nvd3.nv-pie path {
-    stroke: #fff;
+    stroke: var(--highlighted);
     stroke-width: 1px;
     stroke-opacity: 0.6;
 }
@@ -522,9 +523,9 @@ svg.nvd3-svg {
 
 .nvtooltip {
     position: absolute;
-	  background-color: rgb(60, 60, 60);
+	  background-color: var(--pbg);
 	  color: rgba(0,0,0,1.0);
-	  border: 1px solid rgb(255, 127, 14);
+	  border: 1px solid var(--stdborder);
     padding: 1px;
     z-index: 10000;
     display: block;
@@ -578,6 +579,7 @@ svg.nvd3-svg {
 .nvtooltip table {
     margin: 0;
     border-spacing:0;
+    background-color: var(--pbg)
     padding: 6px;
 }
 

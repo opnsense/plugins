@@ -3,6 +3,7 @@
  * Copyright (c) 2014-2015 Rafael Staib (http://www.jquery-bootgrid.com)
  * Licensed under MIT http://www.opensource.org/licenses/MIT
  */
+@import url('default_scheme.css');
 .bootgrid-header,
 .bootgrid-footer {
   margin: 15px 0;
@@ -58,10 +59,10 @@
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover,
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-  color: #336CDF;
+  color: var(--bac);
   text-decoration: none;
-  background-color: #131313;
-  border: 1px solid #336CDF;
+  background-color: var(--pbg);
+  border: 1px solid var(--bac);
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
@@ -81,7 +82,7 @@
   outline: 0;
 }
 .bootgrid-table th > .column-header-anchor {
-  color: #131313;
+  color: var(--pbg);
   cursor: not-allowed;
   display: block;
   position: relative;
@@ -107,7 +108,7 @@
 }
 .bootgrid-table th:hover,
 .bootgrid-table th:active {
-  background: #131313;
+  background: var(--pbg);
 }
 .bootgrid-table td {
   overflow: hidden;
@@ -118,7 +119,7 @@
 }
 .bootgrid-table td.loading,
 .bootgrid-table td.no-results {
-  background: #131313;
+  background: var(--pbg);
   text-align: center;
 }
 .bootgrid-table th.select-cell,

@@ -1,6 +1,8 @@
-.btn-pressed, .btn-pressed:hover {
-    background-color: #336CDF;
-    color: white;
+@import url('default_scheme.css');
+.btn-pressed, .btn-pressed:hover
+{
+    color: var(--highlighted);
+    background-color: var(--bac);
 }
 
 .fa-spinner {
@@ -10,16 +12,16 @@
 .grid-stack-item-content {
   text-align: center;
   border-style: solid;
-  border-color: #3D3D3D;
+  border-color: var(--stdborder);
   border-width: 1px;
-  background-color: #1C1C1C;
+  background-color: var(--sbg);
   border-radius: 0.5em 0.5em 0.5em 0.5em;
-  text-color: #E6E6E6;
+  text-color: var(--text);
 }
 
 .widget-error {
     margin: 50px;
-    color: #FF5252;
+    color: var(--rac);
 }
 
 .widget-content {
@@ -76,7 +78,7 @@ td {
     display: inline-block;
     height: 2px;
     width: 80%;
-    background: #3D3D3D;
+    background: var(--stdborder);
     margin: 5px;
 }
 
@@ -108,7 +110,7 @@ td {
   background: rgba(19, 19, 19, 0.9);
   padding-left: 15px;
   padding-right: 15px;
-  color: white;
+  color: var(--ext);
   font-size: 13px;
   border-radius: 0.5em 0.5em 0.5em 0.5em;
   pointer-events: none;
@@ -212,7 +214,7 @@ div {
     flex-flow: row wrap;
     transition: 0.5s;
     padding: 0.5em 0.5em;
-    border-top: solid 1px #3D3D3D;
+    border-top: solid 1px var(--stdborder);
 }
 
 .flextable-row {
@@ -220,7 +222,7 @@ div {
     flex-flow: row wrap;
     transition: 0.5s;
     padding: 0.5em 0.5em;
-    border-top: solid 1px #3D3D3D;
+    border-top: solid 1px var(--stdborder);
     align-items: center;
 }
 
@@ -245,7 +247,7 @@ div {
     width: 100%;
     padding: 0;
     border: 0;
-    border-top: #3D3D3D;
+    border-top: var(--stdborder);
 }
 .flex-subcell {
     width: 100%;
@@ -253,7 +255,7 @@ div {
 }
 
 .column .flex-cell:not(:last-child) {
-     border-bottom: solid 1px #3D3D3D;
+     border-bottom: solid 1px var(--stdborder);
 	  /* border-bottom: none !important; */
 }
 /* ----- */
@@ -267,26 +269,26 @@ div {
 .grid-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    background-color: #1C1C1C; /* fade-in color, transitions to transparent */
-    border-top: 1px solid #3D3D3D;
+    background-color: var(--sbg); /* fade-in color, transitions to transparent */
+    border-top: 1px solid var(--stdborder);
     transition: 0.5s;
     opacity: 0.4;
 }
 
 .grid-header {
-    border-top: 1px solid #3D3D3D;
+    border-top: 1px solid var(--stdborder);
     font-weight: bold;
 }
 
 .grid-item {
-    border: 1 px solid #3D3D3D;
+    border: 1 px solid var(--stdborder);
     padding: 4px;
     text-align: center;
 }
 /* ----- */
 
 :root {
-    --chart-js-background-color: #1C1C1C;
-    --chart-js-border-color: #3D3D3D;
-    --chart-js-font-color: #E6E6E6;
+    --chart-js-background-color: var(--sbg);
+    --chart-js-border-color: var(--stdborder);
+    --chart-js-font-color: var(--text);
 }

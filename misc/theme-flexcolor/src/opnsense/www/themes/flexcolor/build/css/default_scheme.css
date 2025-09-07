@@ -1,0 +1,24 @@
+:root {
+
+/* colors */
+  --highlighted: #FFFFFF; /* highlighted element */
+  --pbg: #131313; /* primary background */
+  --sbg: #1C1C1C; /* second background */
+  --text: #E6E6E6; /* textcolor */
+  --stdborder: #3D3D3D; /* standrad border */
+  --bac: #336CDF; /* blue accent */
+  --bachover: #437CEF; /* blue accent hover*/
+  --rac: #FF5252; /* red accent */
+  --rachover: #EF4242; /* red accent hover*/
+  --gac: #10AF42; /* green accent */
+  --gachover: #20BF52; /* green accent hover*/
+  --oac: #EF8026; /* orange accent */
+  --oachover: #FF9036; /* orange accent hover*/
+  --texthover: #FFFFFF; /* primary text over */
+  --textmuted: #919191; /* muted text */
+  --menuactive: #252525; /* active menu */
+  --menutext: #C3C3C3; /* menu text */
+  --amenuback: #3B3B3B; /* active menu background*/
+
+/* images */
+}

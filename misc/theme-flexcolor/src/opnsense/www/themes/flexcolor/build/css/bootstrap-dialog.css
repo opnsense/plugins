@@ -1,3 +1,4 @@
+@import url('default_scheme.css');
 .modal-backdrop {
   z-index: -1;
 }
@@ -13,10 +14,10 @@
 .bootstrap-dialog .modal-header {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  background-color: #1C1C1C;
+  background-color: var(--sbg);
 }
 .bootstrap-dialog .bootstrap-dialog-title {
-  color: #E6E6E6;
+  color: var(--text);
   display: inline-block;
   font-size: 15px;
 }
@@ -38,25 +39,25 @@
   opacity: 1;
 }
 .bootstrap-dialog.type-default .modal-header {
-  background-color: #131313;
+  background-color: var(--pbg);
 }
 .bootstrap-dialog.type-default .bootstrap-dialog-title {
   color: #333;
 }
 .bootstrap-dialog.type-info .modal-header {
-  border-bottom: 3px solid #336CDF;
+  border-bottom: 3px solid var(--bac);
 }
 .bootstrap-dialog.type-primary .modal-header {
-  border-bottom: 3px solid #E6E6E6;
+  border-bottom: 3px solid var(--text);
 }
 .bootstrap-dialog.type-success .modal-header {
-  border-bottom: 3px solid #10AF42;
+  border-bottom: 3px solid var(--gac);
 }
 .bootstrap-dialog.type-warning .modal-header {
-  border-bottom: 3px solid #EF8026;
+  border-bottom: 3px solid var(--oac);
 }
 .bootstrap-dialog.type-danger .modal-header {
-  border-bottom: 3px solid #FF5252;
+  border-bottom: 3px solid var(--rac);
 }
 .bootstrap-dialog.size-large .bootstrap-dialog-title {
   font-size: 24px;

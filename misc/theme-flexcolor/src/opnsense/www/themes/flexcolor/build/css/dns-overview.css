@@ -1,6 +1,7 @@
+@import url('default_scheme.css');
 .tab-content {
     padding: 10px;
-    border-top: 1px solid #E6E6E6;
+    border-top: 1px solid var(--text);
 }
 
 .banner {
@@ -9,23 +10,23 @@
 
 .stats-element {
     height: 5em;
-    background: #1C1C1C;
+    background: var(--sbg);
     overflow: hidden;
     display: flex;
     justify-content: flex-start;
     border-radius: .3em;
     margin:auto;
-    border: 1px solid #3D3D3D;
-    color: #336CDF;
+    border: 1px solid var(--stdborder));
+    color: var(--bac);
 }
 
 .stats-icon {
     height: auto;
     width: 50%;
     object-fit:cover;
-    background: #1C1C1C;
+    background: var(--sbg);
     border-radius: 0 2em 2em 0 / 0 3em 3em 0;
-    box-shadow: 3px 5px 1px 3px rgba(54, 112, 207, 0.45);
+    box-shadow: 3px 5px 1px 3px var(--unbshadow);
 }
 
 .large-icon {
@@ -51,7 +52,7 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: #E6E6E6;
+    color: var(--text);
 }
 
 .stats-inner-text {
@@ -59,57 +60,57 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: #336CDF;
+    color: var(--bac);
 }
 
 #bannersub {
     text-align: center;
     margin: 5px;
-    color: #E6E6E6;
+    color: var(--text);
 }
 
 .list-group-wrapper {
     margin: 0px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #131313;
+    background-color: var(--pbg);
 }
 
 .list-item-domain {
     height: 2.5em;
-    background-color: #1C1C1C;
-    color: #336CDF;
+    background-color: var(--sbg);
+    color: var(--bac);
 }
 
 .list-group-item-border {
-    border: 1px solid #3D3D3D;
+    border: 1px solid var(--stdborder));
 }
 
 .list-group-item-border:first-child {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border-bottom: 2px;
-    border-color: #3D3D3D;
+    border-color: var(--stdborder));
 }
 
 .list-group-item-border:last-child {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    border-color: #3D3D3D;
+    border-color: var(--stdborder));
 }
 .btn.pull-right {
     margin-left: 3px;
 }
 
 .odd-bg {
-    background: #1C1C1C;
+    background: var(--sbg);
 }
 
 .top-item {
     display: flex;
     white-space: nowrap;
-    background-color: #1C1C1C;
-    Color: #E6E6E6;
+    background-color: var(--sbg);
+    Color: var(--text);
 }
 
 .group-p {
@@ -122,7 +123,7 @@
 .counter {
     position: relative;
     top: -3px;
-    color: #E6E6E6;
+    color: var(--text);
     font-size: 14px;
     line-height: 1.4;
     flex: 1;
@@ -138,38 +139,38 @@
 }
 
 #maintabs > li > a {
-    border-top: 1px solid #3D3D3D;
-    border-left: 1px solid #3D3D3D;
-    border-right: 1px solid #3D3D3D;
-    border-bottom: 1px solid #3D3D3D;
+    border-top: 1px solid var(--stdborder));
+    border-left: 1px solid var(--stdborder));
+    border-right: 1px solid var(--stdborder));
+    border-bottom: 1px solid var(--stdborder));
 }
 
 #maintabs > li.active > a {
-    border-top: 1px solid #336CDF;
-    border-left: 1px solid #336CDF;
-    border-right: 1px solid #336CDF;
-    border-bottom: 1px solid #131313;
+    border-top: 1px solid var(--bac);
+    border-left: 1px solid var(--bac);
+    border-right: 1px solid var(--bac);
+    border-bottom: 1px solid var(--pbg);
 }
 
 .query-success {
-    background-color: rgba(16,175,66,0.4);
-    color: #E6E6E6
+    background-color: var(--unbsuccess);
+    color: var(--text)
 }
 
 .query-info {
-    background-color: rgba(51,108,223,0.4);
+    background-color: var(--unbinfo);
 }
 
 .query-danger {
-    background-color: rgba(239,227,22,0.6);
+    background-color: var(--unbdanger);
 }
 
 .query-warning {
-    background-color: rgba(239,128,38,0.6);
+    background-color: var(--unbwarning);
 }
 
 .query-error {
-    background-color: rgba(221,40,70,0.4);
+    background-color: var(--unberror);
 }
 
 #searchFilter {
@@ -185,7 +186,7 @@
 }
 
 .tag a {
-  color: #E6E6E6;
+  color: var(--text);
   cursor: pointer;
   opacity: 0.9;
 }
@@ -195,7 +196,7 @@
 }
 
 .tag a fa-times {
-  color: #E6E6E6;
+  color: var(--text);
   margin-bottom: 2px;
 }
 
