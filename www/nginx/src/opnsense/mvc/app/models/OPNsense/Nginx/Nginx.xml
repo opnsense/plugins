@@ -1,1199 +1,1087 @@
 <model>
-  <mount>//OPNsense/Nginx</mount>
-  <version>1.34</version>
-  <description>nginx web server, reverse proxy and waf</description>
-  <items>
-    <general>
-      <enabled type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </enabled>
-      <ban_ttl type="IntegerField">
-        <Default>0</Default>
-        <MinimumValue>0</MinimumValue>
-        <Required>Y</Required>
-      </ban_ttl>
-    </general>
-
-    <webgui>
-      <limitnetworks type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </limitnetworks>
-    </webgui>
-
-    <http>
-      <workerprocesses type="IntegerField">
-        <Default>1</Default>
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-      </workerprocesses>
-      <workerconnections type="IntegerField">
-        <Default>1024</Default>
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-      </workerconnections>
-      <sendfile type="BooleanField">
-        <Default>0</Default>
-        <Required>N</Required>
-      </sendfile>
-      <keepalive_timeout type="IntegerField">
-        <Default>60</Default>
-        <Required>N</Required>
-      </keepalive_timeout>
-      <reset_timedout type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </reset_timedout>
-      <default_type type="TextField">
-        <Required>N</Required>
-      </default_type>
-      <server_names_hash_bucket_size type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </server_names_hash_bucket_size>
-      <server_names_hash_max_size type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </server_names_hash_max_size>
-      <ban_response type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <http_403 value="403">403 Forbidden</http_403>
-          <http_444 value="444">444 Terminate Connection</http_444>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>403</Default>
-      </ban_response>
-      <log_perm_ban type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </log_perm_ban>
-      <bots_ua type="CSVListField">
-        <Required>Y</Required>
-        <Default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</Default>
-      </bots_ua>
-      <headers_more_enable type="BooleanField">
-        <Required>N</Required>
-      </headers_more_enable>
-    </http>
-
-    <userlist type="ArrayField">
-      <name type="TextField">
-        <Required>Y</Required>
-      </name>
-      <users type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>credential</items>
-            <display>username</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected user not found</ValidationMessage>
-        <Required>Y</Required>
-        <Multiple>Y</Multiple>
-      </users>
-    </userlist>
-
-    <credential type="ArrayField">
-      <username type="TextField">
-        <Required>Y</Required>
-      </username>
-      <password type="TextField">
-        <Required>Y</Required>
-      </password>
-    </credential>
-
-    <upstream type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <serverentries type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>upstream_server</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected server not found</ValidationMessage>
-        <Required>Y</Required>
-        <Multiple>Y</Multiple>
-      </serverentries>
-      <load_balancing_algorithm type="OptionField">
-        <OptionValues>
-          <ip_hash>IP Hash</ip_hash>
-        </OptionValues>
-        <BlankDesc>Weighted Round Robin</BlankDesc>
-        <Required>N</Required>
-      </load_balancing_algorithm>
-      <keepalive type="IntegerField">
-        <MinimumValue>0</MinimumValue>
-        <Required>N</Required>
-      </keepalive>
-      <keepalive_requests type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-      </keepalive_requests>
-      <keepalive_timeout type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-      </keepalive_timeout>
-      <host_port type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-      </host_port>
-      <x_forwarded_host_verbatim type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </x_forwarded_host_verbatim>
-      <proxy_protocol type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </proxy_protocol>
-      <store type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </store>
-      <tls_enable type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </tls_enable>
-      <tls_client_certificate type="CertificateField">
-        <Type>cert</Type>
-        <Required>N</Required>
-      </tls_client_certificate>
-      <tls_name_override type="HostnameField">
-        <Required>N</Required>
-      </tls_name_override>
-      <tls_protocol_versions type="OptionField">
-        <Multiple>Y</Multiple>
-        <OptionValues>
-          <TLSv1 value="TLSv1">TLSv1</TLSv1>
-          <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
-          <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
-          <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
-        </OptionValues>
-        <Required>N</Required>
-      </tls_protocol_versions>
-      <tls_session_reuse type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </tls_session_reuse>
-      <tls_trusted_certificate type="CertificateField">
-        <Type>ca</Type>
-        <Multiple>Y</Multiple>
-        <Required>N</Required>
-      </tls_trusted_certificate>
-      <tls_verify type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </tls_verify>
-      <tls_verify_depth type="IntegerField">
-        <Required>N</Required>
-        <Default>1</Default>
-        <MinimumValue>1</MinimumValue>
-      </tls_verify_depth>
-    </upstream>
-
-    <upstream_server type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <server type="HostnameField">
-        <Required>Y</Required>
-      </server>
-      <port type="PortField">
-        <Required>Y</Required>
-      </port>
-      <priority type="IntegerField">
-        <MinimumValue>0</MinimumValue>
-        <Required>Y</Required>
-      </priority>
-      <max_conns type="IntegerField">
-        <Required>N</Required>
-      </max_conns>
-      <max_fails type="IntegerField">
-        <Required>N</Required>
-      </max_fails>
-      <fail_timeout type="IntegerField">
-        <Required>N</Required>
-      </fail_timeout>
-      <no_use type="OptionField">
-        <OptionValues>
-          <down>Permanently Unreachable</down>
-          <backup>Backup Server</backup>
-        </OptionValues>
-        <Required>N</Required>
-      </no_use>
-    </upstream_server>
-
-    <location type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <urlpattern type="TextField">
-        <Required>Y</Required>
-      </urlpattern>
-      <matchtype type="OptionField">
-        <OptionValues>
-          <option1 value="=">Exact Match ("=")</option1>
-          <option2 value="~">Case Sensitive Match ("~")</option2>
-          <option3 value="~*">Case Insensitive Match ("~*")</option3>
-          <option4 value="^~">Don't check regular expressions on longest prefix match ("^~")</option4>
-        </OptionValues>
-        <Required>N</Required>
-      </matchtype>
-      <enable_secrules type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </enable_secrules>
-      <enable_learning_mode type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </enable_learning_mode>
-      <secrules_errorpage type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>errorpage</items>
-            <display>name</display>
-            <filters>
-              <pagecontent>/.+/</pagecontent>
-            </filters>
-          </template>
-        </Model>
-        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </secrules_errorpage>
-      <xss_block_score type="IntegerField">
-        <Required>N</Required>
-      </xss_block_score>
-      <sqli_block_score type="IntegerField">
-        <Required>N</Required>
-      </sqli_block_score>
-      <custom_policy type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>custom_policy</items>
-            <display>name</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected server not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </custom_policy>
-      <upstream type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>upstream</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected upstream not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </upstream>
-      <path_prefix type="TextField">
-        <Required>N</Required>
-        <Mask>/^[^" \t]+$/</Mask>
-      </path_prefix>
-      <cache_path type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>cache_path</items>
-            <display>path</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected cache directory not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </cache_path>
-      <cache_use_stale type="OptionField">
-        <Multiple>Y</Multiple>
-        <OptionValues>
-          <error>Error</error>
-          <timeout>Timeout</timeout>
-          <invalid_header>Invalid_header</invalid_header>
-          <updating>Updating</updating>
-          <http_403>HTTP Status Code 403</http_403>
-          <http_404>HTTP Status Code 404</http_404>
-          <http_429>HTTP Status Code 429</http_429>
-          <http_500>HTTP Status Code 500</http_500>
-          <http_502>HTTP Status Code 502</http_502>
-          <http_503>HTTP Status Code 503</http_503>
-          <http_504>HTTP Status Code 504</http_504>
-        </OptionValues>
-        <Required>N</Required>
-      </cache_use_stale>
-      <cache_methods type="OptionField">
-        <Multiple>Y</Multiple>
-        <OptionValues>
-          <POST>Post</POST>
-          <!-- it seems like it does not like the others required for REST - syntax error
+    <mount>//OPNsense/Nginx</mount>
+    <version>1.35</version>
+    <description>nginx web server, reverse proxy and waf</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <ban_ttl type="IntegerField">
+                <Default>0</Default>
+                <MinimumValue>0</MinimumValue>
+                <Required>Y</Required>
+            </ban_ttl>
+        </general>
+        <webgui>
+            <limitnetworks type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </limitnetworks>
+        </webgui>
+        <http>
+            <workerprocesses type="IntegerField">
+                <Default>1</Default>
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+            </workerprocesses>
+            <workerconnections type="IntegerField">
+                <Default>1024</Default>
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+            </workerconnections>
+            <sendfile type="BooleanField"/>
+            <keepalive_timeout type="IntegerField"/>
+            <reset_timedout type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </reset_timedout>
+            <default_type type="TextField"/>
+            <server_names_hash_bucket_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </server_names_hash_bucket_size>
+            <server_names_hash_max_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </server_names_hash_max_size>
+            <variables_hash_max_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </variables_hash_max_size>
+            <variables_hash_bucket_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </variables_hash_bucket_size>
+            <ban_response type="OptionField">
+                <OptionValues>
+                    <http_403 value="403">403 Forbidden</http_403>
+                    <http_444 value="444">444 Terminate Connection</http_444>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>403</Default>
+            </ban_response>
+            <log_perm_ban type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </log_perm_ban>
+            <bots_ua type="CSVListField">
+                <Required>Y</Required>
+                <Default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</Default>
+            </bots_ua>
+            <headers_more_enable type="BooleanField"/>
+        </http>
+        <userlist type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+            </name>
+            <users type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>credential</items>
+                        <display>username</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected user not found.</ValidationMessage>
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+            </users>
+        </userlist>
+        <credential type="ArrayField">
+            <username type="TextField">
+                <Required>Y</Required>
+            </username>
+            <password type="TextField">
+                <Required>Y</Required>
+            </password>
+        </credential>
+        <upstream type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <serverentries type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>upstream_server</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected server not found.</ValidationMessage>
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+            </serverentries>
+            <load_balancing_algorithm type="OptionField">
+                <OptionValues>
+                    <ip_hash>IP Hash</ip_hash>
+                </OptionValues>
+                <BlankDesc>Weighted Round Robin</BlankDesc>
+            </load_balancing_algorithm>
+            <keepalive type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </keepalive>
+            <keepalive_requests type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </keepalive_requests>
+            <keepalive_timeout type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </keepalive_timeout>
+            <host_port type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </host_port>
+            <x_forwarded_host_verbatim type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </x_forwarded_host_verbatim>
+            <proxy_protocol type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </proxy_protocol>
+            <store type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </store>
+            <tls_enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </tls_enable>
+            <tls_client_certificate type="CertificateField">
+                <Type>cert</Type>
+            </tls_client_certificate>
+            <tls_name_override type="HostnameField"/>
+            <tls_protocol_versions type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <TLSv1 value="TLSv1">TLSv1</TLSv1>
+                    <TLSv1_1 value="TLSv1.1">TLSv1.1</TLSv1_1>
+                    <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
+                    <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
+                </OptionValues>
+            </tls_protocol_versions>
+            <tls_session_reuse type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </tls_session_reuse>
+            <tls_trusted_certificate type="CertificateField">
+                <Type>ca</Type>
+                <Multiple>Y</Multiple>
+            </tls_trusted_certificate>
+            <tls_verify type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </tls_verify>
+            <tls_verify_depth type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </tls_verify_depth>
+        </upstream>
+        <upstream_server type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <server type="HostnameField">
+                <Required>Y</Required>
+            </server>
+            <port type="PortField">
+                <Required>Y</Required>
+            </port>
+            <priority type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+                <Required>Y</Required>
+            </priority>
+            <max_conns type="IntegerField"/>
+            <max_fails type="IntegerField"/>
+            <fail_timeout type="IntegerField"/>
+            <no_use type="OptionField">
+                <OptionValues>
+                    <down>Permanently Unreachable</down>
+                    <backup>Backup Server</backup>
+                </OptionValues>
+            </no_use>
+        </upstream_server>
+        <location type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <urlpattern type="TextField">
+                <Required>Y</Required>
+            </urlpattern>
+            <matchtype type="OptionField">
+                <OptionValues>
+                    <option1 value="=">Exact Match ("=")</option1>
+                    <option2 value="~">Case Sensitive Match ("~")</option2>
+                    <option3 value="~*">Case Insensitive Match ("~*")</option3>
+                    <option4 value="^~">Don't check regular expressions on longest prefix match ("^~")</option4>
+                </OptionValues>
+            </matchtype>
+            <enable_secrules type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_secrules>
+            <enable_learning_mode type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_learning_mode>
+            <secrules_errorpage type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>errorpage</items>
+                        <display>name</display>
+                        <filters>
+                            <pagecontent>/.+/</pagecontent>
+                        </filters>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected error page not found.</ValidationMessage>
+            </secrules_errorpage>
+            <xss_block_score type="IntegerField"/>
+            <sqli_block_score type="IntegerField"/>
+            <custom_policy type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>custom_policy</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected server not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </custom_policy>
+            <upstream type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>upstream</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected upstream not found.</ValidationMessage>
+            </upstream>
+            <path_prefix type="TextField">
+                <Mask>/^[^" \t]+$/</Mask>
+            </path_prefix>
+            <cache_path type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>cache_path</items>
+                        <display>path</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected cache directory not found.</ValidationMessage>
+            </cache_path>
+            <cache_use_stale type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <error>Error</error>
+                    <timeout>Timeout</timeout>
+                    <invalid_header>Invalid_header</invalid_header>
+                    <updating>Updating</updating>
+                    <http_403>HTTP Status Code 403</http_403>
+                    <http_404>HTTP Status Code 404</http_404>
+                    <http_429>HTTP Status Code 429</http_429>
+                    <http_500>HTTP Status Code 500</http_500>
+                    <http_502>HTTP Status Code 502</http_502>
+                    <http_503>HTTP Status Code 503</http_503>
+                    <http_504>HTTP Status Code 504</http_504>
+                </OptionValues>
+            </cache_use_stale>
+            <cache_methods type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <POST>Post</POST>
+                    <!-- it seems like it does not like the others required for REST - syntax error
           <PUT>Put</PUT>
           <DELETE>Delete</DELETE>
           <CONNECT>Connect</CONNECT>
           <OPTIONS>Options</OPTIONS>
           <TRACE>Trace</TRACE>
           <PATCH>Patch</PATCH>-->
-        </OptionValues>
-        <Required>N</Required>
-      </cache_methods>
-      <cache_min_uses type="IntegerField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </cache_min_uses>
-      <cache_valid type="IntegerField">
-        <Required>N</Required>
-      </cache_valid>
-      <cache_background_update type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </cache_background_update>
-      <cache_lock type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </cache_lock>
-      <cache_revalidate type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </cache_revalidate>
-      <root type="TextField">
-        <Required>N</Required>
-      </root>
-      <rewrites type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>http_rewrite</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </rewrites>
-      <index type="CSVListField">
-        <Required>N</Required>
-      </index>
-      <autoindex type="BooleanField">
-        <Required>N</Required>
-      </autoindex>
-      <authbasic type="TextField">
-        <Required>N</Required>
-      </authbasic>
-      <authbasicuserfile type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>userlist</items>
-            <display>name</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected user file not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </authbasicuserfile>
-      <advanced_acl type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </advanced_acl>
-      <force_https type="TextField">
-        <Required>N</Required>
-      </force_https>
-      <php_enable type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </php_enable>
-      <php_override_scriptname type="TextField">
-        <Required>N</Required>
-      </php_override_scriptname>
-      <limit_request_connections type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>limit_request_connection</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected limit zone not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </limit_request_connections>
-      <max_body_size type="TextField">
-        <Required>N</Required>
-        <Mask>/^\d+[kmg]$/i</Mask>
-        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
-      </max_body_size>
-      <body_buffer_size type="TextField">
-        <Required>N</Required>
-        <Mask>/^\d+[kmg]$/i</Mask>
-        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
-      </body_buffer_size>
-      <honeypot type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </honeypot>
-      <websocket type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-        <Constraints>
-            <check001>
-                <ValidationMessage>WebSocket and Upstream Keepalive support can not be combined.</ValidationMessage>
-                <type>SingleSelectConstraint</type>
-                <addFields>
-                    <field1>upstream_keepalive</field1>
-                </addFields>
-            </check001>
-        </Constraints>
-      </websocket>
-      <upstream_keepalive type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-        <Constraints>
-            <check001>
-                <reference>websocket.check001</reference>
-            </check001>
-        </Constraints>
-      </upstream_keepalive>
-      <proxy_buffer_size type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-        <Constraints>
-          <check001>
-            <type>NgxBusyBufferConstraint</type>
-          </check001>
-        </Constraints>
-      </proxy_buffer_size>
-      <proxy_buffers_count type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-        <Constraints>
-          <check001>
-            <type>NgxBusyBufferConstraint</type>
-          </check001>
-        </Constraints>
-      </proxy_buffers_count>
-      <proxy_buffers_size type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-        <Constraints>
-          <check001>
-            <type>NgxBusyBufferConstraint</type>
-          </check001>
-        </Constraints>
-      </proxy_buffers_size>
-      <proxy_busy_buffers_size type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-        <Constraints>
-          <check001>
-            <type>NgxBusyBufferConstraint</type>
-          </check001>
-        </Constraints>
-      </proxy_busy_buffers_size>
-      <proxy_ignore_client_abort type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </proxy_ignore_client_abort>
-      <proxy_request_buffering type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </proxy_request_buffering>
-      <proxy_buffering type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </proxy_buffering>
-      <proxy_read_timeout type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-      </proxy_read_timeout>
-      <proxy_send_timeout type="IntegerField">
-        <Required>N</Required>
-        <minValue>1</minValue>
-      </proxy_send_timeout>
-      <ip_acl type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>ip_acl</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected ACL not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </ip_acl>
-      <satisfy type="OptionField">
-        <OptionValues>
-          <any>Any</any>
-          <all>All</all>
-        </OptionValues>
-        <Required>N</Required>
-      </satisfy>
-      <proxy_max_temp_file_size type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>0</MinimumValue>
-      </proxy_max_temp_file_size>
-      <proxy_ssl_server_name type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </proxy_ssl_server_name>
-      <errorpages type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>errorpage</items>
-            <display>name</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </errorpages>
-    </location>
-
-    <custom_policy type="ArrayField">
-      <name type="TextField">
-        <Required>Y</Required>
-      </name>
-      <naxsi_rules type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>naxsi_rule</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected rule not found</ValidationMessage>
-        <Required>Y</Required>
-        <Multiple>Y</Multiple>
-      </naxsi_rules>
-      <value type="IntegerField">
-        <Required>Y</Required>
-      </value>
-      <operator type="OptionField">
-        <Required>Y</Required>
-        <Default>&gt;=</Default>
-        <OptionValues>
-          <option1 value="&gt;=">Bigger or Equal</option1>
-          <option2 value="&gt;">Bigger</option2>
-          <option3 value="&lt;">Lesser</option3>
-          <option4 value="&lt;=">Lesser or Equal</option4>
-        </OptionValues>
-      </operator>
-      <action type="OptionField">
-        <Required>Y</Required>
-        <Default>BLOCK</Default>
-        <OptionValues>
-          <BLOCK>Block Request</BLOCK>
-          <ALLOW>Allow Request</ALLOW>
-          <DROP>Drop The Connection</DROP>
-          <LOG>Log Request</LOG>
-        </OptionValues>
-      </action>
-    </custom_policy>
-
-    <naxsi_rule type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <ruletype type="OptionField">
-        <OptionValues>
-          <main>Main Rule</main>
-          <basic>Basic Rule</basic>
-        </OptionValues>
-        <Required>Y</Required>
-      </ruletype>
-      <message type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>SetIfConstraint</type>
-            <field>match_type</field>
-            <check>id</check>
-          </check001>
-        </Constraints>
-      </message>
-      <identifier type="CSVListField">
-        <Required>Y</Required>
-        <Constraints>
-          <check001>
-            <type>NaxsiIdentifierConstraint</type>
-          </check001>
-        </Constraints>
-      </identifier>
-      <dollar_url type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-      </dollar_url>
-      <match_value type="TextField">
-        <Required>N</Required>
-        <pattern>/^[^"]+$/</pattern>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>SetIfConstraint</type>
-            <field>match_type</field>
-            <check>id</check>
-          </check001>
-        </Constraints>
-      </match_value>
-      <match_type type="OptionField">
-        <Required>Y</Required>
-        <Default>id</Default>
-        <OptionValues>
-          <id>Blacklist</id>
-          <wl>Whitelist</wl>
-        </OptionValues>
-        <Constraints>
-          <check001>
-            <reference>identifier.check001</reference>
-          </check001>
-        </Constraints>
-      </match_type>
-      <negate type="BooleanField">
-        <Required>Y</Required>
-      </negate>
-      <score type="IntegerField">
-        <Required>N</Required>
-        <Default>8</Default>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>SetIfConstraint</type>
-            <field>match_type</field>
-            <check>id</check>
-          </check001>
-        </Constraints>
-      </score>
-      <regex type="BooleanField">
-        <Required>Y</Required>
-      </regex>
-      <args type="BooleanField">
-        <Required>Y</Required>
-      </args>
-      <url type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </url>
-      <headers type="BooleanField">
-        <Required>Y</Required>
-      </headers>
-      <body type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </body>
-      <dollar_args_var type="TextField">
-        <pattern>/^[^"]+$/</pattern>
-      </dollar_args_var>
-      <dollar_body_var type="TextField">
-        <pattern>/^[^"]+$/</pattern>
-      </dollar_body_var>
-      <dollar_headers_var type="TextField">
-        <pattern>/^[^"]+$/</pattern>
-      </dollar_headers_var>
-      <file_extension type="BooleanField">
-        <Required>Y</Required>
-      </file_extension>
-      <raw_body type="BooleanField">
-        <Required>Y</Required>
-      </raw_body>
-      <name type="BooleanField">
-        <Required>Y</Required>
-      </name>
-    </naxsi_rule>
-
-    <http_server type="ArrayField">
-      <servername type="CSVListField">
-        <Required>Y</Required>
-      </servername>
-      <syslog_targets type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>syslog_target</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </syslog_targets>
-      <listen_http_address type="CSVListField">
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-        <Default>80,[::]:80</Default>
-        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
-        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
-        <Constraints>
-          <check001>
-            <type>NgxUniqueDefaultServerConstraint</type>
-          </check001>
-        </Constraints>
-      </listen_http_address>
-      <listen_https_address type="CSVListField">
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-        <Default>443,[::]:443</Default>
-        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
-        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
-      </listen_https_address>
-      <default_server type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-        <Constraints>
-          <check001>
-            <type>NgxUniqueDefaultServerConstraint</type>
-          </check001>
-        </Constraints>
-      </default_server>
-      <tls_reject_handshake type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </tls_reject_handshake>
-      <proxy_protocol type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </proxy_protocol>
-      <trusted_proxies type="CSVListField">
-        <Required>N</Required>
-        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
-        <Multiple>Y</Multiple>
-      </trusted_proxies>
-      <trusted_proxies_alias type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Firewall.Alias</source>
-            <items>aliases.alias</items>
-            <display>name</display>
-            <filters>
-              <type>/^(host|network)$/</type>
-            </filters>
-          </template>
-        </Model>
-        <ValidationMessage>Selected alias not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </trusted_proxies_alias>
-      <real_ip_source type="OptionField">
-        <OptionValues>
-          <X-Real-IP>X-Real-IP (default)</X-Real-IP>
-          <X-Forwarded-For>X-Forwarded-For</X-Forwarded-For>
-          <proxy_protocol>PROXY Protocol</proxy_protocol>
-          <CF-Connecting-IP>CloudFlare Connecting IP</CF-Connecting-IP>
-        </OptionValues>
-        <Required>N</Required>
-      </real_ip_source>
-      <locations type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>location</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected location(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </locations>
-      <rewrites type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>http_rewrite</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected rewrite(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </rewrites>
-      <root type="TextField">
-        <Required>N</Required>
-      </root>
-      <certificate type="CertificateField">
-        <Type>cert</Type>
-        <Required>N</Required>
-      </certificate>
-      <ca type="CertificateField">
-        <Type>ca</Type>
-        <Required>N</Required>
-      </ca>
-      <verify_client type="OptionField">
-        <Default>Off</Default>
-        <OptionValues>
-          <off>Off</off>
-          <on>On</on>
-          <optional>Optional</optional>
-          <optional_no_ca>Optional, don't verify</optional_no_ca>
-        </OptionValues>
-        <Required>Y</Required>
-      </verify_client>
-      <access_log_format type="OptionField">
-        <Default>main</Default>
-        <OptionValues>
-          <main>Default</main>
-          <main_ext>Extended</main_ext>
-          <anonymized>Anonymized</anonymized>
-          <disabled>Disabled</disabled>
-        </OptionValues>
-        <Required>Y</Required>
-      </access_log_format>
-      <error_log_level type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <emerg value="emerg">Emergency</emerg>
-          <alert value="alert">Alert</alert>
-          <crit value="crit">Critical</crit>
-          <error value="error">Error (default)</error>
-          <warn value="warn">Warning</warn>
-          <notice value="notice">Notice</notice>
-          <info value="info">Informational</info>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>error</Default>
-      </error_log_level>
-      <log_handshakes type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </log_handshakes>
-      <enable_acme_support type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </enable_acme_support>
-      <charset type="OptionField">
-        <Default>utf-8</Default>
-        <OptionValues>
-          <utf-8>utf-8</utf-8>
-        </OptionValues>
-        <Required>N</Required>
-      </charset>
-      <https_only type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </https_only>
-      <tls_protocols type="OptionField">
-        <Multiple>Y</Multiple>
-        <Sorted>Y</Sorted>
-        <OptionValues>
-          <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
-          <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>TLSv1.2,TLSv1.3</Default>
-      </tls_protocols>
-      <tls_ciphers type="TextField">
-        <Default>ECDHE-ECDSA-CAMELLIA256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CAMELLIA256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-CAMELLIA128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-CAMELLIA128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CAMELLIA256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CAMELLIA256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-CAMELLIA128-SHA256:ECDHE-RSA-AES128-SHA256</Default>
-        <Required>N</Required>
-        <Mask>/^((((!|\+|-)?[A-Z][A-Z\d\+-]+)|(@STRENGTH)):?)*$/i</Mask>
-      </tls_ciphers>
-      <tls_ecdh_curve type="TextField">
-        <Required>N</Required>
-        <Mask>/^(([A-Z\d-]+):?)*$/i</Mask>
-      </tls_ecdh_curve>
-      <tls_prefer_server_ciphers type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </tls_prefer_server_ciphers>
-      <resolver type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>resolver</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected resolver not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </resolver>
-      <ocsp_stapling type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </ocsp_stapling>
-      <ocsp_verify type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </ocsp_verify>
-      <block_nonpublic_data type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </block_nonpublic_data>
-      <disable_bot_protection type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </disable_bot_protection>
-      <disable_gzip type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </disable_gzip>
-      <naxsi_whitelist_srcip type="CSVListField">
-        <Required>N</Required>
-        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
-        <Multiple>Y</Multiple>
-      </naxsi_whitelist_srcip>
-      <naxsi_extensive_log type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </naxsi_extensive_log>
-      <sendfile type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </sendfile>
-      <client_header_buffer_size type="IntegerField">
-        <Required>Y</Required>
-        <Default>1</Default>
-        <MinimumValue>1</MinimumValue>
-      </client_header_buffer_size>
-      <large_client_header_buffers_number type="IntegerField">
-        <Required>Y</Required>
-        <Default>4</Default>
-        <MinimumValue>1</MinimumValue>
-      </large_client_header_buffers_number>
-      <large_client_header_buffers_size type="IntegerField">
-        <Required>Y</Required>
-        <Default>8</Default>
-        <MinimumValue>1</MinimumValue>
-      </large_client_header_buffers_size>
-      <security_header type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>security_header</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected security rule not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </security_header>
-      <limit_request_connections type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>limit_request_connection</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected limit zone not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </limit_request_connections>
-      <max_body_size type="TextField">
-        <Required>N</Required>
-        <Mask>/^\d+[kmg]$/i</Mask>
-        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
-      </max_body_size>
-      <body_buffer_size type="TextField">
-        <Required>N</Required>
-        <Mask>/^\d+[kmg]$/i</Mask>
-        <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
-      </body_buffer_size>
-      <ip_acl type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>ip_acl</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected ACL not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </ip_acl>
-      <advanced_acl_server type="AuthenticationServerField">
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-        <Default>Local Database</Default>
-      </advanced_acl_server>
-      <satisfy type="OptionField">
-        <OptionValues>
-          <any>Any</any>
-          <all>All</all>
-        </OptionValues>
-        <Required>N</Required>
-      </satisfy>
-      <zero_rtt type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </zero_rtt>
-      <errorpages type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>errorpage</items>
-            <display>name</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected error page(s) not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </errorpages>
-    </http_server>
-
-    <stream_server type="ArrayField">
-      <listen_address type="CSVListField">
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
-        <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
-      </listen_address>
-      <syslog_targets type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>syslog_target</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected SYSLOG target not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>Y</Multiple>
-      </syslog_targets>
-      <udp type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </udp>
-      <trusted_proxies type="CSVListField">
-        <Required>N</Required>
-        <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
-        <Multiple>Y</Multiple>
-      </trusted_proxies>
-      <proxy_protocol type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </proxy_protocol>
-      <certificate type="CertificateField">
-        <Type>cert</Type>
-        <Required>N</Required>
-      </certificate>
-      <ca type="CertificateField">
-        <Type>ca</Type>
-        <Required>N</Required>
-      </ca>
-      <verify_client type="OptionField">
-        <Default>Off</Default>
-        <OptionValues>
-          <off>Off</off>
-          <on>On</on>
-          <optional>Optional</optional>
-          <optional_no_ca>Optional, don't verify</optional_no_ca>
-        </OptionValues>
-        <Required>Y</Required>
-      </verify_client>
-      <access_log_format type="OptionField">
-        <Default>main</Default>
-        <OptionValues>
-          <main>Default</main>
-          <main_ext>Extended</main_ext>
-          <anonymized>Anonymized</anonymized>
-          <disabled>Disabled</disabled>
-        </OptionValues>
-        <Required>Y</Required>
-      </access_log_format>
-      <error_log_level type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <emerg value="emerg">Emergency</emerg>
-          <alert value="alert">Alert</alert>
-          <crit value="crit">Critical</crit>
-          <error value="error">Error</error>
-          <warn value="warn">Warning</warn>
-          <notice value="notice">Notice</notice>
-          <info value="info">Informational (default)</info>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>info</Default>
-      </error_log_level>
-      <route_field type="OptionField">
-        <Default>upstream</Default>
-        <OptionValues>
-          <upstream>Upstream</upstream>
-          <sni_upstream_map>SNI Upstream Mapping</sni_upstream_map>
-        </OptionValues>
-        <Required>Y</Required>
-      </route_field>
-      <upstream type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>upstream</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected upstream not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>SetIfConstraint</type>
-            <field>route_field</field>
-            <check>upstream</check>
-          </check001>
-        </Constraints>
-      </upstream>
-      <sni_upstream_map type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>sni_hostname_upstream_map</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected upstream not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be set.</ValidationMessage>
-            <type>SetIfConstraint</type>
-            <field>route_field</field>
-            <check>sni_upstream_map</check>
-          </check001>
-        </Constraints>
-      </sni_upstream_map>
-      <ip_acl type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>ip_acl</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected ACL not found</ValidationMessage>
-        <Required>N</Required>
-        <Multiple>N</Multiple>
-      </ip_acl>
-      <proxy_responses type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>0</MinimumValue>
-      </proxy_responses>
-      <proxy_connect_timeout type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>0</MinimumValue>
-      </proxy_connect_timeout>
-      <proxy_timeout type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>0</MinimumValue>
-      </proxy_timeout>
-    </stream_server>
-
-    <sni_hostname_upstream_map type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <data type="TextField">
-        <!-- sorry, the model relation field is broken here
+                </OptionValues>
+            </cache_methods>
+            <cache_min_uses type="IntegerField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </cache_min_uses>
+            <cache_valid type="IntegerField"/>
+            <proxy_cache_valid type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>proxy_cache_valid</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected caching time settings not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </proxy_cache_valid>
+            <cache_background_update type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </cache_background_update>
+            <cache_lock type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </cache_lock>
+            <cache_revalidate type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </cache_revalidate>
+            <root type="TextField"/>
+            <rewrites type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>http_rewrite</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected rewrite not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </rewrites>
+            <index type="CSVListField"/>
+            <autoindex type="BooleanField"/>
+            <authbasic type="TextField"/>
+            <authbasicuserfile type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>userlist</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected user file not found.</ValidationMessage>
+            </authbasicuserfile>
+            <advanced_acl type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </advanced_acl>
+            <force_https type="TextField"/>
+            <php_enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </php_enable>
+            <php_override_scriptname type="TextField"/>
+            <limit_request_connections type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>limit_request_connection</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected limit zone not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </limit_request_connections>
+            <max_body_size type="TextField">
+                <Mask>/^\d+[kmg]$/i</Mask>
+                <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+            </max_body_size>
+            <body_buffer_size type="TextField">
+                <Mask>/^\d+[kmg]$/i</Mask>
+                <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+            </body_buffer_size>
+            <honeypot type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </honeypot>
+            <websocket type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>WebSocket and Upstream Keepalive support can not be combined.</ValidationMessage>
+                        <type>SingleSelectConstraint</type>
+                        <addFields>
+                            <field1>upstream_keepalive</field1>
+                        </addFields>
+                    </check001>
+                </Constraints>
+            </websocket>
+            <upstream_keepalive type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <Constraints>
+                    <check001>
+                        <reference>websocket.check001</reference>
+                    </check001>
+                </Constraints>
+            </upstream_keepalive>
+            <proxy_buffer_size type="IntegerField">
+                <minValue>1</minValue>
+                <Constraints>
+                    <check001>
+                        <type>NgxBusyBufferConstraint</type>
+                    </check001>
+                </Constraints>
+            </proxy_buffer_size>
+            <proxy_buffers_count type="IntegerField">
+                <minValue>1</minValue>
+                <Constraints>
+                    <check001>
+                        <type>NgxBusyBufferConstraint</type>
+                    </check001>
+                </Constraints>
+            </proxy_buffers_count>
+            <proxy_buffers_size type="IntegerField">
+                <minValue>1</minValue>
+                <Constraints>
+                    <check001>
+                        <type>NgxBusyBufferConstraint</type>
+                    </check001>
+                </Constraints>
+            </proxy_buffers_size>
+            <proxy_busy_buffers_size type="IntegerField">
+                <minValue>1</minValue>
+                <Constraints>
+                    <check001>
+                        <type>NgxBusyBufferConstraint</type>
+                    </check001>
+                </Constraints>
+            </proxy_busy_buffers_size>
+            <proxy_ignore_client_abort type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </proxy_ignore_client_abort>
+            <proxy_request_buffering type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </proxy_request_buffering>
+            <proxy_buffering type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </proxy_buffering>
+            <proxy_read_timeout type="IntegerField">
+                <minValue>1</minValue>
+            </proxy_read_timeout>
+            <proxy_send_timeout type="IntegerField">
+                <minValue>1</minValue>
+            </proxy_send_timeout>
+            <ip_acl type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>ip_acl</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected ACL not found.</ValidationMessage>
+            </ip_acl>
+            <satisfy type="OptionField">
+                <OptionValues>
+                    <any>Any</any>
+                    <all>All</all>
+                </OptionValues>
+            </satisfy>
+            <proxy_max_temp_file_size type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </proxy_max_temp_file_size>
+            <proxy_ssl_server_name type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </proxy_ssl_server_name>
+            <errorpages type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>errorpage</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected error page not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </errorpages>
+            <proxy_intercept_errors type="OptionField">
+                <Default>Inherit</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <Inherit>Inherit</Inherit>
+                    <on>On</on>
+                    <off>Off</off>
+                </OptionValues>
+            </proxy_intercept_errors>
+        </location>
+        <custom_policy type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+            </name>
+            <naxsi_rules type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>naxsi_rule</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected rule not found.</ValidationMessage>
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+            </naxsi_rules>
+            <value type="IntegerField">
+                <Required>Y</Required>
+            </value>
+            <operator type="OptionField">
+                <Required>Y</Required>
+                <Default>&gt;=</Default>
+                <OptionValues>
+                    <option1 value="&gt;=">Bigger or Equal</option1>
+                    <option2 value="&gt;">Bigger</option2>
+                    <option3 value="&lt;">Lesser</option3>
+                    <option4 value="&lt;=">Lesser or Equal</option4>
+                </OptionValues>
+            </operator>
+            <action type="OptionField">
+                <Required>Y</Required>
+                <Default>BLOCK</Default>
+                <OptionValues>
+                    <BLOCK>Block Request</BLOCK>
+                    <ALLOW>Allow Request</ALLOW>
+                    <DROP>Drop The Connection</DROP>
+                    <LOG>Log Request</LOG>
+                </OptionValues>
+            </action>
+        </custom_policy>
+        <naxsi_rule type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <ruletype type="OptionField">
+                <OptionValues>
+                    <main>Main Rule</main>
+                    <basic>Basic Rule</basic>
+                </OptionValues>
+                <Required>Y</Required>
+            </ruletype>
+            <message type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>match_type</field>
+                        <check>id</check>
+                    </check001>
+                </Constraints>
+            </message>
+            <identifier type="CSVListField">
+                <Required>Y</Required>
+                <Constraints>
+                    <check001>
+                        <type>NaxsiIdentifierConstraint</type>
+                    </check001>
+                </Constraints>
+            </identifier>
+            <dollar_url type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+            </dollar_url>
+            <match_value type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>match_type</field>
+                        <check>id</check>
+                    </check001>
+                </Constraints>
+            </match_value>
+            <match_type type="OptionField">
+                <Required>Y</Required>
+                <Default>id</Default>
+                <OptionValues>
+                    <id>Blacklist</id>
+                    <wl>Whitelist</wl>
+                </OptionValues>
+                <Constraints>
+                    <check001>
+                        <reference>identifier.check001</reference>
+                    </check001>
+                </Constraints>
+            </match_type>
+            <negate type="BooleanField">
+                <Required>Y</Required>
+            </negate>
+            <score type="IntegerField">
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>match_type</field>
+                        <check>id</check>
+                    </check001>
+                </Constraints>
+            </score>
+            <regex type="BooleanField">
+                <Required>Y</Required>
+            </regex>
+            <args type="BooleanField">
+                <Required>Y</Required>
+            </args>
+            <url type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </url>
+            <headers type="BooleanField">
+                <Required>Y</Required>
+            </headers>
+            <body type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </body>
+            <dollar_args_var type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+            </dollar_args_var>
+            <dollar_body_var type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+            </dollar_body_var>
+            <dollar_headers_var type="TextField">
+                <pattern>/^[^"]+$/</pattern>
+            </dollar_headers_var>
+            <file_extension type="BooleanField">
+                <Required>Y</Required>
+            </file_extension>
+            <raw_body type="BooleanField">
+                <Required>Y</Required>
+            </raw_body>
+            <name type="BooleanField">
+                <Required>Y</Required>
+            </name>
+        </naxsi_rule>
+        <http_server type="ArrayField">
+            <servername type="CSVListField">
+                <Required>Y</Required>
+            </servername>
+            <syslog_targets type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>syslog_target</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected SYSLOG target not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </syslog_targets>
+            <listen_http_address type="CSVListField">
+                <Multiple>Y</Multiple>
+                <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
+                <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <type>NgxUniqueDefaultServerConstraint</type>
+                    </check001>
+                </Constraints>
+            </listen_http_address>
+            <listen_https_address type="CSVListField">
+                <Multiple>Y</Multiple>
+                <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
+                <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+            </listen_https_address>
+            <default_server type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+                <Constraints>
+                    <check001>
+                        <type>NgxUniqueDefaultServerConstraint</type>
+                    </check001>
+                </Constraints>
+            </default_server>
+            <tls_reject_handshake type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </tls_reject_handshake>
+            <proxy_protocol type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </proxy_protocol>
+            <trusted_proxies type="CSVListField">
+                <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+                <Multiple>Y</Multiple>
+            </trusted_proxies>
+            <trusted_proxies_alias type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Firewall.Alias</source>
+                        <items>aliases.alias</items>
+                        <display>name</display>
+                        <filters>
+                            <type>/^(host|network)$/</type>
+                        </filters>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected alias not found.</ValidationMessage>
+            </trusted_proxies_alias>
+            <real_ip_source type="OptionField">
+                <OptionValues>
+                    <X-Real-IP>X-Real-IP (default)</X-Real-IP>
+                    <X-Forwarded-For>X-Forwarded-For</X-Forwarded-For>
+                    <proxy_protocol>PROXY Protocol</proxy_protocol>
+                    <CF-Connecting-IP>CloudFlare Connecting IP</CF-Connecting-IP>
+                </OptionValues>
+            </real_ip_source>
+            <locations type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>location</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected location not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </locations>
+            <rewrites type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>http_rewrite</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected rewrite not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </rewrites>
+            <root type="TextField"/>
+            <certificate type="CertificateField">
+                <Type>cert</Type>
+            </certificate>
+            <ca type="CertificateField">
+                <Type>ca</Type>
+                <Multiple>Y</Multiple>
+            </ca>
+            <verify_client type="OptionField">
+                <Default>Off</Default>
+                <OptionValues>
+                    <off>Off</off>
+                    <on>On</on>
+                    <optional>Optional</optional>
+                    <optional_no_ca>Optional, don't verify</optional_no_ca>
+                </OptionValues>
+                <Required>Y</Required>
+            </verify_client>
+            <access_log_format type="OptionField">
+                <Default>main</Default>
+                <OptionValues>
+                    <main>Default</main>
+                    <main_ext>Extended</main_ext>
+                    <anonymized>Anonymized</anonymized>
+                    <disabled>Disabled</disabled>
+                </OptionValues>
+                <Required>Y</Required>
+            </access_log_format>
+            <error_log_level type="OptionField">
+                <OptionValues>
+                    <emerg value="emerg">Emergency</emerg>
+                    <alert value="alert">Alert</alert>
+                    <crit value="crit">Critical</crit>
+                    <error value="error">Error (default)</error>
+                    <warn value="warn">Warning</warn>
+                    <notice value="notice">Notice</notice>
+                    <info value="info">Informational</info>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>error</Default>
+            </error_log_level>
+            <log_handshakes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </log_handshakes>
+            <enable_acme_support type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </enable_acme_support>
+            <charset type="OptionField">
+                <OptionValues>
+                    <utf-8>utf-8</utf-8>
+                </OptionValues>
+            </charset>
+            <https_only type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </https_only>
+            <http2 type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </http2>
+            <tls_protocols type="OptionField">
+                <Multiple>Y</Multiple>
+                <Sorted>Y</Sorted>
+                <OptionValues>
+                    <TLSv1_2 value="TLSv1.2">TLSv1.2</TLSv1_2>
+                    <TLSv1_3 value="TLSv1.3">TLSv1.3</TLSv1_3>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>TLSv1.2,TLSv1.3</Default>
+            </tls_protocols>
+            <tls_ciphers type="TextField">
+                <Mask>/^((((!|\+|-)?[A-Z][A-Z\d\+-]+)|(@STRENGTH)):?)*$/i</Mask>
+            </tls_ciphers>
+            <tls_ecdh_curve type="TextField">
+                <Mask>/^(([A-Z\d-]+):?)*$/i</Mask>
+            </tls_ecdh_curve>
+            <tls_prefer_server_ciphers type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </tls_prefer_server_ciphers>
+            <resolver type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>resolver</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected resolver not found.</ValidationMessage>
+            </resolver>
+            <ocsp_stapling type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </ocsp_stapling>
+            <ocsp_verify type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </ocsp_verify>
+            <block_nonpublic_data type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </block_nonpublic_data>
+            <disable_bot_protection type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </disable_bot_protection>
+            <disable_gzip type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </disable_gzip>
+            <naxsi_whitelist_srcip type="CSVListField">
+                <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+                <Multiple>Y</Multiple>
+            </naxsi_whitelist_srcip>
+            <naxsi_extensive_log type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </naxsi_extensive_log>
+            <sendfile type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </sendfile>
+            <client_header_buffer_size type="IntegerField">
+                <Required>Y</Required>
+                <Default>1</Default>
+                <MinimumValue>1</MinimumValue>
+            </client_header_buffer_size>
+            <large_client_header_buffers_number type="IntegerField">
+                <Required>Y</Required>
+                <Default>4</Default>
+                <MinimumValue>1</MinimumValue>
+            </large_client_header_buffers_number>
+            <large_client_header_buffers_size type="IntegerField">
+                <Required>Y</Required>
+                <Default>8</Default>
+                <MinimumValue>1</MinimumValue>
+            </large_client_header_buffers_size>
+            <security_header type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>security_header</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected security rule not found.</ValidationMessage>
+            </security_header>
+            <limit_request_connections type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>limit_request_connection</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected limit zone not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </limit_request_connections>
+            <max_body_size type="TextField">
+                <Mask>/^\d+[kmg]$/i</Mask>
+                <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+            </max_body_size>
+            <body_buffer_size type="TextField">
+                <Mask>/^\d+[kmg]$/i</Mask>
+                <ValidationMessage>Enter a number followed by k, m or g.</ValidationMessage>
+            </body_buffer_size>
+            <ip_acl type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>ip_acl</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected ACL not found.</ValidationMessage>
+            </ip_acl>
+            <advanced_acl_server type="AuthenticationServerField"/>
+            <satisfy type="OptionField">
+                <OptionValues>
+                    <any>Any</any>
+                    <all>All</all>
+                </OptionValues>
+            </satisfy>
+            <zero_rtt type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </zero_rtt>
+            <errorpages type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>errorpage</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected error page not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </errorpages>
+            <proxy_intercept_errors type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </proxy_intercept_errors>
+        </http_server>
+        <stream_server type="ArrayField">
+            <listen_address type="CSVListField">
+                <Multiple>Y</Multiple>
+                <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\])):\d+|:?\d+))*$/i</Mask>
+                <ValidationMessage>Please provide a valid listen address or port, i.e. 127.0.0.1:8080, [::1]:8080, 8080.</ValidationMessage>
+            </listen_address>
+            <syslog_targets type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>syslog_target</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected SYSLOG target not found.</ValidationMessage>
+                <Multiple>Y</Multiple>
+            </syslog_targets>
+            <udp type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </udp>
+            <trusted_proxies type="CSVListField">
+                <Mask>/^((?:\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?(,?(?:(?:(\d+\.){3,3}\d+|[a-f0-9\:]+)(?:\/\d+)?))*$/i</Mask>
+                <Multiple>Y</Multiple>
+            </trusted_proxies>
+            <proxy_protocol type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </proxy_protocol>
+            <certificate type="CertificateField">
+                <Type>cert</Type>
+            </certificate>
+            <ca type="CertificateField">
+                <Type>ca</Type>
+            </ca>
+            <verify_client type="OptionField">
+                <Default>Off</Default>
+                <OptionValues>
+                    <off>Off</off>
+                    <on>On</on>
+                    <optional>Optional</optional>
+                    <optional_no_ca>Optional, don't verify</optional_no_ca>
+                </OptionValues>
+                <Required>Y</Required>
+            </verify_client>
+            <access_log_format type="OptionField">
+                <Default>main</Default>
+                <OptionValues>
+                    <main>Default</main>
+                    <main_ext>Extended</main_ext>
+                    <anonymized>Anonymized</anonymized>
+                    <disabled>Disabled</disabled>
+                </OptionValues>
+                <Required>Y</Required>
+            </access_log_format>
+            <error_log_level type="OptionField">
+                <OptionValues>
+                    <emerg value="emerg">Emergency</emerg>
+                    <alert value="alert">Alert</alert>
+                    <crit value="crit">Critical</crit>
+                    <error value="error">Error</error>
+                    <warn value="warn">Warning</warn>
+                    <notice value="notice">Notice</notice>
+                    <info value="info">Informational (default)</info>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>info</Default>
+            </error_log_level>
+            <route_field type="OptionField">
+                <Default>upstream</Default>
+                <OptionValues>
+                    <upstream>Upstream</upstream>
+                    <sni_upstream_map>SNI Upstream Mapping</sni_upstream_map>
+                </OptionValues>
+                <Required>Y</Required>
+            </route_field>
+            <upstream type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>upstream</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected upstream not found.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>route_field</field>
+                        <check>upstream</check>
+                    </check001>
+                </Constraints>
+            </upstream>
+            <sni_upstream_map type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>sni_hostname_upstream_map</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected upstream not found.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be set.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>route_field</field>
+                        <check>sni_upstream_map</check>
+                    </check001>
+                </Constraints>
+            </sni_upstream_map>
+            <ip_acl type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>ip_acl</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected ACL not found.</ValidationMessage>
+            </ip_acl>
+            <proxy_responses type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </proxy_responses>
+            <proxy_connect_timeout type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </proxy_connect_timeout>
+            <proxy_timeout type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </proxy_timeout>
+        </stream_server>
+        <sni_hostname_upstream_map type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <data type="TextField">
+                <!-- sorry, the model relation field is broken here
           <Model>
             <template>
               <source>OPNsense.Nginx.Nginx</source>
@@ -1203,33 +1091,30 @@
           </Model>
           <Multiple>Y</Multiple>
           -->
-          <Required>Y</Required>
-      </data>
-    </sni_hostname_upstream_map>
-
-    <sni_hostname_upstream_map_item type="ArrayField">
-      <hostname type="HostnameField">
-        <Required>Y</Required>
-      </hostname>
-      <upstream type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>upstream</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <Required>Y</Required>
-        <Multiple>N</Multiple>
-      </upstream>
-    </sni_hostname_upstream_map_item>
-
-    <ip_acl type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <data type="TextField">
-        <!-- sorry, the model relation field is broken here
+                <Required>Y</Required>
+            </data>
+        </sni_hostname_upstream_map>
+        <sni_hostname_upstream_map_item type="ArrayField">
+            <hostname type="HostnameField">
+                <Required>Y</Required>
+            </hostname>
+            <upstream type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>upstream</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <Required>Y</Required>
+            </upstream>
+        </sni_hostname_upstream_map_item>
+        <ip_acl type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <data type="TextField">
+                <!-- sorry, the model relation field is broken here
           <Model>
             <template>
               <source>OPNsense.Nginx.Nginx</source>
@@ -1239,784 +1124,742 @@
           </Model>
           <Multiple>Y</Multiple>
           -->
-        <Required>Y</Required>
-      </data>
-      <default_action type="OptionField">
-        <OptionValues>
-          <deny>Deny Access</deny>
-          <allow>Allow Access</allow>
-        </OptionValues>
-        <Required>N</Required>
-      </default_action>
-    </ip_acl>
-
-    <ip_acl_item type="ArrayField">
-      <network type="NetworkField">
-        <Required>Y</Required>
-      </network>
-      <action type="OptionField">
-        <Default>deny</Default>
-        <OptionValues>
-          <deny>Deny Access</deny>
-          <allow>Allow Access</allow>
-        </OptionValues>
-        <Required>Y</Required>
-      </action>
-    </ip_acl_item>
-
-    <resolver type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-        <Mask>/^[^" \t]+$/i</Mask>
-      </description>
-      <address type="CSVListField">
-        <Required>Y</Required>
-        <Multiple>Y</Multiple>
-        <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</Mask>
-        <ValidationMessage>Please provide a valid resolver address, i.e. 8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353.</ValidationMessage>
-      </address>
-      <valid type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-      </valid>
-      <ipv4_off type="BooleanField">
-        <Required>N</Required>
-        <Constraints>
-            <check001>
-                <ValidationMessage>Can not disable all record types.</ValidationMessage>
-                <type>SingleSelectConstraint</type>
-                <addFields>
-                    <field1>ipv6_off</field1>
-                </addFields>
-            </check001>
-        </Constraints>
-      </ipv4_off>
-      <ipv6_off type="BooleanField">
-        <Required>N</Required>
-        <Constraints>
-            <check001>
-                <reference>ipv4_off.check001</reference>
-            </check001>
-        </Constraints>
-      </ipv6_off>
-      <timeout type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-      </timeout>
-    </resolver>
-
-    <http_rewrite type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-        <Mask>/^[^" \t]+$/i</Mask>
-      </description>
-      <source type="TextField">
-        <Required>Y</Required>
-      </source>
-      <destination type="TextField">
-        <Required>Y</Required>
-        <Mask>/^[^" \t]+$/i</Mask>
-      </destination>
-      <flag type="OptionField">
-        <OptionValues>
-          <break>Stop processing rules</break>
-          <last>Stop processing rules and find location</last>
-          <redirect>Redirect</redirect>
-          <permanent>Permanent</permanent>
-        </OptionValues>
-        <Required>N</Required>
-      </flag>
-    </http_rewrite>
-
-    <security_header type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <referrer type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <no-referrer>No Referrer</no-referrer>
-          <no-referrer-when-downgrade>No Referrer When Downgrading</no-referrer-when-downgrade>
-          <same-origin>Same Origin (recommended)</same-origin>
-          <origin>Origin</origin>
-          <strict-origin>Strict Origin</strict-origin>
-          <strict-origin-when-cross-origin>Strict Origin When Cross Origin</strict-origin-when-cross-origin>
-          <origin-when-cross-origin>Origin When Cross Origin</origin-when-cross-origin>
-          <unsafe-url>Unsafe URL</unsafe-url>
-        </OptionValues>
-        <Required>N</Required>
-      </referrer>
-      <xssprotection type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <val1 value="1; mode=block">Block</val1>
-          <val2 value="0">Off</val2>
-          <val3 value="1">On</val3>
-        </OptionValues>
-        <Required>N</Required>
-      </xssprotection>
-      <content_type_options type="BooleanField">
-        <Required>Y</Required>
-      </content_type_options>
-      <strict_transport_security_time type="IntegerField">
-        <Required>N</Required>
-      </strict_transport_security_time>
-      <strict_transport_security_include_subdomains type="BooleanField">
-        <Required>Y</Required>
-        <Default>1</Default>
-      </strict_transport_security_include_subdomains>
-      <strict_transport_security_preload type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </strict_transport_security_preload>
-      <enable_csp type="BooleanField">
-        <Required>Y</Required>
-      </enable_csp>
-      <csp_log_violations type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_log_violations>
-      <csp_report_only type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_report_only>
-      <csp_default_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_enabled>
-      <csp_default_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_data_urls>
-      <csp_default_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_default_src_http_urls>
-      <csp_default_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_inline>
-      <csp_default_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_eval>
-      <csp_default_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_self>
-      <csp_default_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_blob>
-      <csp_default_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_mediastream>
-      <csp_default_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_filesystem>
-      <csp_default_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_default_src_none>
-      <csp_script_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_enabled>
-      <csp_script_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_data_urls>
-      <csp_script_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_script_src_http_urls>
-      <csp_script_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_inline>
-      <csp_script_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_eval>
-      <csp_script_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_self>
-      <csp_script_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_blob>
-      <csp_script_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_mediastream>
-      <csp_script_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_filesystem>
-      <csp_script_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_script_src_none>
-      <csp_img_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_enabled>
-      <csp_img_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_data_urls>
-      <csp_img_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_img_src_http_urls>
-      <csp_img_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_inline>
-      <csp_img_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_eval>
-      <csp_img_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_self>
-      <csp_img_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_blob>
-      <csp_img_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_mediastream>
-      <csp_img_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_filesystem>
-      <csp_img_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_img_src_none>
-      <csp_style_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_enabled>
-      <csp_style_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_data_urls>
-      <csp_style_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_style_src_http_urls>
-      <csp_style_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_inline>
-      <csp_style_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_eval>
-      <csp_style_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_self>
-      <csp_style_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_blob>
-      <csp_style_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_mediastream>
-      <csp_style_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_filesystem>
-      <csp_style_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_style_src_none>
-      <csp_media_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_enabled>
-      <csp_media_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_data_urls>
-      <csp_media_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_media_src_http_urls>
-      <csp_media_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_inline>
-      <csp_media_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_eval>
-      <csp_media_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_self>
-      <csp_media_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_blob>
-      <csp_media_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_mediastream>
-      <csp_media_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_filesystem>
-      <csp_media_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_media_src_none>
-      <csp_font_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_enabled>
-      <csp_font_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_data_urls>
-      <csp_font_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_font_src_http_urls>
-      <csp_font_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_inline>
-      <csp_font_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_eval>
-      <csp_font_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_self>
-      <csp_font_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_blob>
-      <csp_font_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_mediastream>
-      <csp_font_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_filesystem>
-      <csp_font_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_font_src_none>
-      <csp_frame_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_enabled>
-      <csp_frame_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_data_urls>
-      <csp_frame_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_frame_src_http_urls>
-      <csp_frame_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_inline>
-      <csp_frame_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_eval>
-      <csp_frame_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_self>
-      <csp_frame_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_blob>
-      <csp_frame_src_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_mediastream>
-      <csp_frame_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_filesystem>
-      <csp_frame_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_src_none>
-      <csp_frame_ancestors_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_enabled>
-      <csp_frame_ancestors_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_data_urls>
-      <csp_frame_ancestors_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_frame_ancestors_http_urls>
-      <csp_frame_ancestors_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_self>
-      <csp_frame_ancestors_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_blob>
-      <csp_frame_ancestors_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_mediastream>
-      <csp_frame_ancestors_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_filesystem>
-      <csp_frame_ancestors_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_frame_ancestors_none>
-      <csp_connect_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_connect_src_enabled>
-      <csp_connect_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_connect_src_http_urls>
-      <csp_connect_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_connect_src_none>
-      <csp_worker_src_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_enabled>
-      <csp_worker_src_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_data_urls>
-      <csp_worker_src_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_worker_src_http_urls>
-      <csp_worker_src_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_inline>
-      <csp_worker_src_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_eval>
-      <csp_worker_src_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_self>
-      <csp_worker_src_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_blob>
-      <csp_worker_src_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_filesystem>
-      <csp_worker_src_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_worker_src_none>
-      <csp_form_action_enabled type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_enabled>
-      <csp_form_action_data_urls type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_data_urls>
-      <csp_form_action_http_urls type="CSVListField">
-        <Required>N</Required>
-      </csp_form_action_http_urls>
-      <csp_form_action_inline type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_inline>
-      <csp_form_action_eval type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_eval>
-      <csp_form_action_self type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_self>
-      <csp_form_action_blob type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_blob>
-      <csp_form_action_mediastream type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_mediastream>
-      <csp_form_action_filesystem type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_filesystem>
-      <csp_form_action_none type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </csp_form_action_none>
-    </security_header>
-
-    <limit_zone type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <key type="OptionField">
-        <Default>binary_remote_addr</Default>
-        <OptionValues>
-          <binary_remote_addr>Remote IP Address</binary_remote_addr>
-        </OptionValues>
-        <Required>Y</Required>
-      </key>
-      <rate_unit type="OptionField">
-        <Default>r/s</Default>
-        <OptionValues>
-          <val1 value="r/s">Requests Per Second</val1>
-          <val2 value="r/m">Requests Per Minute</val2>
-        </OptionValues>
-        <Required>Y</Required>
-      </rate_unit>
-      <size type="IntegerField">
-        <Required>Y</Required>
-        <Default>10</Default>
-        <MinimumValue>1</MinimumValue>
-      </size>
-      <rate type="IntegerField">
-        <Required>Y</Required>
-        <Default>20</Default>
-        <MinimumValue>1</MinimumValue>
-      </rate>
-    </limit_zone>
-
-    <errorpage type="ArrayField">
-      <name type="TextField">
-        <Required>Y</Required>
-      </name>
-      <statuscodes type="OptionField">
-        <Multiple>Y</Multiple>
-        <OptionValues>
-          <status_400 value="400">400 Bad Request</status_400>
-          <status_401 value="401">401 Unauthorized</status_401>
-          <status_403 value="403">403 Forbidden</status_403>
-          <status_404 value="404">404 Not Found</status_404>
-          <status_405 value="405">405 Method Not Allowed</status_405>
-          <status_407 value="407">407 Proxy Authentication Required</status_407>
-          <status_408 value="408">408 Request Timeout</status_408>
-          <status_410 value="410">410 Gone</status_410>
-          <status_415 value="415">415 Unsupported Media Type</status_415>
-          <status_429 value="429">429 Too Many Requests</status_429>
-          <status_431 value="431">431 Request Header Fields Too Large</status_431>
-          <status_500 value="500">500 Internal Server Error</status_500>
-          <status_501 value="501">501 Not Implemented</status_501>
-          <status_502 value="502">502 Bad Gateway</status_502>
-          <status_503 value="503">503 Service Unavailable</status_503>
-          <status_504 value="504">504 Gateway Timeout</status_504>
-        </OptionValues>
-        <Required>Y</Required>
-      </statuscodes>
-      <pagecontent type="Base64Field">
-        <Default>PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsaW5pdGlhbC1zY2FsZT0xIiAvPgogICAgPHRpdGxlPkVycm9yPC90aXRsZT4KPC9oZWFkPgo8Ym9keT4KICAgIDxoMT5FcnJvcjwvaDE+CiAgICA8cD5Tb3JyeSwgYnV0IHNvbWV0aGluZyB3ZW50IHdyb25nLjwvcD4KPC9ib2R5Pgo8L2h0bWw+</Default>
-        <Constraints>
-          <check001>
-            <type>SingleSelectConstraint</type>
-            <ValidationMessage>Page content is required if redirect is not used and needs to be empty otherwise.</ValidationMessage>
-            <addFields>
-              <field1>redirect</field1>
-            </addFields>
-            <isRequired>Y</isRequired>
-          </check001>
-        </Constraints>
-      </pagecontent>
-      <redirect type="UrlField">
-        <Required>N</Required>
-        <Constraints>
-          <check001>
-            <reference>pagecontent.check001</reference>
-          </check001>
-        </Constraints>
-      </redirect>
-      <response type="OptionField">
-        <Multiple>N</Multiple>
-        <OptionValues>
-          <status_200 value="200">200 OK</status_200>
-          <status_300 value="300">300 Multiple Choice</status_300>
-          <status_301 value="301">301 Moved Permanently</status_301>
-          <status_302 value="302">302 Found</status_302>
-          <status_401 value="401">401 Unauthorized</status_401>
-          <status_403 value="403">403 Forbidden</status_403>
-          <status_404 value="404">404 Not Found</status_404>
-          <status_451 value="451">451 Unavailable For Legal Reasons</status_451>
-          <status_500 value="500">500 Internal Server Error</status_500>
-          <status_503 value="503">503 Service Unavailable</status_503>
-        </OptionValues>
-        <Required>N</Required>
-      </response>
-    </errorpage>
-
-    <tls_fingerprint type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <user_agent type="TextField">
-        <Required>Y</Required>
-      </user_agent>
-      <trusted type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-      </trusted>
-      <curves type="TextField">
-        <!-- OpenSSL curve list like the one used for configuring the supported ciphers by the web server -->
-        <Required>N</Required>
-        <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
-      </curves>
-      <ciphers type="TextField">
-        <!-- OpenSSL cipher list like the one used for configuring the supported ciphers by the web server -->
-        <Required>Y</Required>
-        <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
-      </ciphers>
-    </tls_fingerprint>
-
-    <limit_request_connection type="ArrayField">
-      <limit_zone type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Nginx.Nginx</source>
-            <items>limit_zone</items>
-            <display>description</display>
-          </template>
-        </Model>
-        <ValidationMessage>Selected limit zone not found</ValidationMessage>
-        <Required>Y</Required>
-        <Multiple>Y</Multiple>
-      </limit_zone>
-      <connection_count type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-        <Default>5</Default>
-      </connection_count>
-      <burst type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <Default>20</Default>
-      </burst>
-      <nodelay type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </nodelay>
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-    </limit_request_connection>
-
-    <ban type="ArrayField">
-      <ip type="NetworkField">
-        <Required>Y</Required>
-      </ip>
-      <time type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>0</MinimumValue>
-      </time>
-    </ban>
-
-    <cache_path type="ArrayField">
-      <path type="TextField">
-        <Required>Y</Required>
-        <Mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</Mask>
-      </path>
-      <size type="IntegerField">
-        <MinimumValue>10</MinimumValue>
-        <Default>10</Default>
-      </size>
-      <inactive type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </inactive>
-      <use_temp_path type="BooleanField">
-        <Required>Y</Required>
-        <Default>0</Default>
-      </use_temp_path>
-      <max_size type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </max_size>
-    </cache_path>
-
-    <syslog_target type="ArrayField">
-      <description type="TextField">
-        <Required>Y</Required>
-      </description>
-      <host type="HostnameField">
-        <Required>Y</Required>
-      </host>
-      <port type="PortField">
-        <Required>N</Required>
-      </port>
-      <facility type="OptionField">
-        <OptionValues>
-          <kern>kern</kern>
-          <user>user</user>
-          <mail>mail</mail>
-          <daemon>daemon</daemon>
-          <auth>auth</auth>
-          <intern>intern</intern>
-          <lpr>lpr</lpr>
-          <news>news</news>
-          <uucp>uucp</uucp>
-          <clock>clock</clock>
-          <authpriv>authpriv</authpriv>
-          <ftp>ftp</ftp>
-          <ntp>ntp</ntp>
-          <audit>audit</audit>
-          <alert>alert</alert>
-          <cron>cron</cron>
-          <local0>local0</local0>
-          <local1>local1</local1>
-          <local2>local2</local2>
-          <local3>local3</local3>
-          <local4>local4</local4>
-          <local5>local5</local5>
-          <local6>local6</local6>
-          <local7>local7</local7>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>local7</Default>
-      </facility>
-      <severity type="OptionField">
-        <OptionValues>
-          <debug>debug</debug>
-          <info>info</info>
-          <notice>notice</notice>
-          <warn>warn</warn>
-          <error>error</error>
-          <crit>crit</crit>
-          <alert>alert</alert>
-          <emerg>emerg</emerg>
-        </OptionValues>
-        <Required>Y</Required>
-        <Default>error</Default>
-      </severity>
-      <tag type="TextField">
-        <Required>N</Required>
-        <Mask>/[a-z][a-z0-9]*/i</Mask>
-      </tag>
-      <nohostname type="BooleanField">
-        <Required>Y</Required>
-        <Default>N</Default>
-      </nohostname>
-    </syslog_target>
-  </items>
+                <Required>Y</Required>
+            </data>
+            <default_action type="OptionField">
+                <OptionValues>
+                    <deny>Deny Access</deny>
+                    <allow>Allow Access</allow>
+                </OptionValues>
+            </default_action>
+        </ip_acl>
+        <ip_acl_item type="ArrayField">
+            <network type="NetworkField">
+                <Required>Y</Required>
+            </network>
+            <action type="OptionField">
+                <Default>deny</Default>
+                <OptionValues>
+                    <deny>Deny Access</deny>
+                    <allow>Allow Access</allow>
+                </OptionValues>
+                <Required>Y</Required>
+            </action>
+        </ip_acl_item>
+        <resolver type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[^" \t]+$/i</Mask>
+            </description>
+            <address type="CSVListField">
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+                <Mask>/^(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*)(?:\s*,\s*(?:(?:(?:\d{1,3}(?:\.\d{1,3}){3})|(?:\[[a-f0-9:]{1,4}(?::[a-f0-9:]{0,4}){1,7}\]))(:\d+|:?\d+)*))*$/i</Mask>
+                <ValidationMessage>Please provide a valid resolver address, i.e. 8.8.8.8, [2001:4860:4860::8888], 8.8.8.8:5353.</ValidationMessage>
+            </address>
+            <valid type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </valid>
+            <ipv4_off type="BooleanField">
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>Can not disable all record types.</ValidationMessage>
+                        <type>SingleSelectConstraint</type>
+                        <addFields>
+                            <field1>ipv6_off</field1>
+                        </addFields>
+                    </check001>
+                </Constraints>
+            </ipv4_off>
+            <ipv6_off type="BooleanField">
+                <Constraints>
+                    <check001>
+                        <reference>ipv4_off.check001</reference>
+                    </check001>
+                </Constraints>
+            </ipv6_off>
+            <timeout type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </timeout>
+        </resolver>
+        <http_rewrite type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[^" \t]+$/i</Mask>
+            </description>
+            <source type="TextField">
+                <Required>Y</Required>
+            </source>
+            <destination type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[^" \t]+$/i</Mask>
+            </destination>
+            <flag type="OptionField">
+                <OptionValues>
+                    <break>Stop processing rules</break>
+                    <last>Stop processing rules and find location</last>
+                    <redirect>Redirect</redirect>
+                    <permanent>Permanent</permanent>
+                </OptionValues>
+            </flag>
+        </http_rewrite>
+        <security_header type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <referrer type="OptionField">
+                <OptionValues>
+                    <no-referrer>No Referrer</no-referrer>
+                    <no-referrer-when-downgrade>No Referrer When Downgrading</no-referrer-when-downgrade>
+                    <same-origin>Same Origin (recommended)</same-origin>
+                    <origin>Origin</origin>
+                    <strict-origin>Strict Origin</strict-origin>
+                    <strict-origin-when-cross-origin>Strict Origin When Cross Origin</strict-origin-when-cross-origin>
+                    <origin-when-cross-origin>Origin When Cross Origin</origin-when-cross-origin>
+                    <unsafe-url>Unsafe URL</unsafe-url>
+                </OptionValues>
+            </referrer>
+            <xssprotection type="OptionField">
+                <OptionValues>
+                    <val1 value="1; mode=block">Block</val1>
+                    <val2 value="0">Off</val2>
+                    <val3 value="1">On</val3>
+                </OptionValues>
+            </xssprotection>
+            <content_type_options type="BooleanField">
+                <Required>Y</Required>
+            </content_type_options>
+            <strict_transport_security_time type="IntegerField"/>
+            <strict_transport_security_include_subdomains type="BooleanField">
+                <Required>Y</Required>
+                <Default>1</Default>
+            </strict_transport_security_include_subdomains>
+            <strict_transport_security_preload type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </strict_transport_security_preload>
+            <enable_csp type="BooleanField">
+                <Required>Y</Required>
+            </enable_csp>
+            <csp_log_violations type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_log_violations>
+            <csp_report_only type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_report_only>
+            <csp_default_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_enabled>
+            <csp_default_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_data_urls>
+            <csp_default_src_http_urls type="CSVListField"/>
+            <csp_default_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_inline>
+            <csp_default_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_eval>
+            <csp_default_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_self>
+            <csp_default_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_blob>
+            <csp_default_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_mediastream>
+            <csp_default_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_filesystem>
+            <csp_default_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_default_src_none>
+            <csp_script_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_enabled>
+            <csp_script_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_data_urls>
+            <csp_script_src_http_urls type="CSVListField"/>
+            <csp_script_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_inline>
+            <csp_script_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_eval>
+            <csp_script_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_self>
+            <csp_script_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_blob>
+            <csp_script_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_mediastream>
+            <csp_script_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_filesystem>
+            <csp_script_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_script_src_none>
+            <csp_img_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_enabled>
+            <csp_img_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_data_urls>
+            <csp_img_src_http_urls type="CSVListField"/>
+            <csp_img_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_inline>
+            <csp_img_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_eval>
+            <csp_img_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_self>
+            <csp_img_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_blob>
+            <csp_img_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_mediastream>
+            <csp_img_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_filesystem>
+            <csp_img_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_img_src_none>
+            <csp_style_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_enabled>
+            <csp_style_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_data_urls>
+            <csp_style_src_http_urls type="CSVListField"/>
+            <csp_style_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_inline>
+            <csp_style_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_eval>
+            <csp_style_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_self>
+            <csp_style_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_blob>
+            <csp_style_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_mediastream>
+            <csp_style_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_filesystem>
+            <csp_style_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_style_src_none>
+            <csp_media_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_enabled>
+            <csp_media_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_data_urls>
+            <csp_media_src_http_urls type="CSVListField"/>
+            <csp_media_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_inline>
+            <csp_media_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_eval>
+            <csp_media_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_self>
+            <csp_media_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_blob>
+            <csp_media_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_mediastream>
+            <csp_media_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_filesystem>
+            <csp_media_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_media_src_none>
+            <csp_font_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_enabled>
+            <csp_font_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_data_urls>
+            <csp_font_src_http_urls type="CSVListField"/>
+            <csp_font_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_inline>
+            <csp_font_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_eval>
+            <csp_font_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_self>
+            <csp_font_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_blob>
+            <csp_font_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_mediastream>
+            <csp_font_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_filesystem>
+            <csp_font_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_font_src_none>
+            <csp_frame_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_enabled>
+            <csp_frame_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_data_urls>
+            <csp_frame_src_http_urls type="CSVListField"/>
+            <csp_frame_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_inline>
+            <csp_frame_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_eval>
+            <csp_frame_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_self>
+            <csp_frame_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_blob>
+            <csp_frame_src_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_mediastream>
+            <csp_frame_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_filesystem>
+            <csp_frame_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_src_none>
+            <csp_frame_ancestors_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_enabled>
+            <csp_frame_ancestors_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_data_urls>
+            <csp_frame_ancestors_http_urls type="CSVListField"/>
+            <csp_frame_ancestors_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_self>
+            <csp_frame_ancestors_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_blob>
+            <csp_frame_ancestors_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_mediastream>
+            <csp_frame_ancestors_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_filesystem>
+            <csp_frame_ancestors_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_frame_ancestors_none>
+            <csp_connect_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_connect_src_enabled>
+            <csp_connect_src_http_urls type="CSVListField"/>
+            <csp_connect_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_connect_src_none>
+            <csp_worker_src_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_enabled>
+            <csp_worker_src_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_data_urls>
+            <csp_worker_src_http_urls type="CSVListField"/>
+            <csp_worker_src_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_inline>
+            <csp_worker_src_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_eval>
+            <csp_worker_src_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_self>
+            <csp_worker_src_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_blob>
+            <csp_worker_src_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_filesystem>
+            <csp_worker_src_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_worker_src_none>
+            <csp_form_action_enabled type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_enabled>
+            <csp_form_action_data_urls type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_data_urls>
+            <csp_form_action_http_urls type="CSVListField"/>
+            <csp_form_action_inline type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_inline>
+            <csp_form_action_eval type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_eval>
+            <csp_form_action_self type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_self>
+            <csp_form_action_blob type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_blob>
+            <csp_form_action_mediastream type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_mediastream>
+            <csp_form_action_filesystem type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_filesystem>
+            <csp_form_action_none type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </csp_form_action_none>
+        </security_header>
+        <limit_zone type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <key type="OptionField">
+                <Default>binary_remote_addr</Default>
+                <OptionValues>
+                    <binary_remote_addr>Remote IP Address</binary_remote_addr>
+                </OptionValues>
+                <Required>Y</Required>
+            </key>
+            <rate_unit type="OptionField">
+                <Default>r/s</Default>
+                <OptionValues>
+                    <val1 value="r/s">Requests Per Second</val1>
+                    <val2 value="r/m">Requests Per Minute</val2>
+                </OptionValues>
+                <Required>Y</Required>
+            </rate_unit>
+            <size type="IntegerField">
+                <Required>Y</Required>
+                <Default>10</Default>
+                <MinimumValue>1</MinimumValue>
+            </size>
+            <rate type="IntegerField">
+                <Required>Y</Required>
+                <Default>20</Default>
+                <MinimumValue>1</MinimumValue>
+            </rate>
+        </limit_zone>
+        <errorpage type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+            </name>
+            <statuscodes type="OptionField">
+                <Multiple>Y</Multiple>
+                <OptionValues>
+                    <status_400 value="400">400 Bad Request</status_400>
+                    <status_401 value="401">401 Unauthorized</status_401>
+                    <status_403 value="403">403 Forbidden</status_403>
+                    <status_404 value="404">404 Not Found</status_404>
+                    <status_405 value="405">405 Method Not Allowed</status_405>
+                    <status_407 value="407">407 Proxy Authentication Required</status_407>
+                    <status_408 value="408">408 Request Timeout</status_408>
+                    <status_410 value="410">410 Gone</status_410>
+                    <status_415 value="415">415 Unsupported Media Type</status_415>
+                    <status_429 value="429">429 Too Many Requests</status_429>
+                    <status_431 value="431">431 Request Header Fields Too Large</status_431>
+                    <status_500 value="500">500 Internal Server Error</status_500>
+                    <status_501 value="501">501 Not Implemented</status_501>
+                    <status_502 value="502">502 Bad Gateway</status_502>
+                    <status_503 value="503">503 Service Unavailable</status_503>
+                    <status_504 value="504">504 Gateway Timeout</status_504>
+                </OptionValues>
+                <Required>Y</Required>
+            </statuscodes>
+            <pagecontent type="Base64Field">
+                <Constraints>
+                    <check001>
+                        <type>SingleSelectConstraint</type>
+                        <ValidationMessage>Page content is required if redirect is not used and needs to be empty otherwise.</ValidationMessage>
+                        <addFields>
+                            <field1>redirect</field1>
+                        </addFields>
+                        <isRequired>Y</isRequired>
+                    </check001>
+                </Constraints>
+            </pagecontent>
+            <redirect type="UrlField">
+                <Constraints>
+                    <check001>
+                        <reference>pagecontent.check001</reference>
+                    </check001>
+                </Constraints>
+            </redirect>
+            <response type="OptionField">
+                <OptionValues>
+                    <status_200 value="200">200 OK</status_200>
+                    <status_300 value="300">300 Multiple Choice</status_300>
+                    <status_301 value="301">301 Moved Permanently</status_301>
+                    <status_302 value="302">302 Found</status_302>
+                    <status_401 value="401">401 Unauthorized</status_401>
+                    <status_403 value="403">403 Forbidden</status_403>
+                    <status_404 value="404">404 Not Found</status_404>
+                    <status_451 value="451">451 Unavailable For Legal Reasons</status_451>
+                    <status_500 value="500">500 Internal Server Error</status_500>
+                    <status_503 value="503">503 Service Unavailable</status_503>
+                </OptionValues>
+            </response>
+        </errorpage>
+        <tls_fingerprint type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <user_agent type="TextField">
+                <Required>Y</Required>
+            </user_agent>
+            <trusted type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </trusted>
+            <curves type="TextField">
+                <!-- OpenSSL curve list like the one used for configuring the supported ciphers by the web server -->
+                <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
+            </curves>
+            <ciphers type="TextField">
+                <!-- OpenSSL cipher list like the one used for configuring the supported ciphers by the web server -->
+                <Required>Y</Required>
+                <Mask>/^(0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)(?::((0x[0-9a-fA-F]{4,4}|[a-zA-Z_\-0-9]+)))*$/</Mask>
+            </ciphers>
+        </tls_fingerprint>
+        <limit_request_connection type="ArrayField">
+            <limit_zone type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Nginx.Nginx</source>
+                        <items>limit_zone</items>
+                        <display>description</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Selected limit zone not found.</ValidationMessage>
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+            </limit_zone>
+            <connection_count type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+                <Default>5</Default>
+            </connection_count>
+            <burst type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </burst>
+            <nodelay type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </nodelay>
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+        </limit_request_connection>
+        <ban type="ArrayField">
+            <ip type="NetworkField">
+                <Required>Y</Required>
+            </ip>
+            <time type="IntegerField">
+                <MinimumValue>0</MinimumValue>
+            </time>
+        </ban>
+        <cache_path type="ArrayField">
+            <path type="TextField">
+                <Required>Y</Required>
+                <Mask>/\/(srv|var|tmp|mnt)[a-z0-9\-\._\:\,\/]+[a-z0-9\-\._\:\,]+/i</Mask>
+            </path>
+            <size type="IntegerField">
+                <MinimumValue>10</MinimumValue>
+            </size>
+            <inactive type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </inactive>
+            <use_temp_path type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </use_temp_path>
+            <max_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </max_size>
+        </cache_path>
+        <proxy_cache_valid type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[^" \t]+$/i</Mask>
+            </description>
+            <code type="CSVListField">
+                <Required>Y</Required>
+                <Default>any</Default>
+                <Multiple>Y</Multiple>
+                <Mask>/(^\d{3}(,\d{3})*$)|(^any$)/</Mask>
+                <ValidationMessage>Please use three digit response code(s) or use "any" word.</ValidationMessage>
+            </code>
+            <valid type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+            </valid>
+        </proxy_cache_valid>
+        <syslog_target type="ArrayField">
+            <description type="TextField">
+                <Required>Y</Required>
+            </description>
+            <host type="HostnameField">
+                <Required>Y</Required>
+            </host>
+            <port type="PortField"/>
+            <facility type="OptionField">
+                <OptionValues>
+                    <kern>kern</kern>
+                    <user>user</user>
+                    <mail>mail</mail>
+                    <daemon>daemon</daemon>
+                    <auth>auth</auth>
+                    <intern>intern</intern>
+                    <lpr>lpr</lpr>
+                    <news>news</news>
+                    <uucp>uucp</uucp>
+                    <clock>clock</clock>
+                    <authpriv>authpriv</authpriv>
+                    <ftp>ftp</ftp>
+                    <ntp>ntp</ntp>
+                    <audit>audit</audit>
+                    <alert>alert</alert>
+                    <cron>cron</cron>
+                    <local0>local0</local0>
+                    <local1>local1</local1>
+                    <local2>local2</local2>
+                    <local3>local3</local3>
+                    <local4>local4</local4>
+                    <local5>local5</local5>
+                    <local6>local6</local6>
+                    <local7>local7</local7>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>local7</Default>
+            </facility>
+            <severity type="OptionField">
+                <OptionValues>
+                    <debug>debug</debug>
+                    <info>info</info>
+                    <notice>notice</notice>
+                    <warn>warn</warn>
+                    <error>error</error>
+                    <crit>crit</crit>
+                    <alert>alert</alert>
+                    <emerg>emerg</emerg>
+                </OptionValues>
+                <Required>Y</Required>
+                <Default>error</Default>
+            </severity>
+            <tag type="TextField">
+                <Mask>/[a-z][a-z0-9]*/i</Mask>
+            </tag>
+            <nohostname type="BooleanField">
+                <Required>Y</Required>
+                <Default>N</Default>
+            </nohostname>
+        </syslog_target>
+    </items>
 </model>
