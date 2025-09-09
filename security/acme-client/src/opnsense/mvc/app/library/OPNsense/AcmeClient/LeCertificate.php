@@ -47,6 +47,11 @@ class LeCertificate extends LeCommon
 {
     public const CONFIG_PATH = 'certificates.certificate';
 
+    protected $cert_file;
+    protected $cert_key_file;
+    protected $cert_chain_file;
+    protected $cert_fullchain_file;
+
     /*
      * Create the object by collecting and storing all required data
      * @param $uuid string the UUID of the configuration object
