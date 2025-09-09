@@ -123,7 +123,7 @@ if (isset($nginx['http_server'])) {
                 syslog(LOG_DEBUG, "NGINX setup: Setting up the CA certs for {$hostname}.");
                 $ca_certs = [];
                 foreach ($http_server['ca'] as $carefs) {
-                    foreach(explode(',', $carefs) as $caref) {
+                    foreach (explode(',', $carefs) as $caref) {
                         syslog(LOG_DEBUG, "NGINX setup: Searching for {$caref} CA data");
                         $ca = find_ca($caref);
                         if (isset($ca)) {
