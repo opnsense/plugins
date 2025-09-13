@@ -10,6 +10,10 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
+1.35.1
+
+* Change ban_ttl default value to avoid unintentional system slowdown
+
 1.35
 
 * Global options sendfile directive typo fix
