@@ -10,9 +10,9 @@ WWW: https://nginx.org/
 Plugin Changelog
 ================
 
-1.35.1
+1.35_1
 
-* Change ban_ttl default value to avoid unintentional system slowdown
+* Hotfix: change ban_ttl default value to avoid unintentional system slowdown
 
 1.35
 
