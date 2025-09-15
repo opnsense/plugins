@@ -358,7 +358,7 @@ class LeCertificate extends LeCommon
         $configdir = (string)sprintf(self::ACME_CONFIG_DIR, (string)$this->config->id);
         foreach (array($certdir, $keydir, $configdir) as $dir) {
             if (!is_dir($dir)) {
-                LeUtils::log_debug("creating directory: {$dir}", $this->debug);
+                LeUtils::log_debug("creating directory: {$dir}");
                 mkdir($dir, 0700, true);
             }
         }
@@ -467,7 +467,7 @@ class LeCertificate extends LeCommon
           . '--remove '
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
         // Run acme.sh command
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
@@ -542,7 +542,7 @@ class LeCertificate extends LeCommon
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--domain %s', (string)$this->config->name) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
         // Run acme.sh command
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
@@ -618,6 +618,8 @@ class LeCertificate extends LeCommon
             $this->loadConfig(self::CONFIG_PATH, $this->uuid);
         }
         LeUtils::log('account is registered: ' . (string)$account->config->name);
+        // Always check (and fix) account config
+        $account->fixConfig();
         return true;
     }
 
@@ -642,7 +644,8 @@ class LeCertificate extends LeCommon
 
             // Configure validation object
             $val->setNames($this->config->name, $this->config->altNames, $this->config->aliasmode, $this->config->domainalias, $this->config->challengealias);
-            $val->setRenewal((int)$this->config->renewInterval);
+            $renewInterval = (string)$this->config->renewInterval;
+            $val->setRenewal((int)$renewInterval);
             $val->setForce($this->force);
             $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
             // strip prefix from key value

@@ -1,6 +1,5 @@
 c_icap:/etc/rc.conf.d/c_icap
 c-icap.conf:/usr/local/etc/c-icap/c-icap.conf
-newsyslog.conf:/etc/newsyslog.conf.d/c-icap
 virus_scan.conf:/usr/local/etc/c-icap/virus_scan.conf
 VIRUS_FOUND:/tmp/c-icap/templates/virus_scan/en/VIRUS_FOUND
 VIR_MODE_HEAD:/tmp/c-icap/templates/virus_scan/en/VIR_MODE_HEAD

@@ -1452,7 +1452,7 @@ h6 {
 }
 
 h1, .h1 {
-  font-size: 22px;
+  font-size: 21px;
   text-transform: uppercase;
 }
 
@@ -6996,7 +6996,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
           line-height: 1.428571429;
           text-decoration: none;
           color: #bac3ca;
-          background-color: #273946;
+          background-color: #1d2c37;
           border: 1px solid #191919;
           margin-left: -1px;
           cursor: pointer;
@@ -7068,24 +7068,24 @@ fieldset[disabled] .navbar-inverse .btn-link {
     .disabled > {
       span {
         color: #bac3ca;
-        background-color: #273946;
+        background-color: #1d2c37;
         cursor: not-allowed;
 
         &:hover, &:focus {
           color: #bac3ca;
-          background-color: #273946;
+          background-color: #1d2c37;
           cursor: not-allowed;
         }
       }
 
       a {
         color: #bac3ca;
-        background-color: #273946;
+        background-color: #1d2c37;
         cursor: not-allowed;
 
         &:hover, &:focus {
           color: #bac3ca;
-          background-color: #273946;
+          background-color: #1d2c37;
           cursor: not-allowed;
         }
       }

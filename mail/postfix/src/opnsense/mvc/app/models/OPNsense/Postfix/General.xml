@@ -4,31 +4,31 @@
     <version>1.2.7</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <myhostname type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </myhostname>
         <mydomain type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </mydomain>
         <myorigin type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </myorigin>
         <inet_interfaces type="TextField">
-            <default>all</default>
+            <Default>all</Default>
             <Required>Y</Required>
         </inet_interfaces>
         <inet_port type="PortField">
-            <default>25</default>
+            <Default>25</Default>
             <Required>Y</Required>
         </inet_port>
         <ip_version type="OptionField">
-            <default>all</default>
+            <Default>all</Default>
             <Required>Y</Required>
             <OptionValues>
                 <all>All</all>
@@ -45,24 +45,24 @@
             <AddressFamily>ipv6</AddressFamily>
         </bind_address6>
         <mynetworks type="CSVListField">
-            <default>127.0.0.0/8,[::ffff:127.0.0.0]/104,[::1]/128</default>
+            <Default>127.0.0.0/8,[::ffff:127.0.0.0]/104,[::1]/128</Default>
             <Required>Y</Required>
         </mynetworks>
         <banner type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </banner>
         <message_size_limit type="IntegerField">
-            <default>51200000</default>
+            <Default>51200000</Default>
             <Required>Y</Required>
         </message_size_limit>
         <masquerade_domains type="CSVListField">
             <Required>N</Required>
-            <mask>/^([0-9a-z\.\-\_]{1,128})(,[0-9a-z\.\-\_]{1,128})*$/ui</mask>
+            <Mask>/^([0-9a-z\.\-\_]{1,128})(,[0-9a-z\.\-\_]{1,128})*$/ui</Mask>
             <ValidationMessage>Only up to 128 of the following characters are allowed: 0-9a-zA-Z.-_</ValidationMessage>
         </masquerade_domains>
         <tls_server_compatibility type="OptionField">
-            <default>intermediate</default>
+            <Default>intermediate</Default>
             <Required>Y</Required>
             <OptionValues>
                 <modern>Modern</modern>
@@ -71,7 +71,7 @@
             </OptionValues>
         </tls_server_compatibility>
         <tls_client_compatibility type="OptionField">
-            <default>intermediate</default>
+            <Default>intermediate</Default>
             <Required>Y</Required>
             <OptionValues>
                 <modern>Modern</modern>
@@ -80,7 +80,7 @@
             </OptionValues>
         </tls_client_compatibility>
         <tlswrappermode type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </tlswrappermode>
         <certificate type="CertificateField">
@@ -92,7 +92,7 @@
             <Required>N</Required>
         </ca>
         <smtpclient_security type="OptionField">
-            <default>may</default>
+            <Default>may</Default>
             <Required>Y</Required>
             <OptionValues>
                 <none>none</none>
@@ -103,91 +103,91 @@
         </smtpclient_security>
         <relayhost type="TextField">
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</mask>
+            <Mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</Mask>
             <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
         </relayhost>
         <smtpauth_enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </smtpauth_enabled>
         <smtpauth_user type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </smtpauth_user>
         <smtpauth_password type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </smtpauth_password>
         <enforce_recipient_check type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enforce_recipient_check>
         <extensive_helo_restrictions type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </extensive_helo_restrictions>
         <extensive_sender_restrictions type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </extensive_sender_restrictions>
         <reject_unknown_client_hostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </reject_unknown_client_hostname>
         <reject_non_fqdn_helo_hostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </reject_non_fqdn_helo_hostname>
         <reject_invalid_helo_hostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </reject_invalid_helo_hostname>
         <reject_unknown_helo_hostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </reject_unknown_helo_hostname>
         <reject_unauth_pipelining type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_unauth_pipelining>
         <reject_unknown_sender_domain type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_unknown_sender_domain>
         <reject_unknown_recipient_domain type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_unknown_recipient_domain>
         <reject_non_fqdn_sender type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_non_fqdn_sender>
         <reject_non_fqdn_recipient type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_non_fqdn_recipient>
         <permit_sasl_authenticated type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </permit_sasl_authenticated>
         <permit_tls_clientcerts type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </permit_tls_clientcerts>
         <permit_mynetworks type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </permit_mynetworks>
         <reject_unauth_destination type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </reject_unauth_destination>
         <reject_unverified_recipient type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </reject_unverified_recipient>
         <delay_warning_time type="IntegerField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
             <MinimumValue>0</MinimumValue>
             <MaximumValue>24</MaximumValue>

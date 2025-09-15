@@ -41,16 +41,16 @@ $( document ).ready(function() {
 
 
   var grid = $("#grid-wol-settings").UIBootgrid(
-      { 'search':'/api/wol/wol/searchHost',
-        'get':'/api/wol/wol/getHost/',
-        'set':'/api/wol/wol/setHost/',
-        'add':'/api/wol/wol/addHost/',
-        'del':'/api/wol/wol/delHost/',
+      { 'search':'/api/wol/wol/search_host',
+        'get':'/api/wol/wol/get_host/',
+        'set':'/api/wol/wol/set_host/',
+        'add':'/api/wol/wol/add_host/',
+        'del':'/api/wol/wol/del_host/',
         'options':{
             selection:false,
             multiSelect:false,
             formatters: {
-              "commandswithwake": function (column, row) {
+              "commands": function (column, row) {
                 return "<button type=\"button\" class=\"btn btn-xs btn-default command-wake\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clock-o\"></span></button> " +
                     "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-pencil\"></span></button> " +
                     "<button type=\"button\" class=\"btn btn-xs btn-default command-copy\" data-row-id=\"" + row.uuid + "\"><span class=\"fa fa-clone\"></span></button>" +
@@ -111,7 +111,7 @@ $( document ).ready(function() {
                 <th data-column-id="interface" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
                 <th data-column-id="mac" data-type="string" data-visible="true">{{ lang._('MAC') }}</th>
                 <th data-column-id="descr" data-type="string" data-identifier="true">{{ lang._('Description') }}</th>
-                <th data-column-id="commands" data-formatter="commandswithwake" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="130">{{ lang._('Commands') }}</th>
             </tr>
         </thead>
         <tbody>

@@ -43,7 +43,8 @@ $writeFileIfChanged = function ($filePath, $content) {
     }
 };
 
-$tempDir = '/var/db/caddy/data/caddy/certificates/temp/';
+/* XXX used later to only append a file name */
+$tempDir = '/usr/local/etc/caddy/certificates/';
 
 // leaf certificate chain
 $certificateRefs = [];
@@ -89,6 +90,19 @@ foreach ((new Caddy())->reverseproxy->handle->iterateItems() as $handleItem) {
 
 foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
     $caCertField = (string)$reverseItem->ClientAuthTrustPool;
+
+    if (!empty($caCertField)) {
+        $refs = array_map('trim', explode(',', $caCertField));
+        foreach ($refs as $ref) {
+            if (!empty($ref)) {
+                $caCertRefs[] = $ref;
+            }
+        }
+    }
+}
+
+foreach ((new Caddy())->reverseproxy->subdomain->iterateItems() as $subdomainItem) {
+    $caCertField = (string)$subdomainItem->ClientAuthTrustPool;
 
     if (!empty($caCertField)) {
         $refs = array_map('trim', explode(',', $caCertField));

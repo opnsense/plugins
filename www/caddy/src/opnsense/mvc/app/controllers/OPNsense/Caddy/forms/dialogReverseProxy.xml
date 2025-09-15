@@ -5,16 +5,10 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this domain.]]></help>
         <grid_view>
-            <width>6em</width>
+            <width>20</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
-    </field>
-    <field>
-        <id>reverse.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this domain.]]></help>
     </field>
     <field>
         <type>header</type>
@@ -25,25 +19,34 @@
         <label>Protocol</label>
         <type>dropdown</type>
         <help><![CDATA[When choosing HTTP, automatic certificate management will be disabled and all traffic to and from this domain will be unencrypted.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>reverse.FromDomain</id>
         <label>Domain</label>
         <type>text</type>
         <help><![CDATA[Enter a domain name. For a base domain, use "example.com" or "opn.example.com". For a wildcard domain, use "*.example.com". Using a wildcard domain with subdomains requires a "DNS Provider" and the "DNS-01 Challenge" or a custom certificate.]]></help>
+        <grid_view>
+            <formatter>from_domain</formatter>
+        </grid_view>
     </field>
     <field>
         <id>reverse.FromPort</id>
         <label>Port</label>
         <type>text</type>
         <help><![CDATA[Leave empty to use ports 80 and 443 with automatic redirection from HTTP to HTTPS or choose a custom port. Don't forget to allow these ports with a Firewall rule. If the default ports have been changed in "General Settings", leaving this empty will use the chosen alternative ports instead.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>reverse.CustomCertificate</id>
         <label>Certificate</label>
         <type>dropdown</type>
-        <style>selectpicker style_tls</style>
-        <help><![CDATA[Choose ACME to get automatic certificates with the built in ACME client; no additional plugin required. The "HTTP-01", "TLS-ALPN-01" or "DNS-01" challenge will be used to get automatic "Let's Encrypt" or "ZeroSSL" certificates. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain. Make sure the full chain has been imported.]]></help>
+        <style>selectpicker style_tls_reverse</style>
+        <help><![CDATA[Choose "Auto HTTPS" to get automatic "Let's Encrypt" or "ZeroSSL" certificates; no additional plugin required. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain, e.g., certificates managed by the optional os-acme-client plugin.]]></help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -62,7 +65,7 @@
         <id>reverse.DnsChallenge</id>
         <label>DNS-01 Challenge</label>
         <type>checkbox</type>
-        <style>style_tls</style>
+        <style>style_tls_reverse</style>
         <help><![CDATA[Enable the DNS-01 Challenge for this domain. Requires a "DNS Provider" in "General Settings". This is only needed for wildcard domains, or when the default challenges can not be used due to restrictive firewall policies.]]></help>
         <grid_view>
             <visible>false</visible>
@@ -80,6 +83,12 @@
             <type>boolean</type>
             <formatter>boolean</formatter>
         </grid_view>
+    </field>
+    <field>
+        <id>reverse.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this domain.]]></help>
     </field>
     <field>
         <type>header</type>

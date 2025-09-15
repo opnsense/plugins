@@ -2,7 +2,16 @@
     <Services>
       <CrowdSec cssClass="fa fa-globe fa-fw">
         <Settings order="1" url="/ui/crowdsec/general/index"/>
-        <Overview order="2" url="/ui/crowdsec/overview"/>
+        <Machines order="2" url="/ui/crowdsec/machines/index"/>
+        <Bouncers order="3" url="/ui/crowdsec/bouncers/index"/>
+        <Alerts order="5" url="/ui/crowdsec/alerts/index"/>
+        <Decisions order="6" url="/ui/crowdsec/decisions/index"/>
+        <Collections order="7" url="/ui/crowdsec/collections/index"/>
+        <Scenarios order="8" url="/ui/crowdsec/scenarios/index"/>
+        <Parsers order="9" url="/ui/crowdsec/parsers/index"/>
+        <Postoverflows order="10" url="/ui/crowdsec/postoverflows/index"/>
+        <Appsecrules order="11" url="/ui/crowdsec/appsecrules/index"/>
+        <Appsecconfigs order="12" url="/ui/crowdsec/appsecconfigs/index"/>
       </CrowdSec>
     </Services>
 </menu>

@@ -236,7 +236,7 @@ class Sftp extends Base implements IBackupProvider
                 $fileprefix = "config-";
             } else {
                 $config = $cnf->object();
-                $fileprefix = sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain);
+                $fileprefix = strtolower(sprintf('%s.%s-', (string)$config->system->hostname, (string)$config->system->domain));
             }
             /**
              * Collect most recent backup, since /conf/backup/ always contains the latests, we can use the filename
@@ -262,8 +262,8 @@ class Sftp extends Base implements IBackupProvider
             /* cleanup only if backup count is > 0*/
             if ($this->model->backupcount->asFloat() > 0) {
                 rsort($remote_backups);
-                if (count($remote_backups) > (int)$this->model->backupcount->getCurrentValue()) {
-                    for ($i = $this->model->backupcount->getCurrentValue(); $i < count($remote_backups); $i++) {
+                if (count($remote_backups) > (int)$this->model->backupcount->getValue()) {
+                    for ($i = $this->model->backupcount->getValue(); $i < count($remote_backups); $i++) {
                         $this->del($remote_backups[$i]);
                     }
                     $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));

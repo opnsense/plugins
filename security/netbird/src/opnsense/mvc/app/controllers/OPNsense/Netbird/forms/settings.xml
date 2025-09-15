@@ -1,0 +1,93 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+    <field>
+        <id>settings.general.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable NetBird</help>
+    </field>
+    <field>
+        <id>settings.general.wireguardPort</id>
+        <label>WireGuard Port</label>
+        <type>text</type>
+        <help>Wireguard interface listening port</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Client Firewall</label>
+    </field>
+    <field>
+        <id>settings.firewall.allowConfig</id>
+        <label>Enable Firewall</label>
+        <type>checkbox</type>
+        <help>Allow the client to filter traffic with its built-in firewall. If disabled, you must assign the NetBird interface and manage firewall rules via OPNsense firewall management.
+            Additionally, NetBird routing and DNS may not function as intended.</help>
+    </field>
+    <field>
+        <id>settings.firewall.blockInboundConnection</id>
+        <label>Block Inbound Connection</label>
+        <type>checkbox</type>
+        <help>Block all inbound connections to the local machine from the WireGuard interface and any routed networks</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>SSH</label>
+    </field>
+    <field>
+        <id>settings.ssh.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Allows incoming SSH connections</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>DNS</label>
+    </field>
+    <field>
+        <id>settings.dns.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Allows the client to resolve and configure DNS on the host</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Routing</label>
+    </field>
+    <field>
+        <id>settings.routing.accessLan</id>
+        <label>Access LAN</label>
+        <type>checkbox</type>
+        <help>Allow access to local networks (LAN) when using this peer as a routing peer or exit-node</help>
+    </field>
+    <field>
+        <id>settings.routing.acceptClientRoutes</id>
+        <label>Accept Client Routes</label>
+        <type>checkbox</type>
+        <help>Accept and process client routes received from the management</help>
+    </field>
+    <field>
+        <id>settings.routing.acceptServerRoutes</id>
+        <label>Accept Server Routes</label>
+        <type>checkbox</type>
+        <help>Enable this peer to act as a router for server routes received from the management</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Post-Quantum</label>
+    </field>
+    <field>
+        <id>settings.postquantum.enableRosenpass</id>
+        <label>Enable Rosenpass</label>
+        <type>checkbox</type>
+        <help>Enable the Rosenpass to provide post-quantum secure connections (Experimental)</help>
+    </field>
+    <field>
+        <id>settings.postquantum.rosenpassPermissive</id>
+        <label>Rosenpass Permissive Mode</label>
+        <type>checkbox</type>
+        <help>Enable Rosenpass permissive mode</help>
+    </field>
+</form>

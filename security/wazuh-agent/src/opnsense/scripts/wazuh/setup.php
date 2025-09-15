@@ -56,7 +56,11 @@ if (!empty((string)$mdl->auth->password)) {
  * Temporary solution to link log files so we can view at least the last items in the file easily for debug purposes
  * It looks like ossec is not able to log to syslog directly, which means our log files live outside our normal bounds
  **/
-mkdir("/var/log/wazuhagent/ossec/", 0700, true);
-mkdir("/var/log/wazuhagent/activeresponses/", 0700, true);
+if (!is_dir("/var/log/wazuhagent/ossec/")) {
+    mkdir("/var/log/wazuhagent/ossec/", 0700, true);
+}
+if (!is_dir("/var/log/wazuhagent/activeresponses/")) {
+    mkdir("/var/log/wazuhagent/activeresponses/", 0700, true);
+}
 @symlink("/var/ossec/logs/ossec.log", "/var/log/wazuhagent/ossec/ossec_99991231.log");
 @symlink("/var/ossec/logs/active-responses.log", "/var/log/wazuhagent/activeresponses/activeresponses_99991231.log");

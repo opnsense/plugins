@@ -4,55 +4,55 @@
     <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <wheelgroup type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </wheelgroup>
         <interval type="IntegerField">
-            <default>10</default>
+            <Default>10</Default>
             <Required>Y</Required>
         </interval>
         <roundinterval type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </roundinterval>
         <metric_batch_size type="IntegerField">
-            <default>1000</default>
+            <Default>1000</Default>
             <Required>Y</Required>
         </metric_batch_size>
         <metric_buffer_limit type="IntegerField">
-            <default>10000</default>
+            <Default>10000</Default>
             <Required>Y</Required>
         </metric_buffer_limit>
         <collection_jitter type="IntegerField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </collection_jitter>
         <flush_interval type="IntegerField">
-            <default>10</default>
+            <Default>10</Default>
             <Required>Y</Required>
         </flush_interval>
         <flush_jitter type="IntegerField">
-            <default>0</default>
+            <Default>0</Default>
 	        <Required>Y</Required>
 	    </flush_jitter>
         <hostname type="TextField">
-            <default></default>
+            <Default></Default>
 	        <Required>N</Required>
 	    </hostname>
         <omit_hostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
 	        <Required>Y</Required>
 	    </omit_hostname>
         <quiet type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </quiet>
         <debug type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </debug>
     </items>

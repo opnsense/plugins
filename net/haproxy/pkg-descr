@@ -6,6 +6,12 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.6
+
+Changed:
+* improve help text for "http-request redirect" rules (#4650)
+* rename "http-request redirect" input field (#4650)
+
 4.5
 
 Changed:
