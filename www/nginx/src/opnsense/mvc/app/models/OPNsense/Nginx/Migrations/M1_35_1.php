@@ -37,7 +37,7 @@ class M1_35_1 extends BaseModelMigration
     {
         $general_node = $model->getNodeByReference('general');
 
-        if ((string)$general_node->ban_ttl == '0') {
+        if ($general_node->ban_ttl->isEqual('0')) {
             $general_node->ban_ttl = '4320';
         }
         // run default migration actions
