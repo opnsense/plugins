@@ -103,7 +103,6 @@
     <field>
         <id>settings.syslog.logLevel</id>
         <label>Log Level</label>
-        <style>selectpicker</style>
         <type>dropdown</type>
         <help>Set the syslog logging level. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
     </field>

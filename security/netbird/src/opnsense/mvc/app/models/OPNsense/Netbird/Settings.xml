@@ -69,7 +69,7 @@
             </enable>
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <Default>info</Default>
+                <BlankDesc>Info</BlankDesc>
                 <OptionValues>
                     <fatal>Fatal</fatal>
                     <error>Error</error>
