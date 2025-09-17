@@ -1,5 +1,6 @@
 PLUGIN_NAME=		netbird
 PLUGIN_VERSION=		1.0
+PLUGIN_REVISION=	1
 PLUGIN_DEPENDS=		netbird
 PLUGIN_COMMENT=		Peer-to-peer VPN that seamlessly connects your devices
 PLUGIN_MAINTAINER=	dev@netbird.io
