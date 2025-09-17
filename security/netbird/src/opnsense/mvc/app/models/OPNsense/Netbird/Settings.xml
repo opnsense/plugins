@@ -64,7 +64,7 @@
         </postquantum>
         <syslog>
             <enable type="BooleanField">
-                <Default>0</Default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </enable>
             <logLevel type="OptionField">
@@ -73,6 +73,10 @@
                 <OptionValues>
                     <info>Info</info>
                     <debug>Debug</debug>
+                    <debug>Trace</debug>
+                    <warn>Warn</warn>
+                    <fatal>Fatal</fatal>
+                    <error>Error</error>
                 </OptionValues>
             </logLevel>
         </syslog>
