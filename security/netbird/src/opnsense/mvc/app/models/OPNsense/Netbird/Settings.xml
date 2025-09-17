@@ -62,5 +62,19 @@
                 <Required>Y</Required>
             </rosenpassPermissive>
         </postquantum>
+        <syslog>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <Default>info</Default>
+                <OptionValues>
+                    <info>Info</info>
+                    <debug>Debug</debug>
+                </OptionValues>
+            </logLevel>
+        </syslog>
     </items>
 </model>

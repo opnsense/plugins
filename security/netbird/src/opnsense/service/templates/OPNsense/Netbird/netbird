@@ -1,5 +1,10 @@
 {% if OPNsense.netbird.settings.general.enable == '1' %}
 netbird_enable="YES"
+netbird_setup="/usr/local/sbin/pluginctl -c netbird_sync"
 {% else %}
 netbird_enable="NO"
+{% endif %}
+{% if OPNsense.netbird.settings.syslog.enable == '1' %}
+netbird_logfile="syslog"
+netbird_loglevel="{% if helpers.exists('OPNsense.netbird.settings.syslog.logLevel') %}{{ OPNsense.netbird.settings.syslog.logLevel }}{% else %}info{% endif %}"
 {% endif %}
