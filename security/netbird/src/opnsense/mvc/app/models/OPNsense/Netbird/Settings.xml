@@ -70,14 +70,13 @@
             <logLevel type="OptionField">
                 <Required>Y</Required>
                 <Default>info</Default>
-                <Multiple>N</Multiple>
                 <OptionValues>
+                    <fatal>Fatal</fatal>
+                    <error>Error</error>
+                    <warn>Warn</warn>
                     <info>Info</info>
                     <debug>Debug</debug>
                     <trace>Trace</trace>
-                    <warn>Warn</warn>
-                    <fatal>Fatal</fatal>
-                    <error>Error</error>
                 </OptionValues>
             </logLevel>
         </syslog>
