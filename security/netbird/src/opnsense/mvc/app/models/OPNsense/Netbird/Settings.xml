@@ -69,14 +69,14 @@
             </enable>
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <BlankDesc>Info</BlankDesc>
+                <Default>info</Default>
                 <OptionValues>
-                    <fatal>Fatal</fatal>
-                    <error>Error</error>
-                    <warn>Warn</warn>
-                    <info>Info</info>
-                    <debug>Debug</debug>
-                    <trace>Trace</trace>
+                    <fatal>fatal</fatal>
+                    <error>error</error>
+                    <warn>warn</warn>
+                    <info>info</info>
+                    <debug>debug</debug>
+                    <trace>trace</trace>
                 </OptionValues>
             </logLevel>
         </syslog>
