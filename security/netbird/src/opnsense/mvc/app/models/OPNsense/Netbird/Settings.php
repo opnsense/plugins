@@ -35,7 +35,7 @@ use OPNsense\Base\BaseModel;
 
 class Settings extends BaseModel
 {
-    public function syncConfig($target = '/var/db/netbird/default.json')
+    public function syncConfig($target = '/var/db/netbird/config.json')
     {
         $config = json_decode(file_get_contents($target), true);
         if (!is_array($config)) {
