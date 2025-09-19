@@ -29,9 +29,8 @@
 
 <script>
     $(document).ready(() => {
-        mapDataToFormUI({
-            'frmSettings': "/api/netbird/settings/get"
-        }).done(() => {
+        mapDataToFormUI({'frmSettings': '/api/netbird/settings/get'}).done(() => {
+            $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('netbird');
         });
 
