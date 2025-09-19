@@ -95,12 +95,6 @@
         <label>Syslog Logging</label>
     </field>
     <field>
-        <id>settings.syslog.enable</id>
-        <label>Enable</label>
-        <type>checkbox</type>
-        <help>Enable Syslog</help>
-    </field>
-    <field>
         <id>settings.syslog.logLevel</id>
         <label>Log Level</label>
         <type>dropdown</type>
