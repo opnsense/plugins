@@ -69,16 +69,16 @@
 }
 
 .tabulator-row.tabulator-selected {
-  background-color: var(--sbg);
+  background-color: var(--tbheadbackhover);
 }
 
 .tabulator-row.tabulator-selected:hover {
   cursor: pointer;
-  background-color: var(--sbg);
+  background-color: var(--tbheadbackhover);
 }
 
 .tabulator .tabulator-alert .tabulator-alert-msg.tabulator-alert-state-msg {
-  color: var(--oac); /* spinner icon */
+  color: var(--warning); /* spinner icon */
 }
 
 /* Command column styles */
@@ -136,9 +136,17 @@
   margin: 0px;
   padding: 6px 12px;}
 
-.tabulator .tabulator-footer .tabulator-page:hover {
+.tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
   color: var(--tftexthover);
-  border: 1px solid var(--tfborderhover);
+  background-color: var(--tfbackhover);
+  border-color: var(--tfborderhover);
+}
+
+.tabulator .tabulator-footer .tabulator-page:not(disabled).active:hover {
+  color: var(--tftextactivehover);
+  background-color: var(--tfbackactivehover);
+  border-color: var(--tfborderactivehover);
+  cursor: default;
 }
 
 .tabulator .tabulator-footer .tabulator-page.active {
@@ -147,28 +155,13 @@
   border-color: var(--tfborderactive);
   cursor: default;
 }
-
-/* .tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
-  color: var(--text);
-  background-color: var(--pbg);
-  border-color: var(--text);
-}
-
-.tabulator .tabulator-footer .tabulator-page:not(disabled).active:hover {
-  background-color: var(--pbg);
-  border-color: var(--bac);
-  color: var(--text);
-  cursor: default;
-}
-*/
 .tabulator-page-counter {
-  color: var(--text);
+  color: var(--tftext);
 }
 
 .tabulator .tabulator-footer .tabulator-paginator {
-  color: var(--text);
+  color: var(--tftext);
 }
-
 /*----------*/
 /* end of main theming elements */
 .tabulator-paginator {
@@ -296,7 +289,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--sbg);
+    background: var(--tbheadbackhover);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -304,5 +297,5 @@
 }
 .overlay > i {
     font-size: 20px;
-    color: black;
+    color: var(--tbheadtext);
 }

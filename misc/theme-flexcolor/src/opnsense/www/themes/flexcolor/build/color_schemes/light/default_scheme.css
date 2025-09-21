@@ -1,0 +1,326 @@
+:root
+{
+/* main colors */
+    --highlighted: #131313; /* highlighted element */
+    --muted: #FFFFFF; /* highlighted element */
+    --pbg: #F5F5F5; /* primary background */
+    --pbghover: #FFFFFF; /* primary background hover*/
+    --text: #131313; /* main textcolor */
+    --texthover: #181818; /* primary text hover */
+    --textmuted: #3C3C3C; /* muted text */
+    --sbg: #E4E4E4; /* second background #FAF9F6*/
+    --sbgtext: #131313; /*second background hover */
+    --stdborder: #2D2D2D; /* standrad border */
+    --badgeback: #C3C3C3; /* badge background & progress-bar & blockquote*/
+
+/* navigation sidebar */
+    /* unselected */
+    --sdbartext: #454545; /*textcolor navigation sidebar */
+    --sdbarback: #ECECEC; /*background unselected navigation sidebar */
+    --sdbarhoverback: #C4C4C4; /* background sidebar hover */
+    --sdbarhovertext: #131313; /* textcolor sidebar hover */
+    --sdbaractback: #F5F5F5; /* active menu #ECE7E2, #FFEDF5, #E5F4FF, #FFFBE5, #F5F5DC, #F2F2F2, #FFFACD */
+    --navbarinverse: #1066CC; /* navtab */
+    --navbarinversetext: #FFFFFB; /* navtab */
+    --navbaractivebefore: #1066CC; /*sidebar active before */
+
+/* login */
+    --loginback: #F5F5F5; /* loginscreen background */
+    --logintext: #131313; /* loginscreen textcolor */
+    --loginheadback: #D4D4D4; /* login-dialogbox head background */
+    --loginboxback: #D4D4D4; /* login-dialogbox background */
+    --loginboxtext: #131313; /* Login-dialogbox textcolor */
+
+/* button toggle sidebar */
+    -- tglsdbback: #F5F5F5; /* button toggle sidebar back */
+    -- tglsdbfor: #131313; /* button toggle sidebar foreground */
+
+/* accents */
+    --primary: #1066CC; /* rimary accent */
+    --primaryhover: #0056BC; /* primary accent hover */
+    --info: #10A6D8; /*info accent */
+    --infohover: #0096C8; /* info accent hover */
+    --success: #28A839; /* success accent */
+    --successhover: #189829; /* success accent hover */
+    --warning: #FC9510; /* warning accent */
+    --warninghover: #EC8500; /* warning accent hover */
+    --danger: #FC2529; /* danger accent */
+    --dangerhover: #EC1519; /* danger accent hover */
+
+/* buttons */
+    /* unselected */
+    --btntext: #454545; /* textcolor */
+    --btnback: #ECECEC; /* background */
+    --btnborder: #1066CC; /* border */
+    /* hover */
+    --btntexthover: #131313; /* textcolor hover*/
+    --btnbackhover: #C4C4C4; /* background hover*/
+    --btnborderhover: #0056BC; /* border hover */
+    /* active */
+    --btntextactive: #F5F5F5; /* textcolor active*/
+    --btnbackactive: #1066CC; /* background active*/
+    --btnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --btntextdisabled: #999999; /* textcolor disabled*/
+    --btnbackdisabled: #F5F5F5; /* background disabled*/
+    /* badge */
+    --btntextbadge: #F5F5F5; /* textcolor badge*/
+    --btnbackbadge: #F5F5F5; /* background badge*/
+    --btnborderbadge: #F5F5F5; /* border badge */
+/* default button */
+    /* unselected */
+    --dfbtntext: #131313; /* textcolor */
+    --dfbtnback: #F5F5F5; /* background */
+    --dfbtnborder: #131313; /* border */
+    /* hover */
+    --dfbtntexthover: #131313; /* textcolor hover*/
+    --dfbtnbackhover: #F5F5F5; /* background hover*/
+    --dfbtnborderhover: #131313; /* border hover */
+    /* active */
+    --dfbtntextactive: #F5F5F5; /* textcolor active*/
+    --dfbtnbackactive: #1066CC; /* background active*/
+    --dfbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --dfbtntextdisabled: #999999; /* textcolor disabled*/
+    --dfbtnbackdisabled: #F5F5F5; /* background disabled*/
+    --dfbtnborderdisabled: #131313; /* border disabled */
+    /* Badge */
+    --dfbtntextbadge: #F5F5F5; /* textcolor badge*/
+    --dfbtnbackbadge: #F5F5F5; /* background badge*/
+    --dfbtnborderbadge: #F5F5F5; /* border badge */
+/* primary button */
+    /* unselected */
+    --pbtntext: #454545; /* textcolor */
+    --pbtnback: #ECECEC; /* background */
+    --pbtnborder: #1066CC; /* border */
+    /* hover */
+    --pbtntexthover: #131313; /* textcolor hover*/
+    --pbtnbackhover: #C4C4C4; /* background hover*/
+    --pbtnborderhover: #0056BC; /* border hover */
+    /* active */
+    --pbtntextactive: #F5F5F5; /* textcolor active*/
+    --pbtnbackactive: #1066CC; /* background active*/
+    --pbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --pbtntextdisabled: #999999; /* textcolor disabled*/
+    --pbtnbackdisabled: #F5F5F5; /* background disabled*/
+    --pbtnborderdisabled: #635D55; /* border disabled */
+    /* badge */
+    --pbtntextbadge: #F5F5F5; /* textcolor badge*/
+    --pbtnbackbadge: #F5F5F5; /* background badge*/
+    --pbtnborderbadge: #F5F5F5; /* border badge */
+/* info button */
+    /* unselected */
+    --ibtntext: #454545; /* textcolor */
+    --ibtnback: #ECECEC; /* background */
+    --ibtnborder: #10A6D8; /* border */
+    /* hover */
+    --ibtntexthover: #131313; /* textcolor hover*/
+    --ibtnbackhover: #C4C4C4; /* background hover*/
+    --ibtnborderhover: #0096C8; /* border hover */
+    /* active */
+    --ibtntextactive: #F5F5F5; /* textcolor active*/
+    --ibtnbackactive: #10A6D8; /* background active*/
+    --ibtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --ibtntextdisabled: #999999; /* textcolor disabled*/
+    --ibtnbackdisabled: #F5F5F5; /* background disabled*/
+    --ibtnborderdisabled: #3D3D3D; /* border disabled */
+    /* badge */
+    --ibtntextbadge: #10A6D8; /* textcolor badge*/
+    --ibtnbackbadge: #F5F5F5; /* background badge*/
+    --ibtnborderbadge: #F5F5F5; /* border badge */
+/* success button */
+    /* unselected */
+    --sbtntext: #454545; /* textcolor */
+    --sbtnback: #ECECEC; /* background */
+    --sbtnborder: #28A839; /* border */
+    /* hover */
+    --sbtntexthover: #131313; /* textcolor hover*/
+    --sbtnbackhover: #C4C4C4; /* background hover*/
+    --sbtnborderhover: #189829; /* border hover */
+    /* active */
+    --sbtntextactive: #F5F5F5; /* textcolor active*/
+    --sbtnbackactive: #28A839; /* background active*/
+    --sbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --sbtntextdisabled: #999999; /* textcolor disabled*/
+    --sbtnbackdisabled: #F5F5F5; /* background disabled*/
+    --sbtnborderdisabled: #3D3D3D; /* border disabled */
+    /* badge */
+    --sbtntextbadge: #28A839; /* textcolor badge*/
+    --sbtnbackbadge: #F5F5F5; /* background badge*/
+    --sbtnborderbadge: #F5F5F5; /* border badge */
+/* warning button */
+    /* unselected */
+    --wbtntext: #454545; /* textcolor */
+    --wbtnback: #ECECEC; /* background */
+    --wbtnborder: #FC9510; /* border */
+    /* hover */
+    --wbtntexthover: #131313; /* textcolor hover*/
+    --wbtnbackhover: #C4C4C4; /* background hover*/
+    --wbtnborderhover: #EC8500; /* border hover */
+    /* active */
+    --wbtntextactive: #F5F5F5; /* textcolor active*/
+    --wbtnbackactive: #FC9510; /* background active*/
+    --wbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --wbtntextdisabled: #999999; /* textcolor disabled*/
+    --wbtnbackdisabled: #FC9510; /* background disabled*/
+    --wbtnborderdisabled: #3D3D3D; /* border disabled */
+    /* badge */
+    --wbtntextbadge: #FC9510; /* textcolor badge*/
+    --wbtnbackbadge: #F5F5F5; /* background badge*/
+    --wbtnborderbadge: #F5F5F5; /* border badge */
+/* danger button */
+    /* unselected */
+    --dbtntext: #454545; /* textcolor */
+    --dbtnback: #ECECEC; /* background */
+    --dbtnborder: #FC2529; /* border */
+    /* hover */
+    --dbtntexthover: #131313; /* textcolor hover*/
+    --dbtnbackhover: #C4C4C4; /* background hover*/
+    --dbtnborderhover: #EC1519; /* border hover */
+    /* active */
+    --dbtntextactive: #F5F5F5; /* textcolor active*/
+    --dbtnbackactive: #FC2529; /* background active*/
+    --dbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --dbtntextdisabled: #999999; /* textcolor disabled*/
+    --dbtnbackdisabled: #F5F5F5; /* background disabled*/
+    --dbtnborderdisabled: #3D3D3D; /* border disabled */
+    /* badge */
+    --dbtntextbadge: #FC2529; /* textcolor badge*/
+    --dbtnbackbadge: #F5F5F5; /* background badge*/
+    --dbtnborderbadge: #F5F5F5; /* border badge */
+/* link button */
+    /* unselected */
+    --lbtntext: #FC2529; /* textcolor */
+    --lbtnback: #ECECEC; /* background */
+    --lbtnborder: #FC2529; /* border */
+    /* hover */
+    --lbtntexthover: #EC1519; /* textcolor hover*/
+    --lbtnbackhover: #C4C4C4; /* background hover*/
+    --lbtnborderhover: #EC1519; /* border hover */
+    /* active */
+    --lbtntextactive: #FC2529; /* textcolor active*/
+    --lbtnbackactive: #131313; /* background active*/
+    --lbtnborderactive: #F5F5F5; /* border active */
+    /* disabled */
+    --lbtntextdisabled: #999999; /* textcolor disabled*/
+    --lbtnbackdisabled: #3D3D3D; /* background disabled*/
+    --lbtnborderdisabled: #3D3D3D; /* border disabled */
+
+/* navtabs */
+    /* active */
+    --navtabtextactive: #F5F5F5; /* textcolor active navtab */
+    --navtabbackactive: #1066CC; /* background active navtab */
+    --navtabborderactive: #F5F5F5; /* border active navtab */
+    /* inactive */
+    --navtabtextinactive: #454545; /* textcolor inactive navtab */
+    --navtabbackinactive: #ECECEC; /* background inactive navtab */
+    --navtabborderinactive: #454545; /* border inactive navtab */
+    /* hover */ 
+    --navtabtexthover: #131313; /* textcolor navtab hover */
+    --navtabbackhover: #C4C4C4; /* background navtab hover */
+    --navtabborderhover: #131313; /* border navtab hover */
+
+/* tabulator */
+    /* tabulator header */
+    --tbheadtext: #131313; /* background */
+    --tbheadback: #D4D4D4; /* background */
+    --tbheadbackhover: #D4D4D4; /* background hover*/
+    --tbborder: #131313; /* border color headline */
+    /* tabulator body */
+    --tbbordertable: #131313; /* border color table */
+    /* odd row */
+    --tbrowtextodd: #131313; /* background */
+    --tbrowbackodd: #F5F5F5; /* background */
+    /* even row */
+    --tbrowtexteven: #131313; /* background */
+    --tbrowbackeven: #D4D4D4; /* background */
+/* tabulator footer */
+    /* unselected */
+    --tftext: #454545; /* textcolor */
+    --tfback: #ECECEC; /* background */
+    --tfborder: #454545; /* border */
+    /* hover */
+    --tftexthover: #131313; /* textcolor hover*/
+    --tfbackhover: #C4C4C4; /* border hover */
+    --tfborderhover: #131313; /* textcolor hover*/
+    /* active */
+    --tftextactive: #F5F5F5; /* textcolor active*/
+    --tfbackactive: #1066CC; /* background active*/
+    --tfborderactive: #F5F5F5; /* border active */
+    /* active hover*/
+    --tftextactivehover: #FFFFFF; /* textcolor active*/
+    --tfbackactivehover: #1066CC; /* background active*/
+    --tfborderactivehover: #FFFFFF; /* border active */
+
+/* panel, example: Reporting health */
+   --panelbody: #F5F5F5; /* panel body background*/
+   --panelheading: #F5F5F5; /* panel heading background*/
+   --panelheadingtext: #131313; /* panel heading textcolor*/
+   --panelfooter: #F5F5F5; /* panel footer */
+   --panelinfo: #131313; /* panel info, example wait circle */
+   
+/* content-box, example report traffic*/
+    --contentboxback: #F5F5F5; /* content-box background */
+
+/* table */
+    /* table not stripe */
+    --texttable: #131313; /* text table */
+    --backtable: #F5F5F5; /* background table */
+    /* table stripe */
+    --backstripe: #D4D4D4; /* alternative background table */
+    /* table inside a table */
+    --headtabletable: #1066CC; /* headline table in a table */
+    --backtabletable: #F5F5F5; /* background table in a table */
+
+/*bootstrap*/
+  --bstext: #131313;
+  --bsback: #F5F5F5;
+  --bsborder: #131313;
+  
+/* scrollbar */
+    --scbarcolor: #C4C4C4 #E4E4E4; /* scrollbarcolor, background foreground, the following colors are not important */
+    --scbarback: #999999; /* backgroundcolor */
+    --scbarborder: #989898; /* bordercolor */
+    --scbar: #C8C8C8; /* scrollbar */
+    --scbarhover: #B8B8B8; /* scrollbar */
+    --scbarbutton: #999999; /* scrollbar */
+    --scbarcolor: #C4C4C4 #E4E4E4; /* scrollbarcolor, background foreground */
+
+/* unbound */
+    --unbtext: #E6E6E6; /* unbound query text color */
+    --unbtexterror: #960007; /* unbound query text color */
+    --unbsuccess: rgba(40,168,57,1.0); /* unbound detail background success */
+    --unbinfo: rgba(16,102,204,1.0); /* unbound detail background info */
+    --unbdanger: rgba(252,37,41,1.0); /* unbound detail background danger */
+    --unbwarning: rgba(252,149,16,1.0); /* unbound detail background warning */
+    --unberror: rgba(245,245,245,1.0); /* unbound detail background error */
+    --unbshadow: rgba(47,47,47,.8); /* unbound overview circle shadow */
+
+/* dashboard */
+    --dbback: #E4E4E4; /* background color dashboard */
+    --dbtext: #131313; /* textcolor dashboard */
+    --dbborder: #131313; /* bordercolor dashboard */
+    --dbtttext: #F5F5F5; /* textcolor tooltip dashboard */
+    --dbttback: rgba(19, 19, 19, 0.9); /*background color tooltip */
+
+/* graph */
+    --graphtext: #131313;
+    --graphback: #F5F5F5;
+    --nv3daxis: #131313;
+
+    /* rgb */
+    --rgbhalfhighlite: rgba(0,0,0,0,5);b
+    --rgbshadowdark: rgba(0,0,0,.1);
+    --bootstrapshadow: rgba(41, 41, 41, 0.2);
+    --boxshadow: rgba(0,0,0,0.075);
+    --btnshadow1: rgba(0, 102, 204, 0.075);
+    --btnshadow2: rgba(0, 102, 204, 0.6);
+    --progresshadow: rgb(217, 217, 217);
+    --progresshadow2: rgb(0, 0, 0,0.1);
+    --mozshadow: rgba(21, 21, 21, 0.5)
+}

@@ -17,7 +17,7 @@
     border-radius: .3em;
     margin:auto;
     border: 1px solid var(--stdborder));
-    color: var(--bac);
+    color: var(--primary);
 }
 
 .stats-icon {
@@ -60,7 +60,7 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: var(--bac);
+    color: var(--info);
 }
 
 #bannersub {
@@ -79,7 +79,7 @@
 .list-item-domain {
     height: 2.5em;
     background-color: var(--sbg);
-    color: var(--bac);
+    color: var(--info);
 }
 
 .list-group-item-border {
@@ -110,7 +110,7 @@
     display: flex;
     white-space: nowrap;
     background-color: var(--sbg);
-    Color: var(--text);
+    color: var(--text);
 }
 
 .group-p {
@@ -146,31 +146,35 @@
 }
 
 #maintabs > li.active > a {
-    border-top: 1px solid var(--bac);
-    border-left: 1px solid var(--bac);
-    border-right: 1px solid var(--bac);
+    border-top: 1px solid var(--primary);
+    border-left: 1px solid var(--primary);
+    border-right: 1px solid var(--primary);
     border-bottom: 1px solid var(--pbg);
 }
 
 .query-success {
     background-color: var(--unbsuccess);
-    color: var(--text)
+    color: var(--unbtext);
 }
 
 .query-info {
     background-color: var(--unbinfo);
+    color: var(--unbtext);
 }
 
 .query-danger {
     background-color: var(--unbdanger);
+    color: var(--unbtext);
 }
 
 .query-warning {
     background-color: var(--unbwarning);
+    color: var(--unbtext);
 }
 
 .query-error {
     background-color: var(--unberror);
+    color: var(--unbtexterror);
 }
 
 #searchFilter {

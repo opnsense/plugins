@@ -17,7 +17,7 @@
   background-color: var(--sbg);
 }
 .bootstrap-dialog .bootstrap-dialog-title {
-  color: var(--text);
+  color: var(--sbgtext);
   display: inline-block;
   font-size: 15px;
 }
@@ -45,19 +45,19 @@
   color: #333;
 }
 .bootstrap-dialog.type-info .modal-header {
-  border-bottom: 3px solid var(--bac);
+  border-bottom: 3px solid var(--info);
 }
 .bootstrap-dialog.type-primary .modal-header {
   border-bottom: 3px solid var(--text);
 }
 .bootstrap-dialog.type-success .modal-header {
-  border-bottom: 3px solid var(--gac);
+  border-bottom: 3px solid var(--success);
 }
 .bootstrap-dialog.type-warning .modal-header {
-  border-bottom: 3px solid var(--oac);
+  border-bottom: 3px solid var(--warning);
 }
 .bootstrap-dialog.type-danger .modal-header {
-  border-bottom: 3px solid var(--rac);
+  border-bottom: 3px solid var(--danger);
 }
 .bootstrap-dialog.size-large .bootstrap-dialog-title {
   font-size: 24px;

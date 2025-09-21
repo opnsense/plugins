@@ -59,10 +59,10 @@
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover,
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-  color: var(--bac);
+  color: var(--primary);
   text-decoration: none;
   background-color: var(--pbg);
-  border: 1px solid var(--bac);
+  border: 1px solid var(--primary);
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,

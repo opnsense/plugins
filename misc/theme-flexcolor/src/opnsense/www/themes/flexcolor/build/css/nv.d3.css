@@ -3,12 +3,12 @@
 .nvd3 .nv-axis {
     pointer-events:none;
     opacity: 1;
-	fill: var(--text);
+	fill: var(--graphtext);
 }
 
 .nvd3 .nv-axis path {
     fill: none;
-    stroke: var(--text);
+    stroke: var(--graphtext);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -23,7 +23,7 @@
 
 .nvd3 .nv-axis line {
     fill: none;
-    stroke: var(--text);
+    stroke: var(--graphtext);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -274,7 +274,7 @@ svg.nvd3-svg {
 
 .nvd3 text {
   font: normal 12px Arial, sans-serif;
-	fill: var(--text);
+	fill: var(--graphtext);
 }
 
 .nvd3 .title {
@@ -289,7 +289,7 @@ svg.nvd3-svg {
 .nvd3.nv-noData {
   font-size: 18px;
   font-weight: bold;
-	fill: var(--text);
+	fill: var(--graphtext);
 }
 
 
@@ -332,9 +332,9 @@ svg.nvd3-svg {
 }
 
 .nvd3 .nv-brushBackground rect {
-    stroke: var(--pbg);
+    stroke: var(--graphback);
     stroke-width: .4;
-    fill: var(--text);
+    fill: var(--graphtext);
     fill-opacity: .7;
 }
 
@@ -523,7 +523,7 @@ svg.nvd3-svg {
 
 .nvtooltip {
     position: absolute;
-	  background-color: var(--pbg);
+	  background-color: var(--graphback);
 	  color: rgba(0,0,0,1.0);
 	  border: 1px solid var(--stdborder);
     padding: 1px;
@@ -579,7 +579,7 @@ svg.nvd3-svg {
 .nvtooltip table {
     margin: 0;
     border-spacing:0;
-    background-color: var(--pbg)
+    background-color: var(--graphback);
     padding: 6px;
 }
 

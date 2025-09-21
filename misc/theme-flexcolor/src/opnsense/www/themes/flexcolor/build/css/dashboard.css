@@ -2,7 +2,7 @@
 .btn-pressed, .btn-pressed:hover
 {
     color: var(--highlighted);
-    background-color: var(--bac);
+    background-color: var(--primary);
 }
 
 .fa-spinner {
@@ -12,16 +12,16 @@
 .grid-stack-item-content {
   text-align: center;
   border-style: solid;
-  border-color: var(--stdborder);
+  border-color: var(--dbborder);
   border-width: 1px;
-  background-color: var(--sbg);
+  background-color: var(--dbback);
   border-radius: 0.5em 0.5em 0.5em 0.5em;
-  text-color: var(--text);
+  text-color: var(--dbtext);
 }
 
 .widget-error {
     margin: 50px;
-    color: var(--rac);
+    color: var(--danger);
 }
 
 .widget-content {
@@ -78,7 +78,7 @@ td {
     display: inline-block;
     height: 2px;
     width: 80%;
-    background: var(--stdborder);
+    background: var(--dbborder);
     margin: 5px;
 }
 
@@ -107,10 +107,10 @@ td {
 
 .smoothie-chart-tooltip {
   z-index: 1; /* necessary to force to foreground */
-  background: rgba(19, 19, 19, 0.9);
+  background: var(--dbttback)rgba(19, 19, 19, 0.9);
   padding-left: 15px;
   padding-right: 15px;
-  color: var(--ext);
+  color: var(--dbtttext);
   font-size: 13px;
   border-radius: 0.5em 0.5em 0.5em 0.5em;
   pointer-events: none;
@@ -214,7 +214,7 @@ div {
     flex-flow: row wrap;
     transition: 0.5s;
     padding: 0.5em 0.5em;
-    border-top: solid 1px var(--stdborder);
+    border-top: solid 1px var(--dbborder);
 }
 
 .flextable-row {
@@ -222,7 +222,7 @@ div {
     flex-flow: row wrap;
     transition: 0.5s;
     padding: 0.5em 0.5em;
-    border-top: solid 1px var(--stdborder);
+    border-top: solid 1px var(--dbborder);
     align-items: center;
 }
 
@@ -247,7 +247,7 @@ div {
     width: 100%;
     padding: 0;
     border: 0;
-    border-top: var(--stdborder);
+    border-top: var(--dbborder);
 }
 .flex-subcell {
     width: 100%;
@@ -255,7 +255,7 @@ div {
 }
 
 .column .flex-cell:not(:last-child) {
-     border-bottom: solid 1px var(--stdborder);
+     border-bottom: solid 1px var(--dbborder);
 	  /* border-bottom: none !important; */
 }
 /* ----- */
@@ -269,26 +269,26 @@ div {
 .grid-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    background-color: var(--sbg); /* fade-in color, transitions to transparent */
-    border-top: 1px solid var(--stdborder);
+    background-color: var(--dbback); /* fade-in color, transitions to transparent */
+    border-top: 1px solid var(--dbborder);
     transition: 0.5s;
     opacity: 0.4;
 }
 
 .grid-header {
-    border-top: 1px solid var(--stdborder);
+    border-top: 1px solid var(--dbborder);
     font-weight: bold;
 }
 
 .grid-item {
-    border: 1 px solid var(--stdborder);
+    border: 1 px solid var(--dbborder);
     padding: 4px;
     text-align: center;
 }
 /* ----- */
 
 :root {
-    --chart-js-background-color: var(--sbg);
-    --chart-js-border-color: var(--stdborder);
-    --chart-js-font-color: var(--text);
+    --chart-js-background-color: var(--dbback);
+    --chart-js-border-color: var(--dbborder);
+    --chart-js-font-color: var(--dbtext);
 }

@@ -18,7 +18,7 @@
 
 .tokenize.focus > .tokens-container {
   outline: 0;
-  border-color:var(--bac);
+  border-color:var(--primary);
   background-color:var(--pbg);
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -80,7 +80,7 @@
 
 .tokenize > .tok01Fens-container:focus,
 .tokenize > .tokens-container:hover {
-  border-color: var(--bac);
+  border-color: var(--primary);
   background-color: var(--pbg);
 }
 
@@ -111,7 +111,7 @@
 }
 
 .tokenize > .tokens-container > .token.pending-delete {
-  background-color: var(--bachover);
+  background-color: var(--primaryhover);
   border-color: var(--stdborder);
   color: var(--text);
 }
