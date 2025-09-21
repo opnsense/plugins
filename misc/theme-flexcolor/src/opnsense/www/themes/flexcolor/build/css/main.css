@@ -2600,7 +2600,7 @@ select[multiple].input-lg,
 .btn:active, .btn.active, .open > .btn.dropdown-toggle {
   color: var(--btntextactive);
   background-color: var(--btnbackactive);
-  border-color: var(--btnbordedangertive);
+  border-color: var(--btnborderactive);
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px var(--btnshadow1), 0 0 8px var(--btnshadow2);
   box-shadow: inset 0 1px 1px var(--btnshadow1), 0 0 8px var(--btnshadow2); }
@@ -2626,7 +2626,7 @@ select[multiple].input-lg,
 .btn:active, .btn.active {
   color: var(--btntextactive);
   background-color: var(--btnbackactive);
-  border-color: var(--btnbordedangertive);
+  border-color: var(--btnborderactive);
   outline: 0;
   -webkit-box-shadow: inset 0 3px 5px var(--rgbhalfhighlight);
   box-shadow: inset 0 3px 5px var(--rgbhalfhighlight);
@@ -2657,7 +2657,7 @@ select[multiple].input-lg,
 .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
   color: var(--dfbtntextactive);
   background-color: var(--dfbtnbackactive);
-  border-color: var(--dfbtnbordedangertive);
+  border-color: var(--dfbtnborderactive);
   background-image: none; 
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px var(--btnshadow1), 0 0 8px var(--btnshadow2);
@@ -2684,7 +2684,7 @@ select[multiple].input-lg,
 .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
   color: var(--pbtntextactive);
   background-color: var(--pbtnbackactive);
-  border-color: var(--pbtnbordedangertive);
+  border-color: var(--pbtnborderactive);
   background-image: none;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px var(--btnshadow1), 0 0 12px var(--btnshadow2);
@@ -2708,7 +2708,7 @@ select[multiple].input-lg,
 .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
   color: var(--sbtntextactive);
   background-color: var(--sbtnbackactive);
-  border-color: var(--sbtnbordedangertive); }
+  border-color: var(--sbtnborderactive); }
   background-image: none; }
 .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
   color: var(--sbtntextdisabled);
@@ -2729,7 +2729,7 @@ select[multiple].input-lg,
 .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
   color: var(--ibtnactive);
   background-color: var(--ibtnbackactive);
-  border-color: var(--ibtnbordedangertive); }
+  border-color: var(--ibtnborderactive); }
   background-image: none; }
 .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
   color: var(--ibtntextdisabled);
@@ -2750,7 +2750,7 @@ select[multiple].input-lg,
 .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
   color: var(--wbtnactive);
   background-color: var(--wbtnbackactive);
-  border-color: var(--wbtnbordedangertive);
+  border-color: var(--wbtnborderactive);
   background-image: none; }
 .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
   color: var(--wbtndisabled);
@@ -2771,7 +2771,7 @@ select[multiple].input-lg,
 .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
   color: var(--dbtnactive);
   background-color: var(--dbtnbackactive);
-  border-color: var(--dbtnbordedangertive); }
+  border-color: var(--dbtnborderactive); }
   background-image: none; }
 .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
   color: var(--dbtndisabled);
@@ -2791,7 +2791,7 @@ select[multiple].input-lg,
 .btn-link, .btn-link:active, .btn-link[disabled], fieldset[disabled] .btn-link {
   color: var(--lbtnactive);
   background-color: var(--lbtnbackactive);
-  border-color: var(--lbtnbordedangertive);
+  border-color: var(--lbtnborderactive);
   -webkit-box-shadow: none;
   box-shadow: none; }
 .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
@@ -3252,7 +3252,7 @@ tbody.collapse.in {
   border-radius: 3px 3px 0 0; }
     .nav-tabs > li > a:hover
     {
-        border-color: var(--pbg) var(--pbg) var(--pbg);
+        border-color: var(--pbg), var(--pbg), var(--pbg);
     }
     .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
     {
@@ -3612,7 +3612,7 @@ tbody.collapse.in {
   background-color: transparent; }
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
   color: var(--text);
-  background-color: var(--sdbadangertback); }
+  background-color: var(--sdbaractback); }
 .navbar-default .navbar-nav > .disabled > a, .navbar-default .navbar-nav > .disabled > a:hover, .navbar-default .navbar-nav > .disabled > a:focus {
   color: var(--stdborder);
   background-color: transparent; }
@@ -3620,7 +3620,7 @@ tbody.collapse.in {
   border-color: var(--sbg); 
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-  background-color: var(--sdbadangertback); }
+  background-color: var(--sdbaractback); }
 .navbar-default .navbar-toggle .icon-bar {
   background-color: var(--sbgtext); }
 .navbar-default .navbar-collapse,
@@ -3628,7 +3628,7 @@ tbody.collapse.in {
   border-color: var(--stdborder); }
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
   background-color: var(--sbg);
-  color: var(--sdbadangertback); }
+  color: var(--sdbaractback); }
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: var(--sbg);
@@ -3756,7 +3756,7 @@ tbody.collapse.in {
   text-decoration: none;
   color: var(--primary);
   background-color: var(--pbg); 
-  border: 1px solid var(--sdbadangertback);
+  border: 1px solid var(--sdbaractback);
   margin-left: -1px; }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
@@ -3771,8 +3771,8 @@ tbody.collapse.in {
 .pagination > li > span:hover,
 .pagination > li > span:focus {
   color: var(--danger);
-  background-color: var(--pbgI);
-  border-color: var(--sdbadangertback); }
+  background-color: var(--pbg);
+  border-color: var(--sdbaractback); }
 .pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus,
 .pagination > .active > span,
 .pagination > .active > span:hover,
@@ -3790,7 +3790,7 @@ tbody.collapse.in {
 .pagination > .disabled > a:focus {
   color: var(--textmuted);
   background-color: var(--pbg); 
-  border-color: var(--sdbadangertback);
+  border-color: var(--sdbaractback);
   cursor: not-allowed; }
 .pagination-lg > li > a,
 .pagination-lg > li > span {
@@ -3833,7 +3833,7 @@ tbody.collapse.in {
   display: inline-block;
   padding: 5px 14px;
   background-color: var(--pbg); 
-  border: 1px solid var(--sdbadangertback);
+  border: 1px solid var(--sdbaractback);
   border-radius: 15px; }
 .pager li > a:hover,
 .pager li > a:focus {
@@ -3968,7 +3968,7 @@ a.badge:hover, a.badge:focus {
   margin-bottom: 20px;
   line-height: 1.428571429;
   background-color: var(--pbg); 
-  border: 1px solid var(--sdbadangertback);
+  border: 1px solid var(--sdbaractback);
   border-radius: 3px;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
@@ -3994,7 +3994,7 @@ a.thumbnail.active {
   padding: 15px;
   margin-bottom: 20px;
   border: 2px solid transparent;
-  border-radius: 3px; }
+  border-radius: 3px; 
   -webkit-box-shadow: inset 0 1px 0 var(--boxshadow), 0 1px 0 var(--boxshadow);
   box-shadow: inset 0 1px 0 var(--boxshadow), 0 1px 0 var(--boxshadow); }
 .alert h4 {
@@ -5553,7 +5553,7 @@ main.page-content.col-lg-12 {
 #navigation.col-sidebar-left > div.row > nav.page-side-nav {
   width: 70px;
   height: 100% !important;
-  border-right: 1px solid var(--sdbadangertback); }
+  border-right: 1px solid var(--sdbaractback); }
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item {
   font-size: 14px;
   text-align: center;
@@ -5794,7 +5794,7 @@ table {
 .list-group-submenu a {
   padding-left: 56px; }
 .active-menu-title, .active-menu a { /* Seitenleiste, aktives Menü */
-  background-color: var(--sdbadangertback);
+  background-color: var(--sdbaractback);
   text-decoration: none;
   position: relative; }
   .active-menu-title:before, .active-menu a:before {
@@ -5803,7 +5803,7 @@ table {
   color: var(--navbarinversetext);
   background-color: var(--navbarinverse); }   /* sidebar active menu */
 .active-menu a:before {
-  background: var(--navbadangertivebefore); /*sidebar active before */}
+  background: var(--navbaractivebefore); /*sidebar active before */}
 .alert.alert-danger {
   color: var(--danger) !important; }
 .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {

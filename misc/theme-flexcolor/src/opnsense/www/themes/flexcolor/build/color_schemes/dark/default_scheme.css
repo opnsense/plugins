@@ -38,8 +38,8 @@
 /* accents */
     --primary: #336CDF; /* primary accent */
     --primaryhover: #437CEF; /* primary accent hover */
-    --info: #109CED; /* info accent */
-    --infohover: #008CDD; /* info accent hover */
+    --info: #008CDD; /* info accent */
+    --infohover: #109CED; /* info accent hover */
     --success: #388E3C; /* success accent */
     --successhover: #489E4C; /* success accent hover */
     --warning: #D66E12; /* warning accent */
@@ -111,23 +111,23 @@
     --pbtnborderbadge: #1C1C1C; /* border badge */
 /* info button */
     /* unselected */
-    --ibtntext: #109CED; /* textcolor */
+    --ibtntext: #008CDD; /* textcolor */
     --ibtnback: #131313; /* background */
-    --ibtnborder: #109CED; /* border */
+    --ibtnborder: #008CDD; /* border */
     /* hover */
     --ibtntexthover: #E6E6E6; /* textcolor hover*/
     --ibtnbackhover: #131313; /* background hover*/
     --ibtnborderhover: #336CDF; /* border hover */
     /* active */
-    --ibtntextactive: #33&CDF; /* textcolor active*/
+    --ibtntextactive: #336CDF; /* textcolor active*/
     --ibtnbackactive: #131313; /* background active*/
-    --ibtnborderactive: #109CED; /* border active */
+    --ibtnborderactive: #008CDD; /* border active */
     /* disabled */
     --ibtntextdisabled: #999999; /* textcolor disabled*/
     --ibtnbackdisabled: #131313; /* background disabled*/
     --ibtnborderdisabled: #3D3D3D; /* border disabled */
     /* badge */
-    --ibtntextbadge: #10ADF2; /* textcolor badge*/
+    --ibtntextbadge: #008CDD; /* textcolor badge*/
     --ibtnbackbadge: #1C1C1C; /* background badge*/
     --ibtnborderbadge: #1C1C1C; /* border badge */
 /* success button */
