@@ -65,7 +65,6 @@
                     <Required>Y</Required>
                     <Default>standard</Default>
                     <OptionValues>
-                        <standard>standard</standard>
                         <stub>stub</stub>
                         <stub-no-summary value="stub no-summary">stub no-summary</stub-no-summary>
                         <nssa>nssa</nssa>

@@ -13,7 +13,7 @@
         <id>area.id</id>
         <label>Area ID</label>
         <type>text</type>
-        <help>Enter area ID in dotted (e.g. 0.0.0.1) format.</help>
+        <help>Enter area ID in dotted (e.g. 0.0.0.1) format. You only need to define areas that are not normal. All areas defined in the network or interface tab will automatically be normal, unless explicitely overwritten here with a different area type.</help>
     </field>
     <field>
         <id>area.type</id>
