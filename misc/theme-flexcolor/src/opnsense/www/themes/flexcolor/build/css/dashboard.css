@@ -16,7 +16,7 @@
   border-width: 1px;
   background-color: var(--dbback);
   border-radius: 0.5em 0.5em 0.5em 0.5em;
-  text-color: var(--dbtext);
+  color: var(--dbtext);
 }
 
 .widget-error {
