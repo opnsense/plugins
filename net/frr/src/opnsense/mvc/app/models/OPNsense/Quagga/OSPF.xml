@@ -63,7 +63,7 @@
                 </id>
                 <type type="OptionField">
                     <Required>Y</Required>
-                    <Default>standard</Default>
+                    <Default>stub</Default>
                     <OptionValues>
                         <stub>stub</stub>
                         <stub-no-summary value="stub no-summary">stub no-summary</stub-no-summary>
