@@ -213,10 +213,8 @@
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
                 <DnsChallengeOverrideDomain type="HostnameField">
-                    <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
-                    <FqdnWildcardAllowed>N</FqdnWildcardAllowed>
-                    <ValidationMessage>Please enter a valid domain for DNS-01 CNAME delegation</ValidationMessage>
+                    <ValidationMessage>Please enter a valid domain name.</ValidationMessage>
                 </DnsChallengeOverrideDomain>
                 <CustomCertificate type="CertificateField">
                     <BlankDesc>Auto HTTPS</BlankDesc>
