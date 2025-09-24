@@ -302,6 +302,7 @@ http://{{ domain }} {
 {% macro tls_configuration(
     customCert="",
     dnsChallenge="0",
+    dnsChallengeOverrideDomain="",
     clientAuthTrustPool="",
     clientAuthMode="",
     dnsProvider="",
@@ -316,6 +317,9 @@ http://{{ domain }} {
             {% if not customCert and (dnsChallenge == "1" and dnsProvider) %}
             issuer acme {
                 dns {{ dnsProvider }} {{ dnsApiKey }}
+                {% if dnsChallengeOverrideDomain %}
+                dns_challenge_override_domain {{ dnsChallengeOverrideDomain }}
+                {% endif %}
 
                 {% if tlsDnsPropagationResolvers %}
                 resolvers {{ tlsDnsPropagationResolvers }}
@@ -622,6 +626,7 @@ http://{{ domain }} {
             {{ tls_configuration(
                 customCert=reverse.CustomCertificate|default(""),
                 dnsChallenge=reverse.DnsChallenge|default("0"),
+                dnsChallengeOverrideDomain=reverse.DnsChallengeOverrideDomain|default(""),
                 clientAuthTrustPool=reverse.ClientAuthTrustPool|default(""),
                 clientAuthMode=reverse.ClientAuthMode|default(""),
                 dnsProvider=generalSettings.TlsDnsProvider,
