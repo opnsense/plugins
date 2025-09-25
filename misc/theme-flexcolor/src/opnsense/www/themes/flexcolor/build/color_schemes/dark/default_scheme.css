@@ -1,5 +1,8 @@
 :root
 {
+
+/* theme dark, flexcolor */
+
 /* main colors */
     --highlighted: #FFFFFF; /* highlighted element */
     --muted: #000000; /* highlighted element */
@@ -13,16 +16,23 @@
     --stdborder: #3D3D3D; /* standrad border */
     --badgeback: #777777; /* badge background & progress-bar & blockquote*/
 
+/* page */
+    --pagetext: #E6E6E6; /* text color page */
+    --pageback: #131313; /* backround color page */
+    --pageborder: #3D3D3D; /* border color page */
+    --headlineback: #131313; /*background headline box*/
+    --headlinebackshadow: 2px 2px 1px 0px rgba(0, 0, 0, 0); /* shadow headlinebackgroundbox */
+
 /* navigation sidebar */
     /* unselected */
     --sdbartext: #E6E6E6; /*textcolor navigation sidebar */
-    --sdbarback: #1C1C1C; /*background unselected navigation sidebar */
-    --sdbarhoverback: #232323; /* background sidebar hover */
-    --sdbarhovertext: #E6E6E&; /* textcolor sidebar hover */
-    --sdbaractback: #252525; /* active menu #ECE7E2, #FFEDF5, #E5F4FF, #FFFBE5, #F5F5DC, #F2F2F2, #FFFACD */
-    --navbarinverse: #373737; /* navtab */
-    --navbarinversetext: #E6E6E6; /* navtab */
-    --navbaractivebefore: #1C1C1C; /*sidebar active before */
+    --sdbarback: #131313; /*background unselected navigation sidebar */
+    --sdbarhoverback: #131313; /* background sidebar hover */
+    --sdbarhovertext: #D66E12; /* textcolor sidebar hover */
+    --sdbaractback: #232323; /* active menu #ECE7E2, #FFEDF5, #E5F4FF, #FFFBE5, #F5F5DC, #F2F2F2, #FFFACD */
+    --navbarinverse: #131313; /* navbarinverse */
+    --navbarinversetext: #336CDF; /* navtab */
+    --navbaractivebefore: #E6E6E6; /*sidebar active before */
 
 /* login */
     --loginback: #131313; /* loginscreen background */
@@ -31,21 +41,23 @@
     --loginboxback: #1C1C1C; /* login-dialogbox background */
     --loginboxtext: #E6E6E6; /* Login-dialogbox textcolor */
 
-/* button toggle sidebar */
-    -- tglsdbback: #131313; /* button toggle sidebar back */
-    -- tglsdbfor: #E6E6E6; /* button toggle sidebar foreground */
+/* special  characters */
+    --tglsdbback: #131313; /* button toggle sidebar back */
+    --tglsdbfor: #E6E6E6; /* button toggle sidebar foreground */
+    --link: #FA6121; /* OPNsense text login and links */
+    --linkhover: #E04605; /* OPNsense text login and links hover */
 
 /* accents */
     --primary: #336CDF; /* primary accent */
-    --primaryhover: #437CEF; /* primary accent hover */
+    --primaryhover: #608DE6; /* primary accent hover */
     --info: #008CDD; /* info accent */
-    --infohover: #109CED; /* info accent hover */
+    --infohover: #0FA7FF; /* info accent hover */
     --success: #388E3C; /* success accent */
-    --successhover: #489E4C; /* success accent hover */
+    --successhover: #47B34C; /* success accent hover */
     --warning: #D66E12; /* warning accent */
-    --warninghover: #E67E22; /* warning accent hover */
+    --warninghover: #ED862B; /* warning accent hover */
     --danger: #FF5252; /* danger accent */
-    --dangerhover: #EF4242; /* danger accent hover */
+    --dangerhover: #FF8585; /* danger accent hover */
 
 /* buttons */
     /* unselected */
@@ -225,7 +237,13 @@
     --navtabbackhover: #131313; /* background navtab hover */
     --navtabborderhover: #336CDF; /* border navtab hover */
 
+/* content-box, example report traffic*/
+    --contentboxback: #131313; /* content-box background and tabulator frame head background*/
+
 /* tabulator */
+    /* tabulator frame foot background */
+    --tbfback: #131313;
+    
     /* tabulator header */
     --tbheadtext: #E6E6E6; /* background */
     --tbheadback: #1F1F1F; /* background */
@@ -264,9 +282,6 @@
    --panelfooter: #1C1C1C; /* panel footer */
    --panelinfo: #E6E6E6; /* panel info, example wait circle */
    
-/* content-box, example report traffic*/
-    --contentboxback: #131313; /* content-box background */
-
 /* table */
     /* table not stripe */
     --texttable: #E6E6E6; /* text table */
@@ -275,7 +290,7 @@
     --backstripe: #131313; /* alternative background table */
     /* table inside a table */
     --headtabletable: #E6E6E6; /* headline table in a table */
-    --backtabletable: #1C1C1C; /* background table in a table */
+    --backtabletable: #131313; /* background table in a table */
 
 /*bootstrap*/
   --bstext: #E6E6E6;
@@ -284,7 +299,6 @@
 
 /* scrollbar */
     --scbarcolor: #4D4D4D #131313; /* scrollbarcolor, background foreground, the following colors are not important */
-    --scbarback: #131313; /* backgroundcolor */
     --scbarborder: #6D6D6D; /* bordercolor */
     --scbar: #4D4D4D; /* scrollbar */
     --scbarhover: #5D5D5D; /* scrollbar */
@@ -312,13 +326,13 @@
     --nv3daxis: #E6E6E6;
 
     /* rgb */
-    --rgbhalfhighlite: rgba(255,255,255,0,5);
-    --rgbshadowdark: rgba(0,0,0,.1);
+    --rgb50: rgba(255,255,255,0,5);
+    --rgbshadowdark: rgba(255,255,255,.1);
     --bootstrapshadow: rgba(204, 204, 204, 0.2);
-    --boxshadow: rgba(255,255,255,0.075);
-    --btnshadow1: rgba(25, 57, 183, 0.075);
-    --btnshadow2: rgba(25, 57, 183, 0.6);
-    --progresshadow: rgb(217, 217, 217);
-    --progresshadow2: rgb(255, 255, 255,0.1);
-    --mozshadow: rgba(234, 234, 234, 0.5)
+    --boxshadow: inset 0 1px 1px rgba(255,255,255,0.075);
+    --btnshadow1: inset 0 1px 1px rgba(25, 57, 183, 0.075);
+    --btnshadow2: 0 0 8px rgba(25, 57, 183, 0.6);
+    --progresshadow: inset 0px 1px 2px 1px rgb(217, 217, 217);
+    --progresshadow2: 0 5px 10px rgb(255, 255, 255, 0.1);
+    --mozshadow: 2px 2px 1px 0px rgba(234, 234, 234, 0.5)
 }

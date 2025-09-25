@@ -14,19 +14,17 @@
   background-color: transparent;
   border-bottom: none;
   border-left: 1px solid var(--tbborder);
-
 }
 
 .tabulator .tabulator-header .tabulator-col {
-  color: var(--tbheadtext);
-  background-color: var(--tbheadback);
   border-right: 1px solid var(--tbborder);
+  background-color: var(--tbheadback);
+  color: var(--tbheadtext);
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
-  background-color: var(--tbheadback);
+  background-color: var(--tbheadbackhover);
 }
-
 .tabulator .tabulator-headers {
   height: 100% !important; /* make sure the border below appears */
   border-bottom: 1px solid var(--tbborder);
@@ -35,7 +33,7 @@
 /*------------*/
 /* theme: body */
 .tabulator .tabulator-tableholder .tabulator-table {
-  background-color: transparent;
+  background-color: transportant;
   border-left: 1px solid var(--tbbordertable);
 }
 
@@ -65,7 +63,7 @@
 }
 
 .tabulator .tabulator-tableholder {
-  background-color: transparent;
+  background-color: var(--tbfback);
 }
 
 .tabulator-row.tabulator-selected {
@@ -122,7 +120,7 @@
 /* theme: footer */
 .tabulator .tabulator-footer {
   border-top: none;
-  background-color: transparent;
+  background-color: var(--tbfback);
 }
 
 .tabulator .tabulator-footer .tabulator-page {
@@ -156,7 +154,7 @@
   cursor: default;
 }
 .tabulator-page-counter {
-  color: var(--tftext);
+  color: var(--tbheadtext);
 }
 
 .tabulator .tabulator-footer .tabulator-paginator {
@@ -166,6 +164,7 @@
 /* end of main theming elements */
 .tabulator-paginator {
   flex: 0 !important;
+  background-color: var(--tbfback);
 }
 
 .tabulator-page-counter {
