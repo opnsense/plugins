@@ -55,7 +55,7 @@ function miniupnpd_services()
 
     $pconfig = [];
     $pconfig['name'] = 'miniupnpd';
-    $pconfig['description'] = gettext('Universal Plug and Play');
+    $pconfig['description'] = gettext('UPnP IGD & PCP/NAT-PMP');
     $pconfig['php']['restart'] = ['miniupnpd_stop', 'miniupnpd_start'];
     $pconfig['php']['start'] = ['miniupnpd_start'];
     $pconfig['php']['stop'] = ['miniupnpd_stop'];
@@ -131,7 +131,7 @@ function miniupnpd_configure_do($verbose = false)
         return;
     }
 
-    service_log('Starting UPnP service...', $verbose);
+    service_log('Starting UPnP IGD & PCP/NAT-PMP service...', $verbose);
 
     $upnp_config = $config['installedpackages']['miniupnpd']['config'][0];
 
@@ -142,7 +142,7 @@ function miniupnpd_configure_do($verbose = false)
     }
 
     $config_text = "ext_ifname={$ext_ifname}\n";
-    $config_text .= "port=2189\n";
+    $config_text .= "http_port=2189\n";
 
     $ifaces_active = '';
 
@@ -198,7 +198,13 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            $config_text .= "secure_mode=yes\n";
+            if (!empty($upnp_config['allow_third_party_mapping'])) {
+                $config_text .= "secure_mode=no\n";
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            } else {
+                $config_text .= "secure_mode=yes\n";
+                $config_text .= "pcp_allow_thirdparty=no\n";
+            }
 
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {
@@ -234,17 +240,16 @@ function miniupnpd_configure_do($verbose = false)
             }
 
             if (!empty($upnp_config['permdefault'])) {
-                $config_text .= "deny 0-65535 0.0.0.0/0 0-65535\n";
+                $config_text .= "deny 1-65535 0.0.0.0/0 1-65535\n";
             }
 
             /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
-            /* configure lifetimes to force periodic expire */
-            $config_text .= "clean_ruleset_interval=600\n";
-            $config_text .= "min_lifetime=120\n";
-            $config_text .= "max_lifetime=86400\n";
+            # When building with IGDv2, infinite (IGDv1 only) lease time port maps are reduced to 7d
+            # following the IGDv2 standard. Disabling it at runtime allows IGDv2 incompatible clients
+            $config_text .= "force_igd_desc_v1=yes\n";
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
