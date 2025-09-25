@@ -305,6 +305,9 @@
     --scbarbutton: #4D4D4D; /* scrollbar */
 
 /* unbound */
+    --unbback1: #000000; /* background 1 */
+    --unbback2: #1C1C1C; /* background 2 */
+    --unbmaintext: #E6E6E6; /* main text */
     --unbtext: #F5F5F5; /* unbound query text color */
     --unbtexterror: #EE3040; /* unbound query text color */
     --unbsuccess: rgba(16,175,66,0.4); /* unbound detail background success */

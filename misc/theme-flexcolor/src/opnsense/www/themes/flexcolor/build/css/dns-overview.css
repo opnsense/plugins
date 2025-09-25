@@ -1,7 +1,7 @@
 @import url('default_scheme.css');
 .tab-content {
     padding: 10px;
-    border-top: 1px solid var(--text);
+    border-top: 1px solid var(--unbmaintext);
 }
 
 .banner {
@@ -10,7 +10,7 @@
 
 .stats-element {
     height: 5em;
-    background: var(--sbg);
+    background: var(--unbback2);
     overflow: hidden;
     display: flex;
     justify-content: flex-start;
@@ -24,7 +24,7 @@
     height: auto;
     width: 50%;
     object-fit:cover;
-    background: var(--sbg);
+    background: var(--unbback2);
     border-radius: 0 2em 2em 0 / 0 3em 3em 0;
     box-shadow: 3px 5px 1px 3px var(--unbshadow);
 }
@@ -52,7 +52,7 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: var(--text);
+    color: var(--unbmaintext);
 }
 
 .stats-inner-text {
@@ -66,19 +66,19 @@
 #bannersub {
     text-align: center;
     margin: 5px;
-    color: var(--text);
+    color: var(--unbmaintext);
 }
 
 .list-group-wrapper {
     margin: 0px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: var(--pbg);
+    background-color: var(--unbback1);
 }
 
 .list-item-domain {
     height: 2.5em;
-    background-color: var(--sbg);
+    background-color: var(--unbback2);
     color: var(--info);
 }
 
@@ -103,14 +103,14 @@
 }
 
 .odd-bg {
-    background: var(--sbg);
+    background: var(--unbback2);
 }
 
 .top-item {
     display: flex;
     white-space: nowrap;
-    background-color: var(--sbg);
-    color: var(--text);
+    background-color: var(--unbback2);
+    color: var(--unbmaintext);
 }
 
 .group-p {
@@ -123,7 +123,7 @@
 .counter {
     position: relative;
     top: -3px;
-    color: var(--text);
+    color: var(--unbmaintext);
     font-size: 14px;
     line-height: 1.4;
     flex: 1;
@@ -149,7 +149,7 @@
     border-top: 1px solid var(--primary);
     border-left: 1px solid var(--primary);
     border-right: 1px solid var(--primary);
-    border-bottom: 1px solid var(--pbg);
+    border-bottom: 1px solid var(--unbback1);
 }
 
 .query-success {
@@ -190,7 +190,7 @@
 }
 
 .tag a {
-  color: var(--text);
+  color: var(--unbmaintext);
   cursor: pointer;
   opacity: 0.9;
 }
@@ -200,7 +200,7 @@
 }
 
 .tag a fa-times {
-  color: var(--text);
+  color: var(--unbmaintext);
   margin-bottom: 2px;
 }
 
