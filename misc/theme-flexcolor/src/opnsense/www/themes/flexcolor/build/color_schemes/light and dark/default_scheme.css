@@ -14,7 +14,9 @@
     --sbg: #DBE8F9; /* second background #FAF9F6*/
     --sbgtext: #242D38; /*second background hover */
     --stdborder: #647D9B; /* standrad border */
-    --badgeback: #A2B1C3; /* badge background & progress-bar & blockquote*/
+    --badgeback: #A2B1C3; /* badge background & blockquote */
+    --progressbar: #364454; /* progress-bar */
+    --token: #FA6121; /* background token */
 
 /* page */
     --pagetext: #F2F7FD; /* text color page */

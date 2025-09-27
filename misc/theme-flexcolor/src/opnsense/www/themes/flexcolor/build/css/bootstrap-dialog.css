@@ -39,10 +39,10 @@
   opacity: 1;
 }
 .bootstrap-dialog.type-default .modal-header {
-  background-color: var(--pbg);
+  background-color: var(--sbg);
 }
 .bootstrap-dialog.type-default .bootstrap-dialog-title {
-  color: #333;
+  color: var(--sbgtext);
 }
 .bootstrap-dialog.type-info .modal-header {
   border-bottom: 3px solid var(--info);
