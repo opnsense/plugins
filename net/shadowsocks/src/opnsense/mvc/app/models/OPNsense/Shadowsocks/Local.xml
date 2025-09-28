@@ -33,7 +33,7 @@
         </localport>
         <password type="TextField"/>
         <cipher type="OptionField">
-            <Default>aes-256-cfb</Default>
+            <Default>aes-256-gcm</Default>
             <Required>Y</Required>
             <OptionValues>
                 <2022-blake3-aes-256-gcm>2022-BLAKE3-AES-256-GCM</2022-blake3-aes-256-gcm>
