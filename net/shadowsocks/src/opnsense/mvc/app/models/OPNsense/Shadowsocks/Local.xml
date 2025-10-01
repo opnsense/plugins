@@ -44,6 +44,13 @@
                 <blake3-chacha8-poly1305 value="2022-blake3-chacha8-poly1305">2022-BLAKE3-ChaCha8-Poly1305</blake3-chacha8-poly1305>
                 <chacha20-ietf-poly1305>ChaCha20-IETF-Poly1305</chacha20-ietf-poly1305>
                 <none>NONE</none>
+				<aes-256-cfb>AES-256-CFB (DEPRECATED)</aes-256-cfb>
+				<aes-256-ctr>AES-256-CTR (DEPRECATED)</aes-256-ctr>
+                <aes-192-cfb>AES-192-CFB (DEPRECATED)</aes-192-cfb>
+                <aes-192-gcm>AES-192-GCM (DEPRECATED)</aes-192-gcm>
+                <aes-192-ctr>AES-192-CTR (DEPRECATED)</aes-192-ctr>
+                <aes-128-cfb>AES-128-CFB (DEPRECATED)</aes-128-cfb>
+				<aes-128-ctr>AES-128-CTR (DEPRECATED)</aes-128-ctr>
             </OptionValues>
         </cipher>
     </items>
