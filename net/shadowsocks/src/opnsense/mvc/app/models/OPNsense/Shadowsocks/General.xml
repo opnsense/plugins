@@ -31,14 +31,14 @@
             <Default>aes-256-gcm</Default>
             <Required>Y</Required>
             <OptionValues>
-                <blake3-aes-256-gcm value="2022-blake3-aes-256-gcm">2022-BLAKE3-AES-256-GCM</blake3-aes-256-gcm>
+				<blake3-aes-256-gcm value="2022-blake3-aes-256-gcm">2022-BLAKE3-AES-256-GCM</blake3-aes-256-gcm>
                 <aes-256-gcm>AES-256-GCM</aes-256-gcm>
 				<blake3-aes-128-gcm value="2022-blake3-aes-128-gcm">2022-BLAKE3-AES-128-GCM</blake3-aes-128-gcm>
                 <aes-128-gcm>AES-128-GCM</aes-128-gcm>
 				<blake3-chacha20-poly1305 value="2022-blake3-chacha20-poly1305">2022-BLAKE3-ChaCha20-Poly1305</blake3-chacha20-poly1305>
                 <blake3-chacha8-poly1305 value="2022-blake3-chacha8-poly1305">2022-BLAKE3-ChaCha8-Poly1305</blake3-chacha8-poly1305>
                 <chacha20-ietf-poly1305>ChaCha20-IETF-Poly1305</chacha20-ietf-poly1305>
-                <none>NONE</none>
+                <none>NONE (INSECURE)</none>
 				<aes-256-cfb>AES-256-CFB (DEPRECATED)</aes-256-cfb>
 				<aes-256-ctr>AES-256-CTR (DEPRECATED)</aes-256-ctr>
                 <aes-192-cfb>AES-192-CFB (DEPRECATED)</aes-192-cfb>
