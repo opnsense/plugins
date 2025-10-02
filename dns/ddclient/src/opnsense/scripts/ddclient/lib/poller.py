@@ -63,9 +63,14 @@ class AccountFactory:
                 return handler(account)
 
     def known_services(self):
-        all_services = []
+        all_services = {}
         for handler in self._account_classes:
-            all_services += handler.known_services()
+            data = handler.known_services()
+            if type(data) is dict:
+                all_services.update(data)
+            else:
+                for item in data:
+                    all_services[item] = item
         return all_services
 
 

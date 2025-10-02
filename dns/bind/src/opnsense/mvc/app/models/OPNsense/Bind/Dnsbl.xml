@@ -4,7 +4,7 @@
     <version>1.0.5</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <type type="OptionField">
@@ -41,19 +41,19 @@
             <Required>N</Required>
         </whitelists>
         <forcesafegoogle type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </forcesafegoogle>
         <forcesafeduckduckgo type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </forcesafeduckduckgo>
         <forcesafeyoutube type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </forcesafeyoutube>
         <forcestrictbing type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </forcestrictbing>
     </items>

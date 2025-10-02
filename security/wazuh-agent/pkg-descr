@@ -8,6 +8,15 @@ solution.
 Plugin Changelog
 ================
 
+1.2
+
+* Implement options to change server ports (contributed by 999eagle)
+* Make agent_name configurable (contributed by Andy Binder)
+
+1.1
+
+* Add advanced option to specify transport protocol
+
 1.0
 
 * Initial version

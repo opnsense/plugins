@@ -82,7 +82,7 @@ class Azure(BaseAccount):
 
     @staticmethod
     def known_services():
-        return  Azure._services
+        return  {'azure': 'Microsoft Azure'}
 
     @staticmethod
     def match(account):

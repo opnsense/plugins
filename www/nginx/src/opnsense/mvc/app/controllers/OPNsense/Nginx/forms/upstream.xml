@@ -24,6 +24,26 @@
     <help>If you enable the proxy protocol, an upstream proxy or server will get the client IP and the server port before the real traffic is sent.</help>
   </field>
   <field>
+    <id>upstream.keepalive</id>
+    <label>Keepalive</label>
+    <type>text</type>
+    <help>Activates the connections cache for upstream server and sets the max number of idle connections that are preserved in the cache of each worker process. Leave blank or set to 0 to disable. Keepalive support should be enabled at Location settings also.</help>
+  </field>
+  <field>
+    <id>upstream.keepalive_requests</id>
+    <label>Keepalive requests</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Sets the maximum number of requests that can be served through one keepalive connection. NGINX default is 1000.</help>
+  </field>
+  <field>
+    <id>upstream.keepalive_timeout</id>
+    <label>Keepalive timeout</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Sets a timeout in seconds during which an idle keepalive connection to an upstream server will stay open. NGINX default is 75s.</help>
+  </field>
+  <field>
     <id>upstream.host_port</id>
     <label>Host header port</label>
     <type>text</type>

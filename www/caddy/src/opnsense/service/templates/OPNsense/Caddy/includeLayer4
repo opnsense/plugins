@@ -1,0 +1,177 @@
+{#
+#  This file sets up layer4 routing support.
+#  There are two contexts: "listener_wrappers" and "global"
+#
+#  "listener_wrappers" multiplexes on OSI Layer 7 on the default HTTP and HTTPS ports and requires a traffic matcher since
+#  otherwise the "reverse_proxy" would stop receiving any requests. The "any" Layer 7 matcher is not allowed here.
+#  This context allows for matching domains via SNI and route them without terminating TLS.
+#
+#  "global" can set up custom ports and also route any OSI Layer 4 TCP/UDP traffic without a matcher.
+#  They will be grouped under the same protocol/port combination
+#  to allow multiple Layer 7 matchers inside the scope of the same Layer 4 matcher.
+#  This context is for advanced usecases where raw TCP/UDP traffic on custom ports should be proxied or load balanced.
+#}
+
+{% set unsorted_layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
+
+{# Ensure that 'Sequence' is present and converted to an integer in each item #}
+{% for item in unsorted_layer4_configs %}
+    {% set _ = item.update({'Sequence': item.get('Sequence', '0') | int}) %}
+{% endfor %}
+
+{# Sort the configurations based on 'Sequence' #}
+{% set layer4_configs = unsorted_layer4_configs | sort(attribute='Sequence') %}
+
+{% macro define_proxy(layer4) %}
+    {% if layer4.TerminateTls|default("0") == "1" %}
+    tls
+    {% endif %}
+    proxy {% for domain in layer4.ToDomain.split(',') %}
+        {% set is_ipv6 = (':' in domain) %}
+        {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
+    {% endfor %} {
+    {% if layer4.lb_policy|default("") %}
+        lb_policy {{ layer4.lb_policy }}
+    {% endif %}
+    {% if layer4.PassiveHealthFailDuration|default("") %}
+        fail_duration {{ layer4.PassiveHealthFailDuration }}s
+    {% endif %}
+    {% if layer4.PassiveHealthMaxFails|default("") %}
+        max_fails {{ layer4.PassiveHealthMaxFails }}
+    {% endif %}
+    {% if layer4.ProxyProtocol %}
+        proxy_protocol {{ layer4.ProxyProtocol }}
+    {% endif %}
+    }
+{% endmacro %}
+
+{% macro configure_proxy(layer4) %}
+    {% set content %}
+        {% if layer4.RemoteIp %}
+            {% set ip_list = layer4.RemoteIp.split(',') %}
+            subroute {
+                @allowed_ips remote_ip {{ ip_list|join(' ') }}
+                route @allowed_ips {
+                    {{ define_proxy(layer4) }}
+                }
+            }
+        {% else %}
+            {{ define_proxy(layer4) }}
+        {% endif %}
+    {% endset %}
+    {{ content|trim }}
+{% endmacro %}
+
+{% set grouped_configs = {} %}
+{% for layer4 in layer4_configs %}
+    {% if layer4.FromPort and layer4.Protocol and layer4.enabled == "1"  %}
+        {% set key = layer4.Protocol ~ '/:' ~ layer4.FromPort %}
+        {% if not key in grouped_configs %}
+            {% set _ = grouped_configs.update({key: []}) %}
+        {% endif %}
+        {% set _ = grouped_configs[key].append(layer4) %}
+    {% endif %}
+{% endfor %}
+
+{% macro handle_special_matchers(layer4) %}
+    {% set invert_prefix = 'not ' if layer4.InvertMatchers == '1' else '' %}
+    {% if layer4.Matchers == 'httphost' %}
+        {{ invert_prefix }}http host {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'tlssni' %}
+        {{ invert_prefix }}tls sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'quicsni' %}
+        {{ invert_prefix }}quic sni {{ layer4.FromDomain.replace(',', ' ') }}
+    {% elif layer4.Matchers == 'openvpn' and layer4.FromOpenvpnModes %}
+        {% for mode in layer4.FromOpenvpnModes.split(',') %}
+            {% set mode_clean = mode.strip() %}
+            {% if layer4.FromOpenvpnStaticKey %}
+                {% set key_list = layer4.FromOpenvpnStaticKey.split(',') %}
+            {% endif %}
+            {% if mode_clean.startswith('auth') %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {% set digest = 'sha256' if 'sha256' in mode_clean else 'sha512' %}
+                {% set direction = 'normal' if 'normal' in mode_clean else 'inverse' %}
+                {{ invert_prefix }}openvpn {
+                    modes auth
+                    auth_digest {{ digest }}
+                {% if layer4.FromOpenvpnStaticKey %}
+                    group_key_direction {{ direction }}
+                    {% for key_uuid in key_list %}
+                    group_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
+                    {% endfor %}
+                {% endif %}
+                }
+            {% elif mode_clean == 'crypt' %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {{ invert_prefix }}openvpn {
+                    modes crypt
+                {% if layer4.FromOpenvpnStaticKey %}
+                    {% for key_uuid in key_list %}
+                    group_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
+                    {% endfor %}
+                {% endif %}
+                }
+            {% elif mode_clean == 'crypt2_client' %}
+                {# Multiple keys are allowed for crypt2_client #}
+                {{ invert_prefix }}openvpn {
+                    modes crypt2
+                    {% if layer4.FromOpenvpnStaticKey %}
+                        {% for key_uuid in key_list %}
+                    client_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
+                        {% endfor %}
+                    {% endif %}
+                }
+            {% elif mode_clean == 'crypt2_server' %}
+                {% if key_list|length > 1 %}
+                    {% set key_list = key_list[:1] %}
+                {% endif %}
+                {{ invert_prefix }}openvpn {
+                    modes crypt2
+                    {% if layer4.FromOpenvpnStaticKey %}
+                        {% for key_uuid in key_list %}
+                    server_key_file /usr/local/etc/caddy/certificates/{{ key_uuid.strip() }}.key
+                        {% endfor %}
+                    {% endif %}
+                }
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {{ invert_prefix }}{{ layer4.Matchers }}
+    {% endif %}
+{% endmacro %}
+
+{% if context_var == 'listener_wrappers' %}
+    {% for layer4 in layer4_configs %}
+        {% if layer4.enabled == "1" and layer4.Type == 'listener_wrappers' %}
+            {% if layer4.Matchers != 'any' %}
+                @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
+                route @{{ layer4['@uuid'] }} {
+                    {{ configure_proxy(layer4) }}
+                }
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% elif context_var == 'global' %}
+    {% for key, layers in grouped_configs.items() %}
+        {{ key }} {
+            {% for layer4 in layers %}
+                {% if layer4.enabled == "1" and layer4.Type == 'global' %}
+                    {% if layer4.Matchers != 'any' %}
+                        @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
+                        route @{{ layer4['@uuid'] }} {
+                            {{ configure_proxy(layer4) }}
+                        }
+                    {% else %}
+                        route {
+                            {{ configure_proxy(layer4) }}
+                        }
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        }
+    {% endfor %}
+{% endif %}

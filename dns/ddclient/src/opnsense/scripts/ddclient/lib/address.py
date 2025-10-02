@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2022-2023 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2022-2025 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -26,16 +26,20 @@
 import subprocess
 import re
 import ipaddress
-
+from urllib.parse import urlparse
 
 checkip_service_list = {
-  'dyndns': '%s://checkip.dyndns.org/',
+  'akamai': '%s://whatismyip.akamai.com',
+  'akamai-ipv4': '%s://ipv4.whatismyip.akamai.com',
+  'akamai-ipv6': '%s://ipv6.whatismyip.akamai.com',
+  'cloudflare': '%s://one.one.one.one/cdn-cgi/trace',
+  'cloudflare-ipv4': '%s://1.1.1.1/cdn-cgi/trace',
+  'cloudflare-ipv6': '%s://[2606:4700:4700::1111]/cdn-cgi/trace',
+  'dynu-ipv4': '%s://ipcheck.dynu.com/',
+  'dynu-ipv6': '%s://ipcheckv6.dynu.com/',
   'freedns': '%s://freedns.afraid.org/dynamic/check.php',
-  'googledomains': '%s://domains.google.com/checkip',
   'he': '%s://checkip.dns.he.net/',
   'icanhazip': '%s://icanhazip.com/',
-  'ip4only.me': '%s://ip4only.me/api/',
-  'ip6only.me': '%s://ip6only.me/api/',
   'ipify-ipv4': '%s://api.ipify.org/',
   'ipify-ipv6': '%s://api6.ipify.org/',
   'loopia': '%s://dns.loopia.se/checkip/checkip.php',
@@ -48,27 +52,46 @@ checkip_service_list = {
 }
 
 
-def extract_address(txt):
+def extract_address(host, txt):
     """ Extract first IPv4 or IPv6 address from provided string
         :param txt: text blob
         :return: str
     """
-    for regexp in [r'[^a-fA-F0-9\:]', r'[^F0-9\.]']:
-        for line in re.sub(regexp, ' ', txt).split():
-            if line.count('.') == 3 or line.count(':') >= 2:
+    for regexp in [r'(?:\d{1,3}\.){3}\d{1,3}', r'([a-f0-9:]+:+)+[a-f0-9]+']:
+        matches = re.finditer(regexp, txt)
+        for match in matches:
+            if match.group() != host:
                 try:
-                    ipaddress.ip_address(line)
-                    return line
+                    ipaddress.ip_address(match.group())
+                    return match.group()
                 except ValueError:
                     pass
     return ""
 
 
-def checkip(service, proto='https', timeout='10', interface=None):
+def transform_ip(ip, ipv6host=None):
+    """ Changes ipv6 addresses if interface identifier is given
+        :param ip: ip address
+        :param ipv6host: 64 bit interface identifier
+        :return ipaddress.IPv4Address|ipaddress.IPv6Address
+        :raises ValueError: If the input can not be converted to an IPaddress
+    """
+    if ipv6host and ip.find(':') > 0:
+        # extract 64 bit long prefix and add ipv6host [64]bits
+        return ipaddress.ip_address(
+            ipaddress.ip_network("%s/64" % ip, strict=False).network_address.exploded[0:19] +
+            ipaddress.ip_address(ipv6host).exploded[19:]
+        )
+    else:
+        return ipaddress.ip_address(ip)
+
+
+def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=None):
     """ find ip address using external services defined in checkip_service_list
         :param proto: protocol
         :param timeout: timeout in seconds
         :param interface: bind to interface
+        :param dynipv6host: optional partial ipv6 address
         :return: str
     """
     if service.startswith('web_'):
@@ -79,8 +102,15 @@ def checkip(service, proto='https', timeout='10', interface=None):
         if interface is not None:
             params.append("--interface")
             params.append(interface)
-        params.append(checkip_service_list[service] % proto)
-        return extract_address(subprocess.run(params, capture_output=True, text=True).stdout)
+        url = checkip_service_list[service] % proto
+        params.append(url)
+        extracted_address = extract_address(urlparse(url).hostname,
+            subprocess.run(params, capture_output=True, text=True).stdout)
+        try:
+            return str(transform_ip(extracted_address, dynipv6host))
+        except ValueError:
+            # invalid address
+            return ""
     elif service in ['if', 'if6'] and interface is not None:
         # return first non private IPv[4|6] interface address
         ifcfg = subprocess.run(['/sbin/ifconfig', interface], capture_output=True, text=True).stdout
@@ -89,7 +119,7 @@ def checkip(service, proto='https', timeout='10', interface=None):
                 parts = line.split()
                 if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6'):
                     try:
-                        address = ipaddress.ip_address(parts[1])
+                        address = transform_ip(parts[1], dynipv6host)
                         if address.is_global:
                             return str(address)
                     except ValueError:

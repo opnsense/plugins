@@ -42,9 +42,8 @@ class ServiceField extends BaseListField
             if ((string)$this->getParentModel()->general->backend == 'opnsense') {
                 $supported = json_decode((new Backend())->configdRun("ddclient opnbackend supported"), true);
                 if (!empty($supported)) {
-                    foreach ($supported as $srv) {
-                        self::$internalCacheOptionList[$srv] = $srv;
-                    }
+                    self::$internalCacheOptionList = $supported;
+                    asort(self::$internalCacheOptionList, SORT_NATURAL | SORT_FLAG_CASE);
                 }
             }
         }

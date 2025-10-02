@@ -4,143 +4,143 @@
     <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <fc_enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </fc_enabled>
         <enabletcp type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </enabletcp>
         <maxthreads type="IntegerField">
-            <default>10</default>
+            <Default>10</Default>
             <Required>N</Required>
         </maxthreads>
         <maxqueue type="IntegerField">
-            <default>100</default>
+            <Default>100</Default>
             <Required>N</Required>
         </maxqueue>
         <idletimeout type="IntegerField">
-            <default>30</default>
+            <Default>30</Default>
             <Required>N</Required>
         </idletimeout>
         <maxdirrecursion type="IntegerField">
-            <default>20</default>
+            <Default>20</Default>
             <Required>N</Required>
         </maxdirrecursion>
         <followdirsym type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </followdirsym>
         <followfilesym type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
 	    <Required>N</Required>
 	</followfilesym>
         <disablecache type="TextField">
-            <default>0</default>
+            <Default>0</Default>
 	    <Required>N</Required>
 	</disablecache>
         <scanpe type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
 	    <Required>N</Required>
 	</scanpe>
         <scanelf type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanelf>
         <detectbroken type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </detectbroken>
         <scanole2 type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanole2>
         <ole2blockmarcros type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ole2blockmarcros>
         <scanpdf type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanpdf>
         <scanswf type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanswf>
         <scanxmldocs type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanxmldocs>
         <scanhwp3 type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanhwp3>
         <scanmailfiles type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanmailfiles>
         <scanhtml type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanhtml>
         <scanarchive type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </scanarchive>
         <arcblockenc type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </arcblockenc>
         <maxscansize type="TextField">
-            <default>100M</default>
+            <Default>100M</Default>
             <Required>N</Required>
         </maxscansize>
 	<maxfilesize type="TextField">
-            <default>25M</default>
+            <Default>25M</Default>
             <Required>N</Required>
         </maxfilesize>
 	<maxrecursion type="IntegerField">
-            <default>16</default>
+            <Default>16</Default>
             <Required>N</Required>
         </maxrecursion>
 	<maxfiles type="IntegerField">
-            <default>10000</default>
+            <Default>10000</Default>
             <Required>N</Required>
 	</maxfiles>
         <logverbose type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </logverbose>
         <fc_logverbose type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </fc_logverbose>
         <fc_databasemirror type="TextField">
-            <default>database.clamav.net</default>
+            <Default>database.clamav.net</Default>
             <Required>Y</Required>
         </fc_databasemirror>
         <fc_timeout type="TextField">
-            <default>60</default>
+            <Default>60</Default>
             <Required>Y</Required>
         </fc_timeout>
         <fc_malwareexpert type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </fc_malwareexpert>
         <fc_blurl type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </fc_blurl>
         <fc_jurlbla type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </fc_jurlbla>
         <fc_bofhland type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </fc_bofhland>
     </items>

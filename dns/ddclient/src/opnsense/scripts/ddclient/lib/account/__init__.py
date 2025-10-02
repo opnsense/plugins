@@ -61,7 +61,7 @@ class BaseAccount:
 
     @staticmethod
     def known_services():
-        return []
+        return {}
 
     @property
     def id(self):
@@ -118,7 +118,8 @@ class BaseAccount:
             service = self.settings.get('checkip'),
             proto = 'https' if self.settings.get('force_ssl', False) else 'http',
             timeout = str(self.settings.get('checkip_timeout', '10')),
-            interface = self.settings['interface'] if self.settings.get('interface' ,'').strip() != '' else None
+            interface = self.settings['interface'] if self.settings.get('interface' ,'').strip() != '' else None,
+            dynipv6host = self.settings['dynipv6host'] if self.settings.get('dynipv6host' ,'').strip() != '' else None
         )
 
         if not self._current_address:

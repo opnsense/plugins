@@ -68,9 +68,11 @@ $server = $_SERVER['argv'][2];
 $nginx = new Nginx();
 
 $result = [];
-// special case: the global error log
+// special cases: the global error log and the perm_ban access log
 if ($server == 'global') {
     $result = list_logfiles('error.log');
+} elseif ($server == 'perm_ban') {
+    $result = list_logfiles('perm_ban.access.log');
 } else {
     switch ($mode) {
         case 'error':

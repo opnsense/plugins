@@ -11,7 +11,7 @@
                 <id>nginx.general.ban_ttl</id>
                 <label>Autoblock TTL (minutes)</label>
                 <type>text</type>
-                <help>Set autoblock lifetime in minutes. Set to 0 for infinite.</help>
+                <help>Set autoblock lifetime in minutes. 72 hours by default. Set to 0 for infinite. Please note that setting this to 0 may result in gradual system slowdown and the need to manually clear the entries.</help>
                 <advanced>true</advanced>
             </field>
         </subtab>
@@ -31,7 +31,7 @@
                 <advanced>true</advanced>
             </field>
             <field>
-                <id>nginx.http.enabled</id>
+                <id>nginx.http.sendfile</id>
                 <label>Enable sendfile</label>
                 <type>checkbox</type>
                 <help>Enable sendfile support (faster).</help>
@@ -56,7 +56,7 @@
             </field>
             <field>
                 <id>nginx.http.server_names_hash_bucket_size</id>
-                <label>Hash Bucket Size</label>
+                <label>Server Names Hash Bucket Size</label>
                 <type>text</type>
                 <advanced>true</advanced>
             </field>
@@ -65,6 +65,32 @@
                 <label>Server Names Hash Max Size</label>
                 <type>text</type>
                 <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.variables_hash_bucket_size</id>
+                <label>Variables Hash Bucket Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.variables_hash_max_size</id>
+                <label>Variables Hash Max Size</label>
+                <type>text</type>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>nginx.http.bots_ua</id>
+                <label>Bots User Agents</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>List of bot user agents that will be used in bot protection. Uses a well known list by default.</help>
+            </field>
+            <field>
+                <id>nginx.http.log_perm_ban</id>
+                <label>Log Banned Requests</label>
+                <type>checkbox</type>
+                <help>Log requests that led to auto-blocking (bots and honeypots).</help>
             </field>
             <field>
                 <id>nginx.http.ban_response</id>

@@ -28,6 +28,9 @@
 
 import sys
 import json
+import os
+import subprocess
+
 
 # Function to show the Caddy configuration from a JSON file
 def show_caddy_config():
@@ -44,9 +47,11 @@ def show_caddy_config():
     except FileNotFoundError:
         print(json.dumps({"error": "File not found", "message": "Caddy autosave.json configuration file not found"}))
     except json.JSONDecodeError:
-        print(json.dumps({"error": "Invalid JSON", "message": "Error decoding the Caddy autosave.json, the file is not valid JSON"}))
+        print(json.dumps(
+            {"error": "Invalid JSON", "message": "Error decoding the Caddy autosave.json, the file is not valid JSON"}))
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
+
 
 def show_caddyfile():
     caddyfile_path = "/usr/local/etc/caddy/Caddyfile"
@@ -61,25 +66,25 @@ def show_caddyfile():
     except Exception as e:
         print(json.dumps({"error": "General Error", "message": str(e)}))
 
+
 # Action handler
-def perform_action(action):
+def perform_action(cmd_action):
     actions = {
         "config": show_caddy_config,
         "caddyfile": show_caddyfile
-        # Additional actions can be added here in the same format.
     }
 
-    action_func = actions.get(action)
+    action_func = actions.get(cmd_action)
     if action_func:
         action_func()
     else:
         # Output error details in JSON format if action is unknown
-        print(json.dumps({"error": "Unknown Action", "message": f"Unknown action: {action}"}))
+        print(json.dumps({"error": "Unknown Action", "message": f"Unknown action: {cmd_action}"}))
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        action = sys.argv[1]
-        perform_action(action)
+        perform_action(sys.argv[1])
     else:
         # Output error details in JSON format if no action is specified
         print(json.dumps({"error": "No Action Specified", "message": "No action specified"}))

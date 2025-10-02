@@ -111,7 +111,7 @@
     <field>
         <id>general.recursion</id>
         <label>Recursion</label>
-        <type>dropdown</type>
+        <type>select_multiple</type>
         <help>Define an ACL where you allow which clients can resolve via this service. Usually use your local LAN.</help>
     </field>
     <field>

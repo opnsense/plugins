@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -94,17 +94,17 @@ class LeAccount extends LeCommon
 
         // Check if account key already exists both in filesystem and in config
         if (!is_file($account_key_file) || empty((string)$this->config->key)) {
-            LeUtils::log_debug('creating account key for ' . (string)$this->config->name, $this->debug);
+            LeUtils::log_debug('creating account key for ' . (string)$this->config->name);
 
             // Check if we have an account key in our configuration
             if (!empty((string)$this->config->key)) {
-                LeUtils::log_debug('exporting existing account key to filesystem for ' . (string)$this->config->name, $this->debug);
+                LeUtils::log_debug('exporting existing account key to filesystem for ' . (string)$this->config->name);
                 // Write key to disk
                 file_put_contents($account_key_file, (string)base64_decode((string)$this->config->key));
                 chmod($account_key_file, 0600);
                 return true;
             } else {
-                LeUtils::log_debug('generating a new account key for ' . (string)$this->config->name, $this->debug);
+                LeUtils::log_debug('generating a new account key for ' . (string)$this->config->name);
 
                 // Preparation to run acme client
                 $proc_env = $this->acme_env; // add env variables
@@ -116,7 +116,7 @@ class LeAccount extends LeCommon
                   . implode(' ', $this->acme_args) . ' '
                   . LeUtils::execSafe('--accountkeylength %s', self::ACME_ACCOUNT_KEY_LENGTH) . ' '
                   . LeUtils::execSafe('--accountconf %s', $account_conf_file);
-                LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+                LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
                 // Run acme.sh command
                 $result = LeUtils::run_shell_command($acmecmd, $proc_env);
@@ -131,7 +131,7 @@ class LeAccount extends LeCommon
                 // Read account key file
                 $account_key_content = @file_get_contents($account_key_file);
                 if (empty($account_key_content) || ($account_key_content == false)) {
-                    LeUtils::log_error("unable to read account key from file ${account_key_file}");
+                    LeUtils::log_error("unable to read account key from file {$account_key_file}");
                     $this->setStatus(500);
                     return false;
                 }
@@ -156,7 +156,7 @@ class LeAccount extends LeCommon
                     LeUtils::log_error('failed to save account key for ' . (string)$this->config->name);
                     return false;
                 }
-                LeUtils::log_debug('successfully created account key for ' . (string)$this->config->name, $this->debug);
+                LeUtils::log_debug('successfully created account key for ' . (string)$this->config->name);
                 return true;
             }
         }
@@ -194,11 +194,11 @@ class LeAccount extends LeCommon
 
         // Check if account is already registered
         if (!($this->isRegistered())) {
-            LeUtils::log_debug('starting account registration for ' . (string)$this->config->name, $this->debug);
+            LeUtils::log_debug('starting account registration for ' . (string)$this->config->name);
 
             // Check if ACME External Account Binding (EAB) is enabled
             if (!empty((string)$this->config->eab_kid) && !empty((string)$this->config->eab_hmac)) {
-                LeUtils::log_debug('enabling ACME EAB for this account', $this->debug);
+                LeUtils::log_debug('enabling ACME EAB for this account');
                 $this->acme_args[] = LeUtils::execSafe('--eab-kid %s', $this->config->eab_kid);
                 $this->acme_args[] = LeUtils::execSafe('--eab-hmac-key %s', $this->config->eab_hmac);
             }
@@ -212,7 +212,7 @@ class LeAccount extends LeCommon
               . '--registeraccount '
               . implode(' ', $this->acme_args) . ' '
               . LeUtils::execSafe('--accountconf %s', $this->account_conf_file);
-            LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+            LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
             // Run acme.sh command
             $result = LeUtils::run_shell_command($acmecmd, $proc_env);
@@ -224,15 +224,15 @@ class LeAccount extends LeCommon
                 return false;
             }
 
-            // Fix account config
-            $this->fixConfig();
-
             // Update account status.
-            LeUtils::log_error('account registration successful for ' . $this->config->name);
+            LeUtils::log('account registration successful for ' . $this->config->name);
             $this->setStatus(200);
         } else {
-            LeUtils::log_debug('account already registered: ' . (string)$this->config->name, $this->debug);
+            LeUtils::log_debug('account already registered: ' . (string)$this->config->name);
         }
+
+        // Always check (and fix) account config
+        $this->fixConfig();
 
         return true;
     }
@@ -251,18 +251,21 @@ class LeAccount extends LeCommon
                 // Parse config file and remove property
                 $account_conf = parse_ini_file($account_conf_file);
                 if (isset($account_conf['CERT_HOME'])) {
+                    LeUtils::log('fixing invalid account config (CERT_HOME): ' . $this->config->name);
                     unset($account_conf['CERT_HOME']);
-                }
 
-                // Convert array back to ini file format
-                $new_account_conf = array();
-                foreach ($account_conf as $key => $value) {
-                    $new_account_conf[] = "${key}='${value}'";
-                }
+                    // Convert array back to ini file format
+                    $new_account_conf = array();
+                    foreach ($account_conf as $key => $value) {
+                        $new_account_conf[] = "{$key}='{$value}'";
+                    }
 
-                // Write changes back to file
-                file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
-                chmod($account_conf_file, 0600);
+                    // Write changes back to file
+                    file_put_contents($account_conf_file, implode("\n", $new_account_conf) . "\n");
+                    chmod($account_conf_file, 0600);
+                } else {
+                    LeUtils::log('account config is valid (CERT_HOME): ' . $this->config->name);
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2024 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2025 by Deciso B.V.
 Copyright (C) 2017 Fabian Franz
 Copyright (C) 2017 - 2020 Michael Muenz <m.muenz@gmail.com>
 All rights reserved.
@@ -27,6 +27,110 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
+
+<script>
+    $(document).ready(function() {
+        mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
+        });
+
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/quagga/bgp/set", 'frm_bgp_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
+            }
+        });
+
+        $("#{{formGridEditBGPNeighbor['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_neighbor',
+            'get':'/api/quagga/bgp/get_neighbor/',
+            'set':'/api/quagga/bgp/set_neighbor/',
+            'add':'/api/quagga/bgp/add_neighbor/',
+            'del':'/api/quagga/bgp/del_neighbor/',
+            'toggle':'/api/quagga/bgp/toggle_neighbor/'
+        });
+        $("#{{formGridEditBGPASPaths['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_aspath',
+            'get':'/api/quagga/bgp/get_aspath/',
+            'set':'/api/quagga/bgp/set_aspath/',
+            'add':'/api/quagga/bgp/add_aspath/',
+            'del':'/api/quagga/bgp/del_aspath/',
+            'toggle':'/api/quagga/bgp/toggle_aspath/'
+        });
+        $("#{{formGridEditBGPPrefixLists['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_prefixlist',
+            'get':'/api/quagga/bgp/get_prefixlist/',
+            'set':'/api/quagga/bgp/set_prefixlist/',
+            'add':'/api/quagga/bgp/add_prefixlist/',
+            'del':'/api/quagga/bgp/del_prefixlist/',
+            'toggle':'/api/quagga/bgp/toggle_prefixlist/'
+        });
+        $("#{{formGridEditBGPCommunityLists['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_communitylist',
+            'get':'/api/quagga/bgp/get_communitylist/',
+            'set':'/api/quagga/bgp/set_communitylist/',
+            'add':'/api/quagga/bgp/add_communitylist/',
+            'del':'/api/quagga/bgp/del_communitylist/',
+            'toggle':'/api/quagga/bgp/toggle_communitylist/'
+        });
+        $("#{{formGridEditBGPRouteMaps['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_routemap',
+            'get':'/api/quagga/bgp/get_routemap/',
+            'set':'/api/quagga/bgp/set_routemap/',
+            'add':'/api/quagga/bgp/add_routemap/',
+            'del':'/api/quagga/bgp/del_routemap/',
+            'toggle':'/api/quagga/bgp/toggle_routemap/'
+        });
+        $("#{{formGridEditBGPPeergroups['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_peergroup',
+            'get':'/api/quagga/bgp/get_peergroup/',
+            'set':'/api/quagga/bgp/set_peergroup/',
+            'add':'/api/quagga/bgp/add_peergroup/',
+            'del':'/api/quagga/bgp/del_peergroup/',
+            'toggle':'/api/quagga/bgp/toggle_peergroup/'
+        });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_redistribution',
+            'get':'/api/quagga/bgp/get_redistribution/',
+            'set':'/api/quagga/bgp/set_redistribution/',
+            'add':'/api/quagga/bgp/add_redistribution/',
+            'del':'/api/quagga/bgp/del_redistribution/',
+            'toggle':'/api/quagga/bgp/toggle_redistribution/'
+        });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
+    });
+</script>
+
+<style>
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
+    }
+</style>
+
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
@@ -38,289 +142,41 @@ POSSIBILITY OF SUCH DAMAGE.
     <li><a data-toggle="tab" href="#peergroups">{{ lang._('Peer Groups') }}</a></li>
 </ul>
 <div class="tab-content content-box tab-content">
+    <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
-        <div class="content-box" style="padding-bottom: 1.5em;">
-            {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
-            <div class="col-md-12">
-                <hr />
-                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
-            </div>
-        </div>
+        {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
+    <!-- Tab: Neighbors -->
     <div id="neighbors" class="tab-pane fade in">
-        <table id="grid-neighbors" class="table table-responsive" data-editDialog="DialogEditBGPNeighbor">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="address" data-type="string">{{ lang._('Neighbor Address') }}</th>
-                    <th data-column-id="remoteas" data-type="string">{{ lang._('Remote AS') }}</th>
-                    <th data-column-id="linkedPrefixlistIn" data-type="string">{{ lang._('Prefix List inbound') }}</th>
-                    <th data-column-id="linkedPrefixlistOut" data-type="string">{{ lang._('Prefix List outbound') }}</th>
-                    <th data-column-id="linkedRoutemapIn" data-type="string">{{ lang._('Route Map inbound') }}</th>
-                    <th data-column-id="linkedRoutemapOut" data-type="string">{{ lang._('Route Map outbound') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="10"></td>
-                    <td colspan="1">
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPNeighbor)}}
     </div>
+    <!-- Tab: AS Paths -->
     <div id="aspaths" class="tab-pane fade in">
-        <table id="grid-aspaths" class="table table-responsive" data-editDialog="DialogEditBGPASPaths">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="number" data-type="string" data-sortable="true">{{ lang._('Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="as" data-type="string" data-sortable="false">{{ lang._('AS Number') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPASPaths)}}
     </div>
+    <!-- Tab: Prefix Lists -->
     <div id="prefixlists" class="tab-pane fade in">
-        <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditBGPPrefixLists">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-sortable="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="seqnumber" data-type="string" data-sortable="true">{{ lang._('Sequence Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="network" data-type="string" data-sortable="false">{{ lang._('Network') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPPrefixLists)}}
     </div>
+    <!-- Tab: Community Lists -->
     <div id="communitylists" class="tab-pane fade in">
-        <table id="grid-communitylists" class="table table-responsive" data-editDialog="DialogEditBGPCommunityLists">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="number" data-type="string" data-sortable="true">{{ lang._('Number') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="seqnumber" data-type="string" data-sortable="true">{{ lang._('Secquence Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="community" data-type="string" data-sortable="false">{{ lang._('Community') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPCommunityLists)}}
     </div>
+    <!-- Tab: Route Maps -->
     <div id="routemaps" class="tab-pane fade in">
-        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditBGPRouteMaps">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                    <th data-column-id="action" data-type="string">{{ lang._('Action') }}</th>
-                    <th data-column-id="id" data-type="string">{{ lang._('ID') }}</th>
-                    <th data-column-id="match" data-type="string">{{ lang._('AS Path List') }}</th>
-                    <th data-column-id="match2" data-type="string">{{ lang._('Prefix List') }}</th>
-                    <th data-column-id="match3" data-type="string">{{ lang._('Community List') }}</th>
-                    <th data-column-id="set" data-type="string">{{ lang._('Set') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPRouteMaps)}}
     </div>
+    <!-- Tab: Peer Groups -->
     <div id="peergroups" class="tab-pane fade in">
-        <table id="grid-peergroups" class="table table-responsive" data-editDialog="DialogEditBGPPeergroups">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                    <th data-column-id="nexthopself" data-type="string" data-formatter="boolean">{{ lang._('Next Hop Self') }}</th>
-                    <th data-column-id="defaultoriginate" data-type="string" data-formatter="boolean">{{ lang._('Default Originate') }}</th>
-                    <th data-column-id="linkedPrefixlistIn" data-type="string">{{ lang._('Prefix List inbound') }}</th>
-                    <th data-column-id="linkedPrefixlistOut" data-type="string">{{ lang._('Prefix List outbound') }}</th>
-                    <th data-column-id="linkedRoutemapIn" data-type="string">{{ lang._('Route Map inbound') }}</th>
-                    <th data-column-id="linkedRoutemapOut" data-type="string">{{ lang._('Route Map outbound') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="10"></td>
-                    <td colspan="1">
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPPeergroups)}}
     </div>
 </div>
-
-<script>
-
-function quagga_update_status() {
-    updateServiceControlUI('quagga');
-}
-
-$(document).ready(function() {
-  var data_get_map = {'frm_bgp_settings':"/api/quagga/bgp/get"};
-  mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
-  });
-  quagga_update_status();
-
-  // link save button to API set action
-  $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/bgp/set",formid='frm_bgp_settings',callback_ok=function(){
-          $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-          ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-              quagga_update_status();
-              $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-          });
-      });
-  });
-
-  /* allow a user to manually reload the service (for forms which do not do it automatically) */
-  $('.reload_btn').click(function reload_handler() {
-    $(".reloadAct_progress").addClass("fa-spin");
-    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-        quagga_update_status();
-        $(".reloadAct_progress").removeClass("fa-spin");
-    });
-  });
-
-  $("#grid-neighbors").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchNeighbor',
-      'get':'/api/quagga/bgp/getNeighbor/',
-      'set':'/api/quagga/bgp/setNeighbor/',
-      'add':'/api/quagga/bgp/addNeighbor/',
-      'del':'/api/quagga/bgp/delNeighbor/',
-      'toggle':'/api/quagga/bgp/toggleNeighbor/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-aspaths").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchAspath',
-      'get':'/api/quagga/bgp/getAspath/',
-      'set':'/api/quagga/bgp/setAspath/',
-      'add':'/api/quagga/bgp/addAspath/',
-      'del':'/api/quagga/bgp/delAspath/',
-      'toggle':'/api/quagga/bgp/toggleAspath/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-prefixlists").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchPrefixlist',
-      'get':'/api/quagga/bgp/getPrefixlist/',
-      'set':'/api/quagga/bgp/setPrefixlist/',
-      'add':'/api/quagga/bgp/addPrefixlist/',
-      'del':'/api/quagga/bgp/delPrefixlist/',
-      'toggle':'/api/quagga/bgp/togglePrefixlist/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-communitylists").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchCommunitylist',
-      'get':'/api/quagga/bgp/getCommunitylist/',
-      'set':'/api/quagga/bgp/setCommunitylist/',
-      'add':'/api/quagga/bgp/addCommunitylist/',
-      'del':'/api/quagga/bgp/delCommunitylist/',
-      'toggle':'/api/quagga/bgp/toggleCommunitylist/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-routemaps").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchRoutemap',
-      'get':'/api/quagga/bgp/getRoutemap/',
-      'set':'/api/quagga/bgp/setRoutemap/',
-      'add':'/api/quagga/bgp/addRoutemap/',
-      'del':'/api/quagga/bgp/delRoutemap/',
-      'toggle':'/api/quagga/bgp/toggleRoutemap/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-peergroups").UIBootgrid(
-    { 'search':'/api/quagga/bgp/searchPeergroup',
-      'get':'/api/quagga/bgp/getPeergroup/',
-      'set':'/api/quagga/bgp/setPeergroup/',
-      'add':'/api/quagga/bgp/addPeergroup/',
-      'del':'/api/quagga/bgp/delPeergroup/',
-      'toggle':'/api/quagga/bgp/togglePeergroup/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-    });
-</script>
-
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':'DialogEditBGPNeighbor','label':lang._('Edit Neighbor')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':'DialogEditBGPASPaths','label':lang._('Edit AS Paths')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':'DialogEditBGPPrefixLists','label':lang._('Edit Prefix Lists')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPCommunityLists,'id':'DialogEditBGPCommunityLists','label':lang._('Edit Community Lists')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':'DialogEditBGPRouteMaps','label':lang._('Edit Route Maps')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPeergroups,'id':'DialogEditBGPPeergroups','label':lang._('Edit Peer Groups')])}}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':formGridEditBGPNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':formGridEditBGPASPaths['edit_dialog_id'],'label':lang._('Edit AS Paths')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':formGridEditBGPPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPCommunityLists,'id':formGridEditBGPCommunityLists['edit_dialog_id'],'label':lang._('Edit Community Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':formGridEditBGPRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPeergroups,'id':formGridEditBGPPeergroups['edit_dialog_id'],'label':lang._('Edit Peer Groups')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}

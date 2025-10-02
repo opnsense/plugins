@@ -1,28 +1,32 @@
 <model>
     <mount>//OPNsense/lldpd/general</mount>
     <description>Lldpd configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <cdp type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </cdp>
         <fdp type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </fdp>
         <edp type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </edp>
         <sonmp type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </sonmp>
+        <agentx type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </agentx>
         <interface type="TextField">
             <Required>N</Required>
         </interface>

@@ -40,8 +40,5 @@ class GeneralController extends IndexController
         // Assign the general settings form to the view
         $this->view->pick('OPNsense/Caddy/general');
         $this->view->generalForm = $this->getForm("general");
-        $this->view->dnsproviderForm = $this->getForm("dnsprovider");
-        $this->view->dynamicdnsForm = $this->getForm("dynamicdns");
-        $this->view->logsettingsForm = $this->getForm("logsettings");
     }
 }

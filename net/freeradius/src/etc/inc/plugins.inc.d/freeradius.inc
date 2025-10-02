@@ -57,3 +57,10 @@ function freeradius_xmlrpc_sync()
     $result['services'] = ["freeradius"];
     return array($result);
 }
+
+function freeradius_syslog()
+{
+    return [
+        'freeradius' => ['facility' => ['radiusd']]
+    ];
+}

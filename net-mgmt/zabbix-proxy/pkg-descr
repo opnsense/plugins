@@ -12,6 +12,24 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.14
+
+* Add plugin variant for Zabbix Proxy 7.4
+
+1.13
+
+* Removed plugin variant for Zabbox Proxy 5.0 which is EoL
+* Use snake_case in API URLs
+* Model style updates
+
+1.12
+
+* Add plugin variant for Zabbix Proxy 7.2, 6.4 is EoL and was removed
+
+1.11
+
+* Add plugin variant for Zabbix Proxy 7
+
 1.10
 
 * Add logging options (contributed by Malte Rabenseifner)

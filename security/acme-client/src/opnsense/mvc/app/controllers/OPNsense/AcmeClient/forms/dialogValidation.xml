@@ -553,6 +553,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Fornex</label>
+        <type>header</type>
+        <style>table_dns table_dns_fornex</style>
+    </field>
+    <field>
+        <id>validation.dns_fornex_api_key</id>
+        <label>ApiKey</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Gandi LiveDNS</label>
         <type>header</type>
         <style>table_dns table_dns_gandi_livedns</style>
@@ -680,9 +690,15 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_inws_password</id>
+        <id>validation.dns_inwx_password</id>
         <label>Password</label>
         <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_inwx_shared_secret</id>
+        <label>Shared Secret</label>
+        <type>password</type>
+        <help>When 2FA is enabled, the Shared Secret must be provided. Note that this feature requires the package oath-toolkit, which must be installed manually.</help>
     </field>
     <field>
         <label>IONOS domain API</label>
@@ -823,6 +839,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Lima-City DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_limacity</style>
+    </field>
+    <field>
+        <id>validation.dns_limacity_apikey</id>
+        <label>API-Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Linode API (v3 / Deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
@@ -924,6 +950,21 @@
         <label>Server</label>
         <type>text</type>
         <help>MailinaBox Server FQDN</help>
+    </field>
+    <field>
+        <label>MyDNS.JP</label>
+        <type>header</type>
+        <style>table_dns table_dns_mydnsjp</style>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_masterid</id>
+        <label>Master ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>Mythic Beasts</label>
@@ -1471,7 +1512,7 @@
     </field>
     <field>
         <id>validation.dns_easydns_apikey</id>
-        <label>Api Key</label>
+        <label>API Key</label>
         <type>password</type>
     </field>
     <field>
@@ -1739,6 +1780,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>Websupport.sk</label>
+        <type>header</type>
+        <style>table_dns table_dns_websupport</style>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_key</id>
+        <label>Identifier</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_secret</id>
+        <label>Secret key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
@@ -1882,5 +1938,15 @@
         <id>validation.dns_rage4_token</id>
         <label>Token</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>scaleway</label>
+        <type>header</type>
+        <style>table_dns table_dns_scaleway</style>
+    </field>
+    <field>
+        <id>validation.dns_scaleway_token</id>
+        <label>API Key</label>
+        <type>text</type>
     </field>
 </form>

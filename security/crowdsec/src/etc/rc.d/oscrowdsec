@@ -53,6 +53,10 @@ oscrowdsec_status () {
     service crowdsec status
     ret=$?
 
+    if ! service crowdsec_firewall enabled; then
+        return $ret
+    fi
+
     if ! service crowdsec_firewall status; then
         ret=1
     fi

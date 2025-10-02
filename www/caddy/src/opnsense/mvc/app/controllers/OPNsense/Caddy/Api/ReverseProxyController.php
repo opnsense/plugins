@@ -1,32 +1,30 @@
 <?php
 
-/**
- *    Copyright (C) 2023-2024 Cedrik Pischem
- *    Copyright (C) 2015 Deciso B.V.
+/*
+ * Copyright (C) 2023-2024 Cedrik Pischem
+ * Copyright (C) 2015 Deciso B.V.
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Caddy\Api;
@@ -39,24 +37,94 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     protected static $internalModelClass = 'OPNsense\Caddy\Caddy';
     protected static $internalModelUseSafeDelete = true;
 
-    /*ReverseProxy Section*/
+    /**
+     * Return selectpicker options for reverse proxy domains and ports
+     */
+    public function getAllReverseDomainsAction()
+    {
+        $result = [
+            'domains' => [
+                'label' => gettext('Domains'),
+                'icon'  => 'fa fa-fw fa-globe text-success',
+                'items' => []
+            ],
+            'subdomains' => [
+                'label' => gettext('Subdomains'),
+                'icon'  => 'fa fa-fw fa-globe text-warning',
+                'items' => []
+            ],
+        ];
 
-    /*Search Function adjusted for the search filter dropdown*/
+        foreach ((new \OPNsense\Caddy\Caddy())->reverseproxy->reverse->iterateItems() as $reverse) {
+            if (!empty($reverse->FromDomain)) {
+                $port = (string)$reverse->FromPort;
+                $combined = (string)$reverse->FromDomain . ($port !== '' ? ':' . $port : '');
+
+                $result['domains']['items'][] = [
+                    'value' => (string)$reverse->getAttributes()['uuid'],
+                    'label' => $combined
+                ];
+            }
+        }
+
+        foreach ((new \OPNsense\Caddy\Caddy())->reverseproxy->subdomain->iterateItems() as $subdomain) {
+            if (!empty($subdomain->FromDomain)) {
+                $result['subdomains']['items'][] = [
+                    'value' => (string)$subdomain->getAttributes()['uuid'],
+                    'label' => (string)$subdomain->FromDomain
+                ];
+            }
+        }
+
+        foreach (array_keys($result) as $key) {
+            usort($result[$key]['items'], fn($a, $b) => strcasecmp($a['label'], $b['label']));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build a UUID filter function.
+     *
+     * @return callable|null
+     */
+    private function buildFilterFunction(): ?callable
+    {
+        $domainUuids = $this->request->get('domainUuids');
+        if (empty($domainUuids)) {
+            return null;
+        }
+
+        return function ($record) use ($domainUuids): bool {
+            $fieldsToCheck = ['reverse', 'subdomain'];
+            $uuids = [];
+
+            // Add the record's own UUID
+            $uuidAttr = $record->getAttributes()['uuid'] ?? null;
+            if (is_scalar($uuidAttr)) {
+                $uuids[] = trim((string)$uuidAttr);
+            }
+
+            // Add UUIDs from model relation fields
+            foreach ($fieldsToCheck as $field) {
+                $value = $record->{$field} ?? null;
+
+                foreach ((array)$value as $item) {
+                    if (is_scalar($item)) {
+                        $uuids[] = trim((string)$item);
+                    }
+                }
+            }
+
+            return (bool) array_intersect($uuids, $domainUuids);
+        };
+    }
+
+    // ReverseProxy Section
+
     public function searchReverseProxyAction()
     {
-        // Get a comma-separated list of UUIDs from the request
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
-
-        // Define the filter function to handle multiple UUIDs
-        $filterFunction = function ($modelItem) use ($uuidArray) {
-            $itemUuid = (string)$modelItem->getAttributes()['uuid'];
-            // Include the item if no UUIDs are provided (empty array) or if it's in the array of UUIDs
-            return empty($uuidArray) || in_array($itemUuid, $uuidArray, true);
-        };
-
-        // Return the search results filtered by the provided UUIDs, if any
-        return $this->searchBase("reverseproxy.reverse", null, 'description', $filterFunction);
+        return $this->searchBase('reverseproxy.reverse', null, null, $this->buildFilterFunction());
     }
 
     public function setReverseProxyAction($uuid)
@@ -84,47 +152,12 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         return $this->toggleBase("reverseproxy.reverse", $uuid, $enabled);
     }
 
-    /*Function for the search filter dropdown in the bootgrid*/
-    public function getAllReverseDomainsAction()
-    {
-        $this->sessionClose(); // Close session early for performance
-        $result = array("rows" => array());
 
-        $mdlCaddy = new \OPNsense\Caddy\Caddy();
-        $reverseNodes = $mdlCaddy->reverseproxy->reverse->iterateItems();
+    // Subdomain Section
 
-        foreach ($reverseNodes as $item) {
-            if (!empty($item->FromDomain)) {
-                // Conditionally concatenate port if it exists
-                $domain = (string)$item->FromDomain;
-                $port = (string)$item->FromPort;
-                $combinedDomainPort = $domain . (!empty($port) ? ':' . $port : '');
-
-                $result['rows'][] = array(
-                    'id' => (string)$item->getAttributes()['uuid'],
-                    'domainPort' => $combinedDomainPort  // Combined domain and port, conditionally adding port
-                );
-            }
-        }
-
-        return $result;
-    }
-
-
-    /*Subdomain Section*/
-
-    /*Search Function adjusted for the search filter dropdown*/
     public function searchSubdomainAction()
     {
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = !empty($reverseUuids) ? explode(',', $reverseUuids) : [];
-
-        $filterFunction = function ($modelItem) use ($uuidArray) {
-            // Filtering on domain UUIDs referenced by subdomains
-            return empty($uuidArray) || in_array((string)$modelItem->reverse, $uuidArray, true);
-        };
-
-        return $this->searchBase("reverseproxy.subdomain", null, 'description', $filterFunction);
+        return $this->searchBase('reverseproxy.subdomain', null, null, $this->buildFilterFunction());
     }
 
     public function setSubdomainAction($uuid)
@@ -153,26 +186,11 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /*Handler Section*/
+    // Handler Section
 
-    /*Search Function adjusted for the search filter dropdown*/
     public function searchHandleAction()
     {
-        $reverseUuids = $this->request->get('reverseUuids');
-        $uuidArray = explode(',', $reverseUuids);
-
-        if (empty($reverseUuids)) {
-            // If no UUIDs are provided, do not apply any filter, return all records
-            return $this->searchBase("reverseproxy.handle", null, 'description');
-        } else {
-            // Apply the filter only if UUIDs are provided
-            $filterFunction = function ($modelItem) use ($uuidArray) {
-                $modelUUID = (string)$modelItem->reverse;
-                return in_array($modelUUID, $uuidArray, true);
-            };
-
-            return $this->searchBase("reverseproxy.handle", null, 'description', $filterFunction);
-        }
+        return $this->searchBase('reverseproxy.handle', null, null, $this->buildFilterFunction());
     }
 
     public function setHandleAction($uuid)
@@ -200,12 +218,11 @@ class ReverseProxyController extends ApiMutableModelControllerBase
         return $this->toggleBase("reverseproxy.handle", $uuid, $enabled);
     }
 
-
-    /* AccessList Section */
+    // AccessList Section
 
     public function searchAccessListAction()
     {
-        return $this->searchBase("reverseproxy.accesslist", null, 'description');
+        return $this->searchBase("reverseproxy.accesslist");
     }
 
     public function setAccessListAction($uuid)
@@ -229,19 +246,21 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /* BasicAuth Section */
+    // BasicAuth Section
 
     public function searchBasicAuthAction()
     {
-        return $this->searchBase("reverseproxy.basicauth", null, 'description');
+        return $this->searchBase("reverseproxy.basicauth");
     }
 
     public function setBasicAuthAction($uuid)
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;
@@ -255,8 +274,10 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     {
         if ($this->request->isPost()) {
             $postData = $this->request->getPost();
-
-            if (isset($postData['basicauth']['basicauthpass']) && !empty(trim($postData['basicauth']['basicauthpass']))) {
+            if (
+                isset($postData['basicauth']['basicauthpass'])
+                && !empty(trim($postData['basicauth']['basicauthpass']))
+            ) {
                 $plainPassword = $postData['basicauth']['basicauthpass'];
                 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
                 $_POST['basicauth']['basicauthpass'] = $hashedPassword;
@@ -277,11 +298,11 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     }
 
 
-    /* Header Section */
+    // Header Section
 
     public function searchHeaderAction()
     {
-        return $this->searchBase("reverseproxy.header", null, 'description');
+        return $this->searchBase("reverseproxy.header");
     }
 
     public function setHeaderAction($uuid)
@@ -302,5 +323,71 @@ class ReverseProxyController extends ApiMutableModelControllerBase
     public function delHeaderAction($uuid)
     {
         return $this->delBase("reverseproxy.header", $uuid);
+    }
+
+
+    // Layer4 Proxy Section
+
+    public function searchLayer4Action()
+    {
+        return $this->searchBase("reverseproxy.layer4");
+    }
+
+    public function setLayer4Action($uuid)
+    {
+        return $this->setBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function addLayer4Action()
+    {
+        return $this->addBase("layer4", "reverseproxy.layer4");
+    }
+
+    public function getLayer4Action($uuid = null)
+    {
+        return $this->getBase("layer4", "reverseproxy.layer4", $uuid);
+    }
+
+    public function delLayer4Action($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4", $uuid);
+    }
+
+    public function toggleLayer4Action($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4", $uuid, $enabled);
+    }
+
+
+    // Layer4 OpenVPN Section
+
+    public function searchLayer4OpenvpnAction()
+    {
+        return $this->searchBase("reverseproxy.layer4openvpn");
+    }
+
+    public function setLayer4OpenvpnAction($uuid)
+    {
+        return $this->setBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function addLayer4OpenvpnAction()
+    {
+        return $this->addBase("layer4openvpn", "reverseproxy.layer4openvpn");
+    }
+
+    public function getLayer4OpenvpnAction($uuid = null)
+    {
+        return $this->getBase("layer4openvpn", "reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function delLayer4OpenvpnAction($uuid)
+    {
+        return $this->delBase("reverseproxy.layer4openvpn", $uuid);
+    }
+
+    public function toggleLayer4OpenvpnAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("reverseproxy.layer4openvpn", $uuid, $enabled);
     }
 }

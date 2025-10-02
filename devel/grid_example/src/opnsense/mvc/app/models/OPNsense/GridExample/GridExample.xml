@@ -7,12 +7,13 @@
         <addresses>
             <address type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <email type="EmailField">
                     <Required>Y</Required>
                 </email>
+                <description type="DescriptionField"/>
             </address>
         </addresses>
     </items>

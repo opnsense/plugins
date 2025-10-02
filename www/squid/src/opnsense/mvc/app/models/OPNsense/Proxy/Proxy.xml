@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/proxy</mount>
-    <version>1.0.6</version>
+    <version>1.0.9</version>
     <description>Squid web proxy settings</description>
     <items>
         <general>
@@ -18,7 +18,7 @@
             <icpPort type="IntegerField">
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>ICP port needs to be an integer value between 1 and 65535</ValidationMessage>
+                <ValidationMessage>ICP port needs to be an integer value between 1 and 65535.</ValidationMessage>
             </icpPort>
             <logging>
                 <enable>
@@ -97,18 +97,18 @@
                     <cache_mem type="IntegerField">
                         <Default>256</Default>
                         <MinimumValue>0</MinimumValue>
-                        <ValidationMessage>Specify a positive memory cache size. (number of MB's)</ValidationMessage>
+                        <ValidationMessage>Specify a positive memory cache size (number of MBs).</ValidationMessage>
                         <Required>Y</Required>
                     </cache_mem>
                     <maximum_object_size type="IntegerField">
                       <MinimumValue>1</MinimumValue>
                       <MaximumValue>99999</MaximumValue>
-                      <ValidationMessage>Specify a maximum object size. (number of MB's)</ValidationMessage>
+                      <ValidationMessage>Specify a maximum object size (number of MBs).</ValidationMessage>
                     </maximum_object_size>
                     <maximum_object_size_in_memory type="IntegerField">
                       <MinimumValue>1</MinimumValue>
                       <MaximumValue>99999</MaximumValue>
-                      <ValidationMessage>Specify a maximum object size in memory. (number of KB's)</ValidationMessage>
+                      <ValidationMessage>Specify a maximum object size in memory (number of KBs).</ValidationMessage>
                     </maximum_object_size_in_memory>
                     <memory_cache_mode type="OptionField">
                         <BlankDesc>Default</BlankDesc>
@@ -121,21 +121,21 @@
                     <size type="IntegerField">
                         <Default>100</Default>
                         <MinimumValue>1</MinimumValue>
-                        <ValidationMessage>Specify a positive cache size. (number of MB's)</ValidationMessage>
+                        <ValidationMessage>Specify a positive cache size (number of MBs).</ValidationMessage>
                         <Required>Y</Required>
                     </size>
-                    <l1 type="IntegerField">
-                        <Default>16</Default>
-                        <MinimumValue>1</MinimumValue>
-                        <ValidationMessage>Specify a positive number of first-level subdirectories.</ValidationMessage>
-                        <Required>Y</Required>
-                    </l1>
-                    <l2 type="IntegerField">
-                        <Default>256</Default>
-                        <MinimumValue>1</MinimumValue>
-                        <ValidationMessage>Specify a positive number of second-level subdirectories.</ValidationMessage>
-                        <Required>Y</Required>
-                    </l2>
+                    <swap_timeout type="IntegerField">
+                        <MinimumValue>0</MinimumValue>
+                        <ValidationMessage>Specify a valid swap-timeout.</ValidationMessage>
+                    </swap_timeout>
+                    <max_swap_rate type="IntegerField">
+                        <MinimumValue>0</MinimumValue>
+                        <ValidationMessage>Specify a valid swap-rate.</ValidationMessage>
+                    </max_swap_rate>
+                    <slot_size type="IntegerField">
+                        <MinimumValue>4096</MinimumValue>
+                        <ValidationMessage>Specify a multiple of operating system I/O page size.</ValidationMessage>
+                    </slot_size>
                     <cache_linux_packages type="BooleanField">
                         <Default>0</Default>
                         <Required>Y</Required>
@@ -164,7 +164,7 @@
                     <ValidationMessage>Specify the overall bandwidth for downloads in kilobits per second.</ValidationMessage>
                     <Constraints>
                         <check001>
-                            <ValidationMessage>Both throttling parameters should either be filled or empty</ValidationMessage>
+                            <ValidationMessage>Both throttling parameters should either be filled or empty.</ValidationMessage>
                             <type>AllOrNoneConstraint</type>
                             <addFields>
                                 <field1>perHostTrotteling</field1>
@@ -242,14 +242,14 @@
                 <Default>3128</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>Proxy port needs to be an integer value between 1 and 65535</ValidationMessage>
+                <ValidationMessage>Proxy port needs to be an integer value between 1 and 65535.</ValidationMessage>
                 <Required>Y</Required>
             </port>
             <sslbumpport type="IntegerField">
                 <Default>3129</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>SSL Proxy port needs to be an integer value between 1 and 65535</ValidationMessage>
+                <ValidationMessage>SSL Proxy port needs to be an integer value between 1 and 65535.</ValidationMessage>
                 <Required>Y</Required>
             </sslbumpport>
             <sslbump type="BooleanField">
@@ -257,7 +257,7 @@
                 <Required>Y</Required>
                 <Constraints>
                     <check001>
-                        <ValidationMessage>When enabling "Log SNI information only", SSL inspection must also be enabled</ValidationMessage>
+                        <ValidationMessage>When enabling "Log SNI information only", SSL inspection must also be enabled.</ValidationMessage>
                         <type>DependConstraint</type>
                         <addFields>
                             <field1>sslurlonly</field1>
@@ -276,25 +276,30 @@
             </sslurlonly>
             <sslcertificate type="CertificateField">
                 <Type>ca</Type>
-                <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
+                <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
             </sslcertificate>
             <sslnobumpsites type="CSVListField">
               <Mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</Mask>
-              <ValidationMessage>Please enter ip addresses or domain names here</ValidationMessage>
+              <ValidationMessage>Please enter ip addresses or domain names here.</ValidationMessage>
             </sslnobumpsites>
+            <workers type="IntegerField">
+              <MinimumValue>1</MinimumValue>
+              <MaximumValue>100</MaximumValue>
+              <ValidationMessage>Worker number needs to be an integer value between 1 and 100.</ValidationMessage>
+            </workers>
             <ssl_crtd_storage_max_size type="IntegerField">
               <Required>Y</Required>
               <Default>4</Default>
               <MinimumValue>1</MinimumValue>
               <MaximumValue>65535</MaximumValue>
-              <ValidationMessage>max size needs to be an integer value between 1 and 65535</ValidationMessage>
+              <ValidationMessage>Maximum size needs to be an integer value between 1 and 65535.</ValidationMessage>
             </ssl_crtd_storage_max_size>
             <sslcrtd_children type="IntegerField">
               <Required>Y</Required>
               <Default>5</Default>
               <MinimumValue>1</MinimumValue>
               <MaximumValue>32</MaximumValue>
-              <ValidationMessage>the number of sslrtd children needs to be an integer value between 1 and 32</ValidationMessage>
+              <ValidationMessage>The number of sslrtd children needs to be an integer value between 1 and 32.</ValidationMessage>
             </sslcrtd_children>
             <snmp_enable type="BooleanField">
                 <Default>0</Default>
@@ -303,7 +308,7 @@
             <snmp_port type="IntegerField">
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>SNMP port needs to be an integer value between 1 and 65535</ValidationMessage>
+                <ValidationMessage>SNMP port needs to be an integer value between 1 and 65535.</ValidationMessage>
                 <Required>Y</Required>
                 <Default>3401</Default>
             </snmp_port>
@@ -322,7 +327,7 @@
                 <Default>2121</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>FTP Proxy port needs to be an integer value between 1 and 65535</ValidationMessage>
+                <ValidationMessage>FTP Proxy port needs to be an integer value between 1 and 65535.</ValidationMessage>
                 <Required>Y</Required>
             </ftpPort>
             <ftpTransparentMode type="BooleanField">
@@ -347,13 +352,17 @@
                 <bannedHosts type="CSVListField">
                     <Mask>/^([\/0-9a-fA-F.:,])*/u</Mask>
                 </bannedHosts>
+                <allowWhitelistBannedHosts type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </allowWhitelistBannedHosts>
                 <whiteList type="CSVListField"/>
                 <blackList type="CSVListField"/>
                 <browser type="CSVListField"/>
                 <mimeType type="CSVListField"/>
                 <googleapps type="HostnameField">
                     <Mask>/^([a-zA-Z0-9]){0,}\.([a-zA-Z0-9].){0,}/</Mask>
-                    <ValidationMessage>Please enter a valid domain name here</ValidationMessage>
+                    <ValidationMessage>Please enter a valid domain name here.</ValidationMessage>
                 </googleapps>
                 <youtube type="OptionField">
                     <OptionValues>
@@ -362,10 +371,14 @@
                     </OptionValues>
                 </youtube>
                 <safePorts type="CSVListField">
+                    <Default>80:http,21:ftp,443:https,70:gopher,210:wais,1025-65535:unregistered ports,280:http-mgmt,488:gss-http,591:filemaker,777:multiling http</Default>
                     <Mask>/^([ \-0-9a-zA-Z:,])*/u</Mask>
+                    <Required>Y</Required>
                 </safePorts>
                 <sslPorts type="CSVListField">
+                    <Default>443:https</Default>
                     <Mask>/^([ \-0-9a-zA-Z:,])*/u</Mask>
+                    <Required>Y</Required>
                 </sslPorts>
                 <remoteACLs>
                     <blacklists>
@@ -380,7 +393,7 @@
                                 <ValidationMessage>The filename may only contain letters, digits and one dot (not required).</ValidationMessage>
                                 <Constraints>
                                     <check001>
-                                        <ValidationMessage>Filename should be unique</ValidationMessage>
+                                        <ValidationMessage>Filename should be unique.</ValidationMessage>
                                         <type>UniqueConstraint</type>
                                     </check001>
                                 </Constraints>
@@ -421,7 +434,7 @@
                                 </filters>
                             </queues>
                         </Model>
-                        <ValidationMessage>Related cron not found</ValidationMessage>
+                        <ValidationMessage>Related cron not found.</ValidationMessage>
                     </UpdateCron>
                 </remoteACLs>
             </acl>
@@ -475,11 +488,11 @@
                 </realm>
                 <credentialsttl type="IntegerField">
                     <MinimumValue>1</MinimumValue>
-                    <ValidationMessage>Credentials TTL needs to be an integer value above 0</ValidationMessage>
+                    <ValidationMessage>Credentials TTL needs to be an integer value above 0.</ValidationMessage>
                 </credentialsttl>
                 <children type="IntegerField">
                     <MinimumValue>1</MinimumValue>
-                    <ValidationMessage>Number of children needs to be an integer value above 0</ValidationMessage>
+                    <ValidationMessage>Number of children needs to be an integer value above 0.</ValidationMessage>
                 </children>
             </authentication>
         </forward>
@@ -490,7 +503,7 @@
                   <ValidationMessage>The proxy name must be set.</ValidationMessage>
                   <Constraints>
                       <check001>
-                          <ValidationMessage>Proxy name should be unique</ValidationMessage>
+                          <ValidationMessage>Proxy name should be unique.</ValidationMessage>
                           <type>UniqueConstraint</type>
                       </check001>
                   </Constraints>
@@ -520,7 +533,7 @@
                   <ValidationMessage>The match name must be set.</ValidationMessage>
                   <Constraints>
                       <check001>
-                          <ValidationMessage>Match name should be unique</ValidationMessage>
+                          <ValidationMessage>Match name should be unique.</ValidationMessage>
                           <type>UniqueConstraint</type>
                       </check001>
                   </Constraints>
@@ -568,7 +581,7 @@
               <time_to type="IntegerField">
                   <MinimumValue>0</MinimumValue>
                   <MaximumValue>23</MaximumValue>
-                  <ValidationMessage>The last hour of the day is 23!</ValidationMessage>
+                  <ValidationMessage>The last hour of the day is 23.</ValidationMessage>
               </time_to>
               <date_from type="OptionField">
                   <Required>Y</Required>
@@ -679,7 +692,7 @@
         <error_pages>
           <template type="TextField">
               <Mask>/[0-9a-zA-Z\+\=\/]{20,}/u</Mask>
-              <ValidationMessage>File content should be in (base64 encoded) zip format</ValidationMessage>
+              <ValidationMessage>File content should be in Base64-encoded ZIP format.</ValidationMessage>
           </template>
         </error_pages>
     </items>

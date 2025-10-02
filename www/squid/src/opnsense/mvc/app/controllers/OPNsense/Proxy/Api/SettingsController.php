@@ -50,7 +50,6 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchRemoteBlacklistsAction()
     {
-        $this->sessionClose();
         $mdlProxy = $this->getModel();
         $grid = new UIModelGrid($mdlProxy->forward->acl->remoteACLs->blacklists->blacklist);
         return $grid->fetchBindRequest(
@@ -114,7 +113,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * create new cron item for remote acl or return already available one
      * @return array status action
      */
-    public function fetchRBCronAction()
+    public function fetchRbCronAction()
     {
         $result = array("result" => "failed");
 
@@ -151,9 +150,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * search PAC Rule
      * @return array
      */
-    public function searchPACRuleAction()
+    public function searchPacRuleAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.rule', array("enabled", "description", "proxies", "matches"), "description");
     }
 
@@ -162,9 +160,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array
      */
-    public function getPACRuleAction($uuid = null)
+    public function getPacRuleAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('rule', 'pac.rule', $uuid));
     }
 
@@ -184,7 +181,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @return array result status
      * @throws \OPNsense\Base\ValidationException
      */
-    public function setPACRuleAction($uuid)
+    public function setPacRuleAction($uuid)
     {
         $this->pac_set_helper();
         return $this->setBase('rule', 'pac.rule', $uuid);
@@ -195,7 +192,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array status
      */
-    public function togglePACRuleAction($uuid)
+    public function togglePacRuleAction($uuid)
     {
         return $this->toggleBase('pac.rule', $uuid);
     }
@@ -205,7 +202,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array status
      */
-    public function delPACRuleAction($uuid)
+    public function delPacRuleAction($uuid)
     {
         return $this->delBase('pac.rule', $uuid);
     }
@@ -215,9 +212,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * search PAC Proxy
      * @return array
      */
-    public function searchPACProxyAction()
+    public function searchPacProxyAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.proxy', array("enabled","proxy_type", "name", "url", "description"), "description");
     }
 
@@ -226,9 +222,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array
      */
-    public function getPACProxyAction($uuid = null)
+    public function getPacProxyAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('proxy', 'pac.proxy', $uuid));
     }
 
@@ -236,7 +231,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * add new PAC Proxy and set with attributes from post
      * @return array
      */
-    public function addPACProxyAction()
+    public function addPacProxyAction()
     {
         $this->pac_set_helper();
         return $this->addBase('proxy', 'pac.proxy');
@@ -248,7 +243,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @return array result status
      * @throws \OPNsense\Base\ValidationException
      */
-    public function setPACProxyAction($uuid)
+    public function setPacProxyAction($uuid)
     {
         $this->pac_set_helper();
         return $this->setBase('proxy', 'pac.proxy', $uuid);
@@ -259,7 +254,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array status
      */
-    public function delPACProxyAction($uuid)
+    public function delPacProxyAction($uuid)
     {
         return $this->delBase('pac.proxy', $uuid);
     }
@@ -268,9 +263,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * search PAC Match
      * @return array
      */
-    public function searchPACMatchAction()
+    public function searchPacMatchAction()
     {
-        $this->sessionClose();
         return $this->searchBase('pac.match', array("enabled", "name", "description", "negate", "match_type"), "name");
     }
 
@@ -279,9 +273,8 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array
      */
-    public function getPACMatchAction($uuid = null)
+    public function getPacMatchAction($uuid = null)
     {
-        $this->sessionClose();
         return array("pac" => $this->getBase('match', 'pac.match', $uuid));
     }
 
@@ -289,7 +282,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * add new PAC Proxy and set with attributes from post
      * @return array
      */
-    public function addPACMatchAction()
+    public function addPacMatchAction()
     {
         $this->pac_set_helper();
         return $this->addBase('match', 'pac.match');
@@ -301,7 +294,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @return array result status
      * @throws \OPNsense\Base\ValidationException
      */
-    public function setPACMatchAction($uuid)
+    public function setPacMatchAction($uuid)
     {
         $this->pac_set_helper();
         return $this->setBase('match', 'pac.match', $uuid);
@@ -312,7 +305,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param $uuid item unique id
      * @return array status
      */
-    public function delPACMatchAction($uuid)
+    public function delPacMatchAction($uuid)
     {
         return $this->delBase('pac.match', $uuid);
     }

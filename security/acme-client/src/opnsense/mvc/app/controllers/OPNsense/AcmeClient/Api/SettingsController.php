@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017-2021 Frank Wall
+ *    Copyright (C) 2017-2025 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -59,39 +59,79 @@ class SettingsController extends ApiMutableModelControllerBase
             $mdlAcme = $this->getModel();
             $backend = new Backend();
 
-            // Setup cronjob if AcmeClient and AutoRenewal is enabled.
+            // Setup cron job if AcmeClient and AutoRenewal is enabled.
             if (
-                (string)$mdlAcme->settings->UpdateCron == "" and
                 (string)$mdlAcme->settings->autoRenewal == "1" and
                 (string)$mdlAcme->settings->enabled == "1"
             ) {
-                $mdlCron = new Cron();
-                // NOTE: Only configd actions are valid commands for cronjobs
-                //       and they *must* provide a description that is not empty.
-                $cron_uuid = $mdlCron->newDailyJob(
-                    "AcmeClient",
-                    "acmeclient cron-auto-renew",
-                    "AcmeClient Cronjob for Certificate AutoRenewal",
-                    "*",
-                    "1"
-                );
-                $mdlAcme->settings->UpdateCron = $cron_uuid;
+                // Check if a cron job UUID is available.
+                $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
+                $cron_found = 0;
+                if ($cron_uuid != "") {
+                    // Try to get cron job data from system config.
+                    $cron_job = (new Cron())->getNodeByReference('jobs.job.' . $cron_uuid);
+                    if ($cron_job != null) {
+                        // Cron job found, no changes required.
+                        $cron_found = 1;
+                        $this->getLogger()->notice("AcmeClient: successfully validated cron job");
+                    } else {
+                        // Cron job NOT found. This should not happen, try to fix
+                        // this automatically.
+                        $this->getLogger()->error("AcmeClient: cron job with stored UUID not found in system config: ${cron_uuid}");
 
-                // Save updated configuration.
-                if ($mdlCron->performValidation()->count() == 0) {
-                    $mdlCron->serializeToConfig();
-                    // save data to config, do not validate because the current in memory model doesn't know about the
-                    // cron item just created.
-                    $mdlAcme->serializeToConfig($validateFullModel = false, $disable_validation = true);
-                    Config::getInstance()->save();
-                    // Refresh the crontab
-                    $backend->configdRun('template reload OPNsense/Cron');
-                    // (res)start daemon
-                    $backend->configdRun("cron restart");
-                    $result['result'] = "new";
-                    $result['uuid'] = $cron_uuid;
-                } else {
-                    $result['result'] = "unable to add cron";
+                        // Search for existing AcmeClient cron job.
+                        foreach ((new Cron())->getNodeByReference('jobs.job')->iterateItems() as $cron) {
+                            $_uuid = $cron->getAttributes()["uuid"];
+                            $_origin = (string)$cron->origin;
+                            if ($_origin == 'AcmeClient') {
+                                // Found a matching AcmeClient cron job.
+                                $cron_found = 1;
+                                $this->getLogger()->notice("AcmeClient: found existing AcmeClient cron job, fixing inconsistency in config (new UUID: ${_uuid})");
+                                // Update UUID in Acme Client config.
+                                $mdlAcme->settings->UpdateCron = $_uuid;
+                                // Save updated configuration.
+                                // TODO: need to disable validation?
+                                $mdlAcme->serializeToConfig();
+                                Config::getInstance()->save();
+                                $result['result'] = "new";
+                                $result['uuid'] = $_uuid;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // No matching cron job found. Create a new one.
+                if ($cron_found == 0) {
+                    $this->getLogger()->notice("AcmeClient: no cron job for AutoRenewal found, creating a new one");
+                    $mdlCron = new Cron();
+                    // NOTE: Only configd actions are valid commands for cronjobs
+                    //       and they *must* provide a description that is not empty.
+                    $cron_uuid = $mdlCron->newDailyJob(
+                        "AcmeClient",
+                        "acmeclient cron-auto-renew",
+                        "AcmeClient Cronjob for Certificate AutoRenewal",
+                        "*",
+                        "1"
+                    );
+                    $mdlAcme->settings->UpdateCron = $cron_uuid;
+
+                    // Save updated configuration.
+                    if ($mdlCron->performValidation()->count() == 0) {
+                        $mdlCron->serializeToConfig();
+                        // save data to config, do not validate because the current in memory model doesn't know about the
+                        // cron item just created.
+                        $mdlAcme->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                        Config::getInstance()->save();
+                        // Refresh the crontab
+                        $backend->configdRun('template reload OPNsense/Cron');
+                        // (res)start daemon
+                        $backend->configdRun("cron restart");
+                        $result['result'] = "new";
+                        $result['uuid'] = $cron_uuid;
+                    } else {
+                        $result['result'] = "unable to add cron";
+                    }
                 }
             // Delete cronjob if AcmeClient or AutoRenewal is disabled.
             } elseif (
@@ -99,6 +139,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 ((string)$mdlAcme->settings->autoRenewal == "0" or
                 (string)$mdlAcme->settings->enabled == "0")
             ) {
+                $this->getLogger()->notice("AcmeClient: plugin or AutoRenewal is disabled, removing existing cron job");
                 // Get UUID, clean existin entry
                 $cron_uuid = (string)$mdlAcme->settings->UpdateCron;
                 $mdlAcme->settings->UpdateCron = "";
@@ -134,12 +175,6 @@ class SettingsController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $mdlAcme = $this->getModel();
 
-            // Check if the required plugin is installed
-            if ((string)$mdlAcme->isPluginInstalled('haproxy') != "1") {
-                $this->getLogger()->error("AcmeClient: HAProxy plugin is NOT installed, skipping integration");
-                return($result);
-            }
-
             // Setup only if AcmeClient and HAProxy integration is enabled.
             // NOTE: We provide HAProxy integration no matter if the HAProxy plugin
             //       is actually enabled or not. This should avoid confusion.
@@ -147,6 +182,12 @@ class SettingsController extends ApiMutableModelControllerBase
                 (string)$mdlAcme->settings->haproxyIntegration == "1" and
                 (string)$mdlAcme->settings->enabled == "1"
             ) {
+                // Check if the required plugin is installed
+                if ((string)$mdlAcme->isPluginInstalled('haproxy') != "1") {
+                    $this->getLogger()->error("AcmeClient: HAProxy plugin is NOT installed, skipping integration");
+                    return($result);
+                }
+
                 $mdlHAProxy = new \OPNsense\HAProxy\HAProxy();
                 $backend = new Backend();
 
@@ -209,7 +250,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
                 // Check if HAProxy integration is already complete.
                 if ($integration_found and $integration_complete) {
-                    $this->getLogger()->error("AcmeClient: HAProxy integration is complete");
+                    $this->getLogger()->notice("AcmeClient: HAProxy integration is complete");
                 } else {
                     $integration_changes = true;
                     /**
@@ -226,25 +267,25 @@ class SettingsController extends ApiMutableModelControllerBase
                         // Remove obsolete backend item
                         if (!empty($backend_ref)) {
                             if ($mdlHAProxy->backends->backend->del($backend_ref)) {
-                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete backend item");
+                                $this->getLogger()->info("AcmeClient: HAProxy integration: deleted obsolete backend item");
                             }
                         }
                         // Remove obsolete server item
                         if (!empty($server_ref)) {
                             if ($mdlHAProxy->servers->server->del($server_ref)) {
-                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete server item");
+                                $this->getLogger()->info("AcmeClient: HAProxy integration: deleted obsolete server item");
                             }
                         }
                         // Remove obsolete action item
                         if (!empty($action_ref)) {
                             if ($mdlHAProxy->actions->action->del($action_ref)) {
-                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete action item");
+                                $this->getLogger()->info("AcmeClient: HAProxy integration: deleted obsolete action item");
                             }
                         }
                         // Remove obsolete ACL item
                         if (!empty($acl_ref)) {
                             if ($mdlHAProxy->acls->acl->del($acl_ref)) {
-                                $this->getLogger()->error("AcmeClient: HAProxy integration: deleted obsolete ACL item");
+                                $this->getLogger()->info("AcmeClient: HAProxy integration: deleted obsolete ACL item");
                             }
                         }
                         // TODO: Remove obsolete ACL link from frontends
@@ -253,7 +294,7 @@ class SettingsController extends ApiMutableModelControllerBase
                         //       will be overwritten later anyway.
                         $result['result'] = "repaired";
                     } else {
-                        $this->getLogger()->error("AcmeClient: HAProxy integration initializing");
+                        $this->getLogger()->info("AcmeClient: HAProxy integration initializing");
                         $result['result'] = "new";
                     }
 
@@ -354,7 +395,7 @@ class SettingsController extends ApiMutableModelControllerBase
                                     }
                                     // Add modified list of linked Actions to frontend.
                                     $frontend->linkedActions = $_actions;
-                                    $this->getLogger()->error("AcmeClient: HAProxy integration: updating frontend {$_frontend}");
+                                    $this->getLogger()->info("AcmeClient: HAProxy integration: updating frontend {$_frontend}");
                                     // We need to write changes to config.
                                     $integration_changes = true;
                                 }
@@ -365,7 +406,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
                 // Changes made to configuration?
                 if ($integration_changes === true) {
-                    $this->getLogger()->error("AcmeClient: HAProxy integration: saving updated configuration");
+                    $this->getLogger()->info("AcmeClient: HAProxy integration: saving updated configuration");
                     // Save updated configuration.
                     // Do NOT validate because the current in-memory model doesn't know about the
                     // HAProxy items just created.

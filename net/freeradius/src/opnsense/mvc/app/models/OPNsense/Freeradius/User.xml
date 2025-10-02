@@ -6,21 +6,21 @@
         <users>
             <user type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <username type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z@._\-\/]){1,128}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z@._\-\/:]){1,128}$/u</Mask>
                 </username>
                 <password type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}]){1,128}$/u</mask>
+                    <Mask><![CDATA[/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:&]){1,128}$/u]]></Mask>
                 </password>
                 <passwordencryption type="OptionField">
-                    <default>Cleartext-Password</default>
+                    <Default>Cleartext-Password</Default>
                     <Required>Y</Required>
-                    <multiple>N</multiple>
+                    <Multiple>N</Multiple>
                     <OptionValues>
                         <cleartext value="Cleartext-Password">Cleartext-Password</cleartext>
                         <ntprehashed value="NT-Password">NT-Password (pre-hashed)</ntprehashed>
@@ -31,15 +31,15 @@
                 </description>
                 <ip type="TextField">
                     <Required>N</Required>
-                    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
                 </ip>
                 <subnet type="TextField">
                     <Required>N</Required>
-                    <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+                    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
                 </subnet>
                 <route type="CSVListField">
                     <Required>N</Required>
-                    <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
+                    <Mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</Mask>
                 </route>
                 <ip6 type="NetworkField">
                     <Required>N</Required>
@@ -51,7 +51,7 @@
                 </vlan>
                 <logintime type="TextField">
                     <Required>N</Required>
-                    <mask>/^([0-9a-zA-Z\-\,]){1,128}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z\-\,]){1,128}$/u</Mask>
                 </logintime>
                 <simuse type="IntegerField">
                     <Required>N</Required>
@@ -64,7 +64,7 @@
                 </exos_vlan_untagged>
                 <exos_vlan_tagged type="CSVListField">
                     <Required>N</Required>
-                    <mask>/^(\d{1,4},)*(\d{1,4})$/</mask>
+                    <Mask>/^(\d{1,4},)*(\d{1,4})$/</Mask>
                 </exos_vlan_tagged>
                 <exos_policy type="TextField">
                     <Required>N</Required>
@@ -98,7 +98,7 @@
                 </sessionlimit_max_session_limit>
                 <servicetype type="OptionField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                     <OptionValues>
                         <Option1 value="1">1</Option1>
                         <Option2 value="2">2</Option2>

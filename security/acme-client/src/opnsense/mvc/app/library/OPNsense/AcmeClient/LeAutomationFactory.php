@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * All rights reserved.
  *
@@ -50,7 +50,7 @@ class LeAutomationFactory
         $model = new \OPNsense\AcmeClient\AcmeClient();
         $obj = $model->getNodeByReference(self::CONFIG_PATH . '.' . $uuid);
         if ($obj == null) {
-            LeUtils::log_error("automation not found: ${uuid}");
+            LeUtils::log_error("automation not found: {$uuid}");
             return null;
         }
 
@@ -75,7 +75,7 @@ class LeAutomationFactory
             }
         }
 
-        LeUtils::log_error("automation not supported: " . (string)$obj->type . " (${uuid})");
+        LeUtils::log_error("automation not supported: " . (string)$obj->type . " ({$uuid})");
         return null;
     }
 }

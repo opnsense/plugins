@@ -1,0 +1,17 @@
+<metadata>
+    <wol>
+        <filename>WakeOnLan.js</filename>
+        <endpoints>
+            <endpoint>/api/diagnostics/interface/get_arp*</endpoint>
+            <endpoint>/api/wol/wol/search_host</endpoint>
+            <endpoint>/api/wol/wol/set</endpoint>
+        </endpoints>
+        <translations>
+            <title>WakeOnLan</title>
+            <msg_empty_wol>No saved WOL addresses</msg_empty_wol>
+            <h_device>Device</h_device>
+            <h_interface>Interface</h_interface>
+            <h_status>Status</h_status>
+        </translations>
+    </wol>
+</metadata>

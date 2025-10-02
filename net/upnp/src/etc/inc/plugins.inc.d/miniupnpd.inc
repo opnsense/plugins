@@ -104,10 +104,17 @@ function miniupnpd_uuid()
 
 function miniupnpd_permuser_list()
 {
-    $ret = [];
-    $count = 8;
+    global $config;
 
-    for ($i = 1; $i <= $count; $i++) {
+    $num_permuser = 8;
+
+    if (!empty($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
+        $num_permuser = $config['installedpackages']['miniupnpd']['config'][0]['num_permuser'];
+    }
+
+    $ret = [];
+
+    for ($i = 1; $i <= $num_permuser; $i++) {
         $ret[$i] = "permuser{$i}";
     }
 
@@ -232,7 +239,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
-            $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
+            $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
             /* configure lifetimes to force periodic expire */
             $config_text .= "clean_ruleset_interval=600\n";

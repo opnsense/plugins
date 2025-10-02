@@ -27,6 +27,7 @@
         <id>general.serverport</id>
         <label>Server Port</label>
         <type>text</type>
+        <hint>10051</hint>
         <help>Port of Zabbix trapper on Zabbix server. Default is fine for most scenarios.</help>
     </field>
     <field>
@@ -47,6 +48,7 @@
         <id>general.listenport</id>
         <label>Listen Port</label>
         <type>text</type>
+        <hint>10051</hint>
         <help>Listen port for trapper. Default is just fine.</help>
     </field>
     <field>

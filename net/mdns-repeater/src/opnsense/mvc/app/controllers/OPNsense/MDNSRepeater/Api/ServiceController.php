@@ -2,6 +2,7 @@
 
 /**
  *    Copyright (C) 2017 Fabian Franz
+ *    Copyright (C) 2024 Cedrik Pischem
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -28,52 +29,12 @@
 
 namespace OPNsense\MDNSRepeater\Api;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\MDNSRepeater\MDNSRepeater;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $result = array('result' => 'failed');
-        $res = $backend->configdRun('mdnsrepeater status');
-        if (stripos($res, 'is running')) {
-            $result['result'] = 'running';
-        } elseif (stripos($res, 'not running')) {
-            $general = new MDNSRepeater();
-            if ((string)$general->enabled == '1') {
-                $result['result'] = 'stopped';
-            } else {
-                $result['result'] = 'disabled';
-            }
-        } else {
-            $result['message'] = $res;
-        }
-        return $result;
-    }
-
-    public function startAction()
-    {
-        $backend = new Backend();
-        $result = array('result' => 'failed');
-        $backend->configdRun('template reload OPNsense/MDNSRepeater');
-        $result['result'] = $backend->configdRun('mdnsrepeater start');
-        return $result;
-    }
-
-    public function stopAction()
-    {
-        $backend = new Backend();
-        $result = array("result" => "failed");
-        $result['result'] = $backend->configdRun('mdnsrepeater stop');
-        return $result;
-    }
-
-    public function restartAction()
-    {
-        $this->stopAction();
-        return $this->startAction();
-    }
+    protected static $internalServiceClass = '\OPNsense\MDNSRepeater\MDNSRepeater';
+    protected static $internalServiceTemplate = 'OPNsense/MDNSRepeater';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'mdnsrepeater';
 }

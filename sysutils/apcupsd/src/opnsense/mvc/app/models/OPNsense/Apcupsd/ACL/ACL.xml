@@ -3,7 +3,8 @@
         <name>Services: Apcupsd System Monitoring page</name>
         <patterns>
             <pattern>ui/apcupsd/*</pattern>
-            <pattern>api/apcupsd/*</pattern>
+            <pattern>api/apcupsd/service/*</pattern>
+            <pattern>api/apcupsd/settings/*</pattern>
         </patterns>
     </page-services-apcupsd>
 </acl>

@@ -30,7 +30,7 @@
 <script>
     $(document).ready(function() {
         var refreshStatus = function() {
-            ajaxCall('/api/apcupsd/service/getUpsStatus', {}, function(data, status) {
+            ajaxCall('/api/apcupsd/service/get_ups_status', {}, function(data, status) {
                 if (status === 'success') {
                     $('#apcupsd-status').text(data.error || data.output);
                     setTimeout(refreshStatus, 5000);

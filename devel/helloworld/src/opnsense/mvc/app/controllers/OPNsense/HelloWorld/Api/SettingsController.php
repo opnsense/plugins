@@ -30,63 +30,14 @@
 
 namespace OPNsense\HelloWorld\Api;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\HelloWorld\HelloWorld;
-use OPNsense\Core\Config;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
  * Class SettingsController Handles settings related API actions for the HelloWorld module
  * @package OPNsense\Helloworld
  */
-class SettingsController extends ApiControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
-    /**
-     * retrieve HelloWorld general settings
-     * @return array general settings
-     * @throws \OPNsense\Base\ModelException
-     * @throws \ReflectionException
-     */
-    public function getAction()
-    {
-        // define list of configurable settings
-        $result = array();
-        if ($this->request->isGet()) {
-            $mdlHelloWorld = new HelloWorld();
-            $result['helloworld'] = $mdlHelloWorld->getNodes();
-        }
-        return $result;
-    }
-
-    /**
-     * update HelloWorld settings
-     * @return array status
-     * @throws \OPNsense\Base\ModelException
-     * @throws \ReflectionException
-     */
-    public function setAction()
-    {
-        $result = array("result" => "failed");
-        if ($this->request->isPost()) {
-            // load model and update with provided data
-            $mdlHelloWorld = new HelloWorld();
-            $mdlHelloWorld->setNodes($this->request->getPost("helloworld"));
-
-            // perform validation
-            $valMsgs = $mdlHelloWorld->performValidation();
-            foreach ($valMsgs as $field => $msg) {
-                if (!array_key_exists("validations", $result)) {
-                    $result["validations"] = array();
-                }
-                $result["validations"]["helloworld." . $msg->getField()] = $msg->getMessage();
-            }
-
-            // serialize model to config and save
-            if ($valMsgs->count() == 0) {
-                $mdlHelloWorld->serializeToConfig();
-                Config::getInstance()->save();
-                $result["result"] = "saved";
-            }
-        }
-        return $result;
-    }
+    protected static $internalModelClass = 'OPNsense\HelloWorld\HelloWorld';
+    protected static $internalModelName = 'helloworld';
 }

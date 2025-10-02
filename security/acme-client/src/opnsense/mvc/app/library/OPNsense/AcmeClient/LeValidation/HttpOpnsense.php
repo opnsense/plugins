@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ class HttpOpnsense extends Base implements LeValidationInterface
             $dnslist[] = $this->cert_name;
             foreach ($dnslist as $fqdn) {
                 // NOTE: This may take some time.
-                $ip_found = gethostbyname("${fqdn}.");
+                $ip_found = gethostbyname("{$fqdn}.");
                 if (!empty($ip_found)) {
                     $iplist[] = (string)$ip_found;
                 }
@@ -73,9 +73,15 @@ class HttpOpnsense extends Base implements LeValidationInterface
         // Add IP address from chosen interface
         if (!empty((string)$this->config->http_opn_interface)) {
             $backend = new \OPNsense\Core\Backend();
-            $response = json_decode($backend->configdpRun('interface address', [(string)$this->config->http_opn_interface]));
-            if (!empty($response->address)) {
-                $iplist[] = $response->address;
+            $interface = (string)$this->config->http_opn_interface;
+            $response = json_decode($backend->configdpRun('interface address', [$interface]));
+            // XXX Returns both IPv4 and IPv6 now. While "[0]" and
+            // "[1]" should remain in this order it would make sense
+            // to ensure "family" matches "inet" or "inet6" and/or
+            // pull both addresses for missing IPv6 support depending
+            // on how this should work.
+            if (!empty($response->$interface[0]->address)) {
+                $iplist[] = $response->$interface[0]->address;
             }
         }
 
@@ -96,16 +102,16 @@ class HttpOpnsense extends Base implements LeValidationInterface
                     // IPv4
                     $_dst = '127.0.0.1';
                     $_family = 'inet';
-                    LeUtils::log("using IPv4 address: ${ip}");
+                    LeUtils::log("using IPv4 address: {$ip}");
                 } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
                     // IPv6
                     $_dst = '::1';
                     $_family = 'inet6';
-                    LeUtils::log("using IPv6 address: ${ip}");
+                    LeUtils::log("using IPv6 address: {$ip}");
                 } else {
                     continue; // skip broken entries
                 }
-                $anchor_rules .= "rdr pass ${_family} proto tcp from any to ${ip} port 80 -> ${_dst} port ${local_http_port}\n";
+                $anchor_rules .= "rdr pass {$_family} proto tcp from any to {$ip} port 80 -> {$_dst} port {$local_http_port}\n";
             }
         } else {
             LeUtils::log_error("no IP addresses found to setup port forward");
@@ -120,12 +126,12 @@ class HttpOpnsense extends Base implements LeValidationInterface
 
         // Create temporary port forward to allow acme challenges to get through
         $anchor_setup = "rdr-anchor \"acme-client\"\n";
-        file_put_contents("${configdir}/acme_anchor_setup", $anchor_setup);
-        chmod("${configdir}/acme_anchor_setup", 0600);
-        mwexec("/sbin/pfctl -f ${configdir}/acme_anchor_setup");
-        file_put_contents("${configdir}/acme_anchor_rules", $anchor_rules);
-        chmod("${configdir}/acme_anchor_rules", 0600);
-        mwexec("/sbin/pfctl -a acme-client -f ${configdir}/acme_anchor_rules");
+        file_put_contents("{$configdir}/acme_anchor_setup", $anchor_setup);
+        chmod("{$configdir}/acme_anchor_setup", 0600);
+        mwexec("/sbin/pfctl -f {$configdir}/acme_anchor_setup");
+        file_put_contents("{$configdir}/acme_anchor_rules", $anchor_rules);
+        chmod("{$configdir}/acme_anchor_rules", 0600);
+        mwexec("/sbin/pfctl -a acme-client -f {$configdir}/acme_anchor_rules");
     }
 
     public function cleanup()

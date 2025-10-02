@@ -87,11 +87,11 @@ function rfc2136_cache_file($dnsupdate, $ipver = 4)
     return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$dnsupdate['host']}_{$dnsupdate['server']}{$ipver}.cache";
 }
 
-function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $forced = false)
+function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $forced = false)
 {
     global $config;
 
-    if (!rfc2136_enabled()) {
+    if (!rfc2136_enabled() || !plugins_argument_map($int)) {
         return;
     }
 
@@ -100,7 +100,7 @@ function rfc2136_configure_do($verbose = false, $int = '', $updatehost = '', $fo
     foreach ($config['dnsupdates']['dnsupdate'] as $i => $dnsupdate) {
         if (!isset($dnsupdate['enable'])) {
             continue;
-        } elseif (!empty($int) && $int != $dnsupdate['interface']) {
+        } elseif (!empty($int) && !in_array($dnsupdate['interface'], $int)) {
             continue;
         } elseif (!empty($updatehost) && ($updatehost != $dnsupdate['host'])) {
             continue;
@@ -222,7 +222,7 @@ function get_rfc2136_ip_address($int, $ipver = 4)
         return 'down';
     }
 
-    if ($ipver != 6 && is_private_ip($ip_address)) {
+    if ($ipver != 6 && is_private_ipv4($ip_address)) {
         $ip_ch = curl_init('http://checkip.dyndns.org');
         curl_setopt($ip_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ip_ch, CURLOPT_INTERFACE, $ip_address);

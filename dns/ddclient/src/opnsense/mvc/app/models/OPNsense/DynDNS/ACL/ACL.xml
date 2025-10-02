@@ -3,7 +3,9 @@
         <name>Services: Dynamic DNS</name>
         <patterns>
             <pattern>ui/dyndns/*</pattern>
-            <pattern>api/dyndns/*</pattern>
+            <pattern>api/dyndns/accounts/*</pattern>
+            <pattern>api/dyndns/service/*</pattern>
+            <pattern>api/dyndns/settings/*</pattern>
         </patterns>
     </page-services-dyndns>
 </acl>

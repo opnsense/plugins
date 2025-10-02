@@ -1,15 +1,15 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.1.0</version>
+    <version>4.3.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
             <enabled type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
             <autoRenewal type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </autoRenewal>
             <UpdateCron type="ModelRelationField">
@@ -28,32 +28,32 @@
             </UpdateCron>
             <environment type="OptionField">
                 <Required>N</Required>
-                <default>prod</default>
+                <Default>prod</Default>
                 <OptionValues>
                     <prod>Production Environment [default]</prod>
                     <stg>Staging Environment</stg>
                 </OptionValues>
             </environment>
             <challengePort type="PortField">
-                <default>43580</default>
+                <Default>43580</Default>
                 <MinimumValue>1024</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
                 <Required>Y</Required>
             </challengePort>
             <TLSchallengePort type="PortField">
-                <default>43581</default>
+                <Default>43581</Default>
                 <MinimumValue>1024</MinimumValue>
                 <MaximumValue>65535</MaximumValue>
                 <Required>Y</Required>
             </TLSchallengePort>
             <restartTimeout type="IntegerField">
-                <default>600</default>
+                <Default>600</Default>
                 <MinimumValue>10</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
                 <Required>Y</Required>
             </restartTimeout>
             <haproxyIntegration type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>N</Required>
             </haproxyIntegration>
             <haproxyAclRef type="ModelRelationField">
@@ -65,7 +65,7 @@
                     </acls>
                 </Model>
                 <ValidationMessage>Related HAProxy ACL not found.</ValidationMessage>
-                <multiple>N</multiple>
+                <Multiple>N</Multiple>
                 <Required>N</Required>
             </haproxyAclRef>
             <haproxyActionRef type="ModelRelationField">
@@ -77,7 +77,7 @@
                     </actions>
                 </Model>
                 <ValidationMessage>Related HAProxy action not found.</ValidationMessage>
-                <multiple>N</multiple>
+                <Multiple>N</Multiple>
                 <Required>N</Required>
             </haproxyActionRef>
             <haproxyServerRef type="ModelRelationField">
@@ -89,7 +89,7 @@
                     </servers>
                 </Model>
                 <ValidationMessage>Related HAProxy server not found.</ValidationMessage>
-                <multiple>N</multiple>
+                <Multiple>N</Multiple>
                 <Required>N</Required>
             </haproxyServerRef>
             <haproxyBackendRef type="ModelRelationField">
@@ -101,12 +101,12 @@
                     </backends>
                 </Model>
                 <ValidationMessage>Related HAProxy backend not found.</ValidationMessage>
-                <multiple>N</multiple>
+                <Multiple>N</Multiple>
                 <Required>N</Required>
             </haproxyBackendRef>
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <default>normal</default>
+                <Default>normal</Default>
                 <OptionValues>
                     <normal>normal</normal>
                     <extended>extended</extended>
@@ -117,7 +117,7 @@
             </logLevel>
             <showIntro type="BooleanField">
                 <Required>Y</Required>
-                <default>1</default>
+                <Default>1</Default>
             </showIntro>
         </settings>
         <accounts>
@@ -126,17 +126,17 @@
                     <Required>N</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <email type="EmailField">
@@ -144,7 +144,7 @@
                 </email>
                 <ca type="OptionField">
                     <Required>Y</Required>
-                    <default>letsencrypt</default>
+                    <Default>letsencrypt</Default>
                     <OptionValues>
                         <buypass>Buypass</buypass>
                         <buypass_test>Buypass Test CA</buypass_test>
@@ -159,17 +159,17 @@
                 </ca>
                 <custom_ca type="TextField">
                     <Required>N</Required>
-                    <mask>/^https?:\/\/.*[^\/]$/</mask>
+                    <Mask>/^https?:\/\/.*[^\/]$/</Mask>
                     <ValidationMessage>The URL must be a valid ACME endpoint without a trailing slash.</ValidationMessage>
                 </custom_ca>
                 <eab_kid type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,8192}$/u</mask>
+                    <Mask>/^.{1,8192}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
                 </eab_kid>
                 <eab_hmac type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,8192}$/u</mask>
+                    <Mask>/^.{1,8192}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 8192 characters.</ValidationMessage>
                 </eab_hmac>
                 <!-- hidden field; the private key for this account -->
@@ -179,7 +179,7 @@
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>
-                    <default>100</default>
+                    <Default>100</Default>
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>1000</MaximumValue>
                 </statusCode>
@@ -195,23 +195,23 @@
                     <Required>N</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^[^\s^\t^,^;^\\^\/^(^)^\[^\]]{1,255}$/u</mask>
+                    <Mask>/^[^\s^\t^,^;^\\^\/^(^)^\[^\]]{1,255}$/u</Mask>
                     <ValidationMessage>Please provide a valid FQDN, i.e. www.example.com or mail.example.com (max 255 characters).</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <altNames type="CSVListField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
-                    <mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65535}$/u</mask>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^[^\s^\t^;^\\^\/^(^)^\[^\]]{1,65535}$/u</Mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide one or more valid FQDNs, i.e. www.example.com or mail.example.com. Field length is limited to 65535 characters.</ValidationMessage>
                 </altNames>
@@ -226,8 +226,8 @@
                             </filters>
                         </accounts>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
-                    <multiple>N</multiple>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
+                    <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </account>
                 <validationMethod type="ModelRelationField">
@@ -241,13 +241,13 @@
                             </filters>
                         </validations>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
-                    <multiple>N</multiple>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
+                    <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </validationMethod>
                 <keyLength type="OptionField">
                     <Required>Y</Required>
-                    <default>key_4096</default>
+                    <Default>key_4096</Default>
                     <OptionValues>
                         <key_2048>2048 bit</key_2048>
                         <key_3072>3072 bit</key_3072>
@@ -257,7 +257,7 @@
                     </OptionValues>
                 </keyLength>
                 <ocsp type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>N</Required>
                 </ocsp>
                 <restartActions type="ModelRelationField">
@@ -271,24 +271,24 @@
                             </filters>
                         </actions>
                     </Model>
-                    <ValidationMessage>Related automation not found</ValidationMessage>
+                    <ValidationMessage>Related automation not found.</ValidationMessage>
                     <Sorted>Y</Sorted>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </restartActions>
                 <autoRenewal type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </autoRenewal>
                 <renewInterval type="IntegerField">
                     <Required>Y</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>5000</MaximumValue>
-                    <default>60</default>
+                    <Default>60</Default>
                 </renewInterval>
                 <aliasmode type="OptionField">
                     <Required>Y</Required>
-                    <default>none</default>
+                    <Default>none</Default>
                     <OptionValues>
                         <none>Not using DNS alias mode</none>
                         <automatic>Automatic Mode (uses DNS lookups)</automatic>
@@ -313,7 +313,7 @@
                 <!-- hidden field; status of last operation -->
                 <statusCode type="IntegerField">
                     <Required>N</Required>
-                    <default>100</default>
+                    <Default>100</Default>
                     <MinimumValue>100</MinimumValue>
                     <MaximumValue>1000</MaximumValue>
                 </statusCode>
@@ -329,22 +329,22 @@
                     <Required>N</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <method type="OptionField">
                     <Required>Y</Required>
-                    <default>dns01</default>
+                    <Default>dns01</Default>
                     <OptionValues>
                         <http01>HTTP-01</http01>
                         <dns01>DNS-01</dns01>
@@ -353,14 +353,14 @@
                 </method>
                 <http_service type="OptionField">
                     <Required>Y</Required>
-                    <default>opnsense</default>
+                    <Default>opnsense</Default>
                     <OptionValues>
                         <opnsense>OPNsense Web Service (automatic port forward)</opnsense>
                         <haproxy>HAProxy HTTP Frontend Integration (OPNsense plugin)</haproxy>
                     </OptionValues>
                 </http_service>
                 <http_opn_autodiscovery type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>N</Required>
                 </http_opn_autodiscovery>
                 <http_opn_interface type="InterfaceField">
@@ -371,10 +371,10 @@
                 </http_opn_interface>
                 <http_opn_ipaddresses type="CSVListField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                 </http_opn_ipaddresses>
                 <http_haproxyInject type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>N</Required>
                 </http_haproxyInject>
                 <http_haproxyFrontends type="ModelRelationField">
@@ -389,19 +389,19 @@
                             </filters>
                         </frontends>
                     </Model>
-                    <ValidationMessage>Related HAProxy frontend not found</ValidationMessage>
-                    <multiple>Y</multiple>
+                    <ValidationMessage>Related HAProxy frontend not found.</ValidationMessage>
+                    <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </http_haproxyFrontends>
                 <tlsalpn_service type="OptionField">
                     <Required>Y</Required>
-                    <default>acme</default>
+                    <Default>acme</Default>
                     <OptionValues>
                         <acme>acme.sh TLS Web Server (automatic port forward)</acme>
                     </OptionValues>
                 </tlsalpn_service>
                 <tlsalpn_acme_autodiscovery type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>N</Required>
                 </tlsalpn_acme_autodiscovery>
                 <tlsalpn_acme_interface type="InterfaceField">
@@ -412,11 +412,11 @@
                 </tlsalpn_acme_interface>
                 <tlsalpn_acme_ipaddresses type="CSVListField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                 </tlsalpn_acme_ipaddresses>
                 <dns_service type="OptionField">
                     <Required>Y</Required>
-                    <default>dns_freedns</default>
+                    <Default>dns_freedns</Default>
                     <OptionValues>
                         <dns_1984hosting>1984Hosting</dns_1984hosting>
                         <dns_acmedns>ACME DNS</dns_acmedns>
@@ -461,6 +461,7 @@
                         <dns_easydns>EasyDNS</dns_easydns>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
+                        <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
@@ -484,11 +485,13 @@
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
                         <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
+                        <dns_limacity>Lima-City (TrafficPlex)</dns_limacity>
                         <dns_linode>Linode (v3 / Deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
@@ -510,6 +513,7 @@
                         <dns_rackspace>Rackspace</dns_rackspace>
                         <dns_rage4>rage4</dns_rage4>
                         <dns_regru>RegRu</dns_regru>
+                        <dns_scaleway>Scaleway</dns_scaleway>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
                         <dns_selfhost>Selfhost</dns_selfhost>
@@ -521,6 +525,7 @@
                         <dns_variomedia>Variomedia.de</dns_variomedia>
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
+                        <dns_websupport>Websupport.sk</dns_websupport>
                         <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
@@ -531,7 +536,7 @@
                 <dns_sleep type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>84600</MaximumValue>
-                    <default>0</default>
+                    <Default>0</Default>
                     <ValidationMessage>Please specify a value between 0 and 84600 seconds.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
@@ -618,7 +623,7 @@
                 </dns_da_key>
                 <dns_da_insecure type="BooleanField">
                     <Required>N</Required>
-                    <default>1</default>
+                    <Default>1</Default>
                 </dns_da_insecure>
                 <dns_ddnss_token type="TextField">
                     <Required>N</Required>
@@ -698,6 +703,9 @@
                 <dns_freedns_password type="TextField">
                     <Required>N</Required>
                 </dns_freedns_password>
+                <dns_fornex_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_fornex_api_key>
                 <dns_gandi_livedns_key type="TextField">
                     <Required>N</Required>
                 </dns_gandi_livedns_key>
@@ -740,9 +748,16 @@
                 <dns_inwx_user type="TextField">
                     <Required>N</Required>
                 </dns_inwx_user>
+                <!-- TODO: old value, should be removed -->
                 <dns_inws_password type="TextField">
                     <Required>N</Required>
                 </dns_inws_password>
+                <dns_inwx_password type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_password>
+                <dns_inwx_shared_secret type="TextField">
+                    <Required>N</Required>
+                </dns_inwx_shared_secret>
                 <dns_ionos_prefix type="TextField">
                     <Required>N</Required>
                 </dns_ionos_prefix>
@@ -763,7 +778,7 @@
                 </dns_ispconfig_api>
                 <dns_ispconfig_insecure type="BooleanField">
                     <Required>N</Required>
-                    <default>1</default>
+                    <Default>1</Default>
                 </dns_ispconfig_insecure>
                 <dns_jd_id type="TextField">
                     <Required>N</Required>
@@ -794,7 +809,7 @@
                 </dns_knot_key>
                 <dns_lexicon_provider type="OptionField">
                     <Required>N</Required>
-                    <default>cloudflare</default>
+                    <Default>cloudflare</Default>
                     <OptionValues>
                         <aliyun>Aliyun.com (UNSUPPORTED)</aliyun>
                         <aurora>AuroraDNS (UNSUPPORTED)</aurora>
@@ -865,6 +880,9 @@
                 <dns_lexicon_token type="TextField">
                     <Required>N</Required>
                 </dns_lexicon_token>
+                <dns_limacity_apikey type="TextField">
+                    <Required>N</Required>
+                </dns_limacity_apikey>
                 <dns_linode_key type="TextField">
                     <Required>N</Required>
                 </dns_linode_key>
@@ -873,7 +891,7 @@
                 </dns_linode_v4_key>
                 <dns_loopia_api type="TextField">
                     <Required>N</Required>
-                    <default>https://api.loopia.se/RPCSERV</default>
+                    <Default>https://api.loopia.se/RPCSERV</Default>
                 </dns_loopia_api>
                 <dns_loopia_user type="TextField">
                     <Required>N</Required>
@@ -902,6 +920,12 @@
                 <dns_me_secret type="TextField">
                     <Required>N</Required>
                 </dns_me_secret>
+                <dns_mydnsjp_masterid type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_masterid>
+                <dns_mydnsjp_password type="TextField">
+                    <Required>N</Required>
+                </dns_mydnsjp_password>
                 <dns_mythic_beasts_key type="TextField">
                     <Required>N</Required>
                 </dns_mythic_beasts_key>
@@ -971,11 +995,11 @@
                 </dns_online_key>
                 <dns_opnsense_host type="TextField">
                     <Required>N</Required>
-                    <default>localhost</default>
+                    <Default>localhost</Default>
                 </dns_opnsense_host>
                 <dns_opnsense_port type="TextField">
                     <Required>N</Required>
-                    <default>443</default>
+                    <Default>443</Default>
                 </dns_opnsense_port>
                 <dns_opnsense_key type="TextField">
                     <Required>N</Required>
@@ -985,7 +1009,7 @@
                 </dns_opnsense_token>
                 <dns_opnsense_insecure type="BooleanField">
                     <Required>N</Required>
-                    <default>0</default>
+                    <Default>0</Default>
                 </dns_opnsense_insecure>
                 <dns_ovh_app_key type="TextField">
                     <Required>N</Required>
@@ -1173,7 +1197,7 @@
                 </dns_kas_authdata>
                 <dns_kas_authtype type="OptionField">
                     <Required>N</Required>
-                    <default>plain</default>
+                    <Default>plain</Default>
                     <OptionValues>
                         <plain>plain</plain>
                         <sha1>SHA1 (deprecated in December 2022)</sha1>
@@ -1224,6 +1248,12 @@
                 <dns_nic_secret type="TextField">
                     <Required>N</Required>
                 </dns_nic_secret>
+                <dns_websupport_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_websupport_api_key>
+                <dns_websupport_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_websupport_api_secret>
                 <dns_world4you_username type="TextField">
                     <Required>N</Required>
                 </dns_world4you_username>
@@ -1247,7 +1277,7 @@
                 </dns_conoha_tenantid>
                 <dns_conoha_idapi type="TextField">
                     <Required>N</Required>
-                    <default>https://identity.xxxx.conoha.io/v2.0</default>
+                    <Default>https://identity.xxxx.conoha.io/v2.0</Default>
                 </dns_conoha_idapi>
                 <dns_constellix_key type="TextField">
                     <Required>N</Required>
@@ -1285,6 +1315,9 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_scaleway_token type="TextField">
+                    <Required>N</Required>
+                </dns_scaleway_token>
             </validation>
         </validations>
         <actions>
@@ -1293,17 +1326,17 @@
                     <Required>N</Required>
                 </id>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </name>
                 <description type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
                 <type type="OptionField">
@@ -1312,10 +1345,12 @@
                         <configd_restart_gui>Restart OPNsense Web UI</configd_restart_gui>
                         <configd_restart_haproxy>Restart HAProxy (OPNsense plugin)</configd_restart_haproxy>
                         <configd_restart_nginx>Restart Nginx (OPNsense plugin)</configd_restart_nginx>
+                        <configd_reload_caddy>Reload Caddy (OPNsense plugin)</configd_reload_caddy>
                         <configd_upload_sftp>Upload certificate via SFTP</configd_upload_sftp>
                         <configd_remote_ssh>Remote Command via SSH</configd_remote_ssh>
                         <acme_fritzbox>Upload certificate to FRITZ!Box router</acme_fritzbox>
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
+                        <acme_proxmoxbs>Upload certificate to Proxmox Backup Server</acme_proxmoxbs>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
@@ -1326,26 +1361,26 @@
                 </type>
                 <sftp_host type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </sftp_host>
                 <sftp_host_key type="TextField">
                     <Required>N</Required>
                     <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
                          Reference: https://stackoverflow.com/a/475217 -->
-                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <Mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</Mask>
                     <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
                 </sftp_host_key>
                 <sftp_port type="IntegerField">
                     <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
-                    <default>22</default>
+                    <Default>22</Default>
                     <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
                 </sftp_port>
                 <sftp_user type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,128}$/u</mask>
+                    <Mask>/^.{1,128}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
                 </sftp_user>
                 <sftp_identity_type type="OptionField">
@@ -1358,70 +1393,74 @@
                 </sftp_identity_type>
                 <sftp_remote_path type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,512}$/u</mask>
+                    <Mask>/^.{1,512}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 512 characters.</ValidationMessage>
                 </sftp_remote_path>
                 <sftp_chgrp type="TextField">
                     <Required>N</Required>
-                    <mask>/^[0-9]+$/u</mask>
+                    <Mask>/^[0-9]+$/u</Mask>
                     <ValidationMessage>Should be a numeric value.</ValidationMessage>
                 </sftp_chgrp>
                 <sftp_chmod type="TextField">
                     <Required>N</Required>
-                    <mask>/^0[0-9]{3}$/u</mask>
+                    <Mask>/^0[0-9]{3}$/u</Mask>
                     <ValidationMessage>A unix permission, 4 digits (e.g. 0440).</ValidationMessage>
                 </sftp_chmod>
                 <sftp_chmod_key type="TextField">
                     <Required>N</Required>
-                    <mask>/^0[0-9]{3}$/u</mask>
+                    <Mask>/^0[0-9]{3}$/u</Mask>
                     <ValidationMessage>A unix permission, 4 digits (e.g. 0400).</ValidationMessage>
                 </sftp_chmod_key>
+                <sftp_modtime type="BooleanField">
+                    <Required>N</Required>
+                    <Default>0</Default>
+                </sftp_modtime>
                 <sftp_filename_cert type="TextField">
                     <Required>N</Required>
-                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <Mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_cert>
                 <sftp_filename_key type="TextField">
                     <Required>N</Required>
-                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <Mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_key>
                 <sftp_filename_ca type="TextField">
                     <Required>N</Required>
-                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <Mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_ca>
                 <sftp_filename_fullchain type="TextField">
                     <Required>N</Required>
-                    <mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</mask>
+                    <Mask>/^(?![\/\\])[\w\d_\-@.\/{}%]{1,255}(?&lt;![\/\\])$/ui</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.
                                        Characters are limited to [a-z], [0-9] and [{}@./-_%] and the string must neither begin nor end with '/'.</ValidationMessage>
                 </sftp_filename_fullchain>
                 <remote_ssh_host type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,255}$/u</mask>
+                    <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                 </remote_ssh_host>
                 <remote_ssh_host_key type="TextField">
                     <Required>N</Required>
                     <!-- Key format: (comment)? key-type :SPACE: key-base64 (:SPACE: comment)?
                          Reference: https://stackoverflow.com/a/475217 -->
-                    <mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</mask>
+                    <Mask>/^.+?\s(?:[a-z0-9+\/]{4})*(?:[a-z0-9+\/]{2}==|[a-z0-9+\/]{3}=)?(?:\s.+?)?$/i</Mask>
                     <ValidationMessage>Should be a valid public SSH host key (see "known_hosts").</ValidationMessage>
                 </remote_ssh_host_key>
                 <remote_ssh_port type="IntegerField">
                     <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
-                    <default>22</default>
+                    <Default>22</Default>
                     <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
                 </remote_ssh_port>
                 <remote_ssh_user type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,128}$/u</mask>
+                    <Mask>/^.{1,128}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
                 </remote_ssh_user>
                 <remote_ssh_identity_type type="OptionField">
@@ -1434,7 +1473,7 @@
                 </remote_ssh_identity_type>
                 <remote_ssh_command type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a shell command between 1 and 1024 characters.</ValidationMessage>
                 </remote_ssh_command>
                 <!-- old value, should be removed in next major release -->
@@ -1452,16 +1491,13 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd_generic_command>
-                <acme_synology_dsm_hostname type="HostnameField">
-                    <default></default>
-                    <Required>N</Required>
-                </acme_synology_dsm_hostname>
+                <acme_synology_dsm_hostname type="HostnameField"/>
                 <acme_synology_dsm_port type="PortField">
-                    <default>5000</default>
+                    <Default>5000</Default>
                     <Required>N</Required>
                 </acme_synology_dsm_port>
                 <acme_synology_dsm_scheme type="OptionField">
-                    <default>http</default>
+                    <Default>http</Default>
                     <Required>N</Required>
                     <OptionValues>
                         <http>HTTP [default]</http>
@@ -1470,107 +1506,150 @@
                 </acme_synology_dsm_scheme>
                 <acme_synology_dsm_username type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_username>
                 <acme_synology_dsm_password type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_password>
                 <acme_synology_dsm_create type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                 </acme_synology_dsm_create>
                 <acme_synology_dsm_deviceid type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_deviceid>
                 <acme_synology_dsm_devicename type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_synology_dsm_devicename>
+                <acme_synology_dsm_otpcode type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_synology_dsm_otpcode>
                 <acme_fritzbox_url type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_url>
                 <acme_fritzbox_username type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_username>
                 <acme_fritzbox_password type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_fritzbox_password>
                 <acme_panos_username type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_username>
                 <acme_panos_password type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_password>
                 <acme_panos_host type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_panos_host>
                 <acme_proxmoxve_user type="TextField">
-                    <default>root</default>
+                    <Default>root</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_user>
                 <acme_proxmoxve_server type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_server>
                 <acme_proxmoxve_port type="PortField">
-                    <default>8006</default>
+                    <Default>8006</Default>
                     <Required>N</Required>
                 </acme_proxmoxve_port>
                 <acme_proxmoxve_nodename type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_nodename>
                 <acme_proxmoxve_realm type="TextField">
-                    <default>pam</default>
+                    <Default>pam</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_realm>
                 <acme_proxmoxve_tokenid type="TextField">
-                    <default>acme</default>
+                    <Default>acme</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_tokenid>
                 <acme_proxmoxve_tokenkey type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_tokenkey>
+                <acme_proxmoxbs_user type="TextField">
+                    <Default>root</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_user>
+                <acme_proxmoxbs_server type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_server>
+                <acme_proxmoxbs_port type="PortField">
+                    <Default>8007</Default>
+                    <Required>N</Required>
+                </acme_proxmoxbs_port>
+                <acme_proxmoxbs_nodename type="TextField">
+                    <Required>N</Required>
+                    <Default>localhost</Default>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_nodename>
+                <acme_proxmoxbs_realm type="TextField">
+                    <Default>pam</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_realm>
+                <acme_proxmoxbs_tokenid type="TextField">
+                    <Default>acme</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_tokenid>
+                <acme_proxmoxbs_tokenkey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_proxmoxbs_tokenkey>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_truenas_apikey>
                 <acme_truenas_hostname type="HostnameField">
-                    <default>localhost</default>
+                    <Default>localhost</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_truenas_hostname>
                 <acme_truenas_scheme type="OptionField">
-                    <default>http</default>
+                    <Default>http</Default>
                     <Required>N</Required>
                     <OptionValues>
                         <http>HTTP [default]</http>
@@ -1578,22 +1657,27 @@
                     </OptionValues>
                 </acme_truenas_scheme>
                 <acme_unifi_keystore type="TextField">
-                    <default>/usr/local/share/java/unifi/data/keystore</default>
+                    <Default>/usr/local/share/java/unifi/data/keystore</Default>
                     <Required>N</Required>
                 </acme_unifi_keystore>
                 <acme_vault_url type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_url>
                 <acme_vault_prefix type="TextField">
-                    <default>acme</default>
+                    <Default>acme</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_vault_prefix>
+                <acme_vault_token type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_vault_token>
                 <acme_vault_kvv2 type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                 </acme_vault_kvv2>
             </action>
         </actions>

@@ -42,7 +42,7 @@ class Cloudflare(BaseAccount):
 
     @staticmethod
     def known_services():
-        return  Cloudflare._services.keys()
+        return  {'cloudflare': 'Cloudflare'}
 
     @staticmethod
     def match(account):
@@ -51,13 +51,7 @@ class Cloudflare(BaseAccount):
     def execute(self):
         if super().execute():
             # IPv4/IPv6
-            recordType = None
-            if str(self.current_address).find(':') > 1:
-                #IPv6
-                recordType = "AAAA"
-            else:
-                #IPv4
-                recordType = "A"
+            recordType = "AAAA" if str(self.current_address).find(':') > 1 else "A"
 
             # get ZoneID
             url = "https://%s/client/v4/zones" % self._services[self.settings.get('service')]

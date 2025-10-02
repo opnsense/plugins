@@ -42,6 +42,20 @@
     <help>Due to the nature of UDP, nginx cannot know, when the communication ends and this helps as it tells nginx the number of datagrams the communication is expected to last on server side and it is expected to be closed afterwards. If you enter 0, it is expected, that the server never responds to a datagram. If nginx gets a datagram, it will still get forwarded to the client. Setting this option might be useful in (mostly) unidirectional communication as well.</help>
   </field>
   <field>
+    <id>streamserver.proxy_connect_timeout</id>
+    <label>Proxy Connect Timeout</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Defines a timeout (in seconds) for establishing a connection with a proxied server.</help>
+  </field>
+  <field>
+    <id>streamserver.proxy_timeout</id>
+    <label>Proxy Timeout</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Sets the timeout (in seconds) between two successive read or write operations on client or proxied server connections.</help>
+  </field>
+  <field>
     <id>streamserver.certificate</id>
     <label>TLS Certificate</label>
     <type>dropdown</type>

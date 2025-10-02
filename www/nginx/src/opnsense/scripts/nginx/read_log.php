@@ -68,6 +68,8 @@ $result = [];
 // special case: the global error log
 if ($server == 'global') {
     $logparser = new ErrorLogParser($log_prefix . 'error' . $log_suffix, $page, $per_page, $query);
+} elseif ($server == 'perm_ban') {
+    $logparser = new AccessLogParser($log_prefix . 'perm_ban.access' . $log_suffix, $page, $per_page, $query);
 } else {
     switch ($mode) {
         case 'error':

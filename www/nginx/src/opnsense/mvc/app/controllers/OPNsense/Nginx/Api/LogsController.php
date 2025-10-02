@@ -40,7 +40,7 @@ class LogsController extends ApiControllerBase
     /**
      * "/" -> list of access logs
      * "/uuid" -> conent of access log
-     * @param null|string $uuid log uuid of the HTTP server from which the error log should be returned
+     * @param null|string $uuid log uuid of the HTTP server from which the access log should be returned
      * @param $fileno int number of logfile to retrieve
      * @param $page int pagination page to retrieve
      * @param $perPage int number of entries per page
@@ -53,7 +53,12 @@ class LogsController extends ApiControllerBase
         $this->nginx = new Nginx();
         if (!isset($uuid)) {
             // emulate REST API -> /accesses delivers a list of servers with access logs
-            return $this->list_vhosts();
+            // attach special vhost for perm_ban log if needed
+            $data = $this->list_vhosts();
+            if ((string)$this->nginx->http->log_perm_ban == "1") {
+                $data[] = array('id' => 'perm_ban', 'server_name' => 'Auto-ban');
+            }
+            return $data;
         } elseif (!isset($fileno)) {
             return $this->list_logfiles('access', $uuid);
         } else {
@@ -161,7 +166,7 @@ class LogsController extends ApiControllerBase
      */
     private function get_logs($type, $uuid, $fileno, $page, $perPage, $query)
     {
-        if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
+        if (!($this->vhost_exists($uuid) || $uuid == 'global' || $uuid == 'perm_ban')) {
             return $this->response->setStatusCode(404, "Not Found");
         }
 
@@ -182,7 +187,7 @@ class LogsController extends ApiControllerBase
      */
     private function list_logfiles($type, $uuid)
     {
-        if (!($this->vhost_exists($uuid) || $uuid == 'global')) {
+        if (!($this->vhost_exists($uuid) || $uuid == 'global' || $uuid == 'perm_ban')) {
             return $this->response->setStatusCode(404, "Not Found");
         }
 
@@ -282,11 +287,12 @@ class LogsController extends ApiControllerBase
      */
     private function sendConfigdToClient($command)
     {
-        $backend = new Backend();
         // must be passed directly -> OOM Problem
-        $this->response->setContent($backend->configdRun($command));
-        $this->response->setStatusCode(200, "OK");
-        $this->response->setContentType('application/json', 'UTF-8');
-        return $this->response->send();
+        if (!$this->response->isSent()) {
+            $backend = new Backend();
+            $this->response->setContent($backend->configdRun($command));
+            $this->response->setStatusCode(200, "OK");
+            $this->response->setContentType('application/json', 'UTF-8');
+        }
     }
 }

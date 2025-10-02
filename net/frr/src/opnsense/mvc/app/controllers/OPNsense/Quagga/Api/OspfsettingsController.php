@@ -1,6 +1,7 @@
 <?php
 
 /*
+ *    Copyright (C) 2025 Deciso B.V.
  *    Copyright (C) 2017 Fabian Franz
  *    Copyright (C) 2019 Michael Muenz <m.muenz@gmail.com>
  *    All rights reserved.
@@ -36,40 +37,86 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'ospf';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
 
+    public function searchNeighborAction()
+    {
+        return $this->searchBase('neighbors.neighbor');
+    }
+
+    public function getNeighborAction($uuid = null)
+    {
+        return $this->getBase('neighbor', 'neighbors.neighbor', $uuid);
+    }
+
+    public function addNeighborAction()
+    {
+        return $this->addBase('neighbor', 'neighbors.neighbor');
+    }
+
+    public function delNeighborAction($uuid)
+    {
+        return $this->delBase('neighbors.neighbor', $uuid);
+    }
+
+    public function setNeighborAction($uuid)
+    {
+        return $this->setBase('neighbor', 'neighbors.neighbor', $uuid);
+    }
+
+    public function searchAreaAction()
+    {
+        return $this->searchBase('areas.area');
+    }
+    public function getAreaAction($uuid = null)
+    {
+        return $this->getBase('area', 'areas.area', $uuid);
+    }
+    public function addAreaAction()
+    {
+        return $this->addBase('area', 'areas.area');
+    }
+    public function delAreaAction($uuid)
+    {
+        return $this->delBase('areas.area', $uuid);
+    }
+    public function setAreaAction($uuid)
+    {
+        return $this->setBase('area', 'areas.area', $uuid);
+    }
+    public function toggleAreaAction($uuid)
+    {
+        return $this->toggleBase('areas.area', $uuid);
+    }
+
     public function searchNetworkAction()
     {
-        return $this->searchBase('networks.network', array("enabled", "ipaddr", "netmask", "area"));
+        return $this->searchBase('networks.network');
     }
     public function searchInterfaceAction()
     {
-        return $this->searchBase('interfaces.interface', array("enabled", "interfacename", "networktype", "authtype", "area"));
+        return $this->searchBase('interfaces.interface');
     }
     public function searchPrefixlistAction()
     {
-        return $this->searchBase('prefixlists.prefixlist', array("enabled", "name", "seqnumber", "action", "network" ));
+        return $this->searchBase('prefixlists.prefixlist');
     }
     public function searchRoutemapAction()
     {
-        return $this->searchBase('routemaps.routemap', array("enabled", "name", "action", "id", "match2", "set"));
+        return $this->searchBase('routemaps.routemap');
     }
     public function getNetworkAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('network', 'networks.network', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('interface', 'interfaces.interface', $uuid);
     }
     public function getPrefixlistAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
     public function getRoutemapAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
     public function addNetworkAction()
@@ -120,6 +167,10 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
+    public function toggleNeighborAction($uuid)
+    {
+        return $this->toggleBase('neighbors.neighbor', $uuid);
+    }
     public function toggleNetworkAction($uuid)
     {
         return $this->toggleBase('networks.network', $uuid);
@@ -135,5 +186,30 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     public function toggleRoutemapAction($uuid)
     {
         return $this->toggleBase('routemaps.routemap', $uuid);
+    }
+
+    public function searchRedistributionAction()
+    {
+        return $this->searchBase('redistributions.redistribution');
+    }
+    public function getRedistributionAction($uuid = null)
+    {
+        return $this->getBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function addRedistributionAction()
+    {
+        return $this->addBase('redistribution', 'redistributions.redistribution');
+    }
+    public function delRedistributionAction($uuid)
+    {
+        return $this->delBase('redistributions.redistribution', $uuid);
+    }
+    public function setRedistributionAction($uuid)
+    {
+        return $this->setBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+    public function toggleRedistributionAction($uuid)
+    {
+        return $this->toggleBase('redistributions.redistribution', $uuid);
     }
 }
