@@ -45,12 +45,13 @@
         <id>general.timeout</id>
         <label>Timeout</label>
         <type>text</type>
-        <help>Server's timeout seconds for TCP relay (default 60)</help>
+		<hint>60</hint>
+        <help>Server's timeout seconds for TCP relay</help>
     </field>
 	<field>
         <id>general.fragmentation</id>
         <label>Fragmentation</label>
         <type>checkbox</type>
-        <help>Outbound UDP socket allows IP fragmentation (default false)</help>
+        <help>Outbound UDP socket allows IP fragmentation</help>
     </field>
 </form>
