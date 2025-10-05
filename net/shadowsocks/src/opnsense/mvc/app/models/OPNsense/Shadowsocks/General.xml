@@ -54,15 +54,15 @@
 				</Insecure>
             </OptionValues>
         </cipher>
-		<tcpudpmode type="OptionField">
-			<Default>tcp_only</Default>
-			<Required>Y</Required>
-			<OptionValues>
+        <tcpudpmode type="OptionField">
+            <Default>tcp_only</Default>
+            <Required>Y</Required>
+            <OptionValues>
 				<tcp_only>TCP only</tcp_only>
 				<udp_only>UDP only</udp_only>
 				<tcp_and_udp>TCP and UDP</tcp_and_udp>
-			</OptionValues>
-		</tcpudpmode>
+            </OptionValues>
+        </tcpudpmode>
 		<timeout type="IntegerField">
 			<Default>60</Default>
 			<Required>Y</Required>
