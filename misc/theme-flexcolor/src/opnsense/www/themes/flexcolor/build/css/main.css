@@ -1006,8 +1006,8 @@ pre {
   line-height: 1.428571429;
   word-break: break-all;
   word-wrap: break-word;
-  color: var(--pfore);
-  background-color: inherit;
+  color: var(--contentboxfore);
+  background-color: var(--contentboxback);
   border: inherit;
   border-radius: 3px; }
 pre code {
