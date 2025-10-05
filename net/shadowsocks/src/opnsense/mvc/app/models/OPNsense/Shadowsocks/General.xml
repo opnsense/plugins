@@ -69,6 +69,7 @@
 		</timeout>
 		<fragmentation type="BooleanField">
 			<Default>0</Default>
+			<Required>Y</Required>
 		</fragmentation>
     </items>
 </model>
