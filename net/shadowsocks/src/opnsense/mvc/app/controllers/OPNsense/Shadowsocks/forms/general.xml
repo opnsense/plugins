@@ -41,4 +41,16 @@
         <type>dropdown</type>
         <help>Choose TCP, UDP or both relay mode</help>
     </field>
+	<field>
+        <id>general.timeout</id>
+        <label>Timeout</label>
+        <type>text</type>
+        <help>Server's timeout seconds for TCP relay (default 60)</help>
+    </field>
+	<field>
+        <id>general.fragmentation</id>
+        <label>Fragmentation</label>
+        <type>checkbox</type>
+        <help>Outbound UDP socket allows IP fragmentation (default false)</help>
+    </field>
 </form>
