@@ -58,9 +58,9 @@
             <Default>tcp_only</Default>
             <Required>Y</Required>
             <OptionValues>
-				<tcp_only>TCP only</tcp_only>
-				<udp_only>UDP only</udp_only>
-				<tcp_and_udp>TCP and UDP</tcp_and_udp>
+                <tcp_only>TCP only</tcp_only>
+                <udp_only>UDP only</udp_only>
+                <tcp_and_udp>TCP and UDP</tcp_and_udp>
             </OptionValues>
         </tcpudpmode>
 		<timeout type="IntegerField">
