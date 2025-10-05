@@ -59,10 +59,10 @@
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover,
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
-  color: var(--primary);
+  color: var(--jquerybarfore);
   text-decoration: none;
-  background-color: var(--pbg);
-  border: 1px solid var(--primary);
+  background-color: var(--jquerybarback);
+  border: 1px solid var(--jquerybarborder);
 }
 .bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item.dropdown-item-checkbox,
@@ -82,7 +82,7 @@
   outline: 0;
 }
 .bootgrid-table th > .column-header-anchor {
-  color: var(--pbg);
+  color: var(--jqueryfore);
   cursor: not-allowed;
   display: block;
   position: relative;
@@ -108,7 +108,7 @@
 }
 .bootgrid-table th:hover,
 .bootgrid-table th:active {
-  background: var(--pbg);
+  background: var(--jqueryback);
 }
 .bootgrid-table td {
   overflow: hidden;
@@ -119,7 +119,7 @@
 }
 .bootgrid-table td.loading,
 .bootgrid-table td.no-results {
-  background: var(--pbg);
+  background: var(--jqueryback);
   text-align: center;
 }
 .bootgrid-table th.select-cell,

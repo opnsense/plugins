@@ -3,12 +3,12 @@
 .nvd3 .nv-axis {
     pointer-events:none;
     opacity: 1;
-	fill: var(--graphtext);
+	fill: var(--graphfore);
 }
 
 .nvd3 .nv-axis path {
     fill: none;
-    stroke: var(--graphtext);
+    stroke: var(--graphfore);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -23,7 +23,7 @@
 
 .nvd3 .nv-axis line {
     fill: none;
-    stroke: var(--graphtext);
+    stroke: var(--graphfore);
     stroke-opacity: .20;
     shape-rendering: crispEdges;
 }
@@ -274,7 +274,7 @@ svg.nvd3-svg {
 
 .nvd3 text {
   font: normal 12px Arial, sans-serif;
-	fill: var(--graphtext);
+	fill: var(--graphfore);
 }
 
 .nvd3 .title {
@@ -289,7 +289,7 @@ svg.nvd3-svg {
 .nvd3.nv-noData {
   font-size: 18px;
   font-weight: bold;
-	fill: var(--graphtext);
+	fill: var(--graphfore);
 }
 
 
@@ -334,7 +334,7 @@ svg.nvd3-svg {
 .nvd3 .nv-brushBackground rect {
     stroke: var(--graphback);
     stroke-width: .4;
-    fill: var(--graphtext);
+    fill: var(--graphfore);
     fill-opacity: .7;
 }
 

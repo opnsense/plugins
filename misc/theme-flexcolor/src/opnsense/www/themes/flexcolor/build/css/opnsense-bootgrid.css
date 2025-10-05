@@ -19,7 +19,7 @@
 .tabulator .tabulator-header .tabulator-col {
   border-right: 1px solid var(--tbborder);
   background-color: var(--tbheadback);
-  color: var(--tbheadtext);
+  color: var(--tbheadfore);
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
@@ -43,22 +43,22 @@
 }
 
 .tabulator-row.tabulator-row-odd {
-  color: var(--tbrowtextodd);
+  color: var(--tbrowforeodd);
   background-color: var(--tbrowbackodd);
 }
 
 .tabulator-row.tabulator-row-odd.tabulator-selectable:hover:not(.tabulator-selected) {
-  color: var(--tbrowtextodd);
+  color: var(--tbrowforeodd);
   background-color: var(--tbrowbackodd);
 }
 
 .tabulator-row.tabulator-row-even {
-  color: var(--tbrowtexteven);
+  color: var(--tbrowforeeven);
   background-color: var(--tbrowbackeven);
 }
 
 .tabulator-row.tabulator-row-even.tabulator-selectable:hover:not(.tabulator-selected) {
-  color: var(--tbrowtexteven);
+  color: var(--tbrowforeeven);
   background-color: var(--tbrowbackeven);
 }
 
@@ -124,7 +124,7 @@
 }
 
 .tabulator .tabulator-footer .tabulator-page {
-  color: var(--tftext);
+  color: var(--tffore);
   background-color: var(--tfback);
   border: 1px solid var(--tfborder);
 }
@@ -135,30 +135,30 @@
   padding: 6px 12px;}
 
 .tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
-  color: var(--tftexthover);
+  color: var(--tfforehover);
   background-color: var(--tfbackhover);
   border-color: var(--tfborderhover);
 }
 
 .tabulator .tabulator-footer .tabulator-page:not(disabled).active:hover {
-  color: var(--tftextactivehover);
+  color: var(--tfforeactivehover);
   background-color: var(--tfbackactivehover);
   border-color: var(--tfborderactivehover);
   cursor: default;
 }
 
 .tabulator .tabulator-footer .tabulator-page.active {
-  color: var(--tftextactive);
+  color: var(--tfforeactive);
   background-color: var(--tfbackactive);
   border-color: var(--tfborderactive);
   cursor: default;
 }
 .tabulator-page-counter {
-  color: var(--tbheadtext);
+  color: var(--tbheadfore);
 }
 
 .tabulator .tabulator-footer .tabulator-paginator {
-  color: var(--tftext);
+  color: var(--tffore);
 }
 /*----------*/
 /* end of main theming elements */
@@ -296,5 +296,5 @@
 }
 .overlay > i {
     font-size: 20px;
-    color: var(--tbheadtext);
+    color: var(--tbheadfore);
 }

@@ -4,49 +4,96 @@
 /* theme dark, flexcolor */
 
 /* main colors */
-    --highlighted: #FFFFFF; /* highlighted element */
-    --muted: #000000; /* highlighted element */
-    --pbg: #131313; /* primary background */
-    --pbghover: #232323; /* primary background hover*/
-    --text: #E6E6E6; /* textcolor */
-    --texthover: #FFFFFF; /* primary text hover */
-    --textmuted: #B1B1B1; /* muted text */
-    --sbg: #1C1C1C; /* second background #FAF9F6*/
-    --sbgtext: #A3A3A3; /* textcolor second background */ 
-    --stdborder: #3D3D3D; /* standrad border */
-    --badgeback: #777777; /* badge background & blockquote*/
+    --pfore: #E6E6E6; /* main textcolor */
+    --pforehover: #FFFFFF; /* primary text hover */
+    --pforemuted: #B1B1B1; /* muted text */
+    --pforeinverse: #F2F7FD; /* main textcolor inverse */
+    --pforeinversehover: #D9E1EB; /* main textcolor inverse */
+    --pback: #131313; /* primary background */
+    --pbackmuted: #999999; /* primary background */
+    --pbackinverse: #181E25; /* primary background inverse */
+    --pbackhover: #232323; /* primary background hover*/
+    --sfore: #A3A3A3; /*second background hover */
+    --sback: #1C1C1C; /* second background #FAF9F6*/
+    --stdborder: #6D6D6D; /* standard border */
+    --stdborderfore: #E6E6E6; /* standard border with accent*/
+    --stdborderprimary: #336CDF; /* standard border with accent*/
+    --stdborderinverse: #131313; /* standard border with accent*/
+    --stdborder50bright: #A1A1A1; /* standard border with accent*/
+    --badgeback: #777777; /* badge background & progress-bar & blockquote*/
     --progressbar: #D4D4D4; /* progress-bar*/
     --token: #FA6121; /* background token */
+    --highlighted: #FFFFFF; /* highlighted element */
 
+/* bootstrap */
+  /* bootstrap titlebar */
+    --bsheadfore: #E6E6E6;
+    --bsheadback: #131313;
+    --bsbodyfore: #E6E6E6;
+    --bsbodyback: #131313;
+
+/* jquery-bootgrid */
+    --jqueryfore: #E6E6E6;
+    --jqueryback: #131313;
+    --jquerybarfore: #E6E6E6;
+    --jquerybarback: #1F57C6;
+    --jquerybarborder: #1F57C6;
+
+/* login,(complete indepent, despite textboxes) */
+    --loginback: #131313; /* loginscreen background */
+    --loginboxtitle: #E6E6E6; /* loginscreen boxtitle */
+    --logindatefore: #E6E6E6; /* loginscreen textcolor */
+    --loginheadback: #1C1C1C; /* login-dialogbox head background */
+    --loginboxback: #1C1C1C; /* login-dialogbox background */
+    --loginboxfore: #E6E6E6; /* Login-dialogbox textcolor */
+
+/* textbox (all kinds, tokenize, listbox, textbox, bootstrap select */
+    /* foreground */
+    --txtboxfore: #E6E6E6;
+    --txtboxforehover: #336CDF;
+    --txtboxforeactive: #336CDF;
+    --txtboxforeinverse: #E6E6E6; 
+    --txtboxforedisabled: #E6E6E6;
+    --txtboxforetoken: #131313; /* only tokenize, pending delete */
+    --txtboxforedel: #E6E6E6; /* only tokenize, pending delete */
+    --txtboxforedismiss: #E6E6E6; /* only tokenize, dismiss */
+    --txtboxforeplaceholder: #E6E6E6;
+    /* background */
+    --txtboxback: #131313;
+    --txtboxbackhover: #131313;
+    --txtboxbackactive: #131313;
+    --txtboxbackdisabled: #131313;
+    --txtboxbacktoken: #E65C00;
+    --txtboxbackdel: #FF5252; /* only tokenize, pending delete */
+    --txtboxbackdismiss: #F2F7FD; /* only tokenize, dismiss */
+    /* border */
+    --txtboxborder: #E6E6E6;
+    --txtboxborderhover: #1C4DB0;
+    --txtboxborderactive: #336CDF;
+    --txtboxborderdisabled: #3D3D3D;
+    --txtboxbordertoken: #131313;
+    --txtboxborderdel: #E6E6E6; /* only tokenize, pending delete */
+    --txtboxborderdismiss: #E6E6E6; /* only tokenize, dismiss */
 
 /* page */
-    --pagetext: #E6E6E6; /* text color page */
+    --pagefore: #E6E6E6; /* text color page */
     --pageback: #131313; /* backround color page */
-    --pageborder: #3D3D3D; /* border color page */
+    --pageborder: #E6E6E6; /* border color page */
     --headlineback: #131313; /*background headline box*/
     --headlinebackshadow: 2px 2px 1px 0px rgba(0, 0, 0, 0); /* shadow headlinebackgroundbox */
 
-/* navigation sidebar */
+/* navigation sidebar (complete independent) */
     /* unselected */
-    --sdbartext: #E6E6E6; /*textcolor navigation sidebar */
+    --sdbarfore: #E6E6E6; /*textcolor navigation sidebar */
     --sdbarback: #131313; /*background unselected navigation sidebar */
     --sdbarhoverback: #131313; /* background sidebar hover */
-    --sdbarhovertext: #D66E12; /* textcolor sidebar hover */
+    --sdbarhoverfore: #D66E12; /* textcolor sidebar hover */
     --sdbaractback: #232323; /* active menu #ECE7E2, #FFEDF5, #E5F4FF, #FFFBE5, #F5F5DC, #F2F2F2, #FFFACD */
-    --navbarinverse: #131313; /* navbarinverse */
-    --navbarinversetext: #336CDF; /* navtab */
+    --navbarinverse: #131313; /* navtab */
+    --navbarinversefore: #336CDF; /* navtab */
     --navbaractivebefore: #E6E6E6; /*sidebar active before */
 
-/* login */
-    --loginback: #131313; /* loginscreen background */
-    --logintext: #E6E6E6; /* loginscreen textcolor */
-    --loginheadback: #1C1C1C; /* login-dialogbox head background */
-    --loginboxback: #1C1C1C; /* login-dialogbox background */
-    --loginboxtext: #E6E6E6; /* Login-dialogbox textcolor */
-
 /* special  characters */
-    --tglsdbback: #131313; /* button toggle sidebar back */
-    --tglsdbfor: #E6E6E6; /* button toggle sidebar foreground */
     --link: #FA6121; /* OPNsense text login and links */
     --linkhover: #E04605; /* OPNsense text login and links hover */
 
@@ -60,285 +107,294 @@
     --warning: #D66E12; /* warning accent */
     --warninghover: #ED862B; /* warning accent hover */
     --danger: #FF5252; /* danger accent */
-    --dangerhover: #FF8585; /* danger accent hover */
+    --dangerhover: #BE2326FF8585; /* danger accent hover */
 
-/* buttons */
+/* buttons (complete (independent) */
     /* unselected */
-    --btntext: #E6E6E6; /* textcolor */
+    --btnfore: #E6E6E6; /* textcolor */
     --btnback: #131313; /* background */
     --btnborder: #E6E6E6; /* border */
     /* hover */
-    --btntexthover: #E6E6E6; /* textcolor hover*/
+    --btnforehover: #E6E6E6; /* textcolor hover*/
     --btnbackhover: #131313; /* background hover*/
     --btnborderhover: #336CDF; /* border hover */
     /* active */
-    --btntextactive: #336CDF; /* textcolor active*/
+    --btnforeactive: #336CDF; /* textcolor active*/
     --btnbackactive: #131313; /* background active*/
     --btnborderactive: #336CDF; /* border active */
     /* disabled */
-    --btntextdisabled: #999999; /* textcolor disabled*/
+    --btnforedisabled: #999999; /* textcolor disabled*/
     --btnbackdisabled: #131313; /* background disabled*/
     /* badge */
-    --btntextbadge: #131313; /* textcolor badge*/
+    --btnforebadge: #131313; /* textcolor badge*/
     --btnbackbadge: #1C1C1C; /* background badge*/
     --btnborderbadge: #1C1C1C; /* border badge */
 /* default button */
     /* unselected */
-    --dfbtntext: #E6E6E6; /* textcolor */
+    --dfbtnfore: #E6E6E6; /* textcolor */
     --dfbtnback: #131313; /* background */
     --dfbtnborder: #E6E6E6; /* border */
     /* hover */
-    --dfbtntexthover: #E6E6E6; /* textcolor hover*/
+    --dfbtnforehover: #E6E6E6; /* textcolor hover*/
     --dfbtnbackhover: #131313; /* background hover*/
     --dfbtnborderhover: #336CDF; /* border hover */
     /* active */
-    --dfbtntextactive: #336CDF; /* textcolor active*/
+    --dfbtnforeactive: #336CDF; /* textcolor active*/
     --dfbtnbackactive: #131313; /* background active*/
     --dfbtnborderactive: #336CDF; /* border active */
     /* disabled */
-    --dfbtntextdisabled: #999999; /* textcolor disabled*/
+    --dfbtnforedisabled: #999999; /* textcolor disabled*/
     --dfbtnbackdisabled: #131313; /* background disabled*/
     --dfbtnborderdisabled: #E6E6E6; /* border disabled */
     /* Badge */
-    --dfbtntextbadge: #131313; /* textcolor badge*/
+    --dfbtnforebadge: #131313; /* textcolor badge, traffic badge textcolor*/
     --dfbtnbackbadge: #1C1C1C; /* background badge*/
     --dfbtnborderbadge: #1C1C1C; /* border badge */
 /* primary button */
     /* unselected */
-    --pbtntext: #E6E6E6; /* textcolor */
+    --pbtnfore: #E6E6E6; /* textcolor */
     --pbtnback: #131313; /* background */
     --pbtnborder: #336CDF; /* border */
     /* hover */
-    --pbtntexthover: #336CDF; /* textcolor hover*/
+    --pbtnforehover: #336CDF; /* textcolor hover*/
     --pbtnbackhover: #131313; /* background hover*/
     --pbtnborderhover: #336CDF; /* border hover */
     /* active */
-    --pbtntextactive: #336CDF; /* textcolor active*/
+    --pbtnforeactive: #336CDF; /* textcolor active*/
     --pbtnbackactive: #131313; /* background active*/
     --pbtnborderactive: #336CDF; /* border active */
     /* disabled */
-    --pbtntextdisabled: #999999; /* textcolor disabled*/
+    --pbtnforedisabled: #999999; /* textcolor disabled*/
     --pbtnbackdisabled: #131313; /* background disabled*/
     --pbtnborderdisabled: #635D55; /* border disabled */
     /* badge */
-    --pbtntextbadge: #131313; /* textcolor badge*/
+    --pbtnforebadge: #131313; /* textcolor badge*/
     --pbtnbackbadge: #1C1C1C; /* background badge*/
     --pbtnborderbadge: #1C1C1C; /* border badge */
 /* info button */
     /* unselected */
-    --ibtntext: #008CDD; /* textcolor */
+    --ibtnfore: #008CDD; /* textcolor */
     --ibtnback: #131313; /* background */
     --ibtnborder: #008CDD; /* border */
     /* hover */
-    --ibtntexthover: #E6E6E6; /* textcolor hover*/
+    --ibtnforehover: #E6E6E6; /* textcolor hover*/
     --ibtnbackhover: #131313; /* background hover*/
     --ibtnborderhover: #336CDF; /* border hover */
     /* active */
-    --ibtntextactive: #336CDF; /* textcolor active*/
+    --ibtnforeactive: #336CDF; /* textcolor active*/
     --ibtnbackactive: #131313; /* background active*/
     --ibtnborderactive: #008CDD; /* border active */
     /* disabled */
-    --ibtntextdisabled: #999999; /* textcolor disabled*/
+    --ibtnforedisabled: #999999; /* textcolor disabled*/
     --ibtnbackdisabled: #131313; /* background disabled*/
     --ibtnborderdisabled: #3D3D3D; /* border disabled */
     /* badge */
-    --ibtntextbadge: #008CDD; /* textcolor badge*/
+    --ibtnforebadge: #008CDD; /* textcolor badge*/
     --ibtnbackbadge: #1C1C1C; /* background badge*/
     --ibtnborderbadge: #1C1C1C; /* border badge */
 /* success button */
     /* unselected */
-    --sbtntext: #388E3C; /* textcolor */
+    --sbtnfore: #388E3C; /* textcolor */
     --sbtnback: #131313; /* background */
     --sbtnborder: #388E3C; /* border */
     /* hover */
-    --sbtntexthover: #E6E6E6; /* textcolor hover*/
+    --sbtnforehover: #E6E6E6; /* textcolor hover*/
     --sbtnbackhover: #131313; /* background hover*/
     --sbtnborderhover: #336CDF; /* border hover */
     /* active */
-    --sbtntextactive: #336CDF; /* textcolor active*/
+    --sbtnforeactive: #336CDF; /* textcolor active*/
     --sbtnbackactive: #131313; /* background active*/
     --sbtnborderactive: #388E3C; /* border active */
     /* disabled */
-    --sbtntextdisabled: #999999; /* textcolor disabled*/
+    --sbtnforedisabled: #999999; /* textcolor disabled*/
     --sbtnbackdisabled: #131313; /* background disabled*/
-    --sbtnborderdisabled: #3D3D3D; /* border disabled */
+    --sbtnborderdisabled: #31C234; /* border disabled */
     /* badge */
-    --sbtntextbadge: #388E3C; /* textcolor badge*/
+    --sbtnforebadge: #388E3C; /* textcolor badge*/
     --sbtnbackbadge: #1C1C1C; /* background badge*/
     --sbtnborderbadge: #1C1C1C; /* border badge */
 /* warning button */
     /* unselected */
-    --wbtntext: #D66E12; /* textcolor */
+    --wbtnfore: #D66E12; /* textcolor */
     --wbtnback: #131313; /* background */
     --wbtnborder: #D66E12; /* border */
     /* hover */
-    --wbtntexthover: #E6E6E6; /* textcolor hover*/
+    --wbtnforehover: #E6E6E6; /* textcolor hover*/
     --wbtnbackhover: #131313; /* background hover*/
     --wbtnborderhover: #336CDF; /* border hover */
     /* active */
-    --wbtntextactive: #336CDF; /* textcolor active*/
+    --wbtnforeactive: #336CDF; /* textcolor active*/
     --wbtnbackactive: #131313; /* background active*/
     --wbtnborderactive: #D66E12; /* border active */
     /* disabled */
-    --wbtntextdisabled: #999999; /* textcolor disabled*/
+    --wbtnforedisabled: #999999; /* textcolor disabled*/
     --wbtnbackdisabled: #131313; /* background disabled*/
     --wbtnborderdisabled: #3D3D3D; /* border disabled */
     /* badge */
-    --wbtntextbadge: #D66E12; /* textcolor badge*/
+    --wbtnforebadge: #D66E12; /* textcolor badge*/
     --wbtnbackbadge: #1C1C1C; /* background badge*/
     --wbtnborderbadge: #1C1C1C; /* border badge */
 /* danger button */
     /* unselected */
-    --dbtntext: #FF5252; /* textcolor */
+    --dbtnfore: #FF5252; /* textcolor */
     --dbtnback: #131313; /* background */
     --dbtnborder: #FF5252; /* border */
     /* hover */
-    --dbtntexthover: #E6E6E6; /* textcolor hover*/
+    --dbtnforehover: #E6E6E6; /* textcolor hover*/
     --dbtnbackhover: #131313; /* background hover*/
     --dbtnborderhover: #336CDF; /* border hover */
     /* active */
-    --dbtntextactive: #336CDF; /* textcolor active*/
+    --dbtnforeactive: #336CDF; /* textcolor active*/
     --dbtnbackactive: #131313; /* background active*/
     --dbtnborderactive: #FF5252; /* border active */
     /* disabled */
-    --dbtntextdisabled: #999999; /* textcolor disabled*/
+    --dbtnforedisabled: #999999; /* textcolor disabled*/
     --dbtnbackdisabled: #131313; /* background disabled*/
     --dbtnborderdisabled: #3D3D3D; /* border disabled */
     /* badge */
-    --dbtntextbadge: #FF5252; /* textcolor badge*/
+    --dbtnforebadge: #FF5252; /* textcolor badge*/
     --dbtnbackbadge: #1C1C1C; /* background badge*/
     --dbtnborderbadge: #1C1C1C; /* border badge */
 /* link button */
     /* unselected */
-    --lbtntext: #336CDF; /* textcolor */
+    --lbtnfore: #336CDF; /* textcolor */
     --lbtnback: #131313; /* background */
     --lbtnborder: #E6E6E6; /* border */
     /* hover */
-    --lbtntexthover: #437CEF; /* textcolor hover*/
+    --lbtnforehover: #437CEF; /* textcolor hover*/
     --lbtnbackhover: #131313; /* background hover*/
     --lbtnborderhover: #E6E6E6; /* border hover */
     /* active */
-    --lbtntextactive: #437CEF; /* textcolor active*/
+    --lbtnforeactive: #437CEF; /* textcolor active*/
     --lbtnbackactive: transparent; /* background active*/
     --lbtnborderactive: #E6E6E6; /* border active */
     /* disabled */
-    --lbtntextdisabled: #999999; /* textcolor disabled*/
+    --lbtnforedisabled: #999999; /* textcolor disabled*/
     --lbtnbackdisabled: #3D3D3D; /* background disabled*/
     --lbtnborderdisabled: #3D3D3D; /* border disabled */
 
-/* navtabs */
+/* navtabs (complete independent) */
     /* active */
-    --navtabtextactive: #336CDF; /* textcolor active navtab */
+    --navtabforeactive: #336CDF; /* textcolor active navtab */
     --navtabbackactive: #131313; /* background active navtab */
     --navtabborderactive: #336CDF; /* border active navtab */
     /* inactive */
-    --navtabtextinactive: #E6E6E6; /* textcolor inactive navtab */
+    --navtabforeinactive: #E6E6E6; /* textcolor inactive navtab */
     --navtabbackinactive: #131313; /* background inactive navtab */
     --navtabborderinactive: #E6E6E6; /* border inactive navtab */
     /* hover */ 
-    --navtabtexthover: #E6E6E6; /* textcolor navtab hover */
+    --navtabforehover: #E6E6E6; /* textcolor navtab hover */
     --navtabbackhover: #131313; /* background navtab hover */
     --navtabborderhover: #336CDF; /* border navtab hover */
 
-/* content-box, example report traffic*/
-    --contentboxback: #131313; /* content-box background and tabulator frame head background*/
-
-/* tabulator */
+/* tabulator (complete independent) */
     /* tabulator frame foot background */
     --tbfback: #131313;
-    
     /* tabulator header */
-    --tbheadtext: #E6E6E6; /* background */
+    --tbheadfore: #E6E6E6; /* background */
     --tbheadback: #1F1F1F; /* background */
     --tbheadbackhover: #1F1F1F; /* background hover*/
     --tbborder: #6D6D6D; /* border color headline */
     /* tabulator body */
     --tbbordertable: #6D6D6D; /* border color table */
     /* odd row */
-    --tbrowtextodd: #E6E6E6; /* background */
+    --tbrowforeodd: #E6E6E6; /* background */
     --tbrowbackodd: #131313; /* background */
     /* even row */
-    --tbrowtexteven: #E6E6E6; /* background */
+    --tbrowforeeven: #E6E6E6; /* background */
     --tbrowbackeven: #1C1C1C; /* background */
 /* tabulator footer */
     /* unselected */
-    --tftext: #E6E6E6; /* textcolor */
+    --tffore: #E6E6E6; /* textcolor */
     --tfback: #131313; /* background */
     --tfborder: #E6E6E6; /* border */
     /* hover */
-    --tftexthover: #E6E6E6; /* textcolor hover*/
+    --tfforehover: #E6E6E6; /* textcolor hover*/
     --tfbackhover: #131313; /* border hover */
-    --tfborderhover: #336CDF; /* border hover */
+    --tfborderhover: #336CDF; /* textcolor hover*/
     /* active */
-    --tftextactive: #336CDF; /* textcolor active*/
+    --tfforeactive: #336CDF; /* textcolor active*/
     --tfbackactive: #131313; /* background active*/
     --tfborderactive: #336CDF; /* border active */
     /* active hover*/
-    --tftextactivehover: #467CEF; /* textcolor active*/
+    --tfforeactivehover: #467ECF; /* textcolor active*/
     --tfbackactivehover: #131313; /* background active*/
-    --tfborderactivehover: #467CEF; /* border active */
+    --tfborderactivehover: #467CCF; /* border active */
 
 /* panel, example: Reporting health */
    --panelbody: #1C1C1C; /* panel body background*/
    --panelheading: #1C1C1C; /* panel heading background*/
-   --panelheadingtext: #E6E6E6; /* panel heading textcolor*/
+   --panelheadingfore: #E6E6E6; /* panel heading textcolor*/
    --panelfooter: #1C1C1C; /* panel footer */
    --panelinfo: #E6E6E6; /* panel info, example wait circle */
    
-/* table */
-    /* table not stripe */
-    --texttable: #E6E6E6; /* text table */
-    --backtable: #131313; /* background table */
-    /* table stripe */
-    --backstripe: #131313; /* alternative background table */
-    /* table inside a table */
-    --headtabletable: #E6E6E6; /* headline table in a table */
-    --backtabletable: #131313; /* background table in a table */
+/* content-box, example report traffic*/
+    --contentboxfore: #E6E6E6; /* content-box foreground and tabulator frame head background*/
+    --contentboxback: #131313; /* content-box background and tabulator frame head background*/
 
-/*bootstrap*/
-  --bstext: #E6E6E6;
-  --bsback: #131313;
-  --bsborder: #E6E6E6;
+/* table */
+    --tableheadfore: #E6E6E6; /* textcolor table head */
+    --tablelegend: #E6E6E6;
+    --tableborder: #3D3D3D; /* background table in a table */
+    /* table not stripe */
+    --tablefore: #E6E6E6; /* textcolor table */
+    --tableback: #131313; /* background table */
+    /* table stripe */
+    --tablestripeback: #131313; /* alternative background table */
+    /* table inside a table */
+    --tabletablefore: #E6E6E6; /* headline table in a table */
+    --tabletableback: #131313; /* background table in a table */
 
 /* scrollbar */
-    --scbarcolor: #4D4D4D #131313; /* scrollbarcolor, background foreground, the following colors are not important */
-    --scbarborder: #6D6D6D; /* bordercolor */
-    --scbar: #4D4D4D; /* scrollbar */
-    --scbarhover: #5D5D5D; /* scrollbar */
-    --scbarbutton: #4D4D4D; /* scrollbar */
+    --scbarcolor: #4D4D4D #131313; /* scrollbarcolor: foreground vs background, the following colors are not important */
+    --scbarborder: #6D6D6D; /* bordercolor scrollbar*/
+    --scbar: #4D4D4D; /* scrollbar foreground*/
+    --scbarhover: #5D5D5D; /* scrollbar foreground hover*/
+    --scbarbutton: #4D4D4D; /* scrollbar button*/
 
-/* unbound */
-    --unbback1: #131313; /* background 1 */
-    --unbback2: #1C1C1C; /* background 2 */
-    --unbmaintext: #E6E6E6; /* main text */
-    --unbtext: #F5F5F5; /* unbound query text color */
-    --unbtexterror: #EE3040; /* unbound query text color */
+/* unbound (complete independent) */
+    --unbiconsback: rgba(33,33,33,0.9); /* large icons on tabs */
+    --unbfore1: #E6E6E6; /* main text 1 */
+    --unbback1: #1F1F1F; /* background 1 */
+    --unbfore2: #008CDD; /* main text 2 */
+    --unbback2: #1F1F1F; /* background 2 */
+    --unbborder: #4D4D4D; /* unbound-border */
+    --unbborderactive: #336CDF; /* unbound-border active */
     --unbsuccess: rgba(16,175,66,0.4); /* unbound detail background success */
+    --unbsuccessfore: rgba(241,241,241,1); /* unbound textcolor success */
     --unbinfo: rgba(51,108,223,0.4); /* unbound detail background info */
+    --unbinfofore: rgba(241,241,241,1); /* unbound textcolor info */
     --unbdanger: rgba(239,48,64,0.6); /* unbound detail background danger */
-    --unbwarning: rgba(239,128,38,0.6); /* unbound detail background warning */
+    --unbdangerfore: rgba(241,241,241,1); /* unbound textcolor danger */
+    --unbwarning: rgba(219,57,61,0.4); /* unbound detail background warning */
+    --unbwarningfore: rgba(241,241,241,1,1); /* unbound textcolor warning */
     --unberror: rgba(18,19,19,0); /* unbound detail background error */
+    --unberrorfore: rgba(162,17,42,1); /* unbound textcolor error */
     --unbshadow: rgba(47,47,47,.8); /* unbound overview circle shadow */
-/* dashboard */
+
+/* dashboard, (independent, despite the buttons on the top ) */
+    --dbfore: #E6E6E6; /* textcolor dashboard */
     --dbback: #131313; /* background color dashboard */
-    --dbtext: #E6E6E6; /* textcolor dashboard */
-    --dbborder: #3D3D3D; /* bordercolor dashboard */
-    --dbtttext: #131313; /* textcolor tooltip dashboard */
-    --dbttback: rgba(241, 241, 241, 0.9); /*background color tooltip */
+    --dbbackhover: #131313; /* background color dashboard */
+    --dbborder: rgba(80,80,80,1); /* bordercolor dashboard */
+    --dbchartfore: rgba(241,241,241,1); /* textcolor dashboard charts */
+    --dbchartborder: rgba(61,61,61,1); /* bordercolor dashboard charts*/
+    --dbtoolfore: #131313; /* textcolor tooltip dashboard */
+    --dbtoolback: rgba(241, 241, 241, 0.9); /*background color tooltip */
 
 /* graph */
-    --graphtext: #E6E6E6;
+    --graphfore: #E6E6E6;
     --graphback: #131313;
     --nv3daxis: #E6E6E6;
 
-    /* rgb */
+/* rgb */
     --rgb50: rgba(255,255,255,0,5);
     --rgbshadowdark: rgba(255,255,255,.1);
     --bootstrapshadow: rgba(204, 204, 204, 0.2);
     --boxshadow: inset 0 1px 1px rgba(255,255,255,0.075);
-    --btnshadow1: inset 0 1px 1px rgba(25, 57, 183, 0.075);
-    --btnshadow2: 0 0 8px rgba(25, 57, 183, 0.6);
+    --btnshadow1: inset 0 1px 1px rgba(250, 97, 33, 0.3);
+    --btnshadow2: 2 2 8px rgba(250, 97, 33, 0.6);
     --progresshadow: inset 0px 0px 0px 0px rgb(28, 0, 0);
     --progresshadow2: 0px 0px 0px rgb(0, 255, 255, 0.1);
-    --mozshadow: 2px 2px 1px 0px rgba(234, 234, 234, 0.5)
+    --mozshadow: 4px 4px 2px 0px rgba(250, 97, 33, 0.5)
 }

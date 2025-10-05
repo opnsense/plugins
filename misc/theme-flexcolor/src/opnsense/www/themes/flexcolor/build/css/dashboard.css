@@ -1,12 +1,52 @@
 @import url('default_scheme.css');
-.btn-pressed, .btn-pressed:hover
-{
-    color: var(--highlighted);
-    background-color: var(--primary);
+:root {
+    --chart-js-border-color: var(--dbchartborder);
+    --chart-js-font-color: var(--dbchartfore);
+}
+
+.ui-resizable-handle {
+  opacity: 0 !important;
+}
+
+#save-grid {
+  width: inherit;
+  height: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  position: relative;
+  width: 50px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+#save-btn-text, #icon-container {
+  position: absolute;
+}
+
+#icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fa-spinner {
     font-size: 2em;
+}
+
+.transition-spinner, transition-check {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hide {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.show {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .grid-stack-item-content {
@@ -16,7 +56,7 @@
   border-width: 1px;
   background-color: var(--dbback);
   border-radius: 0.5em 0.5em 0.5em 0.5em;
-  color: var(--dbtext);
+  color: var(--dbfore);
 }
 
 .widget-error {
@@ -29,7 +69,7 @@
     width: 100%;
     height: 100%;
     padding: 1px;
-    cursor: grab;
+    cursor: default;
 }
 
 .widget-header {
@@ -43,22 +83,47 @@
 
 .widget-spinner {
     margin-top: 20px;
+    font-size: 2em;
 }
 
 .fa-stack.small {
     font-size: 0.5em;
 }
 
-.close-handle {
-    vertical-align: middle;
-    text-align: right;
-    cursor: pointer;
+.link-handle,
+.close-handle,
+.edit-handle {
+  margin-left: 0.5em;
+  vertical-align: middle;
+  text-align: right;
+  cursor: pointer;
 }
 
-.close-handle > i {
-    font-size: 0.7em;
+.link-handle > a,
+.close-handle > i,
+.edit-handle > i {
+  font-size: 0.8em;
 }
 
+.widget-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.widget-command-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+}
+
+.widget-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .panel-divider {
     width: 100%;
     text-align: center;
@@ -107,10 +172,10 @@ td {
 
 .smoothie-chart-tooltip {
   z-index: 1; /* necessary to force to foreground */
-  background: var(--dbttback)rgba(19, 19, 19, 0.9);
+  background: var(--dbtoolback);
   padding-left: 15px;
   padding-right: 15px;
-  color: var(--dbtttext);
+  color: var(--dbtoolfore);
   font-size: 13px;
   border-radius: 0.5em 0.5em 0.5em 0.5em;
   pointer-events: none;
@@ -230,6 +295,10 @@ div {
     font-weight: bold;
 }
 
+.flextable-row:hover {
+  background:  var(--dbbackhover) !important;
+}
+
 .flex-cell {
     text-align: left;
     word-break: break-word;
@@ -249,6 +318,11 @@ div {
     border: 0;
     border-top: var(--dbborder);
 }
+
+.column .flex-cell:hover {
+  background: var(--dbbackhover);
+}
+
 .flex-subcell {
     width: 100%;
     text-align: left;
@@ -275,6 +349,10 @@ div {
     opacity: 0.4;
 }
 
+.grid-row:hover {
+  background: var(--dbbackhover) !important;
+}
+
 .grid-header {
     border-top: 1px solid var(--dbborder);
     font-weight: bold;
@@ -285,10 +363,10 @@ div {
     padding: 4px;
     text-align: center;
 }
-/* ----- */
 
-:root {
-    --chart-js-background-color: var(--dbback);
-    --chart-js-border-color: var(--dbborder);
-    --chart-js-font-color: var(--dbtext);
+.ovpn-common-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+

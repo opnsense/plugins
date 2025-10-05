@@ -1,30 +1,33 @@
 @import url('default_scheme.css');
+
 .tab-content {
     padding: 10px;
-    border-top: 1px solid var(--unbmaintext);
+    border-top: 1px solid var(--unbborder);
+    color: var(--unbfore1);
 }
 
 .banner {
     width: 25%;
+    color: var(--info);
 }
 
 .stats-element {
     height: 5em;
-    background: var(--unbback2);
+    background: var(--unbback1);
     overflow: hidden;
     display: flex;
     justify-content: flex-start;
     border-radius: .3em;
     margin:auto;
-    border: 1px solid var(--stdborder));
-    color: var(--primary);
+    border: 1px solid var(--unbborder));
+    color: var(--unbfore1);
 }
 
 .stats-icon {
     height: auto;
     width: 50%;
     object-fit:cover;
-    background: var(--unbback2);
+    background: var(--unbiconsback);
     border-radius: 0 2em 2em 0 / 0 3em 3em 0;
     box-shadow: 3px 5px 1px 3px var(--unbshadow);
 }
@@ -52,7 +55,7 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: var(--unbmaintext);
+    color: var(--unbfore1);
 }
 
 .stats-inner-text {
@@ -60,13 +63,13 @@
     padding: 0;
     text-align: center;
     font-size: 15px;
-    color: var(--info);
+    color: var(--unbfore2);
 }
 
 #bannersub {
     text-align: center;
     margin: 5px;
-    color: var(--unbmaintext);
+    color: var(--unbfore1);
 }
 
 .list-group-wrapper {
@@ -79,24 +82,24 @@
 .list-item-domain {
     height: 2.5em;
     background-color: var(--unbback2);
-    color: var(--info);
+    color: var(--unbfore2);
 }
 
 .list-group-item-border {
-    border: 1px solid var(--stdborder));
+    border: 1px solid var(--unbborder));
 }
 
 .list-group-item-border:first-child {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border-bottom: 2px;
-    border-color: var(--stdborder));
+    border-color: var(--unbborder));
 }
 
 .list-group-item-border:last-child {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    border-color: var(--stdborder));
+    border-color: var(--unbborder));
 }
 .btn.pull-right {
     margin-left: 3px;
@@ -110,7 +113,7 @@
     display: flex;
     white-space: nowrap;
     background-color: var(--unbback2);
-    color: var(--unbmaintext);
+    color: var(--unbfore1);
 }
 
 .group-p {
@@ -123,7 +126,7 @@
 .counter {
     position: relative;
     top: -3px;
-    color: var(--unbmaintext);
+    color: var(--unbfore1);
     font-size: 14px;
     line-height: 1.4;
     flex: 1;
@@ -139,42 +142,39 @@
 }
 
 #maintabs > li > a {
-    border-top: 1px solid var(--stdborder));
-    border-left: 1px solid var(--stdborder));
-    border-right: 1px solid var(--stdborder));
-    border-bottom: 1px solid var(--stdborder));
+    border: 1px solid var(--unbborder);
 }
 
 #maintabs > li.active > a {
-    border-top: 1px solid var(--primary);
-    border-left: 1px solid var(--primary);
-    border-right: 1px solid var(--primary);
-    border-bottom: 1px solid var(--unbback1);
+    border-top: 1px solid var(--unbborderactive);
+    border-left: 1px solid var(--unbborderactive);
+    border-right: 1px solid var(--unbborderactive);
+    border-bottom: transparent;
 }
 
 .query-success {
     background-color: var(--unbsuccess);
-    color: var(--unbtext);
+    color: var(--unbsuccessfore);
 }
 
 .query-info {
     background-color: var(--unbinfo);
-    color: var(--unbtext);
+    color: var(--unbinfofore);
 }
 
 .query-danger {
     background-color: var(--unbdanger);
-    color: var(--unbtext);
+    color: var(--unbdangerfore);
 }
 
 .query-warning {
     background-color: var(--unbwarning);
-    color: var(--unbtext);
+    color: var(--unbwarningfore);
 }
 
 .query-error {
     background-color: var(--unberror);
-    color: var(--unbtexterror);
+    color: var(--unberrorfore);
 }
 
 #searchFilter {
@@ -190,7 +190,7 @@
 }
 
 .tag a {
-  color: var(--unbmaintext);
+  color: var(--unbfore1);
   cursor: pointer;
   opacity: 0.9;
 }
@@ -200,7 +200,7 @@
 }
 
 .tag a fa-times {
-  color: var(--unbmaintext);
+  color: var(--unbfore1);
   margin-bottom: 2px;
 }
 

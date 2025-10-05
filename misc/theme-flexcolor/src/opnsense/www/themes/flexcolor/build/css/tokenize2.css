@@ -7,19 +7,20 @@
   min-height: 34px;
   cursor: text;
   border-radius: 3px;
-  border: 1px solid var(--text);
-  background-color: var(--pbg);
+  border: 1px solid var(--txtboxborder);
+  background-color: var(--txtboxback); 
+  color: var(--txtboxfore);
 }
 
 .tokenize > .tokens-container.disabled {
-  background-color: var(--textmuted);
+  background-color: var(--txtboxbackdisabled);
   cursor: not-allowed;
 }
 
 .tokenize.focus > .tokens-container {
   outline: 0;
-  border-color:var(--primary);
-  background-color:var(--pbg);
+  border-color:var(--txtboxborderhover);
+  background-color:var(--txtboxbackhover);
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -36,11 +37,11 @@
 
 .tokenize > .tokens-container > .token {
   padding: 0 1.2em 0 5px;
-  background-color: var(--token);
+  background-color: var(--txtboxbacktoken);
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  border: 1px solid var(--stdborder);
+  border: 1px solid var(--txtboxbordertoken);
 }
 
 .tokenize > .tokens-container > .token,
@@ -58,30 +59,30 @@
 
 .tokenize.single > .tokens-container > .token {
   display: block;
-  border-color: var(--stdborder);
+  border-color: var(--txtboxbordertoken);
 }
 
 .tokenize.sortable > .tokens-container > .token.shadow {
-  border-color: var(--stdborder);
-  background-color: var(--pbg);
+  border-color: var(--txtboxbordertoken);
+  background-color: var(--txtboxbacktoken);
   filter: alpha(opacity=50);
   opacity: .2;
 }
 
 .tokenize > .tokens-container > .placeholder {
-  color:var(--text);
+  color:var(--txtboxforedisabled);
   padding: 0;
 }
 
 .tokenize > .tokens-container > .token-search {
-  color:var(--text);
+  color:var(--txtboxforetoken);
   padding: 0;
 }
 
 .tokenize > .tok01Fens-container:focus,
 .tokenize > .tokens-container:hover {
-  border-color: var(--primary);
-  background-color: var(--pbg);
+  border-color: var(--txtboxborderhover);
+  background-color: var(--txtboxbackhover);
 }
 
 .tokenize > .tokens-container > .token-search > input {
@@ -111,26 +112,26 @@
 }
 
 .tokenize > .tokens-container > .token.pending-delete {
-  background-color: var(--primaryhover);
-  border-color: var(--stdborder);
-  color: var(--text);
+  background-color: var(--txtboxbackdel);
+  border-color: var(--txtboxborderdel);
+  color: var(--txtboxforedel);
 }
 
 .tokenize > .tokens-container > .token > .dismiss {
   position: absolute;
   right: 5px;
-  color: var(--text);
+  color: var(--txtboxforedismiss);
   text-decoration: none;
   cursor: pointer;
 }
 
 .tokenize > .tokens-container > .token > .dismiss:after {
   content: "×";
-  color: var(--text);
+  color: var(--txtboxforedismiss);
 }
 
 .tokenize > .tokens-container > .token.pending-delete > .dismiss {
-  color: var(--text);
+  color: var(--txtboxforedismiss);
 }
 
 .tokenize-dropdown {
@@ -157,7 +158,7 @@
 
 .tokenize-dropdown > .dropdown-menu li.locked {
   padding: 3px 20px;
-  color: var(--text);
+  color: var(--txtboxforedisabled);
   white-space: nowrap;
 }
 

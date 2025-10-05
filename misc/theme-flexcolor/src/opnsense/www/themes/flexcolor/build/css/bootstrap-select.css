@@ -25,9 +25,9 @@ select.selectpicker {
 .bootstrap-select > .dropdown-toggle.bs-placeholder:hover,
 .bootstrap-select > .dropdown-toggle.bs-placeholder:focus,
 .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
-  color: var(--bstext);
-  background-color: var(--bsback);
-  border-color: var(--bsborder); }
+  color: var(--txtboxfore);
+  background-color: var(--txtboxback);
+  border-color: var(--txtboxborder); }
 
     .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-primary,
     .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-secondary,
@@ -54,7 +54,7 @@ select.selectpicker {
     .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-info:active,
     .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-dark:active
     {
-        color: var(--rgbhalfhighlite);
+        color: var(--rgba50);
     }
 .bootstrap-select > select {
   position: absolute !important;
@@ -92,7 +92,7 @@ select.selectpicker {
 }
 .bootstrap-select > select.mobile-device:focus + .dropdown-toggle,
 .bootstrap-select .dropdown-toggle:focus {
-  outline: thin dotted var(--stdborder) !important;
+  outline: var(--txtboxborderhover) !important;
   outline: 5px auto -webkit-focus-ring-color !important;
   outline-offset: -2px;
 }
@@ -228,7 +228,7 @@ select.selectpicker {
   position: relative;
 }
 .bootstrap-select .dropdown-menu li.active small {
-  color: var(--rgbhalfhighlite !important;
+  color: var(--rgba50) !important;
 }
 .bootstrap-select .dropdown-menu li.disabled a {
   cursor: not-allowed;
@@ -260,10 +260,10 @@ select.selectpicker {
     margin: 0 2%;
     min-height: 26px;
     padding: 3px 5px;
-    background: var(--pbg);
-    border: 1px solid var(--stdborder);
-    -webkit-box-shadow: inset 0 1px 1px var(--rgbshadowdark);
-    box-shadow: inset 0 1px 1px var(--rgbshadowdark);
+    background: var(--txtboxback);
+    border: 1px solid var(--txtboxborder);
+    -webkit-box-shadow: var(--rgbashadowdark);
+    box-shadow: var(--rgbashadowdark);
     pointer-events: none;
     opacity: 0.9;
     -webkit-box-sizing: border-box;
@@ -271,7 +271,8 @@ select.selectpicker {
     box-sizing: border-box; }
 .bootstrap-select .no-results {
   padding: 3px;
-  background: var(--pbg);
+  color: var(--txtboxforedisabled);
+  background: var(--txtboxbackdisabled);
   margin: 0 5px;
   white-space: nowrap;
 }
@@ -318,7 +319,7 @@ select.selectpicker {
   content: '';
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid var(--bootstrapshadow);
+  border-bottom: 7px solid var(--bsshadow);
   position: absolute;
   bottom: -4px;
   left: 9px;
@@ -338,13 +339,13 @@ select.selectpicker {
 {
     bottom: auto;
     top: -4px;
-    border-top: 7px solid var(--bootstrapshadow);
+    border-top: 7px solid var(--bsshadow);
     border-bottom: 0;
 }
 .bootstrap-select.show-menu-arrow.dropup .dropdown-toggle .filter-option:after {
   bottom: auto;
   top: -4px;
-  border-top: 6px solid var(--text);
+  border-top: 6px solid var(--txtboxborder);
   border-bottom: 0;
 }
 .bootstrap-select.show-menu-arrow.pull-right .dropdown-toggle .filter-option:before {
