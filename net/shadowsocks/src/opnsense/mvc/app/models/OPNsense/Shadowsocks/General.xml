@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/shadowsocks/general</mount>
     <description>Shadowsocks configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -63,5 +63,13 @@
                 <tcp_and_udp>TCP and UDP</tcp_and_udp>
             </OptionValues>
         </tcpudpmode>
+		<timeout type="IntegerField">
+			<Default>60</Default>
+			<Required>Y</Required>
+		</timeout>
+		<fragmentation type="BooleanField">
+			<Default>0</Default>
+			<Required>Y</Required>
+		</fragmentation>
     </items>
 </model>
