@@ -46,7 +46,7 @@
         <label>Timeout</label>
         <type>text</type>
 		<hint>60</hint>
-        <help>Server's timeout seconds for TCP relay</help>
+        <help>Set the TCP relay timeout in seconds.</help>
     </field>
 	<field>
         <id>general.fragmentation</id>
