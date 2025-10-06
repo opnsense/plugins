@@ -52,6 +52,6 @@
         <id>general.fragmentation</id>
         <label>Fragmentation</label>
         <type>checkbox</type>
-        <help>Outbound UDP socket allows IP fragmentation</help>
+        <help>Allow IP fragmentation on the outbound UDP socket.</help>
     </field>
 </form>
