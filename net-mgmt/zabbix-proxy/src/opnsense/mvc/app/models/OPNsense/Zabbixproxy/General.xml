@@ -111,7 +111,6 @@
             <Required>N</Required>
         </vmwarecachesize>
         <vmwarefrequency type="IntegerField">
-            <default></default>
             <MinimumValue>10</MinimumValue>
             <MaximumValue>86400</MaximumValue>
             <Required>N</Required>
