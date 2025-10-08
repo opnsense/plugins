@@ -107,7 +107,7 @@
             <Required>N</Required>
         </statsip>
         <vmwarecachesize type="TextField">
-            <default>8M</default>
+            <Mask>/^\d+[KMG]$/</Mask>
         </vmwarecachesize>
         <vmwarefrequency type="IntegerField">
             <MinimumValue>10</MinimumValue>
