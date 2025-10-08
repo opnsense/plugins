@@ -118,7 +118,6 @@
             <MaximumValue>86400</MaximumValue>
         </vmwareperffrequency>
         <vmwaretimeout type="IntegerField">
-            <default></default>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>300</MaximumValue>
             <Required>N</Required>
