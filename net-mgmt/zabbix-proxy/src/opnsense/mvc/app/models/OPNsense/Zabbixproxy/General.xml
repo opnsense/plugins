@@ -114,7 +114,6 @@
             <MaximumValue>86400</MaximumValue>
         </vmwarefrequency>
         <vmwareperffrequency type="IntegerField">
-            <default></default>
             <MinimumValue>10</MinimumValue>
             <MaximumValue>86400</MaximumValue>
             <Required>N</Required>
