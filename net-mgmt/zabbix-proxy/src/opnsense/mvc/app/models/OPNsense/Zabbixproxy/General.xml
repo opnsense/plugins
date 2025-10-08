@@ -23,7 +23,6 @@
         </hostname>
         <listenport type="TextField"/>
         <listenip type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </listenip>
         <sourceip type="NetworkField"/>
@@ -47,7 +46,6 @@
         <configfrequency type="IntegerField"/>
         <datasenderfrequency type="IntegerField"/>
         <statsip type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </statsip>
         <vmwarecachesize type="TextField">
