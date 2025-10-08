@@ -50,6 +50,21 @@
             <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </statsip>
+        <vmwarecachesize type="TextField">
+            <Mask>/^\d+[KMG]$/</Mask>
+        </vmwarecachesize>
+        <vmwarefrequency type="IntegerField">
+            <MinimumValue>10</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+        </vmwarefrequency>
+        <vmwareperffrequency type="IntegerField">
+            <MinimumValue>10</MinimumValue>
+            <MaximumValue>86400</MaximumValue>
+        </vmwareperffrequency>
+        <vmwaretimeout type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>300</MaximumValue>
+        </vmwaretimeout>
         <syslogEnable type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
