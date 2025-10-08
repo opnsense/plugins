@@ -1,0 +1,19 @@
+<model>
+  <mount>OPNsense/UserProvision</mount>
+  <version>0.0.1</version>
+  <description>User Provisioning settings</description>
+  <settings>
+    <dhcpLogPath type="TextField">
+      <default>/var/log/dhcpd.log</default>
+      <ValidationMessage>Path to DHCP log file</ValidationMessage>
+    </dhcpLogPath>
+    <accessLogPath type="TextField">
+      <default>/var/log/system.log</default>
+      <ValidationMessage>Path to access/auth log file</ValidationMessage>
+    </accessLogPath>
+    <auditLogPath type="TextField">
+      <default>/var/log/userprovision_audit.log</default>
+      <ValidationMessage>Path to audit log file</ValidationMessage>
+    </auditLogPath>
+  </settings>
+</model>

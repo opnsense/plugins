@@ -1,0 +1,9 @@
+<acl>
+ 
+  <page-userprovision-api>
+    <name>User Provisioning API</name>
+    <patterns>
+      <pattern>api/userprovision/*</pattern>
+    </patterns>
+  </page-userprovision-api>
+</acl>

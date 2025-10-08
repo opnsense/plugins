@@ -1,0 +1,1 @@
+OPNsense plugin providing headless APIs to provision Users, Groups, external RADIUS servers, DHCP static maps, and retrieve access/DHCP logs with auditing.
