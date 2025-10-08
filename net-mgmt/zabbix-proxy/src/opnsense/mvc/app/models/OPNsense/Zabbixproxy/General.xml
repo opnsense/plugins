@@ -108,7 +108,6 @@
         </statsip>
         <vmwarecachesize type="TextField">
             <default>8M</default>
-            <Required>N</Required>
         </vmwarecachesize>
         <vmwarefrequency type="IntegerField">
             <MinimumValue>10</MinimumValue>
