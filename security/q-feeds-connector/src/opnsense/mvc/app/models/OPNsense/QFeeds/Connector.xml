@@ -1,0 +1,10 @@
+<model>
+    <mount>//OPNsense/QFeedsConnector</mount>
+    <version>1.0.0</version>
+    <description>QFeeds connector</description>
+    <items>
+        <general>
+            <apikey type="TextField"/>
+        </general>
+    </items>
+</model>

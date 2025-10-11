@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# load already collected feeds
+/usr/local/opnsense/scripts/qfeeds/qfeedsctl.py firewall_load
