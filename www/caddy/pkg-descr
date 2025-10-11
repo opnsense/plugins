@@ -10,6 +10,7 @@ Plugin Changelog
 
 Add: DNS-01 challenge delegation via CNAME (contributed by sdsys-ch) (opnsense/plugins/pull/4950)
 Fix: Enabling HTTP access log wrongly excluded the process logs (opnsense/plugins/pull/4974)
+Fix: fix setup.sh script not setting correct ownership in www user mode (opnsense/plugins/pull/4976)
 
 2.0.3
 
