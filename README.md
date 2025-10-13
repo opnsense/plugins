@@ -90,6 +90,7 @@ security/maltrail -- Malicious traffic detection system
 security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
+security/q-feeds-connector -- Connector for Q-Feeds threat intel
 security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
