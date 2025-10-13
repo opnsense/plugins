@@ -39,7 +39,7 @@ class QfeedsAliases
         if (is_array($payload) && !empty($payload['feeds'])) {
             foreach ($payload['feeds'] as $feed) {
                 if ($feed['type'] == 'ip' && !empty($feed['licensed'])) {
-                    $name = '__qfeeds_'. $feed['feed_type'];
+                    $name = '__qfeeds_' . $feed['feed_type'];
                     $result[$name] = [
                         'enabled' => '1',
                         'counters' => '1',

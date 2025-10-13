@@ -61,4 +61,3 @@ if __name__ == '__main__':
     except ujson.JSONDecodeError:
         print("JSON decode error")
         sys.exit(-1)
-

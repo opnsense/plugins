@@ -74,4 +74,3 @@ class PFLogCrawler:
                         return result
 
         return result
-

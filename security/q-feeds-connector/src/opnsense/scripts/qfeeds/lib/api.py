@@ -68,5 +68,3 @@ class Api:
             entry = line.decode().strip()
             if entry:
                 yield entry
-
-

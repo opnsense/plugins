@@ -50,4 +50,3 @@ class LockedFile:
     @property
     def filename(self):
         return self._filename
-
