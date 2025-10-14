@@ -45,6 +45,7 @@ class QFeedsActions:
             'fetch',
             'show_index',
             'firewall_load',
+            'unbound_load',
             'update',
             'stats',
             'logs'
@@ -113,6 +114,13 @@ class QFeedsActions:
                 )
                 yield 'load feed %s [%s]' % (feed['feed_type'], sp.stderr.strip().replace("\n", " "))
 
+    def unbound_load(self):
+        bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
+        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
+            # when qfeeds-blocklists.conf is ~empty, skip updates
+            subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
+            yield 'update unbound blocklist'
+
     def update(self):
         update_sleep = 99999
         try:
@@ -128,7 +136,7 @@ class QFeedsActions:
         if do_update:
                 if 0 < update_sleep <= 300:
                     time.sleep(update_sleep)
-                for action in ['fetch_index', 'fetch', 'firewall_load']:
+                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load']:
                     yield from getattr(self, action)()
 
     def stats(self):

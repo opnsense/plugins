@@ -73,7 +73,7 @@ class SettingsController extends ApiMutableModelControllerBase
         $ifnames = [];
         foreach (Config::getInstance()->object()->interfaces->children() as $key => $node) {
             if (!empty((string)$node->if)) {
-                $ifnames[(string)$node->if] = (string)($node->descr ?? strtoupper($key));
+                $ifnames[(string)$node->if] = !empty((string)($node->descr)) ? (string)($node->descr) : strtoupper($key);
             }
         }
         $data = json_decode((new Backend())->configdRun('qfeeds logs') ?? '[]', true);
