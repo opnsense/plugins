@@ -49,7 +49,9 @@ class PFLogCrawler:
         for line in sp.stdout.split("\n"):
             for table in self._table_names:
                 if line.find("<%s>" % table) > 0:
-                    self._rule_ids.append(line.split()[-1].strip('"'))
+                    rule_id = line.split()[-1].strip('"')
+                    if rule_id not in self._rule_ids:
+                        self._rule_ids.append(rule_id)
 
     @staticmethod
     def _parse_log_line(line):
