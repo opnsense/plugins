@@ -59,7 +59,7 @@ class DefaultBlocklistHandler(BaseBlocklistHandler):
         return []
     
     def _is_enabled(self):
-        """Check if unbound blocklist integration is enabled"""
+        # Check if unbound blocklist integration is enabled
         try:
             import subprocess
             result = subprocess.run(['/usr/local/sbin/configctl', 'config', 'get', 
