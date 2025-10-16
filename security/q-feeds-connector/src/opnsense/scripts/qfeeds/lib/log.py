@@ -40,16 +40,16 @@ def is_ip_address(value):
 class PFLogCrawler:
     def __init__(self, table_names:list=[]):
         self._table_names = table_names
-        self._rule_ids = []
+        self._rule_ids = set()
         self._collect_rule_ids()
 
     def _collect_rule_ids(self):
-        self._rule_ids = []
+        self._rule_ids = set()
         sp = subprocess.run(['/sbin/pfctl', '-sr'], capture_output=True, text=True)
         for line in sp.stdout.split("\n"):
             for table in self._table_names:
                 if line.find("<%s>" % table) > 0:
-                    self._rule_ids.append(line.split()[-1].strip('"'))
+                    self._rule_ids.add(line.split()[-1].strip('"'))
 
     @staticmethod
     def _parse_log_line(line):
@@ -69,7 +69,7 @@ class PFLogCrawler:
                         if rule_id in line:
                             result.append(self._parse_log_line(line))
                             rows_processed +=1
-                            continue
+                            break # inner loop
                     if (idx % 100000 == 0 and time.time() - start_time > max_time) or rows_processed >= max_results:
                         return result
 
