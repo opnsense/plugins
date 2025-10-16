@@ -4,22 +4,22 @@
             $("#apply_div").show();
             if (e.target.id == 'policies_tab') {
                 $("#grid-policies").UIBootgrid(
-                    {   search:'/api/proxy/acl/searchPolicy/',
-                        get:'/api/proxy/acl/getPolicy/',
-                        set:'/api/proxy/acl/setPolicy/',
-                        add:'/api/proxy/acl/addPolicy/',
-                        del:'/api/proxy/acl/delPolicy/',
-                        toggle:'/api/proxy/acl/togglePolicy/'
+                    {   search:'/api/proxy/acl/search_policy/',
+                        get:'/api/proxy/acl/get_policy/',
+                        set:'/api/proxy/acl/set_policy/',
+                        add:'/api/proxy/acl/add_policy/',
+                        del:'/api/proxy/acl/del_policy/',
+                        toggle:'/api/proxy/acl/toggle_policy/'
                     }
                 );
             } else if (e.target.id == 'custom_policies_tab') {
                 $("#grid-custom_policies").UIBootgrid(
-                    {   search:'/api/proxy/acl/searchCustomPolicy/',
-                        get:'/api/proxy/acl/getCustomPolicy/',
-                        set:'/api/proxy/acl/setCustomPolicy/',
-                        add:'/api/proxy/acl/addCustomPolicy/',
-                        del:'/api/proxy/acl/delCustomPolicy/',
-                        toggle:'/api/proxy/acl/toggleCustomPolicy/'
+                    {   search:'/api/proxy/acl/search_custom_policy/',
+                        get:'/api/proxy/acl/get_custom_policy/',
+                        set:'/api/proxy/acl/set_custom_policy/',
+                        add:'/api/proxy/acl/add_custom_policy/',
+                        del:'/api/proxy/acl/del_custom_policy/',
+                        toggle:'/api/proxy/acl/toggle_custom_policy/'
                     }
                 );
             } else if (e.target.id == 'policy_tester_tab') {

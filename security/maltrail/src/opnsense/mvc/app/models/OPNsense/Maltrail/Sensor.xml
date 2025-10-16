@@ -4,11 +4,11 @@
     <version>0.0.3</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <captureall type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </captureall>
         <capturebuffer type="IntegerField">
@@ -21,14 +21,14 @@
             <Required>N</Required>
         </remoteserver>
         <remoteport type="PortField">
-            <default>8337</default>
+            <Default>8337</Default>
             <Required>Y</Required>
         </remoteport>
         <syslogserver type="HostnameField">
             <Required>N</Required>
         </syslogserver>
         <syslogport type="PortField">
-            <default>514</default>
+            <Default>514</Default>
             <Required>Y</Required>
         </syslogport>
     </items>

@@ -50,7 +50,7 @@ export default class ApcUpsd extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        const data = await this.ajaxCall('/api/apcupsd/service/getUpsStatus');
+        const data = await this.ajaxCall('/api/apcupsd/service/get_ups_status');
 
         if (data.error) {
             this.displayError(data.error);

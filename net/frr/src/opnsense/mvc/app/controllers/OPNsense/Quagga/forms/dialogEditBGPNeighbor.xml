@@ -3,176 +3,281 @@
     <id>neighbor.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.description</id>
     <label>Description</label>
     <type>text</type>
-    <help>Set an optional description for this neighbor.</help>
+    <help>Optional description for the neighbor.</help>
   </field>
   <field>
     <id>neighbor.address</id>
     <label>Peer-IP</label>
     <type>text</type>
-    <help>Specify the IP of your neighbor.</help>
+    <help>Specify the IP address of the BGP neighbor.</help>
+  </field>
+  <field>
+    <id>neighbor.remote_as_mode</id>
+    <label>Remote AS mode</label>
+    <type>dropdown</type>
+    <help>"Use Remote AS Number" will use the number specified in the "Remote AS" field, while "External" or "Internal" will ignore it in favor of the alternative "remote-as internal" and "remote-as external" settings.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
-    <help>Neighbor AS.</help>
+    <help>AS (Autonomous System) number of the neighbor, required for establishing a BGP session.</help>
   </field>
   <field>
     <id>neighbor.password</id>
     <label>BGP MD5 Password</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Set a password for BGP authentication.</help>
+    <help>Password used for MD5 authentication of BGP connections to enhance security.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.weight</id>
     <label>Weight</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Specify a default weight value for the neighbor’s routes.</help>
+    <help>Default weight for routes from this neighbor; higher weight increases path preference within the same AS.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.localip</id>
     <label>Local Initiater IP</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Set the local IP connecting to the neighbor. This is only required for BGP authentication.</help>
+    <help>Specify the local IP address used to establish connections with the neighbor. Only relevant for MD5 authentication.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>
-    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+    <help>Interface (IPv4) where BGP sessions are sourced from, typically required when using loopback addresses.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.linklocalinterface</id>
     <label>IPv6 link-local interface</label>
     <type>dropdown</type>
     <advanced>true</advanced>
-    <help><![CDATA[Interface to use for IPv6 link-local neighbours. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERinterfaceIFNAME">FRR documentation</a> for more information.]]></help>
+    <help>Interface for IPv6 link-local neighbors, used primarily for link-local IPv6 addressing.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.nexthopself</id>
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
+    <help>Sets the local router as the next hop for routes advertised to the neighbor, commonly used in Route Reflector setups.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.nexthopselfall</id>
     <label>Next-Hop-Self All</label>
     <type>checkbox</type>
-    <help>Add the parameter "all" after next-hop-self command.</help>
+    <help>Extends Next-Hop-Self by applying the setting to all addresses, including multiple address families.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.multihop</id>
     <label>Multi-Hop</label>
-    <help>
-      Specifying ebgp-multihop allows sessions with eBGP neighbors to establish when they are multiple hops away.
-      When the neighbor is not directly connected and this knob is not enabled, the session will not establish.
-    </help>
+    <help>Enables connections to eBGP neighbors across multiple hops; often required for peering over loopback addresses.</help>
     <type>checkbox</type>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.multiprotocol</id>
     <label>Multi-Protocol</label>
     <type>checkbox</type>
     <advanced>true</advanced>
-    <help><![CDATA[Is this neighbour multiprotocol capable per <a href="https://datatracker.ietf.org/doc/html/rfc2283.html">RFC 2283</a>]]></help>
+    <help>Enables multiprotocol BGP for support of additional address families like IPv6.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.rrclient</id>
     <label>Route Reflector Client</label>
     <type>checkbox</type>
+    <help>Marks the neighbor as a client for a route reflector; used to reduce the number of full BGP mesh connections.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.soft_reconfiguration_inbound</id>
     <label>Soft reconfiguration inbound</label>
     <type>checkbox</type>
-    <help>This option allows changing policies without clearing the BGP session.</help>
+    <help>Allows policy changes without resetting the session by storing inbound updates.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.bfd</id>
     <label>BFD</label>
     <type>checkbox</type>
-    <help>You can enable BFD support for this neighbor.</help>
+    <help>Enable Bidirectional Forwarding Detection (BFD) for rapid link failure detection with the neighbor.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.keepalive</id>
     <label>Keepalive</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Keepalive timer to check if the neighbor is still up. Default when unset is 60 seconds.</help>
+    <hint>60</hint>
+    <help>Sets the interval (default 60 seconds) between keepalive messages to check the neighbors availability.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.holddown</id>
     <label>Hold Down Time</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>The time in seconds when a neighbor is considered dead. This is usually 3 times the keeplive timer and when unset 180 seconds.</help>
+    <hint>180</hint>
+    <help>Time (default 180 seconds) before declaring a neighbor down if no keepalive messages are received.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.connecttimer</id>
     <label>Connect Timer</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>The time in seconds how fast a neighbor tries to reconnect.</help>
+    <help>Interval to attempt reconnecting with a neighbor after a disconnect.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+    <help>Sends a default route to the neighbor, useful in small AS environments where a full routing table is not necessary.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.asoverride</id>
     <label>Enable AS-Override</label>
     <type>checkbox</type>
-    <help>Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers.</help>
+    <help>Allows replacement of the neighbors AS with the local AS, common in eBGP confederations.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.allowas_in</id>
+    <label>Allow AS In</label>
+    <type>dropdown</type>
+    <help>Accept incoming routes with AS path containing AS number with the same value as the current system AS.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.disable_connected_check</id>
     <label>Disable Connected Check</label>
     <type>checkbox</type>
-    <help>Allow peerings between directly connected eBGP peers using loopback addresses.</help>
+    <help>Allows eBGP connections over loopback addresses by bypassing checks for direct connections.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.attributeunchanged</id>
     <label>Attribute Unchanged</label>
     <type>dropdown</type>
     <advanced>true</advanced>
-    <help><![CDATA[This specifies attributes to be left unchanged when sending advertisements to a peer. Read more at <a href="https://docs.frrouting.org/en/latest/bgp.html#clicmd-neighbor-PEER-attribute-unchanged-as-path-next-hop-med">FRR documentation</a>.]]></help>
+    <help>Keeps specified attributes (like MED, AS-Path, etc.) unchanged in updates to the neighbor.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix-List for inbound direction</help>
+    <help>Prefix list to filter inbound prefixes from this neighbor.</help>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix-List for outbound direction</help>
+    <help>Prefix list to filter outbound prefixes sent to this neighbor.</help>
   </field>
   <field>
     <id>neighbor.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-Map for inbound direction</help>
+    <help>Route-map to apply to routes received from this neighbor.</help>
   </field>
   <field>
     <id>neighbor.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-Map for outbound direction</help>
+    <help>Route-map to apply to routes advertised to this neighbor.</help>
   </field>
   <field>
     <id>neighbor.peergroup</id>
     <label>Peer Group</label>
     <type>dropdown</type>
-    <help>Peer Group this neighbor belongs to.</help>
+    <help>Groups neighbors with similar configurations to simplify management.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
 </form>

@@ -5,17 +5,17 @@
    <items>
       <ftpproxy type="ArrayField">
          <enabled type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
          </enabled>
          <listenaddress type="TextField">
             <Required>Y</Required>
-            <default>127.0.0.1</default>
-            <mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</mask>
+            <Default>127.0.0.1</Default>
+            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
             <ValidationMessage>Listen address must be a valid IPv4 address</ValidationMessage>
          </listenaddress>
          <listenport type="IntegerField">
-            <default>8021</default>
+            <Default>8021</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>65535</MaximumValue>
@@ -23,22 +23,22 @@
          </listenport>
          <sourceaddress type="TextField">
             <Required>N</Required>
-            <mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</mask>
+            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
             <ValidationMessage>Source address must be a valid IPv4 address</ValidationMessage>
          </sourceaddress>
          <rewritesourceport  type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
          </rewritesourceport>
          <idletimeout type="IntegerField">
-            <default>86400</default>
+            <Default>86400</Default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>86400</MaximumValue>
             <ValidationMessage>Idle timeout needs to be an integer value between 1 and 86400</ValidationMessage>
          </idletimeout>
          <maxsessions type="IntegerField">
-            <default>100</default>
+            <Default>100</Default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>500</MaximumValue>
@@ -46,22 +46,22 @@
          </maxsessions>
          <reverseaddress type="TextField">
             <Required>N</Required>
-            <mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</mask>
+            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
             <ValidationMessage>Reverse address must be a valid IPv4 address</ValidationMessage>
          </reverseaddress>
          <reverseport type="IntegerField">
-            <default>21</default>
+            <Default>21</Default>
             <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>65535</MaximumValue>
             <ValidationMessage>Reverse port needs to be an integer value between 1 and 65535</ValidationMessage>
          </reverseport>
          <logconnections type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
          </logconnections>
          <debuglevel type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
             <MinimumValue>0</MinimumValue>
             <MaximumValue>7</MaximumValue>
@@ -69,7 +69,7 @@
          </debuglevel>
          <description type="TextField">
             <Required>N</Required>
-            <mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+            <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
             <ValidationMessage>Enter a description.</ValidationMessage>
          </description>
       </ftpproxy>

@@ -3,57 +3,102 @@
     <id>peergroup.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Specify the name of this peergroup.</help>
+    <help>Name of the peer group.</help>
+  </field>
+  <field>
+    <id>peergroup.remote_as_mode</id>
+    <label>Remote AS mode</label>
+    <type>dropdown</type>
+    <help>"Use Remote AS Number" will use the number specified in the "Remote AS" field, while "External" or "Internal" will ignore it in favor of the alternative "remote-as internal" and "remote-as external" settings.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.remoteas</id>
     <label>Remote AS</label>
     <type>text</type>
-    <help>Remote AS for tthis peergroup.</help>
+    <help>Remote AS for the peer group.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>peergroup.family</id>
+    <label>Address Family</label>
+    <type>dropdown</type>
+    <type>select_multiple</type>
+    <help>Select which address families to activate for this peer group.</help>
+  </field>
+  <field>
+    <id>peergroup.listenranges</id>
+    <label>Listen Ranges</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Enter one or multiple IP networks in CIDR notation. Accept connections from any peers in the specified prefix.</help>
   </field>
   <field>
     <id>peergroup.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>
-    <help><![CDATA[Physical name of the IPv4 interface facing the peer. Please refer to the <a href="http://docs.frrouting.org/en/stable-7.4/bgp.html#clicmd-[no]neighborPEERupdate-source%3CIFNAME|ADDRESS%3E">FRR documentation</a> for more information.]]></help>
+    <help>Physical IPv4 interface facing the peer.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.nexthopself</id>
     <label>Next-Hop-Self</label>
     <type>checkbox</type>
+    <help>Sets the local router as the next hop for routes advertised to the neighbor, commonly used in Route Reflector setups.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
-    <field>
+  <field>
     <id>peergroup.defaultoriginate</id>
     <label>Send Defaultroute</label>
     <type>checkbox</type>
+    <help>Enable sending of default routes to the peer group.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
   </field>
   <field>
     <id>peergroup.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix-List for inbound direction.</help>
+    <help>Prefix list to filter inbound prefixes from this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix-List for outbound direction.</help>
+    <help>Prefix list to filter outbound prefixes sent to this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-Map for inbound direction.</help>
+    <help>Route-map to apply to routes received from this neighbor.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-Map for outbound direction.</help>
+    <help>Route-map to apply to routes advertised to this neighbor.</help>
   </field>
 </form>

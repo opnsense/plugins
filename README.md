@@ -64,6 +64,7 @@ net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
 net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
+net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
 net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
 net/vnstat -- Network traffic monitor
@@ -83,10 +84,14 @@ security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
+security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
+security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
 security/openconnect -- OpenConnect Client
-security/softether -- Cross-platform Multi-protocol VPN Program (development only)
+security/openvpn-legacy -- OpenVPN legacy support
+security/q-feeds-connector -- Connector for Q-Feeds threat intel
+security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
@@ -94,9 +99,11 @@ security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
 sysutils/apuled -- PC Engine APU LED control (development only)
+sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
 sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
@@ -106,11 +113,12 @@ sysutils/nextcloud-backup -- Track config changes using NextCloud
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor Repository for Zenarmor (a.k.a Sensei, Next Generation Firewall Extensions)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
 www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
@@ -142,9 +150,8 @@ The make targets for the root directory:
 * clean:	remove all changes and unknown files
 * lint:		run syntax checks
 * list:		print a list of all plugin directories with comments
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes
 
 The make targets for any plugin directory:
 
@@ -155,6 +162,5 @@ The make targets for any plugin directory:
 * package:	creates a package
 * upgrade:	upgrades existing package
 * remove:	remove known files from target directory
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes

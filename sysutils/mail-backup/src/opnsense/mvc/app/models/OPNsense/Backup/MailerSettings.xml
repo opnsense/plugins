@@ -4,7 +4,7 @@
     <description>OPNsense Mailer Backup Settings</description>
     <items>
         <Enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </Enabled>
         <Receiver type="EmailField">
@@ -30,11 +30,11 @@
             </Constraints>
         </SmtpHost>
         <SmtpPort type="PortField">
-            <default>25</default>
+            <Default>25</Default>
             <Required>Y</Required>
         </SmtpPort>
         <SmtpTLS type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </SmtpTLS>
         <SelfSigned type="BooleanField"/>

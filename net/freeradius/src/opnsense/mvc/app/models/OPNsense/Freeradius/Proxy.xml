@@ -6,14 +6,14 @@
         <homeservers>
             <homeserver type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
                 <type type="OptionField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <auth>auth</auth>
@@ -23,7 +23,7 @@
                     </OptionValues>
                 </type>
                 <addresstype type="OptionField">
-                    <default>ipv4</default>
+                    <Default>ipv4</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <ipv4>ipv4</ipv4>
@@ -32,25 +32,25 @@
                     </OptionValues>
                 </addresstype>
                 <ipaddr type="TextField">
-                    <default>172.0.0.1</default>
+                    <Default>172.0.0.1</Default>
                     <Required>N</Required>
                 </ipaddr>
                 <ipaddr6 type="TextField">
-                    <default>::1</default>
+                    <Default>::1</Default>
                     <Required>N</Required>
                 </ipaddr6>
                 <virtualserver type="TextField">
-                    <default>foo</default>
+                    <Default>foo</Default>
                     <Required>N</Required>
                 </virtualserver>
                 <port type="IntegerField">
-                    <default>1812</default>
+                    <Default>1812</Default>
                     <Required>Y</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                 </port>
                 <proto type="OptionField">
-                    <default>udp</default>
+                    <Default>udp</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <udp>udp</udp>
@@ -58,14 +58,14 @@
                     </OptionValues>
                 </proto>
                 <secret type="TextField">
-                    <default>testing123</default>
+                    <Default>testing123</Default>
                     <Required>N</Required>
                 </secret>
                 <sourceip type="TextField">
                     <Required>N</Required>
                 </sourceip>
                 <response_window type="IntegerField">
-                    <default>20</default>
+                    <Default>20</Default>
                     <Required>Y</Required>
                     <MinimumValue>5</MinimumValue>
                     <MaximumValue>60</MaximumValue>
@@ -74,19 +74,19 @@
                     <Required>N</Required>
                 </no_response_fail>
                 <zombieperiod type="IntegerField">
-                    <default>40</default>
+                    <Default>40</Default>
                     <Required>Y</Required>
                     <MinimumValue>20</MinimumValue>
                     <MaximumValue>120</MaximumValue>
                 </zombieperiod>
                 <reviveinterval type="IntegerField">
-                    <default>120</default>
+                    <Default>120</Default>
                     <Required>Y</Required>
                     <MinimumValue>60</MinimumValue>
                     <MaximumValue>3600</MaximumValue>
                 </reviveinterval>
                 <statuscheck type="OptionField">
-                    <default>status-server</default>
+                    <Default>status-server</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <none>none</none>
@@ -95,35 +95,35 @@
                     </OptionValues>
                 </statuscheck>
                 <checkinterval type="IntegerField">
-                    <default>30</default>
+                    <Default>30</Default>
                     <Required>Y</Required>
                     <MinimumValue>6</MinimumValue>
                     <MaximumValue>120</MaximumValue>
                 </checkinterval>
                 <numanswersalive type="IntegerField">
-                    <default>3</default>
+                    <Default>3</Default>
                     <Required>Y</Required>
                     <MinimumValue>3</MinimumValue>
                     <MaximumValue>10</MaximumValue>
                 </numanswersalive>
                 <max_outstanding type="IntegerField">
-                    <default>65536</default>
+                    <Default>65536</Default>
                     <Required>Y</Required>
                 </max_outstanding>
                 <limit_maxconnections type="IntegerField">
-                    <default>16</default>
+                    <Default>16</Default>
                     <Required>Y</Required>
                 </limit_maxconnections>
                 <limit_maxrequests type="IntegerField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </limit_maxrequests>
                 <limit_lifetime type="IntegerField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </limit_lifetime>
                 <limit_idletimeout type="IntegerField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </limit_idletimeout>
             </homeserver>
@@ -131,14 +131,14 @@
         <homeserverpools>
             <homeserverpool type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
                 <type type="OptionField">
-                    <default>fail-over</default>
+                    <Default>fail-over</Default>
                     <Required>Y</Required>
                     <OptionValues>
                         <fail-over>fail-over</fail-over>
@@ -152,15 +152,15 @@
                     <Required>N</Required>
                 </virtualserver>
                 <homeservers type="CSVListField">
-                    <default>localhost</default>
+                    <Default>localhost</Default>
                     <Required>Y</Required>
-                    <multiple>Y</multiple>
-                    <mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</mask>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</Mask>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid server addresses, i.e. radius.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
                 </homeservers>
                 <fallback type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
                 </fallback>
             </homeserverpool>
@@ -168,18 +168,18 @@
         <realms>
             <realm type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
                 <auth_pool type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
                 </auth_pool>
                 <acct_pool type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
                 </acct_pool>
                 <nostrip type="BooleanField">

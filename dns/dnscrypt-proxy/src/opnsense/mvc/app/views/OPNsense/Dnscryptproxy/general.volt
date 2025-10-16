@@ -186,42 +186,42 @@ $( document ).ready(function() {
     });
 
     $("#grid-forwards").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/forward/searchForward',
-            'get':'/api/dnscryptproxy/forward/getForward/',
-            'set':'/api/dnscryptproxy/forward/setForward/',
-            'add':'/api/dnscryptproxy/forward/addForward/',
-            'del':'/api/dnscryptproxy/forward/delForward/',
-            'toggle':'/api/dnscryptproxy/forward/toggleForward/'
+        {   'search':'/api/dnscryptproxy/forward/search_forward',
+            'get':'/api/dnscryptproxy/forward/get_forward/',
+            'set':'/api/dnscryptproxy/forward/set_forward/',
+            'add':'/api/dnscryptproxy/forward/add_forward/',
+            'del':'/api/dnscryptproxy/forward/del_forward/',
+            'toggle':'/api/dnscryptproxy/forward/toggle_forward/'
         }
     );
 
     $("#grid-cloaks").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/cloak/searchCloak',
-            'get':'/api/dnscryptproxy/cloak/getCloak/',
-            'set':'/api/dnscryptproxy/cloak/setCloak/',
-            'add':'/api/dnscryptproxy/cloak/addCloak/',
-            'del':'/api/dnscryptproxy/cloak/delCloak/',
-            'toggle':'/api/dnscryptproxy/cloak/toggleCloak/'
+        {   'search':'/api/dnscryptproxy/cloak/search_cloak',
+            'get':'/api/dnscryptproxy/cloak/get_cloak/',
+            'set':'/api/dnscryptproxy/cloak/set_cloak/',
+            'add':'/api/dnscryptproxy/cloak/add_cloak/',
+            'del':'/api/dnscryptproxy/cloak/del_cloak/',
+            'toggle':'/api/dnscryptproxy/cloak/toggle_cloak/'
         }
     );
 
     $("#grid-whitelists").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/whitelist/searchWhitelist',
-            'get':'/api/dnscryptproxy/whitelist/getWhitelist/',
-            'set':'/api/dnscryptproxy/whitelist/setWhitelist/',
-            'add':'/api/dnscryptproxy/whitelist/addWhitelist/',
-            'del':'/api/dnscryptproxy/whitelist/delWhitelist/',
-            'toggle':'/api/dnscryptproxy/whitelist/toggleWhitelist/'
+        {   'search':'/api/dnscryptproxy/whitelist/search_whitelist',
+            'get':'/api/dnscryptproxy/whitelist/get_whitelist/',
+            'set':'/api/dnscryptproxy/whitelist/set_whitelist/',
+            'add':'/api/dnscryptproxy/whitelist/add_whitelist/',
+            'del':'/api/dnscryptproxy/whitelist/del_whitelist/',
+            'toggle':'/api/dnscryptproxy/whitelist/toggle_whitelist/'
         }
     );
 
     $("#grid-servers").UIBootgrid(
-        {   'search':'/api/dnscryptproxy/server/searchServer',
-            'get':'/api/dnscryptproxy/server/getServer/',
-            'set':'/api/dnscryptproxy/server/setServer/',
-            'add':'/api/dnscryptproxy/server/addServer/',
-            'del':'/api/dnscryptproxy/server/delServer/',
-            'toggle':'/api/dnscryptproxy/server/toggleServer/'
+        {   'search':'/api/dnscryptproxy/server/search_server',
+            'get':'/api/dnscryptproxy/server/get_server/',
+            'set':'/api/dnscryptproxy/server/set_server/',
+            'add':'/api/dnscryptproxy/server/add_server/',
+            'del':'/api/dnscryptproxy/server/del_server/',
+            'toggle':'/api/dnscryptproxy/server/toggle_server/'
         }
     );
 

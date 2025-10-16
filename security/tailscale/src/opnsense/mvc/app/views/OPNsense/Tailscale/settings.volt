@@ -1,6 +1,7 @@
 <script type="text/javascript">
     $( document ).ready(function() {
         mapDataToFormUI({'frmSettings':"/api/tailscale/settings/get"}).done(function(data) {
+            $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('tailscale');
         });
 

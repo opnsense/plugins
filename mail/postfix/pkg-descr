@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.24
+
+* Disable broken, insecure, legacy NTLM authentication (contributed by Alfred Egger)
+
 1.23
 
 * Add support for Opportunistic DANE as SMTP client security level

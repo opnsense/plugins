@@ -4,22 +4,22 @@
   <version>1.0.0</version>
   <items>
     <enabled type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enabled>
     <socks_listen_ip type="InterfaceField">
       <Required>N</Required>
-      <multiple>Y</multiple>
+      <Multiple>Y</Multiple>
     </socks_listen_ip>
     <socks_listen_port type="IntegerField">
-      <default>9050</default>
+      <Default>9050</Default>
       <MinimumValue>0</MinimumValue>
       <Required>Y</Required>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </socks_listen_port>
     <control_port type="IntegerField">
-      <default>9051</default>
+      <Default>9051</Default>
       <MinimumValue>1</MinimumValue>
       <Required>N</Required>
       <MaximumValue>65535</MaximumValue>
@@ -27,24 +27,24 @@
     </control_port>
     <control_port_password type="TextField">
       <Required>N</Required>
-      <mask>/^.+$/</mask>
+      <Mask>/^.+$/</Mask>
     </control_port_password>
     <control_port_password_hashed type="TextField">
       <Required>N</Required>
-      <mask>/^.+$/</mask>
+      <Mask>/^.+$/</Mask>
     </control_port_password_hashed>
     <enablelogfile type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enablelogfile>
     <dormant_canceled_by_startup type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </dormant_canceled_by_startup>
     <logfilelevel type="OptionField">
       <Required>Y</Required>
-      <multiple>N</multiple>
-      <default>notifications</default>
+      <Multiple>N</Multiple>
+      <Default>notifications</Default>
       <OptionValues>
         <err>Errors</err>
         <warn>Warnings</warn>
@@ -54,13 +54,13 @@
       </OptionValues>
     </logfilelevel>
     <enablesyslog type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
     </enablesyslog>
     <sysloglevel type="OptionField">
       <Required>Y</Required>
-      <multiple>N</multiple>
-      <default>notifications</default>
+      <Multiple>N</Multiple>
+      <Default>notifications</Default>
       <OptionValues>
         <err>Errors</err>
         <warn>Warnings</warn>
@@ -71,8 +71,8 @@
     </sysloglevel>
     <scheduler type="OptionField">
       <Required>Y</Required>
-      <multiple>N</multiple>
-      <default>KISTLiteVanilla</default>
+      <Multiple>N</Multiple>
+      <Default>KISTLiteVanilla</Default>
       <OptionValues>
         <KISTLiteVanilla>KISTLite,Vanilla</KISTLiteVanilla>
         <VanillaKISTLite>Vanilla,KISTLite</VanillaKISTLite>
@@ -81,55 +81,55 @@
       </OptionValues>
     </scheduler>
     <fascist_firewall type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </fascist_firewall>
     <fascist_firewall_ports type="CSVListField">
-      <default>80,443</default>
+      <Default>80,443</Default>
       <Required>Y</Required>
-      <mask>/^(\d+,)*\d+$/</mask>
+      <Mask>/^(\d+,)*\d+$/</Mask>
     </fascist_firewall_ports>
     <enable_transparent type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enable_transparent>
     <transparent_port type="IntegerField">
-      <default>9040</default>
+      <Default>9040</Default>
       <MinimumValue>0</MinimumValue>
       <Required>Y</Required>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </transparent_port>
     <transparent_dns type="IntegerField">
-      <default>9053</default>
+      <Default>9053</Default>
       <MinimumValue>0</MinimumValue>
       <Required>Y</Required>
       <MaximumValue>65535</MaximumValue>
       <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
     </transparent_dns>
     <transparent_ip_pool type="NetworkField">
-      <default>172.29.0.0/16</default>
+      <Default>172.29.0.0/16</Default>
       <Required>Y</Required>
     </transparent_ip_pool>
     <dns_map_hosts type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </dns_map_hosts>
     <client_authentications>
       <client_auth type="ArrayField">
         <enabled type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>Y</Required>
         </enabled>
         <onion_service type="TextField">
           <Required>Y</Required>
-          <default>exampleexample23.onion</default>
-          <mask>/^[a-z2-7]{16}\.onion$/i</mask>
+          <Default>exampleexample23.onion</Default>
+          <Mask>/^[a-z2-7]{16}\.onion$/i</Mask>
         </onion_service>
         <auth_cookie type="TextField">
           <Required>Y</Required>
-          <default>0000000000000000000000</default>
-          <mask>/^[a-z0-9\+\/]{22}$/i</mask>
+          <Default>0000000000000000000000</Default>
+          <Mask>/^[a-z0-9\+\/]{22}$/i</Mask>
         </auth_cookie>
       </client_auth>
     </client_authentications>

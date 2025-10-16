@@ -1,27 +1,41 @@
 <model>
     <mount>//OPNsense/tailscale/settings</mount>
     <description>Tailscale general settings</description>
+    <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <loginTimeout type="IntegerField">
+            <Default>10</Default>
+            <Required>Y</Required>
+        </loginTimeout>
         <listenPort type="PortField">
-            <default>41641</default>
+            <Default>41641</Default>
             <Required>Y</Required>
         </listenPort>
         <acceptDNS type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </acceptDNS>
         <advertiseExitNode type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </advertiseExitNode>
+        <useExitNode type=".\ExitNodeField"/>
         <acceptSubnetRoutes type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </acceptSubnetRoutes>
+        <enableSSH type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enableSSH>
+        <disableSNAT type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disableSNAT>
         <subnets>
             <subnet4 type="ArrayField">
                 <subnet type="NetworkField">

@@ -14,6 +14,7 @@ Changelog
 1.10
 
 * Add CHECK_HOST_DOMAINS option
+* Fix CUSTOM_TRAILS_DIR (contributed by codiflow)
 
 1.9
 
@@ -34,7 +35,7 @@ Changelog
 
 1.5
 
-* Change whitelisting format (by @jkellerer)
+* Change whitelisting format (contributed by jkellerer)
 * Add alienvault to disabled feeds
 
 1.4

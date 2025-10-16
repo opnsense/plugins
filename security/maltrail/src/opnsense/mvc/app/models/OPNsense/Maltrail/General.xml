@@ -4,23 +4,23 @@
     <version>0.0.2</version>
     <items>
         <heuristics type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </heuristics>
         <checkhostheader type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </checkhostheader>
         <updateperiod type="IntegerField">
-            <default>86400</default>
+            <Default>86400</Default>
             <Required>Y</Required>
         </updateperiod>
         <adminpassword type="TextField">
-            <default>9ab3cd9d67bf49d01f6a2e33d0bd9bc804ddbe6ce1ff5d219c42624851db5dbc</default>
+            <Default>9ab3cd9d67bf49d01f6a2e33d0bd9bc804ddbe6ce1ff5d219c42624851db5dbc</Default>
             <Required>Y</Required>
         </adminpassword>
         <monitorinterface type="InterfaceField">
-            <multiple>Y</multiple>
+            <Multiple>Y</Multiple>
             <Required>N</Required>
         </monitorinterface>
         <whitelist type="CSVListField">

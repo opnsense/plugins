@@ -9,6 +9,12 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.34
+
+* Add custom configuration include directory /usr/local/etc/namedb/named.conf.d (contributed by Nicholas Card)
+* Add forward zones
+* Fix primary zones grid and command column (contributed by benyamin-codez)
+
 1.33
 
 * Add option to allow the rndc-key for zone transfers (contributed by Naomi Rennie-Waldock)

@@ -3,19 +3,23 @@
     <id>aspath.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>If this AS-Path list should be enabled.</help>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>aspath.description</id>
     <label>Description</label>
     <type>text</type>
-    <help>Add an optional description for this AS-Path list.</help>
+    <help>Optional description for the AS-Path list.</help>
   </field>
   <field>
     <id>aspath.number</id>
     <label>Number</label>
     <type>text</type>
-    <help>The ACL rule number (0-4294967294); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL!</help>
+    <help>The ACL rule number (0-4294967294); keep in mind that there are no sequence numbers with AS-Path lists. When you want to add a new line between you have to completely remove the ACL.</help>
   </field>
   <field>
     <id>aspath.action</id>
@@ -27,6 +31,6 @@
     <id>aspath.as</id>
     <label>AS</label>
     <type>text</type>
-    <help>The AS pattern you want to match, regexp allowed (e.g. .$ or _1$). It's not validated so please be careful!</help>
+    <help>The AS pattern you want to match, regexp allowed (e.g. .$ or _1$).</help>
   </field>
 </form>

@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -15,14 +14,14 @@ use OPNsense\Core\Backend;
 class VersionController extends ApiControllerBase
 {
     /**
-     * retrieve version description
+     * Retrieve version description
+     *
      * @return version description
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
-    public function getAction()
+    public function getAction(): string
     {
-        $backend = new Backend();
-        return $backend->configdRun("crowdsec version");
+        return (new Backend())->configdRun("crowdsec version");
     }
 }

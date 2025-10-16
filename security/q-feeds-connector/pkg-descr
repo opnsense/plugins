@@ -1,0 +1,14 @@
+Connector for Q-Feeds threat intel
+
+Plugin Changelog
+================
+
+1.1
+
+* remove QfeedsStatus as the new table defaults are different
+* add unbound blocklist support
+* Events: fix empty interface names
+
+1.0
+
+* Intial release version
