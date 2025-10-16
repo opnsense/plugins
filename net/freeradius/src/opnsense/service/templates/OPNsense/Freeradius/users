@@ -24,6 +24,9 @@
        Service-Type = {{ servicelist }},
 {%         endfor %}
 {%       endif %}
+{%       if user_list.tunnel_password is defined %}
+       Tunnel-Password = {{ user_list.tunnel_password }},
+{%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
 {%         if user_list.vlan is defined %}
        Tunnel-Type = VLAN,
