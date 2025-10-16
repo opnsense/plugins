@@ -33,6 +33,10 @@
           <Default>master</Default>
           <Required>Y</Required>
         </branch>
+        <force_push type="BooleanField">
+          <Default>0</Default>
+          <Required>Y</Required>
+        </force_push>
         <privkey type="TextField">
             <Required>N</Required>
         </privkey>
