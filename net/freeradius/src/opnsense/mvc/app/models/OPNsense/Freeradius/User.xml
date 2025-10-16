@@ -133,7 +133,6 @@
                     <Required>N</Required>
                 </linkedAVPair>
                 <tunnel_password type="TextField">
-                    <Required>N</Required>
                     <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</mask>
                 </tunnel_password>
             </user>
