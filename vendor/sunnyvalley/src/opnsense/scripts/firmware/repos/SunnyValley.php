@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2024 Hasan Ucak <hasan@sunnyvalley.io>
+ * Copyright (C) 2025 Hasan Ucak <hasan@sunnyvalley.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,11 @@ if (!file_exists($conf . '.sample')) {
 }
 
 $fileContents = file_get_contents($conf . '.sample');
+
+$product_abi = trim(shell_safe('opnsense-version -a'));
+if ($product_abi != '') {
+    $fileContents = str_replace('##PRODUCT_ABI##', $product_abi, $fileContents);
+}
 
 if (file_exists('/usr/local/zenarmor/bin/eastpect')) {
     $uuid = shell_safe('/usr/local/zenarmor/bin/eastpect -s');
