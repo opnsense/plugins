@@ -152,5 +152,8 @@
             <Default>0</Default>
             <Required>Y</Required>
         </fallbackproxy>
+        <fallback_tunnel_password type="TextField">
+            <mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</mask>
+        </fallback_tunnel_password>
     </items>
 </model>
