@@ -101,12 +101,17 @@ DEFAULT Hint == "CSLIP"
 
 DEFAULT Hint == "SLIP"
         Framed-Protocol = SLIP
-{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') and OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') or helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') %}
 
 DEFAULT Auth-Type := Accept
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') and OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
        Tunnel-Private-Group-Id = {{ OPNsense.freeradius.general.fallbackvlan_id }},
+{%  endif %}
+{%  if helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') %}
+       Tunnel-Password = {{ OPNsense.freeradius.general.fallback_tunnel_password }},
+{%  endif %}
        Framed-Protocol = PPP
 {%  endif %}
 {% endif %}
