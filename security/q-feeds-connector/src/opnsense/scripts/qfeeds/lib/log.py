@@ -50,6 +50,11 @@ class PFLogCrawler:
             for table in self._table_names:
                 if line.find("<%s>" % table) > 0:
                     self._rule_ids.add(line.split()[-1].strip('"'))
+                    if 'label "' in line:
+                        quote_start = line.find('"', line.find('label "'))
+                        quote_end = line.find('"', quote_start + 1)
+                        if quote_end > quote_start:
+                            self._rule_ids.add(line[quote_start + 1:quote_end])
 
     @staticmethod
     def _parse_log_line(line):
