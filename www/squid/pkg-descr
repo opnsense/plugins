@@ -5,6 +5,10 @@ content serving applications.
 Plugin Changelog
 ================
 
+1.4
+
+* Make email_err_data static due to SQUID-2025:2 CVE 10.0
+
 1.3
 
 * Repackage template files using new contrib directory feature
