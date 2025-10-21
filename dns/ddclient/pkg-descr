@@ -6,6 +6,10 @@ WWW: https://github.com/ddclient/ddclient
 Plugin Changelog
 ================
 
+1.28
+
+* Add native backend support for PowerDNS API (contributed by Oliver Traber)
+
 1.27
 
 * Add support for altering IPv6 addresses in native backend (contributed by SaarLAN-Pissbeutel)
