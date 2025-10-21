@@ -31,7 +31,7 @@
          When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
          and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
          </help>
-        <style>optional_setting service_custom</style>
+        <style>optional_setting service_custom service_powerdns</style>
     </field>
     <field>
         <id>account.resourceId</id>
