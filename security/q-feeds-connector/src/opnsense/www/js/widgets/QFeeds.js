@@ -64,7 +64,7 @@ export default class QFeeds extends BaseTableWidget {
             'margin-bottom': '5px',
         });
 
-        const data = await this.ajaxCall('/api/q_feeds/settings/stats');
+        const data = await this.ajaxCall(`/api/q_feeds/settings/${'stats'}`);
         if (!data.feeds.length) {
             $('#qfeeds-table').html(`${this.translations.no_feed}`);
             return;
