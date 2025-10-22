@@ -168,7 +168,7 @@ class Git extends Base implements IBackupProvider
         }
         exec("cd {$targetdir} && {$git} remote remove origin");
         exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
-        $force_flag = (string)$mdl->force_push === "1" ? "--force-with-lease " : "";
+        $force_flag = (string)$mdl->force_push === "1" ? "--force " : "";
         $pushtxt = shell_exec(
             "(cd {$targetdir} && {$git} push {$force_flag}origin " . escapeshellarg("master:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
