@@ -32,7 +32,7 @@ class LdapgroupController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->formDialogEditFreeRADIUSUser = $this->getForm("dialogEditFreeRADIUSLdapgroup");
+        $this->view->formDialogEditFreeRADIUSLdapgroup = $this->getForm("dialogEditFreeRADIUSLdapgroup");
         $this->view->pick('OPNsense/Freeradius/ldapgroup');
     }
 }
