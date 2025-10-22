@@ -8,7 +8,7 @@
       <Lease VisibleName="DHCP Leases" url="/ui/freeradius/lease/index" order="36"/>
       <EAP url="/ui/freeradius/eap/index" order="40"/>
       <LDAP url="/ui/freeradius/ldap/index" order="50"/>
-      <LDAPGroup url="/ui/freeradius/ldapgroup/index" order="55"/>
+      <LDAPGroup VisibleName="LDAP Group" url="/ui/freeradius/ldapgroup/index" order="55"/>
       <Proxy url="/ui/freeradius/proxy/index" order="60">
         <Homeservers url="/ui/freeradius#homeservers"/>
         <Homeserverpools url="/ui/freeradius#homeserverpools"/>
