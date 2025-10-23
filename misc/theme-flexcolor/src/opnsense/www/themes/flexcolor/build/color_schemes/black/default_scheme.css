@@ -7,11 +7,11 @@
     --pfore: #E6E6E6; /* main textcolor */
     --pforehover: #FFFFFF; /* primary text hover */
     --pforemuted: #B1B1B1; /* muted text */
-    --pforeinverse: #F2F7FD; /* main textcolor inverse */
-    --pforeinversehover: #D9E1EB; /* main textcolor inverse hover */
+    --pforeinverse: #181E25; /* main textcolor inverse */
+    --pforeinversehover: #232323; /* main textcolor inverse hover */
     --pback: #000000; /* primary background */
     --pbackmuted: #E6E6E6; /* primary background */
-    --pbackinverse: #181E25; /* primary background inverse */
+    --pbackinverse: #E6E6E6; /* primary background inverse */
     --pbackhover: #232323; /* primary background hover*/
     --sfore: #A3A3A3; /*second background */
     --sback: #000000; /* second background #FAF9F6*/

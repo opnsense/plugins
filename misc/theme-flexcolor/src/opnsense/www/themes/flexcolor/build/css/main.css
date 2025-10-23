@@ -3669,18 +3669,18 @@ tbody.collapse.in {
 .navbar-inverse .navbar-brand {
   color: var(--pforemuted); }
 .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
-  color: var(--pback); 
+  color: var(--pforeinverse); 
   background-color: transparent; }
 .navbar-inverse .navbar-text {
   color: var(--pforemuted); }
 .navbar-inverse .navbar-nav > li > a {
   color: var(--pforemuted); }
 .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
-  color: var(--pback); 
+  color: var(--pforeinverse); 
   background-color: transparent; }
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-  color: var(--pback); 
-  background-color:var(--pfore); }
+  color: var(--pforeinverse); 
+  background-color:var(--pbackinverse); }
 .navbar-inverse .navbar-nav > .disabled > a, .navbar-inverse .navbar-nav > .disabled > a:hover, .navbar-inverse .navbar-nav > .disabled > a:focus {
   color: var(--stdborder);
   background-color: transparent; }
@@ -3689,7 +3689,7 @@ tbody.collapse.in {
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
   background-color: var(--navbarinverse); }
 .navbar-inverse .navbar-toggle .icon-bar {
-  background-color: var(--pback); 
+  background-color: var(--pbackinverse); 
 }
 .navbar-inverse .navbar-collapse,
 .navbar-inverse .navbar-form {
@@ -3910,7 +3910,7 @@ a.label:hover, a.label:focus {
     padding: 3px 7px;
     font-size: 12px;
     font-weight: bold;
-    color: var(--pback);
+    color: var(--pfore);
     line-height: 1;
     vertical-align: baseline;
     white-space: nowrap;
@@ -3933,7 +3933,7 @@ a.list-group-item.active > .badge, .nav-pills > .active > a > .badge {
 .nav-pills > li > a > .badge {
   margin-left: 3px; }
 a.badge:hover, a.badge:focus {
-  color: var(--pback); 
+  color: var(--pforehover); 
   text-decoration: none;
   cursor: pointer; }
 .jumbotron {
@@ -4734,10 +4734,10 @@ button.close {
 .tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
-  color: var(--pback); 
+  color: var(--pbackinverse); 
   text-align: center;
   text-decoration: none;
-  background-color: var(--pfore);
+  background-color: var(--pforeinverse);
   border-radius: 3px; }
 .tooltip-arrow {
   position: absolute;
@@ -4949,7 +4949,7 @@ button.close {
   opacity: 0.5;
   filter: alpha(opacity=50);
   font-size: 20px;
-  color: var(--pback); 
+  color: var(--pfore); 
   text-align: center;
   text-shadow: 0 1px 2px var(--rgb50); }
 .carousel-control.left {
@@ -4968,7 +4968,7 @@ button.close {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FFEF8026", endColorstr="#80000000", GradientType=1); }
 .carousel-control:hover, .carousel-control:focus {
   outline: 0;
-  color: var(--pback); 
+  color: var(--pforehover); 
   text-decoration: none;
   opacity: 0.9;
   filter: alpha(opacity=90); }
@@ -5014,7 +5014,7 @@ button.close {
   height: 10px;
   margin: 1px;
   text-indent: -999px;
-  border: 1px solid var(--pback); 
+  border: 1px solid var(--stdborder); 
   border-radius: 10px;
   cursor: pointer;
   background-color: var(--highlighted) \9 ;
@@ -5034,7 +5034,7 @@ button.close {
   z-index: 10;
   padding-top: 20px;
   padding-bottom: 20px;
-  color: var(--pback); 
+  color: var(--pfore); 
   text-align: center;
   text-shadow: 0 1px 2px var(--rgb50); }
 .carousel-caption .btn {
@@ -5570,7 +5570,7 @@ main.page-content.col-lg-12 {
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 12px;
-  border-bottom: 2px solid var(--stdborder);
+  border-bottom: 1px solid var(--stdborder);
   border-right: 1px solid var(--stdborder); }
 #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.fa, #navigation.col-sidebar-left > div > nav > #mainmenu > div > a.list-group-item > span.glyphicon {
   visibility: visible;
@@ -5901,7 +5901,7 @@ div[data-for*=help_for] {
 [data-state=lightcoral] {
   background-color: var(--danger); }
 [data-state=white] {
-  background-color: var(--pback); }
+  background-color: transparent; }
 [data-state=red] {
   background-color: var(--warning); }
 .tokens-container {
@@ -5924,7 +5924,7 @@ div[data-for*=help_for] {
 .bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus {
   color: var(--pfore); }
 .state_text {
-  color: var(--pback); }
+  color: var(--info); }
 div.tab-content.content-box {
   border-top: 1px solid var(--stdborderfore); }
 ul.jqtree-tree .jqtree-title {
