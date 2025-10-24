@@ -375,7 +375,7 @@
 /* dashboard, (independent, despite the buttons on the top ) */
     --dbfore: #131313; /* textcolor dashboard */
     --dbback: #D5D5D5; /* background color dashboard */
-    --dbbackhover: #131313; /* background color dashboard */
+    --dbbackhover: #D5D5D5; /* background color dashboard */
     --dbborder: rgba(61,61,61,0.15); /* bordercolor dashboard */
     --dbchartfore: rgba(19,19,19,1); /* textcolor dashboard charts */
     --dbchartborder: rgba(19,19,19,1); /* bordercolor dashboard charts*/
