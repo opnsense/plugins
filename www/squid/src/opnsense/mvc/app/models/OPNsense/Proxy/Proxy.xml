@@ -263,6 +263,20 @@
                             <field1>sslurlonly</field1>
                         </addFields>
                     </check001>
+                    <check002>
+                        <ValidationMessage>When enabling "Block connections by SSL SNI", SSL inspection must also be enabled.</ValidationMessage>
+                        <type>DependConstraint</type>
+                        <addFields>
+                            <field1>ssl_sni_block_sites</field1>
+                        </addFields>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>When enabling "Exclude IP from SSL inspection and SNI based blocking", SSL inspection must also be enabled.</ValidationMessage>
+                        <type>DependConstraint</type>
+                        <addFields>
+                            <field1>ssl_sni_block_excludeip</field1>
+                        </addFields>
+                    </check003>
                 </Constraints>
             </sslbump>
             <sslurlonly type="BooleanField">
@@ -282,6 +296,25 @@
               <Mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</Mask>
               <ValidationMessage>Please enter ip addresses or domain names here.</ValidationMessage>
             </sslnobumpsites>
+            <ssl_sni_block_sites type="CSVListField">
+                <Mask>/^([a-zA-Z0-9\.:\[\]\s\-]*?,)*([a-zA-Z0-9\.:\[\]\s\-]*)$/</Mask>
+                <ValidationMessage>Please enter ip addresses or domain names here.</ValidationMessage>
+                <AsList>Y</AsList>
+                <Constraints>
+                    <check001>
+                        <reference>sslbump.check002</reference>
+                    </check001>
+                </Constraints>
+            </ssl_sni_block_sites>
+            <ssl_sni_block_excludeip type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AsList>Y</AsList>
+                <Constraints>
+                    <check001>
+                        <reference>sslbump.check003</reference>
+                    </check001>
+                </Constraints>
+            </ssl_sni_block_excludeip>
             <workers type="IntegerField">
               <MinimumValue>1</MinimumValue>
               <MaximumValue>100</MaximumValue>
