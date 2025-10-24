@@ -15,7 +15,7 @@
     --pbackhover: #232323; /* primary background hover*/
     --sfore: #A3A3A3; /*second background */
     --sback: #000000; /* second background #FAF9F6*/
-    --stdborder: #3D3D3D; /* standard border */
+    --stdborder: #515151; /* standard border */
     --stdborderfore: #E6E6E6; /* standard border with accent*/
     --stdborderprimary: #336CDF; /* standard border with accent*/
     --stdborderinverse: #000000; /* standard border with accent*/
@@ -70,7 +70,7 @@
     --txtboxborder: #E6E6E6;
     --txtboxborderhover: #1C4DB0;
     --txtboxborderactive: #336CDF;
-    --txtboxborderdisabled: #3D3D3D;
+    --txtboxborderdisabled: #515151;
     --txtboxbordertoken: #000000;
     --txtboxborderdel: #E6E6E6; /* only tokenize, pending delete */
     --txtboxborderdismiss: #E6E6E6; /* only tokenize, dismiss */
@@ -187,7 +187,7 @@
     /* disabled */
     --ibtnforedisabled: #999999; /* textcolor disabled*/
     --ibtnbackdisabled: #000000; /* background disabled*/
-    --ibtnborderdisabled: #3D3D3D; /* border disabled */
+    --ibtnborderdisabled: #515151; /* border disabled */
     /* badge */
     --ibtnforebadge: #008CDD; /* textcolor badge*/
     --ibtnbackbadge: #000000; /* background badge*/
@@ -229,7 +229,7 @@
     /* disabled */
     --wbtnforedisabled: #999999; /* textcolor disabled*/
     --wbtnbackdisabled: #000000; /* background disabled*/
-    --wbtnborderdisabled: #3D3D3D; /* border disabled */
+    --wbtnborderdisabled: #515151; /* border disabled */
     /* badge */
     --wbtnforebadge: #D66E12; /* textcolor badge*/
     --wbtnbackbadge: #000000; /* background badge*/
@@ -250,7 +250,7 @@
     /* disabled */
     --dbtnforedisabled: #999999; /* textcolor disabled*/
     --dbtnbackdisabled: #000000; /* background disabled*/
-    --dbtnborderdisabled: #3D3D3D; /* border disabled */
+    --dbtnborderdisabled: #515151; /* border disabled */
     /* badge */
     --dbtnforebadge: #FF5252; /* textcolor badge*/
     --dbtnbackbadge: #000000; /* background badge*/
@@ -270,8 +270,8 @@
     --lbtnborderactive: #E6E6E6; /* border active */
     /* disabled */
     --lbtnforedisabled: #999999; /* textcolor disabled*/
-    --lbtnbackdisabled: #3D3D3D; /* background disabled*/
-    --lbtnborderdisabled: #3D3D3D; /* border disabled */
+    --lbtnbackdisabled: #515151; /* background disabled*/
+    --lbtnborderdisabled: #515151; /* border disabled */
 
 /* navtabs (complete independent) */
     /* active */
@@ -294,9 +294,9 @@
     --tbheadfore: #E6E6E6; /* background */
     --tbheadback: #1F1F1F; /* background */
     --tbheadbackhover: #1F1F1F; /* background hover*/
-    --tbborder: #6D6D6D; /* border color headline */
+    --tbborder: #515151; /* border color headline */
     /* tabulator body */
-    --tbbordertable: #6D6D6D; /* border color table */
+    --tbbordertable: #515151; /* border color table */
     /* odd row */
     --tbrowforeodd: #E6E6E6; /* background */
     --tbrowbackodd: #000000; /* background */
@@ -335,7 +335,7 @@
 /* table */
     --tableheadfore: #E6E6E6; /* textcolor table head */
     --tablelegend: #E6E6E6;
-    --tableborder: #3D3D3D; /* background table in a table */
+    --tableborder: #515151; /* background table in a table */
     /* table not stripe */
     --tablefore: #E6E6E6; /* textcolor table */
     --tableback: #000000; /* background table */
@@ -347,7 +347,7 @@
 
 /* scrollbar */
     --scbarcolor: #4D4D4D #000000; /* scrollbarcolor: foreground vs background, the following colors are not important */
-    --scbarborder: #6D6D6D; /* bordercolor scrollbar*/
+    --scbarborder: #515151; /* bordercolor scrollbar*/
     --scbar: #4D4D4D; /* scrollbar foreground*/
     --scbarhover: #5D5D5D; /* scrollbar foreground hover*/
     --scbarbutton: #4D4D4D; /* scrollbar button*/

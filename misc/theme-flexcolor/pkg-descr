@@ -1,1 +1,1 @@
-flexcolor - theme with different color schemes by the original author
+flexcolor - Theme with the option to customize colors through color schemes. To change the scheme, simply replace the corresponding default_scheme.css file in the theme /build/css-folder with an alternative from the corresponding folders in the /build/color_schemes/ folder. Feel free to adjust all colors by changing the color codes in the scheme-file or to create your own schemes.
