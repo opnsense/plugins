@@ -1,0 +1,90 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General Settings</label>
+    </field>
+    <field>
+        <id>ndpproxy.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable or disable this service.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.upstream</id>
+        <label>Upstream interface</label>
+        <type>dropdown</type>
+        <help>Choose the uplink interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.downstream</id>
+        <label>Downstream interfaces</label>
+        <type>select_multiple</type>
+        <help>Choose one or multiple downlink interfaces which should proxy the upstream IPv6 prefix.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.no_ra</id>
+        <label>Disable RA proxy</label>
+        <type>checkbox</type>
+        <help>Do not proxy upstream Router Advertisements (RA) to downstream interfaces. With this enabled, you can use your own RA daemon.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.no_dad</id>
+        <label>Disable DAD proxy</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Do not proxy Duplicate Address Detection (DAD) between interfaces. This can cause conflicts and should only be used for debugging purposes.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.no_routes</id>
+        <label>Disable host route installation</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Do not automatically create host routes for discovered clients. You must manually handle all routing decisions.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.cache_ttl</id>
+        <label>Neighbor cache lifetime</label>
+        <type>text</type>
+        <hint>10</hint>
+        <advanced>true</advanced>
+        <help>Neighbor cache lifetime in minutes.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.cache_max</id>
+        <label>Maximum learned neighbors</label>
+        <type>text</type>
+        <hint>4096</hint>
+        <advanced>true</advanced>
+        <help>Maximum learned neighbors, increase for large networks.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.route_qps</id>
+        <label>Max route operations</label>
+        <type>text</type>
+        <hint>50</hint>
+        <advanced>true</advanced>
+        <help>Max route operations per second, increase for large networks.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.route_burst</id>
+        <label>Max burst route operations</label>
+        <type>text</type>
+        <hint>50</hint>
+        <advanced>true</advanced>
+        <help>Burst of route operations before limiting, increase for large networks.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.pcap_timeout</id>
+        <label>Packet capture timeout</label>
+        <type>text</type>
+        <hint>50</hint>
+        <advanced>true</advanced>
+        <help>Controls CPU usage vs. NDP responsiveness. Lower values (e.g., 25 ms) minimize latency during cache refresh at the cost of more CPU. Higher values (100–250 ms) reduce CPU use but may introduce small latency spikes.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.debug</id>
+        <label>Debug logging</label>
+        <type>checkbox</type>
+        <help>Enable debug logging.</help>
+    </field>
+</form>

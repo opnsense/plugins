@@ -1,0 +1,10 @@
+<acl>
+    <page-ndp-proxy-go-general>
+        <name>Services: NDP Proxy: General Settings</name>
+        <description>Allow access to NDP Proxy General Settings</description>
+        <patterns>
+            <pattern>ui/ndpproxy/general/*</pattern>
+            <pattern>api/ndpproxy/general/*</pattern>
+        </patterns>
+    </page-ndp-proxy-go-general>
+</acl>
