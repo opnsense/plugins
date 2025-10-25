@@ -152,4 +152,11 @@
         <advanced>true</advanced>
         <help>Fallback for proxy server. Default disabled.</help>
     </field>
+    <field>
+        <id>general.fallback_tunnel_password</id>
+        <label>Fallback Tunnel password</label>
+        <type>password</type>
+        <advanced>true</advanced>
+        <help>Define the Fallback Tunnel-Password. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
+    </field>
 </form>
