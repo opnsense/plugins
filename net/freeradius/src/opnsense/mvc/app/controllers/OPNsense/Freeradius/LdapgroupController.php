@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2025 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,15 +26,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Tayga;
+namespace OPNsense\Freeradius;
 
-class GeneralController extends \OPNsense\Base\IndexController
+class LdapgroupController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->pick('OPNsense/Tayga/general');
-        $this->view->formDialogEditStaticMapping = $this->getForm("dialogEditStaticMapping");
-        $this->view->formGridStaticMapping = $this->getFormGrid("dialogEditStaticMapping");
+        $this->view->formDialogEditFreeRADIUSLdapgroup = $this->getForm("dialogEditFreeRADIUSLdapgroup");
+        $this->view->pick('OPNsense/Freeradius/ldapgroup');
     }
 }

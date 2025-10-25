@@ -17,6 +17,11 @@ WWW: https://www.freeradius.org
 Plugin Changelog
 ================
 
+1.9.28
+
+* Add Groups for VLAN assignment
+* Add Fallback PPSK
+
 1.9.27
 
 * Allow EAP-TLS with multiple CAs (contributed by RasAlGhul)

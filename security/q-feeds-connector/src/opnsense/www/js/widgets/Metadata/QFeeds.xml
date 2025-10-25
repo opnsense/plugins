@@ -2,7 +2,7 @@
     <qfeeds>
         <filename>QFeeds.js</filename>
         <endpoints>
-            <endpoint>/api/q_feeds/settings/stats</endpoint>
+            <endpoint>/api/q_feeds/settings/*</endpoint>
         </endpoints>
         <translations>
             <title>Q-Feeds Threat Protection</title>

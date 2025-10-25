@@ -67,6 +67,13 @@ class Git extends Base implements IBackupProvider
              "value" => null
            ],
            [
+             "name" => "force_push",
+             "type" => "checkbox",
+             "label" => gettext("Force Push"),
+             "help" => gettext("When enabled, force push to origin if diverged (e.g., after restoring from an earlier backup). Use with caution as this overwrites remote history."),
+             "value" => null
+           ],
+           [
              "name" => "privkey",
              "type" => "passwordarea",
              "label" => gettext("SSH private key"),
@@ -161,8 +168,9 @@ class Git extends Base implements IBackupProvider
         }
         exec("cd {$targetdir} && {$git} remote remove origin");
         exec("cd {$targetdir} && {$git} remote add origin " . escapeshellarg($url));
+        $force_flag = (string)$mdl->force_push === "1" ? "--force " : "";
         $pushtxt = shell_exec(
-            "(cd {$targetdir} && {$git} push origin " . escapeshellarg("master:{$mdl->branch}") .
+            "(cd {$targetdir} && {$git} push {$force_flag}origin " . escapeshellarg("master:{$mdl->branch}") .
             " && echo '__exit_ok__') 2>&1"
         );
         if (strpos($pushtxt, '__exit_ok__')) {
