@@ -33,13 +33,14 @@
 /*------------*/
 /* theme: body */
 .tabulator .tabulator-tableholder .tabulator-table {
-  background-color: transportant;
+  background-color: var(--tbbodybackhover);
   border-left: 1px solid var(--tbbordertable);
 }
 
-.tabulator-row {
-  background-color: transparent;
-  border: 1px solid var(--tbbordertable);
+.tabulator-row
+{
+    background-color: var(--tbbodybackhover);
+    border: 1px solid var(--tbbordertable);
 }
 
 .tabulator-row.tabulator-row-odd {
@@ -84,6 +85,40 @@
 }
 
 .tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-right {
+}
+
+/* Tabulator groupBy row styles */
+.tabulator-row.tabulator-group
+{
+    border: none;
+    pointer-events: none;
+}
+
+    .tabulator-row.tabulator-group span
+    {
+        margin-left: 0;
+        color: var(--tbrowforeodd);
+    }
+
+.tabulator-row .badge.chip
+{
+    background-color: var(--dfbtnbackbadge);
+    color: var(--dfbtnforebadge);
+    font-size: 10px;
+    padding: 2px 4px;
+    position: relative;
+    top: -1px;
+}
+
+.tabulator-row.tabulator-group .tabulator-group-toggle,
+.tabulator-row.tabulator-group .tabulator-group-toggle *
+{
+    pointer-events: auto;
+}
+
+.tabulator-row.tabulator-group:has(> .tabulator-group-toggle:only-child)
+{
+    display: none; /* Trick to hide empty groupBy header rows */
 }
 
 /* Checkbox column styles */
