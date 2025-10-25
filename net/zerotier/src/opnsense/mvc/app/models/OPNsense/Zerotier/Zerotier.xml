@@ -30,6 +30,22 @@
                     <Default></Default>
                     <Required>N</Required>
                 </description>
+                <allowManaged type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </allowManaged>
+                <allowGlobal type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </allowGlobal>
+                <allowDefault type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </allowDefault>
+                <allowDNS type="BooleanField">
+                    <default>0</default>
+                    <Required>Y</Required>
+                </allowDNS>
             </network>
         </networks>
     </items>
