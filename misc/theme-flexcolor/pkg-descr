@@ -1,4 +1,4 @@
-Theme with the option to customize colors through color schemes. To change
+Theme with the option to customize colors through color schemes.  To change
 the scheme, simply replace the corresponding default_scheme.css file in the
 theme /build/css-folder with an alternative from the corresponding folders
 in the /build/color_schemes/ folder.  Feel free to adjust all colors by
