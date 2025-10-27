@@ -8,7 +8,7 @@
   cursor: text;
   border-radius: 3px;
   border: 1px solid var(--txtboxborder);
-  background-color: var(--txtboxback); 
+  background-color: var(--txtboxback);
   color: var(--txtboxfore);
 }
 
