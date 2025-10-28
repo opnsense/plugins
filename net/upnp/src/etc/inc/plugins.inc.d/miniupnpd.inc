@@ -75,15 +75,15 @@ function miniupnpd_start()
         return;
     }
 
-    mwexec_bg('/usr/local/sbin/miniupnpd -f /var/etc/miniupnpd.conf -P /var/run/miniupnpd.pid');
+    mwexecf_bg('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
 }
 
 function miniupnpd_stop()
 {
     killbypid('/var/run/miniupnpd.pid');
 
-    mwexec('/sbin/pfctl -aminiupnpd -Fr 2>&1 >/dev/null');
-    mwexec('/sbin/pfctl -aminiupnpd -Fn 2>&1 >/dev/null');
+    mwexecf('/sbin/pfctl -a miniupnpd -Fr');
+    mwexecf('/sbin/pfctl -a miniupnpd -Fn');
 }
 
 function miniupnpd_configure()
