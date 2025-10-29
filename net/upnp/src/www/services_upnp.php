@@ -314,7 +314,7 @@ include("head.inc");
                       <td>
                         <input name="stun_host" type="text" value="<?= !empty($pconfig['stun_host']) ? $pconfig['stun_host'] : '' ?>" />
                         <div class="hidden" data-for="help_for_stun_host">
-                          <?= gettext('Allow use of unrestricted endpoint-independent (1:1) CGNATs and detect the public IPv4.')?><br/><?= gettext('E.g. stun.3cx.com or stun.counterpath.com')?>
+                          <?= gettext('Allow use of unrestricted endpoint-independent (1:1) CGNATs and detect the public IPv4 using e.g. "stun.3cx.com" or "stun.counterpath.com".') ?>
                         </div>
                       </td>
                     </tr>
@@ -361,7 +361,7 @@ include("head.inc");
                          <?=gettext("Report system instead of service uptime.");?>
                        </div>
                       </td>
-                    --> </tr>
+                    </tr> -->
                     <tr>
                       <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Firewall logs");?></td>
                       <td>
