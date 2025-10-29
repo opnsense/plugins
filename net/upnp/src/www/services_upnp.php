@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $pconfig = [];
 
     $copy_fields = [
+        'allow_third_party_mapping',
         'download',
         'enable',
         'enable_natpmp',
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // save form data
         $upnp = [];
         // boolean types
-        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault'] as $fieldname) {
+        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'allow_third_party_mapping'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
@@ -193,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // sync to config
         $config['installedpackages']['miniupnpd']['config'] = $upnp;
 
-        write_config('Modified Universal Plug and Play settings');
+        write_config('Modified UPnP IGD & PCP settings');
         miniupnpd_configure_do();
         filter_configure();
         header(url_safe('Location: /services_upnp.php'));
@@ -219,9 +220,7 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <td style="width:22%">
-                        <strong><?=gettext("UPnP IGD & PCP/NAT-PMP Settings");?></strong>
-                      </td>
+                      <th style="width:22%"><?=gettext("Service Setup");?></th>
                       <td style="width:78%; text-align:right">
                         <small><?=gettext("full help"); ?> </small>
                         <i class="fa fa-toggle-off text-danger"  style="cursor: pointer;" id="show_all_help_page"></i>
@@ -231,11 +230,11 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle text-muted"></i></a> <?=gettext("Enable");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable">
-                         <?=gettext("Enable autonomous port mapping service.");?>
+                         <?=gettext("Start the autonomous port mapping service.");?>
                        </div>
                       </td>
                     </tr>
@@ -253,7 +252,7 @@ include("head.inc");
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
-                         <?=gettext("This protocol is often used by Apple-compatible systems.");?>
+                         <?=gettext("These protocols are often used by Apple-compatible systems.");?>
                        </div>
                       </td>
                     </tr>
@@ -270,12 +269,12 @@ include("head.inc");
                         endforeach;?>
                        </select>
                        <div class="hidden" data-for="help_for_ext_iface">
-                         <?=gettext("Select only your primary WAN interface (interface with your default route). Only one interface is allowed here, not multiple.");?>
+                         <?=gettext("The WAN network interface containing the default gateway.");?>
                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_iface_array" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interfaces (generally LAN)");?></td>
+                      <td><a id="help_for_iface_array" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Internal interfaces");?></td>
                       <td>
                        <select class="selectpicker" name="iface_array[]" multiple="multiple">
                          <option value="lo0" <?=!empty($pconfig['iface_array']) && in_array('lo0', $pconfig['iface_array']) ? "selected=\"selected\"" : "";?>>
@@ -289,91 +288,8 @@ include("head.inc");
 <?php
                         endforeach;?>
                        </select>
-                       <div class="hidden" data-for="help_for_ext_iface">
-                         <?=gettext("You can select multiple interfaces here.");?>
-                       </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Interface subnet override");?></td>
-                      <td>
-                        <select name="overridesubnet" class="selectpicker" id="overridesubnet">
-                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
-<?php for ($i = 32; $i >= 1; $i--): ?>
-                          <option value="<?= $i ?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == $i ? 'selected="selected"' : '' ?>><?= $i ?></option>
-<?php endfor ?>
-                        </select>
-                        <div class="hidden" data-for="help_for_overridesubnet">
-                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_stun_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('STUN server') ?></td>
-                      <td>
-                        <input name="stun_host" type="text" value="<?= !empty($pconfig['stun_host']) ? $pconfig['stun_host'] : '' ?>" />
-                        <div class="hidden" data-for="help_for_stun_host">
-                          <?= gettext('STUN server used to predict external WAN IP.') ?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_stun_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('STUN port') ?></td>
-                      <td>
-                        <input name="stun_port" type="text" placeholder="3478" value="<?= !empty($pconfig['stun_port']) ? $pconfig['stun_port'] : ''  ?>" />
-                        <div class="hidden" data-for="help_for_stun_port">
-                          <?= gettext('STUN port used to predict external WAN IP.') ?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Download Speed");?></td>
-                      <td>
-                        <input name="download" type="text" value="<?=$pconfig['download'];?>" />
-                        <div class="hidden" data-for="help_for_download">
-                          <?=gettext("(Kbits/second)");?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_upload" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Maximum Upload Speed");?></td>
-                      <td>
-                        <input name="upload" type="text" value="<?=$pconfig['upload'];?>" />
-                        <div class="hidden" data-for="help_for_upload">
-                          <?=gettext("(Kbits/second)");?>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override WAN address");?></td>
-                      <td>
-                        <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Log packets");?></td>
-                      <td>
-                       <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
-                       <div class="hidden" data-for="help_for_logpackets">
-                         <?=gettext("Log packets handled by service rules?");?>
-                       </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Use system time");?></td>
-                      <td>
-                       <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
-                       <div class="hidden" data-for="help_for_sysuptime">
-                         <?=gettext("Use system uptime instead of service uptime?");?>
-                       </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
-                      <td>
-                       <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
-                       <div class="hidden" data-for="help_for_permdefault">
-                         <?=gettext("By default deny access to service?");?>
+                       <div class="hidden" data-for="help_for_iface_array">
+                         <?=gettext("Select one or more internal network interfaces, such as LAN, where clients reside.");?>
                        </div>
                       </td>
                     </tr>
@@ -388,32 +304,138 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <th colspan="2"><?=gettext("User specified permissions");?></th>
+                      <th style="width:22%"><?=gettext("Advanced Settings")?></th>
+                      <th style="width:78%"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of permissions");?></td>
+                      <td><a id="help_for_stun_host" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('STUN server') ?></td>
+                      <td>
+                        <input name="stun_host" type="text" value="<?= !empty($pconfig['stun_host']) ? $pconfig['stun_host'] : '' ?>" />
+                        <div class="hidden" data-for="help_for_stun_host">
+                          <?= gettext('Allow use of unrestricted endpoint-independent (1:1) CGNATs and detect the public IPv4.')?><br/><?= gettext('E.g. stun.3cx.com or stun.counterpath.com')?>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('STUN port') ?></td>
+                      <td>
+                        <input name="stun_port" type="text" placeholder="3478" value="<?= !empty($pconfig['stun_port']) ? $pconfig['stun_port'] : ''  ?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override external IPv4");?></td>
+                      <td>
+                        <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Internal interface IPv4 subnet override");?></td>
+                      <td>
+                        <select name="overridesubnet" class="selectpicker" id="overridesubnet">
+                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
+<?php for ($i = 32; $i >= 1; $i--): ?>
+                          <option value="<?= $i ?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == $i ? 'selected="selected"' : '' ?>><?= $i ?></option>
+<?php endfor ?>
+                        </select>
+                        <div class="hidden" data-for="help_for_overridesubnet">
+                          <?=gettext("You can override a single LAN interface subnet here. Useful if you are rebroadcasting service traffic across networks.");?>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_allow_third_party_mapping" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow third-party mapping");?></td>
+                      <td>
+                        <input name="allow_third_party_mapping" type="checkbox" value="yes" <?=!empty($pconfig['allow_third_party_mapping']) ? "checked=\"checked\"" : ""; ?> />
+                        <div class="hidden" data-for="help_for_allow_third_party_mapping">
+                          <?=gettext("Allow adding port maps for non-requesting IP addresses.");?>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- <tr>
+                      <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Report system uptime");?></td>
+                      <td>
+                       <input name="sysuptime" type="checkbox" value="yes" <?=!empty($pconfig['sysuptime']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_sysuptime">
+                         <?=gettext("Report system instead of service uptime.");?>
+                       </div>
+                      </td>
+                    --> </tr>
+                    <tr>
+                      <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Firewall logs");?></td>
+                      <td>
+                       <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_logpackets">
+                         <?=gettext("Log mapped connections.");?>
+                       </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Download speed");?></td>
+                      <td>
+                        <input name="download" type="text" placeholder="<?=gettext('Default interface link speed');?>" value="<?=$pconfig['download'];?>" />
+                        <div class="hidden" data-for="help_for_download">
+                          <?=gettext("Report maximum connection speed in kbit/s.");?>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_upload" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Upload speed");?></td>
+                      <td>
+                        <input name="upload" type="text" placeholder="<?=gettext('Default interface link speed');?>" value="<?=$pconfig['upload'];?>" />
+                        <div class="hidden" data-for="help_for_upload">
+                          <?=gettext("Report maximum connection speed in kbit/s.");?>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section class="col-xs-12">
+            <div class="content-box">
+              <div class="table-responsive">
+                <table class="table table-striped opnsense_standard_table_form">
+                  <thead>
+                    <tr>
+                      <th colspan="2"><?=gettext("Access Control List");?></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a id="help_for_permdefault" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default deny");?></td>
+                      <td>
+                       <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
+                       <div class="hidden" data-for="help_for_permdefault">
+                         <?=gettext("Deny access to service by default.");?>
+                       </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of entries");?></td>
                       <td>
                         <input name="num_permuser" type="text" value="<?= html_safe($pconfig['num_permuser']) ?>" />
                         <div class="hidden" data-for="help_for_num_permuser">
-                          <?=gettext("Number of permissions to configure.");?>
+                          <?=gettext("Number of ACL entries to configure.");?>
                         </div>
                       </td>
                     </tr>
 <?php foreach (miniupnpd_permuser_list() as $i => $permuser): ?>
                     <tr>
 <?php if ($i == 1): ?>
-                      <td style="width:22%"><a id="help_for_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext('Entry') . ' ' . $i ?></td>
+                      <td style="width:22%"><a id="help_for_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext('ACL entry') . ' ' . $i ?></td>
 <?php else: ?>
-                      <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext('Entry') . ' ' . $i ?></td>
+                      <td style="width:22%"><i class="fa fa-info-circle text-muted"></i> <?=gettext('ACL entry') . ' ' . $i ?></td>
 <?php endif ?>
                       <td style="width:78%">
                         <input name="<?= html_safe($permuser) ?>" type="text" value="<?= isset($pconfig[$permuser]) ? $pconfig[$permuser] : '' ?>" />
 <?php if ($i == 1): ?>
                         <div class="hidden" data-for="help_for_permuser">
-                          <?=gettext("Format: [allow or deny] [ext port or range] [int ipaddr or ipaddr/cidr] [int port or range]");?><br/>
-                          <?=gettext("Example: allow 1024-65535 192.168.0.0/24 1024-65535");?>
+                          <?=gettext("The ACL specifies which IP addresses and ports can be mapped. IPv6 is always accepted.");?><br/>
+                          <?=gettext("Format: (allow or deny) (ext port or range) (int IP or IP/netmask) (int port or range)");?><br/>
+                          <?=gettext("Example: allow 1024-65535 192.168.1.0/24 1024-65535");?>
                         </div>
 <?php endif ?>
                       </td>
