@@ -6,7 +6,7 @@
         </patterns>
     </page-service-upnp>
     <page-status-upnpstatus>
-        <name>Services: UPnP IGD &amp; PCP: Active Port Maps</name>
+        <name>Services: UPnP IGD &amp; PCP: Port Maps</name>
         <patterns>
             <pattern>status_upnp.php*</pattern>
         </patterns>
