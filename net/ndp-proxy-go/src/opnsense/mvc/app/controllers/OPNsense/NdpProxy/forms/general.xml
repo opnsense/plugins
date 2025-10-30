@@ -22,16 +22,10 @@
         <help>Choose one or multiple downlink interfaces which should proxy the upstream IPv6 prefix.</help>
     </field>
     <field>
-        <id>ndpproxy.general.rewrite_lla</id>
-        <label>Rewrite LLA</label>
-        <type>checkbox</type>
-        <advanced>true</advanced>
-        <help>Rewrite SLLA/TLLA options. Disable this only for debugging purposes.</help>
-    </field>
-    <field>
         <id>ndpproxy.general.ra</id>
         <label>Proxy RA</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>Proxy upstream Router Advertisements (RA) to downstream interfaces. Disable this if you use your own RA daemon.</help>
     </field>
     <field>
@@ -45,7 +39,15 @@
         <id>ndpproxy.general.routes</id>
         <label>Install host routes</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>Automatically create host routes for discovered clients. Disabling this means you must manually handle all routing decisions.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.rewrite_lla</id>
+        <label>Rewrite LLA</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Rewrite SLLA/TLLA options. Disable this only for debugging purposes.</help>
     </field>
     <field>
         <id>ndpproxy.general.cache_ttl</id>
@@ -84,12 +86,13 @@
         <label>Packet capture timeout</label>
         <type>text</type>
         <hint>50</hint>
+        <advanced>true</advanced>
         <help>Controls CPU usage vs. NDP responsiveness. Lower values (e.g., 25 ms) minimize latency during cache refresh at the cost of more CPU. Higher values (100–250 ms) reduce CPU use but may introduce small latency spikes.</help>
     </field>
     <field>
         <id>ndpproxy.general.debug</id>
         <label>Debug logging</label>
         <type>checkbox</type>
-        <help>Enable debug logging.</help>
+        <help>Enable verbose debug logging.</help>
     </field>
 </form>
