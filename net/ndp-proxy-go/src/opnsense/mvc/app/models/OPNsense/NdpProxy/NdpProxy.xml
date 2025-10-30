@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ndpproxy</mount>
     <description>NDP Proxy model</description>
-    <version>0.1</version>
+    <version>0.2</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -12,15 +12,41 @@
             <downstream type="InterfaceField">
                 <Multiple>Y</Multiple>
             </downstream>
-            <no_ra type="BooleanField"/>
-            <no_dad type="BooleanField"/>
-            <no_routes type="BooleanField"/>
-            <cache_ttl type="IntegerField"/>
-            <cache_max type="IntegerField"/>
-            <route_qps type="IntegerField"/>
-            <route_burst type="IntegerField"/>
-            <pcap_timeout type="IntegerField"/>
-            <debug type="BooleanField"/>
+            <rewrite_lla type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </rewrite_lla>
+            <ra type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </ra>
+            <dad type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </dad>
+            <routes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </routes>
+            <cache_ttl type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </cache_ttl>
+            <cache_max type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </cache_max>
+            <route_qps type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </route_qps>
+            <route_burst type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </route_burst>
+            <pcap_timeout type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </pcap_timeout>
+            <debug type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </debug>
         </general>
     </items>
 </model>

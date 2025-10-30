@@ -47,6 +47,16 @@ class NdpProxy extends BaseModel
                     ));
                 }
             }
+
+            $upstream = trim((string)$this->general->upstream);
+            $downstreamList = array_filter(array_map('trim', explode(',', (string)$this->general->downstream)));
+
+            if (!empty($upstream) && in_array($upstream, $downstreamList, true)) {
+                $messages->appendMessage(new Message(
+                    gettext('Downstream interfaces cannot contain upstream interface.'),
+                    'general.downstream'
+                ));
+            }
         }
     }
 

@@ -9,16 +9,19 @@ ndp_proxy_go_upstream="{{ helpers.physical_interface(general.upstream) }}"
 {%     endfor %}
 ndp_proxy_go_downstream="{{ downstream_interfaces|join(' ') }}"
 {%     set flags = [] %}
-{%     if general.debug|default("0") == "1" %}
+{%     if general.debug == "1" %}
 {%         do flags.append('--debug') %}
 {%     endif %}
-{%     if general.no_ra|default("0") == "1" %}
+{%     if general.rewrite_lla == "0" %}
+{%         do flags.append('--no-rewrite-lla') %}
+{%     endif %}
+{%     if general.ra == "0" %}
 {%         do flags.append('--no-ra') %}
 {%     endif %}
-{%     if general.no_dad|default("0") == "1" %}
+{%     if general.dad == "0" %}
 {%         do flags.append('--no-dad') %}
 {%     endif %}
-{%     if general.no_routes|default("0") == "1" %}
+{%     if general.routes == "0" %}
 {%         do flags.append('--no-routes') %}
 {%     endif %}
 {%     if general.cache_ttl %}

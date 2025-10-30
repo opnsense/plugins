@@ -39,12 +39,12 @@ function ndpproxy_services()
         $services[] = [
             'description' => gettext('NDP Proxy'),
             'configd' => [
-                'start' => ['ndp-proxy-go start'],
-                'restart' => ['ndp-proxy-go restart'],
-                'stop' => ['ndp-proxy-go stop'],
+                'start' => ['ndpproxy start'],
+                'restart' => ['ndpproxy restart'],
+                'stop' => ['ndpproxy stop'],
             ],
             'name' => 'ndpproxy',
-            'pidfile' => '/var/run/ndp-proxy-go.pid'
+            'pidfile' => '/var/run/ndp_proxy_go.pid'
         ];
     }
 
