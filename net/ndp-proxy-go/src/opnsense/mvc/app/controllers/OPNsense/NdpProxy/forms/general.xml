@@ -93,6 +93,6 @@
         <id>ndpproxy.general.debug</id>
         <label>Debug logging</label>
         <type>checkbox</type>
-        <help>Enable verbose debug logging.</help>
+        <help>Enable debug logging.</help>
     </field>
 </form>
