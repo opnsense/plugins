@@ -1,10 +1,17 @@
 <acl>
-    <page-ndp-proxy-go-general>
+    <page-ndp-proxy-general>
         <name>Services: NDP Proxy: General Settings</name>
         <description>Allow access to NDP Proxy General Settings</description>
         <patterns>
             <pattern>ui/ndpproxy/general/*</pattern>
             <pattern>api/ndpproxy/general/*</pattern>
         </patterns>
-    </page-ndp-proxy-go-general>
+    </page-ndp-proxy-general>
+    <page-ndp-proxy-log>
+        <name>Services: NDP Proxy: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/ndpproxy/*</pattern>
+            <pattern>api/diagnostics/log/core/ndpproxy/*</pattern>
+        </patterns>
+    </page-ndp-proxy-log>
 </acl>
