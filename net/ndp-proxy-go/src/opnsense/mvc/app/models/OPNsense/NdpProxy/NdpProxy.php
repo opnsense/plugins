@@ -37,19 +37,18 @@ class NdpProxy extends BaseModel
 {
     private function checkConfiguration($messages)
     {
-        if ((string)$this->general->enabled === '1') {
-            $requiredFields = ['upstream', 'downstream'];
-            foreach ($requiredFields as $field) {
-                if (empty((string)$this->general->$field)) {
+        if ($this->general->enabled->isEqual('1')) {
+            foreach (['upstream', 'downstream'] as $field) {
+                if ($this->general->$field->isEmpty()) {
                     $messages->appendMessage(new Message(
                         gettext('Interface is required.'),
-                        "general." . $field
+                        "general.$field"
                     ));
                 }
             }
 
-            $upstream = trim((string)$this->general->upstream);
-            $downstreamList = array_filter(array_map('trim', explode(',', (string)$this->general->downstream)));
+            $upstream = $this->general->upstream->getValue();
+            $downstreamList = array_filter(explode(',', $this->general->downstream->getValue()));
 
             if (!empty($upstream) && in_array($upstream, $downstreamList, true)) {
                 $messages->appendMessage(new Message(
