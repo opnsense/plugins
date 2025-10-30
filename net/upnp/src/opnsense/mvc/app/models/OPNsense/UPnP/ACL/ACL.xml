@@ -1,6 +1,6 @@
 <acl>
     <page-service-upnp>
-        <name>Services: UPnP IGD &amp; PCP</name>
+        <name>Services: UPnP IGD &amp; PCP: Settings</name>
         <patterns>
             <pattern>services_upnp.php*</pattern>
         </patterns>
