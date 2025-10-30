@@ -48,3 +48,4 @@
     {{ partial("layout_partials/base_form", ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
 </div>
 {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/ndpproxy/service/reconfigure', 'data_service_widget': 'ndpproxy'}) }}
+
