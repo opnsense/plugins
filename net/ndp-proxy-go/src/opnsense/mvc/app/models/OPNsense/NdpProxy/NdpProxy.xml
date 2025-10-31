@@ -33,7 +33,7 @@
                 <MinimumValue>1</MinimumValue>
             </pcap_timeout>
             <debug type="BooleanField">
-                <Default>1</Default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </debug>
         </general>
