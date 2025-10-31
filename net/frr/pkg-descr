@@ -12,6 +12,12 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.48
+
+* Add BFD detect-multiplier, transmit-interval, receive-interval (opnsense/plugins/pull/5000)
+* Add BGP enforce-first-as (opnsense/plugins/pull/5001)
+* Add BGP bestpath route selection options (opnsense/plugins/pull/5002)
+
 1.47
 
 * Add OSPF area configuration options (opnsense/plugins/pull/4880)
