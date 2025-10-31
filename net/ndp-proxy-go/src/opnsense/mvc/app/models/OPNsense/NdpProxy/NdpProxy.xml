@@ -1,0 +1,41 @@
+<model>
+    <mount>//OPNsense/ndpproxy</mount>
+    <description>NDP Proxy model</description>
+    <version>0.2</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <upstream type="InterfaceField"/>
+            <downstream type="InterfaceField">
+                <Multiple>Y</Multiple>
+            </downstream>
+            <ra type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </ra>
+            <routes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </routes>
+            <cache_ttl type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </cache_ttl>
+            <cache_max type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </cache_max>
+            <route_qps type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </route_qps>
+            <pcap_timeout type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </pcap_timeout>
+            <debug type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </debug>
+        </general>
+    </items>
+</model>
