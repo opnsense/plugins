@@ -41,6 +41,13 @@
         <help>Defines connected networks to be advertised over BGP. Disable Network Import-Check to announce all networks.</help>
     </field>
     <field>
+        <id>bgp.bestpath</id>
+        <label>Bestpath</label>
+        <type>select_multiple</type>
+        <advanced>true</advanced>
+        <help>Route selection modifiers that influence the best path.</help>
+    </field>
+    <field>
         <id>bgp.networkimportcheck</id>
         <label>Network Import-Check</label>
         <type>checkbox</type>
