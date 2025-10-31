@@ -27,7 +27,6 @@
 <script>
     $(document).ready(function() {
         mapDataToFormUI({'frm_GeneralSettings': "/api/ndpproxy/general/get"}).done(function() {
-            formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('ndpproxy');
         });
@@ -40,7 +39,6 @@
             },
         });
 
-        updateServiceControlUI('ndpproxy');
     });
 </script>
 
