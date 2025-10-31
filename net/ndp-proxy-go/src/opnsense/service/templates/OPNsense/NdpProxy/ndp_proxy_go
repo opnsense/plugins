@@ -12,14 +12,8 @@ ndp_proxy_go_downstream="{{ downstream_interfaces|join(' ') }}"
 {%     if general.debug == "1" %}
 {%         do flags.append('--debug') %}
 {%     endif %}
-{%     if general.rewrite_lla == "0" %}
-{%         do flags.append('--no-rewrite-lla') %}
-{%     endif %}
 {%     if general.ra == "0" %}
 {%         do flags.append('--no-ra') %}
-{%     endif %}
-{%     if general.dad == "0" %}
-{%         do flags.append('--no-dad') %}
 {%     endif %}
 {%     if general.routes == "0" %}
 {%         do flags.append('--no-routes') %}
@@ -32,9 +26,6 @@ ndp_proxy_go_downstream="{{ downstream_interfaces|join(' ') }}"
 {%     endif %}
 {%     if general.route_qps %}
 {%         do flags.append('--route-qps ' ~ general.route_qps) %}
-{%     endif %}
-{%     if general.route_burst %}
-{%         do flags.append('--route-burst ' ~ general.route_burst) %}
 {%     endif %}
 {%     if general.pcap_timeout %}
 {%         do flags.append('--pcap-timeout ' ~ general.pcap_timeout ~ 'ms') %}

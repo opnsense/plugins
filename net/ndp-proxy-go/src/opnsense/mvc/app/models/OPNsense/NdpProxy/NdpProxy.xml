@@ -12,18 +12,10 @@
             <downstream type="InterfaceField">
                 <Multiple>Y</Multiple>
             </downstream>
-            <rewrite_lla type="BooleanField">
-                <Default>1</Default>
-                <Required>Y</Required>
-            </rewrite_lla>
             <ra type="BooleanField">
                 <Default>1</Default>
                 <Required>Y</Required>
             </ra>
-            <dad type="BooleanField">
-                <Default>1</Default>
-                <Required>Y</Required>
-            </dad>
             <routes type="BooleanField">
                 <Default>1</Default>
                 <Required>Y</Required>
@@ -37,9 +29,6 @@
             <route_qps type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </route_qps>
-            <route_burst type="IntegerField">
-                <MinimumValue>1</MinimumValue>
-            </route_burst>
             <pcap_timeout type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </pcap_timeout>
