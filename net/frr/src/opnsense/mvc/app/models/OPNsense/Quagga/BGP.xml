@@ -28,6 +28,10 @@
             <Default>1</Default>
             <Required>Y</Required>
         </networkimportcheck>
+        <enforce_first_as type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </enforce_first_as>
         <logneighborchanges type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
