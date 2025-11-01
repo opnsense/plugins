@@ -50,6 +50,32 @@
             <Default>0</Default>
             <Required>Y</Required>
          </RevertTTL>
+         <allowcidr type="NetworkField">
+            <default></default>
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+            <NetMaskRequired>N</NetMaskRequired>
+            <NetMaskAllowed>Y</NetMaskAllowed>
+            <AddressFamily>ipv4</AddressFamily>
+            <WildcardEnabled>N</WildcardEnabled>
+         </allowcidr>
+         <blockcidr type="NetworkField">
+            <default></default>
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+            <NetMaskRequired>N</NetMaskRequired>
+            <NetMaskAllowed>Y</NetMaskAllowed>
+            <AddressFamily>ipv4</AddressFamily>
+            <WildcardEnabled>N</WildcardEnabled>
+         </blockcidr>
+         <msearch type="TextField">
+            <default></default>
+            <Required>N</Required>
+            <mask>/^(?:(?:block|fwd|proxy|dial)(?:,\S+|) )*(?:block|fwd|proxy|dial)(?:,\S+|)$/</mask>
+            <ValidationMessage>Must be a space separated list of actions, with optional search term.</ValidationMessage>
+         </msearch>
          <description type="TextField">
             <Required>N</Required>
             <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
