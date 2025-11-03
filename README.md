@@ -56,6 +56,7 @@ net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
+net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol Proxy
 net/ndproxy -- Neighbor Discovery Proxy
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
@@ -67,7 +68,7 @@ net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
 net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
-net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
+net/upnp -- UPnP IGD & PCP/NAT-PMP Service
 net/vnstat -- Network traffic monitor
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
