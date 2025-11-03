@@ -2,7 +2,7 @@
     <apcupsd>
         <filename>Apcupsd.js</filename>
         <endpoints>
-            <endpoint>/api/apcupsd/service/getUpsStatus</endpoint>
+            <endpoint>/api/apcupsd/service/get_ups_status</endpoint>
         </endpoints>
         <translations>
             <title>Apcupsd</title>

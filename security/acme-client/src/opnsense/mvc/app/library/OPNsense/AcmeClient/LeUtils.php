@@ -32,6 +32,7 @@
 namespace OPNsense\AcmeClient;
 
 use OPNsense\Core\Config;
+use OPNsense\AcmeClient\AcmeClient;
 
 /**
  * Helper functions for LeAcme
@@ -81,8 +82,13 @@ class LeUtils
     /**
      * log additional debug output
      */
-    public static function log_debug($msg, bool $debug = false)
+    public static function log_debug($msg)
     {
+        $log_config = (new AcmeClient())->getNodeByReference('settings.logLevel');
+        if (strpos($log_config, "debug") !== false) {
+            $debug = true;
+        }
+
         if ($debug) {
             syslog(LOG_NOTICE, "AcmeClient: {$msg}");
         }
@@ -91,9 +97,14 @@ class LeUtils
     /**
      * log error messages
      */
-    public static function log_error($msg)
+    public static function log_error($msg, $error = null)
     {
-        syslog(LOG_ERR, "AcmeClient: {$msg}");
+        syslog(
+            LOG_ERR,
+            $error
+                ? ("AcmeClient: $msg; Trace: " . json_encode($error, JSON_UNESCAPED_SLASHES))
+                : "AcmeClient: $msg"
+        );
     }
 
     /**

@@ -249,6 +249,32 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->setBase('resolver', 'resolver', $uuid);
     }
 
+    // proxy_cache_valid
+    public function searchproxyCacheValidAction()
+    {
+        return $this->searchBase('proxy_cache_valid', array('uuid', 'description', 'code', 'valid'));
+    }
+
+    public function getproxyCacheValidAction($uuid = null)
+    {
+        return $this->getBase('proxy_cache_valid', 'proxy_cache_valid', $uuid);
+    }
+
+    public function addproxyCacheValidAction()
+    {
+        return $this->addBase('proxy_cache_valid', 'proxy_cache_valid');
+    }
+
+    public function delproxyCacheValidAction($uuid)
+    {
+        return $this->delBase('proxy_cache_valid', $uuid);
+    }
+
+    public function setproxyCacheValidAction($uuid)
+    {
+        return $this->setBase('proxy_cache_valid', 'proxy_cache_valid', $uuid);
+    }
+
     // http server
     public function searchhttpserverAction()
     {

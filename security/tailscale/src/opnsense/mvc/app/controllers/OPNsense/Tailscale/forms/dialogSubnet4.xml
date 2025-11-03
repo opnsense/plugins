@@ -3,7 +3,7 @@
         <id>subnet4.subnet</id>
         <label>Subnet</label>
         <type>text</type>
-        <help>Subnet to use, should be large enough to hold the specified pools and reservations</help>
+        <help>Local subnet to route to your tailnet in CIDR notation (e.g. 192.168.1.0/24).</help>
     </field>
     <field>
         <id>subnet4.description</id>

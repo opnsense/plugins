@@ -6,7 +6,7 @@
         <avpairs>
             <avpair type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
@@ -14,7 +14,7 @@
                 </name>
                 <operator type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([\-\+\~\=]){1,2}$/</mask>
+                    <Mask>/^([\-\+\~\=]){1,2}$/</Mask>
                 </operator>
                 <value type="TextField">
                     <Required>Y</Required>

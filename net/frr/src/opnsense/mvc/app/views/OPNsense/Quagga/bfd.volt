@@ -37,12 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBFDNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bfd/searchNeighbor',
-            'get':'/api/quagga/bfd/getNeighbor/',
-            'set':'/api/quagga/bfd/setNeighbor/',
-            'add':'/api/quagga/bfd/addNeighbor/',
-            'del':'/api/quagga/bfd/delNeighbor/',
-            'toggle':'/api/quagga/bfd/toggleNeighbor/'
+            'search':'/api/quagga/bfd/search_neighbor',
+            'get':'/api/quagga/bfd/get_neighbor/',
+            'set':'/api/quagga/bfd/set_neighbor/',
+            'add':'/api/quagga/bfd/add_neighbor/',
+            'del':'/api/quagga/bfd/del_neighbor/',
+            'toggle':'/api/quagga/bfd/toggle_neighbor/'
         });
 
         $("#reconfigureAct").SimpleActionButton({
@@ -74,23 +74,5 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial('layout_partials/base_bootgrid_table', formGridEditBFDNeighbor)}}
     </div>
 </div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint='/api/quagga/service/reconfigure'
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring BFD') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-        </div>
-    </div>
-    <div id="BFDChangeMessage" class="alert alert-info" style="display: none" role="alert">
-        {{ lang._('After changing settings, please remember to apply them.') }}
-    </div>
-</section>
-
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBFDNeighbor,'id':formGridEditBFDNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}

@@ -48,55 +48,88 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBGPNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchNeighbor',
-            'get':'/api/quagga/bgp/getNeighbor/',
-            'set':'/api/quagga/bgp/setNeighbor/',
-            'add':'/api/quagga/bgp/addNeighbor/',
-            'del':'/api/quagga/bgp/delNeighbor/',
-            'toggle':'/api/quagga/bgp/toggleNeighbor/'
+            'search':'/api/quagga/bgp/search_neighbor',
+            'get':'/api/quagga/bgp/get_neighbor/',
+            'set':'/api/quagga/bgp/set_neighbor/',
+            'add':'/api/quagga/bgp/add_neighbor/',
+            'del':'/api/quagga/bgp/del_neighbor/',
+            'toggle':'/api/quagga/bgp/toggle_neighbor/'
         });
         $("#{{formGridEditBGPASPaths['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchAspath',
-            'get':'/api/quagga/bgp/getAspath/',
-            'set':'/api/quagga/bgp/setAspath/',
-            'add':'/api/quagga/bgp/addAspath/',
-            'del':'/api/quagga/bgp/delAspath/',
-            'toggle':'/api/quagga/bgp/toggleAspath/'
+            'search':'/api/quagga/bgp/search_aspath',
+            'get':'/api/quagga/bgp/get_aspath/',
+            'set':'/api/quagga/bgp/set_aspath/',
+            'add':'/api/quagga/bgp/add_aspath/',
+            'del':'/api/quagga/bgp/del_aspath/',
+            'toggle':'/api/quagga/bgp/toggle_aspath/'
         });
         $("#{{formGridEditBGPPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchPrefixlist',
-            'get':'/api/quagga/bgp/getPrefixlist/',
-            'set':'/api/quagga/bgp/setPrefixlist/',
-            'add':'/api/quagga/bgp/addPrefixlist/',
-            'del':'/api/quagga/bgp/delPrefixlist/',
-            'toggle':'/api/quagga/bgp/togglePrefixlist/'
+            'search':'/api/quagga/bgp/search_prefixlist',
+            'get':'/api/quagga/bgp/get_prefixlist/',
+            'set':'/api/quagga/bgp/set_prefixlist/',
+            'add':'/api/quagga/bgp/add_prefixlist/',
+            'del':'/api/quagga/bgp/del_prefixlist/',
+            'toggle':'/api/quagga/bgp/toggle_prefixlist/'
         });
         $("#{{formGridEditBGPCommunityLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchCommunitylist',
-            'get':'/api/quagga/bgp/getCommunitylist/',
-            'set':'/api/quagga/bgp/setCommunitylist/',
-            'add':'/api/quagga/bgp/addCommunitylist/',
-            'del':'/api/quagga/bgp/delCommunitylist/',
-            'toggle':'/api/quagga/bgp/toggleCommunitylist/'
+            'search':'/api/quagga/bgp/search_communitylist',
+            'get':'/api/quagga/bgp/get_communitylist/',
+            'set':'/api/quagga/bgp/set_communitylist/',
+            'add':'/api/quagga/bgp/add_communitylist/',
+            'del':'/api/quagga/bgp/del_communitylist/',
+            'toggle':'/api/quagga/bgp/toggle_communitylist/'
         });
         $("#{{formGridEditBGPRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchRoutemap',
-            'get':'/api/quagga/bgp/getRoutemap/',
-            'set':'/api/quagga/bgp/setRoutemap/',
-            'add':'/api/quagga/bgp/addRoutemap/',
-            'del':'/api/quagga/bgp/delRoutemap/',
-            'toggle':'/api/quagga/bgp/toggleRoutemap/'
+            'search':'/api/quagga/bgp/search_routemap',
+            'get':'/api/quagga/bgp/get_routemap/',
+            'set':'/api/quagga/bgp/set_routemap/',
+            'add':'/api/quagga/bgp/add_routemap/',
+            'del':'/api/quagga/bgp/del_routemap/',
+            'toggle':'/api/quagga/bgp/toggle_routemap/'
         });
         $("#{{formGridEditBGPPeergroups['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bgp/searchPeergroup',
-            'get':'/api/quagga/bgp/getPeergroup/',
-            'set':'/api/quagga/bgp/setPeergroup/',
-            'add':'/api/quagga/bgp/addPeergroup/',
-            'del':'/api/quagga/bgp/delPeergroup/',
-            'toggle':'/api/quagga/bgp/togglePeergroup/'
+            'search':'/api/quagga/bgp/search_peergroup',
+            'get':'/api/quagga/bgp/get_peergroup/',
+            'set':'/api/quagga/bgp/set_peergroup/',
+            'add':'/api/quagga/bgp/add_peergroup/',
+            'del':'/api/quagga/bgp/del_peergroup/',
+            'toggle':'/api/quagga/bgp/toggle_peergroup/'
         });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/bgp/search_redistribution',
+            'get':'/api/quagga/bgp/get_redistribution/',
+            'set':'/api/quagga/bgp/set_redistribution/',
+            'add':'/api/quagga/bgp/add_redistribution/',
+            'del':'/api/quagga/bgp/del_redistribution/',
+            'toggle':'/api/quagga/bgp/toggle_redistribution/'
+        });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
     });
 </script>
+
+<style>
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
+    }
+</style>
 
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
@@ -112,6 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- Tab: General -->
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':bgpForm,'id':'frm_bgp_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
     <!-- Tab: Neighbors -->
     <div id="neighbors" class="tab-pane fade in">
@@ -138,28 +172,11 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial('layout_partials/base_bootgrid_table', formGridEditBGPPeergroups)}}
     </div>
 </div>
-
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint='/api/quagga/service/reconfigure'
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring BGP') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-        </div>
-    </div>
-    <div id="BGPChangeMessage" class="alert alert-info" style="display: none" role="alert">
-        {{ lang._('After changing settings, please remember to apply them.') }}
-    </div>
-</section>
-
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPNeighbor,'id':formGridEditBGPNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPASPaths,'id':formGridEditBGPASPaths['edit_dialog_id'],'label':lang._('Edit AS Paths')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPrefixLists,'id':formGridEditBGPPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPCommunityLists,'id':formGridEditBGPCommunityLists['edit_dialog_id'],'label':lang._('Edit Community Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPRouteMaps,'id':formGridEditBGPRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBGPPeergroups,'id':formGridEditBGPPeergroups['edit_dialog_id'],'label':lang._('Edit Peer Groups')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}

@@ -5,33 +5,33 @@
     <items>
         <general>
             <Enabled type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </Enabled>
             <FQDN type="HostnameField">
-                <default>puppet</default>
+                <Default>puppet</Default>
                 <Required>Y</Required>
             </FQDN>
             <Environment type="TextField">
-                <default>production</default>
+                <Default>production</Default>
                 <Required>Y</Required>
-                <mask>/^.{1,100}$/u</mask>
+                <Mask>/^.{1,100}$/u</Mask>
                 <ValidationMessage>Should be a string between 1 and 100 characters.</ValidationMessage>
             </Environment>
             <RunInterval type="TextField">
-                <default>30m</default>
-                <mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</mask>
+                <Default>30m</Default>
+                <Mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</Mask>
                 <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
                 <Required>Y</Required>
             </RunInterval>
             <RunTimeout type="TextField">
-                <default>1h</default>
-                <mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</mask>
+                <Default>1h</Default>
+                <Mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</Mask>
                 <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
                 <Required>Y</Required>
             </RunTimeout>
             <UseCacheOnFailure type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </UseCacheOnFailure>
         </general>

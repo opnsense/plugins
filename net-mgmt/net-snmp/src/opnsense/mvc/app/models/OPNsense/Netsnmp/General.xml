@@ -4,41 +4,41 @@
     <version>1.0.5</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <community type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </community>
         <syslocation type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </syslocation>
         <syscontact type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </syscontact>
         <l3visibility type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </l3visibility>
         <versionoid type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </versionoid>
         <enableagentx type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enableagentx>
         <enableobservium type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enableobservium>
         <listen type="NetworkField">
             <FieldSeparator>,</FieldSeparator>
             <Required>N</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listen>
     </items>
 </model>

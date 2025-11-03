@@ -8,6 +8,29 @@ WWW: https://crowdsec.net/
 Plugin Changelog
 ================
 
+1.0.12
+
+ * Fix and update service management (start/stop/reload/configure)
+
+1.0.11
+
+* convert tables to UIBootGrid (required for opnsense 25.7)
+* separate page for each table
+* IPv6 validation for LAPI listen address broken (contributed by BPplays)
+* Fix alert time not showing in grid
+
+1.0.10
+
+* changed alias names crowdsec*blacklists -> crowdsec*blocklists
+* added rules for outgoing connections too
+* added enroll_key to settings for automatic enrollment
+* option to disable rule generation (bring your own rules!)
+* code cleanup, reformat, typing
+
+1.0.9
+
+* Update rule reference ($ -> <>) for opnsense 25.1
+
 1.0.8
 
 * Enable use_wal, remove warning
@@ -23,7 +46,7 @@ Plugin Changelog
 
 1.0.6
 
- * default acquis.d/opnsense.yaml to "poll_without_inotify=true" which is now required
+* default acquis.d/opnsense.yaml to "poll_without_inotify=true" which is now required
    to acquire content from symlinks.
 
 1.0.5

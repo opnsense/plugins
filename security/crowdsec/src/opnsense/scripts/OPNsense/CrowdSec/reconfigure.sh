@@ -2,7 +2,7 @@
 
 # This script is run
 #  - when the plugin is installed (by +POST_INSTALL.post)
-#  - when saving the "settings" form (which calls /api/crowdsec/service/reload)
+#  - when saving the "settings" form (which calls /api/crowdsec/service/reconfigure)
 #  - by hand, running "configctl crowdsec reconfigure"
 
 set -e

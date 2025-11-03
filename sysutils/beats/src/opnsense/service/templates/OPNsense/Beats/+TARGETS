@@ -1,0 +1,2 @@
+filebeat.yml:/usr/local/etc/beats/filebeat.yml
+filebeat:/etc/rc.conf.d/filebeat

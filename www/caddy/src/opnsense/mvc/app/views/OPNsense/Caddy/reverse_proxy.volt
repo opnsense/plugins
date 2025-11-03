@@ -26,88 +26,254 @@
 
 <script>
     $(document).ready(function() {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const hash = e.target.hash;
+            if (history.replaceState) {
+                history.replaceState(null, null, hash);
+            } else {
+                location.hash = hash;
+            }
+        });
+
+        $(window).on('hashchange', function () {
+            const $targetTab = $(`#maintabs a[href="${location.hash}"]`);
+            if ($targetTab.length) {
+                $targetTab.tab('show');
+            }
+        });
+
         // Bootgrid Setup
-        $("#{{formGridReverseProxy['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchReverseProxy/',
-            get:'/api/caddy/ReverseProxy/getReverseProxy/',
-            set:'/api/caddy/ReverseProxy/setReverseProxy/',
-            add:'/api/caddy/ReverseProxy/addReverseProxy/',
-            del:'/api/caddy/ReverseProxy/delReverseProxy/',
-            toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
-            options: {
-                requestHandler: addDomainFilterToRequest,
-                rowCount: [4,7,14,20,50,100,-1]
+        const all_grids = {};
+
+        // block change-driven grid reloads during programmatic updates of reverseFilter selectpicker
+        let suppressFilterReload = false;
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let grid_ids = [];
+
+{% if entrypoint == 'reverse_proxy' %}
+
+            switch (e.target.hash) {
+                case '#domains':
+                    grid_ids = ["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"];
+                    break;
+                case '#handlers':
+                    grid_ids = ["{{ formGridHandle['table_id'] }}"];
+                    break;
+                case '#access':
+                    grid_ids = ["{{ formGridAccessList['table_id'] }}", "{{ formGridBasicAuth['table_id'] }}"];
+                    break;
+                case '#headers':
+                    grid_ids = ["{{ formGridHeader['table_id'] }}"];
+                    break;
+            }
+
+{% elseif entrypoint == 'layer4' %}
+
+            switch (e.target.hash) {
+                case '#routes':
+                    grid_ids = ["{{ formGridLayer4['table_id'] }}"];
+                    break;
+                case '#matchers':
+                    grid_ids = ["{{ formGridLayer4Openvpn['table_id'] }}"];
+                    break;
+            }
+
+{% endif %}
+
+            const labels = {
+                upstream: "{{ lang._('Upstream') }}",
+                domain: '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}",
+                subdomain: '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}",
+            };
+
+            if (grid_ids.length > 0) {
+                grid_ids.forEach(function(grid_id) {
+                    if (!all_grids[grid_id]) {
+                        // Define commands only for the specific grids
+                        let commands = {};
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                        if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
+                            const update_filter = function (selectValues) {
+                                suppressFilterReload = true;
+
+                                return $('#reverseFilter')
+                                    .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
+                                    .done(function () {
+                                        $('#reverseFilter')
+                                            .selectpicker('val', selectValues)
+                                            .selectpicker('refresh');
+
+                                        // manually update icon (since we skip .change())
+                                        const hasSelection = Array.isArray(selectValues) && selectValues.length > 0;
+                                        $('#reverseFilterIcon')
+                                            .toggleClass('text-success fa-filter-circle-xmark', hasSelection)
+                                            .toggleClass('fa-filter', !hasSelection);
+
+                                        $('#maintabs a[href="#handlers"]').tab('show');
+
+                                        // manually reload just the handlers grid
+                                        const grid_id = "{{ formGridHandle['table_id'] }}";
+                                        if (all_grids[grid_id]) {
+                                            all_grids[grid_id].bootgrid('reload');
+                                        }
+                                    })
+                                    .always(function () {
+                                        suppressFilterReload = false;
+                                    });
+                            };
+
+                            commands.search_handler = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    update_filter([rowUuid]);
+                                },
+                                classname: 'fa fa-fw fa-search',
+                                title: "{{ lang._('Search Handler') }}",
+                                sequence: 20
+                            };
+
+                            commands.add_handler = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    open_add_dialog = function (selectValues) {
+                                        update_filter(selectValues);
+
+                                        // Ensure selectpicker has values selected before click on add button
+                                        $('#reverseFilter').one('changed.bs.select', function (e) {
+                                            $("#" + "{{ formGridHandle['table_id'] }}")
+                                                .find("button[data-action='add']")
+                                                .trigger('click');
+                                        });
+                                    };
+
+                                    // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
+                                    if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
+                                        ajaxGet(`/api/caddy/reverse_proxy/get_{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
+                                            const reverseUuids = rowData?.subdomain?.reverse || {};
+                                            const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
+                                            const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
+                                            open_add_dialog(selectValues);
+                                        });
+                                    } else {
+                                        open_add_dialog([rowUuid]);
+                                    }
+                                },
+                                classname: 'fa fa-fw fa-plus',
+                                title: "{{ lang._('Add Handler') }}",
+                                sequence: 10
+                            };
+                        }
+
+{% endif %}
+
+                        all_grids[grid_id] = $("#" + grid_id)
+                        .UIBootgrid({
+                            search: `/api/caddy/reverse_proxy/search_${grid_id}/`,
+                            get: `/api/caddy/reverse_proxy/get_${grid_id}/`,
+                            set: `/api/caddy/reverse_proxy/set_${grid_id}/`,
+                            add: `/api/caddy/reverse_proxy/add_${grid_id}/`,
+                            del: `/api/caddy/reverse_proxy/del_${grid_id}/`,
+                            toggle: `/api/caddy/reverse_proxy/toggle_${grid_id}/`,
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                            tabulatorOptions: {
+                                groupBy: grid_id === "{{ formGridHandle['table_id'] }}"
+                                    ? ["%reverse", "%subdomain"]
+                                    : (grid_id === "{{ formGridSubdomain['table_id'] }}" ? "%reverse" : false),
+                                groupHeader: (value, count, data, group) => {
+                                    const isNested = group.getParentGroup() !== false;
+
+                                    if (isNested && !value) {
+                                        return ''; // remove empty subdomain group headers
+                                    }
+
+                                    const iconClass = isNested
+                                        ? 'text-warning'
+                                        : 'text-success';
+
+                                    const countValue = `<span class="badge chip">${count}</span>`;
+
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                },
+                            },
+
+{% endif %}
+
+                            options: {
+                                responsive: true,
+                                rowCount: [20,50,200,500,1000,-1],
+                                requestHandler: function (request) {
+                                    const selectedDomains = $('#reverseFilter').val();
+                                    if (selectedDomains && selectedDomains.length > 0) {
+                                        request['domainUuids'] = selectedDomains;
+                                    }
+                                    return request;
+                                },
+                                headerFormatters: {
+                                    enabled: function (column) {
+                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';;
+                                    },
+                                    ToDomain: function (column) { return labels.upstream; },
+                                    FromDomain: function (column) {
+                                        if (grid_id === "subdomain") {
+                                            return labels.subdomain;
+                                        } else {
+                                            return labels.domain;
+                                        }
+                                    },
+                                    reverse: function (column) {
+                                        return labels.domain;
+                                    },
+                                    subdomain: function (column) {
+                                        return labels.subdomain;
+                                    },
+                                },
+                                formatters: {
+                                    from_domain: function (column, row) {
+                                        return (
+                                            (row["%DisableTls"] || "") +
+                                            (row["FromDomain"] || "") +
+                                            (row["FromPort"] ? `:${row["FromPort"]}` : "")
+                                        );
+                                    },
+                                    to_domain: function (column, row) {
+                                        return (
+                                            (row["%HttpTls"] || "") +
+                                            (row["ToDomain"] || "") +
+                                            (row["ToPort"] ? `:${row["ToPort"]}` : "") +
+                                            (row["ToPath"] || "")
+                                        );
+                                    },
+                                },
+                            },
+                            commands: commands
+                        });
+                    }
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                    // insert buttons and selectpicker
+                    if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
+                        const header = $("#" + grid_id + "-header");
+                        const $actionBar = header.find('.actionBar');
+                        if ($actionBar.length) {
+                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search')).show();
+                        }
+                    }
+
+{% endif %}
+
+                });
             }
         });
-
-        $("#{{formGridSubdomain['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchSubdomain/',
-            get:'/api/caddy/ReverseProxy/getSubdomain/',
-            set:'/api/caddy/ReverseProxy/setSubdomain/',
-            add:'/api/caddy/ReverseProxy/addSubdomain/',
-            del:'/api/caddy/ReverseProxy/delSubdomain/',
-            toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
-            options: {
-                requestHandler: addDomainFilterToRequest,
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
-
-        $("#{{formGridHandle['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHandle/',
-            get:'/api/caddy/ReverseProxy/getHandle/',
-            set:'/api/caddy/ReverseProxy/setHandle/',
-            add:'/api/caddy/ReverseProxy/addHandle/',
-            del:'/api/caddy/ReverseProxy/delHandle/',
-            toggle:'/api/caddy/ReverseProxy/toggleHandle/',
-            options: {
-                requestHandler: addDomainFilterToRequest
-            }
-        });
-
-        $("#{{formGridAccessList['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchAccessList/',
-            get:'/api/caddy/ReverseProxy/getAccessList/',
-            set:'/api/caddy/ReverseProxy/setAccessList/',
-            add:'/api/caddy/ReverseProxy/addAccessList/',
-            del:'/api/caddy/ReverseProxy/delAccessList/',
-            options:{
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
-
-        $("#{{formGridBasicAuth['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchBasicAuth/',
-            get:'/api/caddy/ReverseProxy/getBasicAuth/',
-            set:'/api/caddy/ReverseProxy/setBasicAuth/',
-            add:'/api/caddy/ReverseProxy/addBasicAuth/',
-            del:'/api/caddy/ReverseProxy/delBasicAuth/',
-            options:{
-                rowCount: [4,7,14,20,50,100,-1]
-            }
-        });
-
-        $("#{{formGridHeader['table_id']}}").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHeader/',
-            get:'/api/caddy/ReverseProxy/getHeader/',
-            set:'/api/caddy/ReverseProxy/setHeader/',
-            add:'/api/caddy/ReverseProxy/addHeader/',
-            del:'/api/caddy/ReverseProxy/delHeader/',
-        });
-
-        /**
-         * Modifies the search request to include domain filter.
-         *
-         * @param {Object} request - The original request object.
-         * @returns {Object} The modified request object with domain filter.
-         */
-        function addDomainFilterToRequest(request) {
-            let selectedDomains = $('#reverseFilter').val();
-            if (selectedDomains && selectedDomains.length > 0) {
-                request['reverseUuids'] = selectedDomains.join(',');
-            }
-            return request;
-        }
 
         /**
          * Displays an alert message to the user.
@@ -126,52 +292,19 @@
             });
         }
 
-        /**
-         * Loads domain filters from the server and populates the filter dropdown.
-         */
-        function loadDomainFilters() {
-            ajaxGet('/api/caddy/ReverseProxy/getAllReverseDomains', null, function(data, status) {
-                let select = $('#reverseFilter');
-                select.empty();
-                if (status === "success" && data && data.rows) {
-                    data.rows.forEach(function(item) {
-                        select.append($('<option>').val(item.id).text(item.domainPort));
-                    });
-                } else {
-                    select.html(`<option value="">{{ lang._('Failed to load data') }}</option>`);
-                }
-                select.selectpicker('refresh');
-            }).fail(function() {
-                $('#reverseFilter').html(`<option value="">{{ lang._('Failed to load data') }}</option>`).selectpicker('refresh');
-            });
-        }
-
-        /**
-         * Controls the visibility of the selectpicker and add buttons based on the active tab.
-         *
-         * @param {string} tab - The currently active tab.
-         */
-        function toggleVisibility(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab') {
-                $("#addDomainBtn").show();
-                $("#addHandleBtn").show();
-                $('.common-filter').show();
-            } else {
-                $("#addDomainBtn").hide();
-                $("#addHandleBtn").hide();
-                $('.common-filter').hide();
-            }
-        }
-
-        function reloadGrids() {
-            $("#{{formGridReverseProxy['table_id']}}").bootgrid("reload");
-            $("#{{formGridSubdomain['table_id']}}").bootgrid("reload");
-            $("#{{formGridHandle['table_id']}}").bootgrid("reload");
-        }
-
         // Hide message area when starting new actions
         $('input, select, textarea').on('change', function() {
             $("#messageArea").hide();
+        });
+
+        // Populate domain filter selectpicker
+        $('#reverseFilter').fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains');
+
+        // Clear domain filter selectpicker
+        $('#reverseFilterClear').on('click', function () {
+            $('#reverseFilter').selectpicker('val', []);
+            $('#reverseFilter').selectpicker('refresh');
+            $('#reverseFilter').trigger('change');
         });
 
         // Reconfigure button with custom validation
@@ -192,234 +325,237 @@
                 });
 
                 return dfObj.promise();
-            },
-            onAction: function(data, status) {
-                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
-                    updateServiceControlUI('caddy');
-                } else {
-                    showAlert("{{ lang._('Action was not successful or an error occurred.') }}", "error");
+            }
+        });
+
+{% if entrypoint == 'reverse_proxy' %}
+
+        // Safe reload on filter change, ensures all grids are initalized beforehand
+        $('#reverseFilter').change(function () {
+            if (suppressFilterReload) return;
+            Object.keys(all_grids).forEach(function (grid_id) {
+                if ([
+                    '{{ formGridReverseProxy["table_id"] }}',
+                    '{{ formGridSubdomain["table_id"] }}',
+                    '{{ formGridHandle["table_id"] }}'
+                ].includes(grid_id)) {
+                    all_grids[grid_id].bootgrid('reload');
+                }
+
+            });
+
+            $('#reverseFilterIcon')
+                .toggleClass('text-success fa-filter-circle-xmark', ($(this).val() || []).length > 0)
+                .toggleClass('fa-filter', !($(this).val() || []).length);
+        });
+
+        // Autofill domain and subdomain when add dialog is opened
+        $('#{{ formGridHandle["edit_dialog_id"] }}, #{{ formGridSubdomain["edit_dialog_id"] }}').on('opnsense_bootgrid_mapped', function(e, actionType) {
+            if (actionType === 'add') {
+                const selectedDomains = $('#reverseFilter').val();
+
+                if (selectedDomains && selectedDomains.length > 0) {
+                    $('#handle\\.reverse, #handle\\.subdomain, #subdomain\\.reverse')
+                        .selectpicker('val', selectedDomains)
+                        .selectpicker('refresh');
+                }
+
+                // Trigger to filter the dropdowns if subdomains are selected
+                $("#handle\\.subdomain").trigger("change");
+            }
+        });
+
+{% endif %}
+
+        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type").on("keyup change", function () {
+            const http_tls = String($("#handle\\.HttpTls").val() || "")
+            const handle_directive = String($("#handle\\.HandleDirective").val() || "")
+            const disable_tls = String($("#reverse\\.DisableTls").val() || "")
+            const layer4_matchers = String($("#layer4\\.Matchers").val() || "")
+            const layer4_type = String($("#layer4\\.Type").val() || "")
+
+            const styleVisibility = [
+                {
+                    class: "style_tls_reverse",
+                    visible: disable_tls === "0"
+                },
+                {
+                    class: "style_tls_handle",
+                    visible: http_tls === "1" && handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_reverse_proxy",
+                    visible: handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_domain",
+                    visible: layer4_matchers === "tlssni" || layer4_matchers === "httphost"
+                },
+                {
+                    class: "style_openvpn",
+                    visible: layer4_matchers === "openvpn"
+                },
+                {
+                    class: "style_type",
+                    visible: layer4_type === "global"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
+
+        // When subdomain is selected in handler show only wildcard domains
+        $("#handle\\.subdomain").on("change", function () {
+            if (!$(this).val()) {
+                $("#handle\\.reverse option").show();
+            } else {
+                $("#handle\\.reverse option").each(function () {
+                    $(this).toggle($(this).text().includes("*."));
+                });
+
+                if (!$("#handle\\.reverse option:selected").text().includes("*.")) {
+                    $("#handle\\.reverse").val("").change();
                 }
             }
+
+            $("#handle\\.reverse").selectpicker("refresh");
         });
 
-        $("#clearDomains").on("click", function(e) {
-            e.preventDefault();
-            $('#reverseFilter').val([]);
-            $('#reverseFilter').selectpicker('refresh');
+        // Trigger initial tab
+        const $tabs = $('#maintabs a[data-toggle="tab"]');
+        const $initial = $tabs.filter(`[href="${location.hash}"]`).first();
+        ($initial.length ? $initial : $tabs.first()).tab('show');
 
-            reloadGrids();
-        });
-
-        // Reload Bootgrid on filter change
-        $('#reverseFilter').on('changed.bs.select', function() {
-            reloadGrids();
-        });
-
-        // Initialize visibility based on the active tab on page load
-        let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
-        toggleVisibility(activeTab);
-
-        // Change event when switching tabs
-        $('#maintabs a').on('click', function (e) {
-            let currentTab = $(this).attr('href').replace('#', '');
-            toggleVisibility(currentTab);
-        });
-
-        // Add click event listener for "Add Handler" button
-        $("#addHandleBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#handlesTab") {
-                $("#addReverseHandleBtn").click();
-            } else {
-                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseHandleBtn").click();
-                });
-            }
-        });
-
-        // Add click event listener for "Add Domain" button
-        $("#addDomainBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#domainsTab") {
-                $("#addReverseProxyBtn").click();
-            } else {
-                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseProxyBtn").click();
-                });
-            }
-        });
-
-        // Hide TLS specific options when http or h2c is selected
-        $("#handle\\.HttpTls").change(function() {
-            if ($(this).val() != "1") {
-                $(".style_tls").closest('tr').hide();
-            } else {
-                $(".style_tls").closest('tr').show();
-            }
-        });
-
-        $("#handle\\.HandleDirective").change(function() {
-            if ($(this).val() === "redir") {
-                $(".style_reverse_proxy").prop('disabled', true);
-                $("#handle\\.header").selectpicker('refresh');
-            } else {
-                $(".style_reverse_proxy").prop('disabled', false);
-                $("#handle\\.header").selectpicker('refresh');
-            }
-        });
-
-        // Hide TLS specific options when http is selected
-        $("#reverse\\.DisableTls").change(function() {
-            if ($(this).val() === "1") {
-                $(".style_tls").closest('tr').hide();
-            } else {
-                $(".style_tls").closest('tr').show();
-            }
-        });
-
-        $("#layer4\\.Matchers").change(function() {
-            if ($(this).val() !== "tlssni" && $(this).val() !== "httphost") {
-                $(".style_matchers").closest('tr').hide();
-            } else {
-                $(".style_matchers").closest('tr').show();
-            }
+        // Trigger handlers tab too (even if not active) to ensure command buttons always work
+        $(document).one('ajaxStop', function () {
+            $('a[href="#handlers"]').triggerHandler('shown.bs.tab');
         });
 
         updateServiceControlUI('caddy');
-        loadDomainFilters();
+        $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
     });
+
 </script>
 
 <style>
-    .common-filter {
-        align-items: center;
-        margin-top: 20px;
-        margin-right: 5px;
-        padding: 0 15px;
+    #add_filter_container {
+        float: left;
     }
-
-    .filter-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+    .actions .dropdown-menu.pull-right {
+        max-height: 400px;
+        min-width: max-content;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
-
-    #clearDomains {
-        margin-top: 5px;
-    }
-
     .custom-header {
+        padding-left: 20px;
         font-weight: 800;
         font-size: 16px;
         font-style: italic;
     }
-
+    #reverseFilterClear {
+        border-right: none;
+    }
+    #add_filter_container .bootstrap-select > .dropdown-toggle {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 </style>
 
+<div id="add_filter_container" class="btn-group" style="display: none;">
+    <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
+        <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
+    </button>
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="300px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    </select>
+</div>
+
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
-    <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('Handlers') }}</a></li>
-    <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('Access') }}</a></li>
-    <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('Headers') }}</a></li>
+
+{% if entrypoint == 'reverse_proxy' %}
+
+    <li id="tab-domains"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
+    <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
+    <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
+
+{% elseif entrypoint == 'layer4' %}
+
+    <li id="tab-layer4"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
+
+{% endif %}
+
 </ul>
 
 <div class="tab-content content-box">
-    <!-- Container using flexbox -->
-    <div class="form-group common-filter" style="display: flex; justify-content: space-between; align-items: center;">
-        <!-- Button group on the left -->
-        <div>
-            <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add Handler') }}</button>
-        </div>
-        <!-- Selectpicker and Clear All on the right -->
-        <div class="filter-actions" style="display: flex; flex-direction: column; align-items: flex-end;">
-            <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">
-            </select>
-            <a href="#" class="text-danger" id="clearDomains" style="margin-top: 5px;">
-                <i class="fa fa-times-circle"></i> <small>Clear All</small>
-            </a>
-        </div>
-    </div>
+
+{% if entrypoint == 'reverse_proxy' %}
 
     <!-- Combined Domains Tab -->
-    <div id="domainsTab" class="tab-pane fade in active">
-        <div style="padding-left: 16px;">
-            <!-- Reverse Proxy -->
-            <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy)}}
-            </div>
-        </div>
+    <div id="domains" class="tab-pane fade in active">
+        <!-- Reverse Proxy -->
+        <h1 class="custom-header">{{ lang._('Domains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
 
         <!-- Subdomains Tab -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
     </div>
 
     <!-- Handle Tab -->
-    <div id="handlesTab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridHandle)}}
-            </div>
-        </div>
+    <div id="handlers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHandle)}}
     </div>
 
     <!-- Combined Access Tab -->
-    <div id="accessTab" class="tab-pane fade">
+    <div id="access" class="tab-pane fade">
         <!-- Access Lists Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridAccessList)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridAccessList)}}
 
         <!-- Basic Auth Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridBasicAuth)}}
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridBasicAuth)}}
     </div>
 
     <!-- Header Tab -->
-    <div id="headerTab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Headers') }}</h1>
-            <div style="display: block;">
-                {{ partial('layout_partials/base_bootgrid_table', formGridHeader)}}
-            </div>
-        </div>
+    <div id="headers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('Headers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHeader)}}
     </div>
+
+{% elseif entrypoint == 'layer4' %}
+
+    <!-- Layer4 Tab -->
+    <div id="routes" class="tab-pane fade active in">
+        <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
+    </div>
+
+    <!-- Layer7 Tab -->
+    <div id="matchers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
+    </div>
+
+{% endif %}
+
 </div>
 
-<!-- Reconfigure Button -->
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint="/api/caddy/service/reconfigure"
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-            <!-- Message Area for error/success messages -->
-            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
-            <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
-            <div id="ConfChangeMessage" class="alert alert-info" style="display: none;">
-            {{ lang._('Please do not forget to apply the configuration.') }}
-            </div>
-        </div>
-    </div>
-</section>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure', 'data_service_widget': 'caddy'}) }}
+
+{% if entrypoint == 'reverse_proxy' %}
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':formGridReverseProxy['edit_dialog_id'],'label':lang._('Edit Domain')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':formGridSubdomain['edit_dialog_id'],'label':lang._('Edit Subdomain')])}}
@@ -427,3 +563,10 @@
 {{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':formGridAccessList['edit_dialog_id'],'label':lang._('Edit Access List')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':formGridBasicAuth['edit_dialog_id'],'label':lang._('Edit Basic Auth')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':formGridHeader['edit_dialog_id'],'label':lang._('Edit Header')])}}
+
+{% elseif entrypoint == 'layer4' %}
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':formGridLayer4['edit_dialog_id'],'label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':formGridLayer4Openvpn['edit_dialog_id'],'label':lang._('Edit OpenVPN Static Key')])}}
+
+{% endif %}

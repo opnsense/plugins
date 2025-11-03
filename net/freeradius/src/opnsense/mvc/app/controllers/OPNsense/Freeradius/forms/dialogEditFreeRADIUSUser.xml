@@ -164,4 +164,10 @@
         <allownew>true</allownew>
         <help>Select the configured AVPairs for this user.</help>
     </field>
+    <field>
+        <id>user.tunnel_password</id>
+        <label>Tunnel-Password</label>
+        <type>password</type>
+        <help>Set the Tunnel-Password attribute for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
+    </field>
 </form>

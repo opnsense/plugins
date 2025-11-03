@@ -4,15 +4,15 @@
     <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <vlanassign type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </vlanassign>
         <fallbackvlan_enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
             <Constraints>
                 <check001>
@@ -34,27 +34,27 @@
             </Constraints>
         </fallbackvlan_id>
         <ldap_enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ldap_enabled>
         <exos type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </exos>
         <wispr type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </wispr>
         <chillispot type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </chillispot>
         <mikrotik type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </mikrotik>
         <sqlite type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
             <Constraints>
                 <check001>
@@ -67,11 +67,11 @@
             </Constraints>
         </sqlite>
         <sessionlimit type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </sessionlimit>
         <log_destination type="OptionField">
-            <default>files</default>
+            <Default>files</Default>
             <Required>Y</Required>
             <OptionValues>
                 <files>files</files>
@@ -79,19 +79,19 @@
             </OptionValues>
         </log_destination>
         <log_authentication_request type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </log_authentication_request>
         <log_authbadpass type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </log_authbadpass>
         <log_authgoodpass type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </log_authgoodpass>
         <dhcpenabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
             <Constraints>
                 <check001>
@@ -116,7 +116,7 @@
             </Constraints>
         </dhcplistenip>
         <mysql type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
             <Constraints>
                 <check001>
@@ -129,27 +129,27 @@
             </Constraints>
         </mysql>
         <mysqlserver type="HostnameField">
-            <default>127.0.0.1</default>
+            <Default>127.0.0.1</Default>
             <Required>Y</Required>
         </mysqlserver>
         <mysqlport type="PortField">
-            <default>3306</default>
+            <Default>3306</Default>
             <Required>Y</Required>
         </mysqlport>
         <mysqluser type="TextField">
-            <default>radius</default>
+            <Default>radius</Default>
             <Required>Y</Required>
         </mysqluser>
         <mysqlpassword type="TextField">
-            <default>radpass</default>
+            <Default>radpass</Default>
             <Required>Y</Required>
         </mysqlpassword>
         <mysqldb type="TextField">
-            <default>radius</default>
+            <Default>radius</Default>
             <Required>Y</Required>
         </mysqldb>
         <fallbackproxy type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </fallbackproxy>
     </items>

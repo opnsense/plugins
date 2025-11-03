@@ -1,3 +1,15 @@
 This package adds a backup option using git version control.
 
-Due to the sensitive nature of the data being send to the backup, we strongly advise to not use a public service to send backups to.
+Due to the sensitive nature of the data being send to the backup,
+we strongly advise to not use a public service to send backups to.
+
+Plugin Changelog
+================
+
+1.1
+
+* Add a force-push option (contributed by Hleb Shauchenka)
+
+1.0
+
+* Initial release

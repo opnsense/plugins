@@ -4,27 +4,27 @@
   <items>
     <general>
       <enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </enabled>
       <listen type="InterfaceField">
         <Required>N</Required>
-        <multiple>Y</multiple>
+        <Multiple>Y</Multiple>
       </listen>
       <protected_mode type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </protected_mode>
       <port type="IntegerField">
         <MinimumValue>1</MinimumValue>
         <MaximumValue>65536</MaximumValue>
         <Required>N</Required>
-        <default>6379</default>
+        <Default>6379</Default>
         <ValidationMessage>This must be a valid port number.</ValidationMessage>
       </port>
       <log_level type="OptionField">
         <Required>Y</Required>
-        <default>warning</default>
+        <Default>warning</Default>
         <OptionValues>
           <debug>Debug</debug>
           <verbose>Verbose</verbose>
@@ -33,12 +33,12 @@
         </OptionValues>
       </log_level>
       <syslog_enabled type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
       </syslog_enabled>
       <syslog_facility type="OptionField">
         <Required>Y</Required>
-        <default>LOCAL0</default>
+        <Default>LOCAL0</Default>
         <OptionValues>
           <USER>USER</USER>
           <LOCAL0>LOCAL0</LOCAL0>
@@ -54,7 +54,7 @@
       <databases type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>Y</Required>
-        <default>16</default>
+        <Default>16</Default>
       </databases>
     </general>
     <security>
@@ -68,7 +68,7 @@
       <maxclients type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>N</Required>
-        <default>10000</default>
+        <Default>10000</Default>
       </maxclients>
       <maxmemory type="IntegerField">
         <MinimumValue>0</MinimumValue>
@@ -76,7 +76,7 @@
       </maxmemory>
       <maxmemory_policy type="OptionField">
         <Required>Y</Required>
-        <default>noeviction</default>
+        <Default>noeviction</Default>
         <OptionValues>
           <noeviction>noeviction</noeviction>
           <volatile-ttl>volatile-ttl</volatile-ttl>
@@ -89,19 +89,19 @@
       <maxmemory_samples type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>N</Required>
-        <default>5</default>
+        <Default>5</Default>
       </maxmemory_samples>
     </limits>
     <slowlog>
       <slower_than type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>N</Required>
-        <default>10000</default>
+        <Default>10000</Default>
       </slower_than>
       <max_len type="IntegerField">
         <MinimumValue>0</MinimumValue>
         <Required>N</Required>
-        <default>128</default>
+        <Default>128</Default>
       </max_len>
     </slowlog>
   </items>

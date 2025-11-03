@@ -1,78 +1,78 @@
 <model>
     <mount>//OPNsense/telegraf/input</mount>
     <description>Telegraf inputs configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <cpu type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </cpu>
         <cpu_percpu type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </cpu_percpu>
         <cpu_totalcpu type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </cpu_totalcpu>
         <collect_cpu_time type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </collect_cpu_time>
         <disk type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </disk>
         <disk_mount_points type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </disk_mount_points>
         <disk_ignore_fs type="CSVListField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </disk_ignore_fs>
         <diskio type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </diskio>
         <internet_speed type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </internet_speed>
-        <internet_speed_file type="BooleanField">
-            <default>0</default>
+        <internet_speed_saving type="BooleanField">
+            <Default>0</Default>
             <Required>N</Required>
-        </internet_speed_file>
+        </internet_speed_saving>
         <internet_speed_interval type="IntegerField">
-            <default>360</default>
+            <Default>360</Default>
             <Required>N</Required>
         </internet_speed_interval>
         <mem type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </mem>
         <processes type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </processes>
         <swap type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </swap>
         <system type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </system>
         <network type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </network>
         <pf type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </pf>
         <ping type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ping>
         <ping_count type="IntegerField">
@@ -82,7 +82,7 @@
             <Required>N</Required>
         </ping_hosts>
         <ping6 type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ping6>
         <ping6_count type="IntegerField">
@@ -92,23 +92,23 @@
             <Required>N</Required>
         </ping6_hosts>
         <haproxy type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </haproxy>
         <zfs type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </zfs>
         <ntpq type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ntpq>
         <ntpq_dns_lookup type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </ntpq_dns_lookup>
         <intrusion_detection_alerts type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </intrusion_detection_alerts>
         <unbound type="BooleanField">

@@ -16,6 +16,13 @@
         <help>Specifies the IP address or the hostname of the Wazuh manager.</help>
     </field>
     <field>
+        <id>agent.general.agent_name</id>
+        <label>Agent hostname</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specifies the hostname of this agent.</help>
+    </field>
+    <field>
         <id>agent.general.protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
