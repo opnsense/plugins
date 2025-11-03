@@ -39,7 +39,7 @@
                 <as_path_multipath_relax value="as-path multipath-relax">as-path multipath-relax</as_path_multipath_relax>
                 <compare_routerid value="compare-routerid">compare-routerid</compare_routerid>
                 <peer_type_multipath_relax value="peer-type multipath-relax">peer-type multipath-relax</peer_type_multipath_relax>
-                <aigp>bestpath aigp</aigp>
+                <aigp>aigp</aigp>
                 <med_missing_as_worst value="med missing-as-worst">med missing-as-worst</med_missing_as_worst>
             </OptionValues>
             <Multiple>Y</Multiple>
