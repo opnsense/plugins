@@ -55,6 +55,13 @@
         <help>When enabled (default), BGP only announces networks set at 'Network' if they are present in the routers routing table (alternatively, you can also set a null-route via System -> Routes). If disabled, all configured networks will be announced.</help>
     </field>
     <field>
+        <id>bgp.enforce_first_as</id>
+        <label>Enforce First AS</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Deny an update received from an external BGP (eBGP) peer that does not list its autonomous system number at the beginning of the AS_PATH in the incoming update.</help>
+    </field>
+    <field>
         <id>bgp.logneighborchanges</id>
         <label>Log Neighbor Changes</label>
         <type>checkbox</type>
