@@ -44,6 +44,7 @@ mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
 misc/theme-advanced -- Theme based on AdvancedTomato GUI
 misc/theme-cicada -- The cicada theme - dark grey onyx
+misc/theme-flexcolor -- Theme with 3 different color schemes: black as default, light and dark-light
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
