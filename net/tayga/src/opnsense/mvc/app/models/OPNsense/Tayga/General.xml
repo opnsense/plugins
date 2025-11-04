@@ -18,7 +18,6 @@
             <AddressFamily>ipv4</AddressFamily>
         </v4destination>
         <v6address type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv6</AddressFamily>
         </v6address>
         <v6destination type="NetworkField">
