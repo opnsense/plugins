@@ -42,7 +42,7 @@ emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-advanced -- OPNsense theme based on AdvancedTomato GUI
+misc/theme-advanced -- Theme based on AdvancedTomato GUI
 misc/theme-cicada -- The cicada theme - dark grey onyx
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
