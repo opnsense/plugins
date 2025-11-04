@@ -109,8 +109,8 @@ EOD;
     }
     $igmpconf .= "\n";
 
-    file_put_contents('/usr/local/etc/igmpproxy.conf', $igmpconf);
-    mwexec('/usr/local/etc/rc.d/igmpproxy onestart');
+    file_safe('/usr/local/etc/igmpproxy.conf', $igmpconf);
+    mwexecf('/usr/local/etc/rc.d/igmpproxy onestart');
 
     service_log("done.\n", $verbose);
 }
