@@ -1,0 +1,34 @@
+<form>
+    <field>
+        <id>staticmapping.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the static mapping</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>staticmapping.v4</id>
+        <label>IPv4 network or address</label>
+        <type>text</type>
+        <help>IPv4 network to map. Can overlap with dynamic pool.</help>
+    </field>
+    <field>
+        <id>staticmapping.v6</id>
+        <label>IPv6 network or address</label>
+        <type>text</type>
+        <help>IPv4 network to map. Must not overlap with NAT64 prefix.</help>
+    </field>
+    <field>
+        <id>staticmapping.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optionally describe the purpose of the mapping.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+</form>
