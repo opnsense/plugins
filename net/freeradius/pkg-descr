@@ -9,18 +9,14 @@ needs of many Fortune-500 companies and Tier 1 ISPs.
 It is also widely used for Enterprise Wi-Fi and IEEE 802.1X network
 security, particularly in the academic community, including eduroam.
 
-The server is fast, feature-rich, modular, and scalable.
-
-WWW: https://www.freeradius.org
-
-
 Plugin Changelog
 ================
 
 1.9.28
 
 * Add Groups for VLAN assignment
-* Add Fallback PPSK
+* Add fallback PPSK (contributed by Tobias Perschon)
+* Add fallback Tunnel-Password field (contributed by Robert Resch)
 
 1.9.27
 

@@ -127,7 +127,7 @@
                     <Required>Y</Required>
                 </limit_idletimeout>
             </homeserver>
-         </homeservers>
+        </homeservers>
         <homeserverpools>
             <homeserverpool type="ArrayField">
                 <enabled type="BooleanField">
@@ -159,12 +159,9 @@
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid server addresses, i.e. radius.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
                 </homeservers>
-                <fallback type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </fallback>
+                <fallback type="TextField"/>
             </homeserverpool>
-         </homeserverpools>
+        </homeserverpools>
         <realms>
             <realm type="ArrayField">
                 <enabled type="BooleanField">
@@ -174,17 +171,9 @@
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
-                <auth_pool type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </auth_pool>
-                <acct_pool type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </acct_pool>
-                <nostrip type="BooleanField">
-                    <Required>N</Required>
-                </nostrip>
+                <auth_pool type="TextField"/>
+                <acct_pool type="TextField"/>
+                <nostrip type="BooleanField"/>
             </realm>
         </realms>
     </items>
