@@ -99,10 +99,10 @@ class ServiceController extends ApiMutableServiceControllerBase
      * @return array
      */
     private function getStats(string $type) {
-        $config = Config::getInstance()->toArray();
+        $config = Config::getInstance()->object();
         $backend = new Backend();
 
-        if (isset($config['OPNsense']['vnstat']['general']['separate_stats']) && !$config['OPNsense']['vnstat']['general']['separate_stats']) {
+        if ($config->OPNsense->vnstat->general->separate_stats == 0) {
             // Separate stats are not wanted, just get totals - that's the default in vnstat itself,
             // no need to specify anything here.
             $response = $backend->configdpRun("vnstat", [ $type ]);
@@ -111,10 +111,10 @@ class ServiceController extends ApiMutableServiceControllerBase
 
         // Loop over configured interfaces, concatenating the output of each.
         $result = '';
-        foreach (explode(',', $config['OPNsense']['vnstat']['general']['interface']) as $interface) {
+        foreach (explode(',', $config->OPNsense->vnstat->general->interface) as $interface) {
             // Map the OPNsense interface name to the kernel interface name that vnstat uses.
-            if (isset($config['interfaces'][$interface]['if'])) {
-                $result .= $backend->configdpRun("vnstat", [ $type, $config['interfaces'][$interface]['if'] ]);
+            if (isset($config->interfaces->{$interface}->if)) {
+                $result .= $backend->configdpRun("vnstat", [ $type, $config->interfaces->{$interface}->if ]);
             }
         }
         return array("response" => $result);
