@@ -20,7 +20,7 @@
         <id>staticmapping.v6</id>
         <label>IPv6 network or address</label>
         <type>text</type>
-        <help>IPv4 network to map. Must not overlap with NAT64 prefix.</help>
+        <help>IPv6 network to map. Must not overlap with NAT64 prefix.</help>
     </field>
     <field>
         <id>staticmapping.description</id>
