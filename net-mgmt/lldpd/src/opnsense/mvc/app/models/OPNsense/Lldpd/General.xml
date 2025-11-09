@@ -27,6 +27,10 @@
             <Default>0</Default>
             <Required>Y</Required>
         </agentx>
+        <lldpmed type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </lldpmed>
         <interface type="TextField">
             <Required>N</Required>
         </interface>
