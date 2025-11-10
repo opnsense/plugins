@@ -228,6 +228,10 @@
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
     grace_period {{ generalSettings.GracePeriod }}s
+    {# Important: Prevent sudo appearing on startup for unprivileged users. https://github.com/smallstep/truststore/blob/master/truststore_freebsd.go #}
+    {% if generalSettings.DisableSuperuser|default("0") == "1" %}
+        skip_install_trust
+    {% endif %}
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
