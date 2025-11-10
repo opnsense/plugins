@@ -229,9 +229,7 @@
     #}
     grace_period {{ generalSettings.GracePeriod }}s
     {# Important: Prevent sudo appearing on startup for unprivileged users. https://github.com/smallstep/truststore/blob/master/truststore_freebsd.go #}
-    {% if generalSettings.DisableSuperuser|default("0") == "1" %}
-        skip_install_trust
-    {% endif %}
+    skip_install_trust
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
