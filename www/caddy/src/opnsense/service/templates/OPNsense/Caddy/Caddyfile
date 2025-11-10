@@ -228,6 +228,7 @@
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
     grace_period {{ generalSettings.GracePeriod }}s
+    skip_install_trust
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
