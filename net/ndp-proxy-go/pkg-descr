@@ -1,5 +1,7 @@
-IPv6 Neighbor Discovery (ND), Router Advertisement (RA) and Duplicate Address
-Detection (DAD) Proxy.
+IPv6 Neighbor Discovery Protocol (NDP) Proxy
+
+WWW: https://github.com/monviech/ndp-proxy-go
+DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 
 Plugin Changelog
 ================
