@@ -1591,6 +1591,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Hetzner Cloud DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hetznercloud</style>
+    </field>
+    <field>
+        <id>validation.dns_hetznercloud_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>1984Hosting API</label>
         <type>header</type>
         <style>table_dns table_dns_1984hosting</style>

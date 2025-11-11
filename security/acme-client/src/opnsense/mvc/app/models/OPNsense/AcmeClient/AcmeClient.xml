@@ -469,6 +469,7 @@
                         <dns_googledomains>Google Domains</dns_googledomains>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hetzner>Hetzner</dns_hetzner>
+                        <dns_hetznercloud>Hetzner Cloud</dns_hetznercloud>
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
@@ -1177,6 +1178,9 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_hetznercloud_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetznercloud_token>
                 <dns_hexonet_login type="TextField">
                     <Required>N</Required>
                 </dns_hexonet_login>
