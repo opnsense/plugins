@@ -199,7 +199,16 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
     </div>
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content':
+            'Apply will reload the service without causing interruptions. ' ~
+            'Some changes will need a full restart with the available service buttons.'
+    }
+) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFArea,'id':formGridEditOSPFArea['edit_dialog_id'],'label':lang._('Edit Area')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFNeighbor,'id':formGridEditOSPFNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}

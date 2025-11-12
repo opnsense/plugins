@@ -51,4 +51,13 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content':
+            'Apply will reload the service without causing interruptions. ' ~
+            'Some changes will need a full restart with the available service buttons.'
+    }
+) }}
