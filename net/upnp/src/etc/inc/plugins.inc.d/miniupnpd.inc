@@ -75,7 +75,7 @@ function miniupnpd_start()
         return;
     }
 
-    mwexecf_bg('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
+    mwexecfb('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
 }
 
 function miniupnpd_stop()
