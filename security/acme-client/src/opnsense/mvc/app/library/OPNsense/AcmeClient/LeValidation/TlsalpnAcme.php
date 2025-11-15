@@ -31,6 +31,8 @@ namespace OPNsense\AcmeClient\LeValidation;
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
+use OPNsense\Core\File;
+use OPNsense\Core\Shell;
 
 /**
  * Use acme.sh TLS web server for TLS-ALPN-01 validation
@@ -126,18 +128,16 @@ class TlsalpnAcme extends Base implements LeValidationInterface
         }
 
         // Create temporary port forward to allow acme challenges to get through
-        $anchor_setup = "rdr-anchor \"acme-client\"\n";
-        // XXX Should not be using util.inc from here
-        file_safe("{$configdir}/acme_anchor_setup", $anchor_setup, 0600);
-        mwexecf('/sbin/pfctl -f %s', ["{$configdir}/acme_anchor_setup"]);
-        file_safe("{$configdir}/acme_anchor_rules", $anchor_rules, 0600);
-        mwexecf("/sbin/pfctl -a %s -f %s", ['acme-client', "{$configdir}/acme_anchor_rules"]);
+        File::file_put_contents("{$configdir}/acme_anchor_setup", "rdr-anchor \"acme-client\"\n", 0600);
+        Shell::run_safe('/sbin/pfctl -f %s', ["{$configdir}/acme_anchor_setup"]);
+        File::file_put_contents("{$configdir}/acme_anchor_rules", $anchor_rules, 0600);
+        Shell::run_safe("/sbin/pfctl -a %s -f %s", ['acme-client', "{$configdir}/acme_anchor_rules"]);
     }
 
     public function cleanup()
     {
         // Flush OPNsense port forward rules.
-        mwexecf('/sbin/pfctl -a %s -F %s', ['acme-client', 'all']);
+        Shell::run_safe('/sbin/pfctl -a %s -F %s', ['acme-client', 'all']);
 
         // Workaround to solve disconnection issues reported by some users.
         $backend = new \OPNsense\Core\Backend();
