@@ -34,6 +34,8 @@ require_once("plugins.inc.d/miniupnpd.inc");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['clear'])) {
         miniupnpd_stop();
+        unlink('/var/run/miniupnpd.leases');
+        unlink('/var/run/miniupnpd.leases-ipv6');
         miniupnpd_start();
         header(url_safe('Location: /status_upnp.php'));
         exit;
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $rdr_entries = array();
-exec("/sbin/pfctl -a miniupnpd -s nat -P", $rdr_entries, $pf_ret);
+exec("/sbin/pfctl -P -a miniupnpd -s nat; /sbin/pfctl -P -a miniupnpd -s rules", $rdr_entries, $pf_ret);
 
 $service_hook = 'miniupnpd';
 include("head.inc");
@@ -65,30 +67,42 @@ include("head.inc");
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th><?=gettext("IP Address")?></th>
+                  <th><?=gettext("IP address")?></th>
                   <th><?=gettext("Port")?></th>
-                  <th><?=gettext("External Port")?></th>
+                  <th><?=gettext("External port")?></th>
                   <th><?=gettext("Protocol")?></th>
                   <th><?=gettext("Source IP")?></th>
-                  <th><?=gettext("Source Port")?></th>
-                  <th><?=gettext("Description")?></th>
+                  <th><?=gettext("Source port")?></th>
+                  <th><?=gettext("Added via / description")?></th>
                 </tr>
               </thead>
               <tbody>
 <?php
               foreach ($rdr_entries as $rdr_entry):
-                  if (!preg_match("/on (?P<iface>.*) inet proto (?P<proto>.*) from (?P<srcaddr>.*) (port (?P<srcport>.*) )?to (?P<extaddr>.*) port = (?P<extport>.*) keep state (label \"(?P<descr>.*)\" )?rtable [0-9] -> (?P<intaddr>.*) port (?P<intport>.*)/", $rdr_entry, $matches)) {
+                  if (!preg_match('/on (?P<iface>.+) inet proto (?P<proto>.+) from (?P<srcaddr>[^ ]+) (port (?P<srcport>.+) )?to (?P<extaddr>.+) port = (?P<extport>.+) keep state (label "(?P<descr>.+)" )?rtable [0-9] -> (?P<intaddr>.+) port (?P<intport>.+)/', $rdr_entry, $matches) &&
+                      !preg_match('/on (?P<iface>.+) inet6 proto (?P<proto>.+) from (?P<srcaddr>[^ ]+) (port = (?P<srcport>.+) )?to (?P<intaddr>.+) port = (?P<intport>\d+) (flags [^ ]+ )?keep state (label "(?P<descr>.+)" )?rtable [0-9]/', $rdr_entry, $matches)) {
                       continue;
+                  }
+                  if (preg_match('/PCP .*([0-9a-f]{24})$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = "PCP (nonce  {$descrmatch[1]})";
+                  } elseif (preg_match('/^NAT-PMP \d+ \w+$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = 'NAT-PMP';
+                  } elseif (preg_match('/^pinhole-(\d+).*IGD2 pinhole$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = "UPnP IGD IPv6 (UID {$descrmatch[1]})";
+                  } elseif (preg_match('/^UPnP IGD/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = $matches['descr'];
+                  } else {
+                    $descr = "UPnP IGD / {$matches['descr']}";
                   }
               ?>
                 <tr>
                   <td><?= html_safe($matches['intaddr']) ?></td>
                   <td><?= html_safe($matches['intport']) ?></td>
-                  <td><?= html_safe($matches['extport']) ?></td>
+                  <td><?= ($matches['extport'] != '') ? html_safe($matches['extport']) : html_safe($matches['intport']) ?></td>
                   <td><?= html_safe(strtoupper($matches['proto'])) ?></td>
                   <td><?= html_safe($matches['srcaddr']) ?></td>
                   <td><?= html_safe($matches['srcport'] ?: "any") ?></td>
-                  <td><?= html_safe($matches['descr']) ?></td>
+                  <td><?= html_safe($descr) ?></td>
                 </tr>
 <?php
               endforeach;?>

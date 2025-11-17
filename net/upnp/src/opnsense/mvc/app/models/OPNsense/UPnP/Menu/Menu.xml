@@ -4,7 +4,7 @@
             <Settings order="10" url="/services_upnp.php">
                 <Edit url="/services_upnp.php?*" visibility="hidden"/>
             </Settings>
-            <PortMaps VisibleName="Port Maps" order="20" url="/status_upnp.php"/>
+            <ActiveMaps VisibleName="Active Maps" order="20" url="/status_upnp.php"/>
         </UPnP>
     </Services>
 </menu>
