@@ -75,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'enable_natpmp',
         'enable_upnp',
         'ext_iface',
+        'friendly_name',
         'iface_array',
+        'ipv6_disable',
         'logpackets',
         'overridesubnet',
         'overridewanip',
@@ -85,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'num_permuser',
         'sysuptime',
         'upload',
+        'upnp_igd_compat',
     ];
 
     foreach (miniupnpd_permuser_list() as $permuser) {
@@ -175,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // save form data
         $upnp = [];
         // boolean types
-        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'allow_third_party_mapping'] as $fieldname) {
+        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'allow_third_party_mapping', 'ipv6_disable'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
@@ -183,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
-        foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port'] as $fieldname) {
+        foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port', 'friendly_name', 'upnp_igd_compat'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
@@ -257,7 +260,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_ext_iface" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("External Interface");?></td>
+                      <td><a id="help_for_ext_iface" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("External interface");?></td>
                       <td>
                        <select class="selectpicker" name="ext_iface">
 <?php
@@ -353,6 +356,12 @@ include("head.inc");
                         </div>
                       </td>
                     </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
+                      <td>
+                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
+                      </td>
+                    </tr>
                     <!-- <tr>
                       <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Report system uptime");?></td>
                       <td>
@@ -371,6 +380,31 @@ include("head.inc");
                        </div>
                       </td>
                     </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section class="col-xs-12">
+            <div class="content-box">
+              <div class="table-responsive">
+                <table class="table table-striped opnsense_standard_table_form">
+                  <thead>
+                    <tr>
+                      <th style="width:22%"><?= gettext("UPnP IGD Adjustments") ?></th>
+                      <th style="width:78%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('UPnP IGD compatibility mode') ?></td>
+                    <td>
+                      <select name="upnp_igd_compat">
+                        <option value="igdv1" <?= $pconfig['upnp_igd_compat'] == 'igdv1' ? "selected=\"selected\"" : ""; ?> ><?= gettext("IGDv1 (IPv4 only)"); ?></option>
+                        <option value="igdv2" <?= $pconfig['upnp_igd_compat'] == 'igdv2' ? "selected=\"selected\"" : ""; ?> ><?= gettext("IGDv2 (with workarounds)"); ?></option>
+                      </select>
+                    </td>
+                  </tr>
                     <tr>
                       <td><a id="help_for_download" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Download speed");?></td>
                       <td>
@@ -389,6 +423,12 @@ include("head.inc");
                         </div>
                       </td>
                     </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Router/friendly name') ?></td>
+                      <td>
+                        <input name="friendly_name" type="text" placeholder="OPNsense UPnP IGD &amp; PCP" value="<?= !empty($pconfig['friendly_name']) ? htmlspecialchars($pconfig['friendly_name']) : '' ?>" />
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -400,7 +440,7 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <th colspan="2"><?=gettext("Access Control List");?></th>
+                      <th colspan="2"><?=gettext("Custom Access Control List");?></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -416,7 +456,7 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of entries");?></td>
                       <td>
-                        <input name="num_permuser" type="text" value="<?= html_safe($pconfig['num_permuser']) ?>" />
+                        <input name="num_permuser" type="text" placeholder="8" value="<?= html_safe($pconfig['num_permuser']) ?>" />
                         <div class="hidden" data-for="help_for_num_permuser">
                           <?=gettext("Number of ACL entries to configure.");?>
                         </div>
@@ -433,14 +473,14 @@ include("head.inc");
                         <input name="<?= html_safe($permuser) ?>" type="text" value="<?= isset($pconfig[$permuser]) ? $pconfig[$permuser] : '' ?>" />
 <?php if ($i == 1): ?>
                         <div class="hidden" data-for="help_for_permuser">
-                          <?=gettext("The ACL specifies which IP addresses and ports can be mapped. IPv6 is always accepted.");?><br/>
-                          <?=gettext("Format: (allow or deny) (ext port or range) (int IP or IP/netmask) (int port or range)");?><br/>
+                          <?=gettext("Syntax: (allow or deny) (ext port or range) (int IP or IP/netmask) (int port or range)");?><br/>
                           <?=gettext("Example: allow 1024-65535 192.168.1.0/24 1024-65535");?>
                         </div>
 <?php endif ?>
                       </td>
                     </tr>
 <?php endforeach ?>
+                    <tr><td colspan="2"><?=gettext("The access control list (ACL) specifies which IP addresses and ports can be mapped. IPv6 is currently always accepted unless disabled.");?></td></tr>
                   </tbody>
                 </table>
               </div>

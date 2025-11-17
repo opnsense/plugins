@@ -185,7 +185,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* configure STUN server if needed */
             if (!empty($upnp_config['stun_host'])) {
-                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_perform_stun=allow-filtered\n";
                 $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) . "\n";
                 $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
             }
@@ -206,6 +206,10 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "pcp_allow_thirdparty=no\n";
             }
 
+            if (!empty($upnp_config['ipv6_disable'])) {
+                $config_text .= "ipv6_disable=yes\n";
+            }
+
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {
                 $config_text .= "packet_log=yes\n";
@@ -223,6 +227,13 @@ function miniupnpd_configure_do($verbose = false)
                     $config_text .= ":{$config['system']['webgui']['port']}";
                 }
                 $config_text .= "/\n";
+            }
+
+            if (!empty($upnp_config['friendly_name'])) {
+                // Encode required XML entities of text UPnP IGD config options until the daemon does so
+                $config_text .= "friendly_name=" . htmlspecialchars($upnp_config['friendly_name'], ENT_NOQUOTES | ENT_XML1) . "\n";
+            } else {
+                $config_text .= "friendly_name=OPNsense UPnP IGD &amp; PCP\n";
             }
 
             /* set uuid and serial */
@@ -247,9 +258,14 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
-            # When building with IGDv2, infinite (IGDv1 only) lease time port maps are reduced to 7d
-            # following the IGDv2 standard. Disabling it at runtime allows IGDv2 incompatible clients
-            $config_text .= "force_igd_desc_v1=yes\n";
+            // When building the daemon with UPnP IGDv2, infinite (IGDv1 only) lease duration port maps are reduced
+            // to 7d, following the IGDv2 standard. Disabling it at runtime allows IGDv2-incompatible clients
+            if ($upnp_config['upnp_igd_compat'] == 'igdv1') {
+                $config_text .= "force_igd_desc_v1=yes\n";
+            }
+
+            $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
+            $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
