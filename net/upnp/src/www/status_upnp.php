@@ -29,6 +29,7 @@
 
 require_once("guiconfig.inc");
 require_once("interfaces.inc");
+require_once("util.inc");
 require_once("plugins.inc.d/miniupnpd.inc");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,8 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$rdr_entries = array();
-exec("/sbin/pfctl -P -a miniupnpd -s nat; /sbin/pfctl -P -a miniupnpd -s rules", $rdr_entries, $pf_ret);
+$rdr_entries = shell_safe('/sbin/pfctl -P -a miniupnpd -s nat; /sbin/pfctl -P -a miniupnpd -s rules', [], true);
 
 $service_hook = 'miniupnpd';
 include("head.inc");
