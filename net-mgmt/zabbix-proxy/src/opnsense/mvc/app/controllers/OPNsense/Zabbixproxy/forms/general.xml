@@ -76,6 +76,12 @@
         <help>Number of pre-forked instances of pollers for unreachable hosts (including IPMI and Java).</help>
     </field>
     <field>
+        <id>general.startagentpollers</id>
+        <label>Start Agent Pollers</label>
+        <type>text</type>
+        <help>The number of pre-forked instances of Zabbix agent pollers.</help>
+    </field>
+    <field>
         <id>general.starttrappers</id>
         <label>Start Trappers</label>
         <type>text</type>
@@ -98,6 +104,12 @@
         <label>Start VMware Collectors</label>
         <type>text</type>
         <help>Number of pre-forked instances of VMware Collectors.</help>
+    </field>
+    <field>
+        <id>general.maxconcurrentchecksperpoller</id>
+        <label>Max Concurrent Checks per Poller</label>
+        <type>text</type>
+        <help>The maximum number of asynchronous checks that can be executed at once.</help>
     </field>
     <field>
         <id>general.starthttppollers</id>
