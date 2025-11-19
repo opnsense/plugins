@@ -42,8 +42,9 @@ emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-advanced -- OPNsense theme based on AdvancedTomato GUI
+misc/theme-advanced -- Theme based on AdvancedTomato GUI
 misc/theme-cicada -- The cicada theme - dark grey onyx
+misc/theme-flexcolor -- Theme with 3 different color schemes: black as default, light and dark-light
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
@@ -55,6 +56,7 @@ net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
+net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol Proxy (development only)
 net/ndproxy -- Neighbor Discovery Proxy
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
@@ -66,7 +68,7 @@ net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
 net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
-net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
+net/upnp -- UPnP IGD & PCP/NAT-PMP Service
 net/vnstat -- Network traffic monitor
 net/wol -- Wake on LAN Service
 net/zerotier -- Virtual Networks That Just Work
@@ -90,6 +92,7 @@ security/maltrail -- Malicious traffic detection system
 security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
+security/q-feeds-connector -- Connector for Q-Feeds threat intel
 security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard

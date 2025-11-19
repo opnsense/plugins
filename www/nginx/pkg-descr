@@ -5,8 +5,6 @@ NGINX functionality includes HTTP server, HTTP and mail reverse proxy, caching,
 load balancing, compression, request throttling, connection multiplexing and
 reuse, SSL offload and HTTP media streaming.
 
-WWW: https://nginx.org/
-
 Plugin Changelog
 ================
 
@@ -19,6 +17,8 @@ Plugin Changelog
 * Add Variables hashes size support
 * Add proxy_cache_valid directive support with response codes and multiple selection options
 * Clean up model definition file
+* Change ban_ttl default value to avoid unintentional system slowdown
+* Fix NAXSI rules install
 
 1.34
 

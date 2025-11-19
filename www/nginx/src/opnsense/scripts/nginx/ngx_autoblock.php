@@ -216,7 +216,7 @@ $work_files = (function () use ($is_ten_minutes) {
 
 // Triggering TLS-handshake processor when corresponding work file exists.
 if (in_array(TLS_HANDSHAKE_FILE_WORK, $work_files)) {
-    mwexec(TLS_HANDSHAKE_PROCESSING_TASK);
+    mwexecf(TLS_HANDSHAKE_PROCESSING_TASK);
 }
 
 // Abort if permanent ban file is missing

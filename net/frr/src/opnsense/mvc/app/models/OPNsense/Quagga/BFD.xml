@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bfd</mount>
     <description>BFD configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -21,6 +21,27 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </multihop>
+                <detect_multiplier type="IntegerField">
+                    <Default>3</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>255</MaximumValue>
+                    <ValidationMessage>Value must be between 1 and 255.</ValidationMessage>
+                </detect_multiplier>
+                <receive_interval type="IntegerField">
+                    <Default>300</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>4294967</MaximumValue>
+                    <ValidationMessage>Value must be between 10 and 4294967.</ValidationMessage>
+                </receive_interval>
+                <transmit_interval type="IntegerField">
+                    <Default>300</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>4294967</MaximumValue>
+                    <ValidationMessage>Value must be between 10 and 4294967.</ValidationMessage>
+                </transmit_interval>
             </neighbor>
         </neighbors>
     </items>

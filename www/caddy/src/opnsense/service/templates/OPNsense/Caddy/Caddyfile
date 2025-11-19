@@ -43,13 +43,6 @@
     #            with the syslog-ng instance running on the OPNsense.
     #}
     log {
-        {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-            {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
-                {% if reverse.enabled|default("0") == "1" and reverse.AccessLog|default("0") == "1" %}
-                    include http.log.access.{{ reverse['@uuid'] }}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
         output net unixgram//var/run/caddy/log.sock {
         }
         format json {
@@ -235,6 +228,7 @@
     # Default of Caddy is to wait for all connections to close before allowing reload, meaning the higher the value, the longer applies take.
     #}
     grace_period {{ generalSettings.GracePeriod }}s
+    skip_install_trust
     import /usr/local/etc/caddy/caddy.d/*.global
 }
 
@@ -302,6 +296,7 @@ http://{{ domain }} {
 {% macro tls_configuration(
     customCert="",
     dnsChallenge="0",
+    dnsChallengeOverrideDomain="",
     clientAuthTrustPool="",
     clientAuthMode="",
     dnsProvider="",
@@ -316,6 +311,9 @@ http://{{ domain }} {
             {% if not customCert and (dnsChallenge == "1" and dnsProvider) %}
             issuer acme {
                 dns {{ dnsProvider }} {{ dnsApiKey }}
+                {% if dnsChallengeOverrideDomain %}
+                dns_challenge_override_domain {{ dnsChallengeOverrideDomain }}
+                {% endif %}
 
                 {% if tlsDnsPropagationResolvers %}
                 resolvers {{ tlsDnsPropagationResolvers }}
@@ -610,7 +608,7 @@ http://{{ domain }} {
         {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
             {% if reverse.AccessLog|default("0") == "1" %}
                 {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-                    log {{ reverse['@uuid'] }}
+                    log default
                 {% else %}
                     log {
                         output file /var/log/caddy/access/{{ reverse['@uuid'] }}.log {
@@ -622,6 +620,7 @@ http://{{ domain }} {
             {{ tls_configuration(
                 customCert=reverse.CustomCertificate|default(""),
                 dnsChallenge=reverse.DnsChallenge|default("0"),
+                dnsChallengeOverrideDomain=reverse.DnsChallengeOverrideDomain|default(""),
                 clientAuthTrustPool=reverse.ClientAuthTrustPool|default(""),
                 clientAuthMode=reverse.ClientAuthMode|default(""),
                 dnsProvider=generalSettings.TlsDnsProvider,
@@ -647,7 +646,7 @@ http://{{ domain }} {
             {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
                 {% if reverse.AccessLog|default("0") == "1" %}
                     {% if generalSettings.LogAccessPlain|default("0") == "0" %}
-                        log {{ reverse['@uuid'] }}
+                        log default
                     {% else %}
                         log {
                             output file /var/log/caddy/access/{{ subdomain['@uuid'] }}.log {

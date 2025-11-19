@@ -3,6 +3,11 @@ Shadowsocks is a fast tunnel proxy that helps you bypass firewalls.
 Plugin Changelog
 ================
 
+1.3
+
+* Update ciphers to match shadowsocks-rust (contributed by eguun)
+* Update WebUI to allow setting for TCP timeout and UDP fragmentation (contributed by kvoffka and eguun)
+
 1.2
 
 * Switch to shadowsocks-rust

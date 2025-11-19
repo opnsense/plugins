@@ -156,6 +156,34 @@
         <help>IP address of host allowed to retrieve proxy statistics.</help>
     </field>
     <field>
+        <id>general.vmwarecachesize</id>
+        <label>VMware Cache Size</label>
+        <type>text</type>
+        <help>Shared memory size for storing VMware data.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwarefrequency</id>
+        <label>VMware Frequency</label>
+        <type>text</type>
+        <help>Delay in seconds between data gathering from a single VMware service.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwareperffrequency</id>
+        <label>VMwarePerfFrequency</label>
+        <type>text</type>
+        <help>Delay in seconds between performance counter statistics retrieval from a single VMware service.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwaretimeout</id>
+        <label>VMware Timeout</label>
+        <type>text</type>
+        <help>The maximum number of seconds vmware collector will wait for a response from VMware service.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>general.syslogEnable</id>
         <label>Log To Syslog</label>
         <type>checkbox</type>
