@@ -57,6 +57,12 @@ StartIPMIPollers={{ OPNsense.zabbixproxy.general.startipmipollers }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.startpollersunreachable') and OPNsense.zabbixproxy.general.startpollersunreachable != '' %}
 StartPollersUnreachable={{ OPNsense.zabbixproxy.general.startpollersunreachable }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.startagentpollers') and OPNsense.zabbixproxy.general.startagentpollers != '' %}
+StartAgentPollers={{ OPNsense.zabbixproxy.general.startagentpollers }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller') and OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller != '' %}
+MaxConcurrentChecksPerPoller={{ OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.starttrappers') and OPNsense.zabbixproxy.general.starttrappers != '' %}
 StartTrappers={{ OPNsense.zabbixproxy.general.starttrappers }}
 {% endif %}

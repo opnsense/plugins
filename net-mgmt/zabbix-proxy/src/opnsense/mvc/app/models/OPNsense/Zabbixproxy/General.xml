@@ -29,6 +29,16 @@
         <startpollers type="TextField"/>
         <startipmipollers type="IntegerField"/>
         <startpollersunreachable type="IntegerField"/>
+        <startagentpollers type="IntegerField">
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <Required>N</Required>
+        </startagentpollers>
+        <maxconcurrentchecksperpoller type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <Required>N</Required>
+        </maxconcurrentchecksperpoller>
         <starttrappers type="IntegerField"/>
         <startpingers type="IntegerField"/>
         <startdiscoverers type="IntegerField"/>
