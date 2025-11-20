@@ -2,7 +2,11 @@
 {%   if helpers.exists('OPNsense.postfix.domain.domains.domain') %}
 {%     for domain in helpers.toList('OPNsense.postfix.domain.domains.domain') %}
 {%       if domain.enabled == '1' %}
+{%         if domain.transport|length > 0 %}
+{{ domain.domainname }} {{domain.transport}}:{{domain.destination}}
+{%         else %}
 {{ domain.domainname }} smtp:{{ domain.destination }}
+{%         endif %}
 {%       endif %}
 {%     endfor %}
 {%   endif %}
