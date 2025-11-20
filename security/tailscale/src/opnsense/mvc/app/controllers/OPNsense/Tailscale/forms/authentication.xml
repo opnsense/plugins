@@ -9,6 +9,12 @@
         <id>authentication.preAuthKey</id>
         <label>Pre-authentication Key</label>
         <type>text</type>
-        <help>Use a non-reusable auth key and disable expiration</help>
+        <help>
+            <![CDATA[
+            Pre-authentication Key is required on first launch<br>
+            Use a non-reusable auth key and disable expiration<br>
+            Authkey WILL expire, either delete this after successful authentication, or replace this with "file:/dev/null" (without quotations)
+            ]]>
+        </help>
     </field>
 </form>
