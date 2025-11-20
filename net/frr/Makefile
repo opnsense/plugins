@@ -1,5 +1,5 @@
 PLUGIN_NAME=		frr
-PLUGIN_VERSION=		1.48
+PLUGIN_VERSION=		1.49
 PLUGIN_COMMENT=		The FRRouting Protocol Suite
 PLUGIN_DEPENDS=		frr10-pythontools
 PLUGIN_MAINTAINER=	ad@opnsense.org

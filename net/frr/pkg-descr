@@ -12,6 +12,13 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.49
+
+* Add hint about service reload / restart behaviour
+* Fix SNMP OSPF argument flags in RC configuration file
+* Fix STATIC template interface issue
+* Replace shell_exec() with mwexecfm()
+
 1.48
 
 * Add BFD detect-multiplier, transmit-interval, receive-interval (opnsense/plugins/pull/5000)
