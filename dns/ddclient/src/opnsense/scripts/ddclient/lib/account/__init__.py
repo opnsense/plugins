@@ -122,6 +122,12 @@ class BaseAccount:
             dynipv6host = self.settings['dynipv6host'] if self.settings.get('dynipv6host' ,'').strip() != '' else None
         )
 
+        if self.is_verbose:
+            syslog.syslog(
+                syslog.LOG_NOTICE,
+                "Fetched Account %s global IP address: '%s'" % (self.description, self._current_address)
+            )
+
         if not self._current_address:
             syslog.syslog(
                 syslog.LOG_WARNING,
@@ -133,8 +139,18 @@ class BaseAccount:
                 self._current_address != self._state.get('ip') or
                 self.state.get('md5') != self.md5
         ):
+            if self.is_verbose:
+                syslog.syslog(
+                    syslog.LOG_NOTICE,
+                    "Account %s IP doesn't equal the current state, propagate the fact" % (self.description)
+                )
             # if current address doesn't equal the current state, propagate the fact
             return True
         else:
+            if self.is_verbose:
+                syslog.syslog(
+                    syslog.LOG_NOTICE,
+                    "Account %s IP unmodified, poller keeps track of last access timestamp" % (self.description)
+                )
             # unmodified, poller keeps track of last access timestamp
             return False
