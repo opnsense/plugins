@@ -132,6 +132,9 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </linkedAVPair>
+                <tunnel_password type="TextField">
+                    <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</Mask>
+                </tunnel_password>
             </user>
         </users>
     </items>

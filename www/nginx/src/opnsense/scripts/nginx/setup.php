@@ -29,9 +29,11 @@
 
 const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
+
 require_once('config.inc');
 require_once('certs.inc');
 require_once('util.inc');
+
 use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
@@ -361,4 +363,5 @@ if (!empty($conf_test_errors)) {
 
 syslog(LOG_DEBUG, "NGINX setup routine completed.");
 closelog();
-passthru('/usr/local/etc/rc.d/php-fpm start');
+
+pass_safe('/usr/local/etc/rc.d/php-fpm start');

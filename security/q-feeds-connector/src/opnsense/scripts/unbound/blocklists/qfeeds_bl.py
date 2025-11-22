@@ -32,18 +32,21 @@ from . import BaseBlocklistHandler
 class DefaultBlocklistHandler(BaseBlocklistHandler):
     def __init__(self):
         super().__init__('/usr/local/etc/unbound/qfeeds-blocklists.conf')
-        self.priority = 100
+        self.priority = 50
 
     def get_config(self):
-        cfg = {'qfeeds_filenames': []}
-        if self.cnf and self.cnf.has_section('settings'):
-            if self.cnf.has_option('settings', 'filenames'):
-                cfg['qfeeds_filenames'] = self.cnf.get('settings', 'filenames').split(',')
-        return cfg
+        # do not use, unbound worker settings
+        return {}
 
     def get_blocklist(self):
+        # Only return domains if integration is enabled (filenames are offered)
+        qfeeds_filenames = []
+        if self.cnf and self.cnf.has_section('settings'):
+            if self.cnf.has_option('settings', 'filenames'):
+                qfeeds_filenames = self.cnf.get('settings', 'filenames').split(',')
+
         result = {}
-        for filename in self.get_config()['qfeeds_filenames']:
+        for filename in qfeeds_filenames:
             bl_shortcode = "qf_%s" % os.path.splitext(os.path.basename(filename).strip())[0]
             if os.path.exists(filename):
                 with open(filename, 'r') as f_in:

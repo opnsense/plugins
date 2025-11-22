@@ -28,22 +28,21 @@
 
 function opnproxy_configure()
 {
-    return array(
+    return [
         'user_changed' => ['opnproxy_user_changed:2'],
         'webproxy' => ['opnproxy_webproxy:2'],
-    );
+    ];
 }
 
-
-function opnproxy_user_changed($verbose = false, $username = '')
+function opnproxy_user_changed($unused, $username = '')
 {
-    exec("/usr/local/opnsense/scripts/OPNProxy/redis_sync_users.py " . escapeshellarg($username));
+    mwexecf('/usr/local/opnsense/scripts/OPNProxy/redis_sync_users.py %', $username);
 }
-
 
 function opnproxy_webproxy($verbose = false, $action = null)
 {
     $response = configd_run('template reload Deciso/Proxy');
+
     if ($verbose) {
         printf("template reload Deciso/Proxy: %s\n", trim($response));
     }
