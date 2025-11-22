@@ -22,13 +22,20 @@ CACHEMARKER="/usr/local/opnsense/www/index.php"
 flexcolor_start()
 {
 	SELECTEDCSS="${SCHEMESDIR}/${flexcolor_theme}/${DEFAULTCSS}"
+	if [ ! -f "${SELECTEDCSS}" ]; then
+		warn "The theme '${flexcolor_theme}' was not found."
+		return
+	fi
 
-	if [ -f "${SELECTEDCSS}" ]; then
-		cp "${SELECTEDCSS}" "${TARGETDIR}/${DEFAULTCSS}"
+	for FILE in $(find ${TARGETDIR} -name "*.sample"); do
+		FILE=${FILE%.sample}
+		cp ${FILE}.sample ${FILE}
+		sed -i '' -e "/@import url('default_scheme.css');/r ${SELECTEDCSS}" ${FILE}
+		sed -i '' -e "/@import url('default_scheme.css');/d" ${FILE}
+	done
 
-		if [ -f "${CACHEMARKER}" ]; then
-			touch "${CACHEMARKER}"
-		fi
+	if [ -f "${CACHEMARKER}" ]; then
+		touch "${CACHEMARKER}"
 	fi
 }
 
