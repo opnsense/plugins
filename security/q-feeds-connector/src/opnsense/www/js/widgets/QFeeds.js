@@ -71,6 +71,8 @@ export default class QFeeds extends BaseTableWidget {
         }
         let rows = [];
         let feeds = [];
+        let licenseInfoShown = false;
+        
         for (let feed of data.feeds) {
             feeds.push(
                 `<b><i class="fa fa-fw fa-angle-right" aria-hidden="true"></i> ${feed.name}</b>`,
@@ -78,7 +80,19 @@ export default class QFeeds extends BaseTableWidget {
                 `<div><i class="fa fa-fw fa-circle-o" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.next_update}: ${feed.next_update}</div>`
             );
             if (feed.licensed) {
-                feeds.push(`<div><i class="fa fa-fw fa-check" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.licensed}</div>`);
+                let licenseText = this.translations.licensed;
+                if (data.license && data.license.name) {
+                    licenseText += ` (${data.license.name})`;
+                }
+                feeds.push(`<div><i class="fa fa-fw fa-check" aria-hidden="true"></i> &nbsp;&nbsp;${licenseText}</div>`);
+                if (!licenseInfoShown && data.license && data.license.expiry_date) {
+                    const expiryDate = new Date(data.license.expiry_date);
+                    if (!isNaN(expiryDate.getTime())) {
+                        const formattedDate = expiryDate.toLocaleDateString();
+                        feeds.push(`<div><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> &nbsp;&nbsp;Expires: ${formattedDate}</div>`);
+                    }
+                    licenseInfoShown = true;
+                }
             } else {
                 feeds.push(`<div><i class="fa fa-fw fa-close" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.unlicensed}</div>`);
             }

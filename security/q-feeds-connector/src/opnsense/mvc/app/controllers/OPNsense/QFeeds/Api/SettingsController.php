@@ -110,6 +110,13 @@ class SettingsController extends ApiMutableModelControllerBase
                     }
                 }
             }
+            // Add license information from company_info if available
+            if (!empty($info['company_info'])) {
+                $stats['license'] = [
+                    'name' => $info['company_info']['license_name'] ?? null,
+                    'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
+                ];
+            }
         }
         return $stats;
     }
