@@ -2,12 +2,9 @@ Connector for Q-Feeds threat intel
 
 Plugin Changelog
 ================
-1.4
-
-* Events: added source and destination port
-
 1.3
 
+* Events: added source and destination port
 * Widget: Added license info 
 
 1.2
