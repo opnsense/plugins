@@ -61,23 +61,25 @@ POSSIBILITY OF SUCH DAMAGE.
                             formatters: {
                                 'source': function(column, row) {
                                     if (!row.source) return '';
-                                    return '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                                           '<span>' + row.source + '</span>' +
-                                           '<button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" ' +
-                                           'data-ip="' + row.source + '" ' +
-                                           'title="Lookup Source IP in Threat Intelligence Portal">' +
-                                           '<span class="fa fa-fw fa-search"></span></button>' +
-                                           '</div>';
+                                    return `<div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>${row.source}</span>
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
+                                                data-ip="${row.source}" 
+                                                title="Lookup Source IP in Threat Intelligence Portal">
+                                            <span class="fa fa-fw fa-search"></span>
+                                        </button>
+                                    </div>`;
                                 },
                                 'destination': function(column, row) {
                                     if (!row.destination) return '';
-                                    return '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-                                           '<span>' + row.destination + '</span>' +
-                                           '<button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" ' +
-                                           'data-ip="' + row.destination + '" ' +
-                                           'title="Lookup Destination IP in Threat Intelligence Portal">' +
-                                           '<span class="fa fa-fw fa-search"></span></button>' +
-                                           '</div>';
+                                    return `<div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>${row.destination}</span>
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
+                                                data-ip="${row.destination}" 
+                                                title="Lookup Destination IP in Threat Intelligence Portal">
+                                            <span class="fa fa-fw fa-search"></span>
+                                        </button>
+                                    </div>`;
                                 }
                             }
                         }
