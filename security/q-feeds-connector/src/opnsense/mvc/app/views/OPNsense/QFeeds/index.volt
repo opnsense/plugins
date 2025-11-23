@@ -110,7 +110,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                     <th data-column-id="direction" data-type="string">{{ lang._('Direction') }}</th>
                     <th data-column-id="source" data-type="string">{{ lang._('Source') }}</th>
+                    <th data-column-id="source_port" data-type="string">{{ lang._('Source Port') }}</th>
                     <th data-column-id="destination" data-type="string">{{ lang._('Destination') }}</th>
+                    <th data-column-id="destination_port" data-type="string">{{ lang._('Destination Port') }}</th>
                 </tr>
             </thead>
             <tbody>

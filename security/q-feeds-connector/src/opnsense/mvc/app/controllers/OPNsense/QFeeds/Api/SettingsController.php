@@ -85,6 +85,8 @@ class SettingsController extends ApiMutableModelControllerBase
                     'direction' => $row[2],
                     'source' => $row[3],
                     'destination' => $row[4],
+                    'source_port' => $row[5] ?? '',
+                    'destination_port' => $row[6] ?? '',
                 ];
             }
         }
