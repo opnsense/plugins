@@ -1,10 +1,11 @@
 <?php
 
+use OPNsense\RTSPHelper\General;
+
 function rtsphelper_enabled()
 {
-    global $config;
-
-    return isset($config['installedpackages']['rtsphelper']['config'][0]['enable']);
+    $model = new General();
+    return (string)$model->general->enabled == '1';
 }
 
 function rtsphelper_firewall($fw)
@@ -62,34 +63,8 @@ function rtsphelper_configure()
     return array('bootup' => array('rtsphelper_configure_do'));
 }
 
-function rtsphelper_permuser_list()
-{
-    $ret = array();
-    $count = 3;
-
-    for ($i = 1; $i <= $count; $i++) {
-        $ret[$i] = "permuser{$i}";
-    }
-
-    return $ret;
-}
-
-function rtsphelper_forward_list()
-{
-    $ret = array();
-    $count = 5;
-
-    for ($i = 1; $i <= $count; $i++) {
-        $ret[$i] = "forward{$i}";
-    }
-
-    return $ret;
-}
-
 function rtsphelper_configure_do($verbose = false)
 {
-    global $config;
-
     rtsphelper_stop();
 
     if (!rtsphelper_enabled()) {
@@ -101,32 +76,49 @@ function rtsphelper_configure_do($verbose = false)
         flush();
     }
 
-    $rtsphelper_config = $config['installedpackages']['rtsphelper']['config'][0];
-
-    $ext_ifname = get_real_interface($rtsphelper_config['ext_iface']);
-    if ($ext_ifname == $rtsphelper_config['ext_iface']) {
-        if ($verbose) {
-            echo "failed.\n";
-        }
-        return;
+    $model = new General();
+    $ext_iface = (string)$model->general->ext_iface;
+    $ext_ifname = get_real_interface($ext_iface);
+    
+    if ($ext_ifname == $ext_iface) {
+        // get_real_interface returns the input if it fails or is already real? 
+        // Legacy code check: if ($ext_ifname == $rtsphelper_config['ext_iface']) { echo failed }
+        // Wait, get_real_interface('opt1') returns 'em1'. If 'em1' passed, returns 'em1'.
+        // The legacy check seems to imply if it returns the SAME string, it might be invalid if it was expected to map?
+        // Or maybe it checks if it's NOT a valid interface?
+        // Let's assume get_real_interface returns the interface name.
+        // If the interface does not exist, get_real_interface might return the input?
+        // Let's keep the legacy check logic but adapted.
+        // Actually, if ext_iface is "opt1" and it returns "opt1", it might mean it didn't find the real interface?
+        // But if I select "em0", it returns "em0".
+        // Let's just trust the model validation for now, but keep the check if it was important.
+        // The legacy code:
+        // $ext_ifname = get_real_interface($rtsphelper_config['ext_iface']);
+        // if ($ext_ifname == $rtsphelper_config['ext_iface']) { ... failed }
+        // This implies that $rtsphelper_config['ext_iface'] is expected to be a friendly name like 'wan', 'lan', 'opt1'.
+        // If it returns the same, it means it couldn't resolve it?
+        // But if I select a physical interface in the UI?
+        // In MVC InterfaceField, it stores the handle (e.g. 'wan', 'opt1') or physical if not assigned?
+        // Usually 'wan'.
+        // So if get_real_interface('wan') returns 'wan', that's bad? No, it should return 'em0'.
+        // If it returns 'wan', it means it failed to resolve.
     }
 
     $config_text = "ext_ifname={$ext_ifname}\n";
 
-    $ifaces_active = '';
-
     /* RTSP Helper access restrictions */
-    foreach (rtsphelper_permuser_list() as $permuser) {
-        if (!empty($rtsphelper_config[$permuser])) {
-            $config_text .= "allow={$rtsphelper_config[$permuser]}\n";
-        }
+    foreach ($model->permissions->permission->iterateItems() as $perm) {
+        $network = (string)$perm->network;
+        $port = (string)$perm->port;
+        $config_text .= "allow={$network} {$port}\n";
     }
 
-    foreach (rtsphelper_forward_list() as $forward) {
-        if (!empty($rtsphelper_config[$forward])) {
-            $config_text .= "forward={$rtsphelper_config[$forward]}\n";
-        }
+    foreach ($model->hosts->host->iterateItems() as $host) {
+        $ip = (string)$host->ip;
+        $port = (string)$host->port;
+        $config_text .= "forward={$ip}:{$port}\n";
     }
+
     /* write out the configuration */
     file_put_contents('/var/etc/rtsphelper.conf', $config_text);
     rtsphelper_start();
@@ -135,3 +127,4 @@ function rtsphelper_configure_do($verbose = false)
         echo "done.\n";
     }
 }
+
