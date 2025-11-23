@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import annotations
 import socket
 import select
 import time
@@ -6,20 +7,24 @@ import sys
 import os
 import signal
 import subprocess
+from typing import Any
 
 buffer_size = 4096
 delay = 0.0001
 
 config_file = '/var/etc/rtsphelper.conf'
-config = {}
+config: dict[str, Any] = {}
 
 FNULL = open(os.devnull, 'w')
 
-class Forward:
-    def __init__(self):
-        self.forward = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Type alias for permissions structure: ((mask, net), (port_min, port_max))
+PermType = tuple[tuple[int, int], tuple[str, str]]
 
-    def start(self, host, port):
+class Forward:
+    def __init__(self) -> None:
+        self.forward: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def start(self, host: str, port: int) -> socket.socket | bool:
         try:
             self.forward.connect((host, port))
             return self.forward
@@ -28,26 +33,24 @@ class Forward:
             return False
 
 class ProxyServer:
-    input_list = []
-    channel = {}
-    clients = []
+    input_list: list[Any] = []
+    channel: dict[Any, Any] = {}
+    clients: list[list[Any]] = []
+    forward_to: list[str | int] = []
+    perms: list[PermType] = []
 
-    forward_to = []
-
-    perms = []
-
-    def __init__(self, remoteHost, remotePort, portManager, perms):
-        self.pm = portManager
+    def __init__(self, remoteHost: str, remotePort: int, portManager: PortManager, perms: list[PermType]) -> None:
+        self.pm: PortManager = portManager
         self.forward_to = [remoteHost, remotePort]
         self.perms = perms
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind(('127.0.0.1', 0))
         self.server.listen(200)
         self.pm.addLocalBinding(remoteHost, remotePort, self.server.getsockname()[1])
         self.input_list.append(self.server)
 
-    def main_loop(self):
+    def main_loop(self) -> None:
         ss = select.select
         inputready, outputready, exceptready = ss(self.input_list, [], [])
         for self.s in inputready:
@@ -65,11 +68,11 @@ class ProxyServer:
             except socket.error as e:
                 self.on_close()
 
-    def on_accept(self):
+    def on_accept(self) -> None:
         clientsock, clientaddr = self.server.accept()
         
         if allowedIP(clientaddr[0], self.perms):
-            forward = Forward().start(self.forward_to[0], self.forward_to[1])
+            forward = Forward().start(self.forward_to[0], self.forward_to[1])  # type: ignore
             if forward:
                 self.clients.append([clientaddr,clientsock,forward])
                 self.pm.addClient(clientaddr)
@@ -85,7 +88,7 @@ class ProxyServer:
             print("Forbidden client IP")
             clientsock.close()
 
-    def on_close(self):
+    def on_close(self) -> None:
         #remove objects from input_list
         self.input_list.remove(self.s)
         self.input_list.remove(self.channel[self.s])
@@ -104,7 +107,7 @@ class ProxyServer:
         self.clients.remove(c)
         self.pm.removeClient(c[0])
 
-    def on_recv(self):
+    def on_recv(self) -> None:
         data = self.data
         # here we can parse and/or modify the data before send forward
         self.channel[self.s].send(data)
@@ -113,7 +116,7 @@ class ProxyServer:
                 self.parseData(data, c)
                 break
 
-    def parseData(self, data, client):
+    def parseData(self, data: bytes, client: list[Any]) -> None:
         for line in data.splitlines():
             lineSplit = line.decode().split(':', 1)
             if lineSplit[0] == "Transport":
@@ -127,43 +130,43 @@ class ProxyServer:
                         self.pm.updatePorts(client[0], allowedPorts)
 
 class PortManager:
-    forwardedPorts = {}
-    localBindings = []
-    allowedNets = []
+    forwardedPorts: dict[Any, list[str]] = {}
+    localBindings: list[list[str | int]] = []
+    allowedNets: list[str] = []
 
-    def __init__(self, perms):
+    def __init__(self, perms: list[list[str]]) -> None:
         for perm in perms:
             network = perm[0]
             self.allowedNets.append(network)
         self.removeAll()
         self.applyRules()
 
-    def addClient(self, client):
+    def addClient(self, client: Any) -> None:
         self.forwardedPorts[client] = []
 
-    def updatePorts(self, client, ports):
+    def updatePorts(self, client: Any, ports: list[str]) -> None:
         print("Forwarding ports for client " + client[0] + ". New list of ports is: {0}".format(ports))
         self.forwardedPorts[client] = ports
         self.applyRules()
 
 
-    def removeClient(self, client):
+    def removeClient(self, client: Any) -> None:
         print("Remove client: " + client[0])
         self.forwardedPorts.pop(client)
         self.applyRules()
 
-    def removeAll(self):
+    def removeAll(self) -> None:
         f = open('/tmp/rtsphelper.rules', 'w')
         f.close()
         subprocess.call(['pfctl', '-a', 'rtsphelper', '-F', 'nat'], stdout=FNULL, stderr=subprocess.STDOUT)
         subprocess.call(['pfctl', '-a', 'rtsphelper', '-F', 'rules'], stdout=FNULL, stderr=subprocess.STDOUT)
-        subprocess.call(['pfctl', '-k', 'label', '-k', 'RTSP'], stdout=FNULL, stderr=subprocess.STDOUT)
+        subprocess.call(['pfctl', '-a', 'rtsphelper', '-F', 'state'], stdout=FNULL, stderr=subprocess.STDOUT)
 
-    def addLocalBinding(self, ip, port, local_port):
+    def addLocalBinding(self, ip: str, port: int, local_port: int) -> None:
         self.localBindings.append([ip, port, local_port])
         self.applyRules()
 
-    def applyRules(self):
+    def applyRules(self) -> None:
         config_rule_1 = 'rdr inet proto tcp from any to {} port {} -> {} port {}\n'
         config_rule_2 = 'block in quick on {} proto tcp from any to {} port {}\n'
         config_rule_3 = 'pass in quick proto tcp from {} to {} port {}\n'
@@ -196,16 +199,16 @@ class PortManager:
         subprocess.call(['pfctl', '-a', 'rtsphelper', '-f', '/tmp/rtsphelper.rules'], stdout=FNULL)
 
 
-def writePidFile():
+def writePidFile() -> None:
     pid = str(os.getpid())
     f = open('/var/run/rtsphelper.pid', 'w')
     f.write(pid)
     f.close()
 
-def ip_to_u32(ip):
+def ip_to_u32(ip: str) -> int:
     return int(''.join('%02x' % int(d) for d in ip.split('.')), 16)
 
-def allowedIP(ipstr, perms):
+def allowedIP(ipstr: str, perms: list[PermType]) -> bool:
     ip = ip_to_u32(ipstr)
     for perm in perms:
         mask, net = perm[0]
@@ -213,7 +216,7 @@ def allowedIP(ipstr, perms):
             return True
     return False
 
-def allowedPortForward(ipstr, port, perms):
+def allowedPortForward(ipstr: str, port: str, perms: list[PermType]) -> bool:
     if not allowedIP(ipstr, perms):
         return False
     else:
@@ -226,15 +229,15 @@ def allowedPortForward(ipstr, port, perms):
                     return True
         return False
 
-def buildPerms(perms):
-    masks = [ ]
+def buildPerms(perms: list[list[str]]) -> list[PermType]:
+    masks: list[PermType] = []
     for perm in perms:
         cidr = perm[0]
         portRange = perm[1]
         if '/' in cidr:
             netstr, bits = cidr.split('/')
-            mask = (0xffffffff << (32 - int(bits))) & 0xffffffff
-            net = ip_to_u32(netstr) & mask
+            mask: int = (0xffffffff << (32 - int(bits))) & 0xffffffff
+            net: int = ip_to_u32(netstr) & mask
         else:
             mask = 0xffffffff
             net = ip_to_u32(cidr)
@@ -261,17 +264,17 @@ if __name__ == '__main__':
             line = cf.readline()
     
     perms = buildPerms(config['perms'])
-    servers = []
+    servers: list[ProxyServer] = []
 
     pm = PortManager(config['perms'])
 
     for forward in config['forward_to']:
         servers.append(ProxyServer(forward[0], forward[1], pm, perms))
 
-    def handle_exit_signal(sig, frame):
+    def handle_exit_signal(sig: int, frame: Any) -> None:
         handle_exit()
 
-    def handle_exit():
+    def handle_exit() -> None:
         print("Exiting...")
         pm.removeAll()
         sys.exit(0)
