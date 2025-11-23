@@ -87,9 +87,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     
                     // Add click handler for threat lookup button
                     $(document).on('click', '.threat-lookup-btn', function() {
-                        var ip = $(this).data('ip');
+                        const ip = $(this).data('ip');
                         if (ip) {
-                            var tipUrl = 'https://tip.qfeeds.com/views/threat-lookup/index.php?q=' + encodeURIComponent(ip);
+                            const tipUrl = 'https://tip.qfeeds.com/views/threat-lookup/index.php?q=' + encodeURIComponent(ip);
                             window.open(tipUrl, '_blank');
                         }
                     });
