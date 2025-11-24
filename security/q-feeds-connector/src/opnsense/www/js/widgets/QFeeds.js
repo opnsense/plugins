@@ -72,7 +72,7 @@ export default class QFeeds extends BaseTableWidget {
         let rows = [];
         let feeds = [];
         let licenseInfoShown = false;
-        
+
         for (let feed of data.feeds) {
             feeds.push(
                 `<b><i class="fa fa-fw fa-angle-right" aria-hidden="true"></i> ${feed.name}</b>`,

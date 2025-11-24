@@ -63,8 +63,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                     if (!row.source) return '';
                                     return `<div style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>${row.source}</span>
-                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
-                                                data-ip="${row.source}" 
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip"
+                                                data-ip="${row.source}"
                                                 title="Lookup Source IP in Threat Intelligence Portal">
                                             <span class="fa fa-fw fa-search"></span>
                                         </button>
@@ -74,8 +74,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                     if (!row.destination) return '';
                                     return `<div style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>${row.destination}</span>
-                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
-                                                data-ip="${row.destination}" 
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip"
+                                                data-ip="${row.destination}"
                                                 title="Lookup Destination IP in Threat Intelligence Portal">
                                             <span class="fa fa-fw fa-search"></span>
                                         </button>
@@ -84,7 +84,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             }
                         }
                     });
-                    
+
                     // Add click handler for threat lookup button
                     $(document).on('click', '.threat-lookup-btn', function() {
                         const ip = $(this).data('ip');

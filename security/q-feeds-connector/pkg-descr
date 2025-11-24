@@ -4,9 +4,10 @@ Plugin Changelog
 ================
 
 1.3
+
 * Events: added source and destination port
 * Events: added quick Threat Lookup button to dest-ip and source-ip fields
-* Widget: Added license info 
+* Widget: Added license info
 
 1.2
 
