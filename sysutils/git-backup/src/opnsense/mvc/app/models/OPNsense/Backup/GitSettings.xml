@@ -50,5 +50,9 @@
         </user>
         <password type="TextField">
         </password>
+        <hidesecrets type="BooleanField">
+          <Default>0</Default>
+          <Required>Y</Required>
+        </hidesecrets>
     </items>
 </model>

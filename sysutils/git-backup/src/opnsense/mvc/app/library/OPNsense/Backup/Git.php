@@ -90,6 +90,13 @@ class Git extends Base implements IBackupProvider
              "type" => "password",
              "label" => gettext("Password"),
              "value" => null
+           ],
+           [
+              "name" => "hidesecrets",
+              "type" => "checkbox",
+              "label" => gettext("Hide all secrets from backup"),
+              "help" => gettext("When enabled, all secrets will be hidden from backup."),
+              "value" => null
            ]
         ];
         $mdl = new GitSettings();
