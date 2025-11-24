@@ -56,7 +56,42 @@ POSSIBILITY OF SUCH DAMAGE.
             } else if (e.target.id === 'events_tab') {
                 if (!$("#grid-events").hasClass('tabulator')) {
                     $("#grid-events").UIBootgrid({
-                        'search': '/api/q_feeds/settings/search_events/'
+                        'search': '/api/q_feeds/settings/search_events/',
+                        'options': {
+                            formatters: {
+                                'source': function(column, row) {
+                                    if (!row.source) return '';
+                                    return `<div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>${row.source}</span>
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
+                                                data-ip="${row.source}" 
+                                                title="Lookup Source IP in Threat Intelligence Portal">
+                                            <span class="fa fa-fw fa-search"></span>
+                                        </button>
+                                    </div>`;
+                                },
+                                'destination': function(column, row) {
+                                    if (!row.destination) return '';
+                                    return `<div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>${row.destination}</span>
+                                        <button type="button" class="btn btn-xs btn-default threat-lookup-btn bootgrid-tooltip" 
+                                                data-ip="${row.destination}" 
+                                                title="Lookup Destination IP in Threat Intelligence Portal">
+                                            <span class="fa fa-fw fa-search"></span>
+                                        </button>
+                                    </div>`;
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Add click handler for threat lookup button
+                    $(document).on('click', '.threat-lookup-btn', function() {
+                        const ip = $(this).data('ip');
+                        if (ip) {
+                            const tipUrl = 'https://tip.qfeeds.com/views/threat-lookup/index.php?q=' + encodeURIComponent(ip);
+                            window.open(tipUrl, '_blank');
+                        }
                     });
                 } else {
                     $("#grid-events").bootgrid("reload");
@@ -109,9 +144,9 @@ POSSIBILITY OF SUCH DAMAGE.
                     <th data-column-id="timestamp" data-type="string">{{ lang._('Timestamp') }}</th>
                     <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                     <th data-column-id="direction" data-type="string">{{ lang._('Direction') }}</th>
-                    <th data-column-id="source" data-type="string">{{ lang._('Source') }}</th>
+                    <th data-column-id="source" data-type="string" data-formatter="source">{{ lang._('Source') }}</th>
                     <th data-column-id="source_port" data-type="string">{{ lang._('Source Port') }}</th>
-                    <th data-column-id="destination" data-type="string">{{ lang._('Destination') }}</th>
+                    <th data-column-id="destination" data-type="string" data-formatter="destination">{{ lang._('Destination') }}</th>
                     <th data-column-id="destination_port" data-type="string">{{ lang._('Destination Port') }}</th>
                 </tr>
             </thead>
