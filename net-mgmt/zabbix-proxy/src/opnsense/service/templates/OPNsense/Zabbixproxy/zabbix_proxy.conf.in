@@ -25,6 +25,9 @@ ListenPort={{ OPNsense.zabbixproxy.general.listenport }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.sourceip') and OPNsense.zabbixproxy.general.sourceip != '' %}
 SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.listenbacklog') and OPNsense.zabbixproxy.general.listenbacklog != '' %}
+ListenBacklog={{ OPNsense.zabbixproxy.general.listenbacklog }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.syslogEnable') and OPNsense.zabbixproxy.general.syslogEnable == '1' %}
 LogType=system
 {% else %}
