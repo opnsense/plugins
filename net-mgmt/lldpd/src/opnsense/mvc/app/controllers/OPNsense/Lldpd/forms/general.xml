@@ -36,6 +36,12 @@
         <help>This will enable AgentX support, which can then be queried via SNMP.</help>
     </field>
     <field>
+        <id>general.lldpmed</id>
+        <label>Enable LLDP-MED</label>
+        <type>checkbox</type>
+        <help>This will enable LLDP-MED.</help>
+    </field>
+    <field>
         <id>general.interface</id>
         <label>Interface Configuration</label>
         <type>text</type>
