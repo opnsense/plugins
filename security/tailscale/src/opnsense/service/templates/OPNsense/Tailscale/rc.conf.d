@@ -63,5 +63,3 @@ tailscaled_up_args="{{ up_args|join(' ') }}"
 {%  else %}
 tailscaled_enable="NO"
 {%  endif %}
-
-
