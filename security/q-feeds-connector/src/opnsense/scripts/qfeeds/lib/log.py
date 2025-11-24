@@ -58,10 +58,15 @@ class PFLogCrawler:
 
     @staticmethod
     def _parse_log_line(line):
-        # quick scan for datetime, interface, direction, source, dest
+        # quick scan for datetime, interface, direction, source, dest, source_port, dest_port
         parts = line.split()
         fw_line = parts[-1].split(',') # strip syslog
-        return [parts[1], fw_line[4], fw_line[7]] + [x for x in fw_line if is_ip_address(x)]
+        ip_addresses = [x for x in fw_line if is_ip_address(x)]
+        # Find destination IP position to get ports from next fields (only if numeric)
+        dest_idx = fw_line.index(ip_addresses[1]) if len(ip_addresses) > 1 else len(fw_line)
+        source_port = fw_line[dest_idx + 1] if dest_idx + 1 < len(fw_line) and fw_line[dest_idx + 1].isdigit() else ''
+        dest_port = fw_line[dest_idx + 2] if dest_idx + 2 < len(fw_line) and fw_line[dest_idx + 2].isdigit() else ''
+        return [parts[1], fw_line[4], fw_line[7]] + ip_addresses + [source_port, dest_port]
 
     def find(self, max_time=60, max_results=50000):
         result = []

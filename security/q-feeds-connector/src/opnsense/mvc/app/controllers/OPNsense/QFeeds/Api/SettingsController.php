@@ -85,6 +85,8 @@ class SettingsController extends ApiMutableModelControllerBase
                     'direction' => $row[2],
                     'source' => $row[3],
                     'destination' => $row[4],
+                    'source_port' => $row[5] ?? '',
+                    'destination_port' => $row[6] ?? '',
                 ];
             }
         }
@@ -109,6 +111,13 @@ class SettingsController extends ApiMutableModelControllerBase
                         $feed['licensed'] = $tmp['licensed'];
                     }
                 }
+            }
+            // Add license information from company_info if available
+            if (!empty($info['company_info'])) {
+                $stats['license'] = [
+                    'name' => $info['company_info']['license_name'] ?? null,
+                    'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
+                ];
             }
         }
         return $stats;
