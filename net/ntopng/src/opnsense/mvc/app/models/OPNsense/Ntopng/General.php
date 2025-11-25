@@ -29,7 +29,27 @@
 namespace OPNsense\Ntopng;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class General extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+
+		$http = (string)$this->httpport;
+		$https = (string)$this->httpsport;
+
+		if ($http === '' && $https === '') {
+			$messages->appendMessage(new Message(
+				gettext(
+					'Please input at least an HTTP or HTTPS port.'
+				),
+				'httpport'
+			));
+		}
+
+        return $messages;
+    }
 }

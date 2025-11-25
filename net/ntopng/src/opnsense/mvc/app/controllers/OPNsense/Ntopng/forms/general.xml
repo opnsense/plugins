@@ -13,6 +13,14 @@
         <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
+        <id>general.address</id>
+        <label>Listen address</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Address this service listens on.</help>
+    </field>
+    <field>
         <id>general.httpport</id>
         <label>HTTP Port</label>
         <type>text</type>
@@ -29,6 +37,12 @@
         <label>Certificate</label>
         <type>dropdown</type>
         <help>Set the certificate to use for HTTPS connections.</help>
+    </field>
+    <field>
+        <id>general.redisconnection</id>
+        <label>redis</label>
+        <type>text</type>
+        <help>HTTPS Port this service listens on. If you enable HTTPS you will be redirected from HTTP to HTTPS. Please select a certificate below</help>
     </field>
     <field>
         <id>general.dnsmode</id>

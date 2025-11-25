@@ -12,8 +12,14 @@
             <Multiple>Y</Multiple>
             <AllowDynamic>Y</AllowDynamic>
         </interface>
-        <httpport type="PortField">
+        <address type="NetworkField">
             <Required>Y</Required>
+            <Default>::,0.0.0.0</Default>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <AsList>Y</AsList>
+        </address>
+        <httpport type="PortField">
+            <Required>N</Required>
             <Default>3000</Default>
         </httpport>
         <httpsport type="PortField">
@@ -37,6 +43,10 @@
                 </check001>
             </Constraints>
         </cert>
+        <redisconnection type="TextField">
+            <Required>N</Required>
+            <Mask>/^.*\S.*$/</Mask> <!-- forbids only whitespace, still allows if any non-whitespace chars -->
+        </redisconnection>
         <dnsmode type="OptionField">
             <Required>N</Required>
             <OptionValues>
