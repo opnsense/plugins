@@ -12,6 +12,12 @@
         <help>Set the unique domain name to relay for.</help>
     </field>
     <field>
+        <id>domain.transport</id>
+        <label>Transport</label>
+        <type>text</type>
+        <help>Set the transport method. If empty, smtp will be used. https://www.postfix.org/transport.5.html</help>
+    </field>
+    <field>
         <id>domain.destination</id>
         <label>Destination</label>
         <type>text</type>
