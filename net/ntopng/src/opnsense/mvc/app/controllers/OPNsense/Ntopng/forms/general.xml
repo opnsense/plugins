@@ -13,12 +13,12 @@
         <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
-        <id>general.address</id>
-        <label>Listen address</label>
+        <id>general.addresses</id>
+        <label>Listen addresses</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Address this service listens on.</help>
+        <help>Address(es) this service listens on.</help>
     </field>
     <field>
         <id>general.httpport</id>

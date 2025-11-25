@@ -38,42 +38,42 @@ class General extends BaseModel
         $messages = parent::performValidation($validateFullModel);
 
 
-		$http = (string)$this->httpport;
-		$https = (string)$this->httpsport;
+        $http = (string)$this->httpport;
+        $https = (string)$this->httpsport;
 
-		if ($http === '' && $https === '') {
-			$msg = gettext('Please input at least an HTTP or HTTPS port.');
+        if ($http === '' && $https === '') {
+            $msg = gettext('Please input at least an HTTP or HTTPS port.');
 
-			$messages->appendMessage(new Message(
-				$msg,
-				'httpport'
-			));
+            $messages->appendMessage(new Message(
+                $msg,
+                'httpport'
+            ));
 
-			$messages->appendMessage(new Message(
-				$msg,
-				'httpsport'
-			));
-		}
+            $messages->appendMessage(new Message(
+                $msg,
+                'httpsport'
+            ));
+        }
 
-		$addresses_length = count(explode(',', (string)$this->address));
-		if ($addresses_length > 1 && $https !== '') {
-			$messages->appendMessage(new Message(
-				gettext(
-					"Can't have more then 1 listen address when using HTTPS"
-				),
-				'address'
-			));
+        $addresses_length = count(explode(',', (string)$this->addresses));
+        if ($addresses_length > 1 && $https !== '') {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't have more then 1 listen address when using HTTPS"
+                ),
+                'addresses'
+            ));
 
-		}
-		if ((string)$this->redisconnection === '') {
-			$redisPassword = (string)$this->getNodeByReference('OPNsense.redis.security.password');
-			if (strpos($redisPassword, '\\') !== false || strpos($redisPassword, '`') !== false) {
-				$messages->appendMessage(new Message(
-					gettext('Redis password cannot contain backslash (\) or backtick (`) characters.'),
-					''
-				));
-			}
-		}
+        }
+        if ((string)$this->redisconnection === '') {
+            $redisPassword = (string)$this->getNodeByReference('OPNsense.redis.security.password');
+            if (strpos($redisPassword, '\\') !== false || strpos($redisPassword, '`') !== false) {
+                $messages->appendMessage(new Message(
+                    gettext('Redis password cannot contain backslash (\) or backtick (`) characters.'),
+                    ''
+                ));
+            }
+        }
 
         return $messages;
     }
