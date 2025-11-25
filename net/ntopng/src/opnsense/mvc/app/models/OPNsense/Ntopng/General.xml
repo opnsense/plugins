@@ -12,12 +12,12 @@
             <Multiple>Y</Multiple>
             <AllowDynamic>Y</AllowDynamic>
         </interface>
-        <address type="NetworkField">
+        <addresses type="NetworkField">
             <Required>Y</Required>
             <Default>::,0.0.0.0</Default>
             <NetMaskAllowed>N</NetMaskAllowed>
             <AsList>Y</AsList>
-        </address>
+        </addresses>
         <httpport type="PortField">
             <Required>N</Required>
             <Default>3000</Default>
