@@ -227,6 +227,12 @@
         <type>text</type>
     </field>
     <field>
+        <id>validation.dns_azuredns_managedidentity</id>
+        <label>Use System Assigned Managed Identity</label>
+        <type>checkbox</type>
+        <help><![CDATA[When System Assigned Managed Identity is enabled the Tenant ID, APP ID and Client Secret settings are ignored by the acme client. Access tokens are obtained using the Azure Instance Metadata Service for the System Assigned Managed Identity. See <a target="_blank" href="https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token">documentation</a>.]]></help>
+    </field>
+    <field>
         <label>Bunny</label>
         <type>header</type>
         <style>table_dns table_dns_bunny</style>
