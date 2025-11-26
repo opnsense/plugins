@@ -17,13 +17,13 @@
         <id>ndpproxy.general.upstream</id>
         <label>Upstream interface</label>
         <type>dropdown</type>
-        <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface.</help>
+        <help>Choose the uplink interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface. Point-to-point and virtual tunnel interfaces are unsupported.</help>
     </field>
     <field>
         <id>ndpproxy.general.downstream</id>
         <label>Downstream interfaces</label>
         <type>select_multiple</type>
-        <help>Choose one or multiple downstream interfaces which should proxy the upstream IPv6 prefix.</help>
+        <help>Choose one or multiple downlink interfaces which should proxy the upstream IPv6 prefix. Point-to-point and virtual tunnel interfaces are unsupported.</help>
     </field>
     <field>
         <id>ndpproxy.general.ra</id>
