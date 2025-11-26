@@ -87,6 +87,13 @@
         <help>How to determine the address to use for this host</help>
     </field>
     <field>
+        <id>account.rootdns</id>
+        <label>Root DNS Entry</label>
+        <type>checkbox</type>
+        <style>optional_setting service_porkbun</style>
+        <help>The configured host(s) entry to change is a Root DNS (A Record) entry.</help>
+    </field>
+    <field>
         <id>account.interface</id>
         <label>Interface to monitor</label>
         <type>dropdown</type>
