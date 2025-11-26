@@ -45,7 +45,6 @@
         </cert>
         <redisconnection type="TextField">
             <Required>N</Required>
-            <Mask>/^.*\S.*$/</Mask> <!-- forbids only whitespace, still allows if any non-whitespace chars -->
         </redisconnection>
         <dnsmode type="OptionField">
             <Required>N</Required>

@@ -65,14 +65,31 @@ class General extends BaseModel
             ));
 
         }
-        if ((string)$this->redisconnection === '') {
-            $redisPassword = (string)$this->getNodeByReference('OPNsense.redis.security.password');
-            if (strpos($redisPassword, '\\') !== false || strpos($redisPassword, '`') !== false) {
-                $messages->appendMessage(new Message(
-                    gettext('Redis password cannot contain backslash (\) or backtick (`) characters.'),
-                    ''
-                ));
-            }
+
+
+        $redis_conn = (string)$this->redisconnection;
+
+        if (trim($redis_conn) === '' && $redis_conn !== '') {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't be all whitespace"
+                ),
+                'redisconnection'
+            ));
+        } elseif ($redis_conn !== ltrim($redis_conn)) {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't have leading whitespace"
+                ),
+                'redisconnection'
+            ));
+        } elseif ($redis_conn !== rtrim($redis_conn)) {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't have trailing whitespace"
+                ),
+                'redisconnection'
+            ));
         }
 
         return $messages;
