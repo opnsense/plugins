@@ -76,20 +76,23 @@ class General extends BaseModel
                 ),
                 'redisconnection'
             ));
-        } elseif ($redis_conn !== ltrim($redis_conn)) {
-            $messages->appendMessage(new Message(
-                gettext(
-                    "Can't have leading whitespace"
-                ),
-                'redisconnection'
-            ));
-        } elseif ($redis_conn !== rtrim($redis_conn)) {
-            $messages->appendMessage(new Message(
-                gettext(
-                    "Can't have trailing whitespace"
-                ),
-                'redisconnection'
-            ));
+        } else {
+            if ($redis_conn !== ltrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have leading whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
+            if ($redis_conn !== rtrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have trailing whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
         }
 
         return $messages;
