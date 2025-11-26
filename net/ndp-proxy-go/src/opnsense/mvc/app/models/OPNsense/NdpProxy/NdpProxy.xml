@@ -8,8 +8,15 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <upstream type="InterfaceField"/>
+            <upstream type="InterfaceField">
+                <Filters>
+                    <if>/^(?!(gif|gre|ipsec|l2tp|ovpnc|ovpns|ppp|pppoe|pptp|tap|tun|wg)).*$/</if>
+                </Filters>
+            </upstream>
             <downstream type="InterfaceField">
+                <Filters>
+                    <if>/^(?!(gif|gre|ipsec|l2tp|ovpnc|ovpns|ppp|pppoe|pptp|tap|tun|wg)).*$/</if>
+                </Filters>
                 <Multiple>Y</Multiple>
             </downstream>
             <ra type="BooleanField">

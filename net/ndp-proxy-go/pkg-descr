@@ -6,6 +6,10 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
+1.0
+
+* Do not allow selection of point-to-point and tunnel interfaces
+
 0.1
 
 * Initial Release
