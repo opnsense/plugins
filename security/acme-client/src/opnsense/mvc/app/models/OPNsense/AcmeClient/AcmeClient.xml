@@ -517,7 +517,6 @@
                         <dns_scaleway>Scaleway</dns_scaleway>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
                         <dns_selectel>selectel.com / selectel.ru</dns_selectel>
-                        <dns_selectel_v2>selectel.com V2 / selectel.ru V2</dns_selectel_v2>
                         <dns_selfhost>Selfhost</dns_selfhost>
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
@@ -1052,21 +1051,24 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
-                <dns_selectelv2_token_lifetime type="TextField">
+                <dns_sl_apiver type="TextField">
                     <Required>N</Required>
-                </dns_selectelv2_token_lifetime>
-                <dns_selectelv2_account_id type="TextField">
+                </dns_sl_apiver>
+                <dns_sl_token_lifetime type="TextField">
                     <Required>N</Required>
-                </dns_selectelv2_account_id>
-                <dns_selectelv2_project_name type="TextField">
+                </dns_sl_token_lifetime>
+                <dns_sl_account_id type="TextField">
                     <Required>N</Required>
-                </dns_selectelv2_project_name>
-                <dns_selectelv2_login_name type="TextField">
+                </dns_sl_account_id>
+                <dns_sl_project_name type="TextField">
                     <Required>N</Required>
-                </dns_selectelv2_login_name>
-                <dns_selectelv2_password type="TextField">
+                </dns_sl_project_name>
+                <dns_sl_login_name type="TextField">
                     <Required>N</Required>
-                </dns_selectelv2_password>
+                </dns_sl_login_name>
+                <dns_sl_password type="TextField">
+                    <Required>N</Required>
+                </dns_sl_password>
                 <dns_selfhost_user type="TextField">
                     <Required>N</Required>
                 </dns_selfhost_user>
