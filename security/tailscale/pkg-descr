@@ -8,7 +8,7 @@ Plugin Changelog
 
 1.3
 
-* modify rc script to prevent re-using auth key if already authenticated
+* modify RC script to prevent re-using auth key if already authenticated
 
 1.2
 

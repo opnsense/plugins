@@ -7,6 +7,7 @@ tailscaled_enable="YES"
 # see - https://github.com/tailscale/tailscale/issues/5573#issuecomment-1584695981
 tailscaled_env="TS_DEBUG_NETSTACK_SUBNETS=0"
 {%    endif %}
+tailscaled_up_args_ext=
 {%    if helpers.exists('OPNsense.tailscale.settings.listenPort') %}
 tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
@@ -51,15 +52,13 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%      endif %}
 {%      if helpers.exists('OPNsense.tailscale.authentication.preAuthKey') %}
 # Conditionally add auth-key only if not already authenticated
-if [ -f /var/db/tailscale/tailscaled.state ] && grep -q '"_current-profile"' /var/db/tailscale/tailscaled.state 2>/dev/null; 
-then
-    tailscaled_up_args="{{ up_args|join(' ') }}"
-else
-    tailscaled_up_args="{{ up_args|join(' ') }} --auth-key={{ OPNsense.tailscale.authentication.preAuthKey }}"
+if [ -f /var/db/tailscale/tailscaled.state ]; then
+	if ! grep -q '"_current-profile"' /var/db/tailscale/tailscaled.state; then
+		tailscaled_up_args_ext="--auth-key={{ OPNsense.tailscale.authentication.preAuthKey }}"
+	fi
 fi
-{%      else %}
-tailscaled_up_args="{{ up_args|join(' ') }}"
 {%      endif %}
+tailscaled_up_args="{{ up_args|join(' ') }} ${tailscaled_up_args_ext}"
 {%  else %}
 tailscaled_enable="NO"
 {%  endif %}
