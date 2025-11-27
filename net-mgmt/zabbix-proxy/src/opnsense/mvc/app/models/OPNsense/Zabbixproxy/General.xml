@@ -26,6 +26,11 @@
             <AsList>Y</AsList>
         </listenip>
         <sourceip type="NetworkField"/>
+        <listenbacklog type="IntegerField">
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>2147483647</MaximumValue>
+            <Required>N</Required>
+        </listenbacklog>
         <startpollers type="TextField"/>
         <startipmipollers type="IntegerField"/>
         <startpollersunreachable type="IntegerField"/>
