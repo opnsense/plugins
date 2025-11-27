@@ -24,6 +24,9 @@
        Service-Type = {{ servicelist }},
 {%         endfor %}
 {%       endif %}
+{%       if user_list.tunnel_password is defined %}
+       Tunnel-Password = {{ user_list.tunnel_password }},
+{%       endif %}
 {%       if helpers.exists('OPNsense.freeradius.general.vlanassign') and OPNsense.freeradius.general.vlanassign == '1' %}
 {%         if user_list.vlan is defined %}
        Tunnel-Type = VLAN,
@@ -98,12 +101,28 @@ DEFAULT Hint == "CSLIP"
 
 DEFAULT Hint == "SLIP"
         Framed-Protocol = SLIP
-{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') and OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
 
+{%  if helpers.exists('OPNsense.freeradius.ldapgroup.ldapgroups.ldapgroup') %}
+{%    for ldapgroup_list in helpers.toList('OPNsense.freeradius.ldapgroup.ldapgroups.ldapgroup') %}
+{%      if ldapgroup_list.enabled == '1' %}
+DEFAULT Ldap-Group == "{{ ldapgroup_list.ldapgroupname }}"
+        Tunnel-Type = VLAN,
+        Tunnel-Medium-Type = IEEE-802,
+        Tunnel-Private-Group-Id = "{{ ldapgroup_list.vlan }}"
+{%      endif %}
+{%    endfor %}
+{%  endif %}
+
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') or helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') %}
 DEFAULT Auth-Type := Accept
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_enabled') and OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
        Tunnel-Private-Group-Id = {{ OPNsense.freeradius.general.fallbackvlan_id }},
+{%  endif %}
+{%  if helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') %}
+       Tunnel-Password = {{ OPNsense.freeradius.general.fallback_tunnel_password }},
+{%  endif %}
        Framed-Protocol = PPP
 {%  endif %}
 {% endif %}

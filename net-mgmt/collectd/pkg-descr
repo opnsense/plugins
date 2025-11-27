@@ -14,9 +14,9 @@ Plugin Changelog
 
 1.3
 
-* Add support for CPU aggregation (contributed by @pmhausen)
-* Make Graphite separate instances configurable (contributed by @pmhausen)
-* Add disk I/O plugin (contributed by @pmhausen)
+* Add support for CPU aggregation (contributed by pmhausen)
+* Make Graphite separate instances configurable (contributed by pmhausen)
+* Add disk I/O plugin (contributed by pmhausen)
 
 1.2
 

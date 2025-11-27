@@ -10,6 +10,10 @@ import yaml
 logging.basicConfig(level=logging.INFO)
 
 
+def is_ipv6(ip: str) -> bool:
+    return ":" in ip
+
+
 def load_config(filename: str) -> dict[str, Any]:
     with open(filename) as fin:
         return yaml.safe_load(fin)
@@ -27,6 +31,8 @@ def get_netloc(settings: dict[str, str]):
     # defaults if config has not been saved yet
     listen_address = settings.get('lapi_listen_address', '127.0.0.1')
     listen_port = settings.get('lapi_listen_port', '8080')
+    if is_ipv6(listen_address):
+        listen_address = '[{}]'.format(listen_address)
     return '{}:{}'.format(listen_address, listen_port)
 
 
@@ -48,6 +54,9 @@ def configure_agent(settings: dict[str, str]):
     config['common']['log_dir'] = '/var/log/crowdsec'
     config['crowdsec_service']['acquisition_dir'] = '/usr/local/etc/crowdsec/acquis.d/'
     config['db_config']['use_wal'] = True
+
+    enable = int(settings.get('agent_enabled', '0'))
+    config['crowdsec_service']['enable'] = bool(enable)
 
     if not int(settings.get('lapi_manual_configuration', '0')):
         config['api']['server']['listen_uri'] = get_netloc(settings)

@@ -1,0 +1,20 @@
+<metadata>
+    <qfeeds>
+        <filename>QFeeds.js</filename>
+        <endpoints>
+            <endpoint>/api/q_feeds/settings/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>Q-Feeds Threat Protection</title>
+            <no_feed>Unable to contact information feed.</no_feed>
+            <installed_feeds>Installed Feeds</installed_feeds>
+            <database>Database</database>
+            <size>Size</size>
+            <blocked>Blocked</blocked>
+            <last_update>Updated</last_update>
+            <next_update>Next</next_update>
+            <licensed>Licensed</licensed>
+            <unlicensed>Unlicensed</unlicensed>
+        </translations>
+    </qfeeds>
+</metadata>

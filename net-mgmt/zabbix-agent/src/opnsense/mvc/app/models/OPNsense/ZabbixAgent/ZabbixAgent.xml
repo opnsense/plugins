@@ -46,6 +46,11 @@
                     <NetMaskAllowed>N</NetMaskAllowed>
                     <ValidationMessage>Please provide a valid IP address, i.e. 10.0.0.1.</ValidationMessage>
                 </sourceIP>
+                <listenBacklog type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>2147483647</MaximumValue>
+                    <Required>N</Required>
+                </listenBacklog>
                 <syslogEnable type="BooleanField"/>
                 <logFileSize type="IntegerField">
                     <Default>100</Default>

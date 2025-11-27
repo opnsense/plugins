@@ -100,7 +100,7 @@
                         <th data-column-id="expire" data-type="string" data-visible="true">{{ lang._('Expire') }}</th>
                         <th data-column-id="negative" data-type="string" data-visible="true">{{ lang._('Negative TTL') }}</th>
                         <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                        <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -427,8 +427,8 @@ $(document).ready(function() {
     }).on("loaded.rs.jquery.bootgrid", function(e) {
         // Checkzone button
         $("#grid-primary-domains").find(".command-bind-checkzone").off("click").on("click", function(ev) {
-            if (!$(this).closest("tr").hasClass("text-muted")) {
-                let zonename = $(this).closest('tr').find('td.zonename').text();
+            if (!$(this).closest(".tabulator-row").hasClass("text-muted")) {
+                let zonename = $(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text();
                 zone_test(zonename);
             } else {
                 BootstrapDialog.show({

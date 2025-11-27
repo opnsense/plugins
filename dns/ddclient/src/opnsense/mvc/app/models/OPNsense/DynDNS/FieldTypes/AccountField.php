@@ -40,29 +40,22 @@ class AccountField extends ArrayField
 
     private function addStatsFields($node)
     {
-        // generate new unattached fields, which are only usable to read data from (not synched to config.xml)
-        $current_ip = new TextField();
-        $current_ip->setInternalIsVirtual();
-        $current_mtime = new TextField();
-        $current_mtime->setInternalIsVirtual();
         if (isset(self::$current_stats[$node->getAttribute('uuid')])) {
             $stats = self::$current_stats[$node->getAttribute('uuid')];
             if (!empty($stats)) {
-                $current_ip->setValue($stats['ip']);
-                $current_mtime->setValue(date('c', (int)$stats['mtime']));
+                $node->current_ip->setValue($stats['ip']);
+                $node->current_mtime->setValue(date('c', (int)$stats['mtime']));
             }
         } elseif (!empty((string)$node->hostnames)) {
             foreach (explode(",", (string)$node->hostnames) as $hostname) {
                 if (!empty(self::$current_stats[$hostname]) && !empty(self::$current_stats[$hostname]['ip'])) {
                     $stats = self::$current_stats[$hostname];
-                    $current_ip->setValue($stats['ip']);
-                    $current_mtime->setValue(date('c', $stats['mtime']));
+                    $node->current_ip->setValue($stats['ip']);
+                    $node->current_mtime->setValue(date('c', $stats['mtime']));
                     break;
                 }
             }
         }
-        $node->addChildNode('current_ip', $current_ip);
-        $node->addChildNode('current_mtime', $current_mtime);
     }
 
     protected function actionPostLoadingEvent()

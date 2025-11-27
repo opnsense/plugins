@@ -3,34 +3,32 @@
     <description>Staticd Routing configuration</description>
     <version>1.0.0</version>
     <items>
-		<enabled type="BooleanField">
-			<Default>0</Default>
-			<Required>Y</Required>
-		</enabled>
-		<routes>
-			<route type="ArrayField">
-				<enabled type="BooleanField">
-					<Default>1</Default>
-					<Required>Y</Required>
-				</enabled>
-				<network type="NetworkField">
-					<NetMaskRequired>Y</NetMaskRequired>
-					<Required>Y</Required>
-					<ValidationMessage>Specify a valid network matching the gateways ip protocol.</ValidationMessage>
-				</network>
-				<gateway type="NetworkField">
-					<NetMaskAllowed>N</NetMaskAllowed>
-					<Required>N</Required>
-				</gateway>
-				<interfacename type="InterfaceField">
-					<Multiple>N</Multiple>
-					<AllowDynamic>Y</AllowDynamic>
-					<filters>
-						<enable>/^(?!0).*$/</enable>
-						<type>/^(?!group).*$/</type>
-					</filters>
-				</interfacename>
-			</route>
-		</routes>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <routes>
+            <route type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <network type="NetworkField">
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <Required>Y</Required>
+                    <ValidationMessage>Specify a valid network matching the gateway IP protocol.</ValidationMessage>
+                </network>
+                <gateway type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                </gateway>
+                <interfacename type="InterfaceField">
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                        <type>/^(?!group).*$/</type>
+                    </filters>
+                </interfacename>
+            </route>
+        </routes>
     </items>
 </model>

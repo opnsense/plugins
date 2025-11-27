@@ -1,0 +1,80 @@
+<model>
+    <mount>//OPNsense/netbird/settings</mount>
+    <description>NetBird settings</description>
+    <version>1.1.0</version>
+    <items>
+        <general>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+            <wireguardPort type="IntegerField">
+                <Default>51820</Default>
+                <Required>Y</Required>
+                <minimum>1</minimum>
+                <maximum>65535</maximum>
+                <ValidationMessage>Please specify a valid port.</ValidationMessage>
+            </wireguardPort>
+        </general>
+        <firewall>
+            <allowConfig type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </allowConfig>
+            <blockInboundConnection type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </blockInboundConnection>
+        </firewall>
+        <ssh>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+        </ssh>
+        <dns>
+            <enable type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enable>
+        </dns>
+        <routing>
+            <accessLan type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </accessLan>
+            <acceptClientRoutes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </acceptClientRoutes>
+            <acceptServerRoutes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </acceptServerRoutes>
+        </routing>
+        <postquantum>
+            <enableRosenpass type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRosenpass>
+            <rosenpassPermissive type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </rosenpassPermissive>
+        </postquantum>
+        <syslog>
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <Default>info</Default>
+                <OptionValues>
+                    <fatal>fatal</fatal>
+                    <error>error</error>
+                    <warn>warn</warn>
+                    <info>info</info>
+                    <debug>debug</debug>
+                    <trace>trace</trace>
+                </OptionValues>
+            </logLevel>
+        </syslog>
+    </items>
+</model>

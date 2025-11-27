@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>authentication.managementUrl</id>
+        <label>Management URL</label>
+        <type>text</type>
+        <help>Base URL of the management service</help>
+    </field>
+    <field>
+        <id>authentication.setupKey</id>
+        <label>Setup Key</label>
+        <type>text</type>
+        <help>Set the authentication setup key</help>
+    </field>
+</form>

@@ -12,6 +12,14 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.15
+
+* Add VMware parameters (contributed by us3241)
+
+1.14
+
+* Add plugin variant for Zabbix Proxy 7.4
+
 1.13
 
 * Removed plugin variant for Zabbox Proxy 5.0 which is EoL

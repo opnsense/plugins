@@ -12,9 +12,7 @@
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
-                <description type="TextField">
-                    <Required>N</Required>
-                </description>
+                <description type="TextField"/>
             </whitelist>
         </whitelists>
     </items>

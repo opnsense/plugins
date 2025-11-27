@@ -8,7 +8,6 @@
             <Required>Y</Required>
         </enabled>
         <type type="OptionField">
-            <Required>N</Required>
             <Multiple>Y</Multiple>
             <OptionValues>
                 <aa>AdAway List</aa>

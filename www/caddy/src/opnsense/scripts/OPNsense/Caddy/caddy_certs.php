@@ -43,7 +43,8 @@ $writeFileIfChanged = function ($filePath, $content) {
     }
 };
 
-$tempDir = '/var/db/caddy/data/caddy/certificates/temp/';
+/* XXX used later to only append a file name */
+$tempDir = '/usr/local/etc/caddy/certificates/';
 
 // leaf certificate chain
 $certificateRefs = [];

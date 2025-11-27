@@ -76,7 +76,7 @@ function modify_blocklist($tablename, array $allIps, $operation = "add"): void
     foreach (array_chunk($allIps, $chunkSize) as $ips) {
         $escapedIps = join(" ", array_map("escapeshellarg", $ips));
 
-        exec_hidden("/sbin/pfctl -t ${tablename} -T ${operation} ${escapedIps}");
+        exec_hidden("/sbin/pfctl -t {$tablename} -T {$operation} {$escapedIps}");
     }
 }
 
@@ -89,7 +89,7 @@ function read_all_from_blocklist($tablename)
         2 => ['file', "/dev/null", "w"],
     ];
 
-    $process = proc_open("/sbin/pfctl -t ${tablename} -T show", $descriptorspec, $pipes);
+    $process = proc_open("/sbin/pfctl -t {$tablename} -T show", $descriptorspec, $pipes);
     if (is_resource($process)) {
         $ips = [];
         while ($ip = fgets($pipes[1], 96)) {
@@ -216,7 +216,7 @@ $work_files = (function () use ($is_ten_minutes) {
 
 // Triggering TLS-handshake processor when corresponding work file exists.
 if (in_array(TLS_HANDSHAKE_FILE_WORK, $work_files)) {
-    mwexec(TLS_HANDSHAKE_PROCESSING_TASK);
+    mwexecf(TLS_HANDSHAKE_PROCESSING_TASK);
 }
 
 // Abort if permanent ban file is missing

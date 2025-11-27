@@ -87,13 +87,13 @@ EOD;
 
     foreach ($config['igmpproxy']['igmpentry'] as $igmpcf) {
         unset($iflist[$igmpcf['ifname']]);
-        $realif = get_real_interface($igmpcf['ifname']);
+        $device = get_real_interface($igmpcf['ifname']);
         if (empty($igmpcf['threshold'])) {
             $threshld = 1;
         } else {
             $threshld = $igmpcf['threshold'];
         }
-        $igmpconf .= "phyint {$realif} {$igmpcf['type']} ratelimit 0 threshold {$threshld}\n";
+        $igmpconf .= "phyint {$device} {$igmpcf['type']} ratelimit 0 threshold {$threshld}\n";
 
         if ($igmpcf['address'] <> "") {
             $item = explode(" ", $igmpcf['address']);
@@ -104,13 +104,13 @@ EOD;
         $igmpconf .= "\n";
     }
     foreach ($iflist as $ifn => $unused) {
-        $realif = get_real_interface($ifn);
-        $igmpconf .= "phyint {$realif} disabled\n";
+        $device = get_real_interface($ifn);
+        $igmpconf .= "phyint {$device} disabled\n";
     }
     $igmpconf .= "\n";
 
-    file_put_contents('/usr/local/etc/igmpproxy.conf', $igmpconf);
-    mwexec('/usr/local/etc/rc.d/igmpproxy onestart');
+    file_safe('/usr/local/etc/igmpproxy.conf', $igmpconf);
+    mwexecf('/usr/local/etc/rc.d/igmpproxy onestart');
 
     service_log("done.\n", $verbose);
 }

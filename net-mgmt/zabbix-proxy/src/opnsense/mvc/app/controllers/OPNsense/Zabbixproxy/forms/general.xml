@@ -58,6 +58,12 @@
         <help>Source IP address for outgoing connections.</help>
     </field>
     <field>
+        <id>general.listenbacklog</id>
+        <label>Listen Backlog</label>
+        <type>text</type>
+        <help>The maximum number of pending connections in the TCP queue.</help>
+    </field>
+    <field>
         <id>general.startpollers</id>
         <label>Start Pollers</label>
         <type>text</type>
@@ -74,6 +80,12 @@
         <label>Start Pollers Unreachable</label>
         <type>text</type>
         <help>Number of pre-forked instances of pollers for unreachable hosts (including IPMI and Java).</help>
+    </field>
+    <field>
+        <id>general.startagentpollers</id>
+        <label>Start Agent Pollers</label>
+        <type>text</type>
+        <help>The number of pre-forked instances of Zabbix agent pollers.</help>
     </field>
     <field>
         <id>general.starttrappers</id>
@@ -98,6 +110,12 @@
         <label>Start VMware Collectors</label>
         <type>text</type>
         <help>Number of pre-forked instances of VMware Collectors.</help>
+    </field>
+    <field>
+        <id>general.maxconcurrentchecksperpoller</id>
+        <label>Max Concurrent Checks per Poller</label>
+        <type>text</type>
+        <help>The maximum number of asynchronous checks that can be executed at once.</help>
     </field>
     <field>
         <id>general.starthttppollers</id>
@@ -154,6 +172,34 @@
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>IP address of host allowed to retrieve proxy statistics.</help>
+    </field>
+    <field>
+        <id>general.vmwarecachesize</id>
+        <label>VMware Cache Size</label>
+        <type>text</type>
+        <help>Shared memory size for storing VMware data.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwarefrequency</id>
+        <label>VMware Frequency</label>
+        <type>text</type>
+        <help>Delay in seconds between data gathering from a single VMware service.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwareperffrequency</id>
+        <label>VMwarePerfFrequency</label>
+        <type>text</type>
+        <help>Delay in seconds between performance counter statistics retrieval from a single VMware service.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.vmwaretimeout</id>
+        <label>VMware Timeout</label>
+        <type>text</type>
+        <help>The maximum number of seconds vmware collector will wait for a response from VMware service.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <id>general.syslogEnable</id>

@@ -99,7 +99,8 @@ class LeUtils
      */
     public static function log_error($msg, $error = null)
     {
-        syslog(LOG_ERR,
+        syslog(
+            LOG_ERR,
             $error
                 ? ("AcmeClient: $msg; Trace: " . json_encode($error, JSON_UNESCAPED_SLASHES))
                 : "AcmeClient: $msg"

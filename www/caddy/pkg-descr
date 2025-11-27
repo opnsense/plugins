@@ -6,6 +6,21 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.0.4
+
+Add: DNS-01 challenge delegation via CNAME (contributed by sdsys-ch) (opnsense/plugins/pull/4950)
+Fix: Enabling HTTP access log wrongly excluded the process logs (opnsense/plugins/pull/4974)
+Fix: fix setup.sh script not setting correct ownership in www user mode (opnsense/plugins/pull/4976)
+Fix: Prevent sudo on startup via skip_install_trust (opnsense/plugins/pull/5015)
+
+2.0.3
+
+Add: Tabulator groupBy of domain and subdomain (opnsense/plugins/pull/4909)
+Cleanup: Grid HTML and style
+Fix: Tabulator 'Data Load Response Blocked' warning
+Fix: setup.sh interaction with caddy storage and permissions (opnsense/plugins/pull/4911)
+Fix: Emit subdomain http access logs when wildcard parent has logging enabled (opnsense/plugins/issues/4914)
+
 2.0.2
 
 Add: Global server timeout options (opnsense/plugins/pull/4778)

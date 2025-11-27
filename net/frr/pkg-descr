@@ -12,12 +12,36 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.49
+
+* Add hint about service reload / restart behaviour
+* Fix SNMP OSPF argument flags in RC configuration file
+* Fix STATIC template interface issue
+* Replace shell_exec() with mwexecfm()
+
+1.48
+
+* Add BFD detect-multiplier, transmit-interval, receive-interval (opnsense/plugins/pull/5000)
+* Add BGP enforce-first-as (opnsense/plugins/pull/5001)
+* Add BGP bestpath route selection options (opnsense/plugins/pull/5002)
+
+1.47
+
+* Add OSPF area configuration options (opnsense/plugins/pull/4880)
+* Updated model definitions and indent
+
+1.46
+
+* Add address family selection to peer groups (opnsense/plugins/pull/4861)
+* Add OSPF point-to-multipoint options (contributed by Andy Binder) (opnsense/plugins/pull/4879)
+
 1.45
 
 * Add neighbor config to OSPF (contributed by Andy Binder) (opnsense/plugins/pull/4694)
 * Add BGP listen range to peer groups (opnsense/plugins/pull/4722)
 * Fix peer group activation (opnsense/plugins/pull/4777)
 * Switch to FRR 10 (opnsense/plugins/pull/4741)
+* Further adjustments for FRR 10
 
 1.44
 
@@ -201,9 +225,9 @@ Plugin Changelog
 
 1.12
 
-* Add passive-interface to OSPFv3 (by Michael Muenz)
-* Allow to set area per interface for OSPFv2 (by @twoequaldots)
-* Allow to set ebgp-multihop in BGP (by @bpeavy and Greg Goodrich)
+* Add passive-interface to OSPFv3 (contributed by Michael Muenz)
+* Allow to set area per interface for OSPFv2 (contributed by twoequaldots)
+* Allow to set ebgp-multihop in BGP (contributed by bpeavy and Greg Goodrich)
 
 1.11
 

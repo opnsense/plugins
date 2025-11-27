@@ -62,6 +62,31 @@ class OspfsettingsController extends ApiMutableModelControllerBase
         return $this->setBase('neighbor', 'neighbors.neighbor', $uuid);
     }
 
+    public function searchAreaAction()
+    {
+        return $this->searchBase('areas.area');
+    }
+    public function getAreaAction($uuid = null)
+    {
+        return $this->getBase('area', 'areas.area', $uuid);
+    }
+    public function addAreaAction()
+    {
+        return $this->addBase('area', 'areas.area');
+    }
+    public function delAreaAction($uuid)
+    {
+        return $this->delBase('areas.area', $uuid);
+    }
+    public function setAreaAction($uuid)
+    {
+        return $this->setBase('area', 'areas.area', $uuid);
+    }
+    public function toggleAreaAction($uuid)
+    {
+        return $this->toggleBase('areas.area', $uuid);
+    }
+
     public function searchNetworkAction()
     {
         return $this->searchBase('networks.network');

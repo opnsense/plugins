@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2019 Deciso B.V.
+ # Copyright (c) 2019-2025 Deciso B.V.
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -25,9 +25,9 @@
 #}
 
 <script>
-
-    $( document ).ready(function() {
-        $("#grid-addresses").UIBootgrid(
+    $(document).ready(function() {
+        // set up the UIBootgrid API endpoints for the base_bootgrid_table
+        $("#{{formGridAddress['table_id']}}").UIBootgrid(
             {   search:'/api/gridexample/settings/search_item/',
                 get:'/api/gridexample/settings/get_item/',
                 set:'/api/gridexample/settings/set_item/',
@@ -36,32 +36,18 @@
                 toggle:'/api/gridexample/settings/toggle_item/'
             }
         );
+
+        // use SimpleActionButton() to call /api/gridexample/service/reconfigure as example
+        $("#reconfigureAct").SimpleActionButton();
     });
 
 </script>
 
-
-<table id="grid-addresses" class="table table-condensed table-hover table-striped" data-editDialog="DialogAddress">
-    <thead>
-        <tr>
-            <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
-            <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-            <th data-column-id="email" data-type="string">{{ lang._('Email') }}</th>
-            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td></td>
-            <td>
-                <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-            </td>
-        </tr>
-    </tfoot>
-</table>
-
-
-{{ partial("layout_partials/base_dialog",['fields':formDialogAddress,'id':'DialogAddress','label':lang._('Edit address')])}}
+<div class="content-box">
+    <!-- auto creates a bootgrid from the data in formGridAddress -->
+    {{ partial('layout_partials/base_bootgrid_table', formGridAddress) }}
+</div>
+<!-- general purpose apply button, used to trigger reconfigureAct -->
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/gridexample/service/reconfigure'}) }}
+<!-- base_dialog used by the base_bootgrid_table -->
+{{ partial("layout_partials/base_dialog",['fields':formDialogAddress,'id':formGridAddress['edit_dialog_id'],'label':lang._('Edit address')])}}

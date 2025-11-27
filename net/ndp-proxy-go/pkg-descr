@@ -1,0 +1,11 @@
+IPv6 Neighbor Discovery Protocol (NDP) Proxy
+
+WWW: https://github.com/monviech/ndp-proxy-go
+DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
+
+Plugin Changelog
+================
+
+0.1
+
+* Initial Release

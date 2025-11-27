@@ -1,5 +1,5 @@
 PLUGIN_NAME=		strongswan-legacy
-PLUGIN_VERSION=		0.1
+PLUGIN_VERSION=		1.0
 PLUGIN_COMMENT=		IPsec legacy support
 PLUGIN_DEPENDS=		# strongswan
 PLUGIN_MAINTAINER=	ad@opnsense.org

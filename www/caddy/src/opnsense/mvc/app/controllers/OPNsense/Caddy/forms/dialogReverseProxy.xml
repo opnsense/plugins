@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this domain.]]></help>
         <grid_view>
-            <width>100</width>
+            <width>20</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -71,6 +71,16 @@
             <visible>false</visible>
             <type>boolean</type>
             <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>reverse.DnsChallengeOverrideDomain</id>
+        <label>DNS-01 Override Domain</label>
+        <type>text</type>
+        <help><![CDATA[If using CNAME delegation for DNS-01 challenges, enter the target domain here. The DNS provider will manage TXT records at '_acme-challenge.targetdomain' instead of the certificate domain. Your configured DNS Provider must have write access to this target domain. For wildcard certificates, ensure the CNAME delegation covers the _acme-challenge label. This enables least-privilege setups or can be used as a workaround when the primary DNS provider lacks an API. Leave empty if your DNS Provider has a dedicated field for this.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
