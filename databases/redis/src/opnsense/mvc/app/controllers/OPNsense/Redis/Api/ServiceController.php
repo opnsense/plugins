@@ -39,6 +39,16 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'redis';
 
+    private function isNtopngEnabled()
+    {
+        $cnf = \OPNsense\Core\Config::getInstance()->object();
+        $is_enabled = false;
+        if ($cnf->OPNsense && $cnf->OPNsense->ntopng && $cnf->OPNsense->ntopng->general) {
+            $is_enabled = (string)$cnf->OPNsense->ntopng->general->enabled === '1';
+        }
+        return $is_enabled;
+    }
+
     /**
      * remove database folder
      * @return array
@@ -48,5 +58,19 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("redis resetdb");
         return array("response" => $response);
+    }
+
+    public function reconfigureAction() {
+        $result = parent::reconfigureAction();
+
+        if ($result['status'] == 'ok') {
+            if ($this->isNtopngEnabled()) {
+                $backend = new Backend();
+                $backend->configdRun('template reload OPNsense/Ntopng');
+                $backend->configdRun('ntopng restart');
+            }
+        }
+
+        return $result;
     }
 }
