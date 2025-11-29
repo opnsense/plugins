@@ -23,27 +23,9 @@
         <fallbackvlan_id type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>VLAN fallback assignment needs to be enabled.</ValidationMessage>
-                    <type>DependConstraint</type>
-                    <addFields>
-                        <field1>fallbackvlan_enabled</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
         </fallbackvlan_id>
         <fallback_tunnel_password type="TextField">
             <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</Mask>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>VLAN fallback assignment needs to be enabled.</ValidationMessage>
-                    <type>DependConstraint</type>
-                    <addFields>
-                        <field1>fallbackvlan_enabled</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
         </fallback_tunnel_password>
         <ldap_enabled type="BooleanField">
             <Default>0</Default>
