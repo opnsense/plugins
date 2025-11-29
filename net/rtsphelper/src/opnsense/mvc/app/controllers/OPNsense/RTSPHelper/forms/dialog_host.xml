@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>host.ip</id>
+        <label>IP Address</label>
+        <type>text</type>
+        <help>Internal IP address.</help>
+    </field>
+    <field>
+        <id>host.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Port number.</help>
+    </field>
+</form>
