@@ -5,8 +5,15 @@ WWW: https://github.com/coturn/coturn
 
 1.1
 
+Added:
+* add log page
+
 Changed:
 * hide protocol violating options
+* switch to local syslog logging
+
+Removed:
+* remove old log files
 
 1.0
 
