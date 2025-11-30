@@ -575,12 +575,12 @@
     </field>
     <field>
         <id>validation.dns_zoneedit_id</id>
-        <label>ZONEEDIT_ID</label>
+        <label>ZoneEdit ID</label>
         <type>text</type>
     </field>
     <field>
         <id>validation.dns_zoneedit_token</id>
-        <label>ZONEEDIT_TOKEN</label>
+        <label>ZoneEdit Token</label>
         <type>text</type>
     </field>
     <field>

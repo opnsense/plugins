@@ -532,8 +532,8 @@
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
-                        <dns_zonomi>zonomi.com</dns_zonomi>
                         <dns_zoneedit>ZoneEdit</dns_zoneedit>
+                        <dns_zonomi>zonomi.com</dns_zonomi>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
