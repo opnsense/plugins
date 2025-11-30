@@ -581,6 +581,10 @@
                 <dns_azuredns_clientsecret type="TextField">
                     <Required>N</Required>
                 </dns_azuredns_clientsecret>
+                <dns_azuredns_managedidentity type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </dns_azuredns_managedidentity>
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>

@@ -43,5 +43,9 @@ class DnsAzure extends Base implements LeValidationInterface
         $this->acme_env['AZUREDNS_TENANTID'] = (string)$this->config->dns_azuredns_tenantid;
         $this->acme_env['AZUREDNS_APPID'] = (string)$this->config->dns_azuredns_appid;
         $this->acme_env['AZUREDNS_CLIENTSECRET'] = (string)$this->config->dns_azuredns_clientsecret;
+        
+        if ($this->config->dns_azuredns_managedidentity == '1') {
+            $this->acme_env['AZUREDNS_MANAGEDIDENTITY'] = 'true';
+        }
     }
 }
