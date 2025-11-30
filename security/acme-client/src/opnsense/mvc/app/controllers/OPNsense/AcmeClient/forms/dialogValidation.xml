@@ -1230,7 +1230,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>selectel</label>
+        <label>Selectel</label>
         <type>header</type>
         <style>table_dns table_dns_selectel</style>
     </field>
@@ -1242,8 +1242,7 @@
     <field>
         <id>validation.dns_sl_apiver</id>
         <label>API Version</label>
-        <type>text</type>
-        <help>Available Values: V2</help>
+        <type>dropdown</type>
     </field>
     <field>
         <id>validation.dns_sl_token_lifetime</id>
@@ -1255,7 +1254,7 @@
         <id>validation.dns_sl_account_id</id>
         <label>Account ID</label>
         <type>text</type>
-        <help>Account number, can be seen in the upper right corner on the provider's website</help>
+        <help>The account number can be found on the Selectel control panel</help>
     </field>
     <field>
         <id>validation.dns_sl_project_name</id>
@@ -1266,7 +1265,7 @@
         <id>validation.dns_sl_login_name</id>
         <label>Service username</label>
         <type>text</type>
-        <help>Service username, can be seen in the control panel</help>
+        <help>The service username can be found in the Selectel control panel</help>
     </field>
     <field>
         <id>validation.dns_sl_password</id>

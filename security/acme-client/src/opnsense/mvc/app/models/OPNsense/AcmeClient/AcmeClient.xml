@@ -1056,8 +1056,12 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
-                <dns_sl_apiver type="TextField">
+                <dns_sl_apiver type="OptionField">
                     <Required>N</Required>
+                    <OptionValues>
+                        <v1>API version 1 (deprecated)</v1>
+                        <v2>API version 2</v2>
+                    </OptionValues>
                 </dns_sl_apiver>
                 <dns_sl_token_lifetime type="TextField">
                     <Required>N</Required>
