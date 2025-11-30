@@ -4,318 +4,318 @@
     <version>1.1.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <carp_demote type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </carp_demote>
         <routerid type="TextField">
-            <default></default>
-            <Required>N</Required>
-            <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
+            <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </routerid>
         <costreference type="IntegerField">
-            <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4294967</MaximumValue>
             <ValidationMessage>Must be a number between 1 and 4294967.</ValidationMessage>
         </costreference>
         <logadjacencychanges type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </logadjacencychanges>
         <originate type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </originate>
         <originatealways type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </originatealways>
         <originatemetric type="IntegerField">
-            <Required>N</Required>
             <MinimumValue>0</MinimumValue>
             <MaximumValue>16777214</MaximumValue>
             <ValidationMessage>Must be a number between 0 and 16777214.</ValidationMessage>
         </originatemetric>
         <passiveinterfaces type="InterfaceField">
-                <Required>N</Required>
-                <multiple>Y</multiple>
-                <default></default>
-                <AllowDynamic>Y</AllowDynamic>
-                <filters>
-                    <enable>/^(?!0).*$/</enable>
-                </filters>
+            <Multiple>Y</Multiple>
+            <AllowDynamic>Y</AllowDynamic>
+            <filters>
+                <enable>/^(?!0).*$/</enable>
+            </filters>
         </passiveinterfaces>
+        <areas>
+            <area type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <id type="NetworkField">
+                    <Required>Y</Required>
+                    <AddressFamily>ipv4</AddressFamily>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <ValidationMessage>Please enter area ID in dotted (e.g. 0.0.0.1) format.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <ValidationMessage>The area ID must be unique.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </id>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <Default>stub</Default>
+                    <OptionValues>
+                        <stub>stub</stub>
+                        <stub-no-summary value="stub no-summary">stub no-summary</stub-no-summary>
+                        <nssa>nssa</nssa>
+                        <nssa-no-summary value="nssa no-summary">nssa no-summary</nssa-no-summary>
+                    </OptionValues>
+                </type>
+            </area>
+        </areas>
         <networks>
-                <network type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <ipaddr type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-                        </ipaddr>
-                        <area type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-                        </area>
-                        <netmask type="IntegerField">
-                                <default>24</default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>Y</Required>
-                                <MaximumValue>32</MaximumValue>
-                                <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
-                        </netmask>
-                        <arearange type="NetworkField">
-                                <Required>N</Required>
-                        </arearange>
-                        <linkedPrefixlistIn type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.ospf</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistIn>
-                        <linkedPrefixlistOut type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.ospf</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Prefix-List item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </linkedPrefixlistOut>
-                </network>
+            <network type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <ipaddr type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+                </ipaddr>
+                <area type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+                </area>
+                <netmask type="IntegerField">
+                    <Default>24</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <Required>Y</Required>
+                    <MaximumValue>32</MaximumValue>
+                    <ValidationMessage>Network mask must be between 0 and 32.</ValidationMessage>
+                </netmask>
+                <arearange type="NetworkField"/>
+                <linkedPrefixlistIn type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.ospf</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistIn>
+                <linkedPrefixlistOut type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.ospf</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
+                </linkedPrefixlistOut>
+            </network>
         </networks>
+        <neighbors>
+            <neighbor type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <address type="NetworkField">
+                    <Required>Y</Required>
+                </address>
+                <pollinterval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                </pollinterval>
+                <priority type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>255</MaximumValue>
+                </priority>
+            </neighbor>
+        </neighbors>
         <interfaces>
-                <interface type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <interfacename type="InterfaceField">
-                                 <Required>N</Required>
-                                 <multiple>N</multiple>
-                                 <default></default>
-                                 <AllowDynamic>Y</AllowDynamic>
-                                 <filters>
-                                         <enable>/^(?!0).*$/</enable>
-                                 </filters>
-                        </interfacename>
-                        <authtype type="OptionField">
-                                <Required>N</Required>
-                                <multiple>N</multiple>
-                                <default></default>
-                                <OptionValues>
-                                        <message-digest>MD5</message-digest>
-                                        <plain>plain</plain>
-                                </OptionValues>
-                        </authtype>
-                        <authkey type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                                <mask>/^\S+$/</mask>
-                        </authkey>
-                        <authkey_id type="IntegerField">
-                                <default>1</default>
-                                <MinimumValue>1</MinimumValue>
-                                <MaximumValue>255</MaximumValue>
-                                <Required>Y</Required>
-                                <ValidationMessage>The authentication key ID must be between 1 and 255.</ValidationMessage>
-                        </authkey_id>
-                        <area type="TextField">
-                                <default></default>
-                                <Required>N</Required>
-                                <mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</mask>
-                        </area>
-                        <cost type="IntegerField">
-                                <default></default>
-                                <MinimumValue>1</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>65535</MaximumValue>
-                                <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
-                        </cost>
-                        <cost_demoted type="IntegerField">
-                                <default>65535</default>
-                                <MinimumValue>1</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>65535</MaximumValue>
-                                <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
-                        </cost_demoted>
-                        <carp_depend_on type="VirtualIPField">
-                            <type>carp</type>
-                            <Required>N</Required>
-                        </carp_depend_on>
-                        <hellointerval type="IntegerField">
-                                <default></default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Hello interval must be between 0 and 4294967295.</ValidationMessage>
-                        </hellointerval>
-                        <deadinterval type="IntegerField">
-                                <default></default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Dead interval must be between 0 and 4294967295.</ValidationMessage>
-                        </deadinterval>
-                        <retransmitinterval type="IntegerField">
-                                <default></default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Retransmit interval must be between 0 and 4294967295.</ValidationMessage>
-                        </retransmitinterval>
-                        <transmitdelay type="IntegerField">
-                                <default></default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Transmit delay must be between 0 and 4294967295.</ValidationMessage>
-                        </transmitdelay>
-                        <priority type="IntegerField">
-                                <default></default>
-                                <MinimumValue>0</MinimumValue>
-                                <Required>N</Required>
-                                <MaximumValue>4294967295</MaximumValue>
-                                <ValidationMessage>Priority must be between 0 and 4294967295.</ValidationMessage>
-                        </priority>
-                        <bfd type="BooleanField">
-                                <default>0</default>
-                                <Required>N</Required>
-                        </bfd>
-                        <networktype type="OptionField">
-                                <Required>N</Required>
-                                <multiple>N</multiple>
-                                <default></default>
-                                <OptionValues>
-                                        <broadcast>Broadcast multi-access network</broadcast>
-                                        <non-broadcast>NBMA network</non-broadcast>
-                                        <point-to-multipoint>Point-to-multipoint network</point-to-multipoint>
-                                        <point-to-point>Point-to-point network</point-to-point>
-                                </OptionValues>
-                        </networktype>
-                </interface>
+            <interface type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <interfacename type="InterfaceField">
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </interfacename>
+                <authtype type="OptionField">
+                    <OptionValues>
+                        <message-digest>MD5</message-digest>
+                        <plain>plain</plain>
+                    </OptionValues>
+                </authtype>
+                <authkey type="TextField">
+                    <Mask>/^\S+$/</Mask>
+                </authkey>
+                <authkey_id type="IntegerField">
+                    <Default>1</Default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>255</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>The authentication key ID must be between 1 and 255.</ValidationMessage>
+                </authkey_id>
+                <area type="TextField">
+                    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+                </area>
+                <cost type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
+                </cost>
+                <cost_demoted type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Cost must be between 1 and 65535.</ValidationMessage>
+                </cost_demoted>
+                <carp_depend_on type="VirtualIPField">
+                    <type>carp</type>
+                </carp_depend_on>
+                <hellointerval type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                    <ValidationMessage>Hello interval must be between 0 and 4294967295.</ValidationMessage>
+                </hellointerval>
+                <deadinterval type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                    <ValidationMessage>Dead interval must be between 0 and 4294967295.</ValidationMessage>
+                </deadinterval>
+                <retransmitinterval type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                    <ValidationMessage>Retransmit interval must be between 0 and 4294967295.</ValidationMessage>
+                </retransmitinterval>
+                <transmitdelay type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                    <ValidationMessage>Transmit delay must be between 0 and 4294967295.</ValidationMessage>
+                </transmitdelay>
+                <priority type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                    <ValidationMessage>Priority must be between 0 and 4294967295.</ValidationMessage>
+                </priority>
+                <bfd type="BooleanField"/>
+                <networktype type="OptionField">
+                    <OptionValues>
+                        <broadcast>Broadcast multi-access network</broadcast>
+                        <non-broadcast>NBMA network</non-broadcast>
+                        <point-to-multipoint>Point-to-multipoint network</point-to-multipoint>
+                        <point-to-point>Point-to-point network</point-to-point>
+                    </OptionValues>
+                </networktype>
+                <p2mpoptions type="OptionField">
+                    <OptionValues>
+                        <delay-reflood>Delay reflood</delay-reflood>
+                        <non-broadcast>Non-broadcast</non-broadcast>
+                    </OptionValues>
+                </p2mpoptions>
+            </interface>
         </interfaces>
         <prefixlists>
-                <prefixlist type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <name type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <mask>/^([0-9a-zA-Z\._\-]){1,64}$/u</mask>
-                                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-                        </name>
-                        <seqnumber type="IntegerField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
-                        </seqnumber>
-                        <action type="OptionField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <network type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                        </network>
-                </prefixlist>
+            <prefixlist type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z\._\-]){1,64}$/u</Mask>
+                    <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+                </name>
+                <seqnumber type="IntegerField">
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                </seqnumber>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <network type="TextField">
+                    <Required>Y</Required>
+                </network>
+            </prefixlist>
         </prefixlists>
         <routemaps>
-                <routemap type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <name type="TextField">
-                                <default></default>
-                                <Required>Y</Required>
-                        </name>
-                        <action type="OptionField">
-                                <Required>Y</Required>
-                                <OptionValues>
-                                        <permit>Permit</permit>
-                                        <deny>Deny</deny>
-                                </OptionValues>
-                        </action>
-                        <id type="IntegerField">
-                                <default></default>
-                                <Required>Y</Required>
-                                <MinimumValue>10</MinimumValue>
-                                <MaximumValue>99</MaximumValue>
-                        </id>
-                        <match2 type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.ospf</source>
-                                                <items>prefixlists.prefixlist</items>
-                                                <display>name</display>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related item not found</ValidationMessage>
-                                <Multiple>N</Multiple>
-                                <Required>N</Required>
-                        </match2>
-                        <set type="TextField">
-                                <Required>N</Required>
-                        </set>
-                </routemap>
+            <routemap type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <action type="OptionField">
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <permit>Permit</permit>
+                        <deny>Deny</deny>
+                    </OptionValues>
+                </action>
+                <id type="IntegerField">
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                </id>
+                <match2 type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.ospf</source>
+                            <items>prefixlists.prefixlist</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
+                </match2>
+                <set type="TextField"/>
+            </routemap>
         </routemaps>
         <redistributions>
-                <redistribution type="ArrayField">
-                        <enabled type="BooleanField">
-                                <default>1</default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <description type="DescriptionField"/>
-                        <redistribute type="OptionField">
-                                <Required>Y</Required>
-                                <Default>connected</Default>
-                                <OptionValues>
-                                        <bgp>Border Gateway Protocol (BGP)</bgp>
-                                        <connected>Connected routes (directly attached subnet or host)</connected>
-                                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                                        <rip>Routing Information Protocol (RIP)</rip>
-                                        <static>Statically configured routes</static>
-                                </OptionValues>
-                        </redistribute>
-                        <linkedRoutemap type="ModelRelationField">
-                                <Model>
-                                        <template>
-                                                <source>OPNsense.quagga.ospf</source>
-                                                <items>routemaps.routemap</items>
-                                                <display>name</display>
-                                                <group>name</group>
-                                        </template>
-                                </Model>
-                                <ValidationMessage>Related Route-Map item not found</ValidationMessage>
-                        </linkedRoutemap>
-                </redistribution>
+            <redistribution type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <redistribute type="OptionField">
+                    <Required>Y</Required>
+                    <Default>connected</Default>
+                    <OptionValues>
+                        <bgp>Border Gateway Protocol (BGP)</bgp>
+                        <connected>Connected routes (directly attached subnet or host)</connected>
+                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                        <rip>Routing Information Protocol (RIP)</rip>
+                        <static>Statically configured routes</static>
+                    </OptionValues>
+                </redistribute>
+                <linkedRoutemap type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.quagga.ospf</source>
+                            <items>routemaps.routemap</items>
+                            <display>name</display>
+                            <group>name</group>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
+                </linkedRoutemap>
+            </redistribution>
         </redistributions>
     </items>
 </model>

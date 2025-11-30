@@ -38,7 +38,7 @@
          </enabled>
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
             <Constraints>
                 <check001>
@@ -49,7 +49,7 @@
          </name>
          <address type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
             <ChangeCase>lower</ChangeCase>
             <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
          </address>
@@ -72,7 +72,7 @@
       <table type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
             <Constraints>
                 <check001>
@@ -101,7 +101,7 @@
       <tablecheck type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
          </name>
          <type type="OptionField">
@@ -120,7 +120,7 @@
             <Required>N</Required>
          </path>
          <host type="TextField">
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
             <ChangeCase>lower</ChangeCase>
             <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
             <Required>N</Required>
@@ -145,7 +145,7 @@
       <virtualserver type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</Mask>
             <ValidationMessage>Should be a string between 1 and 31 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
             <Constraints>
                 <check001>
@@ -168,7 +168,7 @@
          </type>
          <listen_address type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
             <ChangeCase>lower</ChangeCase>
             <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
          </listen_address>
@@ -243,7 +243,7 @@
          </transport_timeout>
          <transport_tablemode type="OptionField">
             <Required>Y</Required>
-            <default>roundrobin</default>
+            <Default>roundrobin</Default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -307,7 +307,7 @@
          </backuptransport_tablecheck>
          <backuptransport_tablemode type="OptionField">
             <Required>Y</Required>
-            <default>roundrobin</default>
+            <Default>roundrobin</Default>
             <OptionValues>
                <hash>Hash</hash>
                <least-states>Least States</least-states>
@@ -339,7 +339,7 @@
       <protocol type="ArrayField">
          <name type="TextField">
             <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
+            <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
             <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
          </name>
          <type type="OptionField">

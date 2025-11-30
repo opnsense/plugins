@@ -1,30 +1,47 @@
 <model>
     <mount>//OPNsense/quagga/bfd</mount>
     <description>BFD configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <neighbors>
             <neighbor type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
-                <description type="TextField">
-                    <default></default>
-                    <Required>N</Required>
-                </description>
+                <description type="TextField"/>
                 <address type="NetworkField">
-                    <default></default>
                     <Required>Y</Required>
                 </address>
                 <multihop type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </multihop>
+                <detect_multiplier type="IntegerField">
+                    <Default>3</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>255</MaximumValue>
+                    <ValidationMessage>Value must be between 1 and 255.</ValidationMessage>
+                </detect_multiplier>
+                <receive_interval type="IntegerField">
+                    <Default>300</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>4294967</MaximumValue>
+                    <ValidationMessage>Value must be between 10 and 4294967.</ValidationMessage>
+                </receive_interval>
+                <transmit_interval type="IntegerField">
+                    <Default>300</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>10</MinimumValue>
+                    <MaximumValue>4294967</MaximumValue>
+                    <ValidationMessage>Value must be between 10 and 4294967.</ValidationMessage>
+                </transmit_interval>
             </neighbor>
         </neighbors>
     </items>

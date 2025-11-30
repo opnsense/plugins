@@ -1,17 +1,52 @@
-Caddy - The Ultimate Server - makes your sites more secure, more reliable, and more scalable than any other solution.
-By default, Caddy automatically obtains and renews TLS certificates (Let's Encrypt and ZeroSSL) for all your sites.
-It's the most advanced HTTPS server in the world.
-
-* Reverse Proxy HTTP, HTTPS and WebSockets
-* Route UDP/TCP traffic with the included Layer4 module: https://github.com/mholt/caddy-l4
-* Dynamic DNS module included: https://github.com/mholt/caddy-dynamicdns
-* Large selection of DNS Providers available: https://github.com/caddy-dns
+Fast and extensible multi-platform HTTP/1-2-3 web server with automatic HTTPS
 
 WWW: https://caddyserver.com/
 DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 
 Plugin Changelog
 ================
+
+2.0.4
+
+Add: DNS-01 challenge delegation via CNAME (contributed by sdsys-ch) (opnsense/plugins/pull/4950)
+Fix: Enabling HTTP access log wrongly excluded the process logs (opnsense/plugins/pull/4974)
+Fix: fix setup.sh script not setting correct ownership in www user mode (opnsense/plugins/pull/4976)
+Fix: Prevent sudo on startup via skip_install_trust (opnsense/plugins/pull/5015)
+
+2.0.3
+
+Add: Tabulator groupBy of domain and subdomain (opnsense/plugins/pull/4909)
+Cleanup: Grid HTML and style
+Fix: Tabulator 'Data Load Response Blocked' warning
+Fix: setup.sh interaction with caddy storage and permissions (opnsense/plugins/pull/4911)
+Fix: Emit subdomain http access logs when wildcard parent has logging enabled (opnsense/plugins/issues/4914)
+
+2.0.2
+
+Add: Global server timeout options (opnsense/plugins/pull/4778)
+Cleanup: Change all camelCase to snake_case in api notations (opnsense/plugins/pull/4767,4768,4776)
+Cleanup: Use SimpleActionButton in general.volt (opnsense/plugins/pull/4779)
+Cleanup: Change em into px, fix key/value display in formatter (opnsense/plugins/pull/4807)
+Cleanup: Remove obsolete model_relation_domain formatter (opnsense/plugins/pull/4813)
+
+2.0.1
+
+Add: Active health checks to handlers (contributed by zaben903) (opnsense/plugins/pull/4721)
+Fix: Add handler command sometimes clearing domain selection in open dialogue (opnsense/plugins/pull/4748)
+
+2.0.0
+
+* Attention - Breaking Change: All DNS Providers except Cloudflare have been removed and will not come back (opnsense/plugins/pull/4691)
+              Going forward, if DNS-01 challenge or Dynamic DNS is a requirement, you could use os-acme-client and os-ddclient.
+              Another option is to migrate to Cloudflare, as this module will stay a core component.
+
+* Add: Request Matcher option to Access List (contributed by spawntty) (opnsense/plugins/pull/4680)
+* Add: ECH can configure encrypted client hello with Cloudflare (opnsense/plugins/pull/4673)
+* Add: Client Auth (mTLS) to subdomains (opnsense/plugins/pull/4673)
+* Build: Update to caddy-v2.10.0 (opnsense/tools/pull/469)
+* Change: Render subdomains in a new pattern in the Caddyfile to adhere to caddy-v2.10.0 standard (opnsense/plugins/pull/4673)
+* Change: Show only wildcard domains in subdomain selection (opnsense/plugins/pull/4646)
+* Fix: Missing translation and toggle filter icon (opnsense/plugins/pull/4648)
 
 1.8.5
 

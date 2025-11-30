@@ -12,6 +12,7 @@ Plugin Changelog
 1.9
 
 * Add dashboard widget
+* Fix IPv6 port declaration (contributed by BPplays)
 
 1.8
 

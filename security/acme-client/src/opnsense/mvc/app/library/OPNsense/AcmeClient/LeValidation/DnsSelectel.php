@@ -2,6 +2,7 @@
 
 /*
  * Copyright (C) 2020 Frank Wall
+ * Modifications Copyright (C) 2025 Renat Gorbushin
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,5 +41,11 @@ class DnsSelectel extends Base implements LeValidationInterface
     public function prepare()
     {
         $this->acme_env['SL_Key'] = (string)$this->config->dns_sl_key;
+        $this->acme_env['SL_Ver'] = (string)$this->config->dns_sl_apiver;
+        $this->acme_env['SL_Expire'] = (string)$this->config->dns_slv2_token_lifetime;
+        $this->acme_env['SL_Login_ID'] = (string)$this->config->dns_sl_account_id;
+        $this->acme_env['SL_Project_Name'] = (string)$this->config->dns_sl_project_name;
+        $this->acme_env['SL_Login_Name'] = (string)$this->config->dns_sl_login_name;
+        $this->acme_env['SL_Pswd'] = (string)$this->config->dns_sl_password;
     }
 }

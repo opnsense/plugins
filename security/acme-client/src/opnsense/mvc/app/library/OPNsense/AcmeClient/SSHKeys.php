@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -27,6 +28,8 @@
  */
 
 namespace OPNsense\AcmeClient;
+
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Utility class for managing SSH host-keys (known_hosts) and identity keys.
@@ -153,10 +156,10 @@ class SSHKeys
         // Updating $host and $host_key from known_hosts and check if we need to update known_hosts.
         if ($host_key === false && $known_by_host) {
             if ($known_by_host_matches_port) {
-                Utils::log()->info("No host key specified, using existing known_hosts entry for '$host'");
+                LeUtils::log_debug("No host key specified, using existing known_hosts entry for '$host'");
                 $host_key = $known_by_host["key_info"];
             } else {
-                Utils::log()->info("No host key specified and existing entry for '$host' cannot be used as isn't matching port $port.");
+                LeUtils::log_debug("No host key specified and existing entry for '$host' cannot be used as isn't matching port $port.");
             }
         }
 
@@ -165,7 +168,7 @@ class SSHKeys
             $is_key_known = true;
         } elseif ($known_by_key) {
             if (strcasecmp(trim($host), trim($known_by_key["host"])) != 0) {
-                Utils::log()->info("Host key is in known_hosts but hostname differs. Changing '$host' to '{$known_by_key["host"]}'.");
+                LeUtils::log_debug("Host key is in known_hosts but hostname differs. Changing '$host' to '{$known_by_key["host"]}'.");
                 $host = $known_by_key["host"];
             }
             $is_key_known = true;
@@ -196,15 +199,15 @@ class SSHKeys
 
             if (!empty($matching_remote_host_keys)) {
                 if ($known_by_host && $known_by_host_matches_port) {
-                    Utils::log()->info("Removing known_hosts entry with differing key for '{$known_by_host["host_query"]}' as it is in the way.");
+                    LeUtils::log_debug("Removing known_hosts entry with differing key for '{$known_by_host["host_query"]}' as it is in the way.");
                     $this->removeKnownHost($known_by_host["host_query"]);
                 }
 
                 foreach ($matching_remote_host_keys as $key) {
-                    Utils::log()->info("Adding known_hosts entry: " . json_encode($key["key_info"], JSON_UNESCAPED_SLASHES));
+                    LeUtils::log_debug("Adding known_hosts entry: " . json_encode($key["key_info"], JSON_UNESCAPED_SLASHES));
                     $ok = file_put_contents($this->knownHostsFile(), $key["host_key"] . PHP_EOL, FILE_APPEND);
                     if (!$ok) {
-                        Utils::log()->error("Failed adding known_hosts entry {$key["host_key"]}");
+                        LeUtils::log_error("Failed adding SSH known_hosts entry {$key["host_key"]}");
                     }
                 }
 
@@ -331,12 +334,12 @@ class SSHKeys
                     ? ""
                     : PHP_EOL . "ssh-keyscan: " . join(PHP_EOL . "ssh-keyscan: ", $lines);
 
-                Utils::log()->error("Failed querying host keys ($key_type) for [$names] port $port. Exit code: {$p->exitCode} (error-marker: $marker) $output");
+                LeUtils::log_error("Failed querying SSH host keys ($key_type) for [$names] port $port. Exit code: {$p->exitCode} (error-marker: $marker) $output");
             }
         }
 
         if (empty($keys)) {
-            Utils::log()->info("Couldn't fetch public host key ($key_type) from {$host}:{$port}");
+            LeUtils::log_debug("Couldn't fetch public host key ($key_type) from {$host}:{$port}");
 
             if (!is_array($error) || empty($error)) {
                 $error = ["connection_refused" => true];
@@ -384,13 +387,13 @@ class SSHKeys
                         ? ""
                         : PHP_EOL . join(PHP_EOL, $lines);
 
-                    Utils::log()->error("Failed querying known hosts for $name_or_ip ($host). Exit code: {$p->exitCode} $output");
+                    LeUtils::log_error("Failed querying SSH known hosts for $name_or_ip ($host). Exit code: {$p->exitCode} $output");
                 }
             }
         }
 
         if (empty($keys)) {
-            Utils::log()->info("Didn't find $host in known_hosts");
+            LeUtils::log_debug("Could not find $host in known_hosts");
         }
 
         return $keys;
@@ -408,7 +411,7 @@ class SSHKeys
         if ($p = Process::open(["ssh-keygen", "-R", $host, "-f", $this->knownHostsFile()])) {
             $ok = $p->close() === 0;
             if (!$ok) {
-                Utils::log()->error("Failed removing known hosts for $host. Return code was: {$p->exitCode}");
+                LeUtils::log_error("Failed removing SSH known hosts for $host. Return code was: {$p->exitCode}");
             }
         }
 
@@ -433,11 +436,11 @@ class SSHKeys
                     "key_length" => $matches[1]
                 ];
             } else {
-                Utils::log()->error("Unsupported hash type: $hash");
+                LeUtils::log_error("Unsupported hash type: $hash");
             }
         }
 
-        Utils::log()->error("Failed getting hash for host_key");
+        LeUtils::log_error("Failed getting hash for host_key");
         return false;
     }
 
@@ -472,7 +475,7 @@ class SSHKeys
 
             if ($p = Process::open($generate_key)) {
                 while (($line = $p->get(10)) !== false) {
-                    Utils::log()->info("SSH keygen: $line");
+                    LeUtils::log_debug("SSH keygen: $line");
                 }
 
                 Utils::requireThat(

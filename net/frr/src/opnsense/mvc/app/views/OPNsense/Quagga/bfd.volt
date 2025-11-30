@@ -37,12 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         $("#{{formGridEditBFDNeighbor['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/bfd/searchNeighbor',
-            'get':'/api/quagga/bfd/getNeighbor/',
-            'set':'/api/quagga/bfd/setNeighbor/',
-            'add':'/api/quagga/bfd/addNeighbor/',
-            'del':'/api/quagga/bfd/delNeighbor/',
-            'toggle':'/api/quagga/bfd/toggleNeighbor/'
+            'search':'/api/quagga/bfd/search_neighbor',
+            'get':'/api/quagga/bfd/get_neighbor/',
+            'set':'/api/quagga/bfd/set_neighbor/',
+            'add':'/api/quagga/bfd/add_neighbor/',
+            'del':'/api/quagga/bfd/del_neighbor/',
+            'toggle':'/api/quagga/bfd/toggle_neighbor/'
         });
 
         $("#reconfigureAct").SimpleActionButton({
@@ -74,5 +74,12 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial('layout_partials/base_bootgrid_table', formGridEditBFDNeighbor)}}
     </div>
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
+    }
+) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBFDNeighbor,'id':formGridEditBFDNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}

@@ -8,13 +8,13 @@
         <general>
 
             <enabled type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
 
             <logLevel type="OptionField">
                 <Required>Y</Required>
-                <default>2</default>
+                <Default>2</Default>
                 <OptionValues>
                     <ll1 value="1">1 (only serious errors)</ll1>
                     <ll2 value="2">2 (default)</ll2>
@@ -26,7 +26,7 @@
 
             <logFullUsername type="OptionField">
                 <Required>Y</Required>
-                <default>off</default>
+                <Default>off</Default>
                 <OptionValues>
                     <on>On</on>
                     <off>Off</off>
@@ -35,7 +35,7 @@
 
             <logMac type="OptionField">
                 <Required>Y</Required>
-                <default>Original</default>
+                <Default>Original</Default>
                 <OptionValues>
                     <Static>Static</Static>
                     <Original>Original</Original>
@@ -48,7 +48,7 @@
 
             <loopPrevention type="OptionField">
                 <Required>Y</Required>
-                <default>on</default>
+                <Default>on</Default>
                 <OptionValues>
                     <on>On</on>
                     <off>Off</off>
@@ -93,13 +93,13 @@
             <client type="ArrayField">
 
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
 
                 <identifier type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
                     <Constraints>
                         <check001>
@@ -125,7 +125,7 @@
 
                 <type type="OptionField">
                     <Required>Y</Required>
-                    <default>udp</default>
+                    <Default>udp</Default>
                     <OptionValues>
                         <udp>UDP</udp>
                         <tcp>TCP</tcp>
@@ -165,7 +165,7 @@
 
                 <certificateNameCheck type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>
@@ -206,7 +206,7 @@
 
                 <identifier type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
                     <Constraints>
                         <check001>
@@ -231,7 +231,7 @@
 
                 <statusServer type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>
@@ -242,7 +242,7 @@
 
                 <type type="OptionField">
                     <Required>Y</Required>
-                    <default>udp</default>
+                    <Default>udp</Default>
                     <OptionValues>
                         <udp>UDP</udp>
                         <tcp>TCP</tcp>
@@ -282,7 +282,7 @@
 
                 <certificateNameCheck type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>
@@ -323,9 +323,9 @@
 
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
-                    <default>default</default>
+                    <Default>default</Default>
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>
@@ -352,12 +352,12 @@
 
                 <policyOids type="CSVListField">
                     <Required>N</Required>
-                    <multiple>Y</multiple>
+                    <Multiple>Y</Multiple>
                 </policyOids>
 
                 <crlCheck type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>
@@ -375,7 +375,7 @@
             <realm type="ArrayField">
 
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
 
@@ -424,7 +424,7 @@
 
                 <accountingResponse type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>
@@ -442,15 +442,15 @@
             <rewrite type="ArrayField">
 
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
 
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z_\-]){1,25}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 25 characters whithout special characters.</ValidationMessage>
-                    <default>default</default>
+                    <Default>default</Default>
                     <Constraints>
                         <check001>
                             <type>UniqueConstraint</type>
@@ -493,7 +493,7 @@
 
                 <whitelistMode type="OptionField">
                     <Required>Y</Required>
-                    <default>off</default>
+                    <Default>off</Default>
                     <OptionValues>
                         <on>On</on>
                         <off>Off</off>

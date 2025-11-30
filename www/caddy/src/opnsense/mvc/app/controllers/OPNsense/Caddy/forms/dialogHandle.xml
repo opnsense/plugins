@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this handler.]]></help>
         <grid_view>
-            <width>2em</width>
+            <width>20</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -20,7 +20,7 @@
         <type>dropdown</type>
         <help><![CDATA[Select a domain to handle.]]></help>
         <grid_view>
-            <formatter>model_relation_domain</formatter>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -29,7 +29,7 @@
         <type>dropdown</type>
         <help><![CDATA[Select a subdomain to handle. Make sure to additionaly choose a wildcard domain as "Domain". Leave unset, if not using subdomains.]]></help>
         <grid_view>
-            <formatter>model_relation_domain</formatter>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>
@@ -338,6 +338,113 @@
         <help><![CDATA[unhealthy_request_count is the permissible number of simultaneous requests to a backend before marking it as down. In other words, if a particular backend is currently handling this many requests, then it is considered "overloaded" and other backends will be preferred instead. This should be a reasonably large number; configuring this means that the proxy will have a limit of unhealthy_request_count × upstreams_count total simultaneous requests, and any requests after that point will result in an error due to no upstreams being available.]]></help>
         <grid_view>
             <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_uri</id>
+        <label>Active Health URI</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[health_uri is the URI path (and optional query) for active health checks.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_upstream</id>
+        <label>Active Health Upstream</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[health_upstream is the ip:port to use for active health checks, if different from the upstream. This should be used in tandem with health_header and {http.reverse_proxy.active.target_upstream}]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_port</id>
+        <label>Active Health Port</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[health_port is the port to use for active health checks, if different from the upstream's port. Ignored if health_upstream is used.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_interval</id>
+        <label>Active Health Interval</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>30</hint>
+        <help><![CDATA[health_interval is a duration value that defines how often to perform active health checks. Default: 30s.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_passes</id>
+        <label>Active Health Passes</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>1</hint>
+        <help><![CDATA[health_passes is the number of consecutive health checks required before marking the backend as healthy again. Default: 1.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_fails</id>
+        <label>Active Health Fails</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>1</hint>
+        <help><![CDATA[health_fails is the number of consecutive health checks required before marking the backend as unhealthy. Default: 1.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_timeout</id>
+        <label>Active Health Timeout</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>5</hint>
+        <help><![CDATA[health_timeout is a duration value that defines how long to wait for a reply before marking the backend as down. Default: 5s.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_status</id>
+        <label>Active Health Status</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <hint>200</hint>
+        <help><![CDATA[health_status is the HTTP status code to expect from a healthy backend. Can be a 3-digit status code, or a status code class ending in xx. For example: 200 (which is the default), or 2xx.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_body</id>
+        <label>Active Health Body</label>
+        <type>text</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[health_body is a substring or regular expression to match on the response body of an active health check. If the backend does not return a matching body, it will be marked as down.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>handle.health_follow_redirects</id>
+        <label>Active Health Follow Redirects</label>
+        <type>checkbox</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[health_follow_redirects will cause the health check to follow redirects provided by upstream. By default, a redirect response would cause the health check to count as a fail.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
         </grid_view>
     </field>
 </form>

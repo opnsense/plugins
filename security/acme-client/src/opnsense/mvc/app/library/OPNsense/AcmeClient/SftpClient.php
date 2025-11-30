@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -27,6 +28,8 @@
  */
 
 namespace OPNsense\AcmeClient;
+
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Wrapper around the 'sftp' commandline client.
@@ -71,13 +74,13 @@ class SftpClient
     {
         if (empty(trim($host)) || empty(trim($username))) {
             $this->failed_status = ["invalid_parameters" => true];
-            Utils::log()->error("Failed connecting to '$host'. Hostname or username is missing.");
+            LeUtils::log_error("Failed connecting to '$host'. Hostname or username is missing.");
             return false;
         }
 
         $trust = $this->ssh_keys->trustHost($host, $host_key, $port);
         if ($trust["ok"] !== true) {
-            Utils::log()->error("Failed establishing trust in '$host'; Cause: {$trust["error"]}");
+            LeUtils::log_error("Failed establishing trust in '$host'; Cause: {$trust["error"]}");
             unset($trust["ok"]);
             $this->failed_status = array_merge($trust, ["host_not_trusted" => true]);
             return false;
@@ -103,7 +106,7 @@ class SftpClient
                 "-oPreferredAuthentications=publickey"
             );
         } else {
-            Utils::log()->error("Failed adding client identity ($identity). Connect will likely fail.");
+            LeUtils::log_error("Failed adding client identity ($identity). Connect will likely fail.");
         }
 
         // Adding the host
@@ -113,7 +116,7 @@ class SftpClient
         if ($this->process = Process::open($cmd)) {
             $this->processAvailableInput(self::CONNECT_REPLY_TIMEOUT, 1, null, 0.75);
             if (($error = $this->lastError()) || !$this->process->isRunning()) {
-                Utils::log()->error("Failed connecting to '$host' (user: '$username')", $error);
+                LeUtils::log_error("Failed connecting to '$host' (user: '$username')", $error);
                 return false;
             }
             $this->connection_info = ["host" => $host, "port" => $port, "user" => $username];
@@ -151,7 +154,7 @@ class SftpClient
 
             $consumed = ($lines_consumer && $lines_consumer($line) === true);
             if (!$consumed) {
-                Utils::log()->info("SFTP: " . rtrim($line));
+                LeUtils::log_debug("SFTP: " . rtrim($line));
             }
 
             if (!$lines_consumer || $consumed) {
@@ -286,7 +289,7 @@ class SftpClient
                 . (empty($remote_file) ? "" : " " . escapeshellarg($remote_file)));
             $this->processAvailableInput(self::COMMAND_REPLY_TIMEOUT, 2);
         } else {
-            Utils::log()->info("put: File $local_file doesn't exist.");
+            LeUtils::log_debug("put: File $local_file doesn't exist.");
             $this->failed_status = ["file_not_found" => true, "error" => $local_file];
         }
 

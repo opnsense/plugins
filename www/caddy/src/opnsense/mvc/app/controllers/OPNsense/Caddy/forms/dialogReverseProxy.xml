@@ -5,7 +5,7 @@
         <type>checkbox</type>
         <help><![CDATA[Enable this domain.]]></help>
         <grid_view>
-            <width>2em</width>
+            <width>20</width>
             <type>boolean</type>
             <formatter>rowtoggle</formatter>
         </grid_view>
@@ -46,7 +46,7 @@
         <label>Certificate</label>
         <type>dropdown</type>
         <style>selectpicker style_tls_reverse</style>
-        <help><![CDATA[Choose ACME to get automatic certificates with the built in ACME client; no additional plugin required. The "HTTP-01", "TLS-ALPN-01" or "DNS-01" challenge will be used to get automatic "Let's Encrypt" or "ZeroSSL" certificates. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain. Make sure the full chain has been imported.]]></help>
+        <help><![CDATA[Choose "Auto HTTPS" to get automatic "Let's Encrypt" or "ZeroSSL" certificates; no additional plugin required. Alternatively, choose a custom certificate from "System - Trust - Certificates" for this domain, e.g., certificates managed by the optional os-acme-client plugin.]]></help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -71,6 +71,16 @@
             <visible>false</visible>
             <type>boolean</type>
             <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>reverse.DnsChallengeOverrideDomain</id>
+        <label>DNS-01 Override Domain</label>
+        <type>text</type>
+        <help><![CDATA[If using CNAME delegation for DNS-01 challenges, enter the target domain here. The DNS provider will manage TXT records at '_acme-challenge.targetdomain' instead of the certificate domain. Your configured DNS Provider must have write access to this target domain. For wildcard certificates, ensure the CNAME delegation covers the _acme-challenge label. This enables least-privilege setups or can be used as a workaround when the primary DNS provider lacks an API. Leave empty if your DNS Provider has a dedicated field for this.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
         </grid_view>
     </field>
     <field>

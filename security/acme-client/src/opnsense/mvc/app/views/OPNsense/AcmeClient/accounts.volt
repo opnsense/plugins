@@ -49,7 +49,6 @@ POSSIBILITY OF SUCH DAMAGE.
             ajax: true,
             selection: true,
             multiSelect: true,
-            rowCount:[10,25,50,100,500,1000],
             url: '/api/acmeclient/accounts/search',
             formatters: {
                 "commands": function (column, row) {
@@ -115,7 +114,9 @@ POSSIBILITY OF SUCH DAMAGE.
         /**
          * copy actions for selected items from opnsense_bootgrid_plugin.js
          */
-        var grid_accounts = $("#grid-accounts").bootgrid(gridopt).on("loaded.rs.jquery.bootgrid", function (e)
+        const grid_accounts = $("#grid-accounts").UIBootgrid($.extend(gridParams, { options: gridopt }));
+
+        $("#grid-accounts").on("loaded.rs.jquery.bootgrid", function (e)
         {
             // toggle all rendered tooltips (once for all)
             $('.bootgrid-tooltip').tooltip();

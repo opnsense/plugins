@@ -31,4 +31,34 @@
       <formatter>boolean</formatter>
     </grid_view>
   </field>
+  <field>
+    <id>neighbor.detect_multiplier</id>
+    <label>Detect multiplier</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Configures the detection multiplier to determine packet loss. The remote transmission interval will be multiplied by this value to determine the connection loss detection timer. The default value is 3.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.receive_interval</id>
+    <label>Receive interval</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Configures the minimum interval that this system is capable of receiving control packets. The default value is 300 milliseconds.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.transmit_interval</id>
+    <label>Transmit interval</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>The minimum transmission interval (less jitter) that this system wants to use to send BFD control packets. Defaults to 300ms.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
 </form>

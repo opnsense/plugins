@@ -1,0 +1,11 @@
+<model>
+    <mount>//OPNsense/QFeedsConnector</mount>
+    <version>1.0.0</version>
+    <description>QFeeds connector</description>
+    <items>
+        <general>
+            <apikey type="TextField"/>
+            <enable_unbound_bl type="BooleanField"/>
+        </general>
+    </items>
+</model>

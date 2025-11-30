@@ -34,22 +34,22 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-networks").UIBootgrid(
-            {   search:'/api/tinc/settings/searchNetwork',
-                get:'/api/tinc/settings/getNetwork/',
-                set:'/api/tinc/settings/setNetwork/',
-                add:'/api/tinc/settings/setNetwork/',
-                del:'/api/tinc/settings/delNetwork/',
-                toggle:'/api/tinc/settings/toggleNetwork/'
+            {   search:'/api/tinc/settings/search_network',
+                get:'/api/tinc/settings/get_network/',
+                set:'/api/tinc/settings/set_network/',
+                add:'/api/tinc/settings/set_network/',
+                del:'/api/tinc/settings/del_network/',
+                toggle:'/api/tinc/settings/toggle_network/'
             }
         );
 
         $("#grid-hosts").UIBootgrid(
-                {   search:'/api/tinc/settings/searchHost',
-                    get:'/api/tinc/settings/getHost/',
-                    set:'/api/tinc/settings/setHost/',
-                    add:'/api/tinc/settings/setHost/',
-                    del:'/api/tinc/settings/delHost/',
-                    toggle:'/api/tinc/settings/toggleHost/'
+                {   search:'/api/tinc/settings/search_host',
+                    get:'/api/tinc/settings/get_host/',
+                    set:'/api/tinc/settings/set_host/',
+                    add:'/api/tinc/settings/set_host/',
+                    del:'/api/tinc/settings/del_host/',
+                    toggle:'/api/tinc/settings/toggle_host/'
                 }
         );
 

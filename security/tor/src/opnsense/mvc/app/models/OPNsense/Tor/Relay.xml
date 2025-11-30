@@ -4,31 +4,31 @@
   <description>Tor Relay configuration</description>
   <items>
     <enabled type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </enabled>
     <dir_frontpage type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </dir_frontpage>
     <host type="TextField">
       <Required>N</Required>
-      <mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</mask>
+      <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
     </host>
     <hostv6 type="TextField">
       <Required>N</Required>
-      <mask>/^[a-f0-9:]{2,}$/i</mask>
+      <Mask>/^[a-f0-9:]{2,}$/i</Mask>
     </hostv6>
     <outboundbind type="TextField">
       <Required>N</Required>
-      <mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</mask>
+      <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
     </outboundbind>
     <outboundbindv6 type="TextField">
       <Required>N</Required>
-      <mask>/^[a-f0-9:]{2,}$/i</mask>
+      <Mask>/^[a-f0-9:]{2,}$/i</Mask>
     </outboundbindv6>
     <port type="IntegerField">
-      <default>9001</default>
+      <Default>9001</Default>
       <MinimumValue>0</MinimumValue>
       <Required>Y</Required>
       <MaximumValue>65535</MaximumValue>
@@ -43,21 +43,21 @@
     <address type="TextField">
       <Required>N</Required>
       <!-- hostname -->
-      <mask>/^[a-z0-9.-]+$/i</mask>
+      <Mask>/^[a-z0-9.-]+$/i</Mask>
     </address>
     <nick type="TextField">
       <Required>N</Required>
       <!-- by docs -->
-      <mask>/^[a-zA-Z0-9]+$/</mask>
+      <Mask>/^[a-zA-Z0-9]+$/</Mask>
     </nick>
     <contact_info type="TextField">
       <Required>N</Required>
-      <mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></mask>
+      <Mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></Mask>
     </contact_info>
     <family type="TextField">
       <Required>N</Required>
       <!-- series of hex arrays -->
-      <mask>/^[a-fA-F0-9,]+$/</mask>
+      <Mask>/^[a-fA-F0-9,]+$/</Mask>
     </family>
     <bandwithrate type="IntegerField">
       <Required>N</Required>
@@ -66,27 +66,27 @@
       <Required>N</Required>
     </bandwithburst>
     <relay type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
     </relay>
     <exitrejectprivateip type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
     </exitrejectprivateip>
     <publish type="BooleanField">
-        <default>0</default>
+        <Default>0</Default>
         <Required>Y</Required>
     </publish>
     <exitenabled type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>Y</Required>
     </exitenabled>
     <exitipv6 type="BooleanField">
-      <default>0</default>
+      <Default>0</Default>
       <Required>N</Required>
     </exitipv6>
     <exitrejectlocalif type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
     </exitrejectlocalif>
   </items>

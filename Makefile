@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -23,18 +23,22 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-all:
-	@cat ${.CURDIR}/README.md | ${PAGER}
+PLUGINSDIR?=	${.CURDIR}
 
-.include "Mk/defaults.mk"
-
-CATEGORIES!=	ls -1d [a-z0-9]*
-CATEGORIES:=	${CATEGORIES:Nruleset.xml}
+_CATEGORIES!=	ls -1d [a-z0-9]*
+CATEGORIES?=	${_CATEGORIES}
 
 .for CATEGORY in ${CATEGORIES}
 _${CATEGORY}!=	ls -1d ${CATEGORY}/*
 PLUGIN_DIRS+=	${_${CATEGORY}}
 .endfor
+
+all:
+	@cat ${.CURDIR}/README.md | ${PAGER}
+
+.include "Mk/defaults.mk"
+.include "Mk/common.mk"
+.include "Mk/git.mk"
 
 list:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
@@ -43,15 +47,18 @@ list:
 	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_OBSOLETE)" ]; then echo "(pending removal)"; fi)
 .endfor
 
-# shared targets that are sane to run from the root directory
-TARGETS=	clean glint lint plist-fix revision style style-fix style-python sweep test
+# known good targets (expanded below)
+TARGETS=	clean glint lint revision style sweep test
 
-.for TARGET in ${TARGETS}
-${TARGET}:
-.  for PLUGIN_DIR in ${PLUGIN_DIRS}
-	@echo ">>> Entering ${PLUGIN_DIR}"
-	@${MAKE} -C ${PLUGIN_DIR} ${TARGET}
-.  endfor
+.for _TARGET in ${.TARGETS}
+__TARGET=	${TARGETS:M${_TARGET:C/-.*//}}
+.  if "${__TARGET}" != ""
+${_TARGET}:
+.    for PLUGIN_DIR in ${PLUGIN_DIRS}
+	@echo ">>> Entering ${PLUGIN_DIR} with target '${_TARGET}'"
+	@${MAKE} -C ${PLUGIN_DIR} ${_TARGET}
+.    endfor
+.  endif
 .endfor
 
 license:

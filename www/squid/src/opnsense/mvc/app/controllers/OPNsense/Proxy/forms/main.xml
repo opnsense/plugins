@@ -312,13 +312,13 @@
                 <id>proxy.forward.transparentMode</id>
                 <label>Enable Transparent HTTP proxy</label>
                 <type>checkbox</type>
-                <help><![CDATA[Enable transparent proxy mode. You will need a firewall rule to forward traffic from the firewall to the proxy server. You may leave the proxy interfaces empty, but remember to set a valid ACL in that case. <a href="/firewall_nat_edit.php?template=transparent_proxy"> Add a new firewall rule </a>]]></help>
+                <help><![CDATA[Enable transparent proxy mode. You will need a firewall rule to forward traffic from the firewall to the proxy server. You may leave the proxy interfaces empty, but remember to set a valid ACL in that case.]]></help>
             </field>
             <field>
                 <id>proxy.forward.sslbump</id>
                 <label>Enable SSL inspection</label>
                 <type>checkbox</type>
-                <help><![CDATA[Enable SSL inspection mode, which allows to log HTTPS connections information, such as requested URL and/or make the proxy act as a man in the middle between the internet and your clients. Be aware of the security implications before enabling this option. If you plan to use transparent HTTPS mode, you need nat rules to reflect your traffic.<a href="/firewall_nat_edit.php?template=transparent_proxy&https=1">Add a new firewall rule </a>]]></help>
+                <help><![CDATA[Enable SSL inspection mode, which allows to log HTTPS connections information, such as requested URL and/or make the proxy act as a man in the middle between the internet and your clients. Be aware of the security implications before enabling this option. If you plan to use transparent HTTPS mode, you need nat rules to reflect your traffic.]]></help>
             </field>
             <field>
                 <id>proxy.forward.sslurlonly</id>
@@ -420,6 +420,12 @@
                 <style>tokenize</style>
                 <help>Type IP addresses you want to deny access to the proxy server.</help>
                 <allownew>true</allownew>
+            </field>
+            <field>
+                <id>proxy.forward.acl.allowWhitelistBannedHosts</id>
+                <label>Whitelist access for banned hosts</label>
+                <type>checkbox</type>
+                <help>Allows banned hosts to access domains listed in whitelist.</help>
             </field>
             <field>
                 <id>proxy.forward.acl.whiteList</id>

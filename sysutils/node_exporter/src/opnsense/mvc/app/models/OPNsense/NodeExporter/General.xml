@@ -6,62 +6,62 @@
     <version>0.2.0</version>
     <items>
         <enabled type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>Y</Required>
         </enabled>
         <listenaddress type="NetworkField">
-          <default>0.0.0.0</default>
+          <Default>0.0.0.0</Default>
           <Required>Y</Required>
           <NetMaskAllowed>N</NetMaskAllowed>
           <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </listenaddress>
         <listenport type="PortField">
-          <default>9100</default>
+          <Default>9100</Default>
           <Required>Y</Required>
           <ValidationMessage>Please provide a valid port number between 1 and 65535. Port 9100 is the default.</ValidationMessage>
         </listenport>
         <cpu type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </cpu>
         <exec type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </exec>
         <filesystem type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </filesystem>
         <loadavg type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </loadavg>
         <meminfo type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </meminfo>
         <netdev type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </netdev>
         <time type="BooleanField">
-          <default>1</default>
+          <Default>1</Default>
           <Required>N</Required>
         </time>
         <devstat type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>N</Required>
         </devstat>
         <interrupts type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>N</Required>
         </interrupts>
         <ntp type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>N</Required>
         </ntp>
         <zfs type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>N</Required>
         </zfs>
     </items>

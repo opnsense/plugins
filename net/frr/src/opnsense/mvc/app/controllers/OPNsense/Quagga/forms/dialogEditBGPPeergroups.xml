@@ -34,6 +34,21 @@
     </grid_view>
   </field>
   <field>
+    <id>peergroup.family</id>
+    <label>Address Family</label>
+    <type>dropdown</type>
+    <type>select_multiple</type>
+    <help>Select which address families to activate for this peer group.</help>
+  </field>
+  <field>
+    <id>peergroup.listenranges</id>
+    <label>Listen Ranges</label>
+    <type>select_multiple</type>
+    <style>tokenize</style>
+    <allownew>true</allownew>
+    <help>Enter one or multiple IP networks in CIDR notation. Accept connections from any peers in the specified prefix.</help>
+  </field>
+  <field>
     <id>peergroup.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>

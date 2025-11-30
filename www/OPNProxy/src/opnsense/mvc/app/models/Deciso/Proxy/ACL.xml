@@ -84,11 +84,11 @@
                     <Required>N</Required>
                     <WildcardEnabled>N</WildcardEnabled>
                     <FieldSeparator>,</FieldSeparator>
-                    <asList>Y</asList>
+                    <AsList>Y</AsList>
                 </source_net>
                 <description type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
             </policy>
@@ -119,11 +119,11 @@
                     <Required>N</Required>
                     <WildcardEnabled>N</WildcardEnabled>
                     <FieldSeparator>,</FieldSeparator>
-                    <asList>Y</asList>
+                    <AsList>Y</AsList>
                 </source_net>
                 <description type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</mask>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
                     <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
                 </description>
             </policy>

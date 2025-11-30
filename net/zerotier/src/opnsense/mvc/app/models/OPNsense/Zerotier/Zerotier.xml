@@ -6,11 +6,11 @@
     <version>1.3.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <apiAccessToken type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </apiAccessToken>
         <localconf type="TextField">
@@ -19,15 +19,15 @@
         <networks>
             <network type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </enabled>
                 <networkId type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>Y</Required>
                 </networkId>
                 <description type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
                 </description>
             </network>

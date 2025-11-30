@@ -5,19 +5,19 @@
     <items>
         <general>
             <Enabled type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </Enabled>
             <UPSName type="TextField">
                 <Required>N</Required>
-                <mask>/^([0-9a-zA-Z._\- ]){1,99}$/</mask>
+                <Mask>/^([0-9a-zA-Z._\- ]){1,99}$/</Mask>
                 <ValidationMessage>
                     The name should be 1 to 99 characters and contain only alphanumeric characters,
                     dashes, underscores, dot or space.
                 </ValidationMessage>
             </UPSName>
             <UPSCable type="OptionField">
-                <default>smart</default>
+                <Default>smart</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <option value="simple">Simple</option>
@@ -42,7 +42,7 @@
                 </OptionValues>
             </UPSCable>
             <UPSType type="OptionField">
-                <default>apcsmart</default>
+                <Default>apcsmart</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <apcsmart>apcsmart</apcsmart>
@@ -60,74 +60,74 @@
             </Device>
             <Polltime type="IntegerField">
                 <Required>Y</Required>
-                <default>60</default>
+                <Default>60</Default>
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>86400</MaximumValue>
                 <ValidationMessage>Polltime must be between 1 and 86400.</ValidationMessage>
             </Polltime>
             <Netserver type="BooleanField">
-                <default>1</default>
+                <Default>1</Default>
                 <Required>Y</Required>
             </Netserver>
             <NetserverAddress type="NetworkField">
-                <default>127.0.0.1</default>
+                <Default>127.0.0.1</Default>
                 <Required>Y</Required>
             </NetserverAddress>
             <NetserverPort type="PortField">
-                <default>3551</default>
+                <Default>3551</Default>
                 <Required>Y</Required>
             </NetserverPort>
             <OnBatteryDelay type="IntegerField">
-                <default>6</default>
+                <Default>6</Default>
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>60</MaximumValue>
                 <ValidationMessage>On battery delay must be between 1 and 60.</ValidationMessage>
             </OnBatteryDelay>
             <BatteryLevel type="IntegerField">
-                <default>5</default>
+                <Default>5</Default>
                 <Required>Y</Required>
                 <MinimumValue>-1</MinimumValue>
                 <MaximumValue>99</MaximumValue>
                 <ValidationMessage>Battery level must be between -1 and 99 percent.</ValidationMessage>
             </BatteryLevel>
             <Minutes type="IntegerField">
-                <default>3</default>
+                <Default>3</Default>
                 <Required>Y</Required>
                 <MinimumValue>-1</MinimumValue>
                 <MaximumValue>60</MaximumValue>
                 <ValidationMessage>Remaining battery minutes must be between -1 and 60 minutes.</ValidationMessage>
             </Minutes>
             <Timeout type="IntegerField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>360</MaximumValue>
                 <ValidationMessage>Timeout must be between 0 and 360 seconds.</ValidationMessage>
             </Timeout>
             <Annoy type="IntegerField">
-                <default>300</default>
+                <Default>300</Default>
                 <Required>Y</Required>
                 <MinimumValue>10</MinimumValue>
                 <MaximumValue>360</MaximumValue>
                 <ValidationMessage>Annoy time must be between 10 and 360 seconds.</ValidationMessage>
             </Annoy>
             <AnnoyDelay type="IntegerField">
-                <default>60</default>
+                <Default>60</Default>
                 <Required>Y</Required>
                 <MinimumValue>10</MinimumValue>
                 <MaximumValue>360</MaximumValue>
                 <ValidationMessage>Annoy delay time must be between 10 and 360 seconds.</ValidationMessage>
             </AnnoyDelay>
             <KillDelay type="IntegerField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>360</MaximumValue>
                 <ValidationMessage>Kill delay time must be between 0 and 360 seconds.</ValidationMessage>
             </KillDelay>
             <UPSClass type="OptionField">
-                <default>standalone</default>
+                <Default>standalone</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <standalone>standalone</standalone>
@@ -136,7 +136,7 @@
                 </OptionValues>
             </UPSClass>
             <UPSMode type="OptionField">
-                <default>disable</default>
+                <Default>disable</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <disable>disable</disable>
@@ -144,7 +144,7 @@
                 </OptionValues>
             </UPSMode>
             <NoLogon type="OptionField">
-                <default>disable</default>
+                <Default>disable</Default>
                 <Required>Y</Required>
                 <OptionValues>
                     <disable>disable</disable>

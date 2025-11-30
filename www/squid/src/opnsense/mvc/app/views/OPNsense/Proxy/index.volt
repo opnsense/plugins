@@ -52,20 +52,20 @@
          *************************************************************************************************************/
 
         $("#grid-remote-blacklists").UIBootgrid(
-                {   'search':'/api/proxy/settings/searchRemoteBlacklists',
-                    'get':'/api/proxy/settings/getRemoteBlacklist/',
-                    'set':'/api/proxy/settings/setRemoteBlacklist/',
-                    'add':'/api/proxy/settings/addRemoteBlacklist/',
-                    'del':'/api/proxy/settings/delRemoteBlacklist/',
-                    'toggle':'/api/proxy/settings/toggleRemoteBlacklist/'
+                {   'search':'/api/proxy/settings/search_remote_blacklists',
+                    'get':'/api/proxy/settings/get_remote_blacklist/',
+                    'set':'/api/proxy/settings/set_remote_blacklist/',
+                    'add':'/api/proxy/settings/add_remote_blacklist/',
+                    'del':'/api/proxy/settings/del_remote_blacklist/',
+                    'toggle':'/api/proxy/settings/toggle_remote_blacklist/'
                 }
         );
         $("#grid-pac-match").UIBootgrid(
-                {   'search':'/api/proxy/settings/searchPACMatch',
-                    'get':'/api/proxy/settings/getPACMatch/',
-                    'set':'/api/proxy/settings/setPACMatch/',
-                    'add':'/api/proxy/settings/addPACMatch/',
-                    'del':'/api/proxy/settings/delPACMatch/',
+                {   'search':'/api/proxy/settings/search_pac_match',
+                    'get':'/api/proxy/settings/get_pac_match/',
+                    'set':'/api/proxy/settings/set_pac_match/',
+                    'add':'/api/proxy/settings/add_pac_match/',
+                    'del':'/api/proxy/settings/del_pac_match/',
                     'options': {
                         responseHandler: function (response) {
                             // concatenate fields for not.
@@ -81,20 +81,20 @@
                 }
         );
         $("#grid-pac-rule").UIBootgrid(
-                {   'search':'/api/proxy/settings/searchPACRule',
-                    'get':'/api/proxy/settings/getPACRule/',
-                    'set':'/api/proxy/settings/setPACRule/',
-                    'add':'/api/proxy/settings/addPACRule/',
-                    'del':'/api/proxy/settings/delPACRule/',
-                    'toggle':'/api/proxy/settings/togglePACRule/'
+                {   'search':'/api/proxy/settings/search_pac_rule',
+                    'get':'/api/proxy/settings/get_pac_rule/',
+                    'set':'/api/proxy/settings/set_pac_rule/',
+                    'add':'/api/proxy/settings/add_pac_rule/',
+                    'del':'/api/proxy/settings/del_pac_rule/',
+                    'toggle':'/api/proxy/settings/toggle_pac_rule/'
                 }
         );
         $("#grid-pac-proxy").UIBootgrid(
-                {   'search':'/api/proxy/settings/searchPACProxy',
-                    'get':'/api/proxy/settings/getPACProxy/',
-                    'set':'/api/proxy/settings/setPACProxy/',
-                    'add':'/api/proxy/settings/addPACProxy/',
-                    'del':'/api/proxy/settings/delPACProxy/'
+                {   'search':'/api/proxy/settings/search_pac_proxy',
+                    'get':'/api/proxy/settings/get_pac_proxy/',
+                    'set':'/api/proxy/settings/set_pac_proxy/',
+                    'add':'/api/proxy/settings/add_pac_proxy/',
+                    'del':'/api/proxy/settings/del_pac_proxy/'
                 }
         );
 
@@ -166,7 +166,7 @@
 
         $('.reload-pac-btn').click(function () {
             $('.reload-pac-btn .fa-refresh').addClass('fa-spin');
-            ajaxCall("/api/proxy/service/refreshTemplate", {}, function(data,status) {
+            ajaxCall("/api/proxy/service/refresh_template", {}, function(data,status) {
                 $('.reload-pac-btn .fa-refresh').removeClass('fa-spin');
             });
         });
@@ -192,7 +192,7 @@
          */
         $("#ScheduleAct").click(function() {
             $("#scheduleAct_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall("/api/proxy/settings/fetchRBCron", {}, function(data,status) {
+            ajaxCall("/api/proxy/settings/fetch_rb_cron", {}, function(data,status) {
                 $("#scheduleAct_progress").removeClass("fa fa-spinner fa-pulse");
                 if (data.uuid !=undefined) {
                     // redirect to cron page

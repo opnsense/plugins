@@ -6,19 +6,19 @@
         <keys>
             <key type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
-                    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
                     <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
                 </name>
                 <value type="TextField">
-                    <default></default>
+                    <Default></Default>
                     <Required>N</Required>
-                    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
                     <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
                 </value>
             </key>

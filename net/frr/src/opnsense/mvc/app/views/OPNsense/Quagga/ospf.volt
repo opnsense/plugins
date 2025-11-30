@@ -51,45 +51,61 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         });
 
+        $("#{{formGridEditOSPFNeighbor['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_neighbor',
+            'get':'/api/quagga/ospfsettings/get_neighbor/',
+            'set':'/api/quagga/ospfsettings/set_neighbor/',
+            'add':'/api/quagga/ospfsettings/add_neighbor/',
+            'del':'/api/quagga/ospfsettings/del_neighbor/',
+            'toggle':'/api/quagga/ospfsettings/toggle_neighbor/'
+        });
+        $("#{{formGridEditOSPFArea['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_area',
+            'get':'/api/quagga/ospfsettings/get_area/',
+            'set':'/api/quagga/ospfsettings/set_area/',
+            'add':'/api/quagga/ospfsettings/add_area/',
+            'del':'/api/quagga/ospfsettings/del_area/',
+            'toggle':'/api/quagga/ospfsettings/toggle_area/'
+        });
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchNetwork',
-            'get':'/api/quagga/ospfsettings/getNetwork/',
-            'set':'/api/quagga/ospfsettings/setNetwork/',
-            'add':'/api/quagga/ospfsettings/addNetwork/',
-            'del':'/api/quagga/ospfsettings/delNetwork/',
-            'toggle':'/api/quagga/ospfsettings/toggleNetwork/'
+            'search':'/api/quagga/ospfsettings/search_network',
+            'get':'/api/quagga/ospfsettings/get_network/',
+            'set':'/api/quagga/ospfsettings/set_network/',
+            'add':'/api/quagga/ospfsettings/add_network/',
+            'del':'/api/quagga/ospfsettings/del_network/',
+            'toggle':'/api/quagga/ospfsettings/toggle_network/'
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchInterface',
-            'get':'/api/quagga/ospfsettings/getInterface/',
-            'set':'/api/quagga/ospfsettings/setInterface/',
-            'add':'/api/quagga/ospfsettings/addInterface/',
-            'del':'/api/quagga/ospfsettings/delInterface/',
-            'toggle':'/api/quagga/ospfsettings/toggleInterface/'
+            'search':'/api/quagga/ospfsettings/search_interface',
+            'get':'/api/quagga/ospfsettings/get_interface/',
+            'set':'/api/quagga/ospfsettings/set_interface/',
+            'add':'/api/quagga/ospfsettings/add_interface/',
+            'del':'/api/quagga/ospfsettings/del_interface/',
+            'toggle':'/api/quagga/ospfsettings/toggle_interface/'
         });
         $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchPrefixlist',
-            'get':'/api/quagga/ospfsettings/getPrefixlist/',
-            'set':'/api/quagga/ospfsettings/setPrefixlist/',
-            'add':'/api/quagga/ospfsettings/addPrefixlist/',
-            'del':'/api/quagga/ospfsettings/delPrefixlist/',
-            'toggle':'/api/quagga/ospfsettings/togglePrefixlist/'
+            'search':'/api/quagga/ospfsettings/search_prefixlist',
+            'get':'/api/quagga/ospfsettings/get_prefixlist/',
+            'set':'/api/quagga/ospfsettings/set_prefixlist/',
+            'add':'/api/quagga/ospfsettings/add_prefixlist/',
+            'del':'/api/quagga/ospfsettings/del_prefixlist/',
+            'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/'
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRoutemap',
-            'get':'/api/quagga/ospfsettings/getRoutemap/',
-            'set':'/api/quagga/ospfsettings/setRoutemap/',
-            'add':'/api/quagga/ospfsettings/addRoutemap/',
-            'del':'/api/quagga/ospfsettings/delRoutemap/',
-            'toggle':'/api/quagga/ospfsettings/toggleRoutemap/'
+            'search':'/api/quagga/ospfsettings/search_routemap',
+            'get':'/api/quagga/ospfsettings/get_routemap/',
+            'set':'/api/quagga/ospfsettings/set_routemap/',
+            'add':'/api/quagga/ospfsettings/add_routemap/',
+            'del':'/api/quagga/ospfsettings/del_routemap/',
+            'toggle':'/api/quagga/ospfsettings/toggle_routemap/'
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospfsettings/searchRedistribution',
-            'get':'/api/quagga/ospfsettings/getRedistribution/',
-            'set':'/api/quagga/ospfsettings/setRedistribution/',
-            'add':'/api/quagga/ospfsettings/addRedistribution/',
-            'del':'/api/quagga/ospfsettings/delRedistribution/',
-            'toggle':'/api/quagga/ospfsettings/toggleRedistribution/'
+            'search':'/api/quagga/ospfsettings/search_redistribution',
+            'get':'/api/quagga/ospfsettings/get_redistribution/',
+            'set':'/api/quagga/ospfsettings/set_redistribution/',
+            'add':'/api/quagga/ospfsettings/add_redistribution/',
+            'del':'/api/quagga/ospfsettings/del_redistribution/',
+            'toggle':'/api/quagga/ospfsettings/toggle_redistribution/'
         });
 
         const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
@@ -101,6 +117,29 @@ POSSIBILITY OF SUCH DAMAGE.
                 '</td>'
             );
         }
+
+        $("#interface\\.networktype").on("keyup change", function () {
+
+            const networktype = String($("#interface\\.networktype").val() || "")
+
+            const styleVisibility = [
+                {
+                    class: "style_networktype",
+                    visible: networktype === "point-to-multipoint"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
 
     });
 </script>
@@ -122,6 +161,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
+    <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
     <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
     <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
@@ -132,6 +173,14 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="general" class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
+    </div>
+    <!-- Tab: Neighbors -->
+    <div id="neighbors" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFNeighbor)}}
+    </div>
+    <!-- Tab: Areas -->
+    <div id="areas" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFArea)}}
     </div>
     <!-- Tab: Networks -->
     <div id="networks" class="tab-pane fade in">
@@ -150,7 +199,16 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
     </div>
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
+    }
+) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFArea,'id':formGridEditOSPFArea['edit_dialog_id'],'label':lang._('Edit Area')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFNeighbor,'id':formGridEditOSPFNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}

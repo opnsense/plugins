@@ -25,6 +25,9 @@ ListenPort={{ OPNsense.zabbixproxy.general.listenport }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.sourceip') and OPNsense.zabbixproxy.general.sourceip != '' %}
 SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.listenbacklog') and OPNsense.zabbixproxy.general.listenbacklog != '' %}
+ListenBacklog={{ OPNsense.zabbixproxy.general.listenbacklog }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.syslogEnable') and OPNsense.zabbixproxy.general.syslogEnable == '1' %}
 LogType=system
 {% else %}
@@ -57,6 +60,12 @@ StartIPMIPollers={{ OPNsense.zabbixproxy.general.startipmipollers }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.startpollersunreachable') and OPNsense.zabbixproxy.general.startpollersunreachable != '' %}
 StartPollersUnreachable={{ OPNsense.zabbixproxy.general.startpollersunreachable }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.startagentpollers') and OPNsense.zabbixproxy.general.startagentpollers != '' %}
+StartAgentPollers={{ OPNsense.zabbixproxy.general.startagentpollers }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller') and OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller != '' %}
+MaxConcurrentChecksPerPoller={{ OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.starttrappers') and OPNsense.zabbixproxy.general.starttrappers != '' %}
 StartTrappers={{ OPNsense.zabbixproxy.general.starttrappers }}
 {% endif %}
@@ -83,6 +92,18 @@ HistoryCacheSize={{ OPNsense.zabbixproxy.general.historycachesize }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.historyindexcachesize') and OPNsense.zabbixproxy.general.historyindexcachesize != '' %}
 HistoryIndexCacheSize={{ OPNsense.zabbixproxy.general.historyindexcachesize }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarecachesize') and OPNsense.zabbixproxy.general.vmwarecachesize != '' %}
+VMwareCacheSize={{ OPNsense.zabbixproxy.general.vmwarecachesize }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarefrequency') and OPNsense.zabbixproxy.general.vmwarefrequency != '' %}
+VMwareFrequency={{ OPNsense.zabbixproxy.general.vmwarefrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwareperffrequency') and OPNsense.zabbixproxy.general.vmwareperffrequency != '' %}
+VMwarePerfFrequency={{ OPNsense.zabbixproxy.general.vmwareperffrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwaretimeout') and OPNsense.zabbixproxy.general.vmwaretimeout != '' %}
+VMwareTimeout={{ OPNsense.zabbixproxy.general.vmwaretimeout }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.timeout') and OPNsense.zabbixproxy.general.timeout != '' %}
 Timeout={{ OPNsense.zabbixproxy.general.timeout }}

@@ -36,12 +36,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-sendercanonicals").UIBootgrid(
-            {   'search':'/api/postfix/sendercanonical/searchSendercanonical',
-                'get':'/api/postfix/sendercanonical/getSendercanonical/',
-                'set':'/api/postfix/sendercanonical/setSendercanonical/',
-                'add':'/api/postfix/sendercanonical/addSendercanonical/',
-                'del':'/api/postfix/sendercanonical/delSendercanonical/',
-                'toggle':'/api/postfix/sendercanonical/toggleSendercanonical/'
+            {   'search':'/api/postfix/sendercanonical/search_sendercanonical',
+                'get':'/api/postfix/sendercanonical/get_sendercanonical/',
+                'set':'/api/postfix/sendercanonical/set_sendercanonical/',
+                'add':'/api/postfix/sendercanonical/add_sendercanonical/',
+                'del':'/api/postfix/sendercanonical/del_sendercanonical/',
+                'toggle':'/api/postfix/sendercanonical/toggle_sendercanonical/'
             }
         );
 

@@ -84,12 +84,12 @@ POSSIBILITY OF SUCH DAMAGE.
     updateServiceControlUI('telegraf');
 
     $("#grid-keys").UIBootgrid(
-        {   'search':'/api/telegraf/key/searchKey',
-            'get':'/api/telegraf/key/getKey/',
-            'set':'/api/telegraf/key/setKey/',
-            'add':'/api/telegraf/key/addKey/',
-            'del':'/api/telegraf/key/delKey/',
-            'toggle':'/api/telegraf/key/toggleKey/'
+        {   'search':'/api/telegraf/key/search_key',
+            'get':'/api/telegraf/key/get_key/',
+            'set':'/api/telegraf/key/set_key/',
+            'add':'/api/telegraf/key/add_key/',
+            'del':'/api/telegraf/key/del_key/',
+            'toggle':'/api/telegraf/key/toggle_key/'
         }
     );
 

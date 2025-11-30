@@ -29,19 +29,21 @@
 
 require_once("guiconfig.inc");
 require_once("interfaces.inc");
+require_once("util.inc");
 require_once("plugins.inc.d/miniupnpd.inc");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['clear'])) {
         miniupnpd_stop();
+        unlink('/var/run/miniupnpd.leases');
+        unlink('/var/run/miniupnpd.leases-ipv6');
         miniupnpd_start();
         header(url_safe('Location: /status_upnp.php'));
         exit;
     }
 }
 
-$rdr_entries = array();
-exec("/sbin/pfctl -aminiupnpd -sn", $rdr_entries, $pf_ret);
+$rdr_entries = shell_safe('/sbin/pfctl -P -a miniupnpd -s nat; /sbin/pfctl -P -a miniupnpd -s rules', [], true);
 
 $service_hook = 'miniupnpd';
 include("head.inc");
@@ -57,38 +59,50 @@ include("head.inc");
 <?php
           if (empty($config['installedpackages']['miniupnpd']['config'][0]['iface_array']) || empty($config['installedpackages']['miniupnpd']['config'][0]['enable'])): ?>
           <header class="content-box-head container-fluid">
-            <h3><?= gettext('UPnP is currently disabled.') ?></h3>
+            <h3><?= gettext('Service is currently disabled.') ?></h3>
           </header>
 <?php
           else: ?>
           <div class="table-responsive">
-            <table class="table table-striped table-condensed table-hover">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <td><?=gettext("Ext. Port")?></td>
-                  <td><?=gettext("Internal IP")?></td>
-                  <td><?=gettext("Int. Port")?></td>
-                  <td><?=gettext("Protocol")?></td>
-                  <td><?=gettext("Source IP")?></td>
-                  <td><?=gettext("Source Port")?></td>
-                  <td><?=gettext("Description")?></td>
+                  <th><?=gettext("IP address")?></th>
+                  <th><?=gettext("Port")?></th>
+                  <th><?=gettext("External port")?></th>
+                  <th><?=gettext("Protocol")?></th>
+                  <th><?=gettext("Source IP")?></th>
+                  <th><?=gettext("Source port")?></th>
+                  <th><?=gettext("Added via / description")?></th>
                 </tr>
               </thead>
               <tbody>
 <?php
               foreach ($rdr_entries as $rdr_entry):
-                  if (!preg_match("/on (?P<iface>.*) inet proto (?P<proto>.*) from (?P<srcaddr>.*) (port (?P<srcport>.*) )?to (?P<extaddr>.*) port = (?P<extport>.*) keep state (label \"(?P<descr>.*)\" )?rtable [0-9] -> (?P<intaddr>.*) port (?P<intport>.*)/", $rdr_entry, $matches)) {
+                  if (!preg_match('/on (?P<iface>.+) inet proto (?P<proto>.+) from (?P<srcaddr>[^ ]+) (port (?P<srcport>.+) )?to (?P<extaddr>.+) port = (?P<extport>.+) keep state (label "(?P<descr>.+)" )?rtable [0-9] -> (?P<intaddr>.+) port (?P<intport>.+)/', $rdr_entry, $matches) &&
+                      !preg_match('/on (?P<iface>.+) inet6 proto (?P<proto>.+) from (?P<srcaddr>[^ ]+) (port = (?P<srcport>.+) )?to (?P<intaddr>.+) port = (?P<intport>\d+) (flags [^ ]+ )?keep state (label "(?P<descr>.+)" )?rtable [0-9]/', $rdr_entry, $matches)) {
                       continue;
+                  }
+                  if (preg_match('/PCP .*([0-9a-f]{24})$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = "PCP (nonce  {$descrmatch[1]})";
+                  } elseif (preg_match('/^NAT-PMP \d+ \w+$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = 'NAT-PMP';
+                  } elseif (preg_match('/^pinhole-(\d+).*IGD2 pinhole$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = "UPnP IGD IPv6 (UID {$descrmatch[1]})";
+                  } elseif (preg_match('/^UPnP IGD/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = $matches['descr'];
+                  } else {
+                    $descr = "UPnP IGD / {$matches['descr']}";
                   }
               ?>
                 <tr>
-                  <td><?= html_safe($matches['extport']) ?></td>
                   <td><?= html_safe($matches['intaddr']) ?></td>
                   <td><?= html_safe($matches['intport']) ?></td>
+                  <td><?= ($matches['extport'] != '') ? html_safe($matches['extport']) : html_safe($matches['intport']) ?></td>
                   <td><?= html_safe(strtoupper($matches['proto'])) ?></td>
                   <td><?= html_safe($matches['srcaddr']) ?></td>
                   <td><?= html_safe($matches['srcport'] ?: "any") ?></td>
-                  <td><?= html_safe($matches['descr']) ?></td>
+                  <td><?= html_safe($descr) ?></td>
                 </tr>
 <?php
               endforeach;?>
@@ -97,8 +111,10 @@ include("head.inc");
                   <tr>
                     <td colspan="7">
                       <form method="post">
-                        <button type="submit" name="clear" id="clear" class="btn btn-primary" value="Clear"><?=gettext("Clear");?></button>
-                        <?=gettext("all currently connected sessions");?>.
+                        <button type="submit" name="clear" id="clear" class="btn btn-primary pull-right" value="Clear">
+                          <i class="fa fa-trash"></i>
+                          <?=gettext("Delete all port maps")?>
+                        </button>
                       </form>
                     </td>
                   </tr>

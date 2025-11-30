@@ -6,12 +6,12 @@
         <leases>
             <lease type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <mac type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-fA-F:]){17}$/u</mask>
+                    <Mask>/^([0-9a-fA-F:]){17}$/u</Mask>
                 </mac>
                 <ip type="NetworkField">
                     <Required>Y</Required>

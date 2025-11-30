@@ -5,6 +5,22 @@ content serving applications.
 Plugin Changelog
 ================
 
+1.4
+
+* Make email_err_data static due to SQUID-2025:2 CVE 10.0 (contributed by m.a.x. it)
+
+1.3
+
+* Repackage template files using new contrib directory feature
+* Clean up model and validation messages
+
+1.2
+
+* Change cache_dir from "ufs" to "rock" (contributed by Andy Binder)
+* Authenticate before blocklist (contributed by Andy Binder)
+* Select behavior for banned hosts (contributed by Andy Binder)
+* Do not reject no-bump sites when certificate validation fails (contributed by Michael Muenz)
+
 1.1
 
 * Syslog corrections and implementation of "workers" (contributed by Andy Binder)

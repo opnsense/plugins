@@ -4,44 +4,38 @@
     <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <version type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>2</MaximumValue>
-            <default>2</default>
+            <Default>2</Default>
             <Required>Y</Required>
         </version>
         <networks type="CSVListField">
-            <Required>N</Required>
-            <mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</mask>
+            <Mask>/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2},)*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2})$/</Mask>
         </networks>
         <passiveinterfaces type="InterfaceField">
-                <Required>N</Required>
-                <multiple>Y</multiple>
-                <default></default>
-                <AllowDynamic>Y</AllowDynamic>
-                <filters>
-                    <enable>/^(?!0).*$/</enable>
-                </filters>
+            <Multiple>Y</Multiple>
+            <AllowDynamic>Y</AllowDynamic>
+            <filters>
+                <enable>/^(?!0).*$/</enable>
+            </filters>
         </passiveinterfaces>
         <redistribute type="OptionField">
-                <Required>N</Required>
-                <multiple>Y</multiple>
-                <default></default>
-                <OptionValues>
-                        <bgp>Border Gateway Protocol (BGP)</bgp>
-                        <connected>Connected routes (directly attached subnet or host)</connected>
-                        <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
-                        <ospf>Open Shortest Path First (OSPF)</ospf>
-                        <static>Statically configured routes</static>
-                </OptionValues>
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <bgp>Border Gateway Protocol (BGP)</bgp>
+                <connected>Connected routes (directly attached subnet or host)</connected>
+                <kernel>Kernel routes (not installed via the zebra RIB)</kernel>
+                <ospf>Open Shortest Path First (OSPF)</ospf>
+                <static>Statically configured routes</static>
+            </OptionValues>
         </redistribute>
         <defaultmetric type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>16</MaximumValue>
-            <Required>N</Required>
         </defaultmetric>
     </items>
 </model>
