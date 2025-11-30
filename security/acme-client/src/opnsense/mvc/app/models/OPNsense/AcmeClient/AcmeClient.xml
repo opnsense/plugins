@@ -492,6 +492,7 @@
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
@@ -1319,6 +1320,9 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_mijnhost_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_mijnhost_api_key>
                 <dns_scaleway_token type="TextField">
                     <Required>N</Required>
                 </dns_scaleway_token>
