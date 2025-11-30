@@ -1236,8 +1236,42 @@
     </field>
     <field>
         <id>validation.dns_sl_key</id>
-        <label>API Key</label>
+        <label>API Key (DEPRECIATED)</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_sl_apiver</id>
+        <label>API Version</label>
+        <type>text</type>
+        <help>Available Values: V2</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_token_lifetime</id>
+        <label>Token lifetime</label>
+        <type>text</type>
+        <help>Token lifetime in minutes (0-1440)</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_account_id</id>
+        <label>Account ID</label>
+        <type>text</type>
+        <help>Account number, can be seen in the upper right corner on the provider's website</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_project_name</id>
+        <label>Project name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_sl_login_name</id>
+        <label>Service username</label>
+        <type>text</type>
+        <help>Service username, can be seen in the control panel</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>Selfhost</label>
