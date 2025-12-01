@@ -17,13 +17,13 @@
         <id>ndpproxy.general.upstream</id>
         <label>Upstream interface</label>
         <type>dropdown</type>
-        <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface.</help>
+        <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface. Ethernet interfaces are fully supported, point-to-point (PPPoE) devices are experimental.</help>
     </field>
     <field>
         <id>ndpproxy.general.downstream</id>
         <label>Downstream interfaces</label>
         <type>select_multiple</type>
-        <help>Choose one or multiple downstream interfaces which should proxy the upstream IPv6 prefix.</help>
+        <help>Choose one or multiple downstream interfaces which should proxy the upstream IPv6 prefix. Only ethernet interfaces are supported.</help>
     </field>
     <field>
         <id>ndpproxy.general.ra</id>
@@ -40,14 +40,13 @@
     <field>
         <type>header</type>
         <label>Performance Settings</label>
-        <collapse>true</collapse>
     </field>
     <field>
         <id>ndpproxy.general.cache_ttl</id>
         <label>Neighbor cache lifetime</label>
         <type>text</type>
         <hint>10</hint>
-        <help>Neighbor cache lifetime in minutes.</help>
+        <help>Neighbor cache lifetime in minutes. This controls when stale clients and host routes are cleaned up. When using a point-to-point interface as upstream, increasing this lifetime is necessary to not prematurely clean up routes.</help>
     </field>
     <field>
         <id>ndpproxy.general.cache_max</id>
