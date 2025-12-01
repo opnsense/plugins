@@ -2,3 +2,19 @@ Coturn is a free open source implementation of TURN and STUN Server.
 The TURN Server is a VoIP media traffic NAT traversal server and gateway.
 
 WWW: https://github.com/coturn/coturn
+
+1.1
+
+Added:
+* add log page
+
+Changed:
+* hide protocol violating options
+* switch to local syslog logging
+
+Removed:
+* remove old log files
+
+1.0
+
+Initial release
