@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2020 Frank Wall
- * Modifications Copyright (C) 2025 Renat Gorbushin
+ * Copyright (C) 2025 Renat Gorbushin
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
