@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.10.1
+
+Fixed:
+* syntax depreciation caused errors (#4938)
+
 4.10
 
 Added:
