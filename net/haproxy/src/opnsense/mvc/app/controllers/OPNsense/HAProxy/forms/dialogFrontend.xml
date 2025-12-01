@@ -207,9 +207,9 @@
     </field>
     <field>
         <id>frontend.forwardFor</id>
-        <label>X-Forwarded-For (DEPRECATED)</label>
+        <label>X-Forwarded-For (deprecated)</label>
         <type>checkbox</type>
-        <help><![CDATA[This option is DEPRECATED and should no longer be used. A new option is available in backend pool settings.]]></help>
+        <help><![CDATA[This option is deprecated and should no longer be used. A new option is available in backend pool settings.]]></help>
     </field>
     <field>
         <id>frontend.prometheus_enabled</id>
