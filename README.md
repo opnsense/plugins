@@ -71,7 +71,7 @@ net/udpbroadcastrelay -- Control udpbroadcastrelay processes
 net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
 net/vnstat -- Network traffic monitor
 net/wol -- Wake on LAN Service
-net/zerotier -- Virtual Networks That Just Work
+net/zerotier -- Virtual Networks That Just Work (not maintained)
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
