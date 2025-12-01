@@ -580,9 +580,9 @@
     </field>
     <field>
         <id>validation.dns_gandi_livedns_key</id>
-        <label>API Key (DEPRECATED)</label>
+        <label>API key (deprecated)</label>
         <type>text</type>
-        <help>The API Key is the previous mechanism that was replaced with Personal Access Tokens. API Keys should no longer be used.</help>
+        <help>The API key is the previous mechanism that was replaced with Personal Access Tokens. API keys should no longer be used.</help>
     </field>
     <field>
         <label>Google Cloud DNS</label>
@@ -825,7 +825,7 @@
         <help>Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2</help>
     </field>
     <field>
-        <label>lexicon (DEPRECATED)</label>
+        <label>Lexicon (deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_lexicon</style>
     </field>
@@ -855,7 +855,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode API (v3 / Deprecated)</label>
+        <label>Linode API (v3/deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -1236,7 +1236,7 @@
     </field>
     <field>
         <id>validation.dns_sl_key</id>
-        <label>API Key (DEPRECIATED)</label>
+        <label>API key (deprecated)</label>
         <type>text</type>
     </field>
     <field>

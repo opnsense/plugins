@@ -354,7 +354,7 @@ Changed:
 
 Changed:
 * rename "Linode Cloud API" to "Linode API (v4)" (#2609)
-* rename "Linode API" to "Linode API (v3 / Deprecated)" (#2609)
+* rename "Linode API" to "Linode API (v3/deprecated)" (#2609)
 
 3.3
 

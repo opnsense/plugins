@@ -485,9 +485,9 @@
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
-                        <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
+                        <dns_lexicon>Lexicon (deprecated)</dns_lexicon>
                         <dns_limacity>Lima-City (TrafficPlex)</dns_limacity>
-                        <dns_linode>Linode (v3 / Deprecated)</dns_linode>
+                        <dns_linode>Linode (v3/deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
