@@ -226,7 +226,7 @@
                             </filters>
                         </accounts>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </account>
@@ -241,7 +241,7 @@
                             </filters>
                         </validations>
                     </Model>
-                    <ValidationMessage>Related item not found</ValidationMessage>
+                    <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </validationMethod>
@@ -271,7 +271,7 @@
                             </filters>
                         </actions>
                     </Model>
-                    <ValidationMessage>Related automation not found</ValidationMessage>
+                    <ValidationMessage>Related automation not found.</ValidationMessage>
                     <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
@@ -389,7 +389,7 @@
                             </filters>
                         </frontends>
                     </Model>
-                    <ValidationMessage>Related HAProxy frontend not found</ValidationMessage>
+                    <ValidationMessage>Related HAProxy frontend not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </http_haproxyFrontends>
@@ -469,6 +469,7 @@
                         <dns_googledomains>Google Domains</dns_googledomains>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hetzner>Hetzner</dns_hetzner>
+                        <dns_hetznercloud>Hetzner Cloud</dns_hetznercloud>
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
@@ -484,13 +485,14 @@
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
-                        <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
+                        <dns_lexicon>Lexicon (deprecated)</dns_lexicon>
                         <dns_limacity>Lima-City (TrafficPlex)</dns_limacity>
-                        <dns_linode>Linode (v3 / Deprecated)</dns_linode>
+                        <dns_linode>Linode (v3/deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
@@ -579,6 +581,10 @@
                 <dns_azuredns_clientsecret type="TextField">
                     <Required>N</Required>
                 </dns_azuredns_clientsecret>
+                <dns_azuredns_managedidentity type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </dns_azuredns_managedidentity>
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>
@@ -1050,6 +1056,28 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
+                <dns_sl_apiver type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <v1>API version 1 (deprecated)</v1>
+                        <v2>API version 2</v2>
+                    </OptionValues>
+                </dns_sl_apiver>
+                <dns_sl_token_lifetime type="TextField">
+                    <Required>N</Required>
+                </dns_sl_token_lifetime>
+                <dns_sl_account_id type="TextField">
+                    <Required>N</Required>
+                </dns_sl_account_id>
+                <dns_sl_project_name type="TextField">
+                    <Required>N</Required>
+                </dns_sl_project_name>
+                <dns_sl_login_name type="TextField">
+                    <Required>N</Required>
+                </dns_sl_login_name>
+                <dns_sl_password type="TextField">
+                    <Required>N</Required>
+                </dns_sl_password>
                 <dns_selfhost_user type="TextField">
                     <Required>N</Required>
                 </dns_selfhost_user>
@@ -1177,6 +1205,9 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_hetznercloud_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetznercloud_token>
                 <dns_hexonet_login type="TextField">
                     <Required>N</Required>
                 </dns_hexonet_login>
@@ -1315,6 +1346,9 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_mijnhost_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_mijnhost_api_key>
                 <dns_scaleway_token type="TextField">
                     <Required>N</Required>
                 </dns_scaleway_token>
@@ -1413,7 +1447,7 @@
                 </sftp_chmod_key>
                 <sftp_modtime type="BooleanField">
                     <Required>N</Required>
-                    <default>0</default>
+                    <Default>0</Default>
                 </sftp_modtime>
                 <sftp_filename_cert type="TextField">
                     <Required>N</Required>
@@ -1491,10 +1525,7 @@
                     <ValidationMessage>Select a command from the list.</ValidationMessage>
                     <Required>N</Required>
                 </configd_generic_command>
-                <acme_synology_dsm_hostname type="HostnameField">
-                    <Default></Default>
-                    <Required>N</Required>
-                </acme_synology_dsm_hostname>
+                <acme_synology_dsm_hostname type="HostnameField"/>
                 <acme_synology_dsm_port type="PortField">
                     <Default>5000</Default>
                     <Required>N</Required>
@@ -1603,41 +1634,41 @@
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxve_tokenkey>
                 <acme_proxmoxbs_user type="TextField">
-                    <default>root</default>
+                    <Default>root</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_user>
                 <acme_proxmoxbs_server type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_server>
                 <acme_proxmoxbs_port type="PortField">
-                    <default>8007</default>
+                    <Default>8007</Default>
                     <Required>N</Required>
                 </acme_proxmoxbs_port>
                 <acme_proxmoxbs_nodename type="TextField">
                     <Required>N</Required>
-                    <default>localhost</default>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Default>localhost</Default>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_nodename>
                 <acme_proxmoxbs_realm type="TextField">
-                    <default>pam</default>
+                    <Default>pam</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_realm>
                 <acme_proxmoxbs_tokenid type="TextField">
-                    <default>acme</default>
+                    <Default>acme</Default>
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenid>
                 <acme_proxmoxbs_tokenkey type="TextField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenkey>
                 <acme_truenas_apikey type="TextField">

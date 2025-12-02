@@ -49,7 +49,6 @@ POSSIBILITY OF SUCH DAMAGE.
             ajax: true,
             selection: true,
             multiSelect: true,
-            rowCount:[10,25,50,100,500,1000],
             url: '/api/acmeclient/accounts/search',
             formatters: {
                 "commands": function (column, row) {
