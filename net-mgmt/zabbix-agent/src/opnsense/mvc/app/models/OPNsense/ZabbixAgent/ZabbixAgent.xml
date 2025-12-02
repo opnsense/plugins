@@ -22,7 +22,7 @@
                     <Default>127.0.0.1</Default>
                     <Required>Y</Required>
                     <Multiple>Y</Multiple>
-                    <Mask>/^[a-zA-Z0-9\.:\[\]\-\/]*$/</Mask>
+                    <Mask>/^[a-zA-Z0-9\.:\[\]\-\/]+$/</Mask>
                     <MaskPerItem>Y</MaskPerItem>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid Zabbix server addresses, i.e. zabbix.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
@@ -117,7 +117,7 @@
                 </enableActiveChecks>
                 <activeCheckServers type="CSVListField">
                     <Multiple>Y</Multiple>
-                    <Mask>/^[a-zA-Z0-9\.:\[\]\-]*$/</Mask>
+                    <Mask>/^[a-zA-Z0-9\.:\[\]\-]+$/</Mask>
                     <MaskPerItem>Y</MaskPerItem>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid active check receivers, i.e. 10.0.0.1:10051, zabbix.example.com or [::1]:30051.</ValidationMessage>
