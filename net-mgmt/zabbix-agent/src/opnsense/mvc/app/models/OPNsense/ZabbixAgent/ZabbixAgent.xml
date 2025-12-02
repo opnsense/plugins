@@ -22,7 +22,8 @@
                     <Default>127.0.0.1</Default>
                     <Required>Y</Required>
                     <Multiple>Y</Multiple>
-                    <Mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</Mask>
+                    <Mask>/^[a-zA-Z0-9\.:\[\]\-\/]*$/</Mask>
+                    <MaskPerItem>Y</MaskPerItem>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid Zabbix server addresses, i.e. zabbix.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
                 </serverList>
@@ -38,18 +39,15 @@
                     <Multiple>Y</Multiple>
                     <NetMaskAllowed>N</NetMaskAllowed>
                     <AsList>Y</AsList>
-                    <FieldSeparator>,</FieldSeparator>
                     <ValidationMessage>Please provide one or more valid IP addresses, i.e. 10.0.0.1.</ValidationMessage>
                 </listenIP>
                 <sourceIP type="NetworkField">
-                    <Required>N</Required>
                     <NetMaskAllowed>N</NetMaskAllowed>
                     <ValidationMessage>Please provide a valid IP address, i.e. 10.0.0.1.</ValidationMessage>
                 </sourceIP>
                 <listenBacklog type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>2147483647</MaximumValue>
-                    <Required>N</Required>
                 </listenBacklog>
                 <syslogEnable type="BooleanField"/>
                 <logFileSize type="IntegerField">
@@ -118,9 +116,9 @@
                     <Required>Y</Required>
                 </enableActiveChecks>
                 <activeCheckServers type="CSVListField">
-                    <Required>N</Required>
                     <Multiple>Y</Multiple>
-                    <Mask>/^([a-zA-Z0-9\.:\[\]\-]*?,)*([a-zA-Z0-9\.:\[\]\-]*)$/</Mask>
+                    <Mask>/^[a-zA-Z0-9\.:\[\]\-]*$/</Mask>
+                    <MaskPerItem>Y</MaskPerItem>
                     <ChangeCase>lower</ChangeCase>
                     <ValidationMessage>Please provide valid active check receivers, i.e. 10.0.0.1:10051, zabbix.example.com or [::1]:30051.</ValidationMessage>
                 </activeCheckServers>
