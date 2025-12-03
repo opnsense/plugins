@@ -569,6 +569,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>ZoneEdit</label>
+        <type>header</type>
+        <style>table_dns table_dns_zoneedit</style>
+    </field>
+    <field>
+        <id>validation.dns_zoneedit_id</id>
+        <label>ZoneEdit ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zoneedit_token</id>
+        <label>ZoneEdit Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Gandi LiveDNS</label>
         <type>header</type>
         <style>table_dns table_dns_gandi_livedns</style>

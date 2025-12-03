@@ -532,6 +532,7 @@
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
+                        <dns_zoneedit>ZoneEdit</dns_zoneedit>
                         <dns_zonomi>zonomi.com</dns_zonomi>
                     </OptionValues>
                 </dns_service>
@@ -1352,6 +1353,12 @@
                 <dns_scaleway_token type="TextField">
                     <Required>N</Required>
                 </dns_scaleway_token>
+                <dns_zoneedit_id type="TextField">
+                    <Required>N</Required>
+                </dns_zoneedit_id>
+                <dns_zoneedit_token type="TextField">
+                    <Required>N</Required>
+                </dns_zoneedit_token>
             </validation>
         </validations>
         <actions>
