@@ -55,7 +55,7 @@ function miniupnpd_services()
 
     $pconfig = [];
     $pconfig['name'] = 'miniupnpd';
-    $pconfig['description'] = gettext('Universal Plug and Play');
+    $pconfig['description'] = gettext('UPnP IGD & PCP/NAT-PMP');
     $pconfig['php']['restart'] = ['miniupnpd_stop', 'miniupnpd_start'];
     $pconfig['php']['start'] = ['miniupnpd_start'];
     $pconfig['php']['stop'] = ['miniupnpd_stop'];
@@ -75,15 +75,15 @@ function miniupnpd_start()
         return;
     }
 
-    mwexec_bg('/usr/local/sbin/miniupnpd -f /var/etc/miniupnpd.conf -P /var/run/miniupnpd.pid');
+    mwexecfb('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
 }
 
 function miniupnpd_stop()
 {
     killbypid('/var/run/miniupnpd.pid');
 
-    mwexec('/sbin/pfctl -aminiupnpd -Fr 2>&1 >/dev/null');
-    mwexec('/sbin/pfctl -aminiupnpd -Fn 2>&1 >/dev/null');
+    mwexecf('/sbin/pfctl -a miniupnpd -Fr');
+    mwexecf('/sbin/pfctl -a miniupnpd -Fn');
 }
 
 function miniupnpd_configure()
@@ -131,7 +131,7 @@ function miniupnpd_configure_do($verbose = false)
         return;
     }
 
-    service_log('Starting UPnP service...', $verbose);
+    service_log('Starting UPnP IGD & PCP/NAT-PMP service...', $verbose);
 
     $upnp_config = $config['installedpackages']['miniupnpd']['config'][0];
 
@@ -142,7 +142,7 @@ function miniupnpd_configure_do($verbose = false)
     }
 
     $config_text = "ext_ifname={$ext_ifname}\n";
-    $config_text .= "port=2189\n";
+    $config_text .= "http_port=2189\n";
 
     $ifaces_active = '';
 
@@ -185,7 +185,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* configure STUN server if needed */
             if (!empty($upnp_config['stun_host'])) {
-                $config_text .= "ext_perform_stun=yes\n";
+                $config_text .= "ext_perform_stun=allow-filtered\n";
                 $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) . "\n";
                 $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
             }
@@ -198,7 +198,17 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            $config_text .= "secure_mode=yes\n";
+            if (!empty($upnp_config['allow_third_party_mapping'])) {
+                $config_text .= "secure_mode=no\n";
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            } else {
+                $config_text .= "secure_mode=yes\n";
+                $config_text .= "pcp_allow_thirdparty=no\n";
+            }
+
+            if (!empty($upnp_config['ipv6_disable'])) {
+                $config_text .= "ipv6_disable=yes\n";
+            }
 
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {
@@ -219,12 +229,19 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "/\n";
             }
 
+            if (!empty($upnp_config['friendly_name'])) {
+                // Encode required XML entities of text UPnP IGD config options until the daemon does so
+                $config_text .= "friendly_name=" . htmlspecialchars($upnp_config['friendly_name'], ENT_NOQUOTES | ENT_XML1) . "\n";
+            } else {
+                $config_text .= "friendly_name=OPNsense UPnP IGD &amp; PCP\n";
+            }
+
             /* set uuid and serial */
             $config_text .= "uuid=" . miniupnpd_uuid() . "\n";
             $config_text .= "serial=" . strtoupper(substr(miniupnpd_uuid(), 0, 8)) . "\n";
 
             /* set model number */
-            $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
+            $config_text .= "model_number=" . shell_safe('opnsense-version -v') . "\n";
 
             /* upnp access restrictions */
             foreach (miniupnpd_permuser_list() as $permuser) {
@@ -234,17 +251,21 @@ function miniupnpd_configure_do($verbose = false)
             }
 
             if (!empty($upnp_config['permdefault'])) {
-                $config_text .= "deny 0-65535 0.0.0.0/0 0-65535\n";
+                $config_text .= "deny 1-65535 0.0.0.0/0 1-65535\n";
             }
 
             /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
             $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
-            /* configure lifetimes to force periodic expire */
-            $config_text .= "clean_ruleset_interval=600\n";
-            $config_text .= "min_lifetime=120\n";
-            $config_text .= "max_lifetime=86400\n";
+            // When building the daemon with UPnP IGDv2, infinite (IGDv1 only) lease duration port maps are reduced
+            // to 7d, following the IGDv2 standard. Disabling it at runtime allows IGDv2-incompatible clients
+            if (($upnp_config['upnp_igd_compat'] ?? 'igdv1') == 'igdv1') {
+                $config_text .= "force_igd_desc_v1=yes\n";
+            }
+
+            $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
+            $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
