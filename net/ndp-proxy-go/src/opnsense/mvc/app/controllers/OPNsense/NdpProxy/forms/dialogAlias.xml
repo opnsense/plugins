@@ -3,7 +3,10 @@
         <id>alias.interface</id>
         <label>Interface</label>
         <type>dropdown</type>
-        <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface. Ethernet interfaces are fully supported, point-to-point (PPPoE) devices are experimental.</help>
+        <help>Add IPv6 addresses to the firewall alias that belong to this proxied interface. When choosing any, all IPv6 addresses will be added.</help>
+        <grid_view>
+            <formatter>any</formatter>
+        </grid_view>
     </field>
     <field>
         <id>alias.alias</id>

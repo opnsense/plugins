@@ -40,7 +40,7 @@
         <aliases>
             <alias type="ArrayField">
                 <interface type="InterfaceField">
-                    <Required>Y</Required>
+                    <BlankDesc>any</BlankDesc>
                 </interface>
                 <alias type="ModelRelationField">
                     <Model>

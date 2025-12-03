@@ -45,6 +45,17 @@
             set:'/api/ndpproxy/general/set_alias/',
             add:'/api/ndpproxy/general/add_alias/',
             del:'/api/ndpproxy/general/del_alias/',
+            options: {
+                formatters:{
+                    any: function(column, row) {
+                        if (row[column.id] !== '') {
+                            return row[`%${column.id}`] || row[column.id];
+                        } else {
+                            return '{{ lang._('any') }}';
+                        }
+                    },
+                },
+            },
         });
 
     });
