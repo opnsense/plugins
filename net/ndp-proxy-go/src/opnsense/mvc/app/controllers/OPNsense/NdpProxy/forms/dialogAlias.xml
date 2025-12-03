@@ -1,0 +1,19 @@
+<form>
+    <field>
+        <id>alias.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface. Ethernet interfaces are fully supported, point-to-point (PPPoE) devices are experimental.</help>
+    </field>
+    <field>
+        <id>alias.alias</id>
+        <label>Firewall alias</label>
+        <type>dropdown</type>
+        <help>Choose an "external (advanced)" type alias from "Firewall - Aliases". Whenever a client is discovered, the IPv6 address will be automatically added to the chosen alias. When the neighbor cache lifetime expires, the IPv6 address will be removed from the alias.</help>
+    </field>
+    <field>
+        <id>alias.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

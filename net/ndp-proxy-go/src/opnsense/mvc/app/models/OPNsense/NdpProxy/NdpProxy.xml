@@ -37,5 +37,27 @@
                 <Required>Y</Required>
             </debug>
         </general>
+        <aliases>
+            <alias type="ArrayField">
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                </interface>
+                <alias type="ModelRelationField">
+                    <Model>
+                        <aliases>
+                            <source>OPNsense.Firewall.Alias</source>
+                            <items>aliases.alias</items>
+                            <display>name</display>
+                            <filters>
+                                <type>/^[Ee]xternal.*/</type>
+                                <name>/^(?!bogons$|bogonsv6$|virusprot$|sshlockout$|__.*).*/</name>
+                            </filters>
+                        </aliases>
+                    </Model>
+                    <Required>Y</Required>
+                </alias>
+                <description type="DescriptionField"/>
+            </alias>
+        </aliases>
     </items>
 </model>
