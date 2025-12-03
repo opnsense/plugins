@@ -260,7 +260,7 @@ function miniupnpd_configure_do($verbose = false)
 
             // When building the daemon with UPnP IGDv2, infinite (IGDv1 only) lease duration port maps are reduced
             // to 7d, following the IGDv2 standard. Disabling it at runtime allows IGDv2-incompatible clients
-            if ($upnp_config['upnp_igd_compat'] == 'igdv1') {
+            if (($upnp_config['upnp_igd_compat'] ?? 'igdv1') == 'igdv1') {
                 $config_text .= "force_igd_desc_v1=yes\n";
             }
 
