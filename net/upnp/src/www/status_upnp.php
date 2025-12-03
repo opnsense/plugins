@@ -83,12 +83,12 @@ include("head.inc");
                       !preg_match('/on (?P<iface>.+) inet6 proto (?P<proto>.+) from (?P<srcaddr>[^ ]+) (port = (?P<srcport>.+) )?to (?P<intaddr>.+) port = (?P<intport>\d+) (flags [^ ]+ )?keep state (label "(?P<descr>.+)" )?rtable [0-9]/', $rdr_entry, $matches)) {
                       continue;
                   }
-                  if (preg_match('/PCP .*([0-9a-f]{24})$/', $matches['descr'], $descrmatch) === 1) {
-                    $descr = "PCP (nonce  {$descrmatch[1]})";
+                  if (preg_match('/PCP ([A-Z]+) ([0-9a-f]{24})$/', $matches['descr'], $descrmatch) === 1) {
+                    $descr = "PCP ({$descrmatch[1]} nonce {$descrmatch[2]})";
                   } elseif (preg_match('/^NAT-PMP \d+ \w+$/', $matches['descr'], $descrmatch) === 1) {
                     $descr = 'NAT-PMP';
                   } elseif (preg_match('/^pinhole-(\d+).*IGD2 pinhole$/', $matches['descr'], $descrmatch) === 1) {
-                    $descr = "UPnP IGD IPv6 (UID {$descrmatch[1]})";
+                    $descr = "UPnP IGDv2 IPv6 (UID {$descrmatch[1]})";
                   } elseif (preg_match('/^UPnP IGD/', $matches['descr'], $descrmatch) === 1) {
                     $descr = $matches['descr'];
                   } else {
