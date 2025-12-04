@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/postfix/domain</mount>
     <description>Postfix domain configuration</description>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <items>
         <domains>
                 <domain type="ArrayField">
@@ -13,6 +13,12 @@
                                 <Default></Default>
                                 <Required>Y</Required>
                         </domainname>
+                        <transport type="TextField">
+                                <Default></Default>
+                                <Required>N</Required>
+                                <Mask>/^([0-9a-zA-Z.:\-\[\]]{0,63}[0-9a-zA-Z.\-\[\]])$/u</Mask>
+                                <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[] and must not end with :</ValidationMessage>
+                        </transport>
                         <destination type="TextField">
                                 <Default></Default>
                                 <Required>N</Required>
