@@ -12,8 +12,14 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.18
+
+Added:
+* Add ListenBacklog option (#5046)
+
 1.17
 
+Added:
 * Plugin variant for Zabbix Agent 7.4
 
 1.16

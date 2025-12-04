@@ -35,6 +35,14 @@
             <help><![CDATA[An optional source IP address for outgoing connections.]]></help>
         </field>
         <field>
+            <id>zabbixagent.settings.main.listenBacklog</id>
+            <label>Listen Backlog</label>
+            <type>text</type>
+            <minimum>0</minimum>
+            <maximum>2147483647</maximum>
+            <help><![CDATA[The maximum number of pending connections in the TCP queue.]]></help>
+        </field>
+        <field>
             <id>zabbixagent.settings.main.serverList</id>
             <label>Zabbix Servers</label>
             <type>select_multiple</type>
