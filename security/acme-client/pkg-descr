@@ -15,6 +15,7 @@ Added:
 * add support for Selectel.ru V2 API (#4824)
 * add support for mijn.host DNS API (#4446)
 * add support for AzureDNS System Assigned Managed Identity #4830 (4830)
+* add support for ZoneEdit DNS API (#4671)
 
 Changed:
 * use mwexec/file_safe for HTTP-01/TLSALPN challenge types (core #9325)
