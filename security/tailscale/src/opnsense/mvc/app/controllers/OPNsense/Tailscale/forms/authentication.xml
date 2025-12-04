@@ -9,6 +9,6 @@
         <id>authentication.preAuthKey</id>
         <label>Pre-authentication Key</label>
         <type>text</type>
-        <help>Use a non-reusable auth key and disable expiration</help>
+        <help>Use a non-reusable auth key and disable expiration (optional). If not specified use AuthURL from Status page</help>
     </field>
 </form>
