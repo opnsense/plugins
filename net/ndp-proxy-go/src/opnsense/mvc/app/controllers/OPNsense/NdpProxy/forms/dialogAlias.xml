@@ -1,0 +1,22 @@
+<form>
+    <field>
+        <id>alias.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>Add IPv6 addresses to the firewall alias that belong to this proxied interface. When choosing any, all IPv6 addresses will be added.</help>
+        <grid_view>
+            <formatter>any</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>alias.alias</id>
+        <label>Firewall alias</label>
+        <type>dropdown</type>
+        <help>Choose an "external (advanced)" type alias from "Firewall - Aliases". Whenever a client is discovered, the IPv6 address will be automatically added to the chosen alias. When the neighbor cache lifetime expires, the IPv6 address will be removed from the alias.</help>
+    </field>
+    <field>
+        <id>alias.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

@@ -37,4 +37,30 @@ class GeneralController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'ndpproxy';
     protected static $internalModelClass = 'OPNsense\NdpProxy\NdpProxy';
+
+    public function searchAliasAction()
+    {
+        return $this->searchBase('aliases.alias');
+    }
+
+    public function setAliasAction($uuid)
+    {
+        return $this->setBase('alias', 'aliases.alias', $uuid);
+    }
+
+    public function addAliasAction()
+    {
+        return $this->addBase('alias', 'aliases.alias');
+    }
+
+    public function getAliasAction($uuid = null)
+    {
+        return $this->getBase('alias', 'aliases.alias', $uuid);
+    }
+
+    public function delAliasAction($uuid)
+    {
+        return $this->delBase('aliases.alias', $uuid);
+    }
+
 }
