@@ -801,6 +801,10 @@
                 <Default>1</Default>
                 <Required>Y</Required>
             </http2>
+            <enable_http3 type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_http3>
             <tls_protocols type="OptionField">
                 <Multiple>Y</Multiple>
                 <Sorted>Y</Sorted>
