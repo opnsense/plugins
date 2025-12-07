@@ -4,7 +4,7 @@
     <description>Unbound DNS registration for dnsmasq DHCP leases</description>
     <items>
         <enabled type="BooleanField">
-            <Default>0</Default>
+            <Default>1</Default>
             <Required>Y</Required>
         </enabled>
         <watchleases type="BooleanField">
