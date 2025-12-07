@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# Copyright (c) 2024 C. Hall (chall37@users.noreply.github.com)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+#
+# PROVIDE: dnsmasq_watcher
+# REQUIRE: DAEMON unbound
+# KEYWORD: shutdown
+#
+
+. /etc/rc.subr
+
+name=dnsmasq_watcher
+rcvar=dnsmasq_watcher_enable
+command=/usr/local/opnsense/scripts/unbound/dnsmasq_watcher.py
+command_interpreter=/usr/local/bin/python3
+pidfile="/var/run/${name}.pid"
+
+load_rc_config $name
+
+: ${dnsmasq_watcher_enable:=NO}
+
+start_postcmd=dnsmasq_watcher_poststart
+stop_cmd=dnsmasq_watcher_stop
+
+dnsmasq_watcher_poststart()
+{
+    # Give the daemon time to initialize
+    for i in 1 2 3 4 5; do
+        sleep 1
+        if [ -s ${pidfile} ]; then
+            break
+        fi
+    done
+}
+
+dnsmasq_watcher_stop()
+{
+    if [ -z "$rc_pid" ]; then
+        [ -n "$rc_fast" ] && return 0
+        _run_rc_notrunning
+        return 1
+    fi
+    echo -n "Stopping ${name}."
+    kill -15 ${rc_pid}
+    # Wait max 2 seconds for graceful exit
+    for i in $(seq 1 20); do
+        if [ -z "`/bin/ps -p ${rc_pid} -o pid=`" ]; then
+            break
+        fi
+        sleep 0.1
+    done
+    # Force kill if still running
+    if [ -n "`/bin/ps -p ${rc_pid} -o pid=`" ]; then
+        kill -9 ${rc_pid} >/dev/null 2>&1
+    fi
+    rm -f ${pidfile}
+    echo "done."
+}
+
+run_rc_command $1

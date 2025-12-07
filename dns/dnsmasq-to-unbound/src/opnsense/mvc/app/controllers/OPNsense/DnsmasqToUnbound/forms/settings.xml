@@ -1,0 +1,28 @@
+<form>
+    <field>
+        <id>unbounddnsmasq.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable the dnsmasq lease watcher service.</help>
+    </field>
+    <field>
+        <id>unbounddnsmasq.watchleases</id>
+        <label>Watch Dynamic Leases</label>
+        <type>checkbox</type>
+        <help>Register DHCP leases from dnsmasq in Unbound DNS.</help>
+    </field>
+    <field>
+        <id>unbounddnsmasq.watchstatic</id>
+        <label>Watch Static Hosts</label>
+        <type>checkbox</type>
+        <help>Register static host reservations from dnsmasq in Unbound DNS.</help>
+    </field>
+    <field>
+        <id>unbounddnsmasq.domains</id>
+        <label>Domain Filter</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Leave empty to register all domains. Specifying domains will exclude hosts from unlisted domains.</help>
+    </field>
+</form>

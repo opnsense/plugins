@@ -1,0 +1,25 @@
+<model>
+    <mount>//OPNsense/DnsmasqToUnbound</mount>
+    <version>1.0.0</version>
+    <description>Unbound DNS registration for dnsmasq DHCP leases</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <watchleases type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </watchleases>
+        <watchstatic type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </watchstatic>
+        <domains type="CSVListField">
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <Mask>/^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$/</Mask>
+            <ValidationMessage>Invalid domain format</ValidationMessage>
+        </domains>
+    </items>
+</model>

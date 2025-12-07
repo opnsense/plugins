@@ -1,0 +1,5 @@
+<menu>
+   <Services>
+      <DnsmasqToUnbound VisibleName="Dnsmasq to Unbound" cssClass="fa fa-exchange fa-fw" url="/ui/DnsmasqToUnbound"/>
+   </Services>
+</menu>
