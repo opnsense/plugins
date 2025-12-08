@@ -28,14 +28,63 @@
  *
  */
 
-namespace OPNsense\DnsmasqToUnbound;
-
-use OPNsense\Base\BaseModel;
+/**
+ * Check if the dnsmasq to unbound service is enabled
+ * @return bool
+ */
+function dnsmasqtounbound_enabled()
+{
+    $model = new \OPNsense\DnsmasqToUnbound\DnsmasqToUnbound();
+    return (string)$model->enabled == '1';
+}
 
 /**
- * Class DnsmasqToUnbound
- * @package OPNsense\DnsmasqToUnbound
+ * Register dnsmasq to unbound service for the dashboard widget
+ * @return array
  */
-class DnsmasqToUnbound extends BaseModel
+function dnsmasqtounbound_services()
 {
+    $services = [];
+
+    if (!dnsmasqtounbound_enabled()) {
+        return $services;
+    }
+
+    $services[] = [
+        'description' => gettext('Dnsmasq to Unbound Watcher'),
+        'configd' => [
+            'restart' => ['dnsmasqtounbound restart'],
+            'start' => ['dnsmasqtounbound start'],
+            'stop' => ['dnsmasqtounbound stop'],
+        ],
+        'pidfile' => '/var/run/dnsmasq_watcher.pid',
+        'name' => 'dnsmasq_watcher',
+    ];
+
+    return $services;
+}
+
+/**
+ * Register configuration sections for HA sync
+ * @return array
+ */
+function dnsmasqtounbound_xmlrpc_sync()
+{
+    $result = [];
+    $result['id'] = 'dnsmasqtounbound';
+    $result['section'] = 'OPNsense.DnsmasqToUnbound';
+    $result['description'] = gettext('Dnsmasq to Unbound');
+    $result['services'] = ['dnsmasq_watcher'];
+    return [$result];
+}
+
+/**
+ * Register syslog facility
+ * @return array
+ */
+function dnsmasqtounbound_syslog()
+{
+    $syslogconf = [];
+    $syslogconf['dnsmasq_watcher'] = ['facility' => ['dnsmasq_watcher']];
+    return $syslogconf;
 }

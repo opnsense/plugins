@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 C. Hall (chall37@users.noreply.github.com)
+ *    Copyright (C) 2025 C. Hall (chall37@users.noreply.github.com)
  *
  *    All rights reserved.
  *
@@ -33,6 +33,10 @@ namespace OPNsense\DnsmasqToUnbound\Api;
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 
+/**
+ * Class ServiceController
+ * @package OPNsense\DnsmasqToUnbound\Api
+ */
 class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = '\OPNsense\DnsmasqToUnbound\DnsmasqToUnbound';

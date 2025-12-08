@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 C. Hall (chall37@users.noreply.github.com)
+ *    Copyright (C) 2025 C. Hall (chall37@users.noreply.github.com)
  *
  *    All rights reserved.
  *
@@ -30,8 +30,16 @@
 
 namespace OPNsense\DnsmasqToUnbound;
 
+/**
+ * Class IndexController
+ * @package OPNsense\DnsmasqToUnbound
+ */
 class IndexController extends \OPNsense\Base\IndexController
 {
+    /**
+     * Default index action - render settings form
+     * @return void
+     */
     public function indexAction()
     {
         $this->view->settings = $this->getForm("settings");

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2024 C. Hall (chall37@users.noreply.github.com)
+ *    Copyright (C) 2025 C. Hall (chall37@users.noreply.github.com)
  *
  *    All rights reserved.
  *
@@ -32,6 +32,10 @@ namespace OPNsense\DnsmasqToUnbound\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
+/**
+ * Class SettingsController
+ * @package OPNsense\DnsmasqToUnbound\Api
+ */
 class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\DnsmasqToUnbound\DnsmasqToUnbound';

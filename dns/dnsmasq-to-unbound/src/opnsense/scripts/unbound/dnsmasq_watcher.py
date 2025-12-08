@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 """
-    Copyright (c) 2024 C. Hall (chall37@users.noreply.github.com)
+    Copyright (c) 2025 C. Hall (chall37@users.noreply.github.com)
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
