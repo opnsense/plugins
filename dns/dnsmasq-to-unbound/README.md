@@ -14,8 +14,7 @@ This OPNsense plugin automatically registers dnsmasq DHCP leases and static host
 
 ## Requirements
 
-- OPNsense with Unbound DNS resolver enabled
-- **Unbound Remote Control must be enabled**: Services > Unbound DNS > General > Enable Remote Control
+- OPNsense with Unbound DNS resolver enabled (remote control is enabled by default)
 - dnsmasq plugin installed and configured with DHCP
 
 ## Installation
@@ -80,7 +79,8 @@ grep dnsmasq_watcher /var/log/system/latest.log
 ### Common Issues
 
 **"Unbound remote control not enabled"**
-- Enable Remote Control in Services > Unbound DNS > General
+- This should not normally occur as OPNsense enables remote control by default
+- Check that Unbound is running and restart if necessary
 
 **"No domain configured in dnsmasq.conf"**
 - Add `domain=lan` (or your domain) to dnsmasq configuration
