@@ -183,7 +183,7 @@ def get_records():
     """Fetch and return deduplicated records."""
     config = get_config()
     domain_filter = config['domains']
-    records_by_fqdn = {}  # Deduplicate by FQDN
+    records_by_fqdn = {}  # Deduplicate by FQDN (case-insensitive)
     current_time = int(time.time())
 
     # Get MAC addresses from dhcp-host entries
@@ -198,6 +198,7 @@ def get_records():
                     if host:
                         for domain in get_domains_to_register(domain_filter, host['domain']):
                             fqdn = f"{host['hostname']}.{domain}"
+                            fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             mac = mac_by_ip.get(host['ip'], '-')
                             new_record = {
                                 'hostname': host['hostname'],
@@ -209,8 +210,8 @@ def get_records():
                                 'expiry_ts': None  # For comparison
                             }
                             # For static duplicates, first one wins
-                            if fqdn not in records_by_fqdn:
-                                records_by_fqdn[fqdn] = new_record
+                            if fqdn_lower not in records_by_fqdn:
+                                records_by_fqdn[fqdn_lower] = new_record
         except IOError:
             pass
 
@@ -225,6 +226,7 @@ def get_records():
                             continue
                         for domain in get_domains_to_register(domain_filter, None):
                             fqdn = f"{lease['hostname']}.{domain}"
+                            fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {
                                 'hostname': lease['hostname'],
                                 'fqdn': fqdn,
@@ -235,11 +237,11 @@ def get_records():
                                 'expiry_ts': lease['expiry']  # For comparison
                             }
                             # Handle duplicates with conflict resolution
-                            if fqdn in records_by_fqdn:
-                                if should_replace(records_by_fqdn[fqdn], new_record):
-                                    records_by_fqdn[fqdn] = new_record
+                            if fqdn_lower in records_by_fqdn:
+                                if should_replace(records_by_fqdn[fqdn_lower], new_record):
+                                    records_by_fqdn[fqdn_lower] = new_record
                             else:
-                                records_by_fqdn[fqdn] = new_record
+                                records_by_fqdn[fqdn_lower] = new_record
         except IOError:
             pass
 

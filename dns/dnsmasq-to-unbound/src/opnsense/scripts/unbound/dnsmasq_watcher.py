@@ -339,20 +339,22 @@ class DnsmasqLeaseWatcher:
                         # Leases don't have domain suffix, use configured domains
                         for domain in self.get_domains_to_register(None):
                             fqdn = f"{lease['hostname']}.{domain}"
+                            fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {
                                 'ip': lease['ip'],
                                 'source': 'lease',
                                 'expiry': lease['expiry'],
                                 'hostname': lease['hostname'],
-                                'domain': domain
+                                'domain': domain,
+                                'fqdn': fqdn  # Preserve original case for display
                             }
                             # Handle duplicates within leases: prefer later expiry
-                            if fqdn in records:
-                                existing = records[fqdn]
+                            if fqdn_lower in records:
+                                existing = records[fqdn_lower]
                                 if self._should_replace(existing, new_record):
-                                    records[fqdn] = new_record
+                                    records[fqdn_lower] = new_record
                             else:
-                                records[fqdn] = new_record
+                                records[fqdn_lower] = new_record
         except IOError as e:
             self.log(f"Error reading lease file: {e}", syslog.LOG_ERR)
 
@@ -377,16 +379,18 @@ class DnsmasqLeaseWatcher:
                         # Register under appropriate domains
                         for domain in self.get_domains_to_register(host['domain']):
                             fqdn = f"{host['hostname']}.{domain}"
+                            fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {
                                 'ip': host['ip'],
                                 'source': 'static',
                                 'expiry': None,  # Static entries have no expiry
                                 'hostname': host['hostname'],
-                                'domain': domain
+                                'domain': domain,
+                                'fqdn': fqdn  # Preserve original case for display
                             }
                             # For static duplicates, first one wins (earlier in file)
-                            if fqdn not in records:
-                                records[fqdn] = new_record
+                            if fqdn_lower not in records:
+                                records[fqdn_lower] = new_record
         except IOError as e:
             self.log(f"Error reading static hosts file: {e}", syslog.LOG_ERR)
 
@@ -424,24 +428,24 @@ class DnsmasqLeaseWatcher:
 
     def _merge_records(self, static_records, lease_records):
         """
-        Merge static and lease records, deduplicating by FQDN.
-        Returns dict keyed by FQDN with winning record for each.
+        Merge static and lease records, deduplicating by FQDN (case-insensitive).
+        Returns dict keyed by lowercase FQDN with winning record for each.
         """
         merged = {}
 
-        # Add all static records first
-        for fqdn, record in static_records.items():
-            merged[fqdn] = record
+        # Add all static records first (keys are already lowercase)
+        for fqdn_lower, record in static_records.items():
+            merged[fqdn_lower] = record
 
         # Add lease records, applying conflict resolution
-        for fqdn, record in lease_records.items():
-            if fqdn in merged:
-                if self._should_replace(merged[fqdn], record):
-                    self.log(f"Lease overriding existing record for {fqdn}", syslog.LOG_DEBUG)
-                    merged[fqdn] = record
+        for fqdn_lower, record in lease_records.items():
+            if fqdn_lower in merged:
+                if self._should_replace(merged[fqdn_lower], record):
+                    self.log(f"Lease overriding existing record for {record.get('fqdn', fqdn_lower)}", syslog.LOG_DEBUG)
+                    merged[fqdn_lower] = record
                 # else: keep existing (static wins or existing is newer)
             else:
-                merged[fqdn] = record
+                merged[fqdn_lower] = record
 
         return merged
 
@@ -491,10 +495,13 @@ class DnsmasqLeaseWatcher:
                 self.log(f"unbound-control exception ({self.consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}): {e}", syslog.LOG_ERR)
             return False
 
-    def add_dns_record(self, fqdn, record):
+    def add_dns_record(self, fqdn_key, record):
         """Add TXT marker, A, and PTR records to Unbound in a single batch call."""
         ip = record['ip']
         source = record['source']
+        # Use lowercase fqdn for DNS (case-insensitive)
+        fqdn = fqdn_key.lower()
+        display_fqdn = record.get('fqdn', fqdn)  # Original case for logging
         ttl = 3600 if source == 'static' else 300
         ptr_name = '.'.join(reversed(ip.split('.'))) + '.in-addr.arpa'
 
@@ -513,19 +520,19 @@ class DnsmasqLeaseWatcher:
                 input=records, text=True, capture_output=True, timeout=10
             )
             if result.returncode != 0:
-                self.log(f"Failed to add records for {fqdn}: {result.stderr.strip()}", syslog.LOG_ERR)
+                self.log(f"Failed to add records for {display_fqdn}: {result.stderr.strip()}", syslog.LOG_ERR)
                 self.consecutive_failures += 1
                 return False
         except Exception as e:
-            self.log(f"Exception adding records for {fqdn}: {e}", syslog.LOG_ERR)
+            self.log(f"Exception adding records for {display_fqdn}: {e}", syslog.LOG_ERR)
             self.consecutive_failures += 1
             return False
 
         self.consecutive_failures = 0
-        self.log(f"Added record ({source}): {fqdn} -> {ip}")
-        self.registered_records[fqdn] = record
+        self.log(f"Added record ({source}): {display_fqdn} -> {ip}")
+        self.registered_records[fqdn_key] = record
         # Queue for verification after delay
-        self.pending_verification[fqdn] = (record, time.time())
+        self.pending_verification[fqdn_key] = (record, time.time())
         return True
 
     def verify_pending_records(self):
@@ -537,36 +544,38 @@ class DnsmasqLeaseWatcher:
         verified = []
         failed = []
 
-        for fqdn, (record, added_time) in list(self.pending_verification.items()):
+        for fqdn_key, (record, added_time) in list(self.pending_verification.items()):
             if now - added_time < VERIFICATION_DELAY:
                 continue  # Not ready for verification yet
 
-            # Query Unbound for this record
+            display_fqdn = record.get('fqdn', fqdn_key)
+            # Query Unbound for this record (use lowercase)
             try:
                 result = subprocess.run(
-                    [UNBOUND_CONTROL, '-c', UNBOUND_CONF, 'lookup', fqdn],
+                    [UNBOUND_CONTROL, '-c', UNBOUND_CONF, 'lookup', fqdn_key.lower()],
                     capture_output=True, text=True, timeout=5
                 )
                 # Check if our IP is in the response
                 if record['ip'] in result.stdout:
-                    verified.append(fqdn)
+                    verified.append(fqdn_key)
                 else:
-                    failed.append((fqdn, record))
+                    failed.append((fqdn_key, record))
             except Exception as e:
-                self.log(f"Verification lookup failed for {fqdn}: {e}", syslog.LOG_WARNING)
-                failed.append((fqdn, record))
+                self.log(f"Verification lookup failed for {display_fqdn}: {e}", syslog.LOG_WARNING)
+                failed.append((fqdn_key, record))
 
         # Remove verified from pending
-        for fqdn in verified:
-            del self.pending_verification[fqdn]
+        for fqdn_key in verified:
+            del self.pending_verification[fqdn_key]
 
         # Re-add failed records
-        for fqdn, record in failed:
-            del self.pending_verification[fqdn]
-            self.log(f"Verification failed for {fqdn}, re-adding", syslog.LOG_WARNING)
+        for fqdn_key, record in failed:
+            del self.pending_verification[fqdn_key]
+            display_fqdn = record.get('fqdn', fqdn_key)
+            self.log(f"Verification failed for {display_fqdn}, re-adding", syslog.LOG_WARNING)
             # Remove from registered so add_dns_record can re-add
-            self.registered_records.pop(fqdn, None)
-            self.add_dns_record(fqdn, record)
+            self.registered_records.pop(fqdn_key, None)
+            self.add_dns_record(fqdn_key, record)
 
     def get_managed_fqdns_from_unbound(self):
         """
@@ -595,7 +604,8 @@ class DnsmasqLeaseWatcher:
                 if len(parts) < 5:
                     continue
 
-                name = parts[0].rstrip('.')
+                # Normalize to lowercase for case-insensitive comparison
+                name = parts[0].rstrip('.').lower()
                 rtype = parts[3]
 
                 if rtype == 'TXT' and MANAGED_MARKER in line:
@@ -604,7 +614,7 @@ class DnsmasqLeaseWatcher:
                     a_records[name] = parts[4]
                 elif rtype == 'PTR':
                     # PTR value is the FQDN it points to (strip trailing dot)
-                    ptr_target = parts[4].rstrip('.')
+                    ptr_target = parts[4].rstrip('.').lower()
                     ptr_targets.add(ptr_target)
 
             # Return only A records that have our TXT marker, including PTR status
@@ -620,9 +630,12 @@ class DnsmasqLeaseWatcher:
 
         return managed
 
-    def remove_dns_record(self, fqdn, record):
+    def remove_dns_record(self, fqdn_key, record):
         """Remove A/TXT and PTR records from Unbound in a single batch call."""
         ip = record['ip']
+        # Use lowercase fqdn for DNS (case-insensitive)
+        fqdn = fqdn_key.lower()
+        display_fqdn = record.get('fqdn', fqdn)  # Original case for logging
         ptr_name = '.'.join(reversed(ip.split('.'))) + '.in-addr.arpa'
 
         # Batch removal of both names (trailing newline required)
@@ -634,10 +647,10 @@ class DnsmasqLeaseWatcher:
                 input=names, text=True, capture_output=True, timeout=10
             )
         except Exception as e:
-            self.log(f"Exception removing records for {fqdn}: {e}", syslog.LOG_ERR)
+            self.log(f"Exception removing records for {display_fqdn}: {e}", syslog.LOG_ERR)
 
-        self.log(f"Removed record: {fqdn} -> {ip}")
-        self.registered_records.pop(fqdn, None)
+        self.log(f"Removed record: {display_fqdn} -> {ip}")
+        self.registered_records.pop(fqdn_key, None)
 
     def sync_records(self):
         """Sync DNS records with current lease and static host state."""
