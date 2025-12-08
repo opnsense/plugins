@@ -24,11 +24,14 @@ Kea is ISC's strategic replacement but currently only supports static reservatio
 
 ### dnsmasq
 
-dnsmasq includes its own DNS server with automatic lease registration, but many users prefer Unbound for its DNSSEC validation, DNS-over-TLS support, and advanced caching. When using Unbound as the primary resolver:
+dnsmasq includes its own DNS server with automatic lease registration, but many users prefer Unbound for its DNSSEC validation, DNS-over-TLS support, and advanced caching. When using Unbound as the primary resolver, dnsmasq's internal DNS registrations are not directly accessible.
 
-- dnsmasq's internal DNS registrations are not accessible to Unbound
-- Query forwarding from Unbound to dnsmasq is possible but [has issues](https://github.com/opnsense/core/issues/8612) where static reservations don't inherit the system domain
-- Domain overrides [may not apply consistently](https://github.com/opnsense/core/issues/9277) to static mappings vs dynamic leases
+**Query forwarding** from Unbound to dnsmasq is possible but problematic:
+
+- Forwarding is either brittle or incurs a performance penalty: Unbound either needs explicit knowledge of every domain served by dnsmasq (requiring configuration to stay in sync), or all queries must be routed through dnsmasq first, adding latency to every DNS lookup and negating Unbound's direct recursive resolution capabilities.
+- Static reservations [don't inherit the system domain](https://github.com/opnsense/core/issues/8612) - each must have the domain manually specified or queries fail.
+- Domain overrides [may not apply consistently](https://github.com/opnsense/core/issues/9277) to static mappings vs dynamic leases.
+- Requires additional configuration for `private-domain` (rebind protection exemption) and `domain-insecure` (DNSSEC exemption) for each local domain.
 
 ### This Plugin
 
