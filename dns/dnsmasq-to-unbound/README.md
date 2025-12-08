@@ -4,6 +4,36 @@ This OPNsense plugin automatically registers dnsmasq DHCP leases and static host
 
 > **Note:** This plugin is intended as a stopgap solution until native integration between Unbound and a supported DHCP service is implemented in OPNsense core.
 
+## Background
+
+OPNsense offers three DHCP server options, each with limitations for Unbound DNS integration:
+
+| DHCP Server | Dynamic Lease DNS | Static Reservation DNS | Status |
+|-------------|-------------------|------------------------|--------|
+| ISC DHCP | Buggy | Yes | End-of-life, deprecated |
+| Kea DHCP | **No** | Yes (requires Unbound restart) | Active, DNS integration deprioritized |
+| dnsmasq | Built-in DNS only | Built-in DNS only | Active |
+
+### ISC DHCP (Deprecated)
+
+ISC DHCP had Unbound integration via `unbound_watcher.py`, but it suffers from reliability issues where the [watcher daemon silently crashes](https://github.com/opnsense/core/issues/8075) when encountering malformed hostnames, stopping all subsequent DNS registration until Unbound is restarted. ISC DHCP reached end-of-life in 2022 and is being phased out of OPNsense.
+
+### Kea DHCP
+
+Kea is ISC's strategic replacement but currently only supports static reservation DNS registration in Unbound - dynamic leases are [not registered](https://github.com/opnsense/core/issues/7475). Static reservations also require an Unbound restart to take effect. This limitation is acknowledged but deprioritized by the OPNsense team due to architectural complexity concerns.
+
+### dnsmasq
+
+dnsmasq includes its own DNS server with automatic lease registration, but many users prefer Unbound for its DNSSEC validation, DNS-over-TLS support, and advanced caching. When using Unbound as the primary resolver:
+
+- dnsmasq's internal DNS registrations are not accessible to Unbound
+- Query forwarding from Unbound to dnsmasq is possible but [has issues](https://github.com/opnsense/core/issues/8612) where static reservations don't inherit the system domain
+- Domain overrides [may not apply consistently](https://github.com/opnsense/core/issues/9277) to static mappings vs dynamic leases
+
+### This Plugin
+
+This plugin bridges the gap by directly registering dnsmasq DHCP data into Unbound via `unbound-control`, providing the simplicity of dnsmasq DHCP with the features of Unbound DNS. It avoids the reliability issues of the ISC DHCP watcher by using a more robust file-watching mechanism and graceful error handling.
+
 ## Features
 
 - Watches dnsmasq lease file and static hosts for changes
