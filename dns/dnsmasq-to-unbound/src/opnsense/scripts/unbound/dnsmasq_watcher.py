@@ -51,7 +51,7 @@ import ipaddress
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, "/usr/local/opnsense/site-python")
-from daemonize import Daemonize
+from daemonize import Daemonize  # noqa: E402
 
 LEASE_FILE = '/var/db/dnsmasq.leases'
 STATIC_HOSTS_FILE = '/var/etc/dnsmasq-hosts'
@@ -632,7 +632,10 @@ class DnsmasqLeaseWatcher:
                             "Unbound remote control not enabled or Unbound stopped"
                         )
                     else:
-                        self.log(f"unbound-control failed ({self.consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}): {stderr}", syslog.LOG_WARNING)
+                        self.log(
+                            f"unbound-control failed ({self.consecutive_failures}/"
+                            f"{MAX_CONSECUTIVE_FAILURES}): {stderr}", syslog.LOG_WARNING
+                        )
                 else:
                     self.log(f"unbound-control error: {stderr}", syslog.LOG_WARNING)
                 return False
@@ -647,7 +650,10 @@ class DnsmasqLeaseWatcher:
                     "Unbound repeatedly timing out"
                 )
             else:
-                self.log(f"unbound-control timeout ({self.consecutive_failures}/{MAX_CONSECUTIVE_FAILURES})", syslog.LOG_WARNING)
+                self.log(
+                    f"unbound-control timeout ({self.consecutive_failures}/"
+                    f"{MAX_CONSECUTIVE_FAILURES})", syslog.LOG_WARNING
+                )
             return False
         except Exception as e:
             self.consecutive_failures += 1
@@ -657,7 +663,10 @@ class DnsmasqLeaseWatcher:
                     f"Repeated unbound-control failures: {e}"
                 )
             else:
-                self.log(f"unbound-control exception ({self.consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}): {e}", syslog.LOG_ERR)
+                self.log(
+                    f"unbound-control exception ({self.consecutive_failures}/"
+                    f"{MAX_CONSECUTIVE_FAILURES}): {e}", syslog.LOG_ERR
+                )
             return False
 
     def add_dns_record(self, fqdn_key, record):
@@ -1077,7 +1086,10 @@ class DnsmasqLeaseWatcher:
                     )
                     break
                 else:
-                    self.log(f"Error in watch loop ({self.consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}): {e}", syslog.LOG_ERR)
+                    self.log(
+                        f"Error in watch loop ({self.consecutive_failures}/"
+                        f"{MAX_CONSECUTIVE_FAILURES}): {e}", syslog.LOG_ERR
+                    )
                     time.sleep(FAILURE_RETRY_DELAY)
 
         # If we exited due to failure, enter idle loop

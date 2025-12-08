@@ -330,7 +330,9 @@ def get_records():
                                 'ip': lease['ip'],
                                 'type': 'lease',
                                 'mac': lease['mac'],
-                                'expiry': 'infinite' if lease['expiry'] == 0 else time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(lease['expiry'])),
+                                'expiry': 'infinite' if lease['expiry'] == 0 else time.strftime(
+                                    '%Y-%m-%d %H:%M:%S', time.localtime(lease['expiry'])
+                                ),
                                 'expiry_ts': lease['expiry']  # For comparison
                             }
                             # Handle duplicates with conflict resolution
