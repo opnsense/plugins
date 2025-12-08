@@ -53,7 +53,7 @@ If no domain is configured in dnsmasq, DHCP leases cannot be registered (static 
 1. The daemon watches `/var/db/dnsmasq.leases` and `/var/etc/dnsmasq-hosts` for changes
 2. When changes are detected, it parses the files and compares with current Unbound state
 3. New records are added, changed records are updated, and stale records are removed
-4. Records are marked with a TXT record (`managed-by=unbounddnsmasq`) for identification
+4. Records are marked with a TXT record (`managed-by=dnsmasq-to-unbound`) for identification
 5. Every 5 minutes, a full reconciliation runs to catch any missed changes
 
 ## Troubleshooting

@@ -67,7 +67,7 @@ FAILURE_RETRY_DELAY = 30
 # How often to run full reconciliation (seconds)
 RECONCILE_INTERVAL = 300  # 5 minutes
 # Marker to identify our managed records
-MANAGED_MARKER = 'managed-by=unbounddnsmasq'
+MANAGED_MARKER = 'managed-by=dnsmasq-to-unbound'
 # Delay before verifying added records (seconds)
 VERIFICATION_DELAY = 5
 # Status file for UI notifications
