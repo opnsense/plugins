@@ -2,6 +2,8 @@
 
 This OPNsense plugin automatically registers dnsmasq DHCP leases and static host entries in Unbound DNS, enabling local hostname resolution for DHCP clients.
 
+> **Note:** This plugin is intended as a stopgap solution until native integration between Unbound and a supported DHCP service is implemented in OPNsense core.
+
 ## Features
 
 - Watches dnsmasq lease file and static hosts for changes
