@@ -33,6 +33,7 @@
 
 import argparse
 import hashlib
+import ipaddress
 import json
 import os
 import time
@@ -135,17 +136,106 @@ def get_dhcp_host_macs():
     return mac_by_ip
 
 
-def get_domains_to_register(domain_filter, source_domain=None):
-    """Determine which domains to register a host under."""
+def get_dnsmasq_domain_config():
+    """
+    Load domain configuration from dnsmasq.conf.
+    Returns (global_domain, domain_ranges) where domain_ranges is a list of
+    (start_ip, end_ip, domain) tuples.
+    """
+    global_domain = None
+    domain_ranges = []
+
+    if not os.path.exists(DNSMASQ_CONF):
+        return global_domain, domain_ranges
+
+    try:
+        with open(DNSMASQ_CONF, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line.startswith('domain='):
+                    continue
+
+                # Parse domain= line
+                # Format: domain=<domain> or domain=<domain>,<start_ip>,<end_ip>
+                value = line[7:]  # Strip 'domain='
+                parts = value.split(',')
+
+                if len(parts) == 1:
+                    # Global domain (first one wins if multiple)
+                    if global_domain is None:
+                        global_domain = parts[0].strip()
+                elif len(parts) >= 3:
+                    # Range-specific domain
+                    domain = parts[0].strip()
+                    try:
+                        start_ip = ipaddress.ip_address(parts[1].strip())
+                        end_ip = ipaddress.ip_address(parts[2].strip())
+                        domain_ranges.append((start_ip, end_ip, domain))
+                    except ValueError:
+                        pass  # Invalid IP, skip
+    except IOError:
+        pass
+
+    return global_domain, domain_ranges
+
+
+def get_domain_for_ip(ip_str, global_domain, domain_ranges):
+    """
+    Get the domain for an IP address based on dnsmasq config.
+    Checks range-specific domains first, then falls back to global domain.
+    Returns None if no domain can be determined.
+    """
+    try:
+        ip = ipaddress.ip_address(ip_str)
+    except ValueError:
+        return None
+
+    # Check range-specific domains first
+    for start_ip, end_ip, domain in domain_ranges:
+        if start_ip <= ip <= end_ip:
+            return domain
+
+    # Fall back to global domain
+    return global_domain
+
+
+def get_domains_to_register(domain_filter, source_domain=None, ip=None,
+                            global_domain=None, domain_ranges=None):
+    """
+    Determine which domains to register a host under.
+
+    Args:
+        domain_filter: List of allowed domains from plugin config (empty = all)
+        source_domain: Domain from the source record (e.g., from static host entry)
+        ip: IP address (used to look up domain from dnsmasq config if no source_domain)
+        global_domain: Global domain from dnsmasq.conf
+        domain_ranges: List of (start_ip, end_ip, domain) tuples from dnsmasq.conf
+
+    Returns:
+        List of domains to register under, or empty list if none can be determined.
+    """
+    # Determine the effective domain
+    if source_domain:
+        effective_domain = source_domain
+    elif ip and (global_domain or domain_ranges):
+        effective_domain = get_domain_for_ip(ip, global_domain, domain_ranges or [])
+    else:
+        effective_domain = global_domain
+
+    if not effective_domain:
+        # No domain can be determined - don't register
+        return []
+
     if domain_filter:
-        if source_domain and source_domain in domain_filter:
-            return [source_domain]
-        elif not source_domain:
-            return domain_filter
+        # Filter mode: only register if domain matches filter
+        if effective_domain in domain_filter:
+            return [effective_domain]
         else:
+            # Domain doesn't match filter, skip
             return []
     else:
-        return [source_domain] if source_domain else ['lan']
+        # No filter: register under the effective domain
+        return [effective_domain]
 
 
 def should_replace(existing, new):
@@ -189,6 +279,9 @@ def get_records():
     # Get MAC addresses from dhcp-host entries
     mac_by_ip = get_dhcp_host_macs()
 
+    # Get domain configuration from dnsmasq.conf
+    global_domain, domain_ranges = get_dnsmasq_domain_config()
+
     # Read static hosts first (they have priority by default)
     if config['watchstatic'] and os.path.exists(STATIC_HOSTS_FILE):
         try:
@@ -196,7 +289,9 @@ def get_records():
                 for line in f:
                     host = parse_hosts_line(line)
                     if host:
-                        for domain in get_domains_to_register(domain_filter, host['domain']):
+                        for domain in get_domains_to_register(
+                                domain_filter, host['domain'], host['ip'],
+                                global_domain, domain_ranges):
                             fqdn = f"{host['hostname']}.{domain}"
                             fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             mac = mac_by_ip.get(host['ip'], '-')
@@ -224,7 +319,9 @@ def get_records():
                     if lease:
                         if lease['expiry'] != 0 and lease['expiry'] < current_time:
                             continue
-                        for domain in get_domains_to_register(domain_filter, None):
+                        for domain in get_domains_to_register(
+                                domain_filter, None, lease['ip'],
+                                global_domain, domain_ranges):
                             fqdn = f"{lease['hostname']}.{domain}"
                             fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {

@@ -39,6 +39,7 @@
 """
 
 import argparse
+import json
 import os
 import signal
 import select
@@ -46,6 +47,7 @@ import subprocess
 import syslog
 import time
 import sys
+import ipaddress
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, "/usr/local/opnsense/site-python")
@@ -53,6 +55,7 @@ from daemonize import Daemonize
 
 LEASE_FILE = '/var/db/dnsmasq.leases'
 STATIC_HOSTS_FILE = '/var/etc/dnsmasq-hosts'
+DNSMASQ_CONF = '/usr/local/etc/dnsmasq.conf'
 UNBOUND_CONTROL = '/usr/local/sbin/unbound-control'
 UNBOUND_CONF = '/var/unbound/unbound.conf'
 OPNSENSE_CONFIG = '/conf/config.xml'
@@ -67,6 +70,16 @@ RECONCILE_INTERVAL = 300  # 5 minutes
 MANAGED_MARKER = 'managed-by=unbounddnsmasq'
 # Delay before verifying added records (seconds)
 VERIFICATION_DELAY = 5
+# Status file for UI notifications
+STATUS_FILE = '/var/run/dnsmasq_watcher_status.json'
+
+
+class StatusLevel:
+    """Status levels matching OPNsense SystemStatusCode."""
+    OK = 2
+    NOTICE = 1
+    WARNING = 0
+    ERROR = -1
 
 
 class FailureReason:
@@ -82,9 +95,11 @@ class FailureReason:
 
 
 class DnsmasqLeaseWatcher:
-    def __init__(self, lease_file=LEASE_FILE, static_hosts_file=STATIC_HOSTS_FILE):
+    def __init__(self, lease_file=LEASE_FILE, static_hosts_file=STATIC_HOSTS_FILE,
+                 dnsmasq_conf=DNSMASQ_CONF):
         self.lease_file = lease_file
         self.static_hosts_file = static_hosts_file
+        self.dnsmasq_conf = dnsmasq_conf
         # registered_records: fqdn -> {'ip': str, 'source': str, 'expiry': int or None}
         self.registered_records = {}
         # pending_verification: fqdn -> (record, added_time) - records to verify after delay
@@ -96,20 +111,56 @@ class DnsmasqLeaseWatcher:
         self.watch_leases = True
         self.watch_static = True
         self.domain_filter = set()  # Empty = all domains
+        # Dnsmasq domain config (loaded from dnsmasq.conf)
+        self.global_domain = None  # Global default domain
+        self.domain_ranges = []  # List of (start_ip, end_ip, domain) tuples
         # Failure tracking
         self.failed = False
         self.failure_reason = FailureReason.NONE
         self.consecutive_failures = 0
         self.running = True
+        # Status tracking for UI notifications
+        self.status_level = StatusLevel.OK
+        self.status_message = None
+        self.skipped_records_notified = False  # Only notify once per run
 
     def log(self, message, priority=syslog.LOG_INFO):
         syslog.syslog(priority, f"dnsmasq_watcher: {message}")
+
+    def set_status(self, level, message):
+        """Set current status and write to status file for UI consumption."""
+        self.status_level = level
+        self.status_message = message
+        self.write_status_file()
+
+    def write_status_file(self):
+        """Write current status to file for PHP status class to read."""
+        status = {
+            'level': self.status_level,
+            'message': self.status_message,
+            'timestamp': int(time.time()),
+            'registered_count': len(self.registered_records)
+        }
+        try:
+            with open(STATUS_FILE, 'w') as f:
+                json.dump(status, f)
+        except IOError as e:
+            self.log(f"Failed to write status file: {e}", syslog.LOG_WARNING)
+
+    def clear_status_file(self):
+        """Remove status file (service stopping or OK status)."""
+        try:
+            if os.path.exists(STATUS_FILE):
+                os.unlink(STATUS_FILE)
+        except IOError:
+            pass
 
     def enter_failed_state(self, reason, message):
         """Enter failed/idle state. Log once, then wait for restart."""
         self.failed = True
         self.failure_reason = reason
         self.log(f"FAILED: {message} - entering idle state (restart to retry)", syslog.LOG_ERR)
+        self.set_status(StatusLevel.ERROR, message)
 
     def preflight_checks(self):
         """
@@ -240,6 +291,82 @@ class DnsmasqLeaseWatcher:
             self.log(f"Error loading config: {e}", syslog.LOG_ERR)
             return True  # Non-critical, continue with defaults
 
+    def load_dnsmasq_config(self):
+        """
+        Load domain configuration from dnsmasq.conf.
+        Parses 'domain=' lines to extract global domain and IP-range-specific domains.
+        Returns True if a domain is configured, False otherwise.
+        """
+        self.global_domain = None
+        self.domain_ranges = []
+
+        if not os.path.exists(self.dnsmasq_conf):
+            msg = f"dnsmasq.conf not found at {self.dnsmasq_conf}"
+            self.log(msg, syslog.LOG_ERR)
+            self.set_status(StatusLevel.ERROR, msg)
+            return False
+
+        try:
+            with open(self.dnsmasq_conf, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line.startswith('domain='):
+                        continue
+
+                    # Parse domain= line
+                    # Format: domain=<domain> or domain=<domain>,<start_ip>,<end_ip>
+                    value = line[7:]  # Strip 'domain='
+                    parts = value.split(',')
+
+                    if len(parts) == 1:
+                        # Global domain (first one wins if multiple)
+                        if self.global_domain is None:
+                            self.global_domain = parts[0].strip()
+                    elif len(parts) >= 3:
+                        # Range-specific domain
+                        domain = parts[0].strip()
+                        try:
+                            start_ip = ipaddress.ip_address(parts[1].strip())
+                            end_ip = ipaddress.ip_address(parts[2].strip())
+                            self.domain_ranges.append((start_ip, end_ip, domain))
+                        except ValueError as e:
+                            self.log(f"Invalid IP in domain range: {line} ({e})", syslog.LOG_WARNING)
+
+            if self.global_domain or self.domain_ranges:
+                self.log(f"Dnsmasq config: global_domain={self.global_domain}, "
+                         f"ranges={len(self.domain_ranges)}")
+                return True
+            else:
+                msg = "No domain configured in dnsmasq.conf - cannot register DHCP leases"
+                self.log(msg, syslog.LOG_ERR)
+                self.set_status(StatusLevel.ERROR, msg)
+                return False
+
+        except IOError as e:
+            msg = f"Error reading dnsmasq.conf: {e}"
+            self.log(msg, syslog.LOG_ERR)
+            self.set_status(StatusLevel.ERROR, msg)
+            return False
+
+    def get_domain_for_ip(self, ip_str):
+        """
+        Get the domain for an IP address based on dnsmasq config.
+        Checks range-specific domains first, then falls back to global domain.
+        Returns None if no domain can be determined.
+        """
+        try:
+            ip = ipaddress.ip_address(ip_str)
+        except ValueError:
+            return None
+
+        # Check range-specific domains first
+        for start_ip, end_ip, domain in self.domain_ranges:
+            if start_ip <= ip <= end_ip:
+                return domain
+
+        # Fall back to global domain
+        return self.global_domain
+
     def parse_lease_line(self, line):
         """
         Parse a dnsmasq lease line.
@@ -296,25 +423,39 @@ class DnsmasqLeaseWatcher:
             'domain': domain
         }
 
-    def get_domains_to_register(self, source_domain=None):
+    def get_domains_to_register(self, source_domain=None, ip=None):
         """
         Determine which domains to register a host under.
-        If domain_filter is set, only register under filtered domains.
-        If empty, register under all detected domains (or 'lan' as fallback).
+
+        Args:
+            source_domain: Domain from the source record (e.g., from static host entry)
+            ip: IP address (used to look up domain from dnsmasq config if no source_domain)
+
+        Returns:
+            List of domains to register under, or empty list if none can be determined.
         """
+        # Determine the effective domain
+        if source_domain:
+            effective_domain = source_domain
+        elif ip:
+            effective_domain = self.get_domain_for_ip(ip)
+        else:
+            effective_domain = self.global_domain
+
+        if not effective_domain:
+            # No domain can be determined - don't register
+            return []
+
         if self.domain_filter:
-            # Filter mode: only register if source domain matches filter
-            if source_domain and source_domain in self.domain_filter:
-                return [source_domain]
-            elif not source_domain:
-                # No source domain, register under all filtered domains
-                return list(self.domain_filter)
+            # Filter mode: only register if domain matches filter
+            if effective_domain in self.domain_filter:
+                return [effective_domain]
             else:
-                # Source domain doesn't match filter, skip
+                # Domain doesn't match filter, skip
                 return []
         else:
-            # No filter: register under source domain or 'lan' fallback
-            return [source_domain] if source_domain else ['lan']
+            # No filter: register under the effective domain
+            return [effective_domain]
 
     def read_leases(self):
         """
@@ -336,8 +477,20 @@ class DnsmasqLeaseWatcher:
                         # Skip expired leases (expiry of 0 means infinite)
                         if lease['expiry'] != 0 and lease['expiry'] < current_time:
                             continue
-                        # Leases don't have domain suffix, use configured domains
-                        for domain in self.get_domains_to_register(None):
+                        # Leases don't have domain suffix, determine from IP
+                        domains = self.get_domains_to_register(None, lease['ip'])
+                        if not domains:
+                            self.log(f"Skipping lease {lease['hostname']} ({lease['ip']}): "
+                                     "no domain configured for this IP range", syslog.LOG_WARNING)
+                            if not self.skipped_records_notified:
+                                self.skipped_records_notified = True
+                                self.set_status(
+                                    StatusLevel.WARNING,
+                                    "Some records skipped - IP not in any configured domain range. "
+                                    "Check system log for details."
+                                )
+                            continue
+                        for domain in domains:
                             fqdn = f"{lease['hostname']}.{domain}"
                             fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {
@@ -376,8 +529,20 @@ class DnsmasqLeaseWatcher:
                 for line in f:
                     host = self.parse_hosts_line(line)
                     if host:
-                        # Register under appropriate domains
-                        for domain in self.get_domains_to_register(host['domain']):
+                        # Register under appropriate domains (use IP lookup if no explicit domain)
+                        domains = self.get_domains_to_register(host['domain'], host['ip'])
+                        if not domains:
+                            self.log(f"Skipping static host {host['hostname']} ({host['ip']}): "
+                                     "no domain configured for this IP range", syslog.LOG_WARNING)
+                            if not self.skipped_records_notified:
+                                self.skipped_records_notified = True
+                                self.set_status(
+                                    StatusLevel.WARNING,
+                                    "Some records skipped - IP not in any configured domain range. "
+                                    "Check system log for details."
+                                )
+                            continue
+                        for domain in domains:
                             fqdn = f"{host['hostname']}.{domain}"
                             fqdn_lower = fqdn.lower()  # DNS is case-insensitive
                             new_record = {
@@ -735,11 +900,11 @@ class DnsmasqLeaseWatcher:
             self.log("Reconciliation complete: no changes needed")
 
     def setup_kqueue(self):
-        """Set up kqueue watchers for lease and static hosts files."""
+        """Set up kqueue watchers for lease, static hosts, and dnsmasq config files."""
         self.kq = select.kqueue()
         self.watched_fds = {}
 
-        for filepath in [self.lease_file, self.static_hosts_file]:
+        for filepath in [self.lease_file, self.static_hosts_file, self.dnsmasq_conf]:
             self._watch_file(filepath)
 
     def _watch_file(self, filepath):
@@ -806,10 +971,16 @@ class DnsmasqLeaseWatcher:
             self.idle_loop()
             return
 
+        # Load dnsmasq domain configuration
+        if not self.load_dnsmasq_config():
+            self.failed = True
+            self.idle_loop()
+            return
+
         # Check if service is disabled
         if not self.enabled:
-            self.enter_failed_state(FailureReason.DISABLED, "Service disabled in configuration")
-            self.idle_loop()
+            self.log("Service disabled in configuration")
+            self.clear_status_file()
             return
 
         # Run pre-flight checks
@@ -848,6 +1019,10 @@ class DnsmasqLeaseWatcher:
 
         self.log("Entering main watch loop")
 
+        # Set OK status if no warnings/errors were set during init
+        if self.status_level == StatusLevel.OK:
+            self.set_status(StatusLevel.OK, None)
+
         # Main watch loop
         while self.running and not self.failed:
             try:
@@ -867,7 +1042,14 @@ class DnsmasqLeaseWatcher:
 
                 if files_changed:
                     self.log(f"Files changed: {files_changed}")
-                    self.sync_records()
+                    # If dnsmasq.conf changed, reload domain config and do full reconcile
+                    if self.dnsmasq_conf in files_changed:
+                        self.log("Dnsmasq config changed, reloading domain configuration")
+                        self.load_dnsmasq_config()
+                        self.reconcile()
+                        last_reconcile = time.time()
+                    else:
+                        self.sync_records()
 
                 # Periodically check for files that may not exist yet
                 for filepath in [self.lease_file, self.static_hosts_file]:
@@ -903,6 +1085,7 @@ class DnsmasqLeaseWatcher:
             self.idle_loop()
 
         self.log("Shutting down")
+        self.clear_status_file()
 
 
 def main():
