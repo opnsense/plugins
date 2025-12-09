@@ -62,5 +62,4 @@ class GeneralController extends ApiMutableModelControllerBase
     {
         return $this->delBase('aliases.alias', $uuid);
     }
-
 }
