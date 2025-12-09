@@ -1,77 +1,77 @@
 <model>
-   <mount>//OPNsense/ftpproxies</mount>
-   <version>1.0.0</version>
-   <description>Ftp Proxy settings</description>
-   <items>
-      <ftpproxy type="ArrayField">
-         <enabled type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-         </enabled>
-         <listenaddress type="TextField">
-            <Required>Y</Required>
-            <Default>127.0.0.1</Default>
-            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
-            <ValidationMessage>Listen address must be a valid IPv4 address</ValidationMessage>
-         </listenaddress>
-         <listenport type="IntegerField">
-            <Default>8021</Default>
-            <Required>Y</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>Listen port needs to be an integer value between 1 and 65535</ValidationMessage>
-         </listenport>
-         <sourceaddress type="TextField">
-            <Required>N</Required>
-            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
-            <ValidationMessage>Source address must be a valid IPv4 address</ValidationMessage>
-         </sourceaddress>
-         <rewritesourceport  type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-         </rewritesourceport>
-         <idletimeout type="IntegerField">
-            <Default>86400</Default>
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>86400</MaximumValue>
-            <ValidationMessage>Idle timeout needs to be an integer value between 1 and 86400</ValidationMessage>
-         </idletimeout>
-         <maxsessions type="IntegerField">
-            <Default>100</Default>
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>500</MaximumValue>
-            <ValidationMessage>Maximum number of concurrent FTP sessions needs to be an integer value between 1 and 500</ValidationMessage>
-         </maxsessions>
-         <reverseaddress type="TextField">
-            <Required>N</Required>
-            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
-            <ValidationMessage>Reverse address must be a valid IPv4 address</ValidationMessage>
-         </reverseaddress>
-         <reverseport type="IntegerField">
-            <Default>21</Default>
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>Reverse port needs to be an integer value between 1 and 65535</ValidationMessage>
-         </reverseport>
-         <logconnections type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-         </logconnections>
-         <debuglevel type="IntegerField">
-            <Default>5</Default>
-            <Required>N</Required>
-            <MinimumValue>0</MinimumValue>
-            <MaximumValue>7</MaximumValue>
-            <ValidationMessage>Debug level needs to be an integer value between 0 and 7</ValidationMessage>
-         </debuglevel>
-         <description type="TextField">
-            <Required>N</Required>
-            <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-            <ValidationMessage>Enter a description.</ValidationMessage>
-         </description>
-      </ftpproxy>
-   </items>
+    <mount>//OPNsense/ftpproxies</mount>
+    <version>1.0.0</version>
+    <description>Ftp Proxy settings</description>
+    <items>
+        <ftpproxy type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <listenaddress type="TextField">
+                <Required>Y</Required>
+                <Default>127.0.0.1</Default>
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Listen address must be a valid IPv4 address</ValidationMessage>
+            </listenaddress>
+            <listenport type="IntegerField">
+                <Default>8021</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>Listen port needs to be an integer value between 1 and 65535</ValidationMessage>
+            </listenport>
+            <sourceaddress type="TextField">
+                <Required>N</Required>
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Source address must be a valid IPv4 address</ValidationMessage>
+            </sourceaddress>
+            <rewritesourceport type="BooleanField">
+                <Default>0</Default>
+                <Required>N</Required>
+            </rewritesourceport>
+            <idletimeout type="IntegerField">
+                <Default>86400</Default>
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <ValidationMessage>Idle timeout needs to be an integer value between 1 and 86400</ValidationMessage>
+            </idletimeout>
+            <maxsessions type="IntegerField">
+                <Default>100</Default>
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>500</MaximumValue>
+                <ValidationMessage>Maximum number of concurrent FTP sessions needs to be an integer value between 1 and 500</ValidationMessage>
+            </maxsessions>
+            <reverseaddress type="TextField">
+                <Required>N</Required>
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Reverse address must be a valid IPv4 address</ValidationMessage>
+            </reverseaddress>
+            <reverseport type="IntegerField">
+                <Default>21</Default>
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>Reverse port needs to be an integer value between 1 and 65535</ValidationMessage>
+            </reverseport>
+            <logconnections type="BooleanField">
+                <Default>0</Default>
+                <Required>N</Required>
+            </logconnections>
+            <debuglevel type="IntegerField">
+                <Default>5</Default>
+                <Required>N</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>7</MaximumValue>
+                <ValidationMessage>Debug level needs to be an integer value between 0 and 7</ValidationMessage>
+            </debuglevel>
+            <description type="TextField">
+                <Required>N</Required>
+                <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                <ValidationMessage>Enter a description.</ValidationMessage>
+            </description>
+        </ftpproxy>
+    </items>
 </model>
