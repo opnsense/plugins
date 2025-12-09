@@ -127,7 +127,7 @@ www/cache -- Webserver cache
 www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
 www/squid -- Squid is a caching proxy for the web (not maintained)
-www/web-proxy-sso -- Kerberos authentication module (pending removal)
+www/web-proxy-sso -- Kerberos authentication module (not maintained)
 ```
 
 A brief description of how to use the plugins repository
