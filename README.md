@@ -104,7 +104,7 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
-sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/dmidecode -- Display hardware information on the dashboard (not maintained)
 sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
