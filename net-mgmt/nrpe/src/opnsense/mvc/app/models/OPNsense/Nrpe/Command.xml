@@ -10,7 +10,6 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^[0-9a-z_\-]{1,32}$/ui</Mask>
                     <ValidationMessage>Only alphanumeric characters, dashes and underscores allowed.</ValidationMessage>
