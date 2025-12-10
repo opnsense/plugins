@@ -108,7 +108,7 @@ sysutils/dmidecode -- Display hardware information on the dashboard (not maintai
 sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud
