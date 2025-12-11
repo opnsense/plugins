@@ -46,6 +46,7 @@ class QFeedsActions:
             'show_index',
             'firewall_load',
             'unbound_load',
+            'dnscryptproxy_load',
             'update',
             'stats',
             'logs'
@@ -121,6 +122,21 @@ class QFeedsActions:
             subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
             yield 'update unbound blocklist'
 
+    def dnscryptproxy_load(self):
+        bl_conf = '/usr/local/etc/qfeeds-dnscryptproxy-bl.conf'
+        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
+            # when qfeeds-dnscryptproxy-bl.conf is ~empty, skip updates
+            script_path = '/usr/local/opnsense/scripts/dnscryptproxy/blocklists/qfeeds_bl.py'
+            if os.path.exists(script_path):
+                subprocess.run([script_path], capture_output=True, text=True)
+                # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
+                subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'])
+                # Script writes to blacklist-qfeeds.txt
+                # dnscrypt-proxy's dnsbl.sh automatically merges blacklist-*.txt files
+                yield 'update dnscrypt-proxy blocklist'
+            else:
+                yield 'dnscrypt-proxy blocklist script not found'
+
     def update(self):
         update_sleep = 99999
         try:
@@ -136,7 +152,7 @@ class QFeedsActions:
         if do_update:
                 if 0 < update_sleep <= 300:
                     time.sleep(update_sleep)
-                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load']:
+                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load', 'dnscryptproxy_load']:
                     yield from getattr(self, action)()
 
     def stats(self):

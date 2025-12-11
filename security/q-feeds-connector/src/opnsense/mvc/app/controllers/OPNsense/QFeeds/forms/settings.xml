@@ -15,4 +15,10 @@
         <type>checkbox</type>
         <help>Use domain feeds in Unbound DNS blocklist, requires blocklists to be enabled in order to have effect</help>
     </field>
+    <field>
+        <id>connect.general.enable_dnscryptproxy_bl</id>
+        <label>Register domain feeds for DNSCrypt-Proxy</label>
+        <type>checkbox</type>
+        <help>Use domain feeds in DNSCrypt-Proxy DNSBL blacklist, requires DNSBL to be enabled in DNSCrypt-Proxy settings</help>
+    </field>
 </form>

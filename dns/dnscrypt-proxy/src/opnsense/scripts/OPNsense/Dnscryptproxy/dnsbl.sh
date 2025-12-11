@@ -161,6 +161,11 @@ install() {
 	done
 	# Merge resulting files (/dev/null in case there are none)
 	cat $(find ${WORKDIR} -type f -name "*.inc") /dev/null | sort -u > ${DESTDIR}/blacklist.txt
+	# Merge additional blacklist-*.txt files (e.g., from q-feeds-connector)
+	if [ -n "$(find ${DESTDIR} -maxdepth 1 -name 'blacklist-*.txt' -type f 2>/dev/null)" ]; then
+		cat ${DESTDIR}/blacklist.txt $(find ${DESTDIR} -maxdepth 1 -name 'blacklist-*.txt' -type f 2>/dev/null) | sort -u > ${DESTDIR}/blacklist.txt.tmp
+		mv ${DESTDIR}/blacklist.txt.tmp ${DESTDIR}/blacklist.txt
+	fi
 	chown _dnscrypt-proxy:_dnscrypt-proxy ${DESTDIR}/blacklist.txt
 	rm -rf ${WORKDIR}
 }
