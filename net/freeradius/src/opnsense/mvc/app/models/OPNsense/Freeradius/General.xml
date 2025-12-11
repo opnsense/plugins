@@ -23,16 +23,10 @@
         <fallbackvlan_id type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>You need to set a propper VLAN ID.</ValidationMessage>
-                    <type>DependConstraint</type>
-                    <addFields>
-                        <field1>fallbackvlan_enabled</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
         </fallbackvlan_id>
+        <fallback_tunnel_password type="TextField">
+            <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</Mask>
+        </fallback_tunnel_password>
         <ldap_enabled type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
@@ -152,8 +146,5 @@
             <Default>0</Default>
             <Required>Y</Required>
         </fallbackproxy>
-        <fallback_tunnel_password type="TextField">
-            <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</Mask>
-        </fallback_tunnel_password>
     </items>
 </model>

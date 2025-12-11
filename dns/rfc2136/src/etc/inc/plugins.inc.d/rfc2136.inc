@@ -200,12 +200,15 @@ function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $
         if ($need_update) {
             file_safe("/var/etc/nsupdatecmds{$i}", $upinst);
 
-            $frmt = ['/var/etc/nsupdatecmds%s -k %s'];
-            $args = [$i, $keyfile];
+            $frmt = ['/usr/local/bin/nsupdate -k %s'];
+            $args = [$keyfile];
 
             if (isset($dnsupdate['usetcp'])) {
                 $frmt[] = '-v';
             }
+
+            $args[] = "/var/etc/nsupdatecmds{$i}";
+            $frmt[] = '%s';
 
             mwexecfb($frmt, $args);
         }

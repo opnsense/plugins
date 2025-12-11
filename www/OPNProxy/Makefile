@@ -5,6 +5,5 @@ PLUGIN_COMMENT=		OPNsense proxy additions
 PLUGIN_DEPENDS=		os-redis${PLUGIN_PKGSUFFIX} \
 			os-squid${PLUGIN_PKGSUFFIX} \
 			py${PLUGIN_PYTHON}-redis
-PLUGIN_MAINTAINER=	ad@opnsense.org
 
 .include "../../Mk/plugins.mk"

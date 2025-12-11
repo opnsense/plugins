@@ -37,6 +37,9 @@ class GeneralController extends IndexController
     public function indexAction()
     {
         $this->view->pick('OPNsense/NdpProxy/general');
-        $this->view->generalForm = $this->getForm("general");
+        $this->view->generalForm = $this->getForm('general');
+
+        $this->view->formDialogAlias = $this->getForm('dialogAlias');
+        $this->view->formGridAlias = $this->getFormGrid('dialogAlias');
     }
 }

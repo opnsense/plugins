@@ -58,6 +58,12 @@
         <help>Source IP address for outgoing connections.</help>
     </field>
     <field>
+        <id>general.listenbacklog</id>
+        <label>Listen Backlog</label>
+        <type>text</type>
+        <help>The maximum number of pending connections in the TCP queue.</help>
+    </field>
+    <field>
         <id>general.startpollers</id>
         <label>Start Pollers</label>
         <type>text</type>

@@ -43,6 +43,7 @@ all:
 list:
 .for PLUGIN_DIR in ${PLUGIN_DIRS}
 	@echo ${PLUGIN_DIR} -- $$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_COMMENT) \
+	    $$(if [ "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_MAINTAINER)" = "N/A" ]; then echo "(not maintained)"; fi) \
 	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_DEVEL _PLUGIN_DEVEL=)" ]; then echo "(development only)"; fi) \
 	    $$(if [ -n "$$(${MAKE} -C ${PLUGIN_DIR} -v PLUGIN_OBSOLETE)" ]; then echo "(pending removal)"; fi)
 .endfor

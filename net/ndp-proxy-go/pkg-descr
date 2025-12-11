@@ -6,6 +6,14 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
-0.1
+1.2
+
+* Add firewall alias support
+
+1.1
+
+* Add experimental point-to-point device upstream support (e.g. PPPoE)
+
+1.0
 
 * Initial Release

@@ -469,6 +469,7 @@
                         <dns_googledomains>Google Domains</dns_googledomains>
                         <dns_gdnsdk>GratisDNS.dk</dns_gdnsdk>
                         <dns_hetzner>Hetzner</dns_hetzner>
+                        <dns_hetznercloud>Hetzner Cloud</dns_hetznercloud>
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
@@ -484,13 +485,14 @@
                         <dns_kinghost>KingHost</dns_kinghost>
                         <dns_knot>Knot (knsupdate)</dns_knot>
                         <dns_leaseweb>LeaseWeb</dns_leaseweb>
-                        <dns_lexicon>lexicon (DEPRECATED)</dns_lexicon>
+                        <dns_lexicon>Lexicon (deprecated)</dns_lexicon>
                         <dns_limacity>Lima-City (TrafficPlex)</dns_limacity>
-                        <dns_linode>Linode (v3 / Deprecated)</dns_linode>
+                        <dns_linode>Linode (v3/deprecated)</dns_linode>
                         <dns_linode_v4>Linode (v4)</dns_linode_v4>
                         <dns_loopia>Loopia</dns_loopia>
                         <dns_lua>LuaDNS.com</dns_lua>
                         <dns_miab>MailinaBox</dns_miab>
+                        <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
@@ -530,6 +532,7 @@
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
                         <dns_zone>Zone.eu</dns_zone>
+                        <dns_zoneedit>ZoneEdit</dns_zoneedit>
                         <dns_zonomi>zonomi.com</dns_zonomi>
                     </OptionValues>
                 </dns_service>
@@ -579,6 +582,10 @@
                 <dns_azuredns_clientsecret type="TextField">
                     <Required>N</Required>
                 </dns_azuredns_clientsecret>
+                <dns_azuredns_managedidentity type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </dns_azuredns_managedidentity>
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>
@@ -1050,6 +1057,28 @@
                 <dns_sl_key type="TextField">
                     <Required>N</Required>
                 </dns_sl_key>
+                <dns_sl_apiver type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <v1>API version 1 (deprecated)</v1>
+                        <v2>API version 2</v2>
+                    </OptionValues>
+                </dns_sl_apiver>
+                <dns_sl_token_lifetime type="TextField">
+                    <Required>N</Required>
+                </dns_sl_token_lifetime>
+                <dns_sl_account_id type="TextField">
+                    <Required>N</Required>
+                </dns_sl_account_id>
+                <dns_sl_project_name type="TextField">
+                    <Required>N</Required>
+                </dns_sl_project_name>
+                <dns_sl_login_name type="TextField">
+                    <Required>N</Required>
+                </dns_sl_login_name>
+                <dns_sl_password type="TextField">
+                    <Required>N</Required>
+                </dns_sl_password>
                 <dns_selfhost_user type="TextField">
                     <Required>N</Required>
                 </dns_selfhost_user>
@@ -1177,6 +1206,9 @@
                 <dns_hetzner_token type="TextField">
                     <Required>N</Required>
                 </dns_hetzner_token>
+                <dns_hetznercloud_token type="TextField">
+                    <Required>N</Required>
+                </dns_hetznercloud_token>
                 <dns_hexonet_login type="TextField">
                     <Required>N</Required>
                 </dns_hexonet_login>
@@ -1315,9 +1347,18 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_mijnhost_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_mijnhost_api_key>
                 <dns_scaleway_token type="TextField">
                     <Required>N</Required>
                 </dns_scaleway_token>
+                <dns_zoneedit_id type="TextField">
+                    <Required>N</Required>
+                </dns_zoneedit_id>
+                <dns_zoneedit_token type="TextField">
+                    <Required>N</Required>
+                </dns_zoneedit_token>
             </validation>
         </validations>
         <actions>

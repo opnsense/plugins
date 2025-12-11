@@ -14,13 +14,11 @@
         <server_address type="NetworkField">
             <Default>127.0.0.1</Default>
             <Required>Y</Required>
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </server_address>
         <allowed_hosts type="NetworkField">
             <Default>127.0.0.1,::1</Default>
             <Required>Y</Required>
-            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </allowed_hosts>
         <dont_blame_nrpe type="BooleanField">

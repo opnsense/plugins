@@ -1,5 +1,5 @@
 PLUGIN_NAME=		zabbix-agent
-PLUGIN_VERSION=		1.17
+PLUGIN_VERSION=		1.18
 PLUGIN_COMMENT=		Zabbix monitoring agent
 PLUGIN_MAINTAINER=	opnsense@moov.de
 PLUGIN_VARIANTS=	zabbix7 zabbix72 zabbix74 zabbix6

@@ -8,6 +8,24 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.11
+
+Added:
+* add support for Hetzner Cloud DNS API (#5020)
+* add support for Selectel.ru V2 API (#4824)
+* add support for mijn.host DNS API (#4446)
+* add support for AzureDNS System Assigned Managed Identity #4830 (4830)
+* add support for ZoneEdit DNS API (#4671)
+
+Changed:
+* use mwexec/file_safe for HTTP-01/TLSALPN challenge types (core #9325)
+
+Fixed:
+* fix deprecated PHP syntax in cron settings (#4824)
+
+Deprecated:
+* deprecate support for HTTP-01 challenge types (no removal date yet)
+
 4.10
 
 Added:
@@ -354,7 +372,7 @@ Changed:
 
 Changed:
 * rename "Linode Cloud API" to "Linode API (v4)" (#2609)
-* rename "Linode API" to "Linode API (v3 / Deprecated)" (#2609)
+* rename "Linode API" to "Linode API (v3/deprecated)" (#2609)
 
 3.3
 
