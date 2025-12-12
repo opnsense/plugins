@@ -1,2 +1,3 @@
 qfeeds.conf:/usr/local/etc/qfeeds.conf
 qfeeds-blocklists.conf:/usr/local/etc/unbound/qfeeds-blocklists.conf
+qfeeds-dnscryptproxy-bl.conf:/usr/local/etc/qfeeds-dnscryptproxy-bl.conf
