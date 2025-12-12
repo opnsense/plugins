@@ -57,7 +57,7 @@
     </field>
     <field>
         <id>ndpproxy.general.cache_file</id>
-        <label>Cache file</label>
+        <label>Neighbor cache file</label>
         <type>checkbox</type>
         <help>Persist cache to file on service stop and load it on service start. Only neighbors with a valid cache lifetime are loaded. This helps on system reboots to minimize downtime of individual clients.</help>
     </field>
