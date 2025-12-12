@@ -29,7 +29,72 @@
 namespace OPNsense\Ntopng;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class General extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+
+        $http = (string)$this->httpport;
+        $https = (string)$this->httpsport;
+
+        if ($http === '' && $https === '') {
+            $msg = gettext('Please input at least an HTTP or HTTPS port.');
+
+            $messages->appendMessage(new Message(
+                $msg,
+                'httpport'
+            ));
+
+            $messages->appendMessage(new Message(
+                $msg,
+                'httpsport'
+            ));
+        }
+
+        $addresses_length = count(explode(',', (string)$this->addresses));
+        if ($addresses_length > 1 && $https !== '') {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't have more then 1 listen address when using HTTPS"
+                ),
+                'addresses'
+            ));
+
+        }
+
+
+        $redis_conn = (string)$this->redisconnection;
+
+        if (trim($redis_conn) === '' && $redis_conn !== '') {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't be all whitespace"
+                ),
+                'redisconnection'
+            ));
+        } else {
+            if ($redis_conn !== ltrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have leading whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
+            if ($redis_conn !== rtrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have trailing whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
+        }
+
+        return $messages;
+    }
 }

@@ -12,8 +12,14 @@
             <Multiple>Y</Multiple>
             <AllowDynamic>Y</AllowDynamic>
         </interface>
-        <httpport type="PortField">
+        <addresses type="NetworkField">
             <Required>Y</Required>
+            <Default>::,0.0.0.0</Default>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <AsList>Y</AsList>
+        </addresses>
+        <httpport type="PortField">
+            <Required>N</Required>
             <Default>3000</Default>
         </httpport>
         <httpsport type="PortField">
@@ -37,6 +43,9 @@
                 </check001>
             </Constraints>
         </cert>
+        <redisconnection type="TextField">
+            <Required>N</Required>
+        </redisconnection>
         <dnsmode type="OptionField">
             <Required>N</Required>
             <OptionValues>

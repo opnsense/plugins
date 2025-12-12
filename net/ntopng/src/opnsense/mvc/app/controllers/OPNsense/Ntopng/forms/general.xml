@@ -13,6 +13,14 @@
         <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
+        <id>general.addresses</id>
+        <label>Listen addresses</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Address(es) this service listens on.</help>
+    </field>
+    <field>
         <id>general.httpport</id>
         <label>HTTP Port</label>
         <type>text</type>
@@ -29,6 +37,13 @@
         <label>Certificate</label>
         <type>dropdown</type>
         <help>Set the certificate to use for HTTPS connections.</help>
+    </field>
+    <field>
+        <id>general.redisconnection</id>
+        <label>Redis connection override</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>the defines the redis connections as per --redis in www.ntop.org/guides/ntopng/cli_options/cli_options.html</help>
     </field>
     <field>
         <id>general.dnsmode</id>
