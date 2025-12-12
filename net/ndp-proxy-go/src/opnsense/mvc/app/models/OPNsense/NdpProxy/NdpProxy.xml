@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ndpproxy</mount>
     <description>NDP Proxy model</description>
-    <version>0.2</version>
+    <version>1.0</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -26,6 +26,10 @@
             <cache_max type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </cache_max>
+            <cache_file type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </cache_file>
             <route_qps type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </route_qps>

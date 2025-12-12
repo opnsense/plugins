@@ -46,7 +46,7 @@
         <label>Neighbor cache lifetime</label>
         <type>text</type>
         <hint>10</hint>
-        <help>Neighbor cache lifetime in minutes. This controls when stale clients and host routes are cleaned up. When using a point-to-point interface as upstream, increasing this lifetime is necessary to not prematurely clean up routes.</help>
+        <help>Neighbor cache lifetime in minutes. This controls when stale clients, host routes and firewall aliases are cleaned up. When using a point-to-point interface as upstream, increasing this lifetime is necessary to not prematurely clean up routes.</help>
     </field>
     <field>
         <id>ndpproxy.general.cache_max</id>
@@ -54,6 +54,12 @@
         <type>text</type>
         <hint>4096</hint>
         <help>Maximum learned neighbors, increase for large networks.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.cache_file</id>
+        <label>Cache file</label>
+        <type>checkbox</type>
+        <help>Persist cache to file on service stop and load it on service start. Only neighbors with a valid cache lifetime are loaded. This helps on system reboots to minimize downtime of individual clients.</help>
     </field>
     <field>
         <id>ndpproxy.general.route_qps</id>

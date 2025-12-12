@@ -9,6 +9,7 @@ Plugin Changelog
 1.2
 
 * Add firewall alias support
+* Add cache file support for faster recovery after system reboots
 
 1.1
 
