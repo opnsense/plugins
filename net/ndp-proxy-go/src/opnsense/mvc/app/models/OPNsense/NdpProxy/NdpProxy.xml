@@ -27,7 +27,7 @@
                 <MinimumValue>1</MinimumValue>
             </cache_max>
             <cache_file type="BooleanField">
-                <Default>1</Default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </cache_file>
             <route_qps type="IntegerField">
