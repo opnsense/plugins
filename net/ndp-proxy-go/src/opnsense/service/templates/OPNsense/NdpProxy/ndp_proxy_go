@@ -8,6 +8,9 @@ ndp_proxy_go_upstream="{{ helpers.physical_interface(general.upstream) }}"
 {%         do downstream_interfaces.append(helpers.physical_interface(interface)) %}
 {%     endfor %}
 ndp_proxy_go_downstream="{{ downstream_interfaces|join(' ') }}"
+{%     if general.cache_file == "1" %}
+ndp_proxy_go_cache_file="/var/db/ndpproxy/cache.json"
+{%     endif %}
 {%     set flags = [] %}
 {%     if general.debug == "1" %}
 {%         do flags.append('--debug') %}

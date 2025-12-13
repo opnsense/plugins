@@ -3,7 +3,7 @@
         <id>alias.interface</id>
         <label>Interface</label>
         <type>dropdown</type>
-        <help>Add IPv6 addresses to the firewall alias that belong to this proxied interface. When choosing any, all IPv6 addresses will be added.</help>
+        <help>Add IPv6 addresses to the firewall alias that belongs to this proxied interface. When choosing any, all IPv6 addresses will be added.</help>
         <grid_view>
             <formatter>any</formatter>
         </grid_view>
