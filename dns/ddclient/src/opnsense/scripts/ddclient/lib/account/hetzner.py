@@ -144,34 +144,26 @@ class Hetzner(BaseAccount):
             return None
 
     def _update_record(self, headers, zone_id, record_name, record_type, address):
-        """Update existing record with new address"""
-        url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
+        """Update existing record with new address
 
-        data = {
-            'records': [{'value': str(address)}],
-            'ttl': int(self.settings.get('ttl', 300))
-        }
+        NOTE: Hetzner Cloud API has a bug where PUT returns 200 but doesn't update.
+        Workaround: DELETE old record, then POST new record.
+        """
+        # DELETE old record first
+        delete_url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
+        delete_response = requests.delete(delete_url, headers=headers)
 
-        response = requests.put(url, headers=headers, json=data)
-
-        if response.status_code != 200:
+        if delete_response.status_code not in [200, 201, 204]:
             syslog.syslog(
                 syslog.LOG_ERR,
-                "Account %s error updating record: HTTP %d - %s" % (
-                    self.description, response.status_code, response.text
+                "Account %s error deleting record for update: HTTP %d - %s" % (
+                    self.description, delete_response.status_code, delete_response.text
                 )
             )
             return False
 
-        if self.is_verbose:
-            syslog.syslog(
-                syslog.LOG_NOTICE,
-                "Account %s updated %s %s to %s" % (
-                    self.description, record_name, record_type, address
-                )
-            )
-
-        return True
+        # CREATE new record
+        return self._create_record(headers, zone_id, record_name, record_type, address)
 
     def _create_record(self, headers, zone_id, record_name, record_type, address):
         """Create new record"""
