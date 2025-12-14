@@ -35,13 +35,10 @@ class Redis extends BaseModel
 {
     public function performValidation($validateFullModel = false)
     {
-        // Call parent validation first
         $messages = parent::performValidation($validateFullModel);
 
-        // Get the password value
         $password = (string)$this->security->password;
 
-        // Check if password contains \ or `
         if (!empty($password) && (strpos($password, '\\') !== false || strpos($password, '`') !== false)) {
             $message = new Message(
                 gettext(
