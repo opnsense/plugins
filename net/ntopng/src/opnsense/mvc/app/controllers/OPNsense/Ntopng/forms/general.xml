@@ -13,24 +13,18 @@
         <help>Select the interface to listen to. Set to none if you want to choose the interface via ntopng UI.</help>
     </field>
     <field>
-        <id>general.addresses</id>
-        <label>Listen addresses</label>
+        <id>general.addresseshttp</id>
+        <label>Listen addresses (HTTP)</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Address(es) this service listens on.</help>
     </field>
     <field>
-        <id>general.httpport</id>
-        <label>HTTP Port</label>
+        <id>general.addresseshttps</id>
+        <label>Listen address (HTTPS)</label>
         <type>text</type>
-        <help>HTTP Port this service listens on.</help>
-    </field>
-    <field>
-        <id>general.httpsport</id>
-        <label>HTTPS Port</label>
-        <type>text</type>
-        <help>HTTPS Port this service listens on. If you enable HTTPS you will be redirected from HTTP to HTTPS. Please select a certificate below</help>
+        <help>Address this service listens on. (the limit of 1 address comes from ntopng)</help>
     </field>
     <field>
         <id>general.cert</id>

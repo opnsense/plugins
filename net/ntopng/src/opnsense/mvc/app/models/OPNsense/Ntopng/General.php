@@ -38,32 +38,21 @@ class General extends BaseModel
         $messages = parent::performValidation($validateFullModel);
 
 
-        $http = (string)$this->httpport;
-        $https = (string)$this->httpsport;
+        $http = (string)$this->addresseshttp;
+        $https = (string)$this->addresseshttps;
 
         if ($http === '' && $https === '') {
             $msg = gettext('Please input at least an HTTP or HTTPS port.');
 
             $messages->appendMessage(new Message(
                 $msg,
-                'httpport'
+                'addresseshttp'
             ));
 
             $messages->appendMessage(new Message(
                 $msg,
-                'httpsport'
+                'addresseshttps'
             ));
-        }
-
-        $addresses_length = count(explode(',', (string)$this->addresses));
-        if ($addresses_length > 1 && $https !== '') {
-            $messages->appendMessage(new Message(
-                gettext(
-                    "Can't have more then 1 listen address when using HTTPS"
-                ),
-                'addresses'
-            ));
-
         }
 
 
