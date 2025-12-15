@@ -1,160 +1,182 @@
 #!/usr/local/bin/python3
+# Copyright (C) 2015-2022, Wazuh Inc.
+# All rights reserved.
 
-"""
-    Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
-    All rights reserved.
+# This program is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License (version 2) as published by the FSF - Free Software
+# Foundation.
 
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-     this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in the
-     documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-"""
-
-import argparse
-import datetime
-import json
 import os
-import sys
 import subprocess
-import ipaddress
-from select import select
-from configparser import ConfigParser
+import sys
+import json
+import datetime
+from pathlib import PureWindowsPath, PurePosixPath
+
+LOG_FILE = "/var/ossec/logs/active-responses.log"
+
+PF_TABLE = '__wazuh_agent_drop'
+PFCTL = '/sbin/pfctl'
+
+ADD_COMMAND = 0
+DELETE_COMMAND = 1
+CONTINUE_COMMAND = 2
+ABORT_COMMAND = 3
+
+OS_SUCCESS = 0
+OS_INVALID = -1
+
+class message:
+    def __init__(self):
+        self.alert = ""
+        self.command = 0
 
 
-def send_log(line):
-    with open('/var/ossec/logs/active-responses.log', 'a') as handle:
-        handle.write(
-            str(datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) +
-            " " +
-            os.path.basename(__file__) +
-            ": " +
-            line +
-            "\n"
-        )
+def write_debug_file(ar_name, msg):
+    with open(LOG_FILE, mode="a") as log_file:
+        ar_name_posix = str(PurePosixPath(PureWindowsPath(ar_name[ar_name.find("active-response"):])))
+        log_file.write(str(datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')) + " " + ar_name_posix + ": " + msg +"\n")
 
 
-def read_data(filename):
-    payload = []
-    with open(filename, 'rb') as fin:
-        while True:
-            rlist, _, _ = select([fin], [], [], 0.5)
-            if not rlist:
-                break
-            line = fin.readline()
-            if line == b'':
-                break
-            payload.append(line)
+def setup_and_check_message(argv):
 
-    return b''.join(payload)
+    # get alert from stdin
+    input_str = ""
+    for line in sys.stdin:
+        input_str = line
+        break
 
+    write_debug_file(argv[0], input_str)
 
-def main(params):
-    send_log('Started')
-    skip_alias=''
-    if os.path.isfile('/var/ossec/etc/opnsense-fw.conf'):
-        cnf = ConfigParser()
-        cnf.read('/var/ossec/etc/opnsense-fw.conf')
-        skip_alias = cnf.get('general', 'skip_alias') if cnf.has_option('general', 'skip_alias') else ''
-    else:
-        send_log('Skip configuration')
-
-    event=None
     try:
-        event=json.loads(read_data(params.input))
+        data = json.loads(input_str)
     except ValueError:
-        pass
-    if event is None:
-        send_log('Decoding JSON has failed, invalid input format')
-        return -1
-    else:
-        send_log('Received : %s' % json.dumps(event))
+        write_debug_file(argv[0], 'Decoding JSON has failed, invalid input format')
+        message.command = OS_INVALID
+        return message
 
-    command=event.get('command', None)
-    srcip=event
-    for token in ['parameters', 'alert', 'data', 'srcip']:
-        if type(srcip) is dict and token in srcip:
-            srcip = srcip[token]
-        else:
-            srcip = None
+    message.alert = data
+
+    command = data.get("command")
+
+    if command == "add":
+        message.command = ADD_COMMAND
+    elif command == "delete":
+        message.command = DELETE_COMMAND
+    else:
+        message.command = OS_INVALID
+        write_debug_file(argv[0], 'Not valid command: ' + command)
+
+    return message
+
+
+def send_keys_and_check_message(argv, keys):
+
+    # build and send message with keys
+    keys_msg = json.dumps({"version": 1,"origin":{"name": argv[0],"module":"active-response"},"command":"check_keys","parameters":{"keys":keys}})
+
+    write_debug_file(argv[0], keys_msg)
+
+    print(keys_msg)
+    sys.stdout.flush()
+
+    # read the response of previous message
+    input_str = ""
+    while True:
+        line = sys.stdin.readline()
+        if line:
+            input_str = line
             break
 
-    if srcip is None:
-        send_log('srcip not found')
-        return -1
+    write_debug_file(argv[0], input_str)
 
     try:
-        ipaddress.ip_address(srcip)
+        data = json.loads(input_str)
     except ValueError:
-        send_log('Unable to process even, invalid srcip (%s)' % srcip)
-        return -1
+        write_debug_file(argv[0], 'Decoding JSON has failed, invalid input format')
+        return message
 
-    if skip_alias != '' and command == 'add':
-        sp = subprocess.run(['/sbin/pfctl', '-t', skip_alias, '-Ttest', srcip], capture_output=True, text=True)
-        if sp.stderr.strip().find("1/1") == 0:
-            send_log('Skip event %s in alias %s' % (srcip, skip_alias))
-            return 0
+    action = data.get("command")
 
-    if command == 'add':
-        # return rule id for timeout list
-        try:
-            print(json.dumps({
-                "version": 1,
-                "origin": {
-                    "name": sys.argv[0],
-                    "module":"active-response"
-                },
-                "command": "check_keys",
-                "parameters":{
-                    "keys": [event['parameters']['alert']['rule']['id']]
-                }
-            }))
-            sys.stdout.flush()
-        except KeyError:
-            pass
-        # When attached to stdin we're likely running inside the agent, in which case we will read a second event which
-        # may abort the first one.
-        if params.input == '/dev/stdin':
-            timeout_event = None
-            try:
-                timeout_event=json.loads(read_data(params.input))
-            except ValueError:
-                pass
-            if timeout_event:
-                send_log('Received : %s' % json.dumps(timeout_event))
-                if timeout_event.get('command') == 'abort':
-                    send_log('Aborted')
-                    return 0
-                elif timeout_event.get('command') != 'continue':
-                    send_log('Invalid command')
-                    return -1
-        # add to table and kill active sessions for this ip as well
-        subprocess.run(['/sbin/pfctl', '-t', '__wazuh_agent_drop', '-T', 'add', srcip], capture_output=True)
-        subprocess.run(['/sbin/pfctl', '-k', srcip], capture_output=True)
-    elif command == 'delete':
-        subprocess.run(['/sbin/pfctl', '-t', '__wazuh_agent_drop', '-T', 'delete', srcip], capture_output=True)
+    if "continue" == action:
+        ret = CONTINUE_COMMAND
+    elif "abort" == action:
+        ret = ABORT_COMMAND
+    else:
+        ret = OS_INVALID
+        write_debug_file(argv[0], "Invalid value of 'command'")
 
-    send_log('Active response executed (%s %s)' % (command, srcip))
-
-    return 0
+    return ret
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-input', help='read message from', default='/dev/stdin')
-    sys.exit(main(parser.parse_args()))
+def main(argv):
+
+    write_debug_file(argv[0], "Started")
+
+    # validate json and get command
+    msg = setup_and_check_message(argv)
+
+    if msg.command < 0:
+        sys.exit(OS_INVALID)
+
+    alert = msg.alert["parameters"]["alert"]
+    try:
+        srcip = alert["data"]["srcip"]
+    except KeyError:
+        write_debug_file(argv[0], "Cannot extract srcip")
+        sys.exit(OS_INVALID)
+
+    if msg.command == ADD_COMMAND:
+
+        # use srcip as key for return message for Wazuh Manager
+        keys = [srcip]
+
+        action = send_keys_and_check_message(argv, keys)
+
+        # if necessary, abort execution
+        if action != CONTINUE_COMMAND:
+
+            if action == ABORT_COMMAND:
+                write_debug_file(argv[0], "Aborted")
+                sys.exit(OS_SUCCESS)
+            else:
+                write_debug_file(argv[0], "Invalid command")
+                sys.exit(OS_INVALID)
+
+        # add srcip to blocklist table
+        args = [PFCTL, '-t', PF_TABLE, '-T', 'add', srcip]
+        sp = subprocess.run(args, capture_output=True)
+        if sp.returncode == 0:
+            write_debug_file(argv[0], f"Executed {args}")
+        else:
+            write_debug_file(argv[0], f"Command failed: {args}:\n{sp.stderr.decode('utf-8')}")
+
+        # kill existing firewall sessions for the srcip
+        args = [PFCTL, '-k', srcip]
+        subprocess.run(args, capture_output=True)
+        if sp.returncode == 0:
+            write_debug_file(argv[0], f"Executed {args}")
+        else:
+            write_debug_file(argv[0], f"Command failed: {args}:\n{sp.stderr.decode('utf-8')}")
+
+    elif msg.command == DELETE_COMMAND:
+
+        # clear srcip from blocklist table
+        args = [PFCTL, '-t', PF_TABLE, '-T', 'delete', srcip]
+        sp = subprocess.run(args, capture_output=True)
+        if sp.returncode == 0:
+            write_debug_file(argv[0], f"Executed {args}")
+        else:
+            write_debug_file(argv[0], f"Command failed: {args}:\n{sp.stderr.decode('utf-8')}")
+
+    else:
+        write_debug_file(argv[0], "Invalid command in this context: {msg.command}")
+
+    write_debug_file(argv[0], "Ended")
+
+    sys.exit(OS_SUCCESS)
+
+
+if __name__ == "__main__":
+    main(sys.argv)
