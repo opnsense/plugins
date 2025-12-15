@@ -1,0 +1,9 @@
+<acl>
+    <page-services-hclouddns>
+        <name>Services: Hetzner Cloud DDNS</name>
+        <patterns>
+            <pattern>ui/hclouddns/*</pattern>
+            <pattern>api/hclouddns/*</pattern>
+        </patterns>
+    </page-services-hclouddns>
+</acl>

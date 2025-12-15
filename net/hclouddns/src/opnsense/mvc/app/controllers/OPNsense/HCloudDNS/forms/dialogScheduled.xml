@@ -1,0 +1,34 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>Scheduled Job Settings</label>
+    </field>
+    <field>
+        <id>hclouddns.general.cronEnabled</id>
+        <label>Enable Scheduled Updates</label>
+        <type>checkbox</type>
+        <help>Enable periodic DNS updates via cron job. Disabled by default - automatic triggers (gateway events, IP changes) are usually sufficient.</help>
+    </field>
+    <field>
+        <id>hclouddns.general.cronInterval</id>
+        <label>Update Interval (minutes)</label>
+        <type>text</type>
+        <help>How often to run the update check. Default: 5 minutes. Range: 1-60 minutes.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Update Behavior</label>
+    </field>
+    <field>
+        <id>hclouddns.general.checkInterval</id>
+        <label>IP Change Check Interval (seconds)</label>
+        <type>text</type>
+        <help>Minimum time between IP checks during scheduled updates. Default: 300 (5 minutes). Range: 60-86400</help>
+    </field>
+    <field>
+        <id>hclouddns.general.forceInterval</id>
+        <label>Force Update (days)</label>
+        <type>text</type>
+        <help>Force DNS update even if IP unchanged. 0 = disabled. Default: 0. Range: 0-30</help>
+    </field>
+</form>

@@ -1,0 +1,10 @@
+<menu>
+    <Services>
+        <HCloudDNS VisibleName="Hetzner Cloud DNS" cssClass="fa fa-cloud fa-fw">
+            <DynDNS VisibleName="DynDNS" order="10" url="/ui/hclouddns"/>
+            <DNS VisibleName="DNS Management" order="20" url="/ui/hclouddns/dns"/>
+            <Settings VisibleName="Settings" order="80" url="/ui/hclouddns/settings"/>
+            <LogFile VisibleName="Log File" order="90" url="/ui/diagnostics/log/hclouddns"/>
+        </HCloudDNS>
+    </Services>
+</menu>

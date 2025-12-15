@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>hclouddns.general.enabled</id>
+        <label>Enable Service</label>
+        <type>checkbox</type>
+        <help>Enable Hetzner Cloud Dynamic DNS Service</help>
+    </field>
+    <field>
+        <id>hclouddns.general.verbose</id>
+        <label>Verbose Logging</label>
+        <type>checkbox</type>
+        <help>Write detailed log entries to syslog</help>
+    </field>
+    <field>
+        <id>hclouddns.general.historyRetentionDays</id>
+        <label>History Retention (days)</label>
+        <type>text</type>
+        <help>Number of days to keep DNS change history for undo functionality (1-365, default: 7)</help>
+    </field>
+</form>

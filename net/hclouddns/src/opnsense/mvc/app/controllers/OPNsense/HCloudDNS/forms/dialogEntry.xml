@@ -1,0 +1,71 @@
+<form>
+    <field>
+        <id>entry.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this DNS entry for dynamic updates</help>
+    </field>
+    <field>
+        <id>entry.account</id>
+        <label>Account</label>
+        <type>dropdown</type>
+        <help>API token/account to use for this entry</help>
+    </field>
+    <field>
+        <id>entry.zoneId</id>
+        <label>Zone</label>
+        <type>dropdown</type>
+        <help>Select the DNS zone for this record</help>
+    </field>
+    <field>
+        <id>entry.zoneName</id>
+        <label>Zone Name</label>
+        <type>hidden</type>
+    </field>
+    <field>
+        <id>entry.recordName</id>
+        <label>Record Name</label>
+        <type>text</type>
+        <help>DNS record name (@ for root, www, mail, etc.)</help>
+    </field>
+    <field>
+        <id>entry.recordType</id>
+        <label>Record Type</label>
+        <type>dropdown</type>
+        <help>A for IPv4, AAAA for IPv6</help>
+    </field>
+    <field>
+        <id>entry.primaryGateway</id>
+        <label>Primary Gateway</label>
+        <type>dropdown</type>
+        <help>Main gateway to use for this record's IP</help>
+    </field>
+    <field>
+        <id>entry.failoverGateway</id>
+        <label>Failover Gateway</label>
+        <type>dropdown</type>
+        <help>Backup gateway when primary is down (optional)</help>
+    </field>
+    <field>
+        <id>entry.ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>Time to live in seconds (60-86400)</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Status (read-only)</label>
+    </field>
+    <field>
+        <id>entry.currentIp</id>
+        <label>Current IP</label>
+        <type>info</type>
+        <help>Currently configured IP at Hetzner</help>
+    </field>
+    <field>
+        <id>entry.status</id>
+        <label>Status</label>
+        <type>info</type>
+        <help>Current status of this entry</help>
+    </field>
+</form>
