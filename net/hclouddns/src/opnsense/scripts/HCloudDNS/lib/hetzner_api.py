@@ -200,14 +200,18 @@ class HetznerCloudAPI:
             for rrset in rrsets:
                 if rrset.get('type') in record_types:
                     records = rrset.get('records', [])
-                    value = records[0].get('value', '') if records else ''
+                    rrset_name = rrset.get('name', '')
+                    rrset_type = rrset.get('type', '')
+                    rrset_ttl = rrset.get('ttl', 300)
 
-                    result.append({
-                        'name': rrset.get('name', ''),
-                        'type': rrset.get('type', ''),
-                        'value': value,
-                        'ttl': rrset.get('ttl', 300)
-                    })
+                    # Create one entry per record value (important for MX, NS, etc.)
+                    for record in records:
+                        result.append({
+                            'name': rrset_name,
+                            'type': rrset_type,
+                            'value': record.get('value', ''),
+                            'ttl': rrset_ttl
+                        })
 
             if self.verbose:
                 self._log(syslog.LOG_INFO, f"Found {len(result)} A/AAAA records in zone {zone_id}")

@@ -40,14 +40,91 @@ class SettingsController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'hclouddns';
 
     /**
+     * Ensure notifications section exists in config with defaults
+     */
+    private function ensureNotificationsExist()
+    {
+        $config = \OPNsense\Core\Config::getInstance()->object();
+
+        // Make sure HCloudDNS exists
+        if (!isset($config->OPNsense)) {
+            return;
+        }
+        if (!isset($config->OPNsense->HCloudDNS)) {
+            return;
+        }
+
+        $hcloud = $config->OPNsense->HCloudDNS;
+
+        // Add notifications section if missing
+        if (!isset($hcloud->notifications)) {
+            $hcloud->addChild('notifications');
+            $hcloud->notifications->addChild('enabled', '0');
+            $hcloud->notifications->addChild('notifyOnUpdate', '1');
+            $hcloud->notifications->addChild('notifyOnFailover', '1');
+            $hcloud->notifications->addChild('notifyOnFailback', '1');
+            $hcloud->notifications->addChild('notifyOnError', '1');
+            $hcloud->notifications->addChild('emailEnabled', '0');
+            $hcloud->notifications->addChild('emailTo', '');
+            $hcloud->notifications->addChild('webhookEnabled', '0');
+            $hcloud->notifications->addChild('webhookUrl', '');
+            $hcloud->notifications->addChild('webhookMethod', 'POST');
+            $hcloud->notifications->addChild('ntfyEnabled', '0');
+            $hcloud->notifications->addChild('ntfyServer', 'https://ntfy.sh');
+            $hcloud->notifications->addChild('ntfyTopic', '');
+            $hcloud->notifications->addChild('ntfyPriority', 'default');
+            \OPNsense\Core\Config::getInstance()->save();
+        }
+    }
+
+    /**
      * Get full settings including all dropdown options
      * @return array
      */
     public function getAction()
     {
+        $this->ensureNotificationsExist();
         $result = [];
         $mdl = $this->getModel();
         $result['hclouddns'] = $mdl->getNodes();
+        return $result;
+    }
+
+    /**
+     * Parse flat bracket-notation keys into nested array
+     * e.g. "hclouddns[notifications][enabled]" => ['hclouddns']['notifications']['enabled']
+     */
+    private function parseBracketNotation($flatData)
+    {
+        $result = [];
+        foreach ($flatData as $key => $value) {
+            // Parse keys like "hclouddns[notifications][enabled]"
+            if (preg_match('/^([^\[]+)(.*)$/', $key, $matches)) {
+                $baseKey = $matches[1];
+                $rest = $matches[2];
+
+                if (empty($rest)) {
+                    $result[$baseKey] = $value;
+                } else {
+                    // Parse [notifications][enabled] etc.
+                    preg_match_all('/\[([^\]]*)\]/', $rest, $subMatches);
+                    $keys = $subMatches[1];
+
+                    $current = &$result;
+                    $current[$baseKey] = $current[$baseKey] ?? [];
+                    $current = &$current[$baseKey];
+
+                    foreach ($keys as $i => $subKey) {
+                        if ($i === count($keys) - 1) {
+                            $current[$subKey] = $value;
+                        } else {
+                            $current[$subKey] = $current[$subKey] ?? [];
+                            $current = &$current[$subKey];
+                        }
+                    }
+                }
+            }
+        }
         return $result;
     }
 
@@ -59,13 +136,35 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         $result = ['status' => 'error', 'message' => 'Invalid request'];
         if ($this->request->isPost()) {
+            $this->ensureNotificationsExist();
             $mdl = $this->getModel();
-            $mdl->setNodes($this->request->getPost('hclouddns'));
+
+            // Get raw POST data and parse bracket notation
+            $allPost = $this->request->getPost();
+            $parsed = $this->parseBracketNotation($allPost);
+            $postData = $parsed['hclouddns'] ?? [];
+
+            // Handle notifications separately
+            if (isset($postData['notifications'])) {
+                $notif = $postData['notifications'];
+                foreach ($notif as $key => $value) {
+                    if (isset($mdl->notifications->$key)) {
+                        $mdl->notifications->$key = $value;
+                    }
+                }
+                unset($postData['notifications']);
+            }
+
+            // Handle remaining settings
+            if (!empty($postData)) {
+                $mdl->setNodes($postData);
+            }
+
             $valMsgs = $mdl->performValidation();
             if ($valMsgs->count() == 0) {
                 $mdl->serializeToConfig();
                 \OPNsense\Core\Config::getInstance()->save();
-                $result = ['status' => 'ok'];
+                $result['status'] = 'ok';
             } else {
                 $result = ['status' => 'error', 'validations' => []];
                 foreach ($valMsgs as $msg) {

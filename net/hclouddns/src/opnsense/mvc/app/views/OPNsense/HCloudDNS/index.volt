@@ -51,7 +51,6 @@
     <li class="active"><a data-toggle="tab" href="#overview"><i class="fa fa-dashboard"></i> {{ lang._('Overview') }}</a></li>
     <li><a data-toggle="tab" href="#gateways"><i class="fa fa-server"></i> {{ lang._('Gateways') }}</a></li>
     <li><a data-toggle="tab" href="#entries"><i class="fa fa-list"></i> {{ lang._('DNS Entries') }}</a></li>
-    <li><a data-toggle="tab" href="#history"><i class="fa fa-history"></i> {{ lang._('History') }}</a></li>
     <li><a data-toggle="tab" href="#scheduled"><i class="fa fa-clock-o"></i> {{ lang._('Scheduled') }}</a></li>
 </ul>
 
@@ -250,36 +249,6 @@
         <button class="btn btn-default" id="refreshEntriesBtn"><i class="fa fa-refresh"></i> {{ lang._('Refresh Status') }}</button>
         <button class="btn btn-info" id="createDualStackBtn"><i class="fa fa-link"></i> {{ lang._('Create Dual-Stack (A+AAAA)') }}</button>
         <button class="btn btn-danger" id="removeOrphanedBtn"><i class="fa fa-trash"></i> {{ lang._('Remove Orphaned') }}</button>
-    </div>
-
-    <!-- ==================== HISTORY TAB ==================== -->
-    <div id="history" class="tab-pane fade">
-        <p class="text-muted">{{ lang._('DNS change history log. You can revert changes to restore previous DNS record values.') }}</p>
-        <div class="alert alert-info">
-            <i class="fa fa-info-circle"></i> {{ lang._('History retention is configured in Settings. Only changes within the retention period are shown.') }}
-        </div>
-
-        <table class="table table-condensed table-hover table-striped" id="historyTable">
-            <thead>
-                <tr>
-                    <th style="width:150px;">{{ lang._('Time') }}</th>
-                    <th style="width:80px;">{{ lang._('Action') }}</th>
-                    <th>{{ lang._('Record') }}</th>
-                    <th>{{ lang._('Type') }}</th>
-                    <th>{{ lang._('Old Value') }}</th>
-                    <th>{{ lang._('New Value') }}</th>
-                    <th style="width:80px;">{{ lang._('Status') }}</th>
-                    <th style="width:80px;">{{ lang._('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td colspan="8" class="text-center text-muted">{{ lang._('Loading...') }}</td></tr>
-            </tbody>
-        </table>
-
-        <hr/>
-        <button class="btn btn-default" id="refreshHistoryBtn"><i class="fa fa-refresh"></i> {{ lang._('Refresh') }}</button>
-        <button class="btn btn-warning" id="cleanupHistoryBtn"><i class="fa fa-trash"></i> {{ lang._('Cleanup Old Entries') }}</button>
     </div>
 
     <!-- ==================== SCHEDULED TAB ==================== -->
@@ -1775,121 +1744,6 @@ $(document).ready(function() {
         });
     });
 
-    // ==================== HISTORY TAB ====================
-    function loadHistory() {
-        var $tbody = $('#historyTable tbody');
-        $tbody.html('<tr><td colspan="8" class="text-center text-muted"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr>');
-
-        ajaxCall('/api/hclouddns/history/searchItem', {}, function(data) {
-            $tbody.empty();
-
-            if (!data || !data.rows || data.rows.length === 0) {
-                $tbody.html('<tr><td colspan="8" class="text-center text-muted">No history entries found.</td></tr>');
-                return;
-            }
-
-            $.each(data.rows, function(i, row) {
-                var actionClass = {create: 'success', update: 'info', delete: 'danger'}[row.action] || 'default';
-                var actionIcon = {create: 'plus', update: 'pencil', delete: 'trash'}[row.action] || 'circle';
-                var revertedClass = row.reverted === '1' ? 'text-muted' : '';
-                var revertedBadge = row.reverted === '1' ? '<span class="label label-default">Reverted</span>' : '<span class="label label-primary">Active</span>';
-
-                var revertBtn = '';
-                if (row.reverted !== '1') {
-                    revertBtn = '<button class="btn btn-xs btn-warning revert-btn" data-uuid="' + row.uuid + '" title="Revert this change"><i class="fa fa-undo"></i></button>';
-                } else {
-                    revertBtn = '<span class="text-muted">-</span>';
-                }
-
-                var recordFqdn = row.recordName + '.' + row.zoneName;
-                var oldVal = row.oldValue || '-';
-                var newVal = row.newValue || '-';
-
-                // Add TTL info if available
-                if (row.oldTtl && row.oldValue) oldVal += ' (TTL: ' + row.oldTtl + ')';
-                if (row.newTtl && row.newValue) newVal += ' (TTL: ' + row.newTtl + ')';
-
-                $tbody.append(
-                    '<tr class="' + revertedClass + '">' +
-                        '<td><small>' + row.timestampFormatted + '</small></td>' +
-                        '<td><span class="label label-' + actionClass + '"><i class="fa fa-' + actionIcon + '"></i> ' + row.action + '</span></td>' +
-                        '<td><code>' + recordFqdn + '</code></td>' +
-                        '<td>' + row.recordType + '</td>' +
-                        '<td><small>' + oldVal + '</small></td>' +
-                        '<td><small>' + newVal + '</small></td>' +
-                        '<td>' + revertedBadge + '</td>' +
-                        '<td>' + revertBtn + '</td>' +
-                    '</tr>'
-                );
-            });
-        });
-    }
-
-    // Revert history entry
-    $(document).on('click', '.revert-btn', function() {
-        var $btn = $(this);
-        var uuid = $btn.data('uuid');
-
-        BootstrapDialog.confirm({
-            title: 'Revert Change',
-            message: 'Are you sure you want to revert this DNS change? This will restore the previous value at Hetzner.',
-            type: BootstrapDialog.TYPE_WARNING,
-            btnOKLabel: 'Revert',
-            btnOKClass: 'btn-warning',
-            callback: function(result) {
-                if (result) {
-                    $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
-                    ajaxCall('/api/hclouddns/history/revert/' + uuid, {_: ''}, function(data) {
-                        if (data && data.status === 'ok') {
-                            BootstrapDialog.alert({
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                title: 'Change Reverted',
-                                message: data.message || 'The DNS change has been reverted successfully.'
-                            });
-                            loadHistory();
-                        } else {
-                            $btn.prop('disabled', false).html('<i class="fa fa-undo"></i>');
-                            BootstrapDialog.alert({
-                                type: BootstrapDialog.TYPE_DANGER,
-                                title: 'Revert Failed',
-                                message: data.message || 'Failed to revert the change.'
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    });
-
-    // Refresh history button
-    $('#refreshHistoryBtn').click(function() {
-        loadHistory();
-    });
-
-    // Cleanup old history entries
-    $('#cleanupHistoryBtn').click(function() {
-        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Cleaning...');
-
-        ajaxCall('/api/hclouddns/history/cleanup', {_: ''}, function(data) {
-            $btn.prop('disabled', false).html('<i class="fa fa-trash"></i> Cleanup Old Entries');
-
-            if (data && data.status === 'ok') {
-                BootstrapDialog.alert({
-                    type: BootstrapDialog.TYPE_SUCCESS,
-                    title: 'Cleanup Complete',
-                    message: data.message || (data.deleted + ' old entries removed.')
-                });
-                loadHistory();
-            } else {
-                BootstrapDialog.alert({
-                    type: BootstrapDialog.TYPE_DANGER,
-                    title: 'Cleanup Failed',
-                    message: data.message || 'Failed to cleanup history.'
-                });
-            }
-        });
-    });
-
     // Tab switch handlers
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         var target = $(e.target).attr('href');
@@ -1902,9 +1756,6 @@ $(document).ready(function() {
         else if (target === '#overview') {
             loadDashboard();
             loadSimulationStatus();
-        }
-        else if (target === '#history') {
-            loadHistory();
         }
     });
 

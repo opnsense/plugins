@@ -19,6 +19,7 @@ from gateway_health import get_gateway_ip
 
 STATE_FILE = '/var/run/hclouddns_state.json'
 SIMULATION_FILE = '/var/run/hclouddns_simulation.json'
+CONFIG_FILE = '/conf/config.xml'
 
 
 def load_simulation():
@@ -38,6 +39,121 @@ def log(message, priority=syslog.LOG_INFO):
     syslog.syslog(priority, message)
 
 
+def add_history_entry(entry, account, old_ip, new_ip, action='update'):
+    """
+    Add a history entry to config.xml for DNS change tracking.
+    This allows users to see all IP changes over time.
+    """
+    import uuid as uuid_mod
+    import fcntl
+
+    try:
+        # Use file locking for safe concurrent access
+        with open(CONFIG_FILE, 'r+') as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            try:
+                content = f.read()
+                tree = ET.ElementTree(ET.fromstring(content))
+                root = tree.getroot()
+
+                hcloud = root.find('.//OPNsense/HCloudDNS')
+                if hcloud is None:
+                    return False
+
+                # Find or create history section
+                history = hcloud.find('history')
+                if history is None:
+                    history = ET.SubElement(hcloud, 'history')
+
+                # Create new change entry
+                change = ET.SubElement(history, 'change')
+                change.set('uuid', str(uuid_mod.uuid4()))
+
+                # Add all required fields
+                ET.SubElement(change, 'timestamp').text = str(int(time.time()))
+                ET.SubElement(change, 'action').text = action
+                ET.SubElement(change, 'accountUuid').text = account.get('uuid', '')
+                ET.SubElement(change, 'accountName').text = account.get('name', '')
+                ET.SubElement(change, 'zoneId').text = entry.get('zoneId', '')
+                ET.SubElement(change, 'zoneName').text = entry.get('zoneName', '')
+                ET.SubElement(change, 'recordName').text = entry.get('recordName', '')
+                ET.SubElement(change, 'recordType').text = entry.get('recordType', '')
+                ET.SubElement(change, 'oldValue').text = old_ip or ''
+                ET.SubElement(change, 'oldTtl').text = str(entry.get('ttl', 300))
+                ET.SubElement(change, 'newValue').text = new_ip or ''
+                ET.SubElement(change, 'newTtl').text = str(entry.get('ttl', 300))
+                ET.SubElement(change, 'reverted').text = '0'
+
+                # Write back
+                f.seek(0)
+                f.truncate()
+                tree.write(f, encoding='unicode', xml_declaration=True)
+
+                log(f"History: {action} {entry['recordName']}.{entry['zoneName']} "
+                    f"{entry['recordType']} {old_ip} -> {new_ip}")
+                return True
+
+            finally:
+                fcntl.flock(f, fcntl.LOCK_UN)
+
+    except Exception as e:
+        log(f"Failed to add history entry: {str(e)}", syslog.LOG_ERR)
+        return False
+
+
+def cleanup_old_history(retention_days):
+    """Remove history entries older than retention_days"""
+    import fcntl
+
+    if retention_days <= 0:
+        return 0
+
+    cutoff_time = int(time.time()) - (retention_days * 86400)
+    removed = 0
+
+    try:
+        with open(CONFIG_FILE, 'r+') as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            try:
+                content = f.read()
+                tree = ET.ElementTree(ET.fromstring(content))
+                root = tree.getroot()
+
+                hcloud = root.find('.//OPNsense/HCloudDNS')
+                if hcloud is None:
+                    return 0
+
+                history = hcloud.find('history')
+                if history is None:
+                    return 0
+
+                # Find entries to remove
+                to_remove = []
+                for change in history.findall('change'):
+                    timestamp = int(change.findtext('timestamp', '0'))
+                    if timestamp < cutoff_time:
+                        to_remove.append(change)
+
+                # Remove old entries
+                for change in to_remove:
+                    history.remove(change)
+                    removed += 1
+
+                if removed > 0:
+                    f.seek(0)
+                    f.truncate()
+                    tree.write(f, encoding='unicode', xml_declaration=True)
+                    log(f"History cleanup: removed {removed} entries older than {retention_days} days")
+
+            finally:
+                fcntl.flock(f, fcntl.LOCK_UN)
+
+    except Exception as e:
+        log(f"Failed to cleanup history: {str(e)}", syslog.LOG_ERR)
+
+    return removed
+
+
 def load_config():
     """Load configuration from OPNsense config.xml"""
     config = {
@@ -47,6 +163,7 @@ def load_config():
         'failbackEnabled': True,
         'failbackDelay': 60,
         'verbose': False,
+        'historyRetentionDays': 7,
         'accounts': {},
         'gateways': {},
         'entries': []
@@ -69,6 +186,7 @@ def load_config():
             config['failoverEnabled'] = general.findtext('failoverEnabled', '0') == '1'
             config['failbackEnabled'] = general.findtext('failbackEnabled', '1') == '1'
             config['failbackDelay'] = int(general.findtext('failbackDelay', '60'))
+            config['historyRetentionDays'] = int(general.findtext('historyRetentionDays', '7'))
 
         # Accounts (API tokens)
         accounts = hcloud.find('accounts')
@@ -425,6 +543,9 @@ def process_entries(config, state):
             entry_state['status'] = 'active' if reason in ['primary', 'failback'] else 'failover'
             if update_reason in ['updated', 'created']:
                 results['updated'] += 1
+                # Add history entry for tracking IP changes
+                action = 'create' if update_reason == 'created' else 'update'
+                add_history_entry(entry, account, current_hetzner_ip, target_ip, action)
         else:
             entry_state['status'] = 'error'
             results['errors'] += 1
@@ -479,6 +600,10 @@ def main():
 
     state['lastUpdate'] = int(time.time())
     save_runtime_state(state)
+
+    # Cleanup old history entries
+    if config['historyRetentionDays'] > 0:
+        cleanup_old_history(config['historyRetentionDays'])
 
     result['details'] = update_results
     result['message'] = f"Processed {update_results['processed']} entries, {update_results['updated']} updated"

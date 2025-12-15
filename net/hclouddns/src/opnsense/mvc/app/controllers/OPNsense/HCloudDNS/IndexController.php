@@ -100,4 +100,12 @@ class IndexController extends BaseIndexController
     {
         $this->view->pick('OPNsense/HCloudDNS/dns');
     }
+
+    /**
+     * DNS Change History page - track all DNS modifications
+     */
+    public function historyAction()
+    {
+        $this->view->pick('OPNsense/HCloudDNS/history');
+    }
 }

@@ -6,22 +6,21 @@
 #}
 
 <style>
-    /* Import section styles */
-    #importSection .zone-item { border: 1px solid #ddd; border-radius: 4px; margin-bottom: 8px; background: #fff; }
-    #importSection .zone-header { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; background: #f8f9fa; }
-    #importSection .zone-header:hover { background: #e9ecef; }
-    #importSection .zone-header .zone-checkbox { margin-right: 10px; }
-    #importSection .zone-header .zone-name { flex: 1; font-weight: 500; }
-    #importSection .zone-header .zone-toggle { color: #666; }
-    #importSection .zone-records { padding: 10px 15px 10px 40px; border-top: 1px solid #eee; display: none; }
-    #importSection .zone-records.show { display: block; }
-    #importSection .record-item { padding: 5px 0; display: flex; align-items: center; }
-    #importSection .record-item label { margin: 0; font-weight: normal; flex: 1; }
-    #importSection .record-item.existing { opacity: 0.6; background: #f5f5f5; padding: 5px 8px; margin: 2px -8px; border-radius: 3px; }
-    #importSection .record-item.existing label { color: #888; }
+    /* Import modal styles */
+    #importModal .zone-item { border: 1px solid #ddd; border-radius: 4px; margin-bottom: 8px; background: #fff; }
+    #importModal .zone-header { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; background: #f8f9fa; }
+    #importModal .zone-header:hover { background: #e9ecef; }
+    #importModal .zone-header .zone-checkbox { margin-right: 10px; }
+    #importModal .zone-header .zone-name { flex: 1; font-weight: 500; }
+    #importModal .zone-header .zone-toggle { color: #666; }
+    #importModal .zone-records { padding: 10px 15px 10px 40px; border-top: 1px solid #eee; display: none; }
+    #importModal .zone-records.show { display: block; }
+    #importModal .record-item { padding: 5px 0; display: flex; align-items: center; }
+    #importModal .record-item label { margin: 0; font-weight: normal; flex: 1; }
+    #importModal .record-item.existing { opacity: 0.6; background: #f5f5f5; padding: 5px 8px; margin: 2px -8px; border-radius: 3px; }
+    #importModal .record-item.existing label { color: #888; }
     .bg-success { background-color: #dff0d8 !important; transition: background-color 0.3s; }
-    #importSection .record-type { font-size: 11px; padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
-    #importSection .panel-heading .close { margin-top: -2px; }
+    #importModal .record-type { font-size: 11px; padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
 </style>
 
 <!-- General Settings Section -->
@@ -226,14 +225,15 @@
     </div>
 </div>
 
-<!-- Inline Import Section -->
-<div id="importSection" class="panel panel-default" style="display: none; margin-top: 20px;">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-download"></i> <span id="importSectionTitle">{{ lang._('Add Token & Import DNS Entries') }}</span>
-            <button type="button" class="close" id="closeImportSection"><span>&times;</span></button>
-        </h3>
-    </div>
-    <div class="panel-body">
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-download"></i> <span id="importSectionTitle">{{ lang._('Add Token & Import DNS Entries') }}</span></h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 30px;">
         <!-- Step 1: Token Input -->
         <div id="importStep1">
             <div class="row">
@@ -303,6 +303,11 @@
             </div>
             <button type="button" class="btn btn-success" id="importBtn" disabled><i class="fa fa-download"></i> {{ lang._('Import Selected') }}</button>
             <button type="button" class="btn btn-default" id="backToStep1Btn"><i class="fa fa-arrow-left"></i> {{ lang._('Back') }}</button>
+        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang._('Close') }}</button>
+            </div>
         </div>
     </div>
 </div>
@@ -418,20 +423,21 @@ $(document).ready(function() {
 
         ajaxCall('/api/hclouddns/service/testNotify', {}, function(data) {
             $btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Send Test');
-            if (data && data.status === 'ok') {
-                var msg = '<i class="fa fa-check text-success"></i> Test notification sent!';
-                if (data.results) {
-                    msg += '<br><small class="text-muted">';
-                    $.each(data.results, function(channel, result) {
-                        var icon = result.success ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-                        msg += icon + ' ' + channel + (result.message ? ': ' + result.message : '') + '<br>';
-                    });
-                    msg += '</small>';
-                }
-                $result.html('<div class="alert alert-success">' + msg + '</div>');
-            } else {
-                $result.html('<div class="alert alert-danger"><i class="fa fa-times"></i> ' + (data.message || 'Test failed.') + '</div>');
+            var isSuccess = data && data.status === 'ok';
+            var alertClass = isSuccess ? 'alert-success' : 'alert-danger';
+            var icon = isSuccess ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+            var msg = icon + ' ' + (data.message || (isSuccess ? 'Test notification sent!' : 'Test failed.'));
+
+            // Always show individual channel results if available
+            if (data && data.results) {
+                msg += '<br><small>';
+                $.each(data.results, function(channel, result) {
+                    var chIcon = result.success ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+                    msg += chIcon + ' <strong>' + channel + '</strong>: ' + (result.message || (result.success ? 'OK' : 'Failed')) + '<br>';
+                });
+                msg += '</small>';
             }
+            $result.html('<div class="alert ' + alertClass + '">' + msg + '</div>');
         });
     });
 
@@ -661,8 +667,7 @@ $(document).ready(function() {
     }
 
     function showImportSection() {
-        $('#importSection').slideDown();
-        $('html, body').animate({ scrollTop: $('#importSection').offset().top - 100 }, 300);
+        $('#importModal').modal('show');
     }
 
     $(document).on('click', '#addTokenBtn', function(e) {
@@ -673,7 +678,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#closeImportSection', function() {
-        $('#importSection').slideUp();
+        $('#importModal').modal('hide');
     });
 
     $(document).on('click', '#backToStep1Btn', function() {
@@ -724,11 +729,17 @@ $(document).ready(function() {
 
     function loadGatewaysForImport() {
         ajaxCall('/api/hclouddns/gateways/searchItem', {}, function(data) {
-            var $p = $('#importPrimaryGw').empty().append('<option value="">-- Select Gateway --</option>');
+            var $p = $('#importPrimaryGw').empty();
             var $f = $('#importFailoverGw').empty().append('<option value="">None (no failover)</option>');
+            var gateways = [];
             if (data && data.rows) {
-                var gateways = data.rows.filter(function(gw) { return gw.enabled === '1'; });
+                gateways = data.rows.filter(function(gw) { return gw.enabled === '1'; });
                 gateways.sort(function(a, b) { return (parseInt(a.priority) || 99) - (parseInt(b.priority) || 99); });
+            }
+            if (gateways.length === 0) {
+                // No gateways configured - use default option
+                $p.append('<option value="_default">Default Gateway (auto-detect)</option>');
+            } else {
                 $.each(gateways, function(i, gw) {
                     $p.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
                     $f.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
@@ -878,7 +889,8 @@ $(document).ready(function() {
         if (newCount > 0) text = newCount + ' new record(s) to import';
         if (existingCount > 0) text += (text ? ', ' : '') + existingCount + ' already imported';
         $('#importSelectedCount').text(text);
-        $('#importBtn').prop('disabled', newCount === 0 || !$('#importPrimaryGw').val());
+        // Enable button if records are selected (gateway is always available - either configured or _default)
+        $('#importBtn').prop('disabled', newCount === 0);
     }
 
     $('#importPrimaryGw').change(updateImportCount);
@@ -887,8 +899,12 @@ $(document).ready(function() {
         var primaryGw = $('#importPrimaryGw').val();
         var failoverGw = $('#importFailoverGw').val();
 
-        if (!primaryGw) { BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: 'Please select a primary gateway.'}); return; }
-        if (primaryGw === failoverGw) { BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: 'Failover gateway must differ from primary.'}); return; }
+        // Handle _default gateway (no gateways configured - will use system default)
+        if (primaryGw === '_default') {
+            primaryGw = '';
+            failoverGw = '';
+        }
+        if (primaryGw && primaryGw === failoverGw) { BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: 'Failover gateway must differ from primary.'}); return; }
 
         var entries = [];
         $('.record-checkbox:checked:not(:disabled)').each(function() {
@@ -909,7 +925,7 @@ $(document).ready(function() {
         ajaxCall('/api/hclouddns/entries/batchAdd', {entries: entries, primaryGateway: primaryGw, failoverGateway: failoverGw}, function(data) {
             $btn.prop('disabled', false).html('<i class="fa fa-download"></i> Import');
             if (data && data.status === 'ok') {
-                $('#importSection').slideUp();
+                $('#importModal').modal('hide');
                 BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, message: data.added + ' DNS entry/entries imported successfully!'});
                 $('#grid-accounts').bootgrid('reload');
             } else {
@@ -917,5 +933,6 @@ $(document).ready(function() {
             }
         });
     });
+
 });
 </script>

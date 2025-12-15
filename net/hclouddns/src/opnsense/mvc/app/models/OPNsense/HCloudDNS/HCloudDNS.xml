@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/HCloudDNS</mount>
     <description>Hetzner Cloud Dynamic DNS with Multi-Zone and Failover</description>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <items>
         <!-- Global Settings -->
         <general>
@@ -151,8 +151,8 @@
                             <display>name</display>
                         </gateways>
                     </Model>
-                    <Required>Y</Required>
-                    <ValidationMessage>Primary gateway is required</ValidationMessage>
+                    <Required>N</Required>
+                    <BlankDesc>Default Gateway (auto-detect)</BlankDesc>
                 </primaryGateway>
                 <failoverGateway type="ModelRelationField">
                     <Model>

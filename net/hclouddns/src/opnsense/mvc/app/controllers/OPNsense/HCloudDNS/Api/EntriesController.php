@@ -279,9 +279,9 @@ class EntriesController extends ApiMutableModelControllerBase
             $failoverGateway = $this->request->getPost('failoverGateway');
             $ttl = $this->request->getPost('ttl', 'int', 300);
 
-            if (is_array($entries) && !empty($primaryGateway)) {
-                // Validate failover differs from primary
-                if (!empty($failoverGateway) && $primaryGateway === $failoverGateway) {
+            if (is_array($entries) && count($entries) > 0) {
+                // Validate failover differs from primary (only if both are set)
+                if (!empty($primaryGateway) && !empty($failoverGateway) && $primaryGateway === $failoverGateway) {
                     return ['status' => 'error', 'message' => 'Failover gateway must be different from primary gateway'];
                 }
 
@@ -305,7 +305,7 @@ class EntriesController extends ApiMutableModelControllerBase
                         $node->recordId = $entry['recordId'] ?? '';
                         $node->recordName = $entry['recordName'];
                         $node->recordType = $entry['recordType'];
-                        $node->primaryGateway = $primaryGateway;
+                        $node->primaryGateway = $primaryGateway ?? '';
                         $node->failoverGateway = $failoverGateway ?? '';
                         $node->ttl = $entry['ttl'] ?? $ttl;
                         $node->status = 'pending';

@@ -1,9 +1,16 @@
 <acl>
     <page-services-hclouddns>
-        <name>Services: Hetzner Cloud DDNS</name>
+        <name>Services: Hetzner Cloud DNS</name>
         <patterns>
             <pattern>ui/hclouddns/*</pattern>
             <pattern>api/hclouddns/*</pattern>
         </patterns>
     </page-services-hclouddns>
+    <page-services-hclouddns-history>
+        <name>Services: Hetzner Cloud DNS: History</name>
+        <patterns>
+            <pattern>ui/hclouddns/history</pattern>
+            <pattern>api/hclouddns/history/*</pattern>
+        </patterns>
+    </page-services-hclouddns-history>
 </acl>

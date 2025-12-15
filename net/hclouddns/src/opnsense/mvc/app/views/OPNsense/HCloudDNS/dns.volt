@@ -584,10 +584,42 @@ $(document).ready(function() {
         $('#recordOldValue').val(value);
         $('#recordOldTtl').val(ttl);
 
-        $('#recordType').val(type).trigger('change');
         $('#recordName').val(name);
-        $('#recordValue').val(value);
         $('#recordTtl').val(ttl);
+        $('#recordType').val(type).trigger('change');
+
+        // For TXT records, auto-detect and populate the appropriate wizard
+        if (type === 'TXT') {
+            populateTxtWizard(value, name);
+        } else if (type === 'MX') {
+            // Parse MX value: "priority target" format
+            var mxParts = value.match(/^(\d+)\s+(.+)$/);
+            if (mxParts) {
+                $('#mxPriority').val(mxParts[1]);
+                $('#recordValue').val(mxParts[2]);
+            } else {
+                $('#recordValue').val(value);
+            }
+        } else if (type === 'SRV') {
+            // Parse SRV value: "priority weight port target" format
+            var srvParts = value.match(/^(\d+)\s+(\d+)\s+(\d+)\s+(.+)$/);
+            if (srvParts) {
+                $('#srvPriority').val(srvParts[1]);
+                $('#srvWeight').val(srvParts[2]);
+                $('#srvPort').val(srvParts[3]);
+                $('#srvTarget').val(srvParts[4]);
+            }
+        } else if (type === 'CAA') {
+            // Parse CAA value: "flags tag value" format
+            var caaParts = value.match(/^(\d+)\s+(\w+)\s+"?([^"]+)"?$/);
+            if (caaParts) {
+                $('#caaFlags').val(caaParts[1]);
+                $('#caaTag').val(caaParts[2]);
+                $('#caaValue').val(caaParts[3]);
+            }
+        } else {
+            $('#recordValue').val(value);
+        }
 
         $('#recordModal').modal('show');
     });
@@ -647,6 +679,133 @@ $(document).ready(function() {
         $('#recordOldTtl').val('');
         $('#recordType').val('A').trigger('change');
         $('#txtType').val('custom').trigger('change');
+    }
+
+    // TXT Record Auto-Detection Functions
+    function detectTxtType(value) {
+        if (!value) return 'custom';
+        value = value.trim();
+        // Strip leading/trailing quotes (TXT records often come quoted from API)
+        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+            value = value.slice(1, -1);
+        }
+        if (value.toLowerCase().startsWith('v=spf1')) return 'spf';
+        if (value.toLowerCase().startsWith('v=dkim1')) return 'dkim';
+        if (value.toLowerCase().startsWith('v=dmarc1')) return 'dmarc';
+        if (value.toLowerCase().startsWith('google-site-verification=')) return 'google-site';
+        if (value.toUpperCase().startsWith('MS=')) return 'ms-site';
+        return 'custom';
+    }
+
+    function stripQuotes(val) {
+        if (!val) return val;
+        val = val.trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+            return val.slice(1, -1);
+        }
+        return val;
+    }
+
+    function parseSPF(value) {
+        // Reset SPF wizard
+        $('#spfIncludeMx').prop('checked', false);
+        $('#spfIncludeA').prop('checked', false);
+        $('#spfIncludes').val('');
+        $('#spfIps').val('');
+        $('#spfPolicy').val('~all');
+
+        value = stripQuotes(value);
+        var includes = [];
+        var ips = [];
+        var parts = value.split(/\s+/);
+
+        $.each(parts, function(i, part) {
+            part = part.toLowerCase();
+            if (part === 'mx') {
+                $('#spfIncludeMx').prop('checked', true);
+            } else if (part === 'a') {
+                $('#spfIncludeA').prop('checked', true);
+            } else if (part.startsWith('include:')) {
+                includes.push(part.substring(8));
+            } else if (part.startsWith('ip4:')) {
+                ips.push(part.substring(4));
+            } else if (part.startsWith('ip6:')) {
+                ips.push(part.substring(4));
+            } else if (part === '-all' || part === '~all' || part === '?all' || part === '+all') {
+                $('#spfPolicy').val(part);
+            }
+        });
+
+        $('#spfIncludes').val(includes.join('\n'));
+        $('#spfIps').val(ips.join('\n'));
+        updateSpfPreview();
+    }
+
+    function parseDKIM(value, recordName) {
+        // Extract selector from record name (format: selector._domainkey)
+        var selector = '';
+        if (recordName && recordName.includes('._domainkey')) {
+            selector = recordName.split('._domainkey')[0];
+        }
+        $('#dkimSelector').val(selector);
+
+        value = stripQuotes(value);
+        // Extract public key from value
+        var keyMatch = value.match(/p=([^;\s]+)/i);
+        if (keyMatch) {
+            $('#dkimKey').val(keyMatch[1]);
+        } else {
+            $('#dkimKey').val('');
+        }
+        updateDkimPreview();
+    }
+
+    function parseDMARC(value) {
+        // Reset DMARC wizard
+        $('#dmarcPolicy').val('none');
+        $('#dmarcRua').val('');
+        $('#dmarcPct').val('100');
+
+        value = stripQuotes(value);
+
+        // Parse policy
+        var policyMatch = value.match(/p=([^;\s]+)/i);
+        if (policyMatch) {
+            $('#dmarcPolicy').val(policyMatch[1].toLowerCase());
+        }
+
+        // Parse rua (report email)
+        var ruaMatch = value.match(/rua=mailto:([^;\s]+)/i);
+        if (ruaMatch) {
+            $('#dmarcRua').val(ruaMatch[1]);
+        }
+
+        // Parse pct (percentage)
+        var pctMatch = value.match(/pct=(\d+)/i);
+        if (pctMatch) {
+            $('#dmarcPct').val(pctMatch[1]);
+        }
+        updateDmarcPreview();
+    }
+
+    function populateTxtWizard(value, recordName) {
+        var txtType = detectTxtType(value);
+        $('#txtType').val(txtType);
+
+        // Trigger the change to show the appropriate wizard
+        $('#txtType').trigger('change');
+
+        // Now populate the wizard fields
+        if (txtType === 'spf') {
+            parseSPF(value);
+        } else if (txtType === 'dkim') {
+            parseDKIM(value, recordName);
+        } else if (txtType === 'dmarc') {
+            parseDMARC(value);
+        } else {
+            // For custom, google-site, ms-site - just put value in the standard input
+            $('#recordValue').val(value);
+        }
     }
 
     // Record type change - show/hide relevant fields

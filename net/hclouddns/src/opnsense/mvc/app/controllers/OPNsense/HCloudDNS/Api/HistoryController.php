@@ -262,6 +262,41 @@ class HistoryController extends ApiMutableModelControllerBase
     }
 
     /**
+     * Clear all history entries
+     * @return array
+     */
+    public function clearAllAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $mdl = $this->getModel();
+        $deleted = 0;
+        $toDelete = [];
+
+        foreach ($mdl->history->change->iterateItems() as $uuid => $change) {
+            $toDelete[] = $uuid;
+        }
+
+        foreach ($toDelete as $uuid) {
+            $mdl->history->change->del($uuid);
+            $deleted++;
+        }
+
+        if ($deleted > 0) {
+            $mdl->serializeToConfig();
+            Config::getInstance()->save();
+        }
+
+        return [
+            'status' => 'ok',
+            'deleted' => $deleted,
+            'message' => "Cleared all $deleted history entries"
+        ];
+    }
+
+    /**
      * Add a history entry (internal use)
      * @param string $action create|update|delete
      * @param string $accountUuid
