@@ -218,6 +218,27 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.removeprivateas</id>
+    <label>Remove Private AS</label>
+    <type>checkbox</type>
+    <help>Remove private ASNs in outbound updates.</help>
+    <grid_view>
+        <type>boolean</type>
+        <formatter>boolean</formatter>
+        <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.removeprivateasoptions</id>
+    <label>Remove Private AS Options</label>
+    <type>select_multiple</type>
+    <hint>None</hint>
+    <help>Remove All AS: Remove all ASNs in outbound updates rather than only private ASNs. Replace AS: Replace private ASNs with our ASN in outbound updates.</help>
+    <grid_view>
+      <ignore>true</ignore>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.allowas_in</id>
     <label>Allow AS In</label>
     <type>dropdown</type>

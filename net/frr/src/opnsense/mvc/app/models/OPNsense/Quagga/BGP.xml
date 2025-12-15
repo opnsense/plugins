@@ -108,6 +108,14 @@
                 </connecttimer>
                 <defaultoriginate type="BooleanField"/>
                 <asoverride type="BooleanField"/>
+                <removeprivateas type="BooleanField"/>
+                <removeprivateasoptions type="OptionField">
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <removeallas>Remove All AS</removeallas>
+                        <replaceas>Replace AS</replaceas>
+                    </OptionValues>
+                </removeprivateasoptions>
                 <allowas_in type="OptionField">
                     <OptionValues>
                         <val1 value="1">1</val1>
