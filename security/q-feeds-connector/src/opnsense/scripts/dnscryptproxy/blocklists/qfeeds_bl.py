@@ -27,15 +27,36 @@
 """
 
 import os
-import configparser
+import glob
+import re
 
-cnf = configparser.ConfigParser()
-cnf.read('/usr/local/etc/qfeeds-dnscryptproxy-bl.conf')
+# Check if 'qf' is selected in DNSCrypt-proxy DNSBL configuration
+def is_qf_selected():
+    rc_conf_file = '/etc/rc.conf.d/dnscrypt_proxy'
+    if os.path.exists(rc_conf_file):
+        try:
+            with open(rc_conf_file, 'r') as f:
+                for line in f:
+                    # Look for dnscrypt_proxy_dnsbl="..." line
+                    match = re.search(r'dnscrypt_proxy_dnsbl="([^"]*)"', line)
+                    if match:
+                        dnsbl_list = match.group(1)
+                        # Check if 'qf' is in the comma-separated list
+                        return 'qf' in [x.strip() for x in dnsbl_list.split(',')]
+        except Exception:
+            pass
+    return False
 
+# Q-Feeds domain files directory
+qfeeds_tables_dir = '/var/db/qfeeds-tables'
+
+# Automatically find all domain files (*_domains.txt) in qfeeds-tables directory
+# This will include malware_domains.txt, phishing_domains.txt, etc.
 qfeeds_filenames = []
-if cnf.has_section('settings'):
-    if cnf.has_option('settings', 'filenames'):
-        qfeeds_filenames = cnf.get('settings', 'filenames').split(',')
+if os.path.isdir(qfeeds_tables_dir):
+    # Find all files ending with _domains.txt (e.g., malware_domains.txt, phishing_domains.txt)
+    pattern = os.path.join(qfeeds_tables_dir, '*_domains.txt')
+    qfeeds_filenames = sorted(glob.glob(pattern))
 
 # Collect q-feeds domains
 qfeeds_domains = set()
@@ -48,18 +69,24 @@ for filename in qfeeds_filenames:
                     qfeeds_domains.add(domain)
 
 # Write q-feeds domains to blacklist-qfeeds.txt
-# dnscrypt-proxy's dnsbl.sh will automatically merge blacklist-*.txt files
+# dnscrypt-proxy's dnsbl.sh qfeeds() function will read this file when 'qf' is selected in DNSBL config
 qfeeds_blacklist_file = '/usr/local/etc/dnscrypt-proxy/blacklist-qfeeds.txt'
+dnscrypt_proxy_dir = '/usr/local/etc/dnscrypt-proxy'
 
-os.makedirs('/usr/local/etc/dnscrypt-proxy', exist_ok=True)
+# Only proceed if DNSCrypt-proxy directory exists (plugin is installed) AND 'qf' is selected
+if os.path.isdir(dnscrypt_proxy_dir) and is_qf_selected():
+	if qfeeds_domains:
+		# Write q-feeds domains to separate file
+		with open(qfeeds_blacklist_file, 'w') as f_out:
+			for domain in sorted(qfeeds_domains):
+				f_out.write("%s\n" % domain)
+	else:
+		# Remove q-feeds blacklist file if no domains available
+		if os.path.exists(qfeeds_blacklist_file):
+			os.remove(qfeeds_blacklist_file)
+elif os.path.isdir(dnscrypt_proxy_dir):
+	# DNSCrypt-proxy is installed but 'qf' is not selected - remove the file if it exists
+	if os.path.exists(qfeeds_blacklist_file):
+		os.remove(qfeeds_blacklist_file)
 
-if qfeeds_domains:
-    # Write q-feeds domains to separate file
-    with open(qfeeds_blacklist_file, 'w') as f_out:
-        for domain in sorted(qfeeds_domains):
-            f_out.write("%s\n" % domain)
-else:
-    # Remove q-feeds blacklist file if disabled
-    if os.path.exists(qfeeds_blacklist_file):
-        os.remove(qfeeds_blacklist_file)
 

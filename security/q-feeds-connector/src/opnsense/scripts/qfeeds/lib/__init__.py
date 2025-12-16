@@ -123,19 +123,22 @@ class QFeedsActions:
             yield 'update unbound blocklist'
 
     def dnscryptproxy_load(self):
-        bl_conf = '/usr/local/etc/qfeeds-dnscryptproxy-bl.conf'
-        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
-            # when qfeeds-dnscryptproxy-bl.conf is ~empty, skip updates
-            script_path = '/usr/local/opnsense/scripts/dnscryptproxy/blocklists/qfeeds_bl.py'
-            if os.path.exists(script_path):
-                subprocess.run([script_path], capture_output=True, text=True)
-                # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
-                subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'])
-                # Script writes to blacklist-qfeeds.txt
-                # dnscrypt-proxy's dnsbl.sh automatically merges blacklist-*.txt files
+        script_path = '/usr/local/opnsense/scripts/dnscryptproxy/blocklists/qfeeds_bl.py'
+        dnscrypt_proxy_dir = '/usr/local/etc/dnscrypt-proxy'
+        if os.path.exists(script_path) and os.path.isdir(dnscrypt_proxy_dir):
+            subprocess.run([script_path], capture_output=True, text=True)
+            # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
+            # Only if DNSCrypt-proxy is installed (directory exists)
+            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'], 
+                                  capture_output=True, text=True)
+            if result.returncode == 0:
                 yield 'update dnscrypt-proxy blocklist'
             else:
-                yield 'dnscrypt-proxy blocklist script not found'
+                yield 'dnscrypt-proxy not available'
+        elif not os.path.isdir(dnscrypt_proxy_dir):
+            yield 'dnscrypt-proxy not installed'
+        else:
+            yield 'dnscrypt-proxy blocklist script not found'
 
     def update(self):
         update_sleep = 99999

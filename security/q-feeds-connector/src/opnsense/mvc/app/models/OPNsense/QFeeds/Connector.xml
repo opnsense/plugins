@@ -6,7 +6,6 @@
         <general>
             <apikey type="TextField"/>
             <enable_unbound_bl type="BooleanField"/>
-            <enable_dnscryptproxy_bl type="BooleanField"/>
         </general>
     </items>
 </model>
