@@ -20,11 +20,22 @@
     .record-type-CNAME { background: #fff3cd; color: #856404; }
     .record-type-MX { background: #f8d7da; color: #721c24; }
     .record-type-TXT { background: #e2e3e5; color: #383d41; }
+    /* TXT subtypes */
+    .record-type-SPF { background: #d4edda; color: #155724; }
+    .record-type-DKIM { background: #fff3cd; color: #856404; }
+    .record-type-DMARC { background: #cce5ff; color: #004085; }
+    .record-type-GOOGLE { background: #fce8e6; color: #c5221f; }
+    .record-type-MSVERIFY { background: #e8f0fe; color: #1a73e8; }
     .record-type-NS { background: #d1ecf1; color: #0c5460; }
     .record-type-SRV { background: #e7d4f2; color: #5a2d82; }
     .record-type-CAA { background: #ffeeba; color: #856404; }
     .record-type-SOA { background: #6c757d; color: #fff; }
-    .record-value { font-family: monospace; font-size: 12px; word-break: break-all; max-width: 400px; }
+    .record-value { font-family: monospace; font-size: 12px; word-break: break-all; }
+    .txt-formatted { font-family: inherit; font-size: 12px; }
+    .txt-formatted .txt-param { display: inline-block; background: #f0f0f0; padding: 1px 6px; border-radius: 3px; margin: 1px 2px; }
+    .txt-formatted .txt-param-key { color: #666; }
+    .txt-formatted .txt-param-value { color: #333; font-weight: 500; }
+    .txt-formatted .txt-key-short { color: #999; font-family: monospace; font-size: 11px; }
     .zone-records table tbody tr:hover { background-color: #b8d4e8 !important; transition: background-color 0.15s ease; }
     .record-actions { white-space: nowrap; }
     .account-selector { margin-bottom: 20px; }
@@ -520,7 +531,9 @@ $(document).ready(function() {
     function loadZones() {
         $('#zonesContainer').html('<div class="text-center" style="padding: 40px;"><i class="fa fa-spinner fa-spin fa-2x"></i><p style="margin-top: 15px;">{{ lang._("Loading zones...") }}</p></div>');
 
-        ajaxCall('/api/hclouddns/hetzner/listZonesForAccount', {account_uuid: currentAccountUuid}, function(data) {
+        // Load DynDNS entries first, then load zones
+        loadDynDnsEntries(function() {
+            ajaxCall('/api/hclouddns/hetzner/listZonesForAccount', {account_uuid: currentAccountUuid}, function(data) {
             if (data && data.status === 'ok' && data.zones) {
                 zonesData = {};
                 var html = '';
@@ -546,6 +559,7 @@ $(document).ready(function() {
             } else {
                 $('#zonesContainer').html('<div class="alert alert-danger">{{ lang._("Failed to load zones:") }} ' + (data.message || 'Unknown error') + '</div>');
             }
+            });
         });
     }
 
@@ -583,6 +597,119 @@ $(document).ready(function() {
 
     // Store records data per zone for filtering
     var zoneRecordsCache = {};
+
+    // Store existing DynDNS entries for marking
+    var dynDnsEntriesCache = {};
+
+    // Load DynDNS entries for the current account
+    function loadDynDnsEntries(callback) {
+        ajaxCall('/api/hclouddns/entries/searchItem', {}, function(data) {
+            dynDnsEntriesCache = {};
+            if (data && data.rows) {
+                $.each(data.rows, function(i, entry) {
+                    // Key: zoneId + recordName + recordType
+                    var key = entry.zoneId + ':' + entry.recordName + ':' + entry.recordType;
+                    dynDnsEntriesCache[key] = true;
+                });
+            }
+            if (callback) callback();
+        });
+    }
+
+    // Check if a record is already configured as DynDNS
+    function isDynDnsConfigured(zoneId, recordName, recordType) {
+        var key = zoneId + ':' + recordName + ':' + recordType;
+        return dynDnsEntriesCache[key] === true;
+    }
+
+    // Get display info for TXT record subtypes
+    function getTxtDisplayType(value) {
+        if (!value) return { type: 'TXT', label: 'TXT', cssClass: 'record-type-TXT' };
+        var v = value.trim();
+        if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+        }
+        if (v.toLowerCase().startsWith('v=spf1')) return { type: 'TXT', label: 'SPF', cssClass: 'record-type-SPF', subtype: 'spf' };
+        if (v.toLowerCase().startsWith('v=dkim1')) return { type: 'TXT', label: 'DKIM', cssClass: 'record-type-DKIM', subtype: 'dkim' };
+        if (v.toLowerCase().startsWith('v=dmarc1')) return { type: 'TXT', label: 'DMARC', cssClass: 'record-type-DMARC', subtype: 'dmarc' };
+        if (v.toLowerCase().startsWith('google-site-verification=')) return { type: 'TXT', label: 'Google', cssClass: 'record-type-GOOGLE', subtype: 'google' };
+        if (v.toUpperCase().startsWith('MS=')) return { type: 'TXT', label: 'MS', cssClass: 'record-type-MSVERIFY', subtype: 'ms' };
+        return { type: 'TXT', label: 'TXT', cssClass: 'record-type-TXT', subtype: 'custom' };
+    }
+
+    // Format TXT value for nice display
+    function formatTxtValue(value, subtype) {
+        if (!value) return '';
+        var v = value.trim();
+        if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+        }
+
+        if (subtype === 'spf') {
+            // SPF: show mechanisms as badges
+            var parts = v.split(/\s+/);
+            var html = '<span class="txt-formatted">';
+            $.each(parts, function(i, part) {
+                if (part.toLowerCase() === 'v=spf1') return;
+                var cls = 'txt-param';
+                if (part === '-all') cls += ' label-danger';
+                else if (part === '~all') cls += ' label-warning';
+                html += '<span class="' + cls + '">' + escapeHtml(part) + '</span>';
+            });
+            return html + '</span>';
+        }
+
+        if (subtype === 'dkim') {
+            // DKIM: show key type and shortened key
+            var keyMatch = v.match(/p=([A-Za-z0-9+\/=]+)/);
+            var keyType = v.match(/k=(\w+)/);
+            var html = '<span class="txt-formatted">';
+            if (keyType) html += '<span class="txt-param"><span class="txt-param-key">k=</span><span class="txt-param-value">' + keyType[1] + '</span></span>';
+            if (keyMatch && keyMatch[1]) {
+                var key = keyMatch[1];
+                var shortKey = key.length > 20 ? key.substring(0, 10) + '...' + key.substring(key.length - 10) : key;
+                html += '<span class="txt-param"><span class="txt-param-key">p=</span><span class="txt-key-short">' + shortKey + '</span></span>';
+                html += '<span class="text-muted" style="font-size: 11px; margin-left: 5px;">(' + key.length + ' chars)</span>';
+            }
+            return html + '</span>';
+        }
+
+        if (subtype === 'dmarc') {
+            // DMARC: show policy params as badges
+            var html = '<span class="txt-formatted">';
+            var params = v.split(/;\s*/);
+            $.each(params, function(i, param) {
+                param = param.trim();
+                if (!param || param.toLowerCase() === 'v=dmarc1') return;
+                var kv = param.split('=');
+                if (kv.length === 2) {
+                    var cls = 'txt-param';
+                    if (kv[0].toLowerCase() === 'p') {
+                        if (kv[1].toLowerCase() === 'reject') cls += ' label-danger';
+                        else if (kv[1].toLowerCase() === 'quarantine') cls += ' label-warning';
+                    }
+                    html += '<span class="' + cls + '"><span class="txt-param-key">' + kv[0] + '=</span><span class="txt-param-value">' + escapeHtml(kv[1]) + '</span></span>';
+                }
+            });
+            return html + '</span>';
+        }
+
+        if (subtype === 'google') {
+            var code = v.replace(/^google-site-verification=/i, '');
+            return '<span class="txt-formatted"><span class="txt-param"><span class="txt-param-value">' + escapeHtml(code) + '</span></span></span>';
+        }
+
+        if (subtype === 'ms') {
+            var code = v.replace(/^MS=/i, '');
+            return '<span class="txt-formatted"><span class="txt-param"><span class="txt-param-value">' + escapeHtml(code) + '</span></span></span>';
+        }
+
+        // Default: truncate if too long
+        if (v.length > 80) {
+            return '<span class="record-value" title="' + escapeHtml(value) + '">' + escapeHtml(v.substring(0, 80)) + '...</span>';
+        }
+        return '<span class="record-value">' + escapeHtml(v) + '</span>';
+    }
 
     function loadRecords(zoneId) {
         var $container = $('#zone-records-' + zoneId);
@@ -679,23 +806,39 @@ $(document).ready(function() {
                         '<tbody>';
 
             $.each(typeRecords, function(j, rec) {
-                var displayValue = rec.value;
-                if (type === 'TXT' && displayValue.length > 60) {
-                    displayValue = displayValue.substring(0, 60) + '...';
-                }
                 var isSystemRecord = type === 'SOA' || type === 'NS';
                 var isDynDnsCompatible = type === 'A' || type === 'AAAA';
-                var dynDnsBtn = isDynDnsCompatible ?
-                    '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ' : '';
+                var isAlreadyDynDns = isDynDnsConfigured(zoneId, rec.name, type);
+                var dynDnsBtn = '';
+                if (isDynDnsCompatible) {
+                    if (isAlreadyDynDns) {
+                        dynDnsBtn = '<button class="btn btn-xs btn-success" title="{{ lang._("Managed by DynDNS") }}" disabled><i class="fa fa-bolt"></i></button> ';
+                    } else {
+                        dynDnsBtn = '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ';
+                    }
+                }
                 var actionButtons = isSystemRecord ?
                     '<span class="text-muted" title="{{ lang._("SOA/NS records are managed by Hetzner") }}"><i class="fa fa-lock"></i></span>' :
                     dynDnsBtn +
                     '<button class="btn btn-xs btn-default edit-record-btn" title="{{ lang._("Edit") }}"><i class="fa fa-pencil"></i></button> ' +
                     '<button class="btn btn-xs btn-danger delete-record-btn" title="{{ lang._("Delete") }}"><i class="fa fa-trash"></i></button>';
 
+                // For TXT records, show subtype badge and formatted value
+                var nameBadge = '';
+                var valueDisplay = '';
+                if (type === 'TXT') {
+                    var txtInfo = getTxtDisplayType(rec.value);
+                    if (txtInfo.label !== 'TXT') {
+                        nameBadge = '<span class="record-type-badge ' + txtInfo.cssClass + '" style="margin-right: 6px; min-width: 45px;">' + txtInfo.label + '</span>';
+                    }
+                    valueDisplay = formatTxtValue(rec.value, txtInfo.subtype);
+                } else {
+                    valueDisplay = '<span class="record-value" title="' + escapeHtml(rec.value) + '">' + escapeHtml(rec.value) + '</span>';
+                }
+
                 html += '<tr data-record-id="' + (rec.id || '') + '" data-zone-id="' + zoneId + '">' +
-                    '<td>' + rec.name + '</td>' +
-                    '<td><span class="record-value" title="' + rec.value.replace(/"/g, '&quot;') + '">' + displayValue + '</span></td>' +
+                    '<td>' + nameBadge + rec.name + '</td>' +
+                    '<td title="' + escapeHtml(rec.value) + '">' + valueDisplay + '</td>' +
                     '<td>' + (rec.ttl || 300) + '</td>' +
                     '<td class="record-actions">' + actionButtons + '</td>' +
                 '</tr>';
@@ -736,23 +879,39 @@ $(document).ready(function() {
                         '<tbody>';
 
             $.each(typeRecords, function(j, rec) {
-                var displayValue = rec.value;
-                if (type === 'TXT' && displayValue.length > 60) {
-                    displayValue = displayValue.substring(0, 60) + '...';
-                }
                 var isSystemRecord = type === 'SOA' || type === 'NS';
                 var isDynDnsCompatible = type === 'A' || type === 'AAAA';
-                var dynDnsBtn = isDynDnsCompatible ?
-                    '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ' : '';
+                var isAlreadyDynDns = isDynDnsConfigured(zoneId, rec.name, type);
+                var dynDnsBtn = '';
+                if (isDynDnsCompatible) {
+                    if (isAlreadyDynDns) {
+                        dynDnsBtn = '<button class="btn btn-xs btn-success" title="{{ lang._("Managed by DynDNS") }}" disabled><i class="fa fa-bolt"></i></button> ';
+                    } else {
+                        dynDnsBtn = '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ';
+                    }
+                }
                 var actionButtons = isSystemRecord ?
                     '<span class="text-muted" title="{{ lang._("SOA/NS records are managed by Hetzner") }}"><i class="fa fa-lock"></i></span>' :
                     dynDnsBtn +
                     '<button class="btn btn-xs btn-default edit-record-btn" title="{{ lang._("Edit") }}"><i class="fa fa-pencil"></i></button> ' +
                     '<button class="btn btn-xs btn-danger delete-record-btn" title="{{ lang._("Delete") }}"><i class="fa fa-trash"></i></button>';
 
+                // For TXT records, show subtype badge and formatted value
+                var nameBadge = '';
+                var valueDisplay = '';
+                if (type === 'TXT') {
+                    var txtInfo = getTxtDisplayType(rec.value);
+                    if (txtInfo.label !== 'TXT') {
+                        nameBadge = '<span class="record-type-badge ' + txtInfo.cssClass + '" style="margin-right: 6px; min-width: 45px;">' + txtInfo.label + '</span>';
+                    }
+                    valueDisplay = formatTxtValue(rec.value, txtInfo.subtype);
+                } else {
+                    valueDisplay = '<span class="record-value" title="' + escapeHtml(rec.value) + '">' + escapeHtml(rec.value) + '</span>';
+                }
+
                 html += '<tr data-record-id="' + (rec.id || '') + '" data-zone-id="' + zoneId + '">' +
-                    '<td>' + rec.name + '</td>' +
-                    '<td><span class="record-value" title="' + rec.value.replace(/"/g, '&quot;') + '">' + displayValue + '</span></td>' +
+                    '<td>' + nameBadge + rec.name + '</td>' +
+                    '<td title="' + escapeHtml(rec.value) + '">' + valueDisplay + '</td>' +
                     '<td>' + (rec.ttl || 300) + '</td>' +
                     '<td class="record-actions">' + actionButtons + '</td>' +
                 '</tr>';
@@ -1015,6 +1174,15 @@ $(document).ready(function() {
             if (data && data.status === 'ok') {
                 $('#createDynDnsModal').modal('hide');
                 if (data.added > 0) {
+                    // Update cache and refresh records display
+                    var key = entry.zoneId + ':' + entry.recordName + ':' + entry.recordType;
+                    dynDnsEntriesCache[key] = true;
+                    var cachedRecords = zoneRecordsCache[entry.zoneId];
+                    if (cachedRecords) {
+                        var filterType = $('.record-type-filter[data-zone-id="' + entry.zoneId + '"]').val() || '';
+                        var searchText = $('.record-search[data-zone-id="' + entry.zoneId + '"]').val() || '';
+                        renderRecordsGrouped(entry.zoneId, cachedRecords, filterType, searchText);
+                    }
                     BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: 'Success', message: 'DynDNS entry created successfully! The record will now be managed automatically.'});
                 } else if (data.skipped > 0) {
                     BootstrapDialog.alert({type: BootstrapDialog.TYPE_INFO, title: 'Already Exists', message: 'This record is already managed as a DynDNS entry.'});
