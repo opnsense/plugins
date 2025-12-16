@@ -307,7 +307,9 @@ class EntriesController extends ApiMutableModelControllerBase
                         $node->recordType = $entry['recordType'];
                         $node->primaryGateway = $primaryGateway ?? '';
                         $node->failoverGateway = $failoverGateway ?? '';
-                        $node->ttl = $entry['ttl'] ?? $ttl;
+                        // TTL is an OptionField with underscore prefix (_60, _300, etc.)
+                        $ttlValue = $entry['ttl'] ?? $ttl;
+                        $node->ttl = '_' . ltrim($ttlValue, '_');
                         $node->status = 'pending';
                         $added++;
                     }

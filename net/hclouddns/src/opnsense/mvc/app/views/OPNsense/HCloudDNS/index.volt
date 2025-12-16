@@ -202,7 +202,6 @@
 
     <!-- ==================== ENTRIES TAB ==================== -->
     <div id="entries" class="tab-pane fade">
-        <p class="text-muted">{{ lang._('DNS records managed by this plugin. Records are updated when the gateway IP changes.') }}</p>
         <div class="alert alert-info" style="color: #31708f;">
             <i class="fa fa-cloud-upload"></i> <strong>{{ lang._('Adding entries:') }}</strong> {{ lang._('New entries are created at Hetzner DNS immediately with the current gateway IP.') }}
         </div>
@@ -210,15 +209,34 @@
             <i class="fa fa-exclamation-triangle"></i> <strong>{{ lang._('Deleting entries:') }}</strong> {{ lang._('Only removes from OPNsense management. DNS records at Hetzner remain unchanged.') }}
         </div>
 
-        <!-- DynDNS TTL Settings -->
-        <div class="well well-sm" style="margin-bottom: 15px;">
-            {{ partial("layout_partials/base_form", ['fields': entrySettingsForm, 'id': 'frm_entry_settings']) }}
-            <button class="btn btn-primary btn-sm" id="applyTtlBtn">
-                <i class="fa fa-save"></i> {{ lang._('Save & Apply to All Entries') }}
+        <!-- DynDNS TTL Settings - Inline -->
+        <div class="form-inline" style="margin-bottom: 15px; padding: 12px 15px; background: #f5f5f5; border-radius: 4px;">
+            <label style="margin-right: 10px;"><i class="fa fa-clock-o"></i> {{ lang._('Default TTL') }}:</label>
+            <select class="form-control selectpicker" id="defaultTtlSelect" style="width: 180px;">
+                <option value="60">60s (1 min - DynDNS)</option>
+                <option value="120">120s (2 min)</option>
+                <option value="300" selected>300s (5 min)</option>
+                <option value="600">600s (10 min)</option>
+                <option value="1800">1800s (30 min)</option>
+                <option value="3600">3600s (1 hour)</option>
+                <option value="86400">86400s (1 day)</option>
+            </select>
+            <button class="btn btn-primary btn-sm" id="applyTtlBtn" style="margin-left: 15px;">
+                <i class="fa fa-save"></i> {{ lang._('Save & Apply to All') }}
             </button>
-            <span class="help-block" style="display: inline-block; margin-left: 10px; color: #777;">
-                {{ lang._('Saves setting and updates TTL for all DynDNS records at Hetzner') }}
-            </span>
+            <span class="text-muted" style="margin-left: 15px;">{{ lang._('Updates TTL for all DynDNS records at Hetzner') }}</span>
+        </div>
+
+        <!-- Import from Hetzner - Inline -->
+        <div class="form-inline" style="margin-bottom: 20px; padding: 12px 15px; background: #f5f5f5; border-radius: 4px;">
+            <label style="margin-right: 10px;"><i class="fa fa-download"></i> {{ lang._('Import from Hetzner') }}:</label>
+            <select class="form-control selectpicker" id="importAccountSelect" data-live-search="true" style="width: 200px;">
+                <option value="">{{ lang._('-- Select Account --') }}</option>
+            </select>
+            <button class="btn btn-info btn-sm" id="loadZonesBtn" disabled style="margin-left: 15px;">
+                <i class="fa fa-cloud-download"></i> {{ lang._('Load Zones') }}
+            </button>
+            <span class="text-muted" style="margin-left: 15px;">{{ lang._('Import existing A/AAAA records as DynDNS entries') }}</span>
         </div>
 
         <!-- Batch Operations Toolbar -->
@@ -374,6 +392,50 @@
     </div>
 </div>
 
+<!-- Import Records Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-download"></i> {{ lang._('Import DNS Records') }}</h4>
+            </div>
+            <div class="modal-body" style="padding: 30px; padding-bottom: 0;">
+                <!-- Scrollable zones container -->
+                <div id="importZonesContainer" style="max-height: 50vh; overflow-y: auto; margin-bottom: 15px;">
+                    <div class="text-center" style="padding: 40px;">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                        <p style="margin-top: 15px;">{{ lang._('Loading zones...') }}</p>
+                    </div>
+                </div>
+                <!-- Gateway section - always visible -->
+                <hr style="margin-top: 0;"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ lang._('Primary Gateway') }}</label>
+                            <select class="form-control selectpicker" id="importPrimaryGw" data-live-search="true" data-container="body"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ lang._('Failover Gateway') }} <small class="text-muted">({{ lang._('optional') }})</small></label>
+                            <select class="form-control selectpicker" id="importFailoverGw" data-live-search="true" data-container="body">
+                                <option value="">{{ lang._('-- None --') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="importSelectionCount" class="text-muted pull-left" style="line-height: 34px;"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang._('Cancel') }}</button>
+                <button type="button" class="btn btn-primary" id="importBtn" disabled><i class="fa fa-download"></i> {{ lang._('Import Selected') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     var gatewaysCache = {};
@@ -419,7 +481,6 @@ $(document).ready(function() {
 
     // ==================== OVERVIEW TAB ====================
     var data_get_map = {
-        'frm_entry_settings': '/api/hclouddns/settings/get',
         'frm_scheduled_settings': '/api/hclouddns/settings/get',
         'frm_failover_settings': '/api/hclouddns/settings/get'
     };
@@ -442,6 +503,8 @@ $(document).ready(function() {
                 if (typeof defaultTtl === 'string' && defaultTtl.charAt(0) === '_') {
                     defaultTtl = defaultTtl.substring(1);
                 }
+                // Set the value in the inline TTL selector
+                $('#defaultTtlSelect').val(defaultTtl).selectpicker('refresh');
             }
 
             // Count gateways
@@ -700,21 +763,20 @@ $(document).ready(function() {
     // Save & Apply TTL to all entries button
     $('#applyTtlBtn').click(function() {
         var $btn = $(this);
-        var selectedTtl = $('#hclouddns\\.general\\.defaultTtl').val();
-        var ttlDisplay = selectedTtl ? selectedTtl.replace('_', '') : '60';
+        var selectedTtl = $('#defaultTtlSelect').val();
         BootstrapDialog.confirm({
             title: '{{ lang._("Apply TTL to All Entries") }}',
-            message: '{{ lang._("This will update the TTL for all enabled DynDNS entries at Hetzner to") }} <strong>' + ttlDisplay + 's</strong>. {{ lang._("Continue?") }}',
+            message: '{{ lang._("This will update the TTL for all enabled DynDNS entries at Hetzner to") }} <strong>' + selectedTtl + 's</strong>. {{ lang._("Continue?") }}',
             type: BootstrapDialog.TYPE_WARNING,
             btnOKLabel: '{{ lang._("Apply TTL") }}',
             btnCancelLabel: '{{ lang._("Cancel") }}',
             callback: function(result) {
                 if (result) {
                     $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> {{ lang._("Updating...") }}');
-                    // First save the settings, then apply
-                    saveFormToEndpoint('/api/hclouddns/settings/set', 'frm_entry_settings', function() {
+                    // Save the TTL setting, then apply to all entries
+                    ajaxCall('/api/hclouddns/settings/set', {hclouddns: {general: {defaultTtl: '_' + selectedTtl}}}, function() {
                         ajaxCall('/api/hclouddns/entries/applyDefaultTtl', {}, function(data) {
-                            $btn.prop('disabled', false).html('<i class="fa fa-save"></i> {{ lang._("Save & Apply to All Entries") }}');
+                            $btn.prop('disabled', false).html('<i class="fa fa-save"></i> {{ lang._("Save & Apply to All") }}');
                             if (data && data.status === 'ok') {
                                 BootstrapDialog.alert({
                                     type: BootstrapDialog.TYPE_SUCCESS,
@@ -1286,7 +1348,7 @@ $(document).ready(function() {
 
             if (!gwIp) {
                 $btn.prop('disabled', false).html('<i class="fa fa-save"></i> Save');
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: 'Could not get IP from selected gateway. Is the gateway online?'});
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Gateway Error', message: 'Could not get IP from selected gateway. Is the gateway online?'});
                 return;
             }
 
@@ -1394,7 +1456,7 @@ $(document).ready(function() {
                 });
             } else {
                 var errMsg = (data && data.validations) ? Object.values(data.validations).join(', ') : 'Failed to save entry.';
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: errMsg});
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Save Error', message: errMsg});
             }
         });
     }
@@ -1828,6 +1890,253 @@ $(document).ready(function() {
         });
     });
 
+    // ==================== IMPORT FUNCTIONALITY ====================
+    var importAccountUuid = '';
+    var existingEntries = {}; // Track already imported entries
+
+    // Populate import account selector
+    function loadImportAccounts() {
+        ajaxCall('/api/hclouddns/accounts/searchItem', {}, function(data) {
+            var $select = $('#importAccountSelect');
+            $select.find('option:not(:first)').remove();
+            if (data && data.rows) {
+                $.each(data.rows, function(i, acc) {
+                    if (acc.enabled === '1') {
+                        $select.append('<option value="' + acc.uuid + '">' + acc.name + '</option>');
+                    }
+                });
+            }
+            $select.selectpicker('refresh');
+        });
+    }
+
+    // Load accounts when section is expanded
+    $('#importSection').on('show.bs.collapse', function() {
+        loadImportAccounts();
+    });
+
+    // Enable/disable load button based on account selection
+    $('#importAccountSelect').on('change', function() {
+        importAccountUuid = $(this).val();
+        $('#loadZonesBtn').prop('disabled', !importAccountUuid);
+    });
+
+    // Load zones button
+    $('#loadZonesBtn').on('click', function() {
+        if (!importAccountUuid) return;
+
+        // Load existing entries first
+        ajaxCall('/api/hclouddns/entries/getExistingForAccount', {account_uuid: importAccountUuid}, function(existingData) {
+            existingEntries = {};
+            if (existingData && existingData.entries) {
+                $.each(existingData.entries, function(i, e) {
+                    var key = e.zoneId + '_' + e.recordName + '_' + e.recordType;
+                    existingEntries[key] = true;
+                });
+            }
+
+            // Populate gateways for import modal
+            var $primaryGw = $('#importPrimaryGw').empty().append('<option value="">Default Gateway (auto-detect)</option>');
+            var $failoverGw = $('#importFailoverGw').empty().append('<option value="">-- None --</option>');
+
+            ajaxCall('/api/hclouddns/gateways/searchItem', {}, function(gwData) {
+                var prio1Gw = null, prio2Gw = null;
+                if (gwData && gwData.rows && gwData.rows.length > 0) {
+                    // Sort by priority
+                    var sorted = gwData.rows.filter(function(gw) { return gw.enabled === '1'; })
+                        .sort(function(a, b) { return parseInt(a.priority) - parseInt(b.priority); });
+
+                    $.each(sorted, function(i, gw) {
+                        $primaryGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
+                        $failoverGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
+                        if (gw.priority === '1') prio1Gw = gw.uuid;
+                        else if (gw.priority === '2' && !prio2Gw) prio2Gw = gw.uuid;
+                    });
+                }
+                $primaryGw.selectpicker('refresh');
+                $failoverGw.selectpicker('refresh');
+                // Auto-select priority 1 for primary, priority 2 for failover
+                if (prio1Gw) $primaryGw.selectpicker('val', prio1Gw);
+                if (prio2Gw) $failoverGw.selectpicker('val', prio2Gw);
+            });
+
+            // Load zones
+            loadZonesForImport();
+            $('#importModal').modal('show');
+        });
+    });
+
+    function loadZonesForImport() {
+        $('#importZonesContainer').html('<div class="text-center" style="padding: 40px;"><i class="fa fa-spinner fa-spin fa-2x"></i><p style="margin-top: 15px;">Loading zones...</p></div>');
+
+        ajaxCall('/api/hclouddns/hetzner/listZonesForAccount', {account_uuid: importAccountUuid}, function(data) {
+            if (data && data.status === 'ok' && data.zones) {
+                renderZonesForImport(data.zones);
+            } else {
+                $('#importZonesContainer').html('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <strong>Error:</strong> ' + (data.message || 'Failed to load zones. Please check your API token.') + '</div>');
+            }
+        });
+    }
+
+    function renderZonesForImport(zones) {
+        var html = '<div class="alert alert-info"><i class="fa fa-info-circle"></i> Select A/AAAA records to import as DynDNS entries. Already imported records are disabled.</div>';
+
+        if (zones.length === 0) {
+            html += '<div class="alert alert-warning">No zones found for this account.</div>';
+            $('#importZonesContainer').html(html);
+            return;
+        }
+
+        $.each(zones, function(i, zone) {
+            html += '<div class="panel panel-default zone-import-panel" data-zone-id="' + zone.id + '">';
+            html += '<div class="panel-heading" style="cursor: pointer;">';
+            html += '<label style="margin: 0; cursor: pointer;"><input type="checkbox" class="zone-checkbox" data-zone-id="' + zone.id + '"> <strong>' + zone.name + '</strong></label>';
+            html += '<i class="fa fa-chevron-right pull-right zone-toggle" style="margin-top: 3px;"></i>';
+            html += '</div>';
+            html += '<div class="panel-body zone-records-container" style="display: none;"><div class="text-center"><i class="fa fa-spinner fa-spin"></i> Loading records...</div></div>';
+            html += '</div>';
+        });
+
+        $('#importZonesContainer').html(html);
+        updateImportSelection();
+    }
+
+    // Zone panel toggle
+    $(document).on('click', '.zone-import-panel .panel-heading', function(e) {
+        if ($(e.target).is('input')) return;
+
+        var $panel = $(this).closest('.zone-import-panel');
+        var $body = $panel.find('.zone-records-container');
+        var $icon = $(this).find('.zone-toggle');
+        var zoneId = $panel.data('zone-id');
+
+        if ($body.is(':visible')) {
+            $body.slideUp();
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+        } else {
+            $body.slideDown();
+            $icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+
+            // Load records if not loaded yet
+            if ($body.find('.record-checkbox').length === 0) {
+                loadRecordsForZone(zoneId, $body, $panel.find('.panel-heading strong').text());
+            }
+        }
+    });
+
+    function loadRecordsForZone(zoneId, $container, zoneName) {
+        ajaxCall('/api/hclouddns/hetzner/listRecordsForAccount', {account_uuid: importAccountUuid, zone_id: zoneId}, function(data) {
+            if (data && data.status === 'ok' && data.records) {
+                var html = '<table class="table table-condensed table-hover" style="margin: 0;">';
+                html += '<thead><tr><th style="width: 30px;"></th><th>Name</th><th>Type</th><th>Value</th><th>TTL</th></tr></thead><tbody>';
+
+                var hasRecords = false;
+                $.each(data.records, function(i, rec) {
+                    if (rec.type === 'A' || rec.type === 'AAAA') {
+                        hasRecords = true;
+                        var key = zoneId + '_' + rec.name + '_' + rec.type;
+                        var isExisting = existingEntries[key] === true;
+                        var disabledAttr = isExisting ? 'disabled' : '';
+                        var rowClass = isExisting ? 'text-muted' : '';
+                        var badge = isExisting ? ' <span class="label label-default">already imported</span>' : '';
+
+                        html += '<tr class="' + rowClass + '">';
+                        html += '<td><input type="checkbox" class="record-checkbox" ' + disabledAttr + ' data-zone-id="' + zoneId + '" data-zone-name="' + zoneName + '" data-record-name="' + rec.name + '" data-record-type="' + rec.type + '" data-ttl="' + (rec.ttl || 300) + '"></td>';
+                        html += '<td>' + rec.name + badge + '</td>';
+                        html += '<td><span class="label label-' + (rec.type === 'A' ? 'success' : 'primary') + '">' + rec.type + '</span></td>';
+                        html += '<td><code>' + rec.value + '</code></td>';
+                        html += '<td>' + (rec.ttl || 300) + '</td>';
+                        html += '</tr>';
+                    }
+                });
+
+                if (!hasRecords) {
+                    html += '<tr><td colspan="5" class="text-muted text-center">No A/AAAA records in this zone</td></tr>';
+                }
+
+                html += '</tbody></table>';
+                $container.html(html);
+            } else {
+                $container.html('<div class="alert alert-danger">Error loading records: ' + (data.message || 'Unknown error') + '</div>');
+            }
+        });
+    }
+
+    // Zone checkbox toggle all records
+    $(document).on('change', '.zone-checkbox', function() {
+        var zoneId = $(this).data('zone-id');
+        var isChecked = $(this).is(':checked');
+        $(this).closest('.zone-import-panel').find('.record-checkbox:not(:disabled)').prop('checked', isChecked);
+        updateImportSelection();
+    });
+
+    // Record checkbox
+    $(document).on('change', '.record-checkbox', function() {
+        updateImportSelection();
+    });
+
+    function updateImportSelection() {
+        var count = $('.record-checkbox:checked:not(:disabled)').length;
+        $('#importSelectionCount').text(count > 0 ? count + ' record(s) selected' : '');
+        $('#importBtn').prop('disabled', count === 0);
+    }
+
+    // Import button
+    $('#importBtn').on('click', function() {
+        var primaryGw = $('#importPrimaryGw').val();
+        var failoverGw = $('#importFailoverGw').val();
+
+        if (primaryGw && primaryGw === failoverGw) {
+            BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, title: 'Invalid Selection', message: 'Failover gateway must differ from primary gateway.'});
+            return;
+        }
+
+        var entries = [];
+        $('.record-checkbox:checked:not(:disabled)').each(function() {
+            entries.push({
+                account: importAccountUuid,
+                zoneId: $(this).data('zone-id'),
+                zoneName: $(this).data('zone-name'),
+                recordName: $(this).data('record-name'),
+                recordType: $(this).data('record-type'),
+                ttl: $(this).data('ttl') || defaultTtl
+            });
+        });
+
+        if (entries.length === 0) {
+            BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, title: 'No Selection', message: 'Please select at least one record to import.'});
+            return;
+        }
+
+        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Importing...');
+
+        ajaxCall('/api/hclouddns/entries/batchAdd', {entries: entries, primaryGateway: primaryGw, failoverGateway: failoverGw}, function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-download"></i> Import Selected');
+            if (data && data.status === 'ok') {
+                $('#importModal').modal('hide');
+                var msg = data.added + ' DNS entry/entries imported successfully!';
+                if (data.skipped > 0) {
+                    msg += ' (' + data.skipped + ' already existed)';
+                }
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: 'Import Successful', message: msg});
+                $('#grid-entries').bootgrid('reload');
+            } else {
+                var errorMsg = '<strong>Import failed</strong><br/><br/>';
+                if (data && data.message) {
+                    errorMsg += data.message;
+                }
+                if (data && data.errors && data.errors.length > 0) {
+                    errorMsg += '<br/><br/><strong>Validation errors:</strong><ul>';
+                    $.each(data.errors, function(i, err) {
+                        errorMsg += '<li>' + err + '</li>';
+                    });
+                    errorMsg += '</ul>';
+                }
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Error', message: errorMsg});
+            }
+        });
+    });
+
     // Tab switch handlers
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         var target = $(e.target).attr('href');
@@ -1847,5 +2156,52 @@ $(document).ready(function() {
     preloadCaches(function() {
         $('#grid-entries').bootgrid('reload');
     });
+
+    // Handle URL parameters for creating DynDNS entry from DNS Management page
+    function handleUrlParams() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var account = urlParams.get('account');
+        var zone = urlParams.get('zone');
+        var zoneName = urlParams.get('zoneName');
+        var record = urlParams.get('record');
+        var type = urlParams.get('type');
+        var ttl = urlParams.get('ttl') || defaultTtl;
+
+        if (account && zone && record && type) {
+            // Switch to entries tab
+            $('a[href="#entries"]').tab('show');
+
+            // Wait for form to be ready, then open dialog
+            setTimeout(function() {
+                // Trigger add button to open dialog
+                $('[data-action="add"]').first().click();
+
+                // Wait for dialog to open and form to be ready
+                setTimeout(function() {
+                    // Pre-fill the form
+                    if ($('#entry\\.account').length) {
+                        $('#entry\\.account').val(account).selectpicker('refresh');
+                        // Trigger change to load zones
+                        $('#entry\\.account').trigger('change');
+
+                        // Wait for zones to load
+                        setTimeout(function() {
+                            $('#entry\\.zoneId').val(zone);
+                            $('#entry\\.zoneName').val(zoneName);
+                            $('#entry\\.recordName').val(record);
+                            $('#entry\\.recordType').val(type).selectpicker('refresh');
+                            $('#entry\\.ttl').val(ttl);
+                        }, 500);
+                    }
+                }, 300);
+
+                // Clear URL params after processing
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+            }, 500);
+        }
+    }
+
+    // Check URL params after page load
+    setTimeout(handleUrlParams, 1000);
 });
 </script>

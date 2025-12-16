@@ -57,6 +57,22 @@
     #historyDetailModal .modal-dialog { width: 500px; }
     #historyDetailModal .modal-body { padding: 25px 30px; }
     #historyDetailModal .history-detail-row:last-of-type { border-bottom: none; }
+    /* Record grouping styles */
+    .records-toolbar { padding: 10px 15px; background: #f8f9fa; border-bottom: 1px solid #ddd; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+    .records-toolbar .search-box { flex: 1; min-width: 200px; max-width: 300px; }
+    .records-toolbar .search-box input { width: 100%; }
+    .record-type-group { border-bottom: 1px solid #eee; }
+    .record-type-group:last-child { border-bottom: none; }
+    .record-type-header { padding: 10px 15px; background: #f8f9fa; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+    .record-type-header:hover { background: #e9ecef; }
+    .record-type-header .type-info { display: flex; align-items: center; gap: 10px; }
+    .record-type-header .type-badge { font-size: 13px; font-weight: 600; min-width: 55px; }
+    .record-type-header .type-count { background: #6c757d; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+    .record-type-header .type-description { color: #666; font-size: 12px; }
+    .record-type-body { display: none; }
+    .record-type-body.show { display: block; }
+    .record-type-group.expanded .record-type-header { background: #e2e6ea; }
+    .no-records-match { padding: 20px; text-align: center; color: #666; }
 </style>
 
 <!-- No Accounts Warning -->
@@ -386,6 +402,55 @@
     </div>
 </div>
 
+<!-- Create DynDNS Entry Modal -->
+<div class="modal fade" id="createDynDnsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-bolt"></i> {{ lang._('Create DynDNS Entry') }}</h4>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <input type="hidden" id="dynDnsAccountUuid">
+                <input type="hidden" id="dynDnsZoneId">
+                <input type="hidden" id="dynDnsZoneName">
+                <input type="hidden" id="dynDnsRecordName">
+                <input type="hidden" id="dynDnsRecordType">
+                <input type="hidden" id="dynDnsTtl">
+
+                <table class="table table-condensed" style="margin-bottom: 20px;">
+                    <tr><td style="width: 100px;"><strong>{{ lang._('Zone') }}:</strong></td><td id="dynDnsZoneDisplay"></td></tr>
+                    <tr><td><strong>{{ lang._('Record') }}:</strong></td><td id="dynDnsRecordDisplay"></td></tr>
+                    <tr><td><strong>{{ lang._('Type') }}:</strong></td><td id="dynDnsTypeDisplay"></td></tr>
+                </table>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ lang._('Primary Gateway') }}</label>
+                            <select class="form-control selectpicker" id="dynDnsPrimaryGw" data-live-search="true" data-container="body"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>{{ lang._('Failover Gateway') }} <small class="text-muted">({{ lang._('optional') }})</small></label>
+                            <select class="form-control selectpicker" id="dynDnsFailoverGw" data-live-search="true" data-container="body"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-muted" style="margin-top: 15px; margin-bottom: 0;">
+                    <small><i class="fa fa-info-circle"></i> {{ lang._('The record will be managed by DynDNS and updated automatically when your gateway IP changes.') }}</small>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang._('Cancel') }}</button>
+                <button type="button" class="btn btn-primary" id="createDynDnsBtn"><i class="fa fa-bolt"></i> {{ lang._('Create') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     var currentAccountUuid = '';
@@ -503,48 +568,252 @@ $(document).ready(function() {
         }
     });
 
+    // Type descriptions for UI
+    var typeDescriptions = {
+        'A': 'IPv4 Address',
+        'AAAA': 'IPv6 Address',
+        'CNAME': 'Alias',
+        'MX': 'Mail Exchange',
+        'TXT': 'Text Record',
+        'NS': 'Name Server',
+        'SRV': 'Service',
+        'CAA': 'Certificate Authority',
+        'SOA': 'Start of Authority'
+    };
+
+    // Store records data per zone for filtering
+    var zoneRecordsCache = {};
+
     function loadRecords(zoneId) {
         var $container = $('#zone-records-' + zoneId);
         $container.html('<div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Loading...</div>');
 
         ajaxCall('/api/hclouddns/hetzner/listRecordsForAccount', {account_uuid: currentAccountUuid, zone_id: zoneId, all_types: '1'}, function(data) {
             if (data && data.status === 'ok' && data.records) {
-                var html = '<table class="table table-condensed table-hover" style="margin: 0;">' +
-                    '<thead><tr><th style="width: 60px;">Type</th><th style="width: 150px;">Name</th><th>Value</th><th style="width: 70px;">TTL</th><th style="width: 80px;">Actions</th></tr></thead><tbody>';
-
-                if (data.records.length === 0) {
-                    html += '<tr><td colspan="5" class="text-center text-muted">No records in this zone</td></tr>';
-                } else {
-                    $.each(data.records, function(i, rec) {
-                        var typeClass = 'record-type-' + rec.type;
-                        var displayValue = rec.value;
-                        if (rec.type === 'TXT' && displayValue.length > 60) {
-                            displayValue = displayValue.substring(0, 60) + '...';
-                        }
-                        // SOA and NS records are read-only (managed by Hetzner)
-                        var isSystemRecord = rec.type === 'SOA' || rec.type === 'NS';
-                        var actionButtons = isSystemRecord ?
-                            '<span class="text-muted" title="{{ lang._("SOA/NS records are managed by Hetzner") }}"><i class="fa fa-lock"></i></span>' :
-                            '<button class="btn btn-xs btn-default edit-record-btn" title="Edit"><i class="fa fa-pencil"></i></button> ' +
-                            '<button class="btn btn-xs btn-danger delete-record-btn" title="Delete"><i class="fa fa-trash"></i></button>';
-                        html += '<tr data-record-id="' + (rec.id || '') + '" data-zone-id="' + zoneId + '">' +
-                            '<td><span class="record-type-badge ' + typeClass + '">' + rec.type + '</span></td>' +
-                            '<td>' + rec.name + '</td>' +
-                            '<td><span class="record-value" title="' + rec.value.replace(/"/g, '&quot;') + '">' + displayValue + '</span></td>' +
-                            '<td>' + (rec.ttl || 300) + '</td>' +
-                            '<td class="record-actions">' + actionButtons + '</td>' +
-                        '</tr>';
-                    });
-                }
-                html += '</tbody></table>';
-                $container.html(html);
-                // Update record count in zone header
-                $('[data-zone-id="' + zoneId + '"] .zone-record-count').text('(' + data.records.length + ' records)');
+                // Cache records for filtering
+                zoneRecordsCache[zoneId] = data.records;
+                renderRecordsGrouped(zoneId, data.records, '', '');
             } else {
                 $container.html('<div class="alert alert-danger m-2">Failed to load records</div>');
             }
         });
     }
+
+    function renderRecordsGrouped(zoneId, records, filterType, searchText) {
+        var $container = $('#zone-records-' + zoneId);
+
+        // Group records by type
+        var grouped = {};
+        var typeOrder = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SRV', 'CAA', 'SOA'];
+
+        $.each(records, function(i, rec) {
+            if (!grouped[rec.type]) grouped[rec.type] = [];
+            grouped[rec.type].push(rec);
+        });
+
+        // Build toolbar HTML
+        var html = '<div class="records-toolbar" data-zone-id="' + zoneId + '">' +
+            '<div class="filter-box">' +
+                '<select class="form-control input-sm record-type-filter" data-zone-id="' + zoneId + '">' +
+                    '<option value="">{{ lang._("All Types") }}</option>';
+
+        // Add type options based on what exists
+        $.each(typeOrder, function(i, t) {
+            if (grouped[t]) {
+                html += '<option value="' + t + '"' + (filterType === t ? ' selected' : '') + '>' + t + ' (' + grouped[t].length + ')</option>';
+            }
+        });
+        // Add any other types not in the standard order
+        $.each(grouped, function(t, recs) {
+            if (typeOrder.indexOf(t) === -1) {
+                html += '<option value="' + t + '"' + (filterType === t ? ' selected' : '') + '>' + t + ' (' + recs.length + ')</option>';
+            }
+        });
+
+        html += '</select></div>' +
+            '<div class="search-box">' +
+                '<input type="text" class="form-control input-sm record-search" data-zone-id="' + zoneId + '" placeholder="{{ lang._("Search records...") }}" value="' + (searchText || '') + '">' +
+            '</div>' +
+            '<div class="records-summary text-muted"></div>' +
+        '</div>';
+
+        // Render grouped records
+        html += '<div class="records-grouped-container">';
+
+        var totalShown = 0;
+        var totalRecords = records.length;
+
+        $.each(typeOrder, function(i, type) {
+            if (!grouped[type]) return;
+            var typeRecords = grouped[type];
+
+            // Filter by type if specified
+            if (filterType && filterType !== type) return;
+
+            // Filter by search text
+            if (searchText) {
+                typeRecords = typeRecords.filter(function(rec) {
+                    return rec.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 ||
+                           rec.value.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+                });
+            }
+
+            if (typeRecords.length === 0) return;
+            totalShown += typeRecords.length;
+
+            var typeClass = 'record-type-' + type;
+            var isExpanded = true; // Default expanded
+
+            html += '<div class="record-type-group' + (isExpanded ? ' expanded' : '') + '" data-type="' + type + '">' +
+                '<div class="record-type-header">' +
+                    '<div class="type-info">' +
+                        '<span class="record-type-badge type-badge ' + typeClass + '">' + type + '</span>' +
+                        '<span class="type-count">' + typeRecords.length + '</span>' +
+                        '<span class="type-description">' + (typeDescriptions[type] || '') + '</span>' +
+                    '</div>' +
+                    '<i class="fa fa-chevron-' + (isExpanded ? 'down' : 'right') + ' type-toggle"></i>' +
+                '</div>' +
+                '<div class="record-type-body' + (isExpanded ? ' show' : '') + '">' +
+                    '<table class="table table-condensed table-hover" style="margin: 0;">' +
+                        '<thead><tr><th style="width: 200px;">{{ lang._("Name") }}</th><th>{{ lang._("Value") }}</th><th style="width: 70px;">{{ lang._("TTL") }}</th><th style="width: 100px;">{{ lang._("Actions") }}</th></tr></thead>' +
+                        '<tbody>';
+
+            $.each(typeRecords, function(j, rec) {
+                var displayValue = rec.value;
+                if (type === 'TXT' && displayValue.length > 60) {
+                    displayValue = displayValue.substring(0, 60) + '...';
+                }
+                var isSystemRecord = type === 'SOA' || type === 'NS';
+                var isDynDnsCompatible = type === 'A' || type === 'AAAA';
+                var dynDnsBtn = isDynDnsCompatible ?
+                    '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ' : '';
+                var actionButtons = isSystemRecord ?
+                    '<span class="text-muted" title="{{ lang._("SOA/NS records are managed by Hetzner") }}"><i class="fa fa-lock"></i></span>' :
+                    dynDnsBtn +
+                    '<button class="btn btn-xs btn-default edit-record-btn" title="{{ lang._("Edit") }}"><i class="fa fa-pencil"></i></button> ' +
+                    '<button class="btn btn-xs btn-danger delete-record-btn" title="{{ lang._("Delete") }}"><i class="fa fa-trash"></i></button>';
+
+                html += '<tr data-record-id="' + (rec.id || '') + '" data-zone-id="' + zoneId + '">' +
+                    '<td>' + rec.name + '</td>' +
+                    '<td><span class="record-value" title="' + rec.value.replace(/"/g, '&quot;') + '">' + displayValue + '</span></td>' +
+                    '<td>' + (rec.ttl || 300) + '</td>' +
+                    '<td class="record-actions">' + actionButtons + '</td>' +
+                '</tr>';
+            });
+
+            html += '</tbody></table></div></div>';
+        });
+
+        // Handle any types not in the standard order
+        $.each(grouped, function(type, typeRecords) {
+            if (typeOrder.indexOf(type) !== -1) return;
+
+            if (filterType && filterType !== type) return;
+
+            if (searchText) {
+                typeRecords = typeRecords.filter(function(rec) {
+                    return rec.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1 ||
+                           rec.value.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
+                });
+            }
+
+            if (typeRecords.length === 0) return;
+            totalShown += typeRecords.length;
+
+            var typeClass = 'record-type-' + type;
+
+            html += '<div class="record-type-group expanded" data-type="' + type + '">' +
+                '<div class="record-type-header">' +
+                    '<div class="type-info">' +
+                        '<span class="record-type-badge type-badge ' + typeClass + '">' + type + '</span>' +
+                        '<span class="type-count">' + typeRecords.length + '</span>' +
+                    '</div>' +
+                    '<i class="fa fa-chevron-down type-toggle"></i>' +
+                '</div>' +
+                '<div class="record-type-body show">' +
+                    '<table class="table table-condensed table-hover" style="margin: 0;">' +
+                        '<thead><tr><th style="width: 200px;">{{ lang._("Name") }}</th><th>{{ lang._("Value") }}</th><th style="width: 70px;">{{ lang._("TTL") }}</th><th style="width: 100px;">{{ lang._("Actions") }}</th></tr></thead>' +
+                        '<tbody>';
+
+            $.each(typeRecords, function(j, rec) {
+                var displayValue = rec.value;
+                if (type === 'TXT' && displayValue.length > 60) {
+                    displayValue = displayValue.substring(0, 60) + '...';
+                }
+                var isSystemRecord = type === 'SOA' || type === 'NS';
+                var isDynDnsCompatible = type === 'A' || type === 'AAAA';
+                var dynDnsBtn = isDynDnsCompatible ?
+                    '<button class="btn btn-xs btn-info create-dyndns-btn" title="{{ lang._("Create DynDNS Entry") }}" data-record-name="' + rec.name + '" data-record-type="' + type + '" data-ttl="' + (rec.ttl || 300) + '"><i class="fa fa-bolt"></i></button> ' : '';
+                var actionButtons = isSystemRecord ?
+                    '<span class="text-muted" title="{{ lang._("SOA/NS records are managed by Hetzner") }}"><i class="fa fa-lock"></i></span>' :
+                    dynDnsBtn +
+                    '<button class="btn btn-xs btn-default edit-record-btn" title="{{ lang._("Edit") }}"><i class="fa fa-pencil"></i></button> ' +
+                    '<button class="btn btn-xs btn-danger delete-record-btn" title="{{ lang._("Delete") }}"><i class="fa fa-trash"></i></button>';
+
+                html += '<tr data-record-id="' + (rec.id || '') + '" data-zone-id="' + zoneId + '">' +
+                    '<td>' + rec.name + '</td>' +
+                    '<td><span class="record-value" title="' + rec.value.replace(/"/g, '&quot;') + '">' + displayValue + '</span></td>' +
+                    '<td>' + (rec.ttl || 300) + '</td>' +
+                    '<td class="record-actions">' + actionButtons + '</td>' +
+                '</tr>';
+            });
+
+            html += '</tbody></table></div></div>';
+        });
+
+        html += '</div>';
+
+        if (totalShown === 0) {
+            html = html.replace('<div class="records-grouped-container">', '<div class="records-grouped-container"><div class="no-records-match"><i class="fa fa-search"></i> {{ lang._("No records match your filter") }}</div>');
+        }
+
+        $container.html(html);
+
+        // Update summary
+        var summaryText = totalShown + ' {{ lang._("of") }} ' + totalRecords + ' {{ lang._("records") }}';
+        if (filterType || searchText) {
+            summaryText += ' ({{ lang._("filtered") }})';
+        }
+        $container.find('.records-summary').text(summaryText);
+
+        // Update record count in zone header
+        $('[data-zone-id="' + zoneId + '"] .zone-record-count').text('(' + totalRecords + ' records)');
+    }
+
+    // Event handlers for filter and search
+    $(document).on('change', '.record-type-filter', function() {
+        var zoneId = $(this).data('zone-id');
+        var filterType = $(this).val();
+        var searchText = $('.record-search[data-zone-id="' + zoneId + '"]').val();
+        var records = zoneRecordsCache[zoneId] || [];
+        renderRecordsGrouped(zoneId, records, filterType, searchText);
+    });
+
+    $(document).on('keyup', '.record-search', function() {
+        var zoneId = $(this).data('zone-id');
+        var searchText = $(this).val();
+        var filterType = $('.record-type-filter[data-zone-id="' + zoneId + '"]').val();
+        var records = zoneRecordsCache[zoneId] || [];
+        renderRecordsGrouped(zoneId, records, filterType, searchText);
+    });
+
+    // Type group expand/collapse
+    $(document).on('click', '.record-type-header', function(e) {
+        if ($(e.target).closest('button').length) return; // Ignore button clicks
+        var $group = $(this).closest('.record-type-group');
+        var $body = $group.find('.record-type-body');
+        var $icon = $(this).find('.type-toggle');
+
+        if ($body.hasClass('show')) {
+            $body.removeClass('show');
+            $group.removeClass('expanded');
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+        } else {
+            $body.addClass('show');
+            $group.addClass('expanded');
+            $icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+        }
+    });
 
     // Add Record button (per zone)
     $(document).on('click', '.add-zone-record-btn', function(e) {
@@ -669,6 +938,97 @@ $(document).ready(function() {
                         }
                     });
                 }
+            }
+        });
+    });
+
+    // Create DynDNS Entry from A/AAAA record
+    $(document).on('click', '.create-dyndns-btn', function(e) {
+        e.stopPropagation();
+        var $row = $(this).closest('tr');
+        var $zonePanel = $row.closest('.zone-panel');
+        var zoneId = $row.data('zone-id');
+        var zoneName = $zonePanel.data('zone-name');
+        var recordName = $(this).data('record-name');
+        var recordType = $(this).data('record-type');
+        var ttl = $(this).data('ttl') || 60;
+
+        // Populate modal fields
+        $('#dynDnsAccountUuid').val(currentAccountUuid);
+        $('#dynDnsZoneId').val(zoneId);
+        $('#dynDnsZoneName').val(zoneName);
+        $('#dynDnsRecordName').val(recordName);
+        $('#dynDnsRecordType').val(recordType);
+        $('#dynDnsTtl').val(ttl);
+        $('#dynDnsZoneDisplay').text(zoneName);
+        $('#dynDnsRecordDisplay').text(recordName);
+        $('#dynDnsTypeDisplay').text(recordType);
+
+        // Populate gateway selectors
+        var $primaryGw = $('#dynDnsPrimaryGw').empty().append('<option value="">Default Gateway (auto-detect)</option>');
+        var $failoverGw = $('#dynDnsFailoverGw').empty().append('<option value="">-- None --</option>');
+
+        ajaxCall('/api/hclouddns/gateways/searchItem', {}, function(gwData) {
+            var prio1Gw = null, prio2Gw = null;
+            if (gwData && gwData.rows && gwData.rows.length > 0) {
+                var sorted = gwData.rows.filter(function(gw) { return gw.enabled === '1'; })
+                    .sort(function(a, b) { return parseInt(a.priority) - parseInt(b.priority); });
+
+                $.each(sorted, function(i, gw) {
+                    $primaryGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
+                    $failoverGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
+                    if (gw.priority === '1') prio1Gw = gw.uuid;
+                    else if (gw.priority === '2' && !prio2Gw) prio2Gw = gw.uuid;
+                });
+            }
+            $primaryGw.selectpicker('refresh');
+            $failoverGw.selectpicker('refresh');
+            if (prio1Gw) $primaryGw.selectpicker('val', prio1Gw);
+            if (prio2Gw) $failoverGw.selectpicker('val', prio2Gw);
+        });
+
+        $('#createDynDnsModal').modal('show');
+    });
+
+    // Create DynDNS Entry - submit
+    $('#createDynDnsBtn').on('click', function() {
+        var primaryGw = $('#dynDnsPrimaryGw').val();
+        var failoverGw = $('#dynDnsFailoverGw').val();
+
+        if (primaryGw && primaryGw === failoverGw) {
+            BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, title: 'Invalid Selection', message: 'Failover gateway must differ from primary gateway.'});
+            return;
+        }
+
+        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Creating...');
+
+        var entry = {
+            account: $('#dynDnsAccountUuid').val(),
+            zoneId: $('#dynDnsZoneId').val(),
+            zoneName: $('#dynDnsZoneName').val(),
+            recordName: $('#dynDnsRecordName').val(),
+            recordType: $('#dynDnsRecordType').val(),
+            ttl: $('#dynDnsTtl').val()
+        };
+
+        ajaxCall('/api/hclouddns/entries/batchAdd', {entries: [entry], primaryGateway: primaryGw, failoverGateway: failoverGw}, function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-bolt"></i> Create');
+            if (data && data.status === 'ok') {
+                $('#createDynDnsModal').modal('hide');
+                if (data.added > 0) {
+                    BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: 'Success', message: 'DynDNS entry created successfully! The record will now be managed automatically.'});
+                } else if (data.skipped > 0) {
+                    BootstrapDialog.alert({type: BootstrapDialog.TYPE_INFO, title: 'Already Exists', message: 'This record is already managed as a DynDNS entry.'});
+                }
+            } else {
+                var errorMsg = 'Failed to create DynDNS entry.';
+                if (data && data.message) errorMsg += '<br/><br/>' + data.message;
+                if (data && data.errors && data.errors.length > 0) {
+                    errorMsg += '<br/><br/><strong>Errors:</strong><ul>';
+                    $.each(data.errors, function(i, err) { errorMsg += '<li>' + err + '</li>'; });
+                    errorMsg += '</ul>';
+                }
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Error', message: errorMsg});
             }
         });
     });

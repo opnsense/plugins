@@ -472,7 +472,7 @@ $(document).ready(function() {
                              data.export.accounts.length + ' accounts, ' + data.export.entries.length + ' entries.'
                 });
             } else {
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: 'Export failed.'});
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Export Error', message: 'Failed to export configuration. Please check system logs.'});
             }
         });
     });
@@ -552,7 +552,6 @@ $(document).ready(function() {
             formatters: {
                 commands: function(col, row) {
                     return '<button type="button" class="btn btn-xs btn-default command-edit bootgrid-tooltip" data-row-id="' + row.uuid + '" title="Edit"><i class="fa fa-pencil fa-fw"></i></button> ' +
-                           '<button type="button" class="btn btn-xs btn-success command-import bootgrid-tooltip" data-row-id="' + row.uuid + '" title="Import more zones"><i class="fa fa-download fa-fw"></i></button> ' +
                            '<button type="button" class="btn btn-xs btn-default command-delete bootgrid-tooltip" data-row-id="' + row.uuid + '" title="Delete"><i class="fa fa-trash-o fa-fw"></i></button>';
                 }
             }
@@ -602,34 +601,12 @@ $(document).ready(function() {
                                     BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, message: msg});
                                 });
                             } else {
-                                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: 'Failed to delete account.'});
+                                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Delete Error', message: 'Failed to delete account. Please check system logs.'});
                             }
                         });
                     }
                 }
             });
-        });
-    });
-
-    // Handle import zones button for existing account
-    $(document).on('click', '.command-import', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var uuid = $(this).data('row-id');
-        ajaxCall('/api/hclouddns/accounts/getItem/' + uuid, {}, function(data) {
-            if (data && data.account) {
-                var acc = data.account;
-                var apiType = 'cloud';
-                if (acc.apiType) {
-                    for (var key in acc.apiType) {
-                        if (acc.apiType[key].selected == 1) {
-                            apiType = key;
-                            break;
-                        }
-                    }
-                }
-                openImportForAccount(uuid, acc.name || '', apiType);
-            }
         });
     });
 
@@ -929,7 +906,8 @@ $(document).ready(function() {
                 BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, message: data.added + ' DNS entry/entries imported successfully!'});
                 $('#grid-accounts').bootgrid('reload');
             } else {
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: (data && data.message) ? data.message : 'Import failed.'});
+                var errMsg = (data && data.message) ? data.message : 'Import failed. Please check system logs.';
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: 'Import Error', message: errMsg});
             }
         });
     });

@@ -178,26 +178,51 @@ class HetznerCloudAPI:
         """
         List DNS records for a zone.
         Filters to A and AAAA records by default.
+        Handles pagination to fetch all records.
         """
         if record_types is None:
             record_types = ['A', 'AAAA']
 
         try:
-            response = self._request('GET', f'/zones/{zone_id}/rrsets')
+            all_rrsets = []
+            page = 1
+            per_page = 100  # Max allowed by Hetzner API
 
-            if response.status_code == 404:
-                self._log(syslog.LOG_ERR, f"Zone {zone_id} not found")
-                return []
+            # Fetch all pages
+            while True:
+                response = self._request(
+                    'GET',
+                    f'/zones/{zone_id}/rrsets',
+                    params={'page': page, 'per_page': per_page}
+                )
 
-            if response.status_code != 200:
-                self._log(syslog.LOG_ERR, f"Failed to list records: HTTP {response.status_code}")
-                return []
+                if response.status_code == 404:
+                    self._log(syslog.LOG_ERR, f"Zone {zone_id} not found")
+                    return []
 
-            data = response.json()
-            rrsets = data.get('rrsets', [])
+                if response.status_code != 200:
+                    self._log(syslog.LOG_ERR, f"Failed to list records: HTTP {response.status_code}")
+                    return []
+
+                data = response.json()
+                rrsets = data.get('rrsets', [])
+                all_rrsets.extend(rrsets)
+
+                # Check if there are more pages
+                meta = data.get('meta', {}).get('pagination', {})
+                total_entries = meta.get('total_entries', len(rrsets))
+                last_page = meta.get('last_page', 1)
+
+                if self.verbose:
+                    self._log(syslog.LOG_DEBUG, f"Page {page}/{last_page}: {len(rrsets)} rrsets")
+
+                if page >= last_page or len(rrsets) == 0:
+                    break
+
+                page += 1
 
             result = []
-            for rrset in rrsets:
+            for rrset in all_rrsets:
                 if rrset.get('type') in record_types:
                     records = rrset.get('records', [])
                     rrset_name = rrset.get('name', '')
@@ -214,7 +239,7 @@ class HetznerCloudAPI:
                         })
 
             if self.verbose:
-                self._log(syslog.LOG_INFO, f"Found {len(result)} A/AAAA records in zone {zone_id}")
+                self._log(syslog.LOG_INFO, f"Found {len(result)} records in zone {zone_id} (fetched {len(all_rrsets)} rrsets)")
 
             return result
 
@@ -483,22 +508,45 @@ class HetznerLegacyAPI:
             return None
 
     def list_records(self, zone_id, record_types=None):
-        """List DNS records for a zone."""
+        """List DNS records for a zone. Handles pagination to fetch all records."""
         if record_types is None:
             record_types = ['A', 'AAAA']
 
         try:
-            response = self._request('GET', '/records', params={'zone_id': zone_id})
+            all_records = []
+            page = 1
+            per_page = 100  # Max allowed by Hetzner API
 
-            if response.status_code != 200:
-                self._log(syslog.LOG_ERR, f"Failed to list records: HTTP {response.status_code}")
-                return []
+            # Fetch all pages
+            while True:
+                response = self._request(
+                    'GET',
+                    '/records',
+                    params={'zone_id': zone_id, 'page': page, 'per_page': per_page}
+                )
 
-            data = response.json()
-            records = data.get('records', [])
+                if response.status_code != 200:
+                    self._log(syslog.LOG_ERR, f"Failed to list records: HTTP {response.status_code}")
+                    return []
+
+                data = response.json()
+                records = data.get('records', [])
+                all_records.extend(records)
+
+                # Check if there are more pages (Legacy API uses meta.pagination)
+                meta = data.get('meta', {}).get('pagination', {})
+                last_page = meta.get('last_page', 1)
+
+                if self.verbose:
+                    self._log(syslog.LOG_DEBUG, f"Page {page}/{last_page}: {len(records)} records")
+
+                if page >= last_page or len(records) == 0:
+                    break
+
+                page += 1
 
             result = []
-            for record in records:
+            for record in all_records:
                 if record.get('type') in record_types:
                     result.append({
                         'id': record.get('id', ''),
@@ -509,7 +557,7 @@ class HetznerLegacyAPI:
                     })
 
             if self.verbose:
-                self._log(syslog.LOG_INFO, f"Found {len(result)} A/AAAA records in zone {zone_id}")
+                self._log(syslog.LOG_INFO, f"Found {len(result)} records in zone {zone_id} (fetched {len(all_records)} total)")
 
             return result
 
