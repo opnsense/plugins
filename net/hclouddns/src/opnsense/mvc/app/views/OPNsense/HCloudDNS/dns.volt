@@ -969,7 +969,6 @@ $(document).ready(function() {
         var $failoverGw = $('#dynDnsFailoverGw').empty().append('<option value="">-- None --</option>');
 
         ajaxCall('/api/hclouddns/gateways/searchItem', {}, function(gwData) {
-            var prio1Gw = null, prio2Gw = null;
             if (gwData && gwData.rows && gwData.rows.length > 0) {
                 var sorted = gwData.rows.filter(function(gw) { return gw.enabled === '1'; })
                     .sort(function(a, b) { return parseInt(a.priority) - parseInt(b.priority); });
@@ -977,14 +976,14 @@ $(document).ready(function() {
                 $.each(sorted, function(i, gw) {
                     $primaryGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
                     $failoverGw.append('<option value="' + gw.uuid + '">' + gw.name + ' (Prio ' + gw.priority + ')</option>');
-                    if (gw.priority === '1') prio1Gw = gw.uuid;
-                    else if (gw.priority === '2' && !prio2Gw) prio2Gw = gw.uuid;
                 });
+
+                // Auto-select: first sorted = primary, second sorted = failover
+                if (sorted.length > 0) $primaryGw.selectpicker('val', sorted[0].uuid);
+                if (sorted.length > 1) $failoverGw.selectpicker('val', sorted[1].uuid);
             }
             $primaryGw.selectpicker('refresh');
             $failoverGw.selectpicker('refresh');
-            if (prio1Gw) $primaryGw.selectpicker('val', prio1Gw);
-            if (prio2Gw) $failoverGw.selectpicker('val', prio2Gw);
         });
 
         $('#createDynDnsModal').modal('show');
