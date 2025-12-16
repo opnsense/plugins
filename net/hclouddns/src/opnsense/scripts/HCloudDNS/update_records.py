@@ -20,6 +20,21 @@ CONFIG_PATH = '/conf/config.xml'
 STATE_PATH = '/var/cache/hclouddns'
 
 
+def parse_ttl(ttl_raw):
+    """Parse TTL value from config - handles '_60' format and plain '60'"""
+    if not ttl_raw:
+        return 300
+    # Handle OptionField format: "_60" -> 60 or "opt60" -> 60
+    if ttl_raw.startswith('_'):
+        ttl_raw = ttl_raw[1:]
+    elif ttl_raw.startswith('opt'):
+        ttl_raw = ttl_raw[3:]
+    try:
+        return int(ttl_raw)
+    except ValueError:
+        return 300
+
+
 def get_config():
     """Read HCloudDNS configuration from OPNsense config.xml"""
     try:
@@ -61,7 +76,7 @@ def get_config():
                     'updateIPv6': account.findtext('updateIPv6', '1') == '1',
                     'checkip': account.findtext('checkip', 'if'),
                     'checkipInterface': account.findtext('checkipInterface', ''),
-                    'ttl': int(account.findtext('ttl', '300'))
+                    'ttl': parse_ttl(account.findtext('ttl', '300'))
                 }
                 # Filter empty records
                 acc['records'] = [r.strip() for r in acc['records'] if r.strip()]

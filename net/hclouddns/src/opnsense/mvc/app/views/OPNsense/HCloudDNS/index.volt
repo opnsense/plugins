@@ -210,6 +210,17 @@
             <i class="fa fa-exclamation-triangle"></i> <strong>{{ lang._('Deleting entries:') }}</strong> {{ lang._('Only removes from OPNsense management. DNS records at Hetzner remain unchanged.') }}
         </div>
 
+        <!-- DynDNS TTL Settings -->
+        <div class="well well-sm" style="margin-bottom: 15px;">
+            {{ partial("layout_partials/base_form", ['fields': entrySettingsForm, 'id': 'frm_entry_settings']) }}
+            <button class="btn btn-primary btn-sm" id="applyTtlBtn">
+                <i class="fa fa-save"></i> {{ lang._('Save & Apply to All Entries') }}
+            </button>
+            <span class="help-block" style="display: inline-block; margin-left: 10px; color: #777;">
+                {{ lang._('Saves setting and updates TTL for all DynDNS records at Hetzner') }}
+            </span>
+        </div>
+
         <!-- Batch Operations Toolbar -->
         <div id="batchToolbar" class="well well-sm" style="display: none; margin-bottom: 15px;">
             <span id="batchSelectedCount" class="text-muted" style="margin-right: 15px;"></span>
@@ -317,8 +328,16 @@
                         <input type="text" class="form-control" id="ds_recordName" placeholder="@ or www">
                     </div>
                     <div class="form-group">
-                        <label>{{ lang._('TTL (seconds)') }}</label>
-                        <input type="number" class="form-control" id="ds_ttl" value="300" min="60" max="86400">
+                        <label>{{ lang._('TTL') }}</label>
+                        <select class="form-control selectpicker" id="ds_ttl">
+                            <option value="60">60s (1 min - DynDNS)</option>
+                            <option value="120">120s (2 min)</option>
+                            <option value="300">300s (5 min)</option>
+                            <option value="600">600s (10 min)</option>
+                            <option value="1800">1800s (30 min)</option>
+                            <option value="3600">3600s (1 hour)</option>
+                            <option value="86400">86400s (1 day)</option>
+                        </select>
                     </div>
                     <hr/>
                     <div class="row">
@@ -359,6 +378,7 @@
 $(document).ready(function() {
     var gatewaysCache = {};
     var accountsCache = {};
+    var defaultTtl = '60'; // Default TTL for DynDNS (loaded from settings)
 
     // Check if accounts exist and show/hide warning
     function checkAccountsExist() {
@@ -399,6 +419,7 @@ $(document).ready(function() {
 
     // ==================== OVERVIEW TAB ====================
     var data_get_map = {
+        'frm_entry_settings': '/api/hclouddns/settings/get',
         'frm_scheduled_settings': '/api/hclouddns/settings/get',
         'frm_failover_settings': '/api/hclouddns/settings/get'
     };
@@ -413,6 +434,15 @@ $(document).ready(function() {
         ajaxCall('/api/hclouddns/settings/get', {}, function(data) {
             if (!data || !data.hclouddns) return;
             var cfg = data.hclouddns;
+
+            // Load default TTL setting
+            if (cfg.general && cfg.general.defaultTtl) {
+                // Remove underscore prefix if present (e.g. "_60" -> "60")
+                defaultTtl = cfg.general.defaultTtl.selected || cfg.general.defaultTtl;
+                if (typeof defaultTtl === 'string' && defaultTtl.charAt(0) === '_') {
+                    defaultTtl = defaultTtl.substring(1);
+                }
+            }
 
             // Count gateways
             var gwCount = 0, gwNames = [];
@@ -666,11 +696,60 @@ $(document).ready(function() {
         });
     });
 
+    // ==================== ENTRY SETTINGS (TTL) ====================
+    // Save & Apply TTL to all entries button
+    $('#applyTtlBtn').click(function() {
+        var $btn = $(this);
+        var selectedTtl = $('#hclouddns\\.general\\.defaultTtl').val();
+        var ttlDisplay = selectedTtl ? selectedTtl.replace('_', '') : '60';
+        BootstrapDialog.confirm({
+            title: '{{ lang._("Apply TTL to All Entries") }}',
+            message: '{{ lang._("This will update the TTL for all enabled DynDNS entries at Hetzner to") }} <strong>' + ttlDisplay + 's</strong>. {{ lang._("Continue?") }}',
+            type: BootstrapDialog.TYPE_WARNING,
+            btnOKLabel: '{{ lang._("Apply TTL") }}',
+            btnCancelLabel: '{{ lang._("Cancel") }}',
+            callback: function(result) {
+                if (result) {
+                    $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> {{ lang._("Updating...") }}');
+                    // First save the settings, then apply
+                    saveFormToEndpoint('/api/hclouddns/settings/set', 'frm_entry_settings', function() {
+                        ajaxCall('/api/hclouddns/entries/applyDefaultTtl', {}, function(data) {
+                            $btn.prop('disabled', false).html('<i class="fa fa-save"></i> {{ lang._("Save & Apply to All Entries") }}');
+                            if (data && data.status === 'ok') {
+                                BootstrapDialog.alert({
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    title: '{{ lang._("Success") }}',
+                                    message: data.message
+                                });
+                            } else if (data && data.status === 'partial') {
+                                var msg = data.message;
+                                if (data.errors && data.errors.length > 0) {
+                                    msg += '<br/><br/><strong>{{ lang._("Errors") }}:</strong><br/>' + data.errors.join('<br/>');
+                                }
+                                BootstrapDialog.alert({
+                                    type: BootstrapDialog.TYPE_WARNING,
+                                    title: '{{ lang._("Partial Success") }}',
+                                    message: msg
+                                });
+                            } else {
+                                BootstrapDialog.alert({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    title: '{{ lang._("Error") }}',
+                                    message: data.message || '{{ lang._("Failed to apply TTL") }}'
+                                });
+                            }
+                        });
+                    }, false); // Don't show validation errors popup
+                }
+            }
+        });
+    });
+
     // ==================== SCHEDULED TAB ====================
     $('#saveScheduledBtn').click(function() {
         saveFormToEndpoint('/api/hclouddns/settings/set', 'frm_scheduled_settings', function() {
             ajaxCall('/api/hclouddns/service/reconfigure', {}, function() {
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: 'Success', message: 'Scheduled updates settings saved. Cron job will be updated on next system cron reload.'});
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: '{{ lang._("Success") }}', message: '{{ lang._("Scheduled updates settings saved.") }}'});
             });
         }, true);
     });
@@ -1341,6 +1420,11 @@ $(document).ready(function() {
             $('#entry\\.account').prop('disabled', false).selectpicker('refresh');
             $('#entry\\.zoneId').prop('disabled', false).selectpicker('refresh');
 
+            // Set default TTL for new entries (from global settings)
+            if (isNewEntry && defaultTtl) {
+                $('#entry\\.ttl').val('_' + defaultTtl).selectpicker('refresh');
+            }
+
             $saveBtn.off('click').on('click', function(e) {
                 e.preventDefault();
                 saveNewEntry($(this));
@@ -1521,7 +1605,7 @@ $(document).ready(function() {
         loadDualStackGateways();
         $('#ds_zone').empty().append('<option value="">-- Select Account First --</option>').prop('disabled', true).selectpicker('refresh');
         $('#ds_recordName').val('');
-        $('#ds_ttl').val('300');
+        $('#ds_ttl').val(defaultTtl).selectpicker('refresh');
         $('#dialogDualStack').modal('show');
     });
 

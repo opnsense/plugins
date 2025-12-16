@@ -390,6 +390,7 @@
 $(document).ready(function() {
     var currentAccountUuid = '';
     var zonesData = {};
+    var isEditMode = false; // Track whether we're editing an existing record
 
     // Load accounts and check if any exist
     ajaxCall('/api/hclouddns/accounts/searchItem', {}, function(data) {
@@ -551,6 +552,7 @@ $(document).ready(function() {
         var zoneId = $(this).data('zone-id');
         var zoneName = $(this).data('zone-name');
         resetRecordForm();
+        isEditMode = false;
         $('#recordZone').val(zoneId);
         $('#recordZoneDisplay').val(zoneName);
         $('#recordModalTitle').text('{{ lang._("Add DNS Record") }} - ' + zoneName);
@@ -562,13 +564,12 @@ $(document).ready(function() {
     $(document).on('click', '.edit-record-btn', function(e) {
         e.stopPropagation();
         var $row = $(this).closest('tr');
-        var recordId = $row.data('record-id');
         var zoneId = $row.data('zone-id');
         var $zonePanel = $row.closest('.zone-panel');
         var zoneName = $zonePanel.data('zone-name');
 
+        isEditMode = true; // We're editing an existing record
         $('#recordModalTitle').text('{{ lang._("Edit DNS Record") }} - ' + zoneName);
-        $('#recordId').val(recordId);
         $('#recordZoneId').val(zoneId);
         $('#recordZone').val(zoneId);
         $('#recordZoneDisplay').val(zoneName);
@@ -662,7 +663,8 @@ $(document).ready(function() {
                         } else {
                             BootstrapDialog.alert({
                                 type: BootstrapDialog.TYPE_DANGER,
-                                message: '{{ lang._("Failed to delete record:") }} ' + (data.message || '{{ lang._("Unknown error") }}')
+                                title: '{{ lang._("Error") }}',
+                                message: '{{ lang._("Failed to delete record") }}: ' + name + ' (' + type + ')<br/><br/><strong>{{ lang._("Details") }}:</strong> ' + (data.message || '{{ lang._("Unknown error") }}')
                             });
                         }
                     });
@@ -679,6 +681,7 @@ $(document).ready(function() {
         $('#recordOldTtl').val('');
         $('#recordType').val('A').trigger('change');
         $('#txtType').val('custom').trigger('change');
+        isEditMode = false;
     }
 
     // TXT Record Auto-Detection Functions
@@ -922,8 +925,7 @@ $(document).ready(function() {
         var recordName = $('#recordName').val();
         var ttl = $('#recordTtl').val() || 300;
         var value = '';
-        var recordId = $('#recordId').val();
-        var isEdit = recordId !== '';
+        var zoneName = $('#recordZoneDisplay').val();
 
         // Build value based on record type
         if (recordType === 'TXT') {
@@ -948,15 +950,16 @@ $(document).ready(function() {
         }
 
         if (!zoneId || !recordName || !value) {
-            BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: '{{ lang._("Please fill in all required fields") }}'});
+            BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, title: '{{ lang._("Warning") }}', message: '{{ lang._("Please fill in all required fields") }}'});
             return;
         }
 
         var $btn = $(this);
         $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> {{ lang._("Saving...") }}');
 
-        var apiEndpoint = isEdit ? '/api/hclouddns/hetzner/updateRecord' : '/api/hclouddns/hetzner/createRecord';
-        var zoneName = $('#recordZoneDisplay').val();
+        // Use updateRecord for edits (handles both update and create via Hetzner API)
+        // Use createRecord only for new records
+        var apiEndpoint = isEditMode ? '/api/hclouddns/hetzner/updateRecord' : '/api/hclouddns/hetzner/createRecord';
         var postData = {
             account_uuid: currentAccountUuid,
             zone_id: zoneId,
@@ -976,14 +979,23 @@ $(document).ready(function() {
                 $('#recordModal').modal('hide');
                 BootstrapDialog.alert({
                     type: BootstrapDialog.TYPE_SUCCESS,
+                    title: '{{ lang._("Success") }}',
                     message: data.message || '{{ lang._("Record saved successfully") }}'
                 });
                 // Refresh records for this zone
                 loadRecords(zoneId);
             } else {
+                var errorDetails = '';
+                if (data && data.message) {
+                    errorDetails = data.message;
+                } else {
+                    errorDetails = '{{ lang._("Unknown error") }}';
+                }
+                var recordInfo = recordName + '.' + zoneName + ' (' + recordType + ')';
                 BootstrapDialog.alert({
                     type: BootstrapDialog.TYPE_DANGER,
-                    message: '{{ lang._("Failed to save record:") }} ' + (data.message || '{{ lang._("Unknown error") }}')
+                    title: '{{ lang._("Error") }}',
+                    message: '{{ lang._("Failed to save record") }}: ' + recordInfo + '<br/><br/><strong>{{ lang._("Details") }}:</strong> ' + errorDetails
                 });
             }
         });
@@ -1110,7 +1122,8 @@ $(document).ready(function() {
             } else {
                 BootstrapDialog.alert({
                     type: BootstrapDialog.TYPE_DANGER,
-                    message: '{{ lang._("Failed to revert:") }} ' + (data.message || '{{ lang._("Unknown error") }}')
+                    title: '{{ lang._("Error") }}',
+                    message: '{{ lang._("Failed to revert change") }}<br/><br/><strong>{{ lang._("Details") }}:</strong> ' + (data.message || '{{ lang._("Unknown error") }}')
                 });
                 $btn.prop('disabled', false).html('<i class="fa fa-undo"></i> {{ lang._("Revert This Change") }}');
             }

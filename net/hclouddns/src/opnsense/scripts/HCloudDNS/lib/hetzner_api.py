@@ -267,8 +267,8 @@ class HetznerCloudAPI:
                 # Record doesn't exist, create it
                 return self.create_record(zone_id, name, record_type, value, ttl)
 
-            # Check if value is same - no update needed
-            if existing.get('value') == str(value):
+            # Check if value AND ttl are same - no update needed
+            if existing.get('value') == str(value) and existing.get('ttl') == ttl:
                 return True, "unchanged"
 
             # Workaround for Cloud API PUT bug: DELETE then POST

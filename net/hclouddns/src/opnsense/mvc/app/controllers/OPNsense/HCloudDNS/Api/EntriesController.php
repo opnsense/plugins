@@ -822,4 +822,126 @@ class EntriesController extends ApiMutableModelControllerBase
             'removed' => $removed
         ];
     }
+
+    /**
+     * Apply default TTL to all DynDNS entries
+     * Updates both local config and Hetzner DNS records
+     * @return array result with updated count
+     */
+    public function applyDefaultTtlAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $mdl = $this->getModel();
+
+        // Get the default TTL from settings
+        $defaultTtl = (string)$mdl->general->defaultTtl;
+        // Remove underscore prefix if present (e.g. "_60" -> "60")
+        if (strpos($defaultTtl, '_') === 0) {
+            $defaultTtl = substr($defaultTtl, 1);
+        }
+        $ttl = intval($defaultTtl) ?: 60;
+
+        $updated = 0;
+        $failed = 0;
+        $skipped = 0;
+        $errors = [];
+        $backend = new Backend();
+
+        // Loop through all entries
+        foreach ($mdl->entries->entry->iterateItems() as $uuid => $entry) {
+            // Skip disabled entries
+            if ((string)$entry->enabled !== '1') {
+                $skipped++;
+                continue;
+            }
+
+            // Get entry details
+            $accountUuid = (string)$entry->account;
+
+            if (empty($accountUuid)) {
+                $skipped++;
+                continue;
+            }
+
+            // Get account token
+            $account = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+            if ($account === null) {
+                $skipped++;
+                continue;
+            }
+
+            $token = (string)$account->apiToken;
+            $zoneId = (string)$entry->zoneId;
+            $recordName = (string)$entry->recordName;
+            $recordType = (string)$entry->recordType;
+
+            if (empty($token) || empty($zoneId) || empty($recordName)) {
+                $skipped++;
+                continue;
+            }
+
+            // Get current IP from state or entry
+            $stateFile = '/var/run/hclouddns_state.json';
+            $currentIp = (string)$entry->currentIp;
+            if (file_exists($stateFile)) {
+                $state = json_decode(file_get_contents($stateFile), true) ?? [];
+                if (isset($state['entries'][$uuid]['hetznerIp'])) {
+                    $currentIp = $state['entries'][$uuid]['hetznerIp'];
+                }
+            }
+
+            if (empty($currentIp)) {
+                $skipped++;
+                continue;
+            }
+
+            // Sanitize inputs
+            $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+            $zoneId = preg_replace('/[^a-zA-Z0-9_-]/', '', $zoneId);
+            $recordName = preg_replace('/[^a-zA-Z0-9@._*-]/', '', $recordName);
+
+            // Update at Hetzner
+            $response = $backend->configdpRun('hclouddns dns update', [
+                $token, $zoneId, $recordName, $recordType, $currentIp, $ttl
+            ]);
+            $data = json_decode(trim($response), true);
+
+            if ($data !== null && isset($data['status']) && $data['status'] === 'ok') {
+                // Update local entry TTL
+                $entry->ttl = '_' . $ttl;
+                $updated++;
+            } else {
+                $failed++;
+                $errorMsg = $data['message'] ?? 'Unknown error';
+                $errors[] = "{$recordName}.{$entry->zoneName}: {$errorMsg}";
+            }
+        }
+
+        // Save config changes
+        if ($updated > 0) {
+            $mdl->serializeToConfig();
+            \OPNsense\Core\Config::getInstance()->save();
+        }
+
+        $message = "{$updated} entries updated to TTL {$ttl}s";
+        if ($skipped > 0) {
+            $message .= ", {$skipped} skipped";
+        }
+        if ($failed > 0) {
+            $message .= ", {$failed} failed";
+        }
+
+        return [
+            'status' => $failed === 0 ? 'ok' : 'partial',
+            'message' => $message,
+            'updated' => $updated,
+            'skipped' => $skipped,
+            'failed' => $failed,
+            'ttl' => $ttl,
+            'errors' => $errors
+        ];
+    }
 }

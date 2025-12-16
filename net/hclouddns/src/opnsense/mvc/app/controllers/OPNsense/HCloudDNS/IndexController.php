@@ -47,6 +47,7 @@ class IndexController extends BaseIndexController
         $this->view->entryForm = $this->getForm('dialogEntry');
         $this->view->accountForm = $this->getForm('dialogAccount');
         $this->view->scheduledForm = $this->getForm('dialogScheduled');
+        $this->view->entrySettingsForm = $this->getForm('dialogEntrySettings');
         $this->view->failoverForm = $this->getForm('failover');
     }
 

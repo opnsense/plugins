@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/HCloudDNS</mount>
     <description>Hetzner Cloud Dynamic DNS with Multi-Zone and Failover</description>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <items>
         <!-- Global Settings -->
         <general>
@@ -55,6 +55,20 @@
                 <MaximumValue>365</MaximumValue>
                 <ValidationMessage>History retention must be between 1 and 365 days</ValidationMessage>
             </historyRetentionDays>
+            <!-- Default TTL for DynDNS entries -->
+            <defaultTtl type="OptionField">
+                <Required>Y</Required>
+                <default>_60</default>
+                <OptionValues>
+                    <_60>60s (1 min - DynDNS)</_60>
+                    <_120>120s (2 min)</_120>
+                    <_300>300s (5 min)</_300>
+                    <_600>600s (10 min)</_600>
+                    <_1800>1800s (30 min)</_1800>
+                    <_3600>3600s (1 hour)</_3600>
+                    <_86400>86400s (1 day)</_86400>
+                </OptionValues>
+            </defaultTtl>
         </general>
 
         <!-- Gateways / Interfaces -->
@@ -165,11 +179,18 @@
                     <Required>N</Required>
                     <BlankDesc>None (no failover)</BlankDesc>
                 </failoverGateway>
-                <ttl type="IntegerField">
+                <ttl type="OptionField">
+                    <Required>Y</Required>
                     <default>300</default>
-                    <MinimumValue>60</MinimumValue>
-                    <MaximumValue>86400</MaximumValue>
-                    <ValidationMessage>TTL must be between 60 and 86400 seconds</ValidationMessage>
+                    <OptionValues>
+                        <_60>60s (1 min - DynDNS)</_60>
+                        <_120>120s (2 min)</_120>
+                        <_300>300s (5 min - default)</_300>
+                        <_600>600s (10 min)</_600>
+                        <_1800>1800s (30 min)</_1800>
+                        <_3600>3600s (1 hour)</_3600>
+                        <_86400>86400s (1 day)</_86400>
+                    </OptionValues>
                 </ttl>
                 <currentIp type="TextField">
                     <Required>N</Required>

@@ -154,6 +154,153 @@ def cleanup_old_history(retention_days):
     return removed
 
 
+def parse_ttl(ttl_raw):
+    """Parse TTL value from config - handles '_60' format and plain '60'"""
+    if not ttl_raw:
+        return 300
+    # Handle OptionField format: "_60" -> 60 or "opt60" -> 60
+    if ttl_raw.startswith('_'):
+        ttl_raw = ttl_raw[1:]
+    elif ttl_raw.startswith('opt'):
+        ttl_raw = ttl_raw[3:]
+    try:
+        return int(ttl_raw)
+    except ValueError:
+        return 300
+
+
+def send_ntfy(settings, title, message, tags=''):
+    """Send notification via ntfy"""
+    import urllib.request
+    import urllib.error
+
+    if not settings.get('ntfyEnabled') or not settings.get('ntfyTopic'):
+        return False
+
+    try:
+        server = settings.get('ntfyServer', 'https://ntfy.sh').rstrip('/')
+        topic = settings['ntfyTopic']
+        url = f"{server}/{topic}"
+
+        priority_map = {
+            'min': '1', 'low': '2', 'default': '3', 'high': '4', 'urgent': '5'
+        }
+        priority = priority_map.get(settings.get('ntfyPriority', 'default'), '3')
+
+        headers = {
+            'Title': title,
+            'Priority': priority,
+        }
+        if tags:
+            headers['Tags'] = tags
+
+        req = urllib.request.Request(
+            url,
+            data=message.encode('utf-8'),
+            headers=headers,
+            method='POST'
+        )
+
+        with urllib.request.urlopen(req, timeout=10):
+            log(f"Sent ntfy notification: {title}")
+            return True
+    except Exception as e:
+        log(f"Failed to send ntfy notification: {e}", syslog.LOG_ERR)
+        return False
+
+
+def send_webhook(settings, event_type, data):
+    """Send notification via webhook"""
+    import urllib.request
+    import urllib.error
+
+    if not settings.get('webhookEnabled') or not settings.get('webhookUrl'):
+        return False
+
+    try:
+        url = settings['webhookUrl']
+        method = settings.get('webhookMethod', 'POST')
+
+        payload = {
+            'event': event_type,
+            'timestamp': int(time.time()),
+            'plugin': 'os-hclouddns',
+            **data
+        }
+
+        json_data = json.dumps(payload).encode('utf-8')
+        headers = {'Content-Type': 'application/json'}
+
+        req = urllib.request.Request(url, data=json_data, headers=headers, method=method)
+
+        with urllib.request.urlopen(req, timeout=10):
+            log(f"Sent webhook notification: {event_type}")
+            return True
+    except Exception as e:
+        log(f"Failed to send webhook notification: {e}", syslog.LOG_ERR)
+        return False
+
+
+def send_notification(config, event_type, entry, old_ip=None, new_ip=None, error_msg=None):
+    """Send notifications for DNS events based on configuration"""
+    notifications = config.get('notifications', {})
+
+    if not notifications.get('enabled'):
+        return
+
+    # Check if this event type should trigger a notification
+    should_notify = False
+    if event_type == 'update' and notifications.get('notifyOnUpdate'):
+        should_notify = True
+    elif event_type == 'failover' and notifications.get('notifyOnFailover'):
+        should_notify = True
+    elif event_type == 'failback' and notifications.get('notifyOnFailback'):
+        should_notify = True
+    elif event_type == 'error' and notifications.get('notifyOnError'):
+        should_notify = True
+
+    if not should_notify:
+        return
+
+    # Build notification message
+    record_name = f"{entry['recordName']}.{entry['zoneName']}"
+
+    if event_type == 'update':
+        title = f"DNS Updated: {record_name}"
+        message = f"Record {record_name} ({entry['recordType']}) updated"
+        if old_ip and new_ip:
+            message += f"\nOld IP: {old_ip}\nNew IP: {new_ip}"
+        tags = 'arrows_counterclockwise,hclouddns'
+    elif event_type == 'failover':
+        title = f"DNS Failover: {record_name}"
+        message = f"Record {record_name} switched to failover gateway"
+        if new_ip:
+            message += f"\nNew IP: {new_ip}"
+        tags = 'warning,hclouddns'
+    elif event_type == 'failback':
+        title = f"DNS Failback: {record_name}"
+        message = f"Record {record_name} returned to primary gateway"
+        if new_ip:
+            message += f"\nNew IP: {new_ip}"
+        tags = 'white_check_mark,hclouddns'
+    elif event_type == 'error':
+        title = f"DNS Error: {record_name}"
+        message = f"Error updating {record_name}: {error_msg or 'Unknown error'}"
+        tags = 'x,hclouddns'
+    else:
+        return
+
+    # Send to all enabled channels
+    send_ntfy(notifications, title, message, tags)
+    send_webhook(notifications, event_type, {
+        'record': record_name,
+        'type': entry['recordType'],
+        'old_ip': old_ip,
+        'new_ip': new_ip,
+        'error': error_msg
+    })
+
+
 def load_config():
     """Load configuration from OPNsense config.xml"""
     config = {
@@ -166,7 +313,8 @@ def load_config():
         'historyRetentionDays': 7,
         'accounts': {},
         'gateways': {},
-        'entries': []
+        'entries': [],
+        'notifications': {}
     }
 
     try:
@@ -238,10 +386,30 @@ def load_config():
                     'recordType': entry.findtext('recordType', 'A'),
                     'primaryGateway': entry.findtext('primaryGateway', ''),
                     'failoverGateway': entry.findtext('failoverGateway', ''),
-                    'ttl': int(entry.findtext('ttl', '300')),
+                    'ttl': parse_ttl(entry.findtext('ttl', '300')),
                     'currentIp': entry.findtext('currentIp', ''),
                     'status': entry.findtext('status', 'pending')
                 })
+
+        # Notification settings
+        notifications = hcloud.find('notifications')
+        if notifications is not None:
+            config['notifications'] = {
+                'enabled': notifications.findtext('enabled', '0') == '1',
+                'notifyOnUpdate': notifications.findtext('notifyOnUpdate', '1') == '1',
+                'notifyOnFailover': notifications.findtext('notifyOnFailover', '1') == '1',
+                'notifyOnFailback': notifications.findtext('notifyOnFailback', '1') == '1',
+                'notifyOnError': notifications.findtext('notifyOnError', '1') == '1',
+                'emailEnabled': notifications.findtext('emailEnabled', '0') == '1',
+                'emailTo': notifications.findtext('emailTo', ''),
+                'webhookEnabled': notifications.findtext('webhookEnabled', '0') == '1',
+                'webhookUrl': notifications.findtext('webhookUrl', ''),
+                'webhookMethod': notifications.findtext('webhookMethod', 'POST'),
+                'ntfyEnabled': notifications.findtext('ntfyEnabled', '0') == '1',
+                'ntfyServer': notifications.findtext('ntfyServer', 'https://ntfy.sh'),
+                'ntfyTopic': notifications.findtext('ntfyTopic', ''),
+                'ntfyPriority': notifications.findtext('ntfyPriority', 'default'),
+            }
 
     except Exception as e:
         log(f'Error loading config: {str(e)}', syslog.LOG_ERR)
@@ -407,15 +575,18 @@ def update_dns_record(api, entry, target_ip, state):
     ttl = entry['ttl']
 
     try:
-        # Check current value first
+        # Check current value and TTL first
         records = api.list_records(zone_id)
         current_value = None
+        current_ttl = None
         for rec in records:
             if rec.get('name') == record_name and rec.get('type') == record_type:
                 current_value = rec.get('value')
+                current_ttl = rec.get('ttl')
                 break
 
-        if current_value == target_ip:
+        # Only skip if BOTH value AND TTL match
+        if current_value == target_ip and current_ttl == ttl:
             return True, 'unchanged'
 
         # Use the rrsets API to update/create record
@@ -502,7 +673,8 @@ def process_entries(config, state):
             results['errors'] += 1
             continue
 
-        # Track failover/failback events
+        # Track failover/failback events and send notifications
+        failover_event = None
         if old_active_gw and old_active_gw != active_uuid:
             if reason == 'failover':
                 results['failovers'] += 1
@@ -514,6 +686,7 @@ def process_entries(config, state):
                     'reason': 'primary_down'
                 })
                 log(f"FAILOVER: {entry['recordName']}.{entry['zoneName']} switching to failover gateway")
+                failover_event = 'failover'
             elif reason == 'failback':
                 results['failbacks'] += 1
                 state['failoverHistory'].append({
@@ -524,17 +697,14 @@ def process_entries(config, state):
                     'reason': 'failback'
                 })
                 log(f"FAILBACK: {entry['recordName']}.{entry['zoneName']} returning to primary gateway")
+                failover_event = 'failback'
 
         entry_state['activeGateway'] = active_uuid
 
-        # Check if update needed
+        # Get current Hetzner IP for history tracking
         current_hetzner_ip = entry_state.get('hetznerIp')
-        if current_hetzner_ip == target_ip:
-            entry_state['status'] = 'active' if reason in ['primary', 'failback'] else 'failover'
-            results['processed'] += 1
-            continue
 
-        # Update DNS
+        # Update DNS (update_dns_record checks both IP and TTL before deciding to update)
         success, update_reason = update_dns_record(api, entry, target_ip, state)
 
         if success:
@@ -546,9 +716,16 @@ def process_entries(config, state):
                 # Add history entry for tracking IP changes
                 action = 'create' if update_reason == 'created' else 'update'
                 add_history_entry(entry, account, current_hetzner_ip, target_ip, action)
+                # Send notification for update
+                send_notification(config, 'update', entry, current_hetzner_ip, target_ip)
+            # Send failover/failback notification if applicable
+            if failover_event:
+                send_notification(config, failover_event, entry, current_hetzner_ip, target_ip)
         else:
             entry_state['status'] = 'error'
             results['errors'] += 1
+            # Send error notification
+            send_notification(config, 'error', entry, error_msg=update_reason)
 
         results['processed'] += 1
 

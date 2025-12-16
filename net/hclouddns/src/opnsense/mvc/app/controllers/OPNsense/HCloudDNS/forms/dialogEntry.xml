@@ -49,8 +49,8 @@
     <field>
         <id>entry.ttl</id>
         <label>TTL</label>
-        <type>text</type>
-        <help>Time to live in seconds (60-86400)</help>
+        <type>dropdown</type>
+        <help>Time to live - use 60s for fast DynDNS updates</help>
     </field>
     <field>
         <type>header</type>
