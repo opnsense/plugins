@@ -24,6 +24,21 @@ osudpbroadcastrelay_enable="YES"
 {%    if osudpbroadcastrelay.sourceaddress %}
 {%     do Parameters.append("-s " ~ osudpbroadcastrelay.sourceaddress) %}
 {%    endif %}
+{%    if osudpbroadcastrelay.allowcidr %}
+{%    for allowcidr in osudpbroadcastrelay.allowcidr %}
+{%     do Parameters.append("--allowcidr " ~ allowcidr) %}
+{%    endfor %}
+{%    endif %}
+{%    if osudpbroadcastrelay.blockcidr %}
+{%    for blockcidr in osudpbroadcastrelay.blockcidr %}
+{%     do Parameters.append("--allowcidr " ~ blockcidr) %}
+{%    endfor %}
+{%    endif %}
+{%    if osudpbroadcastrelay.msearch %}
+{%    for msearch in osudpbroadcastrelay.msearch.split(' ') %}
+{%     do Parameters.append("--msearch " ~ (msearch | shlex_quote)) %}
+{%    endfor %}
+{%    endif %}
 {%    if osudpbroadcastrelay.RevertTTL|default('0') == '1' %}
 {%     do Parameters.append("-t ") %}
 {%    endif %}
