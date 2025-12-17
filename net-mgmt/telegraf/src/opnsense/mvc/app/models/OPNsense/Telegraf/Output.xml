@@ -19,10 +19,7 @@
             <Default>5</Default>
             <Required>N</Required>
         </influx_timeout>
-        <influx_name_prefix type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </influx_name_prefix>
+        <influx_name_prefix type="TextField"/>
         <influx_username type="TextField">
             <Default></Default>
             <Required>N</Required>
