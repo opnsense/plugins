@@ -3,6 +3,11 @@
     <id>neighbor.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>neighbor.description</id>
@@ -20,9 +25,40 @@
     <id>neighbor.multihop</id>
     <label>Multihop</label>
     <type>checkbox</type>
-    <help>multihop tells the BFD daemon that we should expect packets with TTL less than 254
-    (because it will take more than one hop) and to listen on the multihop port (4784).
-    When using multi-hop mode echo-mode will not work (see RFC 5883 section 3).
-    </help>
+    <help>Multihop tells the BFD daemon that we should expect packets with TTL less than 254 (because it will take more than one hop) and to listen on the multihop port (4784). When using multi-hop mode echo-mode will not work (see RFC 5883 section 3).</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.detect_multiplier</id>
+    <label>Detect multiplier</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Configures the detection multiplier to determine packet loss. The remote transmission interval will be multiplied by this value to determine the connection loss detection timer. The default value is 3.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.receive_interval</id>
+    <label>Receive interval</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>Configures the minimum interval that this system is capable of receiving control packets. The default value is 300 milliseconds.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.transmit_interval</id>
+    <label>Transmit interval</label>
+    <type>text</type>
+    <advanced>true</advanced>
+    <help>The minimum transmission interval (less jitter) that this system wants to use to send BFD control packets. Defaults to 300ms.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
   </field>
 </form>

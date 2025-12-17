@@ -6,6 +6,24 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.6
+
+Changed:
+* improve help text for "http-request redirect" rules (#4650)
+* rename "http-request redirect" input field (#4650)
+
+4.5
+
+Changed:
+* upgrade to HAProxy 3.0 release series (#4411)
+* migrate cert export to Trust MVC
+
+4.4
+
+Fixed:
+* Cron job "Sync SSL certificate changes" not working (#4035)
+* Template error with empty user group (#3364)
+
 4.3
 
 Added:

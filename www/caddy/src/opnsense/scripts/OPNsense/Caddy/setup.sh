@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 2023-2024 Cedrik Pischem
+# Copyright (c) 2023-2025 Cedrik Pischem
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -26,46 +26,36 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-# The directories are created as root:www with rwx permissions for both,
-# so the user can change in the GUI if caddy runs as root or www
-# If only ports 1024 and above are used, caddy can run as www user and group.
+# Detect configured caddy_user/group (defaults)
+. /etc/rc.conf.d/caddy
+CADDY_USER="${caddy_user:-root}"
+CADDY_GROUP="${caddy_group:-wheel}"
 
 # Define directories
 CADDY_CONF_DIR="/usr/local/etc/caddy"
 CADDY_DATA_DIR="/var/db/caddy"
 CADDY_LOG_DIR="/var/log/caddy"
-CADDY_RUN_DIR="/var/run/caddy"
 CADDY_CONF_CUSTOM_DIR="${CADDY_CONF_DIR}/caddy.d"
-CADDY_DATA_CUSTOM_DIR="${CADDY_DATA_DIR}/data/caddy/certificates/temp"
+CADDY_CONF_CERT_DIR="${CADDY_CONF_DIR}/certificates"
 CADDY_LOG_CUSTOM_DIR="${CADDY_LOG_DIR}/access"
 
-mkdir -p "${CADDY_CONF_DIR}"
-mkdir -p "${CADDY_DATA_DIR}"
-mkdir -p "${CADDY_LOG_DIR}"
-mkdir -p "${CADDY_RUN_DIR}"
-mkdir -p "${CADDY_CONF_CUSTOM_DIR}"
-mkdir -p "${CADDY_DATA_CUSTOM_DIR}"
-mkdir -p "${CADDY_LOG_CUSTOM_DIR}"
+# Group the main directories
+CADDY_DIRS="
+${CADDY_CONF_DIR}
+${CADDY_DATA_DIR}
+${CADDY_LOG_DIR}
+${CADDY_CONF_CERT_DIR}
+${CADDY_CONF_CUSTOM_DIR}
+${CADDY_LOG_CUSTOM_DIR}
+"
 
-chown -R root:www "${CADDY_CONF_DIR}"
-chown -R root:www "${CADDY_DATA_DIR}"
-chown -R root:www "${CADDY_LOG_DIR}"
-chown -R root:www "${CADDY_RUN_DIR}"
+# No inode changes occur when directory already exists or permissions are correct.
+# Always running these when caddy starts guarantees correct ownership with minimal read and writes.
+mkdir -p ${CADDY_DIRS}
+chown -R "${CADDY_USER}:${CADDY_GROUP}" ${CADDY_DIRS}
 
-# Directories need execute permissions to be accessible
-find "${CADDY_CONF_DIR}" -type d -exec chmod 770 {} +
-find "${CADDY_DATA_DIR}" -type d -exec chmod 770 {} +
-find "${CADDY_LOG_DIR}" -type d -exec chmod 770 {} +
-find "${CADDY_RUN_DIR}" -type d -exec chmod 770 {} +
+# Format and overwrite the Caddyfile
+( cd "${CADDY_CONF_DIR}" && /usr/local/bin/caddy fmt --overwrite )
 
-# Files can have read/write permissions
-find "${CADDY_CONF_DIR}" -type f -exec chmod 660 {} +
-find "${CADDY_DATA_DIR}" -type f -exec chmod 660 {} +
-find "${CADDY_LOG_DIR}" -type f -exec chmod 660 {} +
-find "${CADDY_RUN_DIR}" -type f -exec chmod 660 {} +
-
-# Format and overwrite the Caddyfile, this makes whitespace control in jinja2 unnecessary
-(cd "${CADDY_CONF_DIR}" && /usr/local/bin/caddy fmt --overwrite)
-
-# Write custom certs from the OPNsense Trust Store to CADDY_DATA_CUSTOM_DIR
+# Write custom certs from the OPNsense Trust Store
 /usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php

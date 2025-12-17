@@ -227,6 +227,12 @@
         <type>text</type>
     </field>
     <field>
+        <id>validation.dns_azuredns_managedidentity</id>
+        <label>Use System Assigned Managed Identity</label>
+        <type>checkbox</type>
+        <help><![CDATA[When System Assigned Managed Identity is enabled the Tenant ID, APP ID and Client Secret settings are ignored by the acme client. Access tokens are obtained using the Azure Instance Metadata Service for the System Assigned Managed Identity. See <a target="_blank" href="https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token">documentation</a>.]]></help>
+    </field>
+    <field>
         <label>Bunny</label>
         <type>header</type>
         <style>table_dns table_dns_bunny</style>
@@ -553,6 +559,31 @@
         <type>password</type>
     </field>
     <field>
+        <label>Fornex</label>
+        <type>header</type>
+        <style>table_dns table_dns_fornex</style>
+    </field>
+    <field>
+        <id>validation.dns_fornex_api_key</id>
+        <label>ApiKey</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>ZoneEdit</label>
+        <type>header</type>
+        <style>table_dns table_dns_zoneedit</style>
+    </field>
+    <field>
+        <id>validation.dns_zoneedit_id</id>
+        <label>ZoneEdit ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_zoneedit_token</id>
+        <label>ZoneEdit Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Gandi LiveDNS</label>
         <type>header</type>
         <style>table_dns table_dns_gandi_livedns</style>
@@ -564,9 +595,9 @@
     </field>
     <field>
         <id>validation.dns_gandi_livedns_key</id>
-        <label>API Key (DEPRECATED)</label>
+        <label>API key (deprecated)</label>
         <type>text</type>
-        <help>The API Key is the previous mechanism that was replaced with Personal Access Tokens. API Keys should no longer be used.</help>
+        <help>The API key is the previous mechanism that was replaced with Personal Access Tokens. API keys should no longer be used.</help>
     </field>
     <field>
         <label>Google Cloud DNS</label>
@@ -680,9 +711,15 @@
         <type>text</type>
     </field>
     <field>
-        <id>validation.dns_inws_password</id>
+        <id>validation.dns_inwx_password</id>
         <label>Password</label>
         <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_inwx_shared_secret</id>
+        <label>Shared Secret</label>
+        <type>password</type>
+        <help>When 2FA is enabled, the Shared Secret must be provided. Note that this feature requires the package oath-toolkit, which must be installed manually.</help>
     </field>
     <field>
         <label>IONOS domain API</label>
@@ -803,7 +840,7 @@
         <help>Specify the location of the generated TSIG Key inside the TSIG file using grep and cut, example: grep \# /etc/knot/acme.key | cut -d' ' -f2</help>
     </field>
     <field>
-        <label>lexicon (DEPRECATED)</label>
+        <label>Lexicon (deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_lexicon</style>
     </field>
@@ -833,7 +870,7 @@
         <type>text</type>
     </field>
     <field>
-        <label>Linode API (v3 / Deprecated)</label>
+        <label>Linode API (v3/deprecated)</label>
         <type>header</type>
         <style>table_dns table_dns_linode</style>
     </field>
@@ -934,6 +971,21 @@
         <label>Server</label>
         <type>text</type>
         <help>MailinaBox Server FQDN</help>
+    </field>
+    <field>
+        <label>MyDNS.JP</label>
+        <type>header</type>
+        <style>table_dns table_dns_mydnsjp</style>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_masterid</id>
+        <label>Master ID</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_mydnsjp_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>Mythic Beasts</label>
@@ -1193,14 +1245,47 @@
         <type>text</type>
     </field>
     <field>
-        <label>selectel</label>
+        <label>Selectel</label>
         <type>header</type>
         <style>table_dns table_dns_selectel</style>
     </field>
     <field>
         <id>validation.dns_sl_key</id>
-        <label>API Key</label>
+        <label>API key (deprecated)</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_sl_apiver</id>
+        <label>API Version</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>validation.dns_sl_token_lifetime</id>
+        <label>Token lifetime</label>
+        <type>text</type>
+        <help>Token lifetime in minutes (0-1440)</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_account_id</id>
+        <label>Account ID</label>
+        <type>text</type>
+        <help>The account number can be found on the Selectel control panel</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_project_name</id>
+        <label>Project name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_sl_login_name</id>
+        <label>Service username</label>
+        <type>text</type>
+        <help>The service username can be found in the Selectel control panel</help>
+    </field>
+    <field>
+        <id>validation.dns_sl_password</id>
+        <label>Password</label>
+        <type>password</type>
     </field>
     <field>
         <label>Selfhost</label>
@@ -1560,6 +1645,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Hetzner Cloud DNS API</label>
+        <type>header</type>
+        <style>table_dns table_dns_hetznercloud</style>
+    </field>
+    <field>
+        <id>validation.dns_hetznercloud_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>1984Hosting API</label>
         <type>header</type>
         <style>table_dns table_dns_1984hosting</style>
@@ -1749,6 +1844,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>Websupport.sk</label>
+        <type>header</type>
+        <style>table_dns table_dns_websupport</style>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_key</id>
+        <label>Identifier</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_websupport_api_secret</id>
+        <label>Secret key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
@@ -1892,5 +2002,24 @@
         <id>validation.dns_rage4_token</id>
         <label>Token</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>mijn.host</label>
+        <type>header</type>
+        <style>table_dns table_dns_mijnhost</style>
+    </field>
+    <field>
+        <id>validation.dns_mijnhost_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+        <help><![CDATA[Please refer to the <a href="https://mijn.host/api/doc/">API documentation</a> for further information.]]></help>
+        <label>scaleway</label>
+        <type>header</type>
+        <style>table_dns table_dns_scaleway</style>
+    </field>
+    <field>
+        <id>validation.dns_scaleway_token</id>
+        <label>API Key</label>
+        <type>text</type>
     </field>
 </form>

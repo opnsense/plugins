@@ -26,24 +26,23 @@
  #}
 
 <script>
-  $( document ).ready(function() {
-      let data_get_map = {'frm_static_settings':"/api/quagga/static/get"};
-      mapDataToFormUI(data_get_map).done(function(data){
-          formatTokenizersUI();
-          $('.selectpicker').selectpicker('refresh');
-          updateServiceControlUI('quagga');
-      });
+    $( document ).ready(function() {
+        mapDataToFormUI({'frm_static_settings': "/api/quagga/static/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
+        });
 
-      $("#grid-iproutes").UIBootgrid({
-          'search':'/api/quagga/static/searchRoute',
-          'get':'/api/quagga/static/getRoute/',
-          'set':'/api/quagga/static/setRoute/',
-          'add':'/api/quagga/static/addRoute/',
-          'del':'/api/quagga/static/delRoute/',
-          'toggle':'/api/quagga/static/toggleRoute/'
-      });
+        $("#{{formGridEditSTATICRoute['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/static/search_route',
+            'get':'/api/quagga/static/get_route/',
+            'set':'/api/quagga/static/set_route/',
+            'add':'/api/quagga/static/add_route/',
+            'del':'/api/quagga/static/del_route/',
+            'toggle':'/api/quagga/static/toggle_route/'
+        });
 
-      $("#reconfigureAct").SimpleActionButton({
+        $("#reconfigureAct").SimpleActionButton({
             onPreAction: function() {
                 const dfObj = new $.Deferred();
                 saveFormToEndpoint("/api/quagga/static/set", 'frm_static_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
@@ -63,51 +62,21 @@
 </ul>
 
 <div class="tab-content content-box">
-    <!-- general settings  -->
+    <!-- Tab: General -->
     <div id="general"  class="tab-pane fade in active">
         {{ partial("layout_partials/base_form",['fields':staticForm,'id':'frm_static_settings'])}}
     </div>
     <!-- Tab: Routes -->
     <div id="iproute" class="tab-pane fade in">
-      <table id="grid-iproutes" class="table table-responsive" data-editDialog="DialogEditSTATICRoute">
-        <thead>
-          <tr>
-              <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-              <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-              <th data-column-id="network" data-type="string">{{ lang._('Network') }}</th>
-              <th data-column-id="gateway" data-type="string">{{ lang._('Gateway') }}</th>
-              <th data-column-id="interfacename" data-type="string">{{ lang._('Interface') }}</th>
-              <th data-column-id="commands" data-formatter="commands">{{ lang._('Commands') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td>
-              <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-              <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditSTATICRoute)}}
     </div>
 </div>
-
-<section class="page-content-main">
-  <div class="content-box">
-      <div class="col-md-12">
-          <br/>
-          <button class="btn btn-primary" id="reconfigureAct"
-                  data-endpoint='/api/quagga/service/reconfigure'
-                  data-label="{{ lang._('Apply') }}"
-                  data-error-title="{{ lang._('Error reconfiguring STATIC') }}"
-                  type="button"
-          ></button>
-          <br/><br/>
-      </div>
-  </div>
-</section>
-
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditSTATICRoute,'id':'DialogEditSTATICRoute','label':lang._('Edit Routes')])}}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
+    }
+) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditSTATICRoute,'id':formGridEditSTATICRoute['edit_dialog_id'],'label':lang._('Edit Routes')])}}

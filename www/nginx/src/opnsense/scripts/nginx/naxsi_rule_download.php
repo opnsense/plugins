@@ -81,7 +81,7 @@ function parse_rules($data)
             }
             $tmp = trim($matches[1]);
             $parsed[$tmp] = [];
-        } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches)) {
+        } elseif (preg_match('/\S+ "(str|rx):(.+)" "msg:([^\\"]*)" +"mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches)) {
             $parsed[$tmp][] = prepare_values(array_combine($description, $matches));
         }
     }
@@ -167,17 +167,10 @@ function save_to_model($data)
         }
         $policy->naxsi_rules = implode(',', array_diff($rule_list, $dis_rules));
     }
-    $val_result = $model->performValidation(false);
-    if (count($val_result) !== 0) {
-        print_r($val_result);
-        exit(1);
-    }
-
-    $model->serializeToConfig();
+    // skip validation on serialization. possible warnings and errors will still end up in the syslog
+    $model->serializeToConfig(false, true);
     Config::getInstance()->save();
 }
 
-
-#$data =  parse_rules(file('./naxsi_core.rules'));
 $data = parse_rules(explode("\n", download_rules()));
 save_to_model($data);

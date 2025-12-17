@@ -294,13 +294,13 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="valid" data-searchable="false" data-formatter="boolean" data-sortable="false">{{ lang._('Valid') }}</th>
                                 <th data-column-id="bestpath" data-searchable="false" data-formatter="boolean" data-sortable="false">{{ lang._('Best') }}</th>
                                 <th data-column-id="internal" data-searchable="false" data-formatter="boolean" data-sortable="false">{{ lang._('Internal') }}</th>
-                                <th data-column-id="network" data-width="15%">{{ lang._('Network') }}</th>
-                                <th data-column-id="ip" data-width="25%">{{ lang._('Next Hop') }}</th>
+                                <th data-column-id="network" >{{ lang._('Network') }}</th>
+                                <th data-column-id="ip">{{ lang._('Next Hop') }}</th>
                                 <th data-column-id="metric" data-searchable="false">{{ lang._('Metric') }}</th>
                                 <th data-column-id="locPrf" data-searchable="false">{{ lang._('LocPrf') }}</th>
                                 <th data-column-id="weight" data-searchable="false">{{ lang._('Weight') }}</th>
-                                <th data-column-id="path" data-width="21%">{{ lang._('Path') }}</th>
-                                <th data-column-id="origin" data-width="10%" data-formatter="origin">{{ lang._('Origin') }}</th>
+                                <th data-column-id="path">{{ lang._('Path') }}</th>
+                                <th data-column-id="origin" data-formatter="origin">{{ lang._('Origin') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -332,8 +332,8 @@ POSSIBILITY OF SUCH DAMAGE.
                         <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
                             <thead>
                             <tr>
-                                <th data-column-id="destinationType" data-width="5em" data-formatter="ospf6_dest_type" data-sortable="false">{{ lang._('Type') }}</th>
-                                <th data-column-id="isBestRoute" data-width="5em" data-formatter="boolean" data-searchable="false" data-sortable="false">{{ lang._('Best') }}</th>
+                                <th data-column-id="destinationType" data-formatter="ospf6_dest_type" data-sortable="false">{{ lang._('Type') }}</th>
+                                <th data-column-id="isBestRoute" data-formatter="boolean" data-searchable="false" data-sortable="false">{{ lang._('Best') }}</th>
                                 <th data-column-id="pathType" data-formatter="ospf6_path_type">{{ lang._('Path type') }}</th>
                                 <th data-column-id="network">{{ lang._('Network') }}</th>
                                 <th data-column-id="nextHop" data-type="string">{{ lang._('nextHop') }}</th>
@@ -353,14 +353,14 @@ POSSIBILITY OF SUCH DAMAGE.
                             <thead>
                             <tr>
                                 <th data-column-id="neighborid">{{ lang._('Neighbor ID') }}</th>
-                                <th data-column-id="priority" data-searchable="false">{{ lang._('Priority') }}</th>
-                                <th data-column-id="state">{{ lang._('State') }}</th>
-                                <th data-column-id="deadTimeMsecs" data-searchable="false">{{ lang._('Dead Time') }} &lsqb;ms&rsqb;</th>
-                                <th data-column-id="address">{{ lang._('Address') }}</th>
+                                <th data-column-id="nbrPriority" data-searchable="false">{{ lang._('Priority') }}</th>
+                                <th data-column-id="nbrState">{{ lang._('State') }}</th>
+                                <th data-column-id="routerDeadIntervalTimerDueMsec" data-searchable="false">{{ lang._('Dead Time') }} &lsqb;ms&rsqb;</th>
+                                <th data-column-id="ifaceAddress">{{ lang._('Address') }}</th>
                                 <th data-column-id="ifaceName">{{ lang._('Interface') }}</th>
-                                <th data-column-id="retransmitCounter" data-searchable="false">{{ lang._('Retransmit Counter') }}</th>
-                                <th data-column-id="requestCounter" data-searchable="false">{{ lang._('Request Counter') }}</th>
-                                <th data-column-id="dbSummaryCounter" data-searchable="false">{{ lang._('DB Summary Counter') }}</th>
+                                <th data-column-id="linkStateRetransmissionListCounter" data-searchable="false">{{ lang._('Retransmit Counter') }}</th>
+                                <th data-column-id="linkStateRequestListCounter" data-searchable="false">{{ lang._('Request Counter') }}</th>
+                                <th data-column-id="databaseSummaryListCounter" data-searchable="false">{{ lang._('DB Summary Counter') }}</th>
                             </tr>
                             </thead>
                             <tbody>

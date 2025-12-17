@@ -18,6 +18,10 @@
         <label>Invert List</label>
         <type>checkbox</type>
         <help><![CDATA[If checked, the access list logic will be inverted (i.e., the listed IPs will be blocked instead of allowed).]]></help>
+        <grid_view>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <id>accesslist.HttpResponseCode</id>
@@ -26,6 +30,9 @@
         <hint>abort</hint>
         <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list does not match. If empty, the connection is aborted with no response.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>accesslist.HttpResponseMessage</id>
@@ -33,6 +40,19 @@
         <type>text</type>
         <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code. If empty, the default HTTP response message for the chosen HTTP response code will be used.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>accesslist.RequestMatcher</id>
+        <label>Request Matcher</label>
+        <type>dropdown</type>
+        <help><![CDATA[Set the request matcher that will be applied to this access list.]]></help>
+        <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>accesslist.description</id>

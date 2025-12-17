@@ -3,20 +3,20 @@
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>This will activate the routing service.</help>
+        <help>This will activate the routing service. Without enabling it globally, none of the individual services will run.</help>
     </field>
     <field>
         <id>general.profile</id>
         <label>Profile</label>
         <type>dropdown</type>
         <advanced>true</advanced>
-        <help><![CDATA[Control FRR's default profile. "traditional" is the default, "datacenter" is more aggressive. Please refer to the <a href="http://docs.frrouting.org/en/latest/basic.html#profiles">FRR documentation</a> for more information.]]></help>
+        <help>Control FRR’s default profile: traditional reflects defaults adhering mostly to IETF standards or common practices in wide-area internet routing. datacenter reflects a single administrative domain with intradomain links using aggressive timers.</help>
     </field>
     <field>
         <id>general.enablecarp</id>
         <label>Enable CARP Failover</label>
         <type>checkbox</type>
-        <help>This will activate the routing service only on the master device.</help>
+        <help>This will activate the routing service only on the master device. The backup device will stop the service completely.</help>
     </field>
     <field>
         <id>general.enablesnmp</id>
@@ -28,7 +28,7 @@
         <id>general.enablesyslog</id>
         <label>Enable logging</label>
         <type>checkbox</type>
-        <help>Syslog is a service which is made to collect log messages from different software and maybe to a central logging server. Check this box if you have such a setup.</help>
+        <help>Sends logs to the OPNsense integrated syslog-ng service.</help>
     </field>
     <field>
         <id>general.sysloglevel</id>
@@ -40,8 +40,6 @@
         <id>general.fwrules</id>
         <label>Firewall rules</label>
         <type>checkbox</type>
-        <help>Enable automatically created firewall rules, when additional policies are needed, disable this and define
-        your own custom policies in the Firewall section.
-        </help>
+        <help>Enable automatically created firewall rules, when additional policies are needed, disable this and define your own custom policies in the Firewall section.</help>
     </field>
 </form>

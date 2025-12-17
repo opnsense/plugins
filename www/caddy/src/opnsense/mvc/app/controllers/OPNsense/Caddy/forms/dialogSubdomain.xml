@@ -4,12 +4,11 @@
         <label>Enabled</label>
         <type>checkbox</type>
         <help><![CDATA[Enable this subdomain.]]></help>
-    </field>
-    <field>
-        <id>subdomain.description</id>
-        <label>Description</label>
-        <type>text</type>
-        <help><![CDATA[Enter a description for this subdomain.]]></help>
+        <grid_view>
+            <width>20</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -20,12 +19,14 @@
         <label>Domain</label>
         <type>dropdown</type>
         <help><![CDATA[Select a wildcard domain for this subdomain.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.FromDomain</id>
         <label>Subdomain</label>
         <type>text</type>
-        <hint>opn.example.com</hint>
         <help><![CDATA[Enter a subdomain. For example, "opn.example.com" if the wildcard domain is "*.example.com". All subdomains use the same ports and protocols as their parent wildcard domain.]]></help>
     </field>
     <field>
@@ -33,6 +34,11 @@
         <label>Dynamic DNS</label>
         <type>checkbox</type>
         <help><![CDATA[Enable or disable Dynamic DNS. Requires a "DNS Provider" in "General Settings". The DNS records of this subdomain will be automatically updated.]]></help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.AcmePassthrough</id>
@@ -40,17 +46,28 @@
         <type>text</type>
         <help><![CDATA[Enter a domain name or IP address. The HTTP-01 challenge will be redirected to that destination. This enables an ACME Client behind Caddy to serve "/.well-known/acme-challenge/" on port 80. Caddy will reverse proxy the HTTP-01 challenge for this subdomain.]]></help>
         <advanced>true</advanced>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help><![CDATA[Enter a description for this subdomain.]]></help>
     </field>
     <field>
         <type>header</type>
         <label>Access</label>
-        <collapse>true</collapse>
     </field>
     <field>
         <id>subdomain.accesslist</id>
         <label>Access List</label>
         <type>dropdown</type>
         <help><![CDATA[Select an Access List to restrict access to this subdomain. If unset, any local or remote client is allowed access.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
     <field>
         <id>subdomain.basicauth</id>
@@ -58,5 +75,27 @@
         <type>select_multiple</type>
         <size>5</size>
         <help><![CDATA[Select Users to restrict access to this subdomain. Basic Auth matches after Access Lists. If unset, any user is allowed access.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.ClientAuthTrustPool</id>
+        <label>Client Auth Trust Pool</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Choose multiple CAs or self-signed certificates from "System - Trust - Authorities". Client Auth is activated as soon as at least one certificate has been chosen. Important: Certificate revocation lists are not evaluated. If you need granular control, provide individual self-signed certificates for each device, and unset them to block access. Though keep in mind that if no certificate is left in this field, Client Auth will be deactivated.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>subdomain.ClientAuthMode</id>
+        <label>Client Auth Mode</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help><![CDATA["request" - Ask clients for a certificate, but allow even if there isn't one; do not verify it. "require" - Require clients to present a certificate, but do not verify it. "verify_if_given" - Ask clients for a certificate; allow even if there isn't one, but verify it if there is. "require_and_verify" - Require clients to present a valid certificate that is verified.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
 </form>

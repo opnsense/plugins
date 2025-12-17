@@ -69,6 +69,12 @@
               Leave blank to not change path after login.</help>
     </field>
     <field>
+        <id>action.sftp_modtime</id>
+        <label>Preserve Modification Time</label>
+        <type>checkbox</type>
+        <help>Preserves modification times from the source file. Note that this is not supported by all SFTP servers and may cause the upload to fail, e.g. on VMware</help>
+    </field>
+    <field>
         <id>action.sftp_chmod</id>
         <label>Permission (Public Keys)</label>
         <type>text</type>
@@ -188,7 +194,7 @@
         <id>action.acme_synology_dsm_hostname</id>
         <label>Synology Hostname</label>
         <type>text</type>
-        <help>Hostname of IP adress of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
+        <help>Hostname of IP address of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
     </field>
     <field>
         <id>action.acme_synology_dsm_port</id>
@@ -224,6 +230,12 @@
         <label>Device Name</label>
         <type>text</type>
         <help>If Synology DSM has OTP enabled, then the device name has to be provided so that no OTP is required when running the automation.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_otpcode</id>
+        <label>OTP Code</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then a OTP may be required.</help>
     </field>
     <field>
         <id>action.acme_synology_dsm_create</id>
@@ -322,6 +334,47 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_acme_proxmoxbs</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_user</id>
+        <label>Proxmox BS user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_server</id>
+        <label>Proxmox BS server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox BS node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_port</id>
+        <label>Proxmox BS server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8007.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_realm</id>
+        <label>Proxmox BS realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenid</id>
+        <label>Proxmox BS token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenkey</id>
+        <label>Proxmox BS token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
@@ -334,7 +387,7 @@
         <id>action.acme_truenas_hostname</id>
         <label>TrueNAS hostname</label>
         <type>text</type>
-        <help>Hostname or IP adress of TrueNAS Core Server.</help>
+        <help>Hostname or IP address of TrueNAS Core Server.</help>
     </field>
     <field>
         <id>action.acme_truenas_scheme</id>

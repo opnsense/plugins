@@ -43,7 +43,6 @@ class ExitaclController extends ApiMutableModelControllerBase
     }
     public function getaclAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('exitpolicy', 'policy', $uuid);
     }
     public function addaclAction()

@@ -3,6 +3,7 @@
 {% set generalSettings = helpers.getNodeByTag('Pischem.caddy.general') %}
 {% if generalSettings.enabled|default("0") == "1" %}
 caddy_enable="YES"
+caddy_admin="unix//var/run/caddy/caddy.sock|0220"
 caddy_setup="/usr/local/opnsense/scripts/OPNsense/Caddy/setup.sh"
 {% if generalSettings.DisableSuperuser|default("0") == "1" %}
 caddy_user=www

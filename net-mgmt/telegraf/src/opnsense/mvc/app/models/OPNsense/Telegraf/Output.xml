@@ -4,35 +4,36 @@
     <version>1.4.6</version>
     <items>
         <influx_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </influx_enable>
         <influx_url type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_url>
         <influx_database type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_database>
         <influx_timeout type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
         </influx_timeout>
+        <influx_name_prefix type="TextField"/>
         <influx_username type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_username>
         <influx_password type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_password>
         <influx_insecure_skip_verify type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </influx_insecure_skip_verify>
         <graphite_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </graphite_enable>
         <graphite_server type="TextField">
@@ -45,26 +46,26 @@
             <Required>N</Required>
         </graphite_template>
         <graphite_ssl_disable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </graphite_ssl_disable>
         <graphite_verify type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </graphite_verify>
         <graphite_tagsupport type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </graphite_tagsupport>
         <graylog_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </graylog_enable>
         <graylog_server type="TextField">
             <Required>N</Required>
         </graylog_server>
         <elastic_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </elastic_enable>
         <elastic_url type="TextField">
@@ -77,82 +78,82 @@
             <Required>N</Required>
         </elastic_password>
         <elastic_timeout type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
         </elastic_timeout>
         <elastic_indexname type="TextField">
-            <default>telegraf-%Y.%m.%d</default>
+            <Default>telegraf-%Y.%m.%d</Default>
             <Required>N</Required>
         </elastic_indexname>
         <prometheus_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </prometheus_enable>
         <prometheus_listen type="PortField">
-            <default>9273</default>
+            <Default>9273</Default>
             <Required>N</Required>
         </prometheus_listen>
         <prometheus_exclude type="CSVListField">
             <Required>N</Required>
         </prometheus_exclude>
         <prometheus_stringaslabel type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>N</Required>
         </prometheus_stringaslabel>
         <influx_v2_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </influx_v2_enable>
         <influx_v2_url type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_v2_url>
         <influx_v2_token type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_v2_token>
         <influx_v2_organization type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_v2_organization>
         <influx_v2_bucket type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </influx_v2_bucket>
         <influx_v2_insecure_skip_verify type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </influx_v2_insecure_skip_verify>
         <influx_v2_timeout type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
         </influx_v2_timeout>
         <datadog_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </datadog_enable>
         <datadog_url type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </datadog_url>
         <datadog_apikey type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </datadog_apikey>
         <mqtt_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </mqtt_enable>
         <mqtt_topic_prefix type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen are allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_topic_prefix>
         <mqtt_topic type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-\/{}]){1,200}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-\/{}]){1,200}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore, hyphen, slash and curly braces are allowed. Do not use more than 200 characters.</ValidationMessage>
         </mqtt_topic>
         <mqtt_servers type="CSVListField">
@@ -161,17 +162,17 @@
             <FieldSeparator>,</FieldSeparator>
         </mqtt_servers>
         <mqtt_insecure_skip_verify type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </mqtt_insecure_skip_verify>
         <mqtt_client_id type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_client_id>
         <mqtt_qos type="OptionField">
-            <default>2</default>
+            <Default>2</Default>
             <Required>Y</Required>
             <OptionValues>
                 <qos0 value="0">(0) At most once</qos0>
@@ -180,25 +181,25 @@
             </OptionValues>
         </mqtt_qos>
         <mqtt_retain type="BooleanField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </mqtt_retain>
         <mqtt_timeout type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
         </mqtt_timeout>
         <mqtt_username type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
-            <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+            <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_username>
         <mqtt_password type="TextField">
-            <default></default>
+            <Default></Default>
             <Required>N</Required>
         </mqtt_password>
         <mqtt_layout type="OptionField">
-            <default>non-batch</default>
+            <Default>non-batch</Default>
             <Required>Y</Required>
             <OptionValues>
                 <non-batch>(non-batch) send individual messages, one for each metric</non-batch>
@@ -207,7 +208,7 @@
             </OptionValues>
         </mqtt_layout>
         <mqtt_data_format type="OptionField">
-            <default>influx</default>
+            <Default>influx</Default>
             <Required>Y</Required>
             <OptionValues>
                 <carbon2>Carbon2</carbon2>
@@ -225,22 +226,22 @@
             </OptionValues>
         </mqtt_data_format>
         <opentelemetry_enable type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </opentelemetry_enable>
         <opentelemetry_server type="TextField">
             <Required>N</Required>
         </opentelemetry_server>
         <opentelemetry_insecure_skip_verify type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>N</Required>
         </opentelemetry_insecure_skip_verify>
         <opentelemetry_timeout type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>N</Required>
         </opentelemetry_timeout>
         <opentelemetry_compression type="OptionField">
-            <default>gzip</default>
+            <Default>gzip</Default>
             <Required>Y</Required>
             <OptionValues>
                 <gzip>gzip</gzip>

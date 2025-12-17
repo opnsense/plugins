@@ -37,8 +37,8 @@ export default class CaddyDomain extends BaseTableWidget {
     }
 
     getMarkup() {
-        let $container = $('<div></div>');
-        let $caddyDomainTable = this.createTable('caddyDomainTable', {
+        const $container = $('<div></div>');
+        const $caddyDomainTable = this.createTable('caddyDomainTable', {
             headerPosition: 'none'
         });
 
@@ -48,14 +48,21 @@ export default class CaddyDomain extends BaseTableWidget {
 
     async onWidgetTick() {
         // Check if caddy is enabled
-        const data = await this.ajaxCall('/api/caddy/reverse_proxy/get');
+        const data = await this.ajaxCall(`/api/caddy/reverse_proxy/${'get'}`);
         if (!data.caddy.general || data.caddy.general.enabled === "0") {
             this.displayError(`${this.translations.unconfigured}`);
             return;
         }
 
         // Process domains if caddy is enabled
-        let domains = { ...data.caddy.reverseproxy.reverse, ...data.caddy.reverseproxy.subdomain };
+        const domains = { ...data.caddy.reverseproxy.reverse, ...data.caddy.reverseproxy.subdomain };
+
+        if (Object.keys(domains).length === 0) {
+            this.displayError(`${this.translations.nodomains}`);
+            return;
+        }
+
+        this.clearError();
         this.processDomains(domains);
     }
 
@@ -65,6 +72,10 @@ export default class CaddyDomain extends BaseTableWidget {
         $('#caddyDomainTable').empty().append($error);
     }
 
+    clearError() {
+        $('#caddyDomainTable .error-message').remove();
+    }
+
     processDomains(domains) {
         if (!this.dataChanged('domains', domains)) {
             return;
@@ -72,19 +83,18 @@ export default class CaddyDomain extends BaseTableWidget {
 
         $('.caddy-domain-tooltip').tooltip('hide');
 
-        let rows = [];
-        // Assuming domains is a combination of both reverse and subdomains
+        const rows = [];
         for (const key in domains) {
             const domain = domains[key];
-            let colorClass = domain.enabled === "1" ? 'text-success' : 'text-danger';
-            let tooltipText = domain.enabled === "1" ? this.translations.enabled : this.translations.disabled;
+            const colorClass = domain.enabled === "1" ? 'text-success' : 'text-danger';
+            const tooltipText = domain.enabled === "1" ? this.translations.enabled : this.translations.disabled;
             let domainPort = domain.FromDomain;
 
             if (domain.FromPort) {
                 domainPort += `:${domain.FromPort}`;
             }
 
-            let row = $(`
+            const row = $(`
                 <div class="caddy-info">
                     <div class="caddy-enabled">
                         <i class="fa fa-globe ${colorClass} caddy-domain-tooltip" style="cursor: pointer;"
@@ -108,6 +118,6 @@ export default class CaddyDomain extends BaseTableWidget {
         super.updateTable('caddyDomainTable', rows.map(row => [row.html]));
 
         // Initialize tooltips for interactivity
-        $('.caddy-domain-tooltip').tooltip({container: 'body'});
+        $('.caddy-domain-tooltip').tooltip({ container: 'body' });
     }
 }

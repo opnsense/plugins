@@ -1,23 +1,22 @@
 <model>
     <mount>//system/backup/git</mount>
     <version>1.0.0</version>
-    <description>OPNsense Git Backup Settings</description>
+    <description>Git Backup Settings</description>
     <items>
         <enabled type="BooleanField">
-          <Default>0</Default>
-          <Required>Y</Required>
-          <Constraints>
-              <check001>
-                  <reference>user.check001</reference>
-              </check001>
-              <check002>
-                  <reference>url.check001</reference>
-              </check002>
-          </Constraints>
+            <Default>0</Default>
+            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <reference>user.check001</reference>
+                </check001>
+                <check002>
+                    <reference>url.check001</reference>
+                </check002>
+            </Constraints>
         </enabled>
         <url type="TextField">
-            <Required>N</Required>
-            <mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</mask>
+            <Mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</Mask>
             <ValidationMessage>A valid git location must be provided. e.g. ssh://server/project.git, https://server/project.git</ValidationMessage>
             <Constraints>
                 <check001>
@@ -30,22 +29,24 @@
             </Constraints>
         </url>
         <branch type="TextField">
-          <Default>master</Default>
-          <Required>Y</Required>
+            <Default>master</Default>
+            <Required>Y</Required>
         </branch>
-        <privkey type="TextField">
-            <Required>N</Required>
-        </privkey>
+        <force_push type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </force_push>
+        <privkey type="TextField"/>
         <user type="TextField">
-          <Constraints>
-              <check001>
-                  <ValidationMessage>A username is required.</ValidationMessage>
-                  <type>DependConstraint</type>
-                  <addFields>
-                      <field1>enabled</field1>
-                  </addFields>
-              </check001>
-          </Constraints>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>A username is required.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
         </user>
         <password type="TextField">
         </password>

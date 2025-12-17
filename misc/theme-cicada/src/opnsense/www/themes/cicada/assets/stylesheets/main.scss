@@ -1453,7 +1453,7 @@ h6 {
 }
 
 h1, .h1 {
-  font-size: 22px;
+  font-size: 21px;
   text-transform: uppercase;
 }
 
@@ -5363,7 +5363,7 @@ tbody.collapse.in {
   &.pull-right {
     right: 0;
     left: auto;
-    background-color: #e5e5e5;
+    background-color: #222;
   }
 
   .divider {
@@ -6242,6 +6242,8 @@ a:focus {
 }
 
 .navbar-header {
+  padding-top: 12px;
+
   &:before {
     content: " ";
     display: table;
@@ -6384,22 +6386,9 @@ a:focus {
   border-width: 1px 0 0;
 }
 
-.navbar-brand {
-  float: left;
-  padding: 15px 20px;
-  font-size: 18px;
-  height: 50px;
-
-  &:hover, &:focus {
-    text-decoration: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .navbar > {
-    .container .navbar-brand, .container-fluid .navbar-brand {
-      margin-left: -20px;
-    }
+.navbar-brand img {
+  &.brand-logo, &.brand-icon {
+    height: 30px;
   }
 }
 
@@ -6901,7 +6890,7 @@ fieldset[disabled] .navbar-inverse .btn-link {
           line-height: 1.428571429;
           text-decoration: none;
           color: #bac3ca;
-          background-color: #505050;
+          background-color: #282828;
           border: 1px solid #191919;
           margin-left: -1px;
           cursor: pointer;
@@ -6978,28 +6967,28 @@ fieldset[disabled] .navbar-inverse .btn-link {
 
     .disabled > {
       span {
-        color: #000;
-        background-color: #757575;
+        color: #4f4f4f;
+        background-color: #282828;
         border-color: #191919;
         cursor: not-allowed;
 
         &:hover, &:focus {
-          color: #000;
-          background-color: #757575;
+          color: #4f4f4f;
+          background-color: #282828;
           border-color: #191919;
           cursor: not-allowed;
         }
       }
 
       a {
-        color: #000;
-        background-color: #757575;
+        color: #4f4f4f;
+        background-color: #282828;
         border-color: #191919;
         cursor: not-allowed;
 
         &:hover, &:focus {
-          color: #000;
-          background-color: #757575;
+          color: #4f4f4f;
+          background-color: #282828;
           border-color: #191919;
           cursor: not-allowed;
         }
@@ -7903,7 +7892,7 @@ a.list-group-item-danger {
   border-bottom: 1px solid #191919;
   border-top-right-radius: 2px;
   border-top-left-radius: 2px;
-  background-color: #2D2D2D !important;
+  background-color: #202020 !important;
 
   > .dropdown .dropdown-toggle {
     color: inherit;
@@ -7923,8 +7912,8 @@ a.list-group-item-danger {
 
 .panel-footer {
   padding: 10px 15px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #ddd;
+  background-color: #202020;
+  border-top: 1px solid #191919;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
 }
@@ -9161,7 +9150,7 @@ button.close {
 
 .show {
   display: block !important;
-  color: #FFF;
+  color: #3c8014;
 }
 
 .invisible {
@@ -9758,7 +9747,7 @@ main.page-content.col-lg-12 {
       }
 
       a.list-group-item.active-menu-title {
-        color: #bac3ca !important;
+        color: #dd630d !important;
         background-color: #151515 !important;
       }
     }
@@ -9906,6 +9895,7 @@ button.toggle-sidebar {
   margin-top: 18px;
   float: left;
   outline: none;
+  padding-left: 20px;
 }
 
 /* COLLAPSE SIDEBAR END*/
@@ -10136,10 +10126,6 @@ button.toggle-sidebar {
 
 .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {
   border-radius: 0 !important;
-}
-
-.navbar-brand {
-  padding: 10px 20px;
 }
 
 .label-opnsense {

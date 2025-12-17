@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2025 by Deciso B.V.
 This file is Copyright © 2017 by Fabian Franz
 All rights reserved.
 
@@ -27,216 +27,190 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #}
 
-    <!-- Navigation bar -->
-    <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-        <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-        <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
-        <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
-        <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
-        <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
-    </ul>
-    <div class="tab-content content-box tab-content">
-        <div id="general" class="tab-pane fade in active">
-            <div class="content-box" style="padding-bottom: 1.5em;">
-                {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
-                <div class="col-md-12">
-                    <hr />
-                    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
-                </div>
-            </div>
-        </div>
-
-    <!-- Tab: Networks -->
-    <div id="networks" class="tab-pane fade in">
-      <table id="grid-networks" class="table table-responsive" data-editDialog="DialogEditNetwork">
-          <thead>
-              <tr>
-                  <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                  <th data-column-id="ipaddr" data-type="string" data-visible="true">{{ lang._('Network Address') }}</th>
-                  <th data-column-id="netmask" data-type="string" data-visible="true">{{ lang._('Mask') }}</th>
-                  <th data-column-id="area" data-type="string" data-visible="true">{{ lang._('Area') }}</th>
-                  <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                  <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-              </tr>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-              <tr>
-                  <td colspan="5"></td>
-                  <td>
-                      <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                      <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                      <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                  </td>
-              </tr>
-          </tfoot>
-      </table>
-    </div>
-
-    <!-- Tab: Interfaces -->
-    <div id="interfaces" class="tab-pane fade in">
-        <table id="grid-interfaces" class="table table-responsive" data-editDialog="DialogEditInterface">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="interfacename" data-type="string" data-visible="true">{{ lang._('Interface Name') }}</th>
-                    <th data-column-id="networktype" data-type="string" data-visible="true">{{ lang._('Network Type') }}</th>
-                    <th data-column-id="authtype" data-type="string" data-visible="true">{{ lang._('Authentication Type') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div id="prefixlists" class="tab-pane fade in">
-        <table id="grid-prefixlists" class="table table-responsive" data-editDialog="DialogEditPrefixLists">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-sortable="false">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="seqnumber" data-type="string" data-visible="true" data-sortable="true">{{ lang._('Sequence Number') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Action') }}</th>
-                    <th data-column-id="network" data-type="string" data-visible="true" data-sortable="false">{{ lang._('Network') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <!-- <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button> -->
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div id="routemaps" class="tab-pane fade in">
-        <table id="grid-routemaps" class="table table-responsive" data-editDialog="DialogEditRouteMaps">
-            <thead>
-                <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                    <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
-                    <th data-column-id="id" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                    <th data-column-id="match2" data-type="string" data-visible="true">{{ lang._('Prefix List') }}</th>
-                    <th data-column-id="set" data-type="string" data-visible="true">{{ lang._('Set') }}</th>
-                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"></td>
-                    <td>
-                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span> {{ lang._('Reload Service') }}</button>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    </div>
-
 <script>
 
-function quagga_update_status() {
-  updateServiceControlUI('quagga');
-}
+    function quagga_update_status() {
+      updateServiceControlUI('quagga');
+    }
 
-$( document ).ready(function() {
-  var data_get_map = {'frm_ospf_settings':"/api/quagga/ospfsettings/get"};
-  mapDataToFormUI(data_get_map).done(function(data){
-      formatTokenizersUI();
-      $('.selectpicker').selectpicker('refresh');
-  });
-  quagga_update_status();
-
-  // link save button to API set action
-  $("#saveAct").click(function(){
-      saveFormToEndpoint(url="/api/quagga/ospfsettings/set",formid='frm_ospf_settings',callback_ok=function(){
-        $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-        ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-          quagga_update_status();
-          $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+    $( document ).ready(function() {
+        mapDataToFormUI({'frm_ospf_settings':"/api/quagga/ospfsettings/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
         });
-      });
-  });
 
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/quagga/ospfsettings/set", 'frm_ospf_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
+            }
+        });
 
-  /* allow a user to manually reload the service (for forms which do not do it automatically) */
-  $('.reload_btn').click(function reload_handler() {
-    $(".reloadAct_progress").addClass("fa-spin");
-    ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-      quagga_update_status();
-      $(".reloadAct_progress").removeClass("fa-spin");
+        $("#{{formGridEditOSPFNeighbor['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_neighbor',
+            'get':'/api/quagga/ospfsettings/get_neighbor/',
+            'set':'/api/quagga/ospfsettings/set_neighbor/',
+            'add':'/api/quagga/ospfsettings/add_neighbor/',
+            'del':'/api/quagga/ospfsettings/del_neighbor/',
+            'toggle':'/api/quagga/ospfsettings/toggle_neighbor/'
+        });
+        $("#{{formGridEditOSPFArea['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_area',
+            'get':'/api/quagga/ospfsettings/get_area/',
+            'set':'/api/quagga/ospfsettings/set_area/',
+            'add':'/api/quagga/ospfsettings/add_area/',
+            'del':'/api/quagga/ospfsettings/del_area/',
+            'toggle':'/api/quagga/ospfsettings/toggle_area/'
+        });
+        $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_network',
+            'get':'/api/quagga/ospfsettings/get_network/',
+            'set':'/api/quagga/ospfsettings/set_network/',
+            'add':'/api/quagga/ospfsettings/add_network/',
+            'del':'/api/quagga/ospfsettings/del_network/',
+            'toggle':'/api/quagga/ospfsettings/toggle_network/'
+        });
+        $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_interface',
+            'get':'/api/quagga/ospfsettings/get_interface/',
+            'set':'/api/quagga/ospfsettings/set_interface/',
+            'add':'/api/quagga/ospfsettings/add_interface/',
+            'del':'/api/quagga/ospfsettings/del_interface/',
+            'toggle':'/api/quagga/ospfsettings/toggle_interface/'
+        });
+        $("#{{formGridEditPrefixLists['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_prefixlist',
+            'get':'/api/quagga/ospfsettings/get_prefixlist/',
+            'set':'/api/quagga/ospfsettings/set_prefixlist/',
+            'add':'/api/quagga/ospfsettings/add_prefixlist/',
+            'del':'/api/quagga/ospfsettings/del_prefixlist/',
+            'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/'
+        });
+        $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_routemap',
+            'get':'/api/quagga/ospfsettings/get_routemap/',
+            'set':'/api/quagga/ospfsettings/set_routemap/',
+            'add':'/api/quagga/ospfsettings/add_routemap/',
+            'del':'/api/quagga/ospfsettings/del_routemap/',
+            'toggle':'/api/quagga/ospfsettings/toggle_routemap/'
+        });
+        $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospfsettings/search_redistribution',
+            'get':'/api/quagga/ospfsettings/get_redistribution/',
+            'set':'/api/quagga/ospfsettings/set_redistribution/',
+            'add':'/api/quagga/ospfsettings/add_redistribution/',
+            'del':'/api/quagga/ospfsettings/del_redistribution/',
+            'toggle':'/api/quagga/ospfsettings/toggle_redistribution/'
+        });
+
+        const $header = $(".bootgrid-header[id*='{{formGridEditRedistribution['table_id']}}']");
+        if ($header.length) {
+            $header.find("div.actionBar").parent().prepend(
+                '<td class="col-sm-2 theading-text">' +
+                '<span class="fa fa-info-circle text-muted" style="margin-right: 5px;"></span>' +
+                '<strong>{{ lang._("Route Redistribution") }}</strong>' +
+                '</td>'
+            );
+        }
+
+        $("#interface\\.networktype").on("keyup change", function () {
+
+            const networktype = String($("#interface\\.networktype").val() || "")
+
+            const styleVisibility = [
+                {
+                    class: "style_networktype",
+                    visible: networktype === "point-to-multipoint"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
+
     });
-  });
-
-
-  $("#grid-networks").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchNetwork',
-      'get':'/api/quagga/ospfsettings/getNetwork/',
-      'set':'/api/quagga/ospfsettings/setNetwork/',
-      'add':'/api/quagga/ospfsettings/addNetwork/',
-      'del':'/api/quagga/ospfsettings/delNetwork/',
-      'toggle':'/api/quagga/ospfsettings/toggleNetwork/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-interfaces").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchInterface',
-      'get':'/api/quagga/ospfsettings/getInterface/',
-      'set':'/api/quagga/ospfsettings/setInterface/',
-      'add':'/api/quagga/ospfsettings/addInterface/',
-      'del':'/api/quagga/ospfsettings/delInterface/',
-      'toggle':'/api/quagga/ospfsettings/toggleInterface/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-prefixlists").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchPrefixlist',
-      'get':'/api/quagga/ospfsettings/getPrefixlist/',
-      'set':'/api/quagga/ospfsettings/setPrefixlist/',
-      'add':'/api/quagga/ospfsettings/addPrefixlist/',
-      'del':'/api/quagga/ospfsettings/delPrefixlist/',
-      'toggle':'/api/quagga/ospfsettings/togglePrefixlist/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-  $("#grid-routemaps").UIBootgrid(
-    { 'search':'/api/quagga/ospfsettings/searchRoutemap',
-      'get':'/api/quagga/ospfsettings/getRoutemap/',
-      'set':'/api/quagga/ospfsettings/setRoutemap/',
-      'add':'/api/quagga/ospfsettings/addRoutemap/',
-      'del':'/api/quagga/ospfsettings/delRoutemap/',
-      'toggle':'/api/quagga/ospfsettings/toggleRoutemap/',
-      'options':{selection:false, multiSelect:false}
-    }
-  );
-});
 </script>
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':'DialogEditNetwork','label':lang._('Edit Network')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':'DialogEditInterface','label':lang._('Edit Interface')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':'DialogEditPrefixLists','label':lang._('Edit Prefix Lists')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':'DialogEditRouteMaps','label':lang._('Edit Route Maps')])}}
+<style>
+    /* Some trickery to make the redistribution grid look like its part of the base form */
+    .bootgrid-header[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        padding-left: 10px;
+    }
+    #{{ formGridEditRedistribution['table_id'] }}.bootgrid-table {
+        margin-left: 25%;
+        width: 75%;
+    }
+    .bootgrid-footer[id*='{{ formGridEditRedistribution['table_id'] }}'] {
+        margin-left: 24%;
+    }
+</style>
+
+<!-- Navigation bar -->
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
+    <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
+    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+    <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
+    <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
+    <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
+</ul>
+<div class="tab-content content-box tab-content">
+    <!-- Tab: General -->
+    <div id="general" class="tab-pane fade in active">
+        {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
+    </div>
+    <!-- Tab: Neighbors -->
+    <div id="neighbors" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFNeighbor)}}
+    </div>
+    <!-- Tab: Areas -->
+    <div id="areas" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFArea)}}
+    </div>
+    <!-- Tab: Networks -->
+    <div id="networks" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
+    </div>
+    <!-- Tab: Interfaces -->
+    <div id="interfaces" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditInterface)}}
+    </div>
+    <!-- Tab: Prefixlists -->
+    <div id="prefixlists" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditPrefixLists)}}
+    </div>
+    <!-- Tab: Routemaps -->
+    <div id="routemaps" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
+    </div>
+</div>
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
+    }
+) }}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFArea,'id':formGridEditOSPFArea['edit_dialog_id'],'label':lang._('Edit Area')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditOSPFNeighbor,'id':formGridEditOSPFNeighbor['edit_dialog_id'],'label':lang._('Edit Neighbor')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditRedistribution,'id':formGridEditRedistribution['edit_dialog_id'],'label':lang._('Edit Route Redistribution')])}}

@@ -198,16 +198,19 @@ function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $
         $upinst .= "\n";  /* mind that trailing newline! */
 
         if ($need_update) {
-            @file_put_contents("/var/etc/nsupdatecmds{$i}", $upinst);
-            unset($upinst);
-            /* invoke nsupdate */
-            $cmd = "/usr/local/bin/nsupdate -k {$keyfile}";
+            file_safe("/var/etc/nsupdatecmds{$i}", $upinst);
+
+            $frmt = ['/usr/local/bin/nsupdate -k %s'];
+            $args = [$keyfile];
+
             if (isset($dnsupdate['usetcp'])) {
-                $cmd .= " -v";
+                $frmt[] = '-v';
             }
-            $cmd .= " /var/etc/nsupdatecmds{$i}";
-            mwexec_bg($cmd);
-            unset($cmd);
+
+            $args[] = "/var/etc/nsupdatecmds{$i}";
+            $frmt[] = '%s';
+
+            mwexecfb($frmt, $args);
         }
     }
 
@@ -222,7 +225,7 @@ function get_rfc2136_ip_address($int, $ipver = 4)
         return 'down';
     }
 
-    if ($ipver != 6 && is_private_ip($ip_address)) {
+    if ($ipver != 6 && is_private_ipv4($ip_address)) {
         $ip_ch = curl_init('http://checkip.dyndns.org');
         curl_setopt($ip_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ip_ch, CURLOPT_INTERFACE, $ip_address);

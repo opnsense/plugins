@@ -1,0 +1,14 @@
+<acl>
+    <page-openvpn-client>
+        <name>VPN: OpenVPN: Client</name>
+        <patterns>
+            <pattern>vpn_openvpn_client.php*</pattern>
+        </patterns>
+    </page-openvpn-client>
+    <page-openvpn-server>
+        <name>VPN: OpenVPN: Server</name>
+        <patterns>
+            <pattern>vpn_openvpn_server.php*</pattern>
+        </patterns>
+    </page-openvpn-server>
+</acl>

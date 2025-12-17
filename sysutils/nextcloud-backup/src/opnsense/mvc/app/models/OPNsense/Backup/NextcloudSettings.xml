@@ -4,12 +4,12 @@
     <description>OPNsense Nextcloud Backup Settings</description>
     <items>
         <enabled type="BooleanField">
-          <default>0</default>
+          <Default>0</Default>
           <Required>Y</Required>
         </enabled>
         <url type="TextField">
             <Required>N</Required>
-            <mask>/^https?:\/\/.*[^\/]$/</mask>
+            <Mask>/^https?:\/\/.*[^\/]$/</Mask>
             <ValidationMessage>The url must be valid without a trailing slash. For example: https://nextcloud.example.com or https://example.com/nextcloud</ValidationMessage>
             <Constraints>
                 <check001>
@@ -48,8 +48,8 @@
         </password_encryption>
         <backupdir type="TextField">
             <Required>Y</Required>
-            <mask>/^([\w%+\-]+\/)*[\w+%\-]+$/</mask>
-            <default>OPNsense-Backup</default>
+            <Mask>/^([\w%+\-]+\/)*[\w+%\-]+$/</Mask>
+            <Default>OPNsense-Backup</Default>
             <ValidationMessage>The Backup Directory can only consist of alphanumeric characters, dash, underscores and slash. No leading or trailing slash.</ValidationMessage>
         </backupdir>
     </items>

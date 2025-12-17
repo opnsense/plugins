@@ -6,7 +6,6 @@
 namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\CrowdSec\CrowdSec;
 use OPNsense\Core\Backend;
 
 /**
@@ -15,19 +14,32 @@ use OPNsense\Core\Backend;
 class MachinesController extends ApiControllerBase
 {
     /**
-     * retrieve list of registered machines
+     * Retrieve list of machines
+     *
      * @return array of machines
      * @throws \OPNsense\Base\ModelException
      * @throws \ReflectionException
      */
-    public function getAction()
+    public function searchAction(): array
     {
-        $backend = new Backend();
-        $bckresult = json_decode(trim($backend->configdRun("crowdsec machines-list")), true);
-        if ($bckresult !== null) {
-            // only return valid json type responses
-            return $bckresult;
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec machines-list")), true);
+        if ($result === null) {
+            return ["message" => "unable to retrieve data"];
         }
-        return array("message" => "unable to list machines");
+
+        $rows = [];
+        foreach ($result as $machine) {
+            $rows[] = [
+                'name' => $machine['machineId'],
+                'ip_address' => $machine['ipAddress'] ?? '',
+                'version' => $machine['version'] ?? '',
+                'validated' => $machine['isValidated'] ?? false,
+                'created' => $machine['created_at'] ?? '',
+                'last_seen' => $machine['last_heartbeat'] ?? '',
+                'os' => $machine['os'] ?? '',
+            ];
+        }
+
+        return $this->searchRecordsetBase($rows);
     }
 }

@@ -17,15 +17,13 @@
         </enablerpz>
         <listenv4 type="NetworkField">
             <Default>0.0.0.0</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listenv4>
         <listenv6 type="NetworkField">
             <Default>::</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listenv6>
         <querysource type="NetworkField">
             <AddressFamily>ipv4</AddressFamily>
@@ -48,8 +46,7 @@
             <Required>Y</Required>
         </port>
         <forwarders type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </forwarders>
         <filteraaaav4 type="BooleanField">
             <Default>0</Default>
@@ -60,8 +57,7 @@
             <Required>Y</Required>
         </filteraaaav6>
         <filteraaaaacl type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </filteraaaaacl>
         <logsize type="IntegerField">
             <Default>5</Default>
@@ -152,9 +148,8 @@
         </ratelimitcount>
         <ratelimitexcept type="NetworkField">
             <Default>0.0.0.0,::</Default>
-            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </ratelimitexcept>
         <rndcalgo type="OptionField">
             <Required>Y</Required>

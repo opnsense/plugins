@@ -180,7 +180,10 @@ class Caddy extends BaseModel
         foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
             if ($item->isFieldChanged()) {
                 $key = $item->__reference;
-                if (in_array((string)$item->Matchers, ['httphost', 'tlssni']) && empty((string)$item->FromDomain)) {
+                if (
+                    in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) &&
+                    empty((string)$item->FromDomain)
+                ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
@@ -191,7 +194,7 @@ class Caddy extends BaseModel
                         $key . ".FromDomain"
                     ));
                 } elseif (
-                        !in_array((string)$item->Matchers, ['httphost', 'tlssni']) &&
+                        !in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) &&
                         (
                             !empty((string)$item->FromDomain) &&
                             (string)$item->FromDomain != '*'
@@ -205,6 +208,42 @@ class Caddy extends BaseModel
                             $item->Matchers
                         ),
                         $key . ".FromDomain"
+                    ));
+                }
+
+                if (!in_array((string)$item->Matchers, ['tlssni', 'quicsni']) && !empty((string)$item->TerminateTls)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, TLS can not be terminated.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".TerminateTls"
+                    ));
+                }
+
+                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnModes)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, field must be empty.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".FromOpenvpnModes"
+                    ));
+                }
+
+                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnStaticKey)) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext(
+                                'When "%s" matcher is selected, field must be empty.'
+                            ),
+                            $item->Matchers
+                        ),
+                        $key . ".FromOpenvpnStaticKey"
                     ));
                 }
 
@@ -246,13 +285,14 @@ class Caddy extends BaseModel
                     (string)$item->Type !== 'global' &&
                     (
                         (string)$item->Matchers == 'tls' ||
-                        (string)$item->Matchers == 'http'
+                        (string)$item->Matchers == 'http' ||
+                        (string)$item->Matchers == 'quic'
                     )
                 ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
-                                'When routing type is "%s", matchers "HTTP" or "TLS" cannot be chosen.'
+                                'When routing type is "%s", matchers "HTTP", "TLS" or "QUIC" cannot be chosen.'
                             ),
                             $item->Type
                         ),

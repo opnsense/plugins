@@ -1,0 +1,20 @@
+IPv6 Neighbor Discovery Protocol (NDP) Proxy
+
+WWW: https://github.com/monviech/ndp-proxy-go
+DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
+
+Plugin Changelog
+================
+
+1.2
+
+* Add firewall alias support
+* Add cache file support for faster recovery after system reboots
+
+1.1
+
+* Add experimental point-to-point device upstream support (e.g. PPPoE)
+
+1.0
+
+* Initial Release

@@ -2,7 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2021 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -30,7 +30,6 @@
 
 // Import legacy code
 @include_once('config.inc');
-@include_once('certs.inc');
 @include_once('util.inc');
 
 // Import classes

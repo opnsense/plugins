@@ -33,12 +33,28 @@ class BgpController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->bgpForm = $this->getForm("bgp");
+
         $this->view->formDialogEditBGPNeighbor = $this->getForm("dialogEditBGPNeighbor");
+        $this->view->formGridEditBGPNeighbor = $this->getFormGrid("dialogEditBGPNeighbor");
+
         $this->view->formDialogEditBGPASPaths = $this->getForm("dialogEditBGPASPath");
+        $this->view->formGridEditBGPASPaths = $this->getFormGrid("dialogEditBGPASPath");
+
         $this->view->formDialogEditBGPPrefixLists = $this->getForm("dialogEditBGPPrefixLists");
+        $this->view->formGridEditBGPPrefixLists = $this->getFormGrid("dialogEditBGPPrefixLists");
+
         $this->view->formDialogEditBGPCommunityLists = $this->getForm("dialogEditBGPCommunityLists");
+        $this->view->formGridEditBGPCommunityLists = $this->getFormGrid("dialogEditBGPCommunityLists");
+
         $this->view->formDialogEditBGPRouteMaps = $this->getForm("dialogEditBGPRouteMaps");
+        $this->view->formGridEditBGPRouteMaps = $this->getFormGrid("dialogEditBGPRouteMaps");
+
         $this->view->formDialogEditBGPPeergroups = $this->getForm("dialogEditBGPPeergroups");
+        $this->view->formGridEditBGPPeergroups = $this->getFormGrid("dialogEditBGPPeergroups");
+
+        $this->view->formDialogEditRedistribution = $this->getForm("dialogEditRedistribution");
+        $this->view->formGridEditRedistribution = $this->getFormGrid("dialogEditRedistribution");
+
         $this->view->pick('OPNsense/Quagga/bgp');
     }
 }

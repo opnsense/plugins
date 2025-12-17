@@ -49,190 +49,175 @@ POSSIBILITY OF SUCH DAMAGE.
          **********************************************************************/
 
         $("#grid-frontends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchFrontends',
-                get:'/api/haproxy/settings/getFrontend/',
-                set:'/api/haproxy/settings/setFrontend/',
-                add:'/api/haproxy/settings/addFrontend/',
-                del:'/api/haproxy/settings/delFrontend/',
-                toggle:'/api/haproxy/settings/toggleFrontend/',
+            {   search:'/api/haproxy/settings/search_frontends',
+                get:'/api/haproxy/settings/get_frontend/',
+                set:'/api/haproxy/settings/set_frontend/',
+                add:'/api/haproxy/settings/add_frontend/',
+                del:'/api/haproxy/settings/del_frontend/',
+                toggle:'/api/haproxy/settings/toggle_frontend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-backends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchBackends',
-                get:'/api/haproxy/settings/getBackend/',
-                set:'/api/haproxy/settings/setBackend/',
-                add:'/api/haproxy/settings/addBackend/',
-                del:'/api/haproxy/settings/delBackend/',
-                toggle:'/api/haproxy/settings/toggleBackend/',
+            {   search:'/api/haproxy/settings/search_backends',
+                get:'/api/haproxy/settings/get_backend/',
+                set:'/api/haproxy/settings/set_backend/',
+                add:'/api/haproxy/settings/add_backend/',
+                del:'/api/haproxy/settings/del_backend/',
+                toggle:'/api/haproxy/settings/toggle_backend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-servers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchServers',
-                get:'/api/haproxy/settings/getServer/',
-                set:'/api/haproxy/settings/setServer/',
-                add:'/api/haproxy/settings/addServer/',
-                del:'/api/haproxy/settings/delServer/',
-                toggle:'/api/haproxy/settings/toggleServer/',
+            {   search:'/api/haproxy/settings/search_servers',
+                get:'/api/haproxy/settings/get_server/',
+                set:'/api/haproxy/settings/set_server/',
+                add:'/api/haproxy/settings/add_server/',
+                del:'/api/haproxy/settings/del_server/',
+                toggle:'/api/haproxy/settings/toggle_server/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-healthchecks").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchHealthchecks',
-                get:'/api/haproxy/settings/getHealthcheck/',
-                set:'/api/haproxy/settings/setHealthcheck/',
-                add:'/api/haproxy/settings/addHealthcheck/',
-                del:'/api/haproxy/settings/delHealthcheck/',
+            {   search:'/api/haproxy/settings/search_healthchecks',
+                get:'/api/haproxy/settings/get_healthcheck/',
+                set:'/api/haproxy/settings/set_healthcheck/',
+                add:'/api/haproxy/settings/add_healthcheck/',
+                del:'/api/haproxy/settings/del_healthcheck/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-actions").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchActions',
-                get:'/api/haproxy/settings/getAction/',
-                set:'/api/haproxy/settings/setAction/',
-                add:'/api/haproxy/settings/addAction/',
-                del:'/api/haproxy/settings/delAction/',
+            {   search:'/api/haproxy/settings/search_actions',
+                get:'/api/haproxy/settings/get_action/',
+                set:'/api/haproxy/settings/set_action/',
+                add:'/api/haproxy/settings/add_action/',
+                del:'/api/haproxy/settings/del_action/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-acls").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchAcls',
-                get:'/api/haproxy/settings/getAcl/',
-                set:'/api/haproxy/settings/setAcl/',
-                add:'/api/haproxy/settings/addAcl/',
-                del:'/api/haproxy/settings/delAcl/',
+            {   search:'/api/haproxy/settings/search_acls',
+                get:'/api/haproxy/settings/get_acl/',
+                set:'/api/haproxy/settings/set_acl/',
+                add:'/api/haproxy/settings/add_acl/',
+                del:'/api/haproxy/settings/del_acl/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-users").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchUsers',
-                get:'/api/haproxy/settings/getUser/',
-                set:'/api/haproxy/settings/setUser/',
-                add:'/api/haproxy/settings/addUser/',
-                del:'/api/haproxy/settings/delUser/',
-                toggle:'/api/haproxy/settings/toggleUser/',
+            {   search:'/api/haproxy/settings/search_users',
+                get:'/api/haproxy/settings/get_user/',
+                set:'/api/haproxy/settings/set_user/',
+                add:'/api/haproxy/settings/add_user/',
+                del:'/api/haproxy/settings/del_user/',
+                toggle:'/api/haproxy/settings/toggle_user/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-groups").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchGroups',
-                get:'/api/haproxy/settings/getGroup/',
-                set:'/api/haproxy/settings/setGroup/',
-                add:'/api/haproxy/settings/addGroup/',
-                del:'/api/haproxy/settings/delGroup/',
-                toggle:'/api/haproxy/settings/toggleGroup/',
+            {   search:'/api/haproxy/settings/search_groups',
+                get:'/api/haproxy/settings/get_group/',
+                set:'/api/haproxy/settings/set_group/',
+                add:'/api/haproxy/settings/add_group/',
+                del:'/api/haproxy/settings/del_group/',
+                toggle:'/api/haproxy/settings/toggle_group/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-luas").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchLuas',
-                get:'/api/haproxy/settings/getLua/',
-                set:'/api/haproxy/settings/setLua/',
-                add:'/api/haproxy/settings/addLua/',
-                del:'/api/haproxy/settings/delLua/',
-                toggle:'/api/haproxy/settings/toggleLua/',
+            {   search:'/api/haproxy/settings/search_luas',
+                get:'/api/haproxy/settings/get_lua/',
+                set:'/api/haproxy/settings/set_lua/',
+                add:'/api/haproxy/settings/add_lua/',
+                del:'/api/haproxy/settings/del_lua/',
+                toggle:'/api/haproxy/settings/toggle_lua/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-fcgis").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchFcgis',
-                get:'/api/haproxy/settings/getFcgi/',
-                set:'/api/haproxy/settings/setFcgi/',
-                add:'/api/haproxy/settings/addFcgi/',
-                del:'/api/haproxy/settings/delFcgi/',
+            {   search:'/api/haproxy/settings/search_fcgis',
+                get:'/api/haproxy/settings/get_fcgi/',
+                set:'/api/haproxy/settings/set_fcgi/',
+                add:'/api/haproxy/settings/add_fcgi/',
+                del:'/api/haproxy/settings/del_fcgi/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-errorfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchErrorfiles',
-                get:'/api/haproxy/settings/getErrorfile/',
-                set:'/api/haproxy/settings/setErrorfile/',
-                add:'/api/haproxy/settings/addErrorfile/',
-                del:'/api/haproxy/settings/delErrorfile/',
+            {   search:'/api/haproxy/settings/search_errorfiles',
+                get:'/api/haproxy/settings/get_errorfile/',
+                set:'/api/haproxy/settings/set_errorfile/',
+                add:'/api/haproxy/settings/add_errorfile/',
+                del:'/api/haproxy/settings/del_errorfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-mapfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMapfiles',
-                get:'/api/haproxy/settings/getMapfile/',
-                set:'/api/haproxy/settings/setMapfile/',
-                add:'/api/haproxy/settings/addMapfile/',
-                del:'/api/haproxy/settings/delMapfile/',
+            {   search:'/api/haproxy/settings/search_mapfiles',
+                get:'/api/haproxy/settings/get_mapfile/',
+                set:'/api/haproxy/settings/set_mapfile/',
+                add:'/api/haproxy/settings/add_mapfile/',
+                del:'/api/haproxy/settings/del_mapfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-cpus").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchCpus',
-                get:'/api/haproxy/settings/getCpu/',
-                set:'/api/haproxy/settings/setCpu/',
-                add:'/api/haproxy/settings/addCpu/',
-                del:'/api/haproxy/settings/delCpu/',
-                toggle:'/api/haproxy/settings/toggleCpu/',
+            {   search:'/api/haproxy/settings/search_cpus',
+                get:'/api/haproxy/settings/get_cpu/',
+                set:'/api/haproxy/settings/set_cpu/',
+                add:'/api/haproxy/settings/add_cpu/',
+                del:'/api/haproxy/settings/del_cpu/',
+                toggle:'/api/haproxy/settings/toggle_cpu/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-resolvers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchResolvers',
-                get:'/api/haproxy/settings/getResolver/',
-                set:'/api/haproxy/settings/setResolver/',
-                add:'/api/haproxy/settings/addResolver/',
-                del:'/api/haproxy/settings/delResolver/',
-                toggle:'/api/haproxy/settings/toggleResolver/',
+            {   search:'/api/haproxy/settings/search_resolvers',
+                get:'/api/haproxy/settings/get_resolver/',
+                set:'/api/haproxy/settings/set_resolver/',
+                add:'/api/haproxy/settings/add_resolver/',
+                del:'/api/haproxy/settings/del_resolver/',
+                toggle:'/api/haproxy/settings/toggle_resolver/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-mailers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMailers',
-                get:'/api/haproxy/settings/getMailer/',
-                set:'/api/haproxy/settings/setMailer/',
-                add:'/api/haproxy/settings/addMailer/',
-                del:'/api/haproxy/settings/delMailer/',
-                toggle:'/api/haproxy/settings/toggleMailer/',
+            {   search:'/api/haproxy/settings/search_mailers',
+                get:'/api/haproxy/settings/get_mailer/',
+                set:'/api/haproxy/settings/set_mailer/',
+                add:'/api/haproxy/settings/add_mailer/',
+                del:'/api/haproxy/settings/del_mailer/',
+                toggle:'/api/haproxy/settings/toggle_mailer/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -717,7 +702,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="http://docs.haproxy.org/2.8/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="http://docs.haproxy.org/3.0/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -759,7 +744,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/2.8/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/3.0/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -774,7 +759,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/2.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/3.0/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -792,7 +777,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sCache:%s HAProxy's cache which was designed to perform cache on small objects (favicon, css, etc.). This is a minimalist low-maintenance cache which runs in RAM.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sPeers:%s Configure a communication channel between two HAProxy instances. This will propagate entries of any data-types in stick-tables between these HAProxy instances over TCP connections in a multi-master fashion. Useful when aiming for a seamless failover in a HA setup.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://docs.haproxy.org/2.8/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.8/configuration.html#10" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.8/configuration.html#3.5" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://docs.haproxy.org/3.0/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.0/configuration.html#10" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.0/configuration.html#3.5" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -810,7 +795,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sE-Mail Alerts:%s It is possible to send email alerts when the state of servers changes. Each configuration can be used in %sBackend Pools%s to send e-mail alerts to the configured recipient.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://docs.haproxy.org/2.8/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.8/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/2.8/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.8/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.8/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/2.8/configuration.html#process" target="_blank">', '</a>','<a href="http://docs.haproxy.org/2.8/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://docs.haproxy.org/3.0/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.0/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.0/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.0/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.0/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.0/configuration.html#process" target="_blank">', '</a>','<a href="http://docs.haproxy.org/3.0/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>

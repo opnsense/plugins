@@ -43,7 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/acmeclient/validations/del/',
                 toggle:'/api/acmeclient/validations/toggle/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -57,13 +56,13 @@ POSSIBILITY OF SUCH DAMAGE.
                     $("."+service_id).show();
                 }
                 // Show a warning if the Google Cloud SDK plugin is missing.
-                ajaxCall(url="/api/acmeclient/settings/getGcloudPluginStatus", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/acmeclient/settings/get_gcloud_plugin_status", sendData={}, callback=function(data,status) {
                     if (data['result'] != 0) {
                         $(".gcloud_plugin_warning").hide();
                     }
                 });
                 // Show a warning if the BIND plugin is missing.
-                ajaxCall(url="/api/acmeclient/settings/getBindPluginStatus", sendData={}, callback=function(data,status) {
+                ajaxCall(url="/api/acmeclient/settings/get_bind_plugin_status", sendData={}, callback=function(data,status) {
                     if (data['result'] != 0) {
                         $(".bind_plugin_warning").hide();
                     }

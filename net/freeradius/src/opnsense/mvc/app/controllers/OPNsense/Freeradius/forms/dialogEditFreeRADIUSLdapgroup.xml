@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>ldapgroup.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the user account.</help>
+    </field>
+    <field>
+        <id>ldapgroup.ldapgroupname</id>
+        <label>LDAP Group Name</label>
+        <type>text</type>
+        <help>The complete LDAP DN.</help>
+    </field>
+    <field>
+        <id>ldapgroup.vlan</id>
+        <label>VLAN ID</label>
+        <type>text</type>
+        <help>VLAN ID for the specific LDAP group.</help>
+    </field>
+</form>

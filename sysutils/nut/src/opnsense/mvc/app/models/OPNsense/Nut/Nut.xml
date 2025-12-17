@@ -1,156 +1,151 @@
 <model>
-  <mount>//OPNsense/Nut</mount>
-  <description>Network UPS Tools</description>
-  <version>1.0.4</version>
-  <items>
-    <general>
-      <enable type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable>
-      <mode type="OptionField">
-        <default>standalone</default>
-        <Required>Y</Required>
-        <OptionValues>
-          <standalone>standalone</standalone>
-          <netclient>netclient</netclient>
-        </OptionValues>
-      </mode>
-      <name type="TextField">
-        <default>UPSName</default>
-        <Required>Y</Required>
-        <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
-        <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-      </name>
-      <listen type="CSVListField">
-        <default>127.0.0.1,::1</default>
-        <Required>Y</Required>
-      </listen>
-    </general>
-
-    <account>
-      <admin_password type="TextField">
-        <Required>Y</Required>
-        <default>Password</default>
-      </admin_password>
-      <mon_password type="TextField">
-        <Required>Y</Required>
-        <default>Password</default>
-      </mon_password>
-    </account>
-
-    <usbhid>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </usbhid>
-    <apcsmart>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </apcsmart>
-    <apcupsd>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <hostname type="HostnameField">
-        <Required>Y</Required>
-        <default>localhost</default>
-      </hostname>
-      <port type="PortField">
-        <Required>N</Required>
-      </port>
-    </apcupsd>
-    <bcmxcpusb>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </bcmxcpusb>
-    <blazerusb>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </blazerusb>
-    <blazerser>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </blazerser>
-    <netclient>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <address type="HostnameField">
-        <default></default>
-        <Required>N</Required>
-      </address>
-      <port type="PortField">
-        <default>3493</default>
-        <Required>N</Required>
-      </port>
-      <user type="TextField">
-        <Required>N</Required>
-      </user>
-      <password type="TextField">
-        <Required>N</Required>
-      </password>
-    </netclient>
-    <qx>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </qx>
-    <riello>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>port=auto</default>
-        <Required>N</Required>
-      </args>
-    </riello>
-    <snmp>
-      <enable type="BooleanField">
-        <Required>Y</Required>
-        <default>0</default>
-      </enable>
-      <args type="CSVListField">
-        <default>community=public</default>
-        <Required>N</Required>
-      </args>
-    </snmp>
-  </items>
+    <mount>//OPNsense/Nut</mount>
+    <description>Network UPS Tools</description>
+    <version>1.0.4</version>
+    <items>
+        <general>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+            <mode type="OptionField">
+                <Default>standalone</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <standalone>standalone</standalone>
+                    <netclient>netclient</netclient>
+                </OptionValues>
+            </mode>
+            <name type="TextField">
+                <Default>UPSName</Default>
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
+                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+            </name>
+            <listen type="CSVListField">
+                <Default>127.0.0.1,::1</Default>
+                <Required>Y</Required>
+            </listen>
+        </general>
+        <account>
+            <admin_password type="TextField">
+                <Required>Y</Required>
+                <Default>Password</Default>
+            </admin_password>
+            <mon_password type="TextField">
+                <Required>Y</Required>
+                <Default>Password</Default>
+            </mon_password>
+        </account>
+        <usbhid>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </usbhid>
+        <apcsmart>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </apcsmart>
+        <apcupsd>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <hostname type="HostnameField">
+                <Required>Y</Required>
+                <Default>localhost</Default>
+            </hostname>
+            <port type="PortField">
+                <Required>N</Required>
+            </port>
+        </apcupsd>
+        <bcmxcpusb>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </bcmxcpusb>
+        <blazerusb>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </blazerusb>
+        <blazerser>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </blazerser>
+        <netclient>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <address type="HostnameField"/>
+            <port type="PortField">
+                <Default>3493</Default>
+                <Required>N</Required>
+            </port>
+            <user type="TextField">
+                <Required>N</Required>
+            </user>
+            <password type="TextField">
+                <Required>N</Required>
+            </password>
+        </netclient>
+        <qx>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </qx>
+        <riello>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>port=auto</Default>
+                <Required>N</Required>
+            </args>
+        </riello>
+        <snmp>
+            <enable type="BooleanField">
+                <Required>Y</Required>
+                <Default>0</Default>
+            </enable>
+            <args type="CSVListField">
+                <Default>community=public</Default>
+                <Required>N</Required>
+            </args>
+        </snmp>
+    </items>
 </model>

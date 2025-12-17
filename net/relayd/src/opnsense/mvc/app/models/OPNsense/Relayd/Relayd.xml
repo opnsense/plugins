@@ -1,359 +1,359 @@
 <model>
-   <mount>//OPNsense/relayd</mount>
-   <version>1.0.6</version>
-   <description>Relayd settings</description>
-   <items>
-      <general>
-         <enabled type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-         </enabled>
-         <interval type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>Check interval must be greater than 0</ValidationMessage>
-         </interval>
-         <log type="OptionField">
-            <Required>N</Required>
-            <OptionValues>
-               <updates>new states</updates>
-               <all>all states</all>
-            </OptionValues>
-         </log>
-         <prefork type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>Number of processes must be greater than 0</ValidationMessage>
-         </prefork>
-         <timeout type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
-         </timeout>
-      </general>
-      <host type="ArrayField">
-        <enabled type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-         </enabled>
-         <name type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>Host names should be unique.</ValidationMessage>
-                    <type>UniqueConstraint</type>
-                </check001>
-            </Constraints>
-         </name>
-         <address type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
-            <ChangeCase>lower</ChangeCase>
-            <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
-         </address>
-         <ipTTL type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The IP TTL must be greater than 0</ValidationMessage>
-         </ipTTL>
-         <priority type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The route priority must be greater than 0</ValidationMessage>
-         </priority>
-         <retry type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The number of retries must be greater than 0</ValidationMessage>
-         </retry>
-      </host>
-      <table type="ArrayField">
-         <name type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>Table names should be unique.</ValidationMessage>
-                    <type>UniqueConstraint</type>
-                </check001>
-            </Constraints>
-         </name>
-         <enabled type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-         </enabled>
-         <hosts type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>host</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Host not found</ValidationMessage>
-            <Multiple>Y</Multiple>
-            <Required>Y</Required>
-         </hosts>
-      </table>
-      <tablecheck type="ArrayField">
-         <name type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
-         </name>
-         <type type="OptionField">
-            <Default>icmp</Default>
-            <Required>Y</Required>
-            <OptionValues>
-               <icmp>ICMP</icmp>
-               <tcp>TCP</tcp>
-               <tls>TLS</tls>
-               <send>SEND</send>
-               <script>SCRIPT</script>
-               <http>HTTP</http>
-            </OptionValues>
-         </type>
-         <path type="TextField">
-            <Required>N</Required>
-         </path>
-         <host type="TextField">
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
-            <ChangeCase>lower</ChangeCase>
-            <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
-            <Required>N</Required>
-         </host>
-         <code type="IntegerField">
-            <Required>N</Required>
-            <ValidationMessage>Expected return code must be a number.</ValidationMessage>
-         </code>
-         <digest type="TextField">
-            <Required>N</Required>
-         </digest>
-         <data type="TextField">
-            <Required>N</Required>
-         </data>
-         <expect type="TextField">
-            <Required>N</Required>
-         </expect>
-         <ssl type="BooleanField">
-            <Required>N</Required>
-         </ssl>
-      </tablecheck>
-      <virtualserver type="ArrayField">
-         <name type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 31 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
-                    <type>UniqueConstraint</type>
-                </check001>
-            </Constraints>
-         </name>
-         <enabled type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-         </enabled>
-         <type type="OptionField">
-            <Default>relay</Default>
-            <Required>Y</Required>
-            <OptionValues>
-               <relay>Relay</relay>
-               <redirect>Redirection</redirect>
-            </OptionValues>
-         </type>
-         <listen_address type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</mask>
-            <ChangeCase>lower</ChangeCase>
-            <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
-         </listen_address>
-         <listen_proto type="OptionField">
-             <Required>Y</Required>
-             <Default>tcp</Default>
-             <OptionValues>
-                 <tcp>TCP</tcp>
-                 <udp>UDP</udp>
-             </OptionValues>
-         </listen_proto>
-         <listen_startport type="PortField">
-            <Required>Y</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-         </listen_startport>
-         <listen_endport type="PortField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-         </listen_endport>
-         <listen_interface type="InterfaceField">
-            <Required>N</Required>
-            <filters>
-               <enable>/^(?!0).*$/</enable>
-               <ipaddr>/^((?!dhcp).)*$/</ipaddr>
-            </filters>
-         </listen_interface>
-         <transport_type type="OptionField">
-            <Default>forward</Default>
-            <Required>Y</Required>
-            <OptionValues>
-               <forward>Forward</forward>
-               <route>Route</route>
-            </OptionValues>
-         </transport_type>
-         <routing_interface type="InterfaceField">
-            <Required>N</Required>
-            <filters>
-               <enable>/^(?!0).*$/</enable>
-               <ipaddr>/^((?!dhcp).)*$/</ipaddr>
-            </filters>
-         </routing_interface>
-         <transport_table type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>table</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Table not found</ValidationMessage>
-            <Required>Y</Required>
-         </transport_table>
-         <transport_port type="PortField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-         </transport_port>
-         <transport_interval type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>2</MinimumValue>
-            <ValidationMessage>Check interval must be a multiple of the global interval.</ValidationMessage>
-         </transport_interval>
-         <transport_timeout type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
-         </transport_timeout>
-         <transport_tablemode type="OptionField">
-            <Required>Y</Required>
-            <default>roundrobin</default>
-            <OptionValues>
-               <hash>Hash</hash>
-               <least-states>Least States</least-states>
-               <loadbalance>Load Balance</loadbalance>
-               <random>Random</random>
-               <roundrobin>Round Robin</roundrobin>
-               <source-hash>Source Hash</source-hash>
-            </OptionValues>
-         </transport_tablemode>
-         <transport_tablecheck type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>tablecheck</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Table check not found</ValidationMessage>
-            <Required>Y</Required>
-         </transport_tablecheck>
-         <backuptransport_table type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>table</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Table not found</ValidationMessage>
-            <Required>N</Required>
-         </backuptransport_table>
-         <backuptransport_interval type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>2</MinimumValue>
-            <ValidationMessage>Check interval must be a multiple of the global interval.</ValidationMessage>
-         </backuptransport_interval>
-         <backuptransport_timeout type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
-         </backuptransport_timeout>
-         <backuptransport_tablecheck type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>tablecheck</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Table check not found</ValidationMessage>
-            <Required>N</Required>
-            <Constraints>
-                <check001>
-                    <ValidationMessage>Table check must be set.</ValidationMessage>
-                    <type>DependConstraint</type>
-                    <addFields>
-                        <field1>backuptransport_table</field1>
-                    </addFields>
-                </check001>
-            </Constraints>
-         </backuptransport_tablecheck>
-         <backuptransport_tablemode type="OptionField">
-            <Required>Y</Required>
-            <default>roundrobin</default>
-            <OptionValues>
-               <hash>Hash</hash>
-               <least-states>Least States</least-states>
-               <loadbalance>Load Balance</loadbalance>
-               <random>Random</random>
-               <roundrobin>Round Robin</roundrobin>
-               <source-hash>Source Hash</source-hash>
-            </OptionValues>
-         </backuptransport_tablemode>
-         <sessiontimeout type="IntegerField">
-            <Required>N</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>2147483647</MaximumValue>
-            <ValidationMessage>The timeout must be a number between 1 and 2147483647.</ValidationMessage>
-         </sessiontimeout>
-         <stickyaddress type="BooleanField"/>
-         <protocol type="ModelRelationField">
-            <Model>
-               <template>
-                  <source>OPNsense.relayd.relayd</source>
-                  <items>protocol</items>
-                  <display>name</display>
-               </template>
-            </Model>
-            <ValidationMessage>Protocol not found</ValidationMessage>
-            <Required>N</Required>
-         </protocol>
-      </virtualserver>
-      <protocol type="ArrayField">
-         <name type="TextField">
-            <Required>Y</Required>
-            <mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</mask>
-            <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
-         </name>
-         <type type="OptionField">
-            <Default>tcp</Default>
-            <Required>Y</Required>
-            <OptionValues>
-               <tcp>TCP</tcp>
-               <dns>DNS</dns>
-               <http>HTTP</http>
-            </OptionValues>
-         </type>
-         <options type="TextField">
-            <Required>N</Required>
-         </options>
-      </protocol>
-   </items>
+    <mount>//OPNsense/relayd</mount>
+    <version>1.0.6</version>
+    <description>Relayd settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <interval type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Check interval must be greater than 0</ValidationMessage>
+            </interval>
+            <log type="OptionField">
+                <Required>N</Required>
+                <OptionValues>
+                    <updates>new states</updates>
+                    <all>all states</all>
+                </OptionValues>
+            </log>
+            <prefork type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>Number of processes must be greater than 0</ValidationMessage>
+            </prefork>
+            <timeout type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
+            </timeout>
+        </general>
+        <host type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>Host names should be unique.</ValidationMessage>
+                        <type>UniqueConstraint</type>
+                    </check001>
+                </Constraints>
+            </name>
+            <address type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
+                <ChangeCase>lower</ChangeCase>
+                <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
+            </address>
+            <ipTTL type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The IP TTL must be greater than 0</ValidationMessage>
+            </ipTTL>
+            <priority type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The route priority must be greater than 0</ValidationMessage>
+            </priority>
+            <retry type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The number of retries must be greater than 0</ValidationMessage>
+            </retry>
+        </host>
+        <table type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>Table names should be unique.</ValidationMessage>
+                        <type>UniqueConstraint</type>
+                    </check001>
+                </Constraints>
+            </name>
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <hosts type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>host</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Host not found</ValidationMessage>
+                <Multiple>Y</Multiple>
+                <Required>Y</Required>
+            </hosts>
+        </table>
+        <tablecheck type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            </name>
+            <type type="OptionField">
+                <Default>icmp</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <icmp>ICMP</icmp>
+                    <tcp>TCP</tcp>
+                    <tls>TLS</tls>
+                    <send>SEND</send>
+                    <script>SCRIPT</script>
+                    <http>HTTP</http>
+                </OptionValues>
+            </type>
+            <path type="TextField">
+                <Required>N</Required>
+            </path>
+            <host type="TextField">
+                <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
+                <ChangeCase>lower</ChangeCase>
+                <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
+                <Required>N</Required>
+            </host>
+            <code type="IntegerField">
+                <Required>N</Required>
+                <ValidationMessage>Expected return code must be a number.</ValidationMessage>
+            </code>
+            <digest type="TextField">
+                <Required>N</Required>
+            </digest>
+            <data type="TextField">
+                <Required>N</Required>
+            </data>
+            <expect type="TextField">
+                <Required>N</Required>
+            </expect>
+            <ssl type="BooleanField">
+                <Required>N</Required>
+            </ssl>
+        </tablecheck>
+        <virtualserver type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\._\- ]){1,31}$/u</Mask>
+                <ValidationMessage>Should be a string between 1 and 31 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>Virtual server names should be unique.</ValidationMessage>
+                        <type>UniqueConstraint</type>
+                    </check001>
+                </Constraints>
+            </name>
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <type type="OptionField">
+                <Default>relay</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <relay>Relay</relay>
+                    <redirect>Redirection</redirect>
+                </OptionValues>
+            </type>
+            <listen_address type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\.,_\-:]){0,1024}$/u</Mask>
+                <ChangeCase>lower</ChangeCase>
+                <ValidationMessage>Please specify a valid servername or IP address.</ValidationMessage>
+            </listen_address>
+            <listen_proto type="OptionField">
+                <Required>Y</Required>
+                <Default>tcp</Default>
+                <OptionValues>
+                    <tcp>TCP</tcp>
+                    <udp>UDP</udp>
+                </OptionValues>
+            </listen_proto>
+            <listen_startport type="PortField">
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </listen_startport>
+            <listen_endport type="PortField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </listen_endport>
+            <listen_interface type="InterfaceField">
+                <Required>N</Required>
+                <filters>
+                    <enable>/^(?!0).*$/</enable>
+                    <ipaddr>/^((?!dhcp).)*$/</ipaddr>
+                </filters>
+            </listen_interface>
+            <transport_type type="OptionField">
+                <Default>forward</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <forward>Forward</forward>
+                    <route>Route</route>
+                </OptionValues>
+            </transport_type>
+            <routing_interface type="InterfaceField">
+                <Required>N</Required>
+                <filters>
+                    <enable>/^(?!0).*$/</enable>
+                    <ipaddr>/^((?!dhcp).)*$/</ipaddr>
+                </filters>
+            </routing_interface>
+            <transport_table type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>table</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Table not found</ValidationMessage>
+                <Required>Y</Required>
+            </transport_table>
+            <transport_port type="PortField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </transport_port>
+            <transport_interval type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>2</MinimumValue>
+                <ValidationMessage>Check interval must be a multiple of the global interval.</ValidationMessage>
+            </transport_interval>
+            <transport_timeout type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
+            </transport_timeout>
+            <transport_tablemode type="OptionField">
+                <Required>Y</Required>
+                <Default>roundrobin</Default>
+                <OptionValues>
+                    <hash>Hash</hash>
+                    <least-states>Least States</least-states>
+                    <loadbalance>Load Balance</loadbalance>
+                    <random>Random</random>
+                    <roundrobin>Round Robin</roundrobin>
+                    <source-hash>Source Hash</source-hash>
+                </OptionValues>
+            </transport_tablemode>
+            <transport_tablecheck type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>tablecheck</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Table check not found</ValidationMessage>
+                <Required>Y</Required>
+            </transport_tablecheck>
+            <backuptransport_table type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>table</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Table not found</ValidationMessage>
+                <Required>N</Required>
+            </backuptransport_table>
+            <backuptransport_interval type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>2</MinimumValue>
+                <ValidationMessage>Check interval must be a multiple of the global interval.</ValidationMessage>
+            </backuptransport_interval>
+            <backuptransport_timeout type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <ValidationMessage>The timeout must be greater than 0</ValidationMessage>
+            </backuptransport_timeout>
+            <backuptransport_tablecheck type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>tablecheck</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Table check not found</ValidationMessage>
+                <Required>N</Required>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>Table check must be set.</ValidationMessage>
+                        <type>DependConstraint</type>
+                        <addFields>
+                            <field1>backuptransport_table</field1>
+                        </addFields>
+                    </check001>
+                </Constraints>
+            </backuptransport_tablecheck>
+            <backuptransport_tablemode type="OptionField">
+                <Required>Y</Required>
+                <Default>roundrobin</Default>
+                <OptionValues>
+                    <hash>Hash</hash>
+                    <least-states>Least States</least-states>
+                    <loadbalance>Load Balance</loadbalance>
+                    <random>Random</random>
+                    <roundrobin>Round Robin</roundrobin>
+                    <source-hash>Source Hash</source-hash>
+                </OptionValues>
+            </backuptransport_tablemode>
+            <sessiontimeout type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>2147483647</MaximumValue>
+                <ValidationMessage>The timeout must be a number between 1 and 2147483647.</ValidationMessage>
+            </sessiontimeout>
+            <stickyaddress type="BooleanField"/>
+            <protocol type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.relayd.relayd</source>
+                        <items>protocol</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>Protocol not found</ValidationMessage>
+                <Required>N</Required>
+            </protocol>
+        </virtualserver>
+        <protocol type="ArrayField">
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z\._\- ]){1,255}$/u</Mask>
+                <ValidationMessage>Should be a string between 1 and 255 characters. Allowed characters are letters and numbers as well as underscore, minus, dot and space.</ValidationMessage>
+            </name>
+            <type type="OptionField">
+                <Default>tcp</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <tcp>TCP</tcp>
+                    <dns>DNS</dns>
+                    <http>HTTP</http>
+                </OptionValues>
+            </type>
+            <options type="TextField">
+                <Required>N</Required>
+            </options>
+        </protocol>
+    </items>
 </model>

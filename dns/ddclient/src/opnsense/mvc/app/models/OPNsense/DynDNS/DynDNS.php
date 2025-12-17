@@ -52,6 +52,16 @@ class DynDNS extends BaseModel
             }
         }
         foreach ($validate_servers as $key => $node) {
+            if ((string)$node->service == 'powerdns') {
+                if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
+                    $messages->appendMessage(
+                        new Message(
+                            gettext("A valid URI is required."),
+                            $key . ".server"
+                        )
+                    );
+                }
+            }
             if ((string)$node->service != 'custom') {
                 continue;
             }

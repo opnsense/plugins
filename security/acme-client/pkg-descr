@@ -8,6 +8,84 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.11
+
+Added:
+* add support for Hetzner Cloud DNS API (#5020)
+* add support for Selectel.ru V2 API (#4824)
+* add support for mijn.host DNS API (#4446)
+* add support for AzureDNS System Assigned Managed Identity #4830 (4830)
+* add support for ZoneEdit DNS API (#4671)
+
+Changed:
+* use mwexec/file_safe for HTTP-01/TLSALPN challenge types (core #9325)
+
+Fixed:
+* fix deprecated PHP syntax in cron settings (#4824)
+
+Deprecated:
+* deprecate support for HTTP-01 challenge types (no removal date yet)
+
+4.10
+
+Added:
+* new automation to reload www/caddy (#4692)
+* new automation to upload to Proxmox Backup Server (#4785)
+* add support for Websupport.sk DNS API (#4540)
+* add SFTP option: Preserve Modification Time (#3862)
+
+Changed:
+* automatically fix account config if CERT_HOME is set (#4622)
+* automatically resolve cron job mismatch (#4627)
+* change default SFTP options to NOT preserve modification time (#3862)
+* migrate SFTP/SSH operations to AcmeClient logging
+* add detailed SFTP/SSH logging when debug logging is enabled
+* add new log messages and improve existing ones
+
+Fixed:
+* deploy hooks may use the old CERT_HOME (#4622)
+* acme.sh is always called with "--days 1" (#4711)
+* avoid startup error: "rmdir... Not a directory" (#4743)
+* fails to create/update cron job on UUID mismatch (#4627)
+* accounts/certificates not visible on 25.7 alpha (#4790)
+
+Removed:
+* remove stdout (CLI) logging from SFTP library
+
+4.9
+
+Added:
+* Add support for Scaleway DNS API (#4492)
+
+4.8
+
+BREAKING CHANGE: Let's Encrypt ends support for the OCSP Must Staple
+extension on 30.01.2025. Issuance requests will fail if this option is
+still enabled past this date.
+
+Changed:
+* Add note regarding the support of OCSP
+
+Fixed:
+* SFTP automation unable to transfer certs (#4477)
+
+4.7
+
+Added:
+* Add support for MyDNS.JP DNS API (#4328)
+* Add support for fornex DNS API (#4389)
+* Add support for OTP Code to Synology deploy hook (#4045)
+* Add support for Shared Secret to INWX DNS API (#3942)
+
+Changed:
+* Convert Synology deploy hook variables to uppercase (#4286)
+* Migrate to MVC Trust storage
+
+Fixed:
+* SFTP/SSH automation results in fatal PHP error (#4363)
+* Typo in INWX password field name
+* Certs not fully functional after import into Trust storage (#4401)
+
 4.6
 
 Added:
@@ -294,7 +372,7 @@ Changed:
 
 Changed:
 * rename "Linode Cloud API" to "Linode API (v4)" (#2609)
-* rename "Linode API" to "Linode API (v3 / Deprecated)" (#2609)
+* rename "Linode API" to "Linode API (v3/deprecated)" (#2609)
 
 3.3
 
