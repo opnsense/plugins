@@ -30,6 +30,17 @@
         <help>Choose the certificate the Radius service should use.</help>
     </field>
     <field>
+        <id>eap.enable_pwd</id>
+        <label>Enable EAP-PWD</label>
+        <type>checkbox</type>
+        <help>This enables EAP-PWD authentication</help>
+    </field>
+    <field>
+        <id>eap.pwd_serverid</id>
+        <label>EAP-PWD server id</label>
+        <type>text</type>
+    </field>
+    <field>
         <id>eap.crl</id>
         <label>CRL</label>
         <type>dropdown</type>
