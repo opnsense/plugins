@@ -26,13 +26,13 @@
     POSSIBILITY OF SUCH DAMAGE.
 """
 import argparse
-from lib import checkip_service_list, checkip
+from lib import registered_services, checkip
 
 
 if __name__ == '__main__':
     # handle parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--service', help='service name', choices=checkip_service_list.keys(), required=True)
+    parser.add_argument('-s', '--service', help='service name', choices=registered_services(), required=True)
     parser.add_argument('-i', '--interface', help='interface', type=str, default='')
     parser.add_argument('-t', '--tls', help='enforce tls', choices=['0', '1'], default='1')
     parser.add_argument('--timeout', help='timeout', type=str, default='10')
