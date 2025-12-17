@@ -460,4 +460,141 @@ class SettingsController extends ApiMutableModelControllerBase
             )
         ];
     }
+
+    /**
+     * Get zone groups configuration
+     * @return array
+     */
+    public function getZoneGroupsAction()
+    {
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+
+        if (empty($zoneGroupsJson)) {
+            return [
+                'status' => 'ok',
+                'groups' => [],
+                'assignments' => []
+            ];
+        }
+
+        $data = json_decode($zoneGroupsJson, true);
+        if (!is_array($data)) {
+            return [
+                'status' => 'ok',
+                'groups' => [],
+                'assignments' => []
+            ];
+        }
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'] ?? [],
+            'assignments' => $data['assignments'] ?? []
+        ];
+    }
+
+    /**
+     * Set zone group assignment
+     * @return array
+     */
+    public function setZoneGroupAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $zoneId = $this->request->getPost('zone_id');
+        $groupName = $this->request->getPost('group_name');
+
+        if (empty($zoneId)) {
+            return ['status' => 'error', 'message' => 'zone_id required'];
+        }
+
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+        $data = json_decode($zoneGroupsJson, true);
+
+        if (!is_array($data)) {
+            $data = ['groups' => [], 'assignments' => []];
+        }
+        if (!isset($data['groups'])) {
+            $data['groups'] = [];
+        }
+        if (!isset($data['assignments'])) {
+            $data['assignments'] = [];
+        }
+
+        // Add group if new and not empty
+        if (!empty($groupName) && !in_array($groupName, $data['groups'])) {
+            $data['groups'][] = $groupName;
+        }
+
+        // Set or remove assignment
+        if (empty($groupName)) {
+            unset($data['assignments'][$zoneId]);
+        } else {
+            $data['assignments'][$zoneId] = $groupName;
+        }
+
+        $mdl->general->zoneGroups = json_encode($data);
+        $mdl->serializeToConfig();
+        \OPNsense\Core\Config::getInstance()->save();
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'],
+            'assignments' => $data['assignments']
+        ];
+    }
+
+    /**
+     * Delete a zone group
+     * @return array
+     */
+    public function deleteZoneGroupAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $groupName = $this->request->getPost('group_name');
+        if (empty($groupName)) {
+            return ['status' => 'error', 'message' => 'group_name required'];
+        }
+
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+        $data = json_decode($zoneGroupsJson, true);
+
+        if (!is_array($data)) {
+            return ['status' => 'ok', 'message' => 'No groups exist'];
+        }
+
+        // Remove group from list
+        if (isset($data['groups'])) {
+            $data['groups'] = array_values(array_filter($data['groups'], function($g) use ($groupName) {
+                return $g !== $groupName;
+            }));
+        }
+
+        // Remove all assignments to this group
+        if (isset($data['assignments'])) {
+            foreach ($data['assignments'] as $zoneId => $group) {
+                if ($group === $groupName) {
+                    unset($data['assignments'][$zoneId]);
+                }
+            }
+        }
+
+        $mdl->general->zoneGroups = json_encode($data);
+        $mdl->serializeToConfig();
+        \OPNsense\Core\Config::getInstance()->save();
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'] ?? [],
+            'assignments' => $data['assignments'] ?? []
+        ];
+    }
 }

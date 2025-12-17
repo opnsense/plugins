@@ -498,10 +498,14 @@ $(document).ready(function() {
 
             // Load default TTL setting
             if (cfg.general && cfg.general.defaultTtl) {
-                // Remove underscore prefix if present (e.g. "_60" -> "60")
-                defaultTtl = cfg.general.defaultTtl.selected || cfg.general.defaultTtl;
-                if (typeof defaultTtl === 'string' && defaultTtl.charAt(0) === '_') {
-                    defaultTtl = defaultTtl.substring(1);
+                // Find the selected TTL option (API returns object with selected: 1/0 for each option)
+                var ttlOptions = cfg.general.defaultTtl;
+                for (var key in ttlOptions) {
+                    if (ttlOptions[key].selected == 1) {
+                        // Remove underscore prefix (e.g. "_60" -> "60")
+                        defaultTtl = key.charAt(0) === '_' ? key.substring(1) : key;
+                        break;
+                    }
                 }
                 // Set the value in the inline TTL selector
                 $('#defaultTtlSelect').val(defaultTtl).selectpicker('refresh');
@@ -1899,21 +1903,27 @@ $(document).ready(function() {
         ajaxCall('/api/hclouddns/accounts/searchItem', {}, function(data) {
             var $select = $('#importAccountSelect');
             $select.find('option:not(:first)').remove();
+            var enabledAccounts = [];
             if (data && data.rows) {
                 $.each(data.rows, function(i, acc) {
                     if (acc.enabled === '1') {
+                        enabledAccounts.push(acc);
                         $select.append('<option value="' + acc.uuid + '">' + acc.name + '</option>');
                     }
                 });
+            }
+            // Auto-select if only one account
+            if (enabledAccounts.length === 1) {
+                $select.val(enabledAccounts[0].uuid);
+                importAccountUuid = enabledAccounts[0].uuid;
+                $('#loadZonesBtn').prop('disabled', false);
             }
             $select.selectpicker('refresh');
         });
     }
 
-    // Load accounts when section is expanded
-    $('#importSection').on('show.bs.collapse', function() {
-        loadImportAccounts();
-    });
+    // Load import accounts on page load
+    loadImportAccounts();
 
     // Enable/disable load button based on account selection
     $('#importAccountSelect').on('change', function() {

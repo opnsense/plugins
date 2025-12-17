@@ -25,6 +25,7 @@
 
     Shared Hetzner DNS API library - used by both ddclient providers and HCloudDNS
 """
+import hashlib
 import syslog
 import requests
 
@@ -231,10 +232,14 @@ class HetznerCloudAPI:
 
                     # Create one entry per record value (important for MX, NS, etc.)
                     for record in records:
+                        value = record.get('value', '')
+                        # Generate synthetic ID from name+type+value
+                        record_id = hashlib.md5(f"{rrset_name}:{rrset_type}:{value}".encode()).hexdigest()[:12]
                         result.append({
+                            'id': record_id,
                             'name': rrset_name,
                             'type': rrset_type,
-                            'value': record.get('value', ''),
+                            'value': value,
                             'ttl': rrset_ttl
                         })
 

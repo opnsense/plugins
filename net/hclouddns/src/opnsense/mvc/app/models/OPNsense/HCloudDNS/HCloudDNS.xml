@@ -69,6 +69,11 @@
                     <_86400>86400s (1 day)</_86400>
                 </OptionValues>
             </defaultTtl>
+            <!-- Zone Groups for DNS Management -->
+            <zoneGroups type="TextField">
+                <Required>N</Required>
+                <default>{}</default>
+            </zoneGroups>
         </general>
 
         <!-- Gateways / Interfaces -->

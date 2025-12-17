@@ -41,7 +41,7 @@
     .account-selector { margin-bottom: 20px; }
     .wizard-section { background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
     .wizard-section h5 { margin-top: 0; margin-bottom: 15px; }
-    .wizard-preview { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px; font-family: monospace; font-size: 13px; margin-top: 10px; }
+    .wizard-preview { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px; font-family: monospace; font-size: 13px; margin-top: 10px; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; }
     .help-text { font-size: 12px; color: #666; margin-top: 5px; }
     /* Record Modal Styling */
     #recordModal .modal-dialog { width: 70%; max-width: 900px; }
@@ -84,6 +84,20 @@
     .record-type-body.show { display: block; }
     .record-type-group.expanded .record-type-header { background: #e2e6ea; }
     .no-records-match { padding: 20px; text-align: center; color: #666; }
+    /* Zone Groups */
+    .zone-group-section { margin-bottom: 20px; }
+    .zone-group-header { padding: 10px 15px; background: #e9ecef; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .zone-group-header:hover { background: #dee2e6; }
+    .zone-group-header.collapsed { margin-bottom: 0; border-radius: 4px; }
+    .zone-group-title { font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+    .zone-group-title i { color: #666; }
+    .zone-group-count { background: #6c757d; color: #fff; padding: 2px 10px; border-radius: 10px; font-size: 12px; }
+    .zone-group-body { display: block; }
+    .zone-group-body.collapsed { display: none; }
+    .zone-group-selector { width: auto; min-width: 120px; font-size: 12px; padding: 2px 8px; height: 26px; }
+    .zone-group-actions { display: flex; align-items: center; gap: 8px; }
+    .new-group-input { width: 120px; font-size: 12px; padding: 2px 8px; height: 26px; display: none; }
+    .new-group-input.show { display: inline-block; }
 </style>
 
 <!-- No Accounts Warning -->
@@ -112,6 +126,18 @@
             <select class="form-control selectpicker" id="dnsAccountSelect" data-live-search="true">
                 <option value="">{{ lang._('-- Select an account --') }}</option>
             </select>
+        </div>
+    </div>
+</div>
+
+<!-- Zone Search (always visible) -->
+<div class="zone-search-container" style="margin-bottom: 15px; display: none;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input type="text" class="form-control" id="zoneSearchInput" placeholder="{{ lang._('Filter zones...') }}">
+            </div>
         </div>
     </div>
 </div>
@@ -264,7 +290,7 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>{{ lang._('Public Key (p=...)') }}</label>
-                                        <textarea class="form-control" id="dkimKey" rows="3" placeholder="MIGfMA0GCSqGSIb3DQEBAQUAA4..."></textarea>
+                                        <textarea class="form-control" id="dkimKey" rows="5" style="font-family: monospace; font-size: 12px;" placeholder="MIGfMA0GCSqGSIb3DQEBAQUAA4..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -467,6 +493,48 @@ $(document).ready(function() {
     var currentAccountUuid = '';
     var zonesData = {};
     var isEditMode = false; // Track whether we're editing an existing record
+    var defaultDynDnsTtl = '60'; // Default TTL for DynDNS entries (loaded from settings)
+    var zoneGroups = []; // Available group names
+    var zoneAssignments = {}; // zone_id -> group_name mapping
+    var collapsedGroups = {}; // Track which groups are collapsed
+
+    // Load collapsed state from localStorage
+    try {
+        var saved = localStorage.getItem('hclouddns_collapsedGroups');
+        if (saved) collapsedGroups = JSON.parse(saved);
+    } catch(e) {}
+
+    function saveCollapsedState() {
+        try {
+            localStorage.setItem('hclouddns_collapsedGroups', JSON.stringify(collapsedGroups));
+        } catch(e) {}
+    }
+
+    // Load zone groups from settings
+    function loadZoneGroups(callback) {
+        ajaxCall('/api/hclouddns/settings/getZoneGroups', {}, function(data) {
+            if (data && data.status === 'ok') {
+                zoneGroups = data.groups || [];
+                zoneAssignments = data.assignments || {};
+            }
+            if (callback) callback();
+        });
+    }
+
+    // Load default TTL from settings
+    ajaxCall('/api/hclouddns/settings/get', {}, function(data) {
+        if (data && data.hclouddns && data.hclouddns.general && data.hclouddns.general.defaultTtl) {
+            // Find the selected TTL option (API returns object with selected: 1/0 for each option)
+            var ttlOptions = data.hclouddns.general.defaultTtl;
+            for (var key in ttlOptions) {
+                if (ttlOptions[key].selected == 1) {
+                    // Remove underscore prefix (e.g. "_60" -> "60")
+                    defaultDynDnsTtl = key.charAt(0) === '_' ? key.substring(1) : key;
+                    break;
+                }
+            }
+        }
+    });
 
     // Load accounts and check if any exist
     ajaxCall('/api/hclouddns/accounts/searchItem', {}, function(data) {
@@ -513,6 +581,7 @@ $(document).ready(function() {
         } else {
             $('#refreshZonesBtn').prop('disabled', true);
             $('#historyBtn').prop('disabled', true);
+            $('.zone-search-container').hide();
             $('#zonesContainer').html('<div class="text-center text-muted" style="padding: 40px;"><i class="fa fa-cloud fa-3x"></i><p style="margin-top: 15px;">{{ lang._("Select an account to view DNS zones") }}</p></div>');
         }
     });
@@ -528,37 +597,127 @@ $(document).ready(function() {
         });
     }
 
+    function buildGroupSelector(zoneId, currentGroup) {
+        var html = '<select class="form-control zone-group-selector" data-zone-id="' + zoneId + '">';
+        html += '<option value="">{{ lang._("No Group") }}</option>';
+        var sortedGroups = zoneGroups.slice().sort(function(a, b) { return a.localeCompare(b); });
+        $.each(sortedGroups, function(i, g) {
+            html += '<option value="' + g + '"' + (currentGroup === g ? ' selected' : '') + '>' + g + '</option>';
+        });
+        html += '<option value="__new__">+ {{ lang._("New Group...") }}</option>';
+        html += '</select>';
+        html += '<input type="text" class="form-control new-group-input" data-zone-id="' + zoneId + '" placeholder="{{ lang._("Group name") }}">';
+        return html;
+    }
+
+    function renderZonePanel(zone) {
+        var currentGroup = zoneAssignments[zone.id] || '';
+        return '<div class="zone-panel" data-zone-id="' + zone.id + '" data-zone-name="' + zone.name + '">' +
+            '<div class="zone-header">' +
+                '<div><span class="zone-name">' + zone.name + '</span> <span class="zone-meta zone-record-count">(<i class="fa fa-spinner fa-spin"></i>)</span></div>' +
+                '<div class="zone-header-actions">' +
+                    '<div class="zone-group-actions" onclick="event.stopPropagation();">' + buildGroupSelector(zone.id, currentGroup) + '</div>' +
+                    '<button class="btn btn-xs btn-success add-zone-record-btn" data-zone-id="' + zone.id + '" data-zone-name="' + zone.name + '" title="{{ lang._("Add Record") }}"><i class="fa fa-plus"></i></button> ' +
+                    '<i class="fa fa-chevron-right zone-toggle"></i>' +
+                '</div>' +
+            '</div>' +
+            '<div class="zone-records" id="zone-records-' + zone.id + '"><div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Loading...</div></div>' +
+        '</div>';
+    }
+
+    function renderZonesGrouped(zones) {
+        // Sort zones alphabetically
+        zones.sort(function(a, b) { return a.name.localeCompare(b.name); });
+
+        // Group zones by their assigned group
+        var grouped = {};
+        var ungrouped = [];
+        $.each(zones, function(i, zone) {
+            var group = zoneAssignments[zone.id];
+            if (group) {
+                if (!grouped[group]) grouped[group] = [];
+                grouped[group].push(zone);
+            } else {
+                ungrouped.push(zone);
+            }
+        });
+
+        var html = '';
+
+        // Sort groups alphabetically
+        var sortedGroups = zoneGroups.slice().sort(function(a, b) { return a.localeCompare(b); });
+
+        // Render grouped zones first
+        $.each(sortedGroups, function(i, groupName) {
+            if (grouped[groupName] && grouped[groupName].length > 0) {
+                var isCollapsed = collapsedGroups[groupName] === true;
+                var folderIcon = isCollapsed ? 'fa-folder' : 'fa-folder-open';
+                html += '<div class="zone-group-section" data-group="' + groupName + '">' +
+                    '<div class="zone-group-header' + (isCollapsed ? ' collapsed' : '') + '">' +
+                        '<div class="zone-group-title"><i class="fa ' + folderIcon + '"></i> ' + groupName + '</div>' +
+                        '<span class="zone-group-count">' + grouped[groupName].length + ' {{ lang._("zones") }}</span>' +
+                    '</div>' +
+                    '<div class="zone-group-body' + (isCollapsed ? ' collapsed' : '') + '">';
+                $.each(grouped[groupName], function(j, zone) {
+                    html += renderZonePanel(zone);
+                });
+                html += '</div></div>';
+            }
+        });
+
+        // Render ungrouped zones
+        if (ungrouped.length > 0) {
+            if (zoneGroups.length > 0) {
+                var isUngroupedCollapsed = collapsedGroups['__ungrouped__'] === true;
+                var ungroupedIcon = isUngroupedCollapsed ? 'fa-folder' : 'fa-folder-o';
+                html += '<div class="zone-group-section" data-group="">' +
+                    '<div class="zone-group-header' + (isUngroupedCollapsed ? ' collapsed' : '') + '">' +
+                        '<div class="zone-group-title"><i class="fa ' + ungroupedIcon + '"></i> {{ lang._("Ungrouped") }}</div>' +
+                        '<span class="zone-group-count">' + ungrouped.length + ' {{ lang._("zones") }}</span>' +
+                    '</div>' +
+                    '<div class="zone-group-body' + (isUngroupedCollapsed ? ' collapsed' : '') + '">';
+            }
+            $.each(ungrouped, function(j, zone) {
+                html += renderZonePanel(zone);
+            });
+            if (zoneGroups.length > 0) {
+                html += '</div></div>';
+            }
+        }
+
+        return html;
+    }
+
     function loadZones() {
         $('#zonesContainer').html('<div class="text-center" style="padding: 40px;"><i class="fa fa-spinner fa-spin fa-2x"></i><p style="margin-top: 15px;">{{ lang._("Loading zones...") }}</p></div>');
 
-        // Load DynDNS entries first, then load zones
-        loadDynDnsEntries(function() {
-            ajaxCall('/api/hclouddns/hetzner/listZonesForAccount', {account_uuid: currentAccountUuid}, function(data) {
-            if (data && data.status === 'ok' && data.zones) {
-                zonesData = {};
-                var html = '';
-                $.each(data.zones, function(i, zone) {
-                    zonesData[zone.id] = zone;
-                    html += '<div class="zone-panel" data-zone-id="' + zone.id + '" data-zone-name="' + zone.name + '">' +
-                        '<div class="zone-header">' +
-                            '<div><span class="zone-name">' + zone.name + '</span> <span class="zone-meta zone-record-count">(<i class="fa fa-spinner fa-spin"></i>)</span></div>' +
-                            '<div class="zone-header-actions">' +
-                                '<button class="btn btn-xs btn-success add-zone-record-btn" data-zone-id="' + zone.id + '" data-zone-name="' + zone.name + '" title="{{ lang._("Add Record") }}"><i class="fa fa-plus"></i></button> ' +
-                                '<i class="fa fa-chevron-right zone-toggle"></i>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="zone-records" id="zone-records-' + zone.id + '"><div class="text-center p-3"><i class="fa fa-spinner fa-spin"></i> Loading...</div></div>' +
-                    '</div>';
-                });
-                $('#zonesContainer').html(html || '<div class="alert alert-warning">{{ lang._("No zones found for this account.") }}</div>');
+        // Load zone groups, then DynDNS entries, then zones
+        loadZoneGroups(function() {
+            loadDynDnsEntries(function() {
+                ajaxCall('/api/hclouddns/hetzner/listZonesForAccount', {account_uuid: currentAccountUuid}, function(data) {
+                if (data && data.status === 'ok' && data.zones) {
+                    zonesData = {};
+                    $.each(data.zones, function(i, zone) {
+                        zonesData[zone.id] = zone;
+                    });
+                    var html = renderZonesGrouped(data.zones);
+                    $('#zonesContainer').html(html || '<div class="alert alert-warning">{{ lang._("No zones found for this account.") }}</div>');
 
-                // Load record counts for all zones
-                $.each(data.zones, function(i, zone) {
-                    loadRecordCount(zone.id);
+                    // Show zone search if there are zones
+                    if (data.zones.length > 0) {
+                        $('.zone-search-container').show();
+                    } else {
+                        $('.zone-search-container').hide();
+                    }
+
+                    // Load record counts for all zones
+                    $.each(data.zones, function(i, zone) {
+                        loadRecordCount(zone.id);
+                    });
+                } else {
+                    $('#zonesContainer').html('<div class="alert alert-danger">{{ lang._("Failed to load zones:") }} ' + (data.message || 'Unknown error') + '</div>');
+                }
                 });
-            } else {
-                $('#zonesContainer').html('<div class="alert alert-danger">{{ lang._("Failed to load zones:") }} ' + (data.message || 'Unknown error') + '</div>');
-            }
             });
         });
     }
@@ -786,6 +945,10 @@ $(document).ready(function() {
             }
 
             if (typeRecords.length === 0) return;
+
+            // Sort records alphabetically by name
+            typeRecords.sort(function(a, b) { return a.name.localeCompare(b.name); });
+
             totalShown += typeRecords.length;
 
             var typeClass = 'record-type-' + type;
@@ -956,6 +1119,112 @@ $(document).ready(function() {
         renderRecordsGrouped(zoneId, records, filterType, searchText);
     });
 
+    // Zone search/filter
+    $('#zoneSearchInput').on('keyup', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('.zone-panel').each(function() {
+            var zoneName = $(this).data('zone-name').toLowerCase();
+            if (searchText === '' || zoneName.indexOf(searchText) !== -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        // Hide empty group sections
+        $('.zone-group-section').each(function() {
+            var visibleZones = $(this).find('.zone-panel:visible').length;
+            if (visibleZones === 0) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+
+    // Zone group header collapse/expand
+    $(document).on('click', '.zone-group-header', function() {
+        var $section = $(this).closest('.zone-group-section');
+        var $body = $section.find('.zone-group-body');
+        var $icon = $(this).find('.zone-group-title i');
+        var groupName = $section.data('group') || '__ungrouped__';
+        if ($body.hasClass('collapsed')) {
+            $body.removeClass('collapsed');
+            $(this).removeClass('collapsed');
+            $icon.removeClass('fa-folder').addClass('fa-folder-open');
+            collapsedGroups[groupName] = false;
+        } else {
+            $body.addClass('collapsed');
+            $(this).addClass('collapsed');
+            $icon.removeClass('fa-folder-open').addClass('fa-folder');
+            collapsedGroups[groupName] = true;
+        }
+        saveCollapsedState();
+    });
+
+    // Zone group selector change
+    $(document).on('change', '.zone-group-selector', function(e) {
+        e.stopPropagation();
+        var $select = $(this);
+        var zoneId = $select.data('zone-id');
+        var groupName = $select.val();
+
+        if (groupName === '__new__') {
+            // Show new group input
+            $select.hide();
+            $select.siblings('.new-group-input').addClass('show').focus();
+            return;
+        }
+
+        // Save the group assignment
+        ajaxCall('/api/hclouddns/settings/setZoneGroup', {zone_id: zoneId, group_name: groupName}, function(data) {
+            if (data && data.status === 'ok') {
+                zoneGroups = data.groups || [];
+                zoneAssignments = data.assignments || {};
+                // Reload zones to re-render with new grouping
+                loadZones();
+            }
+        }, 'POST');
+    });
+
+    // New group input handler
+    $(document).on('keypress', '.new-group-input', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault();
+            var $input = $(this);
+            var zoneId = $input.data('zone-id');
+            var groupName = $input.val().trim();
+
+            if (groupName) {
+                ajaxCall('/api/hclouddns/settings/setZoneGroup', {zone_id: zoneId, group_name: groupName}, function(data) {
+                    if (data && data.status === 'ok') {
+                        zoneGroups = data.groups || [];
+                        zoneAssignments = data.assignments || {};
+                        loadZones();
+                    }
+                }, 'POST');
+            } else {
+                // Cancel - show select again
+                $input.removeClass('show').val('');
+                $input.siblings('.zone-group-selector').show().val('');
+            }
+        } else if (e.which === 27) { // Escape key
+            var $input = $(this);
+            $input.removeClass('show').val('');
+            $input.siblings('.zone-group-selector').show().val('');
+        }
+    });
+
+    // Cancel new group input on blur
+    $(document).on('blur', '.new-group-input', function() {
+        var $input = $(this);
+        setTimeout(function() {
+            if ($input.hasClass('show') && !$input.val().trim()) {
+                $input.removeClass('show').val('');
+                $input.siblings('.zone-group-selector').show().val('');
+            }
+        }, 200);
+    });
+
     // Type group expand/collapse
     $(document).on('click', '.record-type-header', function(e) {
         if ($(e.target).closest('button').length) return; // Ignore button clicks
@@ -988,84 +1257,148 @@ $(document).ready(function() {
         $('#recordModal').modal('show');
     });
 
-    // Edit record
+    // Edit record - fetch fresh data from API
     $(document).on('click', '.edit-record-btn', function(e) {
         e.stopPropagation();
         var $row = $(this).closest('tr');
+        var recordId = $row.data('record-id');
         var zoneId = $row.data('zone-id');
         var $zonePanel = $row.closest('.zone-panel');
         var zoneName = $zonePanel.data('zone-name');
 
-        isEditMode = true; // We're editing an existing record
-        $('#recordModalTitle').text('{{ lang._("Edit DNS Record") }} - ' + zoneName);
-        $('#recordZoneId').val(zoneId);
-        $('#recordZone').val(zoneId);
-        $('#recordZoneDisplay').val(zoneName);
-        $('#deleteRecordBtn').show();
+        // Show loading state
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
 
-        // Get record data from row
-        var type = $row.find('.record-type-badge').text();
-        var name = $row.find('td:eq(1)').text();
-        var value = $row.find('.record-value').attr('title');
-        var ttl = $row.find('td:eq(3)').text();
+        // Fetch fresh record data from API
+        ajaxCall('/api/hclouddns/hetzner/listRecordsForAccount', {
+            account_uuid: currentAccountUuid,
+            zone_id: zoneId,
+            all_types: '1'
+        }, function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-pencil"></i>');
 
-        // Store old values for history
-        $('#recordOldValue').val(value);
-        $('#recordOldTtl').val(ttl);
+            if (!data || data.status !== 'ok' || !data.records) {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: '{{ lang._("Failed to load record data.") }}'});
+                return;
+            }
 
-        $('#recordName').val(name);
-        $('#recordTtl').val(ttl);
-        $('#recordType').val(type).trigger('change');
+            // Find record by ID
+            var record = null;
+            for (var i = 0; i < data.records.length; i++) {
+                if (data.records[i].id == recordId) {
+                    record = data.records[i];
+                    break;
+                }
+            }
 
-        // For TXT records, auto-detect and populate the appropriate wizard
-        if (type === 'TXT') {
-            populateTxtWizard(value, name);
-        } else if (type === 'MX') {
-            // Parse MX value: "priority target" format
-            var mxParts = value.match(/^(\d+)\s+(.+)$/);
-            if (mxParts) {
-                $('#mxPriority').val(mxParts[1]);
-                $('#recordValue').val(mxParts[2]);
+            if (!record) {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: '{{ lang._("Record not found. It may have been deleted.") }}'});
+                loadRecords(zoneId);
+                return;
+            }
+
+            var type = record.type;
+            var name = record.name;
+            var value = record.value;
+            var ttl = record.ttl || 300;
+
+            isEditMode = true;
+            $('#recordModalTitle').text('{{ lang._("Edit DNS Record") }} - ' + zoneName);
+            $('#recordZoneId').val(zoneId);
+            $('#recordZone').val(zoneId);
+            $('#recordZoneDisplay').val(zoneName);
+            $('#deleteRecordBtn').show();
+
+            // Store old values for history
+            $('#recordOldValue').val(value);
+            $('#recordOldTtl').val(ttl);
+
+            $('#recordName').val(name);
+            $('#recordTtl').val(ttl);
+            $('#recordType').val(type).trigger('change');
+
+            // For TXT records, auto-detect and populate the appropriate wizard
+            if (type === 'TXT') {
+                populateTxtWizard(value, name);
+            } else if (type === 'MX') {
+                var mxParts = value.match(/^(\d+)\s+(.+)$/);
+                if (mxParts) {
+                    $('#mxPriority').val(mxParts[1]);
+                    $('#recordValue').val(mxParts[2]);
+                } else {
+                    $('#recordValue').val(value);
+                }
+            } else if (type === 'SRV') {
+                var srvParts = value.match(/^(\d+)\s+(\d+)\s+(\d+)\s+(.+)$/);
+                if (srvParts) {
+                    $('#srvPriority').val(srvParts[1]);
+                    $('#srvWeight').val(srvParts[2]);
+                    $('#srvPort').val(srvParts[3]);
+                    $('#srvTarget').val(srvParts[4]);
+                }
+            } else if (type === 'CAA') {
+                var caaParts = value.match(/^(\d+)\s+(\w+)\s+"?([^"]+)"?$/);
+                if (caaParts) {
+                    $('#caaFlags').val(caaParts[1]);
+                    $('#caaTag').val(caaParts[2]);
+                    $('#caaValue').val(caaParts[3]);
+                }
             } else {
                 $('#recordValue').val(value);
             }
-        } else if (type === 'SRV') {
-            // Parse SRV value: "priority weight port target" format
-            var srvParts = value.match(/^(\d+)\s+(\d+)\s+(\d+)\s+(.+)$/);
-            if (srvParts) {
-                $('#srvPriority').val(srvParts[1]);
-                $('#srvWeight').val(srvParts[2]);
-                $('#srvPort').val(srvParts[3]);
-                $('#srvTarget').val(srvParts[4]);
-            }
-        } else if (type === 'CAA') {
-            // Parse CAA value: "flags tag value" format
-            var caaParts = value.match(/^(\d+)\s+(\w+)\s+"?([^"]+)"?$/);
-            if (caaParts) {
-                $('#caaFlags').val(caaParts[1]);
-                $('#caaTag').val(caaParts[2]);
-                $('#caaValue').val(caaParts[3]);
-            }
-        } else {
-            $('#recordValue').val(value);
-        }
 
-        $('#recordModal').modal('show');
+            $('#recordModal').modal('show');
+        });
     });
 
-    // Delete record button in table
+    // Delete record button in table - fetch fresh data from API
     $(document).on('click', '.delete-record-btn', function(e) {
         e.stopPropagation();
         var $row = $(this).closest('tr');
+        var recordId = $row.data('record-id');
         var zoneId = $row.data('zone-id');
         var $zonePanel = $row.closest('.zone-panel');
         var zoneName = $zonePanel.data('zone-name');
-        var name = $row.find('td:eq(1)').text();
-        var type = $row.find('.record-type-badge').text();
-        var value = $row.find('.record-value').attr('title');
-        var ttl = $row.find('td:eq(3)').text();
 
-        BootstrapDialog.confirm({
+        // Show loading state
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+
+        // Fetch fresh record data from API
+        ajaxCall('/api/hclouddns/hetzner/listRecordsForAccount', {
+            account_uuid: currentAccountUuid,
+            zone_id: zoneId,
+            all_types: '1'
+        }, function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-trash"></i>');
+
+            if (!data || data.status !== 'ok' || !data.records) {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: '{{ lang._("Failed to load record data.") }}'});
+                return;
+            }
+
+            // Find record by ID
+            var record = null;
+            for (var i = 0; i < data.records.length; i++) {
+                if (data.records[i].id == recordId) {
+                    record = data.records[i];
+                    break;
+                }
+            }
+
+            if (!record) {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_WARNING, message: '{{ lang._("Record not found. It may have been deleted.") }}'});
+                loadRecords(zoneId);
+                return;
+            }
+
+            var name = record.name;
+            var type = record.type;
+            var value = record.value;
+            var ttl = record.ttl || 300;
+
+            BootstrapDialog.confirm({
             title: '{{ lang._("Confirm Delete") }}',
             message: '{{ lang._("Delete record") }} <strong>' + name + '</strong> (' + type + ')?',
             type: BootstrapDialog.TYPE_DANGER,
@@ -1098,7 +1431,8 @@ $(document).ready(function() {
                     });
                 }
             }
-        });
+            });
+        }); // close ajaxCall
     });
 
     // Create DynDNS Entry from A/AAAA record
@@ -1110,15 +1444,14 @@ $(document).ready(function() {
         var zoneName = $zonePanel.data('zone-name');
         var recordName = $(this).data('record-name');
         var recordType = $(this).data('record-type');
-        var ttl = $(this).data('ttl') || 60;
 
-        // Populate modal fields
+        // Populate modal fields - use default DynDNS TTL from settings
         $('#dynDnsAccountUuid').val(currentAccountUuid);
         $('#dynDnsZoneId').val(zoneId);
         $('#dynDnsZoneName').val(zoneName);
         $('#dynDnsRecordName').val(recordName);
         $('#dynDnsRecordType').val(recordType);
-        $('#dynDnsTtl').val(ttl);
+        $('#dynDnsTtl').val(defaultDynDnsTtl);
         $('#dynDnsZoneDisplay').text(zoneName);
         $('#dynDnsRecordDisplay').text(recordName);
         $('#dynDnsTypeDisplay').text(recordType);
