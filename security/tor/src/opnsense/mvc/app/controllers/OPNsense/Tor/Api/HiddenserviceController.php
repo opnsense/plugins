@@ -40,7 +40,6 @@ class HiddenserviceController extends ApiMutableModelControllerBase
     }
     public function getserviceAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('hiddenservice', 'service', $uuid);
     }
     public function addserviceAction()

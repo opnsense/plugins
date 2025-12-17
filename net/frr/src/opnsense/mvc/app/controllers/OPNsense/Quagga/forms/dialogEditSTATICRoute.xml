@@ -3,6 +3,11 @@
     <id>route.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>route.network</id>
@@ -12,7 +17,7 @@
   </field>
   <field>
     <id>route.gateway</id>
-    <label>Gateway (optional)</label>
+    <label>Gateway</label>
     <type>text</type>
     <help>Optional gateway IP address for this route.</help>
   </field>

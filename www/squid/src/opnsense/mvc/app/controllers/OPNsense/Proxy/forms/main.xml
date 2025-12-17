@@ -148,17 +148,24 @@
                 <advanced>true</advanced>
             </field>
             <field>
-                <id>proxy.general.cache.local.l1</id>
-                <label>Number of first-level subdirectories</label>
+                <id>proxy.general.cache.local.swap_timeout</id>
+                <label>Disk I/O Timeout for Swap Operations (msec)</label>
                 <type>text</type>
-                <help>Enter the number of first-level subdirectories for the local cache (default is 16).</help>
+                <help>Prevents Squid from reading/writing to disk if the operation exceeds the specified timelimit in milliseconds (default 0 = disable when left empty).</help>
                 <advanced>true</advanced>
             </field>
             <field>
-                <id>proxy.general.cache.local.l2</id>
-                <label>Number of second-level subdirectories</label>
+                <id>proxy.general.cache.local.max_swap_rate</id>
+                <label>Disk I/O Timeout for Swap Operations (swaps/sec)</label>
                 <type>text</type>
-                <help>Enter the number of second-level subdirectories for the local cache (default is 256).</help>
+                <help>Limits disk access by setting a maximum I/O rate in swaps per second (default 0 = disable when left empty).</help>
+                <advanced>true</advanced>
+            </field>
+            <field>
+                <id>proxy.general.cache.local.slot_size</id>
+                <label>Cache Database-Record Size (bytes)</label>
+                <type>text</type>
+                <help>Defines the size of a database record used to store cached responses. Value should be a multiple of the OS I/O page size (default 16384 when left empty).</help>
                 <advanced>true</advanced>
             </field>
             <field>
@@ -305,13 +312,13 @@
                 <id>proxy.forward.transparentMode</id>
                 <label>Enable Transparent HTTP proxy</label>
                 <type>checkbox</type>
-                <help><![CDATA[Enable transparent proxy mode. You will need a firewall rule to forward traffic from the firewall to the proxy server. You may leave the proxy interfaces empty, but remember to set a valid ACL in that case. <a href="/firewall_nat_edit.php?template=transparent_proxy"> Add a new firewall rule </a>]]></help>
+                <help><![CDATA[Enable transparent proxy mode. You will need a firewall rule to forward traffic from the firewall to the proxy server. You may leave the proxy interfaces empty, but remember to set a valid ACL in that case.]]></help>
             </field>
             <field>
                 <id>proxy.forward.sslbump</id>
                 <label>Enable SSL inspection</label>
                 <type>checkbox</type>
-                <help><![CDATA[Enable SSL inspection mode, which allows to log HTTPS connections information, such as requested URL and/or make the proxy act as a man in the middle between the internet and your clients. Be aware of the security implications before enabling this option. If you plan to use transparent HTTPS mode, you need nat rules to reflect your traffic.<a href="/firewall_nat_edit.php?template=transparent_proxy&https=1">Add a new firewall rule </a>]]></help>
+                <help><![CDATA[Enable SSL inspection mode, which allows to log HTTPS connections information, such as requested URL and/or make the proxy act as a man in the middle between the internet and your clients. Be aware of the security implications before enabling this option. If you plan to use transparent HTTPS mode, you need nat rules to reflect your traffic.]]></help>
             </field>
             <field>
                 <id>proxy.forward.sslurlonly</id>
@@ -338,6 +345,14 @@
                 <style>tokenize</style>
                 <allownew>true</allownew>
                 <help>Create a list of sites which may not be inspected, for example bank sites. Prefix the domain with a . to accept all subdomains (e.g. .google.com).</help>
+            </field>
+            <field>
+                <id>proxy.forward.workers</id>
+                <label>Number of squid workers</label>
+                <type>text</type>
+                <help>Start N main Squid process daemons (i.e., SMP mode). Requires Restart.</help>
+                <hint>1</hint>
+                <advanced>true</advanced>
             </field>
             <field>
                 <id>proxy.forward.ssl_crtd_storage_max_size</id>
@@ -405,6 +420,12 @@
                 <style>tokenize</style>
                 <help>Type IP addresses you want to deny access to the proxy server.</help>
                 <allownew>true</allownew>
+            </field>
+            <field>
+                <id>proxy.forward.acl.allowWhitelistBannedHosts</id>
+                <label>Whitelist access for banned hosts</label>
+                <type>checkbox</type>
+                <help>Allows banned hosts to access domains listed in whitelist.</help>
             </field>
             <field>
                 <id>proxy.forward.acl.whiteList</id>

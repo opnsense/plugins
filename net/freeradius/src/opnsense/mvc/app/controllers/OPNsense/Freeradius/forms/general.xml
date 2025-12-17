@@ -26,6 +26,13 @@
         <help>Define the Fallback VLAN group ID.</help>
     </field>
     <field>
+        <id>general.fallback_tunnel_password</id>
+        <label>Fallback VLAN tunnel password</label>
+        <type>password</type>
+        <advanced>true</advanced>
+        <help>Define the Fallback VLAN Tunnel-Password. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
+    </field>
+    <field>
         <id>general.ldap_enabled</id>
         <label>Enable LDAP</label>
         <type>checkbox</type>

@@ -3,7 +3,7 @@
         <name>Services: SMART</name>
         <patterns>
             <pattern>ui/smart/*</pattern>
-            <pattern>api/smart/*</pattern>
+            <pattern>api/smart/service/*</pattern>
         </patterns>
     </page-services-smart>
 </acl>

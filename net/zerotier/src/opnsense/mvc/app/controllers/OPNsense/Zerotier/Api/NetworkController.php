@@ -44,7 +44,6 @@ class NetworkController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        $this->sessionClose();
         $mdlZerotier = $this->getModel();
         $grid = new UIModelGrid($mdlZerotier->networks->network);
         return $grid->fetchBindRequest(

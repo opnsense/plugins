@@ -6,7 +6,7 @@
         <dhcps>
             <dhcp type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <dns type="CSVListField">

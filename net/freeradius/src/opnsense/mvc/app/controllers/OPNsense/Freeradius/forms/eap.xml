@@ -20,7 +20,7 @@
     <field>
         <id>eap.ca</id>
         <label>Root Certificate</label>
-        <type>dropdown</type>
+        <type>select_multiple</type>
         <help>Choose the Root CA. This CA will be trusted to issue client certificates for authentication.</help>
     </field>
     <field>
@@ -28,6 +28,17 @@
         <label>Server Certificate</label>
         <type>dropdown</type>
         <help>Choose the certificate the Radius service should use.</help>
+    </field>
+    <field>
+        <id>eap.enable_pwd</id>
+        <label>Enable EAP-PWD</label>
+        <type>checkbox</type>
+        <help>This enables EAP-PWD authentication</help>
+    </field>
+    <field>
+        <id>eap.pwd_serverid</id>
+        <label>EAP-PWD server id</label>
+        <type>text</type>
     </field>
     <field>
         <id>eap.crl</id>

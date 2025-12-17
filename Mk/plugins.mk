@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -23,13 +23,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+PLUGINSDIR?=		${.CURDIR}/../..
+
 all: check
+	@cat ${.CURDIR}/${PLUGIN_DESC} | ${PAGER}
 
 .include "defaults.mk"
-
-PLUGINSDIR?=		${.CURDIR}/../..
-SCRIPTSDIR=		${PLUGINSDIR}/Scripts
-TEMPLATESDIR=		${PLUGINSDIR}/Templates
 
 .if exists(${GIT}) && exists(${GITVERSION})
 PLUGIN_COMMIT!=		${GITVERSION}
@@ -44,12 +43,18 @@ PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
 			+PRE_DEINSTALL +POST_DEINSTALL
 
 PLUGIN_WWW?=		https://opnsense.org/
+PLUGIN_MAINTAINER?=	N/A
 PLUGIN_LICENSE?=	BSD2CLAUSE
 PLUGIN_TIER?=		3
 PLUGIN_REVISION?=	0
 
-PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT \
-			PLUGIN_MAINTAINER
+PLUGIN_REQUIRES=	PLUGIN_NAME PLUGIN_VERSION PLUGIN_COMMENT
+
+.include "common.mk"
+.include "git.mk"
+.include "lint.mk"
+.include "style.mk"
+.include "sweep.mk"
 
 check:
 .for PLUGIN_REQUIRE in ${PLUGIN_REQUIRES}
@@ -58,48 +63,58 @@ check:
 .  endif
 .endfor
 
+_PLUGIN_COMMENT:=	${PLUGIN_COMMENT}
+
 .if defined(_PLUGIN_DEVEL)
 PLUGIN_DEVEL?:=		${_PLUGIN_DEVEL}
 .else
-PLUGIN_DEVEL?=		yes
+.-include "devel.mk"
 .endif
 
 PLUGIN_PREFIX?=		os-
 PLUGIN_SUFFIX?=		-devel
 
+.for CONFLICT in ${PLUGIN_CONFLICTS}
+PLUGIN_CONFLICTS+=	${CONFLICT}${PLUGIN_SUFFIX}
+.endfor
+
 .if !empty(PLUGIN_VARIANTS)
 PLUGIN_VARIANT?=	${PLUGIN_VARIANTS:[1]}
-.endif
-
-.if !empty(PLUGIN_VARIANT)
+.if "${PLUGIN_VARIANT}" == ""
+.error Plugin variant cannot be empty
+.else
 PLUGIN_NAME:=		${${PLUGIN_VARIANT}_NAME}
 .if empty(PLUGIN_NAME)
 .error Plugin variant '${PLUGIN_VARIANT}' does not exist
 .endif
-.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS}
-PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}
+.for _PLUGIN_VARIANT in ${PLUGIN_VARIANTS:N${PLUGIN_VARIANT}}
+PLUGIN_CONFLICTS+=	${${_PLUGIN_VARIANT}_NAME}${PLUGIN_SUFFIX} \
+			${${_PLUGIN_VARIANT}_NAME}
 .endfor
 PLUGIN_DEPENDS+=	${${PLUGIN_VARIANT}_DEPENDS}
+.if !empty(${PLUGIN_VARIANT}_COMMENT)
+_PLUGIN_COMMENT:=	${${PLUGIN_VARIANT}_COMMENT}
+.endif
+.endif
 .endif
 
 .if !empty(PLUGIN_NAME)
 PLUGIN_DIR?=		${.CURDIR:S/\// /g:[-2]}/${.CURDIR:S/\// /g:[-1]}
 .endif
 
-PLUGIN_PKGNAMES=	${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_SUFFIX} \
-			${PLUGIN_PREFIX}${PLUGIN_NAME}
-.for CONFLICT in ${PLUGIN_CONFLICTS}
-PLUGIN_PKGNAMES+=	${PLUGIN_PREFIX}${CONFLICT}${PLUGIN_SUFFIX} \
-			${PLUGIN_PREFIX}${CONFLICT}
-.endfor
-
 .if "${PLUGIN_DEVEL}" != ""
+PLUGIN_CONFLICTS+=	${PLUGIN_NAME}
 PLUGIN_PKGSUFFIX=	${PLUGIN_SUFFIX}
+PLUGIN_TIER=		4
 .else
+PLUGIN_CONFLICTS+=	${PLUGIN_NAME}${PLUGIN_SUFFIX}
 PLUGIN_PKGSUFFIX=	# empty
 .endif
 
+PLUGIN_CONFLICTS:=	${PLUGIN_CONFLICTS:S/^/${PLUGIN_PREFIX}/g:O}
+
 PLUGIN_PKGNAME=		${PLUGIN_PREFIX}${PLUGIN_NAME}${PLUGIN_PKGSUFFIX}
+PLUGIN_PKGNAMES=	${PLUGIN_CONFLICTS} ${PLUGIN_PKGNAME}
 
 .if "${PLUGIN_REVISION}" != "" && "${PLUGIN_REVISION}" != "0"
 PLUGIN_PKGVERSION=	${PLUGIN_VERSION}_${PLUGIN_REVISION}
@@ -111,7 +126,7 @@ manifest: check
 	@echo "name: ${PLUGIN_PKGNAME}"
 	@echo "version: \"${PLUGIN_PKGVERSION}\""
 	@echo "origin: opnsense/${PLUGIN_PKGNAME}"
-	@echo "comment: \"${PLUGIN_COMMENT}\""
+	@echo "comment: \"${_PLUGIN_COMMENT}\""
 	@echo "maintainer: \"${PLUGIN_MAINTAINER}\""
 	@echo "categories: [ \"${.CURDIR:S/\// /g:[-2]}\" ]"
 	@echo "www: \"${PLUGIN_WWW}\""
@@ -137,13 +152,26 @@ manifest: check
 	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
 
-scripts: check scripts-pre scripts-auto scripts-manual scripts-post
+# Package scripts generation handling 101:
+#
+# "auto" generates automatic hooks that a plugin may need in order to
+# reload on the fly. ".pre" and ".post" suffixed files can be used to
+# extend the auto-generated content.
+#
+# "manual" overwrites the automatic script and also ignores ".pre" and
+# ".post" files since they do not make sense in manual mode.
+#
+# Furthermore, variable replacement via %%PLUGIN_VAR%% takes place in
+# "manual" as well as ".pre" and ".post" scripts provided.
+
+scripts: check scripts-pre scripts-auto scripts-post scripts-manual
 
 scripts-pre:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		rm -f ${DESTDIR}/$${SCRIPT}; \
 		if [ -f ${.CURDIR}/$${SCRIPT}.pre ]; then \
-			cp ${.CURDIR}/$${SCRIPT}.pre ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.pre > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
@@ -194,22 +222,25 @@ scripts-auto:
 		done \
 	fi
 
-scripts-manual:
-	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
-		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
-			cp ${.CURDIR}/$${SCRIPT} ${DESTDIR}/$${SCRIPT}; \
-		fi; \
-	done
-
 scripts-post:
 	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
 		if [ -f ${.CURDIR}/$${SCRIPT}.post ]; then \
-			cat ${.CURDIR}/$${SCRIPT}.post >> ${DESTDIR}/$${SCRIPT}; \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT}.post >> \
+			    ${DESTDIR}/$${SCRIPT}; \
+		fi; \
+	done
+
+scripts-manual:
+	@for SCRIPT in ${PLUGIN_SCRIPTS}; do \
+		if [ -f ${.CURDIR}/$${SCRIPT} ]; then \
+			sed ${SED_REPLACE} -- ${.CURDIR}/$${SCRIPT} > \
+			    ${DESTDIR}/$${SCRIPT}; \
 		fi; \
 	done
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
+	@if [ -d ${.CURDIR}/contrib ]; then ${MAKE} DESTDIR=$$(readlink -f ${DESTDIR}) -C ${.CURDIR}/contrib install; fi
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - "$${FILE}" | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \
@@ -222,11 +253,19 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
 			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			gzip -cn "${DESTDIR}${LOCALBASE}/$${FILE}" > \
+			    "${DESTDIR}${LOCALBASE}/$${FILE}.gz"; \
+			rm "${DESTDIR}${LOCALBASE}/$${FILE}"; \
+		fi; \
 	done
 	@cat ${TEMPLATESDIR}/version | sed ${SED_REPLACE} > "${DESTDIR}${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
 
 plist: check
-	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
+	@(if [ -d ${.CURDIR}/contrib ]; then \
+		${MAKE} -C ${.CURDIR}/contrib plist; \
+	 fi; \
+	 (cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		if [ -f "$${FILE}.in" ]; then continue; fi; \
 		FILE="$${FILE%%.in}"; PREFIX=""; \
 		if [ "$${FILE%%.sample}" != "$${FILE}" ]; then \
@@ -235,9 +274,13 @@ plist: check
 			FILE="$${FILE%%.shadow}.sample"; \
 			PREFIX="@shadow "; \
 		fi; \
+		if [ "$${FILE%%/*}" == "man" ]; then \
+			FILE="$${FILE}.gz"; \
+		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \
-	done
-	@echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}"
+	 done; \
+	 echo "${LOCALBASE}/opnsense/version/${PLUGIN_NAME}" \
+	) | sort
 
 description: check
 	@if [ -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
@@ -266,10 +309,6 @@ remove: check
 			rmdir "${DESTDIR}${LOCALBASE}/$${DIR}" 2> /dev/null || true; \
 		fi; \
 	done
-
-WRKDIR?=${.CURDIR}/work
-WRKSRC?=${WRKDIR}/src
-PKGDIR?=${WRKDIR}/pkg
 
 package: check
 	@rm -rf ${WRKSRC}
@@ -314,127 +353,20 @@ clean: check
 	fi
 	@rm -rf ${.CURDIR}/work
 
-lint-desc: check
-	@if [ ! -f ${.CURDIR}/${PLUGIN_DESC} ]; then \
-		echo ">>> Missing ${PLUGIN_DESC}"; exit 1; \
-	fi
-
-lint-shell:
-	@for FILE in $$(find ${.CURDIR}/src -name "*.sh" -type f); do \
-	    if [ "$$(head $${FILE} | grep -c '^#!\/')" == "0" ]; then \
-	        echo "Missing shebang in $${FILE}"; exit 1; \
-	    fi; \
-	    sh -n "$${FILE}" || exit 1; \
-	done
-
-lint-xml:
-	@find ${.CURDIR}/src \
-	    -name "*.xml" -type f -print0 | xargs -0 -n1 xmllint --noout
-
-lint-model:
-	@if [ -d ${.CURDIR}/src/opnsense/mvc/app/models ]; then for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
-	    -name "*.xml"); do \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and (not(Required) or Required="N") and Default]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} has a spurious default value set"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Default=""]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} has an empty default value set"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc="None"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} blank description is the default"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Required="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} blank description not applicable on required field"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and BlankDesc and Multiple="Y"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} blank description not applicable on multiple field"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and Multiple="N"]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} Multiple=N is the default"; \
-		done; \
-		(xmllint $${MODEL} --xpath '//*[@type and not(@type="ArrayField") and OptionValues[default[not(@value)] or multiple[not(@value)] or required[not(@value)]]]' 2> /dev/null | grep '^<' || true) | while read LINE; do \
-			echo "$${MODEL}: $${LINE} option element default/multiple/required without value attribute"; \
-		done; \
-	done; fi
-
-lint-exec: check
-.for DIR in ${.CURDIR}/src/opnsense/scripts ${.CURDIR}/src/etc/rc.d ${.CURDIR}/src/etc/rc.syshook.d
-.if exists(${DIR})
-	@find ${DIR} -type f ! -name "*.xml" -print0 | \
-	    xargs -0 -t -n1 test -x || \
-	    (echo "Missing executable permission in ${DIR}"; exit 1)
-.endif
-.endfor
-
-LINTBIN?=	${.CURDIR}/../../../core/contrib/parallel-lint/parallel-lint
-
-lint-php: check
-.if exists(${LINTBIN})
-	@if [ -d ${.CURDIR}/src ]; then ${LINTBIN} src; fi
-.else
-	@echo "Did not find LINTBIN, please provide a core repository"; exit 1
-.endif
-
-lint: lint-desc lint-shell lint-xml lint-model lint-exec lint-php
-
-plist-fix:
-
-sweep: check
-	find ${.CURDIR}/src -type f -name "*.map" -print0 | \
-	    xargs -0 -n1 rm
-	find ${.CURDIR}/src ! -name "*.min.*" ! -name "*.svg" \
-	    ! -name "*.ser" -type f -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
-	find ${.CURDIR} -type f -depth 1 -print0 | \
-	    xargs -0 -n1 ${SCRIPTSDIR}/cleanfile
+glint: sweep lint
 
 revision:
 	@MAKE=${MAKE} ${SCRIPTSDIR}/revbump.sh ${.CURDIR}
 
-STYLEDIRS?=	src/etc/inc src/opnsense
-
-style: check
-	@: > ${.CURDIR}/.style.out
-.for STYLEDIR in ${STYLEDIRS}
-	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		(phpcs --standard=${PLUGINSDIR}/ruleset.xml \
-		    ${.CURDIR}/${STYLEDIR} || true) > \
-		    ${.CURDIR}/.style.out; \
-	fi
-.endfor
-	@echo -n "Total number of style warnings: "
-	@grep '| WARNING' ${.CURDIR}/.style.out | wc -l
-	@echo -n "Total number of style errors:   "
-	@grep '| ERROR' ${.CURDIR}/.style.out | wc -l
-	@cat ${.CURDIR}/.style.out
-	@rm ${.CURDIR}/.style.out
-
-style-fix: check
-.for STYLEDIR in ${STYLEDIRS}
-	@if [ -d ${.CURDIR}/${STYLEDIR} ]; then \
-		phpcbf --standard=${PLUGINSDIR}/ruleset.xml \
-		    ${.CURDIR}/${STYLEDIR} || true; \
-	fi
-.endfor
-
-style-python: check
-	@if [ -d ${.CURDIR}/src ]; then \
-		pycodestyle --ignore=E501 ${.CURDIR}/src || true; \
-	fi
-
-style-model:
-	@for MODEL in $$(find ${.CURDIR}/src/opnsense/mvc/app/models -depth 3 \
-	    -name "*.xml"); do \
-		perl -i -pe 's/<default>(.*?)<\/default>/<Default>$$1<\/Default>/g' $${MODEL}; \
-		perl -i -pe 's/<multiple>(.*?)<\/multiple>/<Multiple>$$1<\/Multiple>/g' $${MODEL}; \
-		perl -i -pe 's/<required>(.*?)<\/required>/<Required>$$1<\/Required>/g' $${MODEL}; \
-	done
-
 test: check
-	@if [ -d ${.CURDIR}/src/opnsense/mvc/tests ]; then \
-		cd ${LOCALBASE}/opnsense/mvc/tests && \
-		    phpunit --configuration PHPunit.xml \
-		    ${.CURDIR}/src/opnsense/mvc/tests; \
-	fi
+.if exists(${TESTDIR})
+	@cd ${TESTDIR} && phpunit || true; \
+	    rm -rf ${TESTDIR}/.phpunit.result.cache
+.endif
 
-.PHONY:	check plist-fix
+commit:
+	@mkdir -p ${MFCDIR}
+	@/bin/echo -n "${.CURDIR:C/\// /g:[-2]}/${.CURDIR:C/\// /g:[-1]}: " > \
+	    ${MFCDIR}/.commitmsg && git commit -eF ${MFCDIR}/.commitmsg .
+
+.PHONY:	check

@@ -297,6 +297,14 @@
                 <type>text</type>
                 <help>Give a URL where to retrieve the Phishtank feed.</help>
             </field>
+            <field>
+                <id>rspamd.phishing.exclusion</id>
+                <label>Exclusion</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>The exclusion map should only contain a list of host names without a scheme and path.</help>
+            </field>
         </subtab>
         <subtab id="rspamd-anti-spam-rate-limit" description="Rate Limit">
             <field>

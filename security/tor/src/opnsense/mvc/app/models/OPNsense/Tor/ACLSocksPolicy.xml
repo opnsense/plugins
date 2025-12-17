@@ -4,11 +4,11 @@
   <items>
     <policy type="ArrayField">
       <enabled type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </enabled>
       <type type="OptionField">
-        <default>v6</default>
+        <Default>v6</Default>
         <Required>Y</Required>
         <OptionValues>
           <v4>IPv4</v4>
@@ -19,7 +19,7 @@
         <Required>Y</Required>
       </network>
       <action type="OptionField">
-          <default>accept</default>
+          <Default>accept</Default>
           <Required>Y</Required>
           <OptionValues>
             <accept>Accept</accept>

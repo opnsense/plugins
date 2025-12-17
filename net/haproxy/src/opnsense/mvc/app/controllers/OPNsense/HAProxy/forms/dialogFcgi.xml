@@ -33,7 +33,7 @@
         <id>fcgi.path_info</id>
         <label>Path Info</label>
         <type>text</type>
-        <help><![CDATA[Define a regular expression to extract the script-name and the path-info from the URL-decoded path, see <a href="http://docs.haproxy.org/2.8/configuration.html#10.1.1-path-info">HAProxy's documentation</a> for further details and examples.]]></help>
+        <help><![CDATA[Define a regular expression to extract the script-name and the path-info from the URL-decoded path, see <a href="http://docs.haproxy.org/3.0/configuration.html#10.1.1-path-info">HAProxy's documentation</a> for further details and examples.]]></help>
     </field>
     <field>
         <id>fcgi.log_stderr</id>

@@ -4,26 +4,26 @@
     <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <port type="PortField">
-            <default>323</default>
+            <Default>323</Default>
             <Required>Y</Required>
         </port>
         <ntsclient type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </ntsclient>
         <ntsnocert type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </ntsnocert>
         <peers type="HostnameField">
-            <default>0.opnsense.pool.ntp.org</default>
+            <Default>0.opnsense.pool.ntp.org</Default>
             <Required>Y</Required>
             <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </peers>
         <fallbackpeers type="HostnameField">
             <Required>N</Required>
@@ -31,7 +31,7 @@
         <allowednetworks type="NetworkField">
             <Required>N</Required>
             <FieldSeparator>,</FieldSeparator>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </allowednetworks>
     </items>
 </model>

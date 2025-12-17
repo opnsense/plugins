@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         system_cron_configure();
 
         if (!empty($pconfig['force'])) {
-            rfc2136_configure_do(false, '', $rfc2136['host'], true);
+            rfc2136_configure_do(false, null, $rfc2136['host'], true);
         }
 
         header(url_safe('Location: /services_rfc2136.php'));

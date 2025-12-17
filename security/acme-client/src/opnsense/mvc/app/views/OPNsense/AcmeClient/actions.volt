@@ -43,7 +43,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 del:'/api/acmeclient/actions/del/',
                 toggle:'/api/acmeclient/actions/toggle/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );

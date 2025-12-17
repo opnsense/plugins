@@ -4,73 +4,63 @@
     <version>1.0.12</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <disablev6 type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </disablev6>
         <enablerpz type="BooleanField">
-            <default>1</default>
+            <Default>1</Default>
             <Required>Y</Required>
         </enablerpz>
         <listenv4 type="NetworkField">
-            <default>0.0.0.0</default>
-            <FieldSeparator>,</FieldSeparator>
+            <Default>0.0.0.0</Default>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listenv4>
         <listenv6 type="NetworkField">
-            <default>::</default>
-            <FieldSeparator>,</FieldSeparator>
+            <Default>::</Default>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listenv6>
         <querysource type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </querysource>
         <querysourcev6 type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv6</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </querysourcev6>
         <transfersource type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </transfersource>
         <transfersourcev6 type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv6</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
         </transfersourcev6>
         <port type="PortField">
-            <default>53530</default>
+            <Default>53530</Default>
             <Required>Y</Required>
         </port>
         <forwarders type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </forwarders>
         <filteraaaav4 type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </filteraaaav4>
         <filteraaaav6 type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </filteraaaav6>
         <filteraaaaacl type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </filteraaaaacl>
         <logsize type="IntegerField">
-            <default>5</default>
+            <Default>5</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>1000</MaximumValue>
@@ -87,10 +77,10 @@
                 <dynamic value="dynamic">Dynamic</dynamic>
             </OptionValues>
             <Required>Y</Required>
-            <default>info</default>
+            <Default>info</Default>
         </general_log_level>
         <maxcachesize type="IntegerField">
-            <default>80</default>
+            <Default>80</Default>
             <Required>Y</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>99</MaximumValue>
@@ -105,7 +95,6 @@
                 </template>
             </Model>
             <Multiple>Y</Multiple>
-            <Required>N</Required>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
         <allowtransfer type="ModelRelationField">
@@ -117,7 +106,6 @@
                 </template>
             </Model>
             <Multiple>Y</Multiple>
-            <Required>N</Required>
         </allowtransfer>
         <allowquery type="ModelRelationField">
             <Model>
@@ -128,48 +116,44 @@
                 </template>
             </Model>
             <Multiple>Y</Multiple>
-            <Required>N</Required>
         </allowquery>
         <dnssecvalidation type="OptionField">
             <OptionValues>
                 <no>No</no>
                 <auto>Auto</auto>
             </OptionValues>
-            <default>no</default>
-            <Multiple>N</Multiple>
+            <Default>no</Default>
             <Required>Y</Required>
         </dnssecvalidation>
         <hidehostname type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </hidehostname>
         <hideversion type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </hideversion>
         <disableprefetch type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </disableprefetch>
         <enableratelimiting type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enableratelimiting>
         <ratelimitcount type="IntegerField">
-            <Required>N</Required>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>1000</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </ratelimitcount>
         <ratelimitexcept type="NetworkField">
-            <default>0.0.0.0,::</default>
-            <FieldSeparator>,</FieldSeparator>
+            <Default>0.0.0.0,::</Default>
             <Required>Y</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </ratelimitexcept>
         <rndcalgo type="OptionField">
             <Required>Y</Required>
-            <default>hmac-sha256</default>
+            <Default>hmac-sha256</Default>
             <OptionValues>
                 <hmac-sha512>HMAC-SHA512</hmac-sha512>
                 <hmac-sha384>HMAC-SHA384</hmac-sha384>
@@ -181,7 +165,7 @@
         </rndcalgo>
         <rndcsecret type="Base64Field">
             <Required>Y</Required>
-            <default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</default>
+            <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
         </rndcsecret>
     </items>
 </model>

@@ -1,0 +1,30 @@
+Tailscale is a mesh VPN alternative, based on WireGuard, that connects your
+computers, databases, and services together securely without any proxies.
+
+https://tailscale.com/
+
+Plugin Changelog
+================
+
+1.3
+
+* modify RC script to prevent re-using auth key if already authenticated
+
+1.2
+
+* add option to allow Tailscale to manage SSH connections
+* add option to disable SNAT routing (experimental)
+* add login timeout (10s default) for when login server is unavailable causing OPNsense to hang on boot (contributed by Ben Smithurst)
+* add exit node option (contributed by Ben Smithurst)
+* fix dashboard widget always showing exit node as no
+
+1.1
+
+* add dashboard widget
+* change peer status list to DNSname instead of hostname
+* show online status for peers in status list
+* allow advertising of IPv6 routes
+
+1.0
+
+* initial release

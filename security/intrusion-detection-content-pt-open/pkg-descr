@@ -1,0 +1,13 @@
+IDS PT ESC open ruleset designed to detect a variety of network threats,
+including those communicated under TLS.
+
+PT Rules is an open-source project focused on enhancing network security
+through proactive threat detection. As the PT Expert Security Center attack
+detection team, we are a dedicated group of cybersecurity experts committed
+to improve network security through open-source initiatives.
+
+Don't forget to define the $DC_SERVERS rule-variable if you want to use the
+protection rules against DCShadow/DCSync attacks.
+
+LICENSE: https://rules.ptsecurity.com/view/LICENSE.txt
+WWW: https://rules.ptsecurity.com/

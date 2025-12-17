@@ -1,5 +1,6 @@
 PLUGIN_NAME=		freeradius
-PLUGIN_VERSION=		1.9.25
+PLUGIN_VERSION=		1.9.28
+PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		RADIUS Authentication, Authorization and Accounting Server
 PLUGIN_DEPENDS=		freeradius3
 PLUGIN_MAINTAINER=	m.muenz@gmail.com

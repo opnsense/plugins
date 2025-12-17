@@ -6,17 +6,17 @@
         <domains>
                 <domain type="ArrayField">
                         <enabled type="BooleanField">
-                                <default>1</default>
+                                <Default>1</Default>
                                 <Required>Y</Required>
                         </enabled>
                         <domainname type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>Y</Required>
                         </domainname>
                         <destination type="TextField">
-                                <default></default>
+                                <Default></Default>
                                 <Required>N</Required>
-                                <mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</mask>
+                                <Mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</Mask>
                                 <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
                         </destination>
             </domain>

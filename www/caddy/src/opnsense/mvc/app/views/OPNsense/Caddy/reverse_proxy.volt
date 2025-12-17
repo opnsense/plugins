@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023-2024 Cedrik Pischem
+ # Copyright (c) 2023-2025 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -26,100 +26,272 @@
 
 <script>
     $(document).ready(function() {
-
-        // Function to handle the search filter request modification
-        function addDomainFilterToRequest(request) {
-            let selectedDomains = $('#reverseFilter').val();
-            if (selectedDomains && selectedDomains.length > 0) {
-                request['reverseUuids'] = selectedDomains.join(',');
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const hash = e.target.hash;
+            if (history.replaceState) {
+                history.replaceState(null, null, hash);
+            } else {
+                location.hash = hash;
             }
-            return request;
-        }
+        });
+
+        $(window).on('hashchange', function () {
+            const $targetTab = $(`#maintabs a[href="${location.hash}"]`);
+            if ($targetTab.length) {
+                $targetTab.tab('show');
+            }
+        });
 
         // Bootgrid Setup
-        $("#reverseProxyGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchReverseProxy/',
-            get:'/api/caddy/ReverseProxy/getReverseProxy/',
-            set:'/api/caddy/ReverseProxy/setReverseProxy/',
-            add:'/api/caddy/ReverseProxy/addReverseProxy/',
-            del:'/api/caddy/ReverseProxy/delReverseProxy/',
-            toggle:'/api/caddy/ReverseProxy/toggleReverseProxy/',
-            options: {
-                requestHandler: addDomainFilterToRequest
+        const all_grids = {};
+
+        // block change-driven grid reloads during programmatic updates of reverseFilter selectpicker
+        let suppressFilterReload = false;
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let grid_ids = [];
+
+{% if entrypoint == 'reverse_proxy' %}
+
+            switch (e.target.hash) {
+                case '#domains':
+                    grid_ids = ["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"];
+                    break;
+                case '#handlers':
+                    grid_ids = ["{{ formGridHandle['table_id'] }}"];
+                    break;
+                case '#access':
+                    grid_ids = ["{{ formGridAccessList['table_id'] }}", "{{ formGridBasicAuth['table_id'] }}"];
+                    break;
+                case '#headers':
+                    grid_ids = ["{{ formGridHeader['table_id'] }}"];
+                    break;
+            }
+
+{% elseif entrypoint == 'layer4' %}
+
+            switch (e.target.hash) {
+                case '#routes':
+                    grid_ids = ["{{ formGridLayer4['table_id'] }}"];
+                    break;
+                case '#matchers':
+                    grid_ids = ["{{ formGridLayer4Openvpn['table_id'] }}"];
+                    break;
+            }
+
+{% endif %}
+
+            const labels = {
+                upstream: "{{ lang._('Upstream') }}",
+                domain: '<i class="fa fa-fw fa-globe text-success"></i>' + "{{ lang._('Domain') }}",
+                subdomain: '<i class="fa fa-fw fa-globe text-warning"></i>' + "{{ lang._('Subdomain') }}",
+            };
+
+            if (grid_ids.length > 0) {
+                grid_ids.forEach(function(grid_id) {
+                    if (!all_grids[grid_id]) {
+                        // Define commands only for the specific grids
+                        let commands = {};
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                        if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
+                            const update_filter = function (selectValues) {
+                                suppressFilterReload = true;
+
+                                return $('#reverseFilter')
+                                    .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
+                                    .done(function () {
+                                        $('#reverseFilter')
+                                            .selectpicker('val', selectValues)
+                                            .selectpicker('refresh');
+
+                                        // manually update icon (since we skip .change())
+                                        const hasSelection = Array.isArray(selectValues) && selectValues.length > 0;
+                                        $('#reverseFilterIcon')
+                                            .toggleClass('text-success fa-filter-circle-xmark', hasSelection)
+                                            .toggleClass('fa-filter', !hasSelection);
+
+                                        $('#maintabs a[href="#handlers"]').tab('show');
+
+                                        // manually reload just the handlers grid
+                                        const grid_id = "{{ formGridHandle['table_id'] }}";
+                                        if (all_grids[grid_id]) {
+                                            all_grids[grid_id].bootgrid('reload');
+                                        }
+                                    })
+                                    .always(function () {
+                                        suppressFilterReload = false;
+                                    });
+                            };
+
+                            commands.search_handler = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    update_filter([rowUuid]);
+                                },
+                                classname: 'fa fa-fw fa-search',
+                                title: "{{ lang._('Search Handler') }}",
+                                sequence: 20
+                            };
+
+                            commands.add_handler = {
+                                method: function () {
+                                    const rowUuid = $(this).data("row-id");
+                                    if (!rowUuid) return;
+
+                                    open_add_dialog = function (selectValues) {
+                                        update_filter(selectValues);
+
+                                        // Ensure selectpicker has values selected before click on add button
+                                        $('#reverseFilter').one('changed.bs.select', function (e) {
+                                            $("#" + "{{ formGridHandle['table_id'] }}")
+                                                .find("button[data-action='add']")
+                                                .trigger('click');
+                                        });
+                                    };
+
+                                    // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
+                                    if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
+                                        ajaxGet(`/api/caddy/reverse_proxy/get_{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
+                                            const reverseUuids = rowData?.subdomain?.reverse || {};
+                                            const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
+                                            const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
+                                            open_add_dialog(selectValues);
+                                        });
+                                    } else {
+                                        open_add_dialog([rowUuid]);
+                                    }
+                                },
+                                classname: 'fa fa-fw fa-plus',
+                                title: "{{ lang._('Add Handler') }}",
+                                sequence: 10
+                            };
+                        }
+
+{% endif %}
+
+                        all_grids[grid_id] = $("#" + grid_id)
+                        .UIBootgrid({
+                            search: `/api/caddy/reverse_proxy/search_${grid_id}/`,
+                            get: `/api/caddy/reverse_proxy/get_${grid_id}/`,
+                            set: `/api/caddy/reverse_proxy/set_${grid_id}/`,
+                            add: `/api/caddy/reverse_proxy/add_${grid_id}/`,
+                            del: `/api/caddy/reverse_proxy/del_${grid_id}/`,
+                            toggle: `/api/caddy/reverse_proxy/toggle_${grid_id}/`,
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                            tabulatorOptions: {
+                                groupBy: grid_id === "{{ formGridHandle['table_id'] }}"
+                                    ? ["%reverse", "%subdomain"]
+                                    : (grid_id === "{{ formGridSubdomain['table_id'] }}" ? "%reverse" : false),
+                                groupHeader: (value, count, data, group) => {
+                                    const isNested = group.getParentGroup() !== false;
+
+                                    if (isNested && !value) {
+                                        return ''; // remove empty subdomain group headers
+                                    }
+
+                                    const iconClass = isNested
+                                        ? 'text-warning'
+                                        : 'text-success';
+
+                                    const countValue = `<span class="badge chip">${count}</span>`;
+
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                },
+                            },
+
+{% endif %}
+
+                            options: {
+                                responsive: true,
+                                rowCount: [20,50,200,500,1000,-1],
+                                requestHandler: function (request) {
+                                    const selectedDomains = $('#reverseFilter').val();
+                                    if (selectedDomains && selectedDomains.length > 0) {
+                                        request['domainUuids'] = selectedDomains;
+                                    }
+                                    return request;
+                                },
+                                headerFormatters: {
+                                    enabled: function (column) {
+                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';;
+                                    },
+                                    ToDomain: function (column) { return labels.upstream; },
+                                    FromDomain: function (column) {
+                                        if (grid_id === "subdomain") {
+                                            return labels.subdomain;
+                                        } else {
+                                            return labels.domain;
+                                        }
+                                    },
+                                    reverse: function (column) {
+                                        return labels.domain;
+                                    },
+                                    subdomain: function (column) {
+                                        return labels.subdomain;
+                                    },
+                                },
+                                formatters: {
+                                    from_domain: function (column, row) {
+                                        return (
+                                            (row["%DisableTls"] || "") +
+                                            (row["FromDomain"] || "") +
+                                            (row["FromPort"] ? `:${row["FromPort"]}` : "")
+                                        );
+                                    },
+                                    to_domain: function (column, row) {
+                                        return (
+                                            (row["%HttpTls"] || "") +
+                                            (row["ToDomain"] || "") +
+                                            (row["ToPort"] ? `:${row["ToPort"]}` : "") +
+                                            (row["ToPath"] || "")
+                                        );
+                                    },
+                                },
+                            },
+                            commands: commands
+                        });
+                    }
+
+{% if entrypoint == 'reverse_proxy' %}
+
+                    // insert buttons and selectpicker only when the tab is actually visible
+                    if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
+                        if (!$(e.target.hash).is(':visible')) {
+                            return;  // prevents the selectpicker from being moved into hidden tabs
+                        }
+
+                        const header = $("#" + grid_id + "-header");
+                        const $actionBar = header.find('.actionBar');
+                        if ($actionBar.length) {
+                            $('#add_filter_container').detach().insertAfter($actionBar.find('.search')).show();
+                        }
+                    }
+
+{% endif %}
+
+                });
             }
         });
 
-        $("#reverseSubdomainGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchSubdomain/',
-            get:'/api/caddy/ReverseProxy/getSubdomain/',
-            set:'/api/caddy/ReverseProxy/setSubdomain/',
-            add:'/api/caddy/ReverseProxy/addSubdomain/',
-            del:'/api/caddy/ReverseProxy/delSubdomain/',
-            toggle:'/api/caddy/ReverseProxy/toggleSubdomain/',
-            options: {
-                requestHandler: addDomainFilterToRequest
-            }
-        });
-
-        $("#reverseLayer4Grid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchLayer4/',
-            get:'/api/caddy/ReverseProxy/getLayer4/',
-            set:'/api/caddy/ReverseProxy/setLayer4/',
-            add:'/api/caddy/ReverseProxy/addLayer4/',
-            del:'/api/caddy/ReverseProxy/delLayer4/',
-            toggle:'/api/caddy/ReverseProxy/toggleLayer4/',
-        });
-
-        $("#reverseHandleGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHandle/',
-            get:'/api/caddy/ReverseProxy/getHandle/',
-            set:'/api/caddy/ReverseProxy/setHandle/',
-            add:'/api/caddy/ReverseProxy/addHandle/',
-            del:'/api/caddy/ReverseProxy/delHandle/',
-            toggle:'/api/caddy/ReverseProxy/toggleHandle/',
-            options: {
-                requestHandler: addDomainFilterToRequest
-            }
-        });
-
-        $("#accessListGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchAccessList/',
-            get:'/api/caddy/ReverseProxy/getAccessList/',
-            set:'/api/caddy/ReverseProxy/setAccessList/',
-            add:'/api/caddy/ReverseProxy/addAccessList/',
-            del:'/api/caddy/ReverseProxy/delAccessList/',
-        });
-
-        $("#basicAuthGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchBasicAuth/',
-            get:'/api/caddy/ReverseProxy/getBasicAuth/',
-            set:'/api/caddy/ReverseProxy/setBasicAuth/',
-            add:'/api/caddy/ReverseProxy/addBasicAuth/',
-            del:'/api/caddy/ReverseProxy/delBasicAuth/',
-        });
-
-        $("#reverseHeaderGrid").UIBootgrid({
-            search:'/api/caddy/ReverseProxy/searchHeader/',
-            get:'/api/caddy/ReverseProxy/getHeader/',
-            set:'/api/caddy/ReverseProxy/setHeader/',
-            add:'/api/caddy/ReverseProxy/addHeader/',
-            del:'/api/caddy/ReverseProxy/delHeader/',
-        });
-
-        // Function to show alerts in the HTML message area
+        /**
+         * Displays an alert message to the user.
+         *
+         * @param {string} message - The message to display.
+         * @param {string} [type="error"] - The type of alert (error or success).
+         */
         function showAlert(message, type = "error") {
-            let alertClass = type === "error" ? "alert-danger" : "alert-success";
-            let messageArea = $("#messageArea");
+            const alertClass = type === "error" ? "alert-danger" : "alert-success";
+            const messageArea = $("#messageArea");
 
-            // Stop any current animation, clear the queue, and immediately hide the element
             messageArea.stop(true, true).hide();
-
-            // Now set the class and message
             messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-
-            // Use fadeIn to make the message appear smoothly, then fadeOut after a delay
             messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                // Clear the message after fading out to ensure it's clean for the next message
                 $(this).html('');
             });
         }
@@ -129,488 +301,279 @@
             $("#messageArea").hide();
         });
 
-        // Adjusting the Reconfigure button to include validation in onPreAction
+        // Populate domain filter selectpicker
+        $('#reverseFilter').fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains');
+
+        // Clear domain filter selectpicker
+        $('#reverseFilterClear').on('click', function () {
+            $('#reverseFilter').selectpicker('val', []);
+            $('#reverseFilter').selectpicker('refresh');
+            $('#reverseFilter').trigger('change');
+        });
+
+        // Reconfigure button with custom validation
         $("#reconfigureAct").SimpleActionButton({
             onPreAction: function() {
                 const dfObj = new $.Deferred();
 
-                // Perform configuration validation
-                $.ajax({
-                    url: "/api/caddy/service/validate",
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        if (data && data['status'].toLowerCase() === 'ok') {
-                            // If configuration is valid, resolve the Deferred object to proceed
-                            dfObj.resolve();
-                        } else {
-                            // If configuration is invalid, show alert and reject the Deferred object
-                            showAlert(data['message'], "{{ lang._('Validation Failed') }}");
-                            dfObj.reject();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // On AJAX error, show alert and reject the Deferred object
-                        showAlert("{{ lang._('Validation request failed: ') }}" + error, "{{ lang._('Error') }}");
+                ajaxGet("/api/caddy/service/validate", null, function(data, status) {
+                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
+                        dfObj.resolve();
+                    } else {
+                        showAlert(data['message'], "error");
                         dfObj.reject();
                     }
+                }).fail(function(xhr, status, error) {
+                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
+                    dfObj.reject();
                 });
 
                 return dfObj.promise();
-            },
-            onAction: function(data, status) {
-                // Check if the action was successful
-                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    showAlert("{{ lang._('Configuration applied successfully.') }}", "{{ lang._('Apply Success') }}");
-                    // Update the service control UI for 'caddy'
-                    updateServiceControlUI('caddy');
-                    // Update the Tab visibility
-                    initializeTabs()
-                } else {
-                    console.error("{{ lang._('Action was not successful or an error occurred:') }}", data);
-                }
             }
         });
 
-        // Initialize the service control UI for 'caddy'
+{% if entrypoint == 'reverse_proxy' %}
+
+        // Safe reload on filter change, ensures all grids are initalized beforehand
+        $('#reverseFilter').change(function () {
+            if (suppressFilterReload) return;
+            Object.keys(all_grids).forEach(function (grid_id) {
+                if ([
+                    '{{ formGridReverseProxy["table_id"] }}',
+                    '{{ formGridSubdomain["table_id"] }}',
+                    '{{ formGridHandle["table_id"] }}'
+                ].includes(grid_id)) {
+                    all_grids[grid_id].bootgrid('reload');
+                }
+
+            });
+
+            $('#reverseFilterIcon')
+                .toggleClass('text-success fa-filter-circle-xmark', ($(this).val() || []).length > 0)
+                .toggleClass('fa-filter', !($(this).val() || []).length);
+        });
+
+        // Autofill domain and subdomain when add dialog is opened
+        $('#{{ formGridHandle["edit_dialog_id"] }}, #{{ formGridSubdomain["edit_dialog_id"] }}').on('opnsense_bootgrid_mapped', function(e, actionType) {
+            if (actionType === 'add') {
+                const selectedDomains = $('#reverseFilter').val();
+
+                if (selectedDomains && selectedDomains.length > 0) {
+                    $('#handle\\.reverse, #handle\\.subdomain, #subdomain\\.reverse')
+                        .selectpicker('val', selectedDomains)
+                        .selectpicker('refresh');
+                }
+
+                // Trigger to filter the dropdowns if subdomains are selected
+                $("#handle\\.subdomain").trigger("change");
+            }
+        });
+
+{% endif %}
+
+        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type").on("keyup change", function () {
+            const http_tls = String($("#handle\\.HttpTls").val() || "")
+            const handle_directive = String($("#handle\\.HandleDirective").val() || "")
+            const disable_tls = String($("#reverse\\.DisableTls").val() || "")
+            const layer4_matchers = String($("#layer4\\.Matchers").val() || "")
+            const layer4_type = String($("#layer4\\.Type").val() || "")
+
+            const styleVisibility = [
+                {
+                    class: "style_tls_reverse",
+                    visible: disable_tls === "0"
+                },
+                {
+                    class: "style_tls_handle",
+                    visible: http_tls === "1" && handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_reverse_proxy",
+                    visible: handle_directive === "reverse_proxy"
+                },
+                {
+                    class: "style_domain",
+                    visible: layer4_matchers === "tlssni" || layer4_matchers === "httphost"
+                },
+                {
+                    class: "style_openvpn",
+                    visible: layer4_matchers === "openvpn"
+                },
+                {
+                    class: "style_type",
+                    visible: layer4_type === "global"
+                },
+            ];
+
+            styleVisibility.forEach(style => {
+                // hide/show rows with the class
+                const elements = $("." + style.class).closest("tr");
+                style.visible ? elements.show() : elements.hide();
+
+                // hide/show thead only if its parent container has the same class
+                $(".table-responsive." + style.class).find("thead").each(function () {
+                    style.visible ? $(this).show() : $(this).hide();
+                });
+            });
+        });
+
+        // When subdomain is selected in handler show only wildcard domains
+        $("#handle\\.subdomain").on("change", function () {
+            if (!$(this).val()) {
+                $("#handle\\.reverse option").show();
+            } else {
+                $("#handle\\.reverse option").each(function () {
+                    $(this).toggle($(this).text().includes("*."));
+                });
+
+                if (!$("#handle\\.reverse option:selected").text().includes("*.")) {
+                    $("#handle\\.reverse").val("").change();
+                }
+            }
+
+            $("#handle\\.reverse").selectpicker("refresh");
+        });
+
+        // Trigger initial tab
+        const $tabs = $('#maintabs a[data-toggle="tab"]');
+        const $initial = $tabs.filter(`[href="${location.hash}"]`).first();
+        ($initial.length ? $initial : $tabs.first()).tab('show');
+
+        // Trigger handlers tab too (even if not active) to ensure command buttons always work
+        $(document).one('ajaxStop', function () {
+            $('a[href="#handlers"]').triggerHandler('shown.bs.tab');
+        });
+
         updateServiceControlUI('caddy');
-
-        // Filter function for domains
-        function loadDomainFilters() {
-            $.ajax({
-                url: '/api/caddy/ReverseProxy/getAllReverseDomains', // custom API endpoint to get uuid and domainport combinations
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    let select = $('#reverseFilter');
-                    select.empty(); // Clear current options
-                    if (data && data.rows) {
-                        data.rows.forEach(function(item) {
-                            select.append($('<option>').val(item.id).text(item.domainPort));
-                        });
-                    }
-                    select.selectpicker('refresh'); // Refresh selectpicker to update the UI
-                },
-                error: function() {
-                    $('#reverseFilter').html('<option value="">{{ lang._('Failed to load data') }}</option>').selectpicker('refresh');
-                }
-            });
-        }
-        loadDomainFilters();
-
-        // Reload Bootgrid on filter change
-        $('#reverseFilter').on('changed.bs.select', function() {
-            $("#reverseProxyGrid").bootgrid("reload");
-            $("#reverseSubdomainGrid").bootgrid("reload");
-            $("#reverseHandleGrid").bootgrid("reload");
-        });
-
-        // Control the visibility of selectpicker for filter by domain
-        function toggleSelectPicker(tab) {
-            if (tab === 'handlesTab' || tab === 'domainsTab' || tab === 'subdomainsTab') {
-                $('.common-filter').show();
-            } else {
-                $('.common-filter').hide();
-            }
-        }
-
-        // Initialize visibility based on the active tab on page load
-        let activeTab = $('#maintabs .active a').attr('href').replace('#', '');
-        toggleSelectPicker(activeTab);
-
-        // Change event when switching tabs
-        $('#maintabs a').on('click', function (e) {
-            let currentTab = $(this).attr('href').replace('#', '');
-            toggleSelectPicker(currentTab);
-        });
-
-        // Add click event listener for "Add HTTP Handler" button
-        $("#addHandleBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#handlesTab") {
-                // Directly open the dialog if already in the Handles tab
-                $("#addReverseHandleBtn").click();
-            } else {
-                // Switch to the "Handlers" tab if not already there
-                $('#maintabs a[href="#handlesTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseHandleBtn").click();
-                });
-            }
-        });
-
-        // Add click event listener for "Add Domain" button
-        $("#addDomainBtn").on("click", function() {
-            if ($('#maintabs .active a').attr('href') === "#domainsTab") {
-                $("#addReverseProxyBtn").click();
-            } else {
-                $('#maintabs a[href="#domainsTab"]').tab('show').one('shown.bs.tab', function(e) {
-                    $("#addReverseProxyBtn").click();
-                });
-            }
-        });
-
-        // Perform an API call to get data and check tabs' visibility on initial load
-        function initializeTabs() {
-            $.ajax({
-                url: '/api/caddy/reverse_proxy/get',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Check for wildcards in domains to toggle Subdomains tab
-                    const hasWildcard = Object.values(response.caddy.reverseproxy.reverse).some(entry => entry.FromDomain.startsWith('*'));
-                    toggleTabVisibility('#tab-subdomains', hasWildcard);
-
-                    // Check if Layer 4 is enabled to toggle the Layer 4 tab
-                    const enableLayer4 = response.caddy.general.EnableLayer4 === '1';
-                    toggleTabVisibility('#tab-layer4', enableLayer4);
-                },
-                error: function() {
-                    console.error("{{ lang._('Failed to load data from /api/caddy/reverse_proxy/get') }}");
-                }
-            });
-        }
-
-        // Generic function to show or hide a tab and switch to another tab if the current one is hidden
-        function toggleTabVisibility(tabSelector, visible) {
-            let tab = $(tabSelector);
-            if (visible) {
-                tab.show();
-            } else {
-                tab.hide();
-                // Switch to 'Domains' tab if the currently active tab is being hidden
-                if (tab.hasClass('active')) {
-                    $('#tab-domains a').tab('show');
-                }
-            }
-        }
-
-        // Initialize tabs on load
-        initializeTabs();
-
+        $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
     });
+
 </script>
 
 <style>
-    .common-filter {
-        text-align: right;
-        margin-top: 20px;
-        margin-right: 5px;
-        padding: 0 15px;  // Align with the tables
+    .actions .dropdown-menu.pull-right {
+        max-height: 400px;
+        min-width: max-content;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
     .custom-header {
+        padding-left: 20px;
         font-weight: 800;
         font-size: 16px;
         font-style: italic;
     }
+    #add_filter_container {
+        display: flex;
+        gap: 8px;
+    }
+    @media (max-width: 1024px) {
+        #reverseFilterClear {
+            flex: 1 1 100%;
+        }
+        #reverseFilter {
+            flex: 1 1 100%;
+        }
+    }
 
 </style>
 
+<div id="add_filter_container" class="btn-group" style="display: none;">
+    <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
+        <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
+    </button>
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    </select>
+</div>
+
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li id="tab-layer4" style="display: none;"><a data-toggle="tab" href="#layer4Tab">{{ lang._('Layer4 Routes') }}</a></li>
-    <li id="tab-domains" class="active"><a data-toggle="tab" href="#domainsTab">{{ lang._('Domains') }}</a></li>
-    <li id="tab-subdomains" style="display: none;"><a data-toggle="tab" href="#subdomainsTab">{{ lang._('Subdomains') }}</a></li>
-    <li id="tab-handlers"><a data-toggle="tab" href="#handlesTab">{{ lang._('HTTP Handlers') }}</a></li>
-    <li id="tab-access"><a data-toggle="tab" href="#accessTab">{{ lang._('HTTP Access') }}</a></li>
-    <li id="tab-headers"><a data-toggle="tab" href="#headerTab">{{ lang._('HTTP Headers') }}</a></li>
+
+{% if entrypoint == 'reverse_proxy' %}
+
+    <li id="tab-domains"><a data-toggle="tab" href="#domains">{{ lang._('Domains') }}</a></li>
+    <li id="tab-handlers"><a data-toggle="tab" href="#handlers">{{ lang._('Handlers') }}</a></li>
+    <li id="tab-access"><a data-toggle="tab" href="#access">{{ lang._('Access') }}</a></li>
+    <li id="tab-headers"><a data-toggle="tab" href="#headers">{{ lang._('Headers') }}</a></li>
+
+{% elseif entrypoint == 'layer4' %}
+
+    <li id="tab-layer4"><a data-toggle="tab" href="#routes">{{ lang._('Layer4 Routes') }}</a></li>
+    <li id="tab-matcher"><a data-toggle="tab" href="#matchers">{{ lang._('Layer7 Matcher Settings') }}</a></li>
+
+{% endif %}
+
 </ul>
 
 <div class="tab-content content-box">
-    <!-- Container using flexbox -->
-    <div class="form-group common-filter" style="display: flex; justify-content: space-between; align-items: center;">
-        <!-- Button group on the left -->
-        <div>
-            <button id="addDomainBtn" type="button" class="btn btn-secondary">{{ lang._('Step 1: Add Domain') }}</button>
-            <button id="addHandleBtn" type="button" class="btn btn-secondary">{{ lang._('Step 2: Add HTTP Handler') }}</button>
-        </div>
-        <!-- Selectpicker on the right -->
-        <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="348px" data-size="7" title="{{ lang._('Filter by Domain') }}">
-            <!-- Options will be populated dynamically using JavaScript/Ajax -->
-        </select>
-    </div>
 
-    <!-- Reverse Proxy Tab -->
-    <div id="domainsTab" class="tab-pane fade in active">
-        <div style="padding-left: 16px;">
-            <!-- Reverse Proxy -->
-            <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseProxyGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogReverseProxy" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromPort" data-type="string">{{ lang._('Port') }}</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
-                            <th data-column-id="DnsChallenge" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('DNS-01 challenge') }}</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
-                            <th data-column-id="AccessLog" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('HTTP Access Log') }}</th>
-                            <th data-column-id="CustomCertificate" data-type="string" data-visible="false">{{ lang._('Custom Certificate') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
-                            <th data-column-id="DisableTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Disable TLS') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseProxyBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
+{% if entrypoint == 'reverse_proxy' %}
 
-    <!-- Subdomains Tab -->
-    <div id="subdomainsTab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseSubdomainGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogSubdomain" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="accesslist" data-type="string" data-visible="false">{{ lang._('Access List') }}</th>
-                            <th data-column-id="basicauth" data-type="string" data-visible="false">{{ lang._('Basic Auth') }}</th>
-                            <th data-column-id="DynDns" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Dynamic DNS') }}</th>
-                            <th data-column-id="AcmePassthrough" data-type="string" data-visible="false">{{ lang._('HTTP-01 redirection') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addSubdomainBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+    <!-- Combined Domains Tab -->
+    <div id="domains" class="tab-pane fade in active">
+        <!-- Reverse Proxy -->
+        <h1 class="custom-header">{{ lang._('Domains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
+
+        <!-- Subdomains Tab -->
+        <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
     </div>
 
     <!-- Handle Tab -->
-    <div id="handlesTab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('HTTP Handlers') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseHandleGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHandle" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="reverse" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="subdomain" data-type="string">{{ lang._('Subdomain') }}</th>
-                            <th data-column-id="HandleType" data-type="string" data-visible="false">{{ lang._('Handle Type') }}</th>
-                            <th data-column-id="HandlePath" data-type="string" data-visible="false">{{ lang._('Handle Path') }}</th>
-                            <th data-column-id="header" data-type="string" data-visible="false">{{ lang._('Header') }}</th>
-                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
-                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
-                            <th data-column-id="ToPath" data-type="string" data-visible="false">{{ lang._('Upstream Path') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
-                            <th data-column-id="ForwardAuth" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('Forward Auth') }}</th>
-                            <th data-column-id="HttpTls" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS') }}</th>
-                            <th data-column-id="HttpVersion" data-type="string" data-visible="false">{{ lang._('HTTP Version') }}</th>
-                            <th data-column-id="HttpKeepalive" data-type="string" data-visible="false">{{ lang._('HTTP Keepalive') }}</th>
-                            <th data-column-id="HttpTlsTrustedCaCerts" data-type="string" data-visible="false">{{ lang._('TLS CA') }}</th>
-                            <th data-column-id="HttpTlsServerName" data-type="string" data-visible="false">{{ lang._('TLS Server Name') }}</th>
-                            <th data-column-id="HttpNtlm" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('NTLM') }}</th>
-                            <th data-column-id="HttpTlsInsecureSkipVerify" data-type="boolean" data-formatter="boolean" data-visible="false">{{ lang._('TLS Insecure Skip Verify') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseHandleBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+    <div id="handlers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('Handlers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHandle)}}
     </div>
 
-    <!-- New Combined Access Tab -->
-    <div id="accessTab" class="tab-pane fade">
+    <!-- Combined Access Tab -->
+    <div id="access" class="tab-pane fade">
         <!-- Access Lists Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
-            <div style="display: block;">
-                <table id="accessListGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogAccessList" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="accesslistName" data-type="string">{{ lang._('Name') }}</th>
-                            <th data-column-id="clientIps" data-type="string">{{ lang._('Client IPs') }}</th>
-                            <th data-column-id="accesslistInvert" data-type="boolean" data-formatter="boolean">{{ lang._('Invert') }}</th>
-                            <th data-column-id="HttpResponseCode" data-type="string" data-visible="false">{{ lang._('HTTP Code') }}</th>
-                            <th data-column-id="HttpResponseMessage" data-type="string" data-visible="false">{{ lang._('HTTP Message') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addAccessListBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Access Lists') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridAccessList)}}
 
         <!-- Basic Auth Section -->
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
-            <div style="display: block;">
-                <table id="basicAuthGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogBasicAuth" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="basicauthuser" data-type="string">{{ lang._('User') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addBasicAuthBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+        <h1 class="custom-header">{{ lang._('Basic Auth') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridBasicAuth)}}
     </div>
 
     <!-- Header Tab -->
-    <div id="headerTab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('HTTP Headers') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseHeaderGrid" class="table table-condensed table-hover table-striped" data-editDialog="DialogHeader" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="HeaderUpDown" data-type="string">{{ lang._('Header') }}</th>
-                            <th data-column-id="HeaderType" data-type="string">{{ lang._('Header Type') }}</th>
-                            <th data-column-id="HeaderValue" data-type="string" data-visible="false">{{ lang._('Header Value') }}</th>
-                            <th data-column-id="HeaderReplace" data-type="string" data-visible="false">{{ lang._('Header Replace') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseHeaderBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+    <div id="headers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('Headers') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridHeader)}}
     </div>
+
+{% elseif entrypoint == 'layer4' %}
 
     <!-- Layer4 Tab -->
-    <div id="layer4Tab" class="tab-pane fade">
-        <div style="padding-left: 16px;">
-            <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
-            <div style="display: block;"> <!-- Common container -->
-                <table id="reverseLayer4Grid" class="table table-condensed table-hover table-striped" data-editDialog="DialogLayer4" data-editAlert="ConfigurationChangeMessage">
-                    <thead>
-                        <tr>
-                            <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                            <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                            <th data-column-id="FromDomain" data-type="string">{{ lang._('Domain') }}</th>
-                            <th data-column-id="Matchers" data-type="string">{{ lang._('Matcher') }}</th>
-                            <th data-column-id="ToDomain" data-type="string">{{ lang._('Upstream Domain') }}</th>
-                            <th data-column-id="ToPort" data-type="string">{{ lang._('Upstream Port') }}</th>
-                            <th data-column-id="RemoteIp" data-type="string" data-visible="false">{{ lang._('Remote IP') }}</th>
-                            <th data-column-id="PassiveHealthFailDuration" data-type="string" data-visible="false">{{ lang._('Fail Duration') }}</th>
-                            <th data-column-id="ProxyProtocol" data-type="string" data-visible="false">{{ lang._('Proxy Protocol') }}</th>
-                            <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                            <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button id="addReverseLayer4Btn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                                <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+    <div id="routes" class="tab-pane fade active in">
+        <h1 class="custom-header">{{ lang._('Layer4 Routes') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4)}}
     </div>
+
+    <!-- Layer7 Tab -->
+    <div id="matchers" class="tab-pane fade">
+        <h1 class="custom-header">{{ lang._('OpenVPN Static Keys') }}</h1>
+        {{ partial('layout_partials/base_bootgrid_table', formGridLayer4Openvpn)}}
+    </div>
+
+{% endif %}
+
 </div>
 
-<!-- Reconfigure Button -->
-<section class="page-content-main">
-    <div class="content-box">
-        <div class="col-md-12">
-            <br/>
-            <button class="btn btn-primary" id="reconfigureAct"
-                    data-endpoint="/api/caddy/service/reconfigure"
-                    data-label="{{ lang._('Apply') }}"
-                    data-error-title="{{ lang._('Error reconfiguring Caddy') }}"
-                    type="button"
-            ></button>
-            <br/><br/>
-            <!-- Message Area for error/success messages -->
-            <div id="messageArea" class="alert alert-info" style="display: none;"></div>
-            <!-- Message Area to hint user to apply changes when data is changed in bootgrids -->
-            <div id="ConfigurationChangeMessage" class="alert alert-info" style="display: none;">
-            {{ lang._('Please do not forget to apply the configuration.') }}
-            </div>
-        </div>
-    </div>
-</section>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/caddy/service/reconfigure', 'data_service_widget': 'caddy'}) }}
 
-{{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':'DialogReverseProxy','label':lang._('Edit Domain')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':'DialogSubdomain','label':lang._('Edit Subdomain')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':'DialogHandle','label':lang._('Edit HTTP Handler')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':'DialogAccessList','label':lang._('Edit Access List')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':'DialogBasicAuth','label':lang._('Edit Basic Auth')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':'DialogHeader','label':lang._('Edit HTTP Header')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':'DialogLayer4','label':lang._('Edit Layer4 Route')])}}
+{% if entrypoint == 'reverse_proxy' %}
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogReverseProxy,'id':formGridReverseProxy['edit_dialog_id'],'label':lang._('Edit Domain')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogSubdomain,'id':formGridSubdomain['edit_dialog_id'],'label':lang._('Edit Subdomain')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHandle,'id':formGridHandle['edit_dialog_id'],'label':lang._('Edit Handler')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogAccessList,'id':formGridAccessList['edit_dialog_id'],'label':lang._('Edit Access List')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogBasicAuth,'id':formGridBasicAuth['edit_dialog_id'],'label':lang._('Edit Basic Auth')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogHeader,'id':formGridHeader['edit_dialog_id'],'label':lang._('Edit Header')])}}
+
+{% elseif entrypoint == 'layer4' %}
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4,'id':formGridLayer4['edit_dialog_id'],'label':lang._('Edit Layer4 Route')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogLayer4Openvpn,'id':formGridLayer4Openvpn['edit_dialog_id'],'label':lang._('Edit OpenVPN Static Key')])}}
+
+{% endif %}

@@ -73,7 +73,7 @@ function squid_syslog()
 {
     $logfacilities = array();
     $logfacilities['squid'] = array(
-        'facility' => array('(squid-1)')
+        'facility' => array('squid')
     );
     return $logfacilities;
 }

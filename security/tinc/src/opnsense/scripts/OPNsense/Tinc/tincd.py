@@ -31,12 +31,12 @@
 import os
 import sys
 import glob
-import pipes
 import xml.etree.ElementTree
 import shutil
 import subprocess
 import ipaddress
 from lib import objects
+from shlex import quote
 
 def write_file(filename, content, mode=0o600):
     dirname = '/'.join(filename.split('/')[0:-1])
@@ -92,7 +92,7 @@ def deploy(config_filename):
 
         if_up = list()
         if_up.append("#!/bin/sh")
-        if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, pipes.quote(interface_address)))
+        if_up.append("ifconfig %s %s %s" % (interface_name, interface_family, quote(interface_address)))
         if_up.append("configctl interface %s %s" % (interface_configd, interface_name))
         write_file("%s/tinc-up" % network.get_basepath(), '\n'.join(if_up) + "\n", 0o700)
 
@@ -116,13 +116,13 @@ def deploy(config_filename):
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
+            # remove symlink from previus run (created by ifconfig) if it wasn't cleaned up properly on exit
+            if os.path.islink('/dev/%s' % interface_name):
+                os.remove('/dev/%s' % interface_name)
             tundev = subprocess.run(['/sbin/ifconfig', interface_type, 'create'],
                                     capture_output=True, text=True).stdout.split()[0]
             subprocess.run(['/sbin/ifconfig',tundev,'name',interface_name])
             subprocess.run(['/sbin/ifconfig',interface_name,'group','tinc'])
-            if os.path.islink('/dev/%s' % interface_name):
-                os.remove('/dev/%s' % interface_name)
-            os.symlink('/dev/%s' % tundev, '/dev/%s' % interface_name)
     return networks
 
 if len(sys.argv) > 1:

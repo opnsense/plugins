@@ -1,12 +1,12 @@
 <model>
     <mount>//OPNsense/freeradius/client</mount>
     <description>FreeRADIUS client configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <clients>
             <client type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
@@ -18,6 +18,10 @@
                 <ip type="NetworkField">
                     <Required>N</Required>
                 </ip>
+                <require_ma type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </require_ma>
             </client>
         </clients>
     </items>

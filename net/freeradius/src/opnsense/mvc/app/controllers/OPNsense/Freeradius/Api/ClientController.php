@@ -76,7 +76,6 @@ class ClientController extends ApiMutableModelControllerBase
 
     public function searchClientAction()
     {
-        $this->sessionClose();
         $mdlClient = $this->getModel();
         $grid = new UIModelGrid($mdlClient->clients->client);
         return $grid->fetchBindRequest(

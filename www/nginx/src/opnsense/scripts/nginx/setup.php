@@ -29,9 +29,11 @@
 
 const KEY_DIRECTORY = '/usr/local/etc/nginx/key/';
 const GROUP_OWNER = 'staff';
+
 require_once('config.inc');
 require_once('certs.inc');
 require_once('util.inc');
+
 use OPNsense\Nginx\Nginx;
 
 function export_pem_file($filename, $data, $post_append = null)
@@ -74,6 +76,8 @@ syslog(LOG_DEBUG, "NGINX setup routine started.");
 @mkdir('/usr/local/etc/nginx/key', 0750, true);
 @mkdir("/var/db/nginx/auth", 0750, true);
 @mkdir("/var/log/nginx", 0750, true);
+// check logs dir permissions. in case if logs moved to tmpfs
+@chmod('/var/log/nginx', 0750);
 @chgrp('/var/db/nginx', GROUP_OWNER);
 @chgrp('/var/db/nginx/auth', GROUP_OWNER);
 @chgrp('/var/log/nginx', GROUP_OWNER);
@@ -118,14 +122,24 @@ if (isset($nginx['http_server'])) {
                 $cert['prv']
             );
             if (!empty($http_server['ca'])) {
-                foreach ($http_server['ca'] as $caref) {
-                    $ca = find_ca($caref);
-                    if (isset($ca)) {
-                        export_pem_file(
-                            KEY_DIRECTORY . $hostname . '_ca.pem',
-                            $ca['crt']
-                        );
+                syslog(LOG_DEBUG, "NGINX setup: Setting up the CA certs for {$hostname}.");
+                $ca_certs = [];
+                foreach ($http_server['ca'] as $carefs) {
+                    foreach (explode(',', $carefs) as $caref) {
+                        syslog(LOG_DEBUG, "NGINX setup: Searching for {$caref} CA data");
+                        $ca = find_ca($caref);
+                        if (isset($ca)) {
+                            syslog(LOG_DEBUG, "NGINX setup: client auth CA found. Adding to the list");
+                            $ca_certs[] = base64_decode($ca['crt']);
+                        }
                     }
+                }
+                if (count($ca_certs) > 0) {
+                    export_pem_file(
+                        KEY_DIRECTORY . $hostname . '_ca.pem',
+                        '',
+                        implode("\n", $ca_certs)
+                    );
                 }
             }
         }
@@ -349,4 +363,5 @@ if (!empty($conf_test_errors)) {
 
 syslog(LOG_DEBUG, "NGINX setup routine completed.");
 closelog();
-passthru('/usr/local/etc/rc.d/php-fpm start');
+
+pass_safe('/usr/local/etc/rc.d/php-fpm start');

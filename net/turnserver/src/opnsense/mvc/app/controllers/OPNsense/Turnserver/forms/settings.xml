@@ -1,0 +1,129 @@
+<form>
+    <field>
+        <label>General Settings</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>turnserver.settings.Enabled</id>
+        <label>Enable Service</label>
+        <type>checkbox</type>
+        <help>Enable the Turnserver service</help>
+    </field>
+    <field>
+        <id>turnserver.settings.ListenIP</id>
+        <label>Listen IPs</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help><![CDATA[Listener IP address of relay server. Multiple listeners can be specified. Use 0.0.0.0 or :: to listen on all IPv4 or IPv6 addresses respectively.]]></help>
+    </field>
+    <field>
+        <id>turnserver.settings.ListenPort</id>
+        <label>Listen Port</label>
+        <type>text</type>
+        <help>TURN listener port for UDP and TCP (Default: 3478). NOTE: Do NOT set this to 80 or 443 when listening on all IPs, this may block access to the OPNsense WebUI.</help>
+    </field>
+    <field>
+        <id>turnserver.settings.MinPort</id>
+        <label>Min UDP Port</label>
+        <type>text</type>
+        <help>Lower bound of the UDP relay endpoints (Default: 49152).</help>
+    </field>
+    <field>
+        <id>turnserver.settings.MaxPort</id>
+        <label>Max UDP Port</label>
+        <type>text</type>
+        <help>Upper bound of the UDP relay endpoints (Default: 65535).</help>
+    </field>
+    <field>
+        <label>TLS Support</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>turnserver.settings.TlsEnabled</id>
+        <label>Enable TLS</label>
+        <type>checkbox</type>
+        <help>Enable TLS/DTLS support. This requires a valid TLS certificate.</help>
+    </field>
+    <field>
+        <id>turnserver.settings.TlsCertificate</id>
+        <label>TLS Certificate</label>
+        <type>dropdown</type>
+        <style>style_tls</style>
+        <help>Select a valid TLS certificate.</help>
+    </field>
+    <field>
+        <id>turnserver.settings.TlsPort</id>
+        <label>TLS Port</label>
+        <type>text</type>
+        <help>TURN listener port for TLS (Default: 5349). NOTE: Do NOT set this to 80 or 443 when listening on all IPs, this may block access to the OPNsense WebUI.</help>
+    </field>
+    <field>
+        <label>Security</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>turnserver.settings.UseAuthSecret</id>
+        <label>Use Auth Secret</label>
+        <type>checkbox</type>
+        <help>This sets a special authorization option that is based upon authentication secret. Enables TURN REST API.</help>
+    </field>
+    <field>
+        <id>turnserver.settings.StaticAuthSecret</id>
+        <label>Auth Secret</label>
+        <type>password</type>
+        <help>The authentication secret value for TURN REST API. It is recommended to use a long random string, at least 32 characters long.</help>
+    </field>
+    <field>
+        <label>Features</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>turnserver.settings.Realm</id>
+        <label>Realm</label>
+        <type>text</type>
+        <help>The default realm to be used for the users. Must be used with TURN REST API. A good choice may be the domain name of the company.</help>
+    </field>
+    <field>
+        <id>turnserver.settings.FingerprintsEnabled</id>
+        <label>Enable Fingerprints</label>
+        <type>checkbox</type>
+        <help>Use fingerprints in the TURN messages.</help>
+    </field>
+    <field>
+        <label>Tuning</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>turnserver.settings.UserQuota</id>
+        <label>User Quota</label>
+        <type>text</type>
+        <help>Per-user allocation quota. Default value is 0 (no quota, unlimited number of sessions per user).</help>
+    </field>
+    <field>
+        <id>turnserver.settings.TotalQuota</id>
+        <label>Total Quota</label>
+        <type>text</type>
+        <help>Total allocation quota. Default value is 0 (no quota).</help>
+    </field>
+    <field>
+        <id>turnserver.settings.StaleNonce</id>
+        <label>Stale Nonce Lifetime</label>
+        <type>text</type>
+        <help>Limit the nonce lifetime (in seconds) for extra security. Default value is 600 secs (10 minutes).</help>
+    </field>
+    <field>
+        <id>turnserver.settings.ChannelLifetime</id>
+        <label>Channel Lifetime</label>
+        <type>text</type>
+        <help>The lifetime for the channel in seconds. Default value is 600 seconds (10 minutes). Changing this value violates RFC 5766. Use with care.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>turnserver.settings.PermissionLifetime</id>
+        <label>Permission Lifetime</label>
+        <type>text</type>
+        <help>The permission lifetime in seconds. Default value is 300 seconds (5 minutes). Changing this value violates RFC 5766. Use with care.</help>
+        <advanced>true</advanced>
+    </field>
+</form>

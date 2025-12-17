@@ -4,11 +4,12 @@
     <version>1.9.17</version>
     <items>
         <default_eap_type type="OptionField">
-            <default>md5</default>
+            <Default>md5</Default>
             <Required>Y</Required>
-            <multiple>N</multiple>
+            <Multiple>N</Multiple>
             <OptionValues>
                 <md5>MD5</md5>
+                <pwd>PWD</pwd>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
                 <tls>TLS</tls>
@@ -16,38 +17,47 @@
             </OptionValues>
         </default_eap_type>
         <elliptic_curve type="OptionField">
-            <default>prime256v1</default>
+            <Default>prime256v1</Default>
             <Required>Y</Required>
-            <multiple>N</multiple>
+            <Multiple>N</Multiple>
             <OptionValues>
                 <prime256v1>prime256v1</prime256v1>
                 <secp384r1>secp384r1</secp384r1>
             </OptionValues>
         </elliptic_curve>
         <enable_client_cert type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enable_client_cert>
         <ca type="CertificateField">
             <Type>ca</Type>
             <Required>N</Required>
+            <Multiple>Y</Multiple>
         </ca>
         <certificate type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
         </certificate>
+        <enable_pwd type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enable_pwd>
+        <pwd_serverid type="TextField">
+            <default>theserver@example.com</default>
+            <Required>Y</Required>
+        </pwd_serverid>
         <crl type="CertificateField">
             <Type>crl</Type>
             <Required>N</Required>
         </crl>
         <check_tls_names type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </check_tls_names>
         <tls_min_version type="OptionField">
-            <default>1.0</default>
+            <Default>1.0</Default>
             <Required>Y</Required>
-            <multiple>N</multiple>
+            <Multiple>N</Multiple>
             <OptionValues>
                 <Option1 value="1.0">1.0</Option1>
                 <Option2 value="1.1">1.1</Option2>

@@ -23,4 +23,11 @@
         <type>text</type>
         <help>Set the IP address of the remote client or the complete network like 10.10.10.0/24</help>
     </field>
+    <field>
+        <id>client.require_ma</id>
+        <label>Require Message-Authenticator</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>RFC 5080 suggests that all clients should include it in an Access-Request. If the server requires it (option checked) and the client does not, then the packet will be silently discarded.</help>
+    </field>
 </form>

@@ -1,40 +1,33 @@
 <model>
     <mount>//OPNsense/netsnmp/general</mount>
     <description>Netsnmp configuration</description>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <community type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </community>
-        <syslocation type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </syslocation>
-        <syscontact type="TextField">
-            <default></default>
-            <Required>N</Required>
-        </syscontact>
+        <community type="TextField"/>
+        <syslocation type="TextField"/>
+        <syscontact type="TextField"/>
         <l3visibility type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </l3visibility>
         <versionoid type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </versionoid>
         <enableagentx type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enableagentx>
+        <enableobservium type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enableobservium>
         <listen type="NetworkField">
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
-            <asList>Y</asList>
+            <AsList>Y</AsList>
         </listen>
     </items>
 </model>

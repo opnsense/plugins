@@ -4,7 +4,7 @@
   <items>
     <hiddenserviceacl type="ArrayField">
       <enabled type="BooleanField">
-        <default>1</default>
+        <Default>1</Default>
         <Required>Y</Required>
       </enabled>
       <hiddenservice type="ModelRelationField">
@@ -20,7 +20,7 @@
         <Required>Y</Required>
       </hiddenservice>
       <port type="IntegerField">
-        <default>80</default>
+        <Default>80</Default>
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
         <MaximumValue>65535</MaximumValue>
@@ -28,10 +28,10 @@
       </port>
       <target_host type="NetworkField">
         <Required>Y</Required>
-        <default>127.0.0.1</default>
+        <Default>127.0.0.1</Default>
       </target_host>
       <target_port type="IntegerField">
-        <default>80</default>
+        <Default>80</Default>
         <MinimumValue>1</MinimumValue>
         <Required>Y</Required>
         <MaximumValue>65535</MaximumValue>

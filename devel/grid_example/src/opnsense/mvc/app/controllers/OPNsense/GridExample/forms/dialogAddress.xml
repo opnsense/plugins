@@ -1,13 +1,30 @@
 <form>
     <field>
         <id>address.enabled</id>
-        <label>enabled</label>
+        <label>Enabled</label>
         <type>checkbox</type>
         <help>Enable this address</help>
+        <!-- Format the grid column for enabled button-->
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <id>address.email</id>
         <label>Email</label>
         <type>text</type>
+        <help>Enter the email address</help>
+    </field>
+    <field>
+        <id>address.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter an optional description</help>
+        <!-- Hide this grid column per default -->
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
     </field>
 </form>

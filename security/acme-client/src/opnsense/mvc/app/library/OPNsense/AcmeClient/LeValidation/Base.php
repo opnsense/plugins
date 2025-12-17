@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2024 Frank Wall
+ * Copyright (C) 2020-2025 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
  * All rights reserved.
@@ -167,7 +167,7 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
           . "--{$acme_action} "
           . implode(' ', $this->acme_args) . ' '
           . LeUtils::execSafe('--accountconf %s', $account_conf_file);
-        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd, $this->debug);
+        LeUtils::log_debug('running acme.sh command: ' . (string)$acmecmd);
 
         // Run acme.sh command
         $result = LeUtils::run_shell_command($acmecmd, $proc_env);
@@ -286,6 +286,6 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      */
     public function setRenewal(int $interval = 60)
     {
-        $this->acme_args[] = LeUtils::execSafe('--days %s', (string)$interval);
+        $this->acme_args[] = LeUtils::execSafe('--days %s', $interval);
     }
 }
