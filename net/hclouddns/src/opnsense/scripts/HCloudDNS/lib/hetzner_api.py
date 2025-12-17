@@ -120,19 +120,33 @@ class HetznerCloudAPI:
         """
         List all DNS zones accessible with this token.
         Returns list of zone dicts with id, name, records_count
+        Uses pagination to fetch all zones (default limit is 25).
         """
         try:
-            response = self._request('GET', '/zones')
+            all_zones = []
+            page = 1
+            per_page = 100
 
-            if response.status_code != 200:
-                self._log(syslog.LOG_ERR, f"Failed to list zones: HTTP {response.status_code}")
-                return []
+            while True:
+                response = self._request('GET', '/zones', params={'page': page, 'per_page': per_page})
 
-            data = response.json()
-            zones = data.get('zones', [])
+                if response.status_code != 200:
+                    self._log(syslog.LOG_ERR, f"Failed to list zones: HTTP {response.status_code}")
+                    return []
+
+                data = response.json()
+                zones = data.get('zones', [])
+                all_zones.extend(zones)
+
+                # Check if there are more pages
+                meta = data.get('meta', {}).get('pagination', {})
+                total_entries = meta.get('total_entries', len(zones))
+                if len(all_zones) >= total_entries or len(zones) < per_page:
+                    break
+                page += 1
 
             result = []
-            for zone in zones:
+            for zone in all_zones:
                 result.append({
                     'id': zone.get('id', ''),
                     'name': zone.get('name', ''),
@@ -457,19 +471,34 @@ class HetznerLegacyAPI:
             return False, f"Unexpected error: {str(e)}", 0
 
     def list_zones(self):
-        """List all DNS zones accessible with this token."""
+        """List all DNS zones accessible with this token.
+        Uses pagination to fetch all zones (default limit is 25).
+        """
         try:
-            response = self._request('GET', '/zones')
+            all_zones = []
+            page = 1
+            per_page = 100
 
-            if response.status_code != 200:
-                self._log(syslog.LOG_ERR, f"Failed to list zones: HTTP {response.status_code}")
-                return []
+            while True:
+                response = self._request('GET', '/zones', params={'page': page, 'per_page': per_page})
 
-            data = response.json()
-            zones = data.get('zones', [])
+                if response.status_code != 200:
+                    self._log(syslog.LOG_ERR, f"Failed to list zones: HTTP {response.status_code}")
+                    return []
+
+                data = response.json()
+                zones = data.get('zones', [])
+                all_zones.extend(zones)
+
+                # Check if there are more pages
+                meta = data.get('meta', {}).get('pagination', {})
+                total_entries = meta.get('total_entries', len(zones))
+                if len(all_zones) >= total_entries or len(zones) < per_page:
+                    break
+                page += 1
 
             result = []
-            for zone in zones:
+            for zone in all_zones:
                 result.append({
                     'id': zone.get('id', ''),
                     'name': zone.get('name', ''),
@@ -489,7 +518,7 @@ class HetznerLegacyAPI:
     def get_zone_id(self, zone_name):
         """Get zone ID by zone name"""
         try:
-            response = self._request('GET', '/zones')
+            response = self._request('GET', '/zones', params={'name': zone_name})
 
             if response.status_code != 200:
                 self._log(syslog.LOG_ERR, f"Failed to get zones: HTTP {response.status_code}")
