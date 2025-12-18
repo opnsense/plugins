@@ -88,7 +88,7 @@
     --link: #FA6121; /* OPNsense text login and links */
     --linkhover: #E04605; /* OPNsense text login and links hover */
     --colorcheckbox: #388E3C; /* background color checkbox */
-    --colorradio: #FF3333; /* E6A05A background color radio button */
+    --colorradio: #FF3333; /* background color radio button */
     /* accents */
     --primary: #336CDF; /* primary accent */
     --primaryhover: #608DE6; /* primary accent hover */
@@ -99,7 +99,7 @@
     --warning: #D66E12; /* warning accent */
     --warninghover: #ED862B; /* warning accent hover */
     --danger: #FF5252; /* danger accent */
-    --dangerhover: #BE2326FF8585; /* danger accent hover */
+    --dangerhover: #FF6B6B; /* danger accent hover */
     /* alert messages */
     /* alert success */
     --alertsuccessfore: #E6E6E6;
