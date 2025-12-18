@@ -1,12 +1,12 @@
 <acl>
     <page-service-upnp>
-        <name>Services: UPnP IGD &amp; PCP: Settings</name>
+        <name>Service: Universal Plug and Play</name>
         <patterns>
             <pattern>services_upnp.php*</pattern>
         </patterns>
     </page-service-upnp>
     <page-status-upnpstatus>
-        <name>Services: UPnP IGD &amp; PCP: Active Maps</name>
+        <name>Status: Universal Plug and Play</name>
         <patterns>
             <pattern>status_upnp.php*</pattern>
         </patterns>

@@ -194,9 +194,6 @@
                 <a data-toggle="tab" id="subtab_item_nginx-http-cache_path" href="#subtab_nginx-http-cache_path">{{ lang._('Cache Path')}}</a>
             </li>
             <li>
-                <a data-toggle="tab" id="subtab_item_nginx-http-proxy_cache_valid" href="#subtab_nginx-http-proxy_cache_valid">{{ lang._('Response Code Caching')}}</a>
-            </li>
-            <li>
                 <a data-toggle="tab" id="subtab_item_nginx-http-errorpages" href="#subtab_nginx-http-errorpages">{{ lang._('Error Pages')}}</a>
             </li>
             <li>
@@ -606,30 +603,6 @@
             </tfoot>
         </table>
     </div>
-    <div id="subtab_nginx-http-proxy_cache_valid" class="tab-pane fade">
-        <table id="grid-proxy_cache_valid" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="proxy_cache_validdlg">
-            <thead>
-                <tr>
-                    <th data-column-id="uuid" data-type="string" data-sortable="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="description" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Description') }}</th>
-                    <th data-column-id="code" data-type="string" data-sortable="true" data-visible="true">{{ lang._('Codes') }}</th>
-                    <th data-column-id="valid" data-type="numeric" data-sortable="true" data-visible="true">{{ lang._('Time') }}</th>
-                    <th data-column-id="commands" data-width="10em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button type="button" class="btn btn-xs reload_btn btn-primary"><span class="fa fa-refresh reloadAct_progress"></span></button>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
     <div id="subtab_nginx-access-request-limit" class="tab-pane fade">
         <table id="grid-limit_zone" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="limit_zonedlg">
             <thead>
@@ -852,7 +825,6 @@
 {{ partial("layout_partials/base_dialog",['fields': limit_request_connection,'id':'limit_request_connectiondlg', 'label':lang._('Edit Request Connection Limit')]) }}
 {{ partial("layout_partials/base_dialog",['fields': limit_zone,'id':'limit_zonedlg', 'label':lang._('Edit Limit Zone')]) }}
 {{ partial("layout_partials/base_dialog",['fields': cache_path,'id':'cache_pathdlg', 'label':lang._('Edit Cache Path')]) }}
-{{ partial("layout_partials/base_dialog",['fields': proxy_cache_valid,'id':'proxy_cache_validdlg', 'label':lang._('Edit Response Code Caching')]) }}
 {{ partial("layout_partials/base_dialog",['fields': sni_hostname_map,'id':'sni_hostname_mapdlg', 'label':lang._('Edit SNI Hostname Mapping')]) }}
 {{ partial("layout_partials/base_dialog",['fields': ipacl,'id':'ipacl_dlg', 'label':lang._('Edit IP ACL')]) }}
 {{ partial("layout_partials/base_dialog",['fields': errorpage,'id':'errorpage_dlg', 'label':lang._('Edit Error Page')]) }}

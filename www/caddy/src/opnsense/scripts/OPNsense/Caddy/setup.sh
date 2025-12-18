@@ -31,6 +31,10 @@
 CADDY_USER="${caddy_user:-root}"
 CADDY_GROUP="${caddy_group:-wheel}"
 
+# Canary to detect root->www switch (disable superuser) permission issues
+# The storage instance will always exist, it's a good assumption
+CANARY="/var/db/caddy/data/caddy/instance.uuid"
+
 # Define directories
 CADDY_CONF_DIR="/usr/local/etc/caddy"
 CADDY_DATA_DIR="/var/db/caddy"
@@ -39,23 +43,35 @@ CADDY_CONF_CUSTOM_DIR="${CADDY_CONF_DIR}/caddy.d"
 CADDY_CONF_CERT_DIR="${CADDY_CONF_DIR}/certificates"
 CADDY_LOG_CUSTOM_DIR="${CADDY_LOG_DIR}/access"
 
-# Group the main directories
-CADDY_DIRS="
-${CADDY_CONF_DIR}
-${CADDY_DATA_DIR}
-${CADDY_LOG_DIR}
-${CADDY_CONF_CERT_DIR}
-${CADDY_CONF_CUSTOM_DIR}
-${CADDY_LOG_CUSTOM_DIR}
-"
-
-# No inode changes occur when directory already exists or permissions are correct.
-# Always running these when caddy starts guarantees correct ownership with minimal read and writes.
-mkdir -p ${CADDY_DIRS}
-chown -R "${CADDY_USER}:${CADDY_GROUP}" ${CADDY_DIRS}
+mkdir -p "${CADDY_CONF_DIR}" \
+         "${CADDY_DATA_DIR}" \
+         "${CADDY_LOG_DIR}" \
+         "${CADDY_CONF_CUSTOM_DIR}" \
+         "${CADDY_CONF_CERT_DIR}" \
+         "${CADDY_LOG_CUSTOM_DIR}"
 
 # Format and overwrite the Caddyfile
 ( cd "${CADDY_CONF_DIR}" && /usr/local/bin/caddy fmt --overwrite )
 
 # Write custom certs from the OPNsense Trust Store
 /usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php
+
+# Ownership decision based on current service user/group, otherwise skip
+EXPECTED_USER="$CADDY_USER"
+EXPECTED_GROUP="$CADDY_GROUP"
+
+if [ -f "$CANARY" ]; then
+    CANARY_USER="$(stat -f '%Su' "$CANARY")"
+    CANARY_GROUP="$(stat -f '%Sg' "$CANARY")"
+
+    if [ "$CANARY_USER" = "$EXPECTED_USER" -a "$CANARY_GROUP" = "$EXPECTED_GROUP" ]; then
+        exit 0
+    fi
+fi
+
+# Use detected service user/group, only migrate ownership
+# We only interact with the storage in this specific edge case, in all other cases caddy must have atomic write guarantee
+chown -R "${CADDY_USER}:${CADDY_GROUP}" "${CADDY_CONF_DIR}" \
+                                        "${CADDY_DATA_DIR}" \
+                                        "${CADDY_LOG_DIR}" \
+                                        "${CADDY_CONF_CERT_DIR}"

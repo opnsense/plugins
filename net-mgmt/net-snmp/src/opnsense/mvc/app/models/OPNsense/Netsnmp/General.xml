@@ -7,9 +7,18 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <community type="TextField"/>
-        <syslocation type="TextField"/>
-        <syscontact type="TextField"/>
+        <community type="TextField">
+            <Default></Default>
+            <Required>N</Required>
+        </community>
+        <syslocation type="TextField">
+            <Default></Default>
+            <Required>N</Required>
+        </syslocation>
+        <syscontact type="TextField">
+            <Default></Default>
+            <Required>N</Required>
+        </syscontact>
         <l3visibility type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -27,6 +36,8 @@
             <Required>Y</Required>
         </enableobservium>
         <listen type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
+            <Required>N</Required>
             <AsList>Y</AsList>
         </listen>
     </items>

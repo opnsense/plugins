@@ -90,14 +90,4 @@
         <type>checkbox</type>
         <help>Enable Rosenpass permissive mode</help>
     </field>
-    <field>
-        <type>header</type>
-        <label>Syslog Logging</label>
-    </field>
-    <field>
-        <id>settings.syslog.logLevel</id>
-        <label>Log Level</label>
-        <type>dropdown</type>
-        <help>Set the syslog logging level. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
-    </field>
 </form>

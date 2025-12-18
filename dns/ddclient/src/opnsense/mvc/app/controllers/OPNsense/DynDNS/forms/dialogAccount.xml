@@ -31,7 +31,7 @@
          When a URI is provided, the tag __MYIP__ will be replaced with the current detected address for this service
          and __HOSTNAME__ will contain the (comma separated) list of hostnames provided.
          </help>
-        <style>optional_setting service_custom service_powerdns</style>
+        <style>optional_setting service_custom</style>
     </field>
     <field>
         <id>account.resourceId</id>
@@ -62,7 +62,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner service_digitalocean service_dnspodcn</style>
+        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner service_digitalocean</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>

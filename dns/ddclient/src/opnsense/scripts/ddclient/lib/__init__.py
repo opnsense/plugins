@@ -57,5 +57,5 @@
         changed (return status of `execute()`) the state is flushed to disk.
 
 """
-from .address import registered_services, checkip
+from .address import checkip_service_list, checkip
 from .poller import AccountFactory, Poller

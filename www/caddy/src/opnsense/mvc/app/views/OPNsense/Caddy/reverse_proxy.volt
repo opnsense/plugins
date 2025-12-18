@@ -260,16 +260,12 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-                    // insert buttons and selectpicker only when the tab is actually visible
+                    // insert buttons and selectpicker
                     if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
-                        if (!$(e.target.hash).is(':visible')) {
-                            return;  // prevents the selectpicker from being moved into hidden tabs
-                        }
-
                         const header = $("#" + grid_id + "-header");
                         const $actionBar = header.find('.actionBar');
                         if ($actionBar.length) {
-                            $('#add_filter_container').detach().insertAfter($actionBar.find('.search')).show();
+                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search')).show();
                         }
                     }
 
@@ -451,6 +447,9 @@
 </script>
 
 <style>
+    #add_filter_container {
+        float: left;
+    }
     .actions .dropdown-menu.pull-right {
         max-height: 400px;
         min-width: max-content;
@@ -463,26 +462,20 @@
         font-size: 16px;
         font-style: italic;
     }
-    #add_filter_container {
-        display: flex;
-        gap: 8px;
+    #reverseFilterClear {
+        border-right: none;
     }
-    @media (max-width: 1024px) {
-        #reverseFilterClear {
-            flex: 1 1 100%;
-        }
-        #reverseFilter {
-            flex: 1 1 100%;
-        }
+    #add_filter_container .bootstrap-select > .dropdown-toggle {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
-
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
     <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
         <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
     </button>
-    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="300px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 

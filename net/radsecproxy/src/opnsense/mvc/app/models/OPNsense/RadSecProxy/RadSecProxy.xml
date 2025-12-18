@@ -6,10 +6,12 @@
     <version>0.0.1</version>
     <items>
         <general>
+
             <enabled type="BooleanField">
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
+
             <logLevel type="OptionField">
                 <Required>Y</Required>
                 <Default>2</Default>
@@ -21,6 +23,7 @@
                     <ll5 value="5">5 (log everything)</ll5>
                 </OptionValues>
             </logLevel>
+
             <logFullUsername type="OptionField">
                 <Required>Y</Required>
                 <Default>off</Default>
@@ -29,6 +32,7 @@
                     <off>Off</off>
                 </OptionValues>
             </logFullUsername>
+
             <logMac type="OptionField">
                 <Required>Y</Required>
                 <Default>Original</Default>
@@ -41,6 +45,7 @@
                     <FullyKeyHashed>FullyKeyHashed</FullyKeyHashed>
                 </OptionValues>
             </logMac>
+
             <loopPrevention type="OptionField">
                 <Required>Y</Required>
                 <Default>on</Default>
@@ -49,37 +54,49 @@
                     <off>Off</off>
                 </OptionValues>
             </loopPrevention>
+
             <listenUdp type="TextField">
                 <Required>N</Required>
             </listenUdp>
+
             <listenTcp type="TextField">
                 <Required>N</Required>
             </listenTcp>
+
             <listenTls type="TextField">
                 <Required>N</Required>
             </listenTls>
+
             <listenDtls type="TextField">
                 <Required>N</Required>
             </listenDtls>
+
             <sourceUdp type="TextField">
                 <Required>N</Required>
             </sourceUdp>
+
             <sourceTcp type="TextField">
                 <Required>N</Required>
             </sourceTcp>
+
             <sourceTls type="TextField">
                 <Required>N</Required>
             </sourceTls>
+
             <sourceDtls type="TextField">
                 <Required>N</Required>
             </sourceDtls>
+
         </general>
+
         <clients>
             <client type="ArrayField">
+
                 <enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+
                 <identifier type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
@@ -91,9 +108,11 @@
                         </check001>
                     </Constraints>
                 </identifier>
+
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
+
                 <host type="NetworkField">
                     <Required>Y</Required>
                     <IpAllowed>Y</IpAllowed>
@@ -103,6 +122,7 @@
                         </check001>
                     </Constraints>
                 </host>
+
                 <type type="OptionField">
                     <Required>Y</Required>
                     <Default>udp</Default>
@@ -113,6 +133,7 @@
                         <dtls>DTLS</dtls>
                     </OptionValues>
                 </type>
+
                 <secret type="TextField">
                     <Required>N</Required>
                     <Constraints>
@@ -130,6 +151,7 @@
                         </check002>
                     </Constraints>
                 </secret>
+
                 <tlsConfig type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -140,6 +162,7 @@
                         </tlsConfigs>
                     </Model>
                 </tlsConfig>
+
                 <certificateNameCheck type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -148,9 +171,11 @@
                         <off>Off</off>
                     </OptionValues>
                 </certificateNameCheck>
+
                 <matchCertificateAttribute type="TextField">
                     <Required>N</Required>
                 </matchCertificateAttribute>
+
                 <rewriteIn type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -161,6 +186,7 @@
                         </rewrites>
                     </Model>
                 </rewriteIn>
+
                 <rewriteOut type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -171,10 +197,13 @@
                         </rewrites>
                     </Model>
                 </rewriteOut>
+
             </client>
         </clients>
+
         <servers>
             <server type="ArrayField">
+
                 <identifier type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
@@ -186,16 +215,20 @@
                         </check001>
                     </Constraints>
                 </identifier>
+
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
+
                 <host type="TextField">
                     <Required>Y</Required>
                     <IpAllowed>Y</IpAllowed>
                 </host>
+
                 <port type="PortField">
                     <Required>N</Required>
                 </port>
+
                 <statusServer type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -206,6 +239,7 @@
                         <auto>Auto</auto>
                     </OptionValues>
                 </statusServer>
+
                 <type type="OptionField">
                     <Required>Y</Required>
                     <Default>udp</Default>
@@ -216,6 +250,7 @@
                         <dtls>DTLS</dtls>
                     </OptionValues>
                 </type>
+
                 <secret type="TextField">
                     <Required>N</Required>
                     <Constraints>
@@ -233,6 +268,7 @@
                         </check002>
                     </Constraints>
                 </secret>
+
                 <tlsConfig type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -243,6 +279,7 @@
                         </tlsConfigs>
                     </Model>
                 </tlsConfig>
+
                 <certificateNameCheck type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -251,9 +288,11 @@
                         <off>Off</off>
                     </OptionValues>
                 </certificateNameCheck>
+
                 <matchCertificateAttribute type="TextField">
                     <Required>N</Required>
                 </matchCertificateAttribute>
+
                 <rewriteIn type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -264,6 +303,7 @@
                         </rewrites>
                     </Model>
                 </rewriteIn>
+
                 <rewriteOut type="ModelRelationField">
                     <Required>N</Required>
                     <Model>
@@ -274,10 +314,13 @@
                         </rewrites>
                     </Model>
                 </rewriteOut>
+
             </server>
         </servers>
+
         <tlsConfigs>
             <tlsConfig type="ArrayField">
+
                 <name type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
@@ -290,23 +333,28 @@
                         </check001>
                     </Constraints>
                 </name>
+
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
+
                 <caCertificateRefId type="CertificateField">
                     <Required>Y</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>ca</Type>
                 </caCertificateRefId>
+
                 <proxyCertificateRefId type="CertificateField">
                     <Required>Y</Required>
                     <ValidationMessage>Field is required</ValidationMessage>
                     <Type>cert</Type>
                 </proxyCertificateRefId>
+
                 <policyOids type="CSVListField">
                     <Required>N</Required>
                     <Multiple>Y</Multiple>
                 </policyOids>
+
                 <crlCheck type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -315,20 +363,26 @@
                         <off>Off</off>
                     </OptionValues>
                 </crlCheck>
+
                 <cacheExpiry type="IntegerField">
                     <Required>N</Required>
                 </cacheExpiry>
+
             </tlsConfig>
         </tlsConfigs>
+
         <realms>
             <realm type="ArrayField">
+
                 <enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+
                 <description type="TextField">
                     <Required>N</Required>
                 </description>
+
                 <realm type="TextField">
                     <Required>Y</Required>
                     <ValidationMessage>Must not be empty</ValidationMessage>
@@ -339,6 +393,7 @@
                         </check001>
                     </Constraints>
                 </realm>
+
                 <server type="ModelRelationField">
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
@@ -352,6 +407,7 @@
                     </Model>
                     <ValidationMessage>Related server not found</ValidationMessage>
                 </server>
+
                 <accountingServer type="ModelRelationField">
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
@@ -365,6 +421,7 @@
                     </Model>
                     <ValidationMessage>Related server not found</ValidationMessage>
                 </accountingServer>
+
                 <accountingResponse type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -373,17 +430,22 @@
                         <off>Off</off>
                     </OptionValues>
                 </accountingResponse>
+
                 <replyMessage type="TextField">
                     <Required>N</Required>
                 </replyMessage>
+
             </realm>
         </realms>
+
         <rewrites>
             <rewrite type="ArrayField">
+
                 <enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+
                 <name type="TextField">
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z_\-]){1,25}$/u</Mask>
@@ -396,30 +458,39 @@
                         </check001>
                     </Constraints>
                 </name>
+
                 <addAttributes type="TextField">
                     <Required>N</Required>
                 </addAttributes>
+
                 <addVendorAttributes type="TextField">
                     <Required>N</Required>
                 </addVendorAttributes>
+
                 <supplementAttributes type="TextField">
                     <Required>N</Required>
                 </supplementAttributes>
+
                 <supplementVendorAttributes type="TextField">
                     <Required>N</Required>
                 </supplementVendorAttributes>
+
                 <modifyAttributes type="TextField">
                     <Required>N</Required>
                 </modifyAttributes>
+
                 <modifyVendorAttributes type="TextField">
                     <Required>N</Required>
                 </modifyVendorAttributes>
+
                 <removeAttributes type="TextField">
                     <Required>N</Required>
                 </removeAttributes>
+
                 <removeVendorAttributes type="TextField">
                     <Required>N</Required>
                 </removeVendorAttributes>
+
                 <whitelistMode type="OptionField">
                     <Required>Y</Required>
                     <Default>off</Default>
@@ -428,12 +499,15 @@
                         <off>Off</off>
                     </OptionValues>
                 </whitelistMode>
+
                 <whitelistAttributes type="TextField">
                     <Required>N</Required>
                 </whitelistAttributes>
+
                 <whitelistVendorAttributes type="TextField">
                     <Required>N</Required>
                 </whitelistVendorAttributes>
+
             </rewrite>
         </rewrites>
     </items>

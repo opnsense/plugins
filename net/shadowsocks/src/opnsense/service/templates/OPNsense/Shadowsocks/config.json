@@ -4,9 +4,8 @@
     "server_port":{{ OPNsense.shadowsocks.general.serverport }},
     "local_port":{{ OPNsense.shadowsocks.general.localport }},
     "password":"{{ OPNsense.shadowsocks.general.password }}",
-    "timeout":{{ OPNsense.shadowsocks.general.timeout }},
+    "timeout":60,
     "mode":"{{ OPNsense.shadowsocks.general.tcpudpmode }}",
-    "method":"{{ OPNsense.shadowsocks.general.cipher }}",
-    "outbound_udp_allow_fragmentation":{{ "true" if OPNsense.shadowsocks.general.fragmentation == '1' else "false"}}
+    "method":"{{ OPNsense.shadowsocks.general.cipher }}"
 }
 {% endif %}

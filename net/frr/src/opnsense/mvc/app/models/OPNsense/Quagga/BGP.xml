@@ -28,26 +28,11 @@
             <Default>1</Default>
             <Required>Y</Required>
         </networkimportcheck>
-        <enforce_first_as type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-        </enforce_first_as>
         <logneighborchanges type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </logneighborchanges>
         <networks type="CSVListField"/>
-        <bestpath type="OptionField">
-            <OptionValues>
-                <as_path_confed value="as-path confed">as-path confed</as_path_confed>
-                <as_path_multipath_relax value="as-path multipath-relax">as-path multipath-relax</as_path_multipath_relax>
-                <compare_routerid value="compare-routerid">compare-routerid</compare_routerid>
-                <peer_type_multipath_relax value="peer-type multipath-relax">peer-type multipath-relax</peer_type_multipath_relax>
-                <aigp>aigp</aigp>
-                <med_missing_as_worst value="med missing-as-worst">med missing-as-worst</med_missing_as_worst>
-            </OptionValues>
-            <Multiple>Y</Multiple>
-        </bestpath>
         <neighbors>
             <neighbor type="ArrayField">
                 <enabled type="BooleanField">

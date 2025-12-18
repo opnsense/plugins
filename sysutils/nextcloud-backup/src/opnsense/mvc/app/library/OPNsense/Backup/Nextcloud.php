@@ -138,7 +138,13 @@ class Nextcloud extends Base implements IBackupProvider
             $password = (string)$nextcloud->password;
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
-
+            $hostname = $config->system->hostname . '.' . $config->system->domain;
+            $configname = 'config-' . $hostname . '-' .  date('Y-m-d_H_i_s') . '.xml';
+            // backup source data to local strings (plain/encrypted)
+            $confdata = file_get_contents('/conf/config.xml');
+            if (!empty($crypto_password)) {
+                $confdata = $this->encrypt($confdata, $crypto_password);
+            }
             // Check if destination directory exists, create (full path) if not
             try {
                 $internal_username = $this->getInternalUsername($url, $username, $password);
@@ -147,51 +153,26 @@ class Nextcloud extends Base implements IBackupProvider
                 return array();
             }
 
-            // Get list of files from local backup system
-            $local_files = array();
-            $tmp_local_files = scandir('/conf/backup/');
-            // Remove '.' and '..'
-            foreach ($tmp_local_files as $tmp_local_file) {
-                if ($tmp_local_file === '.' || $tmp_local_file === '..') { continue; }
-                $local_files[] = $tmp_local_file;
-            }
-
-            // Get list of filenames (without path) on remote location
-            $remote_files = array();
-            $tmp_remote_files = $this->listfiles($url, $username, $password, $internal_username, "/$backupdir/", false);
-            foreach ($tmp_remote_files as $tmp_remote_file) {
-                $remote_files[] = pathinfo($tmp_remote_file)['basename'];
-            }
-
-
-            $uploaded_files = array();
-
-            // Loop over each local file,
-            // see if it's in $remote_files,
-            // if not, optionally encrypt, and upload
-            foreach ($local_files as $file_to_upload) {
-                if (!in_array($file_to_upload, $remote_files)) {
-                    $confdata = file_get_contents("/conf/backup/$file_to_upload");
-                    if (!empty($crypto_password)) {
-                        $confdata = $this->encrypt($confdata, $crypto_password);
+            try {
+                $this->upload_file_content(
+                    $url,
+                    $username,
+                    $password,
+                    $internal_username,
+                    $backupdir,
+                    $configname,
+                    $confdata
+                );
+                // do not list directories
+                return array_filter(
+                    $this->listFiles($url, $username, $password, $internal_username, "/$backupdir/", false),
+                    function ($filename) {
+                        return (substr($filename, -1) !== '/');
                     }
-                    try {
-                        $this->upload_file_content(
-                            $url,
-                            $username,
-                            $password,
-                            $internal_username,
-                            $backupdir,
-                            $file_to_upload,
-                            $confdata
-                        );
-                        $uploaded_files[] = $file_to_upload;
-                    } catch (\Exception $e) {
-                        return $uploaded_files;
-                    }
-                }
+                );
+            } catch (\Exception $e) {
+                return array();
             }
-            return $uploaded_files;
         }
     }
 

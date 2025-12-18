@@ -29,8 +29,9 @@
 
 <script>
     $(document).ready(() => {
-        mapDataToFormUI({'frmSettings': '/api/netbird/settings/get'}).done(() => {
-            $('.selectpicker').selectpicker('refresh');
+        mapDataToFormUI({
+            'frmSettings': "/api/netbird/settings/get"
+        }).done(() => {
             updateServiceControlUI('netbird');
         });
 
@@ -53,4 +54,4 @@
 <div class="content-box">
     {{ partial("layout_partials/base_form",['fields':settingsForm,'id':'frmSettings']) }}
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/netbird/service/reconfigure', 'data_service_widget': 'netbird'}) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/netbird/settings/sync', 'data_service_widget': 'netbird'}) }}

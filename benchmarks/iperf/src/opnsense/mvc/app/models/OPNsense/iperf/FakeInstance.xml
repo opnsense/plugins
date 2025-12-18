@@ -1,11 +1,11 @@
 <model>
-    <mount>//OPNsense/Iperf3</mount>
-    <description>Fake model for the API - will be never stored to config (only used for defaults, validation etc.).</description>
-    <items>
-        <interface type="InterfaceField">
-            <Default>lan</Default>
-            <Required>Y</Required>
-            <Multiple>N</Multiple>
-        </interface>
-    </items>
+  <mount>//OPNsense/Iperf3</mount>
+  <description>Fake model for the API - will be never stored to config (only used for defaults, validation etc.).</description>
+  <items>
+    <interface type="InterfaceField">
+      <Default>lan</Default>
+      <Required>Y</Required>
+      <Multiple>N</Multiple>
+    </interface>
+  </items>
 </model>

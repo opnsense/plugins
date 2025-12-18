@@ -1366,9 +1366,11 @@
                     <Required>N</Required>
                 </port>
                 <checkport type="IntegerField">
+                    <Default></Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
                 </checkport>
                 <mode type="OptionField">
                     <Required>N</Required>
@@ -1563,16 +1565,18 @@
                     <Mask>/^([0-9a-zA-Z._\-]){1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
-                </sslSNI>
+                </sslSNI >
                 <!-- XXX: old value, required for model migration to 3.5.0 -->
                 <force_ssl type="BooleanField">
                     <Default>0</Default>
                     <Required>N</Required>
                 </force_ssl>
                 <checkport type="IntegerField">
+                    <Default></Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Please specify a value between 1 and 65535.</ValidationMessage>
+                    <Required>N</Required>
                 </checkport>
                 <http_method type="OptionField">
                     <Required>N</Required>
@@ -2518,13 +2522,13 @@
                     <Required>N</Required>
                 </useServer>
                 <actionName type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionName>
                 <actionFind type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionFind>
                 <actionValue type="TextField">
-                    <Required>N</Required>
+                     <Required>N</Required>
                 </actionValue>
                 <map_use_backend_file type="ModelRelationField">
                     <Model>

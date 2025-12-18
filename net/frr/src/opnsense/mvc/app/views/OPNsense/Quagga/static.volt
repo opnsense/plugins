@@ -71,12 +71,5 @@
         {{ partial('layout_partials/base_bootgrid_table', formGridEditSTATICRoute)}}
     </div>
 </div>
-{{ partial(
-    'layout_partials/base_apply_button',
-    {
-        'data_endpoint': '/api/quagga/service/reconfigure',
-        'data_service_widget': 'quagga',
-        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
-    }
-) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditSTATICRoute,'id':formGridEditSTATICRoute['edit_dialog_id'],'label':lang._('Edit Routes')])}}

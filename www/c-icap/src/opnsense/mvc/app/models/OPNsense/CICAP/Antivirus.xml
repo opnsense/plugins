@@ -11,15 +11,15 @@
             <Default>TEXT,DATA,EXECUTABLE,ARCHIVE,GIF,JPEG,MSOFFICE</Default>
             <Multiple>Y</Multiple>
             <Required>Y</Required>
-            <OptionValues>
-                <TEXT>Text files</TEXT>
-                <DATA>Binary files</DATA>
-                <EXECUTABLE>Executables</EXECUTABLE>
-                <ARCHIVE>Archives</ARCHIVE>
-                <GIF>GIF animations</GIF>
-                <JPEG>JPEG pictures</JPEG>
-                <MSOFFICE>Microsoft office files</MSOFFICE>
-            </OptionValues>
+                <OptionValues>
+                    <TEXT>Text files</TEXT>
+                    <DATA>Binary files</DATA>
+                    <EXECUTABLE>Executables</EXECUTABLE>
+                    <ARCHIVE>Archives</ARCHIVE>
+                    <GIF>GIF animations</GIF>
+                    <JPEG>JPEG pictures</JPEG>
+                    <MSOFFICE>Microsoft office files</MSOFFICE>
+                </OptionValues>
         </scanfiletypes>
         <sendpercentdata type="IntegerField">
             <Default>5</Default>
@@ -41,5 +41,5 @@
             <Default>5M</Default>
             <Required>Y</Required>
         </maxobjectsize>
-    </items>
+	</items>
 </model>

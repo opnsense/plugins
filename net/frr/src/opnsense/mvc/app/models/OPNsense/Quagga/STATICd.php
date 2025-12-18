@@ -48,7 +48,7 @@ class STATICd extends BaseModel
                 continue;
             }
             $key = $route->__reference;
-            if (!$route->network->isEmpty() && !$route->gateway->isEmpty()) {
+            if (!empty((string)$route->network) && !empty((string)$route->gateway)) {
                 $net_proto = str_contains($route->network, ':') ? 'inet6' : 'inet';
                 $gw_proto = str_contains($route->gateway, ':') ? 'inet6' : 'inet';
                 if ($net_proto != $gw_proto) {
@@ -57,10 +57,10 @@ class STATICd extends BaseModel
                     );
                 }
             }
-            if ($route->gateway->isEmpty() && $route->interfacename->isEmpty()) {
+            if (empty((string)$route->gateway) && empty((string)$route->interfacename)) {
                 $messages->appendMessage(
                     new Message(
-                        gettext("Either an interface or a gateway is required."),
+                        gettext("When no interface is provided, at least a gateway must be offered"),
                         $key . ".gateway"
                     )
                 );

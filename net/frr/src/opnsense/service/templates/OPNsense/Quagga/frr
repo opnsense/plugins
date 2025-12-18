@@ -18,12 +18,20 @@ frr_carp_demote="{%
     if not helpers.empty('OPNsense.quagga.ospf.carp_demote') %} ospfd{% endif %}{%
     if not helpers.empty('OPNsense.quagga.ospf6.carp_demote') %} ospf6d{% endif
 %}"
-watchfrr_flags="-r /usr/local/opnsense/scripts/frr/frr_wrapper.shbBrestartbB%s -s /usr/local/opnsense/scripts/frr/frr_wrapper.shbBstartbB%s -k /usr/sbin/servicebBfrrbBstopbB%s -b bB -t 30"
+start_postcmd='
+	# XXX rc.d/frr declares its own post command we need to hook first
+	start_postcmd
+	# XXX rc.d/frr iterates through daemons so we need to hook last one
+	if [ "${frr_daemons}" != "${frr_daemons% ${name}}" ]; then
+		echo "Starting CARP event handler now"
+		/usr/local/opnsense/scripts/frr/carp_event_handler
+	fi
+'
 {% if OPNsense.quagga.general.enablesnmp == '1' %}
 zebra_flags="${zebra_flags} -M snmp"
 bgpd_flags="${bgpd_flags} -M snmp"
-ospfd_flags="${ospfd_flags} -M snmp"
-ospf6d_flags="${ospf6d_flags} -M snmp"
+ospf_flags="${ospf_flags} -M snmp"
+ospf6_flags="${ospf6_flags} -M snmp"
 {% endif %}
 {% else %}
 frr_enable="NO"

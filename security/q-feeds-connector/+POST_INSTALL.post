@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/local/sbin/pluginctl -s cron restart

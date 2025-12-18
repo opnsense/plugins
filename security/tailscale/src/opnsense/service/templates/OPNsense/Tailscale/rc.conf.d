@@ -7,7 +7,6 @@ tailscaled_enable="YES"
 # see - https://github.com/tailscale/tailscale/issues/5573#issuecomment-1584695981
 tailscaled_env="TS_DEBUG_NETSTACK_SUBNETS=0"
 {%    endif %}
-tailscaled_up_args_ext=
 {%    if helpers.exists('OPNsense.tailscale.settings.listenPort') %}
 tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    endif %}
@@ -39,26 +38,23 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
 {%      do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
 {%    endif %}
-{#    loop through subnets to build list #}
-{%      if helpers.exists('OPNsense.tailscale.settings.subnets.subnet4') %}
-{%        set subnets = [] %}
-{%        for subnet_list in helpers.toList('OPNsense.tailscale.settings.subnets.subnet4') %}
-{%          do subnets.append(subnet_list.subnet) %}
-{%        endfor %}
-{%        set subnetString = subnets|join(',') %}
-{%        do up_args.append("--advertise-routes=" + subnetString) %}
-{%      else %}
-{%        do up_args.append("--advertise-routes=") %}
-{%      endif %}
-{%      if helpers.exists('OPNsense.tailscale.authentication.preAuthKey') %}
-# Conditionally add auth-key only if not already authenticated
-if [ -f /var/db/tailscale/tailscaled.state ]; then
-	if ! grep -q '"_current-profile"' /var/db/tailscale/tailscaled.state; then
-		tailscaled_up_args_ext="--auth-key={{ OPNsense.tailscale.authentication.preAuthKey }}"
-	fi
-fi
-{%      endif %}
-tailscaled_up_args="{{ up_args|join(' ') }} ${tailscaled_up_args_ext}"
+{%    if helpers.exists('OPNsense.tailscale.authentication.preAuthKey') %}
+{%      do up_args.append("--auth-key=" + OPNsense.tailscale.authentication.preAuthKey) %}
+{%    else %}
+{%      do up_args.append("--auth-key=non-specified") %}
+{%    endif %}
+{#  loop through subnets to build list #}
+{%    if helpers.exists('OPNsense.tailscale.settings.subnets.subnet4') %}
+{%      set subnets = [] %}
+{%      for subnet_list in helpers.toList('OPNsense.tailscale.settings.subnets.subnet4') %}
+{%        do subnets.append(subnet_list.subnet) %}
+{%      endfor %}
+{%      set subnetString = subnets|join(',') %}
+{%      do up_args.append("--advertise-routes=" + subnetString) %}
+{%    else %}
+{%      do up_args.append("--advertise-routes=") %}
+{%    endif %}
+tailscaled_up_args="{{ up_args|join(' ') }}"
 {%  else %}
-tailscaled_enable="NO"
+tailscaled_enable=NO
 {%  endif %}

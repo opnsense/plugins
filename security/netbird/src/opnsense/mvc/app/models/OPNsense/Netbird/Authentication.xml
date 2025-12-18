@@ -8,7 +8,7 @@
             <Default>https://api.netbird.io:443</Default>
         </managementUrl>
         <setupKey type="TextField">
-            <!-- XXX fails migration for obvious reasons <Required>Y</Required> -->
+            <Required>Y</Required>
             <Mask>/^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i</Mask>
             <ValidationMessage>Please specify a valid setup key.</ValidationMessage>
         </setupKey>

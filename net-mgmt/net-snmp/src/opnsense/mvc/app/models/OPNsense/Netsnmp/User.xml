@@ -10,19 +10,22 @@
                     <Required>Y</Required>
                 </enabled>
                 <username type="TextField">
+                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z._\-]){1,64}$/u</Mask>
-                    <ValidationMessage>Should be a string between 1 and 64 characters. Allowed characters are 0-9a-zA-Z_-.</ValidationMessage>
+                    <ValidationMessage>Should be a string between 1 and 64 characters. Allowed characters are 0-9a-zA-Z._-</ValidationMessage>
                 </username>
                 <password type="TextField">
+                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</Mask>
-                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z_-!$%/()+#=.</ValidationMessage>
+                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z._-!$%/()+#=</ValidationMessage>
                 </password>
                 <enckey type="TextField">
+                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){8,64}$/u</Mask>
-                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z_-!$%/()+#=.</ValidationMessage>
+                    <ValidationMessage>Should be a string between 8 and 64 characters. Allowed characters are 0-9a-zA-Z._-!$%/()+#=</ValidationMessage>
                 </enckey>
                 <readwrite type="BooleanField">
                     <Default>0</Default>

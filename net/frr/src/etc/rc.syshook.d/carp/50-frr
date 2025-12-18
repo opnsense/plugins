@@ -49,14 +49,14 @@ if (frr_carp_enabled()) {
 
     switch ($type) {
         case 'MASTER':
-            mwexecfm('/usr/local/etc/rc.d/frr start');
+            shell_exec('/usr/local/etc/rc.d/frr start');
             break;
         case 'BACKUP':
-            mwexecfm('/usr/local/etc/rc.d/frr stop');
+            shell_exec('/usr/local/etc/rc.d/frr stop');
             break;
     }
 } elseif (frr_enabled()) {
     // XXX: when not toggling between active and disabled, pass event so underlaying protocols can
     //      determine which actions to perform when reaching a certain state.
-    mwexecfm('/usr/local/opnsense/scripts/frr/carp_event_handler');
+    shell_exec('/usr/local/opnsense/scripts/frr/carp_event_handler');
 }

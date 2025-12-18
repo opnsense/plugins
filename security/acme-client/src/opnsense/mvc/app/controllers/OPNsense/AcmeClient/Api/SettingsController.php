@@ -77,7 +77,7 @@ class SettingsController extends ApiMutableModelControllerBase
                     } else {
                         // Cron job NOT found. This should not happen, try to fix
                         // this automatically.
-                        $this->getLogger()->error("AcmeClient: cron job with stored UUID not found in system config: {$cron_uuid}");
+                        $this->getLogger()->error("AcmeClient: cron job with stored UUID not found in system config: ${cron_uuid}");
 
                         // Search for existing AcmeClient cron job.
                         foreach ((new Cron())->getNodeByReference('jobs.job')->iterateItems() as $cron) {
@@ -86,7 +86,7 @@ class SettingsController extends ApiMutableModelControllerBase
                             if ($_origin == 'AcmeClient') {
                                 // Found a matching AcmeClient cron job.
                                 $cron_found = 1;
-                                $this->getLogger()->notice("AcmeClient: found existing AcmeClient cron job, fixing inconsistency in config (new UUID: {$_uuid})");
+                                $this->getLogger()->notice("AcmeClient: found existing AcmeClient cron job, fixing inconsistency in config (new UUID: ${_uuid})");
                                 // Update UUID in Acme Client config.
                                 $mdlAcme->settings->UpdateCron = $_uuid;
                                 // Save updated configuration.

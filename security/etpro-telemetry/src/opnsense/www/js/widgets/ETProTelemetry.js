@@ -41,7 +41,7 @@ export default class ETProTelemetry extends BaseTableWidget {
 
     async onWidgetTick() {
         const data = await this.ajaxCall('/api/diagnostics/proofpoint_et/status');
-        if (data['sensor_status'].length) {
+        if (data['sensor_status'].toLowerCase() == 'active') {
             $('#etpro_sensor_status').text(data['sensor_status']);
             $('#etpro_event_received').text(data['event_received']);
             $('#etpro_last_rule_download').text(data['last_rule_download']);

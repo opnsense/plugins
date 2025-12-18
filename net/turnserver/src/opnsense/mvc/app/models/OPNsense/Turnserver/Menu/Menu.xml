@@ -1,8 +1,5 @@
 <menu>
     <Services>
-        <Turnserver cssClass="fa fa-comment-o fa-fw">
-            <Settings order="10" url="/ui/turnserver"/>
-            <Log VisibleName="Log File" order="40" url="/ui/diagnostics/log/core/turnserver"/>
-        </Turnserver>
+        <Turnserver cssClass="fa fa-comment-o fa-fw" url="/ui/turnserver"/>
     </Services>
 </menu>

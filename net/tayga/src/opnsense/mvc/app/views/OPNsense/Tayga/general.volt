@@ -26,23 +26,13 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-
-<!-- Navigation bar -->
-<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
-    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#staticmappings">{{ lang._('Static Mappings') }}</a></li>
-</ul>
-
-<div class="tab-content content-box">
-    <div class="tab-pane fade in active" id="general" style="padding-bottom: 1.5em;">
-        {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    </div>
-    <div id="staticmappings" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridStaticMapping) }}
+<div class="content-box" style="padding-bottom: 1.5em;">
+    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+    <div class="col-md-12">
+        <hr />
+        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
     </div>
 </div>
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditStaticMapping,'id': formGridStaticMapping['edit_dialog_id'], 'label':lang._('Edit mapping')])}}
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/tayga/service/reconfigure', 'data_service_widget': 'tayga'}) }}
 
 <script>
     $( document ).ready(function() {
@@ -51,22 +41,21 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
         });
+        ajaxCall(url="/api/tayga/service/status", sendData={}, callback=function(data,status) {
+            updateServiceStatusUI(data['status']);
+        });
 
-        $("#{{formGridStaticMapping['table_id']}}").UIBootgrid({
-            'search': '/api/tayga/mapping/search_staticmapping',
-            'get': '/api/tayga/mapping/get_staticmapping/',
-            'set': '/api/tayga/mapping/set_staticmapping/',
-            'add': '/api/tayga/mapping/add_staticmapping/',
-            'del': '/api/tayga/mapping/del_staticmapping/',
-            'toggle': '/api/tayga/mapping/toggle_staticmapping/'
+        // link save button to API set action
+        $("#saveAct").click(function(){
+            saveFormToEndpoint(url="/api/tayga/general/set", formid='frm_general_settings',callback_ok=function(){
+                    $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+                    ajaxCall(url="/api/tayga/service/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall(url="/api/tayga/service/status", sendData={}, callback=function(data,status) {
+                                    updateServiceStatusUI(data['status']);
+                            });
+                            $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+                    });
+            });
         });
-        $("#reconfigureAct").SimpleActionButton({
-            onPreAction: function() {
-                const dfObj = $.Deferred();
-                saveFormToEndpoint("/api/tayga/general/set", 'frm_general_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
-                return dfObj;
-            }
-        });
-        updateServiceControlUI('tayga');
     });
 </script>

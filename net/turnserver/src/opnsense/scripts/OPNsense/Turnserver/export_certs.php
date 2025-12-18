@@ -59,12 +59,3 @@ if (isset($configObj->OPNsense->turnserver->settings->TlsCertificate) and !empty
         }
     }
 }
-
-# Purge obsolete log files.
-# TODO: Should be removed in plugin version 2.0.
-$log_files = glob('/var/log/turn_*.log');
-foreach ($log_files as $file) {
-    if (is_file($file)) {
-        unlink($file);
-    }
-}

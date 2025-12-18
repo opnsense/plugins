@@ -87,7 +87,9 @@
     /* special  characters */
     --link: #FA6121; /* OPNsense text login and links */
     --linkhover: #E04605; /* OPNsense text login and links hover */
-    /* accents */
+    --colorcheckbox: #28A839; /* background color checkbox */
+    --colorradio: #1066CC; /* background color radio button */
+   /* accents */
     --primary: #1066CC; /* primary accent */
     --primaryhover: #0C4E9C; /* primary accent hover */
     --info: #10A6D8; /* info accent */
@@ -98,6 +100,23 @@
     --warninghover: #D97B03; /* warning accent hover */
     --danger: #FC2529; /* danger accent */
     --dangerhover: #EC0308; /* danger accent hover */
+    /* alert messages */
+    /* alert success */
+    --alertsuccessfore: #000000;
+    --alertsuccessback: #D4FAD9;
+    --alertsuccessborder: #28A839;
+    /* alert info */
+    --alertinfofore: #000000;
+    --alertinfoback: #D4F1FA;
+    --alertinfoborder: #10A6D8;
+    /* alert warning */
+    --alertwarningfore: #000000;
+    --alertwarningback: #F2E3CE;
+    --alertwarningborder: #FC9510;
+    /* alert danger */
+    --alertdangerfore: #000000;
+    --alertdangerback: #F2CECE;
+    --alertdangerborder: #FC2529;
     /* buttons (complete (independent) */
     /* unselected */
     --btnfore: #454545; /* textcolor */

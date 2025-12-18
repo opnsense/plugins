@@ -212,10 +212,6 @@
                 </basicauth>
                 <description type="DescriptionField"/>
                 <DnsChallenge type="BooleanField"/>
-                <DnsChallengeOverrideDomain type="HostnameField">
-                    <IpAllowed>N</IpAllowed>
-                    <ValidationMessage>Please enter a valid domain name.</ValidationMessage>
-                </DnsChallengeOverrideDomain>
                 <CustomCertificate type="CertificateField">
                     <BlankDesc>Auto HTTPS</BlankDesc>
                 </CustomCertificate>

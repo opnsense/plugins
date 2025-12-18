@@ -23,24 +23,13 @@
         </hostname>
         <listenport type="TextField"/>
         <listenip type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </listenip>
         <sourceip type="NetworkField"/>
-        <listenbacklog type="IntegerField">
-            <MinimumValue>0</MinimumValue>
-            <MaximumValue>2147483647</MaximumValue>
-        </listenbacklog>
         <startpollers type="TextField"/>
         <startipmipollers type="IntegerField"/>
         <startpollersunreachable type="IntegerField"/>
-        <startagentpollers type="IntegerField">
-            <MinimumValue>0</MinimumValue>
-            <MaximumValue>1000</MaximumValue>
-        </startagentpollers>
-        <maxconcurrentchecksperpoller type="IntegerField">
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>1000</MaximumValue>
-        </maxconcurrentchecksperpoller>
         <starttrappers type="IntegerField"/>
         <startpingers type="IntegerField"/>
         <startdiscoverers type="IntegerField"/>
@@ -58,23 +47,9 @@
         <configfrequency type="IntegerField"/>
         <datasenderfrequency type="IntegerField"/>
         <statsip type="NetworkField">
+            <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </statsip>
-        <vmwarecachesize type="TextField">
-            <Mask>/^\d+[KMG]$/</Mask>
-        </vmwarecachesize>
-        <vmwarefrequency type="IntegerField">
-            <MinimumValue>10</MinimumValue>
-            <MaximumValue>86400</MaximumValue>
-        </vmwarefrequency>
-        <vmwareperffrequency type="IntegerField">
-            <MinimumValue>10</MinimumValue>
-            <MaximumValue>86400</MaximumValue>
-        </vmwareperffrequency>
-        <vmwaretimeout type="IntegerField">
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>300</MaximumValue>
-        </vmwaretimeout>
         <syslogEnable type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>

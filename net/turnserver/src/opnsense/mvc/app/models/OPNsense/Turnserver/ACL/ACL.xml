@@ -4,8 +4,6 @@
         <patterns>
             <pattern>ui/turnserver</pattern>
             <pattern>api/turnserver/*</pattern>
-            <pattern>ui/diagnostics/log/core/turnserver/*</pattern>
-            <pattern>api/diagnostics/log/core/turnserver/*</pattern>
         </patterns>
     </page-services-turnserver>
 </acl>

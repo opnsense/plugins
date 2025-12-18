@@ -4,16 +4,16 @@
     <description>OPNsense sftp Backup Settings</description>
     <items>
         <enabled type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-            <Constraints>
-                <check001>
-                    <reference>privkey.check001</reference>
-                </check001>
-                <check002>
-                    <reference>url.check001</reference>
-                </check002>
-            </Constraints>
+          <Default>0</Default>
+          <Required>Y</Required>
+          <Constraints>
+              <check001>
+                  <reference>privkey.check001</reference>
+              </check001>
+              <check002>
+                  <reference>url.check001</reference>
+              </check002>
+          </Constraints>
         </enabled>
         <url type="TextField">
             <Required>N</Required>
@@ -49,8 +49,8 @@
             <MinimumValue>0</MinimumValue>
         </backupcount>
         <prefixhostname type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
+          <Default>0</Default>
+          <Required>N</Required>
         </prefixhostname>
     </items>
 </model>

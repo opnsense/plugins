@@ -18,7 +18,7 @@
         <server type="TextField">
             <Required>N</Required>
         </server>
-        <serverport type="TextField">
+      <serverport type="TextField">
             <Required>N</Required>
         </serverport>
         <ldapcert type="CertificateField">

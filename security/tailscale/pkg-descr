@@ -6,10 +6,6 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
-1.3
-
-* modify RC script to prevent re-using auth key if already authenticated
-
 1.2
 
 * add option to allow Tailscale to manage SSH connections

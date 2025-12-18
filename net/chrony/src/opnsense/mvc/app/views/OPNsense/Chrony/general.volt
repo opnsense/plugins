@@ -62,7 +62,7 @@
 // Put API call into a function, needed for auto-refresh
 function update_chronysources() {
     ajaxCall(url="/api/chrony/service/chronysources", sendData={}, callback=function(data,status) {
-        $("#listchronysources").text($('<div>').html(data['response']).text());
+        $("#listchronysources").text(data['response']);
     });
 }
 

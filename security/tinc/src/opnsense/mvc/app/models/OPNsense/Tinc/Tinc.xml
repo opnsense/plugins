@@ -76,17 +76,17 @@
                     <Default>aes-256-cbc</Default>
                 </cipher>
                 <mode type="OptionField">
-                    <Required>Y</Required>
-                    <Default>router</Default>
-                    <OptionValues>
-                        <router>router</router>
-                        <switch>switch</switch>
-                    </OptionValues>
-                    <Constraints>
-                        <check001>
-                            <reference>subnet.check001</reference>
-                        </check001>
-                    </Constraints>
+                  <Required>Y</Required>
+                  <Default>router</Default>
+                  <OptionValues>
+                      <router>router</router>
+                      <switch>switch</switch>
+                  </OptionValues>
+                  <Constraints>
+                      <check001>
+                          <reference>subnet.check001</reference>
+                      </check001>
+                  </Constraints>
                 </mode>
                 <PMTUDiscovery type="BooleanField">
                     <Default>1</Default>

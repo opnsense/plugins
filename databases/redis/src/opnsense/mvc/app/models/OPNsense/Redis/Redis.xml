@@ -1,108 +1,108 @@
 <model>
-    <mount>//OPNsense/redis</mount>
-    <description>Redis DB</description>
-    <items>
-        <general>
-            <enabled type="BooleanField">
-                <Default>0</Default>
-                <Required>Y</Required>
-            </enabled>
-            <listen type="InterfaceField">
-                <Required>N</Required>
-                <Multiple>Y</Multiple>
-            </listen>
-            <protected_mode type="BooleanField">
-                <Default>1</Default>
-                <Required>Y</Required>
-            </protected_mode>
-            <port type="IntegerField">
-                <MinimumValue>1</MinimumValue>
-                <MaximumValue>65536</MaximumValue>
-                <Required>N</Required>
-                <Default>6379</Default>
-                <ValidationMessage>This must be a valid port number.</ValidationMessage>
-            </port>
-            <log_level type="OptionField">
-                <Required>Y</Required>
-                <Default>warning</Default>
-                <OptionValues>
-                    <debug>Debug</debug>
-                    <verbose>Verbose</verbose>
-                    <notice>Notice</notice>
-                    <warning>Warning</warning>
-                </OptionValues>
-            </log_level>
-            <syslog_enabled type="BooleanField">
-                <Default>0</Default>
-                <Required>Y</Required>
-            </syslog_enabled>
-            <syslog_facility type="OptionField">
-                <Required>Y</Required>
-                <Default>LOCAL0</Default>
-                <OptionValues>
-                    <USER>USER</USER>
-                    <LOCAL0>LOCAL0</LOCAL0>
-                    <LOCAL1>LOCAL1</LOCAL1>
-                    <LOCAL2>LOCAL2</LOCAL2>
-                    <LOCAL3>LOCAL3</LOCAL3>
-                    <LOCAL4>LOCAL4</LOCAL4>
-                    <LOCAL5>LOCAL5</LOCAL5>
-                    <LOCAL6>LOCAL6</LOCAL6>
-                    <LOCAL7>LOCAL7</LOCAL7>
-                </OptionValues>
-            </syslog_facility>
-            <databases type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>Y</Required>
-                <Default>16</Default>
-            </databases>
-        </general>
-        <security>
-            <password type="TextField">
-                <Required>N</Required>
-            </password>
-            <disable_commands type="CSVListField">
+  <mount>//OPNsense/redis</mount>
+  <description>Redis DB</description>
+  <items>
+    <general>
+      <enabled type="BooleanField">
+        <Default>0</Default>
+        <Required>Y</Required>
+      </enabled>
+      <listen type="InterfaceField">
+        <Required>N</Required>
+        <Multiple>Y</Multiple>
+      </listen>
+      <protected_mode type="BooleanField">
+        <Default>1</Default>
+        <Required>Y</Required>
+      </protected_mode>
+      <port type="IntegerField">
+        <MinimumValue>1</MinimumValue>
+        <MaximumValue>65536</MaximumValue>
+        <Required>N</Required>
+        <Default>6379</Default>
+        <ValidationMessage>This must be a valid port number.</ValidationMessage>
+      </port>
+      <log_level type="OptionField">
+        <Required>Y</Required>
+        <Default>warning</Default>
+        <OptionValues>
+          <debug>Debug</debug>
+          <verbose>Verbose</verbose>
+          <notice>Notice</notice>
+          <warning>Warning</warning>
+        </OptionValues>
+      </log_level>
+      <syslog_enabled type="BooleanField">
+        <Default>0</Default>
+        <Required>Y</Required>
+      </syslog_enabled>
+      <syslog_facility type="OptionField">
+        <Required>Y</Required>
+        <Default>LOCAL0</Default>
+        <OptionValues>
+          <USER>USER</USER>
+          <LOCAL0>LOCAL0</LOCAL0>
+          <LOCAL1>LOCAL1</LOCAL1>
+          <LOCAL2>LOCAL2</LOCAL2>
+          <LOCAL3>LOCAL3</LOCAL3>
+          <LOCAL4>LOCAL4</LOCAL4>
+          <LOCAL5>LOCAL5</LOCAL5>
+          <LOCAL6>LOCAL6</LOCAL6>
+          <LOCAL7>LOCAL7</LOCAL7>
+        </OptionValues>
+      </syslog_facility>
+      <databases type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>Y</Required>
+        <Default>16</Default>
+      </databases>
+    </general>
+    <security>
+      <password type="TextField">
+        <Required>N</Required>
+      </password>
+      <disable_commands type="CSVListField">
       </disable_commands>
-        </security>
-        <limits>
-            <maxclients type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>N</Required>
-                <Default>10000</Default>
-            </maxclients>
-            <maxmemory type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>N</Required>
-            </maxmemory>
-            <maxmemory_policy type="OptionField">
-                <Required>Y</Required>
-                <Default>noeviction</Default>
-                <OptionValues>
-                    <noeviction>noeviction</noeviction>
-                    <volatile-ttl>volatile-ttl</volatile-ttl>
-                    <allkeys-random>allkeys-random</allkeys-random>
-                    <volatile-random>volatile-random</volatile-random>
-                    <allkeys-lru>allkeys-lru</allkeys-lru>
-                    <volatile-lru>volatile-lru</volatile-lru>
-                </OptionValues>
-            </maxmemory_policy>
-            <maxmemory_samples type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>N</Required>
-                <Default>5</Default>
-            </maxmemory_samples>
-        </limits>
-        <slowlog>
-            <slower_than type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>N</Required>
-                <Default>10000</Default>
-            </slower_than>
-            <max_len type="IntegerField">
-                <MinimumValue>0</MinimumValue>
-                <Required>N</Required>
-                <Default>128</Default>
-            </max_len>
-        </slowlog>
-    </items>
+    </security>
+    <limits>
+      <maxclients type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+        <Default>10000</Default>
+      </maxclients>
+      <maxmemory type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+      </maxmemory>
+      <maxmemory_policy type="OptionField">
+        <Required>Y</Required>
+        <Default>noeviction</Default>
+        <OptionValues>
+          <noeviction>noeviction</noeviction>
+          <volatile-ttl>volatile-ttl</volatile-ttl>
+          <allkeys-random>allkeys-random</allkeys-random>
+          <volatile-random>volatile-random</volatile-random>
+          <allkeys-lru>allkeys-lru</allkeys-lru>
+          <volatile-lru>volatile-lru</volatile-lru>
+        </OptionValues>
+      </maxmemory_policy>
+      <maxmemory_samples type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+        <Default>5</Default>
+      </maxmemory_samples>
+    </limits>
+    <slowlog>
+      <slower_than type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+        <Default>10000</Default>
+      </slower_than>
+      <max_len type="IntegerField">
+        <MinimumValue>0</MinimumValue>
+        <Required>N</Required>
+        <Default>128</Default>
+      </max_len>
+    </slowlog>
+  </items>
 </model>

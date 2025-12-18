@@ -34,7 +34,5 @@ class GeneralController extends \OPNsense\Base\IndexController
     {
         $this->view->generalForm = $this->getForm("general");
         $this->view->pick('OPNsense/Tayga/general');
-        $this->view->formDialogEditStaticMapping = $this->getForm("dialogEditStaticMapping");
-        $this->view->formGridStaticMapping = $this->getFormGrid("dialogEditStaticMapping");
     }
 }

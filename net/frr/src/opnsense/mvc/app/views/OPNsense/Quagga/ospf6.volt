@@ -154,14 +154,7 @@
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRouteMaps)}}
     </div>
 </div>
-{{ partial(
-    'layout_partials/base_apply_button',
-    {
-        'data_endpoint': '/api/quagga/service/reconfigure',
-        'data_service_widget': 'quagga',
-        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
-    }
-) }}
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/quagga/service/reconfigure', 'data_service_widget': 'quagga'}) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}

@@ -42,9 +42,8 @@ emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
 ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-advanced -- Theme based on AdvancedTomato GUI
+misc/theme-advanced -- OPNsense theme based on AdvancedTomato GUI
 misc/theme-cicada -- The cicada theme - dark grey onyx
-misc/theme-flexcolor -- Theme with 3 different color schemes: black as default, light and dark-light
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
@@ -54,9 +53,8 @@ net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
-net/igmp-proxy -- IGMP-Proxy Service (not maintained)
+net/igmp-proxy -- IGMP-Proxy Service
 net/mdns-repeater -- Proxy multicast DNS between networks
-net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
 net/ndproxy -- Neighbor Discovery Proxy
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
@@ -68,10 +66,10 @@ net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
 net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
-net/upnp -- UPnP IGD & PCP/NAT-PMP Service
+net/upnp -- Universal Plug and Play (UPnP IGD & PCP/NAT-PMP) Service
 net/vnstat -- Network traffic monitor
-net/wol -- Wake on LAN Service (not maintained)
-net/zerotier -- Virtual Networks That Just Work (not maintained)
+net/wol -- Wake on LAN Service
+net/zerotier -- Virtual Networks That Just Work
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
@@ -89,10 +87,9 @@ security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (ne
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
-security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
+security/netbird -- Peer-to-peer VPN that seamlessly connects your devices (development only)
 security/openconnect -- OpenConnect Client
 security/openvpn-legacy -- OpenVPN legacy support
-security/q-feeds-connector -- Connector for Q-Feeds threat intel
 security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
 security/tailscale -- VPN mesh securely connecting clients using WireGuard
@@ -104,11 +101,11 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
-sysutils/dmidecode -- Display hardware information on the dashboard (not maintained)
+sysutils/dmidecode -- Display hardware information on the dashboard
 sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud
@@ -116,18 +113,18 @@ sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
 sysutils/sftp-backup -- Backup configurations using SFTP
-sysutils/smart -- SMART tools (not maintained)
+sysutils/smart -- SMART tools
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
 vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
-www/OPNProxy -- OPNsense proxy additions (not maintained)
+www/OPNProxy -- OPNsense proxy additions
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
-www/squid -- Squid is a caching proxy for the web (not maintained)
-www/web-proxy-sso -- Kerberos authentication module (not maintained)
+www/squid -- Squid is a caching proxy for the web
+www/web-proxy-sso -- Kerberos authentication module
 ```
 
 A brief description of how to use the plugins repository

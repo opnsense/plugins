@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/netbird/settings</mount>
     <description>NetBird settings</description>
-    <version>1.1.0</version>
+    <version>1.0.0</version>
     <items>
         <general>
             <enable type="BooleanField">
@@ -62,19 +62,5 @@
                 <Required>Y</Required>
             </rosenpassPermissive>
         </postquantum>
-        <syslog>
-            <logLevel type="OptionField">
-                <Required>Y</Required>
-                <Default>info</Default>
-                <OptionValues>
-                    <fatal>fatal</fatal>
-                    <error>error</error>
-                    <warn>warn</warn>
-                    <info>info</info>
-                    <debug>debug</debug>
-                    <trace>trace</trace>
-                </OptionValues>
-            </logLevel>
-        </syslog>
     </items>
 </model>

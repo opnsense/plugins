@@ -66,7 +66,6 @@ function init_grids() {
         'ipacl',
         'limit_zone',
         'cache_path',
-        'proxy_cache_valid',
         'limit_request_connection',
         'snifwd',
         'errorpage',

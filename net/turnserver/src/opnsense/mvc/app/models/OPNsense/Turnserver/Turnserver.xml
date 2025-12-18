@@ -10,6 +10,7 @@
             </Enabled>
             <ListenIP type="NetworkField">
                 <Default>127.0.0.1</Default>
+                <FieldSeparator>,</FieldSeparator>
                 <AsList>Y</AsList>
                 <Required>Y</Required>
             </ListenIP>
@@ -29,7 +30,10 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </TlsEnabled>
-            <TlsCertificate type="CertificateField"/>
+            <TlsCertificate type="CertificateField">
+                <Required>N</Required>
+                <ValidationMessage>Please select a valid certificate from the list.</ValidationMessage>
+            </TlsCertificate>
             <TlsPort type="PortField">
                 <Default>5349</Default>
                 <Required>Y</Required>
@@ -39,10 +43,12 @@
                 <Required>Y</Required>
             </UseAuthSecret>
             <StaticAuthSecret type="TextField">
+                <Required>N</Required>
                 <Mask>/^.{16,128}$/u</Mask>
                 <ValidationMessage>Should be a string between 16 and 128 characters.</ValidationMessage>
             </StaticAuthSecret>
             <Realm type="TextField">
+                <Required>N</Required>
                 <Mask>/^.{1,128}$/u</Mask>
                 <ValidationMessage>Should be a string between 1 and 128 characters.</ValidationMessage>
             </Realm>
