@@ -87,6 +87,8 @@
     /* special  characters */
     --link: #FA6121; /* OPNsense text login and links */
     --linkhover: #E04605; /* OPNsense text login and links hover */
+    --colorcheckbox: #39E63C; /* background color checkbox */
+    --colorradio: #0089D0; /* background color radio button */
     /* accents */
     --primary: #FA6121; /* primary accent */
     --primaryhover: #E04605; /* primary accent hover */
@@ -98,6 +100,23 @@
     --warninghover: #B87A00; /* warning accent hover */
     --danger: #DB393D; /* danger accent */
     --dangerhover: #BE2326; /* danger accent hover */
+    /* alert messages */
+    /* alert success */
+    --alertsuccessfore: #00E604;
+    --alertsuccessback: #181E25;
+    --alertsuccessborder: #F2F7FD;
+    /* alert info */
+    --alertinfofore: #0099E6;
+    --alertinfoback: #181E25;
+    --alertinfoborder: #F2F7FD;
+    /* alert warning */
+    --alertwarningfore: #E69900;
+    --alertwarningback: #181E25;
+    --alertwarningborder: #F2F7FD;
+    /* alert danger */
+    --alertdangerfore: #E60004;
+    --alertdangerback: #181E25;
+    --alertdangerborder: #F2F7FD;
     /* buttons (complete (independent) */
     /* unselected */
     --btnfore: #181E25; /* textcolor */
@@ -355,12 +374,12 @@
     --unberrorfore: rgba(162,17,42,1); /* unbound textcolor error */
     --unbshadow: rgba(40,50,62,.8); /* unbound overview circle shadow */
     /* dashboard, (independent, despite the buttons on the top ) */
-    --dbfore: #181E25; /* textcolor dashboard */
-    --dbback: #F2F7FD; /* background color dashboard */
-    --dbbackhover: #F2F7FD; /* background color dashboard */
-    --dbborder: rgba(24,30,37,0.15); /* bordercolor dashboard */
+    --dbfore: #F2F7FD; /* textcolor dashboard */
+    --dbback: #181E25; /* background color dashboard */
+    --dbbackhover: #181E25; /* background color dashboard */
+    --dbborder: rgba(204,204,204,0.35); /* bordercolor dashboard */
     --dbchartfore: rgba(24,30,37,1); /* textcolor dashboard charts */
-    --dbchartborder: rgba(24,30,37,1); /* bordercolor dashboard charts*/
+    --dbchartborder: rgba(204,204,204,1); /* bordercolor dashboard charts*/
     --dbtoolfore: #101720; /* textcolor tooltip dashboard */
     --dbtoolback: rgba(241, 241, 241, 0.9); /*background color tooltip */
     /* graph */
