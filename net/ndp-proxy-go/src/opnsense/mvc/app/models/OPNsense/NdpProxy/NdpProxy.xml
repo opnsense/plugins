@@ -33,6 +33,9 @@
             <route_qps type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </route_qps>
+            <pf_qps type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </pf_qps>
             <pcap_timeout type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </pcap_timeout>

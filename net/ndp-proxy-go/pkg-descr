@@ -6,6 +6,10 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
+1.3
+
+* Add ratelimit for pfctl operations
+
 1.2
 
 * Add firewall alias support
