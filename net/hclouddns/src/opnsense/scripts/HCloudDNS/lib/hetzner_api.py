@@ -27,9 +27,12 @@
 """
 import hashlib
 import syslog
+import time
 import requests
 
 TIMEOUT = 15
+ACTION_POLL_INTERVAL = 0.5  # seconds between action status polls
+ACTION_MAX_WAIT = 30  # maximum seconds to wait for action
 
 
 class HetznerAPIError(Exception):
@@ -87,6 +90,42 @@ class HetznerCloudAPI:
             raise HetznerAPIError("Failed to connect to Hetzner Cloud API")
         except requests.exceptions.RequestException as e:
             raise HetznerAPIError(f"API request failed: {str(e)}")
+
+    def _wait_for_action(self, action_id):
+        """
+        Wait for an async action to complete.
+        Returns tuple (success: bool, message: str)
+        """
+        start_time = time.time()
+
+        while time.time() - start_time < ACTION_MAX_WAIT:
+            try:
+                response = self._request('GET', f'/actions/{action_id}')
+
+                if response.status_code != 200:
+                    return False, f"Failed to get action status: HTTP {response.status_code}"
+
+                data = response.json()
+                action = data.get('action', {})
+                status = action.get('status', '')
+
+                if status == 'success':
+                    return True, "Action completed successfully"
+                elif status == 'error':
+                    error = action.get('error', {})
+                    error_msg = error.get('message', 'Unknown error')
+                    return False, f"Action failed: {error_msg}"
+                elif status in ['running', 'pending']:
+                    time.sleep(ACTION_POLL_INTERVAL)
+                    continue
+                else:
+                    # Unknown status, assume success for backward compatibility
+                    return True, f"Action status: {status}"
+
+            except HetznerAPIError as e:
+                return False, f"Error waiting for action: {str(e)}"
+
+        return False, f"Action timed out after {ACTION_MAX_WAIT} seconds"
 
     def validate_token(self):
         """
@@ -225,7 +264,6 @@ class HetznerCloudAPI:
 
                 # Check if there are more pages
                 meta = data.get('meta', {}).get('pagination', {})
-                total_entries = meta.get('total_entries', len(rrsets))
                 last_page = meta.get('last_page', 1)
 
                 if self.verbose:
@@ -297,11 +335,11 @@ class HetznerCloudAPI:
 
     def update_record(self, zone_id, name, record_type, value, ttl=300):
         """
-        Update existing record with new value.
+        Update existing record with new value using rrset-actions endpoint.
         Returns tuple (success: bool, message: str)
 
-        NOTE: Hetzner Cloud API has a bug where PUT returns 200 but doesn't update.
-        Workaround: DELETE old record, then POST new record.
+        Uses the set_records action endpoint which properly updates RRsets.
+        Actions are async and will be waited upon for completion.
         """
         try:
             # Check if record exists
@@ -315,19 +353,43 @@ class HetznerCloudAPI:
             if existing.get('value') == str(value) and existing.get('ttl') == ttl:
                 return True, "unchanged"
 
-            # Workaround for Cloud API PUT bug: DELETE then POST
-            # DELETE the old record
-            delete_response = self._request(
-                'DELETE', f'/zones/{zone_id}/rrsets/{name}/{record_type}'
-            )
+            # Use set_records action to update the RRset
+            url = f'/zones/{zone_id}/rrsets/{name}/{record_type}/actions/set_records'
+            data = {
+                'records': [{'value': str(value)}],
+                'ttl': ttl
+            }
 
-            if delete_response.status_code not in [200, 201, 204]:
-                error_msg = f"DELETE failed: HTTP {delete_response.status_code}"
-                self._log(syslog.LOG_ERR, f"Failed to update {name} {record_type}: {error_msg}")
-                return False, error_msg
+            response = self._request('POST', url, json_data=data)
 
-            # POST new record
-            return self.create_record(zone_id, name, record_type, value, ttl)
+            if response.status_code in [200, 201]:
+                # Check if there's an action to wait for
+                response_data = response.json()
+                action = response_data.get('action', {})
+                action_id = action.get('id')
+
+                if action_id and action.get('status') in ['running', 'pending']:
+                    # Wait for action to complete
+                    success, msg = self._wait_for_action(action_id)
+                    if not success:
+                        self._log(syslog.LOG_ERR, f"Action failed for {name} {record_type}: {msg}")
+                        return False, msg
+
+                if self.verbose:
+                    self._log(syslog.LOG_INFO, f"Updated {name} {record_type} -> {value}")
+                return True, f"Updated {name} {record_type}"
+
+            # Handle error response
+            error_msg = f"HTTP {response.status_code}"
+            try:
+                error_data = response.json()
+                if 'error' in error_data:
+                    error_msg = error_data['error'].get('message', error_msg)
+            except Exception:
+                pass
+
+            self._log(syslog.LOG_ERR, f"Failed to update {name} {record_type}: {error_msg}")
+            return False, error_msg
 
         except HetznerAPIError as e:
             self._log(syslog.LOG_ERR, f"Failed to update record: {str(e)}")
@@ -337,6 +399,8 @@ class HetznerCloudAPI:
         """
         Create new DNS record.
         Returns tuple (success: bool, message: str)
+
+        Note: CREATE operations may return actions that should be awaited.
         """
         try:
             url = f'/zones/{zone_id}/rrsets'
@@ -350,6 +414,20 @@ class HetznerCloudAPI:
             response = self._request('POST', url, json_data=data)
 
             if response.status_code in [200, 201]:
+                # Check if there's an action to wait for
+                try:
+                    response_data = response.json()
+                    action = response_data.get('action', {})
+                    action_id = action.get('id')
+
+                    if action_id and action.get('status') in ['running', 'pending']:
+                        success, msg = self._wait_for_action(action_id)
+                        if not success:
+                            self._log(syslog.LOG_ERR, f"Create action failed for {name} {record_type}: {msg}")
+                            return False, msg
+                except Exception:
+                    pass  # No action in response, that's fine
+
                 if self.verbose:
                     self._log(syslog.LOG_INFO, f"Created {name} {record_type} -> {value}")
                 return True, f"Created {name} {record_type}"
@@ -373,11 +451,27 @@ class HetznerCloudAPI:
         """
         Delete a DNS record.
         Returns tuple (success: bool, message: str)
+
+        Note: DELETE operations may also return actions that should be awaited.
         """
         try:
             response = self._request('DELETE', f'/zones/{zone_id}/rrsets/{name}/{record_type}')
 
             if response.status_code in [200, 201, 204]:
+                # Check if there's an action to wait for
+                try:
+                    response_data = response.json()
+                    action = response_data.get('action', {})
+                    action_id = action.get('id')
+
+                    if action_id and action.get('status') in ['running', 'pending']:
+                        success, msg = self._wait_for_action(action_id)
+                        if not success:
+                            self._log(syslog.LOG_ERR, f"Delete action failed for {name} {record_type}: {msg}")
+                            return False, msg
+                except Exception:
+                    pass  # No action in response, that's fine
+
                 if self.verbose:
                     self._log(syslog.LOG_INFO, f"Deleted {name} {record_type}")
                 return True, f"Deleted {name} {record_type}"

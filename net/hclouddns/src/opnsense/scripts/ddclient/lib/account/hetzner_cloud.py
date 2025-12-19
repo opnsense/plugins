@@ -24,11 +24,15 @@
     POSSIBILITY OF SUCH DAMAGE.
 
     Hetzner Cloud DNS API provider for OPNsense DynDNS
-    Uses the new Cloud API (api.hetzner.cloud) instead of the deprecated dns.hetzner.com API
+    Uses the new Cloud API (api.hetzner.cloud) with proper rrset-actions endpoints
 """
 import syslog
+import time
 import requests
 from . import BaseAccount
+
+ACTION_POLL_INTERVAL = 0.5  # seconds between action status polls
+ACTION_MAX_WAIT = 30  # maximum seconds to wait for action
 
 
 class HetznerCloud(BaseAccount):
@@ -58,6 +62,36 @@ class HetznerCloud(BaseAccount):
             'Authorization': 'Bearer ' + self.settings.get('password', ''),
             'Content-Type': 'application/json'
         }
+
+    def _wait_for_action(self, headers, action_id):
+        """Wait for an async action to complete."""
+        start_time = time.time()
+
+        while time.time() - start_time < ACTION_MAX_WAIT:
+            url = f"{self._api_base}/actions/{action_id}"
+            response = requests.get(url, headers=headers)
+
+            if response.status_code != 200:
+                return False
+
+            try:
+                data = response.json()
+                action = data.get('action', {})
+                status = action.get('status', '')
+
+                if status == 'success':
+                    return True
+                elif status == 'error':
+                    return False
+                elif status in ['running', 'pending']:
+                    time.sleep(ACTION_POLL_INTERVAL)
+                    continue
+                else:
+                    return True  # Unknown status, assume success
+            except Exception:
+                return False
+
+        return False  # Timeout
 
     def _get_zone_name(self):
         """Get zone name from settings - try 'zone' field first, then 'username' as fallback"""
@@ -139,29 +173,59 @@ class HetznerCloud(BaseAccount):
             return None
 
     def _update_record(self, headers, zone_id, record_name, record_type, address):
-        """Update existing record with new address
+        """Update existing record with new address using set_records action.
 
-        NOTE: Hetzner Cloud API has a bug where PUT returns 200 but doesn't update.
-        Workaround: DELETE old record, then POST new record.
+        Uses the proper rrset-actions endpoint which correctly updates RRsets.
+        Actions are async and will be waited upon for completion.
         """
-        # DELETE old record first
-        delete_url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
-        delete_response = requests.delete(delete_url, headers=headers)
+        url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}/actions/set_records"
 
-        if delete_response.status_code not in [200, 201, 204]:
+        data = {
+            'records': [{'value': str(address)}],
+            'ttl': int(self.settings.get('ttl', 300))
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code not in [200, 201]:
             syslog.syslog(
                 syslog.LOG_ERR,
-                "Account %s error deleting record for update: HTTP %d - %s" % (
-                    self.description, delete_response.status_code, delete_response.text
+                "Account %s error updating record: HTTP %d - %s" % (
+                    self.description, response.status_code, response.text
                 )
             )
             return False
 
-        # CREATE new record
-        return self._create_record(headers, zone_id, record_name, record_type, address)
+        # Check if there's an action to wait for
+        try:
+            response_data = response.json()
+            action = response_data.get('action', {})
+            action_id = action.get('id')
+
+            if action_id and action.get('status') in ['running', 'pending']:
+                if not self._wait_for_action(headers, action_id):
+                    syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s update action failed or timed out for %s %s" % (
+                            self.description, record_name, record_type
+                        )
+                    )
+                    return False
+        except Exception:
+            pass  # No action in response, that's fine
+
+        if self.is_verbose:
+            syslog.syslog(
+                syslog.LOG_NOTICE,
+                "Account %s updated %s %s with %s" % (
+                    self.description, record_name, record_type, address
+                )
+            )
+
+        return True
 
     def _create_record(self, headers, zone_id, record_name, record_type, address):
-        """Create new record"""
+        """Create new record with async action handling."""
         url = f"{self._api_base}/zones/{zone_id}/rrsets"
 
         data = {
@@ -181,6 +245,24 @@ class HetznerCloud(BaseAccount):
                 )
             )
             return False
+
+        # Check if there's an action to wait for
+        try:
+            response_data = response.json()
+            action = response_data.get('action', {})
+            action_id = action.get('id')
+
+            if action_id and action.get('status') in ['running', 'pending']:
+                if not self._wait_for_action(headers, action_id):
+                    syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s create action failed or timed out for %s %s" % (
+                            self.description, record_name, record_type
+                        )
+                    )
+                    return False
+        except Exception:
+            pass  # No action in response, that's fine
 
         if self.is_verbose:
             syslog.syslog(
