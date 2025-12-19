@@ -71,7 +71,7 @@
     <field>
         <id>ndpproxy.general.pf_qps</id>
         <label>Max alias operations</label>
-        <tYpe>text</type>
+        <type>text</type>
         <hint>50</hint>
         <help>Maximum firewall alias operations per second. Limits how fast aliases are populated; excess operations are queued, not dropped.</help>
     </field>
