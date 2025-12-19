@@ -30,6 +30,9 @@ ndp_proxy_go_cache_file="/var/db/ndpproxy/cache.json"
 {%     if general.route_qps %}
 {%         do flags.append('--route-qps ' ~ general.route_qps) %}
 {%     endif %}
+{%     if general.pf_qps %}
+{%         do flags.append('--pf-qps ' ~ general.pf_qps) %}
+{%     endif %}
 {%     if general.pcap_timeout %}
 {%         do flags.append('--pcap-timeout ' ~ general.pcap_timeout ~ 'ms') %}
 {%     endif %}
