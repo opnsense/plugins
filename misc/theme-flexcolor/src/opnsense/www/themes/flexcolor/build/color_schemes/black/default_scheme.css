@@ -18,7 +18,7 @@
     --stdborderprimary: #336CDF; /* standard border with accent*/
     --stdborderinverse: #000000; /* standard border with accent*/
     --stdborder50bright: #A1A1A1; /* standard border with accent*/
-    --badgeback: #234A99; /* badge background & progress-bar & blockquote*/
+    --badgeback: #1F62C1; /* badge background & progress-bar & blockquote*/
     --progressbar: #D4D4D4; /* progress-bar*/
     --token: #AF3604; /* background token */
     --highlighted: #FFFFFF; /* highlighted element */
@@ -57,7 +57,7 @@
     --txtboxbackhover: #000000;
     --txtboxbackactive: #000000;
     --txtboxbackdisabled: #000000;
-    --txtboxbacktoken: #E65C00;
+    --txtboxbacktoken: #1F62C1; 
     --txtboxbackdel: #FF5252; /* only tokenize, pending delete */
     --txtboxbackdismiss: #F2F7FD; /* only tokenize, dismiss */
     /* border */
@@ -88,7 +88,7 @@
     --link: #FA6121; /* OPNsense text login and links */
     --linkhover: #E04605; /* OPNsense text login and links hover */
     --colorcheckbox: #388E3C; /* background color checkbox */
-    --colorradio: #FF3333; /* background color radio button */
+    --colorradio: #FF3333; /* E6A05A background color radio button */
     /* accents */
     --primary: #336CDF; /* primary accent */
     --primaryhover: #608DE6; /* primary accent hover */
@@ -99,7 +99,7 @@
     --warning: #D66E12; /* warning accent */
     --warninghover: #ED862B; /* warning accent hover */
     --danger: #FF5252; /* danger accent */
-    --dangerhover: #FF6B6B; /* danger accent hover */
+    --dangerhover: #BE2326FF8585; /* danger accent hover */
     /* alert messages */
     /* alert success */
     --alertsuccessfore: #E6E6E6;
