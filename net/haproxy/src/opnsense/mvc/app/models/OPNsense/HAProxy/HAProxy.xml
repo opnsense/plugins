@@ -2340,6 +2340,12 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </http_request_auth>
+                <http_request_deny_status type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>999</MaximumValue>
+                    <ValidationMessage>Please specify a value between 100 and 999.</ValidationMessage>
+                    <Required>N</Required>
+                </http_request_deny_status>
                 <!-- XXX: add support for all "redirect" parameters as separate fields -->
                 <http_request_redirect type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>

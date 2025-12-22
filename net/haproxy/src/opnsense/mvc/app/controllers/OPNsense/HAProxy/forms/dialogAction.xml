@@ -83,6 +83,17 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_http-request_deny</style>
+    </field>
+    <field>
+        <id>action.http_request_deny_status</id>
+        <label>HTTP Status Code</label>
+        <type>text</type>
+        <help><![CDATA[By default an HTTP 403 error is returned for requests, and 502 for responses, but optionally a different HTTP status code may be specified.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_http-request_redirect</style>
     </field>
     <field>
