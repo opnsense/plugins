@@ -6,6 +6,9 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+Added:
+* add support for "http-request silent-drop"
+
 4.6
 
 Changed:
