@@ -8,6 +8,7 @@ Plugin Changelog
 
 Added:
 * add support for "http-request silent-drop"
+* add new condition: HTTP method
 
 4.6
 

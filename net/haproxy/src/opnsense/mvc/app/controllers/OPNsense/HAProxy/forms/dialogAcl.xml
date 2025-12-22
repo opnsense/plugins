@@ -88,6 +88,17 @@
         <type>text</type>
         <help><![CDATA[HTTP host header contains string (substring match)]]></help>
     </field>
+
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>expression_table table_http_method</style>
+    </field>
+    <field>
+        <id>acl.http_method</id>
+        <label>HTTP Method</label>
+        <type>select_multiple</type>
+    </field>
     <field>
         <label>Parameters</label>
         <type>header</type>

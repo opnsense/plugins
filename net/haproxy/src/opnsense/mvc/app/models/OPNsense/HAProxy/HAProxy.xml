@@ -1728,6 +1728,7 @@
                         <cust_hdr>HTTP Header matches</cust_hdr>
                         <cust_hdr_reg>HTTP Header regex</cust_hdr_reg>
                         <cust_hdr_sub>HTTP Header contains</cust_hdr_sub>
+                        <http_method>HTTP Method</http_method>
                         <url_param>URL parameter contains</url_param>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
@@ -2195,6 +2196,21 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </allowedGroups>
+                <http_method type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <CONNECT>CONNECT</CONNECT>
+                        <DELETE>DELETE</DELETE>
+                        <GET>GET</GET>
+                        <HEAD>HEAD</HEAD>
+                        <OPTIONS>OPTIONS</OPTIONS>
+                        <PATCH>PATCH</PATCH>
+                        <POST>POST</POST>
+                        <PUT>PUT</PUT>
+                        <TRACE>TRACE</TRACE>
+                    </OptionValues>
+                </http_method>
             </acl>
         </acls>
         <actions>
