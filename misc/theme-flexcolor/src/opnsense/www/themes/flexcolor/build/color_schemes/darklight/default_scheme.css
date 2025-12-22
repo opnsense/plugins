@@ -18,7 +18,7 @@
     --stdborderprimary: #FA6121; /* standard border with accent*/
     --stdborderinverse: #647D9B; /* standard border with accent*/
     --stdborder50bright: #A2B1C3; /* standard border with accent*/
-    --badgeback: #FFC59E; /* badge background & progress-bar & blockquote*/
+    --badgeback: #AD7A7A; /* badge background & progress-bar & blockquote*/
     --progressbar: #181E25; /* progress-bar*/
     --token: #FA6121; /* background token */
     --highlighted: #FFFFFF; /* highlighted element */
@@ -57,7 +57,7 @@
     --txtboxbackhover: #F2F7FD;
     --txtboxbackactive: #F2F7FD;
     --txtboxbackdisabled: #181E25;
-    --txtboxbacktoken: #FFC59E;
+    --txtboxbacktoken: #AD7A7A;
     --txtboxbackdel: #DB393D; /* only tokenize, pending delete */
     --txtboxbackdismiss: #F2F7FD; /* only tokenize, dismiss */
     /* border */
@@ -101,6 +101,9 @@
     --danger: #DB393D; /* danger accent */
     --dangerhover: #BE2326; /* danger accent hover */
     /* alert messages */
+    /* alert*/ 
+    --alertback: #181E25;
+    --alertborder: transparent;
     /* alert success */
     --alertsuccessfore: #00E604;
     --alertsuccessback: #181E25;
@@ -374,12 +377,12 @@
     --unberrorfore: rgba(162,17,42,1); /* unbound textcolor error */
     --unbshadow: rgba(40,50,62,.8); /* unbound overview circle shadow */
     /* dashboard, (independent, despite the buttons on the top ) */
-    --dbfore: #F2F7FD; /* textcolor dashboard */
-    --dbback: #181E25; /* background color dashboard */
-    --dbbackhover: #181E25; /* background color dashboard */
-    --dbborder: rgba(204,204,204,0.35); /* bordercolor dashboard */
+    --dbfore: #181E25; /* textcolor dashboard */
+    --dbback: #F2F7FD; /* background color dashboard */
+    --dbbackhover: #F2F7FD; /* background color dashboard */
+    --dbborder: rgba(24,30,37,0.15); /* bordercolor dashboard */
     --dbchartfore: rgba(24,30,37,1); /* textcolor dashboard charts */
-    --dbchartborder: rgba(204,204,204,1); /* bordercolor dashboard charts*/
+    --dbchartborder: rgba(24,30,37,1); /* bordercolor dashboard charts*/
     --dbtoolfore: #101720; /* textcolor tooltip dashboard */
     --dbtoolback: rgba(241, 241, 241, 0.9); /*background color tooltip */
     /* graph */
