@@ -6,8 +6,10 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+4.7
+
 Added:
-* add support for "http-request silent-drop"
+* add new rule: http-request silent-drop
 * add new condition: HTTP method
 * support custom HTTP status code in "http-request deny" rules
 
