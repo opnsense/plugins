@@ -2259,6 +2259,7 @@
                         <http-request_replace-value>http-request header replace value</http-request_replace-value>
                         <http-request_set-path>http-request set-path</http-request_set-path>
                         <http-request_set-var>http-request set-var</http-request_set-var>
+                        <http-request_silent-drop>http-request silent-drop</http-request_silent-drop>
                         <http-response_allow>http-response allow</http-response_allow>
                         <http-response_deny>http-response deny</http-response_deny>
                         <http-response_lua>http-response lua script</http-response_lua>
