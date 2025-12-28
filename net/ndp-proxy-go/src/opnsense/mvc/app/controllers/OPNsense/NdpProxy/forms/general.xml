@@ -10,6 +10,12 @@
         <help>Enable or disable this service.</help>
     </field>
     <field>
+        <id>ndpproxy.general.carp_depend_on</id>
+        <label>Depend on (CARP)</label>
+        <type>checkbox</type>
+        <help>If any CARP VHID on this node is in BACKUP state, the service will be stopped. As NDP is stateless, a short interruption of IPv6 connectivity must be expected during CARP transitions.</help>
+    </field>
+    <field>
         <type>header</type>
         <label>Proxy Settings</label>
     </field>
