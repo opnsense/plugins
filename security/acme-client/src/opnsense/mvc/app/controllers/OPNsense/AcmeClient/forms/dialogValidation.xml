@@ -2013,6 +2013,8 @@
         <label>API Key</label>
         <type>text</type>
         <help><![CDATA[Please refer to the <a href="https://mijn.host/api/doc/">API documentation</a> for further information.]]></help>
+    </field>
+    <field>
         <label>scaleway</label>
         <type>header</type>
         <style>table_dns table_dns_scaleway</style>
@@ -2021,5 +2023,22 @@
         <id>validation.dns_scaleway_token</id>
         <label>API Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <label>Technitium</label>
+        <type>header</type>
+        <style>table_dns table_dns_technitium</style>
+    </field>
+    <field>
+        <id>validation.dns_technitium_token</id>
+        <label>API token</label>
+        <type>password</type>
+		<help><![CDATA[Generate a token from Technitium user and grant rights to teh necessary zones.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_technitium_hostname</id>
+        <label>Technitium Hostname/ IP</label>
+        <type>text</type>
+        <help><![CDATA[EX: https://technitium:5380 where the port is optional.<br/><div class="text-info"><b>NOTE: </b>Remove the trailing / if it is present.</div>]]></help>
     </field>
 </form>
