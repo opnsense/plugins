@@ -1,0 +1,27 @@
+[Settings]
+# LightScope Configuration for OPNsense
+#
+# Database identifier - auto-generated if empty
+# This is used to identify your installation on thelightscope.com
+database =
+
+# IP randomization key - auto-generated if empty
+# Used to anonymize destination IPs in uploaded data
+randomization_key =
+
+# Comma-separated honeypot ports
+# These ports will be opened and forwarded to the remote honeypot server
+# Leave empty to disable honeypot functionality
+# Default: 8080,2323,8443,3389,5900
+honeypot_ports = 8080,2323,8443,3389,5900
+
+# Remote honeypot server
+# The server that receives forwarded honeypot connections
+honeypot_server = 128.9.28.79
+
+# Remote honeypot ports
+# SSH connections (even local ports) forward to this port
+honeypot_ssh_port = 12345
+
+# TELNET connections (odd local ports) forward to this port
+honeypot_telnet_port = 12346

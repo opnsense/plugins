@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# PROVIDE: lightscope
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable lightscope:
+#
+# lightscope_enable="YES"
+#
+
+. /etc/rc.subr
+
+name="lightscope"
+rcvar="${name}_enable"
+
+load_rc_config $name
+
+# Check OPNsense model for enabled state if not explicitly set
+if [ -z "${lightscope_enable}" ]; then
+    if /usr/local/sbin/pluginctl -g OPNsense.Lightscope.general.enabled 2>/dev/null | grep -q "1"; then
+        lightscope_enable="YES"
+    else
+        lightscope_enable="NO"
+    fi
+fi
+
+: ${lightscope_config:="/usr/local/etc/lightscope.conf"}
+
+pidfile="/var/run/${name}.pid"
+procname="/usr/local/bin/python3"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+
+start_precmd="${name}_prestart"
+
+lightscope_start()
+{
+    echo "Starting ${name}."
+    /usr/sbin/daemon -c -f -p ${pidfile} -o /var/log/lightscope.log /usr/local/bin/python3 -u /usr/local/opnsense/scripts/lightscope/lightscope_daemon.py
+}
+
+lightscope_stop()
+{
+    if [ -f ${pidfile} ]; then
+        echo "Stopping ${name}."
+        kill -TERM $(cat ${pidfile}) 2>/dev/null
+        rm -f ${pidfile}
+    else
+        echo "${name} is not running."
+    fi
+}
+
+lightscope_status()
+{
+    if [ -f ${pidfile} ] && kill -0 $(cat ${pidfile}) 2>/dev/null; then
+        echo "${name} is running as pid $(cat ${pidfile})."
+        return 0
+    else
+        echo "${name} is not running."
+        return 1
+    fi
+}
+
+lightscope_prestart()
+{
+    # Copy sample config if no config exists
+    if [ ! -f "${lightscope_config}" ]; then
+        if [ -f "${lightscope_config}.sample" ]; then
+            cp "${lightscope_config}.sample" "${lightscope_config}"
+            echo "Created ${lightscope_config} from sample"
+        fi
+    fi
+
+    # Ensure pflog0 interface exists
+    if ! ifconfig pflog0 > /dev/null 2>&1; then
+        echo "Warning: pflog0 interface not found. Creating..."
+        ifconfig pflog0 create
+    fi
+
+    return 0
+}
+
+run_rc_command "$1"

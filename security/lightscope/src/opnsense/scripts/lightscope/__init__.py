@@ -1,0 +1,1 @@
+# LightScope for OPNsense
