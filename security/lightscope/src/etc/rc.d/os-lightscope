@@ -28,7 +28,7 @@ fi
 : ${lightscope_config:="/usr/local/etc/lightscope.conf"}
 
 pidfile="/var/run/${name}.pid"
-procname="/usr/local/bin/python3"
+procname="/usr/local/bin/lightscope"
 
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
@@ -39,7 +39,7 @@ start_precmd="${name}_prestart"
 lightscope_start()
 {
     echo "Starting ${name}."
-    /usr/sbin/daemon -c -f -p ${pidfile} -o /var/log/lightscope.log /usr/local/bin/python3 -u /usr/local/opnsense/scripts/lightscope/lightscope_daemon.py
+    /usr/sbin/daemon -c -f -p ${pidfile} -o /var/log/lightscope.log /usr/local/bin/lightscope
 }
 
 lightscope_stop()
