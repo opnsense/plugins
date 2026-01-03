@@ -27,17 +27,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once('config.inc');
+require_once('script/load_phalcon.php');
 require_once('util.inc');
+
+use OPNsense\NdpProxy\NdpProxy;
 
 $subsystem = $argv[1] ?? '';
 $type = $argv[2] ?? '';
+$model = new NdpProxy();
 
 if (
     (!in_array($type, ['MASTER', 'BACKUP'], true)) ||  /* exclude INIT */
     strpos($subsystem, '@') === false ||  /* only react to real CARP events */
-    empty($config['OPNsense']['ndpproxy']['general']['enabled']) ||
-    empty($config['OPNsense']['ndpproxy']['general']['carp_depend_on'])
+    $model->general->enabled->isEmpty() ||
+    $model->general->carp_depend_on->isEmpty()
 ) {
     exit(0);
 }
