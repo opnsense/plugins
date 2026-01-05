@@ -62,6 +62,17 @@
 </div>
 
 <script>
+    
+
+var chronyActiveInterval = null;
+
+var chronyTabUpdateMap = {
+    "#chronysources": update_chronysources,
+    "#chronysourcestats": update_chronysourcestats,
+    "#chronytracking": update_chronytracking,
+    "#chronyauthdata": update_chronyauthdata,
+    "#chronyntpdata": update_chronyntpdata
+};
 
 // Put API call into a function, needed for auto-refresh
 function update_chronysources() {
@@ -76,7 +87,6 @@ function update_chronysourcestats() {
     });
 }
 
-// Put API call into a function, needed for auto-refresh
 function update_chronytracking() {
     ajaxCall(url="/api/chrony/service/chronytracking", sendData={}, callback=function(data,status) {
         $("#listchronytracking").text(data['response']);
@@ -95,32 +105,44 @@ function update_chronyntpdata() {
     });
 }
 
-    $(function() {
-        var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-        });
+function autoRefresh(tabId) {
+    if (chronyActiveInterval !== null) {
+        clearInterval(chronyActiveInterval);
+        chronyActiveInterval = null;
+    }
+
+    if (chronyTabUpdateMap[tabId]) {
+        // run once immediately
+        chronyTabUpdateMap[tabId]();
+        // autorefresh active tab every second
+        chronyActiveInterval = setInterval(chronyTabUpdateMap[tabId], 1000);
+    }
+}
+
+$(function() {
+    var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
+    mapDataToFormUI(data_get_map).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
 
     updateServiceControlUI('chrony');
 
-    // Call function update_neighbor with a auto-refresh of 5 seconds
-    setInterval(update_chronysources, 5000);
-    setInterval(update_chronysourcestats, 5000);
-    setInterval(update_chronytracking, 5000);
-    setInterval(update_chronyauthdata, 5000);
-    setInterval(update_chronyntpdata, 5000);
+    // auto-refresh only the current tab
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var targetTab = $(e.target).attr("href");
+        autoRefresh(targetTab);
+    });
 
-        // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
-                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
-                    updateServiceControlUI('chrony');
-                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                });
+    // link save button to API set action
+    $("#saveAct").click(function(){
+        saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('chrony');
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
-
     });
+});
 </script>
