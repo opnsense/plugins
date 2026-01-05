@@ -11,10 +11,10 @@
     </field>
     <field>
         <id>ndpproxy.general.carp_depend_on</id>
-        <label>Depend on (CARP)</label>
+        <label>Enable CARP failover</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>If any CARP VHID on this node is in BACKUP state, the service will be stopped. As NDP is stateless, a short interruption of IPv6 connectivity must be expected during CARP transitions.</help>
+        <help>If any CARP VHID on this node is in MASTER state the service will be started, otherwise stopped. As NDP is stateless, a short interruption of IPv6 connectivity must be expected during CARP transitions.</help>
     </field>
     <field>
         <type>header</type>
