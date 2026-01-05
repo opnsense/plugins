@@ -4,6 +4,10 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.6
+
+* Add NTP data tab
+
 1.5
 
 * Allow adding a fallback NTP when using NTS

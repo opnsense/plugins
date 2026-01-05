@@ -1,5 +1,5 @@
 PLUGIN_NAME=		chrony
-PLUGIN_VERSION=		1.5
+PLUGIN_VERSION=		1.6
 PLUGIN_REVISION=	3
 PLUGIN_COMMENT=		Chrony time synchronisation
 PLUGIN_DEPENDS=		chrony

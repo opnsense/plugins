@@ -31,6 +31,7 @@
     <li><a data-toggle="tab" href="#chronysourcestats">{{ lang._('Source Stats') }}</a></li>
     <li><a data-toggle="tab" href="#chronytracking">{{ lang._('Tracking') }}</a></li>
     <li><a data-toggle="tab" href="#chronyauthdata">{{ lang._('Auth Data') }}</a></li>
+    <li><a data-toggle="tab" href="#chronyntpdata">{{ lang._('NTP Data') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
@@ -54,6 +55,9 @@
     </div>
     <div id="chronyauthdata" class="tab-pane fade in">
         <pre id="listchronyauthdata"></pre>
+    </div>
+    <div id="chronyntpdata" class="tab-pane fade in">
+        <pre id="listchronyntpdata"></pre>
     </div>
 </div>
 
@@ -85,6 +89,12 @@ function update_chronyauthdata() {
     });
 }
 
+function update_chronyntpdata() {
+    ajaxCall(url="/api/chrony/service/chronyntpdata", sendData={}, callback=function(data,status) {
+        $("#listchronyntpdata").text(data['response']);
+    });
+}
+
     $(function() {
         var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
@@ -99,6 +109,7 @@ function update_chronyauthdata() {
     setInterval(update_chronysourcestats, 5000);
     setInterval(update_chronytracking, 5000);
     setInterval(update_chronyauthdata, 5000);
+    setInterval(update_chronyntpdata, 5000);
 
         // link save button to API set action
         $("#saveAct").click(function(){

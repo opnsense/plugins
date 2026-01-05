@@ -82,4 +82,15 @@ class ServiceController extends ApiMutableServiceControllerBase
         $response = $backend->configdRun("chrony chronyauthdata");
         return array("response" => $response);
     }
+
+    /**
+     * show chrony ntpdata
+     * @return array
+     */
+    public function chronyntpdataAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("chrony chronyntpdata");
+        return array("response" => $response);
+    }
 }
