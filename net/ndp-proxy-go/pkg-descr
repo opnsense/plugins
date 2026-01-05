@@ -9,6 +9,7 @@ Plugin Changelog
 1.3
 
 * Add ratelimit for pfctl operations
+* Add CARP failover
 
 1.2
 
