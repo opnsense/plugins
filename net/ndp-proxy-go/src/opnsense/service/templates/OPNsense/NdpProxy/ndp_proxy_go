@@ -3,7 +3,7 @@
 {% if general.enabled|default("0") == "1" and general.upstream and general.downstream %}
 ndp_proxy_go_enable="YES"
 {%     if general.carp_depend_on %}
-start_precmd="ifconfig | grep -q 'carp: MASTER'"
+ndp_proxy_go_check_carp="YES"
 {%     endif %}
 ndp_proxy_go_upstream="{{ helpers.physical_interface(general.upstream) }}"
 {%     set downstream_interfaces = [] %}
