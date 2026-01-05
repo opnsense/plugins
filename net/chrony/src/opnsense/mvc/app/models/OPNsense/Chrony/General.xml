@@ -7,10 +7,31 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <peers type="HostnameField">
+            <Default>0.opnsense.pool.ntp.org</Default>
+            <Required>Y</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+        </peers>
+        <localstratum type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>15</MaximumValue>
+            <Required>N</Required>
+            <ValidationMessage>Local stratum must be within 1-15.</ValidationMessage>
+        </localstratum>
+        <orphanmode type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </orphanmode>
         <port type="PortField">
             <Default>323</Default>
             <Required>Y</Required>
         </port>
+        <allowednetworks type="NetworkField">
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+        </allowednetworks>
         <ntsclient type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -19,19 +40,8 @@
             <Default>0</Default>
             <Required>Y</Required>
         </ntsnocert>
-        <peers type="HostnameField">
-            <Default>0.opnsense.pool.ntp.org</Default>
-            <Required>Y</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <AsList>Y</AsList>
-        </peers>
         <fallbackpeers type="HostnameField">
             <Required>N</Required>
         </fallbackpeers>
-        <allowednetworks type="NetworkField">
-            <Required>N</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <AsList>Y</AsList>
-        </allowednetworks>
     </items>
 </model>
