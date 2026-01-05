@@ -72,7 +72,7 @@ function update_chronysources() {
 
 function update_chronysourcestats() {
     ajaxCall(url="/api/chrony/service/chronysourcestats", sendData={}, callback=function(data,status) {
-        $("#listchronysourcestats").text(data['response']);
+        $("#listchronysourcestats").text($('<div>').html(data['response']).text());
     });
 }
 
