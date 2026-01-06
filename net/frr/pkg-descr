@@ -18,6 +18,7 @@ Plugin Changelog
 * Fix SNMP OSPF argument flags in RC configuration file
 * Fix STATIC template interface issue
 * Replace shell_exec() with mwexecfm()
+* Prevent errors in diagnostics view when a frr daemon is not started
 
 1.48
 

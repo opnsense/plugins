@@ -88,6 +88,16 @@
         </help>
     </field>
     <field>
+        <id>agent.active_response.repeated_offenders</id>
+        <label>Repeated offenders</label>
+        <type>text</type>
+        <help>
+            Comma-separated list of increasing timeout values in minutes for repeat offenders (e.g., 30,60,120,240).
+            When an IP triggers active response multiple times, each subsequent block uses the next timeout value.
+            Leave empty to disable repeated offender escalation.
+        </help>
+    </field>
+    <field>
         <id>agent.active_response.remote_commands</id>
         <label>Wazuh remote commands</label>
         <type>checkbox</type>

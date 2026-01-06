@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/WazuhAgent</mount>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>Wazuh Agent</description>
     <items>
         <general>
@@ -112,6 +112,11 @@
                 </Model>
                 <Required>N</Required>
             </fw_alias_ignore>
+            <repeated_offenders type="TextField">
+                <Required>N</Required>
+                <Mask>/^([0-9]+)(,[0-9]+)*$/</Mask>
+                <ValidationMessage>Enter comma-separated timeout values in minutes (e.g., 30,60,120,240)</ValidationMessage>
+            </repeated_offenders>
         </active_response>
     </items>
 </model>
