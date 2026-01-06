@@ -1728,6 +1728,7 @@
                         <cust_hdr>HTTP Header matches</cust_hdr>
                         <cust_hdr_reg>HTTP Header regex</cust_hdr_reg>
                         <cust_hdr_sub>HTTP Header contains</cust_hdr_sub>
+                        <http_method>HTTP Method</http_method>
                         <url_param>URL parameter contains</url_param>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
@@ -2195,6 +2196,21 @@
                     <Multiple>Y</Multiple>
                     <Required>N</Required>
                 </allowedGroups>
+                <http_method type="OptionField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <OptionValues>
+                        <CONNECT>CONNECT</CONNECT>
+                        <DELETE>DELETE</DELETE>
+                        <GET>GET</GET>
+                        <HEAD>HEAD</HEAD>
+                        <OPTIONS>OPTIONS</OPTIONS>
+                        <PATCH>PATCH</PATCH>
+                        <POST>POST</POST>
+                        <PUT>PUT</PUT>
+                        <TRACE>TRACE</TRACE>
+                    </OptionValues>
+                </http_method>
             </acl>
         </acls>
         <actions>
@@ -2259,6 +2275,7 @@
                         <http-request_replace-value>http-request header replace value</http-request_replace-value>
                         <http-request_set-path>http-request set-path</http-request_set-path>
                         <http-request_set-var>http-request set-var</http-request_set-var>
+                        <http-request_silent-drop>http-request silent-drop</http-request_silent-drop>
                         <http-response_allow>http-response allow</http-response_allow>
                         <http-response_deny>http-response deny</http-response_deny>
                         <http-response_lua>http-response lua script</http-response_lua>
@@ -2323,6 +2340,12 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </http_request_auth>
+                <http_request_deny_status type="IntegerField">
+                    <MinimumValue>100</MinimumValue>
+                    <MaximumValue>999</MaximumValue>
+                    <ValidationMessage>Please specify a value between 100 and 999.</ValidationMessage>
+                    <Required>N</Required>
+                </http_request_deny_status>
                 <!-- XXX: add support for all "redirect" parameters as separate fields -->
                 <http_request_redirect type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
