@@ -54,7 +54,7 @@
             <Required>Y</Required>
         </orphanmode>
         <port type="PortField">
-            <Default>323</Default>
+            <Default>123</Default>
             <Required>Y</Required>
         </port>
         <allowednetworks type="NetworkField">
