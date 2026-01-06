@@ -10,21 +10,21 @@
         <peers>
             <peer type="ArrayField">
                 <pool type="BooleanField">
-                    <Default>1</Default>
+                    <Default>0</Default>
                     <Required>Y</Required>
                 </pool>
                 <address type="HostnameField">
                     <Default>opnsense.pool.ntp.org</Default>
                     <Required>Y</Required>
                 </address>
-                <iburst type="BooleanField">
-                    <Default>0</Default>
-                    <Required>Y</Required>
-                </iburst>
                 <prefer type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>
                 </prefer>
+                <iburst type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </iburst>
                 <xleave type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>

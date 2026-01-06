@@ -17,10 +17,10 @@
         <help>The address/hostname of the NTP server or pool.</help>
     </field>
     <field>
-        <id>peer.iburst</id>
-        <label>iburst</label>
+        <id>peer.prefer</id>
+        <label>prefer</label>
         <type>checkbox</type>
-        <help>Enable iburst for this source.</help>
+        <help>Prefer this source over sources without the prefer option.</help>
         <grid_view>
             <width>6em</width>
             <type>boolean</type>
@@ -28,10 +28,10 @@
         </grid_view>
     </field>
     <field>
-        <id>peer.prefer</id>
-        <label>prefer</label>
+        <id>peer.iburst</id>
+        <label>iburst</label>
         <type>checkbox</type>
-        <help>Prefer this source over sources without the prefer option.</help>
+        <help>Enable iburst for this source.</help>
         <grid_view>
             <width>6em</width>
             <type>boolean</type>
@@ -50,13 +50,13 @@
         </grid_view>
     </field>
     <field>
-        <id>general.minpoll</id>
+        <id>peer.minpoll</id>
         <label>minpoll</label>
         <type>text</type>
         <help>The minimum interval between requests sent to the server as a power of 2 in seconds.</help>
     </field>
     <field>
-        <id>general.maxpoll</id>
+        <id>peer.maxpoll</id>
         <label>maxpoll</label>
         <type>text</type>
         <help>The maximum interval between requests sent to the server as a power of 2 in seconds.</help>
