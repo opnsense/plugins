@@ -61,4 +61,15 @@
         <type>text</type>
         <help>The maximum interval between requests sent to the server as a power of 2 in seconds.</help>
     </field>
+    <field>
+        <id>peer.nts</id>
+        <label>NTS</label>
+        <type>checkbox</type>
+        <help>Enable NTS authentication.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
 </form>

@@ -7,6 +7,29 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <localstratum type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>15</MaximumValue>
+            <Required>N</Required>
+            <ValidationMessage>Local stratum must be within 1-15.</ValidationMessage>
+        </localstratum>
+        <orphanmode type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </orphanmode>
+        <port type="PortField">
+            <Default>123</Default>
+            <Required>Y</Required>
+        </port>
+        <allowednetworks type="NetworkField">
+            <Required>N</Required>
+            <FieldSeparator>,</FieldSeparator>
+            <AsList>Y</AsList>
+        </allowednetworks>
+        <ntsnocert type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </ntsnocert>
         <peers>
             <peer type="ArrayField">
                 <pool type="BooleanField">
@@ -41,37 +64,11 @@
                     <Required>N</Required>
                     <ValidationMessage>maxpoll value must be between -6 and 24.</ValidationMessage>
                 </maxpoll>
+                <nts type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </nts>
             </peer>
         </peers>
-        <localstratum type="IntegerField">
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>15</MaximumValue>
-            <Required>N</Required>
-            <ValidationMessage>Local stratum must be within 1-15.</ValidationMessage>
-        </localstratum>
-        <orphanmode type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </orphanmode>
-        <port type="PortField">
-            <Default>123</Default>
-            <Required>Y</Required>
-        </port>
-        <allowednetworks type="NetworkField">
-            <Required>N</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <AsList>Y</AsList>
-        </allowednetworks>
-        <ntsclient type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </ntsclient>
-        <ntsnocert type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-        </ntsnocert>
-        <fallbackpeers type="HostnameField">
-            <Required>N</Required>
-        </fallbackpeers>
     </items>
 </model>
