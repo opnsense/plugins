@@ -43,9 +43,12 @@
 
             {{ partial('layout_partials/base_bootgrid_table', formGridPeer) }}
             
-            {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/chrony/service/reconfigure'}) }}
-
             {{ partial("layout_partials/base_dialog",['fields':formDialogPeer,'id':formGridPeer['edit_dialog_id'],'label':lang._('Edit source')])}}
+        
+            <div class="col-md-12">
+                <hr />
+                <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
+            </div>
         </div>
     </div>
     <div id="chronysources" class="tab-pane fade in">
@@ -150,6 +153,17 @@ $(function() {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var targetTab = $(e.target).attr("href");
         autoRefresh(targetTab);
+    });
+
+    // link save button to API set action
+    $("#saveAct").click(function(){
+        saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('chrony');
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
+            });
+        });
     });
 });
 </script>
