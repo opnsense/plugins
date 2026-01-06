@@ -6,14 +6,6 @@
         <help>Enable Chrony time daemon.</help>
     </field>
     <field>
-        <id>general.peers</id>
-        <label>NTP Peers</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Set as many NTP peers you need.</help>
-    </field>
-    <field>
         <id>general.localstratum</id>
         <label>Local Stratum</label>
         <type>text</type>

@@ -6,7 +6,14 @@ Plugin Changelog
 
 1.6
 
-* Add NTP data tab
+* Update config UI to expose the following features:
+    - local/orphan mode
+    - pools
+    - prefer
+    - iburst
+    - min/max poll
+    - interleaving
+* Add NTP data diagnostics
 
 1.5
 

@@ -7,11 +7,41 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <peers type="HostnameField">
-            <Default>0.opnsense.pool.ntp.org</Default>
-            <Required>Y</Required>
-            <FieldSeparator>,</FieldSeparator>
-            <AsList>Y</AsList>
+        <peers>
+            <peer type="ArrayField">
+                <pool type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </pool>
+                <address type="HostnameField">
+                    <Default>opnsense.pool.ntp.org</Default>
+                    <Required>Y</Required>
+                </address>
+                <iburst type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </iburst>
+                <prefer type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </prefer>
+                <xleave type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </xleave>
+                <minpoll type="IntegerField">
+                    <MinimumValue>-6</MinimumValue>
+                    <MaximumValue>24</MaximumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>minpoll value must be between -6 and 24.</ValidationMessage>
+                </minpoll>
+                <maxpoll type="IntegerField">
+                    <MinimumValue>-6</MinimumValue>
+                    <MaximumValue>24</MaximumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>maxpoll value must be between -6 and 24.</ValidationMessage>
+                </maxpoll>
+            </peer>
         </peers>
         <localstratum type="IntegerField">
             <MinimumValue>1</MinimumValue>
