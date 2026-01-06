@@ -13,6 +13,7 @@ Plugin Changelog
     - iburst
     - min/max poll
     - interleaving
+* Add per-source NTS option
 * Add NTP data diagnostics
 
 1.5
