@@ -47,11 +47,18 @@
                 </connect_port>
                 <protocol type="OptionField">
                     <OptionValues>
+                        <cifs>CIFS</cifs>
+                        <capwin>CAPWIN</capwin>
+                        <capwinctrl>CAPWINCTRL</capwinctrl>
+                        <connect>CONNECT</connect>
                         <imap>IMAP</imap>
                         <ldap>LDAP</ldap>
                         <nntp>NNTP</nntp>
+                        <pgsql>PGSQL</pgsql>
                         <pop3>POP3</pop3>
+                        <proxy>PROXY</proxy>
                         <smtp>SMTP</smtp>
+                        <socks>SOCKS</socks>
                     </OptionValues>
                     <Required>N</Required>
                 </protocol>
