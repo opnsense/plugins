@@ -21,7 +21,7 @@
                 <primaryip type="IPPortField">
                     <AsList>Y</AsList>
                 </primaryip>
-                <forwardserver type="NetworkField">
+                <forwardserver type="IPPortField">
                     <AsList>Y</AsList>
                 </forwardserver>
                 <transferkeyalgo type="OptionField">
