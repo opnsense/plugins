@@ -18,7 +18,7 @@
                         <forward>forward</forward>
                     </OptionValues>
                 </type>
-                <primaryip type="NetworkField">
+                <primaryip type="IPPortField">
                     <AsList>Y</AsList>
                 </primaryip>
                 <forwardserver type="NetworkField">
