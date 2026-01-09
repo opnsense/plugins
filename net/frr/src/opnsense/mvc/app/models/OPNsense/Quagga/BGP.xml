@@ -131,6 +131,16 @@
                         <med>med</med>
                     </OptionValues>
                 </attributeunchanged>
+                <capabilities type="OptionField">
+                    <BlankDesc>Enable capabilities</BlankDesc>
+                    <OptionValues>
+                        <extended-nexthop>extended-nexthop</extended-nexthop>
+                        <dynamic>dynamic</dynamic>
+                        <fqdn>fqdn</fqdn>
+                        <link-local>link-local</link-local>
+                    </OptionValues>
+                    <Multiple>Y</Multiple>
+                </capabilities>
                 <linkedPrefixlistIn type="ModelRelationField">
                     <Model>
                         <template>
