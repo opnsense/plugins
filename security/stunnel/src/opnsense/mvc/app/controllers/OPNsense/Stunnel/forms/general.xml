@@ -22,7 +22,7 @@
         <id>stunnel.general.enable_oscp</id>
         <label>enable OSCPaia</label>
         <type>checkbox</type>
-        <help>Enable OCSP certificate verification via AIA extension. Disable if OCSP server is unreachable.
+        <help>Validate peer certificates using OCSP responders from their AIA extension. Enable if you need strict certificate revocation checking.
         </help>
     </field>
 </form>
