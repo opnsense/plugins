@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <description>
         Stunnel TLS encryption proxy
     </description>
@@ -19,7 +19,7 @@
                 <Required>Y</Required>
             </enable_ident_server>
             <enable_oscp type="BooleanField">
-                <Default>1</Default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </enable_oscp>
         </general>
