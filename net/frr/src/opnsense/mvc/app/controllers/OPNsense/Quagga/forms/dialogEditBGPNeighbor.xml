@@ -248,6 +248,16 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.capabilities</id>
+    <label>Enable capabilities</label>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Enable the necessary capabilities. If you don’t know what they are, check the documentation. Note that some are IPv6-only.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
