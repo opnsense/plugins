@@ -233,16 +233,16 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable service");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable">
-                         <?=gettext("Start the autonomous port mapping service.");?>
+                         <?=gettext("Enable the autonomous port mapping service.");?>
                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP IGD Port Mapping");?></td>
+                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable UPnP IGD protocol");?></td>
                       <td>
                        <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_upnp">
@@ -251,7 +251,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow PCP/NAT-PMP Port Mapping");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP/NAT-PMP protocols");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -393,12 +393,15 @@ include("head.inc");
                   </thead>
                   <tbody>
                   <tr>
-                    <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('UPnP IGD compatibility mode') ?></td>
+                    <td><a id="help_for_upnp_igd_compat" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('UPnP IGD compatibility') ?></td>
                     <td>
                       <select name="upnp_igd_compat">
                         <option value="igdv1" <?= ($pconfig['upnp_igd_compat'] ?? '') == 'igdv1' ? 'selected="selected"' : '' ?> ><?= gettext('IGDv1 (IPv4 only)') ?></option>
                         <option value="igdv2" <?= ($pconfig['upnp_igd_compat'] ?? '') == 'igdv2' ? 'selected="selected"' : '' ?> ><?= gettext('IGDv2 (with workarounds)') ?></option>
                       </select>
+                      <div class="hidden" data-for="help_for_upnp_igd_compat">
+                        <?=sprintf(gettext('Set compatibility mode (act as device) to workaround IGDv2-incompatible clients; %s only work with %s.'), 'Sony PS / CoD', 'IGDv1');?>
+                      </div>
                     </td>
                   </tr>
                     <tr>
@@ -436,7 +439,7 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <th colspan="2"><?=gettext("Custom Access Control List");?></th>
+                      <th colspan="2"><?=gettext("Access Control List");?></th>
                     </tr>
                   </thead>
                   <tbody>
