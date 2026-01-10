@@ -1,0 +1,22 @@
+Port Forward REST API plugin for OPNsense
+
+This plugin exposes NAT port forwarding rules via a REST API, enabling external
+tools to manage port forwards programmatically. It provides full CRUD operations
+(list, add, delete, toggle) for port forward rules and automatically manages the
+associated firewall filter rules.
+
+Features:
+- List all port forward rules
+- Add new port forward rules with automatic filter rule creation
+- Delete port forward rules with automatic filter rule cleanup
+- Enable/disable rules without deleting them
+- Changes take effect immediately (auto-reload)
+
+API Endpoints:
+- GET  /api/portforwardapi/rules/list        - List all rules
+- POST /api/portforwardapi/rules/add         - Create new rule
+- POST /api/portforwardapi/rules/del/{id}    - Delete rule by ID
+- POST /api/portforwardapi/rules/toggle/{id} - Enable/disable rule
+- GET  /api/portforwardapi/rules/status      - Get rule count
+
+WWW: https://github.com/opnsense/plugins
