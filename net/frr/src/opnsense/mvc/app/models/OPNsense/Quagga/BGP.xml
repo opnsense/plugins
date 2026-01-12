@@ -132,7 +132,6 @@
                     </OptionValues>
                 </attributeunchanged>
                 <capabilities type="OptionField">
-                    <BlankDesc>Enable capabilities</BlankDesc>
                     <OptionValues>
                         <extended-nexthop>extended-nexthop</extended-nexthop>
                         <dynamic>dynamic</dynamic>
