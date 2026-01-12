@@ -252,7 +252,7 @@
     <label>Enable capabilities</label>
     <type>select_multiple</type>
     <advanced>true</advanced>
-    <help>Enable the necessary capabilities. If you don’t know what they are, check the documentation. Note that some are IPv6-only.</help>
+    <help>Allow this neighbor to negotiate additional capabilities with its peer.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
