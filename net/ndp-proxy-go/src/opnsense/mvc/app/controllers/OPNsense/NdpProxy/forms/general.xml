@@ -10,6 +10,13 @@
         <help>Enable or disable this service.</help>
     </field>
     <field>
+        <id>ndpproxy.general.carp_depend_on</id>
+        <label>Enable CARP failover</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>If any CARP VHID on this node is in MASTER state the service will be started, otherwise stopped. As NDP is stateless, a short interruption of IPv6 connectivity must be expected during CARP transitions.</help>
+    </field>
+    <field>
         <type>header</type>
         <label>Proxy Settings</label>
     </field>
@@ -39,7 +46,8 @@
     </field>
     <field>
         <type>header</type>
-        <label>Performance Settings</label>
+        <label>Neighbor Settings</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>ndpproxy.general.cache_ttl</id>
@@ -50,7 +58,7 @@
     </field>
     <field>
         <id>ndpproxy.general.cache_max</id>
-        <label>Maximum learned neighbors</label>
+        <label>Max learned neighbors</label>
         <type>text</type>
         <hint>4096</hint>
         <help>Maximum learned neighbors, increase for large networks.</help>
@@ -62,11 +70,23 @@
         <help>Persist cache to file on service stop and load it on service start. Only neighbors with a valid cache lifetime are loaded. This helps on system reboots to minimize downtime of individual clients.</help>
     </field>
     <field>
+        <type>header</type>
+        <label>Performance Settings</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
         <id>ndpproxy.general.route_qps</id>
         <label>Max route operations</label>
         <type>text</type>
         <hint>50</hint>
-        <help>Max route operations per second, increase for large networks.</help>
+        <help>Maximum route operations per second. Limits how fast routes are applied; excess operations are queued, not dropped.</help>
+    </field>
+    <field>
+        <id>ndpproxy.general.pf_qps</id>
+        <label>Max alias operations</label>
+        <type>text</type>
+        <hint>50</hint>
+        <help>Maximum firewall alias operations per second. Limits how fast aliases are populated; excess operations are queued, not dropped.</help>
     </field>
     <field>
         <id>ndpproxy.general.pcap_timeout</id>
@@ -74,6 +94,11 @@
         <type>text</type>
         <hint>50</hint>
         <help>Controls CPU usage vs. NDP responsiveness. Lower values (e.g., 25 ms) minimize latency during cache refresh at the cost of more CPU. Higher values (100–250 ms) reduce CPU use but may introduce small latency spikes.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Log Settings</label>
+        <collapse>true</collapse>
     </field>
     <field>
         <id>ndpproxy.general.debug</id>

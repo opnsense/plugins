@@ -336,7 +336,7 @@
                 <id>proxy.forward.sslcertificate</id>
                 <label>CA to use</label>
                 <type>dropdown</type>
-                <help><![CDATA[Select a Certificate Authority to use. To create a CA, go to <a href="/system_camanager.php">CA Manager</a>.]]></help>
+                <help>Select a certificate authority to use.</help>
             </field>
             <field>
                 <id>proxy.forward.sslnobumpsites</id>

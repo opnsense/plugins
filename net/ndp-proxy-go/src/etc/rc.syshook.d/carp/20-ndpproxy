@@ -2,8 +2,7 @@
 <?php
 
 /*
- * Copyright (C) 2018 Franco Fichtner <franco@opnsense.org>
- * Copyright (C) 2004 Scott Ullrich <sullrich@gmail.com>
+ * Copyright (C) 2025 Cedrik Pischem
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,10 +27,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once('config.inc');
+require_once('script/load_phalcon.php');
 require_once('util.inc');
-require_once('plugins.inc.d/frr.inc');
 
-if (frr_enabled()) {
-    shell_exec('/usr/local/opnsense/scripts/frr/carp_event_handler');
+use OPNsense\NdpProxy\NdpProxy;
+
+$subsystem = $argv[1] ?? '';
+$type = $argv[2] ?? '';
+$model = new NdpProxy();
+
+if (
+    (!in_array($type, ['MASTER', 'BACKUP'], true)) ||  /* exclude INIT */
+    strpos($subsystem, '@') === false ||  /* only react to real CARP events */
+    $model->general->enabled->isEmpty() ||
+    $model->general->carp_depend_on->isEmpty()
+) {
+    exit(0);
 }
+
+$actions = [
+    'MASTER' => 'start',
+    'BACKUP' => 'stop',
+];
+
+mwexecfm('/usr/local/etc/rc.d/ndp-proxy-go ' . $actions[$type]);

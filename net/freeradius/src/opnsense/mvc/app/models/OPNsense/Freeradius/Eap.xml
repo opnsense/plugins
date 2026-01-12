@@ -9,6 +9,7 @@
             <Multiple>N</Multiple>
             <OptionValues>
                 <md5>MD5</md5>
+                <pwd>PWD</pwd>
                 <mschapv2>MSCHAPv2</mschapv2>
                 <peap>PEAP</peap>
                 <tls>TLS</tls>
@@ -37,6 +38,14 @@
             <Type>cert</Type>
             <Required>N</Required>
         </certificate>
+        <enable_pwd type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </enable_pwd>
+        <pwd_serverid type="TextField">
+            <default>theserver@example.com</default>
+            <Required>Y</Required>
+        </pwd_serverid>
         <crl type="CertificateField">
             <Type>crl</Type>
             <Required>N</Required>

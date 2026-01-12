@@ -80,6 +80,7 @@ smtpd_banner = $myhostname ESMTP Postfix
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.message_size_limit') and OPNsense.postfix.general.message_size_limit != '' %}
 message_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
+mailbox_size_limit = {{ OPNsense.postfix.general.message_size_limit }}
 {% endif %}
 {% if helpers.exists('OPNsense.postfix.general.masquerade_domains') and OPNsense.postfix.general.masquerade_domains != '' %}
 masquerade_domains = {{ OPNsense.postfix.general.masquerade_domains }}

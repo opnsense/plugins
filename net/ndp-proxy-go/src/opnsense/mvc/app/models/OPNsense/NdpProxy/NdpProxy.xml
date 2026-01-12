@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ndpproxy</mount>
     <description>NDP Proxy model</description>
-    <version>1.0</version>
+    <version>1.1</version>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -33,6 +33,9 @@
             <route_qps type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </route_qps>
+            <pf_qps type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+            </pf_qps>
             <pcap_timeout type="IntegerField">
                 <MinimumValue>1</MinimumValue>
             </pcap_timeout>
@@ -40,6 +43,10 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </debug>
+            <carp_depend_on type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </carp_depend_on>
         </general>
         <aliases>
             <alias type="ArrayField">
