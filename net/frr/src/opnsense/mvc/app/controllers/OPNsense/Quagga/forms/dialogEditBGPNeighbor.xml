@@ -258,6 +258,16 @@ te AS: Replace private ASNs with our ASN in outbound updates. Replace All AS: Re
     </grid_view>
   </field>
   <field>
+    <id>neighbor.capabilities</id>
+    <label>Enable capabilities</label>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Allow this neighbor to negotiate additional capabilities with its peer.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
