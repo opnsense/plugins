@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.50
+
+* Add BGP remove-private-AS (opnsense/plugins/issues/5038)
+
 1.49
 
 * Add hint about service reload / restart behaviour
