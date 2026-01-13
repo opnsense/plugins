@@ -221,6 +221,7 @@
     <id>neighbor.removeprivateas</id>
     <label>Remove Private AS</label>
     <type>dropdown</type>
+    <advanced>true</advanced>
     <help>Configure how ASNs are propagated in outbound updates. Depending on selection, they can be removed or replaced.</help>
     <grid_view>
       <visible>false</visible>
