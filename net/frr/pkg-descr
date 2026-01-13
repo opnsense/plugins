@@ -14,15 +14,17 @@ Plugin Changelog
 
 1.50
 
-* Add BGP remove-private-AS (opnsense/plugins/issues/5038)
+* Add BGP remove-private-AS (contributed by rfrederick) (opnsense/plugins/pull/5090)
+* Fix watchfrr service handling (contributed by Andy Binder) (opnsense/plugins/pull/4712 and 5132)
+* Add capability support for BGP neighbors (contributed by Shelldog95) (opnsense/plugins/pull/5128)
+* Prevent errors in diagnostics view when a frr daemon is not started (opnsense/plugins/pull/5119)
 
 1.49
 
-* Add hint about service reload / restart behaviour
-* Fix SNMP OSPF argument flags in RC configuration file
-* Fix STATIC template interface issue
+* Add hint about service reload / restart behaviour (opnsense/plugins/pull/5022)
+* Fix SNMP OSPF argument flags in RC configuration file (opnsense/plugins/pull/5025)
+* Fix STATIC template interface issue (opnsense/plugins/pull/5019)
 * Replace shell_exec() with mwexecfm()
-* Prevent errors in diagnostics view when a frr daemon is not started
 
 1.48
 
