@@ -224,7 +224,7 @@
     <help>Remove Private AS: Remove Private ASNs in outbound updates. Remove All AS: Remove all ASNs in outbound updates. Replace Priva
 te AS: Replace private ASNs with our ASN in outbound updates. Replace All AS: Replace all ASNs with our ASN in outbound updates.</help>
     <grid_view>
-      <ignore>true</ignore>
+      <visible>false</visible>
     </grid_view>
   </field>
   <field>
