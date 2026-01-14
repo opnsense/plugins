@@ -1,0 +1,7 @@
+The ISC Dynamic Host Configuration Protocol Distribution provides a
+freely redistributable reference implementation of all aspects of the
+DHCP protocol.
+
+This plugin implements the DHCPv4 and DHCPv6 server in OPNsense, which
+used to be the standard implementation of DHCP until better alternatives
+such as Dnsmasq and Kea were supplied.

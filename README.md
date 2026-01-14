@@ -55,6 +55,7 @@ net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service
+net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
 net/ndproxy -- Neighbor Discovery Proxy
