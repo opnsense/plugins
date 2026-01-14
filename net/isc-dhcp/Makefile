@@ -1,5 +1,5 @@
 PLUGIN_NAME=		isc-dhcp
-PLUGIN_VERSION=		0.1
+PLUGIN_VERSION=		0.2
 PLUGIN_COMMENT=		ISC DHCPv4/v6 server
 PLUGIN_DEPENDS=		isc-dhcp44-server
 PLUGIN_MAINTAINER=	franco@opnsense.org
