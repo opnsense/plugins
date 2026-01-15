@@ -54,7 +54,7 @@ net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
-net/igmp-proxy -- IGMP-Proxy Service
+net/igmp-proxy -- IGMP-Proxy Service (not maintained)
 net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
@@ -71,7 +71,7 @@ net/turnserver -- The coturn STUN/TURN Server
 net/udpbroadcastrelay -- Control udpbroadcastrelay processes
 net/upnp -- UPnP IGD & PCP/NAT-PMP Service
 net/vnstat -- Network traffic monitor
-net/wol -- Wake on LAN Service
+net/wol -- Wake on LAN Service (not maintained)
 net/zerotier -- Virtual Networks That Just Work (not maintained)
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
@@ -105,11 +105,11 @@ sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
-sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/dmidecode -- Display hardware information on the dashboard (not maintained)
 sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud
@@ -117,7 +117,7 @@ sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
 sysutils/sftp-backup -- Backup configurations using SFTP
-sysutils/smart -- SMART tools
+sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
