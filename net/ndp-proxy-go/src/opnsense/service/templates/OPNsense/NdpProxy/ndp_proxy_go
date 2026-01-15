@@ -2,6 +2,9 @@
 {% set general = helpers.getNodeByTag('OPNsense.ndpproxy.general') %}
 {% if general.enabled|default("0") == "1" and general.upstream and general.downstream %}
 ndp_proxy_go_enable="YES"
+{%     if general.carp_depend_on %}
+ndp_proxy_go_check_carp="YES"
+{%     endif %}
 ndp_proxy_go_upstream="{{ helpers.physical_interface(general.upstream) }}"
 {%     set downstream_interfaces = [] %}
 {%     for interface in general.downstream.split(',') %}
@@ -29,6 +32,9 @@ ndp_proxy_go_cache_file="/var/db/ndpproxy/cache.json"
 {%     endif %}
 {%     if general.route_qps %}
 {%         do flags.append('--route-qps ' ~ general.route_qps) %}
+{%     endif %}
+{%     if general.pf_qps %}
+{%         do flags.append('--pf-qps ' ~ general.pf_qps) %}
 {%     endif %}
 {%     if general.pcap_timeout %}
 {%         do flags.append('--pcap-timeout ' ~ general.pcap_timeout ~ 'ms') %}
