@@ -3,6 +3,5 @@ PLUGIN_VERSION=		2.5
 PLUGIN_REVISION=	3
 PLUGIN_DEPENDS=		wol
 PLUGIN_COMMENT=		Wake on LAN Service
-PLUGIN_MAINTAINER=	franco@opnsense.org
 
 .include "../../Mk/plugins.mk"
