@@ -684,6 +684,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Hurricane Electric DDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_he_ddns</style>
+    </field>
+    <field>
+        <id>validation.dns_he_ddns_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Infoblox</label>
         <type>header</type>
         <style>table_dns table_dns_infoblox</style>
