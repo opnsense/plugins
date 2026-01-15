@@ -218,6 +218,16 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.removeprivateas</id>
+    <label>Remove Private AS</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Configure how ASNs are propagated in outbound updates. Depending on selection, they can be removed or replaced.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.allowas_in</id>
     <label>Allow AS In</label>
     <type>dropdown</type>
@@ -243,6 +253,16 @@
     <type>dropdown</type>
     <advanced>true</advanced>
     <help>Keeps specified attributes (like MED, AS-Path, etc.) unchanged in updates to the neighbor.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.capabilities</id>
+    <label>Enable capabilities</label>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Allow this neighbor to negotiate additional capabilities with its peer.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>

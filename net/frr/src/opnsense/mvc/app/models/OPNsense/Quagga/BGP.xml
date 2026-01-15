@@ -108,6 +108,14 @@
                 </connecttimer>
                 <defaultoriginate type="BooleanField"/>
                 <asoverride type="BooleanField"/>
+                <removeprivateas type="OptionField">
+                    <OptionValues>
+                        <removeprivateas value="remove-private-AS">Remove Private AS</removeprivateas>
+                        <removeallas value="remove-private-AS all">Remove All AS</removeallas>
+                        <replaceprivateas value="remove-private-AS replace-AS">Replace Private AS</replaceprivateas>
+                        <replaceallas value="remove-private-AS all replace-AS">Replace All AS</replaceallas>
+                    </OptionValues>
+                </removeprivateas>
                 <allowas_in type="OptionField">
                     <OptionValues>
                         <val1 value="1">1</val1>
@@ -131,6 +139,15 @@
                         <med>med</med>
                     </OptionValues>
                 </attributeunchanged>
+                <capabilities type="OptionField">
+                    <OptionValues>
+                        <extended-nexthop>extended-nexthop</extended-nexthop>
+                        <dynamic>dynamic</dynamic>
+                        <fqdn>fqdn</fqdn>
+                        <link-local>link-local</link-local>
+                    </OptionValues>
+                    <Multiple>Y</Multiple>
+                </capabilities>
                 <linkedPrefixlistIn type="ModelRelationField">
                     <Model>
                         <template>
