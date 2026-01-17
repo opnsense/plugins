@@ -534,6 +534,7 @@
                         <dns_zone>Zone.eu</dns_zone>
                         <dns_zoneedit>ZoneEdit</dns_zoneedit>
                         <dns_zonomi>zonomi.com</dns_zonomi>
+                        <dns_custom>Custom DNS API Script</dns_custom>
                     </OptionValues>
                 </dns_service>
                 <dns_sleep type="IntegerField">
@@ -1353,6 +1354,43 @@
                 <dns_scaleway_token type="TextField">
                     <Required>N</Required>
                 </dns_scaleway_token>
+                <dns_custom_script type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[a-zA-Z0-9_]{1,64}$/</Mask>
+                    <ValidationMessage>Script name should be alphanumeric with underscores, max 64 chars (e.g., dns_myapi or just myapi).</ValidationMessage>
+                </dns_custom_script>
+                <dns_custom_env1_name type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[A-Z][A-Z0-9_]{0,63}$/</Mask>
+                    <ValidationMessage>Environment variable name should be uppercase with underscores.</ValidationMessage>
+                </dns_custom_env1_name>
+                <dns_custom_env1_value type="TextField">
+                    <Required>N</Required>
+                </dns_custom_env1_value>
+                <dns_custom_env2_name type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[A-Z][A-Z0-9_]{0,63}$/</Mask>
+                    <ValidationMessage>Environment variable name should be uppercase with underscores.</ValidationMessage>
+                </dns_custom_env2_name>
+                <dns_custom_env2_value type="TextField">
+                    <Required>N</Required>
+                </dns_custom_env2_value>
+                <dns_custom_env3_name type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[A-Z][A-Z0-9_]{0,63}$/</Mask>
+                    <ValidationMessage>Environment variable name should be uppercase with underscores.</ValidationMessage>
+                </dns_custom_env3_name>
+                <dns_custom_env3_value type="TextField">
+                    <Required>N</Required>
+                </dns_custom_env3_value>
+                <dns_custom_env4_name type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[A-Z][A-Z0-9_]{0,63}$/</Mask>
+                    <ValidationMessage>Environment variable name should be uppercase with underscores.</ValidationMessage>
+                </dns_custom_env4_name>
+                <dns_custom_env4_value type="TextField">
+                    <Required>N</Required>
+                </dns_custom_env4_value>
                 <dns_zoneedit_id type="TextField">
                     <Required>N</Required>
                 </dns_zoneedit_id>

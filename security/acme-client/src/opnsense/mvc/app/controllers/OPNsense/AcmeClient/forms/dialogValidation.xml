@@ -2022,4 +2022,56 @@
         <label>API Key</label>
         <type>text</type>
     </field>
+    <field>
+        <label>Custom DNS API Script</label>
+        <type>header</type>
+        <style>table_dns table_dns_custom</style>
+    </field>
+    <field>
+        <id>validation.dns_custom_script</id>
+        <label>Script Name</label>
+        <type>text</type>
+        <help><![CDATA[Name of your custom acme.sh DNS API script (e.g., "dns_myapi" or just "myapi"). The script must be placed in /usr/local/share/examples/acme.sh/dnsapi/ directory.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_custom_env1_name</id>
+        <label>Environment Variable 1 Name</label>
+        <type>text</type>
+        <help><![CDATA[Optional environment variable name (e.g., "MY_API_KEY"). Must be uppercase.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_custom_env1_value</id>
+        <label>Environment Variable 1 Value</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env2_name</id>
+        <label>Environment Variable 2 Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env2_value</id>
+        <label>Environment Variable 2 Value</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env3_name</id>
+        <label>Environment Variable 3 Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env3_value</id>
+        <label>Environment Variable 3 Value</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env4_name</id>
+        <label>Environment Variable 4 Name</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_custom_env4_value</id>
+        <label>Environment Variable 4 Value</label>
+        <type>password</type>
+    </field>
 </form>
