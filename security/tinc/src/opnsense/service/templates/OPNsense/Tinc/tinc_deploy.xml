@@ -15,6 +15,7 @@
         <debuglevel>{{network.debuglevel}}</debuglevel>
         <pingtimeout>{{network.pingtimeout}}</pingtimeout>
         <StrictSubnets>{{network.StrictSubnets}}</StrictSubnets>
+        <disablesubnetroutes>{{network.disablesubnetroutes}}</disablesubnetroutes>
         <hosts>
             <host>
                 <hostname>{{network.hostname}}</hostname>
