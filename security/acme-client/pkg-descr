@@ -8,6 +8,16 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.12
+
+Added:
+* add support for Custom DNS API Script (#XXXX)
+
+Custom DNS API Script support allows users to specify their own acme.sh
+DNS API scripts for DNS-01 validation. This enables integration with DNS
+providers not already supported by the plugin, including internal DNS
+servers and custom DNS management APIs.
+
 4.11
 
 Added:
