@@ -1,4 +1,7 @@
-{% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
+{% set generalSettings = helpers.getNodeByTag('OPNsense.Nut.general') %}
+{% set server = generalSettings.mode|default("none") == "standalone" or
+    generalSettings.mode|default("none") == "netserver" %}
+{% if generalSettings.enable|default("0") == '1' and server %}
 nut_setup="/usr/local/opnsense/scripts/OPNsense/Nut/setup.sh"
 nut_enable="YES"
 {% else %}

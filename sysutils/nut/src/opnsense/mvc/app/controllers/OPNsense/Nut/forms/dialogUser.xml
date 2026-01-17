@@ -1,0 +1,52 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this user.</help>
+        <grid_view>
+            <width>20</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>user.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the username for this user.</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password for this user.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>user.actions</id>
+        <label>Actions</label>
+        <style>tokenize</style>
+        <separator>;</separator>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Actions allowed for this user.</help>
+    </field>
+    <field>
+        <id>user.instcmds</id>
+        <label>Commands</label>
+        <style>tokenize</style>
+        <separator>;</separator>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Instant commands allowed for this user.</help>
+    </field>
+    <field>
+        <id>user.upsmon</id>
+        <label>UPSMON Permissions</label>
+        <type>dropdown</type>
+        <help>Give this user actions required to access UPSMON either as a primary or secondary.</help>
+    </field>
+</form>

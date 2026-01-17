@@ -1,8 +1,11 @@
 <menu>
   <Services>
     <Nut cssClass="fa fa-battery-full fa-fw">
-      <Configuration order="10" url="/ui/nut/index"/>
-      <Diagnostics order="20" url="/ui/nut/diagnostics"/>
+      <General VisibleName="General Settings" order="10" url="/ui/nut/general"/>
+      <Users order="20" url="/ui/nut/users"/>
+      <Drivers VisibleName="UPS Drivers" order="30" url="/ui/nut/drivers"/>
+      <Monitors order="40" url="/ui/nut/monitors"/>
+      <Diagnostics order="50" url="/ui/nut/diagnostics"/>
     </Nut>
   </Services>
 </menu>

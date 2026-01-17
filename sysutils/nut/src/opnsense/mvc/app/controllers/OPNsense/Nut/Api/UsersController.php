@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Fabian Franz
+ *    Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
  *
  *    All rights reserved.
  *
@@ -32,8 +32,38 @@ namespace OPNsense\Nut\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-class SettingsController extends ApiMutableModelControllerBase
+class UsersController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Nut\Nut';
     protected static $internalModelName = 'nut';
+
+    public function searchUserAction()
+    {
+        return $this->searchBase("user", null, "username");
+    }
+
+    public function getUserAction($uuid = null)
+    {
+        return $this->getBase("user", "user", $uuid);
+    }
+
+    public function addUserAction()
+    {
+        return $this->addBase("user", "user");
+    }
+
+    public function setUserAction($uuid)
+    {
+        return $this->setBase("user", "user", $uuid);
+    }
+
+    public function delUserAction($uuid)
+    {
+        return $this->delBase("user", $uuid);
+    }
+
+    public function toggleUserAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("user", $uuid, $enabled);
+    }
 }

@@ -1,0 +1,53 @@
+<form>
+    <tab id="nut-general" description="General Settings">
+        <field>
+            <id>nut.general.enable</id>
+            <label>Enable Nut</label>
+            <type>checkbox</type>
+            <help>Enable or disable the nut service. If enabled, the system will shutdown when the UPS emits a low battery warning.</help>
+        </field>
+        <field>
+            <id>nut.general.mode</id>
+            <label>Service Mode</label>
+            <type>dropdown</type>
+            <help>Set the service mode.</help>
+        </field>
+        <field>
+            <id>nut.data_server.listen</id>
+            <label>Listen Address</label>
+            <style>tokenize</style>
+            <type>select_multiple</type>
+            <allownew>true</allownew>
+            <help>Set the addresses this service listens on. Only used in standalone and netserver modes</help>
+        </field>
+    </tab>
+    <tab id="nut-advanced" description="Advanced Settings">
+        <field>
+            <type>header</type>
+            <label>Service Settings</label>
+        </field>
+        <field>
+            <id>nut.general.extra_options</id>
+            <label>nut.conf Extra Options</label>
+            <style>tokenize</style>
+            <separator>;</separator>
+            <type>select_multiple</type>
+            <allownew>true</allownew>
+            <help>Set extra options for nut.conf.</help>
+        </field>
+        <field>
+            <type>header</type>
+            <label>Data Server Settings</label>
+        </field>
+        <field>
+            <id>nut.data_server.extra_options</id>
+            <label>upsd.conf Extra Options</label>
+            <style>tokenize</style>
+            <separator>;</separator>
+            <type>select_multiple</type>
+            <allownew>true</allownew>
+            <help>Set extra options for upsd.conf.</help>
+        </field>
+    </tab>
+    <activetab>nut-general</activetab>
+</form>

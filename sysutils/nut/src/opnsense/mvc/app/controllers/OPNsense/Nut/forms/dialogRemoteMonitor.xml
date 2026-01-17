@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <id>remote.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this UPS monitor.</help>
+        <grid_view>
+            <width>20</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>remote.ups_name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Enter the UPS to monitor.</help>
+    </field>
+    <field>
+        <id>remote.hostname</id>
+        <label>Server Address</label>
+        <type>text</type>
+        <allownew>true</allownew>
+        <help>Set the address of the upsd server the UPS is accessed at.</help>
+    </field>
+    <field>
+        <id>remote.port</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <allownew>true</allownew>
+        <help>Set the port the upsd server that manages the UPS is accessed at.</help>
+    </field>
+    <field>
+        <id>remote.power_value</id>
+        <label>Power Value</label>
+        <type>text</type>
+        <help>Set the number of power supplies of this system that the UPS feeds.</help>
+    </field>
+    <field>
+        <id>remote.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Set the username to access this UPS with.</help>
+    </field>
+    <field>
+        <id>remote.password</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Set the password to access this UPS with.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+</form>

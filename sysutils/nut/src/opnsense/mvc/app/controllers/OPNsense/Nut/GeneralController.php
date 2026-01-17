@@ -3,6 +3,8 @@
 /*
 
     Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+    Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
+
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -32,19 +34,17 @@
 
 namespace OPNsense\Nut;
 
-use OPNsense\Core\Backend;
-use OPNsense\Nut;
+use OPNsense\Base\IndexController;
 
 /**
-* Class IndexController
+* Class GeneralController
 * @package OPNsense/Nut
 */
-class IndexController extends \OPNsense\Base\IndexController
+class GeneralController extends IndexController
 {
     public function indexAction()
     {
-        $backend = new Backend();
-        $this->view->settings = $this->getForm("settings");
-        $this->view->pick('OPNsense/Nut/index');
+        $this->view->pick('OPNsense/Nut/general');
+        $this->view->generalForm = $this->getForm("general");
     }
 }

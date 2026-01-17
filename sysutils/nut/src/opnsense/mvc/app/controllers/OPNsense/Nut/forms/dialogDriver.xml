@@ -1,0 +1,37 @@
+<form>
+    <field>
+        <id>ups.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this UPS driver.</help>
+        <grid_view>
+            <width>20</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>ups.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set a name for this UPS.</help>
+    </field>
+    <field>
+        <id>ups.driver</id>
+        <label>Driver</label>
+        <type>text</type>
+        <help>Set the driver for this UPS.</help>
+    </field>
+    <field>
+        <id>ups.options</id>
+        <label>UPS Options</label>
+        <style>tokenize</style>
+        <separator>;</separator>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set options for for this driver driver.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+</form>

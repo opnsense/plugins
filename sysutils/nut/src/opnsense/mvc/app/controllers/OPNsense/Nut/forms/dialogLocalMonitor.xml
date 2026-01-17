@@ -1,0 +1,31 @@
+<form>
+    <field>
+        <id>local.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this UPS monitor.</help>
+        <grid_view>
+            <width>20</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>local.ups</id>
+        <label>UPS</label>
+        <type>dropdown</type>
+        <help>Select a local UPS to monitor.</help>
+    </field>
+    <field>
+        <id>local.user</id>
+        <label>User</label>
+        <type>dropdown</type>
+        <help>Select a local user to access this UPS with.</help>
+    </field>
+    <field>
+        <id>local.power_value</id>
+        <label>Power Value</label>
+        <type>text</type>
+        <help>Set the number of power supplies of this system that the UPS feeds.</help>
+    </field>
+</form>

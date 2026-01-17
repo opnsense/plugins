@@ -1,6 +1,8 @@
 {#
  # Copyright (C) 2017-2018 Michael Muenz <m.muenz@gmail.com>
  # Copyright (C) 2014-2017 Deciso B.V.
+ # Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
+ #
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
@@ -29,7 +31,7 @@
 
     $( document ).ready(function() {
 
-        var data_get_map = {'frm_nut':'/api/nut/settings/get'};
+        var data_get_map = {'frm_nut':'/api/nut/general/get'};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
@@ -53,7 +55,7 @@
                 var frm_id = $(this).closest("form").attr("id");
                 var frm_title = $(this).closest("form").attr("data-title");
                 // save data for General TAB
-                saveFormToEndpoint(url="/api/nut/settings/set", formid=frm_id, callback_ok=function(){
+                saveFormToEndpoint(url="/api/nut/general/set", formid=frm_id, callback_ok=function(){
                     // on correct save, perform restart, set progress animation when reloading
                     $("#"+frm_id+"_progress").addClass("fa fa-spinner fa-pulse");
                     ajaxCall(url="/api/nut/service/reconfigure", sendData={}, callback=function(data,status){
@@ -71,9 +73,9 @@
 </script>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
-    {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
+    {{ partial("layout_partials/base_tabs_header",['formData':generalForm]) }}
 </ul>
 
 <div class="content-box tab-content">
-    {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
+    {{ partial("layout_partials/base_tabs_content",['formData':generalForm]) }}
 </div>

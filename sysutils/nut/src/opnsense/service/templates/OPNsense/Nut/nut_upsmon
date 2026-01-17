@@ -1,4 +1,5 @@
-{% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
+{% set generalSettings = helpers.getNodeByTag('OPNsense.Nut.general') %}
+{% if generalSettings.enable|default("0") == '1' %}
 nut_upsmon_enable="YES"
 {% else %}
 nut_upsmon_enable="NO"

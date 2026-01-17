@@ -1,5 +1,7 @@
 {#
  # Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ # Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
+ #
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
@@ -24,30 +26,103 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-<ul class="nav nav-tabs" role="tablist"  id="maintabs">
-     <li class="active"><a data-toggle="tab" href="#diagnostics">{{ lang._('UPS Status') }}</a></li>
-</ul>
-
 <div class="content-box tab-content">
+    <div id="select_monitor">
+        <select aria-label="safe"
+            data-size="10"
+            id="monitor"
+            class="selectpicker"
+            data-container="body"
+            data-hint="Select a UPS to view"
+            data-none-selected-text="Select a UPS to view"
+            data-width="346px"
+            data-allownew="false"
+            data-sortable="false"
+            data-live-search="true"
+        ></select>
+    </div>
     <div id="diagnostics" class="tab-pane fade in active">
       <pre id="listdiagnostics"></pre>
     </div>
 </div>
 
 <script>
-
-    // Put API call into a function, needed for auto-refresh
     function update_diagnostics() {
-        ajaxCall(url="/api/nut/diagnostics/upsstatus", sendData={}, callback=function(data,status) {
-            $("#listdiagnostics").text(data['response']);
-        });
+
+        const selection = $("#monitor").selectpicker("val");
+        if (!selection || !selection.includes("_")) {
+            return
+        }
+        const [kind, uuid] = selection.split("_");
+        if (kind !== "local" && kind !== "remote") {
+            return;
+        }
+        ajaxCall(
+            `/api/nut/monitors/status_${kind}_monitor/${uuid}`,
+            {},
+            function(data, status) {
+                if (status == "success") {
+                    $("#listdiagnostics").text(data["response"]);
+                } else {
+                    $("#listdiagnostics").text(
+                        "NUT is not returning a status the selected UPS."
+                    );
+                }
+            }
+        );
     }
 
-    $( document ).ready(function() {
+    $(function() {
+        $("#monitor").each(function() { $(this).empty(); });
+        ajaxGet("/api/nut/monitors/search_local_monitor", {}, function(data, status) {
+            if (status == "success") {
+                let options = []
+                for (const monitor of data.rows) {
+                    if (monitor.enabled === "1") {
+                        const name = monitor["%ups"];
+                        const user = monitor["%user"];
+                        options.push(
+                            $("<option>")
+                                .val(`local_${monitor["uuid"]}`)
+                                .text(`${name} (${user}@localhost)`)
+                        );
+                    }
+                }
+                $("#monitor").append(
+                    $("<optgroup/>")
+                        .attr("label", "Local Monitors")
+                        .append(options)
+                );
+                $("#monitor").selectpicker("refresh");
+            }
+        });
+        ajaxGet("/api/nut/monitors/search_remote_monitor", {}, function(data, status) {
+            if (status == "success") {
+                let options = []
+                for (const monitor of data.rows) {
+                    if (monitor.enabled === "1") {
+                        const name = monitor["ups_name"];
+                        const user = monitor["username"];
+                        const hostname = monitor["hostname"];
+                        const port = monitor["port"];
+                        options.push(
+                            $("<option>")
+                                .val(`remote_${monitor["uuid"]}`)
+                                .text(`${name} (${user}@${hostname}:${port})`)
+                        );
+                    }
+                }
+                $("#monitor").append(
+                    $("<optgroup/>")
+                        .attr("label", "Remote Monitors")
+                        .append(options)
+                );
+                $("#monitor").selectpicker("refresh");
+            }
+        });
 
         // call function update_diagnostics with a auto-refresh of 2 seconds
         setInterval(update_diagnostics, 2000);
-
     });
 
 </script>

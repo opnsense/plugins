@@ -1,0 +1,17 @@
+<form>
+    <field>
+        <id>nut.monitoring.minimum_supplies</id>
+        <label>Minimum Supplies</label>
+        <type>text</type>
+        <help>Set required number of supplies for the system to keep running.</help>
+    </field>
+    <field>
+        <id>nut.monitoring.extra_options</id>
+        <label>Extra Options</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set extra options for upsmon.conf.</help>
+        <advanced>true</advanced>
+    </field>
+</form>

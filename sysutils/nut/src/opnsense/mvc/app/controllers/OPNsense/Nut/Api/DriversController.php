@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
  *
  *    All rights reserved.
  *
@@ -28,18 +28,42 @@
  *
  */
 
-namespace OPNsense\Nut;
+namespace OPNsense\Nut\Api;
 
-use OPNsense\Base\IndexController;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
-/**
-* Class DiagnosticsController
-* @package OPNsense/Nut
-*/
-class DiagnosticsController extends IndexController
+class DriversController extends ApiMutableModelControllerBase
 {
-    public function indexAction()
+    protected static $internalModelClass = '\OPNsense\Nut\Nut';
+    protected static $internalModelName = 'nut';
+
+    public function searchDriverAction()
     {
-        $this->view->pick('OPNsense/Nut/diagnostics');
+        return $this->searchBase("drivers.ups", null, "name");
+    }
+
+    public function getDriverAction($uuid = null)
+    {
+        return $this->getBase("ups", "drivers.ups", $uuid);
+    }
+
+    public function addDriverAction()
+    {
+        return $this->addBase("ups", "drivers.ups");
+    }
+
+    public function setDriverAction($uuid)
+    {
+        return $this->setBase("ups", "drivers.ups", $uuid);
+    }
+
+    public function delDriverAction($uuid)
+    {
+        return $this->delBase("drivers.ups", $uuid);
+    }
+
+    public function toggleDriverAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("drivers.ups", $uuid, $enabled);
     }
 }

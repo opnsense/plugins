@@ -1,7 +1,8 @@
 <?php
 
 /**
- *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ *    Copyright (C) 2017 Fabian Franz
+ *    Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
  *
  *    All rights reserved.
  *
@@ -28,18 +29,12 @@
  *
  */
 
-namespace OPNsense\Nut;
+namespace OPNsense\Nut\Api;
 
-use OPNsense\Base\IndexController;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
-/**
-* Class DiagnosticsController
-* @package OPNsense/Nut
-*/
-class DiagnosticsController extends IndexController
+class GeneralController extends ApiMutableModelControllerBase
 {
-    public function indexAction()
-    {
-        $this->view->pick('OPNsense/Nut/diagnostics');
-    }
+    protected static $internalModelClass = '\OPNsense\Nut\Nut';
+    protected static $internalModelName = 'nut';
 }

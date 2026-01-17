@@ -2,7 +2,11 @@
     <nut>
         <filename>Nut.js</filename>
         <endpoints>
-            <endpoint>/api/nut/*</endpoint>
+            <endpoint>/api/nut/service/status</endpoint>
+            <endpoint>/api/nut/monitors/search_local_monitor</endpoint>
+            <endpoint>/api/nut/monitors/search_remote_monitor</endpoint>
+            <endpoint>/api/nut/monitors/status_local_monitor</endpoint>
+            <endpoint>/api/nut/monitors/status_remote_monitor</endpoint>
         </endpoints>
         <translations>
             <title>NUT</title>
@@ -32,7 +36,8 @@
             <status_fsd>Forced Shutdown</status_fsd>
             <unconfigured>Nut is not started. Click to configure Nut.</unconfigured>
             <misconfigured>Nut is not returning a status. Click to reconfigure Nut.</misconfigured>
-            <netclient_unconfigured>This widget only works with the Netclient driver. Click to configure the Netclient driver.</netclient_unconfigured>
+            <widget_unconfigured>A UPS to monitor must be selected in the widget's configuration.</widget_unconfigured>
+            <netclient_local_server>Local NUT Server</netclient_local_server>
             <netclient_remote_server>Remote NUT Server</netclient_remote_server>
             <time_hours>h</time_hours>
             <time_minutes>m</time_minutes>

@@ -1,6 +1,7 @@
 <acl>
   <page-nut>
     <name>Nut</name>
+    <description>Allow access to NUT</description>
     <patterns>
       <pattern>ui/nut/*</pattern>
       <pattern>api/nut/*</pattern>

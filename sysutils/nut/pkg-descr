@@ -9,6 +9,13 @@ and management interface.
 Plugin Changelog
 ----------------
 
+2.0
+
+* Add user-defined users support
+* Add netclient mode support
+* Add non-local UPS support
+* Add support for all UPS drivers
+
 1.9
 
 * Add dashboard widget

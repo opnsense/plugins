@@ -1,7 +1,8 @@
 <?php
 
 /*
- * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2026 Gabriel Smith <ga29smith@gmail.com>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,27 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Nut\Api;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Nut\Nut;
+namespace OPNsense\Nut;
 
-class DiagnosticsController extends ApiControllerBase
+use OPNsense\Base\IndexController;
+
+class UsersController extends IndexController
 {
-    public function upsstatusAction()
+    public function indexAction()
     {
-        $mdl = new Nut();
-        $host = '127.0.0.1';
-        if (!empty((string)$mdl->netclient->address)) {
-            $host = (string)$mdl->netclient->address;
-        }
-        $upsname = 'UPSName';
-        if (!empty((string)$mdl->general->name)) {
-            $upsname = (string)$mdl->general->name;
-        }
-        $backend = new Backend();
-        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
-        return array("response" => $response);
+        $this->view->pick('OPNsense/Nut/users');
+        $this->view->formDialogUser = $this->getForm("dialogUser");
+        $this->view->formGridUser = $this->getFormGrid("dialogUser");
     }
 }
