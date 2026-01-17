@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2026 OPNsense Community
+ * Copyright (C) 2026 Norm Brandinger
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,55 +33,47 @@ use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Custom DNS API Script
- * Allows users to specify their own acme.sh DNS API script
  * @package OPNsense\AcmeClient
  */
 class DnsCustom extends Base implements LeValidationInterface
 {
-    /**
-     * Prepare custom DNS validation
-     * Sets environment variables for custom DNS script
-     */
     public function prepare()
     {
-        // Get the custom script name
-        $script_name = trim((string)$this->config->dns_custom_script);
+        $scriptName = trim((string)$this->config->dns_custom_script);
 
-        // If no script name provided, log error and return
-        if (empty($script_name)) {
+        if (empty($scriptName)) {
             LeUtils::log_error("DnsCustom: No custom DNS script name provided");
             return;
         }
 
         // Ensure script name starts with dns_
-        if (strpos($script_name, 'dns_') !== 0) {
-            $script_name = 'dns_' . $script_name;
+        if (strpos($scriptName, 'dns_') !== 0) {
+            $scriptName = 'dns_' . $scriptName;
         }
 
         // Override the dns_service in acme_args with custom script name
         $found = false;
         foreach ($this->acme_args as $key => $arg) {
             if (preg_match('/^--dns\s/', $arg) || strpos($arg, '--dns ') === 0) {
-                $this->acme_args[$key] = LeUtils::execSafe('--dns %s', $script_name);
+                $this->acme_args[$key] = LeUtils::execSafe('--dns %s', $scriptName);
                 $found = true;
                 break;
             }
         }
 
-        // If --dns arg wasn't found, add it
         if (!$found) {
-            $this->acme_args[] = LeUtils::execSafe('--dns %s', $script_name);
+            $this->acme_args[] = LeUtils::execSafe('--dns %s', $scriptName);
         }
 
-        // Set optional environment variables if provided
-        $env_vars = [
+        // Set optional environment variables
+        $envVars = [
             ['dns_custom_env1_name', 'dns_custom_env1_value'],
             ['dns_custom_env2_name', 'dns_custom_env2_value'],
             ['dns_custom_env3_name', 'dns_custom_env3_value'],
             ['dns_custom_env4_name', 'dns_custom_env4_value'],
         ];
 
-        foreach ($env_vars as $env) {
+        foreach ($envVars as $env) {
             $name = trim((string)$this->config->{$env[0]});
             $value = trim((string)$this->config->{$env[1]});
             if (!empty($name) && !empty($value)) {
