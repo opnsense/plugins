@@ -10,6 +10,12 @@
         <help>Enable NetBird</help>
     </field>
     <field>
+        <id>settings.general.enablecarp</id>
+        <label>Enable CARP Failover Support</label>
+        <type>checkbox</type>
+        <help>When enabled, NetBird interfaces will start on MASTER state and stop on BACKUP state.</help>
+    </field>
+    <field>
         <id>settings.general.wireguardPort</id>
         <label>WireGuard Port</label>
         <type>text</type>
