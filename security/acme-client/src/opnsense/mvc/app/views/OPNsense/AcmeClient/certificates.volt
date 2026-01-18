@@ -17,7 +17,7 @@ are permitted provided that the following conditions are met:
     this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -141,7 +141,131 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         const grid_certificates = $("#grid-certificates").UIBootgrid($.extend(gridParams, { options: gridopt }));
 
-        $("#grid_certificates").on("loaded.rs.jquery.bootgrid", function (e)
+        // edit dialog id to use
+        var editDlg = $("#grid-certificates").attr('data-editDialog');
+        var gridId = "grid-certificates";
+
+        /**
+         * Bind custom command handlers ONCE using namespaced events.
+         * These are bound to document to use event delegation, with namespaces
+         * to allow clean unbinding and prevent duplicate handlers.
+         * stopPropagation() prevents Tabulator row selection from intercepting clicks.
+         */
+
+        // toggle item
+        $(document).off("click.acme.toggle").on("click.acme.toggle", "#grid-certificates .command-toggle", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['toggle'] != undefined) {
+                var uuid = $(this).data("row-id");
+                $(this).addClass("fa-spinner fa-pulse");
+                ajaxCall(url=gridParams['toggle'] + uuid,
+                    sendData={}, callback=function(data, status) {
+                        std_bootgrid_reload(gridId);
+                    });
+            } else {
+                console.log("[grid] action toggle missing");
+            }
+        });
+
+        // sign cert
+        $(document).off("click.acme.sign").on("click.acme.sign", "#grid-certificates .command-sign", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['sign'] != undefined) {
+                var uuid = $(this).data("row-id");
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        // Handle HAProxy integration (no-op if not applicable)
+                        ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data, status) {
+                            ajaxCall(url=gridParams['sign'] + uuid, sendData={}, callback=function(data, status) {
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                        });
+                    });
+            } else {
+                console.log("[grid] action sign missing");
+            }
+        });
+
+        // revoke cert
+        $(document).off("click.acme.revoke").on("click.acme.revoke", "#grid-certificates .command-revoke", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['revoke'] != undefined) {
+                var uuid = $(this).data("row-id");
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    '{{ lang._('Revoke selected certificate?') }}',
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['revoke'] + uuid,
+                            sendData={}, callback=function(data, status) {
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    }, 'danger');
+            } else {
+                console.log("[grid] action revoke missing");
+            }
+        });
+
+        // remove private key
+        $(document).off("click.acme.removekey").on("click.acme.removekey", "#grid-certificates .command-removekey", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['removekey'] != undefined) {
+                var uuid = $(this).data("row-id");
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    '{{ lang._('Really remove the private key?%s%sThe certificate will be completely reset. This is useful when the private key has been compromised or when you have changed the key options and want to regenerate the private key.%sNote that you have to revalidate the certificate afterwards in order to create a new private key and a matching certificate.') | format('<br/>', '<br/>', '<br/>') }}',
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['removekey'] + uuid,
+                            sendData={}, callback=function(data, status) {
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    }, 'danger');
+            } else {
+                console.log("[grid] action removekey missing");
+            }
+        });
+
+        // run automation
+        $(document).off("click.acme.automation").on("click.acme.automation", "#grid-certificates .command-automation", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['automation'] != undefined) {
+                var uuid = $(this).data("row-id");
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    '{{ lang._('Rerun all automations for the selected certificate?') }}',
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['automation'] + uuid,
+                            sendData={}, callback=function(data, status) {
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+            } else {
+                console.log("[grid] action automation missing");
+            }
+        });
+
+        // import certificate into trust storage
+        $(document).off("click.acme.import").on("click.acme.import", "#grid-certificates .command-import", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            if (gridParams['import'] != undefined) {
+                var uuid = $(this).data("row-id");
+                stdDialogConfirm('{{ lang._('Confirmation Required') }}',
+                    '{{ lang._('(Re-) import the selected certificate and associated CA certificates into the trust storage?') }}',
+                    '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
+                        ajaxCall(url=gridParams['import'] + uuid,
+                            sendData={}, callback=function(data, status) {
+                                $("#"+gridId).bootgrid("reload");
+                            });
+                    });
+            } else {
+                console.log("[grid] action import missing");
+            }
+        });
+
+        grid_certificates.on("loaded.rs.jquery.bootgrid", function (e)
         {
             // toggle all rendered tooltips (once for all)
             $('.bootgrid-tooltip').tooltip();
@@ -154,12 +278,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
-            // edit dialog id to use
-            var editDlg = $(this).attr('data-editDialog');
-            var gridId = $(this).attr('id');
-
             // link Add new to child button with data-action = add
-            $(this).find("*[data-action=add]").click(function(){
+            $(this).find("*[data-action=add]").off('click').on('click', function(){
                 if ( gridParams['get'] != undefined && gridParams['add'] != undefined) {
                     var urlMap = {};
                     urlMap['frm_' + editDlg] = gridParams['get'];
@@ -187,7 +307,7 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // link delete selected items action
-            $(this).find("*[data-action=deleteSelected]").click(function(){
+            $(this).find("*[data-action=deleteSelected]").off('click').on('click', function(){
                 if ( gridParams['del'] != undefined) {
                     stdDialogConfirm('{{ lang._('Confirm removal') }}',
                         '{{ lang._('Do you want to remove the selected item?') }}',
@@ -209,19 +329,11 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
 
-        });
-
-        /**
-         * copy actions for items from opnsense_bootgrid_plugin.js
-         */
-        grid_certificates.on("loaded.rs.jquery.bootgrid", function(){
-            // edit dialog id to use
-            var editDlg = $(this).attr('data-editDialog');
-            var gridId = $(this).attr('id');
-
-            // edit item
-            grid_certificates.find(".command-edit").on("click", function(e)
+            // edit item - UIBootgrid handles this, but we override for custom dialog handling
+            grid_certificates.find(".command-edit").off('click').on("click", function(e)
             {
+                e.stopPropagation();
+                e.preventDefault();
                 if (editDlg != undefined && gridParams['get'] != undefined) {
                     var uuid = $(this).data("row-id");
                     var urlMap = {};
@@ -254,8 +366,10 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // copy item, save as new
-            grid_certificates.find(".command-copy").on("click", function(e)
+            grid_certificates.find(".command-copy").off('click').on("click", function(e)
             {
+                e.stopPropagation();
+                e.preventDefault();
                 if (editDlg != undefined && gridParams['get'] != undefined) {
                     var uuid = $(this).data("row-id");
                     var urlMap = {};
@@ -288,8 +402,10 @@ POSSIBILITY OF SUCH DAMAGE.
             });
 
             // delete item
-            grid_certificates.find(".command-delete").on("click", function(e)
+            grid_certificates.find(".command-delete").off('click').on("click", function(e)
             {
+                e.stopPropagation();
+                e.preventDefault();
                 if (gridParams['del'] != undefined) {
                     var uuid=$(this).data("row-id");
                     stdDialogConfirm('{{ lang._('Confirm removal') }}',
@@ -303,119 +419,6 @@ POSSIBILITY OF SUCH DAMAGE.
                     });
                 } else {
                     console.log("[grid] action del missing")
-                }
-            });
-
-            // toggle item
-            grid_certificates.find(".command-toggle").on("click", function(e)
-            {
-                if (gridParams['toggle'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    $(this).addClass("fa-spinner fa-pulse");
-                    ajaxCall(url=gridParams['toggle'] + uuid,
-                        sendData={},callback=function(data,status){
-                            // reload grid after toggle
-                            std_bootgrid_reload(gridId);
-                        });
-                } else {
-                    console.log("[grid] action toggle missing")
-                }
-            });
-
-            // sign cert
-            grid_certificates.find(".command-sign").on("click", function(e)
-            {
-                if (gridParams['sign'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Forcefully issue or renew the selected certificate?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        // Handle HAProxy integration (no-op if not applicable)
-                        ajaxCall(url="/api/acmeclient/settings/fetch_ha_proxy_integration", sendData={}, callback=function(data,status) {
-                            ajaxCall(url=gridParams['sign'] + uuid,sendData={},callback=function(data,status){
-                                // reload grid after sign
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                        });
-                    });
-                } else {
-                    console.log("[grid] action sign missing")
-                }
-            });
-
-            // revoke cert
-            grid_certificates.find(".command-revoke").on("click", function(e)
-            {
-                if (gridParams['revoke'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Revoke selected certificate?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        ajaxCall(url=gridParams['revoke'] + uuid,
-                            sendData={},callback=function(data,status){
-                                // reload grid after sign
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                    }, 'danger');
-                } else {
-                    console.log("[grid] action revoke missing")
-                }
-            });
-
-            // remove private key
-            grid_certificates.find(".command-removekey").on("click", function(e)
-            {
-                if (gridParams['removekey'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Really remove the private key?%s%sThe certificate will be completely reset. This is useful when the private key has been compromised or when you have changed the key options and want to regenerate the private key.%sNote that you have to revalidate the certificate afterwards in order to create a new private key and a matching certificate.') | format('<br/>', '<br/>', '<br/>') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        ajaxCall(url=gridParams['removekey'] + uuid,
-                            sendData={},callback=function(data,status){
-                                // reload grid after sign
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                    }, 'danger');
-                } else {
-                    console.log("[grid] action removekey missing")
-                }
-            });
-
-            // run automation
-            grid_certificates.find(".command-automation").on("click", function(e)
-            {
-                if (gridParams['automation'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Rerun all automations for the selected certificate?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        ajaxCall(url=gridParams['automation'] + uuid,
-                            sendData={},callback=function(data,status){
-                                // reload grid after sign
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                    });
-                } else {
-                    console.log("[grid] action automation missing")
-                }
-            });
-
-            // import certificate into trust storage
-            grid_certificates.find(".command-import").on("click", function(e)
-            {
-                if (gridParams['import'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('(Re-) import the selected certificate and associated CA certificates into the trust storage?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        ajaxCall(url=gridParams['import'] + uuid,
-                            sendData={},callback=function(data,status){
-                                // reload grid after sign
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                    });
-                } else {
-                    console.log("[grid] action import missing")
                 }
             });
 
