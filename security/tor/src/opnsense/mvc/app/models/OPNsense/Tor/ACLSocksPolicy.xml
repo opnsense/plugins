@@ -1,31 +1,31 @@
 <model>
-  <mount>//OPNsense/tor/aclsockspolicy</mount>
-  <description>ACL for Socks port</description>
-  <items>
-    <policy type="ArrayField">
-      <enabled type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </enabled>
-      <type type="OptionField">
-        <Default>v6</Default>
-        <Required>Y</Required>
-        <OptionValues>
-          <v4>IPv4</v4>
-          <v6>IPv6</v6>
-        </OptionValues>
-      </type>
-      <network type="NetworkField">
-        <Required>Y</Required>
-      </network>
-      <action type="OptionField">
-          <Default>accept</Default>
-          <Required>Y</Required>
-          <OptionValues>
-            <accept>Accept</accept>
-            <reject>Reject</reject>
-          </OptionValues>
-      </action>
-    </policy>
-  </items>
+    <mount>//OPNsense/tor/aclsockspolicy</mount>
+    <description>ACL for Socks port</description>
+    <items>
+        <policy type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <type type="OptionField">
+                <Default>v6</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <v4>IPv4</v4>
+                    <v6>IPv6</v6>
+                </OptionValues>
+            </type>
+            <network type="NetworkField">
+                <Required>Y</Required>
+            </network>
+            <action type="OptionField">
+                <Default>accept</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <accept>Accept</accept>
+                    <reject>Reject</reject>
+                </OptionValues>
+            </action>
+        </policy>
+    </items>
 </model>
