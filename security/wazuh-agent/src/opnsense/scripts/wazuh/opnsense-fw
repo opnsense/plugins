@@ -122,7 +122,7 @@ def main(params):
                 "command": "check_keys",
                 "parameters":{
                    unique_key = "%s-%s" % (event['parameters']['alert']['rule']['id'], srcip)
-		   "keys": [unique_key] 
+		   "keys": [unique_key]
                 }
             }))
             sys.stdout.flush()
