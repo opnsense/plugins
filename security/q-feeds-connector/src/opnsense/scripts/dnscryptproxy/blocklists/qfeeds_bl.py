@@ -88,5 +88,3 @@ elif os.path.isdir(dnscrypt_proxy_dir):
 	# DNSCrypt-proxy is installed but 'qf' is not selected - remove the file if it exists
 	if os.path.exists(qfeeds_blacklist_file):
 		os.remove(qfeeds_blacklist_file)
-
-

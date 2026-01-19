@@ -129,7 +129,7 @@ class QFeedsActions:
             subprocess.run([script_path], capture_output=True, text=True)
             # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
             # Only if DNSCrypt-proxy is installed (directory exists)
-            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'], 
+            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'],
                                   capture_output=True, text=True)
             if result.returncode == 0:
                 yield 'update dnscrypt-proxy blocklist'
