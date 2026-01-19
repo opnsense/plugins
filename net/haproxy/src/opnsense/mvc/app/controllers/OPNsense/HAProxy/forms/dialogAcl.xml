@@ -88,7 +88,6 @@
         <type>text</type>
         <help><![CDATA[HTTP host header contains string (substring match)]]></help>
     </field>
-
     <field>
         <label>Parameters</label>
         <type>header</type>

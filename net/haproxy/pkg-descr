@@ -13,6 +13,9 @@ Added:
 * add new condition: HTTP method
 * support custom HTTP status code in "http-request deny" rules
 
+Changed:
+* upgrade to HAProxy 3.2 release series (#5147)
+
 4.6
 
 Changed:
