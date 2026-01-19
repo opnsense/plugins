@@ -15,9 +15,6 @@
             <Default>4949</Default>
             <Required>Y</Required>
         </port>
-        <allowednetworks type="CSVListField">
-            <Default></Default>
-            <Required>N</Required>
-        </allowednetworks>
+        <allowednetworks type="CSVListField"/>
     </items>
 </model>
