@@ -7,18 +7,9 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <myhostname type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </myhostname>
-        <mydomain type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </mydomain>
-        <myorigin type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </myorigin>
+        <myhostname type="TextField"/>
+        <mydomain type="TextField"/>
+        <myorigin type="TextField"/>
         <inet_interfaces type="TextField">
             <Default>all</Default>
             <Required>Y</Required>
@@ -37,27 +28,21 @@
             </OptionValues>
         </ip_version>
         <bind_address type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv4</AddressFamily>
         </bind_address>
         <bind_address6 type="NetworkField">
-            <Required>N</Required>
             <AddressFamily>ipv6</AddressFamily>
         </bind_address6>
         <mynetworks type="CSVListField">
             <Default>127.0.0.0/8,[::ffff:127.0.0.0]/104,[::1]/128</Default>
             <Required>Y</Required>
         </mynetworks>
-        <banner type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </banner>
+        <banner type="TextField"/>
         <message_size_limit type="IntegerField">
             <Default>51200000</Default>
             <Required>Y</Required>
         </message_size_limit>
         <masquerade_domains type="CSVListField">
-            <Required>N</Required>
             <Mask>/^([0-9a-z\.\-\_]{1,128})(,[0-9a-z\.\-\_]{1,128})*$/ui</Mask>
             <ValidationMessage>Only up to 128 of the following characters are allowed: 0-9a-zA-Z.-_</ValidationMessage>
         </masquerade_domains>
@@ -85,11 +70,9 @@
         </tlswrappermode>
         <certificate type="CertificateField">
             <Type>cert</Type>
-            <Required>N</Required>
         </certificate>
         <ca type="CertificateField">
             <Type>ca</Type>
-            <Required>N</Required>
         </ca>
         <smtpclient_security type="OptionField">
             <Default>may</Default>
@@ -102,7 +85,6 @@
             </OptionValues>
         </smtpclient_security>
         <relayhost type="TextField">
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</Mask>
             <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
         </relayhost>
@@ -110,14 +92,8 @@
             <Default>0</Default>
             <Required>Y</Required>
         </smtpauth_enabled>
-        <smtpauth_user type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </smtpauth_user>
-        <smtpauth_password type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </smtpauth_password>
+        <smtpauth_user type="TextField"/>
+        <smtpauth_password type="TextField"/>
         <enforce_recipient_check type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -187,8 +163,6 @@
             <Required>Y</Required>
         </reject_unverified_recipient>
         <delay_warning_time type="IntegerField">
-            <Default>0</Default>
-            <Required>N</Required>
             <MinimumValue>0</MinimumValue>
             <MaximumValue>24</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 24 to activate - 0 or empty to disable.</ValidationMessage>
