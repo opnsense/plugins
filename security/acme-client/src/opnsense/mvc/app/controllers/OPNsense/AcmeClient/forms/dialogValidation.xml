@@ -2031,7 +2031,7 @@
         <id>validation.dns_technitium_token</id>
         <label>API Token</label>
         <type>password</type>
-        <help><![CDATA[Generate a token from Technitium user and grant rights to teh necessary zones.]]></help>
+        <help><![CDATA[Generate a token from Technitium user and grant rights to the necessary zones.]]></help>
     </field>
     <field>
         <id>validation.dns_technitium_hostname</id>
