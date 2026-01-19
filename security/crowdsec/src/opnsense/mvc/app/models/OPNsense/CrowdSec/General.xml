@@ -1,66 +1,54 @@
 <model>
-  <mount>//OPNsense/crowdsec/general</mount>
-  <description>CrowdSec general configuration</description>
-  <version>1.0.12</version>
-  <items>
-
-    <agent_enabled type="BooleanField">
-      <Default>1</Default>
-      <Required>Y</Required>
-    </agent_enabled>
-
-    <lapi_enabled type="BooleanField">
-      <Default>1</Default>
-      <Required>Y</Required>
-    </lapi_enabled>
-
-    <firewall_bouncer_enabled type="BooleanField">
-      <Default>1</Default>
-      <Required>Y</Required>
-    </firewall_bouncer_enabled>
-
-    <lapi_manual_configuration type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </lapi_manual_configuration>
-
-    <lapi_listen_address type="NetworkField">
-      <Default>127.0.0.1</Default>
-      <Required>Y</Required>
-      <NetMaskAllowed>N</NetMaskAllowed>
-    </lapi_listen_address>
-
-    <lapi_listen_port type="PortField">
-      <Default>8080</Default>
-      <Required>Y</Required>
-      <EnableWellKnown>N</EnableWellKnown>
-      <EnableRanges>N</EnableRanges>
-    </lapi_listen_port>
-
-    <rules_enabled type="BooleanField">
-      <Default>1</Default>
-      <Required>Y</Required>
-    </rules_enabled>
-
-    <rules_log type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </rules_log>
-
-    <rules_tag type="TextField">
-      <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
-      <ValidationMessage>A tag must only contain numbers and letters and must be between 1 and 63 characters.</ValidationMessage>
-    </rules_tag>
-
-    <enroll_key type="TextField">
-      <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
-      <ValidationMessage>The enrollment key can only contain numbers and letters and must be between 1 and 63 characters. Did you take it from app.crowdsec.net?</ValidationMessage>
-    </enroll_key>
-
-    <crowdsec_firewall_verbose type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </crowdsec_firewall_verbose>
-
-  </items>
+    <mount>//OPNsense/crowdsec/general</mount>
+    <description>CrowdSec general configuration</description>
+    <version>1.0.12</version>
+    <items>
+        <agent_enabled type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </agent_enabled>
+        <lapi_enabled type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </lapi_enabled>
+        <firewall_bouncer_enabled type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </firewall_bouncer_enabled>
+        <lapi_manual_configuration type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </lapi_manual_configuration>
+        <lapi_listen_address type="NetworkField">
+            <Default>127.0.0.1</Default>
+            <Required>Y</Required>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </lapi_listen_address>
+        <lapi_listen_port type="PortField">
+            <Default>8080</Default>
+            <Required>Y</Required>
+            <EnableWellKnown>N</EnableWellKnown>
+            <EnableRanges>N</EnableRanges>
+        </lapi_listen_port>
+        <rules_enabled type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </rules_enabled>
+        <rules_log type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </rules_log>
+        <rules_tag type="TextField">
+            <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
+            <ValidationMessage>A tag must only contain numbers and letters and must be between 1 and 63 characters.</ValidationMessage>
+        </rules_tag>
+        <enroll_key type="TextField">
+            <Mask>/^([0-9a-zA-Z]{1,63})$/u</Mask>
+            <ValidationMessage>The enrollment key can only contain numbers and letters and must be between 1 and 63 characters.</ValidationMessage>
+        </enroll_key>
+        <crowdsec_firewall_verbose type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </crowdsec_firewall_verbose>
+    </items>
 </model>
