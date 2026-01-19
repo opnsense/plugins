@@ -2031,14 +2031,14 @@
     </field>
     <field>
         <id>validation.dns_technitium_token</id>
-        <label>API token</label>
+        <label>API Token</label>
         <type>password</type>
         <help><![CDATA[Generate a token from Technitium user and grant rights to teh necessary zones.]]></help>
     </field>
     <field>
         <id>validation.dns_technitium_hostname</id>
-        <label>Technitium Hostname/ IP</label>
+        <label>Server URL</label>
         <type>text</type>
-        <help><![CDATA[EX: https://technitium:5380 where the port is optional.<br/><div class="text-info"><b>NOTE: </b>Remove the trailing / if it is present.</div>]]></help>
+        <help><![CDATA[The full server URL, for example https://technitium:5380. The port number is optional.<br/><div class="text-info"><b>NOTE: </b>Remove the trailing / if it is present.</div>]]></help>
     </field>
 </form>
