@@ -2013,8 +2013,6 @@
         <label>API Key</label>
         <type>text</type>
         <help><![CDATA[Please refer to the <a href="https://mijn.host/api/doc/">API documentation</a> for further information.]]></help>
-    </field>
-    <field>
         <label>scaleway</label>
         <type>header</type>
         <style>table_dns table_dns_scaleway</style>
