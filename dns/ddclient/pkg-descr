@@ -1,10 +1,16 @@
+This plugin offers dynamic DNS capabilities using a native backend
+or ddclient.  The native backend is the default implementation.
 ddclient is a Perl client used to update dynamic DNS entries for
 accounts on many dynamic DNS services.
 
-WWW: https://github.com/ddclient/ddclient
-
 Plugin Changelog
 ================
+
+1.29
+
+* Add native backend support for Hetzner DNS (contributed by Michael J. Arcan)
+* Add native backend support for dnspod.cn (contributed by Ansen)
+* Add Cloudflare DNS IP check option (contributed by GTechAlpha)
 
 1.28
 
