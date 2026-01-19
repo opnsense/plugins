@@ -10,12 +10,10 @@
                     <Required>Y</Required>
                 </enabled>
                 <username type="TextField">
-                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z._\-\+\@]){1,128}$/u</Mask>
                 </username>
                 <password type="TextField">
-                    <Default></Default>
                     <Required>Y</Required>
                     <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</Mask>
                 </password>

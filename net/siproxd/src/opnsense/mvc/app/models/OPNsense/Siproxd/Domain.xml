@@ -10,11 +10,9 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <Default></Default>
                     <Required>Y</Required>
                 </name>
                 <host type="TextField">
-                    <Default></Default>
                     <Required>Y</Required>
                 </host>
                 <port type="IntegerField">
