@@ -2,7 +2,7 @@
 {% set general = helpers.getNodeByTag('OPNsense.ndpproxy.general') %}
 {% if general.enabled|default("0") == "1" and general.upstream and general.downstream %}
 ndp_proxy_go_enable="YES"
-{%     if general.carp_depend_on %}
+{%     if general.carp_depend_on|default("0") == "1" %}
 ndp_proxy_go_check_carp="YES"
 {%     endif %}
 ndp_proxy_go_upstream="{{ helpers.physical_interface(general.upstream) }}"
