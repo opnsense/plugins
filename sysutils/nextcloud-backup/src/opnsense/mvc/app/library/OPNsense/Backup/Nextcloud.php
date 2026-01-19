@@ -152,7 +152,9 @@ class Nextcloud extends Base implements IBackupProvider
             $tmp_local_files = scandir('/conf/backup/');
             // Remove '.' and '..'
             foreach ($tmp_local_files as $tmp_local_file) {
-                if ($tmp_local_file === '.' || $tmp_local_file === '..') { continue; }
+                if ($tmp_local_file === '.' || $tmp_local_file === '..') {
+                    continue;
+                }
                 $local_files[] = $tmp_local_file;
             }
 

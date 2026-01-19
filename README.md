@@ -112,7 +112,7 @@ sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
-sysutils/nextcloud-backup -- Track config changes using NextCloud
+sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
