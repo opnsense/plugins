@@ -1324,6 +1324,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Timeweb Cloud DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_timeweb</style>
+    </field>
+    <field>
+        <id>validation.dns_timeweb_token</id>
+        <label>Timeweb Cloud API Token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Transip</label>
         <type>header</type>
         <style>table_dns table_dns_transip</style>
