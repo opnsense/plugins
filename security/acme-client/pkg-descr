@@ -12,6 +12,12 @@ Plugin Changelog
 
 Added:
 * new automation to upload to Zyxel GS1900 series switches (#5080)
+* add support for Technitium DNS API (#5111)
+* add support for Hurricane Electric DDNS API (#5138)
+* add support for Timeweb Cloud DNS API (#5149)
+
+Fixed:
+* fix mijn.host and scaleway DNS API settings (#5146)
 
 4.11
 
