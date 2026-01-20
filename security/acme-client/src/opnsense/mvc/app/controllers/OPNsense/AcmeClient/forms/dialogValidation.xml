@@ -684,6 +684,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>Hurricane Electric DDNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_he_ddns</style>
+    </field>
+    <field>
+        <id>validation.dns_he_ddns_key</id>
+        <label>Key</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Infoblox</label>
         <type>header</type>
         <style>table_dns table_dns_infoblox</style>
@@ -2033,5 +2043,22 @@
         <id>validation.dns_scaleway_token</id>
         <label>API Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <label>Technitium</label>
+        <type>header</type>
+        <style>table_dns table_dns_technitium</style>
+    </field>
+    <field>
+        <id>validation.dns_technitium_token</id>
+        <label>API Token</label>
+        <type>password</type>
+        <help><![CDATA[Generate a token from Technitium user and grant rights to the necessary zones.]]></help>
+    </field>
+    <field>
+        <id>validation.dns_technitium_hostname</id>
+        <label>Server URL</label>
+        <type>text</type>
+        <help><![CDATA[The full server URL, for example https://technitium:5380. The port number is optional.<br/><div class="text-info"><b>NOTE: </b>Remove the trailing / if it is present.</div>]]></help>
     </field>
 </form>

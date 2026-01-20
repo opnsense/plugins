@@ -473,6 +473,7 @@
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
+                        <dns_he_ddns>Hurricane Electric DDNS</dns_he_ddns>
                         <dns_infoblox>Infoblox</dns_infoblox>
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
                         <dns_internetbs>internetbs.net</dns_internetbs>
@@ -521,6 +522,7 @@
                         <dns_selfhost>Selfhost</dns_selfhost>
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
+                        <dns_technitium>Technitium</dns_technitium>
                         <dns_timeweb>Timeweb Cloud</dns_timeweb>
                         <dns_transip>Transip</dns_transip>
                         <dns_udr>united-domains Reselling</dns_udr>
@@ -747,6 +749,9 @@
                 <dns_he_password type="TextField">
                     <Required>N</Required>
                 </dns_he_password>
+                <dns_he_ddns_key type="TextField">
+                    <Required>N</Required>
+                </dns_he_ddns_key>
                 <dns_infoblox_credentials type="TextField">
                     <Required>N</Required>
                 </dns_infoblox_credentials>
@@ -1101,6 +1106,12 @@
                 <dns_simply_account_name type="TextField">
                     <Required>N</Required>
                 </dns_simply_account_name>
+                <dns_technitium_token type="TextField">
+                    <Required>N</Required>
+                </dns_technitium_token>
+                <dns_technitium_hostname type="TextField">
+                    <Required>N</Required>
+                </dns_technitium_hostname>
                 <dns_transip_username type="TextField">
                     <Required>N</Required>
                 </dns_transip_username>
@@ -1400,6 +1411,7 @@
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
+                        <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
@@ -1724,6 +1736,26 @@
                 <acme_vault_kvv2 type="BooleanField">
                     <Default>1</Default>
                 </acme_vault_kvv2>
+                <acme_zyxel_gs1900_host type="HostnameField">
+                    <Required>N</Required>
+                    <mask>/^.{1,1024}$/u</mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_zyxel_gs1900_host>
+                <acme_zyxel_gs1900_user type="TextField">
+                    <default>admin</default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_user>
+                <acme_zyxel_gs1900_password type="TextField">
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_password>
+                <acme_zyxel_gs1900_insecure type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_insecure>
+                <acme_zyxel_gs1900_reboot type="BooleanField">
+                    <default>0</default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_reboot>
             </action>
         </actions>
     </items>
