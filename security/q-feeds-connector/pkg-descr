@@ -2,9 +2,10 @@ Connector for Q-Feeds threat intel
 
 Plugin Changelog
 ================
+
 1.4
 
-* Feature: Added DNSCrypt-Proxy
+* Feature: Added DNSCrypt-Proxy integration
 
 1.3
 
