@@ -101,7 +101,6 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
@@ -121,7 +120,7 @@ sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor - Enterprise SASE & SSE platform (NGFW, SWG, CASB, ZTNA, SD-WAN)
 www/OPNProxy -- OPNsense proxy additions (not maintained)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
