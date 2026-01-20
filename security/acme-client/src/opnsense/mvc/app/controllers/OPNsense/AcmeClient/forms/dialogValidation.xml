@@ -1334,6 +1334,26 @@
         <type>password</type>
     </field>
     <field>
+        <label>Spaceship DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_spaceship</style>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_api_secret</id>
+        <label>API Secret</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_root_domain</id>
+        <label>Root Domain (optional)</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Timeweb Cloud DNS</label>
         <type>header</type>
         <style>table_dns table_dns_timeweb</style>
