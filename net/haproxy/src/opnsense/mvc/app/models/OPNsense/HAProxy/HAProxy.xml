@@ -1720,6 +1720,7 @@
                 <expression type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
+                        <stopping>HAProxy process is currently stopping</stopping>
                         <http_auth>HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
                         <hdr_beg>Host starts with</hdr_beg>
                         <hdr_end>Host ends with</hdr_end>
@@ -1738,6 +1739,8 @@
                         <cust_hdr_reg>HTTP Header regex</cust_hdr_reg>
                         <cust_hdr_sub>HTTP Header contains</cust_hdr_sub>
                         <http_method>HTTP Method</http_method>
+                        <wait_end>Inspection period is over (WAIT_END)</wait_end>
+                        <quic_enabled>QUIC transport protocol is enabled</quic_enabled>
                         <url_param>URL parameter contains</url_param>
                         <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
                         <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
