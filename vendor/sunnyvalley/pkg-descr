@@ -1,6 +1,15 @@
-This is the vendor repository package, please also install the actual os-sensei package which delivers the below-mentioned capabilities.
-Zenarmor is an enterprise network security and secure access platform, delivering advanced threat protection, content filtering, application-aware inspection, identity-based policy enforcement, and high-performance secure connectivity in a single, plug-and-secure deployment.
-Zenarmor integrates instantly and directly with OPNsense and can also be centrally managed through Zenconsole, enabling centralized policy management, multi-tenant administration, and identity provider (IdP) integration for consistent security enforcement across your organization's networks.
+This is the vendor repository package, please also install the actual
+os-sensei package which delivers the below-mentioned capabilities.
+
+Zenarmor is an enterprise network security and secure access platform,
+delivering advanced threat protection, content filtering, application-aware
+inspection, identity-based policy enforcement, and high-performance secure
+connectivity in a single, plug-and-secure deployment.
+
+Zenarmor integrates instantly and directly with OPNsense and can also be
+centrally managed through Zenconsole, enabling centralized policy management,
+multi-tenant administration, and identity provider (IdP) integration for
+consistent security enforcement across your organization's networks.
 
 Features and capabilities include:
 
