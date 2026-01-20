@@ -2745,6 +2745,14 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </description>
+                <type type="OptionField">
+                    <Required>Y</Required>
+                    <Default>dom</Default>
+                    <OptionValues>
+                        <dom>Domains (dom)</dom>
+                        <reg>Regular Expressions (reg)</reg>
+                    </OptionValues>
+                </type>
                 <content type="TextField">
                     <Required>Y</Required>
                 </content>

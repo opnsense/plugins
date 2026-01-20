@@ -13,6 +13,7 @@ Added:
 * add new condition: HTTP method
 * support custom HTTP status code in "http-request deny" rules
 * add new backend option to control PROXY protocol for health checks (#2909)
+* add support for new map file type: reg (#3641)
 
 Changed:
 * upgrade to HAProxy 3.2 release series (#5147)
