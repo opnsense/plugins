@@ -12,6 +12,11 @@ security, particularly in the academic community, including eduroam.
 Plugin Changelog
 ================
 
+1.10
+
+* Change max TLS version to 1.3 and allow min TLS version 1.3 (contributed by Joerg Werner)
+* Add option to enable EAP-PWD (contributed by Severin Schüller)
+
 1.9.28
 
 * Add Groups for VLAN assignment
