@@ -40,7 +40,7 @@ class AcmeZyxelGs1900 extends Base implements LeAutomationInterface
     {
         // Required parameters
         $this->acme_env['DEPLOY_ZYXEL_SWITCH_PASSWORD'] = (string)$this->config->acme_zyxel_gs1900_password;
-        
+
         // Optional Parameters
         if (!empty((string)$this->config->acme_zyxel_gs1900_host)) {
             $this->acme_env['DEPLOY_ZYXEL_SWITCH'] = (string)$this->config->acme_zyxel_gs1900_host;
@@ -56,7 +56,7 @@ class AcmeZyxelGs1900 extends Base implements LeAutomationInterface
         }
 
         $this->acme_args[] = '--deploy-hook zyxel_gs1900';
-        
+
         if ((string)$this->config->acme_zyxel_gs1900_insecure == 1) {
             array_push($this->acme_args, '--insecure');
         }

@@ -1738,22 +1738,22 @@
                 </acme_vault_kvv2>
                 <acme_zyxel_gs1900_host type="HostnameField">
                     <Required>N</Required>
-                    <mask>/^.{1,1024}$/u</mask>
+                    <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_zyxel_gs1900_host>
                 <acme_zyxel_gs1900_user type="TextField">
-                    <default>admin</default>
+                    <Default>admin</Default>
                     <Required>N</Required>
                 </acme_zyxel_gs1900_user>
                 <acme_zyxel_gs1900_password type="TextField">
                     <Required>N</Required>
                 </acme_zyxel_gs1900_password>
                 <acme_zyxel_gs1900_insecure type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>N</Required>
                 </acme_zyxel_gs1900_insecure>
                 <acme_zyxel_gs1900_reboot type="BooleanField">
-                    <default>0</default>
+                    <Default>0</Default>
                     <Required>N</Required>
                 </acme_zyxel_gs1900_reboot>
             </action>
