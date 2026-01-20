@@ -473,6 +473,7 @@
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
+                        <dns_he_ddns>Hurricane Electric DDNS</dns_he_ddns>
                         <dns_infoblox>Infoblox</dns_infoblox>
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
                         <dns_internetbs>internetbs.net</dns_internetbs>
@@ -747,6 +748,9 @@
                 <dns_he_password type="TextField">
                     <Required>N</Required>
                 </dns_he_password>
+                <dns_he_ddns_key type="TextField">
+                    <Required>N</Required>
+                </dns_he_ddns_key>
                 <dns_infoblox_credentials type="TextField">
                     <Required>N</Required>
                 </dns_infoblox_credentials>
