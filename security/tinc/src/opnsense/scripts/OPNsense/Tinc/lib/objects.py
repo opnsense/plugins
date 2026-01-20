@@ -70,6 +70,7 @@ class Network(NetwConfObject):
         self._payload['mode'] = 'switch'
         self._payload['PMTUDiscovery'] = 'yes'
         self._payload['StrictSubnets'] = 'no'
+        self._disablesubnetroutes = False
         self._hosts = list()
 
     def get_id(self):
@@ -84,6 +85,9 @@ class Network(NetwConfObject):
     def get_debuglevel(self):
         return self._payload['debuglevel'][1] if len(self._payload['debuglevel']) > 1 else '0'
 
+    def get_disablesubnetroutes(self):
+        return self._disablesubnetroutes
+
     def set_hosts(self, hosts):
         for host in hosts:
             hostObj = Host()
@@ -96,6 +100,9 @@ class Network(NetwConfObject):
 
     def set_StrictSubnets(self, value):
         self._payload['StrictSubnets'] = 'no' if value.text != '1' else 'yes'
+
+    def set_disablesubnetroutes(self, value):
+        self._disablesubnetroutes = value.text == '1'
 
     def config_text(self):
         result = list()
