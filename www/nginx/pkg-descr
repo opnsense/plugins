@@ -8,6 +8,10 @@ reuse, SSL offload and HTTP media streaming.
 Plugin Changelog
 ================
 
+1.36
+
+* Add optional HTTP/3 support with dynamic Alt-Svc (contributed by Jan Chlouba)
+
 1.35
 
 * Global options sendfile directive typo fix
