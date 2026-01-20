@@ -523,6 +523,7 @@
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
                         <dns_technitium>Technitium</dns_technitium>
+                        <dns_timeweb>Timeweb Cloud</dns_timeweb>
                         <dns_transip>Transip</dns_transip>
                         <dns_udr>united-domains Reselling</dns_udr>
                         <dns_unoeuro>UnoEuro</dns_unoeuro>
@@ -1117,6 +1118,9 @@
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_timeweb_token type="TextField">
+                    <Required>N</Required>
+                </dns_timeweb_token>
                 <dns_udr_user type="TextField">
                     <Required>N</Required>
                 </dns_udr_user>
