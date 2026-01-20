@@ -260,6 +260,11 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </ocsp>
+                <profile type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </profile>
                 <restartActions type="ModelRelationField">
                     <Model>
                         <actions>
