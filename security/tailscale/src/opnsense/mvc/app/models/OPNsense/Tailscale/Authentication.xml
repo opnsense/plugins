@@ -8,7 +8,7 @@
             <ValidationMessage>Please enter a valid URL</ValidationMessage>
         </loginServer>
         <preAuthKey type="TextField">
-            <Required>Y</Required>
+            <Required>N</Required>
         </preAuthKey>
     </items>
 </model>
