@@ -1079,6 +1079,15 @@
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </linkedMailer>
+                <healthCheckProxyProto type="OptionField">
+                    <Required>N</Required>
+                    <Default>backend</Default>
+                    <OptionValues>
+                        <backend>Follow Backend Pool settings [default]</backend>
+                        <enable>Enable for Health Check</enable>
+                        <disable>Disable for Health Check</disable>
+                    </OptionValues>
+                </healthCheckProxyProto>
                 <http2Enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>N</Required>

@@ -148,6 +148,13 @@
         <help><![CDATA[Select an e-mail alert configuration. An e-mail is sent when the state of a server changes.]]></help>
     </field>
     <field>
+        <id>backend.healthCheckProxyProto</id>
+        <label>Use Proxy Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option controls the emission of a PROXY protocol line with outgoing health checks. The default value is good for most situations. However, if either the server or the health check does not support the PROXY protocol, this option may be useful.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>HTTP(S) settings</label>
         <type>header</type>
         <style>mode_table table_http</style>
