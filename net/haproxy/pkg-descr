@@ -9,6 +9,7 @@ Plugin Changelog
 4.7
 
 Added:
+* add support for HTTP/3 over QUIC to frontends (#4341)
 * add new rule: http-request silent-drop
 * add new condition: HTTP method
 * support custom HTTP status code in "http-request deny" rules

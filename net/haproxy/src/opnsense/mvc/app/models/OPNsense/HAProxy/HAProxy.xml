@@ -515,9 +515,9 @@
                 <bind type="CSVListField">
                     <Required>Y</Required>
                     <Multiple>Y</Multiple>
-                    <Mask>/^((([0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</Mask>
+                    <Mask>/^((([quic4@|quic6@]*[0-9a-zA-Z._\-\*:\[\]]+:+[0-9]+(-[0-9]+)?|unix@[0-9a-z_\-]+)([,]){0,1}))*/u</Mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080, www.example.com:443 or unix@socket-name. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
+                    <ValidationMessage>Please provide a valid listen address, i.e. 127.0.0.1:8080, [::1]:8080, www.example.com:443, quic4@www.example.com or unix@socket-name. Port range as start-end, i.e. 127.0.0.1:1220-1240.</ValidationMessage>
                 </bind>
                 <bindOptions type="TextField">
                     <Required>N</Required>
@@ -853,6 +853,7 @@
                     <Sorted>Y</Sorted>
                     <Multiple>Y</Multiple>
                     <OptionValues>
+                        <h3>HTTP/3</h3>
                         <h2>HTTP/2</h2>
                         <http11>HTTP/1.1</http11>
                         <http10>HTTP/1.0</http10>

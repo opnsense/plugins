@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443 or unix@socket-name. Use TAB key to complete typing a listen address.]]></help>
+        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443 or unix@socket-name. Add quic4@ or quic6@ to enable QUIC for IPv4/IPv6, e.g. quic4@www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -203,7 +203,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <sortable>true</sortable>
-        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled.]]></help>
+        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled. Note that HTTP/3 will only be added to QUIC-compatible Listening Addresses.]]></help>
     </field>
     <field>
         <id>frontend.forwardFor</id>
