@@ -481,4 +481,63 @@
         <type>text</type>
         <help><![CDATA[Set a FastCGI parameter that should be passed to the application. Its value must follow HAProxy's <a href="http://docs.haproxy.org/3.2/configuration.html#8.2.4">Custom Log format rules</a>. With this directive, it is possible to overwrite the value of default FastCGI parameters.]]></help>
     </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_compression</style>
+    </field>
+    <field>
+        <id>action.compression_direction</id>
+        <label>Compression Direction</label>
+        <type>dropdown</type>
+        <help><![CDATA[Whether HAProxy uses compression for HTTP responses, HTTP requests, or both. Be aware that most servers will not support request body decompression. For safekeeping only enable compression for HTTP responses.]]></help>
+    </field>
+    <field>
+        <id>action.compression_algo_res</id>
+        <label>Response Algorithm</label>
+        <type>dropdown</type>
+        <help><![CDATA[The compression algorithm used for HTTP responses. Compression will only be used depending on the Accept-Encoding request header.]]></help>
+    </field>
+    <field>
+        <id>action.compression_algo_req</id>
+        <label>Request Algorithm</label>
+        <type>dropdown</type>
+        <help><![CDATA[The compression algorithm used for HTTP requests. Compression will only be used depending on the Accept-Encoding request header.]]></help>
+    </field>
+    <field>
+        <id>action.compression_mime_res</id>
+        <label>Response Mime Types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[HTTP responses will use compression for the specified mime types, i.e. text/css, text/html, application/javascript.]]></help>
+        <hint>Enter MIME types here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>action.compression_mime_req</id>
+        <label>Request Mime Types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[HTTP requests will use compression for the specified mime types, i.e. text/css, text/html, application/javascript.]]></help>
+        <hint>Enter MIME types here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>action.compression_minsize_res</id>
+        <label>Response Minimum Size</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a minimum file size for HTTP response compression in bytes. By avoiding unnecessary compression work on very small files, this may reduce CPU overhead. Entering 0 disables this option.]]></help>
+    </field>
+    <field>
+        <id>action.compression_minsize_req</id>
+        <label>Request Minimum Size</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a minimum file size for HTTP request compression in bytes. By avoiding unnecessary compression work on very small files, this may reduce CPU overhead. Entering 0 disables this option.]]></help>
+    </field>
+    <field>
+        <id>action.compression_offloading</id>
+        <label>Compression Offloading</label>
+        <type>checkbox</type>
+        <help><![CDATA[When enabled, the load balancer will remove the Accept-Encoding header before forwarding a request to backend servers. This prevents the servers from performing compression, offloading that work to the load balancer. This may impact HAProxy's performance.]]></help>
+    </field>
 </form>

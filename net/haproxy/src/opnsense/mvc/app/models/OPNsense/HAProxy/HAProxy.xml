@@ -2272,6 +2272,7 @@
                         <use_backend>Use specified Backend Pool</use_backend>
                         <use_server>Override server in Backend Pool</use_server>
                         <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
+                        <compression>Enable compression for HTTP responses/requests</compression>
                         <fcgi_pass_header>FastCGI pass-header</fcgi_pass_header>
                         <fcgi_set_param>FastCGI set-param</fcgi_set_param>
                         <http-request_allow>http-request allow</http-request_allow>
@@ -2586,6 +2587,65 @@
                     <Multiple>N</Multiple>
                     <Required>N</Required>
                 </map_use_backend_default>
+                <compression_algo_res type="OptionField">
+                    <Required>N</Required>
+                    <Default>gzip</Default>
+                    <OptionValues>
+                        <gzip>gzip [default]</gzip>
+                        <deflate>deflate</deflate>
+                        <raw-deflate>raw-deflate</raw-deflate>
+                    </OptionValues>
+                </compression_algo_res>
+                <compression_algo_req type="OptionField">
+                    <Required>N</Required>
+                    <Default>gzip</Default>
+                    <OptionValues>
+                        <gzip>gzip [default]</gzip>
+                        <deflate>deflate</deflate>
+                        <raw-deflate>raw-deflate</raw-deflate>
+                    </OptionValues>
+                </compression_algo_req>
+                <compression_mime_res type="CSVListField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^((([0-9a-zA-Z]+\/+[0-9a-zA-Z]+)([,]){0,1}))*/u</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid MIME types, i.e. text/css, text/html, application/json.</ValidationMessage>
+                </compression_mime_res>
+                <compression_mime_req type="CSVListField">
+                    <Required>N</Required>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^((([0-9a-zA-Z]+\/+[0-9a-zA-Z]+)([,]){0,1}))*/u</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid MIME types, i.e. text/css, text/html, application/json.</ValidationMessage>
+                </compression_mime_req>
+                <compression_offloading type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </compression_offloading>
+                <compression_minsize_res type="IntegerField">
+                    <Default>1500</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <ValidationMessage>Please specify a number between 0 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </compression_minsize_res>
+                <compression_minsize_req type="IntegerField">
+                    <Default>1500</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>1000000</MaximumValue>
+                    <ValidationMessage>Please specify a number between 0 and 1000000.</ValidationMessage>
+                    <Required>N</Required>
+                </compression_minsize_req>
+                <compression_direction type="OptionField">
+                    <Required>N</Required>
+                    <Default>response</Default>
+                    <OptionValues>
+                        <response>Compress responses [default]</response>
+                        <request>Compress requests</request>
+                        <both>Compress both</both>
+                    </OptionValues>
+                </compression_direction>
             </action>
         </actions>
         <luas>
