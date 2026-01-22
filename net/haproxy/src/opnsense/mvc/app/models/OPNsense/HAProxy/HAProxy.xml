@@ -2275,6 +2275,7 @@
                         <compression>Enable compression for HTTP responses/requests</compression>
                         <fcgi_pass_header>FastCGI pass-header</fcgi_pass_header>
                         <fcgi_set_param>FastCGI set-param</fcgi_set_param>
+                        <http-after-response>http-after-response</http-after-response>
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
@@ -2350,6 +2351,37 @@
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                     <Required>N</Required>
                 </fcgi_set_param>
+                <http_after_response_action type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <add-header>add-header</add-header>
+                        <allow>allow</allow>
+                        <capture>capture</capture>
+                        <del-header>del-header</del-header>
+                        <del-map>del-map</del-map>
+                        <do-log>do-log</do-log>
+                        <replace-header>replace-header</replace-header>
+                        <replace-value>replace-value</replace-value>
+                        <sc-add-gpc>sc-add-gpc</sc-add-gpc>
+                        <sc-inc-gpc>sc-inc-gpc</sc-inc-gpc>
+                        <sc-inc-gpc0>sc-inc-gpc0</sc-inc-gpc0>
+                        <sc-inc-gpc1>sc-inc-gpc1</sc-inc-gpc1>
+                        <sc-set-gpt>sc-set-gpt</sc-set-gpt>
+                        <sc-set-gpt0>sc-set-gpt0</sc-set-gpt0>
+                        <set-header>set-header</set-header>
+                        <set-log-level>set-log-level</set-log-level>
+                        <set-map>set-map</set-map>
+                        <set-status>set-status</set-status>
+                        <set-var>set-var</set-var>
+                        <set-var-fmt>set-var-fmt</set-var-fmt>
+                        <strict-mode>strict-mode</strict-mode>
+                        <unset-var>unset-var</unset-var>
+                    </OptionValues>
+                </http_after_response_action>
+                <http_after_response_option type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </http_after_response_option>
                 <http_request_auth type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>

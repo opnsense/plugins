@@ -540,4 +540,19 @@
         <type>checkbox</type>
         <help><![CDATA[When enabled, the load balancer will remove the Accept-Encoding header before forwarding a request to backend servers. This prevents the servers from performing compression, offloading that work to the load balancer. This may impact HAProxy's performance.]]></help>
     </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-after-response</style>
+    </field>
+    <field>
+        <id>action.http_after_response_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>action.http_after_response_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+    </field>
 </form>
