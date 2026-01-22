@@ -1,4 +1,6 @@
 """
+    Copyright (c) 2024 Thomas Cekal <thomas@cekal.org>
+    Copyright (c) 2024 Ad Schellevis <ad@opnsense.org>
     Copyright (c) 2026 Leandro Scardua
     All rights reserved.
 
