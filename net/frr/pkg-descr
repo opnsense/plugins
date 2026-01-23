@@ -18,6 +18,7 @@ Plugin Changelog
 * Fix watchfrr service handling (contributed by Andy Binder) (opnsense/plugins/pull/4712 and 5132)
 * Add capability support for BGP neighbors (contributed by Shelldog95) (opnsense/plugins/pull/5128)
 * Prevent errors in diagnostics view when a frr daemon is not started (opnsense/plugins/pull/5119)
+* Fix CARP hook service start hang (opnsense/plugins/pull/5160)
 
 1.49
 

@@ -49,7 +49,8 @@ if (frr_carp_enabled()) {
 
     switch ($type) {
         case 'MASTER':
-            mwexecfm('/usr/local/etc/rc.d/frr start');
+            // XXX: This will stall if stdout is not redirected
+            mwexecfm('/usr/local/etc/rc.d/frr start > /dev/null');
             break;
         case 'BACKUP':
             mwexecfm('/usr/local/etc/rc.d/frr stop');
