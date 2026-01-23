@@ -2269,13 +2269,20 @@
                 <type type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <use_backend>Use specified Backend Pool</use_backend>
-                        <use_server>Override server in Backend Pool</use_server>
-                        <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
-                        <compression>Enable compression for HTTP responses/requests</compression>
+                        <compression>Compression for HTTP responses/requests</compression>
                         <fcgi_pass_header>FastCGI pass-header</fcgi_pass_header>
                         <fcgi_set_param>FastCGI set-param</fcgi_set_param>
                         <http-after-response>http-after-response</http-after-response>
+                        <http-request>http-request</http-request>
+                        <http-response>http-response</http-response>
+                        <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
+                        <monitor_fail>monitor fail: report failure to a monitor request</monitor_fail>
+                        <tcp-request>tcp-request</tcp-request>
+                        <tcp-response>tcp-response</tcp-response>
+                        <use_backend>Use specified Backend Pool</use_backend>
+                        <use_server>Override server in Backend Pool</use_server>
+                        <custom>Custom rule (option pass-through)</custom>
+                        <!-- XXX obsolete fields, should be removed
                         <http-request_allow>http-request allow</http-request_allow>
                         <http-request_deny>http-request deny</http-request_deny>
                         <http-request_tarpit>http-request tarpit</http-request_tarpit>
@@ -2301,7 +2308,6 @@
                         <http-response_replace-value>http-response header replace value</http-response_replace-value>
                         <http-response_set-status>http-response set-status</http-response_set-status>
                         <http-response_set-var>http-response set-var</http-response_set-var>
-                        <monitor_fail>monitor fail: report failure to a monitor request</monitor_fail>
                         <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
                         <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
                         <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
@@ -2314,7 +2320,7 @@
                         <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
                         <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
                         <tcp-response_inspect-delay>tcp-response inspect-delay</tcp-response_inspect-delay>
-                        <custom>Custom rule (option pass-through)</custom>
+                        -->
                     </OptionValues>
                 </type>
                 <use_backend type="ModelRelationField">
@@ -2351,6 +2357,14 @@
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                     <Required>N</Required>
                 </fcgi_set_param>
+                <monitor_fail_uri type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </monitor_fail_uri>
+                <custom type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </custom>
                 <http_after_response_action type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
@@ -2382,6 +2396,248 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </http_after_response_option>
+                <http_request_action type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <add-acl>add-acl</add-acl>
+                        <add-header>add-header</add-header>
+                        <allow>allow</allow>
+                        <auth>auth</auth>
+                        <cache-use>cache-use</cache-use>
+                        <capture>capture</capture>
+                        <del-acl>del-acl</del-acl>
+                        <del-header>del-header</del-header>
+                        <del-map>del-map</del-map>
+                        <deny>deny</deny>
+                        <disable-l7-retry>disable-l7-retry</disable-l7-retry>
+                        <do-log>do-log</do-log>
+                        <do-resolve>do-resolve</do-resolve>
+                        <early-hint>early-hint</early-hint>
+                        <normalize-uri>normalize-uri</normalize-uri>
+                        <redirect>redirect</redirect>
+                        <reject>reject</reject>
+                        <replace-header>replace-header</replace-header>
+                        <replace-path>replace-path</replace-path>
+                        <replace-pathq>replace-pathq</replace-pathq>
+                        <replace-uri>replace-uri</replace-uri>
+                        <replace-value>replace-value</replace-value>
+                        <return>return</return>
+                        <sc-add-gpc>sc-add-gpc</sc-add-gpc>
+                        <sc-inc-gpc>sc-inc-gpc</sc-inc-gpc>
+                        <sc-inc-gpc0>sc-inc-gpc0</sc-inc-gpc0>
+                        <sc-inc-gpc1>sc-inc-gpc1</sc-inc-gpc1>
+                        <sc-set-gpt>sc-set-gpt</sc-set-gpt>
+                        <sc-set-gpt0>sc-set-gpt0</sc-set-gpt0>
+                        <send-spoe-group>send-spoe-group</send-spoe-group>
+                        <set-dst>set-dst</set-dst>
+                        <set-dst-port>set-dst-port</set-dst-port>
+                        <set-fc-mark>set-fc-mark</set-fc-mark>
+                        <set-fc-tos>set-fc-tos</set-fc-tos>
+                        <set-header>set-header</set-header>
+                        <set-log-level>set-log-level</set-log-level>
+                        <set-map>set-map</set-map>
+                        <set-method>set-method</set-method>
+                        <set-nice>set-nice</set-nice>
+                        <set-path>set-path</set-path>
+                        <set-pathq>set-pathq</set-pathq>
+                        <set-priority-class>set-priority-class</set-priority-class>
+                        <set-priority-offset>set-priority-offset</set-priority-offset>
+                        <set-query>set-query</set-query>
+                        <set-src>set-src</set-src>
+                        <set-src-port>set-src-port</set-src-port>
+                        <set-timeout>set-timeout</set-timeout>
+                        <set-uri>set-uri</set-uri>
+                        <set-var>set-var</set-var>
+                        <set-var-fmt>set-var-fmt</set-var-fmt>
+                        <silent-drop>silent-drop</silent-drop>
+                        <strict-mode>strict-mode</strict-mode>
+                        <tarpit>tarpit</tarpit>
+                        <track-sc0>track-sc0</track-sc0>
+                        <track-sc1>track-sc1</track-sc1>
+                        <track-sc2>track-sc2</track-sc2>
+                        <track-sc>track-sc</track-sc>
+                        <unset-var>unset-var</unset-var>
+                        <use-service>use-service</use-service>
+                        <wait-for-body>wait-for-body</wait-for-body>
+                        <wait-for-handshake>wait-for-handshake</wait-for-handshake>
+                    </OptionValues>
+                </http_request_action>
+                <http_request_option type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </http_request_option>
+                <http_response_action type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <add-acl>add-acl</add-acl>
+                        <add-header>add-header</add-header>
+                        <allow>allow</allow>
+                        <cache-store>cache-store</cache-store>
+                        <capture>capture</capture>
+                        <del-acl>del-acl</del-acl>
+                        <del-header>del-header</del-header>
+                        <del-map>del-map</del-map>
+                        <deny>deny</deny>
+                        <do-log>do-log</do-log>
+                        <redirect>redirect</redirect>
+                        <replace-header>replace-header</replace-header>
+                        <replace-value>replace-value</replace-value>
+                        <return>return</return>
+                        <sc-add-gpc>sc-add-gpc</sc-add-gpc>
+                        <sc-inc-gpc>sc-inc-gpc</sc-inc-gpc>
+                        <sc-inc-gpc0>sc-inc-gpc0</sc-inc-gpc0>
+                        <sc-inc-gpc1>sc-inc-gpc1</sc-inc-gpc1>
+                        <sc-set-gpt>sc-set-gpt</sc-set-gpt>
+                        <sc-set-gpt0>sc-set-gpt0</sc-set-gpt0>
+                        <send-spoe-group>send-spoe-group</send-spoe-group>
+                        <set-fc-mark>set-fc-mark</set-fc-mark>
+                        <set-fc-tos>set-fc-tos</set-fc-tos>
+                        <set-header>set-header</set-header>
+                        <set-log-level>set-log-level</set-log-level>
+                        <set-map>set-map</set-map>
+                        <set-nice>set-nice</set-nice>
+                        <set-status>set-status</set-status>
+                        <set-timeout>set-timeout</set-timeout>
+                        <set-var>set-var</set-var>
+                        <set-var-fmt>set-var-fmt</set-var-fmt>
+                        <silent-drop>silent-drop</silent-drop>
+                        <strict-mode>strict-mode</strict-mode>
+                        <track-sc0>track-sc0</track-sc0>
+                        <track-sc1>track-sc1</track-sc1>
+                        <track-sc2>track-sc2</track-sc2>
+                        <track-sc>track-sc</track-sc>
+                        <unset-var>unset-var</unset-var>
+                        <wait-for-body>wait-for-body</wait-for-body>
+                    </OptionValues>
+                </http_response_action>
+                <http_response_option type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </http_response_option>
+                <tcp_request_action type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <connection_accept>connection accept</connection_accept>
+                        <connection_expect-netscaler-cip>connection expect-netscaler-cip</connection_expect-netscaler-cip>
+                        <connection_expect-proxy>connection expect-proxy</connection_expect-proxy>
+                        <connection_fc-silent-drop>connection fc-silent-drop</connection_fc-silent-drop>
+                        <connection_reject>connection reject</connection_reject>
+                        <connection_sc-add-gpc>connection sc-add-gpc</connection_sc-add-gpc>
+                        <connection_sc-inc-gpc>connection sc-inc-gpc</connection_sc-inc-gpc>
+                        <connection_sc-inc-gpc0>connection sc-inc-gpc0</connection_sc-inc-gpc0>
+                        <connection_sc-inc-gpc1>connection sc-inc-gpc1</connection_sc-inc-gpc1>
+                        <connection_sc-set-gpt>connection sc-set-gpt</connection_sc-set-gpt>
+                        <connection_sc-set-gpt0>connection sc-set-gpt0</connection_sc-set-gpt0>
+                        <connection_send-spoe-group>connection send-spoe-group</connection_send-spoe-group>
+                        <connection_set-dst>connection set-dst</connection_set-dst>
+                        <connection_set-dst-port>connection set-dst-port</connection_set-dst-port>
+                        <connection_set-fc-mark>connection set-fc-mark</connection_set-fc-mark>
+                        <connection_set-fc-tos>connection set-fc-tos</connection_set-fc-tos>
+                        <connection_set-log-level>connection set-log-level</connection_set-log-level>
+                        <connection_set-src>connection set-src</connection_set-src>
+                        <connection_set-src-port>connection set-src-port</connection_set-src-port>
+                        <connection_set-var>connection set-var</connection_set-var>
+                        <connection_set-var-fmt>connection set-var-fmt</connection_set-var-fmt>
+                        <connection_silent-drop>connection silent-drop</connection_silent-drop>
+                        <connection_track-sc>connection track-sc</connection_track-sc>
+                        <connection_track-sc0>connection track-sc0</connection_track-sc0>
+                        <connection_track-sc1>connection track-sc1</connection_track-sc1>
+                        <connection_track-sc2>connection track-sc2</connection_track-sc2>
+                        <connection_unset-var>connection unset-var</connection_unset-var>
+                        <content_accept>content accept</content_accept>
+                        <content_capture>content capture</content_capture>
+                        <content_do-resolve>content do-resolve</content_do-resolve>
+                        <content_lua>content lua</content_lua>
+                        <content_reject>content reject</content_reject>
+                        <content_sc-add-gpc>content sc-add-gpc</content_sc-add-gpc>
+                        <content_sc-inc-gpc>content sc-inc-gpc</content_sc-inc-gpc>
+                        <content_sc-inc-gpc0>content sc-inc-gpc0</content_sc-inc-gpc0>
+                        <content_sc-inc-gpc1>content sc-inc-gpc1</content_sc-inc-gpc1>
+                        <content_sc-set-gpt>content sc-set-gpt</content_sc-set-gpt>
+                        <content_sc-set-gpt0>content sc-set-gpt0</content_sc-set-gpt0>
+                        <content_send-spoe-group>content send-spoe-group</content_send-spoe-group>
+                        <content_set-dst>content set-dst</content_set-dst>
+                        <content_set-dst-port>content set-dst-port</content_set-dst-port>
+                        <content_set-fc-mark>content set-fc-mark</content_set-fc-mark>
+                        <content_set-fc-tos>content set-fc-tos</content_set-fc-tos>
+                        <content_set-log-level>content set-log-level</content_set-log-level>
+                        <content_set-nice>content set-nice</content_set-nice>
+                        <content_set-priority-class>content set-priority-class</content_set-priority-class>
+                        <content_set-priority-offset>content set-priority-offset</content_set-priority-offset>
+                        <content_set-src>content set-src</content_set-src>
+                        <content_set-src-port>content set-src-port</content_set-src-port>
+                        <content_set-var>content set-var</content_set-var>
+                        <content_set-var-fmt>content set-var-fmt</content_set-var-fmt>
+                        <content_silent-drop>content silent-drop</content_silent-drop>
+                        <content_switch-mode>content switch-mode</content_switch-mode>
+                        <content_track-sc>content track-sc</content_track-sc>
+                        <content_track-sc0>content track-sc0</content_track-sc0>
+                        <content_track-sc1>content track-sc1</content_track-sc1>
+                        <content_track-sc2>content track-sc2</content_track-sc2>
+                        <content_unset-var>content unset-var</content_unset-var>
+                        <content_use-service>content use-service</content_use-service>
+                        <inspect-delay>inspect-delay</inspect-delay>
+                        <session_accept>session accept</session_accept>
+                        <session_attach-srv>session attach-srv</session_attach-srv>
+                        <session_reject>session reject</session_reject>
+                        <session_sc-add-gpc>session sc-add-gpc</session_sc-add-gpc>
+                        <session_sc-inc-gpc>session sc-inc-gpc</session_sc-inc-gpc>
+                        <session_sc-inc-gpc0>session sc-inc-gpc0</session_sc-inc-gpc0>
+                        <session_sc-inc-gpc1>session sc-inc-gpc1</session_sc-inc-gpc1>
+                        <session_sc-set-gpt>session sc-set-gpt</session_sc-set-gpt>
+                        <session_sc-set-gpt0>session sc-set-gpt0</session_sc-set-gpt0>
+                        <session_send-spoe-group>session send-spoe-group</session_send-spoe-group>
+                        <session_set-dst>session set-dst</session_set-dst>
+                        <session_set-dst-port>session set-dst-port</session_set-dst-port>
+                        <session_set-fc-mark>session set-fc-mark</session_set-fc-mark>
+                        <session_set-fc-tos>session set-fc-tos</session_set-fc-tos>
+                        <session_set-log-level>session set-log-level</session_set-log-level>
+                        <session_set-src>session set-src</session_set-src>
+                        <session_set-src-port>session set-src-port</session_set-src-port>
+                        <session_set-var>session set-var</session_set-var>
+                        <session_set-var-fmt>session set-var-fmt</session_set-var-fmt>
+                        <session_silent-drop>session silent-drop</session_silent-drop>
+                        <session_track-sc>session track-sc</session_track-sc>
+                        <session_track-sc0>session track-sc0</session_track-sc0>
+                        <session_track-sc1>session track-sc1</session_track-sc1>
+                        <session_track-sc2>session track-sc2</session_track-sc2>
+                        <session_unset-var>session unset-var</session_unset-var>
+                    </OptionValues>
+                </tcp_request_action>
+                <tcp_request_option type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </tcp_request_option>
+                <tcp_response_action type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <content_accept>content accept</content_accept>
+                        <content_close>content close</content_close>
+                        <content_lua>content lua</content_lua>
+                        <content_reject>content reject</content_reject>
+                        <content_sc-add-gpc>content sc-add-gpc</content_sc-add-gpc>
+                        <content_sc-inc-gpc>content sc-inc-gpc</content_sc-inc-gpc>
+                        <content_sc-inc-gpc0>content sc-inc-gpc0</content_sc-inc-gpc0>
+                        <content_sc-inc-gpc1>content sc-inc-gpc1</content_sc-inc-gpc1>
+                        <content_sc-set-gpt>content sc-set-gpt</content_sc-set-gpt>
+                        <content_sc-set-gpt0>content sc-set-gpt0</content_sc-set-gpt0>
+                        <content_send-spoe-group>content send-spoe-group</content_send-spoe-group>
+                        <content_set-fc-mark>content set-fc-mark</content_set-fc-mark>
+                        <content_set-fc-tos>content set-fc-tos</content_set-fc-tos>
+                        <content_set-log-level>content set-log-level</content_set-log-level>
+                        <content_set-nice>content set-nice</content_set-nice>
+                        <content_set-var>content set-var</content_set-var>
+                        <content_set-var-fmt>content set-var-fmt</content_set-var-fmt>
+                        <content_silent-drop>content silent-drop</content_silent-drop>
+                        <content_unset-var>content unset-var</content_unset-var>
+                        <inspect-delay>inspect-delay</inspect-delay>
+                    </OptionValues>
+                </tcp_response_action>
+                <tcp_response_option type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </tcp_response_option>
+                <!-- /START/ TODO obsolete options, required for migration to model 4.2.0 -->
                 <http_request_auth type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
@@ -2392,7 +2648,6 @@
                     <ValidationMessage>Please specify a value between 100 and 999.</ValidationMessage>
                     <Required>N</Required>
                 </http_request_deny_status>
-                <!-- XXX: add support for all "redirect" parameters as separate fields -->
                 <http_request_redirect type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
@@ -2533,10 +2788,6 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </http_response_set_var_expr>
-                <monitor_fail_uri type="TextField">
-                    <Mask>/^.{1,4096}$/u</Mask>
-                    <Required>N</Required>
-                </monitor_fail_uri>
                 <tcp_request_content_lua type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
@@ -2557,44 +2808,7 @@
                     <Mask>/^.{1,32}$/u</Mask>
                     <Required>N</Required>
                 </tcp_response_inspect_delay>
-                <custom type="TextField">
-                    <Mask>/^.{1,4096}$/u</Mask>
-                    <Required>N</Required>
-                </custom>
-                <!-- XXX old values, required for migration to model 2.0.0 -->
-                <useBackend type="ModelRelationField">
-                    <Model>
-                        <template>
-                            <source>OPNsense.HAProxy.HAProxy</source>
-                            <items>backends.backend</items>
-                            <display>name</display>
-                        </template>
-                    </Model>
-                    <ValidationMessage>Related backend item not found</ValidationMessage>
-                    <Multiple>Y</Multiple>
-                    <Required>N</Required>
-                </useBackend>
-                <useServer type="ModelRelationField">
-                    <Model>
-                        <template>
-                            <source>OPNsense.HAProxy.HAProxy</source>
-                            <items>servers.server</items>
-                            <display>name</display>
-                        </template>
-                    </Model>
-                    <ValidationMessage>Related server item not found</ValidationMessage>
-                    <Multiple>Y</Multiple>
-                    <Required>N</Required>
-                </useServer>
-                <actionName type="TextField">
-                    <Required>N</Required>
-                </actionName>
-                <actionFind type="TextField">
-                    <Required>N</Required>
-                </actionFind>
-                <actionValue type="TextField">
-                    <Required>N</Required>
-                </actionValue>
+                <!-- /END/ TODO obsolete options, required for migration to model 4.2.0 -->
                 <map_use_backend_file type="ModelRelationField">
                     <Model>
                         <template>
