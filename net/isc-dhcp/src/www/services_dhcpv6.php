@@ -435,7 +435,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
         exit;
     } elseif ($act == "export") {
-        $static = dhcpd_staticmap(6, true, null, true);
+        $static = dhcpd_staticmap(6, true, null, true, true);
 
         header("Content-Type: text/csv");
         header("Content-Disposition: attachment; filename=\"isc_dhcpdv6_export_{$if}.csv\"");

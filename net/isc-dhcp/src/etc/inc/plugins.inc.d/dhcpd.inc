@@ -1197,7 +1197,7 @@ EOD;
     service_log("done.\n", $verbose);
 }
 
-function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_details = null, $allow_disabled = false)
+function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_details = null, $allow_disabled = false, $for_export = false)
 {
     $staticmap = [];
     foreach (empty($proto) ? [4, 6] : [$proto] as $inet) {
@@ -1243,7 +1243,9 @@ function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_detai
                 }
 
                 if ($domain !== null) {
-                    $domain = preg_replace('/\s*;\s*/', ',', trim($domain));
+                    /* first entry only unless requested */
+                    $domain = !$for_export ? preg_split('/[ ;]+/', $domain)[0] :
+                        preg_replace('/\s*;\s*/', ',', trim($domain));
                 }
 
                 $entry = [
