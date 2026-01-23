@@ -1243,8 +1243,7 @@ function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_detai
                 }
 
                 if ($domain !== null) {
-                    /* first entry only */
-                    $domain = preg_split('/[ ;]+/', $domain)[0];
+                    $domain = preg_replace('/\s*;\s*/', ',', trim($domain));
                 }
 
                 $entry = [
