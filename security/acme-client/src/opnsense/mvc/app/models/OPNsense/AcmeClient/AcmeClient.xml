@@ -282,7 +282,7 @@
                 </autoRenewal>
                 <renewInterval type="IntegerField">
                     <Required>Y</Required>
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>5000</MaximumValue>
                     <Default>60</Default>
                 </renewInterval>
