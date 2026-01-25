@@ -2228,6 +2228,10 @@
         </acls>
         <actions>
             <action type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
                 <name type="TextField">
                     <Mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>

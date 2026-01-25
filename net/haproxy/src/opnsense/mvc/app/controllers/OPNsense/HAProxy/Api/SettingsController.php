@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016-2022 Frank Wall
+ *    Copyright (C) 2016-2026 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -206,9 +206,14 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->delBase('actions.action', $uuid);
     }
 
+    public function toggleActionAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('actions.action', $uuid);
+    }
+
     public function searchActionsAction()
     {
-        return $this->searchBase('actions.action', array('name', 'description'), 'name');
+        return $this->searchBase('actions.action', array('enabled', 'name', 'description'), 'name');
     }
 
     public function getLuaAction($uuid = null)

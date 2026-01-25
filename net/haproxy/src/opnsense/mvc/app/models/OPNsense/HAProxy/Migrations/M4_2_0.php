@@ -37,6 +37,9 @@ class M4_2_0 extends BaseModelMigration
     public function run($model)
     {
         foreach ($model->getNodeByReference('actions.action')->iterateItems() as $action) {
+            // Rules have an 'enabled' field now
+            $action->enabled = '1';
+            // Migrate TCP/HTTP rules to new format
             switch ((string)$action->type) {
                 case 'http-request_add-header':
                     $action->type = 'http-request';

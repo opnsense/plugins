@@ -101,6 +101,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 set:'/api/haproxy/settings/set_action/',
                 add:'/api/haproxy/settings/add_action/',
                 del:'/api/haproxy/settings/del_action/',
+                toggle:'/api/haproxy/settings/toggle_action/',
                 options: {
                 }
             }
@@ -910,6 +911,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="actionid" data-type="number"  data-visible="false">{{ lang._('Rule ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Rule Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
