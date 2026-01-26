@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($_GET['if']) && !empty($config['interfaces'][$_GET['if']]) &&
         isset($config['interfaces'][$_GET['if']]['enable']) &&
         (is_ipaddr($config['interfaces'][$_GET['if']]['ipaddrv6']) ||
-        $config['interfaces'][$_GET['if']]['ipaddrv6'] == 'track6')) {
+        in_array($config['interfaces'][$_GET['if']]['ipaddrv6'], ['idassoc6', 'track6']))) {
         $if = $_GET['if'];
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -154,29 +154,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-/**
- * XXX: In case of tracking, show different form and only handle on/off options.
- *      this code injection is intended to keep changes as minimal as possible and avoid regressions on existing isc-dhcp6 installs,
- *      while showing current state for tracking interfaces.
- **/
 if ($if === null) {
     /* if no interface is provided this invoke is invalid */
     header(url_safe('Location: /index.php'));
     exit;
 } elseif (($config['interfaces'][$if]['ipaddrv6'] ?? 'none') == 'track6' && !isset($config['interfaces'][$if]['dhcpd6track6allowoverride'])) {
+    /*
+     * In case of automatic tracking, show different form and only handle on/off options.
+     * This code injection is intended to keep changes as minimal as possible and avoid
+     * regressions on existing isc-dhcp installs, while showing current state for tracking
+     * interfaces.
+     */
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         show_track6_form($if);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         process_track6_form($if);
+    } else {
+        header(url_safe('Location: /index.php'));
     }
     exit;
 }
-/* default form processing */
+
+/* default form processing (for manual track6 and idassoc6 but handled via 'track6-interface') */
 
 $ifcfgip = $config['interfaces'][$if]['ipaddrv6'];
 $ifcfgsn = $config['interfaces'][$if]['subnetv6'];
 
-if (isset($config['interfaces'][$if]['dhcpd6track6allowoverride'])) {
+if (isset($config['interfaces'][$if]['track6-interface'])) {
     list ($ifcfgip,, $ifcfgsn) = interfaces_primary_address6($if);
     $pdlen = calculate_ipv6_delegation_length($config['interfaces'][$if]['track6-interface']) - 1;
 }
@@ -316,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $range_from = $pconfig['range_from'];
             $range_to = $pconfig['range_to'];
 
-            if (isset($config['interfaces'][$if]['dhcpd6track6allowoverride'])) {
+            if (isset($config['interfaces'][$if]['track6-interface'])) {
                 $range_from = merge_ipv6_address($ifcfgip, $pconfig['range_from']);
                 $range_to = merge_ipv6_address($ifcfgip, $pconfig['range_to']);
             }
@@ -606,11 +610,11 @@ include("head.inc");
                           </tbody>
                         </table>
                         <div class="hidden" data-for="help_for_range">
-<?php if (!isset($config['interfaces'][$if]['dhcpd6track6allowoverride'])): ?>
-                          <?= gettext('The range should be entered using the full IPv6 address.') ?>
-<?php else: ?>
+<?php if (isset($config['interfaces'][$if]['track6-interface'])): ?>
                           <?= gettext('The range should be entered using the suffix part of the IPv6 address, i.e. ::1:2:3:4. ' .
                             'The subnet prefix will be added automatically.') ?>
+<?php else: ?>
+                          <?= gettext('The range should be entered using the full IPv6 address.') ?>
 <?php endif ?>
                       </td>
                     </tr>
@@ -651,7 +655,7 @@ include("head.inc");
                           <?= gettext("You can define a Prefix range here for DHCP Prefix Delegation. This allows for assigning networks to subrouters. " .
                           "The start and end of the range must end on boundaries of the prefix delegation size."); ?>
                            <?= gettext("Ensure that any prefix delegation range does not overlap the LAN prefix range."); ?>
-<?php if (isset($config['interfaces'][$if]['dhcpd6track6allowoverride'])): ?>
+<?php if (isset($config['interfaces'][$if]['track6-interface'])): ?>
                           <br/><br/>
                           <?= gettext('When using a tracked interface then please only enter the range itself, i.e. ::xxxx:0:0:0:0. ' .
                             'For example, for a /56 delegation from ::100:0:0:0:0 to ::f00:0:0:0:0. ' .

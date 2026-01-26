@@ -13,5 +13,5 @@ Plugin Changelog
 
 * First release resembling the core state of 25.7.11
 * Minor changes due to "radvd" extraction out of DHCPv6 configuration
-* Minor changes regarding "track6" mode handling
+* Minor changes regarding "track6" and "idassoc6" mode handling
 * Added DHCPv6 static mappings export
