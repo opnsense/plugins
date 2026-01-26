@@ -54,13 +54,13 @@ class Hostinger(BaseAccount):
         if super().execute():
             # IPv4/IPv6
             recordType = "AAAA" if str(self.current_address).find(':') > 1 else "A"
-            
+
             # Validate TTL
             ttl = int(self.settings.get('ttl', 300)) if (60 <= int(self.settings.get('ttl', 300)) <= 86400) else 300
 
             # Use bearer authentication
             url = "https://developers.hostinger.com/api/dns/v1/zones/" + self.settings.get('zone')
-            
+
             # Build the zone update payload
             payload = {
                 "overwrite": True,
@@ -77,13 +77,13 @@ class Hostinger(BaseAccount):
                     }
                 ]
             }
-            
+
             headers = {
                 'authorization': "Bearer " + self.settings.get('password'),
                 'content-type': "application/json",
                 'User-Agent': 'OPNsense-dyndns'
             }
-            
+
             # Send IP address update
             req = requests.request("PUT", url, data=json.dumps(payload), headers=headers)
             if 200 <= req.status_code < 300:
