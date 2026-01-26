@@ -886,7 +886,7 @@ function dhcpd_dhcp6_configure($verbose = false, $ignorelist = [])
         if (isset($ignorelist[$ifname])) {
             continue;
         }
-        if (($config['interfaces'][$ifname]['ipaddrv6'] ?? 'none') == 'track6') {
+        if (isset($config['interfaces'][$ifname]['track6-interface'])) {
             list ($ifcfgipv6) = interfaces_primary_address6($ifname, $ifconfig_details);
             if (!is_ipaddrv6($ifcfgipv6)) {
                 continue;
@@ -895,7 +895,10 @@ function dhcpd_dhcp6_configure($verbose = false, $ignorelist = [])
             $ifcfgipv6 = Net_IPv6::getNetmask($ifcfgipv6, 64);
             $ifcfgipv6arr = explode(':', $ifcfgipv6);
 
-            if (!isset($config['interfaces'][$ifname]['dhcpd6track6allowoverride'])) {
+            if (
+                ($config['interfaces'][$ifname]['ipaddrv6'] ?? 'none') == 'track6' &&
+                !isset($config['interfaces'][$ifname]['dhcpd6track6allowoverride'])
+            ) {
                 /* mock a real server */
                 if (!empty($dhcpdv6cfg[$ifname]['enable']) && $dhcpdv6cfg[$ifname]['enable'] == '-1') {
                     /* tracking, but dhcpv6 disabled */
@@ -1132,7 +1135,7 @@ host s_{$dhcpv6if}_{$i} {
 
 EOD;
                 if (!empty($sm['ipaddrv6'])) {
-                    if (isset($config['interfaces'][$dhcpv6if]['dhcpd6track6allowoverride'])) {
+                    if (isset($config['interfaces'][$dhcpv6if]['track6-interface'])) {
                         $sm['ipaddrv6'] = merge_ipv6_address($ifcfgipv6, $sm['ipaddrv6']);
                     }
                     $dhcpdv6conf .= "  fixed-address6 {$sm['ipaddrv6']};\n";
@@ -1197,7 +1200,7 @@ EOD;
     service_log("done.\n", $verbose);
 }
 
-function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_details = null, $allow_disabled = false)
+function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_details = null, $allow_disabled = false, $for_export = false)
 {
     $staticmap = [];
     foreach (empty($proto) ? [4, 6] : [$proto] as $inet) {
@@ -1209,7 +1212,7 @@ function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_detai
             }
 
             $ifconf = config_read_array('interfaces', $dhcpif);
-            list ($ipaddrv6) = $inet == 6 && isset($ifconf['dhcpd6track6allowoverride']) ?
+            list ($ipaddrv6) = $inet == 6 && isset($ifconf['track6-interface']) ?
                 interfaces_primary_address6($dhcpif, $ifconfig_details) : [null];
 
             foreach ($dhcpifconf['staticmap'] as $host) {
@@ -1243,8 +1246,9 @@ function dhcpd_staticmap($proto = null, $valid_addresses = true, $ifconfig_detai
                 }
 
                 if ($domain !== null) {
-                    /* first entry only */
-                    $domain = preg_split('/[ ;]+/', $domain)[0];
+                    /* first entry only unless requested */
+                    $domain = !$for_export ? preg_split('/[ ;]+/', $domain)[0] :
+                        preg_replace('/\s*;\s*/', ',', trim($domain));
                 }
 
                 $entry = [
