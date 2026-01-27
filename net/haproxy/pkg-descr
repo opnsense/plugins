@@ -28,6 +28,7 @@ Changed:
 * rename some labels in rules
 * change LUA boolean conversion (see tune.lua.bool-sample-conversion)
 * stick-table "size" and "expiration time" are no longer advanced options (now always visible)
+* replace stick-table type "ip" with "ipv4" (#5147)
 
 4.6
 
