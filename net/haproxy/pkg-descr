@@ -20,12 +20,14 @@ Added:
 * add support for HTTP compression (#4867)
 * add all action keywords for http-request/-response and tcp-request/-response rules
 * add "enabled" field to rules
+* add support for all stick-table data types
 
 Changed:
 * upgrade to HAProxy 3.2 release series (#5147)
 * refactor http/tcp rules to make extensions easier
 * rename some labels in rules
 * change LUA boolean conversion (see tune.lua.bool-sample-conversion)
+* stick-table "size" and "expiration time" are no longer advanced options (now always visible)
 
 4.6
 

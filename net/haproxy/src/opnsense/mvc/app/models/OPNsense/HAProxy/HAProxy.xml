@@ -758,19 +758,32 @@
                     <Required>N</Required>
                     <Multiple>Y</Multiple>
                     <OptionValues>
-                        <conn_cnt>Connection count</conn_cnt>
-                        <conn_cur>Current connections</conn_cur>
-                        <conn_rate>Connection rate</conn_rate>
-                        <sess_cnt>Session count</sess_cnt>
-                        <sess_rate>Session rate</sess_rate>
-                        <http_req_cnt>HTTP request count</http_req_cnt>
-                        <http_req_rate>HTTP request rate</http_req_rate>
-                        <http_err_cnt>HTTP error count</http_err_cnt>
-                        <http_err_rate>HTTP error rate</http_err_rate>
                         <bytes_in_cnt>Bytes in count (client to server)</bytes_in_cnt>
                         <bytes_in_rate>Bytes in rate (client to server)</bytes_in_rate>
                         <bytes_out_cnt>Bytes out count (server to client)</bytes_out_cnt>
                         <bytes_out_rate>Bytes out rate (server to client)</bytes_out_rate>
+                        <conn_cnt>Connection count (total)</conn_cnt>
+                        <conn_cur>Connection count (current)</conn_cur>
+                        <conn_rate>Connection rate</conn_rate>
+                        <glitch_cnt>Glitch count</glitch_cnt>
+                        <glitch_rate>Glitch rate</glitch_rate>
+                        <gpc>General Purpose Counters (array of elements)</gpc>
+                        <gpc_rate>General Purpose Counter rate</gpc_rate>
+                        <gpc0>gpc0</gpc0>
+                        <gpc0_rate>gpc0 rate</gpc0_rate>
+                        <gpc1>gpc1</gpc1>
+                        <gpc1_rate>gpc1 rate</gpc1_rate>
+                        <gpt>General Purpose Tags (array of elements)</gpt>
+                        <gpt0>gpt0</gpt0>
+                        <http_err_cnt>HTTP error count</http_err_cnt>
+                        <http_err_rate>HTTP error rate</http_err_rate>
+                        <http_fail_cnt>HTTP fail count</http_fail_cnt>
+                        <http_fail_rate>HTTP fail rate</http_fail_rate>
+                        <http_req_cnt>HTTP request count</http_req_cnt>
+                        <http_req_rate>HTTP request rate</http_req_rate>
+                        <server_id>Server ID</server_id>
+                        <sess_cnt>Session count</sess_cnt>
+                        <sess_rate>Session rate</sess_rate>
                     </OptionValues>
                 </stickiness_dataTypes>
                 <stickiness_expire type="TextField">
@@ -839,6 +852,38 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
+                <stickiness_gpcElements type="IntegerField">
+                    <Default>0</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gpcElements>
+                <stickiness_gpcRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gpcRatePeriod>
+                <stickiness_gptElements type="IntegerField">
+                    <Default>0</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gptElements>
+                <stickiness_httpFailRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpFailRatePeriod>
+                <stickiness_glitchRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_glitchRatePeriod>
                 <http2Enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>N</Required>
@@ -1169,19 +1214,32 @@
                     <Required>N</Required>
                     <Multiple>Y</Multiple>
                     <OptionValues>
-                        <conn_cnt>Connection count</conn_cnt>
-                        <conn_cur>Current connections</conn_cur>
-                        <conn_rate>Connection rate</conn_rate>
-                        <sess_cnt>Session count</sess_cnt>
-                        <sess_rate>Session rate</sess_rate>
-                        <http_req_cnt>HTTP request count</http_req_cnt>
-                        <http_req_rate>HTTP request rate</http_req_rate>
-                        <http_err_cnt>HTTP error count</http_err_cnt>
-                        <http_err_rate>HTTP error rate</http_err_rate>
                         <bytes_in_cnt>Bytes in count (client to server)</bytes_in_cnt>
                         <bytes_in_rate>Bytes in rate (client to server)</bytes_in_rate>
                         <bytes_out_cnt>Bytes out count (server to client)</bytes_out_cnt>
                         <bytes_out_rate>Bytes out rate (server to client)</bytes_out_rate>
+                        <conn_cnt>Connection count (total)</conn_cnt>
+                        <conn_cur>Connection count (current)</conn_cur>
+                        <conn_rate>Connection rate</conn_rate>
+                        <glitch_cnt>Glitch count</glitch_cnt>
+                        <glitch_rate>Glitch rate</glitch_rate>
+                        <gpc>General Purpose Counters (array of elements)</gpc>
+                        <gpc_rate>General Purpose Counter rate</gpc_rate>
+                        <gpc0>gpc0</gpc0>
+                        <gpc0_rate>gpc0 rate</gpc0_rate>
+                        <gpc1>gpc1</gpc1>
+                        <gpc1_rate>gpc1 rate</gpc1_rate>
+                        <gpt>General Purpose Tags (array of elements)</gpt>
+                        <gpt0>gpt0</gpt0>
+                        <http_err_cnt>HTTP error count</http_err_cnt>
+                        <http_err_rate>HTTP error rate</http_err_rate>
+                        <http_fail_cnt>HTTP fail count</http_fail_cnt>
+                        <http_fail_rate>HTTP fail rate</http_fail_rate>
+                        <http_req_cnt>HTTP request count</http_req_cnt>
+                        <http_req_rate>HTTP request rate</http_req_rate>
+                        <server_id>Server ID</server_id>
+                        <sess_cnt>Session count</sess_cnt>
+                        <sess_rate>Session rate</sess_rate>
                     </OptionValues>
                 </stickiness_dataTypes>
                 <stickiness_expire type="TextField">
@@ -1209,6 +1267,12 @@
                     <ValidationMessage>Please specify a value between 1 and 10000.</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_cookielength>
+                <stickiness_length type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>16384</MaximumValue>
+                    <ValidationMessage>Please specify a value between 1 and 16384.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_length>
                 <stickiness_connRatePeriod type="TextField">
                     <Default>10s</Default>
                     <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
@@ -1245,6 +1309,38 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </stickiness_bytesOutRatePeriod>
+                <stickiness_gpcElements type="IntegerField">
+                    <Default>0</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gpcElements>
+                <stickiness_gptElements type="IntegerField">
+                    <Default>0</Default>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>99</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gptElements>
+                <stickiness_gpcRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_gpcRatePeriod>
+                <stickiness_httpFailRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_httpFailRatePeriod>
+                <stickiness_glitchRatePeriod type="TextField">
+                    <Default>1m</Default>
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </stickiness_glitchRatePeriod>
                 <basicAuthEnabled type="BooleanField">
                     <Default>0</Default>
                     <Required>N</Required>
