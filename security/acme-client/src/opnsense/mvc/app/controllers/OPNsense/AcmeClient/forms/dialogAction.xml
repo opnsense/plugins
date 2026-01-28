@@ -378,6 +378,28 @@
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_ruckus</style>
+    </field>
+    <field>
+        <id>action.acme_ruckus_host</id>
+        <label>Ruckus Host</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_user</id>
+        <label>Ruckus User</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_pass</id>
+        <label>Ruckus Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <id>action.acme_truenas_apikey</id>
         <label>TrueNAS API key</label>
         <type>text</type>
