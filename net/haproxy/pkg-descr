@@ -24,6 +24,7 @@ Added:
 * add all action keywords for http-request/-response and tcp-request/-response rules
 * add "enabled" field to rules
 * add support for all stick-table data types
+* add support for GPC/GPT/SC to conditions (#1123, #5109)
 
 Changed:
 * upgrade to HAProxy 3.2 release series (#5147)
@@ -32,6 +33,7 @@ Changed:
 * change LUA boolean conversion (see tune.lua.bool-sample-conversion)
 * stick-table "size" and "expiration time" are no longer advanced options (now always visible)
 * replace stick-table type "ip" with "ipv4" (#5147)
+* show the actual HAProxy option name in conditions for clarity
 
 4.6
 

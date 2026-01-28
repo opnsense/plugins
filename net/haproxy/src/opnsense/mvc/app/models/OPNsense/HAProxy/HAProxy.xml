@@ -1817,63 +1817,87 @@
                 <expression type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <stopping>HAProxy process is currently stopping</stopping>
-                        <http_auth>HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
-                        <hdr_beg>Host starts with</hdr_beg>
-                        <hdr_end>Host ends with</hdr_end>
-                        <hdr>Host matches</hdr>
-                        <hdr_reg>Host regex</hdr_reg>
-                        <hdr_sub>Host contains</hdr_sub>
-                        <path_beg>Path starts with</path_beg>
-                        <path_end>Path ends with</path_end>
-                        <path>Path matches</path>
-                        <path_reg>Path regex</path_reg>
-                        <path_dir>Path contains subdir</path_dir>
-                        <path_sub>Path contains string</path_sub>
-                        <cust_hdr_beg>HTTP Header starts with</cust_hdr_beg>
-                        <cust_hdr_end>HTTP Header ends with</cust_hdr_end>
-                        <cust_hdr>HTTP Header matches</cust_hdr>
-                        <cust_hdr_reg>HTTP Header regex</cust_hdr_reg>
-                        <cust_hdr_sub>HTTP Header contains</cust_hdr_sub>
-                        <http_method>HTTP Method</http_method>
-                        <wait_end>Inspection period is over (WAIT_END)</wait_end>
-                        <quic_enabled>QUIC transport protocol is enabled</quic_enabled>
-                        <url_param>URL parameter contains</url_param>
-                        <ssl_c_verify>SSL Client certificate is valid</ssl_c_verify>
-                        <ssl_c_verify_code>SSL Client certificate verify error result</ssl_c_verify_code>
-                        <ssl_c_ca_commonname>SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
-                        <ssl_hello_type>SSL Hello Type</ssl_hello_type>
-                        <src>Source IP matches specified IP</src>
-                        <src_is_local>Source IP is local</src_is_local>
-                        <src_port>Source IP: TCP source port</src_port>
-                        <src_bytes_in_rate>Source IP: incoming bytes rate</src_bytes_in_rate>
-                        <src_bytes_out_rate>Source IP: outgoing bytes rate</src_bytes_out_rate>
-                        <src_kbytes_in>Source IP: amount of data received (in kilobytes)</src_kbytes_in>
-                        <src_kbytes_out>Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
-                        <!-- <src_clr_gpc0>Source IP: clear first General Purpose Counter</src_clr_gpc0> -->
-                        <src_conn_cnt>Source IP: cumulative number of connections</src_conn_cnt>
-                        <src_conn_cur>Source IP: concurrent connections</src_conn_cur>
-                        <src_conn_rate>Source IP: connection rate</src_conn_rate>
-                        <!-- <src_get_gpc0>Source IP: get first General Purpose Counter</src_get_gpc0> -->
-                        <!-- <src_get_gpt0>Source IP: get first General Purpose Tag</src_get_gpt0> -->
-                        <!-- <src_gpc0_rate>Source IP: increment rate of the first General Purpose Counter</src_gpc0_rate> -->
-                        <src_http_err_cnt>Source IP: cumulative number of HTTP errors</src_http_err_cnt>
-                        <src_http_err_rate>Source IP: rate of HTTP errors</src_http_err_rate>
-                        <src_http_req_cnt>Source IP: number of HTTP requests</src_http_req_cnt>
-                        <src_http_req_rate>Source IP: rate of HTTP requests</src_http_req_rate>
-                        <!-- <src_inc_gpc0>Source IP: increment the first General Purpose Counter</src_inc_gpc0> -->
-                        <src_sess_cnt>Source IP: cumulative number of sessions</src_sess_cnt>
-                        <src_sess_rate>Source IP: session rate</src_sess_rate>
-                        <nbsrv>Minimum number of usable servers in backend</nbsrv>
-                        <traffic_is_http>Traffic is HTTP</traffic_is_http>
-                        <traffic_is_ssl>Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
-                        <ssl_fc>Traffic is SSL (locally deciphered)</ssl_fc>
-                        <ssl_fc_sni>SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
-                        <ssl_sni>SNI TLS extension matches (TCP request content inspection)</ssl_sni>
-                        <ssl_sni_sub>SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
-                        <ssl_sni_beg>SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
-                        <ssl_sni_end>SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
-                        <ssl_sni_reg>SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
+                        <cust_hdr_beg>hdr_beg – specified HTTP Header starts with</cust_hdr_beg>
+                        <cust_hdr_end>hdr_end – specified HTTP Header ends with</cust_hdr_end>
+                        <cust_hdr>hdr – specified HTTP Header matches</cust_hdr>
+                        <cust_hdr_reg>hdr_reg – specified HTTP Header regex</cust_hdr_reg>
+                        <cust_hdr_sub>hdr_sub – specified HTTP Header contains</cust_hdr_sub>
+                        <hdr_beg>hdr_beg – HTTP Host Header starts with</hdr_beg>
+                        <hdr_end>hdr_end – HTTP Host Header ends with</hdr_end>
+                        <hdr>hdr – HTTP Host Header matches</hdr>
+                        <hdr_reg>hdr_reg – HTTP Host Header regex</hdr_reg>
+                        <hdr_sub>hdr_sub – HTTP Host Header contains</hdr_sub>
+                        <http_auth>http_auth – HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
+                        <http_method>http_method – HTTP Method</http_method>
+                        <nbsrv>nbsrv – Minimum number of usable servers in backend</nbsrv>
+                        <path_beg>path_beg – Path starts with</path_beg>
+                        <path_dir>path_dir – Path contains subdir</path_dir>
+                        <path_end>path_end – Path ends with</path_end>
+                        <path>path – Path matches</path>
+                        <path_reg>path_reg – Path regex</path_reg>
+                        <path_sub>path_sub – Path contains string</path_sub>
+                        <quic_enabled>quic_enabled – QUIC transport protocol is enabled</quic_enabled>
+                        <traffic_is_http>req.proto_http – Traffic is HTTP</traffic_is_http>
+                        <traffic_is_ssl>req.ssl_ver – Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
+                        <sc_bytes_in_rate>sc_bytes_in_rate – Sticky counter: incoming bytes rate</sc_bytes_in_rate>
+                        <sc_bytes_out_rate>sc_bytes_out_rate – Sticky counter: outgoing bytes rate</sc_bytes_out_rate>
+                        <sc_clr_gpc>sc_clr_gpc – Sticky counter: clear General Purpose Counter</sc_clr_gpc>
+                        <sc_conn_cnt>sc_conn_cnt – Sticky counter: cumulative number of connections</sc_conn_cnt>
+                        <sc_conn_cur>sc_conn_cur – Sticky counter: concurrent connections</sc_conn_cur>
+                        <sc_conn_rate>sc_conn_rate – Sticky counter: connection rate</sc_conn_rate>
+                        <sc_get_gpc>sc_get_gpc – Sticky counter: get General Purpose Counter value</sc_get_gpc>
+                        <sc_get_gpt>sc_get_gpt – Sticky counter: get General Purpose Tag value</sc_get_gpt>
+                        <sc_glitch_cnt>sc_glitch_cnt – Sticky counter: cumulative number of glitches</sc_glitch_cnt>
+                        <sc_glitch_rate>sc_glitch_rate – Sticky counter: rate of glitches</sc_glitch_rate>
+                        <sc_gpc_rate>sc_gpc_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc_rate>
+                        <sc_http_err_cnt>sc_http_err_cnt – Sticky counter: cumulative number of HTTP errors</sc_http_err_cnt>
+                        <sc_http_err_rate>sc_http_err_rate – Sticky counter: rate of HTTP errors</sc_http_err_rate>
+                        <sc_http_fail_cnt>sc_http_fail_cnt – Sticky counter: cumulative number of HTTP failures</sc_http_fail_cnt>
+                        <sc_http_fail_rate>sc_http_fail_rate – Sticky counter: rate of HTTP failures</sc_http_fail_rate>
+                        <sc_http_req_cnt>sc_http_req_cnt – Sticky counter: cumulative number of HTTP requests</sc_http_req_cnt>
+                        <sc_http_req_rate>sc_http_req_rate – Sticky counter: rate of HTTP requests</sc_http_req_rate>
+                        <sc_inc_gpc>sc_inc_gpc – Sticky counter: increment General Purpose Counter</sc_inc_gpc>
+                        <sc_sess_cnt>sc_sess_cnt – Sticky counter: cumulative number of sessions</sc_sess_cnt>
+                        <sc_sess_rate>sc_sess_rate – Sticky counter: session rate</sc_sess_rate>
+                        <src_bytes_in_rate>src_bytes_in_rate – Source IP: incoming bytes rate</src_bytes_in_rate>
+                        <src_bytes_out_rate>src_bytes_out_rate – Source IP: outgoing bytes rate</src_bytes_out_rate>
+                        <src_clr_gpc>Source IP: clear General Purpose Counter</src_clr_gpc>
+                        <src_conn_cnt>src_conn_cnt – Source IP: cumulative number of connections</src_conn_cnt>
+                        <src_conn_cur>src_conn_cur – Source IP: concurrent connections</src_conn_cur>
+                        <src_conn_rate>src_conn_rate – Source IP: connection rate</src_conn_rate>
+                        <src_get_gpc>src_get_gpc – Source IP: get General Purpose Counter value</src_get_gpc>
+                        <src_get_gpt>src_get_gpt – Source IP: get General Purpose Tag value</src_get_gpt>
+                        <src_glitch_cnt>src_glitch_cnt – Source IP: cumulative number of glitches</src_glitch_cnt>
+                        <src_glitch_rate>src_glitch_rate – Source IP: rate of glitches</src_glitch_rate>
+                        <src_gpc_rate>src_gpc_rate – Source IP: increment rate of General Purpose Counter</src_gpc_rate>
+                        <src_http_err_cnt>src_http_err_cnt – Source IP: cumulative number of HTTP errors</src_http_err_cnt>
+                        <src_http_err_rate>src_http_err_rate – Source IP: rate of HTTP errors</src_http_err_rate>
+                        <src_http_fail_cnt>src_http_fail_cnt – Source IP: cumulative number of HTTP failures</src_http_fail_cnt>
+                        <src_http_fail_rate>src_http_fail_rate – Source IP: rate of HTTP failures</src_http_fail_rate>
+                        <src_http_req_cnt>src_http_req_cnt – Source IP: number of HTTP requests</src_http_req_cnt>
+                        <src_http_req_rate>src_http_req_rate – Source IP: rate of HTTP requests</src_http_req_rate>
+                        <src_inc_gpc>src_inc_gpc – Source IP: increment General Purpose Counter</src_inc_gpc>
+                        <src_is_local>src_is_local – Source IP is local</src_is_local>
+                        <src_kbytes_in>src_kbytes_in – Source IP: amount of data received (in kilobytes)</src_kbytes_in>
+                        <src_kbytes_out>src_kbytes_out – Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
+                        <src_port>src_port – Source IP: TCP source port</src_port>
+                        <src_sess_cnt>src_sess_cnt – Source IP: cumulative number of sessions</src_sess_cnt>
+                        <src_sess_rate>src_sess_rate – Source IP: session rate</src_sess_rate>
+                        <src>src – Source IP matches specified IP</src>
+                        <ssl_c_ca_commonname>ssl_c_ca_commonname – SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
+                        <ssl_c_verify_code>ssl_c_verify_code – SSL Client certificate verify error result</ssl_c_verify_code>
+                        <ssl_c_verify>ssl_c_verify – SSL Client certificate is valid</ssl_c_verify>
+                        <ssl_fc_sni>ssl_fc_sni – SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
+                        <ssl_fc>ssl_fc – Traffic is SSL (locally deciphered)</ssl_fc>
+                        <ssl_hello_type>ssl_hello_type – SSL Hello Type</ssl_hello_type>
+                        <ssl_sni_beg>ssl_sni_beg – SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
+                        <ssl_sni_end>ssl_sni_end – SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
+                        <ssl_sni_reg>ssl_sni_reg – SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
+                        <ssl_sni>ssl_sni – SNI TLS extension matches (TCP request content inspection)</ssl_sni>
+                        <ssl_sni_sub>ssl_sni_sub – SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
+                        <stopping>stopping – HAProxy process is currently stopping</stopping>
+                        <url_param>url_param – URL parameter contains</url_param>
+                        <wait_end>wait_end – Inspection period is over</wait_end>
                         <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
@@ -2320,6 +2344,420 @@
                         <TRACE>TRACE</TRACE>
                     </OptionValues>
                 </http_method>
+                <sc_bytes_in_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_bytes_in_rate_comparison>
+                <sc_bytes_in_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_bytes_in_rate>
+                <sc_bytes_out_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_bytes_out_rate_comparison>
+                <sc_bytes_out_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_bytes_out_rate>
+                <sc_clr_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_clr_gpc_comparison>
+                <sc_clr_gpc type="IntegerField">
+                    <Required>N</Required>
+                </sc_clr_gpc>
+                <sc_conn_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_conn_cnt_comparison>
+                <sc_conn_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_conn_cnt>
+                <sc_conn_cur_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_conn_cur_comparison>
+                <sc_conn_cur type="IntegerField">
+                    <Required>N</Required>
+                </sc_conn_cur>
+                <sc_conn_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_conn_rate_comparison>
+                <sc_conn_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_conn_rate>
+                <sc_get_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpc_comparison>
+                <sc_get_gpc type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpc>
+                <sc_get_gpt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpt_comparison>
+                <sc_get_gpt type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpt>
+                <sc_glitch_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_glitch_cnt_comparison>
+                <sc_glitch_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_glitch_cnt>
+                <sc_glitch_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_glitch_rate_comparison>
+                <sc_glitch_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_glitch_rate>
+                <sc_gpc_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_gpc_rate_comparison>
+                <sc_gpc_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_gpc_rate>
+                <sc_http_err_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_err_cnt_comparison>
+                <sc_http_err_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_err_cnt>
+                <sc_http_err_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_err_rate_comparison>
+                <sc_http_err_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_err_rate>
+                <sc_http_fail_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_fail_cnt_comparison>
+                <sc_http_fail_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_fail_cnt>
+                <sc_http_fail_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_fail_rate_comparison>
+                <sc_http_fail_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_fail_rate>
+                <sc_http_req_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_req_cnt_comparison>
+                <sc_http_req_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_req_cnt>
+                <sc_http_req_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_http_req_rate_comparison>
+                <sc_http_req_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_http_req_rate>
+                <sc_inc_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_inc_gpc_comparison>
+                <sc_inc_gpc type="IntegerField">
+                    <Required>N</Required>
+                </sc_inc_gpc>
+                <sc_sess_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_sess_cnt_comparison>
+                <sc_sess_cnt type="IntegerField">
+                    <Required>N</Required>
+                </sc_sess_cnt>
+                <sc_sess_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_sess_rate_comparison>
+                <sc_sess_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_sess_rate>
+                <src_get_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_get_gpc_comparison>
+                <src_get_gpc type="IntegerField">
+                    <Required>N</Required>
+                </src_get_gpc>
+                <src_get_gpt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_get_gpt_comparison>
+                <src_get_gpt type="IntegerField">
+                    <Required>N</Required>
+                </src_get_gpt>
+                <src_glitch_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_glitch_cnt_comparison>
+                <src_glitch_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_glitch_cnt>
+                <src_glitch_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_glitch_rate_comparison>
+                <src_glitch_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_glitch_rate>
+                <src_gpc_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_gpc_rate_comparison>
+                <src_gpc_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_gpc_rate>
+                <src_http_fail_cnt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_fail_cnt_comparison>
+                <src_http_fail_cnt type="IntegerField">
+                    <Required>N</Required>
+                </src_http_fail_cnt>
+                <src_http_fail_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_http_fail_rate_comparison>
+                <src_http_fail_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_http_fail_rate>
+                <src_inc_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_inc_gpc_comparison>
+                <src_inc_gpc type="IntegerField">
+                    <Required>N</Required>
+                </src_inc_gpc>
+                <gpc_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </gpc_number>
+                <gpt_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </gpt_number>
+                <sc_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </sc_number>
+                <table_name type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </table_name>
             </acl>
         </acls>
         <actions>
