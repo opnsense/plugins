@@ -117,9 +117,15 @@
     </field>
     <field>
         <id>server.sslSNI</id>
-        <label>SSL SNI</label>
+        <label>SSL SNI Name</label>
         <type>text</type>
-        <help><![CDATA[The host name sent in the SNI TLS extension to the server.]]></help>
+        <help><![CDATA[The host name sent in the SNI TLS extension to the server. When present it will be preferred over the SNI expression.]]></help>
+    </field>
+    <field>
+        <id>server.sslSNIExpr</id>
+        <label>SSL SNI Expression</label>
+        <type>text</type>
+        <help><![CDATA[A HAProxy <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html##sni">SNI expression</a> to specify the data that will be sent in the SNI TLS extension to the server, e.g. req.hdr(host). When a SNI name is present it will be used instead and this option will be ignored.]]></help>
     </field>
     <field>
         <id>server.sslVerify</id>
