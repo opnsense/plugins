@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'sysuptime',
         'upload',
         'upnp_igd_compat',
+        'log_level'
     ];
 
     foreach (miniupnpd_permuser_list() as $permuser) {
@@ -186,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
-        foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port', 'friendly_name', 'upnp_igd_compat'] as $fieldname) {
+        foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port', 'friendly_name', 'upnp_igd_compat', 'log_level'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
@@ -233,16 +234,16 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable service");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable">
-                         <?=gettext("Start the autonomous port mapping service.");?>
+                         <?=gettext("Enable the autonomous port mapping service.");?>
                        </div>
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow UPnP IGD Port Mapping");?></td>
+                      <td><a id="help_for_enable_upnp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable UPnP IGD protocol");?></td>
                       <td>
                        <input name="enable_upnp" type="checkbox" value="yes" <?=!empty($pconfig['enable_upnp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_upnp">
@@ -251,7 +252,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow PCP/NAT-PMP Port Mapping");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP/NAT-PMP protocols");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -324,16 +325,19 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?=gettext("Override external IPv4");?></td>
+                      <td><a id="help_for_overridewanip" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Override external IPv4");?></td>
                       <td>
                         <input name="overridewanip" type="text" value="<?=$pconfig['overridewanip'];?>" />
+                        <div class="hidden" data-for="help_for_overridewanip">
+                          <?=gettext('Report custom public/external (WAN) IPv4 address.');?>
+                        </div>
                       </td>
                     </tr>
                     <tr>
                       <td><a id="help_for_overridesubnet" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Internal interface IPv4 subnet override");?></td>
                       <td>
                         <select name="overridesubnet" class="selectpicker" id="overridesubnet">
-                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('default') ?></option>
+                          <option value="" <?= empty($pconfig['overridesubnet']) ? 'selected="selected"' : '' ?>><?= gettext('Default') ?></option>
 <?php for ($i = 32; $i >= 1; $i--): ?>
                           <option value="<?= $i ?>" <?=!empty($pconfig['overridesubnet']) && $pconfig['overridesubnet'] == $i ? 'selected="selected"' : '' ?>><?= $i ?></option>
 <?php endfor ?>
@@ -368,6 +372,16 @@ include("head.inc");
                       </td>
                     </tr> -->
                     <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Log level') ?></td>
+                      <td>
+                        <select name="log_level">
+                          <option value="default" <?= ($pconfig['log_level'] ?? '') == 'default' ? 'selected="selected"' : '' ?> ><?= gettext('Default') ?></option>
+                          <option value="info" <?= ($pconfig['log_level'] ?? '') == 'info' ? 'selected="selected"' : '' ?> ><?= gettext('Info') ?></option>
+                          <option value="debug" <?= ($pconfig['log_level'] ?? '') == 'debug' ? 'selected="selected"' : '' ?> ><?= gettext('Debug') ?></option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
                       <td><a id="help_for_logpackets" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Firewall logs");?></td>
                       <td>
                        <input name="logpackets" type="checkbox" value="yes" <?=!empty($pconfig['logpackets']) ? "checked=\"checked\"" : ""; ?> />
@@ -393,12 +407,15 @@ include("head.inc");
                   </thead>
                   <tbody>
                   <tr>
-                    <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('UPnP IGD compatibility mode') ?></td>
+                    <td><a id="help_for_upnp_igd_compat" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('UPnP IGD compatibility') ?></td>
                     <td>
                       <select name="upnp_igd_compat">
                         <option value="igdv1" <?= ($pconfig['upnp_igd_compat'] ?? '') == 'igdv1' ? 'selected="selected"' : '' ?> ><?= gettext('IGDv1 (IPv4 only)') ?></option>
                         <option value="igdv2" <?= ($pconfig['upnp_igd_compat'] ?? '') == 'igdv2' ? 'selected="selected"' : '' ?> ><?= gettext('IGDv2 (with workarounds)') ?></option>
                       </select>
+                      <div class="hidden" data-for="help_for_upnp_igd_compat">
+                        <?=sprintf(gettext('Set compatibility mode (act as device) to workaround IGDv2-incompatible clients; %s are known to only work with %s.'), 'Sony PS, Activision CoD…', 'IGDv1');?>
+                      </div>
                     </td>
                   </tr>
                     <tr>
@@ -436,7 +453,7 @@ include("head.inc");
                 <table class="table table-striped opnsense_standard_table_form">
                   <thead>
                     <tr>
-                      <th colspan="2"><?=gettext("Custom Access Control List");?></th>
+                      <th colspan="2"><?=gettext("Access Control List");?></th>
                     </tr>
                   </thead>
                   <tbody>

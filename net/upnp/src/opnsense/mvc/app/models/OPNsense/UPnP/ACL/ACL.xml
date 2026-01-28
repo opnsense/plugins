@@ -11,4 +11,11 @@
             <pattern>status_upnp.php*</pattern>
         </patterns>
     </page-status-upnpstatus>
+    <page-services-upnp-log>
+        <name>Services: UPnP IGD &amp; PCP: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/upnp/*</pattern>
+            <pattern>api/diagnostics/log/core/upnp/*</pattern>
+        </patterns>
+    </page-services-upnp-log>
 </acl>
