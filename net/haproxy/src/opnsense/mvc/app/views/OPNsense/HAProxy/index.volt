@@ -861,6 +861,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
                 <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                <th data-column-id="mode" data-type="string">{{ lang._('Mode') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Server Port') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>

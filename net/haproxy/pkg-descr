@@ -26,6 +26,7 @@ Added:
 * add support for all stick-table data types
 * add support for GPC/GPT/SC to conditions (#1123, #5109)
 * add support for SSL SNI expression to servers (#3756)
+* add column "mode" to servers overview (#4632)
 
 Changed:
 * upgrade to HAProxy 3.2 release series (#5147)
