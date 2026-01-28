@@ -1553,6 +1553,11 @@
                     <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
                     <Required>N</Required>
                 </sslSNI>
+                <sslSNIExpr type="TextField">
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </sslSNIExpr>
                 <sslVerify type="BooleanField">
                     <Default>1</Default>
                     <Required>Y</Required>
