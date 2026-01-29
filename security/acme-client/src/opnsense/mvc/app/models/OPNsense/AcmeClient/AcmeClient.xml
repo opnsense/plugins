@@ -1413,6 +1413,7 @@
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_proxmoxbs>Upload certificate to Proxmox Backup Server</acme_proxmoxbs>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
+                        <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
@@ -1699,6 +1700,17 @@
                     <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenkey>
+                <acme_ruckus_host type="HostnameField">
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </acme_ruckus_host>
+                <acme_ruckus_user type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_user>
+                <acme_ruckus_pass type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_pass>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
