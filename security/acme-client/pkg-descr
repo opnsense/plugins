@@ -8,6 +8,13 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.13
+
+Added:
+* add support for ACME profiles (#5154)
+* add support for deploy hook "Ruckus" (#5157)
+* add support for Spaceship.com DNS API (#5158)
+
 4.12
 
 Added:
