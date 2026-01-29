@@ -527,6 +527,7 @@
                         <dns_selfhost>Selfhost</dns_selfhost>
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
+                        <dns_spaceship>Spaceship</dns_spaceship>
                         <dns_technitium>Technitium</dns_technitium>
                         <dns_timeweb>Timeweb Cloud</dns_timeweb>
                         <dns_transip>Transip</dns_transip>
@@ -1111,6 +1112,15 @@
                 <dns_simply_account_name type="TextField">
                     <Required>N</Required>
                 </dns_simply_account_name>
+                <dns_spaceship_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_key>
+                <dns_spaceship_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_secret>
+                <dns_spaceship_root_domain type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_root_domain>
                 <dns_technitium_token type="TextField">
                     <Required>N</Required>
                 </dns_technitium_token>
