@@ -1133,6 +1133,10 @@
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_transip_token_global_key type="BooleanField">
+                    <Required>N</Required>
+                    <Default>0</Default>
+                </dns_transip_token_global_key>
                 <dns_timeweb_token type="TextField">
                     <Required>N</Required>
                 </dns_timeweb_token>

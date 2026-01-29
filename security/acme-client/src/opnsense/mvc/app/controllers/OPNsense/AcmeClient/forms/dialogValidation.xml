@@ -1386,6 +1386,12 @@
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
     </field>
     <field>
+        <id>validation.dns_transip_token_global_key</id>
+        <label>Global key</label>
+        <type>checkbox</type>
+        <help>When using a global key, IP whitelisting is disabled.</help>
+    </field>
+    <field>
         <label>united-domains Reselling</label>
         <type>header</type>
         <style>table_dns table_dns_udr</style>
