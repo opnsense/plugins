@@ -51,7 +51,7 @@ class Eap extends BaseModel
                 '1.3' => 13,
             ];
 
-            if (isset($order[$min], $order[$max]) && $order[$min] > $order[$max]) {
+            if ($this->tls_min_version->asFloat() > $this->tls_max_version->asFloat()) {
                 $messages->appendMessage(new Message(
                     gettext('TLS minimum version must be less than or equal to TLS maximum version.'),
                     $this->tls_max_version->getInternalXMLTagName()
