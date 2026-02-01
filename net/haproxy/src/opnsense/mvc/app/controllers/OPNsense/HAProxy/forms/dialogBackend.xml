@@ -235,15 +235,14 @@
         <help><![CDATA[Enable to automatically strip quotes from the cookie value. Some broken HTTP clients add quotes, which breaks persistence.]]></help>
     </field>
     <field>
-        <label>Stick-table persistence</label>
+        <label>Stick-table</label>
         <type>header</type>
     </field>
     <field>
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
-        <hint>Choose a persistence type.</hint>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#11.1">HAProxy documentation</a> for further information.]]></help>
     </field>
     <field>
         <id>backend.stickiness_dataTypes</id>

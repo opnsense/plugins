@@ -73,10 +73,6 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_deny':
                     $action->type = 'http-request';
                     $action->http_request_action = 'deny';
-                    if (!empty($action->http_request_deny_status)) {
-                        $action->http_request_option = 'deny_status ' . (string)$action->http_request_deny_status;
-                        $action->http_request_deny_status = null;
-                    }
                     break;
                 case 'http-request_lua':
                     $action->type = 'http-request';

@@ -36,6 +36,7 @@ Changed:
 * stick-table "size" and "expiration time" are no longer advanced options (now always visible)
 * replace stick-table type "ip" with "ipv4" (#5147)
 * show the actual HAProxy option name in conditions for clarity
+* allow stick-table types "binary", "integer" and "string" in backends
 
 4.6
 

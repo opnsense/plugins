@@ -343,7 +343,7 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Stickiness table</label>
+        <label>Stick-table</label>
         <type>header</type>
     </field>
     <field>

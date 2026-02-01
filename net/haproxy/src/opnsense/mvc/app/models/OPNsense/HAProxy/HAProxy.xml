@@ -747,11 +747,11 @@
                 <stickiness_pattern type="OptionField">
                     <Required>N</Required>
                     <OptionValues>
-                        <ipv4>only store IPv4 addresses [default]</ipv4>
-                        <ipv6>only store IPv6 addresses</ipv6>
-                        <integer>store 32bit integers</integer>
-                        <string>store substrings</string>
-                        <binary>store binary blocks</binary>
+                        <binary>Binary</binary>
+                        <integer>Integer</integer>
+                        <ipv4>IPv4 [default]</ipv4>
+                        <ipv6>IPv6</ipv6>
+                        <string>String</string>
                     </OptionValues>
                 </stickiness_pattern>
                 <stickiness_dataTypes type="OptionField">
@@ -1204,10 +1204,13 @@
                     <Required>N</Required>
                     <Default>sourceipv4</Default>
                     <OptionValues>
-                        <sourceipv4>Source-IP [default]</sourceipv4>
-                        <sourceipv6>Source-IPv6</sourceipv6>
-                        <cookievalue>Existing cookie value</cookievalue>
+                        <binary>Binary</binary>
+                        <cookievalue>Cookie value</cookievalue>
+                        <integer>Integer</integer>
                         <rdpcookie>RDP-Cookie</rdpcookie>
+                        <sourceipv4>Source-IPv4 [default]</sourceipv4>
+                        <sourceipv6>Source-IPv6</sourceipv6>
+                        <string>String</string>
                     </OptionValues>
                 </stickiness_pattern>
                 <stickiness_dataTypes type="OptionField">
