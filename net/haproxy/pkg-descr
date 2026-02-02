@@ -27,6 +27,7 @@ Added:
 * add support for GPC/GPT/SC to conditions (#1123, #5109)
 * add support for SSL SNI expression to servers (#3756)
 * add column "mode" to servers overview (#4632)
+* add support for loading mapfiles in ACLs
 
 Fixed:
 * Maintenance tab "SSL Certificates" not working with only one cert

@@ -1867,9 +1867,10 @@
                         <sc_inc_gpc>sc_inc_gpc – Sticky counter: increment General Purpose Counter</sc_inc_gpc>
                         <sc_sess_cnt>sc_sess_cnt – Sticky counter: cumulative number of sessions</sc_sess_cnt>
                         <sc_sess_rate>sc_sess_rate – Sticky counter: session rate</sc_sess_rate>
+                        <src>src – Source IP matches specified IP</src>
                         <src_bytes_in_rate>src_bytes_in_rate – Source IP: incoming bytes rate</src_bytes_in_rate>
                         <src_bytes_out_rate>src_bytes_out_rate – Source IP: outgoing bytes rate</src_bytes_out_rate>
-                        <src_clr_gpc>Source IP: clear General Purpose Counter</src_clr_gpc>
+                        <src_clr_gpc>src_clr_gpc – Source IP: clear General Purpose Counter</src_clr_gpc>
                         <src_conn_cnt>src_conn_cnt – Source IP: cumulative number of connections</src_conn_cnt>
                         <src_conn_cur>src_conn_cur – Source IP: concurrent connections</src_conn_cur>
                         <src_conn_rate>src_conn_rate – Source IP: connection rate</src_conn_rate>
@@ -1891,7 +1892,6 @@
                         <src_port>src_port – Source IP: TCP source port</src_port>
                         <src_sess_cnt>src_sess_cnt – Source IP: cumulative number of sessions</src_sess_cnt>
                         <src_sess_rate>src_sess_rate – Source IP: session rate</src_sess_rate>
-                        <src>src – Source IP matches specified IP</src>
                         <ssl_c_ca_commonname>ssl_c_ca_commonname – SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
                         <ssl_c_verify_code>ssl_c_verify_code – SSL Client certificate verify error result</ssl_c_verify_code>
                         <ssl_c_verify>ssl_c_verify – SSL Client certificate is valid</ssl_c_verify>
@@ -2766,6 +2766,17 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </table_name>
+                <mapfile type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>mapfiles.mapfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related mapfile item not found</ValidationMessage>
+                    <Required>N</Required>
+                </mapfile>
             </acl>
         </acls>
         <actions>

@@ -1077,4 +1077,10 @@
         <type>text</type>
         <help><![CDATA[Specifies the name of a stick-table that will be used for key lookups. This is usually the name of the backend/frontend where the stick-stable is configured. When nothing is specified, the stick-table of the current backend/frontend will be used.]]></help>
     </field>
+    <field>
+        <id>acl.mapfile</id>
+        <label>Mapfile</label>
+        <type>dropdown</type>
+        <help><![CDATA[Load patterns from a map file.]]></help>
+    </field>
 </form>
