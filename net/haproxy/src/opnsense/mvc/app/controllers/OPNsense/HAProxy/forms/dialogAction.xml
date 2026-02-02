@@ -117,6 +117,29 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_map_data_use_backend</style>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_file</id>
+        <label>Map file</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will extract the Host header from the HTTP request and search the map file for a match. If a match is found, the backend pool from the map file will be used.]]></help>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_input</id>
+        <label>Input Sample</label>
+        <type>textbox</type>
+        <help><![CDATA[The sample expression (e.g., path, req.ssl_sni, hdr(Host), str(active)) whose fetched value is used as the lookup key for the map file.]]></help>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_default</id>
+        <label>Default backend pool</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_fcgi_pass_header</style>
     </field>
     <field>

@@ -2832,6 +2832,7 @@
                         <http-after-response>http-after-response</http-after-response>
                         <http-request>http-request</http-request>
                         <http-response>http-response</http-response>
+                        <map_data_use_backend>Map data to backend pools using a map file</map_data_use_backend>
                         <map_use_backend>Map domains to backend pools using a map file</map_use_backend>
                         <monitor_fail>monitor fail: report failure to a monitor request</monitor_fail>
                         <tcp-request>tcp-request</tcp-request>
@@ -3366,6 +3367,34 @@
                     <Required>N</Required>
                 </tcp_response_inspect_delay>
                 <!-- /END/ TODO obsolete options, required for migration to model 4.2.0 -->
+                <map_data_use_backend_file type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>mapfiles.mapfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related map file item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </map_data_use_backend_file>
+                <map_data_use_backend_default type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related backend pool item not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>N</Required>
+                </map_data_use_backend_default>
+                <map_data_use_backend_input type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </map_data_use_backend_input>
                 <map_use_backend_file type="ModelRelationField">
                     <Model>
                         <template>
@@ -3616,8 +3645,13 @@
                     <Required>Y</Required>
                     <Default>dom</Default>
                     <OptionValues>
-                        <dom>Domains (dom)</dom>
-                        <reg>Regular Expressions (reg)</reg>
+                        <beg>beg – key begins with requested value</beg>
+                        <dom>dom – Domains</dom>
+                        <end>end – key ends with requested value</end>
+                        <int>int – Integers</int>
+                        <ip>ip – IPs</ip>
+                        <reg>reg – Regular Expressions</reg>
+                        <str>str – Strings</str>
                     </OptionValues>
                 </type>
                 <content type="TextField">
