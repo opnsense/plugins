@@ -6,6 +6,10 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.30
+
+* Add native backend support for Hostinger (contributed by Leandro Scardua)
+
 1.29
 
 * Add native backend support for Hetzner DNS (contributed by Michael J. Arcan)
