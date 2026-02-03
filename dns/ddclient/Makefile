@@ -1,5 +1,5 @@
 PLUGIN_NAME=		ddclient
-PLUGIN_VERSION=		1.29
+PLUGIN_VERSION=		1.30
 PLUGIN_DEPENDS=		ddclient py${PLUGIN_PYTHON}-boto3
 PLUGIN_COMMENT=		Dynamic DNS client
 PLUGIN_MAINTAINER=	ad@opnsense.org
