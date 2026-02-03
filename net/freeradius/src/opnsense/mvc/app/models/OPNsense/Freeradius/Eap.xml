@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/eap</mount>
     <description>EAP configuration</description>
-    <version>1.9.18</version>
+    <version>1.10.0</version>
     <items>
         <default_eap_type type="OptionField">
             <Default>md5</Default>
