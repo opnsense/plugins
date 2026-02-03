@@ -2840,45 +2840,6 @@
                         <use_backend>Use specified Backend Pool</use_backend>
                         <use_server>Override server in Backend Pool</use_server>
                         <custom>Custom rule (option pass-through)</custom>
-                        <!-- XXX obsolete fields, should be removed
-                        <http-request_allow>http-request allow</http-request_allow>
-                        <http-request_deny>http-request deny</http-request_deny>
-                        <http-request_tarpit>http-request tarpit</http-request_tarpit>
-                        <http-request_auth>http-request auth</http-request_auth>
-                        <http-request_redirect>http-request redirect</http-request_redirect>
-                        <http-request_lua>http-request lua action</http-request_lua>
-                        <http-request_use-service>http-request lua service</http-request_use-service>
-                        <http-request_add-header>http-request header add</http-request_add-header>
-                        <http-request_set-header>http-request header set</http-request_set-header>
-                        <http-request_del-header>http-request header delete</http-request_del-header>
-                        <http-request_replace-header>http-request header replace</http-request_replace-header>
-                        <http-request_replace-value>http-request header replace value</http-request_replace-value>
-                        <http-request_set-path>http-request set-path</http-request_set-path>
-                        <http-request_set-var>http-request set-var</http-request_set-var>
-                        <http-request_silent-drop>http-request silent-drop</http-request_silent-drop>
-                        <http-response_allow>http-response allow</http-response_allow>
-                        <http-response_deny>http-response deny</http-response_deny>
-                        <http-response_lua>http-response lua script</http-response_lua>
-                        <http-response_add-header>http-response header add</http-response_add-header>
-                        <http-response_set-header>http-response header set</http-response_set-header>
-                        <http-response_del-header>http-response header delete</http-response_del-header>
-                        <http-response_replace-header>http-response header replace</http-response_replace-header>
-                        <http-response_replace-value>http-response header replace value</http-response_replace-value>
-                        <http-response_set-status>http-response set-status</http-response_set-status>
-                        <http-response_set-var>http-response set-var</http-response_set-var>
-                        <tcp-request_connection_accept>tcp-request connection accept</tcp-request_connection_accept>
-                        <tcp-request_connection_reject>tcp-request connection reject</tcp-request_connection_reject>
-                        <tcp-request_content_accept>tcp-request content accept</tcp-request_content_accept>
-                        <tcp-request_content_reject>tcp-request content reject</tcp-request_content_reject>
-                        <tcp-request_content_lua>tcp-request content lua script</tcp-request_content_lua>
-                        <tcp-request_content_use-service>tcp-request content use-service</tcp-request_content_use-service>
-                        <tcp-request_inspect-delay>tcp-request inspect-delay</tcp-request_inspect-delay>
-                        <tcp-response_content_accept>tcp-response content accept</tcp-response_content_accept>
-                        <tcp-response_content_close>tcp-response content close</tcp-response_content_close>
-                        <tcp-response_content_reject>tcp-response content reject</tcp-response_content_reject>
-                        <tcp-response_content_lua>tcp-response content lua script</tcp-response_content_lua>
-                        <tcp-response_inspect-delay>tcp-response inspect-delay</tcp-response_inspect-delay>
-                        -->
                     </OptionValues>
                 </type>
                 <use_backend type="ModelRelationField">
@@ -3195,7 +3156,7 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </tcp_response_option>
-                <!-- /START/ TODO obsolete options, required for migration to model 4.2.0 -->
+                <!-- /START/ TODO obsolete options, required for migration to model 5.0.0 -->
                 <http_request_auth type="TextField">
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
@@ -3366,7 +3327,7 @@
                     <Mask>/^.{1,32}$/u</Mask>
                     <Required>N</Required>
                 </tcp_response_inspect_delay>
-                <!-- /END/ TODO obsolete options, required for migration to model 4.2.0 -->
+                <!-- /END/ TODO obsolete options, required for migration to model 5.0.0 -->
                 <map_data_use_backend_file type="ModelRelationField">
                     <Model>
                         <template>
@@ -3478,6 +3439,24 @@
                         <both>Compress both</both>
                     </OptionValues>
                 </compression_direction>
+                <gpc_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </gpc_number>
+                <gpt_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </gpt_number>
+                <sc_number type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
+                    <Required>N</Required>
+                </sc_number>
             </action>
         </actions>
         <luas>

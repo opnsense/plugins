@@ -24,7 +24,7 @@ Added:
 * add all action keywords for http-request/-response and tcp-request/-response rules
 * add "enabled" field to rules
 * add support for all stick-table data types
-* add support for GPC/GPT/SC to conditions (#1123, #5109)
+* add support for GPC/GPT/SC to conditions and rules (#1123, #5109)
 * add support for SSL SNI expression to servers (#3756)
 * add column "mode" to servers overview (#4632)
 * add support for loading mapfiles in conditions

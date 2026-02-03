@@ -1057,19 +1057,19 @@
         <id>acl.gpc_number</id>
         <label>GPC number</label>
         <type>text</type>
-        <help><![CDATA[Refers to the number of the General Purpose Counter, e.g. 0 or 1 when using gpc0 or gpc1 respectively. This value will be ignored in rules that do not support GPC.]]></help>
+        <help><![CDATA[Refers to the number of the General Purpose Counter, e.g. 0 or 1 when using gpc0 or gpc1 respectively. This value will be ignored in conditions that do not support GPC.]]></help>
     </field>
     <field>
         <id>acl.gpt_number</id>
         <label>GPT number</label>
         <type>text</type>
-        <help><![CDATA[Refers to the number of the General Purpose Tag, e.g. 0 or 1 when using gpt0 or gpt1 respectively. This value will be ignored in rules that do not support GPT.]]></help>
+        <help><![CDATA[Refers to the number of the General Purpose Tag, e.g. 0 or 1 when using gpt0 or gpt1 respectively. This value will be ignored in conditions that do not support GPT.]]></help>
     </field>
     <field>
         <id>acl.sc_number</id>
         <label>SC number</label>
         <type>text</type>
-        <help><![CDATA[Refers to the number of the Stick Counter, e.g. 0 or 1 when using sc0 or sc1 respectively. This value will be ignored in rules that do not support SC.]]></help>
+        <help><![CDATA[Refers to the number of the Stick Counter, e.g. 0 or 1 when using sc0 or sc1 respectively. This value will be ignored in conditions that do not support SC.]]></help>
     </field>
     <field>
         <id>acl.table_name</id>
