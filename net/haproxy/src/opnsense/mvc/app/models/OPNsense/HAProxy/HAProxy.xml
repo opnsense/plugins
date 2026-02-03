@@ -2974,7 +2974,6 @@
                         <track-sc0>track-sc0</track-sc0>
                         <track-sc1>track-sc1</track-sc1>
                         <track-sc2>track-sc2</track-sc2>
-                        <track-sc>track-sc</track-sc>
                         <unset-var>unset-var</unset-var>
                         <use-service>use-service</use-service>
                         <wait-for-body>wait-for-body</wait-for-body>
@@ -3024,7 +3023,6 @@
                         <track-sc0>track-sc0</track-sc0>
                         <track-sc1>track-sc1</track-sc1>
                         <track-sc2>track-sc2</track-sc2>
-                        <track-sc>track-sc</track-sc>
                         <unset-var>unset-var</unset-var>
                         <wait-for-body>wait-for-body</wait-for-body>
                     </OptionValues>
@@ -3058,7 +3056,6 @@
                         <connection_set-var>connection set-var</connection_set-var>
                         <connection_set-var-fmt>connection set-var-fmt</connection_set-var-fmt>
                         <connection_silent-drop>connection silent-drop</connection_silent-drop>
-                        <connection_track-sc>connection track-sc</connection_track-sc>
                         <connection_track-sc0>connection track-sc0</connection_track-sc0>
                         <connection_track-sc1>connection track-sc1</connection_track-sc1>
                         <connection_track-sc2>connection track-sc2</connection_track-sc2>
@@ -3089,7 +3086,6 @@
                         <content_set-var-fmt>content set-var-fmt</content_set-var-fmt>
                         <content_silent-drop>content silent-drop</content_silent-drop>
                         <content_switch-mode>content switch-mode</content_switch-mode>
-                        <content_track-sc>content track-sc</content_track-sc>
                         <content_track-sc0>content track-sc0</content_track-sc0>
                         <content_track-sc1>content track-sc1</content_track-sc1>
                         <content_track-sc2>content track-sc2</content_track-sc2>
@@ -3116,7 +3112,6 @@
                         <session_set-var>session set-var</session_set-var>
                         <session_set-var-fmt>session set-var-fmt</session_set-var-fmt>
                         <session_silent-drop>session silent-drop</session_silent-drop>
-                        <session_track-sc>session track-sc</session_track-sc>
                         <session_track-sc0>session track-sc0</session_track-sc0>
                         <session_track-sc1>session track-sc1</session_track-sc1>
                         <session_track-sc2>session track-sc2</session_track-sc2>
