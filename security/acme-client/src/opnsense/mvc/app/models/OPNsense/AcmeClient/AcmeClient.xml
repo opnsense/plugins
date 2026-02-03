@@ -260,6 +260,11 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </ocsp>
+                <profile type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </profile>
                 <restartActions type="ModelRelationField">
                     <Model>
                         <actions>
@@ -282,7 +287,7 @@
                 </autoRenewal>
                 <renewInterval type="IntegerField">
                     <Required>Y</Required>
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>5000</MaximumValue>
                     <Default>60</Default>
                 </renewInterval>
@@ -522,6 +527,7 @@
                         <dns_selfhost>Selfhost</dns_selfhost>
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
+                        <dns_spaceship>Spaceship</dns_spaceship>
                         <dns_technitium>Technitium</dns_technitium>
                         <dns_timeweb>Timeweb Cloud</dns_timeweb>
                         <dns_transip>Transip</dns_transip>
@@ -1106,6 +1112,15 @@
                 <dns_simply_account_name type="TextField">
                     <Required>N</Required>
                 </dns_simply_account_name>
+                <dns_spaceship_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_key>
+                <dns_spaceship_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_secret>
+                <dns_spaceship_root_domain type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_root_domain>
                 <dns_technitium_token type="TextField">
                     <Required>N</Required>
                 </dns_technitium_token>
@@ -1118,6 +1133,10 @@
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_transip_token_global_key type="BooleanField">
+                    <Required>N</Required>
+                    <Default>0</Default>
+                </dns_transip_token_global_key>
                 <dns_timeweb_token type="TextField">
                     <Required>N</Required>
                 </dns_timeweb_token>
@@ -1408,6 +1427,7 @@
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_proxmoxbs>Upload certificate to Proxmox Backup Server</acme_proxmoxbs>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
+                        <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
@@ -1694,6 +1714,17 @@
                     <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenkey>
+                <acme_ruckus_host type="HostnameField">
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </acme_ruckus_host>
+                <acme_ruckus_user type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_user>
+                <acme_ruckus_pass type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_pass>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>

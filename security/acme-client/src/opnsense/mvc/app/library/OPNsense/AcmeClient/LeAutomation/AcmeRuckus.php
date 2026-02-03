@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2022 Wouter Deurholt
+ * Copyright (C) 2026 Jeremy Gutierrez
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,27 +26,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeValidation;
+namespace OPNsense\AcmeClient\LeAutomation;
 
-use OPNsense\AcmeClient\LeValidationInterface;
-use OPNsense\Core\Config;
+use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Transip API
+ * Run acme.sh deploy hook ruckus
  * @package OPNsense\AcmeClient
  */
-class DnsTransip extends Base implements LeValidationInterface
+class AcmeRuckus extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
-        $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
-        $secret_key_filename = "{$configdir}secret.key";
-        $secret_key_data = (string)$this->config->dns_transip_key . "\n";
-        file_put_contents($secret_key_filename, $secret_key_data);
-
-        // Add env variables
-        $this->acme_env['TRANSIP_Username'] = (string)$this->config->dns_transip_username;
-        $this->acme_env['TRANSIP_Key_File'] = $secret_key_filename;
-        $this->acme_env['TRANSIP_Token_Global_Key'] = ((string)$this->config->dns_transip_token_global_key === '1') ? 'true' : 'false';
+        $this->acme_env['RUCKUS_HOST'] = (string)$this->config->acme_ruckus_host;
+        $this->acme_env['RUCKUS_USER'] = (string)$this->config->acme_ruckus_user;
+        $this->acme_env['RUCKUS_PASS'] = (string)$this->config->acme_ruckus_pass;
+        $this->acme_args[] = '--deploy-hook ruckus';
+        return true;
     }
 }

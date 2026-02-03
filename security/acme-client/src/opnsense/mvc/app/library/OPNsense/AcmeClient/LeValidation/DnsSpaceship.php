@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2022 Wouter Deurholt
+ * Copyright (C) 2026 Benno Kutschenreuter
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,21 +32,20 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Transip API
+ * Spaceship DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsTransip extends Base implements LeValidationInterface
+
+class DnsSpaceship extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
-        $secret_key_filename = "{$configdir}secret.key";
-        $secret_key_data = (string)$this->config->dns_transip_key . "\n";
-        file_put_contents($secret_key_filename, $secret_key_data);
+        $this->acme_env['SPACESHIP_API_KEY'] = (string)$this->config->dns_spaceship_api_key;
+        $this->acme_env['SPACESHIP_API_SECRET'] = (string)$this->config->dns_spaceship_api_secret;
 
-        // Add env variables
-        $this->acme_env['TRANSIP_Username'] = (string)$this->config->dns_transip_username;
-        $this->acme_env['TRANSIP_Key_File'] = $secret_key_filename;
-        $this->acme_env['TRANSIP_Token_Global_Key'] = ((string)$this->config->dns_transip_token_global_key === '1') ? 'true' : 'false';
+        // optional root domain
+        if (!empty((string)$this->config->dns_spaceship_root_domain)) {
+            $this->acme_env['SPACESHIP_ROOT_DOMAIN'] = (string)$this->config->dns_spaceship_root_domain;
+        }
     }
 }

@@ -1334,6 +1334,26 @@
         <type>password</type>
     </field>
     <field>
+        <label>Spaceship DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_spaceship</style>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_api_key</id>
+        <label>API Key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_api_secret</id>
+        <label>API Secret</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_spaceship_root_domain</id>
+        <label>Root Domain (Optional)</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Timeweb Cloud DNS</label>
         <type>header</type>
         <style>table_dns table_dns_timeweb</style>
@@ -1364,6 +1384,12 @@
         <label>API Key</label>
         <type>textbox</type>
         <help>Requires the whole key file in a format that is compatible with TransIP.</help>
+    </field>
+    <field>
+        <id>validation.dns_transip_token_global_key</id>
+        <label>Global key</label>
+        <type>checkbox</type>
+        <help>When using a global key, IP whitelisting is disabled.</help>
     </field>
     <field>
         <label>united-domains Reselling</label>

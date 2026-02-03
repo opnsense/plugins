@@ -8,6 +8,20 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.13
+
+Added:
+* add support for ACME profiles (#5154)
+* add support for deploy hook "Ruckus" (#5157)
+* add support for Spaceship.com DNS API (#5158)
+* add global access key option for TransIP DNS API (#5166)
+
+Changed:
+* allow setting renewal interval to 0 (#5168)
+
+Fixed:
+* remove duplicate slashes in nsupdate, TransIP, OPNsense, TLS ALPN challenge types (#5166)
+
 4.12
 
 Added:

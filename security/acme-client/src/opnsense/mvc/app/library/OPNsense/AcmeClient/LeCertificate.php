@@ -226,7 +226,12 @@ class LeCertificate extends LeCommon
         $cert = array();
         $cert['refid'] = uniqid();
         $cert['caref'] = (string)$ca['refid'];
-        $cert['descr'] = (string)$cert_cn . ' (ACME Client)';
+        if (empty($cert_cn)) {
+            // Fallback to configured name if Common Name is empty (e.g. for IP certificates)
+            $cert['descr'] = (string)$this->config->name . ' (ACME Client)';
+        } else {
+            $cert['descr'] = (string)$cert_cn . ' (ACME Client)';
+        }
         $import_log_message = 'imported';
         $cert_found = false;
 
@@ -648,6 +653,9 @@ class LeCertificate extends LeCommon
             $val->setRenewal((int)$renewInterval);
             $val->setForce($this->force);
             $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
+            if (!empty((string)$this->config->profile)) {
+                $val->setProfile((string)$this->config->profile);
+            }
             // strip prefix from key value
             $val->setKey(substr($this->config->keyLength, 4));
             $val->prepare();
