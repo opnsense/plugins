@@ -150,9 +150,12 @@ class Nextcloud extends Base implements IBackupProvider
             // Get list of files from local backup system
             $local_files = array();
             $tmp_local_files = scandir('/conf/backup/');
-            // Remove '.' and '..'
+            // Remove '.' and '..', skip directories
             foreach ($tmp_local_files as $tmp_local_file) {
                 if ($tmp_local_file === '.' || $tmp_local_file === '..') {
+                    continue;
+                }
+                if (is_dir("/conf/backup/".$tmp_local_file)) {
                     continue;
                 }
                 $local_files[] = $tmp_local_file;
