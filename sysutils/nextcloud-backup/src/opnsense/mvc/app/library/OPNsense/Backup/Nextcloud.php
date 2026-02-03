@@ -84,7 +84,14 @@ class Nextcloud extends Base implements IBackupProvider
                 "type" => "text",
                 "label" => gettext("Directory Name without leading slash, starting from user's root"),
                 "value" => 'OPNsense-Backup'
-            )
+            ),
+            array(
+                "name" => "addhostname",
+                "type" => "checkbox",
+                "label" => gettext("Backup to directory named after hostname"),
+                "help" => gettext("Create subdirectory under backupdir for this host"),
+                "value" => null
+            ),
         );
         $nextcloud = new NextcloudSettings();
         foreach ($fields as &$field) {
@@ -138,6 +145,11 @@ class Nextcloud extends Base implements IBackupProvider
             $password = (string)$nextcloud->password;
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
+            $add_hostname = (string)$nextcloud->addhostname;
+
+            if ($add_hostname) {
+                $backupdir .= "/".gethostname()."/";
+            }
 
             // Check if destination directory exists, create (full path) if not
             try {
