@@ -304,7 +304,7 @@
         <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#tcp-response">HAProxy's documentation</a>.]]></help>
     </field>
     <field>
-        <label>Conditional Parameters</label>
+        <label>Conditional parameters</label>
         <type>header</type>
     </field>
     <field>

@@ -1850,14 +1850,44 @@
                         <sc_bytes_in_rate>sc_bytes_in_rate – Sticky counter: incoming bytes rate</sc_bytes_in_rate>
                         <sc_bytes_out_rate>sc_bytes_out_rate – Sticky counter: outgoing bytes rate</sc_bytes_out_rate>
                         <sc_clr_gpc>sc_clr_gpc – Sticky counter: clear General Purpose Counter</sc_clr_gpc>
+                        <sc_clr_gpc0>sc_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc_clr_gpc0>
+                        <sc_clr_gpc1>sc_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc_clr_gpc1>
+                        <sc0_clr_gpc0>sc0_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc0_clr_gpc0>
+                        <sc0_clr_gpc1>sc0_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc0_clr_gpc1>
+                        <sc1_clr_gpc>sc1_clr_gpc – Sticky counter: clear General Purpose Counter</sc1_clr_gpc>
+                        <sc1_clr_gpc0>sc1_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc1_clr_gpc0>
+                        <sc1_clr_gpc1>sc1_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc1_clr_gpc1>
+                        <sc2_clr_gpc>sc2_clr_gpc – Sticky counter: clear General Purpose Counter</sc2_clr_gpc>
+                        <sc2_clr_gpc0>sc2_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc2_clr_gpc0>
+                        <sc2_clr_gpc1>sc2_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc2_clr_gpc1>
                         <sc_conn_cnt>sc_conn_cnt – Sticky counter: cumulative number of connections</sc_conn_cnt>
                         <sc_conn_cur>sc_conn_cur – Sticky counter: concurrent connections</sc_conn_cur>
                         <sc_conn_rate>sc_conn_rate – Sticky counter: connection rate</sc_conn_rate>
                         <sc_get_gpc>sc_get_gpc – Sticky counter: get General Purpose Counter value</sc_get_gpc>
+                        <sc_get_gpc0>sc_get_gpc0 – Sticky counter: get General Purpose Counter value</sc_get_gpc0>
+                        <sc_get_gpc1>sc_get_gpc1 – Sticky counter: get General Purpose Counter value</sc_get_gpc1>
+                        <sc0_get_gpc0>sc0_get_gpc0 – Sticky counter: get General Purpose Counter value</sc0_get_gpc0>
+                        <sc0_get_gpc1>sc0_get_gpc1 – Sticky counter: get General Purpose Counter value</sc0_get_gpc1>
+                        <sc1_get_gpc0>sc1_get_gpc0 – Sticky counter: get General Purpose Counter value</sc1_get_gpc0>
+                        <sc1_get_gpc1>sc1_get_gpc1 – Sticky counter: get General Purpose Counter value</sc1_get_gpc1>
+                        <sc2_get_gpc0>sc2_get_gpc0 – Sticky counter: get General Purpose Counter value</sc2_get_gpc0>
+                        <sc2_get_gpc1>sc2_get_gpc1 – Sticky counter: get General Purpose Counter value</sc2_get_gpc1>
                         <sc_get_gpt>sc_get_gpt – Sticky counter: get General Purpose Tag value</sc_get_gpt>
+                        <sc_get_gpt0>sc_get_gpt0 – Sticky counter: get General Purpose Tag value</sc_get_gpt0>
+                        <sc0_get_gpt0>sc0_get_gpt0 – Sticky counter: get General Purpose Tag value</sc0_get_gpt0>
+                        <sc1_get_gpt0>sc1_get_gpt0 – Sticky counter: get General Purpose Tag value</sc1_get_gpt0>
+                        <sc2_get_gpt0>sc2_get_gpt0 – Sticky counter: get General Purpose Tag value</sc2_get_gpt0>
                         <sc_glitch_cnt>sc_glitch_cnt – Sticky counter: cumulative number of glitches</sc_glitch_cnt>
                         <sc_glitch_rate>sc_glitch_rate – Sticky counter: rate of glitches</sc_glitch_rate>
                         <sc_gpc_rate>sc_gpc_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc_rate>
+                        <sc_gpc0_rate>sc_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc0_rate>
+                        <sc_gpc1_rate>sc_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc1_rate>
+                        <sc0_gpc0_rate>sc0_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc0_gpc0_rate>
+                        <sc0_gpc1_rate>sc0_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc0_gpc1_rate>
+                        <sc1_gpc0_rate>sc1_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc1_gpc0_rate>
+                        <sc1_gpc1_rate>sc1_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc1_gpc1_rate>
+                        <sc2_gpc0_rate>sc2_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc2_gpc0_rate>
+                        <sc2_gpc1_rate>sc2_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc2_gpc1_rate>
                         <sc_http_err_cnt>sc_http_err_cnt – Sticky counter: cumulative number of HTTP errors</sc_http_err_cnt>
                         <sc_http_err_rate>sc_http_err_rate – Sticky counter: rate of HTTP errors</sc_http_err_rate>
                         <sc_http_fail_cnt>sc_http_fail_cnt – Sticky counter: cumulative number of HTTP failures</sc_http_fail_cnt>
@@ -1865,20 +1895,34 @@
                         <sc_http_req_cnt>sc_http_req_cnt – Sticky counter: cumulative number of HTTP requests</sc_http_req_cnt>
                         <sc_http_req_rate>sc_http_req_rate – Sticky counter: rate of HTTP requests</sc_http_req_rate>
                         <sc_inc_gpc>sc_inc_gpc – Sticky counter: increment General Purpose Counter</sc_inc_gpc>
+                        <sc_inc_gpc0>sc_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc_inc_gpc0>
+                        <sc_inc_gpc1>sc_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc_inc_gpc1>
+                        <sc0_inc_gpc0>sc0_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc0_inc_gpc0>
+                        <sc0_inc_gpc1>sc0_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc0_inc_gpc1>
+                        <sc1_inc_gpc0>sc1_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc1_inc_gpc0>
+                        <sc1_inc_gpc1>sc1_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc1_inc_gpc1>
+                        <sc2_inc_gpc0>sc2_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc2_inc_gpc0>
+                        <sc2_inc_gpc1>sc2_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc2_inc_gpc1>
                         <sc_sess_cnt>sc_sess_cnt – Sticky counter: cumulative number of sessions</sc_sess_cnt>
                         <sc_sess_rate>sc_sess_rate – Sticky counter: session rate</sc_sess_rate>
                         <src>src – Source IP matches specified IP</src>
                         <src_bytes_in_rate>src_bytes_in_rate – Source IP: incoming bytes rate</src_bytes_in_rate>
                         <src_bytes_out_rate>src_bytes_out_rate – Source IP: outgoing bytes rate</src_bytes_out_rate>
                         <src_clr_gpc>src_clr_gpc – Source IP: clear General Purpose Counter</src_clr_gpc>
+                        <src_clr_gpc0>src_clr_gpc0 – Source IP: clear General Purpose Counter</src_clr_gpc0>
+                        <src_clr_gpc1>src_clr_gpc1 – Source IP: clear General Purpose Counter</src_clr_gpc1>
                         <src_conn_cnt>src_conn_cnt – Source IP: cumulative number of connections</src_conn_cnt>
                         <src_conn_cur>src_conn_cur – Source IP: concurrent connections</src_conn_cur>
                         <src_conn_rate>src_conn_rate – Source IP: connection rate</src_conn_rate>
                         <src_get_gpc>src_get_gpc – Source IP: get General Purpose Counter value</src_get_gpc>
+                        <src_get_gpc0>src_get_gpc0 – Source IP: get General Purpose Counter value</src_get_gpc0>
+                        <src_get_gpc1>src_get_gpc1 – Source IP: get General Purpose Counter value</src_get_gpc1>
                         <src_get_gpt>src_get_gpt – Source IP: get General Purpose Tag value</src_get_gpt>
                         <src_glitch_cnt>src_glitch_cnt – Source IP: cumulative number of glitches</src_glitch_cnt>
                         <src_glitch_rate>src_glitch_rate – Source IP: rate of glitches</src_glitch_rate>
                         <src_gpc_rate>src_gpc_rate – Source IP: increment rate of General Purpose Counter</src_gpc_rate>
+                        <src_gpc0_rate>src_gpc0_rate – Source IP: increment rate of General Purpose Counter</src_gpc0_rate>
+                        <src_gpc1_rate>src_gpc1_rate – Source IP: increment rate of General Purpose Counter</src_gpc1_rate>
                         <src_http_err_cnt>src_http_err_cnt – Source IP: cumulative number of HTTP errors</src_http_err_cnt>
                         <src_http_err_rate>src_http_err_rate – Source IP: rate of HTTP errors</src_http_err_rate>
                         <src_http_fail_cnt>src_http_fail_cnt – Source IP: cumulative number of HTTP failures</src_http_fail_cnt>
@@ -1886,6 +1930,8 @@
                         <src_http_req_cnt>src_http_req_cnt – Source IP: number of HTTP requests</src_http_req_cnt>
                         <src_http_req_rate>src_http_req_rate – Source IP: rate of HTTP requests</src_http_req_rate>
                         <src_inc_gpc>src_inc_gpc – Source IP: increment General Purpose Counter</src_inc_gpc>
+                        <src_inc_gpc0>src_inc_gpc0 – Source IP: increment General Purpose Counter</src_inc_gpc0>
+                        <src_inc_gpc1>src_inc_gpc1 – Source IP: increment General Purpose Counter</src_inc_gpc1>
                         <src_is_local>src_is_local – Source IP is local</src_is_local>
                         <src_kbytes_in>src_kbytes_in – Source IP: amount of data received (in kilobytes)</src_kbytes_in>
                         <src_kbytes_out>src_kbytes_out – Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
@@ -2450,20 +2496,6 @@
                 <sc_get_gpc type="IntegerField">
                     <Required>N</Required>
                 </sc_get_gpc>
-                <sc_get_gpt_comparison type="OptionField">
-                    <Required>N</Required>
-                    <Default>gt</Default>
-                    <OptionValues>
-                        <gt>greater than</gt>
-                        <ge>greater equal</ge>
-                        <eq>equal</eq>
-                        <lt>less than</lt>
-                        <le>less equal</le>
-                    </OptionValues>
-                </sc_get_gpt_comparison>
-                <sc_get_gpt type="IntegerField">
-                    <Required>N</Required>
-                </sc_get_gpt>
                 <sc_glitch_cnt_comparison type="OptionField">
                     <Required>N</Required>
                     <Default>gt</Default>
@@ -2744,6 +2776,664 @@
                 <src_inc_gpc type="IntegerField">
                     <Required>N</Required>
                 </src_inc_gpc>
+                <sc_clr_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_clr_gpc0_comparison>
+                <sc_clr_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc_clr_gpc0>
+                <sc_clr_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_clr_gpc1_comparison>
+                <sc_clr_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc_clr_gpc1>
+                <sc0_clr_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_clr_gpc0_comparison>
+                <sc0_clr_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_clr_gpc0>
+                <sc0_clr_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_clr_gpc1_comparison>
+                <sc0_clr_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_clr_gpc1>
+                <sc1_clr_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_clr_gpc_comparison>
+                <sc1_clr_gpc type="IntegerField">
+                    <Required>N</Required>
+                </sc1_clr_gpc>
+                <sc1_clr_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_clr_gpc0_comparison>
+                <sc1_clr_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_clr_gpc0>
+                <sc1_clr_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_clr_gpc1_comparison>
+                <sc1_clr_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_clr_gpc1>
+                <sc2_clr_gpc_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_clr_gpc_comparison>
+                <sc2_clr_gpc type="IntegerField">
+                    <Required>N</Required>
+                </sc2_clr_gpc>
+                <sc2_clr_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_clr_gpc0_comparison>
+                <sc2_clr_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_clr_gpc0>
+                <sc2_clr_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_clr_gpc1_comparison>
+                <sc2_clr_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_clr_gpc1>
+                <sc_get_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpc0_comparison>
+                <sc_get_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpc0>
+                <sc_get_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpc1_comparison>
+                <sc_get_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpc1>
+                <sc0_get_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_get_gpc0_comparison>
+                <sc0_get_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_get_gpc0>
+                <sc0_get_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_get_gpc1_comparison>
+                <sc0_get_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_get_gpc1>
+                <sc1_get_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_get_gpc0_comparison>
+                <sc1_get_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_get_gpc0>
+                <sc1_get_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_get_gpc1_comparison>
+                <sc1_get_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_get_gpc1>
+                <sc2_get_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_get_gpc0_comparison>
+                <sc2_get_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_get_gpc0>
+                <sc2_get_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_get_gpc1_comparison>
+                <sc2_get_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_get_gpc1>
+                <sc_get_gpt_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpt_comparison>
+                <sc_get_gpt type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpt>
+                <sc_get_gpt0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_get_gpt0_comparison>
+                <sc_get_gpt0 type="IntegerField">
+                    <Required>N</Required>
+                </sc_get_gpt0>
+                <sc0_get_gpt0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_get_gpt0_comparison>
+                <sc0_get_gpt0 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_get_gpt0>
+                <sc1_get_gpt0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_get_gpt0_comparison>
+                <sc1_get_gpt0 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_get_gpt0>
+                <sc2_get_gpt0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_get_gpt0_comparison>
+                <sc2_get_gpt0 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_get_gpt0>
+                <sc_gpc0_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_gpc0_rate_comparison>
+                <sc_gpc0_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_gpc0_rate>
+                <sc_gpc1_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_gpc1_rate_comparison>
+                <sc_gpc1_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc_gpc1_rate>
+                <sc0_gpc0_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_gpc0_rate_comparison>
+                <sc0_gpc0_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc0_gpc0_rate>
+                <sc0_gpc1_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_gpc1_rate_comparison>
+                <sc0_gpc1_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc0_gpc1_rate>
+                <sc1_gpc0_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_gpc0_rate_comparison>
+                <sc1_gpc0_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc1_gpc0_rate>
+                <sc1_gpc1_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_gpc1_rate_comparison>
+                <sc1_gpc1_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc1_gpc1_rate>
+                <sc2_gpc0_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_gpc0_rate_comparison>
+                <sc2_gpc0_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc2_gpc0_rate>
+                <sc2_gpc1_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_gpc1_rate_comparison>
+                <sc2_gpc1_rate type="IntegerField">
+                    <Required>N</Required>
+                </sc2_gpc1_rate>
+                <sc_inc_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_inc_gpc0_comparison>
+                <sc_inc_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc_inc_gpc0>
+                <sc_inc_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc_inc_gpc1_comparison>
+                <sc_inc_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc_inc_gpc1>
+                <sc0_inc_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_inc_gpc0_comparison>
+                <sc0_inc_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_inc_gpc0>
+                <sc0_inc_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc0_inc_gpc1_comparison>
+                <sc0_inc_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc0_inc_gpc1>
+                <sc1_inc_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_inc_gpc0_comparison>
+                <sc1_inc_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_inc_gpc0>
+                <sc1_inc_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc1_inc_gpc1_comparison>
+                <sc1_inc_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc1_inc_gpc1>
+                <sc2_inc_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_inc_gpc0_comparison>
+                <sc2_inc_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_inc_gpc0>
+                <sc2_inc_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </sc2_inc_gpc1_comparison>
+                <sc2_inc_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </sc2_inc_gpc1>
+                <src_clr_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_clr_gpc0_comparison>
+                <src_clr_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </src_clr_gpc0>
+                <src_clr_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_clr_gpc1_comparison>
+                <src_clr_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </src_clr_gpc1>
+                <src_get_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_get_gpc0_comparison>
+                <src_get_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </src_get_gpc0>
+                <src_get_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_get_gpc1_comparison>
+                <src_get_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </src_get_gpc1>
+                <src_gpc0_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_gpc0_rate_comparison>
+                <src_gpc0_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_gpc0_rate>
+                <src_gpc1_rate_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_gpc1_rate_comparison>
+                <src_gpc1_rate type="IntegerField">
+                    <Required>N</Required>
+                </src_gpc1_rate>
+                <src_inc_gpc0_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_inc_gpc0_comparison>
+                <src_inc_gpc0 type="IntegerField">
+                    <Required>N</Required>
+                </src_inc_gpc0>
+                <src_inc_gpc1_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </src_inc_gpc1_comparison>
+                <src_inc_gpc1 type="IntegerField">
+                    <Required>N</Required>
+                </src_inc_gpc1>
                 <gpc_number type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
