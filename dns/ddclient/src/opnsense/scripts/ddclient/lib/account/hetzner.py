@@ -168,7 +168,7 @@ class Hetzner(BaseAccount):
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
-                "Account %s deleted %s %s" % (
+                "Account %s deleted record: %s type: %s" % (
                     self.description, record_name, record_type
                 )
             )
