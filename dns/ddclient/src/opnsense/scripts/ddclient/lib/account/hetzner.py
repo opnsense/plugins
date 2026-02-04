@@ -145,32 +145,34 @@ class Hetzner(BaseAccount):
 
     def _update_record(self, headers, zone_id, record_name, record_type, address):
         """Update existing record with new address"""
+        if self._delete_record(headers, zone_id, record_name, record_type):
+            return self._create_record(headers, zone_id,record_name, record_type, address)
+        
+        return False
+
+    def _delete_record(self, headers, zone_id, record_name, record_type):
+        """Delete existing record"""
         url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
 
-        data = {
-            'records': [{'value': str(address)}],
-            'ttl': int(self.settings.get('ttl', 300))
-        }
+        response = requests.delete(url, headers=headers)
 
-        response = requests.put(url, headers=headers, json=data)
-
-        if response.status_code != 200:
+        if response.status_code not in [200, 201, 204]:
             syslog.syslog(
                 syslog.LOG_ERR,
-                "Account %s error updating record: HTTP %d - %s" % (
+                "Account %s error deleting record for update: HTTP %d - %s" % (
                     self.description, response.status_code, response.text
                 )
             )
             return False
-
+        
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
-                "Account %s updated %s %s to %s" % (
-                    self.description, record_name, record_type, address
+                "Account %s deleted %s %s" % (
+                    self.description, record_name, record_type
                 )
             )
-
+        
         return True
 
     def _create_record(self, headers, zone_id, record_name, record_type, address):
