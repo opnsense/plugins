@@ -44,7 +44,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_add-header':
                     $action->type = 'http-request';
                     $action->http_request_action = 'add-header';
-                    if (isset($action->http_request_add_header_name)) {
+                    if (!empty((string)$action->http_request_add_header_name)) {
                         $action->http_request_option = (string)$action->http_request_add_header_name . ' ' . (string)$action->http_request_add_header_content;
                         $action->http_request_add_header_name = null;
                         $action->http_request_add_header_content = null;
@@ -57,7 +57,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_auth':
                     $action->type = 'http-request';
                     $action->http_request_action = 'auth';
-                    if (isset($action->http_request_auth)) {
+                    if (!empty((string)$action->http_request_auth)) {
                         $action->http_request_option = 'realm ' . (string)$action->http_request_auth;
                         $action->http_request_auth = null;
                     }
@@ -65,7 +65,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_del-header':
                     $action->type = 'http-request';
                     $action->http_request_action = 'del-header';
-                    if (isset($action->http_request_del_header_name)) {
+                    if (!empty((string)$action->http_request_del_header_name)) {
                         $action->http_request_option = (string)$action->http_request_del_header_name;
                         $action->http_request_del_header_name = null;
                     }
@@ -77,7 +77,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_lua':
                     $action->type = 'http-request';
                     $action->http_request_action = 'lua';
-                    if (isset($action->http_request_lua)) {
+                    if (!empty((string)$action->http_request_lua)) {
                         $action->http_request_option = (string)$action->http_request_lua;
                         $action->http_request_lua = null;
                     }
@@ -85,7 +85,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_redirect':
                     $action->type = 'http-request';
                     $action->http_request_action = 'redirect';
-                    if (isset($action->http_request_redirect)) {
+                    if (!empty((string)$action->http_request_redirect)) {
                         $action->http_request_option = (string)$action->http_request_redirect;
                         $action->http_request_redirect = null;
                     }
@@ -93,7 +93,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_replace-header':
                     $action->type = 'http-request';
                     $action->http_request_action = 'replace-header';
-                    if (isset($action->http_request_replace_header_name)) {
+                    if (!empty((string)$action->http_request_replace_header_name)) {
                         $action->http_request_option = (string)$action->http_request_replace_header_name . ' ' . (string)$action->http_request_replace_header_regex;
                         $action->http_request_replace_header_name = null;
                         $action->http_request_replace_header_regex = null;
@@ -102,7 +102,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_replace-value':
                     $action->type = 'http-request';
                     $action->http_request_action = 'replace-value';
-                    if (isset($action->http_request_replace_value_name)) {
+                    if (!empty((string)$action->http_request_replace_value_name)) {
                         $action->http_request_option = (string)$action->http_request_replace_value_name . ' ' . (string)$action->http_request_replace_value_regex;
                         $action->http_request_replace_value_name = null;
                         $action->http_request_replace_value_regex = null;
@@ -111,7 +111,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_set-header':
                     $action->type = 'http-request';
                     $action->http_request_action = 'set-header';
-                    if (isset($action->http_request_set_header_name)) {
+                    if (!empty((string)$action->http_request_set_header_name)) {
                         $action->http_request_option = (string)$action->http_request_set_header_name . ' ' . (string)$action->http_request_set_header_content;
                         $action->http_request_set_header_name = null;
                         $action->http_request_set_header_content = null;
@@ -120,7 +120,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_set-path':
                     $action->type = 'http-request';
                     $action->http_request_action = 'set-path';
-                    if (isset($action->http_request_set_path)) {
+                    if (!empty((string)$action->http_request_set_path)) {
                         $action->http_request_option = (string)$action->http_request_set_path;
                         $action->http_request_set_path = null;
                     }
@@ -128,7 +128,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_set-var':
                     $action->type = 'http-request';
                     $action->http_request_action = 'set-var';
-                    if (isset($action->http_request_set_var_scope)) {
+                    if (!empty((string)$action->http_request_set_var_name)) {
                         $action->http_request_option = '(' . (string)$action->http_request_set_var_scope . '.' . (string)$action->http_request_set_var_name . ') ' . (string)$action->http_request_set_var_expr;
                         $action->http_request_set_var_scope = null;
                         $action->http_request_set_var_name = null;
@@ -146,7 +146,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-request_use-service':
                     $action->type = 'http-request';
                     $action->http_request_action = 'use-service';
-                    if (isset($action->http_request_use_service)) {
+                    if (!empty((string)$action->http_request_use_service)) {
                         $action->http_request_option = (string)$action->http_request_use_service;
                         $action->http_request_use_service = null;
                     }
@@ -154,7 +154,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_add-header':
                     $action->type = 'http-response';
                     $action->http_response_action = 'add-header';
-                    if (isset($action->http_response_add_header_name)) {
+                    if (!empty((string)$action->http_response_add_header_name)) {
                         $action->http_response_option = (string)$action->http_response_add_header_name . ' ' . (string)$action->http_response_add_header_content;
                         $action->http_response_add_header_name = null;
                         $action->http_response_add_header_content = null;
@@ -167,7 +167,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_del-header':
                     $action->type = 'http-response';
                     $action->http_response_action = 'del-header';
-                    if (isset($action->http_response_del_header_name)) {
+                    if (!empty((string)$action->http_response_del_header_name)) {
                         $action->http_response_option = (string)$action->http_response_del_header_name;
                         $action->http_response_del_header_name = null;
                     }
@@ -179,7 +179,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_lua':
                     $action->type = 'http-response';
                     $action->http_response_action = 'lua';
-                    if (isset($action->http_response_lua)) {
+                    if (!empty((string)$action->http_response_lua)) {
                         $action->http_response_option = (string)$action->http_response_lua;
                         $action->http_response_lua = null;
                     }
@@ -187,7 +187,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_replace-header':
                     $action->type = 'http-response';
                     $action->http_response_action = 'replace-header';
-                    if (isset($action->http_response_replace_header_name)) {
+                    if (!empty((string)$action->http_response_replace_header_name)) {
                         $action->http_response_option = (string)$action->http_response_replace_header_name . ' ' . (string)$action->http_response_replace_header_regex;
                         $action->http_response_replace_header_name = null;
                         $action->http_response_replace_header_regex = null;
@@ -196,7 +196,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_replace-value':
                     $action->type = 'http-response';
                     $action->http_response_action = 'replace-value';
-                    if (isset($action->http_response_replace_value_name)) {
+                    if (!empty((string)$action->http_response_replace_value_name)) {
                         $action->http_response_option = (string)$action->http_response_replace_value_name . ' ' . (string)$action->http_response_replace_value_regex;
                         $action->http_response_replace_value_name = null;
                         $action->http_response_replace_value_regex = null;
@@ -205,7 +205,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_set-header':
                     $action->type = 'http-response';
                     $action->http_response_action = 'set-header';
-                    if (isset($action->http_response_set_header_name)) {
+                    if (!empty((string)$action->http_response_set_header_name)) {
                         $action->http_response_option = (string)$action->http_response_set_header_name . ' ' . (string)$action->http_response_set_header_content;
                         $action->http_response_set_header_name = null;
                         $action->http_response_set_header_content = null;
@@ -214,8 +214,8 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_set-status':
                     $action->type = 'http-response';
                     $action->http_response_action = 'set-status';
-                    if (isset($action->http_response_set_status_code)) {
-                        if (isset($action->http_response_set_status_reason)) {
+                    if (!empty((string)$action->http_response_set_status_code)) {
+                        if (!empty((string)$action->http_response_set_status_reason)) {
                             $status_reason = ' reason "' . (string)$action->http_response_set_status_reason . '"';
                         } else {
                             $status_reason = '';
@@ -228,7 +228,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'http-response_set-var':
                     $action->type = 'http-response';
                     $action->http_response_action = 'set-var';
-                    if (isset($action->http_response_set_var_scope)) {
+                    if (!empty((string)$action->http_response_set_var_name)) {
                         $action->http_response_option = '(' . (string)$action->http_response_set_var_scope . '.' . (string)$action->http_response_set_var_name . ') ' . (string)$action->http_response_set_var_expr;
                         $action->http_response_set_var_scope = null;
                         $action->http_response_set_var_name = null;
@@ -250,7 +250,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'tcp-request_content_lua':
                     $action->type = 'tcp-request';
                     $action->tcp_request_action = 'content_lua';
-                    if (isset($action->tcp_request_content_lua)) {
+                    if (!empty((string)$action->tcp_request_content_lua)) {
                         $action->tcp_request_option = (string)$action->tcp_request_content_lua;
                         $action->tcp_request_content_lua = null;
                     }
@@ -262,7 +262,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'tcp-request_content_use-service':
                     $action->type = 'tcp-request';
                     $action->tcp_request_action = 'content_use-service';
-                    if (isset($action->tcp_request_content_use_service)) {
+                    if (!empty((string)$action->tcp_request_content_use_service)) {
                         $action->tcp_request_option = (string)$action->tcp_request_content_use_service;
                         $action->tcp_request_content_use_service = null;
                     }
@@ -270,7 +270,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'tcp-request_inspect-delay':
                     $action->type = 'tcp-request';
                     $action->tcp_request_action = 'inspect-delay';
-                    if (isset($action->tcp_request_inspect_delay)) {
+                    if (!empty((string)$action->tcp_request_inspect_delay)) {
                         $action->tcp_request_option = (string)$action->tcp_request_inspect_delay;
                         $action->tcp_request_inspect_delay = null;
                     }
@@ -286,7 +286,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'tcp-response_content_lua':
                     $action->type = 'tcp-response';
                     $action->tcp_response_action = 'content_lua';
-                    if (isset($action->tcp_response_content_lua)) {
+                    if (!empty((string)$action->tcp_response_content_lua)) {
                         $action->tcp_response_option = (string)$action->tcp_response_content_lua;
                         $action->tcp_response_content_lua = null;
                     }
@@ -298,7 +298,7 @@ class M5_0_0 extends BaseModelMigration
                 case 'tcp-response_inspect-delay':
                     $action->type = 'tcp-response';
                     $action->tcp_response_action = 'inspect-delay';
-                    if (isset($action->tcp_response_inspect_delay)) {
+                    if (!empty((string)$action->tcp_response_inspect_delay)) {
                         $action->tcp_response_option = (string)$action->tcp_response_inspect_delay;
                         $action->tcp_response_inspect_delay = null;
                     }
