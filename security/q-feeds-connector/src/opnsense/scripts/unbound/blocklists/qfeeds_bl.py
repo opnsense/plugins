@@ -44,6 +44,8 @@ class DefaultBlocklistHandler(BaseBlocklistHandler):
         if self.cnf and self.cnf.has_section('settings'):
             if self.cnf.has_option('settings', 'filenames'):
                 qfeeds_filenames = self.cnf.get('settings', 'filenames').split(',')
+                # touch a file to help qfeedsctl detect the current instance uses its list
+                open('/tmp/qfeeds-unbound-bl.stat', 'w').write('')
 
         result = {}
         for filename in qfeeds_filenames:

@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2025 Deciso B.V.
+    Copyright (c) 2025-2026 Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -117,7 +117,14 @@ class QFeedsActions:
 
     def unbound_load(self):
         bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
-        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
+        bl_configured = os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20
+        bl_stat = '/tmp/qfeeds-unbound-bl.stat'
+        if bl_configured or os.path.exists(bl_stat):
+            # when de-configuring domain lists, we need to reconfigure unbound on deselect, track an empty file to
+            # detect that event (written by the unbound helper).
+            if os.path.exists(bl_stat):
+                os.remove(bl_stat)
+
             # when qfeeds-blocklists.conf is ~empty, skip updates
             subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
             yield 'update unbound blocklist'
