@@ -6,6 +6,43 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+5.0
+
+WARNING: This is a new major release, which may result in
+incompatible changes for some users.
+
+Added:
+* add support for HTTP/3 over QUIC to frontends (#4341)
+* add new rule: http-request silent-drop
+* add new rule: http-after-response
+* add new condition: HTTP method
+* support custom HTTP status code in "http-request deny" rules
+* add new backend option to control PROXY protocol for health checks (#2909)
+* add support for new map file types: beg,end,int,ip,reg,str (#3641)
+* add support for more sample fetches: quic_enabled, stopping, wait_end (#3702)
+* add support for HTTP compression (#4867)
+* add all action keywords for http-request/-response and tcp-request/-response rules
+* add "enabled" field to rules
+* add support for all stick-table data types
+* add support for GPC/GPT/SC to conditions and rules (#1123, #5109)
+* add support for SSL SNI expression to servers (#3756)
+* add column "mode" to servers overview (#4632)
+* add support for loading mapfiles in conditions
+
+Fixed:
+* Maintenance tab "SSL Certificates" not working with only one cert
+
+Changed:
+* upgrade to HAProxy 3.2 release series (#5147)
+* refactor http/tcp rules to make extensions easier
+* rename some labels in rules
+* change LUA boolean conversion (see tune.lua.bool-sample-conversion)
+* stick-table "size" and "expiration time" are no longer advanced options (now always visible)
+* replace stick-table type "ip" with "ipv4" (#5147)
+* show the actual HAProxy option name in conditions for clarity
+* allow stick-table types "binary", "integer" and "string" in backends
+* make mapfiles more useful in rules
+
 4.6
 
 Changed:

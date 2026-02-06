@@ -12,9 +12,15 @@
         <help>Description for this map file.</help>
     </field>
     <field>
+        <id>mapfile.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>The type of the map data.</help>
+    </field>
+    <field>
         <id>mapfile.content</id>
         <label>Content</label>
         <type>textbox</type>
-        <help><![CDATA[Paste the content of your map file here. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#map">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Paste the content of your map file here. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#map">HAProxy documentation</a> for a full description.]]></help>
     </field>
 </form>
