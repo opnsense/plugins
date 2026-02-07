@@ -84,7 +84,13 @@ class Nextcloud extends Base implements IBackupProvider
                 "type" => "text",
                 "label" => gettext("Directory Name without leading slash, starting from user's root"),
                 "value" => 'OPNsense-Backup'
-            )
+            ),
+            array(
+                "name" => "strategy",
+                "type" => "checkbox",
+                "help" => gettext("Select this one to back up to a file named config-YYYYMMDD instead of syncing contents of /conf/backup"),
+                "label" => gettext("Daily file instead of sync all"),
+            ),
         );
         $nextcloud = new NextcloudSettings();
         foreach ($fields as &$field) {
@@ -138,6 +144,9 @@ class Nextcloud extends Base implements IBackupProvider
             $password = (string)$nextcloud->password;
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
+            $strategy = (string)$nextcloud->strategy;
+            // Strategy 0 = Sync /conf/backup
+            // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
 
             // Check if destination directory exists, create (full path) if not
             try {
@@ -146,6 +155,33 @@ class Nextcloud extends Base implements IBackupProvider
             } catch (\Exception $e) {
                 return array();
             }
+
+            // Backup strategy 1, sync /conf/config.xml to $backupdir/config-YYYYMMDD.xml
+            if ($strategy) {
+                $confdata = file_get_contents('/conf/config.xml');
+                $target_filename = 'config-' . date('Ymd') . '.xml';
+                // Optionally encrypt
+                if (!empty($crypto_password)) {
+                    $confdata = $this->encrypt($confdata, $crypto_password);
+                }
+                try {
+                    $this->upload_file_content(
+                        $url,
+                        $username,
+                        $password,
+                        $internal_username,
+                        $backupdir,
+                        $target_filename,
+                        $confdata
+                    );
+                    return array($backupdir . '/' . $target_filename);
+                } catch (\Exception $e) {
+                    syslog(LOG_ERR, $e);
+                    return array();
+                }
+            }
+
+            // Default strategy (0), sync /conf/backup/
 
             // Get list of files from local backup system
             $local_files = array();
