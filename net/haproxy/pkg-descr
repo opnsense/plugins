@@ -27,7 +27,8 @@ Added:
 * add support for GPC/GPT/SC to conditions and rules (#1123, #5109)
 * add support for SSL SNI expression to servers (#3756)
 * add column "mode" to servers overview (#4632)
-* add support for loading mapfiles in conditions
+* add support for loading mapfiles in conditions and rules
+* add support for sample fetches in rules
 
 Fixed:
 * Maintenance tab "SSL Certificates" not working with only one cert

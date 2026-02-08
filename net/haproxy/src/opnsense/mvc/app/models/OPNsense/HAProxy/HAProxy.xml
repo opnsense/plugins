@@ -1951,6 +1951,7 @@
                         <ssl_sni_sub>ssl_sni_sub – SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
                         <stopping>stopping – HAProxy process is currently stopping</stopping>
                         <url_param>url_param – URL parameter contains</url_param>
+                        <var>var – Compare the value of a variable</var>
                         <wait_end>wait_end – Inspection period is over</wait_end>
                         <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
@@ -2076,6 +2077,25 @@
                     <Mask>/^.{1,4096}$/u</Mask>
                     <Required>N</Required>
                 </url_param_value>
+                <var type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </var>
+                <var_value type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </var_value>
+                <var_comparison type="OptionField">
+                    <Required>N</Required>
+                    <Default>gt</Default>
+                    <OptionValues>
+                        <gt>greater than</gt>
+                        <ge>greater equal</ge>
+                        <eq>equal</eq>
+                        <lt>less than</lt>
+                        <le>less equal</le>
+                    </OptionValues>
+                </var_comparison>
                 <ssl_c_verify_code type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>500000</MaximumValue>
@@ -3467,6 +3487,10 @@
                     <ValidationMessage>Related mapfile item not found</ValidationMessage>
                     <Required>N</Required>
                 </mapfile>
+                <converter type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </converter>
             </acl>
         </acls>
         <actions>
@@ -4142,6 +4166,25 @@
                     <ValidationMessage>Please specify a value between 0 and 99.</ValidationMessage>
                     <Required>N</Required>
                 </sc_number>
+                <mapfile type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>mapfiles.mapfile</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related mapfile item not found</ValidationMessage>
+                    <Required>N</Required>
+                </mapfile>
+                <map_default type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </map_default>
+                <sample_fetch type="TextField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </sample_fetch>
             </action>
         </actions>
         <luas>
