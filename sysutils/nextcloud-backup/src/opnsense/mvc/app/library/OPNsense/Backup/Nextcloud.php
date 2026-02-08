@@ -159,7 +159,9 @@ class Nextcloud extends Base implements IBackupProvider
             // Backup strategy 1, sync /conf/config.xml to $backupdir/config-YYYYMMDD.xml
             if ($strategy) {
                 $confdata = file_get_contents('/conf/config.xml');
-                $target_filename = 'config-' . date('Ymd') . '.xml';
+                $mdate = filemtime('/conf/config.xml');
+                $datestring = date('Ymd', $mdate);
+                $target_filename = 'config-' . $datestring . '.xml';
                 // Optionally encrypt
                 if (!empty($crypto_password)) {
                     $confdata = $this->encrypt($confdata, $crypto_password);
