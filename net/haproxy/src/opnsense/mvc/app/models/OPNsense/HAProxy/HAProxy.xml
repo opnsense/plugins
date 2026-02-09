@@ -1825,134 +1825,134 @@
                 <expression type="OptionField">
                     <Required>Y</Required>
                     <OptionValues>
-                        <cust_hdr_beg>hdr_beg – specified HTTP Header starts with</cust_hdr_beg>
-                        <cust_hdr_end>hdr_end – specified HTTP Header ends with</cust_hdr_end>
-                        <cust_hdr>hdr – specified HTTP Header matches</cust_hdr>
-                        <cust_hdr_reg>hdr_reg – specified HTTP Header regex</cust_hdr_reg>
-                        <cust_hdr_sub>hdr_sub – specified HTTP Header contains</cust_hdr_sub>
-                        <hdr_beg>hdr_beg – HTTP Host Header starts with</hdr_beg>
-                        <hdr_end>hdr_end – HTTP Host Header ends with</hdr_end>
-                        <hdr>hdr – HTTP Host Header matches</hdr>
-                        <hdr_reg>hdr_reg – HTTP Host Header regex</hdr_reg>
-                        <hdr_sub>hdr_sub – HTTP Host Header contains</hdr_sub>
-                        <http_auth>http_auth – HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
-                        <http_method>http_method – HTTP Method</http_method>
-                        <nbsrv>nbsrv – Minimum number of usable servers in backend</nbsrv>
-                        <path_beg>path_beg – Path starts with</path_beg>
-                        <path_dir>path_dir – Path contains subdir</path_dir>
-                        <path_end>path_end – Path ends with</path_end>
-                        <path>path – Path matches</path>
-                        <path_reg>path_reg – Path regex</path_reg>
-                        <path_sub>path_sub – Path contains string</path_sub>
-                        <quic_enabled>quic_enabled – QUIC transport protocol is enabled</quic_enabled>
-                        <traffic_is_http>req.proto_http – Traffic is HTTP</traffic_is_http>
-                        <traffic_is_ssl>req.ssl_ver – Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
-                        <sc_bytes_in_rate>sc_bytes_in_rate – Sticky counter: incoming bytes rate</sc_bytes_in_rate>
-                        <sc_bytes_out_rate>sc_bytes_out_rate – Sticky counter: outgoing bytes rate</sc_bytes_out_rate>
-                        <sc_clr_gpc>sc_clr_gpc – Sticky counter: clear General Purpose Counter</sc_clr_gpc>
-                        <sc_clr_gpc0>sc_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc_clr_gpc0>
-                        <sc_clr_gpc1>sc_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc_clr_gpc1>
-                        <sc0_clr_gpc0>sc0_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc0_clr_gpc0>
-                        <sc0_clr_gpc1>sc0_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc0_clr_gpc1>
-                        <sc1_clr_gpc>sc1_clr_gpc – Sticky counter: clear General Purpose Counter</sc1_clr_gpc>
-                        <sc1_clr_gpc0>sc1_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc1_clr_gpc0>
-                        <sc1_clr_gpc1>sc1_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc1_clr_gpc1>
-                        <sc2_clr_gpc>sc2_clr_gpc – Sticky counter: clear General Purpose Counter</sc2_clr_gpc>
-                        <sc2_clr_gpc0>sc2_clr_gpc0 – Sticky counter: clear General Purpose Counter</sc2_clr_gpc0>
-                        <sc2_clr_gpc1>sc2_clr_gpc1 – Sticky counter: clear General Purpose Counter</sc2_clr_gpc1>
-                        <sc_conn_cnt>sc_conn_cnt – Sticky counter: cumulative number of connections</sc_conn_cnt>
-                        <sc_conn_cur>sc_conn_cur – Sticky counter: concurrent connections</sc_conn_cur>
-                        <sc_conn_rate>sc_conn_rate – Sticky counter: connection rate</sc_conn_rate>
-                        <sc_get_gpc>sc_get_gpc – Sticky counter: get General Purpose Counter value</sc_get_gpc>
-                        <sc_get_gpc0>sc_get_gpc0 – Sticky counter: get General Purpose Counter value</sc_get_gpc0>
-                        <sc_get_gpc1>sc_get_gpc1 – Sticky counter: get General Purpose Counter value</sc_get_gpc1>
-                        <sc0_get_gpc0>sc0_get_gpc0 – Sticky counter: get General Purpose Counter value</sc0_get_gpc0>
-                        <sc0_get_gpc1>sc0_get_gpc1 – Sticky counter: get General Purpose Counter value</sc0_get_gpc1>
-                        <sc1_get_gpc0>sc1_get_gpc0 – Sticky counter: get General Purpose Counter value</sc1_get_gpc0>
-                        <sc1_get_gpc1>sc1_get_gpc1 – Sticky counter: get General Purpose Counter value</sc1_get_gpc1>
-                        <sc2_get_gpc0>sc2_get_gpc0 – Sticky counter: get General Purpose Counter value</sc2_get_gpc0>
-                        <sc2_get_gpc1>sc2_get_gpc1 – Sticky counter: get General Purpose Counter value</sc2_get_gpc1>
-                        <sc_get_gpt>sc_get_gpt – Sticky counter: get General Purpose Tag value</sc_get_gpt>
-                        <sc_get_gpt0>sc_get_gpt0 – Sticky counter: get General Purpose Tag value</sc_get_gpt0>
-                        <sc0_get_gpt0>sc0_get_gpt0 – Sticky counter: get General Purpose Tag value</sc0_get_gpt0>
-                        <sc1_get_gpt0>sc1_get_gpt0 – Sticky counter: get General Purpose Tag value</sc1_get_gpt0>
-                        <sc2_get_gpt0>sc2_get_gpt0 – Sticky counter: get General Purpose Tag value</sc2_get_gpt0>
-                        <sc_glitch_cnt>sc_glitch_cnt – Sticky counter: cumulative number of glitches</sc_glitch_cnt>
-                        <sc_glitch_rate>sc_glitch_rate – Sticky counter: rate of glitches</sc_glitch_rate>
-                        <sc_gpc_rate>sc_gpc_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc_rate>
-                        <sc_gpc0_rate>sc_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc0_rate>
-                        <sc_gpc1_rate>sc_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc_gpc1_rate>
-                        <sc0_gpc0_rate>sc0_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc0_gpc0_rate>
-                        <sc0_gpc1_rate>sc0_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc0_gpc1_rate>
-                        <sc1_gpc0_rate>sc1_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc1_gpc0_rate>
-                        <sc1_gpc1_rate>sc1_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc1_gpc1_rate>
-                        <sc2_gpc0_rate>sc2_gpc0_rate – Sticky counter: increment rate of General Purpose Counter</sc2_gpc0_rate>
-                        <sc2_gpc1_rate>sc2_gpc1_rate – Sticky counter: increment rate of General Purpose Counter</sc2_gpc1_rate>
-                        <sc_http_err_cnt>sc_http_err_cnt – Sticky counter: cumulative number of HTTP errors</sc_http_err_cnt>
-                        <sc_http_err_rate>sc_http_err_rate – Sticky counter: rate of HTTP errors</sc_http_err_rate>
-                        <sc_http_fail_cnt>sc_http_fail_cnt – Sticky counter: cumulative number of HTTP failures</sc_http_fail_cnt>
-                        <sc_http_fail_rate>sc_http_fail_rate – Sticky counter: rate of HTTP failures</sc_http_fail_rate>
-                        <sc_http_req_cnt>sc_http_req_cnt – Sticky counter: cumulative number of HTTP requests</sc_http_req_cnt>
-                        <sc_http_req_rate>sc_http_req_rate – Sticky counter: rate of HTTP requests</sc_http_req_rate>
-                        <sc_inc_gpc>sc_inc_gpc – Sticky counter: increment General Purpose Counter</sc_inc_gpc>
-                        <sc_inc_gpc0>sc_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc_inc_gpc0>
-                        <sc_inc_gpc1>sc_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc_inc_gpc1>
-                        <sc0_inc_gpc0>sc0_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc0_inc_gpc0>
-                        <sc0_inc_gpc1>sc0_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc0_inc_gpc1>
-                        <sc1_inc_gpc0>sc1_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc1_inc_gpc0>
-                        <sc1_inc_gpc1>sc1_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc1_inc_gpc1>
-                        <sc2_inc_gpc0>sc2_inc_gpc0 – Sticky counter: increment General Purpose Counter</sc2_inc_gpc0>
-                        <sc2_inc_gpc1>sc2_inc_gpc1 – Sticky counter: increment General Purpose Counter</sc2_inc_gpc1>
-                        <sc_sess_cnt>sc_sess_cnt – Sticky counter: cumulative number of sessions</sc_sess_cnt>
-                        <sc_sess_rate>sc_sess_rate – Sticky counter: session rate</sc_sess_rate>
-                        <src>src – Source IP matches specified IP</src>
-                        <src_bytes_in_rate>src_bytes_in_rate – Source IP: incoming bytes rate</src_bytes_in_rate>
-                        <src_bytes_out_rate>src_bytes_out_rate – Source IP: outgoing bytes rate</src_bytes_out_rate>
-                        <src_clr_gpc>src_clr_gpc – Source IP: clear General Purpose Counter</src_clr_gpc>
-                        <src_clr_gpc0>src_clr_gpc0 – Source IP: clear General Purpose Counter</src_clr_gpc0>
-                        <src_clr_gpc1>src_clr_gpc1 – Source IP: clear General Purpose Counter</src_clr_gpc1>
-                        <src_conn_cnt>src_conn_cnt – Source IP: cumulative number of connections</src_conn_cnt>
-                        <src_conn_cur>src_conn_cur – Source IP: concurrent connections</src_conn_cur>
-                        <src_conn_rate>src_conn_rate – Source IP: connection rate</src_conn_rate>
-                        <src_get_gpc>src_get_gpc – Source IP: get General Purpose Counter value</src_get_gpc>
-                        <src_get_gpc0>src_get_gpc0 – Source IP: get General Purpose Counter value</src_get_gpc0>
-                        <src_get_gpc1>src_get_gpc1 – Source IP: get General Purpose Counter value</src_get_gpc1>
-                        <src_get_gpt>src_get_gpt – Source IP: get General Purpose Tag value</src_get_gpt>
-                        <src_glitch_cnt>src_glitch_cnt – Source IP: cumulative number of glitches</src_glitch_cnt>
-                        <src_glitch_rate>src_glitch_rate – Source IP: rate of glitches</src_glitch_rate>
-                        <src_gpc_rate>src_gpc_rate – Source IP: increment rate of General Purpose Counter</src_gpc_rate>
-                        <src_gpc0_rate>src_gpc0_rate – Source IP: increment rate of General Purpose Counter</src_gpc0_rate>
-                        <src_gpc1_rate>src_gpc1_rate – Source IP: increment rate of General Purpose Counter</src_gpc1_rate>
-                        <src_http_err_cnt>src_http_err_cnt – Source IP: cumulative number of HTTP errors</src_http_err_cnt>
-                        <src_http_err_rate>src_http_err_rate – Source IP: rate of HTTP errors</src_http_err_rate>
-                        <src_http_fail_cnt>src_http_fail_cnt – Source IP: cumulative number of HTTP failures</src_http_fail_cnt>
-                        <src_http_fail_rate>src_http_fail_rate – Source IP: rate of HTTP failures</src_http_fail_rate>
-                        <src_http_req_cnt>src_http_req_cnt – Source IP: number of HTTP requests</src_http_req_cnt>
-                        <src_http_req_rate>src_http_req_rate – Source IP: rate of HTTP requests</src_http_req_rate>
-                        <src_inc_gpc>src_inc_gpc – Source IP: increment General Purpose Counter</src_inc_gpc>
-                        <src_inc_gpc0>src_inc_gpc0 – Source IP: increment General Purpose Counter</src_inc_gpc0>
-                        <src_inc_gpc1>src_inc_gpc1 – Source IP: increment General Purpose Counter</src_inc_gpc1>
-                        <src_is_local>src_is_local – Source IP is local</src_is_local>
-                        <src_kbytes_in>src_kbytes_in – Source IP: amount of data received (in kilobytes)</src_kbytes_in>
-                        <src_kbytes_out>src_kbytes_out – Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
-                        <src_port>src_port – Source IP: TCP source port</src_port>
-                        <src_sess_cnt>src_sess_cnt – Source IP: cumulative number of sessions</src_sess_cnt>
-                        <src_sess_rate>src_sess_rate – Source IP: session rate</src_sess_rate>
-                        <ssl_c_ca_commonname>ssl_c_ca_commonname – SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
-                        <ssl_c_verify_code>ssl_c_verify_code – SSL Client certificate verify error result</ssl_c_verify_code>
-                        <ssl_c_verify>ssl_c_verify – SSL Client certificate is valid</ssl_c_verify>
-                        <ssl_fc_sni>ssl_fc_sni – SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
-                        <ssl_fc>ssl_fc – Traffic is SSL (locally deciphered)</ssl_fc>
-                        <ssl_hello_type>ssl_hello_type – SSL Hello Type</ssl_hello_type>
-                        <ssl_sni_beg>ssl_sni_beg – SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
-                        <ssl_sni_end>ssl_sni_end – SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
-                        <ssl_sni_reg>ssl_sni_reg – SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
-                        <ssl_sni>ssl_sni – SNI TLS extension matches (TCP request content inspection)</ssl_sni>
-                        <ssl_sni_sub>ssl_sni_sub – SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
-                        <stopping>stopping – HAProxy process is currently stopping</stopping>
-                        <url_param>url_param – URL parameter contains</url_param>
-                        <var>var – Compare the value of a variable</var>
-                        <wait_end>wait_end – Inspection period is over</wait_end>
+                        <cust_hdr_beg>hdr_beg - specified HTTP Header starts with</cust_hdr_beg>
+                        <cust_hdr_end>hdr_end - specified HTTP Header ends with</cust_hdr_end>
+                        <cust_hdr>hdr - specified HTTP Header matches</cust_hdr>
+                        <cust_hdr_reg>hdr_reg - specified HTTP Header regex</cust_hdr_reg>
+                        <cust_hdr_sub>hdr_sub - specified HTTP Header contains</cust_hdr_sub>
+                        <hdr_beg>hdr_beg - HTTP Host Header starts with</hdr_beg>
+                        <hdr_end>hdr_end - HTTP Host Header ends with</hdr_end>
+                        <hdr>hdr - HTTP Host Header matches</hdr>
+                        <hdr_reg>hdr_reg - HTTP Host Header regex</hdr_reg>
+                        <hdr_sub>hdr_sub - HTTP Host Header contains</hdr_sub>
+                        <http_auth>http_auth - HTTP Basic Auth: username/password from client matches selected User/Group</http_auth>
+                        <http_method>http_method - HTTP Method</http_method>
+                        <nbsrv>nbsrv - Minimum number of usable servers in backend</nbsrv>
+                        <path_beg>path_beg - Path starts with</path_beg>
+                        <path_dir>path_dir - Path contains subdir</path_dir>
+                        <path_end>path_end - Path ends with</path_end>
+                        <path>path - Path matches</path>
+                        <path_reg>path_reg - Path regex</path_reg>
+                        <path_sub>path_sub - Path contains string</path_sub>
+                        <quic_enabled>quic_enabled - QUIC transport protocol is enabled</quic_enabled>
+                        <traffic_is_http>req.proto_http - Traffic is HTTP</traffic_is_http>
+                        <traffic_is_ssl>req.ssl_ver - Traffic is SSL (TCP request content inspection)</traffic_is_ssl>
+                        <sc_bytes_in_rate>sc_bytes_in_rate - Sticky counter: incoming bytes rate</sc_bytes_in_rate>
+                        <sc_bytes_out_rate>sc_bytes_out_rate - Sticky counter: outgoing bytes rate</sc_bytes_out_rate>
+                        <sc_clr_gpc>sc_clr_gpc - Sticky counter: clear General Purpose Counter</sc_clr_gpc>
+                        <sc_clr_gpc0>sc_clr_gpc0 - Sticky counter: clear General Purpose Counter</sc_clr_gpc0>
+                        <sc_clr_gpc1>sc_clr_gpc1 - Sticky counter: clear General Purpose Counter</sc_clr_gpc1>
+                        <sc0_clr_gpc0>sc0_clr_gpc0 - Sticky counter: clear General Purpose Counter</sc0_clr_gpc0>
+                        <sc0_clr_gpc1>sc0_clr_gpc1 - Sticky counter: clear General Purpose Counter</sc0_clr_gpc1>
+                        <sc1_clr_gpc>sc1_clr_gpc - Sticky counter: clear General Purpose Counter</sc1_clr_gpc>
+                        <sc1_clr_gpc0>sc1_clr_gpc0 - Sticky counter: clear General Purpose Counter</sc1_clr_gpc0>
+                        <sc1_clr_gpc1>sc1_clr_gpc1 - Sticky counter: clear General Purpose Counter</sc1_clr_gpc1>
+                        <sc2_clr_gpc>sc2_clr_gpc - Sticky counter: clear General Purpose Counter</sc2_clr_gpc>
+                        <sc2_clr_gpc0>sc2_clr_gpc0 - Sticky counter: clear General Purpose Counter</sc2_clr_gpc0>
+                        <sc2_clr_gpc1>sc2_clr_gpc1 - Sticky counter: clear General Purpose Counter</sc2_clr_gpc1>
+                        <sc_conn_cnt>sc_conn_cnt - Sticky counter: cumulative number of connections</sc_conn_cnt>
+                        <sc_conn_cur>sc_conn_cur - Sticky counter: concurrent connections</sc_conn_cur>
+                        <sc_conn_rate>sc_conn_rate - Sticky counter: connection rate</sc_conn_rate>
+                        <sc_get_gpc>sc_get_gpc - Sticky counter: get General Purpose Counter value</sc_get_gpc>
+                        <sc_get_gpc0>sc_get_gpc0 - Sticky counter: get General Purpose Counter value</sc_get_gpc0>
+                        <sc_get_gpc1>sc_get_gpc1 - Sticky counter: get General Purpose Counter value</sc_get_gpc1>
+                        <sc0_get_gpc0>sc0_get_gpc0 - Sticky counter: get General Purpose Counter value</sc0_get_gpc0>
+                        <sc0_get_gpc1>sc0_get_gpc1 - Sticky counter: get General Purpose Counter value</sc0_get_gpc1>
+                        <sc1_get_gpc0>sc1_get_gpc0 - Sticky counter: get General Purpose Counter value</sc1_get_gpc0>
+                        <sc1_get_gpc1>sc1_get_gpc1 - Sticky counter: get General Purpose Counter value</sc1_get_gpc1>
+                        <sc2_get_gpc0>sc2_get_gpc0 - Sticky counter: get General Purpose Counter value</sc2_get_gpc0>
+                        <sc2_get_gpc1>sc2_get_gpc1 - Sticky counter: get General Purpose Counter value</sc2_get_gpc1>
+                        <sc_get_gpt>sc_get_gpt - Sticky counter: get General Purpose Tag value</sc_get_gpt>
+                        <sc_get_gpt0>sc_get_gpt0 - Sticky counter: get General Purpose Tag value</sc_get_gpt0>
+                        <sc0_get_gpt0>sc0_get_gpt0 - Sticky counter: get General Purpose Tag value</sc0_get_gpt0>
+                        <sc1_get_gpt0>sc1_get_gpt0 - Sticky counter: get General Purpose Tag value</sc1_get_gpt0>
+                        <sc2_get_gpt0>sc2_get_gpt0 - Sticky counter: get General Purpose Tag value</sc2_get_gpt0>
+                        <sc_glitch_cnt>sc_glitch_cnt - Sticky counter: cumulative number of glitches</sc_glitch_cnt>
+                        <sc_glitch_rate>sc_glitch_rate - Sticky counter: rate of glitches</sc_glitch_rate>
+                        <sc_gpc_rate>sc_gpc_rate - Sticky counter: increment rate of General Purpose Counter</sc_gpc_rate>
+                        <sc_gpc0_rate>sc_gpc0_rate - Sticky counter: increment rate of General Purpose Counter</sc_gpc0_rate>
+                        <sc_gpc1_rate>sc_gpc1_rate - Sticky counter: increment rate of General Purpose Counter</sc_gpc1_rate>
+                        <sc0_gpc0_rate>sc0_gpc0_rate - Sticky counter: increment rate of General Purpose Counter</sc0_gpc0_rate>
+                        <sc0_gpc1_rate>sc0_gpc1_rate - Sticky counter: increment rate of General Purpose Counter</sc0_gpc1_rate>
+                        <sc1_gpc0_rate>sc1_gpc0_rate - Sticky counter: increment rate of General Purpose Counter</sc1_gpc0_rate>
+                        <sc1_gpc1_rate>sc1_gpc1_rate - Sticky counter: increment rate of General Purpose Counter</sc1_gpc1_rate>
+                        <sc2_gpc0_rate>sc2_gpc0_rate - Sticky counter: increment rate of General Purpose Counter</sc2_gpc0_rate>
+                        <sc2_gpc1_rate>sc2_gpc1_rate - Sticky counter: increment rate of General Purpose Counter</sc2_gpc1_rate>
+                        <sc_http_err_cnt>sc_http_err_cnt - Sticky counter: cumulative number of HTTP errors</sc_http_err_cnt>
+                        <sc_http_err_rate>sc_http_err_rate - Sticky counter: rate of HTTP errors</sc_http_err_rate>
+                        <sc_http_fail_cnt>sc_http_fail_cnt - Sticky counter: cumulative number of HTTP failures</sc_http_fail_cnt>
+                        <sc_http_fail_rate>sc_http_fail_rate - Sticky counter: rate of HTTP failures</sc_http_fail_rate>
+                        <sc_http_req_cnt>sc_http_req_cnt - Sticky counter: cumulative number of HTTP requests</sc_http_req_cnt>
+                        <sc_http_req_rate>sc_http_req_rate - Sticky counter: rate of HTTP requests</sc_http_req_rate>
+                        <sc_inc_gpc>sc_inc_gpc - Sticky counter: increment General Purpose Counter</sc_inc_gpc>
+                        <sc_inc_gpc0>sc_inc_gpc0 - Sticky counter: increment General Purpose Counter</sc_inc_gpc0>
+                        <sc_inc_gpc1>sc_inc_gpc1 - Sticky counter: increment General Purpose Counter</sc_inc_gpc1>
+                        <sc0_inc_gpc0>sc0_inc_gpc0 - Sticky counter: increment General Purpose Counter</sc0_inc_gpc0>
+                        <sc0_inc_gpc1>sc0_inc_gpc1 - Sticky counter: increment General Purpose Counter</sc0_inc_gpc1>
+                        <sc1_inc_gpc0>sc1_inc_gpc0 - Sticky counter: increment General Purpose Counter</sc1_inc_gpc0>
+                        <sc1_inc_gpc1>sc1_inc_gpc1 - Sticky counter: increment General Purpose Counter</sc1_inc_gpc1>
+                        <sc2_inc_gpc0>sc2_inc_gpc0 - Sticky counter: increment General Purpose Counter</sc2_inc_gpc0>
+                        <sc2_inc_gpc1>sc2_inc_gpc1 - Sticky counter: increment General Purpose Counter</sc2_inc_gpc1>
+                        <sc_sess_cnt>sc_sess_cnt - Sticky counter: cumulative number of sessions</sc_sess_cnt>
+                        <sc_sess_rate>sc_sess_rate - Sticky counter: session rate</sc_sess_rate>
+                        <src>src - Source IP matches specified IP</src>
+                        <src_bytes_in_rate>src_bytes_in_rate - Source IP: incoming bytes rate</src_bytes_in_rate>
+                        <src_bytes_out_rate>src_bytes_out_rate - Source IP: outgoing bytes rate</src_bytes_out_rate>
+                        <src_clr_gpc>src_clr_gpc - Source IP: clear General Purpose Counter</src_clr_gpc>
+                        <src_clr_gpc0>src_clr_gpc0 - Source IP: clear General Purpose Counter</src_clr_gpc0>
+                        <src_clr_gpc1>src_clr_gpc1 - Source IP: clear General Purpose Counter</src_clr_gpc1>
+                        <src_conn_cnt>src_conn_cnt - Source IP: cumulative number of connections</src_conn_cnt>
+                        <src_conn_cur>src_conn_cur - Source IP: concurrent connections</src_conn_cur>
+                        <src_conn_rate>src_conn_rate - Source IP: connection rate</src_conn_rate>
+                        <src_get_gpc>src_get_gpc - Source IP: get General Purpose Counter value</src_get_gpc>
+                        <src_get_gpc0>src_get_gpc0 - Source IP: get General Purpose Counter value</src_get_gpc0>
+                        <src_get_gpc1>src_get_gpc1 - Source IP: get General Purpose Counter value</src_get_gpc1>
+                        <src_get_gpt>src_get_gpt - Source IP: get General Purpose Tag value</src_get_gpt>
+                        <src_glitch_cnt>src_glitch_cnt - Source IP: cumulative number of glitches</src_glitch_cnt>
+                        <src_glitch_rate>src_glitch_rate - Source IP: rate of glitches</src_glitch_rate>
+                        <src_gpc_rate>src_gpc_rate - Source IP: increment rate of General Purpose Counter</src_gpc_rate>
+                        <src_gpc0_rate>src_gpc0_rate - Source IP: increment rate of General Purpose Counter</src_gpc0_rate>
+                        <src_gpc1_rate>src_gpc1_rate - Source IP: increment rate of General Purpose Counter</src_gpc1_rate>
+                        <src_http_err_cnt>src_http_err_cnt - Source IP: cumulative number of HTTP errors</src_http_err_cnt>
+                        <src_http_err_rate>src_http_err_rate - Source IP: rate of HTTP errors</src_http_err_rate>
+                        <src_http_fail_cnt>src_http_fail_cnt - Source IP: cumulative number of HTTP failures</src_http_fail_cnt>
+                        <src_http_fail_rate>src_http_fail_rate - Source IP: rate of HTTP failures</src_http_fail_rate>
+                        <src_http_req_cnt>src_http_req_cnt - Source IP: number of HTTP requests</src_http_req_cnt>
+                        <src_http_req_rate>src_http_req_rate - Source IP: rate of HTTP requests</src_http_req_rate>
+                        <src_inc_gpc>src_inc_gpc - Source IP: increment General Purpose Counter</src_inc_gpc>
+                        <src_inc_gpc0>src_inc_gpc0 - Source IP: increment General Purpose Counter</src_inc_gpc0>
+                        <src_inc_gpc1>src_inc_gpc1 - Source IP: increment General Purpose Counter</src_inc_gpc1>
+                        <src_is_local>src_is_local - Source IP is local</src_is_local>
+                        <src_kbytes_in>src_kbytes_in - Source IP: amount of data received (in kilobytes)</src_kbytes_in>
+                        <src_kbytes_out>src_kbytes_out - Source IP: amount of data sent (in kilobytes)</src_kbytes_out>
+                        <src_port>src_port - Source IP: TCP source port</src_port>
+                        <src_sess_cnt>src_sess_cnt - Source IP: cumulative number of sessions</src_sess_cnt>
+                        <src_sess_rate>src_sess_rate - Source IP: session rate</src_sess_rate>
+                        <ssl_c_ca_commonname>ssl_c_ca_commonname - SSL Client certificate issued by CA common-name</ssl_c_ca_commonname>
+                        <ssl_c_verify_code>ssl_c_verify_code - SSL Client certificate verify error result</ssl_c_verify_code>
+                        <ssl_c_verify>ssl_c_verify - SSL Client certificate is valid</ssl_c_verify>
+                        <ssl_fc_sni>ssl_fc_sni - SNI TLS extension matches (locally deciphered)</ssl_fc_sni>
+                        <ssl_fc>ssl_fc - Traffic is SSL (locally deciphered)</ssl_fc>
+                        <ssl_hello_type>ssl_hello_type - SSL Hello Type</ssl_hello_type>
+                        <ssl_sni_beg>ssl_sni_beg - SNI TLS extension starts with (TCP request content inspection)</ssl_sni_beg>
+                        <ssl_sni_end>ssl_sni_end - SNI TLS extension ends with (TCP request content inspection)</ssl_sni_end>
+                        <ssl_sni_reg>ssl_sni_reg - SNI TLS extension regex (TCP request content inspection)</ssl_sni_reg>
+                        <ssl_sni>ssl_sni - SNI TLS extension matches (TCP request content inspection)</ssl_sni>
+                        <ssl_sni_sub>ssl_sni_sub - SNI TLS extension contains (TCP request content inspection)</ssl_sni_sub>
+                        <stopping>stopping - HAProxy process is currently stopping</stopping>
+                        <url_param>url_param - URL parameter contains</url_param>
+                        <var>var - Compare the value of a variable</var>
+                        <wait_end>wait_end - Inspection period is over</wait_end>
                         <custom_acl>Custom condition (option pass-through)</custom_acl>
                     </OptionValues>
                 </expression>
@@ -3496,7 +3496,7 @@
         <actions>
             <action type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
@@ -4352,13 +4352,13 @@
                     <Required>Y</Required>
                     <Default>dom</Default>
                     <OptionValues>
-                        <beg>beg – key begins with requested value</beg>
-                        <dom>dom – Domains</dom>
-                        <end>end – key ends with requested value</end>
-                        <int>int – Integers</int>
-                        <ip>ip – IPs</ip>
-                        <reg>reg – Regular Expressions</reg>
-                        <str>str – Strings</str>
+                        <beg>beg - key begins with requested value</beg>
+                        <dom>dom - Domains</dom>
+                        <end>end - key ends with requested value</end>
+                        <int>int - Integers</int>
+                        <ip>ip - IPs</ip>
+                        <reg>reg - Regular Expressions</reg>
+                        <str>str - Strings</str>
                     </OptionValues>
                 </type>
                 <content type="TextField">
