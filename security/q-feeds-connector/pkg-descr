@@ -6,6 +6,7 @@ Plugin Changelog
 1.4
 
 * Feature: Added DNSCrypt-Proxy integration
+* Bugfix: Track loaded lists when deselected and reload Unbounds blocklist in that case
 
 1.3
 
