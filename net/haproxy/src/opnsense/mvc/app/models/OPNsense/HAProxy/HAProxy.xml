@@ -4359,6 +4359,7 @@
                         <ip>ip - IPs</ip>
                         <reg>reg - Regular Expressions</reg>
                         <str>str - Strings</str>
+                        <sub>sub - substring matches requested value</sub>
                     </OptionValues>
                 </type>
                 <content type="TextField">
