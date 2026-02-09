@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.14
+
+Fixed:
+* fix class name of Google Domains DNS API (to make PHP linter happy)
+
 4.13
 
 Added:
