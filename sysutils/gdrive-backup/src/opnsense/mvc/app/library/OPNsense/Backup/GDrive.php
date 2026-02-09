@@ -34,7 +34,7 @@ use OPNsense\Core\Config;
  * Class google drive backup
  * @package OPNsense\Backup
  */
-class Gdrive extends Base implements IBackupProvider
+class GDrive extends Base implements IBackupProvider
 {
     /**
      * get required (user interface) fields for backup connector
