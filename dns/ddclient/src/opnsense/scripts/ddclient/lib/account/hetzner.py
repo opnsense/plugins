@@ -23,7 +23,7 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-    Hetzner DNS providers for OPNsense DynDNS via [www.arcan-it.de](https://www.arcan-it.de)
+    Hetzner DNS providers for OPNsense DynDNS via https://www.arcan-it.de
 
     Supports both APIs:
     - Hetzner DNS (api.hetzner.cloud) - new Cloud API for migrated zones
@@ -184,7 +184,7 @@ class Hetzner(HetznerAccount):
                     self.description, response.status_code, response.text
                 )
             )
-        return False
+            return False
 
         if self.is_verbose:
             syslog.syslog(
