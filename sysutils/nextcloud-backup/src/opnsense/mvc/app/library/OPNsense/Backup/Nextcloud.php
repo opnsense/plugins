@@ -361,7 +361,7 @@ class Nextcloud extends Base implements IBackupProvider
         $response = curl_exec($curl);
         $err = curl_error($curl);
         $info = curl_getinfo($curl);
-        if (!($info['http_code'] >= 200 && $info['http_code'] < 300)) {
+        if (!($info['http_code'] >= 200 && $info['http_code'] < 300) || $err) {
             if (err) {
                 syslog(LOG_ERR, $err);
             }
