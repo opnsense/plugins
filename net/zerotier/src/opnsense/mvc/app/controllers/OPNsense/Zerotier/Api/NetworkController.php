@@ -105,6 +105,10 @@ class NetworkController extends ApiMutableModelControllerBase
                         $mdlZerotier->serializeToConfig();
                         Config::getInstance()->save();
                         $result["result"] = "saved";
+                        $this->setZerotierNetwork($network->networkId, 'allowManaged', $network->allowManaged);
+                        $this->setZerotierNetwork($network->networkId, 'allowGlobal', $network->allowGlobal);
+                        $this->setZerotierNetwork($network->networkId, 'allowDefault', $network->allowDefault);
+                        $this->setZerotierNetwork($network->networkId, 'allowDNS', $network->allowDNS);
                     }
                 }
             }
@@ -192,8 +196,10 @@ class NetworkController extends ApiMutableModelControllerBase
 
     private function toggleZerotierNetwork($networkId, $enabled)
     {
+        $backend = new Backend();
+        $backend->configdRun("template reload OPNsense/zerotier");
         $action = $enabled ? 'join' : 'leave';
-        return trim((new Backend())->configdRun("zerotier $action $networkId"));
+        return trim($backend->configdpRun("zerotier", [$action, $networkId]));
     }
 
     private function listZerotierNetwork($networkId)
@@ -206,5 +212,10 @@ class NetworkController extends ApiMutableModelControllerBase
             }
         }
         return gettext("Unable to obtain Zerotier information for network") . " " . $networkId . "! " . gettext("Is the network enabled?");
+    }
+
+    private function setZerotierNetwork($networkId, $setting, $value)
+    {
+        return trim((new Backend())->configdpRun("zerotier", ["set", $networkId, $setting, $value]));
     }
 }
