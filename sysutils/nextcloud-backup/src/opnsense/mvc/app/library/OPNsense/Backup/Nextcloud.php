@@ -91,6 +91,13 @@ class Nextcloud extends Base implements IBackupProvider
                 "help" => gettext("Select this one to back up to a file named config-YYYYMMDD instead of syncing contents of /conf/backup"),
                 "label" => gettext("Daily file instead of sync all"),
             ),
+            array(
+                "name" => "addhostname",
+                "type" => "checkbox",
+                "label" => gettext("Backup to directory named after hostname"),
+                "help" => gettext("Create subdirectory under backupdir for this host"),
+                "value" => null
+            ),
         );
         $nextcloud = new NextcloudSettings();
         foreach ($fields as &$field) {
@@ -148,6 +155,10 @@ class Nextcloud extends Base implements IBackupProvider
             // Strategy 0 = Sync /conf/backup
             // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
 
+            if (!$nextcloud->addhostname->isEmpty()) {
+                $backupdir .= "/".gethostname()."/";
+            }
+
             // Check if destination directory exists, create (full path) if not
             try {
                 $internal_username = $this->getInternalUsername($url, $username, $password);
@@ -188,9 +199,12 @@ class Nextcloud extends Base implements IBackupProvider
             // Get list of files from local backup system
             $local_files = array();
             $tmp_local_files = scandir('/conf/backup/');
-            // Remove '.' and '..'
+            // Remove '.' and '..', skip directories
             foreach ($tmp_local_files as $tmp_local_file) {
                 if ($tmp_local_file === '.' || $tmp_local_file === '..') {
+                    continue;
+                }
+                if (!is_file("/conf/backup/".$tmp_local_file)) {
                     continue;
                 }
                 $local_files[] = $tmp_local_file;
