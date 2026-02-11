@@ -289,14 +289,21 @@ class Nextcloud extends Base implements IBackupProvider
      */
     public function upload_file_content($url, $username, $password, $internal_username, $backupdir, $filename, $local_file_content)
     {
-        $this->curl_request(
-            $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename",
+        $url = $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename";
+        $reply = $this->curl_request(
+            $url,
             $username,
             $password,
             'PUT',
             'cannot execute PUT',
             $local_file_content
         );
+        $http_code = $reply['info']['http_code'];
+        // Accepted http codes for upload is 200-299
+        if (!($http_code >= 200 && $http_code < 300)) {
+            syslog(LOG_ERR, 'Could not PUT '. $url);
+            throw new \Exception();
+        }
     }
 
     /**
