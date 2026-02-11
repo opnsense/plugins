@@ -162,10 +162,40 @@ class Nextcloud extends Base implements IBackupProvider
                 $mdate = filemtime('/conf/config.xml');
                 $datestring = date('Ymd', $mdate);
                 $target_filename = 'config-' . $datestring . '.xml';
+                // Find the same filename @ remote
+                $remote_filename = $url . '/remote.php/dav/files/' . $internal_username . '/' . $backupdir . '/' . $target_filename;
+                try {
+                    $reply = $this->curl_request_nothrow($remote_filename, $username, $password, 'PROPFIND', 'Cannot get remote fileinfo');
+                    $http_code = $reply['info']['http_code'];
+                    if ($http_code >= 200 && $http_code < 300) {
+                        $xml_data = $reply['response'];
+                        if ($xml_data == NULL) {
+                            syslog(LOG_ERR, 'Data was NULL');
+                            return array();
+                        }
+                        $xml_data = str_replace(['<d:', '</d:'], ['<', '</'], $xml_data);
+                        $xml = simplexml_load_string($xml_data);
+                        foreach ($xml->children() as $response) {
+                            if ($response->getName() == 'response') {
+                                $lastmodifiedstr = $response->propstat->prop->getlastmodified;
+                                $filedate = strtotime($lastmodifiedstr);
+                                if ($filedate >= $mdate) {
+                                    syslog(LOG_ERR, 'Remote file is same or newer than local');
+                                    return array();
+                                }
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    syslog(LOG_ERR, $e);
+                    // Exceptions are not fatal at this point
+                    // log for information, but keep going
+                }
                 // Optionally encrypt
                 if (!empty($crypto_password)) {
                     $confdata = $this->encrypt($confdata, $crypto_password);
                 }
+                // Finally, upload some data
                 try {
                     $this->upload_file_content(
                         $url,
@@ -178,7 +208,7 @@ class Nextcloud extends Base implements IBackupProvider
                     );
                     return array($backupdir . '/' . $target_filename);
                 } catch (\Exception $e) {
-                    syslog(LOG_ERR, $e);
+                    syslog(LOG_ERR, 'Backup to ' . $url . ' failed: ' . $e);
                     return array();
                 }
             }
