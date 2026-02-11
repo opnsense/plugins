@@ -145,9 +145,8 @@ class Nextcloud extends Base implements IBackupProvider
             $password = (string)$nextcloud->password;
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
-            $add_hostname = (string)$nextcloud->addhostname;
 
-            if ($add_hostname) {
+            if (!$nextcloud->addhostname->isEmpty()) {
                 $backupdir .= "/".gethostname()."/";
             }
 
