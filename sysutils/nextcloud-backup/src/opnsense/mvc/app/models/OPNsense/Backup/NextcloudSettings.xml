@@ -1,6 +1,6 @@
 <model>
     <mount>//system/backup/nextcloud</mount>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>OPNsense Nextcloud Backup Settings</description>
     <items>
         <enabled type="BooleanField">
@@ -53,5 +53,9 @@
             <Required>Y</Required>
             <Default>0</Default>
         </strategy>
+        <addhostname type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </addhostname>
     </items>
 </model>

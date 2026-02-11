@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>action.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this rule.</help>
+    </field>
+    <field>
         <id>action.name</id>
         <label>Name</label>
         <type>text</type>
@@ -16,32 +22,32 @@
         <type>header</type>
     </field>
     <field>
-        <id>action.testType</id>
-        <label>Test type</label>
-        <type>dropdown</type>
-        <help><![CDATA[Choose how to test. By using IF it tests if the condition evaluates to true. If you use UNLESS, the sense of the test is reversed.]]></help>
-    </field>
-    <field>
         <id>action.linkedAcls</id>
         <label>Select conditions</label>
         <type>select_multiple</type>
         <help><![CDATA[Select one or more conditions to be used for this rule.]]></help>
     </field>
     <field>
-        <id>action.operator</id>
-        <label>Logical operator for conditions</label>
+        <id>action.testType</id>
+        <label>Match Mode</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a logical operator.]]></help>
+        <help><![CDATA[Apply this rule when conditions are met (IF) or unmet (UNLESS).]]></help>
     </field>
     <field>
-        <label>HAProxy function</label>
+        <id>action.operator</id>
+        <label>Logic Operator</label>
+        <type>dropdown</type>
+        <help><![CDATA[Combine multiple conditions using AND (all must match) or OR (any must match).]]></help>
+    </field>
+    <field>
+        <label>Rule type</label>
         <type>header</type>
     </field>
     <field>
         <id>action.type</id>
-        <label>Execute function</label>
+        <label>Type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a HAProxy function that should be executed if the condition evaluates to true.]]></help>
+        <help><![CDATA[Choose a HAProxy action that should be used if the condition evaluates to true.]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -72,291 +78,6 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
-        <style>type_table table_http-request_auth</style>
-    </field>
-    <field>
-        <id>action.http_request_auth</id>
-        <label>Auth Realm</label>
-        <type>text</type>
-        <help><![CDATA[When HAProxy requests user name and password from the user, this optional authentication realm is returned with the response (typically the application's name).]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_redirect</style>
-    </field>
-    <field>
-        <id>action.http_request_redirect</id>
-        <label>Redirect Command</label>
-        <type>text</type>
-        <help><![CDATA[Use HAProxy's redirect function to return a HTTP redirection. A full redirect command is required, e.g. "location https://www.example.net/" or "scheme https code 301". See <a href="http://docs.haproxy.org/3.0/configuration.html#redirect">HAProxy's documentation</a> for further details and examples.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_lua</style>
-    </field>
-    <field>
-        <id>action.http_request_lua</id>
-        <label>Lua function</label>
-        <type>text</type>
-        <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_use-service</style>
-    </field>
-    <field>
-        <id>action.http_request_use_service</id>
-        <label>Lua service</label>
-        <type>text</type>
-        <help><![CDATA[Register the specified Lua service. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_add-header</style>
-    </field>
-    <field>
-        <id>action.http_request_add_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Append a HTTP header field with the specified name.]]></help>
-    </field>
-    <field>
-        <id>action.http_request_add_header_content</id>
-        <label>Header Content</label>
-        <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it is possible to use pre-defined variables, see <a href="http://docs.haproxy.org/3.0/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_set-header</style>
-    </field>
-    <field>
-        <id>action.http_request_set_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Remove the HTTP header field with the specified name and add a new one with the same name. This is useful when passing security information to the server, where the header must not be manipulated by external users.]]></help>
-    </field>
-    <field>
-        <id>action.http_request_set_header_content</id>
-        <label>Header Content</label>
-        <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://docs.haproxy.org/3.0/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_del-header</style>
-    </field>
-    <field>
-        <id>action.http_request_del_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Remove the HTTP header field with the specified name.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_replace-header</style>
-    </field>
-    <field>
-        <id>action.http_request_replace_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[The name of the HTTP header field.]]></help>
-    </field>
-    <field>
-        <id>action.http_request_replace_header_regex</id>
-        <label>Regular Expression</label>
-        <type>text</type>
-        <help><![CDATA[Matches the specified regular expression in all occurrences of the header field.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_replace-value</style>
-    </field>
-    <field>
-        <id>action.http_request_replace_value_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[The name of the HTTP header field.]]></help>
-    </field>
-    <field>
-        <id>action.http_request_replace_value_regex</id>
-        <label>Regular Expression</label>
-        <type>text</type>
-        <help><![CDATA[This is suited for all header fields which are allowed to carry more than one value: Matches the specified regular expression against every comma-delimited value of the header field.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_set-path</style>
-    </field>
-    <field>
-        <id>action.http_request_set_path</id>
-        <label>Set Path</label>
-        <type>text</type>
-        <help><![CDATA[Rewrites the request path. The query string, if any, is left intact. If a scheme and authority is found before the path, they are left intact as well.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-request_set-var</style>
-    </field>
-    <field>
-        <id>action.http_request_set_var_scope</id>
-        <label>Variable Scope</label>
-        <type>dropdown</type>
-        <help><![CDATA[The name of the variable starts with an indication about its scope.]]></help>
-    </field>
-    <field>
-        <id>action.http_request_set_var_name</id>
-        <label>Variable Name</label>
-        <type>text</type>
-    </field>
-    <field>
-        <id>action.http_request_set_var_expr</id>
-        <label>Expression</label>
-        <type>text</type>
-        <help><![CDATA[A standard HAProxy expression formed by a sample-fetch followed by some converters.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_lua</style>
-    </field>
-    <field>
-        <id>action.http_response_lua</id>
-        <label>Lua function</label>
-        <type>text</type>
-        <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_add-header</style>
-    </field>
-    <field>
-        <id>action.http_response_add_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Append a HTTP header field with the specified name.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_add_header_content</id>
-        <label>Header Content</label>
-        <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://docs.haproxy.org/3.0/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_set-header</style>
-    </field>
-    <field>
-        <id>action.http_response_set_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Remove the HTTP header field with the specified name and add a new one with the same name. This is useful when passing security information to the server, where the header must not be manipulated by external users.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_set_header_content</id>
-        <label>Header Content</label>
-        <type>text</type>
-        <help><![CDATA[The value that should be set for the specified HTTP header. Note that it's possible to use pre-defined variables, see <a href="http://docs.haproxy.org/3.0/configuration.html#8.2.4">HAProxy's documentation</a> for further details and examples.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_del-header</style>
-    </field>
-    <field>
-        <id>action.http_response_del_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[Remove the HTTP header field with the specified name.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_replace-header</style>
-    </field>
-    <field>
-        <id>action.http_response_replace_header_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[The name of the HTTP header field.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_replace_header_regex</id>
-        <label>Regular Expression</label>
-        <type>text</type>
-        <help><![CDATA[Matches the specified regular expression in all occurrences of header field.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_replace-value</style>
-    </field>
-    <field>
-        <id>action.http_response_replace_value_name</id>
-        <label>HTTP Header</label>
-        <type>text</type>
-        <help><![CDATA[The name of the HTTP header field.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_replace_value_regex</id>
-        <label>Regular Expression</label>
-        <type>text</type>
-        <help><![CDATA[This is suited for all header fields which are allowed to carry more than one value: Matches the specified regular expression against every comma-delimited value of the header field.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_set-status</style>
-    </field>
-    <field>
-        <id>action.http_response_set_status_code</id>
-        <label>HTTP Status Code</label>
-        <type>text</type>
-        <help><![CDATA[Replaces the response status code. Must be an integer between 100 and 999.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_set_status_reason</id>
-        <label>HTTP Reason Text</label>
-        <type>text</type>
-        <help><![CDATA[An optional custom reason text for the HTTP status code. If empty the default reason for the specified code will be used.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_http-response_set-var</style>
-    </field>
-    <field>
-        <id>action.http_response_set_var_scope</id>
-        <label>Variable Scope</label>
-        <type>dropdown</type>
-        <help><![CDATA[The name of the variable starts with an indication about its scope.]]></help>
-    </field>
-    <field>
-        <id>action.http_response_set_var_name</id>
-        <label>Variable Name</label>
-        <type>text</type>
-    </field>
-    <field>
-        <id>action.http_response_set_var_expr</id>
-        <label>Expression</label>
-        <type>text</type>
-        <help><![CDATA[A standard HAProxy expression formed by a sample-fetch followed by some converters.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
         <style>type_table table_monitor_fail</style>
     </field>
     <field>
@@ -364,61 +85,6 @@
         <label>Monitoring URI</label>
         <type>text</type>
         <help><![CDATA[Specifies a URI which will be intercepted to return HAProxy's health status instead of forwarding the request. When a HTTP request is received, HAProxy will return either "HTTP/1.0 200 OK" or "HTTP/1.0 503 Service unavailable", depending on the fined failure conditions.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_tcp-request_content_lua</style>
-    </field>
-    <field>
-        <id>action.tcp_request_content_lua</id>
-        <label>Lua function</label>
-        <type>text</type>
-        <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_tcp-request_content_use-service</style>
-    </field>
-    <field>
-        <id>action.tcp_request_content_use_service</id>
-        <label>Lua service</label>
-        <type>text</type>
-        <help><![CDATA[Register the specified Lua service. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_tcp-request_inspect-delay</style>
-    </field>
-    <field>
-        <id>action.tcp_request_inspect_delay</id>
-        <label>TCP inspection delay</label>
-        <type>text</type>
-        <help><![CDATA[Set the maximum allowed time to wait for data during content inspection. Defaults to milliseconds. You may also enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_tcp-response_content_lua</style>
-    </field>
-    <field>
-        <id>action.tcp_response_content_lua</id>
-        <label>Lua function</label>
-        <type>text</type>
-        <help><![CDATA[Execute the specified Lua function. You will most likely need to include/load your Lua code first.]]></help>
-    </field>
-    <field>
-        <label>Parameters</label>
-        <type>header</type>
-        <style>type_table table_tcp-response_inspect-delay</style>
-    </field>
-    <field>
-        <id>action.tcp_response_inspect_delay</id>
-        <label>TCP inspection delay</label>
-        <type>text</type>
-        <help><![CDATA[Set the maximum allowed time to wait for a response during content inspection. Defaults to milliseconds. You may also enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds).]]></help>
     </field>
     <field>
         <label>Parameters</label>
@@ -451,6 +117,29 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>type_table table_map_data_use_backend</style>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_file</id>
+        <label>Map file</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will extract the Host header from the HTTP request and search the map file for a match. If a match is found, the backend pool from the map file will be used.]]></help>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_input</id>
+        <label>Input Sample</label>
+        <type>textbox</type>
+        <help><![CDATA[The sample expression (e.g., path, req.ssl_sni, hdr(Host), str(active)) whose fetched value is used as the lookup key for the map file.]]></help>
+    </field>
+    <field>
+        <id>action.map_data_use_backend_default</id>
+        <label>Default backend pool</label>
+        <type>dropdown</type>
+        <help><![CDATA[HAProxy will use this backend pool if no match is found in the map file.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>type_table table_fcgi_pass_header</style>
     </field>
     <field>
@@ -468,6 +157,190 @@
         <id>action.fcgi_set_param</id>
         <label>Parameter</label>
         <type>text</type>
-        <help><![CDATA[Set a FastCGI parameter that should be passed to the application. Its value must follow HAProxy's <a href="http://docs.haproxy.org/3.0/configuration.html#8.2.4">Custom Log format rules</a>. With this directive, it is possible to overwrite the value of default FastCGI parameters.]]></help>
+        <help><![CDATA[Set a FastCGI parameter that should be passed to the application. Its value must follow HAProxy's <a href="http://docs.haproxy.org/3.2/configuration.html#8.2.4">Custom Log format rules</a>. With this directive, it is possible to overwrite the value of default FastCGI parameters.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_compression</style>
+    </field>
+    <field>
+        <id>action.compression_direction</id>
+        <label>Compression Direction</label>
+        <type>dropdown</type>
+        <help><![CDATA[Whether HAProxy uses compression for HTTP responses, HTTP requests, or both. Be aware that most servers will not support request body decompression. For safekeeping only enable compression for HTTP responses.]]></help>
+    </field>
+    <field>
+        <id>action.compression_algo_res</id>
+        <label>Response Algorithm</label>
+        <type>dropdown</type>
+        <help><![CDATA[The compression algorithm used for HTTP responses. Compression will only be used depending on the Accept-Encoding request header.]]></help>
+    </field>
+    <field>
+        <id>action.compression_algo_req</id>
+        <label>Request Algorithm</label>
+        <type>dropdown</type>
+        <help><![CDATA[The compression algorithm used for HTTP requests. Compression will only be used depending on the Accept-Encoding request header.]]></help>
+    </field>
+    <field>
+        <id>action.compression_mime_res</id>
+        <label>Response Mime Types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[HTTP responses will use compression for the specified mime types, i.e. text/css, text/html, application/javascript.]]></help>
+        <hint>Enter MIME types here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>action.compression_mime_req</id>
+        <label>Request Mime Types</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[HTTP requests will use compression for the specified mime types, i.e. text/css, text/html, application/javascript.]]></help>
+        <hint>Enter MIME types here. Finish with TAB.</hint>
+    </field>
+    <field>
+        <id>action.compression_minsize_res</id>
+        <label>Response Minimum Size</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a minimum file size for HTTP response compression in bytes. By avoiding unnecessary compression work on very small files, this may reduce CPU overhead. Entering 0 disables this option.]]></help>
+    </field>
+    <field>
+        <id>action.compression_minsize_req</id>
+        <label>Request Minimum Size</label>
+        <type>text</type>
+        <help><![CDATA[Specifies a minimum file size for HTTP request compression in bytes. By avoiding unnecessary compression work on very small files, this may reduce CPU overhead. Entering 0 disables this option.]]></help>
+    </field>
+    <field>
+        <id>action.compression_offloading</id>
+        <label>Compression Offloading</label>
+        <type>checkbox</type>
+        <help><![CDATA[When enabled, the load balancer will remove the Accept-Encoding header before forwarding a request to backend servers. This prevents the servers from performing compression, offloading that work to the load balancer. This may impact HAProxy's performance.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-after-response</style>
+    </field>
+    <field>
+        <id>action.http_after_response_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[A detailed explanation of each action and examples can be found in <a href="http://docs.haproxy.org/3.2/configuration.html#4.3">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <id>action.http_after_response_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+        <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#http-after-response">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-request</style>
+    </field>
+    <field>
+        <id>action.http_request_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[A detailed explanation of each action and examples can be found in <a href="http://docs.haproxy.org/3.2/configuration.html#4.3">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <id>action.http_request_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+        <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#http-request">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_http-response</style>
+    </field>
+    <field>
+        <id>action.http_response_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[A detailed explanation of each action and examples can be found in <a href="http://docs.haproxy.org/3.2/configuration.html#4.3">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <id>action.http_response_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+        <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#http-response">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_tcp-request</style>
+    </field>
+    <field>
+        <id>action.tcp_request_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[A detailed explanation of each action and examples can be found in <a href="http://docs.haproxy.org/3.2/configuration.html#4.3">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <id>action.tcp_request_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+        <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#tcp-request">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
+        <style>type_table table_tcp-response</style>
+    </field>
+    <field>
+        <id>action.tcp_response_action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help><![CDATA[A detailed explanation of each action and examples can be found in <a href="http://docs.haproxy.org/3.2/configuration.html#4.3">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <id>action.tcp_response_option</id>
+        <label>Options/Values</label>
+        <type>text</type>
+        <help><![CDATA[Some actions require additional parameters and specific syntax. Examples and explanations can be found in the <a href="http://docs.haproxy.org/3.2/configuration.html#tcp-response">HAProxy's documentation</a>.]]></help>
+    </field>
+    <field>
+        <label>Conditional parameters</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>action.gpc_number</id>
+        <label>GPC number</label>
+        <type>text</type>
+        <help><![CDATA[Refers to the number of the General Purpose Counter, e.g. 0 or 1 when using gpc0 or gpc1 respectively. This value will be ignored in rules that do not support GPC.]]></help>
+    </field>
+    <field>
+        <id>action.gpt_number</id>
+        <label>GPT number</label>
+        <type>text</type>
+        <help><![CDATA[Refers to the number of the General Purpose Tag, e.g. 0 or 1 when using gpt0 or gpt1 respectively. This value will be ignored in rules that do not support GPT.]]></help>
+    </field>
+    <field>
+        <id>action.sc_number</id>
+        <label>SC number</label>
+        <type>text</type>
+        <help><![CDATA[Refers to the number of the Stick Counter, e.g. 0 or 1 when using sc0 or sc1 respectively. This value will be ignored in rules that do not support SC.]]></help>
+    </field>
+    <field>
+        <id>action.mapfile</id>
+        <label>Mapfile</label>
+        <type>dropdown</type>
+        <help><![CDATA[Load patterns from a map file.]]></help>
+    </field>
+    <field>
+        <id>action.map_default</id>
+        <label>Map default value</label>
+        <type>text</type>
+        <help><![CDATA[When a map file is specified, this is the default value.]]></help>
+    </field>
+    <field>
+        <id>action.sample_fetch</id>
+        <label>Sample fetch</label>
+        <type>text</type>
+        <help><![CDATA[Extracts a value from the request or connection context (e.g. path, header, source IP) to be used as input for converters or matching rules. May be used in combination with set-var and map files to create more complex rules, e.g.<br/>http-request set-var(req.rate_limit) path,map_beg(/path/to/mapfile,20)</br>http-request set-var(req.request_rate) base32+src,table_http_req_rate()]]></help>
     </field>
 </form>
