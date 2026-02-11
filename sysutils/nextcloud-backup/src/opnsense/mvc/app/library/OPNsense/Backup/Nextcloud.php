@@ -135,6 +135,41 @@ class Nextcloud extends Base implements IBackupProvider
     }
 
     /**
+     * check remote file last modified tag
+     * @param string $remote_filename filename to check on server
+     * @param string $username username for login to server
+     * @param string $password password for authentication
+     * @return int unix timestamp or 0 if errors occour
+     */
+    public function get_remote_file_lastmodified(
+        $remote_filename,
+        $username,
+        $password
+    ) {
+        $reply = $this->curl_request_nothrow($remote_filename, $username, $password, 'PROPFIND', 'Cannot get remote fileinfo');
+        $http_code = $reply['info']['http_code'];
+        if ($http_code >= 200 && $http_code < 300) {
+            $xml_data = $reply['response'];
+            if ($xml_data == NULL) {
+                syslog(LOG_ERR, 'Data was NULL');
+                return 0;
+            }
+            $xml_data = str_replace(['<d:', '</d:'], ['<', '</'], $xml_data);
+            $xml = simplexml_load_string($xml_data);
+            foreach ($xml->children() as $response) {
+                if ($response->getName() == 'response') {
+                    $lastmodifiedstr = $response->propstat->prop->getlastmodified;
+                    $filedate = strtotime($lastmodifiedstr);
+                    return $filedate;
+                }
+            }
+        }
+        return 0;
+    }
+
+
+
+    /**
      * perform backup
      * @return array filelist
      * @throws \OPNsense\Base\ModelException
@@ -175,33 +210,11 @@ class Nextcloud extends Base implements IBackupProvider
                 $target_filename = 'config-' . $datestring . '.xml';
                 // Find the same filename @ remote
                 $remote_filename = $url . '/remote.php/dav/files/' . $internal_username . '/' . $backupdir . '/' . $target_filename;
-                try {
-                    $reply = $this->curl_request_nothrow($remote_filename, $username, $password, 'PROPFIND', 'Cannot get remote fileinfo');
-                    $http_code = $reply['info']['http_code'];
-                    if ($http_code >= 200 && $http_code < 300) {
-                        $xml_data = $reply['response'];
-                        if ($xml_data == NULL) {
-                            syslog(LOG_ERR, 'Data was NULL');
-                            return array();
-                        }
-                        $xml_data = str_replace(['<d:', '</d:'], ['<', '</'], $xml_data);
-                        $xml = simplexml_load_string($xml_data);
-                        foreach ($xml->children() as $response) {
-                            if ($response->getName() == 'response') {
-                                $lastmodifiedstr = $response->propstat->prop->getlastmodified;
-                                $filedate = strtotime($lastmodifiedstr);
-                                if ($filedate >= $mdate) {
-                                    syslog(LOG_ERR, 'Remote file is same or newer than local');
-                                    return array();
-                                }
-                            }
-                        }
-                    }
-                } catch (\Exception $e) {
-                    syslog(LOG_ERR, $e);
-                    // Exceptions are not fatal at this point
-                    // log for information, but keep going
+                $remote_file_date = $this->get_remote_file_lastmodified($remote_filename, $username, $password);
+                if ($remote_file_date >= $mdate) {
+                    return array();
                 }
+
                 // Optionally encrypt
                 if (!empty($crypto_password)) {
                     $confdata = $this->encrypt($confdata, $crypto_password);
