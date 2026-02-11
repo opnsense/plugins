@@ -381,6 +381,31 @@ class Nextcloud extends Base implements IBackupProvider
         $postdata = null,
         $headers = array("User-Agent: OPNsense Firewall")
     ) {
+        $result = $this->curl_request_nothrow($url, $username, $password, $method, $error_message, $postdata, $headers);
+        $info = $result['info'];
+        $err = $result['err'];
+        $response = $result['response'];
+        if (!($info['http_code'] == 200 || $info['http_code'] == 207 || $info['http_code'] == 201) || $err) {
+            syslog(LOG_ERR, $error_message);
+            syslog(LOG_ERR, json_encode($info));
+            throw new \Exception();
+        }
+        return array('response' => $response, 'info' => $info);
+    }
+
+
+    // Add this here, since I'm fundamentally opposed to throwing exceptions
+    // if http codes aren't to your liking in a generic function.
+    // Delegate that to upper functions, where it belongs.
+    public function curl_request_nothrow(
+        $url,
+        $username,
+        $password,
+        $method,
+        $error_message,
+        $postdata = null,
+        $headers = array("User-Agent: OPNsense Firewall")
+    ) {
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
@@ -399,13 +424,8 @@ class Nextcloud extends Base implements IBackupProvider
         $response = curl_exec($curl);
         $err = curl_error($curl);
         $info = curl_getinfo($curl);
-        if (!($info['http_code'] == 200 || $info['http_code'] == 207 || $info['http_code'] == 201) || $err) {
-            syslog(LOG_ERR, $error_message);
-            syslog(LOG_ERR, json_encode($info));
-            throw new \Exception();
-        }
         curl_close($curl);
-        return array('response' => $response, 'info' => $info);
+        return array('response' => $response, 'info' => $info, 'err' => $err);
     }
 
     /**
