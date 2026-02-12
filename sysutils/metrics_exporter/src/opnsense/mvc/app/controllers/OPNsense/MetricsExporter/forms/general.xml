@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable the metrics exporter daemon.</help>
+    </field>
+    <field>
+        <id>general.interval</id>
+        <label>Polling Interval (seconds)</label>
+        <type>text</type>
+        <help>How often to collect metrics. Valid range: 5-300 seconds.</help>
+    </field>
+    <field>
+        <id>general.outputdir</id>
+        <label>Output Directory</label>
+        <type>text</type>
+        <help>Directory to write Prometheus metrics files. Default is the node_exporter textfile collector directory. Must end with /.</help>
+    </field>
+</form>

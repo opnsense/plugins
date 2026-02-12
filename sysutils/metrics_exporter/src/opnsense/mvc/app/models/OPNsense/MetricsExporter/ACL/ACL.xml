@@ -1,0 +1,9 @@
+<acl>
+    <page-services-metricsexporter>
+        <name>Services: Metrics Exporter</name>
+        <patterns>
+            <pattern>ui/metricsexporter/*</pattern>
+            <pattern>api/metricsexporter/*</pattern>
+        </patterns>
+    </page-services-metricsexporter>
+</acl>

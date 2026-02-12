@@ -1,0 +1,28 @@
+<model>
+    <mount>//OPNsense/MetricsExporter</mount>
+    <description>Metrics Exporter configuration</description>
+    <version>1.1.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </enabled>
+        <interval type="IntegerField">
+            <Default>15</Default>
+            <Required>Y</Required>
+            <MinimumValue>5</MinimumValue>
+            <MaximumValue>300</MaximumValue>
+            <ValidationMessage>Interval must be between 5 and 300 seconds.</ValidationMessage>
+        </interval>
+        <outputdir type="TextField">
+            <Default>/var/tmp/node_exporter/</Default>
+            <Required>Y</Required>
+            <Mask>/^\/(?!.*\.\.)[a-zA-Z0-9\/_.\-]{1,200}\/$/</Mask>
+            <ValidationMessage>Must be an absolute directory path ending in /. Path traversal (..) is not allowed.</ValidationMessage>
+        </outputdir>
+        <collectors type="TextField">
+            <Default></Default>
+            <Required>N</Required>
+        </collectors>
+    </items>
+</model>
