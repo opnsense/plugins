@@ -1,0 +1,42 @@
+<model>
+    <mount>//OPNsense/AvahiReflector</mount>
+    <version>1.0.0</version>
+    <description>Avahi mDNS/DNS-SD reflector settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <interfaces type="InterfaceField">
+            <Default>lan</Default>
+            <Required>Y</Required>
+            <Multiple>Y</Multiple>
+        </interfaces>
+        <domain_name type="TextField">
+            <Default>local</Default>
+            <Required>Y</Required>
+            <Mask>/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/</Mask>
+            <ValidationMessage>Enter a valid domain name (e.g. "local" or "home.local").</ValidationMessage>
+        </domain_name>
+        <use_ipv4 type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </use_ipv4>
+        <use_ipv6 type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </use_ipv6>
+        <enable_reflector type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </enable_reflector>
+        <reflect_ipv type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </reflect_ipv>
+        <reflect_filters type="CSVListField">
+            <Required>N</Required>
+            <Mask>/^[a-zA-Z0-9_][a-zA-Z0-9._-]*$/</Mask>
+        </reflect_filters>
+    </items>
+</model>

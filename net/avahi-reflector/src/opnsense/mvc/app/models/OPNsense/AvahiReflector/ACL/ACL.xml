@@ -1,0 +1,9 @@
+<acl>
+    <page-services-avahireflector>
+        <name>Services: Avahi mDNS Reflector</name>
+        <patterns>
+            <pattern>ui/avahireflector/*</pattern>
+            <pattern>api/avahireflector/*</pattern>
+        </patterns>
+    </page-services-avahireflector>
+</acl>

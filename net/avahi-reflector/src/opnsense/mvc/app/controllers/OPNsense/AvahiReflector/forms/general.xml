@@ -1,0 +1,63 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+    <field>
+        <id>avahireflector.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable the Avahi mDNS/DNS-SD reflector service. The avahi-app package is installed automatically as a plugin dependency.]]></help>
+    </field>
+    <field>
+        <id>avahireflector.interfaces</id>
+        <label>Interfaces</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select the interfaces to reflect mDNS traffic between. Avahi binds to UDP port 5353 on each selected interface. <br/><br/><b>Firewall requirement:</b> Each selected interface needs a pass rule for UDP port 5353 destined to the mDNS multicast addresses: <b>224.0.0.251</b> (IPv4) and <b>ff02::fb</b> (IPv6). An IGMP pass rule is also recommended so the firewall can join the IPv4 multicast group. Without these rules, Avahi will not receive mDNS queries or announcements on that interface. <br/><br/><b>Service traffic:</b> mDNS only handles discovery — clients still need unicast access to the actual service ports across VLANs. For example: AirPlay (TCP 7000, 7100), AirPrint/IPP (TCP 631), HomeKit (TCP 51827). Ensure your inter-VLAN rules allow the relevant service ports between client and device subnets.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Protocol</label>
+    </field>
+    <field>
+        <id>avahireflector.domain_name</id>
+        <label>Domain Name</label>
+        <type>text</type>
+        <help><![CDATA[The mDNS domain name to announce. The standard mDNS top-level domain is "local" — changing this is rarely needed and may break service discovery for clients that only query .local.]]></help>
+    </field>
+    <field>
+        <id>avahireflector.use_ipv4</id>
+        <label>Use IPv4</label>
+        <type>checkbox</type>
+        <help>Enable IPv4 mDNS traffic.</help>
+    </field>
+    <field>
+        <id>avahireflector.use_ipv6</id>
+        <label>Use IPv6</label>
+        <type>checkbox</type>
+        <help>Enable IPv6 mDNS traffic.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Reflector</label>
+    </field>
+    <field>
+        <id>avahireflector.enable_reflector</id>
+        <label>Enable Reflector</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable the mDNS reflector to proxy mDNS/DNS-SD between interfaces. Without this, Avahi runs as a local responder only and will not forward service announcements across subnets.]]></help>
+    </field>
+    <field>
+        <id>avahireflector.reflect_ipv</id>
+        <label>Reflect across IP versions</label>
+        <type>checkbox</type>
+        <help><![CDATA[Reflect mDNS traffic between IPv4 and IPv6. This is rarely needed and requires both IPv4 and IPv6 to be enabled above.]]></help>
+    </field>
+    <field>
+        <id>avahireflector.reflect_filters</id>
+        <label>Reflect Filters</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Comma-separated list of service types to reflect. When set, only matching service types are forwarded across interfaces — all others are silently dropped. Leave empty to reflect all services. <br/><br/>Examples: <b>_airplay._tcp</b>, <b>_raop._tcp</b>, <b>_ipp._tcp</b>, <b>_http._tcp</b>]]></help>
+    </field>
+</form>
