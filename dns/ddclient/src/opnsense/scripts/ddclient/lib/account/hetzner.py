@@ -173,8 +173,7 @@ class Hetzner(HetznerAccount):
         data = {
             'records': [{
                'value': str(address)
-            }],
-            'ttl': int(self.settings.get('ttl', 300))
+            }]
         }
         response = requests.post(url, headers=headers, json=data)
         if response.status_code not in [200, 201]:
