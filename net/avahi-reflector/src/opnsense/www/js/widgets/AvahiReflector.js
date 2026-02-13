@@ -12,7 +12,7 @@
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
  * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -24,8 +24,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import BaseTableWidget from "./BaseTableWidget.js";
-
 export default class AvahiReflector extends BaseTableWidget {
     constructor() {
         super();
@@ -34,12 +32,22 @@ export default class AvahiReflector extends BaseTableWidget {
 
     getGridOptions() {
         return {
-            headerPosition: 'left'
+            sizeToContent: 650,
+            minW: 2
         };
     }
 
+    getMarkup() {
+        let $container = $('<div></div>');
+        let $table = this.createTable('avahiReflectorTable', {
+            headerPosition: 'left'
+        });
+        $container.append($table);
+        return $container;
+    }
+
     async onWidgetTick() {
-        const response = await this.ajaxGet('/api/avahireflector/service/diagnostics');
+        const response = await this.ajaxCall('/api/avahireflector/service/diagnostics');
 
         if (!response || response.status === 'error') {
             this.displayError(this.translations['unconfigured']);
@@ -48,10 +56,9 @@ export default class AvahiReflector extends BaseTableWidget {
 
         const rows = [];
 
-        const statusBadge = response.running
-            ? `<span class="label label-opnsense label-opnsense--success">${this.translations['running']}</span>`
-            : `<span class="label label-opnsense label-opnsense--danger">${this.translations['stopped']}</span>`;
-        rows.push([this.translations['status'], statusBadge]);
+        const statusColor = response.running ? 'text-success' : 'text-danger';
+        const statusText = response.running ? this.translations['running'] : this.translations['stopped'];
+        rows.push([this.translations['status'], `<i class="fa fa-circle ${statusColor}"></i> ${statusText}`]);
 
         if (response.running) {
             if (response.pid !== null) {
@@ -71,26 +78,25 @@ export default class AvahiReflector extends BaseTableWidget {
             rows.push([this.translations['interfaces'], response.interfaces]);
         }
 
-        const reflectorLabel = response.reflector_enabled
-            ? `<span class="label label-opnsense label-opnsense--success">${this.translations['enabled']}</span>`
-            : `<span class="label label-opnsense label-opnsense--danger">${this.translations['disabled']}</span>`;
-        rows.push([this.translations['reflector'], reflectorLabel]);
+        const reflectorColor = response.reflector_enabled ? 'text-success' : 'text-danger';
+        const reflectorText = response.reflector_enabled ? this.translations['enabled'] : this.translations['disabled'];
+        rows.push([this.translations['reflector'], `<i class="fa fa-circle ${reflectorColor}"></i> ${reflectorText}`]);
 
         if (response.reflect_filters) {
             rows.push([this.translations['reflect_filters'], response.reflect_filters]);
         }
 
-        if (response.mdns_repeater_running) {
+        if (response.port_conflict) {
             rows.push([
-                `<span class="label label-opnsense label-opnsense--warning">${this.translations['conflict']}</span>`,
-                this.translations['conflict_detail']
+                `<i class="fa fa-exclamation-triangle text-warning"></i> ${this.translations['conflict']}`,
+                `${response.port_conflict} ${this.translations['conflict_detail']}`
             ]);
         }
 
-        super.updateTable(rows);
+        super.updateTable('avahiReflectorTable', rows);
     }
 
     displayError(message) {
-        super.updateTable([[message, '']]);
+        super.updateTable('avahiReflectorTable', [[message, '']]);
     }
 }

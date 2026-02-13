@@ -1,22 +1,26 @@
 <metadata>
-    <title>Avahi mDNS Reflector</title>
-    <endpoint>/api/avahireflector/service/diagnostics</endpoint>
-    <translations>
-        <title>Avahi mDNS Reflector</title>
-        <status>Status</status>
-        <running>Running</running>
-        <stopped>Stopped</stopped>
-        <pid>PID</pid>
-        <uptime>Uptime</uptime>
-        <memory>Memory</memory>
-        <domain>Domain</domain>
-        <interfaces>Interfaces</interfaces>
-        <reflector>Reflector</reflector>
-        <enabled>Enabled</enabled>
-        <disabled>Disabled</disabled>
-        <conflict>Conflict</conflict>
-        <conflict_detail>mdns-repeater is also running — disable it to avoid interference.</conflict_detail>
-        <reflect_filters>Reflect Filters</reflect_filters>
-        <unconfigured>Service not configured</unconfigured>
-    </translations>
+    <AvahiReflector>
+        <filename>AvahiReflector.js</filename>
+        <endpoints>
+            <endpoint>/api/avahireflector/service/diagnostics</endpoint>
+        </endpoints>
+        <translations>
+            <title>Avahi mDNS Reflector</title>
+            <status>Status</status>
+            <running>Running</running>
+            <stopped>Stopped</stopped>
+            <pid>PID</pid>
+            <uptime>Uptime</uptime>
+            <memory>Memory</memory>
+            <domain>Domain</domain>
+            <interfaces>Interfaces</interfaces>
+            <reflector>Reflector</reflector>
+            <enabled>Enabled</enabled>
+            <disabled>Disabled</disabled>
+            <conflict>Conflict</conflict>
+            <conflict_detail>is bound to UDP port 5353 — disable it and any Monit check for it to avoid interference.</conflict_detail>
+            <reflect_filters>Reflect Filters</reflect_filters>
+            <unconfigured>Service not configured</unconfigured>
+        </translations>
+    </AvahiReflector>
 </metadata>

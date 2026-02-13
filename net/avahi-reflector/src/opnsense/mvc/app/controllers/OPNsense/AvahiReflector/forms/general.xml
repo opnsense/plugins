@@ -7,7 +7,7 @@
         <id>avahireflector.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable the Avahi mDNS/DNS-SD reflector service. The avahi-app package is installed automatically as a plugin dependency.]]></help>
+        <help><![CDATA[Enable the Avahi mDNS/DNS-SD reflector service. The avahi-app package is installed automatically as a plugin dependency. <br/><br/><b>Conflict:</b> Avahi binds to UDP port 5353. If another process is already using that port (e.g. mdns-repeater), disable it before enabling Avahi. Also disable or remove any Monit check that would restart the conflicting process. A dashboard widget is available to monitor service status and detect port conflicts. <br/><br/><b>Monit:</b> To monitor avahi-daemon with Monit, add a Process type check using PID file <b>/var/run/avahi-daemon/pid</b> with start command <b>/usr/local/sbin/pluginctl -s avahireflector start</b> and stop command <b>/usr/local/sbin/pluginctl -s avahireflector stop</b>.]]></help>
     </field>
     <field>
         <id>avahireflector.interfaces</id>

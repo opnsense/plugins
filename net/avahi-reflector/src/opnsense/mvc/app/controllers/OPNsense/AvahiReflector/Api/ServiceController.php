@@ -40,7 +40,6 @@ class ServiceController extends ApiMutableServiceControllerBase
 
     public function diagnosticsAction()
     {
-        $this->sessionClose();
         $backend = new Backend();
         $response = $backend->configdRun('avahireflector diagnostics');
         $data = json_decode($response, true);

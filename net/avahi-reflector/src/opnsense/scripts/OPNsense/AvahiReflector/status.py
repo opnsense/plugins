@@ -92,15 +92,25 @@ def _parse_conf():
     return conf
 
 
-def _mdns_repeater_running():
+def _port_conflict():
+    """Check for non-avahi processes bound to UDP 5353."""
     try:
         result = subprocess.run(
-            ['pgrep', '-x', 'mdns-repeater'],
-            capture_output=True, timeout=5
+            ['sockstat', '-4', '-6', '-l', '-p', '5353', '-P', 'udp'],
+            capture_output=True, text=True, timeout=5
         )
-        return result.returncode == 0
+        if result.returncode != 0:
+            return None
+        conflicts = []
+        for line in result.stdout.splitlines()[1:]:
+            fields = line.split()
+            if len(fields) >= 2 and fields[1] != 'avahi-daem':
+                name = fields[1]
+                if name not in conflicts:
+                    conflicts.append(name)
+        return ', '.join(conflicts) if conflicts else None
     except Exception:
-        return False
+        return None
 
 
 def main():
@@ -120,7 +130,7 @@ def main():
         'use_ipv6': conf['use_ipv6'],
         'reflect_ipv': conf['reflect_ipv'],
         'reflect_filters': conf['reflect_filters'],
-        'mdns_repeater_running': _mdns_repeater_running(),
+        'port_conflict': _port_conflict(),
     }
 
     print(json.dumps(status))
