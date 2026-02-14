@@ -1,0 +1,9 @@
+<menu>
+    <Services>
+        <MetricsExporter VisibleName="Metrics Exporter" cssClass="fa fa-line-chart">
+            <Settings order="10" url="/ui/metricsexporter/general/index"/>
+            <Status order="20" url="/ui/metricsexporter/status/index"/>
+            <LogFile VisibleName="Log File" order="30" url="/ui/diagnostics/log/metrics/exporter"/>
+        </MetricsExporter>
+    </Services>
+</menu>
