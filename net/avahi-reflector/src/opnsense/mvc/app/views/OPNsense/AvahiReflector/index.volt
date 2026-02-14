@@ -1,5 +1,5 @@
 {#
- # Copyright (C) 2026 cayossarian (Bill Flood)
+ # Copyright (C) 2024 OPNsense Community
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,15 @@
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('avahireflector');
+
+            // Auto-show advanced fields when reflect_filters has values
+            const filtersVal = $('#avahireflector\\.reflect_filters').val();
+            if (filtersVal && filtersVal.length > 0) {
+                const $toggle = $('#show_advanced_frm_GeneralSettings');
+                if ($toggle.hasClass('fa-toggle-off')) {
+                    $toggle.click();
+                }
+            }
         });
 
         $('#reconfigureAct').SimpleActionButton({

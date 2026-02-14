@@ -7,7 +7,7 @@
         <id>avahireflector.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable the Avahi mDNS/DNS-SD reflector service. The avahi-app package is installed automatically as a plugin dependency. <br/><br/><b>Conflict:</b> Avahi binds to UDP port 5353. If another process is already using that port (e.g. mdns-repeater), disable it before enabling Avahi. Also disable or remove any Monit check that would restart the conflicting process. A dashboard widget is available to monitor service status and detect port conflicts. <br/><br/><b>Monit:</b> To monitor avahi-daemon with Monit, add a Process type check using PID file <b>/var/run/avahi-daemon/pid</b> with start command <b>/usr/local/sbin/pluginctl -s avahireflector start</b> and stop command <b>/usr/local/sbin/pluginctl -s avahireflector stop</b>.]]></help>
+        <help><![CDATA[Enable the Avahi mDNS/DNS-SD reflector service. The avahi-app package is installed automatically as a plugin dependency.]]></help>
     </field>
     <field>
         <id>avahireflector.interfaces</id>
@@ -56,8 +56,10 @@
     <field>
         <id>avahireflector.reflect_filters</id>
         <label>Reflect Filters</label>
-        <type>text</type>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
         <advanced>true</advanced>
-        <help><![CDATA[Comma-separated list of service types to reflect. When set, only matching service types are forwarded across interfaces — all others are silently dropped. Leave empty to reflect all services. <br/><br/>Examples: <b>_airplay._tcp</b>, <b>_raop._tcp</b>, <b>_ipp._tcp</b>, <b>_http._tcp</b>]]></help>
+        <help><![CDATA[DNS-SD service types to reflect. When set, only services matching an entry (via substring match) are forwarded across interfaces — all others are silently dropped. Leave empty to reflect all services. <br/><br/>The <b>.local</b> suffix is not required — Avahi uses substring matching, so <b>_ipp._tcp</b> will match <b>_ipp._tcp.local</b>. Omitting the suffix is recommended to stay within the 239-character limit imposed by the avahi-daemon config parser. <br/><br/>Examples: <b>_airplay._tcp</b>, <b>_raop._tcp</b>, <b>_ipp._tcp</b>, <b>_hap._tcp</b>, <b>_matter._tcp</b>]]></help>
     </field>
 </form>

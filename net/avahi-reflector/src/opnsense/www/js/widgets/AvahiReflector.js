@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 cayossarian (Bill Flood)
+ * Copyright (C) 2024 OPNsense Community
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -12,7 +12,7 @@
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
  * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -32,8 +32,7 @@ export default class AvahiReflector extends BaseTableWidget {
 
     getGridOptions() {
         return {
-            sizeToContent: 650,
-            minW: 2
+            sizeToContent: 650
         };
     }
 
@@ -56,20 +55,36 @@ export default class AvahiReflector extends BaseTableWidget {
 
         const rows = [];
 
-        const statusColor = response.running ? 'text-success' : 'text-danger';
-        const statusText = response.running ? this.translations['running'] : this.translations['stopped'];
-        rows.push([this.translations['status'], `<i class="fa fa-circle ${statusColor}"></i> ${statusText}`]);
+        const statusBadge = response.running
+            ? `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['running']}</span>`
+            : `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['stopped']}</span>`;
+        rows.push([this.translations['status'], statusBadge]);
 
-        if (response.running) {
-            if (response.pid !== null) {
-                rows.push([this.translations['pid'], response.pid]);
+        if (response.health) {
+            const h = response.health;
+            let healthBadge;
+            if (h.status === 'healthy') {
+                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['healthy']}</span>`;
+            } else if (h.status === 'degraded') {
+                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['degraded']}</span>`;
+            } else {
+                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-warning">${this.translations['warning']}</span>`;
             }
-            if (response.uptime !== null) {
-                rows.push([this.translations['uptime'], response.uptime]);
+            rows.push([this.translations['health'], healthBadge]);
+
+            if (h.slot_errors_today > 0) {
+                rows.push([this.translations['slot_errors_today'], h.slot_errors_today]);
             }
-            if (response.memory_mb !== null) {
-                rows.push([this.translations['memory'], `${response.memory_mb} MB`]);
+            if (h.last_slot_error) {
+                rows.push([this.translations['last_slot_error'], h.last_slot_error]);
             }
+            if (h.last_restart) {
+                rows.push([this.translations['last_restart'], h.last_restart]);
+            }
+        }
+
+        if (response.running && response.uptime !== null) {
+            rows.push([this.translations['uptime'], response.uptime]);
         }
 
         rows.push([this.translations['domain'], response.domain || '-']);
@@ -78,18 +93,19 @@ export default class AvahiReflector extends BaseTableWidget {
             rows.push([this.translations['interfaces'], response.interfaces]);
         }
 
-        const reflectorColor = response.reflector_enabled ? 'text-success' : 'text-danger';
-        const reflectorText = response.reflector_enabled ? this.translations['enabled'] : this.translations['disabled'];
-        rows.push([this.translations['reflector'], `<i class="fa fa-circle ${reflectorColor}"></i> ${reflectorText}`]);
+        const reflectorLabel = response.reflector_enabled
+            ? `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['enabled']}</span>`
+            : `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['disabled']}</span>`;
+        rows.push([this.translations['reflector'], reflectorLabel]);
 
         if (response.reflect_filters) {
             rows.push([this.translations['reflect_filters'], response.reflect_filters]);
         }
 
-        if (response.port_conflict) {
+        if (response.mdns_repeater_running) {
             rows.push([
-                `<i class="fa fa-exclamation-triangle text-warning"></i> ${this.translations['conflict']}`,
-                `${response.port_conflict} ${this.translations['conflict_detail']}`
+                `<span class="label label-opnsense label-opnsense-xs label-warning">${this.translations['conflict']}</span>`,
+                this.translations['conflict_detail']
             ]);
         }
 

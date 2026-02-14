@@ -7,10 +7,14 @@ Returns JSON status for the OPNsense dashboard widget and API.
 
 import json
 import os
+import re
 import subprocess
+from datetime import datetime
 
 PID_FILE = '/var/run/avahi-daemon/pid'
 CONF_FILE = '/usr/local/etc/avahi/avahi-daemon.conf'
+SYSLOG_FILE = '/var/log/system/latest.log'
+SLOT_ERROR_PATTERN = 'No slot available for legacy unicast reflection'
 
 
 def _read_pid():
@@ -92,25 +96,60 @@ def _parse_conf():
     return conf
 
 
-def _port_conflict():
-    """Check for non-avahi processes bound to UDP 5353."""
+def _mdns_repeater_running():
     try:
         result = subprocess.run(
-            ['sockstat', '-4', '-6', '-l', '-p', '5353', '-P', 'udp'],
+            ['pgrep', '-x', 'mdns-repeater'],
+            capture_output=True, timeout=5
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
+
+
+def _process_start_time(pid):
+    try:
+        result = subprocess.run(
+            ['ps', '-o', 'lstart=', '-p', str(pid)],
             capture_output=True, text=True, timeout=5
         )
-        if result.returncode != 0:
-            return None
-        conflicts = []
-        for line in result.stdout.splitlines()[1:]:
-            fields = line.split()
-            if len(fields) >= 2 and fields[1] != 'avahi-daem':
-                name = fields[1]
-                if name not in conflicts:
-                    conflicts.append(name)
-        return ', '.join(conflicts) if conflicts else None
+        if result.returncode == 0:
+            raw = result.stdout.strip()
+            dt = datetime.strptime(raw, '%a %b %d %H:%M:%S %Y')
+            return dt.strftime('%Y-%m-%d %H:%M:%S')
     except Exception:
-        return None
+        pass
+    return None
+
+
+def _slot_error_summary():
+    summary = {
+        'status': 'healthy',
+        'slot_errors_today': 0,
+        'last_slot_error': None,
+    }
+    try:
+        now = datetime.now()
+        # Syslog uses space-padded day: "Feb  4" or "Feb 14"
+        today_prefix = now.strftime('%b ') + '{:>2d}'.format(now.day)
+        with open(SYSLOG_FILE, 'r') as fh:
+            for line in fh:
+                if SLOT_ERROR_PATTERN not in line:
+                    continue
+                # Extract timestamp from syslog line (e.g. "Feb 14 10:30:45")
+                match = re.match(r'^(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})', line)
+                if match:
+                    timestamp = match.group(1)
+                    if line.startswith(today_prefix):
+                        summary['slot_errors_today'] += 1
+                    summary['last_slot_error'] = timestamp
+    except FileNotFoundError:
+        pass
+    if summary['slot_errors_today'] > 0:
+        summary['status'] = 'degraded'
+    elif summary['last_slot_error'] is not None:
+        summary['status'] = 'warning'
+    return summary
 
 
 def main():
@@ -130,8 +169,12 @@ def main():
         'use_ipv6': conf['use_ipv6'],
         'reflect_ipv': conf['reflect_ipv'],
         'reflect_filters': conf['reflect_filters'],
-        'port_conflict': _port_conflict(),
+        'mdns_repeater_running': _mdns_repeater_running(),
     }
+
+    health = _slot_error_summary()
+    health['last_restart'] = _process_start_time(pid) if running else None
+    status['health'] = health
 
     print(json.dumps(status))
 

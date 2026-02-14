@@ -18,8 +18,15 @@
             <enabled>Enabled</enabled>
             <disabled>Disabled</disabled>
             <conflict>Conflict</conflict>
-            <conflict_detail>is bound to UDP port 5353 — disable it and any Monit check for it to avoid interference.</conflict_detail>
+            <conflict_detail>mdns-repeater is also running - disable it to avoid interference.</conflict_detail>
             <reflect_filters>Reflect Filters</reflect_filters>
+            <health>Health</health>
+            <healthy>Healthy</healthy>
+            <degraded>Degraded</degraded>
+            <warning>Warning</warning>
+            <slot_errors_today>Slot Errors Today</slot_errors_today>
+            <last_slot_error>Last Slot Error</last_slot_error>
+            <last_restart>Last Restart</last_restart>
             <unconfigured>Service not configured</unconfigured>
         </translations>
     </AvahiReflector>

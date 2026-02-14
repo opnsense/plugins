@@ -37,6 +37,8 @@
         <reflect_filters type="CSVListField">
             <Required>N</Required>
             <Mask>/^[a-zA-Z0-9_][a-zA-Z0-9._-]*$/</Mask>
+            <MaskPerItem>Y</MaskPerItem>
+            <ValidationMessage>Each entry must be a valid DNS-SD service type (e.g. "_ipp._tcp"). Total length must not exceed 239 characters due to the avahi-daemon config parser line-length limit of 256 bytes.</ValidationMessage>
         </reflect_filters>
     </items>
 </model>
