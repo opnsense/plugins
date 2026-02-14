@@ -128,10 +128,6 @@ while ($running) {
         $reconfigure = false;
     }
 
-    // Reload OPNsense config from disk so collectors see fresh data
-    // (the Config singleton caches config.xml in memory).
-    \OPNsense\Core\Config::getInstance()->forceReload();
-
     foreach ($enabled_collectors as $type => $class) {
         try {
             $output = $class::collect();

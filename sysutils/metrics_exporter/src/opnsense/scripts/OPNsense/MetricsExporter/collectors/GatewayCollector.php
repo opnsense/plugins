@@ -26,9 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'config.inc';
-require_once 'util.inc';
-require_once 'interfaces.inc';
+require_once __DIR__ . '/../lib/autoload.php';
 require_once __DIR__ . '/../lib/prometheus.php';
 
 class GatewayCollector
@@ -57,60 +55,25 @@ class GatewayCollector
      */
     public static function status(): array
     {
-        try {
-            $gateways_status = return_gateways_status();
-            $gateways_config = (new \OPNsense\Routing\Gateways())->gatewaysIndexedByName();
-        } catch (\Error $e) {
+        $gateways = self::fetchGateways();
+        if ($gateways === null) {
             return ['type' => 'gateway', 'name' => 'Gateways', 'rows' => []];
         }
 
         $rows = [];
 
-        foreach ($gateways_config as $gname => $gw) {
+        foreach ($gateways as $gw) {
+            $gname = $gw['name'] ?? 'unknown';
             $entry = [
                 'name' => $gname,
-                'description' => !empty($gw['descr']) ? $gw['descr'] : $gname,
+                'description' => $gname,
+                'status' => $gw['status'] ?? 'pending',
+                'status_translated' => $gw['status_translated'] ?? 'Pending',
+                'delay' => $gw['delay'] ?? '~',
+                'stddev' => $gw['stddev'] ?? '~',
+                'loss' => $gw['loss'] ?? '~',
+                'monitor' => ($gw['monitor'] ?? '~') !== '~' ? $gw['monitor'] : '',
             ];
-
-            if (!empty($gateways_status[$gname])) {
-                $gs = $gateways_status[$gname];
-                $entry['status'] = $gs['status'];
-                $entry['delay'] = $gs['delay'];
-                $entry['stddev'] = $gs['stddev'];
-                $entry['loss'] = $gs['loss'];
-                $entry['monitor'] = $gs['monitor'] !== '~' ? $gs['monitor'] : '';
-
-                switch ($gs['status']) {
-                    case 'none':
-                        $entry['status_translated'] = 'Online';
-                        break;
-                    case 'force_down':
-                        $entry['status_translated'] = 'Offline (forced)';
-                        break;
-                    case 'down':
-                        $entry['status_translated'] = 'Offline';
-                        break;
-                    case 'delay':
-                        $entry['status_translated'] = 'Latency';
-                        break;
-                    case 'loss':
-                        $entry['status_translated'] = 'Packetloss';
-                        break;
-                    case 'delay+loss':
-                        $entry['status_translated'] = 'Latency, Packetloss';
-                        break;
-                    default:
-                        $entry['status_translated'] = 'Pending';
-                        break;
-                }
-            } else {
-                $entry['status'] = 'pending';
-                $entry['status_translated'] = 'Pending';
-                $entry['delay'] = '~';
-                $entry['stddev'] = '~';
-                $entry['loss'] = '~';
-                $entry['monitor'] = '';
-            }
 
             $rows[] = $entry;
         }
@@ -119,88 +82,99 @@ class GatewayCollector
     }
 
     /**
-     * Collect gateway metrics using the OPNsense gateway API.
+     * Fetch gateway status via configd Backend.
      */
-    private static function collectMetrics(): array
+    private static function fetchGateways(): ?array
     {
         try {
-            $gateways_status = return_gateways_status();
-            $gateways_config = (new \OPNsense\Routing\Gateways())->gatewaysIndexedByName();
-        } catch (\Error $e) {
+            $backend = new \OPNsense\Core\Backend();
+            $raw = trim($backend->configdRun('interface gateways status'));
+            $gateways = json_decode($raw, true);
+            if (!is_array($gateways)) {
+                syslog(
+                    LOG_WARNING,
+                    'Metrics exporter: invalid gateway status JSON from configd'
+                );
+                return null;
+            }
+            return $gateways;
+        } catch (\Throwable $e) {
             syslog(
                 LOG_WARNING,
                 'Metrics exporter: error reading gateway status: ' . $e->getMessage()
             );
+            return null;
+        }
+    }
+
+    /**
+     * Collect gateway metrics using configd Backend.
+     */
+    private static function collectMetrics(): array
+    {
+        $gateways = self::fetchGateways();
+        if ($gateways === null) {
             return [];
         }
 
         $metrics = [];
 
-        foreach ($gateways_config as $gname => $gw) {
+        foreach ($gateways as $gw) {
+            $gname = $gw['name'] ?? 'unknown';
             $entry = [
                 'name' => $gname,
-                'description' => !empty($gw['descr']) ? $gw['descr'] : $gname,
+                'description' => $gname,
+                'monitor' => ($gw['monitor'] ?? '~') !== '~' ? $gw['monitor'] : '',
             ];
 
-            if (!empty($gateways_status[$gname])) {
-                $gs = $gateways_status[$gname];
-                $entry['monitor'] = $gs['monitor'] !== '~' ? $gs['monitor'] : '';
+            $delay_ms = 0.0;
+            if (($gw['delay'] ?? '~') !== '~') {
+                $delay_ms = (float)$gw['delay'];
+            }
+            $entry['delay_seconds'] = $delay_ms / 1000.0;
 
-                $delay_ms = 0.0;
-                if ($gs['delay'] !== '~') {
-                    $delay_ms = (float)$gs['delay'];
-                }
-                $entry['delay_seconds'] = $delay_ms / 1000.0;
+            $stddev_ms = 0.0;
+            if (($gw['stddev'] ?? '~') !== '~') {
+                $stddev_ms = (float)$gw['stddev'];
+            }
+            $entry['stddev_seconds'] = $stddev_ms / 1000.0;
 
-                $stddev_ms = 0.0;
-                if ($gs['stddev'] !== '~') {
-                    $stddev_ms = (float)$gs['stddev'];
-                }
-                $entry['stddev_seconds'] = $stddev_ms / 1000.0;
+            $loss_pct = 0.0;
+            if (($gw['loss'] ?? '~') !== '~') {
+                $loss_pct = (float)$gw['loss'];
+            }
+            $entry['loss_ratio'] = $loss_pct / 100.0;
 
-                $loss_pct = 0.0;
-                if ($gs['loss'] !== '~') {
-                    $loss_pct = (float)$gs['loss'];
-                }
-                $entry['loss_ratio'] = $loss_pct / 100.0;
-
-                switch ($gs['status']) {
-                    case 'none':
-                        $entry['status_num'] = 1;
-                        $entry['status_text'] = 'online';
-                        break;
-                    case 'down':
-                        $entry['status_num'] = 0;
-                        $entry['status_text'] = 'down';
-                        break;
-                    case 'force_down':
-                        $entry['status_num'] = 0;
-                        $entry['status_text'] = 'force_down';
-                        break;
-                    case 'loss':
-                        $entry['status_num'] = 2;
-                        $entry['status_text'] = 'loss';
-                        break;
-                    case 'delay':
-                        $entry['status_num'] = 3;
-                        $entry['status_text'] = 'delay';
-                        break;
-                    case 'delay+loss':
-                        $entry['status_num'] = 4;
-                        $entry['status_text'] = 'delay+loss';
-                        break;
-                    default:
-                        $entry['status_num'] = 5;
-                        $entry['status_text'] = 'unknown';
-                        break;
-                }
-            } else {
-                $entry['status_text'] = 'pending';
-                $entry['status_num'] = 5;
-                $entry['monitor'] = '';
-                $entry['delay_seconds'] = 0.0;
-                $entry['stddev_seconds'] = 0.0;
-                $entry['loss_ratio'] = 0.0;
+            $status = $gw['status'] ?? '';
+            switch ($status) {
+                case 'none':
+                    $entry['status_num'] = 1;
+                    $entry['status_text'] = 'online';
+                    break;
+                case 'down':
+                    $entry['status_num'] = 0;
+                    $entry['status_text'] = 'down';
+                    break;
+                case 'force_down':
+                    $entry['status_num'] = 0;
+                    $entry['status_text'] = 'force_down';
+                    break;
+                case 'loss':
+                    $entry['status_num'] = 2;
+                    $entry['status_text'] = 'loss';
+                    break;
+                case 'delay':
+                    $entry['status_num'] = 3;
+                    $entry['status_text'] = 'delay';
+                    break;
+                case 'delay+loss':
+                    $entry['status_num'] = 4;
+                    $entry['status_text'] = 'delay+loss';
+                    break;
+                default:
+                    $entry['status_num'] = 5;
+                    $entry['status_text'] = 'unknown';
+                    break;
             }
 
             $metrics[] = $entry;

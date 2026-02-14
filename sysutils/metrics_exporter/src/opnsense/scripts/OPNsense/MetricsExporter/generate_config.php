@@ -94,3 +94,10 @@ if (!is_dir($outputdir)) {
         chmod($outputdir, $perms | 0003);
     }
 }
+
+// Fix ownership of any existing .prom files so the unprivileged daemon can
+// overwrite them (needed when upgrading from a version that ran as root).
+foreach (glob($outputdir . '*.prom') as $prom) {
+    chown($prom, 'nobody');
+    chgrp($prom, 'nobody');
+}

@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once 'config.inc';
+require_once __DIR__ . '/../lib/autoload.php';
 require_once __DIR__ . '/../lib/prometheus.php';
 
 class UnboundCollector
