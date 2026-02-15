@@ -57,5 +57,13 @@
             <Default>1</Default>
             <Required>Y</Required>
         </addhostname>
+        <numdays type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <Required>N</Required>
+        </numdays>
+        <numbackups type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <Required>N</Required>
+        </numbackups>
     </items>
 </model>
