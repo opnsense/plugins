@@ -329,7 +329,6 @@ class Nextcloud extends Base implements IBackupProvider
                 }
             }
             if ($filedate) {
-                syslog(LOG_ERR, $target_filename . ": " . $filedatestr . " turned into " . $filedate);
                 $files[(string)$filedate] = $target_filename;
             } else {
                 syslog(LOG_ERR, "Skipping file " . $target_filename . ", cannot determine date");
