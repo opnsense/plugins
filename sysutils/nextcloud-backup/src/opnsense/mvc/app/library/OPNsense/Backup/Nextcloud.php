@@ -301,6 +301,139 @@ class Nextcloud extends Base implements IBackupProvider
     }
 
     /**
+     * Get timestamp value from filename in list
+     * @param $filelist array of files in remote location
+     * @return array($filedata => $filename)
+     */
+    public function get_filelist_dates($filelist) {
+        // Save as associative array
+        // key = lastmodified
+        // value = filename
+        $files = array();
+        foreach ($filelist as $target_filename) {
+            // Find suggested creation date
+            // Base this on the filename. Either it is a unix timestamp, or it should be YYYYMMDD
+            // Either way, it's the part between "config-" and ".xml"
+            $filestr_no_xml = explode(".xml", $target_filename)[0];
+            $filedatestr = intval(explode("-", $filestr_no_xml)[1]);
+            if (($filedate = strtotime($filedatestr)) === false) {
+                // Cannot convert string to time.. probably already a unix-timestamp
+                // Try to convert with date()
+                $date = date(DATE_ATOM, $filedatestr);
+                // Then to a UNIX timestamp again
+                $maybedate = strtotime($date);
+                if ($maybedate === $filedatestr) {
+                    // They represent the same time, this is good
+                    // Just copy the intval() and be done with this
+                    $filedate = $filedatestr;
+                }
+            }
+            if ($filedate) {
+                syslog(LOG_ERR, $target_filename . ": " . $filedatestr . " turned into " . $filedate);
+                $files[(string)$filedate] = $target_filename;
+            } else {
+                syslog(LOG_ERR, "Skipping file " . $target_filename . ", cannot determine date");
+            }
+        }
+        ksort($files);
+        return $files;
+    }
+
+    /**
+     * housekeeping
+     * @param $internal_username returnvalue from $this->getInternalUsername
+     * @param $username
+     * @param $password
+     * @param $url protocol and hostname of server
+     * @param $backupdir directory to operate in
+     * @param $keep_days number of days to keep backups for
+     * @param $keep_num number of backups to keep
+     */
+    public function retention(
+        $internal_username,
+        $username,
+        $password,
+        $url,
+        $backupdir,
+        $keep_days,
+        $keep_num
+    ) {
+        // Get list of filenames (without path) on remote location
+        $remote_files = array();
+        $tmp_remote_files = $this->listfiles($url, $username, $password, $internal_username, "/$backupdir/", false);
+        foreach ($tmp_remote_files as $tmp_remote_file) {
+            if (!($tmp_remote_file === "")) {
+                if (!($tmp_remote_file == "/$backupdir/")) {
+                    // No idea why the root directory is in the list..
+                    $remote_files[] = pathinfo($tmp_remote_file)['basename'];
+                }
+            }
+        }
+        $num_remote_files = count($remote_files);
+        // Short-circuit, if too few files, no need to check no more
+        if (!($keep_num === "")) {
+            if ($keep_num > $num_remote_files) {
+                return;
+            }
+        }
+
+        $date = new \DateTime();
+        $files = $this->get_filelist_dates($remote_files);
+        if (!($keep_days === "")) {
+            $dateinterval = \DateInterval::createFromDateString($keep_days . " day");
+            $target_timestamp = date_sub($date, $dateinterval)->format('U');
+            // $files is an associative array with key=creation_time, value=filename
+            // should be sorted by ksort, hopefully that is a numerical sort:)
+            $new_files = array();
+            $old_files = array();
+            foreach(array_keys($files) as $file_timestamp) {
+                if ($file_timestamp > $target_timestamp) {
+                    $new_files[(string)$file_timestamp] = $files[$file_timestamp];
+                } else {
+                    // file is "old", aka ripe for deletion
+                    $old_files[(string)$file_timestamp] = $files[$file_timestamp];
+                }
+            }
+            if (!($keep_num === "")) {
+                $num_new_files = count($new_files);
+                if ($num_new_files < $keep_num) {
+                    // Not enough new files to satisfy $keep_num
+                    $missing_num = $keep_num - $num_new_files;
+                    // Can we slice some files from the $old_files list to satisfy $keep_num?
+                    $total_files = count($files);
+                    if ($total_files >= $keep_num) {
+                        // Yes, we can
+                        $tmp_files = array_slice($old_files, 0, $missing_num * -1);
+                        foreach(array_keys($tmp_files) as $filetodelete) {
+                            $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+                        }
+                    }
+                    // No, we can't. Keep all things as is
+                } else {
+                    // We have more new files than what we need to satisfy $keep_num
+                    foreach(array_keys($old_files) as $filetodelete) {
+                        $this->delete_file($url, $username, $password, $internal_username, $backupdir, $old_files[$filetodelete]);
+                    }
+                    // We do not delete files from new_files, as they are covered by the $keep_days
+                }
+            } else {
+                // We have not been told to keep N items,
+                // delete everything in $old_files
+                foreach(array_keys($old_files) as $filetodelete) {
+                    $this->delete_file($url, $username, $password, $internal_username, $backupdir, $old_files[$filetodelete]);
+                }
+            }
+        } else {
+            // No $keep_days specified
+            // Delete filenames based on their creation time
+            $tmp_files = array_slice($files, 0, $keep_num * -1);
+            foreach(array_keys($tmp_files) as $filetodelete) {
+                $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+            }
+        }
+    }
+
+    /**
      * perform backup
      * @return array filelist
      * @throws \OPNsense\Base\ModelException
@@ -308,6 +441,7 @@ class Nextcloud extends Base implements IBackupProvider
      */
     public function backup()
     {
+        date_default_timezone_set('UTC');
         $cnf = Config::getInstance();
         $nextcloud = new NextcloudSettings();
         if ($cnf->isValid() && !empty((string)$nextcloud->enabled)) {
@@ -320,6 +454,8 @@ class Nextcloud extends Base implements IBackupProvider
             $strategy = (string)$nextcloud->strategy;
             // Strategy 0 = Sync /conf/backup
             // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
+            $keep_days = (string)$nextcloud->numdays;
+            $keep_num = (string)$nextcloud->numbackups;
 
             if (!$nextcloud->addhostname->isEmpty()) {
                 $backupdir .= "/".gethostname()."/";
@@ -339,6 +475,9 @@ class Nextcloud extends Base implements IBackupProvider
                 $list_of_files = $this->backupstrat_zero($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             }
             // Retention here
+            if (!($keep_days === "") or !($keep_num === "")) {
+                $this->retention($internal_username, $username, $password, $url, $backupdir, $keep_days, $keep_num);
+            }
             return $list_of_files;
         }
     }
@@ -390,6 +529,7 @@ class Nextcloud extends Base implements IBackupProvider
      * @param string $url remote location
      * @param string $username remote user
      * @param string $password password to use
+     * @param string $internal_username UUID
      * @param string $backupdir remote directory
      * @param string $filename filename to use
      * @param string $local_file_content contents to save
@@ -398,7 +538,7 @@ class Nextcloud extends Base implements IBackupProvider
     public function upload_file_content($url, $username, $password, $internal_username, $backupdir, $filename, $local_file_content)
     {
         $url = $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename";
-        $reply = $this->curl_request(
+        $reply = $this->curl_request_nothrow(
             $url,
             $username,
             $password,
@@ -412,6 +552,28 @@ class Nextcloud extends Base implements IBackupProvider
             syslog(LOG_ERR, 'Could not PUT '. $url);
             throw new \Exception();
         }
+    }
+
+    /**
+     * delete a file
+     * @param string $url remote location
+     * @param string $username remote user
+     * @param string $password password to use
+     * @param strign $internal_username UUID
+     * @param string $backupdir remote directory
+     * @param string $filename filename to use
+     */
+    public function delete_file($url, $username, $password, $internal_username, $backupdir, $filename) {
+        $url = $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename";
+        $reply = $this->curl_request_nothrow(
+            $url,
+            $username,
+            $password,
+            'DELETE',
+            'cannot delete file'
+        );
+        $http_code = $reply['info']['http_code'];
+        syslog(LOG_ERR, "Deleting " . $url . " returned " . $http_code);
     }
 
     /**
