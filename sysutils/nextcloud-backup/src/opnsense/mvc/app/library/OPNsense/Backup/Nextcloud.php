@@ -188,13 +188,15 @@ class Nextcloud extends Base implements IBackupProvider
      * @param string $password
      * @param string $url server protocol and hostname
      * @param string $backupdir
+     * @param string $crypto_password
      */
     public function backupstrat_zero(
         $internal_username,
         $username,
         $password,
         $url,
-        $backupdir
+        $backupdir,
+        $crypto_password
     ) {
         // Get list of files from local backup system
         $local_files = array();
@@ -255,13 +257,15 @@ class Nextcloud extends Base implements IBackupProvider
      * @param string $password
      * @param string url server protocol and hostname
      * @param string $backupdir
+     * @param string $crypto_password
     */
     public function backupstrat_one(
         $internal_username,
         $username,
         $password,
         $url,
-        $backupdir
+        $backupdir,
+        $crypto_password
     ) {
         $confdata = file_get_contents('/conf/config.xml');
         $mdate = filemtime('/conf/config.xml');
@@ -330,9 +334,9 @@ class Nextcloud extends Base implements IBackupProvider
             }
 
             if ($strategy) {
-                $list_of_files = $this->$backupstrat_one($internal_username, $username, $password, $url, $backupdir);
+                $list_of_files = $this->$backupstrat_one($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             } else {
-                $list_of_files = $this->$backupstrat_zero($internal_username, $username, $password, $url, $backupdir);
+                $list_of_files = $this->$backupstrat_zero($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             }
             // Retention here
             return $list_of_files;
