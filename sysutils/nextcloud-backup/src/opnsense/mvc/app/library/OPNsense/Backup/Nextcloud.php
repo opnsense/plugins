@@ -334,9 +334,9 @@ class Nextcloud extends Base implements IBackupProvider
             }
 
             if ($strategy) {
-                $list_of_files = $this->$backupstrat_one($internal_username, $username, $password, $url, $backupdir, $crypto_password);
+                $list_of_files = $this->backupstrat_one($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             } else {
-                $list_of_files = $this->$backupstrat_zero($internal_username, $username, $password, $url, $backupdir, $crypto_password);
+                $list_of_files = $this->backupstrat_zero($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             }
             // Retention here
             return $list_of_files;
