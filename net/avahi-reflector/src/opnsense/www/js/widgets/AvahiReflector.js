@@ -55,23 +55,26 @@ export default class AvahiReflector extends BaseTableWidget {
 
         const rows = [];
 
-        const statusBadge = response.running
-            ? `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['running']}</span>`
-            : `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['stopped']}</span>`;
-        rows.push([this.translations['status'], statusBadge]);
+        // Status + Health on one line with colored circle indicator
+        let statusColor = 'text-success';
+        let statusText = `${this.translations['running']} / ${this.translations['healthy']}`;
+        if (!response.running) {
+            statusColor = 'text-danger';
+            statusText = this.translations['stopped'];
+        } else if (response.health && response.health.status === 'degraded') {
+            statusColor = 'text-danger';
+            statusText = `${this.translations['running']} / ${this.translations['degraded']}`;
+        } else if (response.health && response.health.status === 'warning') {
+            statusColor = 'text-warning';
+            statusText = `${this.translations['running']} / ${this.translations['warning']}`;
+        }
+        rows.push([
+            `<div><i class="fa fa-circle ${statusColor}"></i> ${this.translations['status']}</div>`,
+            `<div>${statusText}</div>`
+        ]);
 
         if (response.health) {
             const h = response.health;
-            let healthBadge;
-            if (h.status === 'healthy') {
-                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['healthy']}</span>`;
-            } else if (h.status === 'degraded') {
-                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['degraded']}</span>`;
-            } else {
-                healthBadge = `<span class="label label-opnsense label-opnsense-xs label-warning">${this.translations['warning']}</span>`;
-            }
-            rows.push([this.translations['health'], healthBadge]);
-
             if (h.slot_errors_today > 0) {
                 rows.push([this.translations['slot_errors_today'], h.slot_errors_today]);
             }
@@ -83,20 +86,15 @@ export default class AvahiReflector extends BaseTableWidget {
             }
         }
 
-        if (response.running && response.uptime !== null) {
-            rows.push([this.translations['uptime'], response.uptime]);
-        }
-
         rows.push([this.translations['domain'], response.domain || '-']);
 
         if (response.interfaces) {
             rows.push([this.translations['interfaces'], response.interfaces]);
         }
 
-        const reflectorLabel = response.reflector_enabled
-            ? `<span class="label label-opnsense label-opnsense-xs label-success">${this.translations['enabled']}</span>`
-            : `<span class="label label-opnsense label-opnsense-xs label-danger">${this.translations['disabled']}</span>`;
-        rows.push([this.translations['reflector'], reflectorLabel]);
+        rows.push([this.translations['reflector'], response.reflector_enabled
+            ? this.translations['enabled']
+            : this.translations['disabled']]);
 
         if (response.reflect_filters) {
             rows.push([this.translations['reflect_filters'], response.reflect_filters]);
