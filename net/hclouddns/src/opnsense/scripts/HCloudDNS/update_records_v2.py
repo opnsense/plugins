@@ -18,7 +18,7 @@ import syslog
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hcloud_api import HCloudAPI
-from gateway_health import get_gateway_ip, write_state_file
+from gateway_health import get_gateway_ip, get_opnsense_gateway_status, is_gateway_up, write_state_file
 
 STATE_FILE = '/var/run/hclouddns_state.json'
 SIMULATION_FILE = '/var/run/hclouddns_simulation.json'
@@ -377,8 +377,8 @@ def send_batch_notification(config, batch_results):
     Send a single batch notification summarizing all DNS changes.
 
     Title format:
-    - Failover:  "HCloudDNS: Failover WAN_Primary → WAN_Backup"
-    - Failback:  "HCloudDNS: Failback WAN_Backup → WAN_Primary"
+    - Failover:  "HCloudDNS: Failover WAN_Primary -> WAN_Backup"
+    - Failback:  "HCloudDNS: Failback WAN_Backup -> WAN_Primary"
     - DynIP:     "HCloudDNS: DynIP Update on WAN_Primary"
     - Error:     "HCloudDNS: Error"
 
@@ -405,7 +405,7 @@ def send_batch_notification(config, batch_results):
         first_fo = failovers[0]
         from_gw = first_fo.get('from_gateway', '?')
         to_gw = first_fo.get('to_gateway', '?')
-        title = f"HCloudDNS: Failover {from_gw} → {to_gw}"
+        title = f"HCloudDNS: Failover {from_gw} -> {to_gw}"
         tags = 'warning,hclouddns'
         records_to_show = failovers
 
@@ -414,7 +414,7 @@ def send_batch_notification(config, batch_results):
         first_fb = failbacks[0]
         from_gw = first_fb.get('from_gateway', '?')
         to_gw = first_fb.get('to_gateway', '?')
-        title = f"HCloudDNS: Failback {from_gw} → {to_gw}"
+        title = f"HCloudDNS: Failback {from_gw} -> {to_gw}"
         tags = 'white_check_mark,hclouddns'
         records_to_show = failbacks
 
@@ -724,6 +724,7 @@ def save_runtime_state(state):
 def check_all_gateways(config, state):
     """Check health and get IPs for all gateways"""
     simulation = load_simulation()
+    opnsense_status = get_opnsense_gateway_status()
 
     for uuid, gw in config['gateways'].items():
         if not gw['enabled']:
@@ -760,10 +761,11 @@ def check_all_gateways(config, state):
                 log(f"SIMULATION: Gateway '{gw['name']}' is DOWN (simulated)", syslog.LOG_WARNING)
             continue
 
-        # Determine status based on IP availability
-        # (dpinger handles real gateway health via syshook - this is a fallback check)
+        # Use OPNsense's dpinger status (matched by interface) as primary health source
+        interface = gw.get('interface', '')
+        dpinger_healthy = is_gateway_up(interface, opnsense_status)
         has_ip = gw_state['ipv4'] or gw_state['ipv6']
-        new_status = 'up' if has_ip else 'down'
+        new_status = 'up' if (dpinger_healthy and has_ip) else 'down'
 
         old_status = gw_state.get('status', 'unknown')
         gw_state['lastCheck'] = int(time.time())
@@ -776,7 +778,8 @@ def check_all_gateways(config, state):
         else:
             gw_state['failCount'] = gw_state.get('failCount', 0) + 1
             if old_status == 'up':
-                log(f"Gateway '{gw['name']}' is DOWN (failCount: {gw_state['failCount']})", syslog.LOG_WARNING)
+                reason = 'no IP' if not has_ip else 'dpinger: down'
+                log(f"Gateway '{gw['name']}' is DOWN ({reason}, failCount: {gw_state['failCount']})", syslog.LOG_WARNING)
 
         gw_state['status'] = new_status
 

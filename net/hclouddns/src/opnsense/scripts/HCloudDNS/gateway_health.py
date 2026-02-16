@@ -174,26 +174,64 @@ def is_valid_ip(ip):
             return False
 
 
-def quick_ping_check(target='8.8.8.8', count=1, timeout=2):
+def get_opnsense_gateway_status():
+    """Query OPNsense's dpinger-based gateway status and gateway-to-interface mapping.
+
+    Returns a dict mapping OPNsense interface name (e.g. 'wan', 'opt1') to status string.
+    OPNsense status values: 'none' = online, 'down', 'force_down', 'loss', 'delay', etc.
     """
-    Quick ping check for gateway connectivity.
-    Used as a simple fallback health check.
-
-    Args:
-        target: IP or hostname to ping
-        count: Number of pings
-        timeout: Timeout in seconds
-
-    Returns:
-        bool: True if ping succeeded
-    """
-    cmd = ['ping', '-c', str(count), '-W', str(timeout), target]
-
+    iface_status = {}
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout * count + 2)
-        return result.returncode == 0
-    except (subprocess.TimeoutExpired, subprocess.SubprocessError):
-        return False
+        # Get gateway details with interface mapping
+        gw_details = subprocess.run(
+            ['php', '-r', """
+require_once 'config.inc';
+require_once 'util.inc';
+require_once 'interfaces.inc';
+require_once 'plugins.inc.d/dpinger.inc';
+$status = dpinger_status();
+$gws = (new \\OPNsense\\Routing\\Gateways())->gatewaysIndexedByName();
+$result = [];
+foreach ($gws as $name => $gw) {
+    $s = isset($status[$name]) ? strtolower($status[$name]['status']) : 'none';
+    $iface = isset($gw['interface']) ? $gw['interface'] : '';
+    $proto = isset($gw['ipprotocol']) ? $gw['ipprotocol'] : 'inet';
+    $result[] = ['name' => $name, 'interface' => $iface, 'ipprotocol' => $proto, 'status' => $s];
+}
+echo json_encode($result);
+"""],
+            capture_output=True, text=True, timeout=10
+        )
+        if gw_details.returncode == 0 and gw_details.stdout.strip():
+            gateways = json.loads(gw_details.stdout)
+            for gw in gateways:
+                iface = gw.get('interface', '')
+                proto = gw.get('ipprotocol', 'inet')
+                status = gw.get('status', 'none')
+                if not iface:
+                    continue
+                # Only use inet (IPv4) gateways for status matching
+                # (avoid overwriting with inet6 status for same interface)
+                if proto == 'inet':
+                    iface_status[iface] = status
+                elif iface not in iface_status:
+                    iface_status[iface] = status
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, json.JSONDecodeError) as e:
+        sys.stderr.write(f"Error querying OPNsense gateway status: {e}\n")
+    return iface_status
+
+
+def is_gateway_up(interface, opnsense_status):
+    """Check if a gateway is up based on OPNsense's dpinger status for its interface.
+
+    OPNsense reports status='none' for healthy gateways.
+    Any other value (force_down, down, loss, delay, etc.) means degraded/down.
+    """
+    status = opnsense_status.get(interface)
+    if status is None:
+        # Interface not found in OPNsense gateways — assume up
+        return True
+    return status == 'none'
 
 
 def resolve_interface_name(interface):
@@ -266,9 +304,9 @@ def main():
             except json.JSONDecodeError:
                 pass
 
-        # Simple ping-based health check (dpinger handles real gateway monitoring)
-        target = gateway_config.get('healthCheckTarget', '8.8.8.8')
-        is_healthy = quick_ping_check(target, count=1, timeout=2)
+        interface = gateway_config.get('interface', '')
+        opnsense_status = get_opnsense_gateway_status()
+        is_healthy = is_gateway_up(interface, opnsense_status)
         result = {
             'uuid': uuid,
             'status': 'up' if is_healthy else 'down'
@@ -300,6 +338,9 @@ def main():
             tree = ET.parse('/conf/config.xml')
             root = tree.getroot()
 
+            # Query OPNsense's own gateway status once for all gateways
+            opnsense_status = get_opnsense_gateway_status()
+
             gateways_node = root.find('.//OPNsense/HCloudDNS/gateways')
             if gateways_node is not None:
                 for gw in gateways_node.findall('gateway'):
@@ -311,9 +352,9 @@ def main():
                     if enabled != '1':
                         continue
 
+                    name = gw.findtext('name', '')
                     interface = gw.findtext('interface', '')
                     checkip_method = gw.findtext('checkipMethod', 'web_ipify')
-                    health_target = gw.findtext('healthCheckTarget', '8.8.8.8')
 
                     # Resolve interface and get IP
                     phys_if = resolve_interface_name(interface)
@@ -327,8 +368,8 @@ def main():
                         local_ip = get_interface_ip(phys_if, ipv6=False)
                         ipv4 = get_web_ip(checkip_method, phys_if, source_ip=local_ip, ipv6=False)
 
-                    # Quick health check (ping only for speed)
-                    status = 'up' if quick_ping_check(health_target, count=1, timeout=2) else 'down'
+                    # Use OPNsense's dpinger-based gateway status (matched by interface)
+                    status = 'up' if is_gateway_up(interface, opnsense_status) else 'down'
 
                     result['gateways'][uuid] = {
                         'status': status,
