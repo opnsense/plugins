@@ -7,5 +7,21 @@
             <apikey type="TextField"/>
             <enable_unbound_bl type="BooleanField"/>
         </general>
+        <unbound>
+            <allowlists type="CSVListField"/>
+            <source_nets type="NetworkField">
+                <Multiple>Y</Multiple>
+                <Strict>Y</Strict>
+                <ValidationMessage>Please specify a valid network segment or address (IPv4/IPv6). If a mask is provided, please omit the host bits.</ValidationMessage>
+                <WildcardEnabled>N</WildcardEnabled>
+                <NetMaskRequired>N</NetMaskRequired>
+                <AsList>Y</AsList>
+            </source_nets>
+            <address type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv4</AddressFamily>
+            </address>
+            <nxdomain type="BooleanField"/>
+        </unbound>
     </items>
 </model>

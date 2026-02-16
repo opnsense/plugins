@@ -99,6 +99,13 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         });
 
+        $("#connect\\.general\\.enable_unbound_bl").change(function(){
+            if ($(this).is(':checked')) {
+                $(".unbound_options").closest('table').show();
+            } else {
+                $(".unbound_options").closest('table').hide();
+            }
+        });
 
         let selected_tab = window.location.hash != "" ? window.location.hash : "#settings";
         $('a[href="' +selected_tab + '"]').tab('show');
