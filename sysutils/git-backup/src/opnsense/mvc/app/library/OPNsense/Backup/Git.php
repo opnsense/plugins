@@ -179,7 +179,7 @@ class Git extends Base implements IBackupProvider
             $gitfrmt[] = '--force';
         }
         $gitfrmt[] = 'origin %s && echo "__exit_ok__") 2>&1';
-        $pushtxt = Shell::shell_safe($gitfrmt, "master:{$mdl->branch}");
+        $pushtxt = Shell::shell_safe($gitfrmt, [$targetdir, "master:{$mdl->branch}"]);
 
         if (strpos($pushtxt, '__exit_ok__')) {
             $error_type = null;

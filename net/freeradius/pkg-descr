@@ -2,15 +2,21 @@ FreeRADIUS includes a RADIUS server, a BSD licensed client library, a
 PAM library, and an Apache module. In most cases, the word FreeRADIUS
 refers to the RADIUS server.
 
-FreeRADIUS is the most widely deployed RADIUS server in the world. It
-is the basis for multiple commercial offerings. It supplies the AAA
-needs of many Fortune-500 companies and Tier 1 ISPs.
-
 It is also widely used for Enterprise Wi-Fi and IEEE 802.1X network
 security, particularly in the academic community, including eduroam.
 
+
 Plugin Changelog
 ================
+
+1.10.1
+
+* Add TLS maximum version setting for EAP (contributed by Kota Shiratsuka)
+
+1.10
+
+* Change max TLS version to 1.3 and allow min TLS version 1.3 (contributed by Joerg Werner)
+* Add option to enable EAP-PWD (contributed by Severin Schüller)
 
 1.9.28
 

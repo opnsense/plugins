@@ -79,6 +79,12 @@
         <help>Generate and add OCSP Must Staple extension to the certificate. When this option is enabled and issueance/renewal requests fail, then this extension is probably not supported by the CA.</help>
     </field>
     <field>
+        <id>certificate.profile</id>
+        <label>Certificate Profile</label>
+        <type>text</type>
+        <help><![CDATA[Optional. Specify the ACME Certificate Profile to use (e.g. "shortlived"). See CA documentation for available profiles.]]></help>
+    </field>
+    <field>
         <label>Advanced Settings</label>
         <type>header</type>
     </field>

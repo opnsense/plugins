@@ -146,6 +146,7 @@
                         <web_cloudflare>cloudflare</web_cloudflare>
                         <web_cloudflare_ipv4 value="cloudflare-ipv4">cloudflare-ipv4</web_cloudflare_ipv4>
                         <web_cloudflare_ipv6 value="cloudflare-ipv6">cloudflare-ipv6</web_cloudflare_ipv6>
+                        <dns_cloudflare value="dns_cloudflare-dns">cloudflare-dns</dns_cloudflare>
                         <web_dynu_ipv4 value="dynu-ipv4">dynu-ipv4</web_dynu_ipv4>
                         <web_dynu_ipv6 value="dynu-ipv6">dynu-ipv6</web_dynu_ipv6>
                         <web_freedns>freedns</web_freedns>

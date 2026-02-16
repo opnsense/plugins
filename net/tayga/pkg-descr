@@ -7,6 +7,10 @@ networks where dedicated NAT64 hardware would be overkill.
 Plugin Changelog
 ================
 
+1.4
+
+* Enable forwarding of UDP packets with zero checksum (contributed by Maurice Walker)
+
 1.3
 
 * Static mapping support (contributed by Matthias Valvekens)
@@ -22,5 +26,3 @@ Plugin Changelog
 1.0
 
 * Support for IPv6 prefix and IPv4 pool
-
-WWW: http://www.litech.org/tayga/

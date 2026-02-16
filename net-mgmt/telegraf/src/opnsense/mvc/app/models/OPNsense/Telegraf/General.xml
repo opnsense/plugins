@@ -37,16 +37,13 @@
         </flush_interval>
         <flush_jitter type="IntegerField">
             <Default>0</Default>
-	        <Required>Y</Required>
-	    </flush_jitter>
-        <hostname type="TextField">
-            <Default></Default>
-	        <Required>N</Required>
-	    </hostname>
+            <Required>Y</Required>
+        </flush_jitter>
+        <hostname type="TextField"/>
         <omit_hostname type="BooleanField">
             <Default>0</Default>
-	        <Required>Y</Required>
-	    </omit_hostname>
+            <Required>Y</Required>
+        </omit_hostname>
         <quiet type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>

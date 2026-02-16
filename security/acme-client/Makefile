@@ -1,5 +1,5 @@
 PLUGIN_NAME=		acme-client
-PLUGIN_VERSION=		4.11
+PLUGIN_VERSION=		4.13
 PLUGIN_COMMENT=		ACME Client
 PLUGIN_MAINTAINER=	opnsense@moov.de
 PLUGIN_DEPENDS=		acme.sh py${PLUGIN_PYTHON}-dns-lexicon

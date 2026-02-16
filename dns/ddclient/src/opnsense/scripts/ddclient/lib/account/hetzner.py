@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2025 Arcan Consulting (www.arcan-it.de)
+    Copyright (c) 2025 Arcan Consulting
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -23,7 +23,7 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-    Hetzner DNS providers for OPNsense DynDNS
+    Hetzner DNS providers for OPNsense DynDNS via www.arcan-it.de
 
     Supports both APIs:
     - Hetzner DNS (api.hetzner.cloud) - new Cloud API for migrated zones

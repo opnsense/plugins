@@ -8,43 +8,29 @@
             <Required>Y</Required>
         </enabled>
         <if_inbound type="InterfaceField">
-            <Default></Default>
             <Required>Y</Required>
         </if_inbound>
         <if_outbound type="InterfaceField">
-            <Default></Default>
             <Required>Y</Required>
         </if_outbound>
-        <host_outbound type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </host_outbound>
+        <host_outbound type="TextField"/>
         <hosts_allow_reg type="NetworkField">
-            <Default></Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </hosts_allow_reg>
         <hosts_allow_sip type="NetworkField">
-            <Default></Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </hosts_allow_sip>
         <hosts_deny_sip type="NetworkField">
-            <Default></Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </hosts_deny_sip>
         <sip_listen_port type="IntegerField">
             <Default>5060</Default>
             <Required>Y</Required>
-	    <MinimumValue>1</MinimumValue>
-	    <MaximumValue>65535</MaximumValue>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
         </sip_listen_port>
         <rtp_port_low type="IntegerField">
             <Default>7070</Default>
@@ -88,10 +74,7 @@
             <MinimumValue>0</MinimumValue>
             <MaximumValue>5000</MaximumValue>
         </rtp_output_dejitter>
-        <proxy_auth_enable type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </proxy_auth_enable>
+        <proxy_auth_enable type="BooleanField"/>
         <tcp_timeout type="IntegerField">
             <Default>600</Default>
             <Required>Y</Required>
@@ -110,81 +93,38 @@
             <MinimumValue>0</MinimumValue>
             <MaximumValue>10000</MaximumValue>
         </tcp_keepalive>
-        <ua_string type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </ua_string>
+        <ua_string type="TextField"/>
         <use_rport type="OptionField">
             <Default>Option1</Default>
-            <Multiple>N</Multiple>
             <Required>Y</Required>
-                <OptionValues>
-                    <Option1 value="0">Do not add ;rport to via header (0)</Option1>
-                    <Option2 value="1">Add ;rport to INCOMING via header (1)</Option2>
-                    <Option3 value="2">Add ;rport to OUTGOING via header (2)</Option3>
-                    <Option4 value="3">Add ;rport to OUTGOING and INCOMING via headers (3)</Option4>
-                </OptionValues>
+            <OptionValues>
+                <Option1 value="0">Do not add ;rport to via header (0)</Option1>
+                <Option2 value="1">Add ;rport to INCOMING via header (1)</Option2>
+                <Option3 value="2">Add ;rport to OUTGOING via header (2)</Option3>
+                <Option4 value="3">Add ;rport to OUTGOING and INCOMING via headers (3)</Option4>
+            </OptionValues>
         </use_rport>
-        <plugin_defaulttarget_enable type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </plugin_defaulttarget_enable>
-        <plugin_defaulttarget_log type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </plugin_defaulttarget_log>
-        <plugin_defaulttarget_target type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </plugin_defaulttarget_target>
-        <plugin_fix_bogus_via_enable type="BooleanField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </plugin_fix_bogus_via_enable>
+        <plugin_defaulttarget_enable type="BooleanField"/>
+        <plugin_defaulttarget_log type="BooleanField"/>
+        <plugin_defaulttarget_target type="TextField"/>
+        <plugin_fix_bogus_via_enable type="BooleanField"/>
         <plugin_fix_bogus_via_networks type="NetworkField">
-            <Default>10.0.0.0/8,172.16.0.0/12,192.168.0.0/16</Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </plugin_fix_bogus_via_networks>
-        <plugin_fix_DTAG_enable type="BooleanField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </plugin_fix_DTAG_enable>
+        <plugin_fix_DTAG_enable type="BooleanField"/>
         <plugin_fix_DTAG_networks type="NetworkField">
-            <Default>217.0.23.100/32</Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </plugin_fix_DTAG_networks>
-        <plugin_fbox_anoncall_enable type="BooleanField">
-            <Default>1</Default>
-            <Required>N</Required>
-        </plugin_fbox_anoncall_enable>
+        <plugin_fbox_anoncall_enable type="BooleanField"/>
         <plugin_fbox_anoncall_networks type="NetworkField">
-            <Default>10.0.0.0/8,172.16.0.0/12,192.168.0.0/16</Default>
             <WildcardEnabled>N</WildcardEnabled>
             <NetMaskRequired>Y</NetMaskRequired>
-            <FieldSeparator>,</FieldSeparator>
-            <Required>N</Required>
         </plugin_fbox_anoncall_networks>
-        <plugin_stun_server_enable type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </plugin_stun_server_enable>
-        <plugin_stun_server_host type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </plugin_stun_server_host>
-        <plugin_stun_server_port type="IntegerField">
-            <Default></Default>
-            <Required>N</Required>
-        </plugin_stun_server_port>
-        <plugin_stun_server_period type="IntegerField">
-            <Default></Default>
-            <Required>N</Required>
-        </plugin_stun_server_period>
+        <plugin_stun_server_enable type="BooleanField"/>
+        <plugin_stun_server_host type="TextField"/>
+        <plugin_stun_server_port type="IntegerField"/>
+        <plugin_stun_server_period type="IntegerField"/>
     </items>
 </model>

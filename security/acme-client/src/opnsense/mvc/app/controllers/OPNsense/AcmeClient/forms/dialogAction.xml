@@ -378,6 +378,28 @@
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_ruckus</style>
+    </field>
+    <field>
+        <id>action.acme_ruckus_host</id>
+        <label>Ruckus Host</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_user</id>
+        <label>Ruckus User</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_pass</id>
+        <label>Ruckus Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <id>action.acme_truenas_apikey</id>
         <label>TrueNAS API key</label>
         <type>text</type>
@@ -434,5 +456,40 @@
         <label>Use KV v2</label>
         <type>checkbox</type>
         <help>If checked version 2 of the kv store will be used, otherwise version 1. If you use v2 please consider the comment in the field "Vault Prefix".</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_zyxel_gs1900</style>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_host</id>
+        <label>Switch Host</label>
+        <type>text</type>
+        <help>Hostname or IP adress of a Zyxel GS1900 series switch.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_user</id>
+        <label>Switch Admin User</label>
+        <type>text</type>
+        <help>A user configured as an adminstrator. Defaults to admin.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_password</id>
+        <label>Switch Admin Password</label>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_insecure</id>
+        <label>Skip Certificate Validation</label>
+        <type>checkbox</type>
+        <help>If checked the deployment will be run in insecure mode and will skip certificate validation when connecting to the switch.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_reboot</id>
+        <label>Restart Switch</label>
+        <type>checkbox</type>
+        <help>If checked the switch will be rebooted once the certificate has been successfully installed.</help>
     </field>
 </form>

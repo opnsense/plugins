@@ -3,6 +3,16 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
+1.4
+
+* Feature: Added DNSCrypt-Proxy integration
+* Bugfix: Track loaded lists when deselected and reload Unbounds blocklist in that case
+
+1.3
+
+* Widget: Added license info
+* Events: added source and destination port
+
 1.3
 
 * Events: added source and destination port

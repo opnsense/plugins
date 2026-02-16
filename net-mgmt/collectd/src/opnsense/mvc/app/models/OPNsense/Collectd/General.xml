@@ -8,9 +8,7 @@
             <Required>Y</Required>
         </enabled>
         <hostname type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-	    <Mask>/^.{1,64}$/u</Mask>
+            <Mask>/^.{1,64}$/u</Mask>
         </hostname>
         <fqdnlookup type="BooleanField">
             <Default>1</Default>
@@ -25,29 +23,21 @@
             <Required>N</Required>
         </p_network_enable>
         <p_network_host type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-	    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
-	    <Mask>/^([0-9a-zA-Z\-\.]){1,1024}$/u</Mask>
+            <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+            <Mask>/^([0-9a-zA-Z\-\.]){1,1024}$/u</Mask>
         </p_network_host>
         <p_network_port type="IntegerField">
-            <Default></Default>
-            <Required>N</Required>
-	    <MinimumValue>1</MinimumValue>
-	    <MaximumValue>65535</MaximumValue>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
         </p_network_port>
         <p_network_username type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
         </p_network_username>
-            <p_network_password type="TextField">
-                <Default></Default>
-            <Required>N</Required>
+        <p_network_password type="TextField">
             <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=]){1,128}$/u</Mask>
         </p_network_password>
-            <p_network_encryption type="BooleanField">
-                <Default>0</Default>
+        <p_network_encryption type="BooleanField">
+            <Default>0</Default>
             <Required>N</Required>
         </p_network_encryption>
         <p_graphite_enable type="BooleanField">
@@ -55,19 +45,13 @@
             <Required>N</Required>
         </p_graphite_enable>
         <p_graphite_node type="TextField">
-            <Default></Default>
-            <Required>N</Required>
         </p_graphite_node>
         <p_graphite_host type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-	    <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
+            <Mask>/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/</Mask>
         </p_graphite_host>
         <p_graphite_port type="IntegerField">
-            <Default></Default>
-            <Required>N</Required>
-	    <MinimumValue>1</MinimumValue>
-	    <MaximumValue>65535</MaximumValue>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
         </p_graphite_port>
         <p_graphite_prefix type="TextField">
             <Default>collectd</Default>

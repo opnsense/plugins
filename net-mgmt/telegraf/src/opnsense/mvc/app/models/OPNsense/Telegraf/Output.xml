@@ -7,27 +7,15 @@
             <Default>0</Default>
             <Required>N</Required>
         </influx_enable>
-        <influx_url type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_url>
-        <influx_database type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_database>
+        <influx_url type="TextField"/>
+        <influx_database type="TextField"/>
         <influx_timeout type="IntegerField">
             <Default>5</Default>
             <Required>N</Required>
         </influx_timeout>
         <influx_name_prefix type="TextField"/>
-        <influx_username type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_username>
-        <influx_password type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_password>
+        <influx_username type="TextField"/>
+        <influx_password type="TextField"/>
         <influx_insecure_skip_verify type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
@@ -104,22 +92,10 @@
             <Default>0</Default>
             <Required>N</Required>
         </influx_v2_enable>
-        <influx_v2_url type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_v2_url>
-        <influx_v2_token type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_v2_token>
-        <influx_v2_organization type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_v2_organization>
-        <influx_v2_bucket type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </influx_v2_bucket>
+        <influx_v2_url type="TextField"/>
+        <influx_v2_token type="TextField"/>
+        <influx_v2_organization type="TextField"/>
+        <influx_v2_bucket type="TextField"/>
         <influx_v2_insecure_skip_verify type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
@@ -132,27 +108,17 @@
             <Default>0</Default>
             <Required>N</Required>
         </datadog_enable>
-        <datadog_url type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </datadog_url>
-        <datadog_apikey type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </datadog_apikey>
+        <datadog_url type="TextField"/>
+        <datadog_apikey type="TextField"/>
         <mqtt_enable type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
         </mqtt_enable>
         <mqtt_topic_prefix type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen are allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_topic_prefix>
         <mqtt_topic type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z._\-\/{}]){1,200}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore, hyphen, slash and curly braces are allowed. Do not use more than 200 characters.</ValidationMessage>
         </mqtt_topic>
@@ -166,8 +132,6 @@
             <Required>N</Required>
         </mqtt_insecure_skip_verify>
         <mqtt_client_id type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_client_id>
@@ -180,31 +144,23 @@
                 <qos2 value="2">(2) Exactly once</qos2>
             </OptionValues>
         </mqtt_qos>
-        <mqtt_retain type="BooleanField">
-            <Default></Default>
-            <Required>N</Required>
-        </mqtt_retain>
+        <mqtt_retain type="BooleanField"/>
         <mqtt_timeout type="IntegerField">
             <Default>5</Default>
             <Required>N</Required>
         </mqtt_timeout>
         <mqtt_username type="TextField">
-            <Default></Default>
-            <Required>N</Required>
             <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
             <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
         </mqtt_username>
-        <mqtt_password type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </mqtt_password>
+        <mqtt_password type="TextField"/>
         <mqtt_layout type="OptionField">
             <Default>non-batch</Default>
             <Required>Y</Required>
             <OptionValues>
                 <non-batch>(non-batch) send individual messages, one for each metric</non-batch>
                 <batch>(batch) send all metric as a single message per MQTT topic</batch>
-                <field >(field) send individual messages for each field</field>
+                <field>(field) send individual messages for each field</field>
             </OptionValues>
         </mqtt_layout>
         <mqtt_data_format type="OptionField">

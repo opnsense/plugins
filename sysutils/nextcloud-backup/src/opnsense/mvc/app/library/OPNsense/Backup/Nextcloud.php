@@ -84,6 +84,13 @@ class Nextcloud extends Base implements IBackupProvider
                 "type" => "text",
                 "label" => gettext("Directory Name without leading slash, starting from user's root"),
                 "value" => 'OPNsense-Backup'
+            ),
+            array(
+                "name" => "addhostname",
+                "type" => "checkbox",
+                "label" => gettext("Backup to directory named after hostname"),
+                "help" => gettext("Create subdirectory under backupdir for this host"),
+                "value" => null
             )
         );
         $nextcloud = new NextcloudSettings();
@@ -139,6 +146,10 @@ class Nextcloud extends Base implements IBackupProvider
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
 
+            if (!$nextcloud->addhostname->isEmpty()) {
+                $backupdir .= "/".gethostname()."/";
+            }
+
             // Check if destination directory exists, create (full path) if not
             try {
                 $internal_username = $this->getInternalUsername($url, $username, $password);
@@ -150,9 +161,14 @@ class Nextcloud extends Base implements IBackupProvider
             // Get list of files from local backup system
             $local_files = array();
             $tmp_local_files = scandir('/conf/backup/');
-            // Remove '.' and '..'
+            // Remove '.' and '..', skip directories
             foreach ($tmp_local_files as $tmp_local_file) {
-                if ($tmp_local_file === '.' || $tmp_local_file === '..') { continue; }
+                if ($tmp_local_file === '.' || $tmp_local_file === '..') {
+                    continue;
+                }
+                if (!is_file("/conf/backup/".$tmp_local_file)) {
+                    continue;
+                }
                 $local_files[] = $tmp_local_file;
             }
 

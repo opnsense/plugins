@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2025 Deciso B.V.
+    Copyright (c) 2025-2026 Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,7 @@ class QFeedsActions:
             'show_index',
             'firewall_load',
             'unbound_load',
+            'dnscryptproxy_load',
             'update',
             'stats',
             'logs'
@@ -116,10 +117,35 @@ class QFeedsActions:
 
     def unbound_load(self):
         bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
-        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
+        bl_configured = os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20
+        bl_stat = '/tmp/qfeeds-unbound-bl.stat'
+        if bl_configured or os.path.exists(bl_stat):
+            # when de-configuring domain lists, we need to reconfigure unbound on deselect, track an empty file to
+            # detect that event (written by the unbound helper).
+            if os.path.exists(bl_stat):
+                os.remove(bl_stat)
+
             # when qfeeds-blocklists.conf is ~empty, skip updates
             subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
             yield 'update unbound blocklist'
+
+    def dnscryptproxy_load(self):
+        script_path = '/usr/local/opnsense/scripts/dnscryptproxy/blocklists/qfeeds_bl.py'
+        dnscrypt_proxy_dir = '/usr/local/etc/dnscrypt-proxy'
+        if os.path.exists(script_path) and os.path.isdir(dnscrypt_proxy_dir):
+            subprocess.run([script_path], capture_output=True, text=True)
+            # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
+            # Only if DNSCrypt-proxy is installed (directory exists)
+            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'],
+                                  capture_output=True, text=True)
+            if result.returncode == 0:
+                yield 'update dnscrypt-proxy blocklist'
+            else:
+                yield 'dnscrypt-proxy not available'
+        elif not os.path.isdir(dnscrypt_proxy_dir):
+            yield 'dnscrypt-proxy not installed'
+        else:
+            yield 'dnscrypt-proxy blocklist script not found'
 
     def update(self):
         update_sleep = 99999
@@ -136,7 +162,7 @@ class QFeedsActions:
         if do_update:
                 if 0 < update_sleep <= 300:
                     time.sleep(update_sleep)
-                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load']:
+                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load', 'dnscryptproxy_load']:
                     yield from getattr(self, action)()
 
     def stats(self):

@@ -3,27 +3,20 @@
     <description>Wake On Lan configuration</description>
     <version>1.0.0</version>
     <items>
-      <wolentry type="ArrayField">
-        <interface type="InterfaceField">
-            <Required>Y</Required>
-            <Multiple>N</Multiple>
-            <Default></Default>
-            <filters>
-                <enable>/^(?!0).*$/</enable>
-            </filters>
-        </interface>
-        <mac type="TextField">
-            <Required>Y</Required>
-            <Multiple>N</Multiple>
-            <Mask>/^((?:[a-fA-F0-9]{2}:){5}(?:[a-fA-F0-9]{2}))$/</Mask>
-            <Default>00:00:00:00:00:00</Default>
-            <ValidationMessage>Should be 6 groups of 2 hex characters (a-fA-F0-9) separated by ':'</ValidationMessage>
-        </mac>
-        <descr type="TextField">
-            <Required>N</Required>
-            <Multiple>N</Multiple>
-            <Default></Default>
-        </descr>
-      </wolentry>
+        <wolentry type="ArrayField">
+            <interface type="InterfaceField">
+                <Required>Y</Required>
+                <filters>
+                    <enable>/^(?!0).*$/</enable>
+                </filters>
+            </interface>
+            <mac type="TextField">
+                <Required>Y</Required>
+                <Mask>/^((?:[a-fA-F0-9]{2}:){5}(?:[a-fA-F0-9]{2}))$/</Mask>
+                <Default>00:00:00:00:00:00</Default>
+                <ValidationMessage>Should be 6 groups of 2 hex characters (a-fA-F0-9) separated by ':'.</ValidationMessage>
+            </mac>
+            <descr type="TextField"/>
+        </wolentry>
     </items>
 </model>

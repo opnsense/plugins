@@ -105,14 +105,15 @@ def deploy(config_filename):
         for filename in chroot_needs:
             os.makedirs('%s%s' % (network.get_basepath(), os.path.dirname(filename)), exist_ok=True)
             shutil.copy(filename, '%s/%s' % (network.get_basepath(), filename))
-        write_file("%s/subnet-up" % network.get_basepath(), '\n'.join([
-            "#!/bin/sh",
-            "route add $SUBNET -iface %s\n" % interface_name
-        ]), 0o700)
-        write_file("%s/subnet-down" % network.get_basepath(), '\n'.join([
-            "#!/bin/sh",
-            "route delete $SUBNET -iface %s\n" % interface_name
-        ]), 0o700)
+        if not network.get_disablesubnetroutes():
+            write_file("%s/subnet-up" % network.get_basepath(), '\n'.join([
+                "#!/bin/sh",
+                "route add $SUBNET -iface %s\n" % interface_name
+            ]), 0o700)
+            write_file("%s/subnet-down" % network.get_basepath(), '\n'.join([
+                "#!/bin/sh",
+                "route delete $SUBNET -iface %s\n" % interface_name
+            ]), 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
