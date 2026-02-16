@@ -428,9 +428,11 @@ class Nextcloud extends Base implements IBackupProvider
             if (!($keep_num === "")) {
                 // keep_num is some number
                 // Delete filenames based on their creation time
-                $tmp_files = array_slice($files, 0, $keep_num * -1);
-                foreach(array_keys($tmp_files) as $filetodelete) {
-                    $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+                if (count($files) > $keep_num) {
+                    $tmp_files = array_slice($files, 0, $keep_num * -1);
+                    foreach(array_keys($tmp_files) as $filetodelete) {
+                        $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+                    }
                 }
             }
         }
