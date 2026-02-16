@@ -11,6 +11,9 @@ Plugin Changelog
 Added:
 * more conditions have support for converters
 
+Fixed:
+* migration fails if a http-request/-response "lua" rule is configured
+
 5.0
 
 WARNING: This is a new major release, which may result in
