@@ -379,6 +379,7 @@ class Nextcloud extends Base implements IBackupProvider
         $date = new \DateTime();
         $files = $this->get_filelist_dates($remote_files);
         if (!($keep_days === "")) {
+            // Admin has specified number of days to keep
             $dateinterval = \DateInterval::createFromDateString($keep_days . " day");
             $target_timestamp = date_sub($date, $dateinterval)->format('U');
             // $files is an associative array with key=creation_time, value=filename
@@ -424,10 +425,13 @@ class Nextcloud extends Base implements IBackupProvider
             }
         } else {
             // No $keep_days specified
-            // Delete filenames based on their creation time
-            $tmp_files = array_slice($files, 0, $keep_num * -1);
-            foreach(array_keys($tmp_files) as $filetodelete) {
-                $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+            if (!($keep_num === "")) {
+                // keep_num is some number
+                // Delete filenames based on their creation time
+                $tmp_files = array_slice($files, 0, $keep_num * -1);
+                foreach(array_keys($tmp_files) as $filetodelete) {
+                    $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
+                }
             }
         }
     }
