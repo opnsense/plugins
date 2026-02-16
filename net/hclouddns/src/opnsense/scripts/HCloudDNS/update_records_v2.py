@@ -6,20 +6,25 @@ All rights reserved.
 Update DNS records with multi-gateway failover support (v2)
 """
 
+import argparse
 import json
 import sys
 import os
 import time
+import re
+import subprocess
 import xml.etree.ElementTree as ET
 import syslog
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hcloud_api import HCloudAPI
-from gateway_health import get_gateway_ip
+from gateway_health import get_gateway_ip, write_state_file
 
 STATE_FILE = '/var/run/hclouddns_state.json'
 SIMULATION_FILE = '/var/run/hclouddns_simulation.json'
 CONFIG_FILE = '/conf/config.xml'
+HISTORY_DIR = '/var/log/hclouddns'
+HISTORY_FILE = '/var/log/hclouddns/history.jsonl'
 
 
 def load_simulation():
@@ -41,60 +46,54 @@ def log(message, priority=syslog.LOG_INFO):
 
 def add_history_entry(entry, account, old_ip, new_ip, action='update'):
     """
-    Add a history entry to config.xml for DNS change tracking.
-    This allows users to see all IP changes over time.
+    Add a history entry to JSONL file for DNS change tracking.
+    Each line is a self-contained JSON object.
     """
     import uuid as uuid_mod
     import fcntl
 
     try:
-        # Use file locking for safe concurrent access
-        with open(CONFIG_FILE, 'r+') as f:
-            fcntl.flock(f, fcntl.LOCK_EX)
+        os.makedirs(HISTORY_DIR, mode=0o700, exist_ok=True)
+
+        record = {
+            'uuid': str(uuid_mod.uuid4()),
+            'timestamp': int(time.time()),
+            'action': action,
+            'accountUuid': account.get('uuid', ''),
+            'accountName': account.get('name', ''),
+            'zoneId': entry.get('zoneId', ''),
+            'zoneName': entry.get('zoneName', ''),
+            'recordName': entry.get('recordName', ''),
+            'recordType': entry.get('recordType', ''),
+            'oldValue': old_ip or '',
+            'oldTtl': entry.get('ttl', 300),
+            'newValue': new_ip or '',
+            'newTtl': entry.get('ttl', 300),
+            'reverted': False
+        }
+
+        line = json.dumps(record) + '\n'
+
+        fd = os.open(HISTORY_FILE, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        try:
+            with os.fdopen(fd, 'a') as f:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                try:
+                    f.write(line)
+                finally:
+                    fcntl.flock(f, fcntl.LOCK_UN)
+        except Exception:
             try:
-                content = f.read()
-                tree = ET.ElementTree(ET.fromstring(content))
-                root = tree.getroot()
+                os.close(fd)
+            except OSError:
+                pass
+            raise
 
-                hcloud = root.find('.//OPNsense/HCloudDNS')
-                if hcloud is None:
-                    return False
+        os.chmod(HISTORY_FILE, 0o600)
 
-                # Find or create history section
-                history = hcloud.find('history')
-                if history is None:
-                    history = ET.SubElement(hcloud, 'history')
-
-                # Create new change entry
-                change = ET.SubElement(history, 'change')
-                change.set('uuid', str(uuid_mod.uuid4()))
-
-                # Add all required fields
-                ET.SubElement(change, 'timestamp').text = str(int(time.time()))
-                ET.SubElement(change, 'action').text = action
-                ET.SubElement(change, 'accountUuid').text = account.get('uuid', '')
-                ET.SubElement(change, 'accountName').text = account.get('name', '')
-                ET.SubElement(change, 'zoneId').text = entry.get('zoneId', '')
-                ET.SubElement(change, 'zoneName').text = entry.get('zoneName', '')
-                ET.SubElement(change, 'recordName').text = entry.get('recordName', '')
-                ET.SubElement(change, 'recordType').text = entry.get('recordType', '')
-                ET.SubElement(change, 'oldValue').text = old_ip or ''
-                ET.SubElement(change, 'oldTtl').text = str(entry.get('ttl', 300))
-                ET.SubElement(change, 'newValue').text = new_ip or ''
-                ET.SubElement(change, 'newTtl').text = str(entry.get('ttl', 300))
-                ET.SubElement(change, 'reverted').text = '0'
-
-                # Write back
-                f.seek(0)
-                f.truncate()
-                tree.write(f, encoding='unicode', xml_declaration=True)
-
-                log(f"History: {action} {entry['recordName']}.{entry['zoneName']} "
-                    f"{entry['recordType']} {old_ip} -> {new_ip}")
-                return True
-
-            finally:
-                fcntl.flock(f, fcntl.LOCK_UN)
+        log(f"History: {action} {entry['recordName']}.{entry['zoneName']} "
+            f"{entry['recordType']} {old_ip} -> {new_ip}")
+        return True
 
     except Exception as e:
         log(f"Failed to add history entry: {str(e)}", syslog.LOG_ERR)
@@ -102,47 +101,41 @@ def add_history_entry(entry, account, old_ip, new_ip, action='update'):
 
 
 def cleanup_old_history(retention_days):
-    """Remove history entries older than retention_days"""
+    """Remove history entries older than retention_days from JSONL file"""
     import fcntl
 
     if retention_days <= 0:
+        return 0
+
+    if not os.path.exists(HISTORY_FILE):
         return 0
 
     cutoff_time = int(time.time()) - (retention_days * 86400)
     removed = 0
 
     try:
-        with open(CONFIG_FILE, 'r+') as f:
+        with open(HISTORY_FILE, 'r+') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             try:
-                content = f.read()
-                tree = ET.ElementTree(ET.fromstring(content))
-                root = tree.getroot()
-
-                hcloud = root.find('.//OPNsense/HCloudDNS')
-                if hcloud is None:
-                    return 0
-
-                history = hcloud.find('history')
-                if history is None:
-                    return 0
-
-                # Find entries to remove
-                to_remove = []
-                for change in history.findall('change'):
-                    timestamp = int(change.findtext('timestamp', '0'))
-                    if timestamp < cutoff_time:
-                        to_remove.append(change)
-
-                # Remove old entries
-                for change in to_remove:
-                    history.remove(change)
-                    removed += 1
+                lines = f.readlines()
+                kept = []
+                for line in lines:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        if entry.get('timestamp', 0) >= cutoff_time:
+                            kept.append(line + '\n')
+                        else:
+                            removed += 1
+                    except json.JSONDecodeError:
+                        continue
 
                 if removed > 0:
                     f.seek(0)
                     f.truncate()
-                    tree.write(f, encoding='unicode', xml_declaration=True)
+                    f.writelines(kept)
                     log(f"History cleanup: removed {removed} entries older than {retention_days} days")
 
             finally:
@@ -209,6 +202,52 @@ def send_ntfy(settings, title, message, tags=''):
         return False
 
 
+def send_email(settings, subject, body):
+    """Send notification via SMTP"""
+    import smtplib
+    from email.mime.text import MIMEText
+
+    if not settings.get('emailEnabled') or not settings.get('emailTo'):
+        return False
+
+    server_host = settings.get('smtpServer', '')
+    if not server_host:
+        log("Email: SMTP server not configured", syslog.LOG_WARNING)
+        return False
+
+    try:
+        to_addr = settings['emailTo']
+        from_addr = settings.get('emailFrom', '') or f"hclouddns@{server_host}"
+        port = int(settings.get('smtpPort', 587))
+        tls_mode = settings.get('smtpTls', 'starttls')
+        user = settings.get('smtpUser', '')
+        password = settings.get('smtpPassword', '')
+
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = from_addr
+        msg['To'] = to_addr
+
+        if tls_mode == 'ssl':
+            smtp = smtplib.SMTP_SSL(server_host, port, timeout=15)
+        else:
+            smtp = smtplib.SMTP(server_host, port, timeout=15)
+
+        try:
+            if tls_mode == 'starttls':
+                smtp.starttls()
+            if user and password:
+                smtp.login(user, password)
+            smtp.sendmail(from_addr, [to_addr], msg.as_string())
+            log(f"Sent email notification: {subject}")
+            return True
+        finally:
+            smtp.quit()
+    except Exception as e:
+        log(f"Email failed: {e}", syslog.LOG_ERR)
+        return False
+
+
 def send_webhook(settings, event_type, data):
     """Send notification via webhook"""
     import urllib.request
@@ -230,6 +269,18 @@ def send_webhook(settings, event_type, data):
 
         json_data = json.dumps(payload).encode('utf-8')
         headers = {'Content-Type': 'application/json'}
+
+        if settings.get('webhookSecret'):
+            import hmac
+            import hashlib
+            timestamp = str(int(time.time()))
+            sig = hmac.new(
+                settings['webhookSecret'].encode(),
+                timestamp.encode() + b'.' + json_data,
+                hashlib.sha256
+            ).hexdigest()
+            headers['X-HCloudDNS-Signature'] = sig
+            headers['X-HCloudDNS-Timestamp'] = timestamp
 
         req = urllib.request.Request(url, data=json_data, headers=headers, method=method)
 
@@ -424,6 +475,7 @@ def send_batch_notification(config, batch_results):
 
     # Send batch notification
     send_ntfy(notifications, title, message, tags)
+    send_email(notifications, title, message)
     send_webhook(notifications, 'batch_update', {
         'updates': len(updates),
         'failovers': len(failovers),
@@ -431,6 +483,91 @@ def send_batch_notification(config, batch_results):
         'errors': len(errors),
         'details': batch_results
     })
+
+
+def get_carp_status(vhid_filter=''):
+    """
+    Determine CARP status by parsing ifconfig output.
+
+    Args:
+        vhid_filter: If set, only check this specific VHID number.
+                     Empty string means check all CARP interfaces.
+
+    Returns dict with:
+        is_master: True if this node should run DNS updates
+        status: 'master', 'backup', or 'none' (no CARP interfaces)
+        interfaces: dict of CARP interface states
+    """
+    result = {
+        'is_master': True,  # fail-open: default to master
+        'status': 'none',
+        'interfaces': {}
+    }
+
+    try:
+        output = subprocess.check_output(
+            ['/sbin/ifconfig', '-a'],
+            timeout=5,
+            stderr=subprocess.DEVNULL
+        ).decode('utf-8', errors='replace')
+
+        # Parse CARP interfaces and their status
+        # Format: "carp: MASTER vhid N advbase N advskew N"
+        # or:     "carp: BACKUP vhid N advbase N advskew N"
+        current_if = None
+        for line in output.splitlines():
+            # Track current interface name
+            if_match = re.match(r'^(\S+):\s+flags=', line)
+            if if_match:
+                current_if = if_match.group(1)
+                continue
+
+            carp_match = re.search(r'carp:\s+(MASTER|BACKUP|INIT)\s+vhid\s+(\d+)', line)
+            if carp_match and current_if:
+                state = carp_match.group(1)
+                vhid = carp_match.group(2)
+                key = f"{current_if}_vhid{vhid}"
+                result['interfaces'][key] = state
+
+        # Filter by specific VHID if configured
+        if vhid_filter:
+            filtered = {k: v for k, v in result['interfaces'].items()
+                        if k.endswith(f'_vhid{vhid_filter}')}
+            if not filtered and result['interfaces']:
+                log(f'CARP check: VHID {vhid_filter} not found, '
+                    f'available: {list(result["interfaces"].keys())} - assuming MASTER (fail-open)',
+                    syslog.LOG_WARNING)
+                result['status'] = 'none'
+                result['is_master'] = True
+                return result
+            result['interfaces'] = filtered
+
+        if not result['interfaces']:
+            # No CARP interfaces found -> standalone system, fail-open
+            result['status'] = 'none'
+            result['is_master'] = True
+            return result
+
+        # Determine status from (filtered) interfaces
+        # If ANY checked interface is BACKUP -> this node is BACKUP
+        states = set(result['interfaces'].values())
+        if 'BACKUP' in states:
+            result['status'] = 'backup'
+            result['is_master'] = False
+        elif 'MASTER' in states:
+            result['status'] = 'master'
+            result['is_master'] = True
+        else:
+            # All INIT or unknown -> fail-open
+            result['status'] = 'init'
+            result['is_master'] = True
+
+    except subprocess.TimeoutExpired:
+        log('CARP check: ifconfig timed out, assuming MASTER (fail-open)', syslog.LOG_WARNING)
+    except Exception as e:
+        log(f'CARP check: error ({e}), assuming MASTER (fail-open)', syslog.LOG_WARNING)
+
+    return result
 
 
 def load_config():
@@ -442,6 +579,7 @@ def load_config():
         'failbackEnabled': True,
         'failbackDelay': 60,
         'verbose': False,
+        'carpAware': False,
         'historyRetentionDays': 7,
         'accounts': {},
         'gateways': {},
@@ -467,6 +605,9 @@ def load_config():
             config['failbackEnabled'] = general.findtext('failbackEnabled', '1') == '1'
             config['failbackDelay'] = int(general.findtext('failbackDelay', '60'))
             config['historyRetentionDays'] = int(general.findtext('historyRetentionDays', '7'))
+            config['forceInterval'] = int(general.findtext('forceInterval', '0'))
+            config['carpAware'] = general.findtext('carpAware', '0') == '1'
+            config['carpVhid'] = general.findtext('carpVhid', '')
 
         # Accounts (API tokens)
         accounts = hcloud.find('accounts')
@@ -534,9 +675,16 @@ def load_config():
                 'notifyOnError': notifications.findtext('notifyOnError', '1') == '1',
                 'emailEnabled': notifications.findtext('emailEnabled', '0') == '1',
                 'emailTo': notifications.findtext('emailTo', ''),
+                'emailFrom': notifications.findtext('emailFrom', ''),
+                'smtpServer': notifications.findtext('smtpServer', ''),
+                'smtpPort': notifications.findtext('smtpPort', '587'),
+                'smtpTls': notifications.findtext('smtpTls', 'starttls'),
+                'smtpUser': notifications.findtext('smtpUser', ''),
+                'smtpPassword': notifications.findtext('smtpPassword', ''),
                 'webhookEnabled': notifications.findtext('webhookEnabled', '0') == '1',
                 'webhookUrl': notifications.findtext('webhookUrl', ''),
                 'webhookMethod': notifications.findtext('webhookMethod', 'POST'),
+                'webhookSecret': notifications.findtext('webhookSecret', ''),
                 'ntfyEnabled': notifications.findtext('ntfyEnabled', '0') == '1',
                 'ntfyServer': notifications.findtext('ntfyServer', 'https://ntfy.sh'),
                 'ntfyTopic': notifications.findtext('ntfyTopic', ''),
@@ -568,8 +716,7 @@ def load_runtime_state():
 def save_runtime_state(state):
     """Save runtime state to JSON file"""
     try:
-        with open(STATE_FILE, 'w') as f:
-            json.dump(state, f, indent=2)
+        write_state_file(STATE_FILE, state)
     except IOError as e:
         log(f'Error saving state: {str(e)}', syslog.LOG_ERR)
 
@@ -699,7 +846,7 @@ def determine_active_gateway(entry, config, state):
     return None, None, 'no_gateway'
 
 
-def update_dns_record(api, entry, target_ip, state):
+def update_dns_record(api, entry, target_ip, state, force=False, dry_run=False):
     """Update DNS record at Hetzner"""
     zone_id = entry['zoneId']
     record_name = entry['recordName']
@@ -717,9 +864,18 @@ def update_dns_record(api, entry, target_ip, state):
                 current_ttl = rec.get('ttl')
                 break
 
-        # Only skip if BOTH value AND TTL match
+        # Only skip if BOTH value AND TTL match (unless force update)
         if current_value == target_ip and current_ttl == ttl:
-            return True, 'unchanged'
+            if force:
+                log(f"Force-updating {record_name}.{entry['zoneName']} (interval expired)")
+            else:
+                return True, 'unchanged'
+
+        # Dry-run: report what would change without making API calls
+        if dry_run:
+            if current_value is None:
+                return True, 'would_create'
+            return True, 'would_update'
 
         # Use the rrsets API to update/create record
         success, message = api.update_record(zone_id, record_name, record_type, target_ip, ttl)
@@ -736,7 +892,7 @@ def update_dns_record(api, entry, target_ip, state):
         return False, str(e)
 
 
-def _process_single_entry(entry, account, api, config, state, state_lock):
+def _process_single_entry(entry, account, api, config, state, state_lock, dry_run=False):
     """
     Process a single DNS entry. Thread-safe worker function.
     Returns a dict with the result of processing this entry.
@@ -830,8 +986,31 @@ def _process_single_entry(entry, account, api, config, state, state_lock):
             result['from_gateway'] = old_gw_name
             result['to_gateway'] = new_gw_name
 
+    # Check force interval
+    force_update = False
+    if config.get('forceInterval', 0) > 0:
+        with state_lock:
+            last_update_ts = state['entries'].get(entry_uuid, {}).get('lastUpdate', 0)
+        if last_update_ts > 0 and (time.time() - last_update_ts) > config['forceInterval'] * 86400:
+            force_update = True
+
     # Update DNS (this is the slow network call - runs in parallel)
-    success, update_reason = update_dns_record(api, entry, target_ip, state)
+    success, update_reason = update_dns_record(api, entry, target_ip, state, force=force_update, dry_run=dry_run)
+
+    # In dry-run mode, report what would happen without changing state
+    if dry_run:
+        if update_reason in ['would_update', 'would_create']:
+            result['updated'] = True
+            result['update_event'] = {
+                'record': record_fqdn,
+                'type': entry['recordType'],
+                'old_ip': current_hetzner_ip,
+                'new_ip': target_ip,
+                'gateway': active_gw.get('name', 'Gateway'),
+                'dry_run': True,
+                'action': update_reason
+            }
+        return result
 
     # Update state with results (thread-safe)
     with state_lock:
@@ -877,7 +1056,7 @@ def _process_single_entry(entry, account, api, config, state, state_lock):
     return result
 
 
-def process_entries(config, state):
+def process_entries(config, state, dry_run=False):
     """
     Process all entries and update DNS as needed.
     Uses parallel processing with deduplication:
@@ -962,7 +1141,8 @@ def process_entries(config, state):
                 data['api'],
                 config,
                 state,
-                state_lock
+                state_lock,
+                dry_run
             ): record_key
             for record_key, data in unique_entries.items()
         }
@@ -1014,18 +1194,27 @@ def process_entries(config, state):
         if len(state['failoverHistory']) > 100:
             state['failoverHistory'] = state['failoverHistory'][-100:]
 
-    # Send single batch notification with all changes
-    send_batch_notification(config, batch_events)
+    # Send single batch notification with all changes (skip in dry-run)
+    if not dry_run:
+        send_batch_notification(config, batch_events)
 
+    results['batch_events'] = batch_events
     return results
 
 
 def main():
+    parser = argparse.ArgumentParser(description='HCloudDNS DNS updater')
+    parser.add_argument('--dry-run', action='store_true', help='Preview changes without making API calls')
+    args = parser.parse_args()
+    dry_run = args.dry_run
+
     result = {
         'status': 'ok',
         'message': '',
         'details': {}
     }
+    if dry_run:
+        result['dry_run'] = True
 
     config = load_config()
 
@@ -1033,6 +1222,16 @@ def main():
         result['message'] = 'Service is disabled'
         print(json.dumps(result))
         return
+
+    # CARP check: skip DNS updates on BACKUP node
+    if config['carpAware']:
+        carp = get_carp_status(config.get('carpVhid', ''))
+        if not carp['is_master']:
+            log(f"CARP BACKUP - DNS update skipped (interfaces: {carp['interfaces']})")
+            result['message'] = 'CARP BACKUP - DNS update skipped'
+            result['details'] = {'carp_status': carp['status'], 'carp_interfaces': carp['interfaces']}
+            print(json.dumps(result))
+            return
 
     if not config['accounts']:
         result['status'] = 'error'
@@ -1057,14 +1256,15 @@ def main():
     state = check_all_gateways(config, state)
 
     # Process entries (API instances created per-account inside)
-    update_results = process_entries(config, state)
+    update_results = process_entries(config, state, dry_run=dry_run)
 
-    state['lastUpdate'] = int(time.time())
-    save_runtime_state(state)
+    if not dry_run:
+        state['lastUpdate'] = int(time.time())
+        save_runtime_state(state)
 
-    # Cleanup old history entries
-    if config['historyRetentionDays'] > 0:
-        cleanup_old_history(config['historyRetentionDays'])
+        # Cleanup old history entries
+        if config['historyRetentionDays'] > 0:
+            cleanup_old_history(config['historyRetentionDays'])
 
     result['details'] = update_results
     result['message'] = f"Processed {update_results['processed']} entries, {update_results['updated']} updated"

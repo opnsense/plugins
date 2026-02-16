@@ -52,6 +52,7 @@
     <li><a data-toggle="tab" href="#gateways"><i class="fa fa-server"></i> {{ lang._('Gateways') }}</a></li>
     <li><a data-toggle="tab" href="#entries"><i class="fa fa-list"></i> {{ lang._('DNS Entries') }}</a></li>
     <li><a data-toggle="tab" href="#scheduled"><i class="fa fa-clock-o"></i> {{ lang._('Scheduled') }}</a></li>
+    <li><a data-toggle="tab" href="#dyndnsSettings"><i class="fa fa-heartbeat"></i> {{ lang._('CARP') }}</a></li>
 </ul>
 
 <div class="tab-content content-box">
@@ -276,6 +277,7 @@
         <hr/>
         <button class="btn btn-primary" id="saveEntriesBtn"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
         <button class="btn btn-default" id="refreshEntriesBtn"><i class="fa fa-refresh"></i> {{ lang._('Refresh Status') }}</button>
+        <button class="btn btn-warning" id="previewChangesBtn"><i class="fa fa-eye"></i> {{ lang._('Preview Changes') }}</button>
         <button class="btn btn-info" id="createDualStackBtn"><i class="fa fa-link"></i> {{ lang._('Create Dual-Stack (A+AAAA)') }}</button>
         <button class="btn btn-danger" id="removeOrphanedBtn"><i class="fa fa-trash"></i> {{ lang._('Remove Orphaned') }}</button>
     </div>
@@ -302,6 +304,14 @@
 
         <hr/>
         <button class="btn btn-primary" id="saveScheduledBtn"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
+    </div>
+
+    <!-- ==================== SETTINGS TAB ==================== -->
+    <div id="dyndnsSettings" class="tab-pane fade">
+        {{ partial("layout_partials/base_form", ['fields': dyndnsSettingsForm, 'id': 'frm_dyndns_settings']) }}
+
+        <hr/>
+        <button class="btn btn-primary" id="saveDyndnsSettingsBtn"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
     </div>
 </div>
 </div><!-- /mainContent -->
@@ -479,16 +489,21 @@ $(document).ready(function() {
         });
     }
 
+    // ==================== SERVICE CONTROL BUTTONS ====================
+    updateServiceControlUI('hclouddns');
+
     // ==================== OVERVIEW TAB ====================
     var data_get_map = {
         'frm_scheduled_settings': '/api/hclouddns/settings/get',
-        'frm_failover_settings': '/api/hclouddns/settings/get'
+        'frm_failover_settings': '/api/hclouddns/settings/get',
+        'frm_dyndns_settings': '/api/hclouddns/settings/get'
     };
     mapDataToFormUI(data_get_map).done(function() {
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
         loadDashboard();
         loadSimulationStatus();
+        loadVipDropdown();
     });
 
     function loadDashboard() {
@@ -548,6 +563,43 @@ $(document).ready(function() {
             $('#entryDetail').text(zoneList.slice(0, 3).join(', ') + (zoneList.length > 3 ? '...' : '') || 'None configured');
         });
     }
+
+    // ==================== DYNDNS SETTINGS TAB ====================
+    function loadVipDropdown() {
+        ajaxCall('/api/hclouddns/service/getVipList', {}, function(data) {
+            var $sel = $('#hclouddns\\.general\\.carpVhid');
+            if ($sel.length === 0) return;
+
+            // Get currently saved value
+            var currentVal = $sel.val() || '';
+
+            $sel.empty();
+            $sel.append('<option value="">{{ lang._("Any (all CARP interfaces)") }}</option>');
+
+            if (data && data.rows && data.rows.length > 0) {
+                $.each(data.rows, function(i, vip) {
+                    var label = 'VHID ' + vip.vhid + ' - ' + vip.subnet + ' (' + vip.interface + ')';
+                    if (vip.descr) label += ' - ' + vip.descr;
+                    $sel.append('<option value="' + vip.vhid + '">' + label + '</option>');
+                });
+            }
+
+            // Restore saved value
+            if (currentVal) {
+                $sel.val(currentVal);
+            }
+
+            $sel.selectpicker('refresh');
+        });
+    }
+
+    $('#saveDyndnsSettingsBtn').click(function() {
+        saveFormToEndpoint('/api/hclouddns/settings/set', 'frm_dyndns_settings', function() {
+            ajaxCall('/api/hclouddns/service/reconfigure', {_: ''}, function() {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: '{{ lang._("Success") }}', message: '{{ lang._("Settings saved successfully.") }}'});
+            });
+        }, true);
+    });
 
     function loadSimulationStatus() {
         // Load gateway status with simulation info
@@ -671,8 +723,11 @@ $(document).ready(function() {
         var summary = [];
         if (counts.active > 0) summary.push(counts.active + ' active');
         if (counts.failover > 0) summary.push(counts.failover + ' failover');
-        if ((counts.error || 0) + (counts.orphaned || 0) > 0) summary.push((counts.error + counts.orphaned) + ' error');
-        $('#statusSummary').text(summary.join(', '));
+        var errorTotal = (counts.error || 0) + (counts.orphaned || 0);
+        if (errorTotal > 0) {
+            summary.push('<a href="#" class="text-danger" onclick="$(\'#maintabs a[href=\\\'#entries\\\']\').tab(\'show\'); return false;">' + errorTotal + ' error <i class="fa fa-arrow-right fa-fw"></i></a>');
+        }
+        $('#statusSummary').html(summary.join(', '));
     }
 
     // Auto-refresh functionality
@@ -923,6 +978,7 @@ $(document).ready(function() {
         del: '/api/hclouddns/entries/delItem/',
         toggle: '/api/hclouddns/entries/toggleItem/',
         options: {
+            selection: false,
             formatters: entryFormatters
         }
     });
@@ -1608,6 +1664,43 @@ $(document).ready(function() {
                     message: data.syncedCount + ' entries synchronized with Hetzner.'
                 });
             }
+        });
+    });
+
+    // ==================== PREVIEW CHANGES (DRY RUN) ====================
+    $('#previewChangesBtn').click(function() {
+        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> {{ lang._("Checking...") }}');
+        ajaxCall('/api/hclouddns/service/preview', {_: ''}, function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-eye"></i> {{ lang._("Preview Changes") }}');
+            if (!data || data.status === 'error') {
+                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, title: '{{ lang._("Error") }}', message: data ? data.message : '{{ lang._("Preview failed") }}'});
+                return;
+            }
+            var details = data.details || {};
+            var events = details.batch_events || {};
+            var updates = events.updates || [];
+            var msg = '<p><strong>' + (details.updated || 0) + '</strong> {{ lang._("record(s) would be updated") }}, <strong>' + (details.errors || 0) + '</strong> {{ lang._("error(s)") }}</p>';
+            if (updates.length > 0) {
+                msg += '<table class="table table-condensed table-striped"><thead><tr><th>{{ lang._("Record") }}</th><th>{{ lang._("Current") }}</th><th>{{ lang._("New") }}</th></tr></thead><tbody>';
+                $.each(updates, function(i, u) {
+                    msg += '<tr><td><code>' + u.record + '</code></td><td>' + (u.old_ip || '-') + '</td><td>' + u.new_ip + '</td></tr>';
+                });
+                msg += '</tbody></table>';
+            } else {
+                msg += '<p class="text-muted">{{ lang._("All records are up to date. No changes needed.") }}</p>';
+            }
+            BootstrapDialog.show({
+                type: updates.length > 0 ? BootstrapDialog.TYPE_WARNING : BootstrapDialog.TYPE_INFO,
+                title: '<i class="fa fa-eye"></i> {{ lang._("Preview Changes (Dry Run)") }}',
+                message: msg,
+                buttons: updates.length > 0 ? [
+                    {label: '{{ lang._("Close") }}', action: function(d) { d.close(); }},
+                    {label: '<i class="fa fa-check"></i> {{ lang._("Apply Now") }}', cssClass: 'btn-primary', action: function(d) {
+                        d.close();
+                        $('#updateNowBtn').click();
+                    }}
+                ] : [{label: '{{ lang._("Close") }}', action: function(d) { d.close(); }}]
+            });
         });
     });
 

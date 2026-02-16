@@ -13,7 +13,7 @@ import os
 import socket
 import urllib.request
 import urllib.error
-import ssl
+import tempfile
 
 # State file for gateway status persistence
 STATE_FILE = '/var/run/hclouddns_gateways.json'
@@ -43,6 +43,25 @@ IP_SERVICES = {
 }
 
 
+def write_state_file(filepath, content, is_json=True):
+    """Atomically write state file with 0600 permissions."""
+    fd, tmp = tempfile.mkstemp(dir=os.path.dirname(filepath), prefix='.hclouddns_')
+    try:
+        with os.fdopen(fd, 'w') as f:
+            if is_json:
+                json.dump(content, f, indent=2)
+            else:
+                f.write(content)
+        os.chmod(tmp, 0o600)
+        os.rename(tmp, filepath)
+    except Exception:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
 def load_state():
     """Load gateway state from file"""
     if os.path.exists(STATE_FILE):
@@ -57,8 +76,7 @@ def load_state():
 def save_state(state):
     """Save gateway state to file"""
     try:
-        with open(STATE_FILE, 'w') as f:
-            json.dump(state, f, indent=2)
+        write_state_file(STATE_FILE, state)
     except IOError as e:
         sys.stderr.write(f"Error saving state: {e}\n")
 
@@ -120,13 +138,9 @@ def get_web_ip(service, interface=None, source_ip=None, ipv6=False):
             return None
 
         # Default: use urllib without source binding
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
+        request = urllib.request.Request(url, headers={'User-Agent': 'OPNsense-HCloudDNS/2.1'})
 
-        request = urllib.request.Request(url, headers={'User-Agent': 'OPNsense-HCloudDNS/2.0'})
-
-        with urllib.request.urlopen(request, timeout=10, context=ctx) as response:
+        with urllib.request.urlopen(request, timeout=10) as response:
             content = response.read().decode('utf-8').strip()
 
             if 'dyndns' in service:

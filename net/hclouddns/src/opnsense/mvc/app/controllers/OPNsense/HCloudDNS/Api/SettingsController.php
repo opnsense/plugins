@@ -66,9 +66,16 @@ class SettingsController extends ApiMutableModelControllerBase
             $hcloud->notifications->addChild('notifyOnError', '1');
             $hcloud->notifications->addChild('emailEnabled', '0');
             $hcloud->notifications->addChild('emailTo', '');
+            $hcloud->notifications->addChild('emailFrom', '');
+            $hcloud->notifications->addChild('smtpServer', '');
+            $hcloud->notifications->addChild('smtpPort', '587');
+            $hcloud->notifications->addChild('smtpTls', 'starttls');
+            $hcloud->notifications->addChild('smtpUser', '');
+            $hcloud->notifications->addChild('smtpPassword', '');
             $hcloud->notifications->addChild('webhookEnabled', '0');
             $hcloud->notifications->addChild('webhookUrl', '');
             $hcloud->notifications->addChild('webhookMethod', 'POST');
+            $hcloud->notifications->addChild('webhookSecret', '');
             $hcloud->notifications->addChild('ntfyEnabled', '0');
             $hcloud->notifications->addChild('ntfyServer', 'https://ntfy.sh');
             $hcloud->notifications->addChild('ntfyTopic', '');
@@ -225,7 +232,9 @@ class SettingsController extends ApiMutableModelControllerBase
             'failbackDelay' => (string)$general->failbackDelay,
             'cronEnabled' => (string)$general->cronEnabled,
             'cronInterval' => (string)$general->cronInterval,
-            'historyRetentionDays' => (string)$general->historyRetentionDays
+            'historyRetentionDays' => (string)$general->historyRetentionDays,
+            'carpAware' => (string)$general->carpAware,
+            'carpVhid' => (string)$general->carpVhid
         ];
 
         // Export notification settings
@@ -238,9 +247,15 @@ class SettingsController extends ApiMutableModelControllerBase
             'notifyOnError' => (string)$notifications->notifyOnError,
             'emailEnabled' => (string)$notifications->emailEnabled,
             'emailTo' => (string)$notifications->emailTo,
+            'emailFrom' => (string)$notifications->emailFrom,
+            'smtpServer' => (string)$notifications->smtpServer,
+            'smtpPort' => (string)$notifications->smtpPort,
+            'smtpTls' => (string)$notifications->smtpTls,
+            'smtpUser' => (string)$notifications->smtpUser,
             'webhookEnabled' => (string)$notifications->webhookEnabled,
             'webhookUrl' => (string)$notifications->webhookUrl,
             'webhookMethod' => (string)$notifications->webhookMethod,
+            'webhookSecret' => (string)$notifications->webhookSecret,
             'ntfyEnabled' => (string)$notifications->ntfyEnabled,
             'ntfyServer' => (string)$notifications->ntfyServer,
             'ntfyTopic' => (string)$notifications->ntfyTopic,
@@ -338,6 +353,8 @@ class SettingsController extends ApiMutableModelControllerBase
             if (isset($gen['cronEnabled'])) $mdl->general->cronEnabled = $gen['cronEnabled'];
             if (isset($gen['cronInterval'])) $mdl->general->cronInterval = $gen['cronInterval'];
             if (isset($gen['historyRetentionDays'])) $mdl->general->historyRetentionDays = $gen['historyRetentionDays'];
+            if (isset($gen['carpAware'])) $mdl->general->carpAware = $gen['carpAware'];
+            if (isset($gen['carpVhid'])) $mdl->general->carpVhid = $gen['carpVhid'];
         }
 
         // Import notification settings
@@ -350,9 +367,16 @@ class SettingsController extends ApiMutableModelControllerBase
             if (isset($notif['notifyOnError'])) $mdl->notifications->notifyOnError = $notif['notifyOnError'];
             if (isset($notif['emailEnabled'])) $mdl->notifications->emailEnabled = $notif['emailEnabled'];
             if (isset($notif['emailTo'])) $mdl->notifications->emailTo = $notif['emailTo'];
+            if (isset($notif['emailFrom'])) $mdl->notifications->emailFrom = $notif['emailFrom'];
+            if (isset($notif['smtpServer'])) $mdl->notifications->smtpServer = $notif['smtpServer'];
+            if (isset($notif['smtpPort'])) $mdl->notifications->smtpPort = $notif['smtpPort'];
+            if (isset($notif['smtpTls'])) $mdl->notifications->smtpTls = $notif['smtpTls'];
+            if (isset($notif['smtpUser'])) $mdl->notifications->smtpUser = $notif['smtpUser'];
+            if (isset($notif['smtpPassword'])) $mdl->notifications->smtpPassword = $notif['smtpPassword'];
             if (isset($notif['webhookEnabled'])) $mdl->notifications->webhookEnabled = $notif['webhookEnabled'];
             if (isset($notif['webhookUrl'])) $mdl->notifications->webhookUrl = $notif['webhookUrl'];
             if (isset($notif['webhookMethod'])) $mdl->notifications->webhookMethod = $notif['webhookMethod'];
+            if (isset($notif['webhookSecret'])) $mdl->notifications->webhookSecret = $notif['webhookSecret'];
             if (isset($notif['ntfyEnabled'])) $mdl->notifications->ntfyEnabled = $notif['ntfyEnabled'];
             if (isset($notif['ntfyServer'])) $mdl->notifications->ntfyServer = $notif['ntfyServer'];
             if (isset($notif['ntfyTopic'])) $mdl->notifications->ntfyTopic = $notif['ntfyTopic'];

@@ -12,6 +12,9 @@ import sys
 import os
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from gateway_health import write_state_file
+
 STATE_FILE = '/var/run/hclouddns_state.json'
 SIMULATION_FILE = '/var/run/hclouddns_simulation.json'
 
@@ -41,8 +44,7 @@ def load_simulation():
 def save_simulation(sim):
     """Save simulation settings"""
     try:
-        with open(SIMULATION_FILE, 'w') as f:
-            json.dump(sim, f, indent=2)
+        write_state_file(SIMULATION_FILE, sim)
     except IOError as e:
         sys.stderr.write(f"Error saving simulation: {e}\n")
 
@@ -82,8 +84,7 @@ def clear_simulation():
         state['gateways'][uuid]['status'] = 'up'
         state['gateways'][uuid]['simulated'] = False
     try:
-        with open(STATE_FILE, 'w') as f:
-            json.dump(state, f, indent=2)
+        write_state_file(STATE_FILE, state)
     except IOError:
         pass
 

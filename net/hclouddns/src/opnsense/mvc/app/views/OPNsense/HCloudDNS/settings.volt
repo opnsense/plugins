@@ -55,7 +55,7 @@
             </thead>
             <tbody></tbody>
             <tfoot>
-                <tr><td></td><td><button data-action="add" type="button" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i></button></td><td colspan="4"></td></tr>
+                <tr><td></td><td><button data-action="add" type="button" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i></button></td><td colspan="5"></td></tr>
             </tfoot>
         </table>
         <div class="alert alert-info" id="accountChangeMessage" style="display: none;">{{ lang._('Changes need to be saved.') }}</div>
@@ -99,96 +99,129 @@
                     <div class="checkbox-inline">
                         <label><input type="checkbox" id="notifyOnError" checked> {{ lang._('Errors') }}</label>
                     </div>
+                    <button class="btn btn-primary btn-xs" id="saveNotifyGlobalBtn" style="margin-left: 15px;"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
                 </div>
             </div>
 
             <hr/>
 
-            <!-- Email Notifications -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="well">
-                        <h5><i class="fa fa-envelope"></i> {{ lang._('Email Notifications') }}</h5>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="emailEnabled"> {{ lang._('Enable Email') }}</label>
+            <div class="row" style="display:flex; flex-wrap:wrap;">
+                <!-- Ntfy -->
+                <div class="col-md-4" style="display:flex;">
+                    <div class="well" style="flex:1; display:flex; flex-direction:column;">
+                        <h5><i class="fa fa-bullhorn"></i> {{ lang._('Ntfy') }}
+                            <label class="pull-right" style="font-weight:normal;margin:0;"><input type="checkbox" id="ntfyEnabled"> {{ lang._('Enable') }}</label>
+                        </h5>
+                        <div class="form-group">
+                            <label>{{ lang._('Server URL') }}</label>
+                            <input type="url" class="form-control" id="ntfyServer" value="https://ntfy.sh" placeholder="https://ntfy.sh">
                         </div>
-                        <div class="form-group" id="emailSettings" style="display: none;">
-                            <label>{{ lang._('Email Address') }}</label>
-                            <input type="email" class="form-control" id="emailTo" placeholder="admin@example.com">
-                            <p class="help-block small">{{ lang._('Uses system email settings (System > Settings > Notifications).') }}</p>
+                        <div class="form-group">
+                            <label>{{ lang._('Topic') }}</label>
+                            <input type="text" class="form-control" id="ntfyTopic" placeholder="my-ddns-alerts">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ lang._('Priority') }}</label>
+                            <select class="form-control" id="ntfyPriority">
+                                <option value="min">Min (1)</option>
+                                <option value="low">Low (2)</option>
+                                <option value="default" selected>Default (3)</option>
+                                <option value="high">High (4)</option>
+                                <option value="urgent">Urgent (5)</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:auto;">
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-sm saveChannelBtn" data-channel="ntfy"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
+                                <button class="btn btn-info btn-sm testChannelBtn" data-channel="ntfy"><i class="fa fa-paper-plane"></i> {{ lang._('Test') }}</button>
+                            </div>
+                            <span class="channel-result" id="ntfyResult" style="margin-left: 10px;"></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Webhook Notifications -->
-                <div class="col-md-6">
-                    <div class="well">
-                        <h5><i class="fa fa-link"></i> {{ lang._('Webhook Notifications') }}</h5>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="webhookEnabled"> {{ lang._('Enable Webhook') }}</label>
+                <!-- Email (SMTP) -->
+                <div class="col-md-4" style="display:flex;">
+                    <div class="well" style="flex:1; display:flex; flex-direction:column;">
+                        <h5><i class="fa fa-envelope"></i> {{ lang._('Email (SMTP)') }}
+                            <label class="pull-right" style="font-weight:normal;margin:0;"><input type="checkbox" id="emailEnabled"> {{ lang._('Enable') }}</label>
+                        </h5>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>{{ lang._('SMTP Server') }}</label>
+                                    <input type="text" class="form-control" id="smtpServer" placeholder="smtp.example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ lang._('Port') }}</label>
+                                    <input type="number" class="form-control" id="smtpPort" value="587" min="1" max="65535">
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ lang._('Username') }} <small class="text-muted">({{ lang._('opt.') }})</small></label>
+                                    <input type="text" class="form-control" id="smtpUser" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ lang._('Password') }} <small class="text-muted">({{ lang._('opt.') }})</small></label>
+                                    <input type="password" class="form-control" id="smtpPassword" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>{{ lang._('Encryption') }}</label>
+                                    <select class="form-control" id="smtpTls">
+                                        <option value="starttls">STARTTLS</option>
+                                        <option value="ssl">SSL/TLS</option>
+                                        <option value="none">None</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ lang._('Sender (From)') }}</label>
+                                    <input type="email" class="form-control" id="emailFrom" placeholder="hclouddns@firewall.local">
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ lang._('Recipient (To)') }}</label>
+                                    <input type="email" class="form-control" id="emailTo" placeholder="admin@example.com">
+                                </div>
+                            </div>
                         </div>
-                        <div id="webhookSettings" style="display: none;">
-                            <div class="form-group">
-                                <label>{{ lang._('Webhook URL') }}</label>
-                                <input type="url" class="form-control" id="webhookUrl" placeholder="https://example.com/webhook">
+                        <div style="margin-top:auto;">
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-sm saveChannelBtn" data-channel="email"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
+                                <button class="btn btn-info btn-sm testChannelBtn" data-channel="email"><i class="fa fa-paper-plane"></i> {{ lang._('Test') }}</button>
                             </div>
-                            <div class="form-group">
-                                <label>{{ lang._('Method') }}</label>
-                                <select class="form-control" id="webhookMethod">
-                                    <option value="POST">POST</option>
-                                    <option value="GET">GET</option>
-                                </select>
-                            </div>
+                            <span class="channel-result" id="emailResult" style="margin-left: 10px;"></span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <!-- Ntfy Notifications -->
-                <div class="col-md-6">
-                    <div class="well">
-                        <h5><i class="fa fa-bullhorn"></i> {{ lang._('Ntfy Notifications') }}</h5>
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="ntfyEnabled"> {{ lang._('Enable Ntfy') }}</label>
+                <!-- Webhook -->
+                <div class="col-md-4" style="display:flex;">
+                    <div class="well" style="flex:1; display:flex; flex-direction:column;">
+                        <h5><i class="fa fa-link"></i> {{ lang._('Webhook') }}
+                            <label class="pull-right" style="font-weight:normal;margin:0;"><input type="checkbox" id="webhookEnabled"> {{ lang._('Enable') }}</label>
+                        </h5>
+                        <div class="form-group">
+                            <label>{{ lang._('URL') }}</label>
+                            <input type="url" class="form-control" id="webhookUrl" placeholder="https://example.com/webhook">
                         </div>
-                        <div id="ntfySettings" style="display: none;">
-                            <div class="form-group">
-                                <label>{{ lang._('Server URL') }}</label>
-                                <input type="url" class="form-control" id="ntfyServer" value="https://ntfy.sh" placeholder="https://ntfy.sh">
-                            </div>
-                            <div class="form-group">
-                                <label>{{ lang._('Topic') }}</label>
-                                <input type="text" class="form-control" id="ntfyTopic" placeholder="my-ddns-alerts">
-                            </div>
-                            <div class="form-group">
-                                <label>{{ lang._('Priority') }}</label>
-                                <select class="form-control" id="ntfyPriority">
-                                    <option value="min">Min (1)</option>
-                                    <option value="low">Low (2)</option>
-                                    <option value="default" selected>Default (3)</option>
-                                    <option value="high">High (4)</option>
-                                    <option value="urgent">Urgent (5)</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>{{ lang._('Method') }}</label>
+                            <select class="form-control" id="webhookMethod">
+                                <option value="POST">POST</option>
+                                <option value="GET">GET</option>
+                            </select>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Test Notifications -->
-                <div class="col-md-6">
-                    <div class="well">
-                        <h5><i class="fa fa-paper-plane"></i> {{ lang._('Test Notifications') }}</h5>
-                        <p class="small text-muted">{{ lang._('Send a test notification to verify your configuration.') }}</p>
-                        <button class="btn btn-info" id="testNotifyBtn" disabled><i class="fa fa-paper-plane"></i> {{ lang._('Send Test') }}</button>
-                        <div id="testNotifyResult" style="margin-top: 10px;"></div>
+                        <div style="margin-top:auto;">
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-sm saveChannelBtn" data-channel="webhook"><i class="fa fa-save"></i> {{ lang._('Save') }}</button>
+                                <button class="btn btn-info btn-sm testChannelBtn" data-channel="webhook"><i class="fa fa-paper-plane"></i> {{ lang._('Test') }}</button>
+                            </div>
+                            <span class="channel-result" id="webhookResult" style="margin-left: 10px;"></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <hr/>
-        <button class="btn btn-primary" id="saveNotifyBtn"><i class="fa fa-save"></i> {{ lang._('Save Notification Settings') }}</button>
     </div>
 </div>
 
@@ -199,9 +232,9 @@
     </div>
     <div class="panel-body">
         <p class="text-muted">{{ lang._('Export your configuration as JSON for backup or migration. Import to restore settings.') }}</p>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="well">
+        <div class="row" style="display:flex; flex-wrap:wrap;">
+            <div class="col-md-6" style="display:flex;">
+                <div class="well" style="flex:1; display:flex; flex-direction:column;">
                     <h5><i class="fa fa-cloud-download"></i> {{ lang._('Export Configuration') }}</h5>
                     <p class="small text-muted">{{ lang._('Download current configuration as JSON file.') }}</p>
                     <div class="checkbox">
@@ -209,16 +242,19 @@
                             <input type="checkbox" id="exportIncludeTokens"> {{ lang._('Include API tokens (security risk!)') }}
                         </label>
                     </div>
-                    <button class="btn btn-primary" id="exportConfigBtn"><i class="fa fa-download"></i> {{ lang._('Export') }}</button>
+                    <div style="margin-top:auto;">
+                        <button class="btn btn-primary" id="exportConfigBtn"><i class="fa fa-download"></i> {{ lang._('Export') }}</button>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="well">
+            <div class="col-md-6" style="display:flex;">
+                <div class="well" style="flex:1; display:flex; flex-direction:column;">
                     <h5><i class="fa fa-cloud-upload"></i> {{ lang._('Import Configuration') }}</h5>
                     <p class="small text-muted">{{ lang._('Import configuration from a JSON backup file.') }}</p>
                     <input type="file" id="importConfigFile" accept=".json" style="margin-bottom: 10px;">
-                    <br/>
-                    <button class="btn btn-warning" id="importConfigBtn" disabled><i class="fa fa-upload"></i> {{ lang._('Import') }}</button>
+                    <div style="margin-top:auto;">
+                        <button class="btn btn-warning" id="importConfigBtn" disabled><i class="fa fa-upload"></i> {{ lang._('Import') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -318,6 +354,8 @@
 
 <script>
 $(document).ready(function() {
+    updateServiceControlUI('hclouddns');
+
     // ==================== GENERAL SETTINGS ====================
     var data_get_map = {'frm_general_settings': '/api/hclouddns/settings/get'};
     mapDataToFormUI(data_get_map).done(function() {
@@ -343,50 +381,37 @@ $(document).ready(function() {
                 $('#notifyOnFailover').prop('checked', n.notifyOnFailover === '1');
                 $('#notifyOnFailback').prop('checked', n.notifyOnFailback === '1');
                 $('#notifyOnError').prop('checked', n.notifyOnError === '1');
-                $('#emailEnabled').prop('checked', n.emailEnabled === '1').trigger('change');
+                $('#emailEnabled').prop('checked', n.emailEnabled === '1');
                 $('#emailTo').val(n.emailTo || '');
-                $('#webhookEnabled').prop('checked', n.webhookEnabled === '1').trigger('change');
+                $('#emailFrom').val(n.emailFrom || '');
+                $('#smtpServer').val(n.smtpServer || '');
+                $('#smtpPort').val(n.smtpPort || '587');
+                $('#smtpTls').val(n.smtpTls || 'starttls');
+                $('#smtpUser').val(n.smtpUser || '');
+                $('#smtpPassword').val(n.smtpPassword || '');
+                $('#webhookEnabled').prop('checked', n.webhookEnabled === '1');
                 $('#webhookUrl').val(n.webhookUrl || '');
                 $('#webhookMethod').val(n.webhookMethod || 'POST');
-                $('#ntfyEnabled').prop('checked', n.ntfyEnabled === '1').trigger('change');
+                $('#ntfyEnabled').prop('checked', n.ntfyEnabled === '1');
                 $('#ntfyServer').val(n.ntfyServer || 'https://ntfy.sh');
                 $('#ntfyTopic').val(n.ntfyTopic || '');
                 $('#ntfyPriority').val(n.ntfyPriority || 'default');
             }
-            updateTestButton();
         });
-    }
-
-    function updateTestButton() {
-        var enabled = $('#notifyEnabled').is(':checked');
-        var hasChannel = $('#emailEnabled').is(':checked') || $('#webhookEnabled').is(':checked') || $('#ntfyEnabled').is(':checked');
-        $('#testNotifyBtn').prop('disabled', !(enabled && hasChannel));
     }
 
     $('#notifyEnabled').change(function() {
         $('#notifySettings').toggle($(this).is(':checked'));
-        updateTestButton();
     });
 
-    $('#emailEnabled').change(function() {
-        $('#emailSettings').toggle($(this).is(':checked'));
-        updateTestButton();
+    $('#smtpTls').change(function() {
+        var portMap = {'starttls': 587, 'ssl': 465, 'none': 25};
+        $('#smtpPort').val(portMap[$(this).val()] || 587);
     });
 
-    $('#webhookEnabled').change(function() {
-        $('#webhookSettings').toggle($(this).is(':checked'));
-        updateTestButton();
-    });
-
-    $('#ntfyEnabled').change(function() {
-        $('#ntfySettings').toggle($(this).is(':checked'));
-        updateTestButton();
-    });
-
-    $('#saveNotifyBtn').click(function() {
-        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-
-        var notifyData = {
+    // Collect all notification settings into POST data
+    function getAllNotifyData() {
+        return {
             'hclouddns[notifications][enabled]': $('#notifyEnabled').is(':checked') ? '1' : '0',
             'hclouddns[notifications][notifyOnUpdate]': $('#notifyOnUpdate').is(':checked') ? '1' : '0',
             'hclouddns[notifications][notifyOnFailover]': $('#notifyOnFailover').is(':checked') ? '1' : '0',
@@ -394,6 +419,12 @@ $(document).ready(function() {
             'hclouddns[notifications][notifyOnError]': $('#notifyOnError').is(':checked') ? '1' : '0',
             'hclouddns[notifications][emailEnabled]': $('#emailEnabled').is(':checked') ? '1' : '0',
             'hclouddns[notifications][emailTo]': $('#emailTo').val(),
+            'hclouddns[notifications][emailFrom]': $('#emailFrom').val(),
+            'hclouddns[notifications][smtpServer]': $('#smtpServer').val(),
+            'hclouddns[notifications][smtpPort]': $('#smtpPort').val(),
+            'hclouddns[notifications][smtpTls]': $('#smtpTls').val(),
+            'hclouddns[notifications][smtpUser]': $('#smtpUser').val(),
+            'hclouddns[notifications][smtpPassword]': $('#smtpPassword').val(),
             'hclouddns[notifications][webhookEnabled]': $('#webhookEnabled').is(':checked') ? '1' : '0',
             'hclouddns[notifications][webhookUrl]': $('#webhookUrl').val(),
             'hclouddns[notifications][webhookMethod]': $('#webhookMethod').val(),
@@ -402,42 +433,80 @@ $(document).ready(function() {
             'hclouddns[notifications][ntfyTopic]': $('#ntfyTopic').val(),
             'hclouddns[notifications][ntfyPriority]': $('#ntfyPriority').val()
         };
+    }
 
-        ajaxCall('/api/hclouddns/settings/set', notifyData, function(data) {
-            $btn.prop('disabled', false).html('<i class="fa fa-save"></i> Save Notification Settings');
+    // Show inline result next to button
+    function showChannelResult($span, success, message) {
+        var icon = success ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
+        $span.html(icon + ' <small>' + message + '</small>');
+        setTimeout(function() { $span.fadeOut(400, function() { $(this).empty().show(); }); }, 8000);
+    }
+
+    // Save global notify toggles (enabled + notify-on checkboxes)
+    $('#saveNotifyGlobalBtn').click(function() {
+        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+        ajaxCall('/api/hclouddns/settings/set', getAllNotifyData(), function(data) {
+            $btn.prop('disabled', false).html('<i class="fa fa-save"></i> Save');
             if (data && data.status === 'ok') {
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, title: 'Success', message: 'Notification settings saved.'});
-            } else {
-                var msg = 'Failed to save settings.';
-                if (data && data.validations) {
-                    msg += '<br><br>' + Object.values(data.validations).join('<br>');
-                }
-                BootstrapDialog.alert({type: BootstrapDialog.TYPE_DANGER, message: msg});
+                $btn.after('<span class="text-success" style="margin-left:8px;"><i class="fa fa-check"></i> Saved</span>');
+                setTimeout(function() { $btn.next('span').fadeOut(400, function() { $(this).remove(); }); }, 3000);
             }
         });
     });
 
-    $('#testNotifyBtn').click(function() {
-        var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
-        var $result = $('#testNotifyResult').empty();
+    // Per-channel Save button
+    $(document).on('click', '.saveChannelBtn', function() {
+        var channel = $(this).data('channel');
+        var $btn = $(this).prop('disabled', true);
+        var origHtml = $btn.html();
+        $btn.html('<i class="fa fa-spinner fa-spin"></i>');
+        var $result = $('#' + channel + 'Result');
 
-        ajaxCall('/api/hclouddns/service/testNotify', {}, function(data) {
-            $btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Send Test');
-            var isSuccess = data && data.status === 'ok';
-            var alertClass = isSuccess ? 'alert-success' : 'alert-danger';
-            var icon = isSuccess ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-            var msg = icon + ' ' + (data.message || (isSuccess ? 'Test notification sent!' : 'Test failed.'));
-
-            // Always show individual channel results if available
-            if (data && data.results) {
-                msg += '<br><small>';
-                $.each(data.results, function(channel, result) {
-                    var chIcon = result.success ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
-                    msg += chIcon + ' <strong>' + channel + '</strong>: ' + (result.message || (result.success ? 'OK' : 'Failed')) + '<br>';
-                });
-                msg += '</small>';
+        ajaxCall('/api/hclouddns/settings/set', getAllNotifyData(), function(data) {
+            $btn.prop('disabled', false).html(origHtml);
+            if (data && data.status === 'ok') {
+                showChannelResult($result, true, 'Saved');
+            } else {
+                var msg = 'Save failed';
+                if (data && data.validations) {
+                    msg = Object.values(data.validations).join(', ');
+                }
+                showChannelResult($result, false, msg);
             }
-            $result.html('<div class="alert ' + alertClass + '">' + msg + '</div>');
+        });
+    });
+
+    // Per-channel Test button: saves first, then tests
+    $(document).on('click', '.testChannelBtn', function() {
+        var channel = $(this).data('channel');
+        var $btn = $(this).prop('disabled', true);
+        var origHtml = $btn.html();
+        $btn.html('<i class="fa fa-spinner fa-spin"></i>');
+        var $result = $('#' + channel + 'Result');
+        $result.html('<small class="text-muted"><i class="fa fa-spinner fa-spin"></i> Saving & testing...</small>');
+
+        // Save all settings first, then test the specific channel
+        ajaxCall('/api/hclouddns/settings/set', getAllNotifyData(), function(saveData) {
+            if (saveData && saveData.status !== 'ok') {
+                $btn.prop('disabled', false).html(origHtml);
+                var msg = 'Save failed';
+                if (saveData && saveData.validations) {
+                    msg = Object.values(saveData.validations).join(', ');
+                }
+                showChannelResult($result, false, msg);
+                return;
+            }
+            // Now test the channel
+            ajaxCall('/api/hclouddns/service/testNotify/' + channel, {}, function(data) {
+                $btn.prop('disabled', false).html(origHtml);
+                if (data && data.results && data.results[channel]) {
+                    var r = data.results[channel];
+                    showChannelResult($result, r.success, r.message || (r.success ? 'OK' : 'Failed'));
+                } else {
+                    var msg = (data && data.message) ? data.message : 'Test failed';
+                    showChannelResult($result, false, msg);
+                }
+            });
         });
     });
 

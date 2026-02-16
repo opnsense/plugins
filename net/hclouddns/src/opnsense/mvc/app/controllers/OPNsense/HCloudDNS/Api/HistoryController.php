@@ -28,72 +28,94 @@
 
 namespace OPNsense\HCloudDNS\Api;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\Core\Config;
+use OPNsense\HCloudDNS\HCloudDNS;
 
 /**
  * Class HistoryController
  * @package OPNsense\HCloudDNS\Api
  */
-class HistoryController extends ApiMutableModelControllerBase
+class HistoryController extends ApiControllerBase
 {
-    protected static $internalModelName = 'hclouddns';
-    protected static $internalModelClass = 'OPNsense\HCloudDNS\HCloudDNS';
+    private static $historyFile = '/var/log/hclouddns/history.jsonl';
 
     /**
-     * Search history entries
+     * Add a history entry (called from HetznerController after DNS changes)
+     */
+    public static function addEntry(
+        $action,
+        $accountUuid,
+        $accountName,
+        $zoneId,
+        $zoneName,
+        $recordName,
+        $recordType,
+        $oldValue,
+        $oldTtl,
+        $newValue,
+        $newTtl
+    ) {
+        $dir = dirname(self::$historyFile);
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0700, true);
+        }
+
+        $entry = [
+            'uuid' => sprintf(
+                '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0x0fff) | 0x4000,
+                mt_rand(0, 0x3fff) | 0x8000,
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            ),
+            'timestamp' => time(),
+            'action' => $action,
+            'accountUuid' => $accountUuid,
+            'accountName' => $accountName,
+            'zoneId' => $zoneId,
+            'zoneName' => $zoneName,
+            'recordName' => $recordName,
+            'recordType' => $recordType,
+            'oldValue' => $oldValue,
+            'oldTtl' => intval($oldTtl),
+            'newValue' => $newValue,
+            'newTtl' => intval($newTtl),
+            'reverted' => false
+        ];
+
+        $line = json_encode($entry) . "\n";
+        $fp = @fopen(self::$historyFile, 'a');
+        if ($fp) {
+            flock($fp, LOCK_EX);
+            fwrite($fp, $line);
+            flock($fp, LOCK_UN);
+            fclose($fp);
+            @chmod(self::$historyFile, 0600);
+        }
+    }
+
+    /**
+     * Search history entries (from JSONL via configd)
      * @return array
      */
     public function searchItemAction()
     {
-        $mdl = $this->getModel();
-        $retentionDays = (int)$mdl->general->historyRetentionDays;
-        $cutoffTime = time() - ($retentionDays * 86400);
+        $backend = new Backend();
+        $response = $backend->configdRun('hclouddns history search');
+        $data = json_decode(trim($response), true);
 
-        $result = [
+        if ($data !== null) {
+            return $data;
+        }
+
+        return [
             'rows' => [],
             'rowCount' => 0,
             'total' => 0,
             'current' => 1
         ];
-
-        foreach ($mdl->history->change->iterateItems() as $uuid => $change) {
-            $timestamp = (int)(string)$change->timestamp;
-
-            // Skip entries older than retention period
-            if ($timestamp < $cutoffTime) {
-                continue;
-            }
-
-            $result['rows'][] = [
-                'uuid' => $uuid,
-                'timestamp' => $timestamp,
-                'timestampFormatted' => date('Y-m-d H:i:s', $timestamp),
-                'action' => (string)$change->action,
-                'accountUuid' => (string)$change->accountUuid,
-                'accountName' => (string)$change->accountName,
-                'zoneId' => (string)$change->zoneId,
-                'zoneName' => (string)$change->zoneName,
-                'recordName' => (string)$change->recordName,
-                'recordType' => (string)$change->recordType,
-                'oldValue' => (string)$change->oldValue,
-                'oldTtl' => (string)$change->oldTtl,
-                'newValue' => (string)$change->newValue,
-                'newTtl' => (string)$change->newTtl,
-                'reverted' => (string)$change->reverted
-            ];
-        }
-
-        // Sort by timestamp descending (newest first)
-        usort($result['rows'], function ($a, $b) {
-            return $b['timestamp'] - $a['timestamp'];
-        });
-
-        $result['rowCount'] = count($result['rows']);
-        $result['total'] = count($result['rows']);
-
-        return $result;
     }
 
     /**
@@ -103,33 +125,19 @@ class HistoryController extends ApiMutableModelControllerBase
      */
     public function getItemAction($uuid)
     {
-        $mdl = $this->getModel();
-        $node = $mdl->getNodeByReference('history.change.' . $uuid);
-
-        if ($node === null) {
-            return ['status' => 'error', 'message' => 'History entry not found'];
+        if (empty($uuid) || !preg_match('/^[a-f0-9-]{36}$/', $uuid)) {
+            return ['status' => 'error', 'message' => 'Invalid UUID'];
         }
 
-        return [
-            'status' => 'ok',
-            'change' => [
-                'uuid' => $uuid,
-                'timestamp' => (int)(string)$node->timestamp,
-                'timestampFormatted' => date('Y-m-d H:i:s', (int)(string)$node->timestamp),
-                'action' => (string)$node->action,
-                'accountUuid' => (string)$node->accountUuid,
-                'accountName' => (string)$node->accountName,
-                'zoneId' => (string)$node->zoneId,
-                'zoneName' => (string)$node->zoneName,
-                'recordName' => (string)$node->recordName,
-                'recordType' => (string)$node->recordType,
-                'oldValue' => (string)$node->oldValue,
-                'oldTtl' => (string)$node->oldTtl,
-                'newValue' => (string)$node->newValue,
-                'newTtl' => (string)$node->newTtl,
-                'reverted' => (string)$node->reverted
-            ]
-        ];
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns history get', [$uuid]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'History entry not found'];
     }
 
     /**
@@ -143,28 +151,35 @@ class HistoryController extends ApiMutableModelControllerBase
             return ['status' => 'error', 'message' => 'POST required'];
         }
 
-        $mdl = $this->getModel();
-        $node = $mdl->getNodeByReference('history.change.' . $uuid);
+        if (empty($uuid) || !preg_match('/^[a-f0-9-]{36}$/', $uuid)) {
+            return ['status' => 'error', 'message' => 'Invalid UUID'];
+        }
 
-        if ($node === null) {
+        // Get the history entry details
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns history get', [$uuid]);
+        $data = json_decode(trim($response), true);
+
+        if ($data === null || $data['status'] !== 'ok' || !isset($data['change'])) {
             return ['status' => 'error', 'message' => 'History entry not found'];
         }
 
-        if ((string)$node->reverted === '1') {
+        $change = $data['change'];
+
+        if ($change['reverted'] === '1') {
             return ['status' => 'error', 'message' => 'This change has already been reverted'];
         }
 
-        $action = (string)$node->action;
-        $accountUuid = (string)$node->accountUuid;
-        $zoneId = (string)$node->zoneId;
-        $recordName = (string)$node->recordName;
-        $recordType = (string)$node->recordType;
-        $oldValue = (string)$node->oldValue;
-        $oldTtl = (string)$node->oldTtl;
-        $newValue = (string)$node->newValue;
-        $newTtl = (string)$node->newTtl;
+        $action = $change['action'];
+        $accountUuid = $change['accountUuid'];
+        $zoneId = $change['zoneId'];
+        $recordName = $change['recordName'];
+        $recordType = $change['recordType'];
+        $oldValue = $change['oldValue'];
+        $oldTtl = $change['oldTtl'] ?? '300';
 
         // Get the account's API token
+        $mdl = new HCloudDNS();
         $accountNode = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
         if ($accountNode === null) {
             return ['status' => 'error', 'message' => 'Account not found - cannot revert'];
@@ -176,25 +191,21 @@ class HistoryController extends ApiMutableModelControllerBase
         }
 
         $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
-        $backend = new Backend();
         $result = null;
 
         // Perform the reverse action
         if ($action === 'create') {
-            // Revert create = delete the record
             $response = $backend->configdpRun('hclouddns dns delete', [
                 $token, $zoneId, $recordName, $recordType
             ]);
             $result = json_decode(trim($response), true);
         } elseif ($action === 'delete') {
-            // Revert delete = recreate the record with old values
             $ttl = !empty($oldTtl) ? $oldTtl : 300;
             $response = $backend->configdpRun('hclouddns dns create', [
                 $token, $zoneId, $recordName, $recordType, $oldValue, $ttl
             ]);
             $result = json_decode(trim($response), true);
         } elseif ($action === 'update') {
-            // Revert update = update back to old values
             $ttl = !empty($oldTtl) ? $oldTtl : 300;
             $response = $backend->configdpRun('hclouddns dns update', [
                 $token, $zoneId, $recordName, $recordType, $oldValue, $ttl
@@ -203,10 +214,8 @@ class HistoryController extends ApiMutableModelControllerBase
         }
 
         if ($result !== null && isset($result['status']) && $result['status'] === 'ok') {
-            // Mark the history entry as reverted
-            $node->reverted = '1';
-            $mdl->serializeToConfig();
-            Config::getInstance()->save();
+            // Mark the history entry as reverted via configd
+            $backend->configdpRun('hclouddns history revert', [$uuid]);
 
             return [
                 'status' => 'ok',
@@ -230,35 +239,18 @@ class HistoryController extends ApiMutableModelControllerBase
             return ['status' => 'error', 'message' => 'POST required'];
         }
 
-        $mdl = $this->getModel();
-        $retentionDays = (int)$mdl->general->historyRetentionDays;
-        $cutoffTime = time() - ($retentionDays * 86400);
+        $mdl = new HCloudDNS();
+        $retentionDays = (string)$mdl->general->historyRetentionDays ?: '7';
 
-        $deleted = 0;
-        $toDelete = [];
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns history cleanup', [$retentionDays]);
+        $data = json_decode(trim($response), true);
 
-        foreach ($mdl->history->change->iterateItems() as $uuid => $change) {
-            $timestamp = (int)(string)$change->timestamp;
-            if ($timestamp < $cutoffTime) {
-                $toDelete[] = $uuid;
-            }
+        if ($data !== null) {
+            return $data;
         }
 
-        foreach ($toDelete as $uuid) {
-            $mdl->history->change->del($uuid);
-            $deleted++;
-        }
-
-        if ($deleted > 0) {
-            $mdl->serializeToConfig();
-            Config::getInstance()->save();
-        }
-
-        return [
-            'status' => 'ok',
-            'deleted' => $deleted,
-            'message' => "Cleaned up $deleted old history entries"
-        ];
+        return ['status' => 'error', 'message' => 'Cleanup failed'];
     }
 
     /**
@@ -271,68 +263,14 @@ class HistoryController extends ApiMutableModelControllerBase
             return ['status' => 'error', 'message' => 'POST required'];
         }
 
-        $mdl = $this->getModel();
-        $deleted = 0;
-        $toDelete = [];
+        $backend = new Backend();
+        $response = $backend->configdRun('hclouddns history clear');
+        $data = json_decode(trim($response), true);
 
-        foreach ($mdl->history->change->iterateItems() as $uuid => $change) {
-            $toDelete[] = $uuid;
+        if ($data !== null) {
+            return $data;
         }
 
-        foreach ($toDelete as $uuid) {
-            $mdl->history->change->del($uuid);
-            $deleted++;
-        }
-
-        if ($deleted > 0) {
-            $mdl->serializeToConfig();
-            Config::getInstance()->save();
-        }
-
-        return [
-            'status' => 'ok',
-            'deleted' => $deleted,
-            'message' => "Cleared all $deleted history entries"
-        ];
-    }
-
-    /**
-     * Add a history entry (internal use)
-     * @param string $action create|update|delete
-     * @param string $accountUuid
-     * @param string $accountName
-     * @param string $zoneId
-     * @param string $zoneName
-     * @param string $recordName
-     * @param string $recordType
-     * @param string $oldValue
-     * @param int $oldTtl
-     * @param string $newValue
-     * @param int $newTtl
-     * @return bool
-     */
-    public static function addEntry($action, $accountUuid, $accountName, $zoneId, $zoneName, $recordName, $recordType, $oldValue = '', $oldTtl = 0, $newValue = '', $newTtl = 0)
-    {
-        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
-
-        $change = $mdl->history->change->Add();
-        $change->timestamp = time();
-        $change->action = $action;
-        $change->accountUuid = $accountUuid;
-        $change->accountName = $accountName;
-        $change->zoneId = $zoneId;
-        $change->zoneName = $zoneName;
-        $change->recordName = $recordName;
-        $change->recordType = $recordType;
-        $change->oldValue = $oldValue;
-        $change->oldTtl = $oldTtl;
-        $change->newValue = $newValue;
-        $change->newTtl = $newTtl;
-        $change->reverted = '0';
-
-        $mdl->serializeToConfig();
-        Config::getInstance()->save();
-
-        return true;
+        return ['status' => 'error', 'message' => 'Clear failed'];
     }
 }

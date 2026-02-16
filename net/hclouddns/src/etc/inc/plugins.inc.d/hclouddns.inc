@@ -39,9 +39,12 @@ function hclouddns_services()
         $services[] = array(
             'description' => gettext('Hetzner Cloud Dynamic DNS'),
             'configd' => array(
+                'start' => array('hclouddns start'),
+                'stop' => array('hclouddns stop'),
                 'restart' => array('hclouddns update'),
             ),
             'name' => 'hclouddns',
+            'nocheck' => true,
         );
     }
 

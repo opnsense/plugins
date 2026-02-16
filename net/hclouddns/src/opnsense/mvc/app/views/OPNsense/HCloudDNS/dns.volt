@@ -490,6 +490,8 @@
 
 <script>
 $(document).ready(function() {
+    updateServiceControlUI('hclouddns');
+
     var currentAccountUuid = '';
     var zonesData = {};
     var isEditMode = false; // Track whether we're editing an existing record

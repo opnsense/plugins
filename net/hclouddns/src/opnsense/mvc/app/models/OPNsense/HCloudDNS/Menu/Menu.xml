@@ -5,7 +5,7 @@
             <DNS VisibleName="DNS Management" order="20" url="/ui/hclouddns/dns"/>
             <History VisibleName="History" order="30" url="/ui/hclouddns/history"/>
             <Settings VisibleName="Settings" order="80" url="/ui/hclouddns/settings"/>
-            <LogFile VisibleName="Log File" order="90" url="/ui/diagnostics/log/hclouddns"/>
+            <LogFile VisibleName="Log File" order="90" url="/ui/diagnostics/log/core/hclouddns"/>
         </HCloudDNS>
     </Services>
 </menu>

@@ -83,6 +83,7 @@
 
 <script>
 $(document).ready(function() {
+    updateServiceControlUI('hclouddns');
 
     function loadHistory() {
         var $tbody = $('#historyTable tbody');

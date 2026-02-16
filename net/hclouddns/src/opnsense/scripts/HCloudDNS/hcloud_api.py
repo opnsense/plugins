@@ -24,8 +24,8 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-    Hetzner Cloud API wrapper for HCloudDNS OPNsense plugin
-    This is a compatibility wrapper - actual implementation is in lib/hetzner_api.py
+    Hetzner DNS API wrapper for HCloudDNS OPNsense plugin.
+    Uses HetznerCloudAPIv2 for Cloud API and HetznerLegacyAPI for deprecated dns.hetzner.com.
 """
 import os
 import sys
@@ -34,10 +34,12 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lib'))
 
 from hetzner_api import (  # noqa: E402
-    HetznerCloudAPI,
     HetznerLegacyAPI,
-    HetznerAPIError,
-    create_api
+    HetznerAPIError
+)
+from hetzner_api_v2 import (  # noqa: E402
+    HetznerCloudAPIv2,
+    create_api_v2
 )
 
 # Re-export for backward compatibility
@@ -46,12 +48,16 @@ HCloudAPIError = HetznerAPIError
 
 class HCloudAPI:
     """
-    Backward-compatible wrapper for Hetzner DNS API.
-    Delegates to HetznerCloudAPI or HetznerLegacyAPI based on api_type.
+    Wrapper for Hetzner DNS API.
+    Uses HetznerCloudAPIv2 (with rate limiting) for Cloud API,
+    HetznerLegacyAPI for deprecated dns.hetzner.com.
     """
 
     def __init__(self, token, api_type='cloud', verbose=False):
-        self._api = create_api(token, api_type, verbose)
+        if api_type == 'dns':
+            self._api = HetznerLegacyAPI(token, verbose)
+        else:
+            self._api = create_api_v2(token, verbose)
         self.api_type = api_type
         self.verbose = verbose
 
@@ -79,13 +85,19 @@ class HCloudAPI:
     def delete_record(self, zone_id, name, record_type):
         return self._api.delete_record(zone_id, name, record_type)
 
+    def update_ttl(self, zone_id, name, record_type, ttl):
+        return self._api.update_ttl(zone_id, name, record_type, ttl)
+
+    def change_ttl(self, zone_id, name, record_type, ttl):
+        return self._api.change_ttl(zone_id, name, record_type, ttl)
+
 
 # Export all for convenience
 __all__ = [
     'HCloudAPI',
     'HCloudAPIError',
-    'HetznerCloudAPI',
     'HetznerLegacyAPI',
+    'HetznerCloudAPIv2',
     'HetznerAPIError',
-    'create_api'
+    'create_api_v2'
 ]

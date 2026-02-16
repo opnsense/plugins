@@ -1,4 +1,5 @@
 etc/inc/plugins.inc.d/hclouddns.inc
+etc/rc.syshook.d/carp/20-hclouddns
 etc/rc.syshook.d/monitor/50-hclouddns
 opnsense/mvc/app/controllers/OPNsense/HCloudDNS/Api/AccountsController.php
 opnsense/mvc/app/controllers/OPNsense/HCloudDNS/Api/EntriesController.php
@@ -41,6 +42,7 @@ opnsense/scripts/HCloudDNS/lib/hetzner_api.py
 opnsense/scripts/HCloudDNS/list_records.py
 opnsense/scripts/HCloudDNS/list_zones.py
 opnsense/scripts/HCloudDNS/refresh_status.py
+opnsense/scripts/HCloudDNS/service_control.py
 opnsense/scripts/HCloudDNS/simulate_failover.py
 opnsense/scripts/HCloudDNS/status.py
 opnsense/scripts/HCloudDNS/test_notify.py

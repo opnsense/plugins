@@ -52,7 +52,83 @@ class ServiceController extends ApiControllerBase
             return ['status' => 'error', 'message' => 'Failed to get status'];
         }
 
+        // Determine running/stopped for updateServiceControlUI
+        $mdl = new HCloudDNS();
+        $enabled = (string)$mdl->general->enabled === '1';
+        $stopped = file_exists('/var/run/hclouddns.stopped');
+        $data['status'] = ($enabled && !$stopped) ? 'running' : 'stopped';
+
         return $data;
+    }
+
+    /**
+     * Start service
+     * @return array
+     */
+    public function startAction()
+    {
+        if ($this->request->isPost()) {
+            @unlink('/var/run/hclouddns.stopped');
+            $backend = new Backend();
+            $response = $backend->configdRun('hclouddns start');
+            return ['status' => 'ok'];
+        }
+        return ['status' => 'error', 'message' => 'POST request required'];
+    }
+
+    /**
+     * Stop service
+     * @return array
+     */
+    public function stopAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('hclouddns stop');
+            return ['status' => 'ok'];
+        }
+        return ['status' => 'error', 'message' => 'POST request required'];
+    }
+
+    /**
+     * Restart service
+     * @return array
+     */
+    public function restartAction()
+    {
+        if ($this->request->isPost()) {
+            @unlink('/var/run/hclouddns.stopped');
+            $backend = new Backend();
+            $response = $backend->configdRun('hclouddns update');
+            return ['status' => 'ok'];
+        }
+        return ['status' => 'error', 'message' => 'POST request required'];
+    }
+
+    /**
+     * Get list of CARP VIPs from system config
+     * @return array
+     */
+    public function getVipListAction()
+    {
+        $result = ['status' => 'ok', 'rows' => []];
+
+        $config = \OPNsense\Core\Config::getInstance()->object();
+
+        if (isset($config->virtualip) && isset($config->virtualip->vip)) {
+            foreach ($config->virtualip->vip as $vip) {
+                if ((string)$vip->mode === 'carp') {
+                    $result['rows'][] = [
+                        'vhid' => (string)$vip->vhid,
+                        'subnet' => (string)$vip->subnet,
+                        'interface' => (string)$vip->interface,
+                        'descr' => (string)$vip->descr
+                    ];
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -103,11 +179,32 @@ class ServiceController extends ApiControllerBase
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun('hclouddns updatev2');
+            $response = $backend->configdRun('hclouddns update');
             $data = json_decode($response, true);
 
             if ($data === null) {
                 return ['status' => 'error', 'message' => 'Update failed', 'raw' => $response];
+            }
+
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'POST request required'];
+    }
+
+    /**
+     * Preview DNS changes (dry run)
+     * @return array
+     */
+    public function previewAction()
+    {
+        if ($this->request->isPost()) {
+            $backend = new Backend();
+            $response = $backend->configdRun('hclouddns dryrun');
+            $data = json_decode($response, true);
+
+            if ($data === null) {
+                return ['status' => 'error', 'message' => 'Preview failed'];
             }
 
             return $data;
@@ -221,13 +318,18 @@ class ServiceController extends ApiControllerBase
 
     /**
      * Test notification channels
+     * @param string $channel Optional: email, webhook, ntfy (empty = all)
      * @return array
      */
-    public function testNotifyAction()
+    public function testNotifyAction($channel = '')
     {
         if ($this->request->isPost()) {
             $backend = new Backend();
-            $response = $backend->configdRun('hclouddns testnotify');
+            $validChannels = ['email', 'webhook', 'ntfy', ''];
+            if (!in_array($channel, $validChannels)) {
+                return ['status' => 'error', 'message' => 'Invalid channel'];
+            }
+            $response = $backend->configdpRun('hclouddns testnotify', [$channel]);
             $data = json_decode(trim($response), true);
 
             if ($data !== null) {

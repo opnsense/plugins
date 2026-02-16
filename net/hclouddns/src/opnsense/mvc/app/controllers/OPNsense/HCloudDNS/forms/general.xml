@@ -12,6 +12,12 @@
         <help>Write detailed log entries to syslog</help>
     </field>
     <field>
+        <id>hclouddns.general.forceInterval</id>
+        <label>Force Update Interval (days)</label>
+        <type>text</type>
+        <help>Force DNS update even if IP unchanged after this many days. 0 = disabled (default: 0)</help>
+    </field>
+    <field>
         <id>hclouddns.general.historyRetentionDays</id>
         <label>History Retention (days)</label>
         <type>text</type>
