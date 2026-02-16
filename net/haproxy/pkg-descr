@@ -10,6 +10,7 @@ Plugin Changelog
 
 Added:
 * more conditions have support for converters
+* add support for mapfile URLs (#4825)
 
 Fixed:
 * migration fails if a http-request/-response "lua" rule is configured

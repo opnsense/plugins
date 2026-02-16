@@ -4365,8 +4365,12 @@
                     </OptionValues>
                 </type>
                 <content type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </content>
+                <url type="UrlField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </url>
             </mapfile>
         </mapfiles>
         <groups>
