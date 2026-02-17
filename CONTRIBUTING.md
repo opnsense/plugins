@@ -49,12 +49,13 @@ When creating pull request, please heed the following:
 * Explain the problem and your proposed solution
 
 New plugins
--------------
+-----------
 
-The same structure as opening a pull request, but with the following additional requirements:
+The pull request notes apply, but with the following additional points:
 
-* Open an issue first and explain what you want to work on, wait for feedback
-* The core component should be available as 2-Clause BSD licensed FreeBSD port package
-* Code should be (GUI) integration around this existing port
-* You will be responsible for long-term maintainance and issues
-* The review process can take time, please be patient
+* Open an issue first to explain what you want to work on and give it time for discussion
+* If you are integrating a service binary it should at least be available in FreeBSD ports
+* Precompiled binaries in the plugins are not allowed
+* It is not possible to to review and integrate plugins with a large initial codebase
+* If you use AI tools in your submission please disclose their use (name and model)
+* Even though you are the maintainer you effectively force burden of maintainership to the community and OPNsense developers as soon as you open your first PR
