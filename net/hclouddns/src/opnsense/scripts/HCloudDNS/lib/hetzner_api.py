@@ -163,6 +163,34 @@ class HetznerLegacyAPI:
             self._log(syslog.LOG_ERR, f"Failed to list zones: {str(e)}")
             return []
 
+    def create_zone(self, zone_name):
+        """Create a new DNS zone. Returns (success, message, zone_id)."""
+        try:
+            response = self._request('POST', '/zones', json_data={'name': zone_name})
+
+            if response.status_code in [200, 201]:
+                data = response.json()
+                zone = data.get('zone', {})
+                zone_id = zone.get('id', '')
+                if self.verbose:
+                    self._log(syslog.LOG_INFO, f"Created zone {zone_name} (id={zone_id})")
+                return True, f"Zone {zone_name} created", zone_id
+
+            error_msg = f"HTTP {response.status_code}"
+            try:
+                error_data = response.json()
+                if 'error' in error_data:
+                    error_msg = error_data['error'].get('message', error_msg)
+            except Exception:
+                pass
+
+            self._log(syslog.LOG_ERR, f"Failed to create zone {zone_name}: {error_msg}")
+            return False, error_msg, None
+
+        except HetznerAPIError as e:
+            self._log(syslog.LOG_ERR, f"Failed to create zone: {str(e)}")
+            return False, str(e), None
+
     def get_zone_id(self, zone_name):
         """Get zone ID by zone name"""
         try:

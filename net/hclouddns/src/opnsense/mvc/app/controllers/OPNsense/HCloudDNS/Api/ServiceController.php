@@ -317,6 +317,144 @@ class ServiceController extends ApiControllerBase
     }
 
     /**
+     * Start maintenance mode for a gateway
+     * @param string $uuid gateway UUID
+     * @return array
+     */
+    public function maintenanceStartAction($uuid = null)
+    {
+        if ($this->request->isPost() && $uuid !== null) {
+            $mdl = new HCloudDNS();
+            $node = $mdl->getNodeByReference('gateways.gateway.' . $uuid);
+
+            if ($node === null) {
+                return ['status' => 'error', 'message' => 'Gateway not found'];
+            }
+
+            $backend = new Backend();
+            $response = $backend->configdpRun('hclouddns maintenance start', [$uuid]);
+            $data = json_decode(trim($response), true);
+
+            // Return immediately - DNS update is triggered by the frontend separately
+            return $data ?? ['status' => 'error', 'message' => 'Failed to start maintenance'];
+        }
+
+        return ['status' => 'error', 'message' => 'POST request with gateway UUID required'];
+    }
+
+    /**
+     * Stop maintenance mode for a gateway
+     * @param string $uuid gateway UUID
+     * @return array
+     */
+    public function maintenanceStopAction($uuid = null)
+    {
+        if ($this->request->isPost() && $uuid !== null) {
+            $mdl = new HCloudDNS();
+            $node = $mdl->getNodeByReference('gateways.gateway.' . $uuid);
+
+            if ($node === null) {
+                return ['status' => 'error', 'message' => 'Gateway not found'];
+            }
+
+            $backend = new Backend();
+            $response = $backend->configdpRun('hclouddns maintenance stop', [$uuid]);
+            $data = json_decode(trim($response), true);
+
+            // Return immediately - DNS update is triggered by the frontend separately
+            return $data ?? ['status' => 'error', 'message' => 'Failed to stop maintenance'];
+        }
+
+        return ['status' => 'error', 'message' => 'POST request with gateway UUID required'];
+    }
+
+    /**
+     * Schedule maintenance window for a gateway
+     * @param string $uuid gateway UUID
+     * @return array
+     */
+    public function maintenanceScheduleAction($uuid = null)
+    {
+        if ($this->request->isPost() && $uuid !== null) {
+            $mdl = new HCloudDNS();
+            $node = $mdl->getNodeByReference('gateways.gateway.' . $uuid);
+
+            if ($node === null) {
+                return ['status' => 'error', 'message' => 'Gateway not found'];
+            }
+
+            $start = $this->request->getPost('start', 'string', '');
+            $end = $this->request->getPost('end', 'string', '');
+
+            if (empty($start) || empty($end)) {
+                return ['status' => 'error', 'message' => 'Start and end datetime required'];
+            }
+
+            $backend = new Backend();
+            $response = $backend->configdpRun('hclouddns maintenance schedule', [$uuid, $start, $end]);
+            $data = json_decode(trim($response), true);
+
+            if ($data !== null) {
+                return $data;
+            }
+            return ['status' => 'error', 'message' => 'Failed to schedule maintenance'];
+        }
+
+        return ['status' => 'error', 'message' => 'POST request with gateway UUID required'];
+    }
+
+    /**
+     * Check DNS propagation for a specific entry
+     * @param string $uuid entry UUID
+     * @return array propagation check result
+     */
+    public function propagationCheckAction($uuid = null)
+    {
+        if ($uuid === null) {
+            return ['status' => 'error', 'message' => 'Entry UUID required'];
+        }
+
+        $mdl = new HCloudDNS();
+        $node = $mdl->getNodeByReference('entries.entry.' . $uuid);
+
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Entry not found'];
+        }
+
+        $recordName = (string)$node->recordName;
+        $zoneName = (string)$node->zoneName;
+        $recordType = (string)$node->recordType;
+
+        // Get current IP from runtime state
+        $stateFile = '/var/run/hclouddns_state.json';
+        $currentIp = '';
+        if (file_exists($stateFile)) {
+            $state = json_decode(file_get_contents($stateFile), true) ?? [];
+            $currentIp = $state['entries'][$uuid]['hetznerIp'] ?? '';
+        }
+
+        if (empty($currentIp)) {
+            $currentIp = (string)$node->currentIp;
+        }
+
+        if (empty($currentIp)) {
+            return ['status' => 'error', 'message' => 'No current IP known for this entry'];
+        }
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns propagation check', [
+            $recordName, $zoneName, $recordType, $currentIp
+        ]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'Propagation check failed'];
+    }
+
+    /**
      * Test notification channels
      * @param string $channel Optional: email, webhook, ntfy (empty = all)
      * @return array

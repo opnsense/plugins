@@ -78,6 +78,22 @@
                 <Mask>/^(\d{1,3})?$/</Mask>
                 <ValidationMessage>VHID must be a number (1-255) or empty for all</ValidationMessage>
             </carpVhid>
+            <!-- DNS Propagation Check -->
+            <propagationCheck type="BooleanField">
+                <default>1</default>
+            </propagationCheck>
+            <propagationRetries type="IntegerField">
+                <default>3</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>10</MaximumValue>
+                <ValidationMessage>Propagation retries must be between 1 and 10</ValidationMessage>
+            </propagationRetries>
+            <propagationDelay type="IntegerField">
+                <default>2</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>30</MaximumValue>
+                <ValidationMessage>Propagation delay must be between 1 and 30 seconds</ValidationMessage>
+            </propagationDelay>
             <!-- Zone Groups for DNS Management -->
             <zoneGroups type="TextField">
                 <Required>N</Required>
@@ -127,6 +143,20 @@
                     <default>8.8.8.8</default>
                     <ValidationMessage>IP or hostname for health check</ValidationMessage>
                 </healthCheckTarget>
+                <maintenance type="BooleanField">
+                    <default>0</default>
+                </maintenance>
+                <maintenanceScheduled type="BooleanField">
+                    <default>0</default>
+                </maintenanceScheduled>
+                <maintenanceStart type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/</Mask>
+                </maintenanceStart>
+                <maintenanceEnd type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/</Mask>
+                </maintenanceEnd>
             </gateway>
         </gateways>
 
@@ -247,6 +277,9 @@
             <notifyOnError type="BooleanField">
                 <default>1</default>
             </notifyOnError>
+            <notifyOnMaintenance type="BooleanField">
+                <default>0</default>
+            </notifyOnMaintenance>
             <!-- Email Notifications -->
             <emailEnabled type="BooleanField">
                 <default>0</default>

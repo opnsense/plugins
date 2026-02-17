@@ -595,7 +595,8 @@ class EntriesController extends ApiMutableModelControllerBase
                 'status' => $entryState['status'] ?? (string)$entry->status,
                 'activeGateway' => $activeGateway,
                 'activeGatewayName' => $gatewayName,
-                'lastUpdate' => $entryState['lastUpdate'] ?? 0
+                'lastUpdate' => $entryState['lastUpdate'] ?? 0,
+                'propagated' => $entryState['propagated'] ?? null
             ];
         }
 

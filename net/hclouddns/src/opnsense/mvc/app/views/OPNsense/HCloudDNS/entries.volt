@@ -329,7 +329,7 @@
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="5em" data-type="string" data-formatter="rowtoggle">{{ lang._('On') }}</th>
+                    <th data-column-id="enabled" data-width="5em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('On') }}</th>
                     <th data-column-id="zoneName" data-type="string" data-formatter="record">{{ lang._('Record') }}</th>
                     <th data-column-id="recordType" data-width="5em" data-type="string">{{ lang._('Type') }}</th>
                     <th data-column-id="currentIp" data-type="string">{{ lang._('Current IP') }}</th>

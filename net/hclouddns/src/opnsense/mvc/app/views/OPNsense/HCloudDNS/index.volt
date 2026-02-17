@@ -24,6 +24,8 @@
     .sim-gateway.up { border-left: 4px solid #5cb85c; }
     .sim-gateway.down { border-left: 4px solid #d9534f; }
     .sim-gateway.simulated { border-left: 4px solid #f0ad4e; background: #fff8e1; }
+    .sim-gateway.maintenance { border-left: 4px solid #f0ad4e; background: #fef9e7; }
+    .maint-schedule-info { font-size: 11px; color: #8a6d3b; background: #fcf8e3; border-radius: 3px; padding: 2px 6px; margin-top: 3px; display: inline-block; }
     .sim-gateway .gw-name { font-weight: 500; }
     .sim-gateway .gw-ip { font-size: 12px; color: #666; }
     .sim-gateway .gw-status { text-align: right; }
@@ -601,6 +603,16 @@ $(document).ready(function() {
         }, true);
     });
 
+    function formatDatetime(isoStr) {
+        if (!isoStr) return '';
+        try {
+            var d = new Date(isoStr);
+            return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } catch(e) {
+            return isoStr;
+        }
+    }
+
     function loadSimulationStatus() {
         // Load gateway status with simulation info
         ajaxCall('/api/hclouddns/gateways/status', {}, function(data) {
@@ -613,26 +625,45 @@ $(document).ready(function() {
             var hasSimulation = false;
             $.each(data.gateways, function(uuid, gw) {
                 gatewaysCache[uuid] = gw.name;
-                var statusClass = gw.simulated ? 'simulated' : (gw.status === 'up' ? 'up' : 'down');
+                var statusClass = gw.maintenance ? 'maintenance' : (gw.simulated ? 'simulated' : (gw.status === 'up' ? 'up' : 'down'));
                 if (gw.simulated) hasSimulation = true;
 
                 var statusHtml = '';
-                if (gw.simulated) {
-                    statusHtml = '<span class="label label-warning">Simulated Down</span>';
+                if (gw.maintenance) {
+                    statusHtml = '<span class="label label-warning">{{ lang._("Maintenance") }}</span>';
+                } else if (gw.simulated) {
+                    statusHtml = '<span class="label label-warning">{{ lang._("Simulated Down") }}</span>';
                 } else if (gw.status === 'up') {
-                    statusHtml = '<span class="label label-success">Up</span>';
+                    statusHtml = '<span class="label label-success">{{ lang._("Up") }}</span>';
                 } else {
-                    statusHtml = '<span class="label label-danger">Down</span>';
+                    statusHtml = '<span class="label label-danger">{{ lang._("Down") }}</span>';
                 }
 
-                var btnHtml = gw.simulated
-                    ? '<button class="btn btn-xs btn-success sim-restore-btn" data-uuid="' + uuid + '" title="Restore"><i class="fa fa-plug"></i></button>'
-                    : '<button class="btn btn-xs btn-warning sim-fail-btn" data-uuid="' + uuid + '" title="Simulate Failure"><i class="fa fa-power-off"></i></button>';
+                // Simulation buttons
+                var simBtnHtml = gw.simulated
+                    ? '<button class="btn btn-xs btn-success sim-restore-btn" data-uuid="' + uuid + '" title="{{ lang._("Restore") }}"><i class="fa fa-plug"></i></button>'
+                    : '<button class="btn btn-xs btn-warning sim-fail-btn" data-uuid="' + uuid + '" title="{{ lang._("Simulate Failure") }}"><i class="fa fa-power-off"></i></button>';
+
+                // Maintenance buttons
+                var maintBtnHtml = '';
+                if (gw.maintenance) {
+                    maintBtnHtml = '<button class="btn btn-xs btn-success maint-stop-btn" data-uuid="' + uuid + '" title="{{ lang._("End Maintenance") }}"><i class="fa fa-play"></i></button> ';
+                } else {
+                    maintBtnHtml = '<button class="btn btn-xs btn-warning maint-start-btn" data-uuid="' + uuid + '" title="{{ lang._("Start Maintenance") }}"><i class="fa fa-wrench"></i></button> ';
+                }
+                maintBtnHtml += '<button class="btn btn-xs btn-default maint-schedule-btn" data-uuid="' + uuid + '" title="{{ lang._("Schedule Maintenance") }}"><i class="fa fa-calendar"></i></button> ';
+
+                // Scheduled maintenance info
+                var schedHtml = '';
+                if (gw.maintenanceScheduled && gw.maintenanceStart && gw.maintenanceEnd) {
+                    schedHtml = '<div class="maint-schedule-info"><i class="fa fa-calendar"></i> {{ lang._("Scheduled") }}: ' +
+                        formatDatetime(gw.maintenanceStart) + ' &ndash; ' + formatDatetime(gw.maintenanceEnd) + '</div>';
+                }
 
                 $c.append(
                     '<div class="sim-gateway ' + statusClass + '" data-uuid="' + uuid + '">' +
-                        '<div><div class="gw-name">' + gw.name + '</div><div class="gw-ip">' + (gw.ipv4 || '-') + '</div></div>' +
-                        '<div class="gw-status">' + statusHtml + ' ' + btnHtml + '</div>' +
+                        '<div><div class="gw-name">' + gw.name + '</div><div class="gw-ip">' + (gw.ipv4 || '-') + '</div>' + schedHtml + '</div>' +
+                        '<div class="gw-status">' + statusHtml + ' ' + maintBtnHtml + simBtnHtml + '</div>' +
                     '</div>'
                 );
             });
@@ -681,12 +712,17 @@ $(document).ready(function() {
                 if (counts.hasOwnProperty(statusLower)) counts[statusLower]++;
                 else counts.pending++;
 
+                var propagationBtn = '';
+                if (e.currentIp) {
+                    propagationBtn = ' <button class="btn btn-xs btn-default propagation-check-btn" data-uuid="' + e.uuid + '" title="{{ lang._("Check propagation") }}"><i class="fa fa-globe"></i></button>';
+                }
+
                 $tb.append(
                     '<tr>' +
                         '<td>' + (e.enabled === '1' ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-muted"></i>') + '</td>' +
                         '<td><code>' + e.recordName + '.' + e.zoneName + '</code></td>' +
                         '<td><span class="label label-' + (e.recordType === 'A' ? 'primary' : 'info') + '">' + e.recordType + '</span></td>' +
-                        '<td>' + (e.currentIp || '-') + '</td>' +
+                        '<td>' + (e.currentIp || '-') + propagationBtn + '</td>' +
                         '<td>' + gwName + '</td>' +
                         '<td><span class="label label-' + cls + '">' + statusIcon + statusText + '</span></td>' +
                     '</tr>'
@@ -804,6 +840,156 @@ $(document).ready(function() {
                 }
                 BootstrapDialog.alert({type: BootstrapDialog.TYPE_INFO, title: 'Simulations Cleared', message: msg});
             });
+        });
+    });
+
+    // ==================== MAINTENANCE HANDLERS ====================
+    $(document).on('click', '.maint-start-btn', function() {
+        var uuid = $(this).data('uuid');
+        var gwName = gatewaysCache[uuid] || uuid;
+        BootstrapDialog.show({
+            title: "{{ lang._('Start Maintenance') }}",
+            message: "{{ lang._('Start maintenance mode for') }} <strong>" + gwName + "</strong>?<br>" +
+                "<small class=\"text-muted\">{{ lang._('Gateway will be treated as down and entries will failover.') }}</small>",
+            type: BootstrapDialog.TYPE_WARNING,
+            buttons: [{
+                label: "{{ lang._('Cancel') }}",
+                action: function(dialogRef) { dialogRef.close(); }
+            }, {
+                label: "{{ lang._('Start Maintenance') }}",
+                cssClass: 'btn-warning',
+                action: function(dialogRef) {
+                    dialogRef.close();
+                    ajaxCall('/api/hclouddns/service/maintenanceStart/' + uuid, {}, function(data) {
+                        if (data && data.status === 'ok') {
+                            loadSimulationStatus();
+                            $('#overviewEntryTable tbody').prepend(
+                                '<tr id="updatingRow"><td colspan="6" class="text-center text-warning">' +
+                                '<i class="fa fa-spinner fa-spin"></i> {{ lang._("Updating DNS records...") }}</td></tr>'
+                            );
+                            ajaxCall('/api/hclouddns/service/updateV2', {_: ''}, function() {
+                                $('#updatingRow').remove();
+                                loadOverviewEntryStatus();
+                            });
+                        }
+                    });
+                }
+            }]
+        });
+    });
+
+    $(document).on('click', '.maint-stop-btn', function() {
+        var uuid = $(this).data('uuid');
+        ajaxCall('/api/hclouddns/service/maintenanceStop/' + uuid, {}, function(data) {
+            if (data && data.status === 'ok') {
+                loadSimulationStatus();
+                $('#overviewEntryTable tbody').prepend(
+                    '<tr id="updatingRow"><td colspan="6" class="text-center text-warning">' +
+                    '<i class="fa fa-spinner fa-spin"></i> {{ lang._("Failback: updating DNS records...") }}</td></tr>'
+                );
+                ajaxCall('/api/hclouddns/service/updateV2', {_: ''}, function() {
+                    $('#updatingRow').remove();
+                    loadOverviewEntryStatus();
+                    loadSimulationStatus();
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.maint-schedule-btn', function() {
+        var uuid = $(this).data('uuid');
+        var gwName = gatewaysCache[uuid] || uuid;
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var defStart = tomorrow.toISOString().slice(0, 11) + '02:00';
+        var defEnd = tomorrow.toISOString().slice(0, 11) + '06:00';
+
+        BootstrapDialog.show({
+            title: "{{ lang._('Schedule Maintenance') }}: " + gwName,
+            message: '<div class="form-group">' +
+                '<label>{{ lang._("Start") }}</label>' +
+                '<input type="datetime-local" class="form-control" id="maintStart" value="' + defStart + '">' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label>{{ lang._("End") }}</label>' +
+                '<input type="datetime-local" class="form-control" id="maintEnd" value="' + defEnd + '">' +
+                '</div>' +
+                '<div class="alert alert-info" style="margin-bottom:0;">' +
+                '<small><i class="fa fa-info-circle"></i> {{ lang._("The gateway will automatically enter maintenance mode at the start time and exit at the end time. This requires the update cron job to be running.") }}</small>' +
+                '</div>',
+            buttons: [{
+                label: "{{ lang._('Cancel') }}",
+                action: function(dialog) { dialog.close(); }
+            }, {
+                label: "{{ lang._('Schedule') }}",
+                cssClass: 'btn-primary',
+                action: function(dialog) {
+                    var start = $('#maintStart').val();
+                    var end = $('#maintEnd').val();
+                    if (!start || !end) {
+                        alert("{{ lang._('Both start and end times are required.') }}");
+                        return;
+                    }
+                    if (new Date(start) >= new Date(end)) {
+                        alert("{{ lang._('End time must be after start time.') }}");
+                        return;
+                    }
+                    ajaxCall('/api/hclouddns/service/maintenanceSchedule/' + uuid, {
+                        start: start,
+                        end: end
+                    }, function(data) {
+                        if (data && data.status === 'ok') {
+                            dialog.close();
+                            BootstrapDialog.alert({
+                                type: BootstrapDialog.TYPE_SUCCESS,
+                                title: "{{ lang._('Maintenance Scheduled') }}",
+                                message: '<strong>' + gwName + '</strong><br>' +
+                                    '{{ lang._("From") }}: ' + formatDatetime(start) + '<br>' +
+                                    '{{ lang._("Until") }}: ' + formatDatetime(end)
+                            });
+                            loadSimulationStatus();
+                        }
+                    });
+                }
+            }]
+        });
+    });
+
+    // ==================== PROPAGATION CHECK ====================
+    $(document).on('click', '.propagation-check-btn', function() {
+        var uuid = $(this).data('uuid');
+        var $btn = $(this);
+        $btn.prop('disabled', true).find('i').addClass('fa-spin');
+
+        ajaxCall('/api/hclouddns/service/propagationCheck/' + uuid, {}, function(data) {
+            $btn.prop('disabled', false).find('i').removeClass('fa-spin');
+
+            if (data && data.status === 'ok') {
+                var resultsHtml = '';
+                if (data.results) {
+                    $.each(data.results, function(ns, ip) {
+                        resultsHtml += '<i class="fa fa-check text-success"></i> <strong>' + ns + '</strong>: ' + ip + '<br>';
+                    });
+                }
+                if (data.errors) {
+                    $.each(data.errors, function(ns, err) {
+                        resultsHtml += '<i class="fa fa-times text-danger"></i> <strong>' + ns + '</strong>: ' + err + '<br>';
+                    });
+                }
+
+                BootstrapDialog.show({
+                    title: "{{ lang._('DNS Propagation Check') }}",
+                    message: '<strong>{{ lang._("Propagated") }}:</strong> ' +
+                        (data.propagated ? '<span class="text-success">{{ lang._("Yes") }}</span>' : '<span class="text-warning">{{ lang._("Pending") }}</span>') +
+                        '<br><br>' + resultsHtml,
+                    type: data.propagated ? BootstrapDialog.TYPE_SUCCESS : BootstrapDialog.TYPE_WARNING,
+                    buttons: [{
+                        label: "{{ lang._('Close') }}",
+                        action: function(dialog) { dialog.close(); }
+                    }]
+                });
+            }
         });
     });
 

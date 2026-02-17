@@ -174,6 +174,97 @@ def is_valid_ip(ip):
             return False
 
 
+HETZNER_NAMESERVERS = [
+    '213.133.100.98',   # hydrogen.ns.hetzner.com
+    '88.198.229.192',   # oxygen.ns.hetzner.com
+    '193.47.99.3',      # helium.ns.hetzner.de
+]
+
+
+def verify_dns_propagation(record_name, zone_name, record_type, expected_ip,
+                           nameservers=None, timeout=5):
+    """Query authoritative Hetzner nameservers to verify DNS propagation.
+
+    Uses dnspython (available on OPNsense via py-dnspython) for direct queries.
+    Falls back to drill (FreeBSD) if dnspython is not available.
+
+    Returns:
+        dict with 'propagated' (bool), 'results' (ns->ip), 'errors' (ns->error)
+    """
+    if nameservers is None:
+        nameservers = HETZNER_NAMESERVERS
+
+    fqdn = f"{record_name}.{zone_name}" if record_name != '@' else zone_name
+
+    results = {}
+    errors = {}
+
+    # Try dnspython first (preferred, available on OPNsense)
+    try:
+        import dns.resolver
+        import dns.rdatatype
+
+        rdtype = dns.rdatatype.from_text(record_type)
+
+        for ns in nameservers:
+            try:
+                resolver = dns.resolver.Resolver(configure=False)
+                resolver.nameservers = [ns]
+                resolver.lifetime = timeout
+
+                answer = resolver.resolve(fqdn, rdtype)
+                for rdata in answer:
+                    results[ns] = str(rdata)
+                    break  # first answer
+            except dns.resolver.NXDOMAIN:
+                errors[ns] = 'NXDOMAIN'
+            except dns.resolver.NoAnswer:
+                errors[ns] = 'no answer'
+            except dns.resolver.NoNameservers:
+                errors[ns] = 'no nameservers'
+            except dns.exception.Timeout:
+                errors[ns] = 'timeout'
+            except Exception as e:
+                errors[ns] = str(e)
+
+    except ImportError:
+        # Fallback to drill (available on FreeBSD/OPNsense via ldns)
+        for ns in nameservers:
+            try:
+                cmd = ['drill', f'@{ns}', fqdn, record_type]
+                proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout + 5)
+                if proc.returncode == 0:
+                    # Parse drill output: look for answer section
+                    in_answer = False
+                    for line in proc.stdout.splitlines():
+                        if line.strip() == ';; ANSWER SECTION:':
+                            in_answer = True
+                            continue
+                        if in_answer and line.strip() and not line.startswith(';;'):
+                            parts = line.split()
+                            if len(parts) >= 5:
+                                results[ns] = parts[-1]
+                                break
+                        elif in_answer and (line.startswith(';;') or not line.strip()):
+                            break
+                    if ns not in results:
+                        errors[ns] = 'empty response'
+                else:
+                    errors[ns] = proc.stderr.strip() or 'drill failed'
+            except subprocess.TimeoutExpired:
+                errors[ns] = 'timeout'
+            except Exception as e:
+                errors[ns] = str(e)
+
+    propagated = any(ip == expected_ip for ip in results.values())
+
+    return {
+        'propagated': propagated,
+        'results': results,
+        'errors': errors
+    }
+
+
 def get_opnsense_gateway_status():
     """Query OPNsense's dpinger-based gateway status and gateway-to-interface mapping.
 
@@ -381,6 +472,21 @@ def main():
         except Exception as e:
             sys.stderr.write(f"Error getting gateway status: {e}\n")
 
+        print(json.dumps(result))
+
+    elif action == 'propagation':
+        if len(sys.argv) < 6:
+            print(json.dumps({'status': 'error',
+                              'message': 'Usage: propagation <record_name> <zone_name> <record_type> <expected_ip>'}))
+            sys.exit(1)
+
+        record_name = sys.argv[2]
+        zone_name = sys.argv[3]
+        record_type = sys.argv[4]
+        expected_ip = sys.argv[5]
+
+        result = verify_dns_propagation(record_name, zone_name, record_type, expected_ip)
+        result['status'] = 'ok'
         print(json.dumps(result))
 
     else:

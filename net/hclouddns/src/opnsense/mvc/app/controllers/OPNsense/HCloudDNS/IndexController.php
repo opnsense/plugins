@@ -88,14 +88,6 @@ class IndexController extends BaseIndexController
     }
 
     /**
-     * Status page (standalone, optional)
-     */
-    public function statusAction()
-    {
-        $this->view->pick('OPNsense/HCloudDNS/status');
-    }
-
-    /**
      * Full DNS Management page - manage all zones and record types
      */
     public function dnsAction()

@@ -128,7 +128,7 @@
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                     <th data-column-id="interface" data-type="string">{{ lang._('Interface') }}</th>
                     <th data-column-id="priority" data-width="6em" data-type="string">{{ lang._('Priority') }}</th>

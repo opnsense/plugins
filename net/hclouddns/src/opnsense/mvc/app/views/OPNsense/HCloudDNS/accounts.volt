@@ -202,12 +202,10 @@
             <thead>
                 <tr>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-width="6em" data-type="boolean" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                     <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                     <th data-column-id="zoneName" data-type="string">{{ lang._('Zone') }}</th>
                     <th data-column-id="records" data-type="string">{{ lang._('Records') }}</th>
-                    <th data-column-id="updateIPv4" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('IPv4') }}</th>
-                    <th data-column-id="updateIPv6" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('IPv6') }}</th>
                     <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 </tr>
             </thead>

@@ -163,6 +163,10 @@ class GatewaysController extends ApiMutableModelControllerBase
                 'ipv4' => $gwState['ipv4'] ?? null,
                 'ipv6' => $gwState['ipv6'] ?? null,
                 'simulated' => $gwState['simulated'] ?? false,
+                'maintenance' => $gwState['maintenance'] ?? false,
+                'maintenanceScheduled' => (string)($gw->maintenanceScheduled ?? '0') === '1',
+                'maintenanceStart' => (string)($gw->maintenanceStart ?? ''),
+                'maintenanceEnd' => (string)($gw->maintenanceEnd ?? ''),
                 'lastCheck' => $gwState['lastCheck'] ?? 0
             ];
         }

@@ -67,6 +67,9 @@ class HCloudAPI:
     def list_zones(self):
         return self._api.list_zones()
 
+    def create_zone(self, zone_name):
+        return self._api.create_zone(zone_name)
+
     def get_zone_id(self, zone_name):
         return self._api.get_zone_id(zone_name)
 

@@ -18,7 +18,8 @@ import syslog
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hcloud_api import HCloudAPI
-from gateway_health import get_gateway_ip, get_opnsense_gateway_status, is_gateway_up, write_state_file
+from gateway_health import (get_gateway_ip, get_opnsense_gateway_status, is_gateway_up,
+                           write_state_file, verify_dns_propagation)
 
 STATE_FILE = '/var/run/hclouddns_state.json'
 SIMULATION_FILE = '/var/run/hclouddns_simulation.json'
@@ -405,7 +406,11 @@ def send_batch_notification(config, batch_results):
         first_fo = failovers[0]
         from_gw = first_fo.get('from_gateway', '?')
         to_gw = first_fo.get('to_gateway', '?')
-        title = f"HCloudDNS: Failover {from_gw} -> {to_gw}"
+        is_maintenance = first_fo.get('maintenance', False)
+        if is_maintenance:
+            title = f"HCloudDNS: Maintenance Failover {from_gw} -> {to_gw}"
+        else:
+            title = f"HCloudDNS: Failover {from_gw} -> {to_gw}"
         tags = 'warning,hclouddns'
         records_to_show = failovers
 
@@ -471,6 +476,17 @@ def send_batch_notification(config, batch_results):
                 lines.append(f"{e['record']}")
                 lines.append(f"  ✗ {e['error']}")
 
+    # Add propagation status if available
+    propagation = batch_results.get('propagation')
+    if propagation and propagation.get('total', 0) > 0:
+        lines.append("")
+        verified = propagation['verified']
+        total = propagation['total']
+        if verified == total:
+            lines.append(f"DNS propagated: {verified}/{total}")
+        else:
+            lines.append(f"DNS propagation pending: {verified}/{total}")
+
     message = "\n".join(lines)
 
     # Send batch notification
@@ -481,6 +497,7 @@ def send_batch_notification(config, batch_results):
         'failovers': len(failovers),
         'failbacks': len(failbacks),
         'errors': len(errors),
+        'propagation': propagation,
         'details': batch_results
     })
 
@@ -608,6 +625,9 @@ def load_config():
             config['forceInterval'] = int(general.findtext('forceInterval', '0'))
             config['carpAware'] = general.findtext('carpAware', '0') == '1'
             config['carpVhid'] = general.findtext('carpVhid', '')
+            config['propagationCheck'] = general.findtext('propagationCheck', '1') == '1'
+            config['propagationRetries'] = int(general.findtext('propagationRetries', '3'))
+            config['propagationDelay'] = int(general.findtext('propagationDelay', '2'))
 
         # Accounts (API tokens)
         accounts = hcloud.find('accounts')
@@ -638,7 +658,11 @@ def load_config():
                     'interface': gw.findtext('interface', ''),
                     'priority': int(gw.findtext('priority', '10')),
                     'checkipMethod': gw.findtext('checkipMethod', 'web_ipify'),
-                    'healthCheckTarget': gw.findtext('healthCheckTarget', '8.8.8.8')
+                    'healthCheckTarget': gw.findtext('healthCheckTarget', '8.8.8.8'),
+                    'maintenance': gw.findtext('maintenance', '0') == '1',
+                    'maintenanceScheduled': gw.findtext('maintenanceScheduled', '0') == '1',
+                    'maintenanceStart': gw.findtext('maintenanceStart', ''),
+                    'maintenanceEnd': gw.findtext('maintenanceEnd', '')
                 }
 
         # Entries
@@ -673,6 +697,7 @@ def load_config():
                 'notifyOnFailover': notifications.findtext('notifyOnFailover', '1') == '1',
                 'notifyOnFailback': notifications.findtext('notifyOnFailback', '1') == '1',
                 'notifyOnError': notifications.findtext('notifyOnError', '1') == '1',
+                'notifyOnMaintenance': notifications.findtext('notifyOnMaintenance', '0') == '1',
                 'emailEnabled': notifications.findtext('emailEnabled', '0') == '1',
                 'emailTo': notifications.findtext('emailTo', ''),
                 'emailFrom': notifications.findtext('emailFrom', ''),
@@ -721,6 +746,64 @@ def save_runtime_state(state):
         log(f'Error saving state: {str(e)}', syslog.LOG_ERR)
 
 
+def _is_in_maintenance_window(gw):
+    """Check if current time is within a scheduled maintenance window."""
+    if not gw.get('maintenanceScheduled'):
+        return False
+    start_str = gw.get('maintenanceStart', '')
+    end_str = gw.get('maintenanceEnd', '')
+    if not start_str or not end_str:
+        return False
+    try:
+        from datetime import datetime
+        now = datetime.now()
+        start = datetime.fromisoformat(start_str)
+        end = datetime.fromisoformat(end_str)
+        return start <= now <= end
+    except (ValueError, TypeError):
+        return False
+
+
+def _is_past_maintenance_window(gw):
+    """Check if current time is past a scheduled maintenance window end."""
+    if not gw.get('maintenanceScheduled'):
+        return False
+    end_str = gw.get('maintenanceEnd', '')
+    if not end_str:
+        return False
+    try:
+        from datetime import datetime
+        now = datetime.now()
+        end = datetime.fromisoformat(end_str)
+        return now > end
+    except (ValueError, TypeError):
+        return False
+
+
+def _clear_maintenance_in_config(uuid):
+    """Clear maintenance fields for a gateway in config.xml."""
+    try:
+        tree = ET.parse('/conf/config.xml')
+        root = tree.getroot()
+        gateways = root.find('.//OPNsense/HCloudDNS/gateways')
+        if gateways is not None:
+            for gw in gateways.findall('gateway'):
+                if gw.get('uuid') == uuid:
+                    for field in ['maintenance', 'maintenanceScheduled', 'maintenanceStart', 'maintenanceEnd']:
+                        node = gw.find(field)
+                        if node is not None:
+                            if field in ('maintenance', 'maintenanceScheduled'):
+                                node.text = '0'
+                            else:
+                                node.text = ''
+                    tree.write('/conf/config.xml', xml_declaration=True, encoding='UTF-8')
+                    log(f"Cleared maintenance fields for gateway {uuid}")
+                    return True
+    except Exception as e:
+        log(f"Failed to clear maintenance in config: {e}", syslog.LOG_ERR)
+    return False
+
+
 def check_all_gateways(config, state):
     """Check health and get IPs for all gateways"""
     simulation = load_simulation()
@@ -738,7 +821,8 @@ def check_all_gateways(config, state):
                 'lastCheck': 0,
                 'failCount': 0,
                 'upSince': None,
-                'simulated': False
+                'simulated': False,
+                'maintenance': False
             }
 
         gw_state = state['gateways'][uuid]
@@ -747,6 +831,31 @@ def check_all_gateways(config, state):
         ip_result = get_gateway_ip(uuid, gw)
         gw_state['ipv4'] = ip_result.get('ipv4')
         gw_state['ipv6'] = ip_result.get('ipv6')
+
+        # Check maintenance mode
+        in_maintenance = gw.get('maintenance', False)
+
+        # Check scheduled maintenance window
+        if not in_maintenance and _is_in_maintenance_window(gw):
+            in_maintenance = True
+
+        # Auto-clear expired scheduled maintenance
+        if gw.get('maintenanceScheduled') and _is_past_maintenance_window(gw):
+            log(f"Maintenance window expired for gateway '{gw['name']}', auto-clearing")
+            _clear_maintenance_in_config(uuid)
+            in_maintenance = False
+            gw['maintenance'] = False
+            gw['maintenanceScheduled'] = False
+
+        gw_state['maintenance'] = in_maintenance
+
+        if in_maintenance:
+            old_status = gw_state.get('status', 'unknown')
+            gw_state['status'] = 'maintenance'
+            # Don't increment failCount for maintenance (not a real failure)
+            if old_status not in ('maintenance', 'unknown'):
+                log(f"MAINTENANCE: Gateway '{gw['name']}' entering maintenance mode", syslog.LOG_WARNING)
+            continue
 
         # Check if this gateway is simulated as down
         is_simulated_down = simulation.get('active', False) and uuid in simulation.get('simulatedDown', [])
@@ -808,6 +917,11 @@ def determine_active_gateway(entry, config, state):
     primary_healthy = primary_state.get('status') == 'up'
     failover_healthy = failover_state.get('status') == 'up'
 
+    # Maintenance mode is treated as down for failover purposes
+    primary_in_maintenance = primary_state.get('status') == 'maintenance'
+    if primary_in_maintenance:
+        primary_healthy = False
+
     # Primary is usable if enabled and has IP
     primary_usable = primary_gw and primary_gw['enabled'] and primary_has_ip
     failover_usable = failover_gw and failover_gw['enabled'] and failover_has_ip
@@ -849,7 +963,7 @@ def determine_active_gateway(entry, config, state):
     return None, None, 'no_gateway'
 
 
-def update_dns_record(api, entry, target_ip, state, force=False, dry_run=False):
+def update_dns_record(api, entry, target_ip, state, config=None, force=False, dry_run=False, skip_propagation=False):
     """Update DNS record at Hetzner"""
     zone_id = entry['zoneId']
     record_name = entry['recordName']
@@ -872,27 +986,47 @@ def update_dns_record(api, entry, target_ip, state, force=False, dry_run=False):
             if force:
                 log(f"Force-updating {record_name}.{entry['zoneName']} (interval expired)")
             else:
-                return True, 'unchanged'
+                return True, 'unchanged', None
 
         # Dry-run: report what would change without making API calls
         if dry_run:
             if current_value is None:
-                return True, 'would_create'
-            return True, 'would_update'
+                return True, 'would_create', None
+            return True, 'would_update', None
 
         # Use the rrsets API to update/create record
         success, message = api.update_record(zone_id, record_name, record_type, target_ip, ttl)
 
         if success:
             log(f"Updated {record_name}.{entry['zoneName']} {record_type} -> {target_ip}")
-            return True, 'updated'
+
+            # DNS propagation verification (skip during maintenance for faster failover)
+            propagation = None
+            if config and config.get('propagationCheck', False) and not skip_propagation:
+                retries = config.get('propagationRetries', 3)
+                delay = config.get('propagationDelay', 2)
+                for attempt in range(retries):
+                    propagation = verify_dns_propagation(
+                        record_name, entry['zoneName'], record_type, target_ip
+                    )
+                    if propagation['propagated']:
+                        log(f"DNS propagated for {record_name}.{entry['zoneName']} "
+                            f"(attempt {attempt + 1}/{retries})")
+                        break
+                    if attempt < retries - 1:
+                        time.sleep(delay)
+                if propagation and not propagation['propagated']:
+                    log(f"DNS propagation pending for {record_name}.{entry['zoneName']} "
+                        f"after {retries} attempts", syslog.LOG_WARNING)
+
+            return True, 'updated', propagation
         else:
             log(f"DNS update failed for {record_name}.{entry['zoneName']}: {message}", syslog.LOG_ERR)
-            return False, message
+            return False, message, None
 
     except Exception as e:
         log(f"DNS update failed for {record_name}.{entry['zoneName']}: {str(e)}", syslog.LOG_ERR)
-        return False, str(e)
+        return False, str(e), None
 
 
 def _process_single_entry(entry, account, api, config, state, state_lock, dry_run=False):
@@ -964,21 +1098,28 @@ def _process_single_entry(entry, account, api, config, state, state_lock, dry_ru
         old_gw_name = old_gw_config.get('name', old_active_gw[:8])
         new_gw_name = active_gw.get('name', active_uuid[:8])
 
+        # Determine if failover is due to maintenance
+        primary_state_status = state['gateways'].get(entry['primaryGateway'], {}).get('status', '')
+        is_maintenance_failover = primary_state_status == 'maintenance'
+
         if reason == 'failover':
-            log(f"FAILOVER: {record_fqdn} switching from {old_gw_name} to {new_gw_name}")
+            failover_reason = 'maintenance' if is_maintenance_failover else 'primary_down'
+            log(f"FAILOVER: {record_fqdn} switching from {old_gw_name} to {new_gw_name} ({failover_reason})")
             result['failover_event'] = 'failover'
+            result['failover_reason'] = failover_reason
             result['failover_history'] = {
                 'timestamp': int(time.time()),
                 'entry': entry_uuid,
                 'from': old_active_gw,
                 'to': active_uuid,
-                'reason': 'primary_down'
+                'reason': failover_reason
             }
             result['from_gateway'] = old_gw_name
             result['to_gateway'] = new_gw_name
         elif reason == 'failback':
             log(f"FAILBACK: {record_fqdn} returning from {old_gw_name} to {new_gw_name}")
             result['failover_event'] = 'failback'
+            result['failover_reason'] = 'failback'
             result['failover_history'] = {
                 'timestamp': int(time.time()),
                 'entry': entry_uuid,
@@ -997,8 +1138,18 @@ def _process_single_entry(entry, account, api, config, state, state_lock, dry_ru
         if last_update_ts > 0 and (time.time() - last_update_ts) > config['forceInterval'] * 86400:
             force_update = True
 
+    # Skip propagation check during maintenance (faster failover/failback)
+    primary_maint_ended = state['gateways'].get(entry.get('primaryGateway', ''), {}).get('maintenanceEnded', 0)
+    is_maintenance_update = (
+        result.get('failover_reason') == 'maintenance' or
+        (reason == 'failback' and primary_maint_ended and (time.time() - primary_maint_ended) < 120)
+    )
+
     # Update DNS (this is the slow network call - runs in parallel)
-    success, update_reason = update_dns_record(api, entry, target_ip, state, force=force_update, dry_run=dry_run)
+    success, update_reason, propagation = update_dns_record(
+        api, entry, target_ip, state, config=config, force=force_update, dry_run=dry_run,
+        skip_propagation=is_maintenance_update
+    )
 
     # In dry-run mode, report what would happen without changing state
     if dry_run:
@@ -1025,8 +1176,18 @@ def _process_single_entry(entry, account, api, config, state, state_lock, dry_ru
             entry_state['lastUpdate'] = int(time.time())
             entry_state['status'] = 'active' if reason in ['primary', 'failback'] else 'failover'
 
+            # Store propagation status
+            if propagation is not None:
+                entry_state['propagated'] = propagation['propagated']
+                entry_state['propagationResults'] = propagation['results']
+            elif update_reason == 'unchanged':
+                pass  # keep existing propagation state
+            else:
+                entry_state['propagated'] = None
+
             if update_reason in ['updated', 'created']:
                 result['updated'] = True
+                result['propagation'] = propagation
                 # Add history entry for tracking IP changes
                 action = 'create' if update_reason == 'created' else 'update'
                 add_history_entry(entry, account, current_hetzner_ip, target_ip, action)
@@ -1088,6 +1249,9 @@ def process_entries(config, state, dry_run=False):
         'errors': []
     }
 
+    # Track propagation results
+    propagation_results = []
+
     # Lock for thread-safe state access
     state_lock = threading.Lock()
 
@@ -1136,8 +1300,9 @@ def process_entries(config, state, dry_run=False):
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Submit all tasks
-        future_to_entry = {
-            executor.submit(
+        future_to_entry = {}
+        for record_key, data in unique_entries.items():
+            future = executor.submit(
                 _process_single_entry,
                 data['entry'],
                 data['account'],
@@ -1146,9 +1311,8 @@ def process_entries(config, state, dry_run=False):
                 state,
                 state_lock,
                 dry_run
-            ): record_key
-            for record_key, data in unique_entries.items()
-        }
+            )
+            future_to_entry[future] = record_key
 
         # Collect results as they complete
         for future in as_completed(future_to_entry):
@@ -1160,8 +1324,8 @@ def process_entries(config, state, dry_run=False):
 
                 if result.get('updated'):
                     results['updated'] += 1
-                    if result.get('update_event'):
-                        batch_events['updates'].append(result['update_event'])
+                    if result.get('propagation') is not None:
+                        propagation_results.append(result['propagation'])
 
                 if result.get('error'):
                     results['errors'] += 1
@@ -1169,19 +1333,51 @@ def process_entries(config, state, dry_run=False):
 
                 if result.get('failover_event') == 'failover':
                     results['failovers'] += 1
-                    if result.get('failover_notification'):
-                        batch_events['failovers'].append(result['failover_notification'])
+                    is_maintenance = result.get('failover_reason') == 'maintenance'
+                    notify_maintenance = config.get('notifications', {}).get('notifyOnMaintenance')
+
+                    if is_maintenance and not notify_maintenance:
+                        pass
+                    else:
+                        if result.get('update_event'):
+                            if is_maintenance:
+                                result['update_event']['maintenance'] = True
+                            batch_events['updates'].append(result['update_event'])
+                        if result.get('failover_notification'):
+                            if is_maintenance:
+                                result['failover_notification']['maintenance'] = True
+                            batch_events['failovers'].append(result['failover_notification'])
                     if result.get('failover_history'):
                         with state_lock:
                             state['failoverHistory'].append(result['failover_history'])
 
                 elif result.get('failover_event') == 'failback':
                     results['failbacks'] += 1
-                    if result.get('failover_notification'):
-                        batch_events['failbacks'].append(result['failover_notification'])
+                    # Check if failback is from a recent maintenance stop
+                    primary_gw_uuid = ''
+                    for e in config.get('entries', []):
+                        if e.get('recordName') == record_key[1] and e.get('recordType') == record_key[2]:
+                            primary_gw_uuid = e.get('primaryGateway', '')
+                            break
+                    maint_ended = state['gateways'].get(primary_gw_uuid, {}).get('maintenanceEnded', 0)
+                    is_maintenance_failback = maint_ended and (time.time() - maint_ended) < 120
+                    notify_maintenance = config.get('notifications', {}).get('notifyOnMaintenance')
+
+                    if is_maintenance_failback and not notify_maintenance:
+                        pass
+                    else:
+                        if result.get('failover_notification'):
+                            batch_events['failbacks'].append(result['failover_notification'])
+                        if result.get('update_event'):
+                            batch_events['updates'].append(result['update_event'])
                     if result.get('failover_history'):
                         with state_lock:
                             state['failoverHistory'].append(result['failover_history'])
+
+                elif result.get('updated'):
+                    # Non-failover, non-failback update (regular IP change)
+                    if result.get('update_event'):
+                        batch_events['updates'].append(result['update_event'])
 
             except Exception as e:
                 log(f"Error processing entry {record_key}: {str(e)}", syslog.LOG_ERR)
@@ -1197,6 +1393,121 @@ def process_entries(config, state, dry_run=False):
         if len(state['failoverHistory']) > 100:
             state['failoverHistory'] = state['failoverHistory'][-100:]
 
+    # Check if maintenance started and all entries have failed over
+    # Send "Maintenance started" notification only after DNS failover is complete
+    maintenance_started_gateways = set()
+    if not dry_run:
+        for gw_uuid, gw_state_data in state.get('gateways', {}).items():
+            maint_started_ts = gw_state_data.get('maintenanceStarted', 0)
+            if not maint_started_ts:
+                continue
+            if (time.time() - maint_started_ts) > 120:
+                gw_state_data.pop('maintenanceStarted', None)
+                continue
+
+            # Check all entries that use this gateway as primary:
+            # have they ALL failed over to a different gateway?
+            all_failedover = True
+            has_entries = False
+            for entry in config['entries']:
+                if not entry['enabled'] or entry['status'] == 'paused':
+                    continue
+                if entry.get('primaryGateway') != gw_uuid:
+                    continue
+                has_entries = True
+                entry_state = state['entries'].get(entry['uuid'], {})
+                active_gw = entry_state.get('activeGateway')
+                if not active_gw or active_gw == gw_uuid:
+                    all_failedover = False
+                    break
+
+            if has_entries and all_failedover:
+                gw_name = config['gateways'].get(gw_uuid, {}).get('name', gw_uuid[:8])
+                try:
+                    tree = ET.parse('/conf/config.xml')
+                    root = tree.getroot()
+                    _send_maintenance_notification(root, gw_name, 'start')
+                except Exception as e:
+                    log(f"Failed to send maintenance started notification: {e}", syslog.LOG_ERR)
+                gw_state_data.pop('maintenanceStarted', None)
+                maintenance_started_gateways.add(gw_uuid)
+                log(f"Maintenance fully started for gateway {gw_name}: all entries failed over")
+
+    # Check if maintenance ended and all entries have failbacked
+    # Send "Maintenance ended" notification only after DNS is fully restored
+    maintenance_ended_gateways = set()
+    if not dry_run:
+        for gw_uuid, gw_state_data in state.get('gateways', {}).items():
+            maint_ended_ts = gw_state_data.get('maintenanceEnded', 0)
+            if not maint_ended_ts:
+                continue
+            # Check if within 120s window (maintenance recently ended)
+            if (time.time() - maint_ended_ts) > 120:
+                # Too old, clear the flag
+                gw_state_data.pop('maintenanceEnded', None)
+                continue
+
+            # Check all entries that use this gateway as primary:
+            # are they ALL back on primary (activeGateway == primaryGateway)?
+            all_failbacked = True
+            has_entries = False
+            for entry in config['entries']:
+                if not entry['enabled'] or entry['status'] == 'paused':
+                    continue
+                if entry.get('primaryGateway') != gw_uuid:
+                    continue
+                has_entries = True
+                entry_state = state['entries'].get(entry['uuid'], {})
+                active_gw = entry_state.get('activeGateway')
+                if active_gw and active_gw != gw_uuid:
+                    all_failbacked = False
+                    break
+
+            if has_entries and all_failbacked:
+                # All entries are back on primary - send "Maintenance ended" notification
+                gw_name = config['gateways'].get(gw_uuid, {}).get('name', gw_uuid[:8])
+                try:
+                    tree = ET.parse('/conf/config.xml')
+                    root = tree.getroot()
+                    _send_maintenance_notification(root, gw_name, 'stop')
+                except Exception as e:
+                    log(f"Failed to send maintenance ended notification: {e}", syslog.LOG_ERR)
+                # Clear the flag so we don't send again
+                gw_state_data.pop('maintenanceEnded', None)
+                maintenance_ended_gateways.add(gw_uuid)
+                log(f"Maintenance fully ended for gateway {gw_name}: all entries restored")
+
+    # Remove failover/failback/update events from batch that are already covered
+    # by the maintenance start/end notification to avoid duplicate notifications
+    maint_notified_gateways = maintenance_started_gateways | maintenance_ended_gateways
+    if maint_notified_gateways:
+        maint_records = set()
+        for entry in config.get('entries', []):
+            if entry.get('primaryGateway') in maint_notified_gateways:
+                fqdn = entry.get('recordName', '') + '.' + entry.get('zoneName', '')
+                maint_records.add(fqdn)
+        batch_events['failovers'] = [
+            fo for fo in batch_events['failovers']
+            if fo.get('record') not in maint_records
+        ]
+        batch_events['failbacks'] = [
+            fb for fb in batch_events['failbacks']
+            if fb.get('record') not in maint_records
+        ]
+        batch_events['updates'] = [
+            u for u in batch_events['updates']
+            if u.get('record') not in maint_records
+        ]
+
+    # Count propagation results
+    propagated_count = sum(1 for r in propagation_results if r.get('propagated'))
+    total_propagation = len(propagation_results)
+    if total_propagation > 0:
+        batch_events['propagation'] = {
+            'verified': propagated_count,
+            'total': total_propagation
+        }
+
     # Send single batch notification with all changes (skip in dry-run)
     if not dry_run:
         send_batch_notification(config, batch_events)
@@ -1205,10 +1516,193 @@ def process_entries(config, state, dry_run=False):
     return results
 
 
+def _update_gateway_state(uuid, maintenance):
+    """Update maintenance flag in the runtime state file immediately."""
+    try:
+        state = {}
+        if os.path.exists(STATE_FILE):
+            with open(STATE_FILE, 'r') as f:
+                state = json.load(f)
+        if 'gateways' not in state:
+            state['gateways'] = {}
+        if uuid not in state['gateways']:
+            state['gateways'][uuid] = {}
+        state['gateways'][uuid]['maintenance'] = maintenance
+        if maintenance:
+            state['gateways'][uuid]['status'] = 'maintenance'
+            state['gateways'][uuid].pop('maintenanceEnded', None)
+            state['gateways'][uuid]['maintenanceStarted'] = int(time.time())
+        else:
+            state['gateways'][uuid]['status'] = 'up'
+            state['gateways'][uuid]['maintenanceEnded'] = int(time.time())
+        write_state_file(STATE_FILE, state)
+    except Exception as e:
+        log(f"Failed to update gateway state: {e}", syslog.LOG_ERR)
+
+
+def _get_gateway_name(root, uuid):
+    """Get gateway name from config.xml by UUID."""
+    gateways = root.find('.//OPNsense/HCloudDNS/gateways')
+    if gateways is not None:
+        for gw in gateways.findall('gateway'):
+            if gw.get('uuid') == uuid:
+                return gw.findtext('name', uuid[:8])
+    return uuid[:8]
+
+
+def _send_maintenance_notification(root, gw_name, action):
+    """Send a maintenance mode notification (start/stop)."""
+    try:
+        notifications = root.find('.//OPNsense/HCloudDNS/notifications')
+        if notifications is None:
+            return
+        if notifications.findtext('enabled', '0') != '1':
+            return
+
+        settings = {
+            'ntfyEnabled': notifications.findtext('ntfyEnabled', '0') == '1',
+            'ntfyServer': notifications.findtext('ntfyServer', 'https://ntfy.sh'),
+            'ntfyTopic': notifications.findtext('ntfyTopic', ''),
+            'ntfyPriority': notifications.findtext('ntfyPriority', 'default'),
+            'emailEnabled': notifications.findtext('emailEnabled', '0') == '1',
+            'emailTo': notifications.findtext('emailTo', ''),
+            'emailFrom': notifications.findtext('emailFrom', ''),
+            'smtpServer': notifications.findtext('smtpServer', ''),
+            'smtpPort': notifications.findtext('smtpPort', '587'),
+            'smtpTls': notifications.findtext('smtpTls', 'starttls'),
+            'smtpUser': notifications.findtext('smtpUser', ''),
+            'smtpPassword': notifications.findtext('smtpPassword', ''),
+            'webhookEnabled': notifications.findtext('webhookEnabled', '0') == '1',
+            'webhookUrl': notifications.findtext('webhookUrl', ''),
+            'webhookMethod': notifications.findtext('webhookMethod', 'POST'),
+            'webhookSecret': notifications.findtext('webhookSecret', ''),
+        }
+
+        if action == 'start':
+            title = f"Maintenance: {gw_name}"
+            message = (f"Gateway '{gw_name}' is entering maintenance mode.\n"
+                       f"DNS entries will failover to backup gateways.\n"
+                       f"This is a planned maintenance - no action required.")
+            tags = 'wrench,maintenance'
+        else:
+            title = f"Maintenance ended: {gw_name}"
+            message = (f"Gateway '{gw_name}' has exited maintenance mode.\n"
+                       f"DNS entries will failback to primary gateway.")
+            tags = 'white_check_mark,maintenance'
+
+        send_ntfy(settings, title, message, tags)
+        send_email(settings, title, message)
+        send_webhook(settings, f'maintenance_{action}', {
+            'gateway': gw_name,
+            'action': action
+        })
+        log(f"Sent maintenance {action} notification for {gw_name}")
+    except Exception as e:
+        log(f"Failed to send maintenance notification: {e}", syslog.LOG_ERR)
+
+
+def handle_maintenance_start(uuid):
+    """Set maintenance=1 for a gateway in config.xml and update runtime state."""
+    try:
+        tree = ET.parse('/conf/config.xml')
+        root = tree.getroot()
+        gateways = root.find('.//OPNsense/HCloudDNS/gateways')
+        if gateways is not None:
+            for gw in gateways.findall('gateway'):
+                if gw.get('uuid') == uuid:
+                    maint = gw.find('maintenance')
+                    if maint is None:
+                        maint = ET.SubElement(gw, 'maintenance')
+                    maint.text = '1'
+                    tree.write('/conf/config.xml', xml_declaration=True, encoding='UTF-8')
+                    _update_gateway_state(uuid, True)
+                    gw_name = gw.findtext('name', uuid[:8])
+                    # Don't send notification here - it will be sent after
+                    # the update cycle confirms all entries have failed over
+                    log(f"Maintenance started for gateway {gw_name} ({uuid})")
+                    return {'status': 'ok', 'message': 'Maintenance mode started'}
+        return {'status': 'error', 'message': 'Gateway not found'}
+    except Exception as e:
+        return {'status': 'error', 'message': str(e)}
+
+
+def handle_maintenance_stop(uuid):
+    """Clear maintenance for a gateway, update runtime state and send notification."""
+    try:
+        tree = ET.parse('/conf/config.xml')
+        root = tree.getroot()
+        gw_name = _get_gateway_name(root, uuid)
+    except Exception:
+        gw_name = uuid[:8]
+        root = None
+
+    result = _clear_maintenance_in_config(uuid)
+    if result:
+        _update_gateway_state(uuid, False)
+        # Don't send "Maintenance ended" notification here - it will be sent
+        # after the update cycle confirms all entries have failbacked
+        log(f"Maintenance stopped for gateway {gw_name} ({uuid})")
+        return {'status': 'ok', 'message': 'Maintenance mode stopped'}
+    return {'status': 'error', 'message': 'Failed to clear maintenance'}
+
+
+def handle_maintenance_schedule(uuid, start, end):
+    """Set scheduled maintenance window for a gateway."""
+    try:
+        tree = ET.parse('/conf/config.xml')
+        root = tree.getroot()
+        gateways = root.find('.//OPNsense/HCloudDNS/gateways')
+        if gateways is not None:
+            for gw in gateways.findall('gateway'):
+                if gw.get('uuid') == uuid:
+                    for field, value in [('maintenanceScheduled', '1'),
+                                         ('maintenanceStart', start),
+                                         ('maintenanceEnd', end)]:
+                        node = gw.find(field)
+                        if node is None:
+                            node = ET.SubElement(gw, field)
+                        node.text = value
+                    tree.write('/conf/config.xml', xml_declaration=True, encoding='UTF-8')
+                    log(f"Maintenance scheduled for gateway {uuid}: {start} to {end}")
+                    return {'status': 'ok', 'message': f'Maintenance scheduled: {start} to {end}'}
+        return {'status': 'error', 'message': 'Gateway not found'}
+    except Exception as e:
+        return {'status': 'error', 'message': str(e)}
+
+
 def main():
     parser = argparse.ArgumentParser(description='HCloudDNS DNS updater')
     parser.add_argument('--dry-run', action='store_true', help='Preview changes without making API calls')
-    args = parser.parse_args()
+    parser.add_argument('--maintenance-start', action='store_true', help='Start maintenance mode for gateway')
+    parser.add_argument('--maintenance-stop', action='store_true', help='Stop maintenance mode for gateway')
+    parser.add_argument('--maintenance-schedule', action='store_true', help='Schedule maintenance window')
+    args, remaining = parser.parse_known_args()
+
+    # Handle maintenance commands
+    if args.maintenance_start:
+        if not remaining:
+            print(json.dumps({'status': 'error', 'message': 'Gateway UUID required'}))
+            return
+        result = handle_maintenance_start(remaining[0])
+        print(json.dumps(result))
+        return
+
+    if args.maintenance_stop:
+        if not remaining:
+            print(json.dumps({'status': 'error', 'message': 'Gateway UUID required'}))
+            return
+        result = handle_maintenance_stop(remaining[0])
+        print(json.dumps(result))
+        return
+
+    if args.maintenance_schedule:
+        if len(remaining) < 3:
+            print(json.dumps({'status': 'error', 'message': 'Usage: --maintenance-schedule UUID START END'}))
+            return
+        result = handle_maintenance_schedule(remaining[0], remaining[1], remaining[2])
+        print(json.dumps(result))
+        return
+
     dry_run = args.dry_run
 
     result = {

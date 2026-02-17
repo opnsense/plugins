@@ -281,6 +281,57 @@ class HetznerController extends ApiControllerBase
     }
 
     /**
+     * Create a new DNS zone at Hetzner
+     * @return array
+     */
+    public function createZoneAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $accountUuid = $this->request->getPost('account_uuid', 'string', '');
+        $zoneName = $this->request->getPost('zone_name', 'string', '');
+
+        if (empty($accountUuid) || empty($zoneName)) {
+            return ['status' => 'error', 'message' => 'Missing required parameters'];
+        }
+
+        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
+        $node = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Account not found'];
+        }
+
+        $token = (string)$node->apiToken;
+        if (empty($token)) {
+            return ['status' => 'error', 'message' => 'Account has no API token'];
+        }
+
+        $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+        $zoneName = strtolower(preg_replace('/[^a-zA-Z0-9.-]/', '', $zoneName));
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns dns createzone', [$token, $zoneName]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null && isset($data['status']) && $data['status'] === 'ok') {
+            return [
+                'status' => 'ok',
+                'message' => $data['message'] ?? "Zone $zoneName created",
+                'zone_id' => $data['zone_id'] ?? '',
+                'zone_name' => $data['zone_name'] ?? $zoneName
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'message' => $data['message'] ?? 'Failed to create zone'
+        ];
+    }
+
+    /**
      * Create a new DNS record at Hetzner
      * @return array
      */
@@ -515,5 +566,224 @@ class HetznerController extends ApiControllerBase
         }
 
         return ['status' => 'error', 'message' => 'Failed to delete record'];
+    }
+
+    /**
+     * Export zone in BIND format
+     * @return array
+     */
+    public function zoneExportAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $accountUuid = $this->request->getPost('account_uuid', 'string', '');
+        $zoneId = $this->request->getPost('zone_id', 'string', '');
+
+        if (empty($accountUuid) || empty($zoneId)) {
+            return ['status' => 'error', 'message' => 'Missing required parameters'];
+        }
+
+        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
+        $node = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Account not found'];
+        }
+
+        $token = (string)$node->apiToken;
+        if (empty($token)) {
+            return ['status' => 'error', 'message' => 'Account has no API token'];
+        }
+
+        $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+        $zoneId = preg_replace('/[^a-zA-Z0-9_-]/', '', $zoneId);
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns dns export', [$token, $zoneId]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'Export failed'];
+    }
+
+    /**
+     * Parse imported zonefile
+     * @return array
+     */
+    public function zoneImportParseAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $content = $this->request->getPost('content', 'string', '');
+        if (empty($content)) {
+            return ['status' => 'error', 'message' => 'No zonefile content provided'];
+        }
+
+        // Parse via Python script using stdin
+        $descriptorspec = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w']
+        ];
+
+        $cmd = '/usr/local/opnsense/scripts/HCloudDNS/zone_import.py';
+        $process = proc_open($cmd, $descriptorspec, $pipes);
+
+        if (is_resource($process)) {
+            fwrite($pipes[0], $content);
+            fclose($pipes[0]);
+
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+
+            $data = json_decode(trim($output), true);
+            if ($data !== null) {
+                return $data;
+            }
+        }
+
+        return ['status' => 'error', 'message' => 'Import parse failed'];
+    }
+
+    /**
+     * DNS Health Check for a zone
+     * @return array
+     */
+    public function dnsHealthCheckAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $accountUuid = $this->request->getPost('account_uuid', 'string', '');
+        $zoneId = $this->request->getPost('zone_id', 'string', '');
+        $zoneName = $this->request->getPost('zone_name', 'string', '');
+
+        if (empty($accountUuid) || empty($zoneId)) {
+            return ['status' => 'error', 'message' => 'Missing required parameters'];
+        }
+
+        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
+        $node = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Account not found'];
+        }
+
+        $token = (string)$node->apiToken;
+        if (empty($token)) {
+            return ['status' => 'error', 'message' => 'Account has no API token'];
+        }
+
+        $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+        $zoneId = preg_replace('/[^a-zA-Z0-9_-]/', '', $zoneId);
+        $zoneName = preg_replace('/[^a-zA-Z0-9._-]/', '', $zoneName);
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns dns healthcheck', [
+            $token, $zoneId, $zoneName
+        ]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'Health check failed'];
+    }
+
+    /**
+     * DNSSEC Status Check for a zone
+     * @return array
+     */
+    public function dnssecStatusAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $accountUuid = $this->request->getPost('account_uuid', 'string', '');
+        $zoneName = $this->request->getPost('zone_name', 'string', '');
+
+        if (empty($accountUuid) || empty($zoneName)) {
+            return ['status' => 'error', 'message' => 'Missing required parameters'];
+        }
+
+        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
+        $node = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Account not found'];
+        }
+
+        $token = (string)$node->apiToken;
+        if (empty($token)) {
+            return ['status' => 'error', 'message' => 'Account has no API token'];
+        }
+
+        $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+        $zoneName = preg_replace('/[^a-zA-Z0-9._-]/', '', $zoneName);
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns dns dnssec', [
+            $token, $zoneName
+        ]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'DNSSEC check failed'];
+    }
+
+    /**
+     * Zone Propagation Check
+     * @return array
+     */
+    public function zonePropagationCheckAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $accountUuid = $this->request->getPost('account_uuid', 'string', '');
+        $zoneId = $this->request->getPost('zone_id', 'string', '');
+
+        if (empty($accountUuid) || empty($zoneId)) {
+            return ['status' => 'error', 'message' => 'Missing required parameters'];
+        }
+
+        $mdl = new \OPNsense\HCloudDNS\HCloudDNS();
+        $node = $mdl->getNodeByReference('accounts.account.' . $accountUuid);
+        if ($node === null) {
+            return ['status' => 'error', 'message' => 'Account not found'];
+        }
+
+        $token = (string)$node->apiToken;
+        if (empty($token)) {
+            return ['status' => 'error', 'message' => 'Account has no API token'];
+        }
+
+        $token = preg_replace('/[^a-zA-Z0-9_-]/', '', $token);
+        $zoneId = preg_replace('/[^a-zA-Z0-9_-]/', '', $zoneId);
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns dns propagation', [
+            $token, $zoneId
+        ]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'Propagation check failed'];
     }
 }

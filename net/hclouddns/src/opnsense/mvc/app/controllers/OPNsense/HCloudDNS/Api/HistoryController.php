@@ -97,6 +97,31 @@ class HistoryController extends ApiControllerBase
     }
 
     /**
+     * Get aggregated history statistics
+     * @return array
+     */
+    public function statsAction()
+    {
+        $days = $this->request->getPost('days', 'int', 30);
+        if ($days < 1) {
+            $days = 30;
+        }
+        if ($days > 365) {
+            $days = 365;
+        }
+
+        $backend = new Backend();
+        $response = $backend->configdpRun('hclouddns history stats', [strval($days)]);
+        $data = json_decode(trim($response), true);
+
+        if ($data !== null) {
+            return $data;
+        }
+
+        return ['status' => 'error', 'message' => 'Failed to get stats'];
+    }
+
+    /**
      * Search history entries (from JSONL via configd)
      * @return array
      */
