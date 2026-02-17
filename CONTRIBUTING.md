@@ -47,3 +47,14 @@ When creating pull request, please heed the following:
 * Code review may ensue in order to help shape your proposal
 * Pull request must adhere to 2-Clause BSD licensing
 * Explain the problem and your proposed solution
+
+New plugins
+-------------
+
+The same structure as opening a pull request, but with the following additional requirements:
+
+* Open an issue first and explain what you want to work on, wait for feedback
+* The core component should be available as 2-Clause BSD licensed FreeBSD port package
+* Code should be (GUI) integration around this existing port
+* You will be responsible for long-term maintainance and issues
+* The review process can take time, please be patient
