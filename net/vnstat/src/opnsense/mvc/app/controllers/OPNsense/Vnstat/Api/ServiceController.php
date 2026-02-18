@@ -32,6 +32,7 @@ namespace OPNsense\Vnstat\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Vnstat\General;
 
 /**
@@ -51,9 +52,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function hourlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat hourly");
-        return array("response" => $response);
+        return $this->getStats('hourly');
     }
 
     /**
@@ -62,9 +61,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function dailyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat daily");
-        return array("response" => $response);
+        return $this->getStats('daily');
     }
 
     /**
@@ -73,9 +70,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function monthlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat monthly");
-        return array("response" => $response);
+        return $this->getStats('monthly');
     }
 
     /**
@@ -84,9 +79,7 @@ class ServiceController extends ApiMutableServiceControllerBase
      */
     public function yearlyAction()
     {
-        $backend = new Backend();
-        $response = $backend->configdRun("vnstat yearly");
-        return array("response" => $response);
+        return $this->getStats('yearly');
     }
 
     /**
@@ -98,5 +91,32 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("vnstat resetdb");
         return array("response" => $response);
+    }
+
+    /**
+     * Get stats of the given type
+     * @param string $type Which type of statistics to return (hourly, daily, weekly, or monthly)
+     * @return array
+     */
+    private function getStats(string $type) {
+        $config = Config::getInstance()->object();
+        $backend = new Backend();
+
+        if ($config->OPNsense->vnstat->general->separate_stats == 0) {
+            // Separate stats are not wanted, just get totals - that's the default in vnstat itself,
+            // no need to specify anything here.
+            $response = $backend->configdpRun("vnstat", [ $type ]);
+            return array("response" => $response);
+        }
+
+        // Loop over configured interfaces, concatenating the output of each.
+        $result = '';
+        foreach (explode(',', $config->OPNsense->vnstat->general->interface) as $interface) {
+            // Map the OPNsense interface name to the kernel interface name that vnstat uses.
+            if (isset($config->interfaces->{$interface}->if)) {
+                $result .= $backend->configdpRun("vnstat", [ $type, $config->interfaces->{$interface}->if ]);
+            }
+        }
+        return array("response" => $result);
     }
 }
