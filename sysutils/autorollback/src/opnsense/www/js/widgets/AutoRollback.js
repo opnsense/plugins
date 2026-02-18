@@ -135,7 +135,7 @@ export default class AutoRollback extends BaseWidget {
 
         $('#arw-btn-extend').on('click', async function() {
             try {
-                await self.ajaxCall('/api/autorollback/service/extend', JSON.stringify({seconds: 60}), 'POST');
+                await self.ajaxCall('/api/autorollback/service/extend', {seconds: 60}, 'POST');
             } catch(e) { /* ignore */ }
             await self.onWidgetTick();
         });
