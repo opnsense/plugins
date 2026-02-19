@@ -34,7 +34,7 @@ use OPNsense\Core\Config;
  * Google Domains DNS API
  * @package OPNsense\AcmeClient
  */
-class DnsGoogleDomains extends Base implements LeValidationInterface
+class DnsGoogledomains extends Base implements LeValidationInterface
 {
     public function prepare()
     {
