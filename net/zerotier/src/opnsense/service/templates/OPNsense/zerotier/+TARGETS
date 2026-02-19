@@ -1,2 +1,3 @@
 zerotier:/etc/rc.conf.d/zerotier
 local.conf:/var/db/zerotier-one/local.conf
+networks-local.conf:/var/db/zerotier-one/networks.d/[OPNsense.zerotier.networks.network.%.networkId].local.conf
