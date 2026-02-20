@@ -14,6 +14,7 @@ class HetznerCloudDNS(BaseAccount):
     _services = {"hetznercloud": "Hetzner Cloud DNS"}
 
     API_BASE = "https://api.hetzner.cloud/v1"
+    TIMEOUT = 20
 
     @staticmethod
     def known_services():
@@ -32,12 +33,17 @@ class HetznerCloudDNS(BaseAccount):
         }
 
     def _zone_id(self, zone_name: str) -> str | None:
-        # Hetzner Community beschreibt: /zones?name=<zone> → zone.id :contentReference[oaicite:4]{index=4}
         url = f"{self.API_BASE}/zones?name={zone_name}"
-        r = requests.get(url, headers=self._headers(), timeout=20)
+        try:
+            r = requests.get(url, headers=self._headers(), timeout=self.TIMEOUT)
+        except requests.RequestException as e:
+            syslog.syslog(syslog.LOG_ERR, f"HetznerCloud: zones lookup failed (request error): {e}")
+            return None
+
         if not (200 <= r.status_code < 300):
             syslog.syslog(syslog.LOG_ERR, f"HetznerCloud: zones lookup failed [{r.status_code}] {r.text}")
             return None
+
         zones = (r.json() or {}).get("zones") or []
         for z in zones:
             if z.get("name") == zone_name and z.get("id"):
@@ -46,7 +52,6 @@ class HetznerCloudDNS(BaseAccount):
 
     @staticmethod
     def _split_hostnames(hostnames: str) -> list[str]:
-        # erlaubt: "a.example.com, b.example.com" oder "a.example.com b.example.com"
         raw = hostnames.replace(",", " ").split()
         return [h.strip().rstrip(".") for h in raw if h.strip()]
 
@@ -58,18 +63,22 @@ class HetznerCloudDNS(BaseAccount):
             return "@"
         if fqdn.endswith("." + zone):
             return fqdn[: -(len(zone) + 1)]
-        # falls jemand "home" statt "home.example.com" einträgt:
         if "." not in fqdn:
             return fqdn
         return fqdn
 
     def _set_rrset(self, zone_id: str, rr_name: str, rr_type: str, value: str) -> bool:
-        # RRset ersetzen via set_records :contentReference[oaicite:5]{index=5}
         url = f"{self.API_BASE}/zones/{zone_id}/rrsets/{rr_name}/{rr_type}/actions/set_records"
         body = {"records": [{"value": value}]}
-        r = requests.post(url, headers=self._headers(), json=body, timeout=20)
+        try:
+            r = requests.post(url, headers=self._headers(), json=body, timeout=self.TIMEOUT)
+        except requests.RequestException as e:
+            syslog.syslog(syslog.LOG_ERR, f"HetznerCloud: set_records failed (request error): {e}")
+            return False
+
         if 200 <= r.status_code < 300:
             return True
+
         syslog.syslog(syslog.LOG_ERR, f"HetznerCloud: set_records failed [{r.status_code}] {r.text}")
         return False
 
