@@ -40,7 +40,7 @@
 
 .tabulator-row {
   background-color: transparent;
-  color: #bac3ca;
+  color: #000;
 }
 
 .tabulator-row.tabulator-row-odd {
@@ -208,11 +208,6 @@
 
 .tabulator-page-counter {
   padding-right: 20px;
-}
-
-.bootgrid-footer-commands {
-  width: 90px;
-  padding-left: 8px;
 }
 
 .tabulator-tableholder::after {
