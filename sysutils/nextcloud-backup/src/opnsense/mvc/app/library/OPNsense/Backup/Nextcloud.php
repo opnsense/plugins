@@ -86,12 +86,18 @@ class Nextcloud extends Base implements IBackupProvider
                 "value" => 'OPNsense-Backup'
             ),
             array(
+                "name" => "strategy",
+                "type" => "checkbox",
+                "help" => gettext("Select this one to back up to a file named config-YYYYMMDD instead of syncing contents of /conf/backup"),
+                "label" => gettext("Daily file instead of sync all"),
+            ),
+            array(
                 "name" => "addhostname",
                 "type" => "checkbox",
                 "label" => gettext("Backup to directory named after hostname"),
                 "help" => gettext("Create subdirectory under backupdir for this host"),
                 "value" => null
-            )
+            ),
         );
         $nextcloud = new NextcloudSettings();
         foreach ($fields as &$field) {
@@ -129,6 +135,41 @@ class Nextcloud extends Base implements IBackupProvider
     }
 
     /**
+     * check remote file last modified tag
+     * @param string $remote_filename filename to check on server
+     * @param string $username username for login to server
+     * @param string $password password for authentication
+     * @return int unix timestamp or 0 if errors occour
+     */
+    public function get_remote_file_lastmodified(
+        $remote_filename,
+        $username,
+        $password
+    ) {
+        $reply = $this->curl_request_nothrow($remote_filename, $username, $password, 'PROPFIND', 'Cannot get remote fileinfo');
+        $http_code = $reply['info']['http_code'];
+        if ($http_code >= 200 && $http_code < 300) {
+            $xml_data = $reply['response'];
+            if ($xml_data == NULL) {
+                syslog(LOG_ERR, 'Data was NULL');
+                return 0;
+            }
+            $xml_data = str_replace(['<d:', '</d:'], ['<', '</'], $xml_data);
+            $xml = simplexml_load_string($xml_data);
+            foreach ($xml->children() as $response) {
+                if ($response->getName() == 'response') {
+                    $lastmodifiedstr = $response->propstat->prop->getlastmodified;
+                    $filedate = strtotime($lastmodifiedstr);
+                    return $filedate;
+                }
+            }
+        }
+        return 0;
+    }
+
+
+
+    /**
      * perform backup
      * @return array filelist
      * @throws \OPNsense\Base\ModelException
@@ -145,6 +186,9 @@ class Nextcloud extends Base implements IBackupProvider
             $password = (string)$nextcloud->password;
             $backupdir = (string)$nextcloud->backupdir;
             $crypto_password = (string)$nextcloud->password_encryption;
+            $strategy = (string)$nextcloud->strategy;
+            // Strategy 0 = Sync /conf/backup
+            // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
 
             if (!$nextcloud->addhostname->isEmpty()) {
                 $backupdir .= "/".gethostname()."/";
@@ -157,6 +201,43 @@ class Nextcloud extends Base implements IBackupProvider
             } catch (\Exception $e) {
                 return array();
             }
+
+            // Backup strategy 1, sync /conf/config.xml to $backupdir/config-YYYYMMDD.xml
+            if ($strategy) {
+                $confdata = file_get_contents('/conf/config.xml');
+                $mdate = filemtime('/conf/config.xml');
+                $datestring = date('Ymd', $mdate);
+                $target_filename = 'config-' . $datestring . '.xml';
+                // Find the same filename @ remote
+                $remote_filename = $url . '/remote.php/dav/files/' . $internal_username . '/' . $backupdir . '/' . $target_filename;
+                $remote_file_date = $this->get_remote_file_lastmodified($remote_filename, $username, $password);
+                if ($remote_file_date >= $mdate) {
+                    return array();
+                }
+
+                // Optionally encrypt
+                if (!empty($crypto_password)) {
+                    $confdata = $this->encrypt($confdata, $crypto_password);
+                }
+                // Finally, upload some data
+                try {
+                    $this->upload_file_content(
+                        $url,
+                        $username,
+                        $password,
+                        $internal_username,
+                        $backupdir,
+                        $target_filename,
+                        $confdata
+                    );
+                    return array($backupdir . '/' . $target_filename);
+                } catch (\Exception $e) {
+                    syslog(LOG_ERR, 'Backup to ' . $url . ' failed: ' . $e);
+                    return array();
+                }
+            }
+
+            // Default strategy (0), sync /conf/backup/
 
             // Get list of files from local backup system
             $local_files = array();
@@ -265,14 +346,21 @@ class Nextcloud extends Base implements IBackupProvider
      */
     public function upload_file_content($url, $username, $password, $internal_username, $backupdir, $filename, $local_file_content)
     {
-        $this->curl_request(
-            $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename",
+        $url = $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename";
+        $reply = $this->curl_request(
+            $url,
             $username,
             $password,
             'PUT',
             'cannot execute PUT',
             $local_file_content
         );
+        $http_code = $reply['info']['http_code'];
+        // Accepted http codes for upload is 200-299
+        if (!($http_code >= 200 && $http_code < 300)) {
+            syslog(LOG_ERR, 'Could not PUT '. $url);
+            throw new \Exception();
+        }
     }
 
     /**
@@ -357,6 +445,31 @@ class Nextcloud extends Base implements IBackupProvider
         $postdata = null,
         $headers = array("User-Agent: OPNsense Firewall")
     ) {
+        $result = $this->curl_request_nothrow($url, $username, $password, $method, $error_message, $postdata, $headers);
+        $info = $result['info'];
+        $err = $result['err'];
+        $response = $result['response'];
+        if (!($info['http_code'] == 200 || $info['http_code'] == 207 || $info['http_code'] == 201) || $err) {
+            syslog(LOG_ERR, $error_message);
+            syslog(LOG_ERR, json_encode($info));
+            throw new \Exception();
+        }
+        return array('response' => $response, 'info' => $info);
+    }
+
+
+    // Add this here, since I'm fundamentally opposed to throwing exceptions
+    // if http codes aren't to your liking in a generic function.
+    // Delegate that to upper functions, where it belongs.
+    public function curl_request_nothrow(
+        $url,
+        $username,
+        $password,
+        $method,
+        $error_message,
+        $postdata = null,
+        $headers = array("User-Agent: OPNsense Firewall")
+    ) {
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
@@ -375,13 +488,8 @@ class Nextcloud extends Base implements IBackupProvider
         $response = curl_exec($curl);
         $err = curl_error($curl);
         $info = curl_getinfo($curl);
-        if (!($info['http_code'] == 200 || $info['http_code'] == 207 || $info['http_code'] == 201) || $err) {
-            syslog(LOG_ERR, $error_message);
-            syslog(LOG_ERR, json_encode($info));
-            throw new \Exception();
-        }
         curl_close($curl);
-        return array('response' => $response, 'info' => $info);
+        return array('response' => $response, 'info' => $info, 'err' => $err);
     }
 
     /**
