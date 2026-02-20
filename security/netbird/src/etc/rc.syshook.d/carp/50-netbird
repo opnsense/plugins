@@ -50,11 +50,11 @@ if (netbird_carp_enabled()) {
     switch ($type) {
         case 'MASTER':
             log_msg("NetBird CARP: Transitioning to MASTER state, starting NetBird interfaces");
-            mwexec('/usr/local/bin/netbird up > /dev/null', false, true);
+            mwexecfm('/usr/local/bin/netbird up > /dev/null', false, true);
             break;
         case 'BACKUP':
             log_msg("NetBird CARP: Transitioning to BACKUP state, stopping NetBird interfaces");
-            mwexec('/usr/local/bin/netbird down > /dev/null', false, true);
+            mwexecfm('/usr/local/bin/netbird down > /dev/null', false, true);
             break;
     }
 }
