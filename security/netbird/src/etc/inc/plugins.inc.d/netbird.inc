@@ -41,6 +41,28 @@ function netbird_carp_enabled()
            (string)$settings->general->enablecarp == '1';
 }
 
+/**
+ * Check if the current host is CARP master for any monitored VIP.
+ * Used to guard the service so it cannot start on a BACKUP node.
+ * Returns true if CARP is not enabled OR if we are currently MASTER.
+ * @return bool
+ */
+function netbird_carp_check_master()
+{
+    if (!netbird_carp_enabled()) {
+        // CARP not enabled for NetBird, allow service to start
+        return true;
+    }
+
+    // Check ifconfig output for CARP MASTER state
+    $ifconfig = shell_exec('/sbin/ifconfig');
+    if (preg_match('/carp:.*MASTER/', $ifconfig)) {
+        return true;
+    }
+
+    return false;
+}
+
 function netbird_services()
 {
     $services = [];

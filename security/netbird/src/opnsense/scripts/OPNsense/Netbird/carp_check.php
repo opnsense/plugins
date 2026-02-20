@@ -27,34 +27,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once("config.inc");
-require_once("util.inc");
-require_once("plugins.inc.d/netbird.inc");
+/**
+ * CARP check script for NetBird rc.d service guard.
+ *
+ * Returns exit code 0 if service can start:
+ *   - CARP mode not enabled for NetBird, OR
+ *   - Current host is CARP MASTER
+ *
+ * Returns exit code 1 if service should NOT start:
+ *   - CARP mode enabled and current host is BACKUP
+ *
+ * Usage in rc.d script:
+ *   start_precmd="netbird_precmd"
+ *   netbird_precmd() {
+ *       /usr/local/opnsense/scripts/OPNsense/Netbird/carp_check.php || return 1
+ *   }
+ */
 
-if (netbird_carp_enabled()) {
-    $subsystem = !empty($argv[1]) ? $argv[1] : '';
-    $type = !empty($argv[2]) ? $argv[2] : '';
+require_once('config.inc');
+require_once('plugins.inc.d/netbird.inc');
 
-    if ($type != 'MASTER' && $type != 'BACKUP') {
-        log_msg("Carp '$type' event unknown from source '{$subsystem}'");
-        exit(1);
-    }
-
-    if (!strstr($subsystem, '@')) {
-        log_msg("Carp '$type' event triggered from wrong source '{$subsystem}'");
-        exit(1);
-    }
-
-    // Use mwexec with background=true to prevent blocking other CARP scripts
-    // during failover (scripts run serialized)
-    switch ($type) {
-        case 'MASTER':
-            log_msg("NetBird CARP: Transitioning to MASTER state, starting NetBird interfaces");
-            mwexec('/usr/local/bin/netbird up > /dev/null', false, true);
-            break;
-        case 'BACKUP':
-            log_msg("NetBird CARP: Transitioning to BACKUP state, stopping NetBird interfaces");
-            mwexec('/usr/local/bin/netbird down > /dev/null', false, true);
-            break;
-    }
+if (netbird_carp_check_master()) {
+    exit(0);
 }
+
+exit(1);
