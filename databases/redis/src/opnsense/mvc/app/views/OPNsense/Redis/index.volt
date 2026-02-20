@@ -72,9 +72,7 @@ $( document ).ready(function() {
                             draggable: true
                         });
                     } else {
-                        ajaxCall(url="/api/redis/service/status", sendData={}, callback=function(data,status) {
-                            updateServiceStatusUI(data['status']);
-                        });
+                        updateServiceControlUI('redis');
                     }
                 });
             });
