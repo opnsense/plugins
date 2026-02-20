@@ -49,9 +49,21 @@
             <Default>OPNsense-Backup</Default>
             <ValidationMessage>The Backup Directory can only consist of alphanumeric characters, dash, underscores and slash. No leading or trailing slash.</ValidationMessage>
         </backupdir>
+        <strategy type="BooleanField">
+            <Required>Y</Required>
+            <Default>0</Default>
+        </strategy>
         <addhostname type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>
         </addhostname>
+        <numdays type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <Required>N</Required>
+        </numdays>
+        <numbackups type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <Required>N</Required>
+        </numbackups>
     </items>
 </model>
