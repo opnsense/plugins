@@ -28,6 +28,8 @@
 
 namespace OPNsense\AcmeClient\LeValidation;
 
+require_once('util.inc');
+
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
@@ -87,13 +89,6 @@ class HttpOpnsense extends Base implements LeValidationInterface
             }
         }
 
-        // Check if IPv6 support is enabled
-        if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == '1')) {
-            $_ipv6_enabled = true;
-        } else {
-            $_ipv6_enabled = false;
-        }
-
         // Generate rules for all IP addresses
         $anchor_rules = "";
         if (!empty($iplist)) {
@@ -105,7 +100,7 @@ class HttpOpnsense extends Base implements LeValidationInterface
                     $_dst = '127.0.0.1';
                     $_family = 'inet';
                     LeUtils::log("using IPv4 address: {$ip}");
-                } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+                } elseif (is_ipv6_allowed() && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
                     // IPv6
                     $_dst = '::1';
                     $_family = 'inet6';
