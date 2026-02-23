@@ -132,7 +132,7 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
         for line in ifcfg.split('\n'):
             if line.startswith('\tinet'):
                 parts = line.split()
-                if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6'):
+                if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6' and 'deprecated' not in line):
                     try:
                         address = transform_ip(parts[1], dynipv6host)
                         if address.is_global:
