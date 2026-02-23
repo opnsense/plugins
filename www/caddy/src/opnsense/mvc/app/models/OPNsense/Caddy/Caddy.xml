@@ -393,6 +393,18 @@
                     <ValidationMessage>Please enter a valid path that starts with '/'.</ValidationMessage>
                 </ToPath>
                 <ForwardAuth type="BooleanField"/>
+                <ForwardAuthBypassAccessList type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>Pischem.caddy.reverseproxy.accesslist</source>
+                            <items>accesslistName</items>
+                            <display>accesslistName</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Please select a valid Access List.</ValidationMessage>
+                    <BlankDesc>None (no bypass)</BlankDesc>
+                    <Required>N</Required>
+                </ForwardAuthBypassAccessList>
                 <HttpTls type="OptionField">
                     <Required>Y</Required>
                     <Default>0</Default>

@@ -387,22 +387,14 @@ http://{{ domain }} {
 {% endmacro %}
 
 {#
-#   Macro: reverse_proxy_configuration
-#   Purpose: Sets up the handle with the reverse proxy configurations.
+#   Macro: _render_reverse_proxy
+#   Purpose: Renders the reverse_proxy or redir directive for a handle. Extracted as a helper
+#            so it can be called from both the bypass handle block and the auth handle block
+#            without duplicating the full directive configuration.
 #   Parameters:
 #   @param handle (object)
 #}
-{% macro reverse_proxy_configuration(handle) %}
-    {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
-        {{ handle_accesslist(handle.accesslist) }}
-        {{ render_basic_auth(handle.basicauth) }}
-        {# All IPs not matched by accesslist will continue processing #}
-        {% if handle.ForwardAuth|default("0") == "1" %}
-            {% include "OPNsense/Caddy/includeAuthProvider" %}
-        {% endif %}
-        {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
-            rewrite * {{ handle.ToPath }}{uri}
-        {% endif %}
+{% macro _render_reverse_proxy(handle) %}
         {# http:// is the empty default for reverse_proxy #}
         {% set protocol = (
             "http://" if handle.HttpTls == "0" and handle.HandleDirective == "redir" else
@@ -517,6 +509,62 @@ http://{{ domain }} {
         }
         {% elif handle.HandleDirective == "redir" %}
             {{ handle.HandleDirective }} {{ formatted_domains[0] }}{{ handle.ToPath|default("{uri}") }}
+        {% endif %}
+{% endmacro %}
+
+{#
+#   Macro: reverse_proxy_configuration
+#   Purpose: Sets up the handle with the reverse proxy configurations.
+#            When ForwardAuth is enabled and ForwardAuthBypassAccessList is set, generates two
+#            nested handle blocks: one for bypass IPs (direct proxy) and one for all other
+#            traffic (forward_auth + proxy). When bypass is not set, behaves identically to
+#            the original single-block output.
+#   Parameters:
+#   @param handle (object)
+#}
+{% macro reverse_proxy_configuration(handle) %}
+    {{ handle.HandleType }} {{ handle.HandlePath|default("") }} {
+        {{ handle_accesslist(handle.accesslist) }}
+        {{ render_basic_auth(handle.basicauth) }}
+        {# All IPs not matched by accesslist will continue processing #}
+        {% if handle.ForwardAuth|default("0") == "1" and handle.ForwardAuthBypassAccessList|default("") %}
+            {# Conditional forward_auth: bypass for matching IPs, enforce for all others #}
+            {% set bypass_acl = helpers.toList('Pischem.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', handle.ForwardAuthBypassAccessList) | first %}
+            {% if bypass_acl %}
+                {% set bypass_matcher = '@fwd_auth_bypass_' ~ (handle['@uuid'] | regex_replace('[^a-zA-Z0-9]', '')) %}
+                {{ bypass_matcher }} remote_ip {{ bypass_acl.clientIps.split(',') | join(' ') }}
+                handle {{ bypass_matcher }} {
+                    {# Direct proxy without auth for matched IPs #}
+                    {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
+                        rewrite * {{ handle.ToPath }}{uri}
+                    {% endif %}
+                    {{ _render_reverse_proxy(handle) }}
+                }
+                handle {
+                    {# All other traffic goes through forward_auth first #}
+                    {% include "OPNsense/Caddy/includeAuthProvider" %}
+                    {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
+                        rewrite * {{ handle.ToPath }}{uri}
+                    {% endif %}
+                    {{ _render_reverse_proxy(handle) }}
+                }
+            {% else %}
+                {# Bypass ACL UUID set but ACL not found — fall back to normal forward_auth #}
+                {% include "OPNsense/Caddy/includeAuthProvider" %}
+                {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
+                    rewrite * {{ handle.ToPath }}{uri}
+                {% endif %}
+                {{ _render_reverse_proxy(handle) }}
+            {% endif %}
+        {% else %}
+            {# Original behavior: forward_auth applies to all traffic (or no forward_auth) #}
+            {% if handle.ForwardAuth|default("0") == "1" %}
+                {% include "OPNsense/Caddy/includeAuthProvider" %}
+            {% endif %}
+            {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
+                rewrite * {{ handle.ToPath }}{uri}
+            {% endif %}
+            {{ _render_reverse_proxy(handle) }}
         {% endif %}
     }
 {% endmacro %}

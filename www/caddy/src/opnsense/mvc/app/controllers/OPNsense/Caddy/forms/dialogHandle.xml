@@ -96,6 +96,16 @@
         </grid_view>
     </field>
     <field>
+        <id>handle.ForwardAuthBypassAccessList</id>
+        <label>Forward Auth Bypass</label>
+        <type>dropdown</type>
+        <style>style_reverse_proxy</style>
+        <help><![CDATA[Select an Access List whose matching clients will BYPASS Forward Auth and access the upstream directly without authentication. Clients NOT matching this list will still be sent through Forward Auth. Only effective when Forward Auth is enabled. Typical use: select a "private_ipv4" access list so LAN clients skip auth while external clients authenticate.]]></help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
         <type>header</type>
         <label>Directive</label>
     </field>
