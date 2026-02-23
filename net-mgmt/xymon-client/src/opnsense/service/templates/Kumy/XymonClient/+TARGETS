@@ -1,0 +1,2 @@
+xymonclient.cfg:/usr/local/etc/xymon/xymonclient.cfg
+xymon_client:/etc/rc.conf.d/xymon_client
