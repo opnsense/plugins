@@ -395,11 +395,12 @@
                 <ForwardAuth type="BooleanField"/>
                 <ForwardAuthBypassAccessList type="ModelRelationField">
                     <Model>
-                        <template>
-                            <source>Pischem.caddy.reverseproxy.accesslist</source>
-                            <items>accesslistName</items>
-                            <display>accesslistName</display>
-                        </template>
+                        <reverseproxy>
+                            <source>OPNsense.Caddy.Caddy</source>
+                            <items>reverseproxy.accesslist</items>
+                            <display>accesslistName,description</display>
+                            <display_format>%s %s</display_format>
+                        </reverseproxy>
                     </Model>
                     <ValidationMessage>Please select a valid Access List.</ValidationMessage>
                     <BlankDesc>None (no bypass)</BlankDesc>
