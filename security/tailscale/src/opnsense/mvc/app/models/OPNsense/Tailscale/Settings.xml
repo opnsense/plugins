@@ -36,6 +36,10 @@
             <Default>0</Default>
             <Required>Y</Required>
         </disableSNAT>
+        <peerRelayPort type="IntegerField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </peerRelayPort>
         <subnets>
             <subnet4 type="ArrayField">
                 <subnet type="NetworkField">
