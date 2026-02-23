@@ -56,6 +56,7 @@ The pull request notes apply, but with the following additional points:
 * Open an issue first to explain what you want to work on and give it time for discussion
 * If you are integrating a service binary it should at least be available in FreeBSD ports
 * Precompiled binaries in the plugins are not allowed
+* Plugins should almost always focus on integrating an existing service and providing MVC/API GUI pages for it
 * It is not possible to review and integrate plugins with a large initial codebase
 * If you use AI tools in your submission please disclose their use (name and model)
 * Even though you are the maintainer you effectively force burden of maintainership to the community and OPNsense developers as soon as you open your first PR
