@@ -162,6 +162,23 @@
             <Default>0</Default>
             <Required>Y</Required>
         </reject_unverified_recipient>
+        <always_add_missing_headers type="BooleanField">
+            <default>0</default>
+            <Required>Y</Required>
+        </always_add_missing_headers>
+        <local_header_rewrite_clients type="OptionField">
+            <Required>N</Required>
+            <default>permit_inet_interfaces</default>
+            <Sorted>Y</Sorted>
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <permit_inet_interfaces>permit_inet_interfaces</permit_inet_interfaces>
+                <permit_mynetworks>permit_mynetworks</permit_mynetworks>
+                <permit_sasl_authenticated>permit_sasl_authenticated</permit_sasl_authenticated>
+                <permit_tls_clientcerts>permit_tls_clientcerts</permit_tls_clientcerts>
+                <permit_tls_all_clientcerts>permit_tls_all_clientcerts</permit_tls_all_clientcerts>
+            </OptionValues>
+        </local_header_rewrite_clients>
         <delay_warning_time type="IntegerField">
             <MinimumValue>0</MinimumValue>
             <MaximumValue>24</MaximumValue>
