@@ -5,10 +5,7 @@
         <loginServer type="UrlField">
             <Default>https://controlplane.tailscale.com</Default>
             <Required>Y</Required>
-            <ValidationMessage>Please enter a valid URL</ValidationMessage>
         </loginServer>
-        <preAuthKey type="TextField">
-            <Required>N</Required>
-        </preAuthKey>
+        <preAuthKey type="TextField"/>
     </items>
 </model>
