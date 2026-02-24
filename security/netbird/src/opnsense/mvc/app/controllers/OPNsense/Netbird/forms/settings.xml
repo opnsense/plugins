@@ -43,6 +43,36 @@
         <help>Allows incoming SSH connections</help>
     </field>
     <field>
+        <id>settings.ssh.enableRoot</id>
+        <label>Enable Root Login</label>
+        <type>checkbox</type>
+        <help>Allow root user login</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableSFTP</id>
+        <label>Enable SFTP</label>
+        <type>checkbox</type>
+        <help>Enable SFTP subsystem for file transfers</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableLocalPortForwarding</id>
+        <label>Enable Local Port Forwarding</label>
+        <type>checkbox</type>
+        <help>Allow clients to forward local ports through the server</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableRemotePortForwarding</id>
+        <label>Enable Remote Port Forwarding</label>
+        <type>checkbox</type>
+        <help>Allow clients to request remote port forwarding</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableAuth</id>
+        <label>Enable SSH Authentication</label>
+        <type>checkbox</type>
+        <help>Enable JWT authentication for SSH connections. When disabled, allows any peer with network access</help>
+    </field>
+    <field>
         <type>header</type>
         <label>DNS</label>
     </field>
