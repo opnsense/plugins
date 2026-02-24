@@ -27,12 +27,19 @@
 """
 
 import os
+import re
+import syslog
+import uuid
 from . import BaseBlocklistHandler
 
-class DefaultBlocklistHandler(BaseBlocklistHandler):
+class QFeedsBlocklistHandler(BaseBlocklistHandler):
     def __init__(self):
         super().__init__('/usr/local/etc/unbound/qfeeds-blocklists.conf')
         self.priority = 50
+        self._compat_id = str(uuid.uuid4())
+
+    def _is_enabled(self):
+        return self.cnf and self.cnf.has_section('settings') and self.cnf.has_option('settings', 'filenames')
 
     def get_config(self):
         # do not use, unbound worker settings
@@ -41,11 +48,10 @@ class DefaultBlocklistHandler(BaseBlocklistHandler):
     def get_blocklist(self):
         # Only return domains if integration is enabled (filenames are offered)
         qfeeds_filenames = []
-        if self.cnf and self.cnf.has_section('settings'):
-            if self.cnf.has_option('settings', 'filenames'):
-                qfeeds_filenames = self.cnf.get('settings', 'filenames').split(',')
-                # touch a file to help qfeedsctl detect the current instance uses its list
-                open('/tmp/qfeeds-unbound-bl.stat', 'w').write('')
+        if self._is_enabled():
+            qfeeds_filenames = self.cnf.get('settings', 'filenames').split(',')
+            # touch a file to help qfeedsctl detect the current instance uses its list
+            open('/tmp/qfeeds-unbound-bl.stat', 'w').write('')
 
         result = {}
         for filename in qfeeds_filenames:
@@ -58,3 +64,35 @@ class DefaultBlocklistHandler(BaseBlocklistHandler):
 
     def get_passlist_patterns(self):
         return []
+
+    def get_policies(self):
+        if not self._is_enabled():
+            return []
+
+        cfg = {
+            'source_nets': [],
+            'address': '',
+            'rcode': '',
+            'id': self._compat_id,
+            'allowlists': []
+        }
+        for k,v in self.cnf['settings'].items():
+            if k in cfg and v.strip() != '':
+                if type(cfg[k]) is list:
+                    cfg[k] = v.split(',')
+                else:
+                    cfg[k] = v.strip()
+
+        if cfg['allowlists']:
+            compiled_passlist = set()
+            for pattern in cfg['allowlists']:
+                try:
+                    re.compile(pattern, re.IGNORECASE)
+                    compiled_passlist.add(pattern)
+                except re.error:
+                    syslog.syslog(syslog.LOG_ERR,'Q-Feeds : skip invalid whitelist exclude pattern "%s"' % pattern)
+
+            cfg['passlist'] = '|'.join(compiled_passlist)
+            del cfg['allowlists']
+
+        return [cfg]

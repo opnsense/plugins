@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/netbird/settings</mount>
     <description>NetBird settings</description>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <items>
         <general>
             <enable type="BooleanField">
@@ -31,6 +31,26 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enable>
+            <enableRoot type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRoot>
+            <enableSFTP type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableSFTP>
+            <enableLocalPortForwarding type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableLocalPortForwarding>
+            <enableRemotePortForwarding type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRemotePortForwarding>
+            <enableAuth type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enableAuth>
         </ssh>
         <dns>
             <enable type="BooleanField">
