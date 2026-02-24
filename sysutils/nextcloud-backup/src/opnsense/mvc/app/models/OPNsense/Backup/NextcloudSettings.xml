@@ -1,6 +1,6 @@
 <model>
     <mount>//system/backup/nextcloud</mount>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>OPNsense Nextcloud Backup Settings</description>
     <items>
         <enabled type="BooleanField">
