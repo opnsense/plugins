@@ -214,7 +214,6 @@ class Nextcloud extends Base implements IBackupProvider
                 if ($remote_file_date >= $mdate) {
                     return array();
                 }
-
                 // Optionally encrypt
                 if (!empty($crypto_password)) {
                     $confdata = $this->encrypt($confdata, $crypto_password);
