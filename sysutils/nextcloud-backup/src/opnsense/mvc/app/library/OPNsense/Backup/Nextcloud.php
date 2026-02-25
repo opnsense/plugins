@@ -359,7 +359,7 @@ class Nextcloud extends Base implements IBackupProvider
     ) {
         // Are we configured to run at all?
         // Short circuit in case none of our options are set
-        if ((strlen($keep_days)) and (strlen($keep_num)) {
+        if (!strlen($keep_days) && !strlen($keep_num)) {
             return;
         }
         // Get list of filenames (without path) on remote location
@@ -375,7 +375,7 @@ class Nextcloud extends Base implements IBackupProvider
         }
         $num_remote_files = count($remote_files);
         // Short-circuit, if too few files, no need to check no more
-        if (!($keep_num === "")) {
+        if (strlen($keep_num)) {
             if ($keep_num > $num_remote_files) {
                 return;
             }
