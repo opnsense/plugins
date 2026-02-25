@@ -357,6 +357,11 @@ class Nextcloud extends Base implements IBackupProvider
         $keep_days,
         $keep_num
     ) {
+        // Are we configured to run at all?
+        // Short circuit in case none of our options are set
+        if ((strlen($keep_days)) and (strlen($keep_num)) {
+            return;
+        }
         // Get list of filenames (without path) on remote location
         $remote_files = array();
         $tmp_remote_files = $this->listfiles($url, $username, $password, $internal_username, "/$backupdir/", false);
@@ -479,10 +484,7 @@ class Nextcloud extends Base implements IBackupProvider
             } else {
                 $list_of_files = $this->backupstrat_zero($internal_username, $username, $password, $url, $backupdir, $crypto_password);
             }
-            // Retention here
-            if (!($keep_days === "") or !($keep_num === "")) {
-                $this->retention($internal_username, $username, $password, $url, $backupdir, $keep_days, $keep_num);
-            }
+            $this->retention($internal_username, $username, $password, $url, $backupdir, $keep_days, $keep_num);
             return $list_of_files;
         }
     }
