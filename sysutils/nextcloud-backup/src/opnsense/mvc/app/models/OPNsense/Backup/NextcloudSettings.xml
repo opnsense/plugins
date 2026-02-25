@@ -42,7 +42,7 @@
                 </check001>
             </Constraints>
         </password>
-        <password_encryption type="TextField"/>
+        <password_encryption type="UpdateOnlyTextField"/>
         <backupdir type="TextField">
             <Required>Y</Required>
             <Mask>/^([\w%+\-]+\/)*[\w+%\-]+$/</Mask>
