@@ -31,7 +31,7 @@
                 </check001>
             </Constraints>
         </user>
-        <password type="TextField">
+        <password type="UpdateOnlyTextField">
             <Constraints>
                 <check001>
                     <ValidationMessage>A password for a Nextcloud server must be set.</ValidationMessage>
@@ -42,7 +42,7 @@
                 </check001>
             </Constraints>
         </password>
-        <password_encryption type="TextField"/>
+        <password_encryption type="UpdateOnlyTextField"/>
         <backupdir type="TextField">
             <Required>Y</Required>
             <Mask>/^([\w%+\-]+\/)*[\w+%\-]+$/</Mask>

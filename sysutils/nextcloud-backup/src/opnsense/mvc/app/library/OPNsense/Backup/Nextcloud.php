@@ -456,20 +456,19 @@ class Nextcloud extends Base implements IBackupProvider
         $cnf = Config::getInstance();
         $nextcloud = new NextcloudSettings();
         if ($cnf->isValid() && !empty((string)$nextcloud->enabled)) {
-            $config = $cnf->object();
-            $url = (string)$nextcloud->url;
-            $username = (string)$nextcloud->user;
-            $password = (string)$nextcloud->password;
-            $backupdir = (string)$nextcloud->backupdir;
-            $crypto_password = (string)$nextcloud->password_encryption;
-            $strategy = (string)$nextcloud->strategy;
+            $url = $nextcloud->url->getValue();
+            $username = $nextcloud->user->getValue();
+            $password = $nextcloud->password->getValue();
+            $backupdir = $nextcloud->backupdir->getValue();
+            $crypto_password = $nextcloud->password_encryption->getValue();
+            $strategy = $nextcloud->strategy->getValue();
             // Strategy 0 = Sync /conf/backup
             // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
-            $keep_days = (string)$nextcloud->numdays;
-            $keep_num = (string)$nextcloud->numbackups;
+            $keep_days = $nextcloud->numdays->getValue();
+            $keep_num = $nextcloud->numbackups->getValue();
 
-            if (!$nextcloud->addhostname->isEmpty()) {
-                $backupdir .= "/" . gethostname() . "/";
+            if ($nextcloud->addhostname->isEqual('1')) {
+                $backupdir .= "/" . gethostname();
             }
 
             // Check if destination directory exists, create (full path) if not
