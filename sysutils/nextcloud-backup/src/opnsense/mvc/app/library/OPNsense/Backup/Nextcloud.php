@@ -456,19 +456,18 @@ class Nextcloud extends Base implements IBackupProvider
         $cnf = Config::getInstance();
         $nextcloud = new NextcloudSettings();
         if ($cnf->isValid() && !empty((string)$nextcloud->enabled)) {
-            $our_conf = $cnf->object()->system->backup->nextcloud;
-            $url = (string)$our_conf->url;
-            $username = (string)$our_conf->user;
-            $password = (string)$our_conf->password;
-            $backupdir = (string)$our_conf->backupdir;
-            $crypto_password = (string)$our_conf->password_encryption;
-            $strategy = (string)$our_conf->strategy;
+            $url = $nextcloud->url->getValue();
+            $username = $nextcloud->user->getValue();
+            $password = $nextcloud->password->getValue();
+            $backupdir = $nextcloud->backupdir->getValue();
+            $crypto_password = $nextcloud->password_encryption->getValue();
+            $strategy = $nextcloud->strategy->getValue();
             // Strategy 0 = Sync /conf/backup
             // Strategy 1 = Copy /conf/config.xml to $backupdir/conf-YYYYMMDD.xml
-            $keep_days = (string)$our_conf->numdays;
-            $keep_num = (string)$our_conf->numbackups;
+            $keep_days = $nextcloud->numdays->getValue();
+            $keep_num = $nextcloud->numbackups->getValue();
 
-            if ($our_conf->addhostname == "1") {
+            if ($nextcloud->addhostname->getValue() == "1") {
                 $backupdir .= "/" . gethostname();
             }
 
