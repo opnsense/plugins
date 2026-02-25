@@ -425,7 +425,7 @@ class Nextcloud extends Base implements IBackupProvider
             }
         } else {
             // No $keep_days specified
-            if (!($keep_num === "")) {
+            if (strlen($keep_num)) {
                 // keep_num is some number
                 // Delete filenames based on their creation time
                 if (count($files) > $keep_num) {
