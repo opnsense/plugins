@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'friendly_name',
         'iface_array',
         'ipv6_disable',
+        'log_level',
         'logpackets',
         'overridesubnet',
         'overridewanip',
@@ -88,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'sysuptime',
         'upload',
         'upnp_igd_compat',
-        'log_level',
     ];
 
     foreach (miniupnpd_permuser_list() as $permuser) {
