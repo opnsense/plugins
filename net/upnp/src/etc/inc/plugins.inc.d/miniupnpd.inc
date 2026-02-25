@@ -28,7 +28,7 @@
 
 function miniupnpd_syslog()
 {
-    return ['miniupnpd_syslog' => ['facility' => ['upnp_syslog']]];
+    return ['miniupnpd' => ['facility' => ['miniupnpd']]];
 }
 
 function miniupnpd_enabled()
