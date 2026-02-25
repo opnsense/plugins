@@ -80,14 +80,11 @@ class TlsalpnAcme extends Base implements LeValidationInterface
             $backend = new \OPNsense\Core\Backend();
             $interface = (string)$this->config->tlsalpn_acme_interface;
             $response = json_decode($backend->configdpRun('interface address', [$interface]));
-            // XXX Returns both IPv4 and IPv6 now. While "[0]" and
-            // "[1]" should remain in this order it would make sense
-            // to ensure "family" matches "inet" or "inet6" and/or
-            // pull both addresses for missing IPv6 support depending
-            // on how this should work.
-            if (!empty($response->$interface[0]->address)) {
-                $iplist[] = $response->$interface[0]->address;
-            }
+            foreach ($response->$interface as $if) {
+                if (!empty($if->address)) {
+                    $iplist[] = $if->address;
+                }
+	    }
         }
 
         // Generate rules for all IP addresses
