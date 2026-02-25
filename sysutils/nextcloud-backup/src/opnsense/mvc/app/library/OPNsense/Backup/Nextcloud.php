@@ -456,8 +456,7 @@ class Nextcloud extends Base implements IBackupProvider
         $cnf = Config::getInstance();
         $nextcloud = new NextcloudSettings();
         if ($cnf->isValid() && !empty((string)$nextcloud->enabled)) {
-            $config = $cnf->object();
-            $our_conf = $config->system->backup->nextcloud;
+            $our_conf = $cnf->object()->system->backup->nextcloud;
             $url = (string)$our_conf->url;
             $username = (string)$our_conf->user;
             $password = (string)$our_conf->password;
