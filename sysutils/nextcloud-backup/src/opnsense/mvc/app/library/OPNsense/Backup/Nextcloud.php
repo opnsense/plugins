@@ -378,7 +378,7 @@ class Nextcloud extends Base implements IBackupProvider
 
         $date = new \DateTime();
         $files = $this->get_filelist_dates($remote_files);
-        if (!($keep_days === "")) {
+        if (strlen($keep_days)) {
             // Admin has specified number of days to keep
             $dateinterval = \DateInterval::createFromDateString($keep_days . " day");
             $target_timestamp = date_sub($date, $dateinterval)->format('U');
