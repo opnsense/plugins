@@ -102,8 +102,8 @@ function miniupnpd_stop()
 {
     killbypid('/var/run/miniupnpd.pid');
 
-    mwexecf('/sbin/pfctl -a miniupnpd -Fr');
-    mwexecf('/sbin/pfctl -a miniupnpd -Fn');
+    mwexecf('/sbin/pfctl -a miniupnpd -F rules');
+    mwexecf('/sbin/pfctl -a miniupnpd -F nat');
 }
 
 function miniupnpd_configure()
@@ -218,11 +218,15 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            if (!empty($upnp_config['allow_third_party_mapping'])) {
+            if (($upnp_config['allow_third_party_mapping'] ?? '') == '1' || ($upnp_config['allow_third_party_mapping'] ?? '') == 'upnp-igd') {
                 $config_text .= "secure_mode=no\n";
-                $config_text .= "pcp_allow_thirdparty=yes\n";
             } else {
                 $config_text .= "secure_mode=yes\n";
+            }
+
+            if (($upnp_config['allow_third_party_mapping'] ?? '') == '1' || ($upnp_config['allow_third_party_mapping'] ?? '') == 'pcp') {
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            } else {
                 $config_text .= "pcp_allow_thirdparty=no\n";
             }
 

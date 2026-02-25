@@ -7,6 +7,14 @@ WWW: https://miniupnp.tuxfamily.org/
 Plugin Changelog
 ================
 
+1.9
+
+* INCOMPLETE: Log file, help, wording, logging patch
+
+1.8
+
+* INCOMPLETE: Rewording plugin, new UI options: disable IPv6 mapping, allow third-party mapping, UPnP IGD compatiblity (IGDv2 support), friendly name, remove option: report system uptime, keep active maps on service restarts, active IPv6 maps, clearer added via / description, set STUN allow-filtered, daemon config improvements, UI sections, daemon update, IGD compatibility patch
+
 1.7
 
 * Add option to allow arbitrary number of UPnP/NAT-PMP rules (contributed by Kreeblah)
