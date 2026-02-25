@@ -69,11 +69,11 @@ if (isset($configObj->OPNsense->HAProxy->mapfiles)) {
             } catch (\Exception $e) {
                 // Show error message only if URL was specified.
                 if ($mf_url != "") {
-                  echo "download of map file failed, error: " . $e->getMessage() . "\n";
-                  echo "trying to fill map file with fallback content\n";
-                  $mf_content = "# NOTE: Download failed, this is the fallback content.\n";
+                    echo "download of map file failed, error: " . $e->getMessage() . "\n";
+                    echo "trying to fill map file with fallback content\n";
+                    $mf_content = "# NOTE: Download failed, this is the fallback content.\n";
                 } else {
-                  $mf_content = '';
+                    $mf_content = '';
                 }
 
                 // Write contents to map file.
