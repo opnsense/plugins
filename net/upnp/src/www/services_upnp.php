@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
-        foreach (['ext_iface', 'download', 'upload', 'overridewanip', 'overridesubnet', 'stun_host', 'stun_port', 'friendly_name', 'upnp_igd_compat', 'log_level'] as $fieldname) {
+        foreach (['download', 'ext_iface', 'friendly_name', 'log_level', 'overridesubnet', 'overridewanip', 'stun_host', 'stun_port', 'upload', 'upnp_igd_compat'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
