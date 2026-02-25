@@ -394,7 +394,7 @@ class Nextcloud extends Base implements IBackupProvider
                     $old_files[(string)$file_timestamp] = $files[$file_timestamp];
                 }
             }
-            if (!($keep_num === "")) {
+            if (strlen($keep_num)) {
                 $num_new_files = count($new_files);
                 if ($num_new_files < $keep_num) {
                     // Not enough new files to satisfy $keep_num
