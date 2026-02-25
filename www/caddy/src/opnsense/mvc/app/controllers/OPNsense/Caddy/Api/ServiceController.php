@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023-2024 Cedrik Pischem
+ *    Copyright (C) 2023-2026 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.

@@ -24,7 +24,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
- <script>
+<script>
     $(document).ready(function() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             const hash = e.target.hash;
