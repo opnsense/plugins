@@ -3,7 +3,7 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
-1.5 
+1.5
 
 * Feature: Add passlist option for unbound
 * Feature: Add effective networks for unbound
