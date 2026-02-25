@@ -375,7 +375,7 @@ include("head.inc");
                       <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Log level') ?></td>
                       <td>
                         <select name="log_level">
-                          <option value="default" <?= ($pconfig['log_level'] ?? '') == 'default' ? 'selected="selected"' : '' ?> ><?= gettext('Default') ?></option>
+                          <option value="" <?= ($pconfig['log_level'] ?? '') == '' ? 'selected="selected"' : '' ?> ><?= gettext('Default') ?></option>
                           <option value="info" <?= ($pconfig['log_level'] ?? '') == 'info' ? 'selected="selected"' : '' ?> ><?= gettext('Info') ?></option>
                           <option value="debug" <?= ($pconfig['log_level'] ?? '') == 'debug' ? 'selected="selected"' : '' ?> ><?= gettext('Debug') ?></option>
                         </select>

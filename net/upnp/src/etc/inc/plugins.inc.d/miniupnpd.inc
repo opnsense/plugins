@@ -72,6 +72,8 @@ function miniupnpd_services()
 
 function miniupnpd_start()
 {
+    global $config;
+
     if (!miniupnpd_enabled()) {
         return;
     }
@@ -80,16 +82,23 @@ function miniupnpd_start()
         return;
     }
 
-    global $config;
-    $upnp_config = $config['installedpackages']['miniupnpd']['config'][0];
-    if (($upnp_config['log_level'] ?? '') == 'info') {
-        $exec_cmd='/usr/local/sbin/miniupnpd -f %s -P %s -v';
-    } elseif (($upnp_config['log_level'] ?? '') == 'debug') {
-        $exec_cmd='/usr/local/sbin/miniupnpd -f %s -P %s -vv';
-    } else {
-        $exec_cmd='/usr/local/sbin/miniupnpd -f %s -P %s';
+    $log_level = $config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '';
+
+    $cmd_frmt = ['/usr/local/sbin/miniupnpd -f %s -P %s'];
+    $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
+
+    switch ($log_level) {
+        case 'debug':
+            $cmd_frmt[] = '-v';
+            /* FALLTHROUGH */
+        case 'info':
+            $cmd_frmt[] = '-v';
+            /* FALLTHROUGH */
+        default:
+            break;
     }
-    mwexecfb($exec_cmd, ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
+
+    mwexecfb($cmd_frmt, $cmd_args);
 }
 
 function miniupnpd_stop()
