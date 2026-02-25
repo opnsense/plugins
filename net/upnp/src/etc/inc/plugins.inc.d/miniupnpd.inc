@@ -44,10 +44,10 @@ function miniupnpd_firewall($fw)
         return;
     }
 
-    $fw->registerAnchor('miniupnpd', 'rdr');
-    $fw->registerAnchor('miniupnpd', 'fw');
+    $fw->registerAnchor('miniupnpd', 'rdr'); // required for IPv4
+    $fw->registerAnchor('miniupnpd', 'fw'); // required for IPv6
     $fw->registerAnchor('miniupnpd', 'nat', 0, 'head');
-    $fw->registerAnchor('miniupnpd', 'binat');
+    // $fw->registerAnchor('miniupnpd', 'binat');
 }
 
 function miniupnpd_services()
