@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'sysuptime',
         'upload',
         'upnp_igd_compat',
-        'log_level'
+        'log_level',
     ];
 
     foreach (miniupnpd_permuser_list() as $permuser) {
