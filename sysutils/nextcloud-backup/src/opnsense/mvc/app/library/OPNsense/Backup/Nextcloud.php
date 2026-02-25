@@ -469,7 +469,7 @@ class Nextcloud extends Base implements IBackupProvider
             $keep_days = (string)$our_conf->numdays;
             $keep_num = (string)$our_conf->numbackups;
 
-            if (!$our_conf->addhostname->isEmpty()) {
+            if ($our_conf->addhostname == "1") {
                 $backupdir .= "/" . gethostname();
             }
 
