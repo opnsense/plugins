@@ -31,7 +31,7 @@
                 </check001>
             </Constraints>
         </user>
-        <password type="TextField">
+        <password type="UpdateOnlyTextField">
             <Constraints>
                 <check001>
                     <ValidationMessage>A password for a Nextcloud server must be set.</ValidationMessage>
