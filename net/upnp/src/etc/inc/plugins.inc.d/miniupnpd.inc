@@ -88,14 +88,11 @@ function miniupnpd_start()
     $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
 
     switch ($log_level) {
-        case 'debug':
-            $cmd_frmt[] = '-v';
-            /* FALLTHROUGH */
         case 'info':
             $cmd_frmt[] = '-v';
-            /* FALLTHROUGH */
-        default:
             break;
+        case 'debug':
+            $cmd_frmt[] = '-vv';
     }
 
     mwexecfb($cmd_frmt, $cmd_args);
