@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023-2025 Cedrik Pischem
+ # Copyright (c) 2023-2026 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -24,7 +24,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
-<script>
+ <script>
     $(document).ready(function() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             const hash = e.target.hash;
@@ -279,28 +279,6 @@
             }
         });
 
-        /**
-         * Displays an alert message to the user.
-         *
-         * @param {string} message - The message to display.
-         * @param {string} [type="error"] - The type of alert (error or success).
-         */
-        function showAlert(message, type = "error") {
-            const alertClass = type === "error" ? "alert-danger" : "alert-success";
-            const messageArea = $("#messageArea");
-
-            messageArea.stop(true, true).hide();
-            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-            messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                $(this).html('');
-            });
-        }
-
-        // Hide message area when starting new actions
-        $('input, select, textarea').on('change', function() {
-            $("#messageArea").hide();
-        });
-
         // Populate domain filter selectpicker
         $('#reverseFilter').fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains');
 
@@ -311,26 +289,8 @@
             $('#reverseFilter').trigger('change');
         });
 
-        // Reconfigure button with custom validation
-        $("#reconfigureAct").SimpleActionButton({
-            onPreAction: function() {
-                const dfObj = new $.Deferred();
-
-                ajaxGet("/api/caddy/service/validate", null, function(data, status) {
-                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                        dfObj.resolve();
-                    } else {
-                        showAlert(data['message'], "error");
-                        dfObj.reject();
-                    }
-                }).fail(function(xhr, status, error) {
-                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
-                    dfObj.reject();
-                });
-
-                return dfObj.promise();
-            }
-        });
+        // Reconfigure button
+        $("#reconfigureAct").SimpleActionButton();
 
 {% if entrypoint == 'reverse_proxy' %}
 
@@ -445,7 +405,6 @@
         });
 
         updateServiceControlUI('caddy');
-        $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
     });
 
 </script>

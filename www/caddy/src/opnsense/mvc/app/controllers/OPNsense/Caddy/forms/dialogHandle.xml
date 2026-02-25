@@ -219,18 +219,6 @@
         </grid_view>
     </field>
     <field>
-        <id>handle.HttpNtlm</id>
-        <label>NTLM</label>
-        <type>checkbox</type>
-        <style>style_tls_handle</style>
-        <help><![CDATA[Enable or disable NTLM. Needed to reverse proxy an Exchange Server. Warning: NTLM has been deprecated by Microsoft. This option will stay for as long as the optional http.reverse_proxy.transport.http_ntlm module can be compiled without errors.]]></help>
-        <grid_view>
-            <visible>false</visible>
-            <type>boolean</type>
-            <formatter>boolean</formatter>
-        </grid_view>
-    </field>
-    <field>
         <id>handle.description</id>
         <label>Description</label>
         <type>text</type>
