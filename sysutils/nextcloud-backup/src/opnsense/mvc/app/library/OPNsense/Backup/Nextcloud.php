@@ -470,7 +470,7 @@ class Nextcloud extends Base implements IBackupProvider
             $keep_num = (string)$our_conf->numbackups;
 
             if (!$our_conf->addhostname->isEmpty()) {
-                $backupdir .= "/" . gethostname() . "/";
+                $backupdir .= "/" . gethostname();
             }
 
             // Check if destination directory exists, create (full path) if not
