@@ -14,8 +14,8 @@
     <page-services-upnp-log>
         <name>Services: UPnP IGD &amp; PCP: Log File</name>
         <patterns>
-            <pattern>ui/diagnostics/log/core/upnp/*</pattern>
-            <pattern>api/diagnostics/log/core/upnp/*</pattern>
+            <pattern>ui/diagnostics/log/core/miniupnpd/*</pattern>
+            <pattern>api/diagnostics/log/core/miniupnpd/*</pattern>
         </patterns>
     </page-services-upnp-log>
 </acl>
