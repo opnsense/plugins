@@ -231,8 +231,8 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-            /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
-            //    $config_text .= "system_uptime=yes\n";
+                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
+                //$config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */
