@@ -164,7 +164,7 @@ class Nextcloud extends Base implements IBackupProvider
         $http_code = $reply['info']['http_code'];
         if ($http_code >= 200 && $http_code < 300) {
             $xml_data = $reply['response'];
-            if ($xml_data == NULL) {
+            if ($xml_data == null) {
                 syslog(LOG_ERR, 'Data was NULL');
                 return 0;
             }
@@ -206,7 +206,7 @@ class Nextcloud extends Base implements IBackupProvider
             if ($tmp_local_file === '.' || $tmp_local_file === '..') {
                 continue;
             }
-            if (!is_file("/conf/backup/".$tmp_local_file)) {
+            if (!is_file("/conf/backup/" . $tmp_local_file)) {
                 continue;
             }
             $local_files[] = $tmp_local_file;
@@ -305,7 +305,8 @@ class Nextcloud extends Base implements IBackupProvider
      * @param $filelist array of files in remote location
      * @return array($filedata => $filename)
      */
-    public function get_filelist_dates($filelist) {
+    public function get_filelist_dates($filelist)
+    {
         // Save as associative array
         // key = lastmodified
         // value = filename
@@ -391,7 +392,7 @@ class Nextcloud extends Base implements IBackupProvider
             // should be sorted by ksort, hopefully that is a numerical sort:)
             $new_files = array();
             $old_files = array();
-            foreach(array_keys($files) as $file_timestamp) {
+            foreach (array_keys($files) as $file_timestamp) {
                 if ($file_timestamp > $target_timestamp) {
                     $new_files[(string)$file_timestamp] = $files[$file_timestamp];
                 } else {
@@ -409,14 +410,14 @@ class Nextcloud extends Base implements IBackupProvider
                     if ($total_files >= $keep_num) {
                         // Yes, we can
                         $tmp_files = array_slice($old_files, 0, $missing_num * -1);
-                        foreach(array_keys($tmp_files) as $filetodelete) {
+                        foreach (array_keys($tmp_files) as $filetodelete) {
                             $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
                         }
                     }
                     // No, we can't. Keep all things as is
                 } else {
                     // We have more new files than what we need to satisfy $keep_num
-                    foreach(array_keys($old_files) as $filetodelete) {
+                    foreach (array_keys($old_files) as $filetodelete) {
                         $this->delete_file($url, $username, $password, $internal_username, $backupdir, $old_files[$filetodelete]);
                     }
                     // We do not delete files from new_files, as they are covered by the $keep_days
@@ -424,7 +425,7 @@ class Nextcloud extends Base implements IBackupProvider
             } else {
                 // We have not been told to keep N items,
                 // delete everything in $old_files
-                foreach(array_keys($old_files) as $filetodelete) {
+                foreach (array_keys($old_files) as $filetodelete) {
                     $this->delete_file($url, $username, $password, $internal_username, $backupdir, $old_files[$filetodelete]);
                 }
             }
@@ -435,7 +436,7 @@ class Nextcloud extends Base implements IBackupProvider
                 // Delete filenames based on their creation time
                 if (count($files) > $keep_num) {
                     $tmp_files = array_slice($files, 0, $keep_num * -1);
-                    foreach(array_keys($tmp_files) as $filetodelete) {
+                    foreach (array_keys($tmp_files) as $filetodelete) {
                         $this->delete_file($url, $username, $password, $internal_username, $backupdir, $tmp_files[$filetodelete]);
                     }
                 }
@@ -468,7 +469,7 @@ class Nextcloud extends Base implements IBackupProvider
             $keep_num = (string)$nextcloud->numbackups;
 
             if (!$nextcloud->addhostname->isEmpty()) {
-                $backupdir .= "/".gethostname()."/";
+                $backupdir .= "/" . gethostname() . "/";
             }
 
             // Check if destination directory exists, create (full path) if not
@@ -556,7 +557,7 @@ class Nextcloud extends Base implements IBackupProvider
         $http_code = $reply['info']['http_code'];
         // Accepted http codes for upload is 200-299
         if (!($http_code >= 200 && $http_code < 300)) {
-            syslog(LOG_ERR, 'Could not PUT '. $url);
+            syslog(LOG_ERR, 'Could not PUT ' . $url);
             throw new \Exception();
         }
     }
@@ -570,7 +571,8 @@ class Nextcloud extends Base implements IBackupProvider
      * @param string $backupdir remote directory
      * @param string $filename filename to use
      */
-    public function delete_file($url, $username, $password, $internal_username, $backupdir, $filename) {
+    public function delete_file($url, $username, $password, $internal_username, $backupdir, $filename)
+    {
         $url = $url . "/remote.php/dav/files/$internal_username/$backupdir/$filename";
         $reply = $this->curl_request_nothrow(
             $url,
