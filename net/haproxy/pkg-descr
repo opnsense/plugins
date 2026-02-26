@@ -15,6 +15,9 @@ Added:
 Fixed:
 * migration fails if a http-request/-response "lua" rule is configured
 
+Changed:
+* modernize UI templates
+
 5.0
 
 WARNING: This is a new major release, which may result in
