@@ -24,7 +24,7 @@
  # POSSIBILITY OF SUCH DAMAGE.
  #}
 
- <script>
+<script>
     $(document).ready(function() {
         // Initial setup
         mapDataToFormUI({'frm_general': "/api/caddy/general/get"}).done(function() {
