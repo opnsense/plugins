@@ -28,34 +28,59 @@ export default class Smart extends BaseTableWidget {
     constructor() {
         super();
         this.tickTimeout = 300;
-        this.disks = null;
     }
 
     getMarkup() {
-        const $container = $('<div></div>');
-        const $smarttable = this.createTable('smart-table', {
-            headerPosition: 'left',
+        const $table = this.createTable('smart-table', {
+            headers: ['Device', 'SMART Status']
         });
-        $container.append($smarttable);
-        return $container;
+        $table.addClass('table table-striped table-condensed table-hover');
+        return $('<div>').append($table);
+    }
+
+    getAttrRaw(output, id) {
+        const attr = output?.ata_smart_attributes?.table?.find(a => a.id === id);
+        return attr?.raw?.string ?? 'N/A';
     }
 
     async onWidgetTick() {
-        let disks = await this.ajaxCall(`/api/smart/service/${'list/detailed'}`, {}, 'POST');
-        if (disks && disks.devices) {
-            const rows = [];
-            for (const device of disks.devices) {
-                try {
-                    const health = device.state.smart_status.passed;
-                    const text = health ? "OK" : "FAILED";
-                    const css = { color: health ? "green" : "red", fontSize: '150%' };
-                    const field = $(`<span id="${device.device}">`).text(text).css(css).prop('outerHTML');
-                    rows.push([[device.device], field]);
-                } catch (error) {
-                    super.updateTable('smart-table', [[["Error"], $(`<span>${this.translations.nosmart} ${device.device}: ${error}</span>`).prop('outerHTML')]]);
+        try {
+            const {devices = []} = await this.ajaxCall('/api/smart/service/list/detailed', {}, 'POST') || {};
+
+            const rows = await Promise.all(devices.map(async dev => {
+                const name = dev.device || 'Unknown';
+                const ident = dev.ident || 'N/A';
+                let status = '<span class="text-muted">Unknown</span>';
+                let tip = `Device: ${name}\nSerial: ${ident}\n\nKey attributes:`;
+
+                const health = dev.state?.smart_status?.passed;
+                if (health !== undefined) {
+                    const icon = health ? 'check-circle text-success' : 'exclamation-circle text-danger';
+                    status = `<span style="font-size:130%;font-weight:bold"><i class="fa fa-${icon} fa-lg"></i> ${health ? 'OK' : 'FAILED'}</span>`;
                 }
-            }
-            super.updateTable('smart-table', rows);
+
+                const resp = await this.ajaxCall('/api/smart/service/info', JSON.stringify({device: name, type: 'a', json: '1'}), 'POST');
+                const output = resp?.output;
+
+                if (output) {
+                    tip += `\nTemp: ${output.temperature?.current ?? 'N/A'} °C`;
+                    tip += `\nPower-On: ${output.power_on_time?.hours ?? 'N/A'} h`;
+                    tip += `\nReallocated: ${this.getAttrRaw(output, 5)}`;
+                    tip += `\nPending: ${this.getAttrRaw(output, 197)}`;
+                    tip += `\nUncorrectable: ${this.getAttrRaw(output, 198)}`;
+                    tip += `\nCRC Errors: ${this.getAttrRaw(output, 199)}`;
+                } else {
+                    tip += '\n(No details available)';
+                }
+
+                const escaped = tip.replace(/"/g, '&quot;').replace(/\n/g, '<br>');
+                return [`<span data-toggle="tooltip" data-html="true" title="${escaped}">${name}</span>`, status];
+            }));
+
+            super.updateTable('smart-table', rows.sort((a,b) => a[0].localeCompare(b[0])));
+            $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        } catch {
+            super.updateTable('smart-table', [['<span class="text-danger">Error</span>', '<span class="text-danger">Widget failed</span>']]);
         }
     }
 }
