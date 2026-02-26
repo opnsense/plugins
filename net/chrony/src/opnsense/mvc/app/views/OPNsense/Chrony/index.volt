@@ -31,12 +31,20 @@
     <li><a data-toggle="tab" href="#chronysourcestats">{{ lang._('Source Stats') }}</a></li>
     <li><a data-toggle="tab" href="#chronytracking">{{ lang._('Tracking') }}</a></li>
     <li><a data-toggle="tab" href="#chronyauthdata">{{ lang._('Auth Data') }}</a></li>
+    <li><a data-toggle="tab" href="#chronyntpdata">{{ lang._('NTP Data') }}</a></li>
 </ul>
 
 <div class="tab-content content-box tab-content">
     <div id="general" class="tab-pane fade in active">
         <div class="content-box" style="padding-bottom: 1.5em;">
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+
+            <h1>{{ lang._('Sources') }}</h1>
+
+            {{ partial('layout_partials/base_bootgrid_table', formGridPeer) }}
+            
+            {{ partial("layout_partials/base_dialog",['fields':formDialogPeer,'id':formGridPeer['edit_dialog_id'],'label':lang._('Edit source')])}}
+        
             <div class="col-md-12">
                 <hr />
                 <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
@@ -55,9 +63,37 @@
     <div id="chronyauthdata" class="tab-pane fade in">
         <pre id="listchronyauthdata"></pre>
     </div>
+    <div id="chronyntpdata" class="tab-pane fade in">
+        <pre id="listchronyntpdata"></pre>
+    </div>
 </div>
 
 <script>
+
+$(document).ready(function() {
+    $("#{{formGridPeer['table_id']}}").UIBootgrid(
+        {
+            search:'/api/chrony/general/search_item/',
+            get:'/api/chrony/general/get_item/',
+            set:'/api/chrony/general/set_item/',
+            add:'/api/chrony/general/add_item/',
+            del:'/api/chrony/general/del_item/',
+            toggle:'/api/chrony/general/toggle_item/'
+        }
+    );
+
+    $("#reconfigureAct").SimpleActionButton();
+});
+
+var chronyActiveInterval = null;
+
+var chronyTabUpdateMap = {
+    "#chronysources": update_chronysources,
+    "#chronysourcestats": update_chronysourcestats,
+    "#chronytracking": update_chronytracking,
+    "#chronyauthdata": update_chronyauthdata,
+    "#chronyntpdata": update_chronyntpdata
+};
 
 // Put API call into a function, needed for auto-refresh
 function update_chronysources() {
@@ -68,11 +104,10 @@ function update_chronysources() {
 
 function update_chronysourcestats() {
     ajaxCall(url="/api/chrony/service/chronysourcestats", sendData={}, callback=function(data,status) {
-        $("#listchronysourcestats").text(data['response']);
+        $("#listchronysourcestats").text($('<div>').html(data['response']).text());
     });
 }
 
-// Put API call into a function, needed for auto-refresh
 function update_chronytracking() {
     ajaxCall(url="/api/chrony/service/chronytracking", sendData={}, callback=function(data,status) {
         $("#listchronytracking").text(data['response']);
@@ -85,31 +120,50 @@ function update_chronyauthdata() {
     });
 }
 
-    $(function() {
-        var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-        });
+function update_chronyntpdata() {
+    ajaxCall(url="/api/chrony/service/chronyntpdata", sendData={}, callback=function(data,status) {
+        $("#listchronyntpdata").text(data['response']);
+    });
+}
+
+function autoRefresh(tabId) {
+    if (chronyActiveInterval !== null) {
+        clearInterval(chronyActiveInterval);
+        chronyActiveInterval = null;
+    }
+
+    if (chronyTabUpdateMap[tabId]) {
+        // run once immediately
+        chronyTabUpdateMap[tabId]();
+        // autorefresh active tab every second
+        chronyActiveInterval = setInterval(chronyTabUpdateMap[tabId], 1000);
+    }
+}
+
+$(function() {
+    var data_get_map = {'frm_general_settings':"/api/chrony/general/get"};
+    mapDataToFormUI(data_get_map).done(function(data){
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
 
     updateServiceControlUI('chrony');
 
-    // Call function update_neighbor with a auto-refresh of 5 seconds
-    setInterval(update_chronysources, 5000);
-    setInterval(update_chronysourcestats, 5000);
-    setInterval(update_chronytracking, 5000);
-    setInterval(update_chronyauthdata, 5000);
+    // auto-refresh only the current tab
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var targetTab = $(e.target).attr("href");
+        autoRefresh(targetTab);
+    });
 
-        // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
-                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
-                    updateServiceControlUI('chrony');
-                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                });
+    // link save button to API set action
+    $("#saveAct").click(function(){
+        saveFormToEndpoint(url="/api/chrony/general/set", formid='frm_general_settings',callback_ok=function(){
+            $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url="/api/chrony/service/reconfigure", sendData={}, callback=function(data,status) {
+                updateServiceControlUI('chrony');
+                $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
-
     });
+});
 </script>

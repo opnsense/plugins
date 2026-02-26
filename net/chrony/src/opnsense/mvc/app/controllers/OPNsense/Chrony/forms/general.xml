@@ -6,36 +6,22 @@
         <help>Enable Chrony time daemon.</help>
     </field>
     <field>
+        <id>general.localstratum</id>
+        <label>Local Stratum</label>
+        <type>text</type>
+        <help>(1-15) Local mode allows the system clock to be used when no other clocks are available. The number here specifies the stratum reported by the local clock and should normally be set to a number high enough to ensure that any other servers available to clients are preferred over this server.</help>
+    </field>
+    <field>
+        <id>general.orphanmode</id>
+        <label>Orphan Mode</label>
+        <type>checkbox</type>
+        <help></help>
+    </field>
+    <field>
         <id>general.port</id>
         <label>Listen Port</label>
         <type>text</type>
         <help>Set the port chrony listen to.</help>
-    </field>
-    <field>
-        <id>general.ntsclient</id>
-        <label>NTS Client Support</label>
-        <type>checkbox</type>
-        <help>Enable NTS in client mode. This will add another layer of security for peers when OPNsense is the client. Every server in Peers has to support NTS.</help>
-    </field>
-    <field>
-        <id>general.ntsnocert</id>
-        <label>NTS Disable Certcheck</label>
-        <type>checkbox</type>
-        <help>If you run NTS mode you can enable this option in order to ignore wrong time in certificates for the first check. This helps if your system starts with wrong time.</help>
-    </field>
-    <field>
-        <id>general.peers</id>
-        <label>NTP Peers</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Set as many NTP peers you need.</help>
-    </field>
-    <field>
-        <id>general.fallbackpeers</id>
-        <label>Fallback Peer</label>
-        <type>text</type>
-        <help>Set fallback peer if you use NTS and your system starts with wrong time. Best to only use this for internal trusted peers.</help>
     </field>
     <field>
         <id>general.allowednetworks</id>
@@ -44,5 +30,11 @@
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Set the networks allowed to synchronize time with this server. If this value is not set it will also not listen to the port and just synchronize the time for itself.</help>
+    </field>
+    <field>
+        <id>general.ntsnocert</id>
+        <label>NTS Disable Certcheck</label>
+        <type>checkbox</type>
+        <help>If you run NTS mode you can enable this option in order to ignore wrong time in certificates for the first check. This helps if your system starts with wrong time.</help>
     </field>
 </form>
