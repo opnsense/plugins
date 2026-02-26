@@ -111,8 +111,8 @@ class Caddy extends BaseModel
     private function checkSuperuserPorts($messages)
     {
         if ($this->general->DisableSuperuser->isEqual('1')) {
-            $httpPort = !$this->general->HttpPort->isEmpty() ? $this->general->HttpPort->getValue() : 80;
-            $httpsPort = !$this->general->HttpsPort->isEmpty() ? $this->general->HttpsPort->getValue() : 443;
+            $httpPort = !$this->general->HttpPort->isEmpty() ? $this->general->HttpPort->asInt() : 80;
+            $httpsPort = !$this->general->HttpsPort->isEmpty() ? $this->general->HttpsPort->asInt() : 443;
 
             // Check default HTTP port
             if ($httpPort < 1024) {
@@ -136,7 +136,7 @@ class Caddy extends BaseModel
 
             // Check ports under domain configurations
             foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->getValue() : null;
+                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->asInt() : null;
 
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
