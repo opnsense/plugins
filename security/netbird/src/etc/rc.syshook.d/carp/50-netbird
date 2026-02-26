@@ -45,16 +45,52 @@ if (netbird_carp_enabled()) {
         exit(1);
     }
 
-    // Use mwexec with background=true to prevent blocking other CARP scripts
-    // during failover (scripts run serialized)
+    // Lock file to ensure filter reload only runs once across all CARP events
+    // (multiple interfaces transition simultaneously during failover)
+    $lockfile_master = '/var/run/netbird.CARP_MASTER';
+    $lockfile_backup = '/var/run/netbird.CARP_BACKUP';
+
     switch ($type) {
         case 'MASTER':
-            log_msg("NetBird CARP: Transitioning to MASTER state, starting NetBird interfaces");
-            mwexecfm('/usr/local/bin/netbird up > /dev/null', false, true);
+            // Only the first MASTER event creates the lock file and triggers the reload
+            if (!file_exists($lockfile_master)) {
+                @file_put_contents($lockfile_master, (string)getmypid());
+
+                @unlink($lockfile_backup);
+                $found_wt0 = false;
+
+                log_msg("NetBird CARP: MASTER event from '{$subsystem}', starting NetBird's WireGuard interface");
+                mwexec('/usr/local/bin/netbird up > /dev/null', false, true);
+                for ($i = 0; $i < 10; $i++) {
+                    sleep(1);
+                    if (file_exists('/dev/wt0')) {
+                        $found_wt0 = true;
+                        break;
+                    }
+                }
+                if ($found_wt0) {
+                    log_msg("NetBird CARP: Found wt0 interface, reloading filter");
+                    mwexec('/usr/local/sbin/configctl filter reload > /dev/null', false, true);
+                }
+                else {
+                    log_msg("NetBird CARP: Timeout waiting for wt0 interface to appear after NetBird up. Filter reload skipped.");
+                }
+            } else {
+                log_msg("NetBird CARP: Ignoring duplicate MASTER event from '{$subsystem}'");
+            }
             break;
         case 'BACKUP':
-            log_msg("NetBird CARP: Transitioning to BACKUP state, stopping NetBird interfaces");
-            mwexecfm('/usr/local/bin/netbird down > /dev/null', false, true);
+            // Only the first BACKUP event creates the lock file and triggers the down
+            if (!file_exists($lockfile_backup)) {
+                @file_put_contents($lockfile_backup, (string)getmypid());
+
+                @unlink($lockfile_master);
+
+                log_msg("NetBird CARP: BACKUP event from '{$subsystem}', stopping NetBird's WireGuard interface");
+                mwexec('/usr/local/bin/netbird down > /dev/null', false, true);
+            } else {
+                log_msg("NetBird CARP: Ignoring duplicate BACKUP event from '{$subsystem}'");
+            }
             break;
     }
 }
