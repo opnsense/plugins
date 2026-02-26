@@ -30,7 +30,7 @@
         {% for domain in layer4.ToDomain.split(',') %}
         {% set is_ipv6 = (':' in domain) %}
         upstream {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ layer4.ToPort }} {
-            {% if layer4.TerminateTls|default("0") == "1" and layer4.OriginateTls|default("") %}
+            {% if layer4.OriginateTls %}
                 {{ layer4.OriginateTls }}
             {% endif %}
         }
