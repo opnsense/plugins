@@ -96,78 +96,30 @@
 {% if entrypoint == 'reverse_proxy' %}
 
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
-                            const update_filter = function (selectValues) {
-                                suppressFilterReload = true;
-
-                                return $('#reverseFilter')
-                                    .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
-                                    .done(function () {
-                                        $('#reverseFilter')
-                                            .selectpicker('val', selectValues)
-                                            .selectpicker('refresh');
-
-                                        // manually update icon (since we skip .change())
-                                        const hasSelection = Array.isArray(selectValues) && selectValues.length > 0;
-                                        $('#reverseFilterIcon')
-                                            .toggleClass('text-success fa-filter-circle-xmark', hasSelection)
-                                            .toggleClass('fa-filter', !hasSelection);
-
-                                        $('#maintabs a[href="#handlers"]').tab('show');
-
-                                        // manually reload just the handlers grid
-                                        const grid_id = "{{ formGridHandle['table_id'] }}";
-                                        if (all_grids[grid_id]) {
-                                            all_grids[grid_id].bootgrid('reload');
-                                        }
-                                    })
-                                    .always(function () {
-                                        suppressFilterReload = false;
-                                    });
-                            };
-
                             commands.search_handler = {
                                 method: function () {
                                     const rowUuid = $(this).data("row-id");
                                     if (!rowUuid) return;
 
-                                    update_filter([rowUuid]);
+                                    suppressFilterReload = true;
+
+                                    $('#reverseFilter')
+                                        .selectpicker('val', [rowUuid])
+                                        .selectpicker('refresh');
+
+                                    $('#reverseFilterIcon')
+                                        .removeClass('fa-filter')
+                                        .addClass('text-success fa-filter-circle-xmark');
+
+                                    $('#maintabs a[href="#handlers"]').tab('show');
+
+                                    all_grids["{{ formGridHandle['table_id'] }}"]?.bootgrid('reload');
+
+                                    suppressFilterReload = false;
                                 },
                                 classname: 'fa fa-fw fa-search',
                                 title: "{{ lang._('Search Handler') }}",
                                 sequence: 20
-                            };
-
-                            commands.add_handler = {
-                                method: function () {
-                                    const rowUuid = $(this).data("row-id");
-                                    if (!rowUuid) return;
-
-                                    open_add_dialog = function (selectValues) {
-                                        update_filter(selectValues);
-
-                                        // Ensure selectpicker has values selected before click on add button
-                                        $('#reverseFilter').one('changed.bs.select', function (e) {
-                                            $("#" + "{{ formGridHandle['table_id'] }}")
-                                                .find("button[data-action='add']")
-                                                .trigger('click');
-                                        });
-                                    };
-
-                                    // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
-                                    if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
-                                        ajaxGet(`/api/caddy/reverse_proxy/get_{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
-                                            const reverseUuids = rowData?.subdomain?.reverse || {};
-                                            const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
-                                            const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
-                                            open_add_dialog(selectValues);
-                                        });
-                                    } else {
-                                        open_add_dialog([rowUuid]);
-                                    }
-                                },
-                                classname: 'fa fa-fw fa-plus',
-                                title: "{{ lang._('Add Handler') }}",
-                                sequence: 10
                             };
                         }
 
@@ -399,11 +351,6 @@
         const $initial = $tabs.filter(`[href="${location.hash}"]`).first();
         ($initial.length ? $initial : $tabs.first()).tab('show');
 
-        // Trigger handlers tab too (even if not active) to ensure command buttons always work
-        $(document).one('ajaxStop', function () {
-            $('a[href="#handlers"]').triggerHandler('shown.bs.tab');
-        });
-
         updateServiceControlUI('caddy');
     });
 
@@ -471,11 +418,11 @@
     <div id="domains" class="tab-pane fade in active">
         <!-- Reverse Proxy -->
         <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '120'})}}
 
         <!-- Subdomains Tab -->
         <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '120'})}}
     </div>
 
     <!-- Handle Tab -->
