@@ -1,0 +1,42 @@
+<model>
+    <mount>//OPNsense/Lightscope</mount>
+    <version>1.0.0</version>
+    <description>LightScope Cybersecurity Research Honeypot and Telescope</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <database type="TextField">
+                <Required>N</Required>
+                <Mask>/^[a-z0-9_]{0,63}$/</Mask>
+                <ValidationMessage>Database name must be lowercase alphanumeric with underscores, max 63 chars</ValidationMessage>
+            </database>
+            <randomization_key type="TextField">
+                <Required>N</Required>
+                <Mask>/^[a-z0-9_]{0,63}$/</Mask>
+            </randomization_key>
+            <honeypot_ports type="TextField">
+                <Default>8080,2323,8443,3389,5900</Default>
+                <Required>N</Required>
+                <Mask>/^[0-9,\s]*$/</Mask>
+                <ValidationMessage>Enter comma-separated port numbers (e.g., 8080,2323,8443)</ValidationMessage>
+            </honeypot_ports>
+            <honeypot_server type="TextField">
+                <Default>128.9.28.79</Default>
+                <Required>N</Required>
+            </honeypot_server>
+            <honeypot_ssh_port type="IntegerField">
+                <Default>12345</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+            </honeypot_ssh_port>
+            <honeypot_telnet_port type="IntegerField">
+                <Default>12346</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+            </honeypot_telnet_port>
+        </general>
+    </items>
+</model>
