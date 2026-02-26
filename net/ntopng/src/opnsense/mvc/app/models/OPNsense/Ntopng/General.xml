@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/ntopng/general</mount>
     <description>ntopng configuration</description>
-    <version>0.0.2</version>
+    <version>0.1.3</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -12,31 +12,37 @@
             <Multiple>Y</Multiple>
             <AllowDynamic>Y</AllowDynamic>
         </interface>
-        <httpport type="PortField">
-            <Required>Y</Required>
-            <Default>3000</Default>
-        </httpport>
-        <httpsport type="PortField">
+        <addresseshttp type="IPPortField">
             <Required>N</Required>
+            <Default>[::]:3000,0.0.0.0:3000</Default>
+            <AsList>Y</AsList>
+        </addresseshttp>
+        <addresseshttps type="IPPortField">
+            <Required>N</Required>
+            <Default></Default>
             <Constraints>
                 <check001>
-                    <ValidationMessage>Please select a HTTPS port and a valid certificate</ValidationMessage>
+                    <ValidationMessage>Please select an HTTPS port and a valid certificate</ValidationMessage>
                     <type>AllOrNoneConstraint</type>
                     <addFields>
                         <field1>cert</field1>
                     </addFields>
                 </check001>
             </Constraints>
-        </httpsport>
+            <AsList>N</AsList>
+        </addresseshttps>
         <cert type="CertificateField">
             <Type>cert</Type>
             <Required>N</Required>
             <Constraints>
                 <check001>
-                    <reference>httpsport.check001</reference>
+                    <reference>addresseshttps.check001</reference>
                 </check001>
             </Constraints>
         </cert>
+        <redisconnection type="TextField">
+            <Required>N</Required>
+        </redisconnection>
         <dnsmode type="OptionField">
             <Required>N</Required>
             <OptionValues>
