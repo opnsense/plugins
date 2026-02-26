@@ -1,0 +1,9 @@
+<acl>
+    <page-autorollback>
+        <name>WebCfg - Auto Rollback: Settings</name>
+        <patterns>
+            <pattern>ui/autorollback/*</pattern>
+            <pattern>api/autorollback/*</pattern>
+        </patterns>
+    </page-autorollback>
+</acl>

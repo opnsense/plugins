@@ -1,0 +1,131 @@
+#!/usr/local/bin/python3
+"""
+    Copyright (c) 2026 MP Lindsey
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+"""
+"""
+OPNsense Auto Rollback - Config Change Hook (syshook/config)
+
+This script is called by OPNsense every time config.xml is saved.
+It receives the backup file path as its first argument.
+
+Purpose:
+  1. Record the config change for the connectivity watchdog
+  2. Record BOTH the new backup AND the previous backup (for correct rollback target)
+  3. Skip recording if a rollback restore is in progress (re-entrancy guard)
+  4. Skip recording if a firmware update is in progress
+
+This script MUST be fast and lightweight — it runs synchronously
+in the config save pipeline.
+"""
+
+import json
+import os
+import sys
+import time
+import glob
+import re
+
+# Paths
+VOLATILE_DIR = '/var/run/autorollback'
+RESTORE_LOCK = os.path.join(VOLATILE_DIR, 'restoring.lock')
+LAST_CONFIG_FILE = os.path.join(VOLATILE_DIR, 'last_config_change')
+FIRMWARE_LOCK = '/tmp/pkg_upgrade.progress'
+CONFIG_BACKUP_DIR = '/conf/backup'
+
+# Same regex as common.py to match only timestamped backups
+BACKUP_TIMESTAMP_RE = re.compile(r'^config-\d+(\.\d+)?(_\d+)?\.xml$')
+
+
+def get_previous_backup(current_backup):
+    """
+    Find the backup file that existed BEFORE the current one.
+    This is the correct rollback target for the watchdog.
+    """
+    try:
+        backups = glob.glob(os.path.join(CONFIG_BACKUP_DIR, 'config-*.xml'))
+        backups = [b for b in backups if BACKUP_TIMESTAMP_RE.match(os.path.basename(b))]
+        backups.sort()
+        if current_backup and current_backup in backups:
+            idx = backups.index(current_backup)
+            if idx > 0:
+                return backups[idx - 1]
+        elif len(backups) >= 2:
+            # Current backup might not be in the list yet, return second-to-last
+            return backups[-2]
+    except Exception:
+        pass
+    return ''
+
+
+def main():
+    # Get backup file path from argument
+    backup_file = sys.argv[1] if len(sys.argv) > 1 else ''
+
+    # Re-entrancy guard: skip if we're restoring a config
+    if os.path.isfile(RESTORE_LOCK):
+        # Check if lock is actually held (not stale)
+        import fcntl
+        fd = None
+        try:
+            fd = open(RESTORE_LOCK, 'r')
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            # Got lock = stale file, clean up
+            fcntl.flock(fd, fcntl.LOCK_UN)
+            try:
+                os.unlink(RESTORE_LOCK)
+            except OSError:
+                pass
+        except (BlockingIOError, OSError):
+            # Lock held = restore in progress, skip
+            return
+        finally:
+            if fd is not None:
+                fd.close()
+
+    # Skip during firmware updates
+    if os.path.isfile(FIRMWARE_LOCK):
+        return
+
+    # Ensure volatile directory exists
+    os.makedirs(VOLATILE_DIR, mode=0o750, exist_ok=True)
+
+    # Find the previous backup (the one BEFORE this config change)
+    previous_backup = get_previous_backup(backup_file)
+
+    # Record the config change for the watchdog
+    try:
+        state = {
+            'time': time.time(),
+            'backup': backup_file,
+            'previous_backup': previous_backup,
+        }
+        with open(LAST_CONFIG_FILE, 'w') as f:
+            json.dump(state, f)
+    except (IOError, OSError):
+        pass  # Non-critical — don't break the config save pipeline
+
+
+if __name__ == '__main__':
+    main()
