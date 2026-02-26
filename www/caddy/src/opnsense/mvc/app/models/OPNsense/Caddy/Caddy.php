@@ -226,7 +226,7 @@ class Caddy extends BaseModel
                 if ($layer4->TerminateTls->isEmpty() && !$layer4->OriginateTls->isEmpty()) {
                     $messages->appendMessage(new Message(
                         gettext(
-                            'This cannot be selected if TLS is not terminated.'
+                            'This cannot be selected without terminating TLS.'
                         ),
                         $key . ".OriginateTls"
                     ));
