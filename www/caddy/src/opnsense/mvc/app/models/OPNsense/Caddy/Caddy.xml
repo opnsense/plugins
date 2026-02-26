@@ -652,6 +652,12 @@
                 <ToPort type="PortField">
                     <Required>Y</Required>
                 </ToPort>
+                <OriginateTls type="OptionField">
+                    <OptionValues>
+                        <tls>TLS (Verify certificate)</tls>
+                        <tls_insecure_skip_verify>TLS (Skip verification)</tls_insecure_skip_verify>
+                    </OptionValues>
+                </OriginateTls>
                 <ProxyProtocol type="OptionField">
                     <BlankDesc>Off (default)</BlankDesc>
                     <OptionValues>

@@ -283,12 +283,13 @@
 
 {% endif %}
 
-        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type").on("keyup change", function () {
+        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type, #layer4\\.TerminateTls").on("keyup change", function () {
             const http_tls = String($("#handle\\.HttpTls").val() || "")
             const handle_directive = String($("#handle\\.HandleDirective").val() || "")
             const disable_tls = String($("#reverse\\.DisableTls").val() || "")
             const layer4_matchers = String($("#layer4\\.Matchers").val() || "")
             const layer4_type = String($("#layer4\\.Type").val() || "")
+            const layer4_terminate_tls = $("#layer4\\.TerminateTls").is(":checked");
 
             const styleVisibility = [
                 {
@@ -314,6 +315,10 @@
                 {
                     class: "style_type",
                     visible: layer4_type === "global"
+                },
+                {
+                    class: "style_terminate_tls",
+                    visible: layer4_terminate_tls
                 },
             ];
 
