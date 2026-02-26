@@ -13,6 +13,7 @@ Plugin Changelog
 Fixed:
 * fix class name of Google Domains DNS API (to make PHP linter happy)
 * parameters for TrueNAS automation not visible (#5210)
+* multiple buttons not working (#5123)
 
 4.13
 
