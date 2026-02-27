@@ -378,6 +378,24 @@
         <style>method_table method_table_acme_truenas</style>
     </field>
     <field>
+        <id>action.acme_truenas_apikey</id>
+        <label>TrueNAS API key</label>
+        <type>text</type>
+        <help>API key generated in the TrueNAS web UI.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_hostname</id>
+        <label>TrueNAS hostname</label>
+        <type>text</type>
+        <help>Hostname or IP address of TrueNAS Core Server.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_scheme</id>
+        <label>TrueNAS scheme</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to TrueNAS Core Server.</help>
+    </field>
+    <field>
         <label>Required Parameters</label>
         <type>header</type>
         <style>method_table method_table_acme_ruckus</style>
@@ -398,24 +416,6 @@
         <id>action.acme_ruckus_pass</id>
         <label>Ruckus Password</label>
         <type>password</type>
-    </field>
-    <field>
-        <id>action.acme_truenas_apikey</id>
-        <label>TrueNAS API key</label>
-        <type>text</type>
-        <help>API key generated in the TrueNAS web UI.</help>
-    </field>
-    <field>
-        <id>action.acme_truenas_hostname</id>
-        <label>TrueNAS hostname</label>
-        <type>text</type>
-        <help>Hostname or IP address of TrueNAS Core Server.</help>
-    </field>
-    <field>
-        <id>action.acme_truenas_scheme</id>
-        <label>TrueNAS scheme</label>
-        <type>dropdown</type>
-        <help>Connection scheme that will be used when uploading certificates to TrueNAS Core Server.</help>
     </field>
     <field>
         <label>Required Parameters</label>
