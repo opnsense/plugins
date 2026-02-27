@@ -244,7 +244,7 @@ class Caddy extends BaseModel
                     ));
                 }
 
-                if ($layer4->Matchers->isEqual('openvpn') && !$layer4->FromOpenvpnStaticKey->isEmpty()) {
+                if (!$layer4->Matchers->isEqual('openvpn') && !$layer4->FromOpenvpnStaticKey->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
