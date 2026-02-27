@@ -10,7 +10,6 @@ Plugin Changelog
 * Feature: Add NXDOMAIN option for unbound
 * Feature: Add dest address for unbound
 
-
 1.4
 
 * Feature: Added DNSCrypt-Proxy integration
