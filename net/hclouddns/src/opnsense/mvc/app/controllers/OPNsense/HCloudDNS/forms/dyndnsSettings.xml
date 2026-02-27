@@ -1,0 +1,18 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>High Availability (CARP)</label>
+    </field>
+    <field>
+        <id>hclouddns.general.carpAware</id>
+        <label>CARP Aware</label>
+        <type>checkbox</type>
+        <help>Only run DNS updates on the CARP master node. When enabled, the backup node will skip all DNS operations. Standalone systems without CARP interfaces are not affected (fail-open).</help>
+    </field>
+    <field>
+        <id>hclouddns.general.carpVhid</id>
+        <label>CARP VIP</label>
+        <type>dropdown</type>
+        <help>Select a CARP VIP to monitor, or "Any" to monitor all CARP interfaces. If any monitored VIP is BACKUP, DNS updates are skipped.</help>
+    </field>
+</form>
