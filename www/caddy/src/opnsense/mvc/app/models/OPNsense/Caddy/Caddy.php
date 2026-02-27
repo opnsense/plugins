@@ -155,7 +155,7 @@ class Caddy extends BaseModel
             }
 
             foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->getValue() : null;
+                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->asInt() : null;
 
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
