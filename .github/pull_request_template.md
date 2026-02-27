@@ -3,11 +3,7 @@ Before you submit a pull request, we ask you kindly to acknowledge the following
 
 - [ ] I have read the contributing guide lines at https://github.com/opnsense/plugins/blob/master/CONTRIBUTING.md
 - [ ] I opened an issue first for non-trivial changes and linked it below.
-
-**AI Disclosure**
-
-- [ ] No AI tools were used.
-- [ ] AI tools were used.
+- [ ] AI tools were used to create at least part of the code submitted herewith.
 
 If AI was used, please disclose:
 
