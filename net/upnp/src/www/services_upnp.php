@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // save form data
         $upnp = [];
         // boolean types
-        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'allow_third_party_mapping', 'ipv6_disable'] as $fieldname) {
+        foreach (['enable', 'enable_upnp', 'enable_natpmp', 'logpackets', 'sysuptime', 'permdefault', 'ipv6_disable'] as $fieldname) {
             $upnp[$fieldname] = !empty($pconfig[$fieldname]);
         }
         // numeric types
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
-        foreach (['download', 'ext_iface', 'friendly_name', 'log_level', 'overridesubnet', 'overridewanip', 'stun_host', 'stun_port', 'upload', 'upnp_igd_compat'] as $fieldname) {
+        foreach (['allow_third_party_mapping', 'download', 'ext_iface', 'friendly_name', 'log_level', 'overridesubnet', 'overridewanip', 'stun_host', 'stun_port', 'upload', 'upnp_igd_compat'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
@@ -234,7 +234,7 @@ include("head.inc");
                   </thead>
                   <tbody>
                     <tr>
-                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable service");?></td>
+                      <td><a id="help_for_enable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enabled");?></td>
                       <td>
                        <input name="enable" type="checkbox" value="yes" <?=!empty($pconfig['enable']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable">
@@ -350,9 +350,14 @@ include("head.inc");
                     <tr>
                       <td><a id="help_for_allow_third_party_mapping" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Allow third-party mapping");?></td>
                       <td>
-                        <input name="allow_third_party_mapping" type="checkbox" value="yes" <?=!empty($pconfig['allow_third_party_mapping']) ? "checked=\"checked\"" : ""; ?> />
+                        <select name="allow_third_party_mapping">
+                          <option value="0" <?= ($pconfig['allow_third_party_mapping'] ?? '') == '0' ? 'selected="selected"' : '' ?> ><?= gettext('Disabled (recommended)') ?></option>
+                          <option value="1" <?= ($pconfig['allow_third_party_mapping'] ?? '') == '1' ? 'selected="selected"' : '' ?> ><?= gettext('Enabled') ?></option>
+                          <option value="upnp-igd" <?= ($pconfig['allow_third_party_mapping'] ?? '') == 'upnp-igd' ? 'selected="selected"' : '' ?> ><?= gettext('Enabled (UPnP IGD only)') ?></option>
+                          <option value="pcp" <?= ($pconfig['allow_third_party_mapping'] ?? '') == 'pcp' ? 'selected="selected"' : '' ?> ><?= gettext('Enabled (PCP only)') ?></option>
+                        </select>
                         <div class="hidden" data-for="help_for_allow_third_party_mapping">
-                          <?=gettext("Allow adding port maps for non-requesting IP addresses.");?>
+                          <?=gettext("Allow adding port maps for non-requesting IP addresses; use with care.");?>
                         </div>
                       </td>
                     </tr>
