@@ -8,6 +8,10 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enable>
+            <enablecarp type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enablecarp>
             <wireguardPort type="IntegerField">
                 <Default>51820</Default>
                 <Required>Y</Required>
