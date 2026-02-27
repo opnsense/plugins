@@ -23,6 +23,7 @@ Plugin Changelog
 1.1
 
 * Add a button to reset all databases (contributed by Michael Muenz)
+* Fix service widget behaviour (contributed by sevengiants)
 
 1.0
 
@@ -31,6 +32,3 @@ Plugin Changelog
 * Allow password protection
 * Connection limits
 * Performance monitoring of slow connections
-
-
-WWW: http://redis.io/
