@@ -1474,7 +1474,7 @@ $( document ).ready(function() {
                           </span><br>
                           <select name='netbios_ntype' class="selectpicker">
 <?php
-                          foreach ($netbios_nodetypes as $type => $name) :
+                          foreach (['0' => 'none', '1' => 'b-node', '2' => 'p-node', '4' => 'm-node', '5' => 'h-node'] as $type => $name):
                               $selected = "";
                               if ($pconfig['netbios_ntype'] == $type) {
                                   $selected = "selected=\"selected\"";
