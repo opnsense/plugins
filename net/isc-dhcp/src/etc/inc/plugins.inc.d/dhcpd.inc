@@ -1325,3 +1325,21 @@ function dhcpd_staticarp($interface, $ifconfig_details)
         interfaces_neighbors_configure($interface, $ifconfig_details);
     }
 }
+
+function dhcpd_ip_in_interface_alias_subnet($interface, $ipalias)
+{
+    if (empty($interface) || !is_ipaddr($ipalias)) {
+        return false;
+    }
+
+    foreach (config_read_array('virtualip', 'vip', false) as $vip) {
+        if ($vip['mode'] == 'ipalias' && $vip['interface'] == $interface) {
+            $subnet = is_ipaddrv6($ipalias) ? gen_subnetv6($vip['subnet'], $vip['subnet_bits']) : gen_subnet($vip['subnet'], $vip['subnet_bits']);
+            if (ip_in_subnet($ipalias, "{$subnet}/{$vip['subnet_bits']}")) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
