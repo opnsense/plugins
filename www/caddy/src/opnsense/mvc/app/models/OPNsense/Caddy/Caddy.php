@@ -42,8 +42,8 @@ class Caddy extends BaseModel
         $combos = [];
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
             $key = $item->__reference;
-            $fromDomain = (string) $item->FromDomain;
-            $fromPort = (string) $item->FromPort;
+            $fromDomain = $item->FromDomain->getValue();
+            $fromPort = $item->FromPort->getValue();
 
             if ($fromPort === '') {
                 $defaultPorts = ['80', '443'];
@@ -78,11 +78,11 @@ class Caddy extends BaseModel
     {
         foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
             if ($item->isFieldChanged()) {
-                if ((string) $item->DisableTls === '1') {
+                if ($item->DisableTls->isEqual('1')) {
                     $conflictChecks = [
-                        'DnsChallenge' => (string) $item->DnsChallenge === '1',
-                        'AcmePassthrough' => !empty((string) $item->AcmePassthrough),
-                        'CustomCertificate' => !empty((string) $item->CustomCertificate)
+                        'DnsChallenge' => $item->DnsChallenge->isEqual('1'),
+                        'AcmePassthrough' => !$item->AcmePassthrough->isEmpty(),
+                        'CustomCertificate' => !$item->CustomCertificate->isEmpty()
                     ];
 
                     $conflictFields = array_keys(array_filter($conflictChecks));
@@ -110,9 +110,9 @@ class Caddy extends BaseModel
      */
     private function checkSuperuserPorts($messages)
     {
-        if ((string)$this->general->DisableSuperuser === '1') {
-            $httpPort = !empty((string)$this->general->HttpPort) ? (string)$this->general->HttpPort : 80;
-            $httpsPort = !empty((string)$this->general->HttpsPort) ? (string)$this->general->HttpsPort : 443;
+        if ($this->general->DisableSuperuser->isEqual('1')) {
+            $httpPort = !$this->general->HttpPort->isEmpty() ? $this->general->HttpPort->asInt() : 80;
+            $httpsPort = !$this->general->HttpsPort->isEmpty() ? $this->general->HttpsPort->asInt() : 443;
 
             // Check default HTTP port
             if ($httpPort < 1024) {
@@ -136,7 +136,7 @@ class Caddy extends BaseModel
 
             // Check ports under domain configurations
             foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
-                $fromPort = !empty((string)$item->FromPort) ? (string)$item->FromPort : null;
+                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->asInt() : null;
 
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
@@ -155,7 +155,7 @@ class Caddy extends BaseModel
             }
 
             foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-                $fromPort = !empty((string)$item->FromPort) ? (string)$item->FromPort : null;
+                $fromPort = !$item->FromPort->isEmpty() ? $item->FromPort->asInt() : null;
 
                 if ($fromPort !== null && $fromPort < 1024) {
                     $messages->appendMessage(new Message(
@@ -177,27 +177,27 @@ class Caddy extends BaseModel
 
     private function checkLayer4Matchers($messages)
     {
-        foreach ($this->reverseproxy->layer4->iterateItems() as $item) {
-            if ($item->isFieldChanged()) {
-                $key = $item->__reference;
+        foreach ($this->reverseproxy->layer4->iterateItems() as $layer4) {
+            if ($layer4->isFieldChanged()) {
+                $key = $layer4->__reference;
                 if (
-                    in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) &&
-                    empty((string)$item->FromDomain)
+                    in_array($layer4->Matchers->getValue(), ['httphost', 'tlssni', 'quicsni']) &&
+                    $layer4->FromDomain->isEmpty()
                 ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When "%s" matcher is selected, domain is required.'
                             ),
-                            $item->Matchers
+                            $layer4->Matchers->getValue()
                         ),
                         $key . ".FromDomain"
                     ));
                 } elseif (
-                        !in_array((string)$item->Matchers, ['httphost', 'tlssni', 'quicsni']) &&
+                        !in_array($layer4->Matchers->getValue(), ['httphost', 'tlssni', 'quicsni']) &&
                         (
-                            !empty((string)$item->FromDomain) &&
-                            (string)$item->FromDomain != '*'
+                            !$layer4->FromDomain->isEmpty() &&
+                            !$layer4->FromDomain->isEqual('*')
                         )
                 ) {
                     $messages->appendMessage(new Message(
@@ -205,96 +205,101 @@ class Caddy extends BaseModel
                             gettext(
                                 'When "%s" matcher is selected, domain must be empty or *.'
                             ),
-                            $item->Matchers
+                            $layer4->Matchers->getValue()
                         ),
                         $key . ".FromDomain"
                     ));
                 }
 
-                if (!in_array((string)$item->Matchers, ['tlssni', 'quicsni']) && !empty((string)$item->TerminateTls)) {
+                if (!in_array($layer4->Matchers->getValue(), ['tlssni', 'quicsni']) && !$layer4->TerminateTls->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When "%s" matcher is selected, TLS can not be terminated.'
                             ),
-                            $item->Matchers
+                            $layer4->Matchers->getValue()
                         ),
                         $key . ".TerminateTls"
                     ));
                 }
 
-                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnModes)) {
+                if ($layer4->TerminateTls->isEmpty() && !$layer4->OriginateTls->isEmpty()) {
+                    $messages->appendMessage(new Message(
+                        gettext(
+                            'This field cannot be selected without terminating TLS.'
+                        ),
+                        $key . ".OriginateTls"
+                    ));
+                }
+
+                if (!$layer4->Matchers->isEqual('openvpn') && !$layer4->FromOpenvpnModes->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When "%s" matcher is selected, field must be empty.'
                             ),
-                            $item->Matchers
+                            $layer4->Matchers->getValue()
                         ),
                         $key . ".FromOpenvpnModes"
                     ));
                 }
 
-                if ((string)$item->Matchers !== 'openvpn' && !empty((string)$item->FromOpenvpnStaticKey)) {
+                if (!$layer4->Matchers->isEqual('openvpn') && !$layer4->FromOpenvpnStaticKey->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When "%s" matcher is selected, field must be empty.'
                             ),
-                            $item->Matchers
+                            $layer4->Matchers->getValue()
                         ),
                         $key . ".FromOpenvpnStaticKey"
                     ));
                 }
 
-                if ((string)$item->Type === 'global' && empty((string)$item->FromPort)) {
+                if ($layer4->Type->isEqual('global') && $layer4->FromPort->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When routing type is "%s", port is required.'
                             ),
-                            $item->Type
+                            $layer4->Type->getValue()
                         ),
                         $key . ".FromPort"
                     ));
-                } elseif ((string)$item->Type !== 'global' && !empty((string)$item->FromPort)) {
+                } elseif (!$layer4->Type->isEqual('global') && !$layer4->FromPort->isEmpty()) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When routing type is "%s", port must be empty.'
                             ),
-                            $item->Type
+                            $layer4->Type->getValue()
                         ),
                         $key . ".FromPort"
                     ));
                 }
 
-                if ((string)$item->Type !== 'global' && ((string)$item->Protocol !== 'tcp')) {
+                if (!$layer4->Type->isEqual('global') && !$layer4->Protocol->isEqual('tcp')) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When routing type is "%s", protocol must be TCP.'
                             ),
-                            $item->Type
+                            $layer4->Type->getValue()
                         ),
                         $key . ".Protocol"
                     ));
                 }
 
                 if (
-                    (string)$item->Type !== 'global' &&
-                    (
-                        (string)$item->Matchers == 'tls' ||
-                        (string)$item->Matchers == 'http' ||
-                        (string)$item->Matchers == 'quic'
-                    )
+                    !$layer4->Type->isEqual('global') &&
+                    in_array($layer4->Matchers->getValue(), ['tls', 'http', 'quic'])
                 ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
                                 'When routing type is "%s", matchers "HTTP", "TLS" or "QUIC" cannot be chosen.'
                             ),
-                            $item->Type
+                            $layer4->Type->getValue()
                         ),
                         $key . ".Matchers"
                     ));

@@ -141,6 +141,16 @@
         </grid_view>
     </field>
     <field>
+        <id>layer4.OriginateTls</id>
+        <label>Originate TLS</label>
+        <type>dropdown</type>
+        <style>selectpicker style_terminate_tls</style>
+        <help>Setting this option will establish a new TLS connection to the upstream after it has been terminated.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
         <id>layer4.ProxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>

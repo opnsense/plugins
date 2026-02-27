@@ -26,22 +26,28 @@
     {% if layer4.TerminateTls|default("0") == "1" %}
     tls
     {% endif %}
-    proxy {% for domain in layer4.ToDomain.split(',') %}
+    proxy {
+        {% for domain in layer4.ToDomain.split(',') %}
         {% set is_ipv6 = (':' in domain) %}
-        {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ layer4.ToPort }}{% if not loop.last %} {% endif %}
-    {% endfor %} {
-    {% if layer4.lb_policy|default("") %}
-        lb_policy {{ layer4.lb_policy }}
-    {% endif %}
-    {% if layer4.PassiveHealthFailDuration|default("") %}
-        fail_duration {{ layer4.PassiveHealthFailDuration }}s
-    {% endif %}
-    {% if layer4.PassiveHealthMaxFails|default("") %}
-        max_fails {{ layer4.PassiveHealthMaxFails }}
-    {% endif %}
-    {% if layer4.ProxyProtocol %}
-        proxy_protocol {{ layer4.ProxyProtocol }}
-    {% endif %}
+        upstream {{ layer4.Protocol }}/{{ '[' if is_ipv6 }}{{ domain }}{{ ']' if is_ipv6 }}:{{ layer4.ToPort }} {
+            {% if layer4.OriginateTls %}
+                {{ layer4.OriginateTls }}
+            {% endif %}
+        }
+        {% endfor %}
+
+        {% if layer4.lb_policy|default("") %}
+            lb_policy {{ layer4.lb_policy }}
+        {% endif %}
+        {% if layer4.PassiveHealthFailDuration|default("") %}
+            fail_duration {{ layer4.PassiveHealthFailDuration }}s
+        {% endif %}
+        {% if layer4.PassiveHealthMaxFails|default("") %}
+            max_fails {{ layer4.PassiveHealthMaxFails }}
+        {% endif %}
+        {% if layer4.ProxyProtocol %}
+            proxy_protocol {{ layer4.ProxyProtocol }}
+        {% endif %}
     }
 {% endmacro %}
 
