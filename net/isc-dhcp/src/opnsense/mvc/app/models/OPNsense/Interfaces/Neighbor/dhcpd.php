@@ -1,7 +1,8 @@
 <?php
 
 /*
- * Copyright (C) 2023 Cannon Matthews <cannonmatthews@google.com>
+ * Copyright (C) 2023 Deciso B.V.
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,25 +26,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeValidation;
+namespace OPNsense\Interfaces\Neighbor;
 
-use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
-/**
- * Google Domains DNS API
- * @package OPNsense\AcmeClient
- */
-class DnsGoogledomains extends Base implements LeValidationInterface
+class dhcpd
 {
-    public function prepare()
+    public function collect()
     {
-        // It is possible to override $GOOGLEDOMAINS_API env variable to
-        // control the endpoint acme.sh talks to. However there is only one
-        // option (https://acmedns.googleapis.com/v1/acmeChallengeSets) that is
-        // currently the default, so exposing this only adds to confusion and
-        // noise in the UI.
-        $this->acme_env['GOOGLEDOMAINS_ACCESS_TOKEN'] = (string)$this->config->dns_googledomains_access_token;
-        $this->acme_env['GOOGLEDOMAINS_ZONE'] = (string)$this->config->dns_googledomains_zone;
+        $result = [];
+        $intfmap = [];
+        $config = Config::getInstance()->object();
+        if ($config->dhcpd->count() > 0) {
+            foreach ($config->dhcpd->children() as $intf => $node) {
+                foreach ($node->children() as $key => $data) {
+                    if ($key == 'staticmap') {
+                        if (!empty($data->arp_table_static_entry) || !empty($node->staticarp)) {
+                            $result[] = [
+                                'etheraddr' => (string)$data->mac,
+                                'ipaddress' => (string)$data->ipaddr,
+                                'descr' => (string)$data->descr,
+                                'source' => sprintf('dhcpd-%s', $intf)
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
     }
 }

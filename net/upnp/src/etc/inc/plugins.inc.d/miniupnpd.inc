@@ -26,6 +26,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+function miniupnpd_syslog()
+{
+    return ['miniupnpd' => ['facility' => ['miniupnpd']]];
+}
+
 function miniupnpd_enabled()
 {
     global $config;
@@ -67,6 +72,8 @@ function miniupnpd_services()
 
 function miniupnpd_start()
 {
+    global $config;
+
     if (!miniupnpd_enabled()) {
         return;
     }
@@ -75,7 +82,23 @@ function miniupnpd_start()
         return;
     }
 
-    mwexecfb('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
+    $log_level = $config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '';
+
+    $cmd_frmt = ['/usr/local/sbin/miniupnpd -f %s -P %s'];
+    $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
+
+    switch ($log_level) {
+        case 'debug':
+            $cmd_frmt[] = '-v';
+            /* FALLTHROUGH */
+        case 'info':
+            $cmd_frmt[] = '-v';
+            /* FALLTHROUGH */
+        default:
+            break;
+    }
+
+    mwexecfb($cmd_frmt, $cmd_args);
 }
 
 function miniupnpd_stop()
@@ -217,7 +240,8 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-                $config_text .= "system_uptime=yes\n";
+                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
+                //$config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */

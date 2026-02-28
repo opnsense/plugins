@@ -6,6 +6,18 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+5.1
+
+Added:
+* more conditions have support for converters
+* add support for mapfile URLs (#4825)
+
+Fixed:
+* migration fails if a http-request/-response "lua" rule is configured
+
+Changed:
+* modernize UI templates
+
 5.0
 
 WARNING: This is a new major release, which may result in
