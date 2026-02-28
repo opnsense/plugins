@@ -2,7 +2,8 @@
   <Services>
     <Nut cssClass="fa fa-battery-full fa-fw">
       <Configuration order="10" url="/ui/nut/index"/>
-      <Diagnostics order="20" url="/ui/nut/diagnostics"/>
+      <Drivers VisibleName="UPS Drivers" order="20" url="/ui/nut/drivers"/>
+      <Diagnostics order="30" url="/ui/nut/diagnostics"/>
     </Nut>
   </Services>
 </menu>
