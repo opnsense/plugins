@@ -48,7 +48,7 @@
 }
 
 .tabulator-row.tabulator-row-odd.tabulator-selectable:hover:not(.tabulator-selected) {
-  background-color: #242424;
+  background-color: #282828;
 }
 
 .tabulator-row.tabulator-row-even {
@@ -56,7 +56,7 @@
 }
 
 .tabulator-row.tabulator-row-even.tabulator-selectable:hover:not(.tabulator-selected) {
-  background-color: #242424;
+  background-color: #282828;
 }
 
 .tabulator .tabulator-tableholder {
