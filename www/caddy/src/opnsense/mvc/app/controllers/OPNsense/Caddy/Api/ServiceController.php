@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023-2024 Cedrik Pischem
+ *    Copyright (C) 2023-2026 Cedrik Pischem
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -45,29 +45,5 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         // Caddy can use a reload action instead
         return 0;
-    }
-
-    public function validateAction()
-    {
-        $backend = new Backend();
-
-        // First, reload the template to ensure the latest configuration is used
-        $backend->configdRun("template reload " . self::$internalServiceTemplate);
-
-        // Validate the Caddyfile
-        $validateResult = trim($backend->configdRun('caddy validate'));
-
-        // Attempt to parse the JSON output from the validation result
-        if (($jsonStartPos = strpos($validateResult, '{"message":')) !== false) {
-            $jsonOutput = substr($validateResult, $jsonStartPos);
-            $result = json_decode($jsonOutput, true);
-
-            if (is_array($result) && isset($result['status'])) {
-                return ["status" => $result['status'], "message" => $result['message']];
-            }
-        }
-
-        // If unable to parse the expected JSON output, return a generic error message
-        return ["status" => "failed", "message" => gettext("Unable to parse the validation result.")];
     }
 }
