@@ -44,9 +44,12 @@ function miniupnpd_firewall($fw)
         return;
     }
 
-    $fw->registerAnchor('miniupnpd', 'rdr'); // required for IPv4
-    $fw->registerAnchor('miniupnpd', 'fw'); // required for IPv6
-    $fw->registerAnchor('miniupnpd', 'nat', 0, 'head'); // required for IPv4 NAT hairpinning
+    /* required for IPv4: */
+    $fw->registerAnchor('miniupnpd', 'rdr');
+    /* required for IPv6: */
+    $fw->registerAnchor('miniupnpd', 'fw');
+    /* required for IPv4 NAT hairpinning: */
+    $fw->registerAnchor('miniupnpd', 'nat', 0, 'head');
 }
 
 function miniupnpd_services()
