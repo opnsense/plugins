@@ -52,6 +52,7 @@ class DynDNS extends BaseModel
             }
         }
         foreach ($validate_servers as $key => $node) {
+            $srv = (string)$node->server;
             if ((string)$node->service == 'powerdns') {
                 if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
                     $messages->appendMessage(
@@ -65,7 +66,6 @@ class DynDNS extends BaseModel
             if ((string)$node->service != 'custom') {
                 continue;
             }
-            $srv = (string)$node->server;
             if (in_array((string)$node->protocol, ['get', 'post', 'put'])) {
                 if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
                     $messages->appendMessage(
