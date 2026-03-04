@@ -16,14 +16,10 @@ Plugin Changelog
 
 1.8
 
-* New UI options: disable IPv6 mapping, allow third-party mapping, UPnP IGD
-  compatibility, router/friendly name; remove option: report system uptime (bug)
-* List IPv6 maps and keep active maps when reconfiguring/restarting service,
-  clearer added via / description field
-* New UI sections, rewording plugin, set allow-filtered with STUN to workaround
-  CGNAT test limitation, clean up daemon config
-* Update daemon to 2.3.9, add build options (e.g. IGDv2 support), add daemon
-  patch to improve UPnP IGDv2 compatibility
+* New UI options: disable IPv6 mapping, allow third-party mapping, UPnP IGD compatibility, router/friendly name; remove option: report system uptime (bug)
+* List IPv6 maps and keep active maps when reconfiguring/restarting service, clearer added via / description field
+* New UI sections, rewording plugin, set allow-filtered with STUN to workaround CGNAT test limitation, clean up daemon config
+* Update daemon to 2.3.9, add build options (e.g. IGDv2 support), add daemon patch to improve UPnP IGDv2 compatibility
 
 (1.8/1.9 contributed by Self-Hosting-Group)
 
