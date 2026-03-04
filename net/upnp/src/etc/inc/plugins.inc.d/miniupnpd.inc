@@ -84,17 +84,18 @@ function miniupnpd_start()
         return;
     }
 
-    $log_level = $config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '';
-
     $cmd_frmt = ['/usr/local/sbin/miniupnpd -f %s -P %s'];
     $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
 
-    switch ($log_level) {
+    switch ($config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '') {
+        case 'debug':
+            $cmd_frmt[] = '-vv';
+            break;
         case 'info':
             $cmd_frmt[] = '-v';
             break;
-        case 'debug':
-            $cmd_frmt[] = '-vv';
+        default:
+            break;
     }
 
     mwexecfb($cmd_frmt, $cmd_args);

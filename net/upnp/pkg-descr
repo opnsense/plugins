@@ -14,6 +14,8 @@ Plugin Changelog
 * Impove help/wording and update missed changelog
 * Add daemon patch to improve logging
 
+(all contributed by Self-Hosting-Group)
+
 1.8
 
 * New UI options: disable IPv6 mapping, allow third-party mapping, UPnP IGD compatibility, router/friendly name; remove option: report system uptime (bug)
@@ -21,7 +23,7 @@ Plugin Changelog
 * New UI sections, rewording plugin, set allow-filtered with STUN to workaround CGNAT test limitation, clean up daemon config
 * Update daemon to 2.3.9, add build options (e.g. IGDv2 support), add daemon patch to improve UPnP IGDv2 compatibility
 
-(1.8/1.9 contributed by Self-Hosting-Group)
+(all contributed by Self-Hosting-Group)
 
 1.7
 
