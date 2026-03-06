@@ -34,6 +34,16 @@ function netbird_enabled()
     return !(new \OPNsense\Netbird\Settings())->general->enable->isEmpty();
 }
 
+function netbird_devices()
+{
+    return [[
+        'pattern' => '^wt0$',
+        'configurable' => false,
+        'spoofmac' => false,
+        'volatile' => true,
+    ]];
+}
+
 function netbird_services()
 {
     $services = [];
