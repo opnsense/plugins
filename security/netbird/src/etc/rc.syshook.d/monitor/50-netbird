@@ -27,28 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * CARP check script for NetBird rc.d service guard.
+/*
+ * rc.syshook.d/monitor hook — called by rc.gateway_alarm when dpinger
+ * detects a gateway state change (any monitored gateway going up or down).
  *
- * Returns exit code 0 if service can start:
- *   - CARP mode not enabled for NetBird, OR
- *   - Current host is CARP MASTER
- *
- * Returns exit code 1 if service should NOT start:
- *   - CARP mode enabled and current host is BACKUP
- *
- * Usage in rc.d script:
- *   start_precmd="netbird_precmd"
- *   netbird_precmd() {
- *       /usr/local/opnsense/scripts/OPNsense/Netbird/carp_check.php || return 1
- *   }
+ * This calls NetBird's gateway monitor script in the background (non-blocking), 
+ * which checks whether the default gateway has actually changed since the last
+ * invocation. If so, it restarts NetBird so it can re-establish connections 
+ * through the new default route.
  */
 
-require_once('config.inc');
-require_once('plugins.inc.d/netbird.inc');
+require_once("config.inc");
+require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
 
-if (netbird_carp_check_master()) {
-    exit(0);
+if (netbird_enabled()) {
+    $affected_gateways = !empty($argv[1]) ? $argv[1] : '';
+
+    log_msg("NetBird monitor: Gateway event from '{$affected_gateways}', starting NetBird's monitor event handler");
+    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php %s > /dev/null', [$affected_gateways]); 
 }
-
-exit(1);

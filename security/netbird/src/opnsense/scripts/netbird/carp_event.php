@@ -27,57 +27,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * Gathers events for 2 seconds; if more are triggered in the same slot,
+ * execute only the last one.  This moves events until we have at least
+ * 2 seconds of "silence" to process them, preventing duplicate actions
+ * when multiple CARP interfaces transition simultaneously during failover.
+ */
+
 require_once("config.inc");
 require_once("util.inc");
 
 $subsystem = !empty($argv[1]) ? $argv[1] : 'unknown';
-$lockfile = '/var/run/netbird.CARP_MASTER';
+$type = !empty($argv[2]) ? $argv[2] : 'unknown';
 
-// Bring up NetBird's WireGuard interface
-log_msg("NetBird CARP: MASTER event from '{$subsystem}', starting NetBird's WireGuard interface");
-mwexecfm('/usr/local/bin/netbird up > /dev/null');
+$debounce_ref = '/tmp/tmp_netbird_carp_event.tmp';
 
-// Wait up to 10 seconds for the wt0 device to appear, then reload the
-// firewall filter so rules referencing the interface take effect.
-$found_wt0 = false;
-for ($i = 0; $i < 10; $i++) {
-    if (file_exists('/dev/wt0')) {
-        $found_wt0 = true;
+// Write our PID into the reference file to claim this event slot.
+// Using file contents (PID) instead of filemtime avoids the 1-second
+// granularity limit that allows two events arriving in the same second
+// to both pass the debounce check.
+$my_token = (string)getmypid();
+file_put_contents($debounce_ref, $my_token, LOCK_EX);
+
+sleep(2);
+
+// If another event has overwritten the file with a different PID,
+// this event is obsolete
+if (@file_get_contents($debounce_ref) !== $my_token) {
+    log_msg("NetBird CARP: '{$type}' event from '{$subsystem}' ignored, newer event triggered making this obsolete");
+    exit(0);
+}
+
+// We are the last event in the burst — proceed
+log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', appears to be the last event in burst, processing");
+switch ($type) {
+    case 'MASTER':
+        log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', starting NetBird's WireGuard interface");
+        mwexecfm('/usr/local/sbin/configctl netbird up');
         break;
-    }
-    sleep(1);
+    case 'BACKUP':
+        log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', stopping NetBird's WireGuard interface");
+        mwexecfm('/usr/local/sbin/configctl netbird down');
+        break;
 }
 
-if ($found_wt0) {
-    log_msg("NetBird CARP: Found wt0 interface after MASTER event from '{$subsystem}', reloading filter");
-    mwexecfm('/usr/local/sbin/configctl filter reload > /dev/null');
-} else {
-    log_msg("NetBird CARP: Timeout waiting for wt0 interface after MASTER event from '{$subsystem}'. Filter reload skipped.");
-}
-
-// Remove the lock file after 10 seconds of inactivity so future MASTER
-// events can trigger actions again.  Exits early if a BACKUP event has
-// already removed it.
-if (file_exists($lockfile)) {
-    clearstatcache(true, $lockfile);
-    $last_mtime = filemtime($lockfile);
-    while (file_exists($lockfile)) {
-        sleep(2);
-        clearstatcache(true, $lockfile);
-        if (!file_exists($lockfile)) {
-            // Lock file was already removed (e.g. by a BACKUP event)
-            break;
-        }
-        $current_mtime = filemtime($lockfile);
-        if ($current_mtime !== $last_mtime) {
-            // Timestamp was updated, reset the timer
-            $last_mtime = $current_mtime;
-            continue;
-        }
-        if ((time() - $last_mtime) >= 10) {
-            @unlink($lockfile);
-            log_msg("NetBird CARP: Lock file removed after 10 seconds of inactivity");
-            break;
-        }
-    }
-}
+@unlink($debounce_ref);

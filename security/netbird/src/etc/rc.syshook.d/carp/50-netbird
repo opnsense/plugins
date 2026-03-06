@@ -27,6 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * rc.syshook.d/carp hook — called by ifup when a CARP interface changes state
+ * (MASTER or BACKUP).
+ *
+ * This calls NetBird's carp event script in the background (non-blocking), 
+ * which gathers events for 2 seconds; if more are triggered in the same slot,
+ * execute only the last one.  This moves events until we have at least
+ * 2 seconds of "silence" to process them, preventing duplicate actions
+ * when multiple CARP interfaces transition simultaneously during failover.
+ */
+
 require_once("config.inc");
 require_once("util.inc");
 require_once("plugins.inc.d/netbird.inc");
@@ -45,30 +56,6 @@ if (netbird_carp_enabled()) {
         exit(1);
     }
 
-    // Lock file to ensure filter reload only runs once across all CARP events
-    // (multiple interfaces transition simultaneously during failover)
-    $lockfile = '/var/run/netbird.CARP_MASTER';
-
-    switch ($type) {
-        case 'MASTER':
-            // Only the first MASTER event creates the lock file and triggers the reload
-            if (!file_exists($lockfile)) {
-                @touch($lockfile);
-                
-                log_msg("NetBird CARP: MASTER event from '{$subsystem}', starting NetBird's carp event handler");
-                mwexecfb('/usr/local/opnsense/scripts/netbird/carp_event.php ' . escapeshellarg($subsystem) . ' > /dev/null');
-            } else {
-                @touch($lockfile);
-
-                log_msg("NetBird CARP: Ignoring duplicate MASTER event from '{$subsystem}'");
-            }
-            break;
-        case 'BACKUP':
-            // Remove the lock file to allow future MASTER events to trigger actions again
-            @unlink($lockfile);
-
-            log_msg("NetBird CARP: BACKUP event from '{$subsystem}', stopping NetBird's WireGuard interface");
-            mwexecfb('/usr/local/bin/netbird down > /dev/null');
-            break;
-    }
+    log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', starting NetBird's carp event handler");
+    mwexecfb('/usr/local/opnsense/scripts/netbird/carp_event.php %s %s > /dev/null', [$subsystem, $type]); 
 }

@@ -63,6 +63,16 @@ function netbird_carp_check_master()
     return false;
 }
 
+function netbird_devices()
+{
+    return [[
+        'pattern' => '^wt0$',
+        'configurable' => false,
+        'spoofmac' => false,
+        'volatile' => true,
+    ]];
+}
+
 function netbird_services()
 {
     $services = [];
