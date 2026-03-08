@@ -152,7 +152,14 @@
             {% if reverse.FromDomain.startswith("*.") %}
                 {% do dynDnsDomains.append(cleanedDomain + " *") %}
             {% else %}
-                {% do dynDnsDomains.append(cleanedDomain + " @") %}
+                {% set domainParts = cleanedDomain.split('.') %}
+                {% if domainParts | length > 2 %}
+                    {% set baseDomain = domainParts[1:] | join('.') %}
+                    {% set subDomainPart = domainParts[0] %}
+                    {% do dynDnsDomains.append(baseDomain + " " + subDomainPart) %}
+                {% else %}
+                    {% do dynDnsDomains.append(cleanedDomain + " @") %}
+                {% endif %}
             {% endif %}
         {% endif %}
 
