@@ -16,9 +16,11 @@
             <Required>Y</Required>
             <AsList>Y</AsList>
         </server_address>
-        <allowed_hosts type="NetworkField">
+        <allowed_hosts type="CSVListField">
             <Default>127.0.0.1,::1</Default>
+	    <ValidationMessage>Please specify a valid network segment, IP address, or hostname.</ValidationMessage>
             <Required>Y</Required>
+	    <mask>/^([a-zA-Z0-9\.\-\/:]+(,[a-zA-Z0-9\.\-\/:]+)*)?$/u</mask>
             <AsList>Y</AsList>
         </allowed_hosts>
         <dont_blame_nrpe type="BooleanField">
