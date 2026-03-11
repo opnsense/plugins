@@ -9,6 +9,7 @@ Plugin Changelog
 * Feature: Add effective networks for unbound
 * Feature: Add NXDOMAIN option for unbound
 * Feature: Add dest address for unbound
+* Bugfix: Invalidate alias cache on reconfigure
 
 1.4
 
