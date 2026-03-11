@@ -6618,7 +6618,8 @@ ul.jqtree-tree .jqtree-title {
 }
 
 .rule.text-muted {
-  opacity: 0.4;
+	background-color: #242424 !important;
+	opacity: 0.4;
 }
 
 .rule.text-muted > td:nth-child(1n+3) {
