@@ -387,7 +387,7 @@
         <id>action.acme_truenas_hostname</id>
         <label>TrueNAS hostname</label>
         <type>text</type>
-        <help>Hostname or IP address of TrueNAS Core Server.</help>
+        <help>Hostname or IP address of TrueNAS Server.</help>
     </field>
     <field>
         <id>action.acme_truenas_scheme</id>
@@ -410,7 +410,7 @@
         <id>action.acme_truenasws_hostname</id>
         <label>TrueNAS hostname</label>
         <type>text</type>
-        <help>Hostname or IP address of TrueNAS Core Server.</help>
+        <help>Hostname or IP address of TrueNAS Server.</help>
     </field>
     <field>
         <id>action.acme_truenasws_protocol</id>
