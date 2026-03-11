@@ -12,6 +12,10 @@ WWW: https://frrouting.org/
 Plugin Changelog
 ================
 
+1.51
+
+* Add per-neighbor local-as option for BGP (contributed by danohn) (opnsense/plugins/pull/5308)
+
 1.50
 
 * Add BGP remove-private-AS (contributed by rfrederick) (opnsense/plugins/pull/5090)
