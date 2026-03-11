@@ -41,7 +41,7 @@ class AcmeTruenas extends Base implements LeAutomationInterface
         $this->acme_env['DEPLOY_TRUENAS_APIKEY'] = (string)$this->config->acme_truenas_apikey;
         $this->acme_env['DEPLOY_TRUENAS_HOSTNAME'] = (string)$this->config->acme_truenas_hostname;
         $this->acme_env['DEPLOY_TRUENAS_SCHEME'] = (string)$this->config->acme_truenas_scheme;
-        $this->acme_args[] = '--deploy-hook truenas --insecure';
+        $this->acme_args[] = '--deploy-hook truenas_ws --insecure';
         return true;
     }
 }
