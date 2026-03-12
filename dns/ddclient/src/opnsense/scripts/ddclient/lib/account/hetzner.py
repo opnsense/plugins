@@ -55,6 +55,7 @@ class Hetzner(HetznerAccount):
     Hetzner Cloud DNS API provider
     Uses the new Cloud API (api.hetzner.cloud)
     API Documentation: [https://docs.hetzner.cloud/#dns](https://docs.hetzner.cloud/#dns)
+    https://docs.hetzner.cloud/#dns
     """
     _priority = 65535
     _services = ['hetzner']
@@ -121,30 +122,6 @@ class Hetzner(HetznerAccount):
                 "Account %s found zone ID %s for %s" % (self.description, zone_id, zone_name)
             )
         return zone_id
-
-    def _get_record(self, headers, zone_id, record_name, record_type):
-        """Get existing record by name and type"""
-        url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
-        response = requests.get(url, headers=headers)
-        if response.status_code == 404:
-            return None
-        if response.status_code != 200:
-            syslog.syslog(
-                syslog.LOG_ERR,
-                "Account %s error fetching record: HTTP %d - %s" % (
-                    self.description, response.status_code, response.text
-                )
-            )
-            return None
-        try:
-            payload = response.json()
-            return payload.get('rrset')
-        except requests.exceptions.JSONDecodeError:
-            syslog.syslog(
-                syslog.LOG_ERR,
-                "Account %s error parsing JSON response: %s" % (self.description, response.text)
-            )
-            return None
 
     def _delete_record(self, headers, zone_id, record_name, record_type):
         """Delete existing record"""
@@ -247,12 +224,11 @@ class Hetzner(HetznerAccount):
                             self.description, hostname, record_name, record_type, self.current_address
                         )
                     )
-                existing = self._get_record(headers, zone_id, record_name, record_type)
-                if existing:
-                    success = self._update_record(
-                        headers, zone_id, record_name, record_type, self.current_address
-                    )
-                else:
+                success = self._update_record(
+                    headers, zone_id, record_name, record_type, self.current_address
+                )
+                #else:
+                if not success:
                     success = self._create_record(
                         headers, zone_id, record_name, record_type, self.current_address
                     )
