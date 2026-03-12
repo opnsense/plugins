@@ -227,7 +227,6 @@ class Hetzner(HetznerAccount):
                 success = self._update_record(
                     headers, zone_id, record_name, record_type, self.current_address
                 )
-                #else:
                 if not success:
                     success = self._create_record(
                         headers, zone_id, record_name, record_type, self.current_address
