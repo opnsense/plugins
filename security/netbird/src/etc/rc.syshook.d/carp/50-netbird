@@ -1,0 +1,61 @@
+#!/usr/local/bin/php
+<?php
+
+/*
+ * Copyright (C) 2026 Myah Mitchell, Innovative Networks, Inc. d.b.a INDIGEX
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * rc.syshook.d/carp hook — called by ifup when a CARP interface changes state
+ * (MASTER or BACKUP).
+ *
+ * This calls NetBird's carp event script in the background (non-blocking), 
+ * which gathers events for 2 seconds; if more are triggered in the same slot,
+ * execute only the last one.  This moves events until we have at least
+ * 2 seconds of "silence" to process them, preventing duplicate actions
+ * when multiple CARP interfaces transition simultaneously during failover.
+ */
+
+require_once("config.inc");
+require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
+
+if (netbird_carp_enabled()) {
+    $subsystem = !empty($argv[1]) ? $argv[1] : '';
+    $type = !empty($argv[2]) ? $argv[2] : '';
+
+    if ($type != 'MASTER' && $type != 'BACKUP') {
+        log_msg("Carp '$type' event unknown from source '{$subsystem}'");
+        exit(1);
+    }
+
+    if (!strstr($subsystem, '@')) {
+        log_msg("Carp '$type' event triggered from wrong source '{$subsystem}'");
+        exit(1);
+    }
+
+    log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', starting NetBird's carp event handler");
+    mwexecfb('/usr/local/opnsense/scripts/netbird/carp_event.php %s %s > /dev/null', [$subsystem, $type]); 
+}
