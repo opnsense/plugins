@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.15
+
+Added:
+* add support for the websocket API of TrueNAS (required for TrueNAS 26+)
+
 4.14
 
 Fixed:
