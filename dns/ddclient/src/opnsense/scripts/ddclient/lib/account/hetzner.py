@@ -23,7 +23,7 @@
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-    Hetzner DNS providers for OPNsense DynDNS via www.arcan-it.de
+    Hetzner DNS providers for OPNsense DynDNS via https://www.arcan-it.de
 
     Supports both APIs:
     - Hetzner DNS (api.hetzner.cloud) - new Cloud API for migrated zones
@@ -34,16 +34,31 @@ import requests
 from . import BaseAccount
 
 
-class Hetzner(BaseAccount):
+class HetznerAccount(BaseAccount):
+
+    def _extract_record_name(self, hostname, zone_name):
+        """Extract record name from hostname, handling FQDN format"""
+        hostname = hostname.rstrip('.')
+        if hostname.endswith('.' + zone_name):
+            record_name = hostname[:-len(zone_name) - 1]
+        elif hostname == zone_name:
+            record_name = '@'
+        else:
+            record_name = hostname
+        if not record_name or record_name == '@':
+            record_name = '@'
+        return record_name
+
+
+class Hetzner(HetznerAccount):
     """
     Hetzner Cloud DNS API provider
     Uses the new Cloud API (api.hetzner.cloud)
-    API Documentation: https://docs.hetzner.cloud/#dns
+    API Documentation: [https://docs.hetzner.cloud/#dns](https://docs.hetzner.cloud/#dns)
+    https://docs.hetzner.cloud/#dns
     """
     _priority = 65535
-
     _services = ['hetzner']
-
     _api_base = "https://api.hetzner.cloud/v1"
 
     def __init__(self, account: dict):
@@ -74,12 +89,9 @@ class Hetzner(BaseAccount):
     def _get_zone_id(self, headers):
         """Get zone ID by zone name"""
         zone_name = self._get_zone_name()
-
         url = f"{self._api_base}/zones"
         params = {'name': zone_name}
-
         response = requests.get(url, headers=headers, params=params)
-
         if response.status_code != 200:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -88,7 +100,6 @@ class Hetzner(BaseAccount):
                 )
             )
             return None
-
         try:
             payload = response.json()
         except requests.exceptions.JSONDecodeError:
@@ -97,7 +108,6 @@ class Hetzner(BaseAccount):
                 "Account %s error parsing JSON response: %s" % (self.description, response.text)
             )
             return None
-
         zones = payload.get('zones', [])
         if not zones:
             syslog.syslog(
@@ -105,56 +115,45 @@ class Hetzner(BaseAccount):
                 "Account %s zone '%s' not found" % (self.description, zone_name)
             )
             return None
-
         zone_id = zones[0].get('id')
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
                 "Account %s found zone ID %s for %s" % (self.description, zone_id, zone_name)
             )
-
         return zone_id
 
-    def _get_record(self, headers, zone_id, record_name, record_type):
-        """Get existing record by name and type"""
+    def _delete_record(self, headers, zone_id, record_name, record_type):
+        """Delete existing record"""
         url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
-
-        response = requests.get(url, headers=headers)
-
-        if response.status_code == 404:
-            return None
-
-        if response.status_code != 200:
+        response = requests.delete(url, headers=headers)
+        if response.status_code not in [200, 201, 204]:
             syslog.syslog(
                 syslog.LOG_ERR,
-                "Account %s error fetching record: HTTP %d - %s" % (
+                "Account %s error deleting record for update: HTTP %d - %s" % (
                     self.description, response.status_code, response.text
                 )
             )
-            return None
-
-        try:
-            payload = response.json()
-            return payload.get('rrset')
-        except requests.exceptions.JSONDecodeError:
+            return False
+        if self.is_verbose:
             syslog.syslog(
-                syslog.LOG_ERR,
-                "Account %s error parsing JSON response: %s" % (self.description, response.text)
+                syslog.LOG_NOTICE,
+                "Account %s deleted record: %s type: %s" % (
+                    self.description, record_name, record_type
+                )
             )
-            return None
+        return True
 
     def _update_record(self, headers, zone_id, record_name, record_type, address):
         """Update existing record with new address"""
-        url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
-
+        url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}/actions/set_records"
         data = {
-            'records': [{'value': str(address)}],
-            'ttl': int(self.settings.get('ttl', 300))
+            'records': [{
+               'value': str(address)
+            }]
         }
-
-        response = requests.put(url, headers=headers, json=data)
-
-        if response.status_code != 200:
+        response = requests.post(url, headers=headers, json=data)
+        if response.status_code not in [200, 201]:
             syslog.syslog(
                 syslog.LOG_ERR,
                 "Account %s error updating record: HTTP %d - %s" % (
@@ -170,22 +169,18 @@ class Hetzner(BaseAccount):
                     self.description, record_name, record_type, address
                 )
             )
-
         return True
 
     def _create_record(self, headers, zone_id, record_name, record_type, address):
         """Create new record"""
         url = f"{self._api_base}/zones/{zone_id}/rrsets"
-
         data = {
             'name': record_name,
             'type': record_type,
             'records': [{'value': str(address)}],
             'ttl': int(self.settings.get('ttl', 300))
         }
-
         response = requests.post(url, headers=headers, json=data)
-
         if response.status_code not in [200, 201]:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -194,7 +189,6 @@ class Hetzner(BaseAccount):
                 )
             )
             return False
-
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
@@ -202,50 +196,27 @@ class Hetzner(BaseAccount):
                     self.description, record_name, record_type, address
                 )
             )
-
         return True
-
-    def _extract_record_name(self, hostname, zone_name):
-        """Extract record name from hostname, handling FQDN format"""
-        hostname = hostname.rstrip('.')
-
-        if hostname.endswith('.' + zone_name):
-            record_name = hostname[:-len(zone_name) - 1]
-        elif hostname == zone_name:
-            record_name = '@'
-        else:
-            record_name = hostname
-
-        if not record_name or record_name == '@':
-            record_name = '@'
-
-        return record_name
 
     def execute(self):
         if super().execute():
             record_type = "AAAA" if ':' in str(self.current_address) else "A"
             headers = self._get_headers()
-
             zone_id = self._get_zone_id(headers)
             if not zone_id:
                 return False
-
             zone_name = self._get_zone_name()
-
             hostnames_raw = self.settings.get('hostnames', '')
             hostnames = [h.strip() for h in hostnames_raw.split(',') if h.strip()]
-
             if not hostnames:
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s no hostnames configured" % self.description
                 )
                 return False
-
             all_success = True
             for hostname in hostnames:
                 record_name = self._extract_record_name(hostname, zone_name)
-
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
@@ -253,18 +224,13 @@ class Hetzner(BaseAccount):
                             self.description, hostname, record_name, record_type, self.current_address
                         )
                     )
-
-                existing = self._get_record(headers, zone_id, record_name, record_type)
-
-                if existing:
-                    success = self._update_record(
-                        headers, zone_id, record_name, record_type, self.current_address
-                    )
-                else:
+                success = self._update_record(
+                    headers, zone_id, record_name, record_type, self.current_address
+                )
+                if not success:
                     success = self._create_record(
                         headers, zone_id, record_name, record_type, self.current_address
                     )
-
                 if success:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
@@ -274,25 +240,21 @@ class Hetzner(BaseAccount):
                     )
                 else:
                     all_success = False
-
             if all_success:
                 self.update_state(address=self.current_address)
                 return True
-
         return False
 
 
-class HetznerLegacy(BaseAccount):
+class HetznerLegacy(HetznerAccount):
     """
     Hetzner DNS Console (Legacy) API provider
     Uses the old API at dns.hetzner.com - will be shut down May 2026
     For zones not yet migrated to Hetzner Cloud Console
-    API Documentation: https://dns.hetzner.com/api-docs
+    API Documentation: [https://dns.hetzner.com/api-docs](https://dns.hetzner.com/api-docs)
     """
     _priority = 65535
-
     _services = ['hetzner-legacy']
-
     _api_base = "https://dns.hetzner.com/api/v1"
 
     def __init__(self, account: dict):
@@ -323,10 +285,8 @@ class HetznerLegacy(BaseAccount):
     def _get_zone_id(self, headers):
         """Get zone ID by zone name"""
         zone_name = self._get_zone_name()
-
         url = f"{self._api_base}/zones"
         response = requests.get(url, headers=headers)
-
         if response.status_code != 200:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -335,7 +295,6 @@ class HetznerLegacy(BaseAccount):
                 )
             )
             return None
-
         try:
             payload = response.json()
         except requests.exceptions.JSONDecodeError:
@@ -344,7 +303,6 @@ class HetznerLegacy(BaseAccount):
                 "Account %s error parsing JSON response: %s" % (self.description, response.text)
             )
             return None
-
         zones = payload.get('zones', [])
         for zone in zones:
             if zone.get('name') == zone_name:
@@ -355,7 +313,6 @@ class HetznerLegacy(BaseAccount):
                         "Account %s found zone ID %s for %s" % (self.description, zone_id, zone_name)
                     )
                 return zone_id
-
         syslog.syslog(
             syslog.LOG_ERR,
             "Account %s zone '%s' not found" % (self.description, zone_name)
@@ -366,9 +323,7 @@ class HetznerLegacy(BaseAccount):
         """Get record ID by name and type"""
         url = f"{self._api_base}/records"
         params = {'zone_id': zone_id}
-
         response = requests.get(url, headers=headers, params=params)
-
         if response.status_code != 200:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -377,7 +332,6 @@ class HetznerLegacy(BaseAccount):
                 )
             )
             return None
-
         try:
             payload = response.json()
         except requests.exceptions.JSONDecodeError:
@@ -386,7 +340,6 @@ class HetznerLegacy(BaseAccount):
                 "Account %s error parsing JSON response: %s" % (self.description, response.text)
             )
             return None
-
         records = payload.get('records', [])
         for record in records:
             if record.get('name') == record_name and record.get('type') == record_type:
@@ -399,13 +352,11 @@ class HetznerLegacy(BaseAccount):
                         )
                     )
                 return record_id
-
         return None
 
     def _update_record(self, headers, zone_id, record_id, record_name, record_type, address):
         """Update existing record with new address"""
         url = f"{self._api_base}/records/{record_id}"
-
         data = {
             'zone_id': zone_id,
             'type': record_type,
@@ -413,9 +364,7 @@ class HetznerLegacy(BaseAccount):
             'value': str(address),
             'ttl': int(self.settings.get('ttl', 300))
         }
-
         response = requests.put(url, headers=headers, json=data)
-
         if response.status_code != 200:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -424,7 +373,6 @@ class HetznerLegacy(BaseAccount):
                 )
             )
             return False
-
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
@@ -432,13 +380,11 @@ class HetznerLegacy(BaseAccount):
                     self.description, record_name, record_type, address
                 )
             )
-
         return True
 
     def _create_record(self, headers, zone_id, record_name, record_type, address):
         """Create new record"""
         url = f"{self._api_base}/records"
-
         data = {
             'zone_id': zone_id,
             'type': record_type,
@@ -446,9 +392,7 @@ class HetznerLegacy(BaseAccount):
             'value': str(address),
             'ttl': int(self.settings.get('ttl', 300))
         }
-
         response = requests.post(url, headers=headers, json=data)
-
         if response.status_code not in [200, 201]:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -457,7 +401,6 @@ class HetznerLegacy(BaseAccount):
                 )
             )
             return False
-
         if self.is_verbose:
             syslog.syslog(
                 syslog.LOG_NOTICE,
@@ -465,50 +408,27 @@ class HetznerLegacy(BaseAccount):
                     self.description, record_name, record_type, address
                 )
             )
-
         return True
-
-    def _extract_record_name(self, hostname, zone_name):
-        """Extract record name from hostname, handling FQDN format"""
-        hostname = hostname.rstrip('.')
-
-        if hostname.endswith('.' + zone_name):
-            record_name = hostname[:-len(zone_name) - 1]
-        elif hostname == zone_name:
-            record_name = '@'
-        else:
-            record_name = hostname
-
-        if not record_name or record_name == '@':
-            record_name = '@'
-
-        return record_name
 
     def execute(self):
         if super().execute():
             record_type = "AAAA" if ':' in str(self.current_address) else "A"
             headers = self._get_headers()
-
             zone_id = self._get_zone_id(headers)
             if not zone_id:
                 return False
-
             zone_name = self._get_zone_name()
-
             hostnames_raw = self.settings.get('hostnames', '')
             hostnames = [h.strip() for h in hostnames_raw.split(',') if h.strip()]
-
             if not hostnames:
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s no hostnames configured" % self.description
                 )
                 return False
-
             all_success = True
             for hostname in hostnames:
                 record_name = self._extract_record_name(hostname, zone_name)
-
                 if self.is_verbose:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
@@ -516,9 +436,7 @@ class HetznerLegacy(BaseAccount):
                             self.description, hostname, record_name, record_type, self.current_address
                         )
                     )
-
                 record_id = self._get_record_id(headers, zone_id, record_name, record_type)
-
                 if record_id:
                     success = self._update_record(
                         headers, zone_id, record_id, record_name, record_type, self.current_address
@@ -527,7 +445,6 @@ class HetznerLegacy(BaseAccount):
                     success = self._create_record(
                         headers, zone_id, record_name, record_type, self.current_address
                     )
-
                 if success:
                     syslog.syslog(
                         syslog.LOG_NOTICE,
@@ -537,9 +454,7 @@ class HetznerLegacy(BaseAccount):
                     )
                 else:
                     all_success = False
-
             if all_success:
                 self.update_state(address=self.current_address)
                 return True
-
         return False
