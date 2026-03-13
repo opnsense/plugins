@@ -62,7 +62,7 @@
         <id>account.zone</id>
         <label>Zone</label>
         <type>text</type>
-        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner service_digitalocean service_dnspodcn</style>
+        <style>optional_setting service_aws service_zoneedit1 service_cloudflare service_nsupdate service_gandi service_godaddy service_nfsn service_hetzner service_digitalocean service_dnspodcn service_transip</style>
         <help>Zone containing the host entry.</help>
     </field>
     <field>
@@ -77,7 +77,7 @@
         <id>account.ttl</id>
         <label>TTL</label>
         <type>text</type>
-        <style>optional_setting service_aws service_netcup service_gandi service_godaddy</style>
+        <style>optional_setting service_aws service_netcup service_gandi service_godaddy service_transip</style>
         <help>Time to Live for the DNS entry</help>
     </field>
     <field>
