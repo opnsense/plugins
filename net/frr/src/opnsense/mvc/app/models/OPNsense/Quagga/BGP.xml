@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bgp</mount>
     <description>BGP Routing configuration</description>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -98,6 +98,7 @@
                 <rrclient type="BooleanField"/>
                 <soft_reconfiguration_inbound type="BooleanField"/>
                 <bfd type="BooleanField"/>
+                <bfd_strict type="BooleanField"/>
                 <keepalive type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>1000</MaximumValue>

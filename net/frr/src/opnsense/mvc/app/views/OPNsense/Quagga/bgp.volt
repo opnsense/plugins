@@ -34,6 +34,14 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('quagga');
+
+        $(document).on('change', '#neighbor\\.bfd', function(){
+            if ($(this).is(':checked')) {
+                $(".bfd_strict_mode").closest('tr').show();
+            } else {
+                $(".bfd_strict_mode").closest('tr').hide();
+            }
+        });
         });
 
         $("#reconfigureAct").SimpleActionButton({

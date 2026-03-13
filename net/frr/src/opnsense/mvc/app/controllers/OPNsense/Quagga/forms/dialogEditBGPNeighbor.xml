@@ -173,6 +173,18 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.bfd_strict</id>
+    <label>BFD Strict Mode</label>
+    <type>checkbox</type>
+    <help>Strict mode requires the BFD session to be established before allowing BGP to connect. If BFD goes down, BGP immediately closes the session. This prevents BGP sessions from remaining up when the underlying link is down. Requires BFD to be enabled.</help>
+    <style>bfd_strict_mode</style>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.keepalive</id>
     <label>Keepalive</label>
     <type>text</type>
