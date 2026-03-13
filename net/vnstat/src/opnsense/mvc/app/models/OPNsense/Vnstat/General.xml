@@ -11,5 +11,9 @@
             <Required>N</Required>
             <Multiple>Y</Multiple>
         </interface>
+        <separate_stats type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </separate_stats>
     </items>
 </model>
