@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2025 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,46 +26,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Bind\Api;
+namespace OPNsense\BIND\FieldTypes;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\Validators\CallbackValidator;
+use OPNsense\Base\FieldTypes\BaseSetField;
+use OPNsense\Base\FieldTypes\NetworkField;
 
-class AclController extends ApiMutableModelControllerBase
+class ACLNetField extends NetworkField
 {
-    protected static $internalModelName = 'acl';
-    protected static $internalModelClass = '\OPNsense\Bind\Acl';
+    /*
+     * Extends the NetworkField getValidators() method to ignore networks specified
+     * as 'system defined', which is the value used to describe BIND's builtin ACLs.
+     */
 
-    public function searchAclAction()
+    /**
+     * {@inheritdoc}
+     */
+    public function getValidators()
     {
-        return $this->searchBase('acls.acl', ['enabled', 'name', 'networks']);
-    }
-
-    public function getAclAction($uuid = null)
-    {
-        return $this->getBase('acl', 'acls.acl', $uuid);
-    }
-
-    public function addAclAction()
-    {
-        return $this->addBase('acl', 'acls.acl');
-    }
-
-    public function delAclAction($uuid)
-    {
-        $del_tgt = $this->getBase('acl', 'acls.acl', $uuid);
-        # skip if builtins...
-        if (!($del_tgt['acl']['name'] == 'any' || $del_tgt['acl']['name'] == 'localnets' || $del_tgt['acl']['name'] == 'localhost' || $del_tgt['acl']['name'] == 'none')) {
-            return $this->delBase('acls.acl', $uuid);
+        $validators = BaseSetField::getValidators();
+        if ($this->internalValue != null) {
+            if ($this->internalValue != "any" || $this->internalWildcardEnabled == false) {
+                $that = $this;
+                $validators[] = new CallbackValidator(["callback" => function ($data) use ($that) {
+                    $messages = [];
+                    if ($data == 'system derived' ) {
+                        // ignoring builtin BIND ACL names
+                    } elseif (!$that->isValidInput($data)) {
+                        $messages[] =  $this->getValidationMessage();
+                    }
+                    return $messages;
+                }]);
+            }
         }
-    }
-
-    public function setAclAction($uuid)
-    {
-        return $this->setBase('acl', 'acls.acl', $uuid);
-    }
-
-    public function toggleAclAction($uuid)
-    {
-        return $this->toggleBase('acls.acl', $uuid);
+        return $validators;
     }
 }
