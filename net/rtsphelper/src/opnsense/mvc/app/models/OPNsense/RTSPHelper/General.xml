@@ -1,0 +1,41 @@
+<model>
+    <mount>//OPNsense/RTSPHelper</mount>
+    <version>1.0.0</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <ext_iface type="InterfaceField">
+                <Required>Y</Required>
+                <multiple>N</multiple>
+            </ext_iface>
+        </general>
+        <hosts>
+            <host type="ArrayField">
+                <ip type="NetworkField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please specify a valid IP address.</ValidationMessage>
+                </ip>
+                <port type="PortField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please specify a valid port number.</ValidationMessage>
+                </port>
+            </host>
+        </hosts>
+        <permissions>
+            <permission type="ArrayField">
+                <network type="NetworkField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Please specify a valid network (CIDR) or IP address.</ValidationMessage>
+                </network>
+                <port type="TextField">
+                    <Required>Y</Required>
+                    <mask>/^(\d{1,5})(?:-(\d{1,5}))?$/</mask>
+                    <ValidationMessage>Please specify a valid port or port range (e.g. 1024-65535).</ValidationMessage>
+                </port>
+            </permission>
+        </permissions>
+    </items>
+</model>
