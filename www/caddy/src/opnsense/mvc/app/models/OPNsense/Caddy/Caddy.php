@@ -308,6 +308,37 @@ class Caddy extends BaseModel
         }
     }
 
+    // Prevent the usage of DNS-01 Challenge and Dynamic DNS with IP address domains
+    private function checkIpAddressConflicts($messages)
+    {
+        foreach ($this->reverseproxy->reverse->iterateItems() as $item) {
+            if ($item->isFieldChanged()) {
+                $fromDomain = $item->FromDomain->getValue();
+
+                if (filter_var($fromDomain, FILTER_VALIDATE_IP) !== false) {
+                    if ($item->DnsChallenge->isEqual('1')) {
+                        $messages->appendMessage(new Message(
+                            gettext(
+                                'DNS-01 Challenge is not supported for IP addresses. ' .
+                                'Use HTTP-01 or TLS-ALPN-01 challenge instead.'
+                            ),
+                            $item->__reference . ".DnsChallenge"
+                        ));
+                    }
+
+                    if ($item->DynDns->isEqual('1')) {
+                        $messages->appendMessage(new Message(
+                            gettext(
+                                'Dynamic DNS is not supported for IP addresses.'
+                            ),
+                            $item->__reference . ".DynDns"
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
     // Perform the actual validation
     public function performValidation($validateFullModel = false)
     {
@@ -317,6 +348,7 @@ class Caddy extends BaseModel
         $this->checkDisableTlsConflicts($messages);
         $this->checkSuperuserPorts($messages);
         $this->checkLayer4Matchers($messages);
+        $this->checkIpAddressConflicts($messages);
 
         return $messages;
     }

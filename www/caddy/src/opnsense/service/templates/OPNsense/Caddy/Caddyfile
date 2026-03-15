@@ -304,9 +304,10 @@ http://{{ domain }} {
     tlsDnsPropagationTimeout="",
     tlsDnsPropagationTimeoutPeriod="",
     tlsDnsPropagationDelay="",
-    tlsDnsPropagationResolvers=""
+    tlsDnsPropagationResolvers="",
+    isIpDomain="0"
 ) %}
-    {% if customCert or (dnsChallenge == "1" and dnsProvider) or clientAuthTrustPool %}
+    {% if customCert or (dnsChallenge == "1" and dnsProvider) or clientAuthTrustPool or isIpDomain == "1" %}
         tls {% if customCert %}/usr/local/etc/caddy/certificates/{{ customCert }}.pem /usr/local/etc/caddy/certificates/{{ customCert }}.key{% endif %} {
             {% if not customCert and (dnsChallenge == "1" and dnsProvider) %}
             issuer acme {
@@ -326,6 +327,12 @@ http://{{ domain }} {
                 {% if tlsDnsPropagationDelay %}
                 propagation_delay {{ tlsDnsPropagationDelay }}s
                 {% endif %}
+            }
+            {% endif %}
+
+            {% if not customCert and isIpDomain == "1" and dnsChallenge != "1" %}
+            issuer acme {
+                profile shortlived
             }
             {% endif %}
 
@@ -601,7 +608,12 @@ http://{{ domain }} {
 
 {% for reverse in helpers.toList('Pischem.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" %}
-        {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+        {% set is_ipv6_from = (':' in reverse.FromDomain|default("") and (reverse.FromDomain|default("")).count(':') >= 2) %}
+        {% set is_ipv4_from = (reverse.FromDomain|default("") | regex_replace('[0-9.]', '') == '' and '.' in reverse.FromDomain|default("")) %}
+        {% set is_ip_from_domain = is_ipv6_from or is_ipv4_from %}
+        {% set from_domain_display = '[' ~ reverse.FromDomain ~ ']' if is_ipv6_from else reverse.FromDomain|default("") %}
+        {% set from_port_display = reverse.FromPort if reverse.FromPort else (httpsPort if httpsPort and is_ipv6_from and reverse.DisableTls|default("0") != "1" else ('443' if is_ipv6_from and reverse.DisableTls|default("0") != "1" else '')) %}
+        {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ from_domain_display }}{% if from_port_display %}:{{ from_port_display }}{% endif %} {
             {% if reverse.AccessLog|default("0") == "1" %}
                 {% if generalSettings.LogAccessPlain|default("0") == "0" %}
                     log default
@@ -624,7 +636,8 @@ http://{{ domain }} {
                 tlsDnsPropagationTimeout=generalSettings.TlsDnsPropagationTimeout,
                 tlsDnsPropagationTimeoutPeriod=generalSettings.TlsDnsPropagationTimeoutPeriod,
                 tlsDnsPropagationDelay=generalSettings.TlsDnsPropagationDelay,
-                tlsDnsPropagationResolvers=generalSettings.TlsDnsPropagationResolvers
+                tlsDnsPropagationResolvers=generalSettings.TlsDnsPropagationResolvers,
+                isIpDomain='1' if is_ip_from_domain else '0'
             ) }}
             {% set domain_handles = helpers.toList('Pischem.caddy.reverseproxy.handle') | selectattr('reverse', 'equalto', reverse['@uuid']) | selectattr('subdomain', 'undefined') | list %}
             {{ handle_accesslist(reverse.accesslist, reverse.FromDomain) }}

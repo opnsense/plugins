@@ -184,9 +184,9 @@
                 </enabled>
                 <FromDomain type="HostnameField">
                     <Required>Y</Required>
-                    <IpAllowed>N</IpAllowed>
+                    <IpAllowed>Y</IpAllowed>
                     <FqdnWildcardAllowed>Y</FqdnWildcardAllowed>
-                    <ValidationMessage>Please enter a valid domain name.</ValidationMessage>
+                    <ValidationMessage>Please enter a valid domain name or IP address.</ValidationMessage>
                 </FromDomain>
                 <FromPort type="PortField"/>
                 <accesslist type="ModelRelationField">
