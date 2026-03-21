@@ -203,7 +203,9 @@ class GDrive extends Base implements IBackupProvider
                 // backup source data to local strings (plain/encrypted)
                 $confdata = file_get_contents('/conf/config.xml');
                 $confdata_enc = $this->encrypt($confdata, (string)$config->system->remotebackup->GDrivePassword);
-
+                if (empty($confdata_enc)) {
+                    $confdata_enc = $confdata;
+                }
                 // read filelist ({prefix}*.xml)
                 try {
                     $files = $client->listFiles((string)$config->system->remotebackup->GDriveFolderID);
