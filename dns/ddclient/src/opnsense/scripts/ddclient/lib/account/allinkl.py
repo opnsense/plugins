@@ -31,15 +31,15 @@
     WSDL:         https://kasapi.kasserver.com/soap/wsdl/KasApi.wsdl
 
     UI fields:
-      username  - KAS login (all-inkl Benutzername, z.B. "w0xxxxx")
-      password  - KAS Passwort (Klartext, wird über HTTPS übertragen)
-      hostnames - FQDN(s) zum Aktualisieren, kommagetrennt (z.B. "example.com,*.example.com")
-      zone      - DNS-Zone (z.B. "example.com"); wird aus hostname abgeleitet wenn leer
+      username  - KAS login (all-inkl username, e.g. "w0xxxxx")
+      password  - KAS password (plaintext, transmitted over HTTPS)
+      hostnames - FQDN(s) to update, comma-separated (e.g. "example.com,*.example.com")
+      zone      - DNS zone (e.g. "example.com"); derived from hostname if left empty
 """
 import json
-import re
 import syslog
 import time
+import xml.etree.ElementTree as ET
 
 import requests
 
@@ -143,13 +143,25 @@ class AllInkl(BaseAccount):
                 )
             )
 
-        if '<SOAP-ENV:Fault>' in resp.text:
-            fault = re.search(r'<faultstring>([^<]+)</faultstring>', resp.text)
+        try:
+            root = ET.fromstring(resp.text)
+        except ET.ParseError:
+            syslog.syslog(
+                syslog.LOG_ERR,
+                "Account %s KAS '%s' invalid XML response: %s" % (
+                    self.description, action, resp.text[:200]
+                )
+            )
+            return None
+
+        fault = root.find('.//{*}Fault')
+        if fault is not None:
+            faultstring = fault.find('{*}faultstring') or fault.find('faultstring')
             syslog.syslog(
                 syslog.LOG_ERR,
                 "Account %s KAS '%s' SOAP fault: %s" % (
                     self.description, action,
-                    fault.group(1) if fault else resp.text[:200]
+                    faultstring.text if faultstring is not None else resp.text[:200]
                 )
             )
             return None
@@ -170,27 +182,18 @@ class AllInkl(BaseAccount):
           <item><key ...>record_type</key><value ...>A</value></item>
           <item><key ...>record_id</key><value ...>12345</value></item>
         """
-        def _kv(chunk, key):
-            """Extract value for key in a key/value chunk."""
-            m = re.search(
-                r'<key[^>]*>' + re.escape(key) + r'</key>\s*<value[^>]*>([^<]*)</value>',
-                chunk
-            )
-            return m.group(1) if m else None
+        root = ET.fromstring(xml_text)
 
-        # Split on record boundaries — each record is an <item xsi:type="ns2:Map"> block
-        chunks = re.split(r'<item\s[^>]*ns2:Map[^>]*>', xml_text)
+        for map_item in root.findall('.//{*}KasApiResponse//{*}item'):
+            kv = {}
+            for sub in map_item.findall('{*}item'):
+                key_el   = sub.find('{*}key')
+                value_el = sub.find('{*}value')
+                if key_el is not None and value_el is not None:
+                    kv[key_el.text or ''] = value_el.text or ''
 
-        for chunk in chunks:
-            r_name = _kv(chunk, 'record_name')
-            r_type = _kv(chunk, 'record_type')
-            r_id   = _kv(chunk, 'record_id')
-
-            if r_name is None or r_type is None or r_id is None:
-                continue
-
-            if r_name == record_label and r_type == record_type:
-                return r_id
+            if kv.get('record_name') == record_label and kv.get('record_type') == record_type:
+                return kv.get('record_id')
 
         return None
 
@@ -307,7 +310,9 @@ class AllInkl(BaseAccount):
                 all_success = False
                 continue
 
-            if re.search(r'<value[^>]*>TRUE</value>', update_response, re.IGNORECASE):
+            update_root = ET.fromstring(update_response)
+            if any(v.text and v.text.upper() == 'TRUE'
+                   for v in update_root.findall('.//{*}value')):
                 syslog.syslog(
                     syslog.LOG_NOTICE,
                     "Account %s set new IP %s for %s" % (
