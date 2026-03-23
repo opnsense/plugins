@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2021 Frank Wall
+Copyright (C) 2021-2026 Frank Wall
 OPNsense® is Copyright © 2014 – 2016 by Deciso B.V.
 All rights reserved.
 
@@ -29,16 +29,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
+        'use strict';
+
         /**
          * show HAProxy config
          */
         function update_showconf() {
-            ajaxCall(url="/api/haproxy/export/config/", sendData={}, callback=function(data,status) {
+            ajaxCall("/api/haproxy/export/config/", {}, function(data, status) {
                 if (data['response'] && data['response'].trim()) {
                     $("#showconf").text(data['response']);
                 } else {
-                    conf_help = "<br><span style=\"color: #000000; white-space: pre-wrap; font-family: monospace;\"> {{ lang._('Config file not found. Run a syntax check to create it.') }}</span><br>";
-                    $("#showconfempty").append(conf_help);
+                    $("#showconfempty").append('<br><span class="conf-message"> {{ lang._('Config file not found. Run a syntax check to create it.') }}</span><br>');
                     $("#showconf").hide();
                 }
             });
@@ -49,29 +50,16 @@ POSSIBILITY OF SUCH DAMAGE.
          * show HAProxy config diff
          */
         function update_showdiff() {
-            ajaxCall(url="/api/haproxy/export/diff/", sendData={}, callback=function(data,status) {
-                diff = '';
+            ajaxCall("/api/haproxy/export/diff/", {}, function(data, status) {
+                const diffClasses = {'+': 'diff-add', '-': 'diff-remove', '@': 'diff-hunk'};
+                let diff = '';
                 if (data['response'] && data['response'].trim()) {
-                    var lines = data['response'].split("\n");
-                    $.each(lines, function(n, line) {
-                        switch(line.substring(0,1)) {
-                            case '+':
-                                color = '#3bbb33';
-                                break;
-                            case '-':
-                                color = '#c13928';
-                                break;
-                            case '@':
-                                color = '#3bb9c3';
-                                break;
-                            default:
-                                color = '#000000';
-                        }
-                        diff += '<span style="color: ' + color + '; white-space: pre-wrap; font-family: monospace;">' + line + '</span><br>';
-
+                    data['response'].split("\n").forEach(function(line) {
+                        const cssClass = diffClasses[line.substring(0, 1)] || 'diff-context';
+                        diff += `<span class="${cssClass}">${$('<span/>').text(line).html()}</span><br>`;
                     });
                 } else {
-                    diff = "<br><span style=\"color: #000000; white-space: pre-wrap; font-family: monospace;\"> {{ lang._('New and old config files are identical.') }}</span><br>";
+                    diff = '<br><span class="diff-context"> {{ lang._('New and old config files are identical.') }}</span><br>';
                 }
                 $("#showdiff").append(diff);
             });
@@ -83,11 +71,11 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         $('[id*="exportbtn"]').each(function(){
             $(this).click(function(){
-                var type = $(this).data("type");
-                ajaxGet("/api/haproxy/export/download/"+type+"/", {}, function(data, status){
+                const type = $(this).data("type");
+                ajaxGet("/api/haproxy/export/download/" + type + "/", {}, function(data, status){
                     if (data.filename !== undefined) {
-                        var link = $('<a></a>')
-                            .attr('href','data:'+data.filetype+';base64,' + data.content)
+                        const link = $('<a></a>')
+                            .attr('href', 'data:' + data.filetype + ';base64,' + data.content)
                             .attr('download', data.filename)
                             .appendTo('body');
 
@@ -101,17 +89,25 @@ POSSIBILITY OF SUCH DAMAGE.
         });
 
         // update history on tab state and implement navigation
-        if(window.location.hash != "") {
-            $('a[href="' + window.location.hash + '"]').click()
+        if (window.location.hash != "") {
+            $('a[href="' + window.location.hash + '"]').click();
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
         });
         $(window).on('hashchange', function(e) {
-            $('a[href="' + window.location.hash + '"]').click()
+            $('a[href="' + window.location.hash + '"]').click();
         });
     });
 </script>
+
+<style>
+    .diff-add     { color: #3bbb33; white-space: pre-wrap; font-family: monospace; }
+    .diff-remove  { color: #c13928; white-space: pre-wrap; font-family: monospace; }
+    .diff-hunk    { color: #3bb9c3; white-space: pre-wrap; font-family: monospace; }
+    .diff-context { white-space: pre-wrap; font-family: monospace; }
+    .conf-message { white-space: pre-wrap; font-family: monospace; }
+</style>
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#export"><b>{{ lang._('Config Export') }}</b></a></li>

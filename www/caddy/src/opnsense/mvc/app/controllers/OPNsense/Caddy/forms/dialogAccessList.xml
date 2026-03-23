@@ -3,7 +3,7 @@
         <id>accesslist.accesslistName</id>
         <label>Access List Name</label>
         <type>text</type>
-        <help><![CDATA[Enter a name for this access list.]]></help>
+        <help>Enter a name for this access list.</help>
     </field>
     <field>
         <id>accesslist.clientIps</id>
@@ -11,13 +11,13 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Enter the client IP addresses or networks for this access list. Accepts multiple IPv4/IPv6 addresses or networks.]]></help>
+        <help>Enter the client IP addresses or networks for this access list. Accepts multiple IPv4/IPv6 addresses or networks.</help>
     </field>
     <field>
         <id>accesslist.accesslistInvert</id>
         <label>Invert List</label>
         <type>checkbox</type>
-        <help><![CDATA[If checked, the access list logic will be inverted (i.e., the listed IPs will be blocked instead of allowed).]]></help>
+        <help>If checked, the access list logic will be inverted (i.e., the listed IPs will be blocked instead of allowed).</help>
         <grid_view>
             <type>boolean</type>
             <formatter>boolean</formatter>
@@ -28,7 +28,7 @@
         <label>HTTP Response Code</label>
         <type>text</type>
         <hint>abort</hint>
-        <help><![CDATA[Set a custom HTTP response code that should be returned to the requesting client when the access list does not match. If empty, the connection is aborted with no response.]]></help>
+        <help>Set a custom HTTP response code that should be returned to the requesting client when the access list does not match. If empty, the connection is aborted with no response.</help>
         <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
@@ -38,7 +38,7 @@
         <id>accesslist.HttpResponseMessage</id>
         <label>HTTP Response Message</label>
         <type>text</type>
-        <help><![CDATA[Set a custom HTTP response message in addition to the HTTP response code. If empty, the default HTTP response message for the chosen HTTP response code will be used.]]></help>
+        <help>Set a custom HTTP response message in addition to the HTTP response code. If empty, the default HTTP response message for the chosen HTTP response code will be used.</help>
         <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
@@ -48,7 +48,7 @@
         <id>accesslist.RequestMatcher</id>
         <label>Request Matcher</label>
         <type>dropdown</type>
-        <help><![CDATA[Set the request matcher that will be applied to this access list.]]></help>
+        <help>Set the request matcher that will be applied to this access list.</help>
         <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
@@ -58,6 +58,6 @@
         <id>accesslist.description</id>
         <label>Description</label>
         <type>text</type>
-        <help><![CDATA[Enter a description for this access list.]]></help>
+        <help>Enter a description for this access list.</help>
     </field>
 </form>

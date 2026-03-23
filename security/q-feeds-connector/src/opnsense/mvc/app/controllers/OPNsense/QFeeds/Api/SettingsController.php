@@ -34,6 +34,7 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Base\UserException;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Firewall\Alias;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
@@ -51,6 +52,8 @@ class SettingsController extends ApiMutableModelControllerBase
         if (strpos($res, 'EXIT OK') === false) {
             throw new UserException($res);
         }
+        /* as we register new dynamic aliases, we're also responsible for invalidating an existing cache */
+        Alias::flushCacheData();
         return ['status' => 'ok', 'output' => $res];
     }
 

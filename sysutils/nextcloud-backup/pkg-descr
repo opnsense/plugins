@@ -6,6 +6,14 @@ strongly advise to not use a public service to send backups to.
 Plugin Changelog
 ================
 
+1.2
+
+* Add option to upload to one file each day instead of syncing the contents of /conf/backup
+* Add support for having backing up to a subdirectory instead of the root backup dir
+* Skip non-files when enumerating local entries to backup
+* Only back up when local file is newer than remote
+* Switch to UpdateOnlyTextField from TextField
+
 1.1
 
 * Back up the content of /conf/backup (contributed by Daniel Lysfjor)

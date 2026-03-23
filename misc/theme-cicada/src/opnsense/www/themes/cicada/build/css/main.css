@@ -3198,7 +3198,7 @@ tbody.collapse.in {
     height: 1px;
     margin: 9px 0;
     overflow: hidden;
-    background-color: #e5e5e5; }
+    background-color: #191919; }
   .dropdown-menu > li > a {
     display: block;
     padding: 3px 20px;
@@ -6615,6 +6615,11 @@ ul.jqtree-tree .jqtree-title {
 
 .table.border {
   border: 1px solid #191919 !important;
+}
+
+.rule.text-muted {
+	background-color: #242424 !important;
+	opacity: 0.4;
 }
 
 .rule.text-muted > td:nth-child(1n+3) {
