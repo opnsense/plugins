@@ -53,27 +53,10 @@ $poll_timeout  = 15;  // maximum seconds to wait for interface
 
 // --- Restart the NetBird service -------------------------------------------
 log_msg("NetBird: Restarting service");
-mwexec('/usr/local/etc/rc.d/netbird restart');
+mwexecfb ('/usr/local/etc/rc.d/netbird restart');
 
-// --- Check if NetBird is actually connected after restart ------------------
-// On a CARP BACKUP node the start_postcmd runs "netbird down", so the tunnel
-// is intentionally not established and wt0 will never appear.  Skip the
-// interface poll entirely in that case to avoid a 15-second timeout.
+// Short delay to allow the restart command to take effect before polling
 sleep(2);
-
-$is_connected = false;
-$status_json = shell_exec('/usr/local/bin/netbird status --json 2>/dev/null');
-if ($status_json !== null) {
-    $status = json_decode($status_json, true);
-    if (json_last_error() === JSON_ERROR_NONE) {
-        $is_connected = ($status['management']['connected'] ?? false) === true;
-    }
-}
-
-if (!$is_connected) {
-    log_msg("NetBird: Service not connected after restart (CARP BACKUP or not authenticated), skipping filter reload");
-    exit(0);
-}
 
 // --- Poll for the wt0 interface to reappear --------------------------------
 // The restart destroys the old wt0 and creates a new one.  We need to wait
