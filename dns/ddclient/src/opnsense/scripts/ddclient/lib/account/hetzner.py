@@ -59,7 +59,7 @@ class Hetzner(HetznerAccount):
     _priority = 65535
 
     _services = ['hetzner']
-    
+
     _api_base = "https://api.hetzner.cloud/v1"
 
     def __init__(self, account: dict):
