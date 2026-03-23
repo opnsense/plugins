@@ -30,11 +30,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $(document).ready(function() {
-        mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-            updateServiceControlUI('quagga');
-
         $(document).on('change', '#neighbor\\.bfd', function(){
             if ($(this).is(':checked')) {
                 $(".bfd_strict_mode").closest('tr').show();
@@ -42,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 $(".bfd_strict_mode").closest('tr').hide();
             }
         });
+
+        mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
+            $('#neighbor\\.bfd').trigger('change');
         });
 
         $("#reconfigureAct").SimpleActionButton({
