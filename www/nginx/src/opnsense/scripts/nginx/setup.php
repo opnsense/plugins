@@ -354,7 +354,7 @@ file_put_contents(
 chmod('/usr/local/etc/nginx/tls_fingerprints.json', 0644);
 
 // test config and exit early if it not good
-$conf_test_errors = shell_safe('nginx -t -q 2>&1');
+$conf_test_errors = shell_safe('/usr/local/sbin/nginx -t -q 2>&1');
 if (!empty($conf_test_errors)) {
     syslog(LOG_EMERG, $conf_test_errors);
     closelog();
@@ -364,4 +364,4 @@ if (!empty($conf_test_errors)) {
 syslog(LOG_DEBUG, "NGINX setup routine completed.");
 closelog();
 
-pass_safe('/usr/local/etc/rc.d/php-fpm start');
+pass_safe('/usr/local/etc/rc.d/php_fpm start');
