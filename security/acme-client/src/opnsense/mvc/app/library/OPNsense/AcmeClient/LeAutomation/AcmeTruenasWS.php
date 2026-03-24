@@ -32,7 +32,7 @@ namespace OPNsense\AcmeClient\LeAutomation;
 use OPNsense\AcmeClient\LeAutomationInterface;
 
 /**
- * Run acme.sh deploy hook truenasws
+ * Run acme.sh deploy hook truenas_ws
  * @package OPNsense\AcmeClient
  */
 class AcmeTruenasWS extends Base implements LeAutomationInterface
