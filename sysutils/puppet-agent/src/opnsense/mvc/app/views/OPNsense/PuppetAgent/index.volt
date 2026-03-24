@@ -29,28 +29,35 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script>
-    $( document ).ready(function() {
-        var data_get_map = {'frm_GeneralSettings':"/api/puppetagent/settings/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
-            // place actions to run after load, for example update form styles.
+    $(document).ready(function() {
+        mapDataToFormUI({'frm_GeneralSettings': "/api/puppetagent/settings/get"}).done(function() {
+            formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('puppetagent');
         });
-        // link save button to API set action
         $("#saveAct").SimpleActionButton({
             onPreAction: function() {
                 const dfObj = new $.Deferred();
-                saveFormToEndpoint(url="/api/puppetagent/settings/set",formid='frm_GeneralSettings', function() {
-                    dfObj.resolve();
-                });
-                return dfObj;
+                saveFormToEndpoint(
+                    "/api/puppetagent/settings/set",
+                    'frm_GeneralSettings',
+                    function() {
+                        dfObj.resolve();
+                    },
+                    true,
+                    function() {
+                        dfObj.reject();
+                    }
+                );
+                return dfObj.promise();
             }
         });
-        updateServiceControlUI('puppetagent');
     });
 </script>
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
-    <li class="active"><a data-toggle="tab" id="settings-introduction" href="#subtab_settings-introduction"><b>{{ lang._('Introduction') }}</b></a></li>
-    <li><a data-toggle="tab" id="settings-tab" href="#settings"><b>{{ lang._('Settings') }}</b></a></li>
+    <li class="active"><a data-toggle="tab" id="settings-introduction" href="#subtab_settings-introduction">{{ lang._('Introduction') }}</a></li>
+    <li><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
@@ -80,7 +87,6 @@ POSSIBILITY OF SUCH DAMAGE.
                 data-error-title="{{ lang._('Error reconfiguring puppetagent') }}"
                 type="button">
             </button>
-            <br/>
         </div>
     </div>
 
