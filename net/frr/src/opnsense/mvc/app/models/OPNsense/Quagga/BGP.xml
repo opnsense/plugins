@@ -69,6 +69,10 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>4294967295</MaximumValue>
                 </remoteas>
+                <localas type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                </localas>
                 <password type="TextField"/>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
