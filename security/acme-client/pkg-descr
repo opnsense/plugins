@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.15
+
+Added:
+* add support for deploy hook "truenas_ws" (#5309)
+
 4.14
 
 Fixed:
