@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2021 Frank Wall
+OPNsense® is Copyright © 2021-2026 Frank Wall
 OPNsense® is Copyright © 2021 Jan Winkler
 OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
 All rights reserved.
@@ -58,11 +58,11 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_settings-introduction" class="tab-pane fade in active">
         <div class="col-md-12">
             <h1>{{ lang._('Quick Start Guide') }}</h1>
-            <p>{{ lang._("Welcome to the Puppet Agent plugin! This plugin allows you to integrate OPNsense with your Puppet environment.") }}</p>
+            <p>{{ lang._("Welcome to the Puppet Agent plugin! This plugin allows you to integrate OPNsense with your Puppet/OpenVox environment.") }}</p>
             <p>{{ lang._("Keep in mind that you should not treat OPNsense like any other operating system. Most notably you should not modify system files or packages. Instead use the OPNsense API to make configuration changes and to manage plugins. The following tools are a good starting point when trying to automate OPNsense with Puppet:") }}</p>
             <ul>
-              <li>{{ lang._("%sopn-cli:%s A command line client to configure OPNsense core and plugin components through their respective APIs.") | format('<a href="https://github.com/andreas-stuerz/opn-cli" target="_blank">', '</a>') }}</li>
-              <li>{{ lang._("%spuppet/opnsense:%s A read-to-use Puppet module for automating the OPNsense firewall.") | format('<a href="https://github.com/andreas-stuerz/puppet-opnsense" target="_blank">', '</a>') }}</li>
+              <li>{{ lang._("%sopn_api:%s A command line client to configure OPNsense core and plugin components through their respective APIs.") | format('<a href="https://github.com/markt-de/opn-api" target="_blank">', '</a>') }}</li>
+              <li>{{ lang._("%spuppet/opn:%s A read-to-use Puppet module for automating the OPNsense firewall.") | format('<a href="https://github.com/markt-de/puppet-opn" target="_blank">', '</a>') }}</li>
             </ul>
             <p>{{ lang._("Note that these tools are not directly related to this plugin. Please report issues and missing features directly to the author.") }}</p>
         </div>
