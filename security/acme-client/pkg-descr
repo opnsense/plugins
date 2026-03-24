@@ -11,7 +11,7 @@ Plugin Changelog
 4.15
 
 Added:
-* add support for the websocket API of TrueNAS (required for TrueNAS 26+)
+* add support for deploy hook "truenas_ws" (#5309)
 
 4.14
 
