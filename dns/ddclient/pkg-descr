@@ -9,6 +9,7 @@ Plugin Changelog
 1.30
 
 * Add native backend support for Hostinger (contributed by Leandro Scardua)
+* Fix Hetzner existing record update (contributed by Julian Nikodemus)
 * Fix PowerDNS URL validation
 
 1.29
