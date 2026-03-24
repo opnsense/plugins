@@ -13,6 +13,9 @@ Plugin Changelog
 Added:
 * add support for deploy hook "truenas_ws" (#5309)
 
+Changed:
+* always use configured cert name in cert description (#5282)
+
 4.14
 
 Fixed:
