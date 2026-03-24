@@ -6,6 +6,8 @@ WWW: https://github.com/coturn/coturn
 Plugin Changelog
 ================
 
+1.2
+
 Added:
 * add support for external IPs and IP mappings (#4906)
 
