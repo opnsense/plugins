@@ -32,6 +32,24 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.localaddress</id>
+    <label>Local Address</label>
+    <type>text</type>
+    <help>Local IP address to bind and send packets from. Mandatory for IPv6 peers.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
+    <id>neighbor.interfacename</id>
+    <label>Interface</label>
+    <type>dropdown</type>
+    <help>Select interface to use for this BFD peer.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.detect_multiplier</id>
     <label>Detect multiplier</label>
     <type>text</type>
