@@ -56,4 +56,10 @@
         <type>checkbox</type>
         <help>Disable source NAT to disable subnet routing (experimental).</help>
     </field>
+    <field>
+        <id>settings.peerRelayPort</id>
+        <label>Peer Relay Port</label>
+        <type>text</type>
+        <help>Keep empty to disable peer relay.</help>
+    </field>
 </form>
