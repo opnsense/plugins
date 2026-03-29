@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <description>
         Stunnel TLS encryption proxy
     </description>
@@ -18,6 +18,10 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enable_ident_server>
+            <enable_oscp type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_oscp>
         </general>
         <services>
             <service type="ArrayField">
@@ -47,11 +51,18 @@
                 </connect_port>
                 <protocol type="OptionField">
                     <OptionValues>
+                        <cifs>CIFS</cifs>
+                        <capwin>CAPWIN</capwin>
+                        <capwinctrl>CAPWINCTRL</capwinctrl>
+                        <connect>CONNECT</connect>
                         <imap>IMAP</imap>
                         <ldap>LDAP</ldap>
                         <nntp>NNTP</nntp>
+                        <pgsql>PGSQL</pgsql>
                         <pop3>POP3</pop3>
+                        <proxy>PROXY</proxy>
                         <smtp>SMTP</smtp>
+                        <socks>SOCKS</socks>
                     </OptionValues>
                     <Required>N</Required>
                 </protocol>
