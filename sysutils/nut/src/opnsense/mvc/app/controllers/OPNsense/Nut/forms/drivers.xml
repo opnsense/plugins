@@ -1,0 +1,16 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>Global Driver Settings</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>nut.drivers.extra_global_options</id>
+        <label>ups.conf Extra Global Options</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set extra options for ups.conf not for a specific driver.</help>
+        <advanced>true</advanced>
+    </field>
+</form>
