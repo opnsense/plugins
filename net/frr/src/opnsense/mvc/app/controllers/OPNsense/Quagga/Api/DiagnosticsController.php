@@ -254,6 +254,7 @@ class DiagnosticsController extends ApiControllerBase
         $payload = $this->configdJson("ospfv3", "route");
         if (!empty($payload['routes'])) {
             foreach ($payload['routes'] as $net => $route) {
+                $route = $route[0]; // route details are object within array in json. - fixes #5252
                 if (!empty($route['nextHops'])) {
                     foreach ($route['nextHops'] as $nexthop) {
                         $record = array_merge($route, $nexthop);
