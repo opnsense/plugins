@@ -223,7 +223,7 @@ class M5_0_0 extends BaseModelMigration
                         $action->http_response_option = (string)$action->http_response_set_status_code . $status_reason;
                         $action->http_response_set_status_code = null;
                         $action->http_response_set_status_reason = null;
-                  }
+                    }
                     break;
                 case 'http-response_set-var':
                     $action->type = 'http-response';

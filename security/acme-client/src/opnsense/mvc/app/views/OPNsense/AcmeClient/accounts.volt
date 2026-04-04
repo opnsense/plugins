@@ -99,224 +99,38 @@ POSSIBILITY OF SUCH DAMAGE.
             },
         };
 
-        /**
-         * reload bootgrid, return to current selected page
-         */
-        function std_bootgrid_reload(gridId) {
-            var currentpage = $("#"+gridId).bootgrid("getCurrentPage");
-            $("#"+gridId).bootgrid("reload");
-            // absolutely not perfect, bootgrid.reload doesn't seem to support when().done()
-            setTimeout(function(){
-                $('#'+gridId+'-footer  a[data-page="'+currentpage+'"]').click();
-            }, 400);
-        }
-
-        /**
-         * copy actions for selected items from opnsense_bootgrid_plugin.js
-         */
-        const grid_accounts = $("#grid-accounts").UIBootgrid($.extend(gridParams, { options: gridopt }));
-
-        $("#grid-accounts").on("loaded.rs.jquery.bootgrid", function (e)
-        {
-            // toggle all rendered tooltips (once for all)
-            $('.bootgrid-tooltip').tooltip();
-
-            // scale footer on resize
-            $(this).find("tfoot td:first-child").attr('colspan',$(this).find("th").length - 1);
-            $(this).find('tr[data-row-id]').each(function(){
-                if ($(this).find('[class*="command-toggle"]').first().data("value") == "0") {
-                    $(this).addClass("text-muted");
+        const grid_accounts = $("#grid-accounts").UIBootgrid($.extend(gridParams, {
+            options: gridopt,
+            commands: {
+                register: {
+                    method: function(event, cell) {
+                        var uuid = $(this).data("row-id");
+                        stdDialogConfirm(
+                            '{{ lang._('Confirmation Required') }}',
+                            '{{ lang._('Register the selected account with the configured ACME CA?') }}',
+                            '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}',
+                            function() {
+                                ajaxCall(gridParams['register'] + uuid, {}, function() {
+                                    grid_accounts.bootgrid("reload");
+                                });
+                            }
+                        );
+                    },
+                    classname: 'fa fa-address-book-o',
+                    title: '{{ lang._('Register account') }}',
+                    sequence: 510
                 }
-            });
-
-            // edit dialog id to use
-            var editDlg = $(this).attr('data-editDialog');
-            var gridId = $(this).attr('id');
-
-            // link Add new to child button with data-action = add
-            $(this).find("*[data-action=add]").click(function(){
-                if ( gridParams['get'] != undefined && gridParams['add'] != undefined) {
-                    var urlMap = {};
-                    urlMap['frm_' + editDlg] = gridParams['get'];
-                    mapDataToFormUI(urlMap).done(function(){
-                        // update selectors
-                        formatTokenizersUI();
-                        $('.selectpicker').selectpicker('refresh');
-                        // clear validation errors (if any)
-                        clearFormValidation('frm_' + editDlg);
-                    });
-
-                    // show dialog for edit
-                    $('#'+editDlg).modal({backdrop: 'static', keyboard: false});
-                    //
-                    $("#btn_"+editDlg+"_save").unbind('click').click(function(){
-                        saveFormToEndpoint(url=gridParams['add'],
-                            formid='frm_' + editDlg, callback_ok=function(){
-                                $("#"+editDlg).modal('hide');
-                                $("#"+gridId).bootgrid("reload");
-                            }, true);
-                    });
-                }  else {
-                    console.log("[grid] action add missing")
+            },
+            tabulatorOptions: {
+                rowFormatter: function(row) {
+                    if (parseInt(row.getData()['enabled'], 2) !== 1) {
+                        $(row.getElement()).addClass('text-muted');
+                    } else {
+                        $(row.getElement()).removeClass('text-muted');
+                    }
                 }
-            });
-
-            // link delete selected items action
-            $(this).find("*[data-action=deleteSelected]").click(function(){
-                if ( gridParams['del'] != undefined) {
-                    stdDialogConfirm('{{ lang._('Confirm removal') }}',
-                        '{{ lang._('Do you want to remove the selected item?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
-                        var rows =$("#"+gridId).bootgrid('getSelectedRows');
-                        if (rows != undefined){
-                            var deferreds = [];
-                            $.each(rows, function(key,uuid){
-                                deferreds.push(ajaxCall(url=gridParams['del'] + uuid, sendData={},null));
-                            });
-                            // refresh after load
-                            $.when.apply(null, deferreds).done(function(){
-                                std_bootgrid_reload(gridId);
-                            });
-                        }
-                    });
-                } else {
-                    console.log("[grid] action del missing")
-                }
-            });
-
-        });
-
-        /**
-         * copy actions for items from opnsense_bootgrid_plugin.js
-         */
-        grid_accounts.on("loaded.rs.jquery.bootgrid", function(){
-
-            // edit dialog id to use
-            var editDlg = $(this).attr('data-editDialog');
-            var gridId = $(this).attr('id');
-
-            // edit item
-            grid_accounts.find(".command-edit").on("click", function(e)
-            {
-                if (editDlg != undefined && gridParams['get'] != undefined) {
-                    var uuid = $(this).data("row-id");
-                    var urlMap = {};
-                    urlMap['frm_' + editDlg] = gridParams['get'] + uuid;
-                    mapDataToFormUI(urlMap).done(function () {
-                        // update selectors
-                        formatTokenizersUI();
-                        $('.selectpicker').selectpicker('refresh');
-                        // clear validation errors (if any)
-                        clearFormValidation('frm_' + editDlg);
-                    });
-
-                    // show dialog for pipe edit
-                    $('#'+editDlg).modal({backdrop: 'static', keyboard: false});
-                    // define save action
-                    $("#btn_"+editDlg+"_save").unbind('click').click(function(){
-                        if (gridParams['set'] != undefined) {
-                            saveFormToEndpoint(url=gridParams['set']+uuid,
-                                formid='frm_' + editDlg, callback_ok=function(){
-                                    $("#"+editDlg).modal('hide');
-                                    std_bootgrid_reload(gridId);
-                                }, true);
-                        } else {
-                            console.log("[grid] action set missing")
-                        }
-                    });
-                } else {
-                    console.log("[grid] action get or data-editDialog missing")
-                }
-            });
-
-            // copy item, save as new
-            grid_accounts.find(".command-copy").on("click", function(e)
-            {
-                if (editDlg != undefined && gridParams['get'] != undefined) {
-                    var uuid = $(this).data("row-id");
-                    var urlMap = {};
-                    urlMap['frm_' + editDlg] = gridParams['get'] + uuid;
-                    mapDataToFormUI(urlMap).done(function () {
-                        // update selectors
-                        formatTokenizersUI();
-                        $('.selectpicker').selectpicker('refresh');
-                        // clear validation errors (if any)
-                        clearFormValidation('frm_' + editDlg);
-                    });
-
-                    // show dialog for pipe edit
-                    $('#'+editDlg).modal({backdrop: 'static', keyboard: false});
-                    // define save action
-                    $("#btn_"+editDlg+"_save").unbind('click').click(function(){
-                        if (gridParams['add'] != undefined) {
-                            saveFormToEndpoint(url=gridParams['add'],
-                                formid='frm_' + editDlg, callback_ok=function(){
-                                    $("#"+editDlg).modal('hide');
-                                    std_bootgrid_reload(gridId);
-                                }, true);
-                        } else {
-                            console.log("[grid] action add missing")
-                        }
-                    });
-                } else {
-                    console.log("[grid] action get or data-editDialog missing")
-                }
-            });
-
-            // delete item
-            grid_accounts.find(".command-delete").on("click", function(e)
-            {
-                if (gridParams['del'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirm removal') }}',
-                        '{{ lang._('Do you want to remove the selected item?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function () {
-                        ajaxCall(url=gridParams['del'] + uuid,
-                            sendData={},callback=function(data,status){
-                                // reload grid after delete
-                                $("#"+gridId).bootgrid("reload");
-                            });
-                    });
-                } else {
-                    console.log("[grid] action del missing")
-                }
-            });
-
-            // toggle item
-            grid_accounts.find(".command-toggle").on("click", function(e)
-            {
-                if (gridParams['toggle'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    $(this).addClass("fa-spinner fa-pulse");
-                    ajaxCall(url=gridParams['toggle'] + uuid,
-                        sendData={},callback=function(data,status){
-                            // reload grid after toggle
-                            std_bootgrid_reload(gridId);
-                        });
-                } else {
-                    console.log("[grid] action toggle missing")
-                }
-            });
-
-            // register account
-            grid_accounts.find(".command-register").on("click", function(e)
-            {
-                if (gridParams['register'] != undefined) {
-                    var uuid=$(this).data("row-id");
-                    stdDialogConfirm('{{ lang._('Confirmation Required') }}',
-                        '{{ lang._('Register the selected account with the configured ACME CA?') }}',
-                        '{{ lang._('Yes') }}', '{{ lang._('Cancel') }}', function() {
-                        ajaxCall(url=gridParams['register'] + uuid,sendData={},callback=function(data,status){
-                            // reload grid afterwards
-                            $("#"+gridId).bootgrid("reload");
-                        });
-                    });
-                } else {
-                    console.log("[grid] action register missing")
-                }
-            });
-
-        });
+            }
+        }));
 
         // hook into on-show event for dialog to extend layout.
         $('#DialogAccount').on('shown.bs.modal', function (e) {

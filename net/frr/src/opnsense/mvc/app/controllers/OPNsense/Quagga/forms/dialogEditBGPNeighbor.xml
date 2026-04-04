@@ -37,6 +37,15 @@
     <help>AS (Autonomous System) number of the neighbor, required for establishing a BGP session.</help>
   </field>
   <field>
+    <id>neighbor.localas</id>
+    <label>Local AS</label>
+    <type>text</type>
+    <help>Optional local AS to present to this specific neighbor.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.password</id>
     <label>BGP MD5 Password</label>
     <type>text</type>

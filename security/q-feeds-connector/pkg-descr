@@ -3,9 +3,18 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
+1.5
+
+* Feature: Add passlist option for unbound
+* Feature: Add effective networks for unbound
+* Feature: Add NXDOMAIN option for unbound
+* Feature: Add dest address for unbound
+* Bugfix: Invalidate alias cache on reconfigure
+
 1.4
 
 * Feature: Added DNSCrypt-Proxy integration
+* Bugfix: Track loaded lists when deselected and reload Unbounds blocklist in that case
 
 1.3
 

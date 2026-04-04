@@ -1,7 +1,7 @@
 {% if helpers.exists('OPNsense.quagga.general.enabled') and OPNsense.quagga.general.enabled == '1' %}
 # XXX rc.d/frr splits up defunct "frr" service into frr_daemons
 # and we always start "zebra" so for now this works:
-zebra_setup="/usr/local/opnsense/scripts/frr/setup.sh"
+watchfrr_setup="/usr/local/opnsense/scripts/frr/setup.sh"
 frr_enable="YES"
 {% if helpers.exists('OPNsense.quagga.general.enablecarp') and OPNsense.quagga.general.enablecarp == '1' %}
 start_precmd="ifconfig | grep 'carp: MASTER'"

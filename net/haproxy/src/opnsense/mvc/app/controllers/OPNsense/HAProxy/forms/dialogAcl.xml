@@ -269,6 +269,27 @@
     <field>
         <label>Parameters</label>
         <type>header</type>
+        <style>expression_table table_var</style>
+    </field>
+    <field>
+        <id>acl.var_comparison</id>
+        <label>Comparison</label>
+        <type>dropdown</type>
+    </field>
+    <field>
+        <id>acl.var</id>
+        <label>Variable</label>
+        <type>text</type>
+        <help><![CDATA[The name of a variable, followed by an optional default value, e.g. (req.rate_limit) or (req.rate_limit,10).]]></help>
+    </field>
+    <field>
+        <id>acl.var_value</id>
+        <label>Value</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Parameters</label>
+        <type>header</type>
         <style>expression_table table_ssl_c_verify_code</style>
     </field>
     <field>
@@ -1787,5 +1808,11 @@
         <label>Mapfile</label>
         <type>dropdown</type>
         <help><![CDATA[Load patterns from a map file.]]></help>
+    </field>
+    <field>
+        <id>acl.converter</id>
+        <label>Converter</label>
+        <type>text</type>
+        <help><![CDATA[Transforms or processes the output of a sample fetch (e.g. variable, mapping, arithmetic, string manipulation) and passes the result to the next converter or final evaluation. Make more complex conditions possible, e.g. acl rate_abuse var(req.rate_limit),sub(req.request_rate) lt 0.]]></help>
     </field>
 </form>

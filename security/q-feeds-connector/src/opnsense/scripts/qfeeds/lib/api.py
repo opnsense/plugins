@@ -37,7 +37,7 @@ class QFeedsConfig:
             cnf = ConfigParser()
             cnf.read(config_filename)
             if cnf.has_section('api') and cnf.has_option('api', 'key'):
-                self.api_key = cnf.get('api', 'key')
+                self.api_key = cnf.get('api', 'key').strip()
 
 
 class Api:

@@ -2,7 +2,7 @@
 <?php
 
 /*
- *    Copyright (C) 2024 Cedrik Pischem
+ *    Copyright (C) 2024-2026 Cedrik Pischem
  *    All rights reserved.
  *
  *    Redistribution and use in source and binary forms, with or without
@@ -49,24 +49,25 @@ $tempDir = '/usr/local/etc/caddy/certificates/';
 // leaf certificate chain
 $certificateRefs = [];
 
-foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
-    $certRef = (string)$reverseItem->CustomCertificate;
-    if (!empty($certRef)) {
-        $certificateRefs[] = $certRef;
+$caddyMdl = new Caddy();
+
+foreach ($caddyMdl->reverseproxy->reverse->iterateItems() as $reverseItem) {
+    if (!$reverseItem->CustomCertificate->isEmpty()) {
+        $certificateRefs[] = $reverseItem->CustomCertificate->getValue();
     }
 }
 
 $certificateRefs = array_unique($certificateRefs);
 
 foreach ((new Cert())->cert->iterateItems() as $cert) {
-    $refid = (string)$cert->refid;
+    $refid = $cert->refid->getValue();
 
     if (in_array($refid, $certificateRefs, true)) {
-        $certChain = base64_decode((string)$cert->crt);
-        $certKey = base64_decode((string)$cert->prv);
+        $certChain = base64_decode($cert->crt->getValue());
+        $certKey = base64_decode($cert->prv->getValue());
 
-        if (!empty((string)$cert->caref)) {
-            $ca = CertStore::getCaChain((string)$cert->caref);
+        if (!$cert->caref->isEmpty()) {
+            $ca = CertStore::getCaChain($cert->caref->getValue());
             if ($ca) {
                 $certChain .= "\n" . $ca;
             }
@@ -80,36 +81,24 @@ foreach ((new Cert())->cert->iterateItems() as $cert) {
 // ca certificate
 $caCertRefs = [];
 
-foreach ((new Caddy())->reverseproxy->handle->iterateItems() as $handleItem) {
-    $caCertField = (string)$handleItem->HttpTlsTrustedCaCerts;
-
-    if (!empty($caCertField)) {
-        $caCertRefs[] = $caCertField;
+foreach ($caddyMdl->reverseproxy->handle->iterateItems() as $handleItem) {
+    if (!$handleItem->HttpTlsTrustedCaCerts->isEmpty()) {
+        $caCertRefs[] = $handleItem->HttpTlsTrustedCaCerts->getValue();
     }
 }
 
-foreach ((new Caddy())->reverseproxy->reverse->iterateItems() as $reverseItem) {
-    $caCertField = (string)$reverseItem->ClientAuthTrustPool;
-
-    if (!empty($caCertField)) {
-        $refs = array_map('trim', explode(',', $caCertField));
-        foreach ($refs as $ref) {
-            if (!empty($ref)) {
-                $caCertRefs[] = $ref;
-            }
+foreach ($caddyMdl->reverseproxy->reverse->iterateItems() as $reverseItem) {
+    foreach (explode(',', $reverseItem->ClientAuthTrustPool->getValue()) as $ref) {
+        if (!empty($ref)) {
+            $caCertRefs[] = $ref;
         }
     }
 }
 
-foreach ((new Caddy())->reverseproxy->subdomain->iterateItems() as $subdomainItem) {
-    $caCertField = (string)$subdomainItem->ClientAuthTrustPool;
-
-    if (!empty($caCertField)) {
-        $refs = array_map('trim', explode(',', $caCertField));
-        foreach ($refs as $ref) {
-            if (!empty($ref)) {
-                $caCertRefs[] = $ref;
-            }
+foreach ($caddyMdl->reverseproxy->subdomain->iterateItems() as $subdomainItem) {
+    foreach (explode(',', $subdomainItem->ClientAuthTrustPool->getValue()) as $ref) {
+        if (!empty($ref)) {
+            $caCertRefs[] = $ref;
         }
     }
 }
@@ -117,17 +106,17 @@ foreach ((new Caddy())->reverseproxy->subdomain->iterateItems() as $subdomainIte
 $caCertRefs = array_unique($caCertRefs);
 
 foreach ((new Ca())->ca->iterateItems() as $caItem) {
-    $refid = (string)$caItem->refid;
+    $refid = $caItem->refid->getValue();
     if (in_array($refid, $caCertRefs, true)) {
-        $caCert = base64_decode((string)$caItem->crt);
+        $caCert = base64_decode($caItem->crt->getValue());
         $writeFileIfChanged($tempDir . $refid . '.pem', $caCert);
     }
 }
 
 // openvpn static keys
-foreach ((new Caddy())->reverseproxy->layer4openvpn->iterateItems() as $openvpnItem) {
+foreach ($caddyMdl->reverseproxy->layer4openvpn->iterateItems() as $openvpnItem) {
     $writeFileIfChanged(
-        $tempDir . (string)$openvpnItem->getAttributes()['uuid'] . '.key',
-        (string)$openvpnItem->StaticKey
+        $tempDir . $openvpnItem->getAttributes()['uuid'] . '.key',
+        $openvpnItem->StaticKey->getValue()
     );
 }

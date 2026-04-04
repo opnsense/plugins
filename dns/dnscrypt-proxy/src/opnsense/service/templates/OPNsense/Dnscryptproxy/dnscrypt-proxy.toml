@@ -95,7 +95,7 @@ tls_disable_session_tickets = true
 tls_disable_session_tickets = false
 {%   endif %}
 
-bootstrap_resolvers = ['{{ OPNsense.dnscryptproxy.general.fallback_resolver }}']
+bootstrap_resolvers = ['{{ OPNsense.dnscryptproxy.general.fallback_resolver.split(',') | join("','") }}']
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.ignore_system_dns') and OPNsense.dnscryptproxy.general.ignore_system_dns == '1' %}
 ignore_system_dns = true

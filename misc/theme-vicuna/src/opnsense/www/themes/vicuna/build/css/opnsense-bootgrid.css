@@ -48,7 +48,7 @@
 }
 
 .tabulator-row.tabulator-row-odd.tabulator-selectable:hover:not(.tabulator-selected) {
-  background-color: #1b272f;
+  background-color: #1f2c35;
 }
 
 .tabulator-row.tabulator-row-even {
@@ -56,7 +56,7 @@
 }
 
 .tabulator-row.tabulator-row-even.tabulator-selectable:hover:not(.tabulator-selected) {
-  background-color: #1b272f;
+  background-color: #1f2c35;
 }
 
 .tabulator .tabulator-tableholder {
@@ -208,11 +208,6 @@
 
 .tabulator-page-counter {
   padding-right: 20px;
-}
-
-.bootgrid-footer-commands {
-  width: 90px;
-  padding-left: 8px;
 }
 
 .tabulator-tableholder::after {

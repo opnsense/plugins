@@ -325,4 +325,22 @@
         <type>text</type>
         <help><![CDATA[Refers to the number of the Stick Counter, e.g. 0 or 1 when using sc0 or sc1 respectively. This value will be ignored in rules that do not support SC.]]></help>
     </field>
+    <field>
+        <id>action.mapfile</id>
+        <label>Mapfile</label>
+        <type>dropdown</type>
+        <help><![CDATA[Load patterns from a map file.]]></help>
+    </field>
+    <field>
+        <id>action.map_default</id>
+        <label>Map default value</label>
+        <type>text</type>
+        <help><![CDATA[When a map file is specified, this is the default value.]]></help>
+    </field>
+    <field>
+        <id>action.sample_fetch</id>
+        <label>Sample fetch</label>
+        <type>text</type>
+        <help><![CDATA[Extracts a value from the request or connection context (e.g. path, header, source IP) to be used as input for converters or matching rules. May be used in combination with set-var and map files to create more complex rules, e.g.<br/>http-request set-var(req.rate_limit) path,map_beg(/path/to/mapfile,20)</br>http-request set-var(req.request_rate) base32+src,table_http_req_rate()]]></help>
+    </field>
 </form>

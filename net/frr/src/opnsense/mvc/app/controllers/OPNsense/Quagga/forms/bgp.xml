@@ -67,4 +67,18 @@
         <type>checkbox</type>
         <help>Enable extended logging of BGP neighbor changes.</help>
     </field>
+    <field>
+        <id>bgp.maximumpaths</id>
+        <label>Maximum Paths</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum number of equal-cost paths for EBGP multipath (ECMP). Leave empty to use FRR default (1).</help>
+    </field>
+    <field>
+        <id>bgp.maximumpathsibgp</id>
+        <label>Maximum Paths (IBGP)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum number of equal-cost paths for IBGP multipath (ECMP). Leave empty to use FRR default (1).</help>
+    </field>
 </form>

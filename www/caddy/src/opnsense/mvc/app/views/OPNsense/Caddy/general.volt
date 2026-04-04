@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023-2025 Cedrik Pischem
+ # Copyright (c) 2023-2026 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -33,31 +33,6 @@
             updateServiceControlUI('caddy');
         });
 
-        /**
-         * Displays an alert message to the user.
-         *
-         * @param {string} message - The message to display.
-         * @param {string} [type="error"] - The type of alert (error or success).
-         */
-        function showAlert(message, type = "error") {
-            const alertClass = type === "error" ? "alert-danger" : "alert-success";
-            const messageArea = $("#messageArea");
-            messageArea.stop(true, true).hide();
-            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-            messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                $(this).html('');
-            });
-        }
-
-        /**
-         * Centralizes error handling.
-         * @param {string} type - The type of error.
-         * @param {string} message - The error message.
-         */
-        function handleError(type, message) {
-            showAlert(message, type);
-        }
-
         // Event binding for saving forms
         $('[id^="save_general-"]').each(function () {
             const $btn = $(this);
@@ -77,25 +52,13 @@
                         "/api/caddy/general/set",
                         formId,
                         function () {
-                            ajaxGet("/api/caddy/service/validate", null, function (data, status) {
-                                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                                    dfObj.resolve();
-                                } else {
-                                    showAlert(data?.message || "{{ lang._('Validation Error') }}", "error");
-                                    dfObj.reject();
-                                }
-                            }).fail(function(xhr, status, error) {
-                                showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
-                                dfObj.reject();
-                            });
+                            dfObj.resolve();
                         },
                         true,
-                        function (errorData) {
-                            showAlert(errorData.message || "{{ lang._('Validation Error') }}", "error");
+                        function () {
                             dfObj.reject();
                         }
                     );
-
                     return dfObj.promise();
                 }
             });
@@ -111,8 +74,4 @@
 
 <div id="generalTabsContent" class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content", ['formData': generalForm]) }}
-    <!-- Message Area for error/success messages -->
-    <div style="max-width: 98%; margin: 10px auto;">
-        <div id="messageArea" class="alert alert-info" style="display: none;"></div>
-    </div>
 </div>
