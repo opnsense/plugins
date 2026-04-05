@@ -39,6 +39,11 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
 {%      do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
 {%    endif %}
+{% if helpers.exists('OPNsense.tailscale.settings.peerRelayPort') and OPNsense.tailscale.settings.peerRelayPort|default("0") != "0" %}
+    {% do up_args.append("--relay-server-port=" + OPNsense.tailscale.settings.peerRelayPort) %}
+{% else %}
+    {% do up_args.append("--relay-server-port=") %}
+{% endif %}
 {#    loop through subnets to build list #}
 {%      if helpers.exists('OPNsense.tailscale.settings.subnets.subnet4') %}
 {%        set subnets = [] %}
