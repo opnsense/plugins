@@ -253,13 +253,15 @@ class DiagnosticsController extends ApiControllerBase
         $records = [];
         $payload = $this->configdJson("ospfv3", "route");
         if (!empty($payload['routes'])) {
-            foreach ($payload['routes'] as $net => $route) {
-                if (!empty($route['nextHops'])) {
-                    foreach ($route['nextHops'] as $nexthop) {
-                        $record = array_merge($route, $nexthop);
-                        $record['network'] = $net;
-                        $record['interfaceDescr'] = $this->getIfDesc($record['interfaceName']);
-                        $records[] = $record;
+            foreach ($payload['routes'] as $net => $routes) {
+                foreach ($routes as $route) {
+                    if (!empty($route['nextHops'])) {
+                        foreach ($route['nextHops'] as $nexthop) {
+                            $record = array_merge($route, $nexthop);
+                            $record['network'] = $net;
+                            $record['interfaceDescr'] = $this->getIfDesc($record['interfaceName']);
+                            $records[] = $record;
+                        }
                     }
                 }
             }
