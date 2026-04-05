@@ -1,0 +1,9 @@
+<acl>
+    <page-xproxy>
+        <name>VPN: Xproxy</name>
+        <patterns>
+            <pattern>ui/xproxy/*</pattern>
+            <pattern>api/xproxy/*</pattern>
+        </patterns>
+    </page-xproxy>
+</acl>
