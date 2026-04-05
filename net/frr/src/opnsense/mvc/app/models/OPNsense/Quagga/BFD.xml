@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bfd</mount>
     <description>BFD configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -21,6 +21,17 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </multihop>
+                <localaddress type="NetworkField">
+                    <Required>N</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                </localaddress>
+                <interfacename type="InterfaceField">
+                    <Required>N</Required>
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </interfacename>
                 <detect_multiplier type="IntegerField">
                     <Default>3</Default>
                     <Required>Y</Required>
