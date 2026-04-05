@@ -154,22 +154,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     /* user permissions validation */
     foreach (miniupnpd_permuser_list() as $i => $permuser) {
         if (!empty($pconfig[$permuser])) {
-            $perm = explode(' ', $pconfig[$permuser]);
+            $perm = explode(' ', trim($pconfig[$permuser]));
             /* should explode to 4 args */
             if (count($perm) != 4) {
-                $input_errors[] = sprintf(gettext("You must follow the specified format in the 'User specified permissions %s' field"), $i);
+                $input_errors[] = sprintf(gettext("You must follow the specified format in the 'ACL entry %s' field"), $i);
             } else {
               /* must with allow or deny */
               if (!($perm[0] == 'allow' || $perm[0] == 'deny')) {
-                $input_errors[] = sprintf(gettext("You must begin with allow or deny in the 'User specified permissions %s' field"), $i);
+                $input_errors[] = sprintf(gettext("You must begin with allow or deny in the 'ACL entry %s' field"), $i);
               }
               /* verify port or port range */
               if (!miniupnpd_validate_port($perm[1]) || !miniupnpd_validate_port($perm[3])) {
-                  $input_errors[] = sprintf(gettext("You must specify a port or port range between 0 and 65535 in the 'User specified permissions %s' field"), $i);
+                  $input_errors[] = sprintf(gettext("You must specify a port or port range between 0 and 65535 in the 'ACL entry %s' field"), $i);
               }
               /* verify ip address */
               if (!miniupnpd_validate_ip($perm[2])) {
-                  $input_errors[] = sprintf(gettext("You must specify a valid ip address in the 'User specified permissions %s' field"), $i);
+                  $input_errors[] = sprintf(gettext("You must specify a valid ip address in the 'ACL entry %s' field"), $i);
               }
             }
         }
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
-            $upnp[$fieldname] = $pconfig[$fieldname];
+            $upnp[$fieldname] = trim($pconfig[$fieldname] ?? '');
         }
         // array types
         $upnp['iface_array'] = implode(',', $pconfig['iface_array']);
