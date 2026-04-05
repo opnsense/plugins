@@ -79,8 +79,9 @@ class DynDNS2(BaseAccount):
                 )
             else:
                 uri_proto = 'https' if self.settings.get('force_ssl', False) else 'http'
-                if self.settings.get('service') in self._services:
-                    url = "%s://%s/nic/update" % (uri_proto, self._services[self.settings.get('service')])
+                service = self.settings.get('service')
+                if service in self._services:
+                    url = "%s://%s/nic/update" % (uri_proto, self._services[service])
                 else:
                     url = "%s://%s/nic/update" % (uri_proto, self.settings.get('server'))
 
@@ -97,6 +98,9 @@ class DynDNS2(BaseAccount):
                         'User-Agent': 'OPNsense-dyndns'
                     }
                 }
+                if service in ['desec-v4', 'desec-v6']:
+                    req_opts['params']['myip'] = self.current_address if service == 'desec-v4' else 'preserve'
+                    req_opts['params']['myipv6'] = self.current_address if service == 'desec-v6' else 'preserve'
                 req = requests.get(**req_opts)
 
             if 200 <= req.status_code < 300:
