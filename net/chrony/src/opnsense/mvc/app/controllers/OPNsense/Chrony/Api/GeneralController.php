@@ -32,6 +32,36 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
-    protected static $internalModelClass = '\OPNsense\Chrony\General';
     protected static $internalModelName = 'general';
+    protected static $internalModelClass = '\OPNsense\Chrony\General';
+
+    public function searchItemAction()
+    {
+        return $this->searchBase("peers.peer", null, "address");
+    }
+
+    public function setItemAction($uuid)
+    {
+        return $this->setBase("peer", "peers.peer", $uuid);
+    }
+
+    public function addItemAction()
+    {
+        return $this->addBase("peer", "peers.peer");
+    }
+
+    public function getItemAction($uuid = null)
+    {
+        return $this->getBase("peer", "peers.peer", $uuid);
+    }
+
+    public function delItemAction($uuid)
+    {
+        return $this->delBase("peers.peer", $uuid);
+    }
+
+    public function toggleItemAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase("peers.peer", $uuid, $enabled);
+    }
 }
