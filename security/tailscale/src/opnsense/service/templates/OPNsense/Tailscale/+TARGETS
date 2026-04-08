@@ -1,1 +1,2 @@
-rc.conf.d:/etc/rc.conf.d/tailscaled
+rc.conf-up.d:/etc/rc.conf.d/tailscaled
+rc.conf-set.d:/etc/rc.conf.d/tailscaled_set

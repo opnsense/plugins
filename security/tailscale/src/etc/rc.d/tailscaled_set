@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# PROVIDE: tailscaled_set
+# REQUIRE: tailscaled
+#
+# Applies "tailscale set" configuration after tailscaled is running.
+# Sources tailscaled_set_args from /etc/rc.conf.d/tailscaled_set.
+
+. /etc/rc.subr
+
+name="tailscaled_set"
+rcvar="${name}_enable"
+start_cmd="${name}_start"
+stop_cmd=":"
+
+tailscaled_set_start()
+{
+	# Wait for tailscaled to become ready (up to 15 seconds)
+	local i=0
+	while ! /usr/local/bin/tailscale status > /dev/null 2>&1; do
+		sleep 1
+		i=$((i + 1))
+		if [ $i -ge 15 ]; then
+			echo "tailscaled_set: tailscaled never became ready"
+			return 1
+		fi
+	done
+
+	/usr/local/bin/tailscale set ${tailscaled_set_args}
+}
+
+load_rc_config $name
+: ${tailscaled_set_enable:="NO"}
+run_rc_command "$1"
+
+
