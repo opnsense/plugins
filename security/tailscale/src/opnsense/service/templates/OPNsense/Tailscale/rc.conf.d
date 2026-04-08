@@ -59,6 +59,15 @@ if [ -f /var/db/tailscale/tailscaled.state ]; then
 fi
 {%      endif %}
 tailscaled_up_args="{{ up_args|join(' ') }} ${tailscaled_up_args_ext}"
+{#    tailscale set args #}
+{%    set set_args = [] %}
+{%      do set_args.append("--relay-server-port=" + OPNsense.tailscale.settings.relayServerPort|default("")) %}
+{%    if helpers.exists('OPNsense.tailscale.settings.webclient') and OPNsense.tailscale.settings.webclient|default("0") == "1" %}
+{%      do set_args.append("--webclient") %}
+{%    else %}
+{%      do set_args.append("--webclient=false") %}
+{%    endif %}
+tailscaled_set_args="{{ set_args|join(' ') }}"
 {%  else %}
 tailscaled_enable="NO"
 {%  endif %}
