@@ -33,5 +33,5 @@ require_once('util.inc');
 require_once('plugins.inc.d/frr.inc');
 
 if (frr_enabled()) {
-    shell_exec('/usr/local/opnsense/scripts/frr/carp_event_handler');
+    mwexecfm('/usr/local/opnsense/scripts/frr/carp_event_handler');
 }

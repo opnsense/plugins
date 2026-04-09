@@ -22,11 +22,9 @@
                     <Required>Y</Required>
                 </multihop>
                 <localaddress type="NetworkField">
-                    <Required>N</Required>
                     <NetMaskAllowed>N</NetMaskAllowed>
                 </localaddress>
                 <interfacename type="InterfaceField">
-                    <Required>N</Required>
                     <AllowDynamic>Y</AllowDynamic>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
