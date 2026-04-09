@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2026 Konstantinos Spartalis (cspartalis@potatonetworks.com)
+ * Copyright (C) 2026 Konstantinos Spartalis <cspartalis@potatonetworks.com>
  * Copyright (C) 2023 Jan Winkler
  * All rights reserved.
  *
