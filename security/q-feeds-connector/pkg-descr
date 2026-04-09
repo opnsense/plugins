@@ -10,6 +10,7 @@ Plugin Changelog
 * Feature: Add NXDOMAIN option for unbound
 * Feature: Add dest address for unbound
 * Bugfix: Invalidate alias cache on reconfigure
+* Bugfix: Ignore "pass" log lines for `qfeedsctl.py logs`
 
 1.4
 
