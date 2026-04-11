@@ -27,4 +27,14 @@
     <type>dropdown</type>
     <help>Select an interface where this settings apply to.</help>
   </field>
+  <field>
+    <id>route.bfd</id>
+    <label>BFD</label>
+    <type>checkbox</type>
+    <help>Mark the route as dependent on the BFD neighbor session with the next hop.</help>
+    <advanced>true</advanced>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
 </form>
