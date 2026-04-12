@@ -89,6 +89,61 @@ def resolve_via_drill(hostname, dns_server):
     return None, detail
 
 
+def resolve_via_doh(hostname):
+    """Return (ipv4, error) using DNS-over-HTTPS over port 443 only."""
+    candidates = [
+        {
+            'host': 'cloudflare-dns.com',
+            'ip': '1.1.1.1',
+            'url': 'https://cloudflare-dns.com/dns-query?name={}&type=A'.format(hostname),
+        },
+        {
+            'host': 'dns.google',
+            'ip': '8.8.8.8',
+            'url': 'https://dns.google/resolve?name={}&type=A'.format(hostname),
+        },
+    ]
+
+    errors = []
+    for item in candidates:
+        cmd = [
+            '/usr/local/bin/curl',
+            '-s',
+            '-S',
+            '--max-time', '12',
+            '--connect-timeout', '6',
+            '--resolve', '{}:443:{}'.format(item['host'], item['ip']),
+            '-H', 'accept: application/dns-json',
+            item['url'],
+        ]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        except Exception as e:
+            errors.append('{} via {} failed: {}'.format(item['host'], item['ip'], str(e)))
+            continue
+
+        if result.returncode != 0:
+            msg = (result.stderr or result.stdout or '').strip()[:200]
+            errors.append('{} via {} curl error: {}'.format(item['host'], item['ip'], msg))
+            continue
+
+        try:
+            data = json.loads(result.stdout)
+        except Exception:
+            errors.append('{} via {} returned invalid JSON'.format(item['host'], item['ip']))
+            continue
+
+        answers = data.get('Answer') or []
+        for answer in answers:
+            ip = str(answer.get('data', '')).strip()
+            if re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip):
+                return ip, None
+
+        errors.append('{} via {} returned no A record'.format(item['host'], item['ip']))
+
+    return None, '; '.join(errors) if errors else 'No DoH resolver candidates available'
+
+
 def send_via_curl(token, data, resolved_ip=None):
     """Call the Telegram sendMessage endpoint via the system curl binary."""
     url = 'https://{}/bot{}/sendMessage'.format(TELEGRAM_HOST, token)
@@ -155,8 +210,19 @@ def main():
     dns_server = cfg.get('dnsServer', '') or '8.8.8.8'
     resolved_ip, resolve_error = resolve_via_drill(TELEGRAM_HOST, dns_server)
     if not resolved_ip:
-        out({'ok': False, 'description': 'DNS resolve failed via {} using {}: {}'.format(dns_server, 'drill', resolve_error)})
-        sys.exit(1)
+        doh_ip, doh_error = resolve_via_doh(TELEGRAM_HOST)
+        if doh_ip:
+            resolved_ip = doh_ip
+        else:
+            out({
+                'ok': False,
+                'description': 'DNS resolve failed. drill@{}: {} ; DoH fallback: {}'.format(
+                    dns_server,
+                    resolve_error,
+                    doh_error
+                )
+            })
+            sys.exit(1)
 
     post_data = {
         'chat_id': chat_id,
