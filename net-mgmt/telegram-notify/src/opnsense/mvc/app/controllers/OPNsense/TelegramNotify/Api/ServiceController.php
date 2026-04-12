@@ -3,30 +3,28 @@
 namespace OPNsense\TelegramNotify\Api;
 
 use OPNsense\Base\ApiControllerBase;
+use OPNsense\Core\Backend;
 use OPNsense\TelegramNotify\TelegramNotify;
 
 class ServiceController extends ApiControllerBase
 {
-    private function getEventMap()
-    {
-        return [
-            'system' => ['field' => 'eventSystem', 'label' => 'System'],
-            'gateway' => ['field' => 'eventGateway', 'label' => 'Gateway'],
-            'service' => ['field' => 'eventService', 'label' => 'Service'],
-            'vpn' => ['field' => 'eventVpn', 'label' => 'VPN'],
-            'security' => ['field' => 'eventSecurity', 'label' => 'Security'],
-            'updates' => ['field' => 'eventUpdates', 'label' => 'Updates'],
-        ];
-    }
+    private static $validEvents = [
+        'system', 'gateway', 'service', 'vpn', 'security', 'updates',
+    ];
+
+    private static $eventFields = [
+        'system'   => 'eventSystem',
+        'gateway'  => 'eventGateway',
+        'service'  => 'eventService',
+        'vpn'      => 'eventVpn',
+        'security' => 'eventSecurity',
+        'updates'  => 'eventUpdates',
+    ];
 
     public function testAction()
     {
         if (!$this->request->isPost()) {
             return ['status' => 'failed', 'message' => 'POST required'];
-        }
-
-        if (!function_exists('curl_init')) {
-            return ['status' => 'failed', 'message' => 'PHP cURL extension is not available'];
         }
 
         $model = new TelegramNotify();
@@ -36,10 +34,7 @@ class ServiceController extends ApiControllerBase
             return ['status' => 'failed', 'message' => 'Telegram notifications are disabled'];
         }
 
-        $token = trim((string)$general->botToken);
-        $chatId = trim((string)$general->chatId);
-
-        if ($token === '' || $chatId === '') {
+        if (trim((string)$general->botToken) === '' || trim((string)$general->chatId) === '') {
             return ['status' => 'failed', 'message' => 'Bot token and Chat ID are required'];
         }
 
@@ -48,12 +43,11 @@ class ServiceController extends ApiControllerBase
             $eventType = 'system';
         }
 
-        $eventMap = $this->getEventMap();
-        if (empty($eventMap[$eventType])) {
+        if (!in_array($eventType, self::$validEvents, true)) {
             return ['status' => 'failed', 'message' => 'Invalid event type'];
         }
 
-        $eventField = $eventMap[$eventType]['field'];
+        $eventField = self::$eventFields[$eventType];
         if ((string)$general->$eventField === '0') {
             return ['status' => 'failed', 'message' => 'Selected event type is disabled in settings'];
         }
@@ -63,76 +57,28 @@ class ServiceController extends ApiControllerBase
             $message = 'OPNsense test notification from Telegram Notify plugin.';
         }
 
-        $message = '[' . $eventMap[$eventType]['label'] . '] ' . $message;
+        // Delegate the HTTP call to configd (runs as root). The backend script
+        // uses drill @DNS to resolve api.telegram.org and curl --resolve to
+        // bypass the system resolver, which avoids DNS timeouts from PHP-FPM.
+        $raw = trim((new Backend())->configdpRun(
+            'telegramnotify send',
+            [$eventType, base64_encode($message)]
+        ));
 
-        $payload = [
-            'chat_id' => $chatId,
-            'text' => $message,
-            'disable_web_page_preview' => ((string)$general->disableWebPagePreview === '1') ? 'true' : 'false',
-            'disable_notification' => ((string)$general->disableNotification === '1') ? 'true' : 'false'
-        ];
-
-        $threadId = trim((string)$general->threadId);
-        if ($threadId !== '') {
-            $payload['message_thread_id'] = $threadId;
+        if ($raw === '') {
+            return ['status' => 'failed', 'message' => 'No response from backend (configd may not have loaded the new action yet — wait a few seconds and try again)'];
         }
 
-        $parseMode = (string)$general->parseMode;
-        if ($parseMode !== '' && $parseMode !== 'None') {
-            $payload['parse_mode'] = $parseMode;
-        }
-
-        $ch = curl_init('https://api.telegram.org/bot' . $token . '/sendMessage');
-        if ($ch === false) {
-            return ['status' => 'failed', 'message' => 'Unable to initialize cURL'];
-        }
-
-        $curlOpts = [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query($payload),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 20,
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
-        ];
-
-        $dnsServer = trim((string)$general->dnsServer);
-        if ($dnsServer !== '') {
-            $curlOpts[CURLOPT_DNS_SERVERS] = $dnsServer;
-        }
-
-        curl_setopt_array($ch, $curlOpts);
-
-        $response = curl_exec($ch);
-        $curlError = curl_error($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        curl_close($ch);
-
-        if ($response === false) {
-            $hint = (strpos($curlError, 'timed out') !== false || strpos($curlError, 'Resolving') !== false)
-                ? ' — Check: System > Settings > General > DNS servers, and that outbound HTTPS from the firewall is allowed. You can also set a custom DNS Server in the plugin settings (e.g. 8.8.8.8).'
-                : '';
-            return ['status' => 'failed', 'message' => 'Telegram API request failed: ' . $curlError . $hint];
-        }
-
-        $decoded = json_decode($response, true);
+        $decoded = json_decode($raw, true);
         if (!is_array($decoded)) {
-            return ['status' => 'failed', 'message' => 'Telegram API returned invalid JSON'];
+            return ['status' => 'failed', 'message' => 'Backend returned unexpected output: ' . substr($raw, 0, 200)];
         }
 
         if (!empty($decoded['ok'])) {
-            return [
-                'status' => 'ok',
-                'message' => 'Test message sent successfully',
-                'event_type' => $eventType
-            ];
+            return ['status' => 'ok', 'message' => 'Test message sent successfully', 'event_type' => $eventType];
         }
 
-        $apiMessage = !empty($decoded['description']) ? $decoded['description'] : 'unknown Telegram API error';
-        if ($statusCode === 0) {
-            return ['status' => 'failed', 'message' => 'Telegram API request did not receive an HTTP response'];
-        }
-
-        return ['status' => 'failed', 'message' => 'Telegram API error (' . $statusCode . '): ' . $apiMessage];
+        $apiMessage = !empty($decoded['description']) ? $decoded['description'] : 'Unknown Telegram API error';
+        return ['status' => 'failed', 'message' => $apiMessage];
     }
 }
