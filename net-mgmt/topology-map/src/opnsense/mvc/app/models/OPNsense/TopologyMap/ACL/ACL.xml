@@ -1,0 +1,16 @@
+<acl>
+    <page-user-topologymap>
+        <name>Services: Topology Map</name>
+        <patterns>
+            <pattern>ui/topologymap/*</pattern>
+            <pattern>api/topologymap/*</pattern>
+        </patterns>
+    </page-user-topologymap>
+    <page-dashboard-widget-topologymap>
+        <name>Dashboard: Topology Map widget</name>
+        <patterns>
+            <pattern>api/topologymap/service/summary</pattern>
+            <pattern>api/topologymap/service/geomap</pattern>
+        </patterns>
+    </page-dashboard-widget-topologymap>
+</acl>
