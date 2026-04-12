@@ -37,6 +37,12 @@
             <dnsServer type="TextField">
                 <Required>N</Required>
             </dnsServer>
+            <idsPollCron type="TextField">
+                <Required>N</Required>
+            </idsPollCron>
+            <monitPollCron type="TextField">
+                <Required>N</Required>
+            </monitPollCron>
             <eventSystem type="BooleanField">
                 <Default>1</Default>
                 <Required>Y</Required>

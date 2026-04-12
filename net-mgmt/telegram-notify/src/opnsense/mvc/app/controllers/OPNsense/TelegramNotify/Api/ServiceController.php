@@ -4,6 +4,8 @@ namespace OPNsense\TelegramNotify\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Cron\Cron;
+use OPNsense\Core\Config;
 use OPNsense\TelegramNotify\TelegramNotify;
 
 class ServiceController extends ApiControllerBase
@@ -80,5 +82,149 @@ class ServiceController extends ApiControllerBase
 
         $apiMessage = !empty($decoded['description']) ? $decoded['description'] : 'Unknown Telegram API error';
         return ['status' => 'failed', 'message' => $apiMessage];
+    }
+
+    public function enableIdsCronAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed', 'message' => 'POST required'];
+        }
+
+        $model = new TelegramNotify();
+        $backend = new Backend();
+        $cronModel = new Cron();
+
+        $existingUuid = trim((string)$model->general->idsPollCron);
+        if ($existingUuid !== '' && $cronModel->getNodeByReference('jobs.job.' . $existingUuid) != null) {
+            return [
+                'status' => 'ok',
+                'result' => 'ok',
+                'message' => 'IDS auto alerts cron rule already exists',
+                'uuid' => $existingUuid
+            ];
+        }
+
+        foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify ids poll') {
+                $foundUuid = $cronItem->getAttributes()['uuid'];
+                $model->general->idsPollCron = $foundUuid;
+                $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                Config::getInstance()->save();
+                return [
+                    'status' => 'ok',
+                    'result' => 'ok',
+                    'message' => 'Linked existing IDS auto alerts cron rule',
+                    'uuid' => $foundUuid
+                ];
+            }
+        }
+
+        $uuid = $cronModel->newDailyJob(
+            'TelegramNotify',
+            'telegramnotify ids poll',
+            'Poll IDS alerts and send Telegram notifications',
+            '5',
+            '1'
+        );
+
+        $cronJob = $cronModel->getNodeByReference('jobs.job.' . $uuid);
+        if ($cronJob != null) {
+            $cronJob->minutes = '*';
+            $cronJob->hours = '*';
+            $cronJob->days = '*';
+            $cronJob->months = '*';
+            $cronJob->weekdays = '*';
+        }
+
+        if ($cronModel->performValidation()->count() > 0) {
+            return ['status' => 'failed', 'message' => 'Unable to add IDS auto alerts cron rule'];
+        }
+
+        $cronModel->serializeToConfig();
+        $model->general->idsPollCron = $uuid;
+        $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+        Config::getInstance()->save();
+
+        $backend->configdRun('template reload OPNsense/Cron');
+        $backend->configdRun('cron restart');
+
+        return [
+            'status' => 'ok',
+            'result' => 'ok',
+            'message' => 'IDS auto alerts cron rule created (runs every minute, max 5 alerts per run)',
+            'uuid' => $uuid
+        ];
+    }
+
+    public function enableMonitCronAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed', 'message' => 'POST required'];
+        }
+
+        $model = new TelegramNotify();
+        $backend = new Backend();
+        $cronModel = new Cron();
+
+        $existingUuid = trim((string)$model->general->monitPollCron);
+        if ($existingUuid !== '' && $cronModel->getNodeByReference('jobs.job.' . $existingUuid) != null) {
+            return [
+                'status' => 'ok',
+                'result' => 'ok',
+                'message' => 'Monit auto alerts cron rule already exists',
+                'uuid' => $existingUuid
+            ];
+        }
+
+        foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify monit poll') {
+                $foundUuid = $cronItem->getAttributes()['uuid'];
+                $model->general->monitPollCron = $foundUuid;
+                $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+                Config::getInstance()->save();
+                return [
+                    'status' => 'ok',
+                    'result' => 'ok',
+                    'message' => 'Linked existing Monit auto alerts cron rule',
+                    'uuid' => $foundUuid
+                ];
+            }
+        }
+
+        $uuid = $cronModel->newDailyJob(
+            'TelegramNotify',
+            'telegramnotify monit poll',
+            'Poll Monit alerts and send Telegram notifications',
+            '3',
+            '1'
+        );
+
+        $cronJob = $cronModel->getNodeByReference('jobs.job.' . $uuid);
+        if ($cronJob != null) {
+            $cronJob->minutes = '*';
+            $cronJob->hours = '*';
+            $cronJob->days = '*';
+            $cronJob->months = '*';
+            $cronJob->weekdays = '*';
+        }
+
+        if ($cronModel->performValidation()->count() > 0) {
+            return ['status' => 'failed', 'message' => 'Unable to add Monit auto alerts cron rule'];
+        }
+
+        $cronModel->serializeToConfig();
+        $model->general->monitPollCron = $uuid;
+        $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+        Config::getInstance()->save();
+
+        $backend->configdRun('template reload OPNsense/Cron');
+        $backend->configdRun('cron restart');
+
+        return [
+            'status' => 'ok',
+            'result' => 'ok',
+            'message' => 'Monit auto alerts cron rule created (runs every minute, max 3 alerts per run)',
+            'uuid' => $uuid
+        ];
     }
 }
