@@ -8,7 +8,7 @@
                 <Default>1</Default>
                 <Required>Y</Required>
             </enabled>
-            <botToken type="PasswordField">
+            <botToken type="TextField">
                 <Required>N</Required>
             </botToken>
             <chatId type="TextField">
