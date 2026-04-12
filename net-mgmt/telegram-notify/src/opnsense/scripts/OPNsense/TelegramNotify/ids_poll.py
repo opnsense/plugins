@@ -52,6 +52,7 @@ def format_alert(evt):
     signature = str(alert.get('signature') or 'unknown signature')
     category = str(alert.get('category') or 'unknown category')
     severity = str(alert.get('severity') or 'n/a')
+    action = str(alert.get('action') or evt.get('action') or 'n/a')
     src_ip = str(evt.get('src_ip') or 'n/a')
     src_port = str(evt.get('src_port') or 'n/a')
     dst_ip = str(evt.get('dest_ip') or 'n/a')
@@ -64,11 +65,22 @@ def format_alert(evt):
         'Signature: {}\n'
         'Category: {}\n'
         'Severity: {}\n'
+        'Action: {}\n'
         'Proto: {}\n'
         'From: {}:{}\n'
         'To: {}:{}\n'
         'Interface: {}'
-    ).format(signature, category, severity, proto, src_ip, src_port, dst_ip, dst_port, iface)
+    ).format(signature, category, severity, action, proto, src_ip, src_port, dst_ip, dst_port, iface)
+
+
+def is_blocked_event(evt):
+    event_type = str(evt.get('event_type') or '').lower()
+    if event_type == 'drop':
+        return True
+
+    alert = evt.get('alert') or {}
+    action = str(alert.get('action') or evt.get('action') or '').lower()
+    return action in ('blocked', 'drop', 'dropped', 'reject', 'rejected')
 
 
 def send_message(text):
@@ -135,7 +147,10 @@ def main():
                 except Exception:
                     continue
 
-                if str(evt.get('event_type')) != 'alert':
+                if str(evt.get('event_type')) not in ('alert', 'drop'):
+                    continue
+
+                if not is_blocked_event(evt):
                     continue
 
                 msg = format_alert(evt)

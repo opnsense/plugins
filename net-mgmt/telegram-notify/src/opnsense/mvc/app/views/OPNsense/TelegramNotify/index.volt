@@ -42,6 +42,36 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#disableMonitAutoAct').click(function () {
+        ajaxCall('/api/telegramnotify/service/disableMonitCron', {}, function (data, status) {
+            if (status === 'success' && (data['status'] === 'ok' || data['result'] === 'ok')) {
+                $('#responseMsg').removeClass('hidden alert-danger').addClass('alert-info').html(data['message'] || '{{ lang._('Monit auto alerts cron rule disabled.') }}');
+            } else {
+                var err = (data && data['message']) ? data['message'] : '{{ lang._('Unable to disable Monit auto alerts cron rule.') }}';
+                $('#responseMsg').removeClass('hidden alert-info').addClass('alert-danger').html(err);
+            }
+        });
+    });
+
+    $('#toggleMonitInfo').click(function () {
+        $('#monitInfoBox').toggleClass('hidden');
+    });
+
+    $('#toggleIdsInfo').click(function () {
+        $('#idsInfoBox').toggleClass('hidden');
+    });
+
+    $('#disableIdsAutoAct').click(function () {
+        ajaxCall('/api/telegramnotify/service/disableIdsCron', {}, function (data, status) {
+            if (status === 'success' && (data['status'] === 'ok' || data['result'] === 'ok')) {
+                $('#responseMsg').removeClass('hidden alert-danger').addClass('alert-info').html(data['message'] || '{{ lang._('IDS auto alerts cron rule disabled.') }}');
+            } else {
+                var err = (data && data['message']) ? data['message'] : '{{ lang._('Unable to disable IDS auto alerts cron rule.') }}';
+                $('#responseMsg').removeClass('hidden alert-info').addClass('alert-danger').html(err);
+            }
+        });
+    });
 });
 </script>
 
@@ -49,25 +79,37 @@ $(document).ready(function () {
     {{ lang._('Configure your Telegram bot and test delivery with a live message.') }}
 </div>
 
-<div class="alert alert-info" role="alert">
-    <strong>{{ lang._('Monit integration') }}</strong><br/>
-    {{ lang._('In Monit, use an alert exec command like:') }}<br/>
-    <code>/usr/local/sbin/configctl telegramnotify monit "$SERVICE" "$EVENT" "$ACTION" "$DESCRIPTION" "$HOST" "$DATE"</code><br/>
-    {{ lang._('Or enable automatic Monit log polling:') }}<br/>
-    <code>/usr/local/sbin/configctl telegramnotify monit poll 3</code><br/>
-    <button class="btn btn-default" id="enableMonitAutoAct" type="button" style="margin-top:8px;">
-        <b>{{ lang._('Enable Monit Auto Alerts (Cron)') }}</b>
-    </button>
+<div class="alert alert-info" role="alert" style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <strong>{{ lang._('Monit integration') }}</strong>
+        <div>
+            <button class="btn btn-default" id="toggleMonitInfo" type="button" title="{{ lang._('Show details') }}"><b>i</b></button>
+            <button class="btn btn-default" id="enableMonitAutoAct" type="button"><b>{{ lang._('Enable Monit Auto Alerts (Cron)') }}</b></button>
+            <button class="btn btn-default" id="disableMonitAutoAct" type="button"><b>{{ lang._('Disable') }}</b></button>
+        </div>
+    </div>
+    <div id="monitInfoBox" class="hidden" style="margin-top:8px;">
+        {{ lang._('In Monit, use an alert exec command like:') }}<br/>
+        <code>/usr/local/sbin/configctl telegramnotify monit "$SERVICE" "$EVENT" "$ACTION" "$DESCRIPTION" "$HOST" "$DATE"</code><br/>
+        {{ lang._('Or enable automatic Monit log polling:') }}<br/>
+        <code>/usr/local/sbin/configctl telegramnotify monit.poll 3</code>
+    </div>
 </div>
 
-<div class="alert alert-info" role="alert">
-    <strong>{{ lang._('IDS integration (Suricata)') }}</strong><br/>
-    {{ lang._('Run periodically via Automation/Cron to send new IDS alerts from eve.json:') }}<br/>
-    <code>/usr/local/sbin/configctl telegramnotify ids poll 5</code><br/>
-    {{ lang._('The number is max alerts per run (1-50).') }}<br/>
-    <button class="btn btn-default" id="enableIdsAutoAct" type="button" style="margin-top:8px;">
-        <b>{{ lang._('Enable IDS Auto Alerts (Cron)') }}</b>
-    </button>
+<div class="alert alert-info" role="alert" style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <strong>{{ lang._('IDS integration (Suricata)') }}</strong>
+        <div>
+            <button class="btn btn-default" id="toggleIdsInfo" type="button" title="{{ lang._('Show details') }}"><b>i</b></button>
+            <button class="btn btn-default" id="enableIdsAutoAct" type="button"><b>{{ lang._('Enable IDS Auto Alerts (Cron)') }}</b></button>
+            <button class="btn btn-default" id="disableIdsAutoAct" type="button"><b>{{ lang._('Disable') }}</b></button>
+        </div>
+    </div>
+    <div id="idsInfoBox" class="hidden" style="margin-top:8px;">
+        {{ lang._('Run periodically via Automation/Cron to send blocked IDS alerts from eve.json:') }}<br/>
+        <code>/usr/local/sbin/configctl telegramnotify ids.poll 5</code><br/>
+        {{ lang._('The number is max blocked alerts per run (1-50).') }}
+    </div>
 </div>
 
 <div class="alert hidden" role="alert" id="responseMsg"></div>

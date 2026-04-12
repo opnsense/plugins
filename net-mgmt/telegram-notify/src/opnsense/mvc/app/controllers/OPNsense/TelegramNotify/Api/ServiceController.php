@@ -105,7 +105,7 @@ class ServiceController extends ApiControllerBase
         }
 
         foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
-            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify ids poll') {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify ids.poll') {
                 $foundUuid = $cronItem->getAttributes()['uuid'];
                 $model->general->idsPollCron = $foundUuid;
                 $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
@@ -121,7 +121,7 @@ class ServiceController extends ApiControllerBase
 
         $uuid = $cronModel->newDailyJob(
             'TelegramNotify',
-            'telegramnotify ids poll',
+            'telegramnotify ids.poll',
             'Poll IDS alerts and send Telegram notifications',
             '5',
             '1'
@@ -177,7 +177,7 @@ class ServiceController extends ApiControllerBase
         }
 
         foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
-            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify monit poll') {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify monit.poll') {
                 $foundUuid = $cronItem->getAttributes()['uuid'];
                 $model->general->monitPollCron = $foundUuid;
                 $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
@@ -193,7 +193,7 @@ class ServiceController extends ApiControllerBase
 
         $uuid = $cronModel->newDailyJob(
             'TelegramNotify',
-            'telegramnotify monit poll',
+            'telegramnotify monit.poll',
             'Poll Monit alerts and send Telegram notifications',
             '3',
             '1'
@@ -225,6 +225,88 @@ class ServiceController extends ApiControllerBase
             'result' => 'ok',
             'message' => 'Monit auto alerts cron rule created (runs every minute, max 3 alerts per run)',
             'uuid' => $uuid
+        ];
+    }
+
+    public function disableIdsCronAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed', 'message' => 'POST required'];
+        }
+
+        $model = new TelegramNotify();
+        $backend = new Backend();
+        $cronModel = new Cron();
+        $deleted = false;
+
+        $storedUuid = trim((string)$model->general->idsPollCron);
+        if ($storedUuid !== '') {
+            if ($cronModel->jobs->job->del($storedUuid)) {
+                $deleted = true;
+            }
+        }
+
+        foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify ids.poll') {
+                $uuid = $cronItem->getAttributes()['uuid'];
+                if ($cronModel->jobs->job->del($uuid)) {
+                    $deleted = true;
+                }
+            }
+        }
+
+        $model->general->idsPollCron = '';
+        $cronModel->serializeToConfig();
+        $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+        Config::getInstance()->save();
+        $backend->configdRun('template reload OPNsense/Cron');
+        $backend->configdRun('cron restart');
+
+        return [
+            'status' => 'ok',
+            'result' => 'ok',
+            'message' => $deleted ? 'IDS auto alerts cron rule disabled' : 'IDS auto alerts cron rule was already disabled'
+        ];
+    }
+
+    public function disableMonitCronAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed', 'message' => 'POST required'];
+        }
+
+        $model = new TelegramNotify();
+        $backend = new Backend();
+        $cronModel = new Cron();
+        $deleted = false;
+
+        $storedUuid = trim((string)$model->general->monitPollCron);
+        if ($storedUuid !== '') {
+            if ($cronModel->jobs->job->del($storedUuid)) {
+                $deleted = true;
+            }
+        }
+
+        foreach ($cronModel->getNodeByReference('jobs.job')->iterateItems() as $cronItem) {
+            if ((string)$cronItem->origin === 'TelegramNotify' && (string)$cronItem->command === 'telegramnotify monit.poll') {
+                $uuid = $cronItem->getAttributes()['uuid'];
+                if ($cronModel->jobs->job->del($uuid)) {
+                    $deleted = true;
+                }
+            }
+        }
+
+        $model->general->monitPollCron = '';
+        $cronModel->serializeToConfig();
+        $model->serializeToConfig($validateFullModel = false, $disable_validation = true);
+        Config::getInstance()->save();
+        $backend->configdRun('template reload OPNsense/Cron');
+        $backend->configdRun('cron restart');
+
+        return [
+            'status' => 'ok',
+            'result' => 'ok',
+            'message' => $deleted ? 'Monit auto alerts cron rule disabled' : 'Monit auto alerts cron rule was already disabled'
         ];
     }
 }
