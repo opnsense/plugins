@@ -14,6 +14,7 @@ import subprocess
 import re
 import xml.etree.ElementTree as ET
 import urllib.parse
+import shutil
 
 CONFIG_PATH = '/conf/config.xml'
 TELEGRAM_HOST = 'api.telegram.org'
@@ -53,22 +54,39 @@ def read_config():
 
 
 def resolve_via_drill(hostname, dns_server):
-    """Return an IPv4 address for hostname using drill with an explicit DNS server."""
+    """Return (ipv4, error). Uses an explicit DNS server and never falls back silently."""
+    drill_bin = None
+    for candidate in ('/usr/bin/drill', '/usr/local/bin/drill', 'drill'):
+        found = shutil.which(candidate)
+        if found:
+            drill_bin = found
+            break
+
+    if not drill_bin:
+        return None, 'drill binary not found on system'
+
     try:
         result = subprocess.run(
-            ['/usr/bin/drill', '@' + dns_server, hostname, 'A'],
+            [drill_bin, '@' + dns_server, hostname, 'A'],
             capture_output=True, text=True, timeout=8
         )
-        for line in result.stdout.splitlines():
-            parts = line.strip().split()
-            # drill answer section: name ttl class type address
-            if len(parts) == 5 and parts[3] == 'A':
-                ip = parts[4]
-                if re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip):
-                    return ip
-    except Exception:
-        pass
-    return None
+    except Exception as e:
+        return None, 'drill execution failed: ' + str(e)
+
+    for line in result.stdout.splitlines():
+        parts = line.strip().split()
+        # drill answer section: name ttl class type address
+        if len(parts) == 5 and parts[3] == 'A':
+            ip = parts[4]
+            if re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip):
+                return ip, None
+
+    detail = (result.stderr or result.stdout or '').strip()
+    if detail:
+        detail = detail[:200]
+    else:
+        detail = 'no A record returned'
+    return None, detail
 
 
 def send_via_curl(token, data, resolved_ip=None):
@@ -79,6 +97,7 @@ def send_via_curl(token, data, resolved_ip=None):
     cmd = [
         '/usr/local/bin/curl',
         '-s',
+        '-S',
         '--max-time', '20',
         '--connect-timeout', '10',
         '-4',           # force IPv4
@@ -93,7 +112,7 @@ def send_via_curl(token, data, resolved_ip=None):
     cmd.append(url)
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
-    return result.stdout, result.returncode
+    return result.stdout, result.stderr, result.returncode
 
 
 def main():
@@ -134,7 +153,10 @@ def main():
 
     # Resolve hostname bypassing system DNS
     dns_server = cfg.get('dnsServer', '') or '8.8.8.8'
-    resolved_ip = resolve_via_drill(TELEGRAM_HOST, dns_server)
+    resolved_ip, resolve_error = resolve_via_drill(TELEGRAM_HOST, dns_server)
+    if not resolved_ip:
+        out({'ok': False, 'description': 'DNS resolve failed via {} using {}: {}'.format(dns_server, 'drill', resolve_error)})
+        sys.exit(1)
 
     post_data = {
         'chat_id': chat_id,
@@ -151,7 +173,11 @@ def main():
         post_data['parse_mode'] = parse_mode
 
     try:
-        stdout, _ = send_via_curl(token, post_data, resolved_ip)
+        stdout, stderr, returncode = send_via_curl(token, post_data, resolved_ip)
+        if returncode != 0:
+            err = (stderr or stdout or '').strip()
+            out({'ok': False, 'description': 'curl failed: ' + err[:200]})
+            sys.exit(1)
         response = json.loads(stdout)
     except json.JSONDecodeError:
         out({'ok': False, 'description': 'curl returned non-JSON: ' + stdout[:200]})
