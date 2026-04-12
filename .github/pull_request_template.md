@@ -1,4 +1,5 @@
 **Important notices**
+
 Before you submit a pull request, we ask you kindly to acknowledge the following:
 
 - [ ] I have read the contributing guidelines at https://github.com/opnsense/plugins/blob/master/CONTRIBUTING.md
@@ -12,17 +13,18 @@ If AI was used, please disclose:
 
 ---
 
-**Related issue**
-If this pull request relates to an issue, link it here:
-
----
-
 **Describe the problem**
+
 A clear and concise description of the problem this pull request addresses.
 
 ---
 
 **Describe the proposed solution**
+
 Explain what this pull request changes and why.
 
 ---
+
+**Related issue**
+
+If this pull request relates to an issue, link it here.
