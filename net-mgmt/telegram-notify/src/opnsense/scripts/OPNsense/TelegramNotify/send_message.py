@@ -54,7 +54,7 @@ def read_config():
 
 
 def resolve_via_drill(hostname, dns_server):
-    """Return (ipv4, error). Uses an explicit DNS server and never falls back silently."""
+    """Return ([ipv4, ...], error). Uses explicit DNS server only."""
     drill_bin = None
     for candidate in ('/usr/bin/drill', '/usr/local/bin/drill', 'drill'):
         found = shutil.which(candidate)
@@ -63,7 +63,7 @@ def resolve_via_drill(hostname, dns_server):
             break
 
     if not drill_bin:
-        return None, 'drill binary not found on system'
+        return [], 'drill binary not found on system'
 
     try:
         result = subprocess.run(
@@ -71,26 +71,34 @@ def resolve_via_drill(hostname, dns_server):
             capture_output=True, text=True, timeout=8
         )
     except Exception as e:
-        return None, 'drill execution failed: ' + str(e)
+        return [], 'drill execution failed: ' + str(e)
 
+    addresses = []
     for line in result.stdout.splitlines():
         parts = line.strip().split()
         # drill answer section: name ttl class type address
         if len(parts) == 5 and parts[3] == 'A':
             ip = parts[4]
             if re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip):
-                return ip, None
+                addresses.append(ip)
+
+    if addresses:
+        dedup = []
+        for ip in addresses:
+            if ip not in dedup:
+                dedup.append(ip)
+        return dedup, None
 
     detail = (result.stderr or result.stdout or '').strip()
     if detail:
         detail = detail[:200]
     else:
         detail = 'no A record returned'
-    return None, detail
+    return [], detail
 
 
 def resolve_via_doh(hostname):
-    """Return (ipv4, error) using DNS-over-HTTPS over port 443 only."""
+    """Return ([ipv4, ...], error) using DNS-over-HTTPS over port 443 only."""
     candidates = [
         {
             'host': 'cloudflare-dns.com',
@@ -105,6 +113,7 @@ def resolve_via_doh(hostname):
     ]
 
     errors = []
+    addresses = []
     for item in candidates:
         cmd = [
             '/usr/local/bin/curl',
@@ -137,11 +146,19 @@ def resolve_via_doh(hostname):
         for answer in answers:
             ip = str(answer.get('data', '')).strip()
             if re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip):
-                return ip, None
+                addresses.append(ip)
 
-        errors.append('{} via {} returned no A record'.format(item['host'], item['ip']))
+        if not addresses:
+            errors.append('{} via {} returned no A record'.format(item['host'], item['ip']))
 
-    return None, '; '.join(errors) if errors else 'No DoH resolver candidates available'
+    if addresses:
+        dedup = []
+        for ip in addresses:
+            if ip not in dedup:
+                dedup.append(ip)
+        return dedup, None
+
+    return [], '; '.join(errors) if errors else 'No DoH resolver candidates available'
 
 
 def send_via_curl(token, data, resolved_ip=None):
@@ -208,11 +225,11 @@ def main():
 
     # Resolve hostname bypassing system DNS
     dns_server = cfg.get('dnsServer', '') or '8.8.8.8'
-    resolved_ip, resolve_error = resolve_via_drill(TELEGRAM_HOST, dns_server)
-    if not resolved_ip:
-        doh_ip, doh_error = resolve_via_doh(TELEGRAM_HOST)
-        if doh_ip:
-            resolved_ip = doh_ip
+    resolved_ips, resolve_error = resolve_via_drill(TELEGRAM_HOST, dns_server)
+    if not resolved_ips:
+        doh_ips, doh_error = resolve_via_doh(TELEGRAM_HOST)
+        if doh_ips:
+            resolved_ips = doh_ips
         else:
             out({
                 'ok': False,
@@ -239,15 +256,23 @@ def main():
         post_data['parse_mode'] = parse_mode
 
     try:
-        stdout, stderr, returncode = send_via_curl(token, post_data, resolved_ip)
-        if returncode != 0:
-            err = (stderr or stdout or '').strip()
-            out({'ok': False, 'description': 'curl failed: ' + err[:200]})
+        last_error = 'Unknown error'
+        response = None
+        for ip in resolved_ips:
+            stdout, stderr, returncode = send_via_curl(token, post_data, ip)
+            if returncode != 0:
+                err = (stderr or stdout or '').strip()
+                last_error = 'ip {}: {}'.format(ip, err[:200])
+                continue
+            try:
+                response = json.loads(stdout)
+                break
+            except json.JSONDecodeError:
+                last_error = 'ip {} returned non-JSON: {}'.format(ip, stdout[:200])
+
+        if response is None:
+            out({'ok': False, 'description': 'curl failed on all resolved IPs: {}'.format(last_error)})
             sys.exit(1)
-        response = json.loads(stdout)
-    except json.JSONDecodeError:
-        out({'ok': False, 'description': 'curl returned non-JSON: ' + stdout[:200]})
-        sys.exit(1)
     except subprocess.TimeoutExpired:
         out({'ok': False, 'description': 'curl request timed out'})
         sys.exit(1)
