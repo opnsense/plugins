@@ -87,13 +87,21 @@ class ServiceController extends ApiControllerBase
             return ['status' => 'failed', 'message' => 'Unable to initialize cURL'];
         }
 
-        curl_setopt_array($ch, [
+        $curlOpts = [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($payload),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 8,
-            CURLOPT_TIMEOUT => 15,
-        ]);
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+        ];
+
+        $dnsServer = trim((string)$general->dnsServer);
+        if ($dnsServer !== '') {
+            $curlOpts[CURLOPT_DNS_SERVERS] = $dnsServer;
+        }
+
+        curl_setopt_array($ch, $curlOpts);
 
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
@@ -101,7 +109,10 @@ class ServiceController extends ApiControllerBase
         curl_close($ch);
 
         if ($response === false) {
-            return ['status' => 'failed', 'message' => 'Telegram API request failed: ' . $curlError];
+            $hint = (strpos($curlError, 'timed out') !== false || strpos($curlError, 'Resolving') !== false)
+                ? ' — Check: System > Settings > General > DNS servers, and that outbound HTTPS from the firewall is allowed. You can also set a custom DNS Server in the plugin settings (e.g. 8.8.8.8).'
+                : '';
+            return ['status' => 'failed', 'message' => 'Telegram API request failed: ' . $curlError . $hint];
         }
 
         $decoded = json_decode($response, true);

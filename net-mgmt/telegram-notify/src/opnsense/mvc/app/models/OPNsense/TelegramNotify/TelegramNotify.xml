@@ -34,6 +34,9 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </disableNotification>
+            <dnsServer type="TextField">
+                <Required>N</Required>
+            </dnsServer>
             <eventSystem type="BooleanField">
                 <Default>1</Default>
                 <Required>Y</Required>
