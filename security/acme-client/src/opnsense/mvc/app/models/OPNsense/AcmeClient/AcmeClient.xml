@@ -552,9 +552,12 @@
                     <ValidationMessage>Please specify a value between 0 and 84600 seconds.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
-                <dns_active24_token type="TextField">
+                <dns_active24_api_key type="TextField">
                     <Required>N</Required>
-                </dns_active24_token>
+                </dns_active24_api_key>
+                <dns_active24_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_active24_api_secret>
                 <dns_ad_key type="TextField">
                     <Required>N</Required>
                 </dns_ad_key>

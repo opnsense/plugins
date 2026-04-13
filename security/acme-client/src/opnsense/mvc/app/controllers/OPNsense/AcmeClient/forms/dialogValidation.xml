@@ -137,9 +137,14 @@
         <style>table_dns table_dns_active24</style>
     </field>
     <field>
-        <id>validation.dns_active24_token</id>
-        <label>Token</label>
+        <id>validation.dns_active24_api_key</id>
+        <label>API Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_active24_api_secret</id>
+        <label>API Secret</label>
+        <type>password</type>
     </field>
     <field>
         <label>Alwaysdata</label>
