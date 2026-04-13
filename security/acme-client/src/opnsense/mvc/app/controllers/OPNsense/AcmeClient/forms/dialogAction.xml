@@ -398,22 +398,22 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_acme_truenasws</style>
+        <style>method_table method_table_acme_truenas_ws</style>
     </field>
     <field>
-        <id>action.acme_truenasws_apikey</id>
+        <id>action.acme_truenas_ws_apikey</id>
         <label>TrueNAS API key</label>
         <type>text</type>
         <help>API key generated in the TrueNAS web UI.</help>
     </field>
     <field>
-        <id>action.acme_truenasws_hostname</id>
+        <id>action.acme_truenas_ws_hostname</id>
         <label>TrueNAS hostname</label>
         <type>text</type>
         <help>Hostname or IP address of TrueNAS Server.</help>
     </field>
     <field>
-        <id>action.acme_truenasws_protocol</id>
+        <id>action.acme_truenas_ws_protocol</id>
         <label>TrueNAS protocol</label>
         <type>dropdown</type>
         <help>Connection scheme that will be used when uploading certificates to TrueNAS Server.</help>

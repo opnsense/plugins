@@ -8,6 +8,17 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.16
+
+Added:
+* add support for Active24 API v2 (#5381)
+
+Changed:
+* credentials for Active24 DNSAPI must be entered again (#5381)
+
+Fixed:
+* fix incorrect naming scheme of TrueNAS WS automation
+
 4.15
 
 Added:
