@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.16
+
+Fixed:
+* fix incorrect naming scheme of TrueNAS WS automation
+
 4.15
 
 Added:
