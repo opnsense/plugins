@@ -42,15 +42,15 @@
                 let message;
                 let type;
                 if (!isEnabled) {
-                    message = "Enable NetBird";
+                    message = "Enable NetBird first";
                     type = "warning";
                 } else {
                     message = isConnected ? "NetBird is connected" : "NetBird is not connected";
                     type = isConnected ? "info" : "warning";
                 }
 
-                $connectBtn.toggleClass("hidden", isConnected || !isEnabled);
-                $disconnectBtn.toggleClass("hidden", !isConnected || !isEnabled);
+                $connectBtn.toggleClass("hidden", isConnected);
+                $disconnectBtn.toggleClass("hidden", !isConnected);
 
                 $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
             };

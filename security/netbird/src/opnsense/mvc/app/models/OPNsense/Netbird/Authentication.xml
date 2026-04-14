@@ -6,7 +6,6 @@
         <managementUrl type="UrlField">
             <Required>Y</Required>
             <default>https://api.netbird.io</default>
-            <hint>https://api.netbird.io</hint>
         </managementUrl>
         <setupKey type="TextField">
             <!-- XXX fails migration for obvious reasons <Required>Y</Required> -->
