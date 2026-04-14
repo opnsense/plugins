@@ -33,13 +33,11 @@
         ajaxGet('/api/netbird/settings/get', {}, (settings) => {
             const isEnabled = settings.settings?.general?.enable === '1';
 
-            ajaxGet('/api/netbird/status/status', {}, (data) => {
+            const updateUI = (isConnected) => {
                 const $connectBtn = $("#connectBtn");
                 const $disconnectBtn = $("#disconnectBtn");
 
                 $("#netbird-actions").removeClass("hidden");
-
-                const isConnected = data.management?.connected === true;
 
                 let message;
                 let type;
@@ -55,7 +53,16 @@
                 $disconnectBtn.toggleClass("hidden", !isConnected || !isEnabled);
 
                 $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
-            });
+            };
+
+            if (!isEnabled) {
+                updateUI(false);
+            } else {
+                ajaxGet('/api/netbird/status/status', {}, (data) => {
+                    const isConnected = data.management?.connected === true;
+                    updateUI(isConnected);
+                });
+            }
         });
     }
 
