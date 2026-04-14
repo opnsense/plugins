@@ -16,6 +16,14 @@
         <help>Wireguard interface listening port</help>
     </field>
     <field>
+        <id>settings.general.ipmapping</id>
+        <label>Force IP Mapping</label>
+        <type>text</type>
+        <hint>12.34.56.78</hint>
+        <help>Forces external IPs maps between local addresses and interfaces. You can specify a comma-separated list with a single IP or IP/IP or IP/Interface Name.
+            Leave empty for automatic mapping</help>
+    </field>
+    <field>
         <type>header</type>
         <label>Client Firewall</label>
     </field>

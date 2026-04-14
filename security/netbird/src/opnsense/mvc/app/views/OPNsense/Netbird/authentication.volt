@@ -1,4 +1,5 @@
 {#
+ # Copyright (C) 2025 Konstantinos Spartalis <cspartalis@potatonetworks.com>
  # Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  # Copyright (C) 2025 squared GmbH
  # Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
@@ -29,20 +30,32 @@
 
 <script>
     function updateNetBirdStatusUI() {
-        ajaxGet('/api/netbird/status/status', {}, (data) => {
-            const $connectBtn = $("#connectBtn");
-            const $disconnectBtn = $("#disconnectBtn");
+        ajaxGet('/api/netbird/settings/get', {}, (settings) => {
+            const isEnabled = settings.settings?.general?.enable === '1';
 
-            $("#netbird-actions").removeClass("hidden");
+            ajaxGet('/api/netbird/status/status', {}, (data) => {
+                const $connectBtn = $("#connectBtn");
+                const $disconnectBtn = $("#disconnectBtn");
 
-            const isConnected = data.management?.connected === true;
-            const message = isConnected ? "NetBird is connected" : "NetBird is not connected";
-            const type = isConnected ? "info" : "warning";
+                $("#netbird-actions").removeClass("hidden");
 
-            $connectBtn.toggleClass("hidden", isConnected);
-            $disconnectBtn.toggleClass("hidden", !isConnected);
+                const isConnected = data.management?.connected === true;
 
-            $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
+                let message;
+                let type;
+                if (!isEnabled) {
+                    message = "Enable NetBird";
+                    type = "warning";
+                } else {
+                    message = isConnected ? "NetBird is connected" : "NetBird is not connected";
+                    type = isConnected ? "info" : "warning";
+                }
+
+                $connectBtn.toggleClass("hidden", isConnected || !isEnabled);
+                $disconnectBtn.toggleClass("hidden", !isConnected || !isEnabled);
+
+                $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
+            });
         });
     }
 
