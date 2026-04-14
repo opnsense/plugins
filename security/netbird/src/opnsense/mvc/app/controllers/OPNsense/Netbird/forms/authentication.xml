@@ -3,14 +3,12 @@
         <id>authentication.managementUrl</id>
         <label>Management URL</label>
         <type>text</type>
-        <hint>https://api.netbird.io</hint>
         <help>Base URL of the management service</help>
     </field>
     <field>
         <id>authentication.setupKey</id>
         <label>Setup Key</label>
         <type>text</type>
-        <hint>00000000-0000-0000-0000-000000000000</hint>
         <help>Set the authentication setup key</help>
     </field>
 </form>

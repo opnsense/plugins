@@ -1,5 +1,5 @@
 {#
- # Copyright (C) 2025 Konstantinos Spartalis <cspartalis@potatonetworks.com>
+ # Copyright (C) 2026 Konstantinos Spartalis <cspartalis@potatonetworks.com>
  # Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  # Copyright (C) 2025 squared GmbH
  # Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH

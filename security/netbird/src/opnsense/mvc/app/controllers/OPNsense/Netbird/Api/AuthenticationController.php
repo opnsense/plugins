@@ -51,11 +51,9 @@ class AuthenticationController extends ApiMutableModelControllerBase
         $managementUrl = $mdl->managementUrl->__toString();
         $setupKey = $mdl->setupKey->__toString();
 
-        if (!empty($setupKey) && $setupKey !== $defaultKey) {
+        if (!empty($setupKey)) {
             $visiblePart = substr($setupKey, 0, 4);
             $maskedKey = $visiblePart . str_repeat('*', max(4, strlen($setupKey) - 4));
-        } else {
-            $maskedKey = $defaultKey;
         }
 
         return [
