@@ -19,7 +19,7 @@ class M0_1_3 extends BaseModelMigration
 
             $httpsPort = (string)($ntopngConfig->httpsport ?? '');
             if ($httpsPort !== '') {
-                $model->addresseshttps = "[::]:{$httpsPort}";
+                $model->addresseshttps = "0.0.0.0:{$httpsPort}";
             }
         }
 
