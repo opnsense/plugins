@@ -104,7 +104,6 @@ class Cloudflare(BaseAccount):
                 )
 
             # Update each hostname
-            failed_hostnames = []
             for hostname in self.settings.get("hostnames", "").split(","):
 
                 if self.is_verbose:
@@ -133,8 +132,7 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [RecordID] %s" % (self.description, response.text)
                     )
-                    failed_hostnames.append(hostname)
-                    continue
+                    return False
 
                 if not payload.get('success', False):
                     syslog.syslog(
@@ -143,8 +141,7 @@ class Cloudflare(BaseAccount):
                             self.description, json.dumps(payload.get('errors', {}))
                         )
                     )
-                    failed_hostnames.append(hostname)
-                    continue
+                    return False
 
                 if len(payload['result']) == 0:
                     syslog.syslog(
@@ -152,8 +149,7 @@ class Cloudflare(BaseAccount):
                             self.description, hostname, recordType
                         )
                     )
-                    failed_hostnames.append(hostname)
-                    continue
+                    return False
 
                 record_id = payload['result'][0]['id']
                 if self.is_verbose:
@@ -186,8 +182,7 @@ class Cloudflare(BaseAccount):
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
-                    failed_hostnames.append(hostname)
-                    continue
+                    return False
 
                 if payload.get('success', False):
                     syslog.syslog(
@@ -205,10 +200,9 @@ class Cloudflare(BaseAccount):
                                                                                       self.current_address, hostname,
                                                                                       response.text)
                     )
-                    failed_hostnames.append(hostname)
+                    return False
 
-            if not failed_hostnames:
-                self.update_state(address=self.current_address)
-                return True
+            self.update_state(address=self.current_address)
+            return True
 
         return False
