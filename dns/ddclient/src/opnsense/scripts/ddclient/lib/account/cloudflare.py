@@ -117,7 +117,6 @@ class Cloudflare(BaseAccount):
                     },
                     'headers': headers
                 }
-
                 # Get record ID
                 response = requests.get(**req_opts)
                 try:
