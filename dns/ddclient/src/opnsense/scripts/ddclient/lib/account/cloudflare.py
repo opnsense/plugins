@@ -42,7 +42,7 @@ class Cloudflare(BaseAccount):
 
     @staticmethod
     def known_services():
-        return  {'cloudflare': 'Cloudflare'}
+        return {'cloudflare': 'Cloudflare'}
 
     @staticmethod
     def match(account):
@@ -66,6 +66,7 @@ class Cloudflare(BaseAccount):
                 headers["X-Auth-Email"] = self.settings.get('username')
                 headers["X-Auth-Key"] = self.settings.get('password')
 
+            # Check if zone exists
             req_opts = {
                 'url': url,
                 'params': {
@@ -80,11 +81,11 @@ class Cloudflare(BaseAccount):
                 payload = {}
             if 'success' not in payload:
                 syslog.syslog(
-                        syslog.LOG_ERR,
-                        "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
-                    )
+                    syslog.LOG_ERR,
+                    "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
+                )
                 return False
-            if not payload.get('success', False):
+            if not payload.get('success', False) or len(payload.get('result', [])) == 0:
                 syslog.syslog(
                     syslog.LOG_ERR,
                     "Account %s error receiving ZoneID [%s]" % (self.description, json.dumps(payload.get('errors', {})))
@@ -98,88 +99,98 @@ class Cloudflare(BaseAccount):
                     "Account %s ZoneID for %s %s" % (self.description, self.settings.get('zone'), zone_id)
                 )
 
-            # Get record ID
-            req_opts = {
-                'url': f"{req_opts['url']}/{zone_id}/dns_records",
-                'params': {
-                    'name': self.settings.get('hostnames'),
-                    'type': recordType
-                },
-                'headers': req_opts['headers']
-            }
-            response = requests.get(**req_opts)
-            try:
-                payload = response.json()
-            except requests.exceptions.JSONDecodeError:
-                payload = {}
-            if 'success' not in payload:
-                syslog.syslog(
+            # Update each hostname
+            for hostname in self.settings.get("hostnames", "").split(","):
+
+                if self.is_verbose:
+                    syslog.syslog(
+                        syslog.LOG_NOTICE,
+                        "Account %s Getting record ID for hostname %s (%s)"
+                        % (self.description, hostname, recordType),
+                    )
+
+                # Get record ID
+                req_opts = {
+                    'url': '%s/%s/dns_records' % (url, zone_id),
+                    'params': {
+                        'name': hostname,
+                        'type': recordType
+                    },
+                    'headers': headers
+                }
+                response = requests.get(**req_opts)
+                try:
+                    payload = response.json()
+                except requests.exceptions.JSONDecodeError:
+                    syslog.syslog(
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [RecordID] %s" % (self.description, response.text)
                     )
-                return
-            if not payload.get('success', False):
-                syslog.syslog(
-                    syslog.LOG_ERR,
-                    "Account %s error receiving RecordID [%s]" % (
-                        self.description, json.dumps(payload.get('errors', {}))
+                    return False
+                if not payload.get('success', False):
+                    syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s error receiving RecordID [%s]" % (
+                            self.description, json.dumps(payload.get('errors', {}))
+                        )
                     )
-                )
-                return False
+                    return False
 
-            if len(payload['result']) == 0:
-                syslog.syslog(
-                    syslog.LOG_ERR, "Account %s error locating hostname %s [%s]" % (
-                        self.description, self.settings.get('hostnames'), recordType
+                if len(payload['result']) == 0:
+                    syslog.syslog(
+                        syslog.LOG_ERR, "Account %s error locating hostname %s [%s]" % (
+                            self.description, hostname, recordType
+                        )
                     )
-                )
-                return False
+                    return False
 
-            record_id = payload['result'][0]['id']
-            if self.is_verbose:
-                syslog.syslog(
-                    syslog.LOG_NOTICE,
-                    "Account %s RecordID for %s %s" % (self.description, self.settings.get('hostnames'), record_id)
-                )
+                record_id = payload['result'][0]['id']
+                if self.is_verbose:
+                    syslog.syslog(
+                        syslog.LOG_NOTICE,
+                        "Account %s RecordID for %s %s" % (self.description, hostname, record_id)
+                    )
 
-            # Send IP address update
-            req_opts = {
-                'url': f"{req_opts['url']}/{record_id}",
-                'json': {
-                    'type': recordType,
-                    'name': self.settings.get('hostnames'),
-                    'content': str(self.current_address),
-                },
-                'headers': req_opts['headers']
-            }
-            response = requests.patch(**req_opts)
-            try:
-                payload = response.json()
-            except requests.exceptions.JSONDecodeError:
-                payload = {}
-            if 'success' not in payload:
-                syslog.syslog(
+                # Send IP address update
+                req_opts = {
+                    'url': '%s/%s/dns_records/%s' % (url, zone_id, record_id),
+                    'json': {
+                        'type': recordType,
+                        'name': hostname,
+                        'content': str(self.current_address),
+                    },
+                    'headers': headers
+                }
+                response = requests.patch(**req_opts)
+                try:
+                    payload = response.json()
+                except requests.exceptions.JSONDecodeError:
+                    payload = {}
+                if 'success' not in payload:
+                    syslog.syslog(
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
-                return False
-            if payload.get('success', False):
-                syslog.syslog(
-                    syslog.LOG_NOTICE,
-                    "Account %s set new ip %s [%s]" % (
-                        self.description,
-                        self.current_address,
-                        payload.get('result', {}).get('content', '')
+                    return False
+                if payload.get('success', False):
+                    syslog.syslog(
+                        syslog.LOG_NOTICE,
+                        "Account %s set new ip %s [%s]" % (
+                            self.description,
+                            self.current_address,
+                            payload.get('result', {}).get('content', '')
+                        )
                     )
-                )
+                else:
+                    syslog.syslog(
+                        syslog.LOG_ERR,
+                        "Account %s failed to set new ip %s for hostname %s: [%s]" % (self.description,
+                                                                                      self.current_address, hostname,
+                                                                                      response.text)
+                    )
+                    return False
 
-                self.update_state(address=self.current_address)
-                return True
-            else:
-                syslog.syslog(
-                    syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%s]" % (self.description, self.current_address, response.text)
-                )
-
+            self.update_state(address=self.current_address)
+            return True
 
         return False
