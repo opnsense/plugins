@@ -85,7 +85,6 @@ class Cloudflare(BaseAccount):
                     "Account %s error parsing JSON response [ZoneID] %s" % (self.description, response.text)
                 )
                 return False
-
             if not payload.get('success', False) or len(payload.get('result', [])) == 0:
                 syslog.syslog(
                     syslog.LOG_ERR,
@@ -110,7 +109,7 @@ class Cloudflare(BaseAccount):
                         % (self.description, hostname, recordType),
                     )
 
-                request = {
+                req_opts = {
                     'url': '%s/%s/dns_records' % (url, zone_id),
                     'params': {
                         'name': hostname,
@@ -120,7 +119,7 @@ class Cloudflare(BaseAccount):
                 }
 
                 # Get record ID
-                response = requests.get(**request)
+                response = requests.get(**req_opts)
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:
