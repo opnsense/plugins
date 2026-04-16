@@ -109,6 +109,7 @@ class Cloudflare(BaseAccount):
                         % (self.description, hostname, recordType),
                     )
 
+                # Get record ID
                 req_opts = {
                     'url': '%s/%s/dns_records' % (url, zone_id),
                     'params': {
@@ -117,7 +118,6 @@ class Cloudflare(BaseAccount):
                     },
                     'headers': headers
                 }
-                # Get record ID
                 response = requests.get(**req_opts)
                 try:
                     payload = response.json()
