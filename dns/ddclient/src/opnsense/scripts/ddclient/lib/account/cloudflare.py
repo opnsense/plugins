@@ -67,21 +67,18 @@ class Cloudflare(BaseAccount):
                 headers["X-Auth-Key"] = self.settings.get('password')
 
             # Check if zone exists
-            request = {
+            req_opts = {
                 'url': url,
                 'params': {
                     'name': self.settings.get('zone')
                 },
                 'headers': headers
             }
-
-            response = requests.get(**request)
-
+            response = requests.get(**req_opts)
             try:
                 payload = response.json()
             except requests.exceptions.JSONDecodeError:
                 payload = {}
-
             if 'success' not in payload:
                 syslog.syslog(
                     syslog.LOG_ERR,
@@ -124,7 +121,6 @@ class Cloudflare(BaseAccount):
 
                 # Get record ID
                 response = requests.get(**request)
-
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:
@@ -133,7 +129,6 @@ class Cloudflare(BaseAccount):
                         "Account %s error parsing JSON response [RecordID] %s" % (self.description, response.text)
                     )
                     return False
-
                 if not payload.get('success', False):
                     syslog.syslog(
                         syslog.LOG_ERR,
@@ -159,7 +154,7 @@ class Cloudflare(BaseAccount):
                     )
 
                 # Send IP address update
-                request = {
+                req_opts = {
                     'url': '%s/%s/dns_records/%s' % (url, zone_id, record_id),
                     'json': {
                         'type': recordType,
@@ -168,22 +163,17 @@ class Cloudflare(BaseAccount):
                     },
                     'headers': headers
                 }
-
-                # Update record IP
-                response = requests.patch(**request)
-
+                response = requests.patch(**req_opts)
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:
                     payload = {}
-
                 if 'success' not in payload:
                     syslog.syslog(
                         syslog.LOG_ERR,
                         "Account %s error parsing JSON response [UpdateIP] %s" % (self.description, response.text)
                     )
                     return False
-
                 if payload.get('success', False):
                     syslog.syslog(
                         syslog.LOG_NOTICE,
