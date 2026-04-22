@@ -3,6 +3,12 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
+1.5.1
+* Bugfix: Fixed updated at field in the widget
+* Bugfix: Fixed invalid API-token notification in widget
+* Bugfix: Fixed empty API-token notification in widget
+* Bugfix: Fixed events tab sorting issue when scrolling through multiple days
+
 1.5
 
 * Feature: Add passlist option for unbound
