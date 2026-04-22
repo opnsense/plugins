@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: os-cloudflared\n"
+"Language: pt_BR\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Menu & ACL
+msgid "Cloudflare Tunnel"
+msgstr "Cloudflare Tunnel"
+
+msgid "Settings"
+msgstr "Configurações"
+
+msgid "Allow access to Cloudflare Tunnel settings"
+msgstr "Permitir acesso às configurações do Cloudflare Tunnel"
+
+msgid "Allow access to Cloudflare Tunnel service status/control"
+msgstr "Permitir acesso ao status/controle do serviço Cloudflare Tunnel"
+
+# General Form
+msgid "General Settings"
+msgstr "Configurações Gerais"
+
+msgid "Enable"
+msgstr "Habilitar"
+
+msgid "Tunnel Token"
+msgstr "Token do Túnel"
+
+msgid "Disable Auto-Update"
+msgstr "Desativar Atualização Automática"
+
+msgid "Enable Post-Quantum Encryption"
+msgstr "Habilitar Criptografia Pós-Quântica"
+
+msgid "Max Socket Buffer (kern.ipc.maxsockbuf)"
+msgstr "Buffer Máximo de Socket (kern.ipc.maxsockbuf)"
+
+msgid "UDP Recv Space (net.inet.udp.recvspace)"
+msgstr "Espaço de Recebimento UDP (net.inet.udp.recvspace)"
+
+msgid "Enable Cloudflare Tunnel"
+msgstr "Habilitar Cloudflare Tunnel"
+
+msgid "The token for your Cloudflare Tunnel. Get it from one.dash.cloudflare.com > Access > Tunnels."
+msgstr "O token do seu Cloudflare Tunnel. Obtenha em one.dash.cloudflare.com > Access > Tunnels."
+
+msgid "Pass --no-autoupdate to cloudflared. Recommended when managing updates manually via the Install/Update Binary button."
+msgstr "Passa --no-autoupdate ao cloudflared. Recomendado quando as atualizações são gerenciadas manualmente pelo botão Instalar/Atualizar Binário."
+
+msgid "Pass --post-quantum to enable post-quantum cryptography for the tunnel connection."
+msgstr "Passa --post-quantum para habilitar criptografia pós-quântica na conexão do túnel."
+
+msgid "Recommended value for QUIC performance. Default is 16777216."
+msgstr "Valor recomendado para desempenho do QUIC. O padrão é 16777216."
+
+msgid "Recommended value for QUIC performance. Default is 8388608."
+msgstr "Valor recomendado para desempenho do QUIC. O padrão é 8388608."
+
+# UI Buttons
+msgid "Apply"
+msgstr "Aplicar"
+
+msgid "Install/Update Binary"
+msgstr "Instalar/Atualizar Binário"
+
+msgid "Start"
+msgstr "Iniciar"
+
+msgid "Stop"
+msgstr "Parar"
+
+msgid "Restart"
+msgstr "Reiniciar"
+
+msgid "Running"
+msgstr "Executando"
+
+msgid "Stopped"
+msgstr "Parado"
+
+msgid "No response from server. Check if configd is running."
+msgstr "Sem resposta do servidor. Verifique se o configd está em execução."
+
+msgid "Tunnel"
+msgstr "Túnel"
+
+msgid "Healthy"
+msgstr "Saudável"
+
+msgid "Connecting"
+msgstr "Conectando"

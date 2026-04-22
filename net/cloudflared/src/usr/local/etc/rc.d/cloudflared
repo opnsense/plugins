@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# PROVIDE: cloudflared
+# REQUIRE: NETWORKING SERVERS
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="cloudflared"
+rcvar="cloudflared_enable"
+logfile="/var/log/cloudflared.log"
+pidfile="/var/run/cloudflared.pid"
+procname="/usr/local/bin/cloudflared"
+
+load_rc_config $name
+
+: ${cloudflared_enable:="NO"}
+: ${cloudflared_mode:="tunnel"}
+
+# Load token from secure file
+# --metrics é flag global do cloudflared: deve vir antes do subcomando tunnel
+if [ -f /usr/local/etc/cloudflared/token ]; then
+    token=$(cat /usr/local/etc/cloudflared/token)
+    command_args="--metrics localhost:2000 ${cloudflared_mode} --token ${token}"
+else
+    command_args="--metrics localhost:2000 ${cloudflared_mode}"
+fi
+
+command="/usr/sbin/daemon"
+command_args="-o ${logfile} -p ${pidfile} -f ${procname} ${command_args}"
+
+run_rc_command "$1"

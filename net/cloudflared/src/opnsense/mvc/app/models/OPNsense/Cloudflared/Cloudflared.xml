@@ -1,0 +1,27 @@
+<model>
+    <mount>//OPNsense/Cloudflared</mount>
+    <description>Cloudflare Tunnel</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <token type="TextField">
+                <Required>Y</Required>
+                <maskMatch>/^[a-zA-Z0-9\._\-]+$/</maskMatch>
+            </token>
+            <no_autoupdate type="BooleanField">
+                <default>1</default>
+            </no_autoupdate>
+            <post_quantum type="BooleanField">
+                <default>0</default>
+            </post_quantum>
+            <kern_ipc_maxsockbuf type="IntegerField">
+                <default>16777216</default>
+            </kern_ipc_maxsockbuf>
+            <net_inet_udp_recvspace type="IntegerField">
+                <default>8388608</default>
+            </net_inet_udp_recvspace>
+        </general>
+    </items>
+</model>
