@@ -31,6 +31,7 @@ import sys
 import ujson
 from requests.exceptions import HTTPError, Timeout
 from lib import QFeedsActions
+from lib.api import MissingApiKey
 
 
 if __name__ == '__main__':
@@ -49,6 +50,9 @@ if __name__ == '__main__':
         for action in args.action:
             for msg in getattr(actions, action)():
                 print(msg)
+    except MissingApiKey as exc:
+        print('skipped: %s' % exc)
+        sys.exit(0)
     except HTTPError as exc:
         print('exit with HTTPError %d (%s)' % (exc.response.status_code, exc.response.text))
         sys.exit(-1)

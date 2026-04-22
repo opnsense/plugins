@@ -99,29 +99,35 @@ class SettingsController extends ApiMutableModelControllerBase
     public function statsAction()
     {
         $stats = json_decode((new Backend())->configdRun('qfeeds stats'), true);
-        if (!empty($stats) && !empty($stats['feeds'])) {
-            $info = json_decode((new Backend())->configdRun('qfeeds info'), true);
-            if (!empty($info) && !empty($info['feeds'])) {
-                $feeds = [];
-                foreach ($info['feeds'] as $feed) {
-                    $feeds[$feed['feed_type']] = $feed;
-                }
-                foreach ($stats['feeds'] as &$feed) {
-                    if (isset($feeds[$feed['name']])) {
-                        $tmp = $feeds[$feed['name']];
-                        $feed['updated_at'] = $tmp['updated_at'];
-                        $feed['next_update'] = $tmp['next_update'];
-                        $feed['licensed'] = $tmp['licensed'];
-                    }
+        $info = json_decode((new Backend())->configdRun('qfeeds info'), true);
+        $stats = is_array($stats) ? $stats : [];
+        $info = is_array($info) ? $info : [];
+        if (!empty($stats['feeds']) && !empty($info['feeds'])) {
+            $feeds = [];
+            foreach ($info['feeds'] as $feed) {
+                $feeds[$feed['feed_type']] = $feed;
+            }
+            foreach ($stats['feeds'] as &$feed) {
+                if (isset($feeds[$feed['name']])) {
+                    $tmp = $feeds[$feed['name']];
+                    $feed['updated_at'] = $tmp['updated_at'];
+                    $feed['next_update'] = $tmp['next_update'];
+                    $feed['licensed'] = $tmp['licensed'];
                 }
             }
-            // Add license information from company_info if available
-            if (!empty($info['company_info'])) {
-                $stats['license'] = [
-                    'name' => $info['company_info']['license_name'] ?? null,
-                    'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
-                ];
-            }
+        }
+        // Add license information from company_info if available
+        if (!empty($info['company_info'])) {
+            $stats['license'] = [
+                'name' => $info['company_info']['license_name'] ?? null,
+                'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
+            ];
+        }
+        if (isset($info['auth_status'])) {
+            $stats['auth_status'] = $info['auth_status'];
+        }
+        if (!isset($stats['feeds'])) {
+            $stats['feeds'] = [];
         }
         return $stats;
     }
