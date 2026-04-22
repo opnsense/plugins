@@ -28,15 +28,54 @@ import subprocess
 import time
 import ujson
 from datetime import datetime
-from lib.api import Api
+from requests.exceptions import HTTPError
+from lib.api import Api, QFeedsConfig
 from lib.log import PFLogCrawler
 from lib.file import LockedFile
 
 
 class QFeedsActions:
+    _AUTH_FAIL_FILE = '.auth_failed'
+    _AUTH_FAIL_COOLDOWN = 3600
+
     def __init__(self, target_dir, forced=False):
         self._target_dir = target_dir
         self._forced = forced
+
+    def _auth_fail_path(self):
+        return os.path.join(self._target_dir, self._AUTH_FAIL_FILE)
+
+    def _auth_blocked(self):
+        p = self._auth_fail_path()
+        if not os.path.exists(p):
+            return False
+        try:
+            stamp = int(os.stat(p).st_mtime)
+        except OSError:
+            return False
+        conf = '/usr/local/etc/qfeeds.conf'
+        if os.path.exists(conf) and os.stat(conf).st_mtime > stamp:
+            try:
+                os.remove(p)
+            except OSError:
+                pass
+            return False
+        return (time.time() - stamp) < self._AUTH_FAIL_COOLDOWN
+
+    def _mark_auth_failed(self):
+        if not os.path.isdir(self._target_dir):
+            os.makedirs(self._target_dir)
+        p = self._auth_fail_path()
+        open(p, 'w').close()
+        os.utime(p, None)
+
+    def _clear_auth_failed(self):
+        p = self._auth_fail_path()
+        if os.path.exists(p):
+            try:
+                os.remove(p)
+            except OSError:
+                pass
 
     @classmethod
     def list_actions(cls):
@@ -63,46 +102,93 @@ class QFeedsActions:
             list(self.fetch_index())
         elif not os.path.exists(self.index_file):
             return {}
-        data = ujson.load(open(self.index_file)) or {}
-        if type(data) is dict:
+        with open(self.index_file, 'r') as fp:
+            data = ujson.load(fp) or {}
+        if isinstance(data, dict):
             for feed in data.get('feeds', []):
                 feed['local_filename'] = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
-                feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
-                feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
+                feed['updated_at_dt'] = (
+                    int(datetime.fromisoformat(feed['updated_at'].strip()).timestamp())
+                    if feed.get('updated_at') else 0
+                )
+                feed['next_update_dt'] = (
+                    int(datetime.fromisoformat(feed['next_update'].strip()).timestamp())
+                    if feed.get('next_update') else 0
+                )
 
         return data
-
-    def _file_stat(self, filename):
-        if not os.path.exists(filename):
-            return 0
-        return os.stat(filename).st_mtime
 
     def fetch_index(self):
         if not os.path.isdir(self._target_dir):
             os.makedirs(self._target_dir)
-        with LockedFile(self.index_file) as f:
+        try:
             payload = Api().licenses()
+        except HTTPError as exc:
+            if exc.response is not None and exc.response.status_code == 401:
+                self._mark_auth_failed()
+                yield 'auth failed (401); backing off'
+                return
+            raise
+        with LockedFile(self.index_file) as f:
             f.truncate()
             f.write(ujson.dumps(payload))
             yield 'downloaded index to %s' % f.filename
+        self._clear_auth_failed()
 
     def show_index(self):
-        yield ujson.dumps(self.index)
+        data = self.index or {}
+        if not isinstance(data, dict):
+            data = {}
+        if not QFeedsConfig().api_key:
+            data['auth_status'] = 'no_key'
+        elif self._auth_blocked():
+            data['auth_status'] = 'failed'
+        else:
+            data['auth_status'] = 'ok'
+        yield ujson.dumps(data)
 
     def fetch(self):
-        for feed in self.index.get('feeds', []):
-            if feed['licensed'] and feed['updated_at_dt'] != self._file_stat(feed['local_filename']):
-                with LockedFile(feed['local_filename']) as f:
+        if not os.path.exists(self.index_file):
+            return
+        with open(self.index_file, 'r') as fp:
+            data = ujson.load(fp) or {}
+        feeds = data.get('feeds', [])
+        if not feeds:
+            return
+
+        index_dirty = False
+        for feed in feeds:
+            if not feed.get('licensed'):
+                continue
+            local_filename = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
+            updated_at_dt = (
+                int(datetime.fromisoformat(feed['updated_at'].strip()).timestamp())
+                if feed.get('updated_at') else 0
+            )
+            file_mtime = int(os.stat(local_filename).st_mtime) if os.path.exists(local_filename) else 0
+            if updated_at_dt != file_mtime:
+                with LockedFile(local_filename) as f:
                     counter = 0
                     for entry in Api().fetch(feed['feed_type']):
                         if counter == 0:
                             f.truncate()
                         f.write("%s\n" % entry)
                         counter += 1
-                os.utime(feed['local_filename'], (feed['updated_at_dt'], feed['updated_at_dt']))
-                yield "downloaded %d entries into %s [%s]" % (counter, feed['local_filename'], feed['updated_at'])
-            elif feed['licensed']:
-                yield "skipped %s [%s]" % (feed['local_filename'], feed['updated_at'])
+                if counter > 0:
+                    now_ts = int(time.time())
+                    os.utime(local_filename, (now_ts, now_ts))
+                    feed['updated_at'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(now_ts))
+                    index_dirty = True
+                    yield "downloaded %d entries into %s [%s]" % (counter, local_filename, feed['updated_at'])
+                else:
+                    yield "skipped %s [%s]" % (local_filename, feed.get('updated_at', 'n/a'))
+            else:
+                yield "skipped %s [%s]" % (local_filename, feed.get('updated_at', 'n/a'))
+
+        if index_dirty:
+            with LockedFile(self.index_file) as f:
+                f.truncate()
+                f.write(ujson.dumps(data))
 
     def firewall_load(self):
         for feed in self.index.get('feeds', []):
@@ -148,6 +234,12 @@ class QFeedsActions:
             yield 'dnscrypt-proxy blocklist script not found'
 
     def update(self):
+        if not QFeedsConfig().api_key:
+            yield 'no api key configured; skipping'
+            return
+        if self._auth_blocked():
+            yield 'auth cooldown active; skipping'
+            return
         update_sleep = 99999
         try:
             index_payload = self.index
