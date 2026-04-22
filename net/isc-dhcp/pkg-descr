@@ -16,3 +16,4 @@ Plugin Changelog
 * Minor changes regarding "track6" and "idassoc6" mode handling
 * Safeguard dhcpd_staticarp() from nonexistent interface configuration
 * Added DHCPv6 static mappings export
+* Moved dynamic menu item registration to plugin
