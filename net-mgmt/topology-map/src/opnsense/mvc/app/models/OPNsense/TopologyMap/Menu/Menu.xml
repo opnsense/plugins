@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <TopologyMap VisibleName="Topology Map" cssClass="fa fa-sitemap">
+            <Settings url="/ui/topologymap"/>
+        </TopologyMap>
+    </Services>
+</menu>

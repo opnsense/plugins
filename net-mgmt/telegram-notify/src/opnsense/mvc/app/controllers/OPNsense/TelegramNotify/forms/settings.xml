@@ -1,0 +1,86 @@
+<form>
+    <field>
+        <id>telegramnotify.general.enabled</id>
+        <label>Enable Telegram notifications</label>
+        <type>checkbox</type>
+        <help>Enable or disable Telegram notifications.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.botToken</id>
+        <label>Bot Token</label>
+        <type>password</type>
+        <help>Telegram bot token from BotFather.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.chatId</id>
+        <label>Chat ID</label>
+        <type>text</type>
+        <help>Destination chat ID or channel ID.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.threadId</id>
+        <label>Thread ID (optional)</label>
+        <type>text</type>
+        <help>Telegram topic thread ID for forum groups.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.parseMode</id>
+        <label>Parse Mode</label>
+        <type>dropdown</type>
+        <help>Message parse mode used by Telegram.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.disableWebPagePreview</id>
+        <label>Disable Web Page Preview</label>
+        <type>checkbox</type>
+        <help>Disable automatic link previews in messages.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.disableNotification</id>
+        <label>Send Silently</label>
+        <type>checkbox</type>
+        <help>Send messages without notification sound.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.dnsServer</id>
+        <label>DNS Server (optional)</label>
+        <type>text</type>
+        <help>Custom DNS server for resolving api.telegram.org (e.g. 8.8.8.8). Leave empty to use the system resolver. Use this if the firewall itself has DNS issues.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventSystem</id>
+        <label>System Events</label>
+        <type>checkbox</type>
+        <help>Allow system-related events.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventGateway</id>
+        <label>Gateway Events</label>
+        <type>checkbox</type>
+        <help>Allow gateway status and reachability events.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventService</id>
+        <label>Service Events</label>
+        <type>checkbox</type>
+        <help>Allow service start, stop and failure events.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventVpn</id>
+        <label>VPN Events</label>
+        <type>checkbox</type>
+        <help>Allow VPN tunnel and peer status events.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventSecurity</id>
+        <label>Security Events</label>
+        <type>checkbox</type>
+        <help>Allow security and intrusion-related events.</help>
+    </field>
+    <field>
+        <id>telegramnotify.general.eventUpdates</id>
+        <label>Update Events</label>
+        <type>checkbox</type>
+        <help>Allow firmware and package update events.</help>
+    </field>
+</form>

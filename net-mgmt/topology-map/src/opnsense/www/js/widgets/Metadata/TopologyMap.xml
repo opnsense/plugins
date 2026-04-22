@@ -1,0 +1,18 @@
+<metadata>
+    <topologymap>
+        <filename>TopologyMap.js</filename>
+        <endpoints>
+            <endpoint>/api/topologymap/service/summary</endpoint>
+            <endpoint>/api/topologymap/service/geomap</endpoint>
+        </endpoints>
+        <translations>
+            <title>Topology Map</title>
+            <interfaces>Interfaces</interfaces>
+            <hosts>Hosts</hosts>
+            <neighbors>LLDP Neighbors</neighbors>
+            <nodes>Nodes</nodes>
+            <links>Links</links>
+            <geoPoints>Geo Points</geoPoints>
+        </translations>
+    </topologymap>
+</metadata>
