@@ -90,6 +90,13 @@ class GDrive extends Base implements IBackupProvider
             "value" => 60
         );
         $fields[] = array(
+            "name" => "GDriveEncrypt",
+            "type" => "checkbox",
+            "label" => gettext("Encrypt backup files"),
+            "help" => gettext("Encrypt the configuration file before uploading to Google Drive. A password is required when enabled."),
+            "value" => null
+        );
+        $fields[] = array(
             "name" => "GDrivePassword",
             "type" => "password",
             "label" => gettext("Password"),
@@ -202,7 +209,14 @@ class GDrive extends Base implements IBackupProvider
 
                 // backup source data to local strings (plain/encrypted)
                 $confdata = file_get_contents('/conf/config.xml');
-                $confdata_enc = $this->encrypt($confdata, (string)$config->system->remotebackup->GDrivePassword);
+                $confdata_enc = $confdata;
+                if (!empty($config->system->remotebackup->GDriveEncrypt)) {
+                    $confdata_enc = $this->encrypt($confdata, (string)$config->system->remotebackup->GDrivePassword);
+                    if (empty($confdata_enc)) {
+                        syslog(LOG_ERR, "GDrive: encryption failed, aborting backup.");
+                        return array();
+                    }
+                }
 
                 // read filelist ({prefix}*.xml)
                 try {
@@ -220,7 +234,6 @@ class GDrive extends Base implements IBackupProvider
                 }
                 krsort($configfiles);
 
-
                 // backup new file if changed (or if first in backup)
                 $target_filename = $fileprefix . time() . ".xml";
                 if (count($configfiles) > 1) {
@@ -233,10 +246,14 @@ class GDrive extends Base implements IBackupProvider
                             $end_at = strpos($bck_data_enc, "\n---");
                             $bck_data_enc = substr($bck_data_enc, $start_at, ($end_at - $start_at));
                         }
-                        $bck_data = $this->decrypt(
-                            $bck_data_enc,
-                            (string)$config->system->remotebackup->GDrivePassword
-                        );
+                        if (!empty($config->system->remotebackup->GDriveEncrypt)) {
+                            $bck_data = $this->decrypt(
+                                $bck_data_enc,
+                                (string)$config->system->remotebackup->GDrivePassword
+                            );
+                        } else {
+                            $bck_data = $bck_data_enc;
+                        }
                         if ($bck_data == $confdata) {
                             $target_filename = null;
                         }
