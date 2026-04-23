@@ -1,0 +1,81 @@
+<form>
+    <field>
+        <id>xproxy.general.enabled</id>
+        <label>Enable Xproxy</label>
+        <type>checkbox</type>
+        <help>Enable the Xproxy service.</help>
+    </field>
+    <field>
+        <id>xproxy.general.active_server</id>
+        <label>Active Server</label>
+        <type>dropdown</type>
+        <help>Select which server to connect to when the service is enabled. The chosen server must be enabled and use a supported protocol (VLESS, VMess, Shadowsocks, Trojan).</help>
+    </field>
+    <field>
+        <id>xproxy.general.socks_port</id>
+        <label>SOCKS5 Port</label>
+        <type>text</type>
+        <help>Local SOCKS5 proxy port for xray-core.</help>
+    </field>
+    <field>
+        <id>xproxy.general.http_port</id>
+        <label>HTTP Proxy Port</label>
+        <type>text</type>
+        <help>Local HTTP proxy port for xray-core.</help>
+    </field>
+    <field>
+        <id>xproxy.general.socks_listen</id>
+        <label>SOCKS5 Listen Address</label>
+        <type>text</type>
+        <help>Address xray binds for SOCKS5. Use 127.0.0.1 for router-only (default). Set to this firewall's LAN IP or 0.0.0.0 so PCs on your network can use SOCKS5 at firewall_IP:SOCKS5_Port — then add a firewall rule allowing TCP to that port on This Firewall. Does not affect the tunnel component (it always uses localhost).</help>
+    </field>
+    <field>
+        <id>xproxy.general.http_listen</id>
+        <label>HTTP Proxy Listen Address</label>
+        <type>text</type>
+        <help>Address xray binds for the HTTP proxy (same choices as SOCKS5).</help>
+    </field>
+    <field>
+        <id>xproxy.general.policy_route_lan</id>
+        <label>Route LAN through tunnel</label>
+        <type>checkbox</type>
+        <help>Automatically route IPv4 traffic through the TUN tunnel. LAN devices need no proxy settings. A system gateway XPROXY_TUN and firewall rules are managed automatically. Disable if you only want local SOCKS/HTTP on the firewall.</help>
+    </field>
+    <field>
+        <id>xproxy.general.route_interfaces</id>
+        <label>Tunnel Interfaces</label>
+        <type>select_multiple</type>
+        <style>selectpicker</style>
+        <help>Select which interfaces to route through the tunnel. Leave empty to route all non-WAN interfaces (default). Use this to route only specific networks (e.g. Guest, IoT) while keeping your main LAN direct.</help>
+    </field>
+    <field>
+        <id>xproxy.general.tun_device</id>
+        <label>TUN Device</label>
+        <type>text</type>
+        <help>Name of the TUN device (e.g. tun9).</help>
+    </field>
+    <field>
+        <id>xproxy.general.tun_address</id>
+        <label>TUN Address</label>
+        <type>text</type>
+        <help>IP address assigned to the TUN interface (near side).</help>
+    </field>
+    <field>
+        <id>xproxy.general.tun_gateway</id>
+        <label>TUN Gateway</label>
+        <type>text</type>
+        <help>Far gateway address for the TUN interface. Use this as the OPNsense gateway address.</help>
+    </field>
+    <field>
+        <id>xproxy.general.bypass_ips</id>
+        <label>Bypass IPs</label>
+        <type>text</type>
+        <help>Comma-separated list of CIDRs to route directly (bypass proxy). RFC1918 ranges are included by default.</help>
+    </field>
+    <field>
+        <id>xproxy.general.metrics_exporter</id>
+        <label>Prometheus Exporter</label>
+        <type>checkbox</type>
+        <help>Enable a Prometheus metrics exporter (port 9101) that exposes xray-core and tunnel statistics for monitoring with Grafana or similar tools.</help>
+    </field>
+</form>
