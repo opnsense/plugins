@@ -70,7 +70,7 @@
     <label>Local Initiater IP</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Specify the local IP address used to establish connections with the neighbor. Only relevant for MD5 authentication.</help>
+    <help>Specify the local IP address used to establish connections with the neighbor. Affects BGP session source ip selection and MD5 authentication. Takes precedense before an "updatesource" option.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
