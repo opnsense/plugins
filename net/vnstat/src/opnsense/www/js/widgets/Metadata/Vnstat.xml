@@ -1,0 +1,25 @@
+<metadata>
+    <vnstat>
+        <filename>Vnstat.js</filename>
+        <endpoints>
+            <endpoint>/api/vnstat/service/dbiflist</endpoint>
+            <endpoint>/api/vnstat/service/json</endpoint>
+        </endpoints>
+        <translations>
+            <title>Vnstat Traffic</title>
+            <h_date>Date</h_date>
+            <h_rx>RX</h_rx>
+            <h_tx>TX</h_tx>
+            <h_total>Total</h_total>
+            <h_avg_rate>Avg Rate</h_avg_rate>
+            <period_hourly>Hourly</period_hourly>
+            <period_daily>Daily</period_daily>
+            <period_monthly>Monthly</period_monthly>
+            <period_yearly>Yearly</period_yearly>
+            <msg_no_data>No vnstat data available</msg_no_data>
+            <excluded_interfaces>Excluded Interfaces</excluded_interfaces>
+            <refresh_interval>Refresh Interval (minutes)</refresh_interval>
+            <show_avg_rate>Show Average Rate</show_avg_rate>
+        </translations>
+    </vnstat>
+</metadata>

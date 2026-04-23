@@ -90,6 +90,42 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
+     * list interfaces tracked by vnstat
+     * @return array
+     */
+    public function dbiflistAction()
+    {
+        $backend = new Backend();
+        $response = trim($backend->configdRun("vnstat dbiflist"));
+        if (empty($response)) {
+            return array("interfaces" => array());
+        }
+        $interfaces = array_map('trim', explode("\n", $response));
+        $interfaces = array_values(array_filter($interfaces, function ($v) {
+            return !empty($v);
+        }));
+        return array("interfaces" => $interfaces);
+    }
+
+    /**
+     * retrieve vnstat data as structured JSON for a specific interface
+     * @return array
+     */
+    public function jsonAction()
+    {
+        $iface = $this->request->get('iface');
+        if (empty($iface) || !preg_match('/^[a-zA-Z0-9_.]+$/', $iface)) {
+            return array("error" => "Invalid or missing interface name");
+        }
+        $backend = new Backend();
+        $response = json_decode($backend->configdRun("vnstat json " . escapeshellarg($iface)), true);
+        if ($response === null) {
+            return array("error" => "Failed to retrieve vnstat data");
+        }
+        return $response;
+    }
+
+    /**
      * remove database folder
      * @return array
      */
