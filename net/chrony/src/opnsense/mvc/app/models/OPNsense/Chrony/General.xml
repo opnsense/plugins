@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/chrony/general</mount>
     <description>Chrony configuration</description>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -33,5 +33,18 @@
             <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
         </allowednetworks>
+        <ntsservercert type="TextField">
+            <Required>N</Required>
+            <Mask>/^(\/[a-zA-Z0-9._\-]+)+$/</Mask>
+            <ValidationMessage>Must be an absolute file path.</ValidationMessage>
+        </ntsservercert>
+        <ntsserverkey type="TextField">
+            <Required>N</Required>
+            <Mask>/^(\/[a-zA-Z0-9._\-]+)+$/</Mask>
+            <ValidationMessage>Must be an absolute file path.</ValidationMessage>
+        </ntsserverkey>
+        <ntsport type="PortField">
+            <Required>N</Required>
+        </ntsport>
     </items>
 </model>

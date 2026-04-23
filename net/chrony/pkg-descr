@@ -4,6 +4,11 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.6
+
+* Add NTS server support (ntsservercert, ntsserverkey, ntsport)
+* Add confdir include for custom directives (/usr/local/etc/chrony.opnsense.d/)
+
 1.5
 
 * Allow adding a fallback NTP when using NTS
