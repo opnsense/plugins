@@ -49,20 +49,10 @@ class AuthenticationController extends ApiMutableModelControllerBase
         $mdl = new Authentication();
 
         $managementUrl = $mdl->managementUrl->__toString();
-        $setupKey = $mdl->setupKey->__toString();
-
-        $defaultKey = '00000000-0000-0000-0000-000000000000';
-        if (!empty($setupKey) && $setupKey !== $defaultKey) {
-            $visiblePart = substr($setupKey, 0, 4);
-            $maskedKey = $visiblePart . str_repeat('*', max(4, strlen($setupKey) - 4));
-        } else {
-            $maskedKey = $defaultKey;
-        }
 
         return [
             'authentication' => [
                 'managementUrl' => $managementUrl,
-                'setupKey' => $maskedKey
             ]
         ];
     }
