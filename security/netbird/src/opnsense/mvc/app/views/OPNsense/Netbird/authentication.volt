@@ -77,17 +77,11 @@
         $("#connectBtn").SimpleActionButton({
             onPreAction: () => {
                 const dfObj = new $.Deferred();
-                const setupKey = $("#authentication\\.setupKey").val();
-
-                if (setupKey.includes("*")) {
+                saveFormToEndpoint("/api/netbird/authentication/set", 'frmAuthentication', () => {
                     dfObj.resolve();
-                } else {
-                    saveFormToEndpoint("/api/netbird/authentication/set", 'frmAuthentication', () => {
-                        dfObj.resolve();
-                    }, true, () => {
-                        dfObj.reject();
-                    });
-                }
+                }, true, () => {
+                    dfObj.reject();
+                });
                 return dfObj;
             },
             onAction: () => {
