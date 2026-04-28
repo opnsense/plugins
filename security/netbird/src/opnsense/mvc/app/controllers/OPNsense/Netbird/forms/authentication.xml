@@ -9,7 +9,7 @@
         <id>authentication.setupKey</id>
         <label>Setup Key</label>
         <type>text</type>
-        <hint>00000000-0000-0000-0000-000000000000</hint>
+        <hint>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</hint>
         <help>Set the authentication setup key</help>
     </field>
 </form>
