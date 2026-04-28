@@ -6,6 +6,11 @@ WWW: https://github.com/coturn/coturn
 Plugin Changelog
 ================
 
+1.3
+
+Changed:
+* remove obsolete options from config
+
 1.2
 
 Added:
