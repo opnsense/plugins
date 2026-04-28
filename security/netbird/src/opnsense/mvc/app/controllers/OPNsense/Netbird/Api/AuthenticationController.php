@@ -49,12 +49,20 @@ class AuthenticationController extends ApiMutableModelControllerBase
         $mdl = new Authentication();
 
         $managementUrl = $mdl->managementUrl->__toString();
+        $setupKey = $mdl->setupKey->__toString();
 
-        return [
+        $result = [
             'authentication' => [
                 'managementUrl' => $managementUrl,
+                'setupKey' => '',
             ]
         ];
+
+        if (!empty($setupKey)) {
+            $result['authentication']['%setupKey'] = substr($setupKey, 0, 5) . str_repeat('*', max(0, strlen($setupKey) - 7));
+        }
+
+        return $result;
     }
 
     public function upAction()
