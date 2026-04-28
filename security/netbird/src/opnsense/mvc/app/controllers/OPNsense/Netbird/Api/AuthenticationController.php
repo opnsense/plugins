@@ -48,8 +48,8 @@ class AuthenticationController extends ApiMutableModelControllerBase
     {
         $mdl = new Authentication();
 
-        $managementUrl = $mdl->managementUrl->__toString();
-        $setupKey = $mdl->setupKey->__toString();
+        $managementUrl = $mdl->managementUrl->getValue();
+        $setupKey = $mdl->setupKey->getValue();
 
         $result = [
             'authentication' => [
