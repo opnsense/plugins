@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.3.1</version>
+    <version>4.4.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -552,9 +552,12 @@
                     <ValidationMessage>Please specify a value between 0 and 84600 seconds.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
-                <dns_active24_token type="TextField">
+                <dns_active24_api_key type="TextField">
                     <Required>N</Required>
-                </dns_active24_token>
+                </dns_active24_api_key>
+                <dns_active24_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_active24_api_secret>
                 <dns_ad_key type="TextField">
                     <Required>N</Required>
                 </dns_ad_key>
@@ -1431,7 +1434,7 @@
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Server (deprecated API)</acme_truenas>
-                        <acme_truenasws>Upload certificate to TrueNAS Server (Websocket API)</acme_truenasws>
+                        <acme_truenas_ws>Upload certificate to TrueNAS Server (Websocket API)</acme_truenas_ws>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
@@ -1745,6 +1748,26 @@
                         <https>HTTPS</https>
                     </OptionValues>
                 </acme_truenas_scheme>
+                <acme_truenas_ws_apikey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_ws_apikey>
+                <acme_truenas_ws_hostname type="HostnameField">
+                    <Default>localhost</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_ws_hostname>
+                <acme_truenas_ws_protocol type="OptionField">
+                    <Default>ws</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ws>ws [default]</ws>
+                        <wss>wss</wss>
+                    </OptionValues>
+                </acme_truenas_ws_protocol>
+                <!-- TODO: old "truenasws" values kept for model migration, should be removed in version 5.0.0 -->
                 <acme_truenasws_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>

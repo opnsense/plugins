@@ -35,7 +35,7 @@ use OPNsense\AcmeClient\LeAutomationInterface;
  * Run acme.sh deploy hook truenas_ws
  * @package OPNsense\AcmeClient
  */
-class AcmeTruenasWS extends Base implements LeAutomationInterface
+class AcmeTruenasWs extends Base implements LeAutomationInterface
 {
     public function prepare()
     {
