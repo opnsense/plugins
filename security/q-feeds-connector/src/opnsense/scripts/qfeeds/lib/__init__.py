@@ -63,7 +63,10 @@ class QFeedsActions:
             list(self.fetch_index())
         elif not os.path.exists(self.index_file):
             return {}
-        data = ujson.load(open(self.index_file)) or {}
+        try:
+            data = ujson.load(open(self.index_file)) or {}
+        except ujson.JSONDecodeError:
+            data = {}
         if type(data) is dict:
             for feed in data.get('feeds', []):
                 feed['local_filename'] = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
