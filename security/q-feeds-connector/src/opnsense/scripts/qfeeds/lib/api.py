@@ -28,6 +28,10 @@ import requests
 from configparser import ConfigParser
 
 
+class MissingApiKey(RuntimeError):
+    pass
+
+
 class QFeedsConfig:
     api_key = None
 
@@ -44,7 +48,12 @@ class Api:
     def __init__(self):
         self.api_key = QFeedsConfig().api_key
 
+    def _require_key(self):
+        if not self.api_key:
+            raise MissingApiKey('no api key configured')
+
     def licenses(self):
+        self._require_key()
         r = requests.get(
             url='https://api.qfeeds.com/licenses.php',
             auth=('api_token', self.api_key),
@@ -55,6 +64,7 @@ class Api:
         return r.json()
 
     def fetch(self, feed):
+        self._require_key()
         r = requests.get(
             url='https://api.qfeeds.com/api.php',
             params={'feed_type': feed},

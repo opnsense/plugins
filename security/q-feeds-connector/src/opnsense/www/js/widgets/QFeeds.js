@@ -65,18 +65,32 @@ export default class QFeeds extends BaseTableWidget {
         });
 
         const data = await this.ajaxCall(`/api/q_feeds/settings/${'stats'}`);
-        if (!data.feeds.length) {
-            $('#qfeeds-table').html(`${this.translations.no_feed}`);
+
+        let authBanner = null;
+        if (data && data.auth_status === 'no_key') {
+            authBanner = `<div class="text-danger"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> &nbsp;${this.translations.no_api_key}</div>`;
+        } else if (data && data.auth_status === 'failed') {
+            authBanner = `<div class="text-danger"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> &nbsp;${this.translations.auth_failed}</div>`;
+        }
+
+        if (!data || !data.feeds || !data.feeds.length) {
+            $('#qfeeds-table').html(authBanner || `${this.translations.no_feed}`);
             return;
         }
         let rows = [];
         let feeds = [];
         let licenseInfoShown = false;
 
+        const authOk = data.auth_status === 'ok' || !data.auth_status;
         for (let feed of data.feeds) {
             feeds.push(
                 `<b><i class="fa fa-fw fa-angle-right" aria-hidden="true"></i> ${feed.name}</b>`,
-                `<div><i class="fa fa-fw fa-circle-o" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.last_update}: ${feed.updated_at}</div>`,
+                `<div><i class="fa fa-fw fa-circle-o" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.last_update}: ${feed.updated_at}</div>`
+            );
+            if (!authOk) {
+                continue;
+            }
+            feeds.push(
                 `<div><i class="fa fa-fw fa-circle-o" aria-hidden="true"></i> &nbsp;&nbsp;${this.translations.next_update}: ${feed.next_update}</div>`
             );
             if (feed.licensed) {
@@ -105,6 +119,9 @@ export default class QFeeds extends BaseTableWidget {
         ];
         rows.push([[this.translations.database], db]);
 
+        if (authBanner) {
+            rows.unshift([['&nbsp;'], [authBanner]]);
+        }
         super.updateTable('qfeeds-table', rows);
     }
 }

@@ -85,6 +85,8 @@ class PFLogCrawler:
                                 rows_processed +=1
                             break # inner loop
                     if (idx % 100000 == 0 and time.time() - start_time > max_time) or rows_processed >= max_results:
+                        result.sort(key=lambda row: row[0], reverse=True)
                         return result
 
+        result.sort(key=lambda row: row[0], reverse=True)
         return result
