@@ -1,0 +1,9 @@
+<acl>
+    <page-services-cloudflared>
+        <name>Services: Cloudflare Tunnel</name>
+        <patterns>
+            <pattern>ui/cloudflared/*</pattern>
+            <pattern>api/cloudflared/*</pattern>
+        </patterns>
+    </page-services-cloudflared>
+</acl>

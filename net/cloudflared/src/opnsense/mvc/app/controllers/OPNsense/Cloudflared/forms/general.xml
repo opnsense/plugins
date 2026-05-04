@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>Cloudflared.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Cloudflare Tunnel</help>
+    </field>
+    <field>
+        <id>Cloudflared.general.token</id>
+        <label>Tunnel Token</label>
+        <type>password</type>
+        <help>The token for your Cloudflare Tunnel. Get it from one.dash.cloudflare.com > Access > Tunnels.</help>
+    </field>
+    <field>
+        <id>Cloudflared.general.no_autoupdate</id>
+        <label>Disable Auto-Update</label>
+        <type>checkbox</type>
+        <help>Pass --no-autoupdate to cloudflared. Recommended when managing updates manually via the Install/Update Binary button.</help>
+    </field>
+    <field>
+        <id>Cloudflared.general.post_quantum</id>
+        <label>Enable Post-Quantum Encryption</label>
+        <type>checkbox</type>
+        <help>Pass --post-quantum to enable post-quantum cryptography for the tunnel connection.</help>
+    </field>
+    <field>
+        <id>Cloudflared.general.kern_ipc_maxsockbuf</id>
+        <label>Max Socket Buffer (kern.ipc.maxsockbuf)</label>
+        <type>text</type>
+        <help>Recommended value for QUIC performance. Default is 16777216.</help>
+    </field>
+    <field>
+        <id>Cloudflared.general.net_inet_udp_recvspace</id>
+        <label>UDP Recv Space (net.inet.udp.recvspace)</label>
+        <type>text</type>
+        <help>Recommended value for QUIC performance. Default is 8388608.</help>
+    </field>
+</form>

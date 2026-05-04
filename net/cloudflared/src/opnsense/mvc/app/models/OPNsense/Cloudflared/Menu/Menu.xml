@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <Cloudflared order="490" VisibleName="Cloudflare Tunnel" cssClass="fa fa-cloud fa-fw" url="/ui/cloudflared/"/>
+    </Services>
+</menu>
