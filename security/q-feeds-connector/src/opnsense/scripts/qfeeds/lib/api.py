@@ -29,15 +29,23 @@ from configparser import ConfigParser
 
 
 class QFeedsConfig:
+    config_filename = '/usr/local/etc/qfeeds.conf'
     api_key = None
+    conf_timestamp = None
 
     def __init__(self):
-        config_filename = '/usr/local/etc/qfeeds.conf'
-        if os.path.isfile(config_filename):
+        if os.path.isfile(self.config_filename):
             cnf = ConfigParser()
-            cnf.read(config_filename)
+            cnf.read(self.config_filename)
             if cnf.has_section('api') and cnf.has_option('api', 'key'):
                 self.api_key = cnf.get('api', 'key').strip()
+
+            if self.conf_timestamp is None:
+                QFeedsConfig.conf_timestamp = os.stat(self.config_filename).st_mtime
+
+    @classmethod
+    def has_changed(cls):
+        return os.path.isfile(cls.config_filename) and cls.conf_timestamp != os.stat(cls.config_filename).st_mtime
 
 
 class Api:
