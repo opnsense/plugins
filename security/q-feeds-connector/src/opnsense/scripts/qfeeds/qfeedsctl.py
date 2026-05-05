@@ -27,10 +27,13 @@
 """
 
 import argparse
+import fcntl
+import time
 import sys
 import ujson
 from requests.exceptions import HTTPError, Timeout
 from lib import QFeedsActions
+from lib.api import QFeedsConfig
 
 
 if __name__ == '__main__':
@@ -38,8 +41,20 @@ if __name__ == '__main__':
     parser.add_argument('--target_dir', default='/var/db/qfeeds-tables')
     parser.add_argument('-f', help='forced (auto index)' , default=False, action='store_true')
     parser.add_argument('-v', help='verbose output' , default=False, action='store_true')
+    parser.add_argument('-l', help='lock operation' , default=False, action='store_true')
     parser.add_argument("action", choices=QFeedsActions.list_actions(), nargs='*')
     args = parser.parse_args()
+
+    fhandle = None
+    if args.l:
+        lck_filename = '/tmp/qfeeds_prc.LCK'
+        fhandle = open(lck_filename, 'a+')
+        try:
+            fcntl.flock(fhandle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except IOError:
+            print('already busy, exit')
+            sys.exit(0)
+
     if args.v:
         # verbose mode
         import http.client as http_client
@@ -51,6 +66,14 @@ if __name__ == '__main__':
                 print(msg)
     except HTTPError as exc:
         print('exit with HTTPError %d (%s)' % (exc.response.status_code, exc.response.text))
+        if exc.response.status_code == 401 and 'update' in args.action:
+            print('batch mode - wait for configuration update or timeout')
+            t_start = time.time()
+            while not QFeedsConfig.has_changed():
+                if time.time() - t_start > 3600:
+                    print('timeout waiting for config change')
+                    break
+                time.sleep(5)
         sys.exit(-1)
     except Timeout as exc:
         print('timeout reaching api endpoint')
@@ -61,3 +84,6 @@ if __name__ == '__main__':
     except ujson.JSONDecodeError:
         print("JSON decode error")
         sys.exit(-1)
+    finally:
+        if fhandle:
+            fcntl.flock(fhandle, fcntl.LOCK_UN)
