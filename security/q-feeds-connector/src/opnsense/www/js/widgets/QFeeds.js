@@ -31,6 +31,7 @@ export default class QFeeds extends BaseTableWidget {
 
     getMarkup() {
         let $container = $('<div></div>');
+        $container.append('<div id="qfeeds-alerts"></div>');
         let $sysinfotable = this.createTable('qfeeds-table', {
             headerPosition: 'left',
         });
@@ -40,6 +41,30 @@ export default class QFeeds extends BaseTableWidget {
 
     async onWidgetTick() {
         return;
+    }
+
+    /**
+     * License warning banner (Bootstrap alert). Used for expired / invalid license from cached index only.
+     */
+    buildLicenseDangerAlert(message) {
+        return $('<div class="alert alert-danger" role="alert"></div>')
+            .append($('<i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>'))
+            .append(document.createTextNode(' '))
+            .append($('<strong></strong>').text(message));
+    }
+
+    resolveLicenseAlert(data) {
+        if (data.license && data.license.expiry_date) {
+            const expiryMs = Date.parse(data.license.expiry_date);
+            if (!Number.isNaN(expiryMs) && expiryMs < Date.now()) {
+                return this.translations.license_expired;
+            }
+        }
+        const lf = data.license_feeds;
+        if (lf && lf.total > 0 && lf.licensed === 0) {
+            return this.translations.license_invalid;
+        }
+        return null;
     }
 
     async onMarkupRendered() {
@@ -65,8 +90,18 @@ export default class QFeeds extends BaseTableWidget {
         });
 
         const data = await this.ajaxCall(`/api/q_feeds/settings/${'stats'}`);
-        if (!data.feeds.length) {
-            $('#qfeeds-table').html(`${this.translations.no_feed}`);
+        const $alerts = $('#qfeeds-alerts').empty();
+        const $table = $('#qfeeds-table');
+        const licenseMsg = this.resolveLicenseAlert(data || {});
+        if (licenseMsg) {
+            $alerts.append(this.buildLicenseDangerAlert(licenseMsg));
+            $table.empty().hide();
+            return;
+        }
+        $table.show();
+
+        if (!data || !Array.isArray(data.feeds) || !data.feeds.length) {
+            $table.html(`${this.translations.no_feed}`);
             return;
         }
         let rows = [];

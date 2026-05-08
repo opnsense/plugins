@@ -98,31 +98,41 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function statsAction()
     {
-        $stats = json_decode((new Backend())->configdRun('qfeeds stats'), true);
-        if (!empty($stats) && !empty($stats['feeds'])) {
-            $info = json_decode((new Backend())->configdRun('qfeeds info'), true);
-            if (!empty($info) && !empty($info['feeds'])) {
-                $feeds = [];
-                foreach ($info['feeds'] as $feed) {
-                    $feeds[$feed['feed_type']] = $feed;
-                }
-                foreach ($stats['feeds'] as &$feed) {
-                    if (isset($feeds[$feed['name']])) {
-                        $tmp = $feeds[$feed['name']];
-                        $feed['updated_at'] = $tmp['local_updated'];
-                        $feed['next_update'] = $tmp['next_update'];
-                        $feed['licensed'] = $tmp['licensed'];
-                    }
-                }
-            }
-            // Add license information from company_info if available
-            if (!empty($info['company_info'])) {
-                $stats['license'] = [
-                    'name' => $info['company_info']['license_name'] ?? null,
-                    'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
-                ];
-            }
+        $stats = json_decode((new Backend())->configdRun('qfeeds stats'), true) ?: [];
+        $info = json_decode((new Backend())->configdRun('qfeeds info'), true) ?: [];
+
+        /* Widget may have empty PF stats feeds (e.g. domains-only); still expose license fields from cache */
+        if (!empty($info['company_info'])) {
+            $stats['license'] = [
+                'name' => $info['company_info']['license_name'] ?? null,
+                'expiry_date' => $info['company_info']['license_expiry_date'] ?? null
+            ];
         }
+        if (!empty($info['licensing_summary']['feeds'])) {
+            $lf = $info['licensing_summary']['feeds'];
+            $stats['license_feeds'] = [
+                'licensed' => (int)($lf['licensed'] ?? 0),
+                'total' => (int)($lf['total'] ?? 0),
+            ];
+        }
+
+        if (!empty($stats['feeds']) && !empty($info['feeds'])) {
+            $feeds = [];
+            foreach ($info['feeds'] as $feed) {
+                $feeds[$feed['feed_type']] = $feed;
+            }
+            foreach ($stats['feeds'] as &$feed) {
+                if (isset($feeds[$feed['name']])) {
+                    $tmp = $feeds[$feed['name']];
+                    /* older qfeeds or partial index may omit local_updated */
+                    $feed['updated_at'] = $tmp['local_updated'] ?? $tmp['updated_at'] ?? '';
+                    $feed['next_update'] = $tmp['next_update'] ?? '';
+                    $feed['licensed'] = $tmp['licensed'] ?? false;
+                }
+            }
+            unset($feed);
+        }
+
         return $stats;
     }
 }
