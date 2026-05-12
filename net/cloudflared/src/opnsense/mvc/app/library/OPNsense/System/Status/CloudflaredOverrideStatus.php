@@ -26,12 +26,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Cloudflared\Api;
+namespace OPNsense\System\Status;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\System\AbstractStatus;
+use OPNsense\System\SystemStatusCode;
 
-class SettingsController extends ApiMutableModelControllerBase
+class CloudflaredOverrideStatus extends AbstractStatus
 {
-    protected static $internalModelClass = '\OPNsense\Cloudflared\Cloudflared';
-    protected static $internalModelName = 'cloudflared';
+    public function __construct()
+    {
+        $this->internalPriority = 2;
+        $this->internalPersistent = true;
+        $this->internalIsBanner = true;
+        $this->internalTitle = gettext('Cloudflare Tunnel');
+        $this->internalScope = [
+            '/ui/cloudflared/'
+        ];
+    }
+
+    public function collectStatus()
+    {
+        $this->internalMessage = gettext(
+            'Cloudflare Tunnel traffic bypasses OPNsense firewall rules; access control must be enforced in ' .
+            'Cloudflare Access. For optimal QUIC performance, set the recommended kernel tunables. ' .
+            'See the plugin documentation for details.'
+        );
+        $this->internalStatus = SystemStatusCode::NOTICE;
+    }
 }

@@ -26,37 +26,9 @@
 
 <script>
 $(document).ready(function() {
-    function updateSysctlWarning() {
-        var protocol = $("#cloudflared\\.general\\.protocol").val();
-        if (protocol !== 'auto' && protocol !== 'quic') {
-            $("#sysctl_warning").hide();
-            return;
-        }
-        ajaxCall("/api/cloudflared/settings/sysctlCheck", {}, function(data) {
-            var issues = [];
-            $.each({'kern.ipc.maxsockbuf': 16777216, 'net.inet.udp.recvspace': 8388608}, function(key, min) {
-                if (data[key] && !data[key].ok) {
-                    issues.push(key + " {{ lang._('(current:') }} " + data[key].value +
-                        "{{ lang._(',  recommended: ≥') }} " + min + ")");
-                }
-            });
-            if (issues.length > 0) {
-                $("#sysctl_issues").html(issues.join("<br>"));
-                $("#sysctl_warning").show();
-            } else {
-                $("#sysctl_warning").hide();
-            }
-        });
-    }
-
     mapDataToFormUI({'frm_GeneralSettings': "/api/cloudflared/settings/get"}).done(function() {
         $('.selectpicker').selectpicker('refresh');
         updateServiceControlUI('cloudflared');
-        updateSysctlWarning();
-    });
-
-    $("#cloudflared\\.general\\.protocol").on('change', function() {
-        updateSysctlWarning();
     });
 
     $("#reconfigureAct").SimpleActionButton({
@@ -71,15 +43,6 @@ $(document).ready(function() {
 
 <div class="content-box">
     {{ partial('layout_partials/base_form', ['fields': general, 'id': 'frm_GeneralSettings']) }}
-    <div id="sysctl_warning" class="alert alert-warning" role="alert" style="margin: 10px; display: none;">
-        {{ lang._("QUIC performance: the following UDP buffer sysctl(s) are below the recommended values. Set them under") }}
-        <a href="/ui/core/tunables">{{ lang._("System > Settings > Tuneables") }}</a>
-        {{ lang._("for optimal tunnel throughput.") }}
-        <br><span id="sysctl_issues"></span>
-    </div>
-    <div class="alert alert-warning" role="alert" style="margin: 10px;">
-        {{ lang._("Traffic received via the Cloudflare Tunnel bypasses OPNsense firewall rules. Access control for tunnelled services must be enforced within Cloudflare Access. Backend services must also be reachable from the router's own IP address, as cloudflared forwards connections from the router itself.") }}
-    </div>
 </div>
 
 {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/cloudflared/service/reconfigure', 'data_service_widget': 'cloudflared'}) }}
