@@ -109,7 +109,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 foreach ($stats['feeds'] as &$feed) {
                     if (isset($feeds[$feed['name']])) {
                         $tmp = $feeds[$feed['name']];
-                        $feed['updated_at'] = $tmp['updated_at'];
+                        $feed['updated_at'] = $tmp['local_updated'];
                         $feed['next_update'] = $tmp['next_update'];
                         $feed['licensed'] = $tmp['licensed'];
                     }

@@ -3,6 +3,12 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
+1.6
+
+* Feature: Add alert when license expired or invalid
+* Bugfix: Output filename locked or missing after last update
+* Bugfix: Use local file timestamp for feed updated_at
+
 1.5
 
 * Feature: Add passlist option for unbound

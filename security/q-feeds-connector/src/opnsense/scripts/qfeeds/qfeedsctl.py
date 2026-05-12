@@ -79,7 +79,7 @@ if __name__ == '__main__':
         print('timeout reaching api endpoint')
         sys.exit(-1)
     except IOError as e:
-        print("output filename locked or missing")
+        print("output filename locked or missing (%s)" % e)
         sys.exit(-1)
     except ujson.JSONDecodeError:
         print("JSON decode error")

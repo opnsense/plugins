@@ -27,7 +27,7 @@ import os
 import subprocess
 import time
 import ujson
-from datetime import datetime
+from datetime import datetime, UTC
 from lib.api import Api
 from lib.log import PFLogCrawler
 from lib.file import LockedFile
@@ -72,6 +72,9 @@ class QFeedsActions:
                 feed['local_filename'] = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
                 feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
                 feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
+                feed['local_updated'] = datetime.fromtimestamp(
+                    self._file_stat(feed['local_filename']), UTC
+                ).isoformat().replace("+00:00", "Z")
 
         return data
 
