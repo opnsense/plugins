@@ -16,3 +16,11 @@ FreeBSD systems to join a NetBird mesh network and securely communicate with
 other peers.
 
 For more details, visit: https://netbird.io
+
+Plugin Changelog
+================
+
+1.3
+
+* Added netbird_devices() so that wt0 is a volatile interface (contributed by Myah Mitchell)
+* Added IP Mapping option and authentication banner (contributed by Konstantinos Spartalis)
