@@ -6,6 +6,11 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.31
+
+* Add multiple hostname support for cloudflare (contributed by Maksim Tokarev)
+* Add all-inkl.com KAS API DynDNS provider (contributed by Carsten Kallies)
+
 1.30
 
 * Add native backend support for Hostinger (contributed by Leandro Scardua)
