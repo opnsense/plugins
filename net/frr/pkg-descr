@@ -14,7 +14,12 @@ Plugin Changelog
 
 1.52
 
-* Add BGP maximum-paths support for ECMP multipath (contributed by maxfield-allison) (opnsense/plugins#4878)
+* Add BGP maximum-paths support for ECMP multipath (contributed by maxfield-allison) (opnsense/plugins/pull/4878)
+* Add description of bgp neighbor to frr.conf (opnsense/plugins/pull/5364)
+* Add local-address and interface options to BFD neighbors (opnsense/plugins/pull/5317)
+* Add BFD dependency support for static routes and add diagnostics (opnsense/plugins/commit/12f8828)
+* Fix setup.sh script not being triggered after switch to watchfrr (opnsense/plugins/commit/9486488)
+* Fix OSPFv3 routes missing in diagnostics output (opnsense/plugins/commit/1e7cf83)
 
 1.51
 
