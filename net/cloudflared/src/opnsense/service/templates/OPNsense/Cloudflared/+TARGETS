@@ -1,0 +1,2 @@
+rc.conf.d:/etc/rc.conf.d/cloudflared
+config.yml:/usr/local/etc/cloudflared/config.yml

@@ -1,0 +1,46 @@
+<model>
+    <mount>//OPNsense/Cloudflared</mount>
+    <version>1.0.0</version>
+    <description>Cloudflare Tunnel settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <token type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[a-zA-Z0-9\._\-]+$/</Mask>
+                <ValidationMessage>Token may only contain letters, digits, dots, underscores and hyphens.</ValidationMessage>
+            </token>
+            <protocol type="OptionField">
+                <Default>auto</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <auto>auto</auto>
+                    <quic>quic</quic>
+                    <http2>http2</http2>
+                </OptionValues>
+            </protocol>
+            <post_quantum type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </post_quantum>
+            <quic_disable_pmtu_discovery type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </quic_disable_pmtu_discovery>
+            <log_level type="OptionField">
+                <Default>info</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <info>info</info>
+                    <debug>debug</debug>
+                    <warn>warn</warn>
+                    <error>error</error>
+                    <fatal>fatal</fatal>
+                </OptionValues>
+            </log_level>
+        </general>
+    </items>
+</model>

@@ -1,0 +1,89 @@
+<?php
+
+/*
+ * Copyright (C) 2026 Richard Aspden <rick+github@insanityinside.net>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+function cloudflared_enabled()
+{
+    return (string)(new \OPNsense\Cloudflared\Cloudflared())->general->enabled == '1';
+}
+
+function cloudflared_configure()
+{
+    return [
+        'newwanip' => ['cloudflared_configure_newwanip'],
+    ];
+}
+
+function cloudflared_configure_newwanip($verbose = false)
+{
+    if (!cloudflared_enabled()) {
+        return;
+    }
+    if (file_exists('/var/run/cloudflared.pid')) {
+        return;
+    }
+    (new \OPNsense\Core\Backend())->configdRun('cloudflared start');
+}
+
+function cloudflared_services()
+{
+    global $config;
+
+    $services = [];
+
+    if (
+        isset($config['OPNsense']['Cloudflared']['general']['enabled']) &&
+        $config['OPNsense']['Cloudflared']['general']['enabled'] == '1'
+    ) {
+        $services[] = [
+            'description' => gettext('Cloudflare Tunnel'),
+            'configd' => [
+                'start' => ['cloudflared start'],
+                'restart' => ['cloudflared restart'],
+                'stop' => ['cloudflared stop'],
+            ],
+            'name' => 'cloudflared',
+            'pidfile' => '/var/run/cloudflared.pid',
+        ];
+    }
+
+    return $services;
+}
+
+function cloudflared_xmlrpc_sync()
+{
+    $result = [];
+
+    $result[] = [
+        'description' => gettext('Cloudflare Tunnel'),
+        'section' => 'OPNsense.Cloudflared',
+        'id' => 'cloudflared',
+        'services' => ['cloudflared'],
+    ];
+
+    return $result;
+}
