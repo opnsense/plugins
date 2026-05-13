@@ -41,10 +41,14 @@ class DynDNS extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
         $validate_servers = [];
+        $has_oray = false;
 
         foreach ($this->getFlatNodes() as $key => $node) {
             $tagName = $node->getInternalXMLTagName();
             $parentNode = $node->getParentNode();
+            if ($parentNode->getInternalXMLTagName() === 'account' && $parentNode->service->isEqual('oray')) {
+                $has_oray = true;
+            }
             if ($validateFullModel || $node->isFieldChanged()) {
                 if ($parentNode->getInternalXMLTagName() === 'account' && in_array($tagName, ['protocol', 'server'])) {
                     $parentKey = $parentNode->__reference;
@@ -53,7 +57,14 @@ class DynDNS extends BaseModel
             }
         }
 
+        if ($has_oray && !$this->general->backend->isEqual('ddclient')) {
+            $messages->appendMessage(new Message(gettext('Oray is only supported when the ddclient backend is selected.'), 'general.backend'));
+        }
+
         foreach ($validate_servers as $key => $node) {
+            if ($node->service->isEqual('oray')) {
+                continue;
+            }
             $validate_url = false;
 
             if ($node->service->isEqual('powerdns')) {
