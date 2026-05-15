@@ -28,14 +28,18 @@
 $(document).ready(function() {
     mapDataToFormUI({'frm_GeneralSettings': "/api/cloudflared/settings/get"}).done(function() {
         $('.selectpicker').selectpicker('refresh');
-        updateServiceControlUI('cloudflared');
     });
+
+    updateServiceControlUI('cloudflared');
 
     $("#reconfigureAct").SimpleActionButton({
         onPreAction: function() {
             const dfObj = $.Deferred();
             saveFormToEndpoint("/api/cloudflared/settings/set", 'frm_GeneralSettings', dfObj.resolve, true, dfObj.reject);
             return dfObj;
+        },
+        onAction: function() {
+            updateServiceControlUI('cloudflared');
         },
     });
 });
