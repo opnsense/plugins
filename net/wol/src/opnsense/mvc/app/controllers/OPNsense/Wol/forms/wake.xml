@@ -11,4 +11,10 @@
         <type>text</type>
         <help>Enter a MAC address in the following format: xx:xx:xx:xx:xx:xx.</help>
     </field>
+    <field>
+        <id>wake.port</id>
+        <label>UDP port</label>
+        <type>text</type>
+        <help>UDP port to send the magic packet to (1-65535). Defaults to 9.</help>
+    </field>
 </form>
