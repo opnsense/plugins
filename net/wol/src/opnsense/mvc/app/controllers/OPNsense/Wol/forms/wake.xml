@@ -15,6 +15,6 @@
         <id>wake.port</id>
         <label>UDP port</label>
         <type>text</type>
-        <help>UDP port to send the magic packet to (1-65535). Defaults to 9.</help>
+        <help>UDP port to send the magic packet to (1-65535).</help>
     </field>
 </form>
