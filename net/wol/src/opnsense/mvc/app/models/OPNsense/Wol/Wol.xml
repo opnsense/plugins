@@ -16,12 +16,10 @@
                 <Default>00:00:00:00:00:00</Default>
                 <ValidationMessage>Should be 6 groups of 2 hex characters (a-fA-F0-9) separated by ':'.</ValidationMessage>
             </mac>
-            <port type="IntegerField">
+            <port type="PortField">
                 <Required>Y</Required>
                 <Default>9</Default>
-                <MinimumValue>1</MinimumValue>
-                <MaximumValue>65535</MaximumValue>
-                <ValidationMessage>UDP port must be an integer between 1 and 65535.</ValidationMessage>
+                <ValidationMessage>UDP port must be a valid port number.</ValidationMessage>
             </port>
             <descr type="TextField"/>
         </wolentry>

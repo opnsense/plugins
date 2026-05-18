@@ -98,11 +98,11 @@ $( document ).ready(function() {
 <div class="content-box" style="padding-bottom: 1.5em;">
     {{ partial("layout_partials/base_form",['fields':wakeForm,'id':'frm_wol_wake'])}}
     <div class="col-md-12">
-        <hr />
+        <br>
         <button class="btn btn-primary" id="wakeAct" type="button"><b>{{ lang._('Wake up') }}</b> <i id="wakeAct_progress"></i></button>
     </div>
 </div>
-
+<br>
 <div class="content-box" style="padding-bottom: 1.5em;">
 
       <table id="grid-wol-settings" class="table table-responsive" data-editDialog="frm_wol_settings">
@@ -110,6 +110,7 @@ $( document ).ready(function() {
             <tr>
                 <th data-column-id="interface" data-type="string" data-visible="true">{{ lang._('Interface') }}</th>
                 <th data-column-id="mac" data-type="string" data-visible="true">{{ lang._('MAC') }}</th>
+                <th data-column-id="port" data-type="string" data-visible="true">{{ lang._('Port') }}</th>
                 <th data-column-id="descr" data-type="string" data-identifier="true">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="130">{{ lang._('Commands') }}</th>
             </tr>
@@ -118,7 +119,7 @@ $( document ).ready(function() {
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
                 <td>
                     <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                     <button type="button" class="btn btn-xs reload_btn btn-primary" id="act_wake_all"><span class="fa wakeallAct_progress"></span> {{ lang._('Wake All') }}</button>
