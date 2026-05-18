@@ -12,6 +12,11 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.15
+
+* Add custom header support for OpenTelemetry output
+* Quote OpenTelemetry service_address in config
+
 1.12.14
 
 * Add name_prefix in influxdb config

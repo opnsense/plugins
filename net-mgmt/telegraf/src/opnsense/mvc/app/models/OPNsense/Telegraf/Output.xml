@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/telegraf/output</mount>
     <description>Telegraf outputs configuration</description>
-    <version>1.4.6</version>
+    <version>1.4.7</version>
     <items>
         <influx_enable type="BooleanField">
             <Default>0</Default>
@@ -204,5 +204,11 @@
                 <none>none</none>
             </OptionValues>
         </opentelemetry_compression>
+        <opentelemetry_header_name type="TextField">
+            <Required>N</Required>
+        </opentelemetry_header_name>
+        <opentelemetry_header_value type="TextField">
+            <Required>N</Required>
+        </opentelemetry_header_value>
     </items>
 </model>
