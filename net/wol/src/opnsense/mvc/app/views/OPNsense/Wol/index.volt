@@ -103,6 +103,7 @@ $( document ).ready(function() {
     </div>
 </div>
 <br>
+
 <div class="content-box" style="padding-bottom: 1.5em;">
 
       <table id="grid-wol-settings" class="table table-responsive" data-editDialog="frm_wol_settings">

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2026 <your name>
+ * Copyright (C) 2026 touzenesmy
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,19 +33,14 @@ use OPNsense\Base\BaseModelMigration;
 class M1_0_1 extends BaseModelMigration
 {
     /**
-     * Existing WoL hosts predate the configurable port and were always
-     * sent to UDP port 40000 (the previous hard-coded value). Preserve
-     * that behaviour on upgrade so existing hosts keep working; only new
-     * hosts get the sane default of 9.
+     * Migrates from hardcoded port
      * @param $model
      */
     public function run($model)
     {
         parent::run($model);
         foreach ($model->wolentry->iterateItems() as $host) {
-            if (empty((string)$host->port)) {
-                $host->port = '40000';
-            }
+            $host->port = '40000';
         }
     }
 }
