@@ -84,9 +84,9 @@
     <help>Enable the ZFS collector.</help>
   </field>
   <field>
-    <id>general.textfile_directory</id>
-    <label>Textfile Directory</label>
-    <type>text</type>
-    <help>Path to a directory read by the textfile collector. Files ending in .prom in this directory will be exposed as metrics. Leave empty to disable. Example: /var/db/node_exporter</help>
+    <id>general.textfile</id>
+    <label>Textfile Collector</label>
+    <type>checkbox</type>
+    <help>Enable the textfile collector. When enabled, .prom files placed in /var/db/node_exporter/textfile will be exposed as metrics.</help>
   </field>
 </form>

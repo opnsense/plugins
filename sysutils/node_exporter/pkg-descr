@@ -9,7 +9,7 @@ Changelog
 
 1.3
 
-* Add textfile collector directory support
+* Add textfile collector support (fixed directory: /var/db/node_exporter/textfile)
 
 1.2
 
