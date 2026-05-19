@@ -31,7 +31,6 @@
     <id>routemap.match2</id>
     <label>Prefix List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
     <help>Allows for matching based on prefix lists, multiple selections enabled.</help>
   </field>

@@ -275,12 +275,14 @@
                 </id>
                 <match2 type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.ospf</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
+                    <Multiple>Y</Multiple>
                     <ValidationMessage>Related item not found.</ValidationMessage>
                 </match2>
                 <set type="TextField"/>
