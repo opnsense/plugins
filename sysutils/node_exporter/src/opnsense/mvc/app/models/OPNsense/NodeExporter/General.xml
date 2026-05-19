@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/NodeExporter</mount>
     <description>node_exporter configuration</description>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -29,5 +29,6 @@
         <interrupts type="BooleanField"/>
         <ntp type="BooleanField"/>
         <zfs type="BooleanField"/>
+        <textfile_directory type="TextField"/>
     </items>
 </model>

@@ -83,4 +83,10 @@
     <type>checkbox</type>
     <help>Enable the ZFS collector.</help>
   </field>
+  <field>
+    <id>general.textfile_directory</id>
+    <label>Textfile Directory</label>
+    <type>text</type>
+    <help>Path to a directory read by the textfile collector. Files ending in .prom in this directory will be exposed as metrics. Leave empty to disable. Example: /var/db/node_exporter</help>
+  </field>
 </form>
