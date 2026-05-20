@@ -698,9 +698,9 @@ include("head.inc");
                     <td>
                       <select name="protocol">
                       <?php
-                      $protocols = array("inet" => "IPv4", "inet6" => "IPv6");
+                      $protocols = ['inet' => 'IPv4', 'inet6' => 'IPv6'];
                       if (!empty($pconfig['mobile'])) {
-                          $protocols["inet46"] = "IPv4+6";
+                          $protocols['inet46'] = 'any';
                       }
                       foreach ($protocols as $protocol => $name) :
                       ?>
