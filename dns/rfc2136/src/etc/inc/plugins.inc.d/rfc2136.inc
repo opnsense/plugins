@@ -84,7 +84,10 @@ function rfc2136_cache_file($dnsupdate, $ipver = 4)
 {
     $ipver = $ipver == 6 ? '_v6' : '';
 
-    return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$dnsupdate['host']}_{$dnsupdate['server']}{$ipver}.cache";
+    /* rawurlencode is identity on the LDH+underscore set is_domain() accepts; only "*." gets encoded */
+    $host = rawurlencode($dnsupdate['host']);
+
+    return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$host}_{$dnsupdate['server']}{$ipver}.cache";
 }
 
 function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $forced = false)
