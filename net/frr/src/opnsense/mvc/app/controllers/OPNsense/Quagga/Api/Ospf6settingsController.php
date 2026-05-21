@@ -37,6 +37,7 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'ospf6';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF6';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchNetworkAction()
     {
