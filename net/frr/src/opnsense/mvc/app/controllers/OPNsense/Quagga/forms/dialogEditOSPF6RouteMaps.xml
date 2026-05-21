@@ -32,7 +32,7 @@
     <label>Prefix List</label>
     <type>select_multiple</type>
     <allownew>true</allownew>
-    <help>Allows for matching based on prefix lists, multiple selections enabled.</help>
+    <help>Allows for matching based on prefix lists, multiple selections enabled. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
     <field>
     <id>routemap.set</id>

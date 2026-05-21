@@ -36,6 +36,7 @@ class OspfsettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'ospf';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchNeighborAction()
     {
