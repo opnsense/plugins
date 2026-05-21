@@ -81,8 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     do_input_validation($pconfig, $reqdfields, $reqdfieldsn, $input_errors);
 
-    if (!empty($pconfig['host']) && !is_domain($pconfig['host'])) {
-        $input_errors[] = gettext("The DNS update host name contains invalid characters.");
+    if (!empty($pconfig['host'])) {
+        /* allow a leading "*." to designate a wildcard record */
+        $host_to_check = str_starts_with($pconfig['host'], '*.') ? substr($pconfig['host'], 2) : $pconfig['host'];
+        if (!is_domain($host_to_check)) {
+            $input_errors[] = gettext("The DNS update host name contains invalid characters.");
+        }
     }
     if (!empty($pconfig['ttl']) && !is_numericint($pconfig['ttl'])) {
         $input_errors[] = gettext("The DNS update TTL must be an integer.");
@@ -176,7 +180,7 @@ include("head.inc");
                     <td>
                       <input name="host" type="text" id="host" value="<?=$pconfig['host'];?>" />
                       <div class="hidden" data-for="help_for_host">
-                        <?= gettext('Fully qualified hostname of the host to be updated.') ?>
+                        <?= gettext('Fully qualified hostname of the host to be updated. A leading "*." may be used to update a wildcard record (e.g. "*.example.org"); the DNS server must permit wildcard updates in its update policy.') ?>
                       </div>
                     </td>
                   </tr>
