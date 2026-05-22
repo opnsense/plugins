@@ -164,56 +164,56 @@
                 </capabilities>
                 <linkedPrefixlistIn type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
                 <linkedPrefixlistOut type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistOut>
                 <linkedRoutemapIn type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapIn>
                 <linkedRoutemapOut type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapOut>
                 <peergroup type="ModelRelationField">
                     <Model>
-                        <template>
+                        <peergroups>
                             <source>OPNsense.quagga.bgp</source>
                             <items>peergroups.peergroup</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,description</display>
+                            <display_format>%s %s</display_format>
+                        </peergroups>
                     </Model>
                     <ValidationMessage>Related Peer Group item not found.</ValidationMessage>
                 </peergroup>
@@ -336,33 +336,36 @@
                 </id>
                 <match type="ModelRelationField">
                     <Model>
-                        <template>
+                        <aspaths>
                             <source>OPNsense.quagga.bgp</source>
                             <items>aspaths.aspath</items>
-                            <display>number</display>
-                        </template>
+                            <display>name,description</display>
+                            <display_format>%s %s</display_format>
+                        </aspaths>
                     </Model>
                     <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                 </match>
                 <match2 type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related item PrefixList not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                 </match2>
                 <match3 type="ModelRelationField">
                     <Model>
-                        <template>
+                        <communitylists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>communitylists.communitylist</items>
-                            <display>number</display>
-                        </template>
+                            <display>name,description</display>
+                            <display_format>%s %s</display_format>
+                        </communitylists>
                     </Model>
                     <ValidationMessage>Related item CommunityList not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
@@ -416,45 +419,45 @@
                 <defaultoriginate type="BooleanField"/>
                 <linkedPrefixlistIn type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
                 <linkedPrefixlistOut type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistOut>
                 <linkedRoutemapIn type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapIn>
                 <linkedRoutemapOut type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapOut>
@@ -480,12 +483,12 @@
                 </redistribute>
                 <linkedRoutemap type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemap>
