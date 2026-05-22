@@ -24,3 +24,4 @@ Plugin Changelog
 
 * Added netbird_devices() so that wt0 is a volatile interface (contributed by Myah Mitchell)
 * Added IP Mapping option and authentication banner (contributed by Konstantinos Spartalis)
+* Fix setupKey usage after UpdateOnlyTextField introduction
