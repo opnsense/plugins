@@ -77,10 +77,12 @@ class AuthenticationController extends ApiMutableModelControllerBase
             $backend->configdRun("netbird down");
         }
 
-        $managementUrl = $mdl->managementUrl->__toString();
-        $setupKey = $mdl->setupKey->__toString();
 
-        $result = $backend->configdpRun("netbird up-setup-key", array($managementUrl, $setupKey));
+        $result = $backend->configdpRun('netbird up-setup-key', [
+            $mdl->managementUrl->getValue(),
+            $mdl->setupKey->getValue()
+        ]);
+
         return ['result' => trim($result)];
     }
 
