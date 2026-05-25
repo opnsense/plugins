@@ -467,10 +467,6 @@ class Nextcloud extends Base implements IBackupProvider
             $keep_days = $nextcloud->numdays->getValue();
             $keep_num = $nextcloud->numbackups->getValue();
 
-            if ($nextcloud->addhostname->isEqual('1')) {
-                $backupdir .= "/" . gethostname();
-            }
-
             // Check if destination directory exists, create (full path) if not
             try {
                 $internal_username = $this->getInternalUsername($url, $username, $password);
@@ -478,6 +474,18 @@ class Nextcloud extends Base implements IBackupProvider
             } catch (\Exception $e) {
                 return array();
             }
+
+            if ($nextcloud->addhostname->isEqual('1')) {
+                $backupdir .= "/" . gethostname();
+                # Since we have a new backupdir, create this too, if needed
+                try {
+                    $this->create_directory($url, $username, $password, $internal_username, $backupdir);
+                } catch (\Exception $e) {
+                    syslog(LOG_ERR, "nextcloud backup failed: " . $e);
+                    return array();
+                }
+            }
+
 
             if ($strategy) {
                 $list_of_files = $this->backupstrat_one($internal_username, $username, $password, $url, $backupdir, $crypto_password);
