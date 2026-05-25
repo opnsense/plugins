@@ -9,14 +9,20 @@
         <id>domain.domainname</id>
         <label>Zone Name</label>
         <type>text</type>
-        <help>Set the name for this zone. Both forward and reverse zones may be specified, i.e. example.com or 0.168.192.in-addr.arpa.</help>
+        <help>Set the name for this zone. Both forward and reverse zones may be specified, e.g. "example.com" or "0.168.192.in-addr.arpa"</help>
+    </field>
+    <field>
+        <id>domain.forwardonly</id>
+        <label>Forward Only</label>
+        <type>checkbox</type>
+        <help>Disables recursion if forwarding fails. The default is to attempt resolution via forwarders first and only perform recursive lookups if forwarding fails. This setting is only meaningful if the list of forwarders is not empty. Can be used to override global forwarding behaviour for this domain by specifying the same servers below as those on the General tab.</help>
     </field>
     <field>
         <id>domain.forwardserver</id>
-        <label>Primary IP</label>
+        <label>Forwarder IPs</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set the IP address of server to forward requests to.</help>
+        <help>Set any combination of IPv4 and IPv6 addresses. Queries for this domain will be forwarded to these addresses. Used to override global forwarders for this domain.</help>
     </field>
 </form>
