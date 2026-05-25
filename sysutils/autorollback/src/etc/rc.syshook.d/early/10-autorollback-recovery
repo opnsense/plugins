@@ -1,0 +1,203 @@
+#!/usr/local/bin/python3
+"""
+    Copyright (c) 2026 MP Lindsey
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+"""
+"""
+OPNsense Auto Rollback - Early Boot Recovery (syshook/early)
+
+This is the TERTIARY rollback trigger — the last line of defense.
+It runs during early boot, BEFORE networking starts.
+
+Scenario:
+  1. Admin enters safe mode
+  2. Makes a config change that breaks something
+  3. System crashes or reboots (or admin reboots to try to fix)
+  4. System starts booting with the BAD config
+  5. THIS SCRIPT fires before networking starts
+  6. Detects the persistent state file with an expired timer
+  7. Restores the known-good config.xml BEFORE any service reads it
+  8. System boots with the known-good config
+
+The persistent state is stored at /conf/autorollback_pending.json
+(on persistent storage, NOT tmpfs).
+
+This script must be FAST and SELF-CONTAINED — no external dependencies
+beyond Python stdlib and the config file.
+"""
+
+import json
+import os
+import shutil
+import sys
+import syslog
+import tempfile
+import time
+import xml.etree.ElementTree as ET
+
+PERSISTENT_STATE = '/conf/autorollback_pending.json'
+CONFIG_XML = '/conf/config.xml'
+CONFIG_CACHE = '/tmp/config.cache'
+CONFIG_BACKUP_DIR = '/conf/backup'
+
+
+syslog.openlog('autorollback-recovery', syslog.LOG_PID, syslog.LOG_LOCAL4)
+
+def log(msg):
+    """Log to syslog."""
+    try:
+        syslog.syslog(syslog.LOG_WARNING, msg)
+    except Exception:
+        pass
+
+
+def validate_config(path):
+    """Quick validation of a config.xml file."""
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+        return (root.tag in ('opnsense', 'pfsense')
+                and root.find('system') is not None
+                and root.find('interfaces') is not None)
+    except Exception:
+        return False
+
+
+def validate_backup_path(path):
+    """Validate that backup_file is within allowed directories (defense-in-depth)."""
+    allowed = (CONFIG_BACKUP_DIR, os.path.dirname(CONFIG_XML))
+    try:
+        real = os.path.realpath(path)
+        for d in allowed:
+            real_d = os.path.realpath(d)
+            if real.startswith(real_d + os.sep) or real == real_d:
+                return True
+    except (TypeError, ValueError):
+        pass
+    return False
+
+
+def main():
+    # Check for persistent state file
+    if not os.path.isfile(PERSISTENT_STATE):
+        return  # No pending rollback — normal boot
+
+    try:
+        with open(PERSISTENT_STATE, 'r') as f:
+            state = json.load(f)
+    except (json.JSONDecodeError, IOError):
+        return  # Corrupt state file — skip
+
+    # Only act on safe mode states
+    if state.get('mode') != 'safemode':
+        return
+
+    # Check if the timer has expired
+    expiry = state.get('expiry_time', 0)
+    now = time.time()
+
+    if now < expiry:
+        # Timer hasn't expired — don't rollback yet
+        # The timer daemon will handle it when cron starts
+        return
+
+    # Timer expired! This means:
+    # - The system rebooted/crashed during safe mode
+    # - The timer daemon never got to fire (it was in /var/run, which is tmpfs)
+    # - We need to restore the known-good config NOW, before services start
+
+    backup_file = state.get('backup_file', '')
+    if not backup_file or not validate_backup_path(backup_file) or not os.path.isfile(backup_file):
+        log('EARLY BOOT RECOVERY: Expired safe mode found but backup missing or invalid path: %s' % backup_file)
+        # Clean up the stale state
+        try:
+            os.unlink(PERSISTENT_STATE)
+        except OSError:
+            pass
+        return
+
+    # Validate the backup
+    if not validate_config(backup_file):
+        log('EARLY BOOT RECOVERY: Backup file is invalid: %s' % backup_file)
+        try:
+            os.unlink(PERSISTENT_STATE)
+        except OSError:
+            pass
+        return
+
+    # --- PERFORM EARLY BOOT ROLLBACK ---
+    log('=== EARLY BOOT RECOVERY: Safe mode expired %d seconds ago. Restoring config from %s ===' % (
+        int(now - expiry), backup_file))
+
+    try:
+        # Create safety backup of current (bad) config
+        safety = os.path.join(CONFIG_BACKUP_DIR, 'config-pre-boot-recovery.xml')
+        if os.path.isfile(CONFIG_XML):
+            shutil.copy2(CONFIG_XML, safety)
+
+        # Capture original ownership
+        try:
+            st = os.stat(CONFIG_XML)
+            orig_uid, orig_gid = st.st_uid, st.st_gid
+        except OSError:
+            orig_uid, orig_gid = 0, 0
+
+        # Restore the known-good config atomically via temp + rename
+        conf_dir = os.path.dirname(CONFIG_XML)
+        fd, tmp_path = tempfile.mkstemp(dir=conf_dir, prefix='.config_recovery_')
+        try:
+            os.close(fd)
+            shutil.copy2(backup_file, tmp_path)
+            os.chmod(tmp_path, 0o640)
+            try:
+                os.chown(tmp_path, orig_uid, orig_gid)
+            except PermissionError:
+                pass
+            os.rename(tmp_path, CONFIG_XML)
+        except Exception:
+            # Clean up temp file on failure
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
+
+        # Remove config cache
+        if os.path.isfile(CONFIG_CACHE):
+            os.unlink(CONFIG_CACHE)
+
+        log('EARLY BOOT RECOVERY: Config restored successfully. System will boot with known-good config.')
+
+        # Only clean up persistent state on successful recovery
+        try:
+            os.unlink(PERSISTENT_STATE)
+        except OSError:
+            pass
+
+    except Exception as e:
+        log('EARLY BOOT RECOVERY FAILED: %s — state preserved for retry on next boot' % str(e))
+
+
+if __name__ == '__main__':
+    main()
