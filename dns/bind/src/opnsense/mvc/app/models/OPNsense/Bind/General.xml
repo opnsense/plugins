@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -86,7 +86,7 @@
             <MaximumValue>99</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 99.</ValidationMessage>
         </maxcachesize>
-        <recursion type="ModelRelationField">
+        <recursion type=".\AclModelRelationField">
             <Model>
                 <template>
                     <source>OPNsense.Bind.Acl</source>
@@ -97,7 +97,7 @@
             <Multiple>Y</Multiple>
             <ValidationMessage>Choose an ACL.</ValidationMessage>
         </recursion>
-        <allowtransfer type="ModelRelationField">
+        <allowtransfer type=".\AclModelRelationField">
             <Model>
                 <template>
                     <source>OPNsense.Bind.Acl</source>
@@ -107,7 +107,7 @@
             </Model>
             <Multiple>Y</Multiple>
         </allowtransfer>
-        <allowquery type="ModelRelationField">
+        <allowquery type=".\AclModelRelationField">
             <Model>
                 <template>
                     <source>OPNsense.Bind.Acl</source>
