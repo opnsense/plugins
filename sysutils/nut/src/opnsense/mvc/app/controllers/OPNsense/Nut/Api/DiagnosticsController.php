@@ -29,7 +29,6 @@
 namespace OPNsense\Nut\Api;
 
 use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
 use OPNsense\Nut\Nut;
 
 class DiagnosticsController extends ApiControllerBase
@@ -41,12 +40,40 @@ class DiagnosticsController extends ApiControllerBase
         if (!empty((string)$mdl->netclient->address)) {
             $host = (string)$mdl->netclient->address;
         }
+        $port = 3493;
+        if (!empty((string)$mdl->netclient->port)) {
+            $port = (int)(string)$mdl->netclient->port;
+        }
         $upsname = 'UPSName';
         if (!empty((string)$mdl->general->name)) {
             $upsname = (string)$mdl->general->name;
         }
-        $backend = new Backend();
-        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
+
+        $response = '';
+        $socket = @fsockopen($host, $port, $errno, $errstr, 5);
+        if ($socket) {
+            fwrite($socket, "LIST VAR {$upsname}\n");
+            $raw = '';
+            while (!feof($socket)) {
+                $raw .= fgets($socket, 1024);
+                if (strpos($raw, "END LIST VAR") !== false) break;
+            }
+            fclose($socket);
+
+            // Transform "VAR upsname key "value"" to "key: value"
+            foreach (explode("\n", $raw) as $line) {
+                if (strpos($line, "VAR {$upsname} ") === 0) {
+                    $line = substr($line, strlen("VAR {$upsname} "));
+                    $parts = explode(' ', $line, 2);
+                    if (count($parts) == 2) {
+                        $key = $parts[0];
+                        $value = trim($parts[1], " \"\r\n");
+                        $response .= "{$key}: {$value}\n";
+                    }
+                }
+            }
+        }
+
         return array("response" => $response);
     }
 }
