@@ -105,7 +105,10 @@
                 <Required>Y</Required>
                 <Default>0</Default>
             </enable>
-            <address type="HostnameField"/>
+            <address type="HostnameField">
+                <Required>N</Required>
+                <IpWithPrefix>N</IpWithPrefix>
+            </address>
             <port type="PortField">
                 <Default>3493</Default>
                 <Required>N</Required>
