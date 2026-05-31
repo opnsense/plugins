@@ -32,9 +32,6 @@ from . import BaseAccount
 class DynDNS2(BaseAccount):
     _priority = 65535
 
-    # services that need an IPv6 address sent as "myipv6" instead of the default "myip"
-    _myipv6_services = {'inwx', 'dynu'}
-
     _services = {
         'dyndns2': 'members.dyndns.org',
         'desec-v4': 'update.dedyn.io',
@@ -43,7 +40,6 @@ class DynDNS2(BaseAccount):
         'dynu': 'api.dynu.com',
         'he-net': 'dyn.dns.he.net',
         'he-net-tunnel': 'ipv4.tunnelbroker.net',
-        'inwx': 'dyndns.inwx.com',
         'loopia': 'dyndns.loopia.se',
         'nsupdatev4': 'ipv4.nsupdate.info',
         'nsupdatev6': 'ipv6.nsupdate.info',
@@ -74,14 +70,6 @@ class DynDNS2(BaseAccount):
                 url = self.settings.get('server')
                 url = url.replace('__MYIP__', self.current_address)
                 url = url.replace('__HOSTNAME__', self.settings.get('hostnames'))
-                if self.is_verbose:
-                    # log only the substituted tokens, not the URL (its query string may carry secrets)
-                    syslog.syslog(
-                        syslog.LOG_NOTICE,
-                        "Account %s custom update __MYIP__=%s __HOSTNAME__=%s" % (
-                            self.description, self.current_address, self.settings.get('hostnames')
-                        )
-                    )
                 req = requests.request(
                     method=protocol,
                     url=url,
@@ -95,26 +83,14 @@ class DynDNS2(BaseAccount):
                 else:
                     url = "%s://%s/nic/update" % (uri_proto, self.settings.get('server'))
 
-                # pick "myipv6" for those services when the address is IPv6 (contains ':')
-                ip_param = 'myip'
-                if ':' in str(self.current_address) and self.settings.get('service') in self._myipv6_services:
-                    ip_param = 'myipv6'
-
-                if self.is_verbose:
-                    syslog.syslog(
-                        syslog.LOG_NOTICE,
-                        "Account %s sending dyndns2 update using parameter %s" % (self.description, ip_param)
-                    )
-
-                params = {
-                    'hostname': self.settings.get('hostnames'),
-                    'system': 'dyndns',
-                    'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
-                }
-                params[ip_param] = self.current_address
                 req_opts = {
                     'url': url,
-                    'params': params,
+                    'params': {
+                        'hostname': self.settings.get('hostnames'),
+                        'myip': self.current_address,
+                        'system': 'dyndns',
+                        'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
+                    },
                     'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
                     'headers': {
                         'User-Agent': 'OPNsense-dyndns'
