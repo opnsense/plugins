@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2026 Johannes Nolte <git@jonolt.eu>
+    Copyright (c) 2026 Johannes Nolte <johannes@jonolt.eu>
     Copyright (c) 2023 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
@@ -29,8 +29,17 @@
     Service specific dyndns2-style account. INWX expects an IPv6 address in the
     "myipv6" parameter (setting the AAAA record); the dyndns2 legacy "standard"
     only specifies "myip", so this is kept out of the generic DynDNS2 class.
-    For an IPv4 address the request is byte-identical to the generic DynDNS2
-    "/nic/update" output.
+    For an IPv4 address the request matches the generic DynDNS2 "/nic/update"
+    output, aside from the no-op "system" / "wildcard" parameters which INWX
+    ignores (its endpoint only reads "hostname", "myip" and "myipv6").
+
+    Record scope is per DynDNS login: a single INWX login bound to both A and
+    AAAA drops whichever family is omitted from an update. For dual-stack, use a
+    separate INWX login per family (each bound to its own record) — the standard
+    OPNsense one-account-per-family model.
+
+    INWX documented update URL:
+        https://dyndns.inwx.com/nic/update?myip=<ipaddr>&myipv6=<ip6addr>
 """
 import syslog
 import requests
@@ -75,9 +84,7 @@ class INWX(BaseAccount):
                 'url': url,
                 'params': {
                     'hostname': self.settings.get('hostnames'),
-                    ip_param: self.current_address,
-                    'system': 'dyndns',
-                    'wildcard': 'ON' if self.settings.get('wildcard', False) else 'NOCHG'
+                    ip_param: self.current_address
                 },
                 'auth': HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
                 'headers': {
@@ -93,10 +100,7 @@ class INWX(BaseAccount):
                         "Account %s set new ip %s [%s]" % (self.description, self.current_address, req.text.strip())
                     )
 
-                # INWX scopes record deletion to the DynDNS login: a login bound to both
-                # A and AAAA drops whichever family is omitted from an update. Dual-stack
-                # therefore needs a separate INWX login per family, each bound to its own
-                # record (the standard OPNsense one-account-per-family model still works).
+                # Per-login record scope — see module docstring; warn the operator below.
                 syslog.syslog(
                     syslog.LOG_NOTICE,
                     "Account %s set %s (%s). For INWX dual-stack use a separate INWX DynDNS "
