@@ -15,6 +15,23 @@
 #smtpd     pass  -       -       n       -       -       smtpd
 #dnsblog   unix  -       -       n       -       0       dnsblog
 #tlsproxy  unix  -       -       n       -       0       tlsproxy
+{% if helpers.exists('OPNsense.postfix.general.submission_enabled') and OPNsense.postfix.general.submission_enabled == '1' %}
+submission inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_tls_auth_only=yes
+{% if helpers.exists('OPNsense.postfix.general.submission_sasl_local_domain') and OPNsense.postfix.general.submission_sasl_local_domain != '' %}
+  -o smtpd_sasl_local_domain={{ OPNsense.postfix.general.submission_sasl_local_domain }}
+{% endif %}
+  -o smtpd_reject_unlisted_recipient=no
+  -o smtpd_client_restrictions=
+  -o smtpd_helo_restrictions=
+  -o smtpd_sender_restrictions=
+  -o smtpd_recipient_restrictions=
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
+{% else %}
 #submission inet n       -       n       -       -       smtpd
 #  -o syslog_name=postfix/submission
 #  -o smtpd_tls_security_level=encrypt
@@ -27,6 +44,7 @@
 #  -o smtpd_recipient_restrictions=
 #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
 #  -o milter_macro_daemon_name=ORIGINATING
+{% endif %}
 #smtps     inet  n       -       n       -       -       smtpd
 #  -o syslog_name=postfix/smtps
 #  -o smtpd_tls_wrappermode=yes
