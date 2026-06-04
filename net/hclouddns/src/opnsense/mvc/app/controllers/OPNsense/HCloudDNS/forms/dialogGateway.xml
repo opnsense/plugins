@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>gateway.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this gateway for DNS updates</help>
+    </field>
+    <field>
+        <id>gateway.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Friendly name for this gateway (e.g., "Glasfaser", "Kabel")</help>
+    </field>
+    <field>
+        <id>gateway.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>WAN interface for this gateway</help>
+    </field>
+    <field>
+        <id>gateway.priority</id>
+        <label>Priority</label>
+        <type>text</type>
+        <help>Gateway priority (1-100, lower = higher priority)</help>
+    </field>
+    <field>
+        <id>gateway.checkipMethod</id>
+        <label>IP Detection Method</label>
+        <type>dropdown</type>
+        <help>How to determine the public IP for this gateway</help>
+    </field>
+    <field>
+        <id>gateway.healthCheckTarget</id>
+        <label>Health Check Target</label>
+        <type>text</type>
+        <help>IP or hostname to ping for health checks (default: 8.8.8.8)</help>
+    </field>
+</form>
