@@ -31,6 +31,7 @@ require_once('util.inc');
 require_once('plugins.inc');
 require_once('config.inc');
 require_once('certs.inc');
+require_once('system.inc');
 require_once("legacy_bindings.inc");
 
 use OPNsense\Stunnel\Stunnel;
