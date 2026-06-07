@@ -8,6 +8,7 @@ vnstat_enable="YES"
 {%       do interfaces.append(physical_interface(interface)) %}
 {%     endfor %}
 vnstat_additional_ifaces="{{ interfaces|join(' ') }}"
+vnstat_month_rotate="{{ OPNsense.vnstat.general.month_rotate }}"
 {%   endif %}
 {% else %}
 vnstat_enable="NO"

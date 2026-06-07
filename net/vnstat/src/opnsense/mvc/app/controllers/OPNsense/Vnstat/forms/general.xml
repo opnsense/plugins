@@ -11,4 +11,10 @@
         <type>select_multiple</type>
         <help>Set the interface to listen on.</help>
     </field>
+    <field>
+        <id>general.month_rotate</id>
+        <label>Month Rotate</label>
+        <type>text</type>
+        <help>On which day should months change.</help>
+    </field>
 </form>
