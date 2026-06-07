@@ -1,0 +1,14 @@
+<menu>
+    <VPN>
+        <Nebula order="80" VisibleName="Nebula" cssClass="fa fa-project-diagram fa-fw">
+            <Instances order="1" url="/ui/nebula/instances"/>
+            <Routes order="10" VisibleName="Routes" url="/ui/nebula/routes" cssClass="fa fa-route fa-fw"/>
+            <Firewall order="15" url="/ui/nebula/firewall" cssClass="fa fa-fire fa-fw"/>
+            <Authorities order="20" url="/ui/nebula/authorities"/>
+            <Certificates order="21" VisibleName="Host Certificates" url="/ui/nebula/certificates"/>
+            <Blocklist order="22" url="/ui/nebula/blocklist" cssClass="fa fa-ban fa-fw"/>
+            <Tunnels order="29" VisibleName="Tunnels" url="/ui/nebula/tunnels" cssClass="fa fa-sitemap fa-fw"/>
+            <Status order="30" VisibleName="Status" url="/ui/nebula/status" cssClass="fa fa-heartbeat fa-fw"/>
+        </Nebula>
+    </VPN>
+</menu>
