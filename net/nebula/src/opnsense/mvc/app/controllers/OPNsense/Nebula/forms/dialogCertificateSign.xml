@@ -1,0 +1,62 @@
+<form>
+    <field>
+        <id>certificate.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Nebula certificate name / hostname (embedded in the certificate).</help>
+    </field>
+    <field>
+        <id>certificate.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Human-readable label for this host certificate. Defaults to the name if left empty.</help>
+    </field>
+    <field>
+        <id>certificate.caref</id>
+        <label>Certificate Authority</label>
+        <type>dropdown</type>
+        <help>The Nebula CA that will sign this host certificate.</help>
+    </field>
+    <field>
+        <id>certificate.passphrase</id>
+        <label>CA Passphrase</label>
+        <type>password</type>
+        <help>Required when the selected CA's private key is encrypted. Supplied per signing operation and never stored.</help>
+    </field>
+    <field>
+        <id>certificate.public_key</id>
+        <label>Public Key (CSR)</label>
+        <type>textbox</type>
+        <help>Optional: paste a node's Nebula public key (from `nebula-cert keygen`) to sign it as a CSR — the private key stays on the node and is never sent to or stored on this CA (recommended). Leave empty to generate the key here and download it.</help>
+    </field>
+    <field>
+        <id>certificate.networks</id>
+        <label>Networks</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>CIDR(s) assigned to this node, e.g. 10.10.0.1/24. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>certificate.unsafe_networks</id>
+        <label>Unsafe Networks</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Optional unsafe (excluded) CIDRs. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>certificate.groups</id>
+        <label>Groups</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Optional group membership. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>certificate.duration_days</id>
+        <label>Duration (days)</label>
+        <type>text</type>
+        <help>Days the certificate is valid. Leave empty to expire just before the signing CA (recommended).</help>
+    </field>
+</form>
