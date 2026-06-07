@@ -1,0 +1,61 @@
+<form>
+    <field>
+        <id>entry.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.instance</id>
+        <label>Instance</label>
+        <type>dropdown</type>
+        <help>The Nebula instance this static host map entry belongs to.</help>
+        <grid_view>
+            <sequence>2</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.certref</id>
+        <label>Lighthouse certificate</label>
+        <type>dropdown</type>
+        <help>Optionally pick the peer&apos;s host certificate to auto-fill its Nebula IP below from the certificate&apos;s networks. A convenience only — the Nebula IP is what is stored.</help>
+        <allownull>true</allownull>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.nebula_ip</id>
+        <label>Nebula IP</label>
+        <type>text</type>
+        <help>The peer&apos;s Nebula overlay IP (a single host address, e.g. 192.168.100.1) — the key of this static host map entry.</help>
+        <grid_view>
+            <sequence>3</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.addresses</id>
+        <label>Underlay addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>One or more underlay host:port addresses to reach the peer before discovery. Type each address and press Enter to add it as a tag, e.g. 198.51.100.1:4242 then 203.0.113.5:4242.</help>
+        <grid_view>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label for this entry.</help>
+        <grid_view>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+</form>

@@ -1,0 +1,50 @@
+<form>
+    <field>
+        <id>tunroute.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>tunroute.instance</id>
+        <label>Instance</label>
+        <type>dropdown</type>
+        <help>The Nebula instance this MTU override belongs to.</help>
+        <grid_view>
+            <sequence>2</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>tunroute.route</id>
+        <label>Route CIDR</label>
+        <type>text</type>
+        <help>An overlay CIDR (a subnet from this node&apos;s certificate) to give a non-default MTU, e.g. 10.0.0.0/16.</help>
+        <grid_view>
+            <sequence>3</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>tunroute.mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <help>MTU for this route (576–9000). Overrides the tunnel MTU for traffic to this CIDR.</help>
+        <grid_view>
+            <width>6em</width>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>tunroute.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label for this MTU override.</help>
+        <grid_view>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+</form>

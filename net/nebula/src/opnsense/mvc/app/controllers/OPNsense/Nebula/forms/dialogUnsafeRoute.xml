@@ -1,0 +1,81 @@
+<form>
+    <field>
+        <id>route.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.instance</id>
+        <label>Instance</label>
+        <type>dropdown</type>
+        <help>The Nebula instance this route belongs to.</help>
+        <grid_view>
+            <sequence>2</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.route</id>
+        <label>Destination CIDR</label>
+        <type>text</type>
+        <help>The non-Nebula destination network (e.g. 172.16.1.0/24) to route over the overlay.</help>
+        <grid_view>
+            <sequence>3</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.via</id>
+        <label>Via (Nebula IP)</label>
+        <type>text</type>
+        <help>The overlay IP of the Nebula peer that hosts this route. That peer&apos;s certificate must include the destination as a subnet.</help>
+        <grid_view>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <help>Optional MTU for this route. Defaults to the tunnel MTU when empty.</help>
+        <grid_view>
+            <width>6em</width>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.metric</id>
+        <label>Metric</label>
+        <type>text</type>
+        <help>Optional route metric (defaults to 0 when empty).</help>
+        <grid_view>
+            <width>6em</width>
+            <sequence>6</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.install</id>
+        <label>Install in system route table</label>
+        <type>checkbox</type>
+        <help>Install this route into the host routing table. Disable to let Nebula handle it internally only.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+            <sequence>7</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>route.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label for this route.</help>
+        <grid_view>
+            <sequence>8</sequence>
+        </grid_view>
+    </field>
+</form>
