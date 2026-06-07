@@ -1,0 +1,125 @@
+<form>
+    <field>
+        <id>rule.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.instance</id>
+        <label>Instance</label>
+        <type>dropdown</type>
+        <help>The Nebula instance this rule applies to.</help>
+        <grid_view>
+            <sequence>2</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.direction</id>
+        <label>Direction</label>
+        <type>dropdown</type>
+        <help>Whether this rule governs inbound or outbound traffic on the overlay.</help>
+        <grid_view>
+            <width>7em</width>
+            <sequence>3</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>IP protocol this rule matches (any, tcp, udp or icmp).</help>
+        <grid_view>
+            <width>6em</width>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Port or port range this rule matches. Use &apos;any&apos; for all ports, &apos;0&apos; for fragments, or a range like &apos;200-300&apos;.</help>
+        <grid_view>
+            <width>6em</width>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label for this rule.</help>
+        <grid_view>
+            <sequence>6</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Match (fill at least one)</label>
+    </field>
+    <field>
+        <id>rule.host</id>
+        <label>Host</label>
+        <type>text</type>
+        <help>A remote certificate name, or &apos;any&apos; to match every host.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.groups</id>
+        <label>Groups</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Match peers in ALL of these groups (AND logic). Add each group as a tag. A single group matches peers in that group.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.cidr</id>
+        <label>CIDR</label>
+        <type>text</type>
+        <help>Match peers whose overlay IP is within this remote CIDR.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.ca_name</id>
+        <label>CA name</label>
+        <type>text</type>
+        <help>Match peers whose certificate was issued by a CA with this name. Type a name or pick one of your configured CAs; it must name a CA this node trusts.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>rule.ca_sha</id>
+        <label>CA fingerprint (sha)</label>
+        <type>text</type>
+        <help>Match peers whose issuing CA has this fingerprint.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Local side (optional)</label>
+    </field>
+    <field>
+        <id>rule.local_cidr</id>
+        <label>Local CIDR</label>
+        <type>text</type>
+        <help>Optional: restrict the rule to traffic for this local-side CIDR (used with unsafe routes). Leave empty for the node&apos;s own address.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+</form>
