@@ -1,0 +1,69 @@
+<form>
+    <field>
+        <id>entry.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.scope</id>
+        <label>Scope</label>
+        <type>dropdown</type>
+        <help>Global blocks the certificate on every instance; This instance blocks it on only the selected instance.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.instance</id>
+        <label>Applies to</label>
+        <type>dropdown</type>
+        <help>The instance this block applies to. Used only when Scope is &quot;This instance&quot;.</help>
+        <allownull>true</allownull>
+        <grid_view>
+            <sequence>2</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.certref</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help>Pick a known certificate to block — this fills and locks the fingerprint (and expiry) below. To block a certificate you do not hold, leave this blank and paste its fingerprint instead.</help>
+        <allownull>true</allownull>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.fingerprint</id>
+        <label>Fingerprint (sha256)</label>
+        <type>text</type>
+        <help>The 64-character lowercase hex sha256 fingerprint of the certificate to block. Editable only when no certificate is chosen above; colons/spaces are stripped automatically. Immutable once saved.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label for this blocklist entry.</help>
+        <grid_view>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>entry.expiry</id>
+        <label>Expiry</label>
+        <type>text</type>
+        <help>Optional date after which this entry becomes eligible for "Purge expired" (pick from the calendar, or type YYYY-MM-DD). The block stays in effect until you purge it. Leave empty to keep it indefinitely.</help>
+        <grid_view>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+</form>

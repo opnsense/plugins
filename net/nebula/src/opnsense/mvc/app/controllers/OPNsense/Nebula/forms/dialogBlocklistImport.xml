@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>import.scope</id>
+        <label>Scope</label>
+        <type>dropdown</type>
+        <help>Global blocks the certificates on every instance; This instance blocks them on only the selected instance.</help>
+    </field>
+    <field>
+        <id>import.instance</id>
+        <label>Applies to</label>
+        <type>dropdown</type>
+        <help>The instance these blocks apply to. Used only when Scope is &quot;This instance&quot;.</help>
+    </field>
+    <field>
+        <id>import.descr</id>
+        <label>Default description</label>
+        <type>text</type>
+        <help>Optional label applied to every imported entry that does not carry its own description.</help>
+    </field>
+    <field>
+        <id>import.fingerprints</id>
+        <label>Fingerprints</label>
+        <type>textbox</type>
+        <help>One sha256 fingerprint per line, optionally followed by a comma (or space) and a description, e.g. &quot;0123abcd...ef, compromised laptop&quot;. Colons/spaces inside a fingerprint are stripped; each must resolve to 64 hex characters. Invalid lines are reported and skipped; fingerprints already blocked at this scope are skipped.</help>
+    </field>
+</form>
