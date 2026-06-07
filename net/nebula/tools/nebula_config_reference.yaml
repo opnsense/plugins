@@ -1,0 +1,212 @@
+---
+# nebula_config_reference.yaml — canonical Nebula configuration key registry.
+#
+# This is the upstream source of truth the plugin's knobs are audited against.
+# It enumerates EVERY configuration key Nebula accepts and records exactly how
+# this plugin exposes (or deliberately does not expose) each one.
+#
+#   source:  https://github.com/slackhq/nebula  examples/config.yml
+#   blob:    6c7fb489cd9d11143bfe4705bb620d90a9056b60
+#   commit:  b041f306cb2ee8177dfcb9ed8e7f31e6e7fe6564
+#   target:  Nebula 1.10.x (the release line packaged in FreeBSD ports / OPNsense)
+#
+# `all` is the complete leaf-key set for the targeted release, reconciled from
+# examples/config.yml and the versioned docs at https://nebula.defined.net/docs/config/.
+# Granularity matches how the plugin handles a key: scalar settings are listed at
+# their leaf (e.g. firewall.conntrack.tcp_timeout); list/map blocks are listed by
+# their top key (e.g. stats, tun.unsafe_routes).
+#
+# tools/audit_knobs.py enforces, on every run / in CI:
+#   * every key in `all` is either a generated knob (knobs.yaml) or classified
+#     below — an unclassified upstream key fails the audit;
+#   * every knob's yaml path exists in `all` — a knob for a non-existent /
+#     removed upstream key fails the audit;
+#   * classification and knob membership do not overlap (except deprecated
+#     entries explicitly marked `retained: true`).
+#
+# WHEN BUMPING NEBULA: re-diff examples/config.yml against `all`, update this file
+# and the blob/commit/target above, then run `python3 tools/audit_knobs.py`.
+#
+# Deprecation policy: a key that upstream deprecates is removed from the UI and
+# moved to `deprecated` below. If existing stored configs still carry the field
+# (created under an earlier plugin version), keep its knob in knobs.yaml, mark the
+# entry `retained: true`, and surface a deprecation warning in the field help so
+# the value still round-trips until the user migrates. Non-retained deprecated
+# keys must have no knob.
+
+# ---------------------------------------------------------------------------
+# Complete upstream leaf-key set (targeted release). Every entry must be
+# accounted for by a knob or a classification list below.
+# ---------------------------------------------------------------------------
+all:
+  # pki
+  - pki.ca
+  - pki.cert
+  - pki.key
+  - pki.blocklist
+  - pki.disconnect_invalid
+  - pki.initiating_version
+  # static_host_map
+  - static_host_map
+  # static_map
+  - static_map.cadence
+  - static_map.network
+  - static_map.lookup_timeout
+  # lighthouse
+  - lighthouse.am_lighthouse
+  - lighthouse.serve_dns
+  - lighthouse.dns.host
+  - lighthouse.dns.port
+  - lighthouse.interval
+  - lighthouse.hosts
+  - lighthouse.remote_allow_list
+  - lighthouse.remote_allow_ranges
+  - lighthouse.local_allow_list
+  - lighthouse.advertise_addrs
+  - lighthouse.calculated_remotes
+  # listen
+  - listen.host
+  - listen.port
+  - listen.batch
+  - listen.read_buffer
+  - listen.write_buffer
+  - listen.windows_bypass_wdf
+  - listen.send_recv_error
+  - listen.accept_recv_error
+  - listen.so_mark
+  # routines
+  - routines
+  # punchy
+  - punchy.punch
+  - punchy.respond
+  - punchy.delay
+  - punchy.respond_delay
+  # cipher
+  - cipher
+  # preferred_ranges
+  - preferred_ranges
+  # sshd
+  - sshd.enabled
+  - sshd.listen
+  - sshd.host_key
+  - sshd.authorized_users
+  - sshd.trusted_cas
+  - sshd.sandbox_dir
+  # relay
+  - relay.relays
+  - relay.am_relay
+  - relay.use_relays
+  # tun
+  - tun.disabled
+  - tun.dev
+  - tun.drop_local_broadcast
+  - tun.drop_multicast
+  - tun.tx_queue
+  - tun.mtu
+  - tun.routes
+  - tun.unsafe_routes
+  - tun.network_category
+  - tun.windows_bypass_wdf
+  - tun.use_system_route_table
+  - tun.use_system_route_table_buffer_size
+  # logging
+  - logging.level
+  - logging.format
+  - logging.disable_timestamp
+  - logging.timestamp_format
+  # stats
+  - stats
+  # handshakes
+  - handshakes.try_interval
+  - handshakes.retries
+  - handshakes.query_buffer
+  - handshakes.trigger_buffer
+  # tunnels
+  - tunnels.drop_inactive
+  - tunnels.inactivity_timeout
+  # firewall
+  - firewall.outbound_action
+  - firewall.inbound_action
+  - firewall.default_local_cidr_any
+  - firewall.conntrack.tcp_timeout
+  - firewall.conntrack.udp_timeout
+  - firewall.conntrack.default_timeout
+  - firewall.outbound
+  - firewall.inbound
+  # deprecated top-level
+  - local_range
+
+# ---------------------------------------------------------------------------
+# Implemented elsewhere in the model / UI — not as a generated scalar knob.
+# ---------------------------------------------------------------------------
+handled:
+  - key: pki.ca
+    by: PKI — Certificate Authorities (instance trusts CAs by reference)
+  - key: pki.cert
+    by: PKI — host certificate (instance certref)
+  - key: pki.key
+    by: PKI — host certificate private key (instance certref)
+  - key: static_host_map
+    by: instances.instance.static_host_map model field (map-of-lists)
+  - key: firewall.outbound
+    by: fwrules.rule — Allow List (outbound rules)
+  - key: firewall.inbound
+    by: fwrules.rule — Allow List (inbound rules)
+  - key: pki.blocklist
+    by: PKI blocklist page (pki.blocklist.entry)
+  - key: tun.unsafe_routes
+    by: Routes page — Unsafe Routes tab (unsafe_routes.route)
+  - key: tun.routes
+    by: Routes page — MTU Overrides tab (tun_routes.route)
+  # The sshd debug server is the plugin's always-on internal management channel
+  # (not user-configurable): Nebula.php always emits enabled/listen/host_key, and
+  # authorized_users carries only the plugin diagnostics key. No user knobs.
+  - key: sshd.enabled
+    by: always-on internal management channel (Nebula.php — true)
+  - key: sshd.listen
+    by: always-on internal management channel (Nebula.php — 127.0.0.1:<derived port>)
+  - key: sshd.host_key
+    by: always-on internal management channel (Nebula.php / setup.php — per-instance host key)
+  - key: sshd.authorized_users
+    by: always-on internal management channel (Nebula.php — _opnsense_diag diagnostics key only)
+  - key: sshd.trusted_cas
+    by: not used (no user CA access to the internal debug server)
+  - key: stats
+    by: instance dialog — Telemetry (stats) section (stats_* hand fields; graphite/prometheus rendered by Nebula.php)
+  - key: lighthouse.remote_allow_list
+    by: instance dialog — Lighthouse allow-lists (lighthouse_remote_allow_list textarea)
+  - key: lighthouse.local_allow_list
+    by: instance dialog — Lighthouse allow-lists (lighthouse_local_allow_list textarea, incl. interfaces sub-map)
+  - key: lighthouse.remote_allow_ranges
+    by: instance dialog — Lighthouse allow-lists (lighthouse_remote_allow_ranges textarea, experimental)
+  - key: lighthouse.calculated_remotes
+    by: instance dialog — Lighthouse allow-lists (lighthouse_calculated_remotes textarea, experimental)
+
+# ---------------------------------------------------------------------------
+# Recognized upstream keys intentionally not yet exposed. Each needs bespoke
+# list/map UI; tracked for a future iteration.
+# ---------------------------------------------------------------------------
+deferred: []
+
+# ---------------------------------------------------------------------------
+# Platform- or version-specific keys never valid for OPNsense / Nebula 1.10.x.
+# ---------------------------------------------------------------------------
+not_applicable:
+  - key: listen.windows_bypass_wdf
+    reason: Windows-only (WFP filter); OPNsense is FreeBSD
+  - key: tun.windows_bypass_wdf
+    reason: Windows-only (WFP filter); OPNsense is FreeBSD
+  - key: tun.network_category
+    reason: Windows-only network-category hint; OPNsense is FreeBSD
+  - key: sshd.sandbox_dir
+    reason: present only in nebula master, not the 1.10.x release line
+
+# ---------------------------------------------------------------------------
+# Deprecated upstream keys. Omitted from the UI. Set `retained: true` (and keep
+# the knob, with a deprecation warning in its help) only when stored configs
+# from an earlier plugin version still need the field to round-trip.
+# ---------------------------------------------------------------------------
+deprecated:
+  - key: local_range
+    reason: deprecated alias for preferred_ranges; never exposed by this plugin
+    retained: false
