@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>authority.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Human-readable name for this certificate authority.</help>
+    </field>
+    <field>
+        <id>authority.crt</id>
+        <label>Certificate (PEM)</label>
+        <type>textbox</type>
+        <help>PEM-encoded Nebula CA certificate.</help>
+    </field>
+    <field>
+        <id>authority.key</id>
+        <label>Private Key (PEM)</label>
+        <type>textbox</type>
+        <help>PEM-encoded CA private key. May be omitted for trust-anchor-only imports.</help>
+    </field>
+</form>
