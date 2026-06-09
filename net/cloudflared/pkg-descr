@@ -1,0 +1,17 @@
+Cloudflare Tunnel (cloudflared) integration for OPNsense.
+
+Provides a native MVC interface to manage token-based Cloudflare Zero
+Trust tunnels without opening firewall ports or requiring a static IP.
+Follows Method 1: Token-based Setup using binaries from the kjake
+FreeBSD fork of cloudflared.
+
+Features:
+- Token-based tunnel authentication via Cloudflare Zero Trust
+- Integrated binary installer with automatic FreeBSD version and
+  architecture detection
+- QUIC kernel tuning (kern.ipc.maxsockbuf, net.inet.udp.recvspace)
+- Post-quantum encryption support (--post-quantum)
+- Real-time tunnel health status in the UI
+- Appears in System: Diagnostics: Services
+
+WWW: https://github.com/AlanMartines/os-cloudflared

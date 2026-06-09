@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: os-cloudflared\n"
+"Language: en_US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Menu & ACL
+msgid "Cloudflare Tunnel"
+msgstr "Cloudflare Tunnel"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Allow access to Cloudflare Tunnel settings"
+msgstr "Allow access to Cloudflare Tunnel settings"
+
+msgid "Allow access to Cloudflare Tunnel service status/control"
+msgstr "Allow access to Cloudflare Tunnel service status/control"
+
+# General Form
+msgid "General Settings"
+msgstr "General Settings"
+
+msgid "Enable"
+msgstr "Enable"
+
+msgid "Tunnel Token"
+msgstr "Tunnel Token"
+
+msgid "Disable Auto-Update"
+msgstr "Disable Auto-Update"
+
+msgid "Enable Post-Quantum Encryption"
+msgstr "Enable Post-Quantum Encryption"
+
+msgid "Max Socket Buffer (kern.ipc.maxsockbuf)"
+msgstr "Max Socket Buffer (kern.ipc.maxsockbuf)"
+
+msgid "UDP Recv Space (net.inet.udp.recvspace)"
+msgstr "UDP Recv Space (net.inet.udp.recvspace)"
+
+msgid "Enable Cloudflare Tunnel"
+msgstr "Enable Cloudflare Tunnel"
+
+msgid "The token for your Cloudflare Tunnel. Get it from one.dash.cloudflare.com > Access > Tunnels."
+msgstr "The token for your Cloudflare Tunnel. Get it from one.dash.cloudflare.com > Access > Tunnels."
+
+msgid "Pass --no-autoupdate to cloudflared. Recommended when managing updates manually via the Install/Update Binary button."
+msgstr "Pass --no-autoupdate to cloudflared. Recommended when managing updates manually via the Install/Update Binary button."
+
+msgid "Pass --post-quantum to enable post-quantum cryptography for the tunnel connection."
+msgstr "Pass --post-quantum to enable post-quantum cryptography for the tunnel connection."
+
+msgid "Recommended value for QUIC performance. Default is 16777216."
+msgstr "Recommended value for QUIC performance. Default is 16777216."
+
+msgid "Recommended value for QUIC performance. Default is 8388608."
+msgstr "Recommended value for QUIC performance. Default is 8388608."
+
+# UI Buttons
+msgid "Apply"
+msgstr "Apply"
+
+msgid "Install/Update Binary"
+msgstr "Install/Update Binary"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Restart"
+msgstr "Restart"
+
+msgid "Running"
+msgstr "Running"
+
+msgid "Stopped"
+msgstr "Stopped"
+
+msgid "No response from server. Check if configd is running."
+msgstr "No response from server. Check if configd is running."
+
+msgid "Tunnel"
+msgstr "Tunnel"
+
+msgid "Healthy"
+msgstr "Healthy"
+
+msgid "Connecting"
+msgstr "Connecting"
