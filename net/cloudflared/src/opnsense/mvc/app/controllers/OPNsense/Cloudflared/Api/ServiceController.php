@@ -29,7 +29,6 @@
 namespace OPNsense\Cloudflared\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -37,13 +36,4 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Cloudflared';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'cloudflared';
-
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            (new Backend())->configdRun('cloudflared reconfigure');
-            return ['status' => 'ok'];
-        }
-        return ['status' => 'failed'];
-    }
 }
