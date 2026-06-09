@@ -129,7 +129,7 @@
                 "FQDN": status.fqdn,
                 "NetBird IP": interfaceIp,
                 "Interface type": interfaceType,
-                "Quantum resistance": status.rosenpassEnabled ? `true${status.rosenpassPermissive ? " (permissive)" : ""}` : "false",
+                "Quantum resistance": status.quantumResistance ? `true${status.quantumResistancePermissive ? " (permissive)" : ""}` : "false",
                 "Lazy connection": status.lazyConnectionEnabled ? "true" : "false",
                 "Networks": status.networks?.join(", ") || "-",
                 "Forwarding rules": status.forwardingRules,
@@ -139,12 +139,7 @@
         }
 
         function getPeersDetail(status) {
-            const {
-                peers,
-                rosenpassEnabled,
-                rosenpassPermissive
-            } = status;
-            const details = peers?.details || [];
+            const details = status?.peers?.details || [];
 
             return details.map(peer => {
                 const getOrDefault = (val, def = '-') => val ?? def;
@@ -152,9 +147,9 @@
                 const remoteIce = getOrDefault(peer.iceCandidateType?.remote);
 
                 const quantumStatus = peer.quantumResistance ?
-                    (rosenpassEnabled ? 'true' : 'false (connection might not work without a remote permissive mode)') :
-                    rosenpassEnabled ?
-                    (rosenpassPermissive ?
+                    (status.quantumResistance ? 'true' : 'false (connection might not work without a remote permissive mode)') :
+                    status.quantumResistance ?
+                    (status.quantumResistancePermissive ?
                         "false (remote didn't enable quantum resistance)" :
                         "false (connection won't work without a permissive mode)") :
                     'false';
