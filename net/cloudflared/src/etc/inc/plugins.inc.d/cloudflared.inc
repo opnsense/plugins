@@ -35,9 +35,6 @@ function cloudflared_configure()
 
 function cloudflared_configure_newwanip($verbose = false)
 {
-    if ((string)(new \OPNsense\Cloudflared\Cloudflared())->general->enabled != '1') {
-        return;
-    }
     (new \OPNsense\Core\Backend())->configdRun('cloudflared start');
 }
 
