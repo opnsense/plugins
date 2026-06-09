@@ -139,8 +139,7 @@
         }
 
         function getPeersDetail(status) {
-            const { peers } = status;
-            const details = peers?.details || [];
+            const details = status?.peers?.details || [];
 
             return details.map(peer => {
                 const getOrDefault = (val, def = '-') => val ?? def;
