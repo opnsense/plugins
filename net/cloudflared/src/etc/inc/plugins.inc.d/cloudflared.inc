@@ -26,29 +26,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function cloudflared_enabled()
-{
-    return (string)(new \OPNsense\Cloudflared\Cloudflared())->general->enabled == '1';
-}
-
-function cloudflared_configure()
-{
-    return [
-        'newwanip' => ['cloudflared_configure_newwanip'],
-    ];
-}
-
-function cloudflared_configure_newwanip($verbose = false)
-{
-    if (!cloudflared_enabled()) {
-        return;
-    }
-    if (file_exists('/var/run/cloudflared.pid')) {
-        return;
-    }
-    (new \OPNsense\Core\Backend())->configdRun('cloudflared start');
-}
-
 function cloudflared_services()
 {
     global $config;
