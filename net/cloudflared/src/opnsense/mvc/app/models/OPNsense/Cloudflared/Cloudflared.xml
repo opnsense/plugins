@@ -17,7 +17,7 @@
                 <Default>auto</Default>
                 <Required>Y</Required>
                 <OptionValues>
-                    <auto>auto</auto>
+                    <auto/>
                     <quic>quic</quic>
                     <http2>http2</http2>
                 </OptionValues>

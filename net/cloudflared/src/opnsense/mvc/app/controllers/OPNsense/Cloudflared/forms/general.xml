@@ -13,7 +13,7 @@
         <id>cloudflared.general.token</id>
         <label>Tunnel Token</label>
         <type>text</type>
-        <help>Tunnel token from the Cloudflare Zero Trust dashboard (Networks &gt; Tunnels). The token is stored in a root-readable file and passed to cloudflared via an environment variable.</help>
+        <help>Tunnel token from the Cloudflare Zero Trust dashboard.</help>
     </field>
     <field>
         <id>cloudflared.general.protocol</id>
