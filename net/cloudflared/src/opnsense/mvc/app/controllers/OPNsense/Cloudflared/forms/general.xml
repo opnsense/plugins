@@ -19,7 +19,7 @@
         <id>cloudflared.general.protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
-        <help>Transport protocol. Leave on auto unless you have a specific reason to force QUIC or HTTP/2.</help>
+        <help>Transport protocol. Leave unset unless you have a specific reason to force QUIC or HTTP/2.</help>
     </field>
     <field>
         <id>cloudflared.general.post_quantum</id>
