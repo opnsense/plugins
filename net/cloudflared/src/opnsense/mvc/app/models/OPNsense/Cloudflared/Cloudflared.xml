@@ -18,8 +18,8 @@
                 <Required>Y</Required>
                 <OptionValues>
                     <auto/>
-                    <quic>quic</quic>
-                    <http2>http2</http2>
+                    <quic/>
+                    <http2/>
                 </OptionValues>
             </protocol>
             <post_quantum type="BooleanField">
@@ -34,11 +34,11 @@
                 <Default>info</Default>
                 <Required>Y</Required>
                 <OptionValues>
-                    <info>info</info>
-                    <debug>debug</debug>
-                    <warn>warn</warn>
-                    <error>error</error>
-                    <fatal>fatal</fatal>
+                    <info/>
+                    <debug/>
+                    <warn/>
+                    <error/>
+                    <fatal/>
                 </OptionValues>
             </log_level>
         </general>
