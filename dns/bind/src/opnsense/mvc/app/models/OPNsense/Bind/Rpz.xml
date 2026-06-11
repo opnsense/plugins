@@ -1,0 +1,30 @@
+<model>
+    <mount>//OPNsense/bind/rpz</mount>
+    <description>Response Policy Zone configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <zone type="TextField">
+            <Required>N</Required>
+            <Mask>/^([a-zA-Z0-9_\-\.]{0,253})$/</Mask>
+            <ValidationMessage>Zone name may only contain letters, digits, hyphens, dots, and underscores.</ValidationMessage>
+        </zone>
+        <policy type="OptionField">
+            <Required>N</Required>
+            <OptionValues>
+                <nxdomain>NXDOMAIN (block — return non-existent domain)</nxdomain>
+                <nodata>NODATA (block — return empty answer)</nodata>
+                <passthru>Passthru (disable policy for matching names)</passthru>
+                <drop>Drop (do not answer)</drop>
+                <tcp-only>TCP only (force TCP retry)</tcp-only>
+            </OptionValues>
+        </policy>
+        <break_dnssec type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </break_dnssec>
+    </items>
+</model>

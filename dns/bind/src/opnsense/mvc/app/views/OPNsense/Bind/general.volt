@@ -30,6 +30,7 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
+    <li><a data-toggle="tab" href="#rpz">{{ lang._('RPZ') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
     <li><a data-toggle="tab" href="#primary-domains">{{ lang._('Primary Zones') }}</a></li>
     <li><a data-toggle="tab" href="#secondary-domains">{{ lang._('Secondary Zones') }}</a></li>
@@ -50,6 +51,14 @@
             {{ partial("layout_partials/base_form",['fields':dnsblForm,'id':'frm_dnsbl_settings'])}}
             <div class="col-md-12 __mt">
                 <button class="btn btn-primary" id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_dnsbl_progress"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="rpz" class="tab-pane fade in">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            {{ partial("layout_partials/base_form",['fields':rpzForm,'id':'frm_rpz_settings'])}}
+            <div class="col-md-12 __mt">
+                <button class="btn btn-primary" id="saveAct_rpz" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_rpz_progress"></i></button>
             </div>
         </div>
     </div>
@@ -389,6 +398,14 @@ $(document).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    let data_get_map3 = {
+        'frm_rpz_settings': "/api/bind/rpz/get"
+    };
+    mapDataToFormUI(data_get_map3).done(function(data) {
+        formatTokenizersUI();
+        $('.selectpicker').selectpicker('refresh');
+    });
+
     updateServiceControlUI('bind');
 
     $("#grid-acls").UIBootgrid({
@@ -536,6 +553,16 @@ $(document).ready(function() {
                     updateServiceControlUI('bind');
                     $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
                 });
+            });
+        });
+    });
+
+    $("#saveAct_rpz").click(function() {
+        saveFormToEndpoint(url = "/api/bind/rpz/set", formid = 'frm_rpz_settings', callback_ok = function() {
+            $("#saveAct_rpz_progress").addClass("fa fa-spinner fa-pulse");
+            ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
+                updateServiceControlUI('bind');
+                $("#saveAct_rpz_progress").removeClass("fa fa-spinner fa-pulse");
             });
         });
     });
