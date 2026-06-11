@@ -2,6 +2,7 @@
     <field>
         <type>header</type>
         <label>General Settings</label>
+        <static>true</static>
     </field>
     <field>
         <id>cloudflared.general.enabled</id>
