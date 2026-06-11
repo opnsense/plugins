@@ -65,4 +65,10 @@
         <type>text</type>
         <help>Filter for group objects, should match all available group objects a user might be a member of.</help>
     </field>
+    <field>
+        <id>ldap.group_membership_mode</id>
+        <label>Group Membership Mode</label>
+        <type>dropdown</type>
+        <help>How FreeRADIUS checks LDAP group membership. Use "member filter" for Active Directory or Samba 4 with nested groups (uses LDAP_MATCHING_RULE_IN_CHAIN OID for transitive lookup).</help>
+    </field>
 </form>
