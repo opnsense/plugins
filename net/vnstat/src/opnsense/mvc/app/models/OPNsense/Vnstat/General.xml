@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/vnstat/general</mount>
     <description>Vnstat configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -11,5 +11,12 @@
             <Required>N</Required>
             <Multiple>Y</Multiple>
         </interface>
+        <month_rotate type="NumericField">
+            <Required>Y</Required>
+            <Default>1</Default>
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>28</MaximumValue>
+            <ValidationMessage>Value must be between 1 and 28</ValidationMessage>
+        </month_rotate>
     </items>
 </model>
