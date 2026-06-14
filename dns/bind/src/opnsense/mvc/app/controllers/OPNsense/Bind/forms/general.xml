@@ -195,4 +195,32 @@
         <advanced>true</advanced>
         <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>DDNS TSIG Key</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>general.ddnskeyname</id>
+        <label>Name</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>TSIG key name used for dynamic DNS updates (e.g. from Kea).</help>
+    </field>
+
+    <field>
+        <id>general.ddnskeyalgo</id>
+        <label>Algorithm</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>TSIG algorithm for the DDNS key.</help>
+    </field>
+
+    <field>
+        <id>general.ddnskeysecret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Base64-encoded TSIG secret for the DDNS key. This requires a restart of the Bind Service.</help>
+    </field>
 </form>

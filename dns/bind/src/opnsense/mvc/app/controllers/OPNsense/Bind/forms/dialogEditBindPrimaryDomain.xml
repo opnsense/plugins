@@ -36,6 +36,12 @@
         <help>Allow updates via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
     </field>
     <field>
+        <id>domain.allowddnsupdate</id>
+        <label>Allow DDNS update (TSIG)</label>
+        <type>checkbox</type>
+        <help>Generates an update-policy grant for the configured DDNS TSIG key (e.g. Kea). If all update options are disabled, no update-policy will be generated (use named.conf.d drop-ins).</help>
+    </field>
+    <field>
         <id>domain.ttl</id>
         <label>TTL</label>
         <type>text</type>
