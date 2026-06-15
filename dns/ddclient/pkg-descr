@@ -10,6 +10,7 @@ Plugin Changelog
 
 * Add multiple hostname support for cloudflare (contributed by Maksim Tokarev)
 * Add all-inkl.com KAS API DynDNS provider (contributed by Carsten Kallies)
+* Fix missing logging URLs from ACL (contributed by Konstantinos Spartalis)
 
 1.30
 
