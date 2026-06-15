@@ -204,5 +204,7 @@
                 <none>none</none>
             </OptionValues>
         </opentelemetry_compression>
+        <opentelemetry_header_name type="TextField"/>
+        <opentelemetry_header_value type="TextField"/>
     </items>
 </model>
