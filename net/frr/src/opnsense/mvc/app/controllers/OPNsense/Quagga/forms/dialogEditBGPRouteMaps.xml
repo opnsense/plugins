@@ -37,25 +37,22 @@
     <id>routemap.match</id>
     <label>AS-Path List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the AS-Path List. If multiples with the same name exist, selecting one is enough.</help>
+    <help>Select the AS-Path List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>routemap.match2</id>
     <label>Prefix List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Prefix List. If multiples with the same name exist, selecting one is enough.</help>
+    <help>Select the Prefix List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>routemap.match3</id>
     <label>Community List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Community List. If multiples with the same name exist, selecting one is enough.</help>
+    <help>Select the Community List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
     <field>
     <id>routemap.set</id>

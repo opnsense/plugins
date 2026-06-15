@@ -40,7 +40,7 @@
     <id>network.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Filters inbound route advertisements using a prefix list.</help>
+    <help>Filters inbound route advertisements using a prefix list. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -49,7 +49,7 @@
     <id>network.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Filters outbound route advertisements using a prefix list.</help>
+    <help>Filters outbound route advertisements using a prefix list. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>

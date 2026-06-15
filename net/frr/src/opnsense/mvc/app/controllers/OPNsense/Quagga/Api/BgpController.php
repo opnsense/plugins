@@ -36,6 +36,7 @@ class BgpController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'bgp';
     protected static $internalModelClass = '\OPNsense\Quagga\BGP';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchNeighborAction()
     {
