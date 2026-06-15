@@ -6,6 +6,8 @@
             <pattern>api/dyndns/accounts/*</pattern>
             <pattern>api/dyndns/service/*</pattern>
             <pattern>api/dyndns/settings/*</pattern>
+            <pattern>ui/diagnostics/log/core/ddclient/*</pattern>
+            <pattern>api/diagnostics/log/core/ddclient/*</pattern>
         </patterns>
     </page-services-dyndns>
 </acl>
