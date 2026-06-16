@@ -347,6 +347,22 @@
                 <help>Create a list of sites which may not be inspected, for example bank sites. Prefix the domain with a . to accept all subdomains (e.g. .google.com).</help>
             </field>
             <field>
+                <id>proxy.forward.ssl_sni_block_sites</id>
+                <label>Block connections by SSL SNI</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Create a list of sites which must be blocked by SSL SNI domain. Prefix the domain with a . to accept all subdomains (e.g. .google.com).</help>
+            </field>
+            <field>
+                <id>proxy.forward.ssl_sni_block_excludeip</id>
+                <label>Exclude IP from SSL inspection and SNI based blocking</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>Create a list of IP addresses.</help>
+            </field>
+            <field>
                 <id>proxy.forward.workers</id>
                 <label>Number of squid workers</label>
                 <type>text</type>
