@@ -49,15 +49,17 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
+net/cloudflared -- Cloudflare Tunnel integration
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service (not maintained)
+net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
-net/ndproxy -- Neighbor Discovery Proxy
+net/ndproxy -- End of life: please use os-ndp-proxy-go (pending removal)
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -100,18 +102,17 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
-sysutils/dmidecode -- Display hardware information on the dashboard
+sysutils/dmidecode -- Display hardware information on the dashboard (not maintained)
 sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
-sysutils/nextcloud-backup -- Track config changes using NextCloud
+sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
 sysutils/puppet-agent -- Manage Puppet Agent
@@ -120,14 +121,14 @@ sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor - Enterprise SASE & SSE platform (NGFW, SWG, CASB, ZTNA, SD-WAN)
 www/OPNProxy -- OPNsense proxy additions (not maintained)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
 www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
 www/squid -- Squid is a caching proxy for the web (not maintained)
-www/web-proxy-sso -- Kerberos authentication module (pending removal)
+www/web-proxy-sso -- Kerberos authentication module (not maintained)
 ```
 
 A brief description of how to use the plugins repository

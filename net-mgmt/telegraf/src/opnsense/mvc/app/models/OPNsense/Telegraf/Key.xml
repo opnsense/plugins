@@ -10,14 +10,10 @@
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
                     <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
                     <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
                 </name>
                 <value type="TextField">
-                    <Default></Default>
-                    <Required>N</Required>
                     <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
                     <ValidationMessage>Only characters, numbers, a dot, underscore and hyphen allowed. Do not use more than 128 characters.</ValidationMessage>
                 </value>

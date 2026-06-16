@@ -8,6 +8,11 @@ solution.
 Plugin Changelog
 ================
 
+1.3
+
+* Fix active response duplicate key causing false aborts (contributed by Michael Bedworth)
+* Add repeated_offenders config and fix template issues (contributed by Michael Bedworth)
+
 1.2
 
 * Implement options to change server ports (contributed by 999eagle)

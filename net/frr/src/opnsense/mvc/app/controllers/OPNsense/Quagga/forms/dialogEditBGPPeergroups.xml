@@ -81,24 +81,24 @@
     <id>peergroup.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix list to filter inbound prefixes from this neighbor.</help>
+    <help>Prefix list to filter inbound prefixes from this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>peergroup.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix list to filter outbound prefixes sent to this neighbor.</help>
+    <help>Prefix list to filter outbound prefixes sent to this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-map to apply to routes received from this neighbor.</help>
+    <help>Route-map to apply to routes received from this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>peergroup.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-map to apply to routes advertised to this neighbor.</help>
+    <help>Route-map to apply to routes advertised to this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
 </form>

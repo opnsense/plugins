@@ -37,6 +37,15 @@
     <help>AS (Autonomous System) number of the neighbor, required for establishing a BGP session.</help>
   </field>
   <field>
+    <id>neighbor.localas</id>
+    <label>Local AS</label>
+    <type>text</type>
+    <help>Optional local AS to present to this specific neighbor.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.password</id>
     <label>BGP MD5 Password</label>
     <type>text</type>
@@ -164,6 +173,18 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.bfd_strict</id>
+    <label>BFD Strict Mode</label>
+    <type>checkbox</type>
+    <help>Strict mode requires the BFD session to be established before allowing BGP to connect. If BFD goes down, BGP immediately closes the session. This prevents BGP sessions from remaining up when the underlying link is down. Requires BFD to be enabled.</help>
+    <style>bfd_strict_mode</style>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.keepalive</id>
     <label>Keepalive</label>
     <type>text</type>
@@ -218,6 +239,16 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.removeprivateas</id>
+    <label>Remove Private AS</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Configure how ASNs are propagated in outbound updates. Depending on selection, they can be removed or replaced.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.allowas_in</id>
     <label>Allow AS In</label>
     <type>dropdown</type>
@@ -248,34 +279,44 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.capabilities</id>
+    <label>Enable capabilities</label>
+    <type>select_multiple</type>
+    <advanced>true</advanced>
+    <help>Allow this neighbor to negotiate additional capabilities with its peer.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.linkedPrefixlistIn</id>
     <label>Prefix-List In</label>
     <type>dropdown</type>
-    <help>Prefix list to filter inbound prefixes from this neighbor.</help>
+    <help>Prefix list to filter inbound prefixes from this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>neighbor.linkedPrefixlistOut</id>
     <label>Prefix-List Out</label>
     <type>dropdown</type>
-    <help>Prefix list to filter outbound prefixes sent to this neighbor.</help>
+    <help>Prefix list to filter outbound prefixes sent to this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>neighbor.linkedRoutemapIn</id>
     <label>Route-Map In</label>
     <type>dropdown</type>
-    <help>Route-map to apply to routes received from this neighbor.</help>
+    <help>Route-map to apply to routes received from this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>neighbor.linkedRoutemapOut</id>
     <label>Route-Map Out</label>
     <type>dropdown</type>
-    <help>Route-map to apply to routes advertised to this neighbor.</help>
+    <help>Route-map to apply to routes advertised to this neighbor. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>neighbor.peergroup</id>
     <label>Peer Group</label>
     <type>dropdown</type>
-    <help>Groups neighbors with similar configurations to simplify management.</help>
+    <help>Groups neighbors with similar configurations to simplify management. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>

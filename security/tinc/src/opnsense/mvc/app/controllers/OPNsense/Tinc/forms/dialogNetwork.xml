@@ -97,6 +97,12 @@
         <help>This machines part of the network</help>
     </field>
     <field>
+        <id>network.disablesubnetroutes</id>
+        <label>Disable subnet routes</label>
+        <type>checkbox</type>
+        <help>This will prevent installing subnet routes. Usually you only enable this to do own routing decisions via a local gateway and gateway rules.</help>
+    </field>
+    <field>
         <id>network.privkey</id>
         <label>Private key</label>
         <type>textbox</type>

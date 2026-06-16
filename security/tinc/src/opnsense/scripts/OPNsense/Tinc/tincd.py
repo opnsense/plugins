@@ -105,24 +105,25 @@ def deploy(config_filename):
         for filename in chroot_needs:
             os.makedirs('%s%s' % (network.get_basepath(), os.path.dirname(filename)), exist_ok=True)
             shutil.copy(filename, '%s/%s' % (network.get_basepath(), filename))
-        write_file("%s/subnet-up" % network.get_basepath(), '\n'.join([
-            "#!/bin/sh",
-            "route add $SUBNET -iface %s\n" % interface_name
-        ]), 0o700)
-        write_file("%s/subnet-down" % network.get_basepath(), '\n'.join([
-            "#!/bin/sh",
-            "route delete $SUBNET -iface %s\n" % interface_name
-        ]), 0o700)
+        if not network.get_disablesubnetroutes():
+            write_file("%s/subnet-up" % network.get_basepath(), '\n'.join([
+                "#!/bin/sh",
+                "route add $SUBNET -iface %s\n" % interface_name
+            ]), 0o700)
+            write_file("%s/subnet-down" % network.get_basepath(), '\n'.join([
+                "#!/bin/sh",
+                "route delete $SUBNET -iface %s\n" % interface_name
+            ]), 0o700)
 
         # configure and rename new tun device, place all in group "tinc" symlink associated tun device
         if interface_name not in interfaces:
+            # remove symlink from previus run (created by ifconfig) if it wasn't cleaned up properly on exit
+            if os.path.islink('/dev/%s' % interface_name):
+                os.remove('/dev/%s' % interface_name)
             tundev = subprocess.run(['/sbin/ifconfig', interface_type, 'create'],
                                     capture_output=True, text=True).stdout.split()[0]
             subprocess.run(['/sbin/ifconfig',tundev,'name',interface_name])
             subprocess.run(['/sbin/ifconfig',interface_name,'group','tinc'])
-            if os.path.islink('/dev/%s' % interface_name):
-                os.remove('/dev/%s' % interface_name)
-            os.symlink('/dev/%s' % tundev, '/dev/%s' % interface_name)
     return networks
 
 if len(sys.argv) > 1:

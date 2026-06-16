@@ -30,6 +30,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $(document).ready(function() {
+        $(document).on('change', '#neighbor\\.bfd', function(){
+            if ($(this).is(':checked')) {
+                $(".bfd_strict_mode").closest('tr').show();
+            } else {
+                $(".bfd_strict_mode").closest('tr').hide();
+            }
+        });
+
         mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');

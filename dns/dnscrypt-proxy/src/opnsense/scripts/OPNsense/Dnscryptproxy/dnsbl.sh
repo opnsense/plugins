@@ -154,6 +154,13 @@ simpletrack() {
 	rm ${WORKDIR}/simpletrack-raw
 }
 
+qfeeds() {
+	# Q-Feeds List
+	if [ -f "/usr/local/etc/dnscrypt-proxy/blacklist-qfeeds.txt" ] && [ -s "/usr/local/etc/dnscrypt-proxy/blacklist-qfeeds.txt" ]; then
+		sed "/\.$/d" /usr/local/etc/dnscrypt-proxy/blacklist-qfeeds.txt | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/qfeeds
+	fi
+}
+
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
@@ -221,6 +228,9 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	yy)
 		yoyo
+		;;
+	qf)
+		qfeeds
 		;;
 	esac
 done

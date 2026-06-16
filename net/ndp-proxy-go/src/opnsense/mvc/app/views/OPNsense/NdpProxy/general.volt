@@ -39,10 +39,41 @@
             },
         });
 
+        $("#{{formGridAlias['table_id']}}").UIBootgrid({
+            search:'/api/ndpproxy/general/search_alias/',
+            get:'/api/ndpproxy/general/get_alias/',
+            set:'/api/ndpproxy/general/set_alias/',
+            add:'/api/ndpproxy/general/add_alias/',
+            del:'/api/ndpproxy/general/del_alias/',
+            options: {
+                formatters:{
+                    any: function(column, row) {
+                        if (row[column.id] !== '') {
+                            return row[`%${column.id}`] || row[column.id];
+                        } else {
+                            return '{{ lang._('any') }}';
+                        }
+                    },
+                },
+            },
+        });
+
     });
 </script>
 
-<div class="content-box __mb">
-    {{ partial("layout_partials/base_form", ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
+<ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
+    <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
+    <li><a data-toggle="tab" href="#aliases">{{ lang._('Aliases') }}</a></li>
+</ul>
+
+<div class="tab-content content-box">
+    <div id="general" class="tab-pane fade in active">
+        {{ partial('layout_partials/base_form', ['fields': generalForm, 'id': 'frm_GeneralSettings']) }}
+    </div>
+    <div id="aliases" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridAlias)}}
+    </div>
 </div>
+
 {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/ndpproxy/service/reconfigure', 'data_service_widget': 'ndpproxy'}) }}
+{{ partial('layout_partials/base_dialog',['fields':formDialogAlias,'id':formGridAlias['edit_dialog_id'],'label':lang._('Edit Alias')])}}

@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <Cloudflared VisibleName="Cloudflare Tunnel" cssClass="fa fa-cloud fa-fw">
+            <Settings order="10" url="/ui/cloudflared/"/>
+            <Log VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/cloudflared"/>
+        </Cloudflared>
+    </Services>
+</menu>

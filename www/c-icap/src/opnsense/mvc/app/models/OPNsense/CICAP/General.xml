@@ -33,31 +33,25 @@
         </minsparethreads>
         <maxsparethreads type="IntegerField">
             <Default>20</Default>
-	    <Required>Y</Required>
-	</maxsparethreads>
+            <Required>Y</Required>
+        </maxsparethreads>
         <threadsperchild type="IntegerField">
             <Default>10</Default>
-	    <Required>Y</Required>
-	</threadsperchild>
+            <Required>Y</Required>
+        </threadsperchild>
         <maxrequestsperchild type="IntegerField">
             <Default>0</Default>
-	    <Required>Y</Required>
-	</maxrequestsperchild>
+            <Required>Y</Required>
+        </maxrequestsperchild>
         <listenaddress type="NetworkField">
             <Default>::1</Default>
-	    <WildcardEnabled>N</WildcardEnabled>
-	    <NetMaskRequired>N</NetMaskRequired>
-	    <FieldSeparator>,</FieldSeparator>
+            <WildcardEnabled>N</WildcardEnabled>
+            <NetMaskRequired>N</NetMaskRequired>
+            <FieldSeparator>,</FieldSeparator>
             <Required>Y</Required>
         </listenaddress>
-        <serveradmin type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </serveradmin>
-        <servername type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </servername>
+        <serveradmin type="TextField"/>
+        <servername type="TextField"/>
         <enable_accesslog type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>

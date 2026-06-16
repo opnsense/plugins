@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.3.0</version>
+    <version>4.4.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -260,6 +260,11 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </ocsp>
+                <profile type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </profile>
                 <restartActions type="ModelRelationField">
                     <Model>
                         <actions>
@@ -282,7 +287,7 @@
                 </autoRenewal>
                 <renewInterval type="IntegerField">
                     <Required>Y</Required>
-                    <MinimumValue>1</MinimumValue>
+                    <MinimumValue>0</MinimumValue>
                     <MaximumValue>5000</MaximumValue>
                     <Default>60</Default>
                 </renewInterval>
@@ -473,6 +478,7 @@
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
                         <dns_he>Hurricane Electric</dns_he>
+                        <dns_he_ddns>Hurricane Electric DDNS</dns_he_ddns>
                         <dns_infoblox>Infoblox</dns_infoblox>
                         <dns_infomaniak>Infomaniak</dns_infomaniak>
                         <dns_internetbs>internetbs.net</dns_internetbs>
@@ -521,6 +527,9 @@
                         <dns_selfhost>Selfhost</dns_selfhost>
                         <dns_servercow>Servercow</dns_servercow>
                         <dns_simply>Simply.com</dns_simply>
+                        <dns_spaceship>Spaceship</dns_spaceship>
+                        <dns_technitium>Technitium</dns_technitium>
+                        <dns_timeweb>Timeweb Cloud</dns_timeweb>
                         <dns_transip>Transip</dns_transip>
                         <dns_udr>united-domains Reselling</dns_udr>
                         <dns_unoeuro>UnoEuro</dns_unoeuro>
@@ -543,9 +552,12 @@
                     <ValidationMessage>Please specify a value between 0 and 84600 seconds.</ValidationMessage>
                     <Required>Y</Required>
                 </dns_sleep>
-                <dns_active24_token type="TextField">
+                <dns_active24_api_key type="TextField">
                     <Required>N</Required>
-                </dns_active24_token>
+                </dns_active24_api_key>
+                <dns_active24_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_active24_api_secret>
                 <dns_ad_key type="TextField">
                     <Required>N</Required>
                 </dns_ad_key>
@@ -746,6 +758,9 @@
                 <dns_he_password type="TextField">
                     <Required>N</Required>
                 </dns_he_password>
+                <dns_he_ddns_key type="TextField">
+                    <Required>N</Required>
+                </dns_he_ddns_key>
                 <dns_infoblox_credentials type="TextField">
                     <Required>N</Required>
                 </dns_infoblox_credentials>
@@ -1100,12 +1115,34 @@
                 <dns_simply_account_name type="TextField">
                     <Required>N</Required>
                 </dns_simply_account_name>
+                <dns_spaceship_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_key>
+                <dns_spaceship_api_secret type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_api_secret>
+                <dns_spaceship_root_domain type="TextField">
+                    <Required>N</Required>
+                </dns_spaceship_root_domain>
+                <dns_technitium_token type="TextField">
+                    <Required>N</Required>
+                </dns_technitium_token>
+                <dns_technitium_hostname type="TextField">
+                    <Required>N</Required>
+                </dns_technitium_hostname>
                 <dns_transip_username type="TextField">
                     <Required>N</Required>
                 </dns_transip_username>
                 <dns_transip_key type="TextField">
                     <Required>N</Required>
                 </dns_transip_key>
+                <dns_transip_token_global_key type="BooleanField">
+                    <Required>N</Required>
+                    <Default>0</Default>
+                </dns_transip_token_global_key>
+                <dns_timeweb_token type="TextField">
+                    <Required>N</Required>
+                </dns_timeweb_token>
                 <dns_udr_user type="TextField">
                     <Required>N</Required>
                 </dns_udr_user>
@@ -1393,9 +1430,12 @@
                         <acme_panos>Upload certificate to Palo Alto Networks Firewall</acme_panos>
                         <acme_proxmoxbs>Upload certificate to Proxmox Backup Server</acme_proxmoxbs>
                         <acme_proxmoxve>Upload certificate to Proxmox VE</acme_proxmoxve>
+                        <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
-                        <acme_truenas>Upload certificate to TrueNAS Core Server</acme_truenas>
+                        <acme_truenas>Upload certificate to TrueNAS Server (deprecated API)</acme_truenas>
+                        <acme_truenas_ws>Upload certificate to TrueNAS Server (Websocket API)</acme_truenas_ws>
+                        <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
@@ -1678,6 +1718,17 @@
                     <Mask>/^.{1,1024}$/u</Mask>
                     <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
                 </acme_proxmoxbs_tokenkey>
+                <acme_ruckus_host type="HostnameField">
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                    <Required>N</Required>
+                </acme_ruckus_host>
+                <acme_ruckus_user type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_user>
+                <acme_ruckus_pass type="TextField">
+                    <Required>N</Required>
+                </acme_ruckus_pass>
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
@@ -1697,6 +1748,45 @@
                         <https>HTTPS</https>
                     </OptionValues>
                 </acme_truenas_scheme>
+                <acme_truenas_ws_apikey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_ws_apikey>
+                <acme_truenas_ws_hostname type="HostnameField">
+                    <Default>localhost</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_ws_hostname>
+                <acme_truenas_ws_protocol type="OptionField">
+                    <Default>ws</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ws>ws [default]</ws>
+                        <wss>wss</wss>
+                    </OptionValues>
+                </acme_truenas_ws_protocol>
+                <!-- TODO: old "truenasws" values kept for model migration, should be removed in version 5.0.0 -->
+                <acme_truenasws_apikey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenasws_apikey>
+                <acme_truenasws_hostname type="HostnameField">
+                    <Default>localhost</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenasws_hostname>
+                <acme_truenasws_protocol type="OptionField">
+                    <Default>ws</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ws>ws [default]</ws>
+                        <wss>wss</wss>
+                    </OptionValues>
+                </acme_truenasws_protocol>
                 <acme_unifi_keystore type="TextField">
                     <Default>/usr/local/share/java/unifi/data/keystore</Default>
                     <Required>N</Required>
@@ -1720,6 +1810,26 @@
                 <acme_vault_kvv2 type="BooleanField">
                     <Default>1</Default>
                 </acme_vault_kvv2>
+                <acme_zyxel_gs1900_host type="HostnameField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_zyxel_gs1900_host>
+                <acme_zyxel_gs1900_user type="TextField">
+                    <Default>admin</Default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_user>
+                <acme_zyxel_gs1900_password type="TextField">
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_password>
+                <acme_zyxel_gs1900_insecure type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_insecure>
+                <acme_zyxel_gs1900_reboot type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </acme_zyxel_gs1900_reboot>
             </action>
         </actions>
     </items>

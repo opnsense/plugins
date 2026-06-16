@@ -28,6 +28,10 @@
                         <type>/^(?!group).*$/</type>
                     </filters>
                 </interfacename>
+                <bfd type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </bfd>
             </route>
         </routes>
     </items>

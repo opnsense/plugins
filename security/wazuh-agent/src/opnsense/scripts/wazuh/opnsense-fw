@@ -101,7 +101,7 @@ def main(params):
     try:
         ipaddress.ip_address(srcip)
     except ValueError:
-        send_log('Unable to process even, invalid srcip (%s)' % srcip)
+        send_log('Unable to process event, invalid srcip (%s)' % srcip)
         return -1
 
     if skip_alias != '' and command == 'add':
@@ -113,15 +113,17 @@ def main(params):
     if command == 'add':
         # return rule id for timeout list
         try:
+            unique_key = "%s-%s" % (event['parameters']['alert']['rule']['id'], srcip)
+            send_log('Sending check_keys for: %s' % unique_key)
             print(json.dumps({
                 "version": 1,
                 "origin": {
                     "name": sys.argv[0],
-                    "module":"active-response"
+                    "module": "active-response"
                 },
                 "command": "check_keys",
-                "parameters":{
-                    "keys": [event['parameters']['alert']['rule']['id']]
+                "parameters": {
+                    "keys": [unique_key]
                 }
             }))
             sys.stdout.flush()
@@ -130,6 +132,7 @@ def main(params):
         # When attached to stdin we're likely running inside the agent, in which case we will read a second event which
         # may abort the first one.
         if params.input == '/dev/stdin':
+            send_log('Waiting for manager response...')
             timeout_event = None
             try:
                 timeout_event=json.loads(read_data(params.input))
@@ -137,6 +140,7 @@ def main(params):
                 pass
             if timeout_event:
                 send_log('Received : %s' % json.dumps(timeout_event))
+                send_log('Manager says: %s' % timeout_event.get('command'))
                 if timeout_event.get('command') == 'abort':
                     send_log('Aborted')
                     return 0

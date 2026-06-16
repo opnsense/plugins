@@ -1,32 +1,32 @@
 <model>
-  <mount>//OPNsense/tor/hiddenservice</mount>
-  <description>Tor Onion service configuration</description>
-  <version>1.0.0</version>
-  <items>
-    <service type="ArrayField">
-      <enabled type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </enabled>
-      <name type="TextField">
-        <Required>Y</Required>
-        <Mask>/^[a-z0-9_-]+$/i</Mask>
-        <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
-      </name>
-      <type type="OptionField">
-        <Default>basic</Default>
-        <Required>Y</Required>
-        <OptionValues>
-            <basic>Basic</basic>
-            <stealth>Stealth</stealth>
-        </OptionValues>
-      </type>
-      <clients type="CSVListField">
-        <Multiple>Y</Multiple>
-        <Required>N</Required>
-        <Mask>/^([a-z0-9_+-]+,)*([a-z0-9_+-]*)$/i</Mask>
-        <ValidationMessage>The authorized clients should only consist of alphanumeric characters, dashes, underscores and plus sign.</ValidationMessage>
-      </clients>
-    </service>
-  </items>
+    <mount>//OPNsense/tor/hiddenservice</mount>
+    <description>Tor Onion service configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <service type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[a-z0-9_-]+$/i</Mask>
+                <ValidationMessage>The name should only consist of alphanumeric characters, dashes and underscores.</ValidationMessage>
+            </name>
+            <type type="OptionField">
+                <Default>basic</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <basic>Basic</basic>
+                    <stealth>Stealth</stealth>
+                </OptionValues>
+            </type>
+            <clients type="CSVListField">
+                <Multiple>Y</Multiple>
+                <Required>N</Required>
+                <Mask>/^([a-z0-9_+-]+,)*([a-z0-9_+-]*)$/i</Mask>
+                <ValidationMessage>The authorized clients should only consist of alphanumeric characters, dashes, underscores and plus sign.</ValidationMessage>
+            </clients>
+        </service>
+    </items>
 </model>

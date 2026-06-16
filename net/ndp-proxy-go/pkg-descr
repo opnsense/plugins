@@ -6,6 +6,16 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
+1.3
+
+* Add ratelimit for pfctl operations
+* Add CARP failover
+
+1.2
+
+* Add firewall alias support
+* Add cache file support for faster recovery after system reboots
+
 1.1
 
 * Add experimental point-to-point device upstream support (e.g. PPPoE)

@@ -1,60 +1,52 @@
 <model>
-   <mount>//OPNsense/udpbroadcastrelays</mount>
-   <version>1.0.0</version>
-   <description>UDP Broadcast Relay settings</description>
-   <items>
-      <udpbroadcastrelay type="ArrayField">
-         <enabled type="BooleanField">
-            <Default>1</Default>
-            <Required>Y</Required>
-         </enabled>
+    <mount>//OPNsense/udpbroadcastrelays</mount>
+    <version>1.0.0</version>
+    <description>UDP Broadcast Relay settings</description>
+    <items>
+        <udpbroadcastrelay type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
             <interfaces type="InterfaceField">
-            <Default>lan</Default>
-            <Required>Y</Required>
-            <Multiple>Y</Multiple>
+                <Default>lan</Default>
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
             </interfaces>
-         <multicastaddress type="CSVListField">
-            <Required>N</Required>
-            <Default></Default>
-            <Multiple>Y</Multiple>
-            <Mask>/^([\/0-9.,])*/u</Mask>
-            <ValidationMessage>Broadcast address must be a valid IPv4 address</ValidationMessage>
-         </multicastaddress>
-         <sourceaddress  type="TextField">
-            <Required>N</Required>
-            <Default></Default>
-            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
-            <ValidationMessage>Source address must be a valid IPv4 address</ValidationMessage>
-         </sourceaddress>
-         <listenport type="IntegerField">
-            <Default></Default>
-            <Required>Y</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>65535</MaximumValue>
-            <ValidationMessage>Listen port needs to be an integer value between 1 and 65535</ValidationMessage>
-         </listenport>
-         <sourceaddress  type="TextField">
-            <Required>N</Required>
-            <Default></Default>
-            <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
-            <ValidationMessage>Source address must be a valid IPv4 address</ValidationMessage>
-         </sourceaddress>
-         <InstanceID type="IntegerField">
-            <Default>0</Default>
-            <Required>Y</Required>
-            <MinimumValue>1</MinimumValue>
-            <MaximumValue>63</MaximumValue>
-            <ValidationMessage>InstanceID needs to be an integer value between 1 and 63</ValidationMessage>
-         </InstanceID>
-         <RevertTTL type="BooleanField">
-            <Default>0</Default>
-            <Required>Y</Required>
-         </RevertTTL>
-         <description type="TextField">
-            <Required>N</Required>
-            <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
-            <ValidationMessage>Enter a description.</ValidationMessage>
-         </description>
-      </udpbroadcastrelay>
-   </items>
+            <multicastaddress type="CSVListField">
+                <Multiple>Y</Multiple>
+                <Mask>/^([\/0-9.,])*/u</Mask>
+                <ValidationMessage>Broadcast address must be a valid IPv4 address.</ValidationMessage>
+            </multicastaddress>
+            <sourceaddress type="TextField">
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Source address must be a valid IPv4 address.</ValidationMessage>
+            </sourceaddress>
+            <listenport type="IntegerField">
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>Listen port needs to be an integer value between 1 and 65535.</ValidationMessage>
+            </listenport>
+            <sourceaddress type="TextField">
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-4]|2[0-5][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Source address must be a valid IPv4 address.</ValidationMessage>
+            </sourceaddress>
+            <InstanceID type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>63</MaximumValue>
+                <ValidationMessage>InstanceID needs to be an integer value between 1 and 63.</ValidationMessage>
+            </InstanceID>
+            <RevertTTL type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </RevertTTL>
+            <description type="TextField">
+                <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.,_\x{00A0}-\x{FFFF}]){1,255}$/u</Mask>
+                <ValidationMessage>Enter a description.</ValidationMessage>
+            </description>
+        </udpbroadcastrelay>
+    </items>
 </model>

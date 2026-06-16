@@ -61,6 +61,8 @@ class PFLogCrawler:
         # quick scan for datetime, interface, direction, source, dest, source_port, dest_port
         parts = line.split()
         fw_line = parts[-1].split(',') # strip syslog
+        if fw_line[6] == 'pass':
+            return []
         ip_addresses = [x for x in fw_line if is_ip_address(x)]
         # Find destination IP position to get ports from next fields (only if numeric)
         dest_idx = fw_line.index(ip_addresses[1]) if len(ip_addresses) > 1 else len(fw_line)
@@ -77,8 +79,10 @@ class PFLogCrawler:
                 for idx, line in enumerate(f_in):
                     for rule_id in self._rule_ids:
                         if rule_id in line:
-                            result.append(self._parse_log_line(line))
-                            rows_processed +=1
+                            lline = self._parse_log_line(line)
+                            if lline:
+                                result.append(lline)
+                                rows_processed +=1
                             break # inner loop
                     if (idx % 100000 == 0 and time.time() - start_time > max_time) or rows_processed >= max_results:
                         return result

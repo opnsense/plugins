@@ -203,7 +203,6 @@ class LeCertificate extends LeCommon
             $cert_details = CertStore::parseX509($cert_content);
             $cert_subject = $cert_details['name'];
             $cert_serial  = $cert_details['serialNumber'];
-            $cert_cn      = $cert_details['commonname'];
             $cert_issuer  = implode(",", $cert_details['issuer']);
         } else {
             LeUtils::log_error('unable to read certificate content from file');
@@ -226,7 +225,7 @@ class LeCertificate extends LeCommon
         $cert = array();
         $cert['refid'] = uniqid();
         $cert['caref'] = (string)$ca['refid'];
-        $cert['descr'] = (string)$cert_cn . ' (ACME Client)';
+        $cert['descr'] = (string)$this->config->name . ' (ACME Client)';
         $import_log_message = 'imported';
         $cert_found = false;
 
@@ -268,7 +267,7 @@ class LeCertificate extends LeCommon
             $newcert->crt = base64_encode($cert_content);
             $newcert->prv = base64_encode($key_content);
         }
-        LeUtils::log("{$import_log_message} ACME X.509 certificate: {$cert_cn} ({$cert['refid']})");
+        LeUtils::log("{$import_log_message} ACME X.509 certificate: {$this->config->name} ({$cert['refid']})");
 
         // Serialize to config and save
         // Skip validation because the current in-memory model may not
@@ -648,6 +647,9 @@ class LeCertificate extends LeCommon
             $val->setRenewal((int)$renewInterval);
             $val->setForce($this->force);
             $val->setOcsp((string)$this->config->ocsp == 1 ? true : false);
+            if (!empty((string)$this->config->profile)) {
+                $val->setProfile((string)$this->config->profile);
+            }
             // strip prefix from key value
             $val->setKey(substr($this->config->keyLength, 4));
             $val->prepare();

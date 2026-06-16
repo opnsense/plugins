@@ -128,10 +128,10 @@ class TlsalpnAcme extends Base implements LeValidationInterface
         }
 
         // Create temporary port forward to allow acme challenges to get through
-        File::file_put_contents("{$configdir}/acme_anchor_setup", "rdr-anchor \"acme-client\"\n", 0600);
+        File::file_put_contents("{$configdir}acme_anchor_setup", "rdr-anchor \"acme-client\"\n", 0600);
         Shell::run_safe('/sbin/pfctl -f %s', ["{$configdir}/acme_anchor_setup"]);
-        File::file_put_contents("{$configdir}/acme_anchor_rules", $anchor_rules, 0600);
-        Shell::run_safe("/sbin/pfctl -a %s -f %s", ['acme-client', "{$configdir}/acme_anchor_rules"]);
+        File::file_put_contents("{$configdir}acme_anchor_rules", $anchor_rules, 0600);
+        Shell::run_safe("/sbin/pfctl -a %s -f %s", ['acme-client', "{$configdir}acme_anchor_rules"]);
     }
 
     public function cleanup()

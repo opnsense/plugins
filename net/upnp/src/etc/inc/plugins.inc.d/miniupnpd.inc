@@ -26,6 +26,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+function miniupnpd_syslog()
+{
+    return ['miniupnpd' => ['facility' => ['miniupnpd']]];
+}
+
 function miniupnpd_enabled()
 {
     global $config;
@@ -39,10 +44,12 @@ function miniupnpd_firewall($fw)
         return;
     }
 
+    /* required for IPv4: */
     $fw->registerAnchor('miniupnpd', 'rdr');
+    /* required for IPv6: */
     $fw->registerAnchor('miniupnpd', 'fw');
+    /* required for IPv4 NAT hairpinning: */
     $fw->registerAnchor('miniupnpd', 'nat', 0, 'head');
-    $fw->registerAnchor('miniupnpd', 'binat');
 }
 
 function miniupnpd_services()
@@ -67,6 +74,8 @@ function miniupnpd_services()
 
 function miniupnpd_start()
 {
+    global $config;
+
     if (!miniupnpd_enabled()) {
         return;
     }
@@ -75,15 +84,29 @@ function miniupnpd_start()
         return;
     }
 
-    mwexecfb('/usr/local/sbin/miniupnpd -f %s -P %s', [ '/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid']);
+    $cmd_frmt = ['/usr/local/sbin/miniupnpd -f %s -P %s'];
+    $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
+
+    switch ($config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '') {
+        case 'debug':
+            $cmd_frmt[] = '-vv';
+            break;
+        case 'info':
+            $cmd_frmt[] = '-v';
+            break;
+        default:
+            break;
+    }
+
+    mwexecfb($cmd_frmt, $cmd_args);
 }
 
 function miniupnpd_stop()
 {
     killbypid('/var/run/miniupnpd.pid');
 
-    mwexecf('/sbin/pfctl -a miniupnpd -Fr');
-    mwexecf('/sbin/pfctl -a miniupnpd -Fn');
+    mwexecf('/sbin/pfctl -a miniupnpd -F rules');
+    mwexecf('/sbin/pfctl -a miniupnpd -F nat');
 }
 
 function miniupnpd_configure()
@@ -198,11 +221,15 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            if (!empty($upnp_config['allow_third_party_mapping'])) {
+            if (in_array($upnp_config['allow_third_party_mapping'] ?? '', ['1', 'upnp-igd'])) {
                 $config_text .= "secure_mode=no\n";
-                $config_text .= "pcp_allow_thirdparty=yes\n";
             } else {
                 $config_text .= "secure_mode=yes\n";
+            }
+
+            if (in_array($upnp_config['allow_third_party_mapping'] ?? '', ['1', 'pcp'])) {
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            } else {
                 $config_text .= "pcp_allow_thirdparty=no\n";
             }
 
@@ -217,7 +244,8 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-                $config_text .= "system_uptime=yes\n";
+                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
+                //$config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */

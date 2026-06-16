@@ -1,42 +1,42 @@
 <model>
-  <mount>//OPNsense/tor/hiddenserviceacl</mount>
-  <description>Tor Onion Service ACL</description>
-  <items>
-    <hiddenserviceacl type="ArrayField">
-      <enabled type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </enabled>
-      <hiddenservice type="ModelRelationField">
-        <Model>
-          <template>
-            <source>OPNsense.Tor.HiddenService</source>
-            <items>service</items>
-            <display>name</display>
-          </template>
-        </Model>
-        <ValidationMessage>An Onion service must be set.</ValidationMessage>
-        <Multiple>N</Multiple>
-        <Required>Y</Required>
-      </hiddenservice>
-      <port type="IntegerField">
-        <Default>80</Default>
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </port>
-      <target_host type="NetworkField">
-        <Required>Y</Required>
-        <Default>127.0.0.1</Default>
-      </target_host>
-      <target_port type="IntegerField">
-        <Default>80</Default>
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </target_port>
-    </hiddenserviceacl>
-  </items>
+    <mount>//OPNsense/tor/hiddenserviceacl</mount>
+    <description>Tor Onion Service ACL</description>
+    <items>
+        <hiddenserviceacl type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <hiddenservice type="ModelRelationField">
+                <Model>
+                    <template>
+                        <source>OPNsense.Tor.HiddenService</source>
+                        <items>service</items>
+                        <display>name</display>
+                    </template>
+                </Model>
+                <ValidationMessage>An Onion service must be set.</ValidationMessage>
+                <Multiple>N</Multiple>
+                <Required>Y</Required>
+            </hiddenservice>
+            <port type="IntegerField">
+                <Default>80</Default>
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </port>
+            <target_host type="NetworkField">
+                <Required>Y</Required>
+                <Default>127.0.0.1</Default>
+            </target_host>
+            <target_port type="IntegerField">
+                <Default>80</Default>
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </target_port>
+        </hiddenserviceacl>
+    </items>
 </model>

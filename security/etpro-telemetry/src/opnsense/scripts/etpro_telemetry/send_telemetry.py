@@ -120,9 +120,9 @@ if not telemetry_state.is_running():
                 # no data
                 exit_code = 0
         else:
-            syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
+            syslog.syslog(syslog.LOG_ERR, 'directory %s missing' % args.log)
     else:
-        syslog.syslog(syslog.LOG_ERR, 'directory %s missing' % args.log)
+        syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
 
 
 sys.exit(exit_code)

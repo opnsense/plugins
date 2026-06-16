@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2023-2025 Cedrik Pischem
+ # Copyright (c) 2023-2026 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -96,78 +96,30 @@
 {% if entrypoint == 'reverse_proxy' %}
 
                         if (["{{ formGridReverseProxy['table_id'] }}", "{{ formGridSubdomain['table_id'] }}"].includes(grid_id)) {
-                            const update_filter = function (selectValues) {
-                                suppressFilterReload = true;
-
-                                return $('#reverseFilter')
-                                    .fetch_options('/api/caddy/reverse_proxy/get_all_reverse_domains')
-                                    .done(function () {
-                                        $('#reverseFilter')
-                                            .selectpicker('val', selectValues)
-                                            .selectpicker('refresh');
-
-                                        // manually update icon (since we skip .change())
-                                        const hasSelection = Array.isArray(selectValues) && selectValues.length > 0;
-                                        $('#reverseFilterIcon')
-                                            .toggleClass('text-success fa-filter-circle-xmark', hasSelection)
-                                            .toggleClass('fa-filter', !hasSelection);
-
-                                        $('#maintabs a[href="#handlers"]').tab('show');
-
-                                        // manually reload just the handlers grid
-                                        const grid_id = "{{ formGridHandle['table_id'] }}";
-                                        if (all_grids[grid_id]) {
-                                            all_grids[grid_id].bootgrid('reload');
-                                        }
-                                    })
-                                    .always(function () {
-                                        suppressFilterReload = false;
-                                    });
-                            };
-
                             commands.search_handler = {
                                 method: function () {
                                     const rowUuid = $(this).data("row-id");
                                     if (!rowUuid) return;
 
-                                    update_filter([rowUuid]);
+                                    suppressFilterReload = true;
+
+                                    $('#reverseFilter')
+                                        .selectpicker('val', [rowUuid])
+                                        .selectpicker('refresh');
+
+                                    $('#reverseFilterIcon')
+                                        .removeClass('fa-filter')
+                                        .addClass('text-success fa-filter-circle-xmark');
+
+                                    $('#maintabs a[href="#handlers"]').tab('show');
+
+                                    all_grids["{{ formGridHandle['table_id'] }}"]?.bootgrid('reload');
+
+                                    suppressFilterReload = false;
                                 },
                                 classname: 'fa fa-fw fa-search',
                                 title: "{{ lang._('Search Handler') }}",
                                 sequence: 20
-                            };
-
-                            commands.add_handler = {
-                                method: function () {
-                                    const rowUuid = $(this).data("row-id");
-                                    if (!rowUuid) return;
-
-                                    open_add_dialog = function (selectValues) {
-                                        update_filter(selectValues);
-
-                                        // Ensure selectpicker has values selected before click on add button
-                                        $('#reverseFilter').one('changed.bs.select', function (e) {
-                                            $("#" + "{{ formGridHandle['table_id'] }}")
-                                                .find("button[data-action='add']")
-                                                .trigger('click');
-                                        });
-                                    };
-
-                                    // Resolve reverse domains, as subdomains need wildcard domain and subdomain in dialog
-                                    if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
-                                        ajaxGet(`/api/caddy/reverse_proxy/get_{{ formGridSubdomain['table_id'] }}/` + rowUuid, {}, function (rowData) {
-                                            const reverseUuids = rowData?.subdomain?.reverse || {};
-                                            const selectedReverse = Object.entries(reverseUuids).find(([uuid, entry]) => entry.selected === 1);
-                                            const selectValues = selectedReverse ? [selectedReverse[0], rowUuid] : [rowUuid];
-                                            open_add_dialog(selectValues);
-                                        });
-                                    } else {
-                                        open_add_dialog([rowUuid]);
-                                    }
-                                },
-                                classname: 'fa fa-fw fa-plus',
-                                title: "{{ lang._('Add Handler') }}",
-                                sequence: 10
                             };
                         }
 
@@ -260,12 +212,16 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-                    // insert buttons and selectpicker
+                    // insert buttons and selectpicker only when the tab is actually visible
                     if (['{{formGridReverseProxy["table_id"]}}', '{{formGridHandle["table_id"]}}'].includes(grid_id)) {
+                        if (!$(e.target.hash).is(':visible')) {
+                            return;  // prevents the selectpicker from being moved into hidden tabs
+                        }
+
                         const header = $("#" + grid_id + "-header");
                         const $actionBar = header.find('.actionBar');
                         if ($actionBar.length) {
-                            $('#add_filter_container').detach().insertBefore($actionBar.find('.search')).show();
+                            $('#add_filter_container').detach().insertAfter($actionBar.find('.search')).show();
                         }
                     }
 
@@ -273,28 +229,6 @@
 
                 });
             }
-        });
-
-        /**
-         * Displays an alert message to the user.
-         *
-         * @param {string} message - The message to display.
-         * @param {string} [type="error"] - The type of alert (error or success).
-         */
-        function showAlert(message, type = "error") {
-            const alertClass = type === "error" ? "alert-danger" : "alert-success";
-            const messageArea = $("#messageArea");
-
-            messageArea.stop(true, true).hide();
-            messageArea.removeClass("alert-success alert-danger").addClass(alertClass).html(message);
-            messageArea.fadeIn(500).delay(15000).fadeOut(500, function() {
-                $(this).html('');
-            });
-        }
-
-        // Hide message area when starting new actions
-        $('input, select, textarea').on('change', function() {
-            $("#messageArea").hide();
         });
 
         // Populate domain filter selectpicker
@@ -307,26 +241,8 @@
             $('#reverseFilter').trigger('change');
         });
 
-        // Reconfigure button with custom validation
-        $("#reconfigureAct").SimpleActionButton({
-            onPreAction: function() {
-                const dfObj = new $.Deferred();
-
-                ajaxGet("/api/caddy/service/validate", null, function(data, status) {
-                    if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                        dfObj.resolve();
-                    } else {
-                        showAlert(data['message'], "error");
-                        dfObj.reject();
-                    }
-                }).fail(function(xhr, status, error) {
-                    showAlert("{{ lang._('Validation request failed: ') }}" + error, "error");
-                    dfObj.reject();
-                });
-
-                return dfObj.promise();
-            }
-        });
+        // Reconfigure button
+        $("#reconfigureAct").SimpleActionButton();
 
 {% if entrypoint == 'reverse_proxy' %}
 
@@ -367,12 +283,13 @@
 
 {% endif %}
 
-        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type").on("keyup change", function () {
+        $("#handle\\.HttpTls, #handle\\.HandleDirective, #reverse\\.DisableTls, #layer4\\.Matchers, #layer4\\.Type, #layer4\\.TerminateTls").on("keyup change", function () {
             const http_tls = String($("#handle\\.HttpTls").val() || "")
             const handle_directive = String($("#handle\\.HandleDirective").val() || "")
             const disable_tls = String($("#reverse\\.DisableTls").val() || "")
             const layer4_matchers = String($("#layer4\\.Matchers").val() || "")
             const layer4_type = String($("#layer4\\.Type").val() || "")
+            const layer4_terminate_tls = $("#layer4\\.TerminateTls").is(":checked");
 
             const styleVisibility = [
                 {
@@ -398,6 +315,10 @@
                 {
                     class: "style_type",
                     visible: layer4_type === "global"
+                },
+                {
+                    class: "style_terminate_tls",
+                    visible: layer4_terminate_tls
                 },
             ];
 
@@ -435,21 +356,12 @@
         const $initial = $tabs.filter(`[href="${location.hash}"]`).first();
         ($initial.length ? $initial : $tabs.first()).tab('show');
 
-        // Trigger handlers tab too (even if not active) to ensure command buttons always work
-        $(document).one('ajaxStop', function () {
-            $('a[href="#handlers"]').triggerHandler('shown.bs.tab');
-        });
-
         updateServiceControlUI('caddy');
-        $('<div id="messageArea" class="alert alert-info" style="display: none;"></div>').insertBefore('#change_message_base_form');
     });
 
 </script>
 
 <style>
-    #add_filter_container {
-        float: left;
-    }
     .actions .dropdown-menu.pull-right {
         max-height: 400px;
         min-width: max-content;
@@ -462,20 +374,26 @@
         font-size: 16px;
         font-style: italic;
     }
-    #reverseFilterClear {
-        border-right: none;
+    #add_filter_container {
+        display: flex;
+        gap: 8px;
     }
-    #add_filter_container .bootstrap-select > .dropdown-toggle {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+    @media (max-width: 1024px) {
+        #reverseFilterClear {
+            flex: 1 1 100%;
+        }
+        #reverseFilter {
+            flex: 1 1 100%;
+        }
     }
+
 </style>
 
 <div id="add_filter_container" class="btn-group" style="display: none;">
     <button type="button" id="reverseFilterClear" class="btn btn-default" title="{{ lang._('Clear Selection') }}">
         <i id="reverseFilterIcon" class="fa fa-fw fa-filter"></i>
     </button>
-    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="300px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
+    <select id="reverseFilter" class="selectpicker form-control" multiple data-live-search="true" data-width="200px" data-size="10" data-container="body" title="{{ lang._('Filter by Domain') }}">
     </select>
 </div>
 
@@ -505,11 +423,11 @@
     <div id="domains" class="tab-pane fade in active">
         <!-- Reverse Proxy -->
         <h1 class="custom-header">{{ lang._('Domains') }}</h1>
-        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '160'})}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridReverseProxy + {'command_width': '120'})}}
 
         <!-- Subdomains Tab -->
         <h1 class="custom-header">{{ lang._('Subdomains') }}</h1>
-        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '160'})}}
+        {{ partial('layout_partials/base_bootgrid_table', formGridSubdomain + {'command_width': '120'})}}
     </div>
 
     <!-- Handle Tab -->

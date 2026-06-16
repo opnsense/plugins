@@ -6,6 +6,10 @@ is completely different.
 Plugin Changelog
 ================
 
+1.24.1
+
+* Align mailbox and message size
+
 1.24
 
 * Disable broken, insecure, legacy NTLM authentication (contributed by Alfred Egger)

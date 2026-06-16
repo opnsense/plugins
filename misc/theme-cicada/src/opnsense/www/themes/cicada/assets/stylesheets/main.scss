@@ -5370,7 +5370,7 @@ tbody.collapse.in {
     height: 1px;
     margin: 9px 0;
     overflow: hidden;
-    background-color: #e5e5e5;
+    background-color: #191919;
   }
 
   > {
@@ -10629,6 +10629,11 @@ ul.jqtree-tree {
 
 .table.border {
   border: 1px solid #191919 !important;
+}
+
+.rule.text-muted {
+  background-color: #242424 !important;
+  opacity: 0.4;
 }
 
 .rule.text-muted > td {

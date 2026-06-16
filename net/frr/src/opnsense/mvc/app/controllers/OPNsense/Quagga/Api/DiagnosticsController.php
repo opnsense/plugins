@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2023 Deciso B.V.
+ *    Copyright (C) 2023-2026 Deciso B.V.
  *    Copyright (C) 2017 Frank Wall
  *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
  *
@@ -253,13 +253,15 @@ class DiagnosticsController extends ApiControllerBase
         $records = [];
         $payload = $this->configdJson("ospfv3", "route");
         if (!empty($payload['routes'])) {
-            foreach ($payload['routes'] as $net => $route) {
-                if (!empty($route['nextHops'])) {
-                    foreach ($route['nextHops'] as $nexthop) {
-                        $record = array_merge($route, $nexthop);
-                        $record['network'] = $net;
-                        $record['interfaceDescr'] = $this->getIfDesc($record['interfaceName']);
-                        $records[] = $record;
+            foreach ($payload['routes'] as $net => $routes) {
+                foreach ($routes as $route) {
+                    if (!empty($route['nextHops'])) {
+                        foreach ($route['nextHops'] as $nexthop) {
+                            $record = array_merge($route, $nexthop);
+                            $record['network'] = $net;
+                            $record['interfaceDescr'] = $this->getIfDesc($record['interfaceName']);
+                            $records[] = $record;
+                        }
                     }
                 }
             }
@@ -326,5 +328,20 @@ class DiagnosticsController extends ApiControllerBase
     public function bfdcountersAction(): array
     {
         return $this->bfdTreeFetch('counters');
+    }
+
+    public function bfdstaticrouteAction(): array
+    {
+        $records = [];
+        $payload = json_decode((new Backend())->configdpRun('quagga diagnostics bfd_staticroute json'), true) ?? [];
+        if (!empty($payload['path-list'])) {
+            foreach ($payload['path-list'] as $proto => $values) {
+                foreach ($values as $record) {
+                    $record['proto'] = $proto;
+                    $records[] = $record;
+                }
+            }
+        }
+        return $this->searchRecordsetBase($records);
     }
 }
