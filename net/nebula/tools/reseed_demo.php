@@ -302,9 +302,6 @@ echo "\n=== Step 3: Create instance 'demo-lighthouse' ===\n";
 
 $mdl3 = new Nebula();
 
-// Enable the global service.
-$mdl3->general->enabled = '1';
-
 $instNode = $mdl3->instances->instance->Add();
 $instNode->enabled      = '1';
 $instNode->description  = 'demo-lighthouse';

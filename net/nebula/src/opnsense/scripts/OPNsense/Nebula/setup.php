@@ -816,7 +816,7 @@ function nebula_instance_diag($uuid)
  * @return array ['started'=>bool] / ['started'=>false,'error'=>str], so the
  *               reload button can surface the real failure reason in the UI.
  */
-function nebula_restart_instance($model, $uuid, $general_enabled)
+function nebula_restart_instance($model, $uuid)
 {
     nebula_stop_instance($uuid);
 
@@ -831,7 +831,7 @@ function nebula_restart_instance($model, $uuid, $general_enabled)
         syslog(LOG_WARNING, "nebula: restart_instance: uuid {$uuid} not found in model; skipping");
         return ['started' => false, 'error' => 'instance not found'];
     }
-    if (!$general_enabled || (string)$node->enabled !== '1') {
+    if ((string)$node->enabled !== '1') {
         syslog(LOG_INFO, "nebula: instance {$uuid} is disabled; not restarting");
         return ['started' => false, 'error' => 'instance is disabled'];
     }
@@ -899,13 +899,13 @@ function nebula_needs_restart(string $oldYml, string $newYml): bool
  * device) changed, or when the reload itself fails. nebula re-reads the config
  * and the cert files on reload, so both are written before reloading.
  */
-function nebula_apply($model, $general_enabled)
+function nebula_apply($model)
 {
     $instances = nebula_instances($model);
     nebula_reconcile_orphans($instances);
 
     foreach ($instances as $uuid => $node) {
-        $shouldRun = $general_enabled && (string)$node->enabled === '1';
+        $shouldRun = (string)$node->enabled === '1';
         $running   = nebula_running_pid($uuid) !== null;
 
         if (!$shouldRun) {
@@ -925,7 +925,7 @@ function nebula_apply($model, $general_enabled)
         $newYml  = (string)$model->generateConfig($node, nebula_diag_pubkey());
 
         if (nebula_needs_restart($oldYml, $newYml)) {
-            nebula_restart_instance($model, $uuid, $general_enabled);
+            nebula_restart_instance($model, $uuid);
             continue;
         }
 
@@ -947,7 +947,7 @@ function nebula_apply($model, $general_enabled)
         $res = nebula_debug_cmd($model, $uuid, 'reload');
         if (empty($res['ok'])) {
             syslog(LOG_WARNING, "nebula: apply: {$uuid} reload failed (" . ($res['error'] ?? '') . "); restarting");
-            nebula_restart_instance($model, $uuid, $general_enabled);
+            nebula_restart_instance($model, $uuid);
         } else {
             syslog(LOG_INFO, "nebula: apply: {$uuid} reloaded in place");
         }
@@ -1303,7 +1303,6 @@ openlog('nebula', LOG_ODELAY, LOG_DAEMON);
 $action = $argv[1] ?? '';
 $uuid_arg = isset($argv[2]) ? trim($argv[2]) : '';
 $model = new Nebula();
-$general_enabled = (string)$model->general->enabled === '1';
 
 switch ($action) {
     case 'start':
@@ -1315,14 +1314,14 @@ switch ($action) {
              * an assigned nebulaX device gets created during interface bring-up.
              * JSON out so the caller can see the start result. */
             $node = $instances[$uuid_arg] ?? null;
-            if ($node !== null && $general_enabled && (string)$node->enabled === '1') {
+            if ($node !== null && (string)$node->enabled === '1') {
                 echo json_encode(nebula_start_instance($model, $node, $uuid_arg)) . "\n";
             } else {
                 echo json_encode(['started' => false, 'error' => 'instance not enabled or unknown']) . "\n";
             }
         } else {
             foreach ($instances as $uuid => $node) {
-                if ($general_enabled && (string)$node->enabled === '1') {
+                if ((string)$node->enabled === '1') {
                     nebula_start_instance($model, $node, $uuid);
                 }
             }
@@ -1342,7 +1341,7 @@ switch ($action) {
             /* per-instance restart — emit JSON so the reload button (configd
              * restart_instance action, type:script_output) can surface the
              * real start failure reason in the UI. */
-            $res = nebula_restart_instance($model, $uuid_arg, $general_enabled);
+            $res = nebula_restart_instance($model, $uuid_arg);
             echo json_encode($res) . "\n";
         } else {
             /* all-instances restart */
@@ -1350,7 +1349,7 @@ switch ($action) {
                 nebula_stop_instance($uuid);
             }
             foreach ($instances as $uuid => $node) {
-                if ($general_enabled && (string)$node->enabled === '1') {
+                if ((string)$node->enabled === '1') {
                     $res = nebula_start_instance($model, $node, $uuid);
                     if (!empty($res['started'])) {
                         nebula_reattach_interface($uuid);
@@ -1363,7 +1362,7 @@ switch ($action) {
         /* reconfigure path: reload running instances in place, restarting only
          * those whose structural config (listen bind / cipher / tun dev) changed.
          * Avoids tearing down live tunnels for firewall/route/lighthouse edits. */
-        nebula_apply($model, $general_enabled);
+        nebula_apply($model);
         break;
     case 'status':
         if ($uuid_arg !== '') {

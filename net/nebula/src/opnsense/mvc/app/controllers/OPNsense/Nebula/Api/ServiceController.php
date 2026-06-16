@@ -48,8 +48,24 @@ use OPNsense\Nebula\Nebula;
 class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = 'OPNsense\Nebula\Nebula';
-    protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'nebula';
+
+    /**
+     * Nebula has no global enable: each instance is its own daemon, gated by
+     * its own enabled flag (mirrors WireGuard's per-server/per-client model).
+     * The base class needs *some* answer to "is the service enabled?" so the
+     * standard reconfigure / status / widget plumbing works — answer "yes if
+     * any instance is enabled."
+     */
+    protected function serviceEnabled()
+    {
+        foreach (($this->getModel())->instances->instance->iterateItems() as $node) {
+            if ((string)$node->enabled === '1') {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Apply pending config, then clear the subsystem-dirty marker so the "apply

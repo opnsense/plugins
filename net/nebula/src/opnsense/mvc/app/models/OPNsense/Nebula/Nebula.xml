@@ -2,12 +2,6 @@
     <mount>//OPNsense/Nebula</mount>
     <description>Nebula mesh overlay</description>
     <items>
-        <general>
-            <enabled type="BooleanField">
-                <Default>0</Default>
-                <Required>Y</Required>
-            </enabled>
-        </general>
         <instances>
             <instance type="ArrayField">
                 <enabled type="BooleanField">

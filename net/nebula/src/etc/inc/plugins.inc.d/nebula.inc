@@ -28,7 +28,15 @@
 
 function nebula_enabled()
 {
-    return (string)(new \OPNsense\Nebula\Nebula())->general->enabled == '1';
+    /* Nebula has no global enable: each instance is its own daemon. The plugin's
+     * services / devices / interface hooks early-out via nebula_enabled() when
+     * there's nothing to run, so map "enabled" to "at least one instance is on." */
+    foreach ((new \OPNsense\Nebula\Nebula())->instances->instance->iterateItems() as $node) {
+        if ((string)$node->enabled === '1') {
+            return true;
+        }
+    }
+    return false;
 }
 
 function nebula_services()
