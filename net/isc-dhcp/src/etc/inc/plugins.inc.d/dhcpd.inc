@@ -99,7 +99,7 @@ function dhcpd_services()
     if (dhcpd_dhcpv4_enabled()) {
         $pconfig = [];
         $pconfig['name'] = 'dhcpd';
-        $pconfig['description'] = gettext('ISC DHCPv4 Server');
+        $pconfig['description'] = gettext('ISC DHCPv4');
         $pconfig['php']['restart'] = ['dhcpd_dhcp4_configure'];
         $pconfig['php']['start'] = ['dhcpd_dhcp4_configure'];
         $pconfig['pidfile'] = '/var/dhcpd/var/run/dhcpd.pid';
@@ -109,7 +109,7 @@ function dhcpd_services()
     if (dhcpd_dhcpv6_enabled()) {
         $pconfig = [];
         $pconfig['name'] = 'dhcpd6';
-        $pconfig['description'] = gettext('ISC DHCPv6 Server');
+        $pconfig['description'] = gettext('ISC DHCPv6');
         $pconfig['php']['restart'] = ['dhcpd_dhcp6_configure'];
         $pconfig['php']['start'] = ['dhcpd_dhcp6_configure'];
         $pconfig['pidfile'] = '/var/dhcpd/var/run/dhcpdv6.pid';
