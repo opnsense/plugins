@@ -709,7 +709,6 @@ class Nextcloud extends Base implements IBackupProvider
         $response = curl_exec($curl);
         $err = curl_error($curl);
         $info = curl_getinfo($curl);
-        curl_close($curl);
         return array('response' => $response, 'info' => $info, 'err' => $err);
     }
 

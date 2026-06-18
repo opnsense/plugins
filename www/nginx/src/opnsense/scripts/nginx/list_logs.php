@@ -57,14 +57,14 @@ function list_logfiles($prefix)
     return $result;
 }
 
-if ($_SERVER['argc'] < 3) {
+if ($argc < 3) {
     die('{"error": "Incorrect amount of parameters given"}');
 }
 
 // first parameter: error|access
-$mode = $_SERVER['argv'][1];
+$mode = $argv[1];
 // second parameter: uuid of server
-$server = $_SERVER['argv'][2];
+$server = $argv[2];
 $nginx = new Nginx();
 
 $result = [];
