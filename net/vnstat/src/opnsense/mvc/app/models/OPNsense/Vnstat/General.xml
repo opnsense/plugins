@@ -16,7 +16,7 @@
             <Default>1</Default>
             <MinimumValue>1</MinimumValue>
             <MaximumValue>28</MaximumValue>
-            <ValidationMessage>Value must be between 1 and 28</ValidationMessage>
+            <ValidationMessage>Value must be between 1 and 28.</ValidationMessage>
         </month_rotate>
     </items>
 </model>
