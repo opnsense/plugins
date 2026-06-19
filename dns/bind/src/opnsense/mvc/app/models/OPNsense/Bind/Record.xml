@@ -38,6 +38,7 @@
                         <RRSIG>RRSIG</RRSIG>
                         <SRV>SRV</SRV>
                         <SSHFP>SSHFP</SSHFP>
+                        <SVCB>SVCB</SVCB>
                         <TLSA>TLSA</TLSA>
                         <TXT>TXT</TXT>
                     </OptionValues>
