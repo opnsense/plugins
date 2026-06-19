@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/vnstat/general</mount>
     <description>Vnstat configuration</description>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
