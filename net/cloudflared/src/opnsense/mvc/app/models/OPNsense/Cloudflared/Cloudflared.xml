@@ -30,6 +30,15 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </quic_disable_pmtu_discovery>
+            <edge_ip_version type="OptionField">
+                <Default>auto</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <auto/>
+                    <ipv4>IPv4</ipv4>
+                    <ipv6>IPv6</ipv6>
+                </OptionValues>
+            </edge_ip_version>
             <log_level type="OptionField">
                 <Default>info</Default>
                 <Required>Y</Required>
