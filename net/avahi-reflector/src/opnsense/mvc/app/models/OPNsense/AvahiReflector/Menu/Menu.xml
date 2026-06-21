@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <AvahiReflector VisibleName="Avahi mDNS Reflector" cssClass="fa fa-podcast fa-fw">
+            <Settings url="/ui/avahireflector"/>
+        </AvahiReflector>
+    </Services>
+</menu>

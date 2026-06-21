@@ -1,0 +1,2 @@
+avahidaemon.conf:/usr/local/etc/avahi/avahi-daemon.conf
+rc.conf.d:/etc/rc.conf.d/avahi_daemon
