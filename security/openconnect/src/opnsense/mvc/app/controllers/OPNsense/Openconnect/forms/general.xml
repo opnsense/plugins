@@ -47,4 +47,28 @@
         <type>dropdown</type>
         <help>Select the client certificate to use.</help>
     </field>
+    <field>
+        <id>general.tokenmode</id>
+        <label>Token Mode</label>
+        <type>dropdown</type>
+        <help>Use a one-time password generation mode.</help>
+    </field>
+    <field>
+        <id>general.tokensecret</id>
+        <label>Token Secret</label>
+        <type>text</type>
+        <help>Enter a secret to use with one-time password generation.</help>
+    </field>
+    <field>
+        <id>general.allowinsecure</id>
+        <label>Allow Insecure Ciphers</label>
+        <type>checkbox</type>
+        <help>This option allows the use of insecure ciphers.</help>
+    </field>
+    <field>
+        <id>general.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Select the protocol to use.</help>
+    </field>
 </form>

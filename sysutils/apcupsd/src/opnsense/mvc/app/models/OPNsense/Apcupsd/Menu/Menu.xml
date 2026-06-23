@@ -1,0 +1,9 @@
+<menu>
+    <Services>
+        <Apcupsd cssClass="fa fa-battery-full fa-fw">
+            <Settings order="10" url="/ui/apcupsd" />
+            <Status order="20" url="/ui/apcupsd/status" />
+            <LogFile VisibleName="Log File" order="30" url="/ui/diagnostics/log/core/apcupsd"/>
+        </Apcupsd>
+    </Services>
+</menu>

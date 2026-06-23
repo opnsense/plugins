@@ -30,8 +30,7 @@ function puppetagent_enabled()
 {
     global $config;
 
-    return isset($config['OPNsense']['puppetagent']['general']['Enabled']) &&
-    $config['OPNsense']['puppetagent']['general']['Enabled'] == 1;
+    return !empty($config['OPNsense']['puppetagent']['general']['Enabled']);
 }
 
 /**

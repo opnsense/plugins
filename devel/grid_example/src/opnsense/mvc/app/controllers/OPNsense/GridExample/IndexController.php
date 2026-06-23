@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2019 Deciso B.V.
+ *    Copyright (C) 2019-2025 Deciso B.V.
  *
  *    All rights reserved.
  *
@@ -40,5 +40,7 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->pick('OPNsense/GridExample/index');
         $this->view->formDialogAddress = $this->getForm("dialogAddress");
+        // convert dialog for grid table
+        $this->view->formGridAddress = $this->getFormGrid("dialogAddress");
     }
 }

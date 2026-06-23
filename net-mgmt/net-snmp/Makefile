@@ -1,5 +1,5 @@
 PLUGIN_NAME=		net-snmp
-PLUGIN_VERSION=		1.5
+PLUGIN_VERSION=		1.6
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		Net-SNMP is a daemon for the SNMP protocol
 PLUGIN_DEPENDS=		net-snmp

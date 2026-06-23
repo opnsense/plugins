@@ -1,0 +1,11 @@
+{# /usr/local/etc/rc.conf.d/sslh #}
+{%  set plugin_name = 'sslh' %}
+{%  if OPNsense[plugin_name] is defined %}{# Prevent configd reload from erroring out if node doesn't exist #}
+{%      set cfg = OPNsense[plugin_name] %}
+{%      if cfg['enabled'] is defined %}
+sslh_enable={{ '"YES"' if (cfg['enabled'] == '1') else '"NO"' }}
+{%      endif %}
+{%      if cfg['mode'] is defined %}
+sslh_mode={{ '"fork"' if (cfg['mode'] == 'fork') else '"select"' }}
+{%      endif %}
+{%  endif %}

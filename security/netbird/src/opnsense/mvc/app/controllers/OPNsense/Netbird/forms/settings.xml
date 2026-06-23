@@ -1,0 +1,141 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+    <field>
+        <id>settings.general.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable NetBird</help>
+    </field>
+    <field>
+        <id>settings.general.wireguardPort</id>
+        <label>WireGuard Port</label>
+        <type>text</type>
+        <help>Wireguard interface listening port</help>
+    </field>
+    <field>
+        <id>settings.general.ipmapping</id>
+        <label>Force IP Mapping</label>
+        <type>text</type>
+        <hint>12.34.56.78</hint>
+        <help>Forces external IPs maps between local addresses and interfaces. You can specify a comma-separated list with the following: a single IP (12.34.56.78), IP/IP (12.34.56.78/10.0.0.1) or IP/device (12.34.56.80/em1). Leave empty for automatic mapping.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Client Firewall</label>
+    </field>
+    <field>
+        <id>settings.firewall.allowConfig</id>
+        <label>Enable Firewall</label>
+        <type>checkbox</type>
+        <help>Allow the client to filter traffic with its built-in firewall. If disabled, you must assign the NetBird interface and manage firewall rules via OPNsense firewall management.
+            Additionally, NetBird routing and DNS may not function as intended.</help>
+    </field>
+    <field>
+        <id>settings.firewall.blockInboundConnection</id>
+        <label>Block Inbound Connection</label>
+        <type>checkbox</type>
+        <help>Block all inbound connections to the local machine from the WireGuard interface and any routed networks</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>SSH</label>
+    </field>
+    <field>
+        <id>settings.ssh.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Allows incoming SSH connections</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableRoot</id>
+        <label>Enable Root Login</label>
+        <type>checkbox</type>
+        <help>Allow root user login</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableSFTP</id>
+        <label>Enable SFTP</label>
+        <type>checkbox</type>
+        <help>Enable SFTP subsystem for file transfers</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableLocalPortForwarding</id>
+        <label>Enable Local Port Forwarding</label>
+        <type>checkbox</type>
+        <help>Allow clients to forward local ports through the server</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableRemotePortForwarding</id>
+        <label>Enable Remote Port Forwarding</label>
+        <type>checkbox</type>
+        <help>Allow clients to request remote port forwarding</help>
+    </field>
+    <field>
+        <id>settings.ssh.enableAuth</id>
+        <label>Enable SSH Authentication</label>
+        <type>checkbox</type>
+        <help>Enable JWT authentication for SSH connections. When disabled, allows any peer with network access</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>DNS</label>
+    </field>
+    <field>
+        <id>settings.dns.enable</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Allows the client to resolve and configure DNS on the host</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Routing</label>
+    </field>
+    <field>
+        <id>settings.routing.accessLan</id>
+        <label>Access LAN</label>
+        <type>checkbox</type>
+        <help>Allow access to local networks (LAN) when using this peer as a routing peer or exit-node</help>
+    </field>
+    <field>
+        <id>settings.routing.acceptClientRoutes</id>
+        <label>Accept Client Routes</label>
+        <type>checkbox</type>
+        <help>Accept and process client routes received from the management</help>
+    </field>
+    <field>
+        <id>settings.routing.acceptServerRoutes</id>
+        <label>Accept Server Routes</label>
+        <type>checkbox</type>
+        <help>Enable this peer to act as a router for server routes received from the management</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Post-Quantum</label>
+    </field>
+    <field>
+        <id>settings.postquantum.enableRosenpass</id>
+        <label>Enable Rosenpass</label>
+        <type>checkbox</type>
+        <help>Enable the Rosenpass to provide post-quantum secure connections (Experimental)</help>
+    </field>
+    <field>
+        <id>settings.postquantum.rosenpassPermissive</id>
+        <label>Rosenpass Permissive Mode</label>
+        <type>checkbox</type>
+        <help>Enable Rosenpass permissive mode</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Syslog Logging</label>
+    </field>
+    <field>
+        <id>settings.syslog.logLevel</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help>Set the syslog logging level. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged.</help>
+    </field>
+</form>

@@ -3,18 +3,36 @@
         <id>puppetagent.general.Enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
-        <help>Enable Puppet Agent</help>
+        <help>Enable the Puppet Agent service.</help>
     </field>
     <field>
         <id>puppetagent.general.FQDN</id>
         <label>Puppet Server FQDN</label>
         <type>text</type>
-        <help>Change Puppet Server FQDN</help>
+        <help>The primary Puppet Server to which the Puppet Agent should connect.</help>
     </field>
     <field>
         <id>puppetagent.general.Environment</id>
         <label>Puppet Environment</label>
         <type>text</type>
-        <help>Change Puppet Agent Environment</help>
+        <help>The environment in which Puppet is running.</help>
+    </field>
+    <field>
+        <id>puppetagent.general.RunInterval</id>
+        <label>Run Interval</label>
+        <type>text</type>
+        <help>How often Puppet Agent applies the catalog. Enter a number followed by one of the supported suffixes: "y" (years), "d" (days), "h" (hours), "m" (minutes), "s" (seconds).</help>
+    </field>
+    <field>
+        <id>puppetagent.general.RunTimeout</id>
+        <label>Run Timeout</label>
+        <type>text</type>
+        <help>The maximum amount of time an agent run is allowed to take. Enter a number followed by one of the supported suffixes: "y" (years), "d" (days), "h" (hours), "m" (minutes), "s" (seconds).</help>
+    </field>
+    <field>
+        <id>puppetagent.general.UseCacheOnFailure</id>
+        <label>Use Cache On Failure</label>
+        <type>checkbox</type>
+        <help>Whether to use the cached configuration when the remote configuration will not compile.</help>
     </field>
 </form>

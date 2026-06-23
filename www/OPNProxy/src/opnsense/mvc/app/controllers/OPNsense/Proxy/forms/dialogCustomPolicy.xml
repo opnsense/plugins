@@ -1,0 +1,40 @@
+<form>
+    <field>
+        <id>custom_policy.enabled</id>
+        <label>enabled</label>
+        <type>checkbox</type>
+        <help>Enable this item</help>
+    </field>
+    <field>
+        <id>custom_policy.applies_on</id>
+        <label>User / Group</label>
+        <type>select_multiple</type>
+        <help>ACL applies on selected users and groups. Users are prefixed with *, best use groups to structure policies</help>
+    </field>
+    <field>
+        <id>custom_policy.source_net</id>
+        <label>Source</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>source ip or network, examples 10.0.0.0/24, 10.0.0.1</help>
+    </field>
+    <field>
+        <id>custom_policy.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>Action to perform.</help>
+    </field>
+    <field>
+        <id>custom_policy.content</id>
+        <label>Content</label>
+        <type>textbox</type>
+        <help>List of domains and path entries, prefix with . to include subdomains (e.g. .com to block all .com domains). To match all use *</help>
+        <allownew>true</allownew>
+    </field>
+    <field>
+        <id>custom_policy.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

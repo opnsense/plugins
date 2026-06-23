@@ -37,7 +37,7 @@ namespace OPNsense\MDNSRepeater;
 class IndexController extends \OPNsense\Base\IndexController
 {
     /**
-     * MDNS Repeater index page
+     * mDNS Repeater index page
      * @throws \Exception
      */
     public function indexAction()

@@ -42,7 +42,6 @@ class DhcpController extends ApiMutableModelControllerBase
     }
     public function getDhcpAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('dhcp', 'dhcps.dhcp', $uuid);
     }
     public function addDhcpAction()

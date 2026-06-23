@@ -9,13 +9,20 @@
         <id>user.username</id>
         <label>Username</label>
         <type>text</type>
-        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ._-@/</help>
+        <help>Set the unique username for the user. Allowed characters are 0-9, a-z, A-Z, and ._-@/:</help>
     </field>
     <field>
         <id>user.password</id>
         <label>Password</label>
         <type>password</type>
-        <help>Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#= with up to 128 characters.</help>
+        <help><![CDATA[Set the password for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=:& with up to 128 characters.]]></help>
+    </field>
+    <field>
+        <id>user.passwordencryption</id>
+        <label>Password Encryption</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help><![CDATA[Set encryption or hash for stored password.<br/><b>Cleartext-Password</b> The password will be stored in plaintext. This may be less secure than alternatives. Works with all RADIUS authentication protocols.<br/><b>NT-Password (pre-hashed)</b> An NT hash of the password will be stored. First the NT hash of the password should be generated; this will be a string such as 469DCB69D4A58A5F29272787713D96F8. Then the hash (not the password) should be entered into the password field above. A command such as <code>smbencrypt secret123</code> may be used to generate the pre-hashed NT Password. Works with the following RADIUS authentication protocols: PEAP, EAP-MSCHAPv2, EAP-GTC, PAP, MS-CHAP, Cisco LEAP.]]></help>
     </field>
     <field>
         <id>user.description</id>
@@ -68,6 +75,26 @@
         <type>text</type>
         <advanced>true</advanced>
         <help>Set how many times one account is allowed to login at the same time.</help>
+    </field>
+    <field>
+        <id>user.exos_vlan_untagged</id>
+        <label>EXOS VLAN Untagged</label>
+        <type>text</type>
+        <help>Set exos vlan untagged</help>
+    </field>
+    <field>
+        <id>user.exos_vlan_tagged</id>
+        <label>EXOS VLAN Tagged list</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set exos vlan tagged</help>
+    </field>
+    <field>
+        <id>user.exos_policy</id>
+        <label>EXOS policy</label>
+        <type>text</type>
+        <help>Set exos policy filter id with Filter-ID="Entrasys:version=1:mgmt=su:policy=[policy_name]"</help>
     </field>
     <field>
         <id>user.wispr_bw_min_up</id>
@@ -136,5 +163,11 @@
         <type>select_multiple</type>
         <allownew>true</allownew>
         <help>Select the configured AVPairs for this user.</help>
+    </field>
+    <field>
+        <id>user.tunnel_password</id>
+        <label>Tunnel-Password</label>
+        <type>password</type>
+        <help>Set the Tunnel-Password attribute for the user. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
     </field>
 </form>

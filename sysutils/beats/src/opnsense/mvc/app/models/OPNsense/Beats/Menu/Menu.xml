@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <Beats cssClass="fa fa-heartbeat fa-fw">
+            <Filebeat url="/ui/beats"/>
+        </Beats>
+    </Services>
+</menu>

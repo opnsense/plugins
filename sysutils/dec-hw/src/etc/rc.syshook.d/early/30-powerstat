@@ -1,0 +1,13 @@
+#!/bin/sh
+
+AMDGPIO="/boot/kernel/amdgpio.ko"
+
+if [ ! -e "$AMDGPIO" ]; then
+    echo "Error: amdpgio kernel module missing"
+    logger -t "dec-hw" "Error: amdpgio kernel module missing"
+	exit 1
+fi
+
+kldload "$AMDGPIO" 2>&1
+
+exit 0

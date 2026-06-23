@@ -1,9 +1,9 @@
 PLUGIN_NAME=		sunnyvalley
-PLUGIN_VERSION=		1.2
-PLUGIN_REVISION=	1
-PLUGIN_COMMENT=		Vendor repository for Sensei (Next Generation Firewall Extensions)
-PLUGIN_MAINTAINER=	opensource@sunnyvalley.io
-PLUGIN_WWW=		https://www.sunnyvalley.io
-PLUGIN_DEPENDS=		${PLUGIN_FLAVOUR:tl}
+PLUGIN_VERSION=		1.5
+PLUGIN_REVISION=	2
+PLUGIN_COMMENT=		Vendor Repository for Zenarmor - Enterprise SASE & SSE platform (NGFW, SWG, CASB, ZTNA, SD-WAN)
+PLUGIN_MAINTAINER=	oss@zenarmor.com
+PLUGIN_WWW=		https://www.zenarmor.com
+PLUGIN_TIER=		2
 
 .include "../../Mk/plugins.mk"

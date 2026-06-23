@@ -155,7 +155,16 @@ authorize {
 
         #
         #  The ldap module reads passwords from the LDAP database.
+{%   if helpers.exists('OPNsense.freeradius.ldap.innertunnel') and OPNsense.freeradius.ldap.innertunnel == '1' %}
+        ldap
+          if ((ok || updated) && User-Password) {
+              update control {
+                  Auth-Type := ldap
+              }
+          }
+{%  else %}
         -ldap
+{%  endif %}
 
         #
         #  Enforce daily limits on time spent logged in.
@@ -242,9 +251,11 @@ authenticate {
         #  authentication server, and knows what to do with authentication.
         #  LDAP servers do not.
         #
-#       Auth-Type LDAP {
-#               ldap
-#       }
+{%   if helpers.exists('OPNsense.freeradius.ldap.innertunnel') and OPNsense.freeradius.ldap.innertunnel == '1' %}
+        Auth-Type LDAP {
+                ldap
+        }
+{%   endif %}
 
         #
         #  Allow EAP authentication.

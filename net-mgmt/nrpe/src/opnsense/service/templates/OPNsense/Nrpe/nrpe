@@ -1,6 +1,6 @@
 {% if helpers.exists('OPNsense.nrpe.general.enabled') and OPNsense.nrpe.general.enabled == '1' %}
-nrpe3_var_script="/usr/local/opnsense/scripts/OPNsense/Nrpe/setup.sh"
-nrpe3_enable="YES"
+nrpe_setup="/usr/local/opnsense/scripts/OPNsense/Nrpe/setup.sh"
+nrpe_enable="YES"
 {% else %}
-nrpe3_enable="NO"
+nrpe_enable="NO"
 {% endif %}

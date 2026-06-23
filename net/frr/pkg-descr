@@ -11,6 +11,180 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.53
+
+* BGP: improve visibility in ModelRelationFields and enable internalModelUseSafeDelete
+* BGP: add BFD strict mode for BGP neighbors (contributed by r3m8)
+* Diagnostics: do not mismatch on vtysh command escape
+* OSPF: improve many to one relationship between prefix lists and route maps, allow multiple selection
+* OSPF/OSPF6: more visibility and safety for ModelRelationField references
+
+1.52
+
+* Add BGP maximum-paths support for ECMP multipath (contributed by maxfield-allison) (opnsense/plugins/pull/4878)
+* Add description of BGP neighbor to frr.conf (contributed by n3wtype and Marcin Matlag) (opnsense/plugins/pull/5364)
+* Add local-address and interface options to BFD neighbors (contributed by r3m8) (opnsense/plugins/pull/5317)
+* Add BFD dependency support for static routes and add diagnostics (contributed by Sven Scholle) (opnsense/plugins/commit/12f8828)
+* Fix setup.sh script not being triggered after switch to watchfrr (opnsense/plugins/commit/9486488)
+* Fix OSPFv3 routes missing in diagnostics output (opnsense/plugins/commit/1e7cf83)
+
+1.51
+
+* Add per-neighbor local-as option for BGP (contributed by danohn) (opnsense/plugins/pull/5308)
+
+1.50
+
+* Add BGP remove-private-AS (contributed by rfrederick) (opnsense/plugins/pull/5090)
+* Fix watchfrr service handling (contributed by Andy Binder) (opnsense/plugins/pull/4712 and 5132)
+* Add capability support for BGP neighbors (contributed by Shelldog95) (opnsense/plugins/pull/5128)
+* Prevent errors in diagnostics view when a frr daemon is not started (opnsense/plugins/pull/5119)
+* Fix CARP hook service start hang (opnsense/plugins/pull/5160)
+
+1.49
+
+* Add hint about service reload / restart behaviour (opnsense/plugins/pull/5022)
+* Fix SNMP OSPF argument flags in RC configuration file (opnsense/plugins/pull/5025)
+* Fix STATIC template interface issue (opnsense/plugins/pull/5019)
+* Replace shell_exec() with mwexecfm()
+
+1.48
+
+* Add BFD detect-multiplier, transmit-interval, receive-interval (opnsense/plugins/pull/5000)
+* Add BGP enforce-first-as (opnsense/plugins/pull/5001)
+* Add BGP bestpath route selection options (opnsense/plugins/pull/5002)
+
+1.47
+
+* Add OSPF area configuration options (opnsense/plugins/pull/4880)
+* Updated model definitions and indent
+
+1.46
+
+* Add address family selection to peer groups (opnsense/plugins/pull/4861)
+* Add OSPF point-to-multipoint options (contributed by Andy Binder) (opnsense/plugins/pull/4879)
+
+1.45
+
+* Add neighbor config to OSPF (contributed by Andy Binder) (opnsense/plugins/pull/4694)
+* Add BGP listen range to peer groups (opnsense/plugins/pull/4722)
+* Fix peer group activation (opnsense/plugins/pull/4777)
+* Switch to FRR 10 (opnsense/plugins/pull/4741)
+* Further adjustments for FRR 10
+
+1.44
+
+* Add BGP allowas-in (opnsense/plugins/issues/4586)
+* Add route-map functionality to route redistribution in bgp (opnsense/plugins/issues/4570)
+* Add route-map functionality to route redistribution in ospf/ospf6 (opnsense/plugins/issues/4580)
+* Add BGP remote-as internal and external (opnsense/plugins/issues/4609)
+
+1.43
+
+* Use frr-reload instead of restarting the service on configuration changes (opnsense/plugins/issues/4529)
+* Migrate separate daemon config files into single frr.conf file (opnsense/plugins/issues/4510)
+* Delete per daemon and old watchfrr files (opnsense/plugins/issues/4551)
+* Add help texts to all options and expose them in grid as columns (opnsense/plugins/pull/4494)
+* Replace deprecated passive-interface directive in ospf (opnsense/plugins/issues/4534)
+* Style cleanup and unify forms (opnsense/plugins/pull/4450)
+* Implement base_apply_button (opnsense/plugins/pull/4542)
+
+1.42
+
+* Fix updatesource not rendering when interface has been selected
+* Add BFD multihop support for IPv4
+
+1.41
+
+* Set up networks, prefix lists, and route maps for OSPF6 (contributed by Mike Shuey)
+
+1.40
+
+* Add staticd to routing suite
+* Add BGP peer-group support
+* Add distance to BGP
+
+1.39
+
+* Add plain password authentication to OSPF
+* Set multihop value to 255 (contributed by Cogan Ng Jun Lin)
+
+1.38
+
+* Add "soft-reconfiguration inbound" neighbor option
+
+1.37
+
+* Add Adjacency Logging to OSPF
+
+1.36
+
+* Added default-information originate option for OSPFv3
+
+1.35
+
+* Added automatic OSPFv3 firewall rules and opt-out automatic rule switch (contributed by Bill Gertz)
+
+1.34
+
+* Add checkbox to log BGP neighbor changes
+* Add BFD support (contributed by Mark Stitson)
+* Switch to FRR version 8
+* Rewrote diagnostics API
+
+1.33
+
+* Allow both IPv4 and IPv6 in BGP via setkey (contributed by as8net)
+
+1.32
+
+* Add attribute-unchanged option (contributed by Patrik Kernstock)
+
+1.31
+
+* Set no bgp default ipv4-unicast (contributed by vnxme)
+* Increase artifical BGP GUI ID limits (contributed by Patrik Kernstock)
+* Add BGP Network Import-Check (contributed by Patrik Kernstock)
+* Assorted GUI fixes (contributed by Patrik Kernstock)
+
+1.30
+
+* Allow specifying multiple PrefixLists and CommunityLists (contributed by Patrik Kernstock)
+
+1.29
+
+* Add disable-connected-check option and BGP weight option
+
+1.28
+
+* OSPF6 Interface change networktype and interfacename to dropdown in stead of multi select
+* Diagnostics / BGP - fix search in grid, should only use a formatter for presentation purposes
+* Add ospf6 carp demotion event handler
+* Allow BGP prefix-list number up to 10000 instead of 99
+
+1.27
+
+* Add BGP password authentication
+
+1.26
+
+* Fix Model migration errors
+
+1.25
+
+* Add "All" option to next-hop-self command (#2673)
+
+1.24
+
+* Add AS-Override (#2517)
+
+1.23
+
+* Add route-reflector-client to BGP neighbor config
+* bugfix: BGP Prefix List "IP version" field appears to be ineffective (#2602)
+* feature: IPv6 link-local neighbors require an interface to be specified (#2604)
+* feature: multiprotocol BGP sessions are not supported (#2606)
+* bugfix: Multiple BGP peers causes config generation error (#2623)
+
 1.22
 
 * Add BFD support
@@ -79,9 +253,9 @@ Plugin Changelog
 
 1.12
 
-* Add passive-interface to OSPFv3 (by Michael Muenz)
-* Allow to set area per interface for OSPFv2 (by @twoequaldots)
-* Allow to set ebgp-multihop in BGP (by @bpeavy and Greg Goodrich)
+* Add passive-interface to OSPFv3 (contributed by Michael Muenz)
+* Allow to set area per interface for OSPFv2 (contributed by twoequaldots)
+* Allow to set ebgp-multihop in BGP (contributed by bpeavy and Greg Goodrich)
 
 1.11
 
@@ -100,6 +274,3 @@ Plugin Changelog
 1.8
 
 * Add area range in OSPF config
-
-
-WWW: https://frrouting.org/

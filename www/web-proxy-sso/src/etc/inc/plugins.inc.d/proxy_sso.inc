@@ -13,17 +13,20 @@ function proxy_sso_squid_hook($verbose, $action)
         exit;
     }
 
+    service_log('template reload OPNsense/ProxySSO: ', $verbose);
+
     $res = configd_run('template reload OPNsense/ProxySSO');
-    if ($verbose) {
-        printf("template reload OPNsense/ProxySSO: %s\n", trim($res));
-    }
+
+    service_log(trim($res) . "\n", $verbose);
 }
 
 function proxy_sso_xmlrpc_sync()
 {
-    $result = array();
+    $result = [];
+
     $result['id'] = 'proxysso';
     $result['section'] = 'OPNsense.ProxySSO';
     $result['description'] = gettext('Kerberos authentication module');
-    return array($result);
+
+    return [$result];
 }

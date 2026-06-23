@@ -30,6 +30,12 @@
         <help>Enable support for AgentX Application (FRR, others).</help>
     </field>
     <field>
+        <id>general.enableobservium</id>
+        <label>Add Observium Support</label>
+        <type>checkbox</type>
+        <help>Enable extended OIDs for Observium NMS.</help>
+    </field>
+    <field>
         <id>general.l3visibility</id>
         <label>Layer 3 Visibility</label>
         <type>checkbox</type>

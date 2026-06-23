@@ -36,7 +36,7 @@ def reverse_log_reader(filename):
     :return: generator
     """
     block_size = 81920
-    input_stream = open(filename, 'rU')
+    input_stream = open(filename, 'r')
     input_stream.seek(0, os.SEEK_END)
     file_byte_start = input_stream.tell()
 

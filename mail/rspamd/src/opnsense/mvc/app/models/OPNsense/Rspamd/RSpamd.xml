@@ -1,511 +1,497 @@
 <model>
-  <mount>//OPNsense/Rspamd</mount>
-  <description>rspamd anti spam filter</description>
-  <version>1.0.2</version>
-  <items>
-    <general>
-      <enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enabled>
-      <enable_redis_plugin type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_redis_plugin>
-      <enable_bayes_autolearn type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_bayes_autolearn>
-      <rejectscore type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-        <MaximumValue>999</MaximumValue>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>subjectscore</field>
-            <operator>gt</operator>
-          </check001>
-          <check002>
-            <ValidationMessage>This field must be bigger than the reject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>headerscore</field>
-            <operator>gt</operator>
-          </check002>
-          <check003>
-            <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>greylistscore</field>
-            <operator>gt</operator>
-          </check003>
-        </Constraints>
-      </rejectscore>
-      <headerscore type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-        <MaximumValue>999</MaximumValue>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>subjectscore</field>
-            <operator>lt</operator>
-          </check001>
-          <check002>
-            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>rejectscore</field>
-            <operator>lt</operator>
-          </check002>
-          <check003>
-            <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>greylistscore</field>
-            <operator>gt</operator>
-          </check003>
-        </Constraints>
-      </headerscore>
-      <greylistscore type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-        <MaximumValue>999</MaximumValue>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be lower than the header score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>headerscore</field>
-            <operator>lt</operator>
-          </check001>
-          <check002>
-            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>rejectscore</field>
-            <operator>lt</operator>
-          </check002>
-          <check003>
-            <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>subjectscore</field>
-            <operator>lt</operator>
-          </check003>
-        </Constraints>
-      </greylistscore>
-      <subjectscore type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-        <MaximumValue>999</MaximumValue>
-        <Constraints>
-          <check001>
-            <ValidationMessage>This field must be bigger than the header score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>headerscore</field>
-            <operator>gt</operator>
-          </check001>
-          <check002>
-            <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>rejectscore</field>
-            <operator>lt</operator>
-          </check002>
-          <check003>
-            <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
-            <type>ComparedToFieldConstraint</type>
-            <field>greylistscore</field>
-            <operator>gt</operator>
-          </check003>
-        </Constraints>
-      </subjectscore>
-      <rewritesubject type="TextField">
-        <Required>N</Required>
-      </rewritesubject>
-      <historyrows type="IntegerField">
-        <default>200</default>
-        <Required>Y</Required>
-        <MinimumValue>1</MinimumValue>
-        <MaximumValue>100000</MaximumValue>
-        <ValidationMessage>Choose a value between 1 and 100000.</ValidationMessage>
-      </historyrows>
-      <nameserver type="HostnameField">
-        <default>127.0.0.1</default>
-        <Required>Y</Required>
-        <FieldSeparator>,</FieldSeparator>
-        <asList>Y</asList>
-      </nameserver>
-    </general>
-
-    <milter_headers>
-      <enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enabled>
-      <enable_extended_spam_headers type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_extended_spam_headers>
-      <enable_authentication_results type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_authentication_results>
-      <enable_spamd_bar type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enable_spamd_bar>
-      <skip_local type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </skip_local>
-      <skip_authenticated type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </skip_authenticated>
-      <extended_headers_rcpt type="CSVListField">
-        <mask>/[a-z0-9\.\-_@,]+/i</mask>
-        <Required>N</Required>
-      </extended_headers_rcpt>
-    </milter_headers>
-
-    <graylist>
-      <expire type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </expire>
-      <timeout type="IntegerField">
-        <Required>N</Required>
-        <MinimumValue>1</MinimumValue>
-      </timeout>
-      <max_data_len type="IntegerField">
-        <Required>N</Required>
-      </max_data_len>
-      <ipv4mask type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <MaximumValue>32</MaximumValue>
-        <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
-        <default>19</default>
-      </ipv4mask>
-      <ipv6mask type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <MaximumValue>128</MaximumValue>
-        <default>64</default>
-        <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
-      </ipv6mask>
-      <whitelist_ip type="CSVListField">
-        <Required>N</Required>
-        <mask>/^([a-fA-F0-9\.:\[\]\/]*?,)*([a-fA-F0-9\.:\[\]\/]*)$/</mask>
-      </whitelist_ip>
-    </graylist>
-
-    <dkim>
-      <cache_size type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <ValidationMessage>A valid cache size must be set.</ValidationMessage>
-      </cache_size>
-      <cache_expire type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
-      </cache_expire>
-      <time_jitter type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <ValidationMessage>A valid time jitter must be set.</ValidationMessage>
-      </time_jitter>
-      <trusted_only type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </trusted_only>
-      <skip_multi type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </skip_multi>
-      <!-- dkim signing -->
-      <allow_envfrom_empty type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </allow_envfrom_empty>
-      <allow_hdrfrom_mismatch type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </allow_hdrfrom_mismatch>
-      <allow_hdrfrom_multiple type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </allow_hdrfrom_multiple>
-      <allow_username_mismatch type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </allow_username_mismatch>
-      <auth_only type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </auth_only>
-      <sign_local type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </sign_local>
-      <try_fallback type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </try_fallback>
-      <use_domain type="OptionField">
-        <default>header</default>
-        <Required>Y</Required>
-        <OptionValues>
-          <header>Header</header>
-          <envelope>Envelope</envelope>
-        </OptionValues>
-      </use_domain>
-      <use_esld type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </use_esld>
-    </dkim>
-
-    <mx-check>
-      <enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enabled>
-      <expire type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <default>86400</default>
-        <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
-      </expire>
-    </mx-check>
-
-    <phishing>
-      <openphish_enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </openphish_enabled>
-      <openphish_map type="TextField">
-        <default></default>
-        <Required>N</Required>
-      </openphish_map>
-      <openphish_premium_enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </openphish_premium_enabled>
-      <phishtank_enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </phishtank_enabled>
-      <phishtank_map type="TextField">
-        <default></default>
-        <Required>N</Required>
-      </phishtank_map>
-    </phishing>
-
-    <rate_limit>
-      <per_recipient>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </per_recipient>
-      <per_ip>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </per_ip>
-      <per_ip_from>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </per_ip_from>
-      <bounce>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </bounce>
-      <bounce_ip>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </bounce_ip>
-      <user>
-        <count type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The count value must be a positive number.</ValidationMessage>
-        </count>
-        <time type="IntegerField">
-          <MinimumValue>1</MinimumValue>
-          <Required>N</Required>
-          <ValidationMessage>The time must be a positive integer.</ValidationMessage>
-        </time>
-        <time_unit type="OptionField">
-          <default>m</default>
-          <Required>Y</Required>
-          <OptionValues>
-            <s>Seconds</s>
-            <m>Minutes</m>
-            <h>Hours</h>
-          </OptionValues>
-        </time_unit>
-      </user>
-      <whitelisted_rcpts type="CSVListField">
-        <default>postmaster,mailer-daemon</default>
-      </whitelisted_rcpts>
-      <max_rcpt type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>Y</Required>
-        <default>20</default>
-      </max_rcpt>
-    </rate_limit>
-
-    <spamtrap>
-      <enabled type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </enabled>
-      <fuzzy_learning type="BooleanField">
-        <default>0</default>
-        <Required>Y</Required>
-      </fuzzy_learning>
-      <spam_learning type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </spam_learning>
-      <spam_recipients type="CSVListField">
-        <Required>N</Required>
-      </spam_recipients>
-    </spamtrap>
-
-    <spf>
-      <spf_cache_size type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <default>2</default>
-        <ValidationMessage>A valid cache size in kilobytes must be set.</ValidationMessage>
-      </spf_cache_size>
-      <spf_cache_expire type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
-      </spf_cache_expire>
-    </spf>
-
-    <av>
-      <force-reject type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </force-reject>
-      <attachments-only type="BooleanField">
-        <default>1</default>
-        <Required>Y</Required>
-      </attachments-only>
-      <max-size type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <default>20000000</default>
-        <Required>N</Required>
-        <ValidationMessage>A valid maximum size in bytes must be set.</ValidationMessage>
-      </max-size>
-      <whitelist type="CSVListField">
-        <Required>N</Required>
-      </whitelist>
-    </av>
-
-    <surbl>
-      <whitelist type="CSVListField">
-        <Required>N</Required>
-      </whitelist>
-      <exceptions type="CSVListField">
-        <Required>N</Required>
-      </exceptions>
-    </surbl>
-
-    <multimap>
-      <badfileextension type="CSVListField">
-        <Required>N</Required>
-        <default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</default>
-      </badfileextension>
-      <whitelistsender type="CSVListField">
-        <Required>N</Required>
-      </whitelistsender>
-    </multimap>
-  </items>
+    <mount>//OPNsense/Rspamd</mount>
+    <description>rspamd anti spam filter</description>
+    <version>1.0.2</version>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <enable_redis_plugin type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_redis_plugin>
+            <enable_bayes_autolearn type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_bayes_autolearn>
+            <rejectscore type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>999</MaximumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>subjectscore</field>
+                        <operator>gt</operator>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be bigger than the reject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>headerscore</field>
+                        <operator>gt</operator>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>greylistscore</field>
+                        <operator>gt</operator>
+                    </check003>
+                </Constraints>
+            </rejectscore>
+            <headerscore type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>999</MaximumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>subjectscore</field>
+                        <operator>lt</operator>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>rejectscore</field>
+                        <operator>lt</operator>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>This field must be bigger than the greylist score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>greylistscore</field>
+                        <operator>gt</operator>
+                    </check003>
+                </Constraints>
+            </headerscore>
+            <greylistscore type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>999</MaximumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be lower than the header score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>headerscore</field>
+                        <operator>lt</operator>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>rejectscore</field>
+                        <operator>lt</operator>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>This field must be lower than the subject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>subjectscore</field>
+                        <operator>lt</operator>
+                    </check003>
+                </Constraints>
+            </greylistscore>
+            <subjectscore type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>999</MaximumValue>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>This field must be bigger than the header score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>headerscore</field>
+                        <operator>gt</operator>
+                    </check001>
+                    <check002>
+                        <ValidationMessage>This field must be lower than the reject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>rejectscore</field>
+                        <operator>lt</operator>
+                    </check002>
+                    <check003>
+                        <ValidationMessage>This field must be bigger than the subject score.</ValidationMessage>
+                        <type>ComparedToFieldConstraint</type>
+                        <field>greylistscore</field>
+                        <operator>gt</operator>
+                    </check003>
+                </Constraints>
+            </subjectscore>
+            <rewritesubject type="TextField">
+                <Required>N</Required>
+            </rewritesubject>
+            <historyrows type="IntegerField">
+                <Default>200</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>100000</MaximumValue>
+                <ValidationMessage>Choose a value between 1 and 100000.</ValidationMessage>
+            </historyrows>
+            <nameserver type="HostnameField">
+                <Default>127.0.0.1</Default>
+                <Required>Y</Required>
+                <FieldSeparator>,</FieldSeparator>
+                <AsList>Y</AsList>
+            </nameserver>
+        </general>
+        <milter_headers>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <enable_extended_spam_headers type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_extended_spam_headers>
+            <enable_authentication_results type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_authentication_results>
+            <enable_spamd_bar type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_spamd_bar>
+            <skip_local type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </skip_local>
+            <skip_authenticated type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </skip_authenticated>
+            <extended_headers_rcpt type="CSVListField">
+                <Mask>/[a-z0-9\.\-_@,]+/i</Mask>
+                <Required>N</Required>
+            </extended_headers_rcpt>
+        </milter_headers>
+        <graylist>
+            <expire type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+            </expire>
+            <timeout type="IntegerField">
+                <Required>N</Required>
+                <MinimumValue>1</MinimumValue>
+            </timeout>
+            <max_data_len type="IntegerField">
+                <Required>N</Required>
+            </max_data_len>
+            <ipv4mask type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <MaximumValue>32</MaximumValue>
+                <ValidationMessage>A valid IPv4 mask must be between 1 and 32 bits.</ValidationMessage>
+                <Default>19</Default>
+            </ipv4mask>
+            <ipv6mask type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <MaximumValue>128</MaximumValue>
+                <Default>64</Default>
+                <ValidationMessage>A valid IPv6 mask must be between 1 and 128 bits. 64 bits are recommended as this is the recommended subnet size in IPv6.</ValidationMessage>
+            </ipv6mask>
+            <whitelist_ip type="CSVListField">
+                <Required>N</Required>
+                <Mask>/^([a-fA-F0-9\.:\[\]\/]*?,)*([a-fA-F0-9\.:\[\]\/]*)$/</Mask>
+            </whitelist_ip>
+        </graylist>
+        <dkim>
+            <cache_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <ValidationMessage>A valid cache size must be set.</ValidationMessage>
+            </cache_size>
+            <cache_expire type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+            </cache_expire>
+            <time_jitter type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <ValidationMessage>A valid time jitter must be set.</ValidationMessage>
+            </time_jitter>
+            <trusted_only type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </trusted_only>
+            <skip_multi type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </skip_multi>
+            <!-- dkim signing -->
+            <allow_envfrom_empty type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </allow_envfrom_empty>
+            <allow_hdrfrom_mismatch type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </allow_hdrfrom_mismatch>
+            <allow_hdrfrom_multiple type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </allow_hdrfrom_multiple>
+            <allow_username_mismatch type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </allow_username_mismatch>
+            <auth_only type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </auth_only>
+            <sign_local type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </sign_local>
+            <try_fallback type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </try_fallback>
+            <use_domain type="OptionField">
+                <Default>header</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <header>Header</header>
+                    <envelope>Envelope</envelope>
+                </OptionValues>
+            </use_domain>
+            <use_esld type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </use_esld>
+        </dkim>
+        <mx-check>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <expire type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <Default>86400</Default>
+                <ValidationMessage>A valid cache expiration must be set.</ValidationMessage>
+            </expire>
+        </mx-check>
+        <phishing>
+            <openphish_enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </openphish_enabled>
+            <openphish_map type="TextField"/>
+            <openphish_premium_enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </openphish_premium_enabled>
+            <phishtank_enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </phishtank_enabled>
+            <phishtank_map type="TextField"/>
+            <exclusion type="CSVListField">
+                <Required>N</Required>
+            </exclusion>
+        </phishing>
+        <rate_limit>
+            <per_recipient>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </per_recipient>
+            <per_ip>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </per_ip>
+            <per_ip_from>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </per_ip_from>
+            <bounce>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </bounce>
+            <bounce_ip>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </bounce_ip>
+            <user>
+                <count type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The count value must be a positive number.</ValidationMessage>
+                </count>
+                <time type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <Required>N</Required>
+                    <ValidationMessage>The time must be a positive integer.</ValidationMessage>
+                </time>
+                <time_unit type="OptionField">
+                    <Default>m</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <s>Seconds</s>
+                        <m>Minutes</m>
+                        <h>Hours</h>
+                    </OptionValues>
+                </time_unit>
+            </user>
+            <whitelisted_rcpts type="CSVListField">
+                <Default>postmaster,mailer-daemon</Default>
+            </whitelisted_rcpts>
+            <max_rcpt type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>Y</Required>
+                <Default>20</Default>
+            </max_rcpt>
+        </rate_limit>
+        <spamtrap>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <fuzzy_learning type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </fuzzy_learning>
+            <spam_learning type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </spam_learning>
+            <spam_recipients type="CSVListField">
+                <Required>N</Required>
+            </spam_recipients>
+        </spamtrap>
+        <spf>
+            <spf_cache_size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <Default>2</Default>
+                <ValidationMessage>A valid cache size in kilobytes must be set.</ValidationMessage>
+            </spf_cache_size>
+            <spf_cache_expire type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <ValidationMessage>A valid expiration time must be set.</ValidationMessage>
+            </spf_cache_expire>
+        </spf>
+        <av>
+            <force-reject type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </force-reject>
+            <attachments-only type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </attachments-only>
+            <max-size type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Default>20000000</Default>
+                <Required>N</Required>
+                <ValidationMessage>A valid maximum size in bytes must be set.</ValidationMessage>
+            </max-size>
+            <whitelist type="CSVListField">
+                <Required>N</Required>
+            </whitelist>
+        </av>
+        <surbl>
+            <whitelist type="CSVListField">
+                <Required>N</Required>
+            </whitelist>
+            <exceptions type="CSVListField">
+                <Required>N</Required>
+            </exceptions>
+        </surbl>
+        <multimap>
+            <badfileextension type="CSVListField">
+                <Required>N</Required>
+                <Default>exe,dll,scr,com,cmd,js,bat,vbs,ps1,bat,cpl,lnk,msi,msp,reg</Default>
+            </badfileextension>
+            <whitelistsender type="CSVListField">
+                <Required>N</Required>
+            </whitelistsender>
+        </multimap>
+    </items>
 </model>

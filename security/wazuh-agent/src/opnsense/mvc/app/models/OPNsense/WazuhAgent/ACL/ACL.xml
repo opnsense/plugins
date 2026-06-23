@@ -1,0 +1,9 @@
+<acl>
+    <page-services-wazuh_agent>
+        <name>Services: Wazuh Agent</name>
+        <patterns>
+            <pattern>ui/wazuh_agent/*</pattern>
+            <pattern>api/wazuh_agent/*</pattern>
+        </patterns>
+    </page-services-wazuh_agent>
+</acl>

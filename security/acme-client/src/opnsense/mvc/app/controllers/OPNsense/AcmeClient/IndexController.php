@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2017 Frank Wall
+ *    Copyright (C) 2017-2021 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -45,6 +45,9 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         // include form definitions
         $this->view->settingsForm = $this->getForm("settings");
+        // set additional view parameters
+        $mdlAcme = new \OPNsense\AcmeClient\AcmeClient();
+        $this->view->showIntro = (string)$mdlAcme ->settings->showIntro;
         // pick the template to serve
         $this->view->pick('OPNsense/AcmeClient/settings');
     }

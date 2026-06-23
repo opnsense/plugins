@@ -18,6 +18,18 @@
         <help>Description for this Lua script.</help>
     </field>
     <field>
+        <id>lua.preload</id>
+        <label>Preload on startup</label>
+        <type>checkbox</type>
+        <help>Whether HAProxy should load and execute this Lua script on startup. This is the default behaviour. However, if this Lua script is included by other Lua scripts using the "require" function, then preloading should be disabled to avoid HAProxy errors.</help>
+    </field>
+    <field>
+        <id>lua.filename_scheme</id>
+        <label>Filename Scheme</label>
+        <type>dropdown</type>
+        <help><![CDATA[Specify the filename scheme for this Lua script. Usually using the ID is sufficient and the most fail-safe apparoach. However, when using Lua's "require" function this apparoach will not work and it becomes necessary to use the specified name as filename. In this case all non-alphanumeric characters are removed from the filename. Note that this may cause issues when creating multiple Lua scripts with the same name.]]></help>
+    </field>
+    <field>
         <id>lua.content</id>
         <label>Content</label>
         <type>textbox</type>

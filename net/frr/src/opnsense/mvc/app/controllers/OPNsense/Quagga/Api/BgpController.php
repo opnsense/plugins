@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Copyright (C) 2015-2017 Deciso B.V.
+ * Copyright (C) 2015-2024 Deciso B.V.
  * Copyright (C) 2017 Fabian Franz
- * Copyright (C) 2017-2020 Michael Muenz <m.muenz@gmail.com>
+ * Copyright (C) 2017-2024 Michael Muenz <m.muenz@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,32 +36,15 @@ class BgpController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'bgp';
     protected static $internalModelClass = '\OPNsense\Quagga\BGP';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchNeighborAction()
     {
-        return $this->searchBase(
-            'neighbors.neighbor',
-            array("enabled",
-                  "description",
-                  "address",
-                  "remoteas",
-                  "updatesource",
-                  "nexthopself",
-                  "multihop",
-                  "keepalive",
-                  "holddown",
-                  "connecttimer",
-                  "defaultoriginate",
-                  "linkedPrefixlistIn",
-                  "linkedPrefixlistOut",
-                  "linkedRoutemapIn",
-                  "linkedRoutemapOut")
-        );
+        return $this->searchBase('neighbors.neighbor');
     }
 
     public function getNeighborAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('neighbor', 'neighbors.neighbor', $uuid);
     }
 
@@ -82,15 +65,11 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchAspathAction()
     {
-        return $this->searchBase(
-            'aspaths.aspath',
-            array("enabled", "description", "number", "action", "as" )
-        );
+        return $this->searchBase('aspaths.aspath');
     }
 
     public function getAspathAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('aspath', 'aspaths.aspath', $uuid);
     }
 
@@ -111,14 +90,11 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchPrefixlistAction()
     {
-        return $this->searchBase(
-            'prefixlists.prefixlist',
-            array("enabled", "description", "name", "seqnumber", "action", "network" )
-        );
+        return $this->searchBase('prefixlists.prefixlist');
     }
+
     public function getPrefixlistAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('prefixlist', 'prefixlists.prefixlist', $uuid);
     }
 
@@ -139,14 +115,11 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchCommunitylistAction()
     {
-        return $this->searchBase(
-            'communitylists.communitylist',
-            array("enabled", "description", "number", "seqnumber", "action", "community" )
-        );
+        return $this->searchBase('communitylists.communitylist');
     }
+
     public function getCommunitylistAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('communitylist', 'communitylists.communitylist', $uuid);
     }
 
@@ -167,15 +140,11 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function searchRoutemapAction()
     {
-        return $this->searchBase(
-            'routemaps.routemap',
-            array("enabled", "description", "name", "action", "id", "match", "match2", "set")
-        );
+        return $this->searchBase('routemaps.routemap');
     }
 
     public function getRoutemapAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
 
@@ -192,6 +161,61 @@ class BgpController extends ApiMutableModelControllerBase
     public function setRoutemapAction($uuid)
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
+    }
+
+    public function searchPeergroupAction()
+    {
+        return $this->searchBase('peergroups.peergroup');
+    }
+
+    public function getPeergroupAction($uuid = null)
+    {
+        return $this->getBase('peergroup', 'peergroups.peergroup', $uuid);
+    }
+
+    public function addPeergroupAction()
+    {
+        return $this->addBase('peergroup', 'peergroups.peergroup');
+    }
+
+    public function delPeergroupAction($uuid)
+    {
+        return $this->delBase('peergroups.peergroup', $uuid);
+    }
+
+    public function setPeergroupAction($uuid)
+    {
+        return $this->setBase('peergroup', 'peergroups.peergroup', $uuid);
+    }
+
+    public function searchRedistributionAction()
+    {
+        return $this->searchBase('redistributions.redistribution');
+    }
+
+    public function getRedistributionAction($uuid = null)
+    {
+        return $this->getBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+
+    public function addRedistributionAction()
+    {
+        return $this->addBase('redistribution', 'redistributions.redistribution');
+    }
+
+    public function delRedistributionAction($uuid)
+    {
+        return $this->delBase('redistributions.redistribution', $uuid);
+    }
+
+    public function setRedistributionAction($uuid)
+    {
+        return $this->setBase('redistribution', 'redistributions.redistribution', $uuid);
+    }
+
+    public function toggleCommunitylistAction($uuid)
+    {
+        return $this->toggleBase('communitylists.communitylist', $uuid);
     }
 
     public function toggleNeighborAction($uuid)
@@ -212,5 +236,15 @@ class BgpController extends ApiMutableModelControllerBase
     public function toggleRoutemapAction($uuid)
     {
         return $this->toggleBase('routemaps.routemap', $uuid);
+    }
+
+    public function togglePeergroupAction($uuid)
+    {
+        return $this->toggleBase('peergroups.peergroup', $uuid);
+    }
+
+    public function toggleRedistributionAction($uuid)
+    {
+        return $this->toggleBase('redistributions.redistribution', $uuid);
     }
 }

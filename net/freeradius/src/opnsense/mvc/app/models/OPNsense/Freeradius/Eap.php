@@ -3,6 +3,7 @@
 namespace OPNsense\Freeradius;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 /*
     Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
@@ -32,4 +33,23 @@ use OPNsense\Base\BaseModel;
 
 class Eap extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+        if (
+            $validateFullModel ||
+            $this->tls_min_version->isFieldChanged() ||
+            $this->tls_max_version->isFieldChanged()
+        ) {
+            if ($this->tls_min_version->asFloat() > $this->tls_max_version->asFloat()) {
+                $messages->appendMessage(new Message(
+                    gettext('TLS minimum version must be less than or equal to TLS maximum version.'),
+                    $this->tls_max_version->getInternalXMLTagName()
+                ));
+            }
+        }
+
+        return $messages;
+    }
 }

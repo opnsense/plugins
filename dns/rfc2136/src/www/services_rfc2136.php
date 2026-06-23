@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             write_config();
             system_cron_configure();
             if (!empty($a_rfc2136[$_POST['id']]['enable'])) {
-                rfc2136_configure_do(false, '', $a_rfc2136[$_POST['id']]['host'], true);
+                rfc2136_configure_do(false, null, $a_rfc2136[$_POST['id']]['host'], true);
             }
         }
         exit;
@@ -64,10 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include("head.inc");
 
 legacy_html_escape_form_data($a_rfc2136);
-
-$main_buttons = array(
-    array('label' => gettext('Add'), 'href' => 'services_rfc2136_edit.php'),
-);
 
 ?>
 <body>
@@ -124,7 +120,11 @@ $main_buttons = array(
                       <th><?=gettext("Hostname");?></th>
                       <th><?=gettext("Cached IP");?></th>
                       <th><?=gettext("Description");?></th>
-                      <th class"text-nowrap"></th>
+                      <th class"text-nowrap">
+                        <a href="services_rfc2136_edit.php" class="btn btn-primary btn-xs" data-toggle="tooltip" title="<?= html_safe(gettext('Add')) ?>">
+                          <i class="fa fa-plus fa-fw"></i>
+                        </a>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -146,9 +146,9 @@ $main_buttons = array(
                         if (file_exists($filename) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'A')) {
                             echo "IPv4: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 4);
+                                $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 4);
                             } else {
-                                $ipaddr = get_interface_ip($rfc2136['interface']);
+                                list ($ipaddr) = interfaces_primary_address($rfc2136['interface']);
                             }
                             $cached_ip_s = explode("|", file_get_contents($filename));
                             $cached_ip = $cached_ip_s[0];
@@ -167,9 +167,9 @@ $main_buttons = array(
                         if (file_exists($filename6) && !empty($rfc2136['enable']) && (empty($rfc2136['recordtype']) || $rfc2136['recordtype'] == 'AAAA')) {
                             echo "IPv6: ";
                             if (isset($rfc2136['usepublicip'])) {
-                                $ipaddr = get_dyndns_ip($rfc2136['interface'], 6);
+                                $ipaddr = get_rfc2136_ip_address($rfc2136['interface'], 6);
                             } else {
-                                $ipaddr = get_interface_ipv6($rfc2136['interface']);
+                                list ($ipaddr) = interfaces_primary_address6($rfc2136['interface']);
                             }
                             $cached_ip_s = explode("|", file_get_contents($filename6));
                             $cached_ip = $cached_ip_s[0];

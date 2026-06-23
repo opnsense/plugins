@@ -1,14 +1,21 @@
 <acl>
     <page-service-upnp>
-        <name>Service: Universal Plug and Play</name>
+        <name>Services: UPnP IGD &amp; PCP: Settings</name>
         <patterns>
             <pattern>services_upnp.php*</pattern>
         </patterns>
     </page-service-upnp>
     <page-status-upnpstatus>
-        <name>Status: Universal Plug and Play</name>
+        <name>Services: UPnP IGD &amp; PCP: Active Maps</name>
         <patterns>
             <pattern>status_upnp.php*</pattern>
         </patterns>
     </page-status-upnpstatus>
+    <page-diagnostics-logs-upnp>
+        <name>Services: UPnP IGD &amp; PCP: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/miniupnpd/*</pattern>
+            <pattern>api/diagnostics/log/core/miniupnpd/*</pattern>
+        </patterns>
+    </page-diagnostics-logs-upnp>
 </acl>

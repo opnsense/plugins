@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# PROVIDE: flexcolor
+# REQUIRE: FILESYSTEMS
+#
+
+. /etc/rc.subr
+
+name="flexcolor"
+start_cmd="flexcolor_start"
+stop_cmd=":"
+
+: ${flexcolor_theme:="black"}
+
+FLEXCOLORDIR="/usr/local/opnsense/www/themes/flexcolor"
+SCHEMESDIR="${FLEXCOLORDIR}/build/color_schemes"
+TARGETDIR="${FLEXCOLORDIR}/build/css"
+DEFAULTCSS="default_scheme.css"
+
+CACHEMARKER="/usr/local/opnsense/www/index.php"
+
+flexcolor_start()
+{
+	SELECTEDCSS="${SCHEMESDIR}/${flexcolor_theme}/${DEFAULTCSS}"
+	if [ ! -f "${SELECTEDCSS}" ]; then
+		warn "The theme '${flexcolor_theme}' was not found."
+		return
+	fi
+
+	for FILE in $(find ${TARGETDIR} -name "*.sample"); do
+		FILE=${FILE%.sample}
+		cp ${FILE}.sample ${FILE}
+		sed -i '' -e "/@import url('default_scheme.css');/r ${SELECTEDCSS}" ${FILE}
+		sed -i '' -e "/@import url('default_scheme.css');/d" ${FILE}
+	done
+
+	if [ -f "${CACHEMARKER}" ]; then
+		touch "${CACHEMARKER}"
+	fi
+}
+
+load_rc_config $name
+run_rc_command "$1"

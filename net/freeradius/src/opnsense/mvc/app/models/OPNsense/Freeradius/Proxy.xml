@@ -1,0 +1,180 @@
+<model>
+    <mount>//OPNsense/freeradius/proxy</mount>
+    <description>Proxy configuration</description>
+    <version>0.1</version>
+    <items>
+        <homeservers>
+            <homeserver type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <type type="OptionField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <auth>auth</auth>
+                        <acct>acct</acct>
+                        <authacct>auth+acct</authacct>
+                        <coa>coa</coa>
+                    </OptionValues>
+                </type>
+                <addresstype type="OptionField">
+                    <Default>ipv4</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <ipv4>ipv4</ipv4>
+                        <ipv6>ipv6</ipv6>
+                        <virtual_server>virtual_server</virtual_server>
+                    </OptionValues>
+                </addresstype>
+                <ipaddr type="TextField">
+                    <Default>172.0.0.1</Default>
+                    <Required>N</Required>
+                </ipaddr>
+                <ipaddr6 type="TextField">
+                    <Default>::1</Default>
+                    <Required>N</Required>
+                </ipaddr6>
+                <virtualserver type="TextField">
+                    <Default>foo</Default>
+                    <Required>N</Required>
+                </virtualserver>
+                <port type="IntegerField">
+                    <Default>1812</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                </port>
+                <proto type="OptionField">
+                    <Default>udp</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <udp>udp</udp>
+                        <tcp>tcp</tcp>
+                    </OptionValues>
+                </proto>
+                <secret type="TextField">
+                    <Default>testing123</Default>
+                    <Required>N</Required>
+                </secret>
+                <sourceip type="TextField">
+                    <Required>N</Required>
+                </sourceip>
+                <response_window type="IntegerField">
+                    <Default>20</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>5</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                </response_window>
+                <no_response_fail type="BooleanField">
+                    <Required>N</Required>
+                </no_response_fail>
+                <zombieperiod type="IntegerField">
+                    <Default>40</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>20</MinimumValue>
+                    <MaximumValue>120</MaximumValue>
+                </zombieperiod>
+                <reviveinterval type="IntegerField">
+                    <Default>120</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>60</MinimumValue>
+                    <MaximumValue>3600</MaximumValue>
+                </reviveinterval>
+                <statuscheck type="OptionField">
+                    <Default>status-server</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <none>none</none>
+                        <status-server>status-server</status-server>
+                        <request>request</request>
+                    </OptionValues>
+                </statuscheck>
+                <checkinterval type="IntegerField">
+                    <Default>30</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>6</MinimumValue>
+                    <MaximumValue>120</MaximumValue>
+                </checkinterval>
+                <numanswersalive type="IntegerField">
+                    <Default>3</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>3</MinimumValue>
+                    <MaximumValue>10</MaximumValue>
+                </numanswersalive>
+                <max_outstanding type="IntegerField">
+                    <Default>65536</Default>
+                    <Required>Y</Required>
+                </max_outstanding>
+                <limit_maxconnections type="IntegerField">
+                    <Default>16</Default>
+                    <Required>Y</Required>
+                </limit_maxconnections>
+                <limit_maxrequests type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </limit_maxrequests>
+                <limit_lifetime type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </limit_lifetime>
+                <limit_idletimeout type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </limit_idletimeout>
+            </homeserver>
+        </homeservers>
+        <homeserverpools>
+            <homeserverpool type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <type type="OptionField">
+                    <Default>fail-over</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <fail-over>fail-over</fail-over>
+                        <load-balance>load-balance</load-balance>
+                        <client-balance>client-balance</client-balance>
+                        <client-port-balance>client-port-balance</client-port-balance>
+                        <keyed-balance>keyed-balance</keyed-balance>
+                    </OptionValues>
+                </type>
+                <virtualserver type="TextField">
+                    <Required>N</Required>
+                </virtualserver>
+                <homeservers type="CSVListField">
+                    <Default>localhost</Default>
+                    <Required>Y</Required>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^([a-zA-Z0-9\.:\[\]\-\/]*?,)*([a-zA-Z0-9\.:\[\]\-\/]*)$/</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid server addresses, i.e. radius.example.com, 10.0.0.2 or 10.0.0.0/24.</ValidationMessage>
+                </homeservers>
+                <fallback type="TextField"/>
+            </homeserverpool>
+        </homeserverpools>
+        <realms>
+            <realm type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                </name>
+                <auth_pool type="TextField"/>
+                <acct_pool type="TextField"/>
+                <nostrip type="BooleanField"/>
+            </realm>
+        </realms>
+    </items>
+</model>

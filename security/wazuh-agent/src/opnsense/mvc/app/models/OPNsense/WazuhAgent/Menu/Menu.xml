@@ -1,0 +1,9 @@
+<menu>
+    <Services>
+        <WazuhAgent VisibleName="Wazuh Agent" cssClass="fa fa-heartbeat fa-fw">
+            <Settings order="10" url="/ui/wazuhagent/"/>
+            <Ossec VisibleName="Logfile / ossec" order="20" url="/ui/diagnostics/log/wazuhagent/ossec" />
+            <ActiveResponses VisibleName="Logfile / active-responses" order="30" url="/ui/diagnostics/log/wazuhagent/activeresponses" />
+        </WazuhAgent>
+    </Services>
+</menu>

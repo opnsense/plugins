@@ -78,7 +78,7 @@ if not telemetry_state.is_running():
             # data collected, log and push
             if row_count > 0 and max_timestamp is not None:
                 syslog.syslog(
-                    syslog.LOG_NOTICE,
+                    syslog.LOG_DEBUG,
                     'telemetry data collected %d records in %.2f seconds @%s' % (
                         row_count, time.time() - send_start_time, max_timestamp
                     )
@@ -120,9 +120,9 @@ if not telemetry_state.is_running():
                 # no data
                 exit_code = 0
         else:
-            syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
+            syslog.syslog(syslog.LOG_ERR, 'directory %s missing' % args.log)
     else:
-        syslog.syslog(syslog.LOG_ERR, 'directory %s missing' % args.log)
+        syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
 
 
 sys.exit(exit_code)

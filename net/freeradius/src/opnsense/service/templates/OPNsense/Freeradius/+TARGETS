@@ -1,4 +1,5 @@
 clients.conf:/usr/local/etc/raddb/clients.conf
+proxy.conf:/usr/local/etc/raddb/proxy.conf
 dictionary:/usr/local/etc/raddb/dictionary
 mac2ip:/usr/local/etc/raddb/mods-config/passwd/mac2ip
 mods-enabled-counter:/usr/local/etc/raddb/mods-enabled/counter

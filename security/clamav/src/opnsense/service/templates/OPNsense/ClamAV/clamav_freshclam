@@ -1,5 +1,5 @@
 {% if helpers.exists('OPNsense.clamav.general.fc_enabled') and OPNsense.clamav.general.fc_enabled == '1' %}
-clamav_freshclam_var_script="/usr/local/opnsense/scripts/OPNsense/ClamAV/setup.sh"
+clamav_freshclam_setup="/usr/local/opnsense/scripts/OPNsense/ClamAV/setup.sh"
 clamav_freshclam_enable="YES"
 {% else %}
 clamav_freshclam_enable="NO"

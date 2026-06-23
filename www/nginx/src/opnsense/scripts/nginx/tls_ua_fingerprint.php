@@ -31,13 +31,25 @@ $database_name = '/var/log/nginx/handshakes.json';
 
 function parse_line($line)
 {
+    // ignore GREASE cipher suite values when compiling a browser fingerprint (see rfc8701)
+    $GREASE = array("0x0a0a", "0x1a1a", "0x2a2a", "0x3a3a", "0x4a4a", "0x5a5a", "0x6a6a", "0x7a7a", "0x8a8a", "0x9a9a", "0xaaaa", "0xbaba", "0xcaca", "0xdada", "0xeaea", "0xfafa");
+    // ignore SCSV cipher suite values when compiling a browser fingerprint (see rfc5746 and rfc7507)
+    $SCSV = array("TLS_EMPTY_RENEGOTIATION_INFO_SCSV", "TLS_FALLBACK_SCSV");
     $tmp = explode('"', trim($line));
-    return array(
+    $fp = array(
         'ua' => $tmp[1],
         'ciphers' => $tmp[3],
         'curves' => $tmp[5] == '-' ? '' : $tmp[5],
         'count' => 1
     );
+    // exclude GREASE and SCSV suits from fingerprint
+    $fp_ciphers = explode(':', $fp['ciphers']);
+    $fp_ciphers = array_diff($fp_ciphers, $GREASE, $SCSV);
+    $fp['ciphers'] = implode(':', $fp_ciphers);
+    $fp_curves = explode(':', $fp['curves']);
+    $fp_curves = array_diff($fp_curves, $GREASE);
+    $fp['curves'] = implode(':', $fp_curves);
+    return $fp;
 }
 function filter_ua($key)
 {
@@ -61,13 +73,13 @@ $fingerprints = array();
 $handle = @fopen($tls_logfile, 'r');
 if ($handle) {
     while (($buffer = fgets($handle)) !== false) {
-        $md5line = md5($buffer);
-        if (array_key_exists($md5line, $fingerprints)) {
-            $fingerprints[$md5line]['count']++;
-        } else {
-            $parsed_line = parse_line($buffer);
-            if ($parsed_line['ciphers'] != '-') {
-                $fingerprints[$md5line] = $parsed_line;
+        $parsed_line = parse_line($buffer);
+        if ($parsed_line['ciphers'] != '-') {
+            $md5fp = md5($parsed_line['ua'] . $parsed_line['ciphers'] . $parsed_line['curves']);
+            if (array_key_exists($md5fp, $fingerprints)) {
+                $fingerprints[$md5fp]['count']++;
+            } else {
+                $fingerprints[$md5fp] = $parsed_line;
             }
         }
     }

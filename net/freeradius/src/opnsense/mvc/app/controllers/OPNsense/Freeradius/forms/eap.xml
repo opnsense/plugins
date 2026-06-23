@@ -6,6 +6,12 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.elliptic_curve</id>
+        <label>Elliptic Curve</label>
+        <type>dropdown</type>
+        <help>Set the Elliptical cryptography configuration.</help>
+    </field>
+    <field>
         <id>eap.enable_client_cert</id>
         <label>Use own certificates</label>
         <type>checkbox</type>
@@ -14,7 +20,7 @@
     <field>
         <id>eap.ca</id>
         <label>Root Certificate</label>
-        <type>dropdown</type>
+        <type>select_multiple</type>
         <help>Choose the Root CA. This CA will be trusted to issue client certificates for authentication.</help>
     </field>
     <field>
@@ -22,6 +28,17 @@
         <label>Server Certificate</label>
         <type>dropdown</type>
         <help>Choose the certificate the Radius service should use.</help>
+    </field>
+    <field>
+        <id>eap.enable_pwd</id>
+        <label>Enable EAP-PWD</label>
+        <type>checkbox</type>
+        <help>This enables EAP-PWD authentication</help>
+    </field>
+    <field>
+        <id>eap.pwd_serverid</id>
+        <label>EAP-PWD server id</label>
+        <type>text</type>
     </field>
     <field>
         <id>eap.crl</id>
@@ -34,5 +51,17 @@
         <label>Check TLS Common-Name</label>
         <type>checkbox</type>
         <help>Checks that the username given by the user matches the Common-Name of the certificate.</help>
+    </field>
+    <field>
+        <id>eap.tls_min_version</id>
+        <label>TLS Minimum Version</label>
+        <type>dropdown</type>
+        <help>Set minimum TLS version. Please be aware that every version below 1.2 is considered as insecure.</help>
+    </field>
+    <field>
+        <id>eap.tls_max_version</id>
+        <label>TLS Maximum Version</label>
+        <type>dropdown</type>
+        <help>Set maximum TLS version. Use 1.2 to avoid TLS 1.3 for legacy clients.</help>
     </field>
 </form>

@@ -26,6 +26,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+function miniupnpd_syslog()
+{
+    return ['miniupnpd' => ['facility' => ['miniupnpd']]];
+}
+
 function miniupnpd_enabled()
 {
     global $config;
@@ -39,24 +44,28 @@ function miniupnpd_firewall($fw)
         return;
     }
 
+    /* required for IPv4: */
     $fw->registerAnchor('miniupnpd', 'rdr');
+    /* required for IPv6: */
     $fw->registerAnchor('miniupnpd', 'fw');
+    /* required for IPv4 NAT hairpinning: */
+    $fw->registerAnchor('miniupnpd', 'nat', 0, 'head');
 }
 
 function miniupnpd_services()
 {
-    $services = array();
+    $services = [];
 
     if (!miniupnpd_enabled()) {
         return $services;
     }
 
-    $pconfig = array();
+    $pconfig = [];
     $pconfig['name'] = 'miniupnpd';
-    $pconfig['description'] = gettext('Univeral Plug and Play');
-    $pconfig['php']['restart'] = array('miniupnpd_stop', 'miniupnpd_start');
-    $pconfig['php']['start'] = array('miniupnpd_start');
-    $pconfig['php']['stop'] = array('miniupnpd_stop');
+    $pconfig['description'] = gettext('UPnP IGD & PCP/NAT-PMP');
+    $pconfig['php']['restart'] = ['miniupnpd_stop', 'miniupnpd_start'];
+    $pconfig['php']['start'] = ['miniupnpd_start'];
+    $pconfig['php']['stop'] = ['miniupnpd_stop'];
     $pconfig['pidfile'] = '/var/run/miniupnpd.pid';
     $services[] = $pconfig;
 
@@ -65,6 +74,8 @@ function miniupnpd_services()
 
 function miniupnpd_start()
 {
+    global $config;
+
     if (!miniupnpd_enabled()) {
         return;
     }
@@ -73,19 +84,37 @@ function miniupnpd_start()
         return;
     }
 
-    mwexec_bg('/usr/local/sbin/miniupnpd -f /var/etc/miniupnpd.conf -P /var/run/miniupnpd.pid');
+    $cmd_frmt = ['/usr/local/sbin/miniupnpd -f %s -P %s'];
+    $cmd_args = ['/var/etc/miniupnpd.conf', '/var/run/miniupnpd.pid'];
+
+    switch ($config['installedpackages']['miniupnpd']['config'][0]['log_level'] ?? '') {
+        case 'debug':
+            $cmd_frmt[] = '-vv';
+            break;
+        case 'info':
+            $cmd_frmt[] = '-v';
+            break;
+        default:
+            break;
+    }
+
+    mwexecfb($cmd_frmt, $cmd_args);
 }
 
 function miniupnpd_stop()
 {
-    killbypid('/var/run/miniupnpd.pid', 'TERM', true);
-    mwexec('/sbin/pfctl -aminiupnpd -Fr 2>&1 >/dev/null');
-    mwexec('/sbin/pfctl -aminiupnpd -Fn 2>&1 >/dev/null');
+    killbypid('/var/run/miniupnpd.pid');
+
+    mwexecf('/sbin/pfctl -a miniupnpd -F rules');
+    mwexecf('/sbin/pfctl -a miniupnpd -F nat');
 }
 
 function miniupnpd_configure()
 {
-    return array('bootup' => array('miniupnpd_configure_do'));
+    return [
+        'bootup' => ['miniupnpd_configure_do'],
+        'newwanip' => ['miniupnpd_configure_do'],
+    ];
 }
 
 function miniupnpd_uuid()
@@ -98,10 +127,17 @@ function miniupnpd_uuid()
 
 function miniupnpd_permuser_list()
 {
-    $ret = array();
-    $count = 8;
+    global $config;
 
-    for ($i = 1; $i <= $count; $i++) {
+    $num_permuser = 8;
+
+    if (!empty($config['installedpackages']['miniupnpd']['config'][0]['num_permuser'])) {
+        $num_permuser = $config['installedpackages']['miniupnpd']['config'][0]['num_permuser'];
+    }
+
+    $ret = [];
+
+    for ($i = 1; $i <= $num_permuser; $i++) {
         $ret[$i] = "permuser{$i}";
     }
 
@@ -118,23 +154,18 @@ function miniupnpd_configure_do($verbose = false)
         return;
     }
 
-    if ($verbose) {
-        echo 'Starting UPnP service...';
-        flush();
-    }
+    service_log('Starting UPnP IGD & PCP/NAT-PMP service...', $verbose);
 
     $upnp_config = $config['installedpackages']['miniupnpd']['config'][0];
 
     $ext_ifname = get_real_interface($upnp_config['ext_iface']);
     if ($ext_ifname == $upnp_config['ext_iface']) {
-        if ($verbose) {
-            echo "failed.\n";
-        }
+        service_log("failed.\n", $verbose);
         return;
     }
 
     $config_text = "ext_ifname={$ext_ifname}\n";
-    $config_text .= "port=2189\n";
+    $config_text .= "http_port=2189\n";
 
     $ifaces_active = '';
 
@@ -148,10 +179,13 @@ function miniupnpd_configure_do($verbose = false)
             $if = get_real_interface($iface);
             /* above function returns iface if fail */
             if ($if != $iface) {
-                $addr = find_interface_ip($if);
-                /* check that the interface has an ip address before adding parameters */
-                if (is_ipaddr($addr)) {
-                    $config_text .= "listening_ip={$if}\n";
+                list ($addr) = interfaces_primary_address($iface);
+                if (!empty($addr)) {
+                    $config_text .= "listening_ip={$if}";
+                    if (!empty($upnp_config['overridesubnet'])) {
+                        $config_text .= "/{$upnp_config['overridesubnet']}";
+                    }
+                    $config_text .= "\n";
                     if (!$ifaces_active) {
                         $webgui_ip = $addr;
                         $ifaces_active = $iface;
@@ -159,10 +193,10 @@ function miniupnpd_configure_do($verbose = false)
                         $ifaces_active .= ", {$iface}";
                     }
                 } else {
-                    log_error("miniupnpd: Interface {$iface} has no ip address, ignoring");
+                    log_msg("miniupnpd: Interface {$iface} has no ip address, ignoring", LOG_WARNING);
                 }
             } else {
-                log_error("miniupnpd: Could not resolve real interface for {$iface}");
+                log_msg("miniupnpd: Could not resolve real interface for {$iface}", LOG_ERR);
             }
         }
 
@@ -171,6 +205,14 @@ function miniupnpd_configure_do($verbose = false)
             if (!empty($upnp_config['overridewanip'])) {
                 $config_text .= "ext_ip={$upnp_config['overridewanip']}\n";
             }
+
+            /* configure STUN server if needed */
+            if (!empty($upnp_config['stun_host'])) {
+                $config_text .= "ext_perform_stun=allow-filtered\n";
+                $config_text .= "ext_stun_host=" . ($upnp_config['stun_host']) . "\n";
+                $config_text .= "ext_stun_port=" . ($upnp_config['stun_port'] ?? "3478") . "\n";
+            }
+
             /* set upload and download bitrates */
             if (!empty($upnp_config['download']) && !empty($upnp_config['upload'])) {
                 $download = $upnp_config['download'] * 1000;
@@ -179,7 +221,21 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "bitrate_up={$upload}\n";
             }
 
-            $config_text .= "secure_mode=yes\n";
+            if (in_array($upnp_config['allow_third_party_mapping'] ?? '', ['1', 'upnp-igd'])) {
+                $config_text .= "secure_mode=no\n";
+            } else {
+                $config_text .= "secure_mode=yes\n";
+            }
+
+            if (in_array($upnp_config['allow_third_party_mapping'] ?? '', ['1', 'pcp'])) {
+                $config_text .= "pcp_allow_thirdparty=yes\n";
+            } else {
+                $config_text .= "pcp_allow_thirdparty=no\n";
+            }
+
+            if (!empty($upnp_config['ipv6_disable'])) {
+                $config_text .= "ipv6_disable=yes\n";
+            }
 
             /* enable logging of packets handled by miniupnpd rules */
             if (!empty($upnp_config['logpackets'])) {
@@ -188,7 +244,8 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-                $config_text .= "system_uptime=yes\n";
+                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
+                //$config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */
@@ -200,12 +257,19 @@ function miniupnpd_configure_do($verbose = false)
                 $config_text .= "/\n";
             }
 
+            if (!empty($upnp_config['friendly_name'])) {
+                // Encode required XML entities of text UPnP IGD config options until the daemon does so
+                $config_text .= "friendly_name=" . htmlspecialchars($upnp_config['friendly_name'], ENT_NOQUOTES | ENT_XML1) . "\n";
+            } else {
+                $config_text .= "friendly_name=OPNsense UPnP IGD &amp; PCP\n";
+            }
+
             /* set uuid and serial */
             $config_text .= "uuid=" . miniupnpd_uuid() . "\n";
             $config_text .= "serial=" . strtoupper(substr(miniupnpd_uuid(), 0, 8)) . "\n";
 
             /* set model number */
-            $config_text .= "model_number=" . trim(shell_exec('opnsense-version -v')) . "\n";
+            $config_text .= "model_number=" . shell_safe('opnsense-version -v') . "\n";
 
             /* upnp access restrictions */
             foreach (miniupnpd_permuser_list() as $permuser) {
@@ -215,27 +279,30 @@ function miniupnpd_configure_do($verbose = false)
             }
 
             if (!empty($upnp_config['permdefault'])) {
-                $config_text .= "deny 0-65535 0.0.0.0/0 0-65535\n";
+                $config_text .= "deny 1-65535 0.0.0.0/0 1-65535\n";
             }
 
-            /* Allow UPnP or NAT-PMP as requested */
+            /* Allow UPnP IGD or PCP/NAT-PMP as requested */
             $config_text .= "enable_upnp="   . ( $upnp_config['enable_upnp']   ? "yes\n" : "no\n" );
-            $config_text .= "enable_natpmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
+            $config_text .= "enable_pcp_pmp=" . ( $upnp_config['enable_natpmp'] ? "yes\n" : "no\n" );
 
-            /* configure lifetimes to force periodic expire */
-            $config_text .= "clean_ruleset_interval=600\n";
-            $config_text .= "min_lifetime=120\n";
-            $config_text .= "max_lifetime=86400\n";
+            // When building the daemon with UPnP IGDv2, infinite (IGDv1 only) lease duration port maps are reduced
+            // to 7d, following the IGDv2 standard. Disabling it at runtime allows IGDv2-incompatible clients
+            if (($upnp_config['upnp_igd_compat'] ?? 'igdv1') == 'igdv1') {
+                $config_text .= "force_igd_desc_v1=yes\n";
+            }
+
+            $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
+            $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
-            log_error("miniupnpd: Starting service on interface: {$ifaces_active}");
+            log_msg("miniupnpd: Starting service on interface: {$ifaces_active}");
+
             miniupnpd_start();
         }
     }
 
-    if ($verbose) {
-        echo "done.\n";
-    }
+    service_log("done.\n", $verbose);
 }

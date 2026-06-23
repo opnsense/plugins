@@ -1,0 +1,15 @@
+<metadata>
+    <etpro_telemetry>
+        <filename>ETProTelemetry.js</filename>
+        <endpoints>
+            <endpoint>/api/diagnostics/proofpoint_et/status</endpoint>
+        </endpoints>
+        <translations>
+            <title>Telemetry status</title>
+            <sensor_status>Status</sensor_status>
+            <event_received>Last event</event_received>
+            <last_rule_download>Last rule download</last_rule_download>
+            <last_heartbeat>Last heartbeat</last_heartbeat>
+        </translations>
+    </etpro_telemetry>
+</metadata>

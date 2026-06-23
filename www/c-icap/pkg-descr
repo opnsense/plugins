@@ -2,4 +2,14 @@ c-icap is an implementation of an ICAP server. It can be used with HTTP
 proxies that support the ICAP protocol to implement content adaptation
 and filtering services.
 
-WWW: http://c-icap.sourceforge.net/
+Plugin Changelog
+================
+
+1.9
+
+* Fix issue with localserver ACL defintion
+* Yield maintainership to Andy Binder
+
+1.8
+
+* Move logging to syslog (contributed by Andy Binder)

@@ -1,5 +1,41 @@
-Mini UPnPd is a lightweight implementation of a UPnP IGD daemon. This is
-supposed to be run on your gateway machine to allow client systems to redirect
-ports and punch holes in the firewall.
+MiniUPnPd is a lightweight implementation of a UPnP IGD & PCP/NAT-PMP daemon.
+This is supposed to be run on your gateway machine to allow client systems to
+map ports and punch holes in the firewall.
 
-WWW: http://miniupnp.free.fr/
+WWW: https://miniupnp.tuxfamily.org/
+
+Plugin Changelog
+================
+
+1.9
+
+* Separate service log file and log level UI option
+* More specific allow third-party mapping UI option
+* Impove help/wording and update missed changelog
+* Add daemon patch to improve logging
+
+(all contributed by Self-Hosting-Group)
+
+1.8
+
+* New UI options: disable IPv6 mapping, allow third-party mapping, UPnP IGD compatibility, router/friendly name; remove option: report system uptime (bug)
+* List IPv6 maps and keep active maps when reconfiguring/restarting service, clearer added via / description field
+* New UI sections, rewording plugin, set allow-filtered with STUN to workaround CGNAT test limitation, clean up daemon config
+* Update daemon to 2.3.9, add build options (e.g. IGDv2 support), add daemon patch to improve UPnP IGDv2 compatibility
+
+(all contributed by Self-Hosting-Group)
+
+1.7
+
+* Add option to allow arbitrary number of UPnP/NAT-PMP rules (contributed by Kreeblah)
+
+1.6
+
+* Fix port maps not listed without description (contributed by Self-Hosting-Group)
+
+1.5
+
+* Enable STUN and allow LAN subnet override (contributed by Tawmu)
+* Add missing firewall anchors (contributed by Tawmu)
+* Allow subnet mask 0 in rules (contributed by Reiko Asakura)
+* Switch to miniupnpd 2.3.1

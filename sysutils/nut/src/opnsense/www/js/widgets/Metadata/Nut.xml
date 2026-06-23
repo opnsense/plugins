@@ -1,0 +1,42 @@
+<metadata>
+    <nut>
+        <filename>Nut.js</filename>
+        <endpoints>
+            <endpoint>/api/nut/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>NUT</title>
+            <status_model>UPS Model</status_model>
+            <status_status>UPS Status</status_status>
+            <status_battery>Battery status</status_battery>
+            <status_load>UPS Load</status_load>
+            <status_efficiency>UPS Efficiency</status_efficiency>
+            <status_bcharge>Battery level</status_bcharge>
+            <status_timeleft>Battery runtime</status_timeleft>
+            <status_output_power>Output Power</status_output_power>
+            <status_input_power>Input Power</status_input_power>
+            <status_selftest>Self test</status_selftest>
+            <status_ol>On line</status_ol>
+            <status_ob>On battery</status_ob>
+            <status_lb>Low battery</status_lb>
+            <status_hb>High battery</status_hb>
+            <status_rb>Battery needs to be replaced</status_rb>
+            <status_chrg>Battery is charging</status_chrg>
+            <status_dischrg>Battery is discharging</status_dischrg>
+            <status_bypass>UPS bypass circuit is active</status_bypass>
+            <status_cal>Performing runtime calibration</status_cal>
+            <status_off>UPS is offline</status_off>
+            <status_over>UPS is overloaded</status_over>
+            <status_trim>UPS is trimming voltage</status_trim>
+            <status_boost>UPS is boosting voltage</status_boost>
+            <status_fsd>Forced Shutdown</status_fsd>
+            <unconfigured>Nut is not started. Click to configure Nut.</unconfigured>
+            <misconfigured>Nut is not returning a status. Click to reconfigure Nut.</misconfigured>
+            <netclient_unconfigured>This widget only works with the Netclient driver. Click to configure the Netclient driver.</netclient_unconfigured>
+            <netclient_remote_server>Remote NUT Server</netclient_remote_server>
+            <time_hours>h</time_hours>
+            <time_minutes>m</time_minutes>
+            <time_seconds>s</time_seconds>
+        </translations>
+    </nut>
+</metadata>

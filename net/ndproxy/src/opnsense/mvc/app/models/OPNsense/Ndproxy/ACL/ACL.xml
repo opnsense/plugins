@@ -1,0 +1,10 @@
+<acl>
+    <page-ndproxy-general>
+        <name>Services: Ndproxy: General Settings</name>
+        <description>Allow access to Ndproxy General Settings</description>
+        <patterns>
+            <pattern>ui/ndproxy/general/*</pattern>
+            <pattern>api/ndproxy/general/*</pattern>
+        </patterns>
+    </page-ndproxy-general>
+</acl>

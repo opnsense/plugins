@@ -6,13 +6,12 @@
         <commands>
             <command type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
-                    <default></default>
                     <Required>Y</Required>
-                    <mask>/^[0-9a-z_\-]{1,32}$/ui</mask>
+                    <Mask>/^[0-9a-z_\-]{1,32}$/ui</Mask>
                     <ValidationMessage>Only alphanumeric characters, dashes and underscores allowed.</ValidationMessage>
                 </name>
                 <nrpecommand type="TextField">

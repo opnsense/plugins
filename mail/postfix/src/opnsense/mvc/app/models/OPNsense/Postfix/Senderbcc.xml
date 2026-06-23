@@ -6,7 +6,7 @@
         <senderbccs>
             <senderbcc type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <from type="TextField">

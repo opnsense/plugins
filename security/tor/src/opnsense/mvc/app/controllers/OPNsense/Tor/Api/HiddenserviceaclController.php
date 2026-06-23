@@ -40,7 +40,6 @@ class HiddenserviceaclController extends ApiMutableModelControllerBase
     }
     public function getaclAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('hiddenserviceacl', 'hiddenserviceacl', $uuid);
     }
     public function addaclAction()

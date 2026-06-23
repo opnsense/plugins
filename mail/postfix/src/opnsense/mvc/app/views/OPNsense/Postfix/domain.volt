@@ -35,12 +35,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-domains").UIBootgrid(
-            {   'search':'/api/postfix/domain/searchDomain',
-                'get':'/api/postfix/domain/getDomain/',
-                'set':'/api/postfix/domain/setDomain/',
-                'add':'/api/postfix/domain/addDomain/',
-                'del':'/api/postfix/domain/delDomain/',
-                'toggle':'/api/postfix/domain/toggleDomain/'
+            {   'search':'/api/postfix/domain/search_domain',
+                'get':'/api/postfix/domain/get_domain/',
+                'set':'/api/postfix/domain/set_domain/',
+                'add':'/api/postfix/domain/add_domain/',
+                'del':'/api/postfix/domain/del_domain/',
+                'toggle':'/api/postfix/domain/toggle_domain/'
             }
         );
 

@@ -35,12 +35,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-recipients").UIBootgrid(
-            {   'search':'/api/postfix/recipient/searchRecipient',
-                'get':'/api/postfix/recipient/getRecipient/',
-                'set':'/api/postfix/recipient/setRecipient/',
-                'add':'/api/postfix/recipient/addRecipient/',
-                'del':'/api/postfix/recipient/delRecipient/',
-                'toggle':'/api/postfix/recipient/toggleRecipient/'
+            {   'search':'/api/postfix/recipient/search_recipient',
+                'get':'/api/postfix/recipient/get_recipient/',
+                'set':'/api/postfix/recipient/set_recipient/',
+                'add':'/api/postfix/recipient/add_recipient/',
+                'del':'/api/postfix/recipient/del_recipient/',
+                'toggle':'/api/postfix/recipient/toggle_recipient/'
             }
         );
 

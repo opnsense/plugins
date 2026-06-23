@@ -33,8 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
          */
         function openDialog(uuid) {
             var editDlg = "DialogEdit";
-            var setUrl = "/api/udpbroadcastrelay/settings/setRelay/";
-            var getUrl = "/api/udpbroadcastrelay/settings/getRelay/";
+            var setUrl = "/api/udpbroadcastrelay/settings/set_relay/";
+            var getUrl = "/api/udpbroadcastrelay/settings/get_relay/";
             var urlMap = {};
             urlMap['frm_' + editDlg] = getUrl + uuid;
             mapDataToFormUI(urlMap).done(function () {
@@ -55,12 +55,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-proxies").UIBootgrid(
-                {   'search':'/api/udpbroadcastrelay/settings/searchRelay',
-                    'get':'/api/udpbroadcastrelay/settings/getRelay/',
-                    'set':'/api/udpbroadcastrelay/settings/setRelay/',
-                    'add':'/api/udpbroadcastrelay/settings/addRelay/',
-                    'del':'/api/udpbroadcastrelay/settings/delRelay/',
-                    'toggle':'/api/udpbroadcastrelay/settings/toggleRelay/',
+                {   'search':'/api/udpbroadcastrelay/settings/search_relay',
+                    'get':'/api/udpbroadcastrelay/settings/get_relay/',
+                    'set':'/api/udpbroadcastrelay/settings/set_relay/',
+                    'add':'/api/udpbroadcastrelay/settings/add_relay/',
+                    'del':'/api/udpbroadcastrelay/settings/del_relay/',
+                    'toggle':'/api/udpbroadcastrelay/settings/toggle_relay/',
                     'options':{selection:false, multiSelect:false}
                 }
         );
@@ -87,16 +87,16 @@ POSSIBILITY OF SUCH DAMAGE.
         <table id="grid-proxies" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEdit">
             <thead>
             <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="interfaces" data-width="10em" data-type="string" data-visible="true">{{ lang._('Interfaces') }}</th>
-                <th data-column-id="multicastaddress" data-width="15em" data-type="string" data-visible="true">{{ lang._('Multicast Addresses') }}</th>
-                <th data-column-id="sourceaddress"  data-width="11em" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
-                <th data-column-id="listenport" data-width="8em" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
-                <th data-column-id="InstanceID" data-width="6em" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
-                <th data-column-id="description" data-width="15em" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="RevertTTL" data-width="10em" data-type="string"  data-visible="true" data-formatter="boolean">{{ lang._('Use ID as TTL') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                <th data-column-id="interfaces" data-type="string" data-visible="true">{{ lang._('Interfaces') }}</th>
+                <th data-column-id="multicastaddress" data-type="string" data-visible="true">{{ lang._('Multicast Addresses') }}</th>
+                <th data-column-id="sourceaddress" data-type="string" data-visible="true">{{ lang._('Source Address') }}</th>
+                <th data-column-id="listenport" data-type="string" data-visible="true">{{ lang._('Listen Port') }}</th>
+                <th data-column-id="InstanceID" data-type="string" data-visible="true">{{ lang._('ID') }}</th>
+                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="uuid" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                <th data-column-id="RevertTTL" data-type="string"  data-visible="true" data-formatter="boolean">{{ lang._('Use ID as TTL') }}</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>

@@ -28,7 +28,7 @@
 
 namespace OPNsense\Base\Constraints;
 
-use Phalcon\Messages\Message;
+use OPNsense\Base\Messages\Message;
 
 /**
  * a very specific nginx check for Naxsi rule IDs - not reusable
@@ -38,7 +38,7 @@ use Phalcon\Messages\Message;
  */
 class NaxsiIdentifierConstraint extends BaseConstraint
 {
-    public function validate(\Phalcon\Validation $validator, $attribute): bool
+    public function validate($validator, $attribute): bool
     {
         $node = $this->getOption('node');
         if ($node) {

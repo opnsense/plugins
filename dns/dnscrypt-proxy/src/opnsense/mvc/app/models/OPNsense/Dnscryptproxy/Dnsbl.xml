@@ -4,11 +4,10 @@
     <version>1.0.0</version>
     <items>
         <enabled type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enabled>
         <type type="OptionField">
-            <Required>N</Required>
             <Multiple>Y</Multiple>
             <OptionValues>
                 <aa>AdAway List</aa>
@@ -20,6 +19,7 @@
                 <ep>Easyprivacy List</ep>
                 <nc>NoCoin List</nc>
                 <pt>PornTop1M List</pt>
+                <qf>Q-Feeds (when installed)</qf>
                 <sa>Simple Ad List</sa>
                 <st>Simple Tracker List</st>
                 <sb>Steven Black List</sb>

@@ -1,31 +1,29 @@
 {#
-
-Copyright © 2018 by EURO-LOG AG
-Copyright (c) 2021 Deciso B.V.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-1.  Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
-
-2.  Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-#}
+ # Copyright (c) 2018 EURO-LOG AG
+ # Copyright (c) 2021 Deciso B.V.
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1. Redistributions of source code must retain the above copyright notice,
+ #    this list of conditions and the following disclaimer.
+ #
+ # 2. Redistributions in binary form must reproduce the above copyright notice,
+ #    this list of conditions and the following disclaimer in the documentation
+ #    and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
 
 <script>
 
@@ -44,16 +42,6 @@ POSSIBILITY OF SUCH DAMAGE.
             }
          });
       }
-
-      /**
-       * chain std_bootgrid_reload from opnsense_bootgrid_plugin.js
-       * to get the isSubsystemDirty state on "UIBootgrid" changes
-       */
-      var opn_std_bootgrid_reload = std_bootgrid_reload;
-      std_bootgrid_reload = function(gridId) {
-         opn_std_bootgrid_reload(gridId);
-         isSubsystemDirty();
-      };
 
       /**
        * apply changes and reload relayd
@@ -101,12 +89,40 @@ POSSIBILITY OF SUCH DAMAGE.
             'get':    '/api/relayd/settings/get/' + element + '/',
             'set':    '/api/relayd/settings/set/' + element + '/',
             'add':    '/api/relayd/settings/set/' + element + '/',
-            'del':    '/api/relayd/settings/del/' + element + '/'
+            'del':    '/api/relayd/settings/del/' + element + '/',
+            options: {
+                formatters: {
+                    'listen_port': function (column, row) {
+                        if (row.listen_endport) {
+                            return row.listen_startport + ":" + row.listen_endport;
+                        } else {
+                            return row.listen_startport;
+                        }
+                    },
+                    'commands': function (column, row) {
+                        return '<button type="button" class="btn btn-xs btn-default command-edit bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-pencil"></span></button> ' +
+                            '<button type="button" class="btn btn-xs btn-default command-copy bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-clone"></span></button>' +
+                            '<button type="button" class="btn btn-xs btn-default command-delete bootgrid-tooltip" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-trash-o"></span></button>';
+                    },
+                    'rowtoggle': function (column, row) {
+                        if (parseInt(row[column.id], 2) === 1) {
+                            return '<span style="cursor: pointer;" class="fa fa-fw fa-check-square-o command-toggle bootgrid-tooltip" data-value="1" data-row-id="' + row.uuid + '"></span>';
+                        } else {
+                            return '<span style="cursor: pointer;" class="fa fa-fw fa-square-o command-toggle bootgrid-tooltip" data-value="0" data-row-id="' + row.uuid + '"></span>';
+                        }
+                    },
+                }
+            }
          };
          if (['virtualserver', 'host', 'table'].includes(element)) {
             endpoints['toggle'] = '/api/relayd/settings/toggle/' + element + '/';
          }
          $("#grid-" + element).UIBootgrid(endpoints);
+
+         // get the isSubsystemDirty state on "UIBootgrid" changes
+         $("#grid-" + element).on("loaded.rs.jquery.bootgrid", function () {
+            isSubsystemDirty();
+         });
       });
 
       // show/hide options depending on other options
@@ -117,6 +133,7 @@ POSSIBILITY OF SUCH DAMAGE.
          var transport_tablemode = $('#relayd\\.virtualserver\\.transport_tablemode').val();
          var backuptransport_tablemode = $('#relayd\\.virtualserver\\.backuptransport_tablemode').val();
 
+         $('tr[id="row_relayd.virtualserver.listen_proto"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.transport_type"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.routing_interface"]').addClass('hidden');
          $('tr[id="row_relayd.virtualserver.stickyaddress"]').addClass('hidden');
@@ -129,6 +146,7 @@ POSSIBILITY OF SUCH DAMAGE.
          $('#relayd\\.virtualserver\\.backuptransport_tablemode').empty().append('<option value="roundrobin">Round Robin </option>');
 
          if(servertype == 'redirect'){
+            $('tr[id="row_relayd.virtualserver.listen_proto"]').removeClass('hidden');
             $('tr[id="row_relayd.virtualserver.transport_type"]').removeClass('hidden');
             if(transport_type == 'route'){
                $('tr[id="row_relayd.virtualserver.routing_interface"]').removeClass('hidden');
@@ -340,6 +358,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
                 <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                <th data-column-id="listen_address" data-type="string">{{ lang._('Address') }}</th>
+                <th data-column-id="listen_startport" data-formatter="listen_port" data-type="string">{{ lang._('Port') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Edit') }} | {{ lang._('Delete') }}</th>
             </tr>

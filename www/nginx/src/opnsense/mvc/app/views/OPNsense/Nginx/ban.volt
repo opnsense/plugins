@@ -46,6 +46,11 @@ $(function () {
             'options': {
                 selection:false,
                 multiSelect:false,
+                converters: {
+                    timestamp: {
+                        to: function (value) { return (new Date(value*1000)).toLocaleString(); }
+                    }
+                },
                 formatters: {
                     "delbtn": function (column, row) {
                         return `<button type="button" class="btn btn-xs btn-default command-delete" data-row-id="${row.uuid}"><span class=\"fa fa-unlock-alt\"></span></button>`;

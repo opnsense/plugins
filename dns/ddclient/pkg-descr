@@ -1,0 +1,204 @@
+This plugin offers dynamic DNS capabilities using a native backend
+or ddclient.  The native backend is the default implementation.
+ddclient is a Perl client used to update dynamic DNS entries for
+accounts on many dynamic DNS services.
+
+Plugin Changelog
+================
+
+1.31
+
+* Add multiple hostname support for cloudflare (contributed by Maksim Tokarev)
+* Add all-inkl.com KAS API DynDNS provider (contributed by Carsten Kallies)
+* Fix missing logging URLs from ACL (contributed by Konstantinos Spartalis)
+
+1.30
+
+* Add native backend support for Hostinger (contributed by Leandro Scardua)
+* Fix Hetzner existing record update (contributed by Julian Nikodemus)
+* Fix PowerDNS URL validation
+
+1.29
+
+* Add native backend support for Hetzner DNS (contributed by Michael J. Arcan)
+* Add native backend support for dnspod.cn (contributed by Ansen)
+* Add Cloudflare DNS IP check option (contributed by GTechAlpha)
+
+1.28
+
+* Add native backend support for PowerDNS API (contributed by Oliver Traber)
+
+1.27
+
+* Add support for altering IPv6 addresses in native backend (contributed by SaarLAN-Pissbeutel)
+* Add Akamai to checkip providers (contributed by Rajiv Aaron Manglani)
+* Fix Netcup host/domain recognition (contributed by SaarLAN-Pissbeutel)
+* Empty IP send to DNS provider and replace dyndns by dynu (contributed by Meliox)
+* Removed defunct ip4only.me and ip6only.me
+
+1.26
+
+* Add ddclient TTL configuration in Gandi and GoDaddy (contributed by David PHAM-VAN)
+
+1.25
+
+* Add DigitalOcean support to native backend (contributed by Olly Baker)
+
+1.24
+
+* Refactored IP matching (contributed by Rob van Oostenrijk)
+
+1.23
+
+* Add dashboard widget
+
+1.22
+
+* Add gandi support
+* Optionally support descriptive values for account selection when using native backend
+
+1.21
+
+* Add Netcup support (contributed by Ingo Lafrenz)
+* Use '==' instead of 'is' in Domeneshop Python support (contributed by ssmendon)
+* Update DNS record instead of overwriting in Cloudflare Python support (contributed by lin-xianming)
+* Improve service information fetch by avoiding creation of a model
+
+1.20
+
+* Add system parameter to native dyndns2 requesto (contributed by Jakub Gargul)
+* Add Digitalocean support (contributed by Mathias Schneuwly)
+* Add Mythin Beasts support (contributed by PeterF)
+
+1.19
+
+* Add Porkbun support (contributed by briandur)
+* Add native service for Domeneshop (contributed by Bernhard Frenking)
+
+1.18
+
+* Update to ddclient 3.11.2 FreeBSD ports version
+* Default to native backend for new installs
+* Fix permission of ddclient.json
+
+1.17
+
+* Update to ddclient 3.11.1 (dnsexit legacy support removed)
+
+1.16
+
+* Add custom GET/PUT protocols to native backend (contributed by DaCookie4u)
+* Consider all 2xx status codes as success in native dyndns2 implementation
+
+1.15
+
+* Add AWS Route53 and DuckDNS to native backend (contributed by Greg Glockner)
+* Fix JSON output with disabled trailing accounts/escaping and empty stats in AccountField
+* Rename Python-based "OPNsense" backend to "native" to prevent ambiguity
+* Do not update on native backend when IP detection failed and emit a warning instead
+* Add desec to native backend (contributed by Clemens Hardewig)
+* Fix ClouDNS missing dynurl= parameter
+* Clean up ddclient.conf template
+
+1.14
+
+* Add "post" protocol in custom service type
+* Add DNSExit API and regfish.de support to ddclient backend
+
+1.13
+
+* Fix not returning IP address as a string in native backend (contributed by Sean Kelly)
+* Fix PID file handling for native backend
+* Use API token for cloudflare native backend if available (contributed by juantxorena)
+* Read proxied attribute from cloudflare hostname and send it back to prevent it being removed
+* Move accounting of "last accessed timestamp" to poller in native backend
+* Change if= use to proper ifv4=/ifv6= use (contributed by Rhys Barrie)
+
+1.12
+
+* Add cloudflare implementation for native backend (contributed by Thomas Cekal)
+* Allow custom target hostname for dyndns2 protocol in native backend
+* Adjust for missing ipv6= option including upstream patches for use=/usev4=/usev6=
+* Require a selected interface through validation when interface check method is used
+
+1.11
+
+* Add Python-based native backend support for custom ddclient-like implementation using the same input
+* Add AzureDNS backende using OAuth 2.0
+* Add dyndns2 backend using said API
+
+1.10
+
+* Update to ddclient 3.10.0
+* Add 1984 support (contributed by Luca Schoeneberg)
+* Add ClouDNS support (contributed by Luca Schoeneberg)
+* Add Dinahosting support (contributed by Luca Schoeneberg)
+* Add DNSExit support (contributed by Luca Schoeneberg)
+* Add DonDominio support (contributed by Luca Schoeneberg)
+* Add Freemyip support (contributed by Luca Schoeneberg)
+* Add godaddy support (contributed by Luca Schoeneberg)
+* Add Hetzner support (contributed by Luca Schoeneberg)
+* Add Key-Systems support (contributed by Luca Schoeneberg)
+* Add NearlyFreeSpeech.NET support (contributed by Luca Schoeneberg)
+* Add Njal.la support (contributed by satrapes)
+* Add sitelutions support (contributed by Luca Schoeneberg)
+* Add woima support (contributed by Luca Schoeneberg)
+* Add Yandex support (contributed by Luca Schoeneberg)
+
+1.9
+
+* Add icanhazip.com as a checkip provider (contributed by Matt Parnell)
+* Configurable checkip (contributed by Christian Schulze)
+* Allow % characters in usernames
+* Fix parsing short IPv6 addresses from external service (contributed by Patrick Grupp)
+
+1.8
+
+* Add a force action available via cron
+* Fix expected permission on ddclient.conf
+* Make service status and stop more reliable
+* Time out checkip script after 10 seconds
+
+1.7
+
+* Add current ip address and updated timestamp to search api and grid
+
+1.6
+
+* Add Gandi support (contributed by Neozlag)
+
+1.5
+
+* Add service control, XMLRPC registration and syslog target
+* Add Servercow support (contributed by FreddleSpl0it)
+
+1.4
+
+* Add advanced general setting to allow updates via IPv6
+* Enforce SSL on global level with account setting
+
+1.3
+
+* Add checkip settings per account using selected source interface when provided
+* Add OVH DynHost to the DynDNS providers (contributed by toxic0berliner)
+
+1.2
+
+* Add Loopia (contributed by Johan Lilja)
+* Add DNS Made Easy, FreeDNS and Dynu (contributed by Rene Schuster)
+* Add root zone and wildcard support
+
+1.1
+
+* Add spdyn, inwx and dns-o-matic (contributed by Rene Schuster)
+* Add Hurricane Electric provider (contributed by Netboy3)
+* Add option to force SSL, on by default (contributed by Robin Mueller)
+* Add Cloudflare and custom service (contributed by Robin Mueller)
+* Add STRATO provider (contributed by Alex Mi)
+* Add use interface as IP source
+* Fix ip6only.me (contributed by Robin Mueller)
+* Fix uppercase use in usernames
+
+1.0
+
+* Initial release

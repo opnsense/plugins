@@ -18,6 +18,7 @@
               <Users VisibleName="Users" url="/ui/haproxy#users"/>
               <Groups VisibleName="Groups" url="/ui/haproxy#groups"/>
               <Luas VisibleName="Lua Scripts" url="/ui/haproxy#luas"/>
+              <Fcgis VisibleName="FastCGI Applications" url="/ui/haproxy#fcgis"/>
               <Errorfiles VisibleName="Error Files" url="/ui/haproxy#errorfiles"/>
               <Mapfiles VisibleName="Map Files" url="/ui/haproxy#mapfiles"/>
               <Resolvers VisibleName="Resolvers" url="/ui/haproxy#resolvers"/>

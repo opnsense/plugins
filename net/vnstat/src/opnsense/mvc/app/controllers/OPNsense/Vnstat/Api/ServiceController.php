@@ -79,6 +79,17 @@ class ServiceController extends ApiMutableServiceControllerBase
     }
 
     /**
+     * list yearly statistics
+     * @return array
+     */
+    public function yearlyAction()
+    {
+        $backend = new Backend();
+        $response = $backend->configdRun("vnstat yearly");
+        return array("response" => $response);
+    }
+
+    /**
      * remove database folder
      * @return array
      */

@@ -1,0 +1,16 @@
+<metadata>
+    <caddydomain>
+        <filename>CaddyDomain.js</filename>
+        <link>/ui/caddy/reverse_proxy</link>
+        <endpoints>
+            <endpoint>/api/caddy/reverse_proxy/*</endpoint>
+        </endpoints>
+        <translations>
+            <title>Caddy Domains</title>
+            <enabled>Enabled</enabled>
+            <disabled>Disabled</disabled>
+            <unconfigured>Caddy is disabled or not configured.</unconfigured>
+            <nodomains>Caddy does not manage any domains.</nodomains>
+        </translations>
+    </caddydomain>
+</metadata>

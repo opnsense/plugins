@@ -1,0 +1,1 @@
+oscrowdsec_enable="YES"

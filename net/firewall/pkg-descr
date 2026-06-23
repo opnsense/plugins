@@ -1,4 +1,0 @@
-This package extends the standard OPNsense firewall system with endpoints for machine to machine management tasks.
-Gui components are initially only intended to ease testing and to explain current functionality.
-
-In the long term this might replace the default firewall in OPNsense.

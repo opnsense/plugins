@@ -38,25 +38,29 @@ class ServerController extends ApiMutableModelControllerBase
 
     public function searchServerAction()
     {
-        return $this->searchBase('servers.server', array("enabled", "name", "stamp"));
+        return $this->searchBase('servers.server', ['enabled', 'name', 'stamp']);
     }
+
     public function getServerAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('server', 'servers.server', $uuid);
     }
+
     public function addServerAction()
     {
         return $this->addBase('server', 'servers.server');
     }
+
     public function delServerAction($uuid)
     {
         return $this->delBase('servers.server', $uuid);
     }
+
     public function setServerAction($uuid)
     {
         return $this->setBase('server', 'servers.server', $uuid);
     }
+
     public function toggleServerAction($uuid)
     {
         return $this->toggleBase('servers.server', $uuid);

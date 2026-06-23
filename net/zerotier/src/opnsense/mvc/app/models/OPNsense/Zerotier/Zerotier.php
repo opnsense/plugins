@@ -35,5 +35,4 @@ use OPNsense\Base\BaseModel;
 
 class Zerotier extends BaseModel
 {
-
 }

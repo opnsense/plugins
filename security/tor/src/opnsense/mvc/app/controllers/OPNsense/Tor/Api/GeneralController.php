@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2017 Fabian Franz
- * Copyright (C) 2015 Jos Schellevis
+ * Copyright (C) 2015 Jos Schellevis <jos@opnsense.org>
  * Copyright (C) 2015-2017 Deciso B.V.
  * All rights reserved.
  *
@@ -82,7 +82,6 @@ class GeneralController extends ApiMutableModelControllerBase
 
     public function gethidservauthAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('client_auth', 'client_authentications.client_auth', $uuid);
     }
 

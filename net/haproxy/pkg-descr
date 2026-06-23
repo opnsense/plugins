@@ -6,6 +6,235 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+5.1
+
+Added:
+* more conditions have support for converters
+* add support for mapfile URLs (#4825)
+
+Fixed:
+* migration fails if a http-request/-response "lua" rule is configured
+
+Changed:
+* modernize UI templates
+
+5.0
+
+WARNING: This is a new major release, which may result in
+incompatible changes for some users.
+
+Added:
+* add support for HTTP/3 over QUIC to frontends (#4341)
+* add new rule: http-request silent-drop
+* add new rule: http-after-response
+* add new condition: HTTP method
+* support custom HTTP status code in "http-request deny" rules
+* add new backend option to control PROXY protocol for health checks (#2909)
+* add support for new map file types: beg,end,int,ip,reg,str,sub (#3641)
+* add support for more sample fetches: quic_enabled, stopping, wait_end (#3702)
+* add support for HTTP compression (#4867)
+* add all action keywords for http-request/-response and tcp-request/-response rules
+* add "enabled" field to rules
+* add support for all stick-table data types
+* add support for GPC/GPT/SC to conditions and rules (#1123, #5109)
+* add support for SSL SNI expression to servers (#3756)
+* add column "mode" to servers overview (#4632)
+* add support for loading mapfiles in conditions and rules
+* add support for sample fetches in rules
+
+Fixed:
+* Maintenance tab "SSL Certificates" not working with only one cert
+
+Changed:
+* upgrade to HAProxy 3.2 release series (#5147)
+* refactor http/tcp rules to make extensions easier
+* rename some labels in rules
+* change LUA boolean conversion (see tune.lua.bool-sample-conversion)
+* stick-table "size" and "expiration time" are no longer advanced options (now always visible)
+* replace stick-table type "ip" with "ipv4" (#5147)
+* show the actual HAProxy option name in conditions for clarity
+* allow stick-table types "binary", "integer" and "string" in backends
+* make mapfiles more useful in rules
+
+4.6
+
+Changed:
+* improve help text for "http-request redirect" rules (#4650)
+* rename "http-request redirect" input field (#4650)
+
+4.5
+
+Changed:
+* upgrade to HAProxy 3.0 release series (#4411)
+* migrate cert export to Trust MVC
+
+4.4
+
+Fixed:
+* Cron job "Sync SSL certificate changes" not working (#4035)
+* Template error with empty user group (#3364)
+
+4.3
+
+Added:
+* Add new global parameter: DNS prefer IP family (#3779)
+
+Fixed:
+* SNI not working when automatic OCSP updates are enabled (#3779)
+* HAProxy error: has an OCSP URI but an error occurred (#3779)
+
+Changed:
+* prefer IPv4 results when resolving DNS names (#3779)
+* disable OCSP updates if cert contains no OCSP data (#3779)
+
+4.2
+
+Added:
+* add support for built-in OCSP update feature
+* add support for forwarded header (RFC7239)
+* add option "X-Forwarded-For Header" to backend settings
+* add options for HTTP/2 performance tuning
+
+Fixed:
+* fix SSL sync cron job (bulk sync was never working properly)
+
+Changed:
+* upgrade to HAProxy 2.8 release series (#3459)
+* change default for HTTP/2 to enabled (only new frontends/backends)
+* add "no-alpn" option if HTTP/2 is not enabled (only TLS-enabled frontends)
+* move OCSP settings from "Service" to "Global" section
+* replace bundled haproxyctl library with haproxy-cli
+
+Deprecated:
+* frontend option "X-Forwarded-For Header" (the backend option should be used)
+
+Removed:
+* remove OSCP update cron job
+
+4.1
+
+Fixed:
+* fix SSL preferences in health checks (#3221)
+
+4.0
+
+Added:
+* add new service option "Gradual connection close time" (close-spread-time) (#3026)
+* add new frontend option "shards" (#3026)
+
+Changed:
+* upgrade to HAProxy 2.6 release series (#3026)
+* rename frontend option "Type" to "Connection Mode" (#3026)
+* migrate options "http-tunnel" and "forceclose" to "http-keep-alive" (#3026)
+* replace "process" with "threads" bind keyword for CPU Affinity (#3026)
+* no longer duplicate global defaults in backends/frontends (#2642)
+
+Removed:
+* remove Processes/nbproc option (use Threads/nbthread instead) (#3026)
+* remove "Process ID" from CPU Affinity settings (now always 1) (#3026)
+* remove "bind-process" option (replaced by the "threads" bind keyword) (#3026)
+* remove options "http-tunnel" and "forceclose" from "Connection Mode" (#3026)
+
+3.12
+
+Added:
+* add support for req.ssl_hello_type (#2311)
+* add support for Prometheus exporter (#2764)
+* add support for FastCGI applications (#2769)
+* add server option to override the multiplexer protocol
+
+Fixed:
+* fix unix sockets in chrooted environment (#3093)
+* fix peers by automatically configuring the local peer (#3114)
+
+Changed:
+* update HAProxy documentation URLs
+
+3.11
+
+Added:
+* add support for cache parameter (#2908)
+
+3.10
+
+WARNING: This release switches to the HAProxy 2.4 release series,
+which may result in incompatible changes for some users.
+
+Added:
+* add support for DNS resolution over TCP (#2644)
+
+Changed:
+* upgrade to HAProxy 2.4 release series (#2644)
+* disable strict-limits for safekeeping (#2644)
+
+Removed:
+* remove deprecated option tune.chksize (#2644)
+
+3.9
+
+Added:
+* add SSL SNI setting to servers and health checks (#2388)
+
+Fixed:
+* fix custom TCP health checks (#2653)
+
+Changed:
+* replace "force SSL" setting with "SSL preferences" in health checks (#2388)
+* health check port is no longer an advanced option
+
+3.8
+
+Added:
+* add support for unix sockets (#2040)
+* add "max connections" option to servers (#2641)
+
+Changed:
+* allow setting "max connections" to "0" (unlimited)
+* raise maximum value for "max connections" to 10000000
+
+3.7
+
+Added:
+* add options "preload" and "filename scheme" to Lua scripts (#2265)
+* add syslog-ng socket for logging (#2620)
+* show hint to apply changes after every config change (#2590)
+* show warning for pending configuration changes (#2590)
+
+Fixed:
+* unable to use the "require" function in Lua scripts (#2265)
+* request logging not working (#2587)
+* fix syntax error in template (#2619)
+
+Changed:
+* set "lua-prepend-path" so that Lua scripts can be found (#2265)
+* show "apply" and "test syntax" buttons on introduction pages
+
+3.6
+
+Added:
+* add support for advanced resolver properties (#2330)
+* add graceful stop timeout to service settings
+* support "monitor-uri" and "monitor fail" in rules (#2387)
+* add new option "case-sensitive" to conditions (#2576)
+
+Fixed:
+* no haproxy.conf after restoring a config backup (#2474)
+
+Changed:
+* deploy haproxy.conf if it does not exist (#2474)
+* add new timeout (60s) which will terminate open connections when using graceful stop
+* allow retries to be set to "0" (#2585)
+
+3.5
+
+Fixed:
+* fix maintenance page not loading (#2485)
+
+3.4
+
+Fixed:
+* fix empty resolve-prefer option (#2340)
+
 3.3
 
 Changed:
@@ -52,6 +281,7 @@ Fixed:
 * prevent the deletion of items that are still referenced elsewhere (core/#1897)
 
 Changed:
+* upgrade to HAProxy 2.2 release series (#2092)
 * change default SSL version to TLSv1.2 (ssl-min-ver)
 * remove weak ciphers from (default) SSL settings
 * remove default SSL bind options that would conflict with ssl-min-ver

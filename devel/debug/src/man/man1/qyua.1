@@ -1,0 +1,99 @@
+.\"
+.\" Copyright (c) 2024 Franco Fichtner <franco@opnsense.org>
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\"
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\"
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd November 22, 2024
+.Dt QYUA 1
+.Os
+.Sh NAME
+.Nm qyua
+.Nd Quick kyua wrapper
+.Sh SYNOPSIS
+.Nm
+.Op Fl abdlrV
+.Op Ar test ...
+.Sh DESCRIPTION
+The
+.Nm
+utility is a thin wrapper around
+.Xr kyua 1
+in order to run test cases directly from the source tree at
+.Pa /usr/src .
+In order to do this,
+the
+.Pa /usr/tests
+directory is required,
+which is provided by the
+.Li tests
+set of
+.Xr opnsense-update 8 .
+The source tree can be installed using
+.Xr opnsense-code 8 .
+Internally,
+.Xr kyua-test 1
+is used to run the given tests.
+.Pp
+Please note that
+.Nm
+is only concerned with a single test component, namely
+.Pa sys/netpfil/pf .
+The focus is the ability to assist with writing tests where
+they are being committed/published in the first place without
+the need to compile/install anything.
+.Pp
+The options are as follows:
+.Bl -tag -width ".Fl a" -offset indent
+.It Fl a
+Select all available tests to run.
+.It Fl b
+Bootstrap mode installs the matching tests set.
+.It Fl d
+In debug mode, a single test case is selected from the specified
+test file using
+.Sq Ar file:name .
+Internally, this invokes
+.Xr kyua-debug 1
+instead.
+.It Fl l
+List all the tests that can be run.
+.It Fl r
+In reference mode, run the tests available in
+.Pa /usr/tests .
+This works without
+.Pa /usr/src
+being available, but is not the default mode.
+.It Fl V
+Set debug mode for shell script output.
+.El
+.Sh EXIT STATUS
+.Ex -std
+.Sh SEE ALSO
+.Xr kyua 1 ,
+.Xr kyua-debug 1 ,
+.Xr kyua-test 1 ,
+.Xr opnsense-code 8 ,
+.Xr opnsense-update 8
+.Sh AUTHORS
+.An Franco Fichtner Aq Mt franco@opnsense.org

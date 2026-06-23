@@ -1,0 +1,159 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General Settings</label>
+    </field>
+    <field>
+        <id>agent.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Wazuh Agent</help>
+    </field>
+    <field>
+        <id>agent.general.server_address</id>
+        <label>Manager hostname</label>
+        <type>text</type>
+        <help>Specifies the IP address or the hostname of the Wazuh manager.</help>
+    </field>
+    <field>
+        <id>agent.general.agent_name</id>
+        <label>Agent hostname</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specifies the hostname of this agent.</help>
+    </field>
+    <field>
+        <id>agent.general.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Specifies the transport protocol to use.</help>
+    </field>
+    <field>
+        <id>agent.general.port</id>
+        <label>Manager port</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specifies the port to use for communicating with the Wazuh manager.</help>
+    </field>
+    <field>
+        <id>agent.logcollector.syslog_programs</id>
+        <label>Applications</label>
+        <type>select_multiple</type>
+        <help>Choose which applications to forward to Wazuh.</help>
+    </field>
+    <field>
+        <id>agent.logcollector.suricata_eve_log</id>
+        <label>Intrusion detection events</label>
+        <type>checkbox</type>
+        <help>Send events from the intrusion detection engine to Wazuh (Suricata EVE log)</help>
+    </field>
+    <field>
+        <id>agent.logcollector.remote_commands</id>
+        <label>Logcollector remote commands</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>
+            Enable remote commands from the log collector, disabling this will ignore command and full_command log sources
+            and prevents Wazuh manager from running arbitrary commands on this node.
+        </help>
+    </field>
+    <field>
+        <id>agent.general.debug_level</id>
+        <advanced>true</advanced>
+        <label>Debug</label>
+        <type>dropdown</type>
+        <help>
+            Debug level for this agents services.
+        </help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Active response</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>agent.active_response.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Active response</help>
+    </field>
+    <field>
+        <id>agent.active_response.fw_alias_ignore</id>
+        <label>Firewall command ignore</label>
+        <type>dropdown</type>
+        <help>
+            Select an alias from which the items should be ignored when dropping ip addresses using the opnsense-fw
+            active-response action.
+        </help>
+    </field>
+    <field>
+        <id>agent.active_response.repeated_offenders</id>
+        <label>Repeated offenders</label>
+        <type>text</type>
+        <help>
+            Comma-separated list of increasing timeout values in minutes for repeat offenders (e.g., 30,60,120,240).
+            When an IP triggers active response multiple times, each subsequent block uses the next timeout value.
+            Leave empty to disable repeated offender escalation.
+        </help>
+    </field>
+    <field>
+        <id>agent.active_response.remote_commands</id>
+        <label>Wazuh remote commands</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>
+            Toggles whether Command Module should accept commands defined in the shared configuration or not.
+        </help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Enrollment</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>agent.auth.password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>Password to use in authd.pass file.</help>
+    </field>
+    <field>
+        <id>agent.auth.port</id>
+        <label>Enrollment port</label>
+        <type>text</type>
+        <help>Specifies the port to use for communicating with the Wazuh manager during enrollment.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Policy monitoring and anomaly detection</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>agent.rootcheck.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable policy monitoring and anomaly detection</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>System inventory</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>agent.syscollector.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable syscollector</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>File integrity monitoring</label>
+        <collapse>true</collapse>
+    </field>
+    <field>
+        <id>agent.syscheck.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable file integrity monitoring</help>
+    </field>
+</form>

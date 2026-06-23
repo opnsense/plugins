@@ -43,7 +43,6 @@ class ProofpointEtController extends ApiControllerBase
      */
     public function statusAction()
     {
-        $this->sessionClose();
         $backend = new Backend();
         $response = $backend->configdRun('proofpoint et status');
         $activity = json_decode($response, true);

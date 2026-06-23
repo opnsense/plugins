@@ -1,4 +1,5 @@
 {#
+ # Copyright (c) 2024 Frank Wall
  # Copyright (c) 2019 Deciso B.V.
  # All rights reserved.
  #
@@ -34,10 +35,9 @@
               sorting:false,
               rowSelect: false,
               selection: false,
-              rowCount:[20,50,100,200,500,1000,-1],
               requestHandler: function(request){
                   // Show only log entries that match 'AcmeClient'
-                  request['searchPhrase'] = 'AcmeClient';
+                  request['searchPhrase'] = 'acmeclient';
                   return request;
               },
           },
@@ -50,43 +50,17 @@
               sorting:false,
               rowSelect: false,
               selection: false,
-              rowCount:[20,50,100,200,500,1000,-1],
           },
           search:'/api/diagnostics/log/core/acmeclient'
       });
 
-      grid_systemlog.on("loaded.rs.jquery.bootgrid", function(){
-          $(".action-page").click(function(event){
-              event.preventDefault();
-              $("#grid-systemlog").bootgrid("search",  "");
-              let new_page = parseInt((parseInt($(this).data('row-id')) / $("#grid-log").bootgrid("getRowCount")))+1;
-              $("input.search-field").val("");
-              // XXX: a bit ugly, but clearing the filter triggers a load event.
-              setTimeout(function(){
-                  $("ul.pagination > li:last > a").data('page', new_page).click();
-              }, 100);
-          });
-      });
-
-      grid_acmelog.on("loaded.rs.jquery.bootgrid", function(){
-          $(".action-page").click(function(event){
-              event.preventDefault();
-              $("#grid-acmelog").bootgrid("search",  "");
-              let new_page = parseInt((parseInt($(this).data('row-id')) / $("#grid-log").bootgrid("getRowCount")))+1;
-              $("input.search-field").val("");
-              // XXX: a bit ugly, but clearing the filter triggers a load event.
-              setTimeout(function(){
-                  $("ul.pagination > li:last > a").data('page', new_page).click();
-              }, 100);
-          });
-      });
     });
 </script>
 
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#systemlog"><b>{{ lang._('System Log') }}</b></a></li>
-    <li><a data-toggle="tab" href="#acmelog">{{ lang._('Acme Log') }}</a></li>
+    <li><a data-toggle="tab" href="#acmelog">{{ lang._('ACME Log') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">

@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2016-2021 Frank Wall
+Copyright (C) 2016-2026 Frank Wall
 OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
 All rights reserved.
 
@@ -30,16 +30,17 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
+        'use strict';
 
         // get general HAProxy settings
-        var data_get_map = {'frm_haproxy':"/api/haproxy/settings/get"};
+        const data_get_map = {'frm_haproxy':"/api/haproxy/settings/get"};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             // request service status on load and update status box
-            ajaxCall(url="/api/haproxy/service/status", sendData={}, callback=function(data,status) {
+            ajaxCall("/api/haproxy/service/status", {}, function(data, status) {
                 updateServiceStatusUI(data['status']);
             });
         });
@@ -49,178 +50,176 @@ POSSIBILITY OF SUCH DAMAGE.
          **********************************************************************/
 
         $("#grid-frontends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchFrontends',
-                get:'/api/haproxy/settings/getFrontend/',
-                set:'/api/haproxy/settings/setFrontend/',
-                add:'/api/haproxy/settings/addFrontend/',
-                del:'/api/haproxy/settings/delFrontend/',
-                toggle:'/api/haproxy/settings/toggleFrontend/',
+            {   search:'/api/haproxy/settings/search_frontends',
+                get:'/api/haproxy/settings/get_frontend/',
+                set:'/api/haproxy/settings/set_frontend/',
+                add:'/api/haproxy/settings/add_frontend/',
+                del:'/api/haproxy/settings/del_frontend/',
+                toggle:'/api/haproxy/settings/toggle_frontend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-backends").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchBackends',
-                get:'/api/haproxy/settings/getBackend/',
-                set:'/api/haproxy/settings/setBackend/',
-                add:'/api/haproxy/settings/addBackend/',
-                del:'/api/haproxy/settings/delBackend/',
-                toggle:'/api/haproxy/settings/toggleBackend/',
+            {   search:'/api/haproxy/settings/search_backends',
+                get:'/api/haproxy/settings/get_backend/',
+                set:'/api/haproxy/settings/set_backend/',
+                add:'/api/haproxy/settings/add_backend/',
+                del:'/api/haproxy/settings/del_backend/',
+                toggle:'/api/haproxy/settings/toggle_backend/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-servers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchServers',
-                get:'/api/haproxy/settings/getServer/',
-                set:'/api/haproxy/settings/setServer/',
-                add:'/api/haproxy/settings/addServer/',
-                del:'/api/haproxy/settings/delServer/',
-                toggle:'/api/haproxy/settings/toggleServer/',
+            {   search:'/api/haproxy/settings/search_servers',
+                get:'/api/haproxy/settings/get_server/',
+                set:'/api/haproxy/settings/set_server/',
+                add:'/api/haproxy/settings/add_server/',
+                del:'/api/haproxy/settings/del_server/',
+                toggle:'/api/haproxy/settings/toggle_server/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-healthchecks").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchHealthchecks',
-                get:'/api/haproxy/settings/getHealthcheck/',
-                set:'/api/haproxy/settings/setHealthcheck/',
-                add:'/api/haproxy/settings/addHealthcheck/',
-                del:'/api/haproxy/settings/delHealthcheck/',
+            {   search:'/api/haproxy/settings/search_healthchecks',
+                get:'/api/haproxy/settings/get_healthcheck/',
+                set:'/api/haproxy/settings/set_healthcheck/',
+                add:'/api/haproxy/settings/add_healthcheck/',
+                del:'/api/haproxy/settings/del_healthcheck/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-actions").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchActions',
-                get:'/api/haproxy/settings/getAction/',
-                set:'/api/haproxy/settings/setAction/',
-                add:'/api/haproxy/settings/addAction/',
-                del:'/api/haproxy/settings/delAction/',
+            {   search:'/api/haproxy/settings/search_actions',
+                get:'/api/haproxy/settings/get_action/',
+                set:'/api/haproxy/settings/set_action/',
+                add:'/api/haproxy/settings/add_action/',
+                del:'/api/haproxy/settings/del_action/',
+                toggle:'/api/haproxy/settings/toggle_action/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-acls").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchAcls',
-                get:'/api/haproxy/settings/getAcl/',
-                set:'/api/haproxy/settings/setAcl/',
-                add:'/api/haproxy/settings/addAcl/',
-                del:'/api/haproxy/settings/delAcl/',
+            {   search:'/api/haproxy/settings/search_acls',
+                get:'/api/haproxy/settings/get_acl/',
+                set:'/api/haproxy/settings/set_acl/',
+                add:'/api/haproxy/settings/add_acl/',
+                del:'/api/haproxy/settings/del_acl/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-users").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchUsers',
-                get:'/api/haproxy/settings/getUser/',
-                set:'/api/haproxy/settings/setUser/',
-                add:'/api/haproxy/settings/addUser/',
-                del:'/api/haproxy/settings/delUser/',
-                toggle:'/api/haproxy/settings/toggleUser/',
+            {   search:'/api/haproxy/settings/search_users',
+                get:'/api/haproxy/settings/get_user/',
+                set:'/api/haproxy/settings/set_user/',
+                add:'/api/haproxy/settings/add_user/',
+                del:'/api/haproxy/settings/del_user/',
+                toggle:'/api/haproxy/settings/toggle_user/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-groups").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchGroups',
-                get:'/api/haproxy/settings/getGroup/',
-                set:'/api/haproxy/settings/setGroup/',
-                add:'/api/haproxy/settings/addGroup/',
-                del:'/api/haproxy/settings/delGroup/',
-                toggle:'/api/haproxy/settings/toggleGroup/',
+            {   search:'/api/haproxy/settings/search_groups',
+                get:'/api/haproxy/settings/get_group/',
+                set:'/api/haproxy/settings/set_group/',
+                add:'/api/haproxy/settings/add_group/',
+                del:'/api/haproxy/settings/del_group/',
+                toggle:'/api/haproxy/settings/toggle_group/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-luas").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchLuas',
-                get:'/api/haproxy/settings/getLua/',
-                set:'/api/haproxy/settings/setLua/',
-                add:'/api/haproxy/settings/addLua/',
-                del:'/api/haproxy/settings/delLua/',
-                toggle:'/api/haproxy/settings/toggleLua/',
+            {   search:'/api/haproxy/settings/search_luas',
+                get:'/api/haproxy/settings/get_lua/',
+                set:'/api/haproxy/settings/set_lua/',
+                add:'/api/haproxy/settings/add_lua/',
+                del:'/api/haproxy/settings/del_lua/',
+                toggle:'/api/haproxy/settings/toggle_lua/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
+                }
+            }
+        );
+
+        $("#grid-fcgis").UIBootgrid(
+            {   search:'/api/haproxy/settings/search_fcgis',
+                get:'/api/haproxy/settings/get_fcgi/',
+                set:'/api/haproxy/settings/set_fcgi/',
+                add:'/api/haproxy/settings/add_fcgi/',
+                del:'/api/haproxy/settings/del_fcgi/',
+                options: {
                 }
             }
         );
 
         $("#grid-errorfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchErrorfiles',
-                get:'/api/haproxy/settings/getErrorfile/',
-                set:'/api/haproxy/settings/setErrorfile/',
-                add:'/api/haproxy/settings/addErrorfile/',
-                del:'/api/haproxy/settings/delErrorfile/',
+            {   search:'/api/haproxy/settings/search_errorfiles',
+                get:'/api/haproxy/settings/get_errorfile/',
+                set:'/api/haproxy/settings/set_errorfile/',
+                add:'/api/haproxy/settings/add_errorfile/',
+                del:'/api/haproxy/settings/del_errorfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-mapfiles").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMapfiles',
-                get:'/api/haproxy/settings/getMapfile/',
-                set:'/api/haproxy/settings/setMapfile/',
-                add:'/api/haproxy/settings/addMapfile/',
-                del:'/api/haproxy/settings/delMapfile/',
+            {   search:'/api/haproxy/settings/search_mapfiles',
+                get:'/api/haproxy/settings/get_mapfile/',
+                set:'/api/haproxy/settings/set_mapfile/',
+                add:'/api/haproxy/settings/add_mapfile/',
+                del:'/api/haproxy/settings/del_mapfile/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-cpus").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchCpus',
-                get:'/api/haproxy/settings/getCpu/',
-                set:'/api/haproxy/settings/setCpu/',
-                add:'/api/haproxy/settings/addCpu/',
-                del:'/api/haproxy/settings/delCpu/',
-                toggle:'/api/haproxy/settings/toggleCpu/',
+            {   search:'/api/haproxy/settings/search_cpus',
+                get:'/api/haproxy/settings/get_cpu/',
+                set:'/api/haproxy/settings/set_cpu/',
+                add:'/api/haproxy/settings/add_cpu/',
+                del:'/api/haproxy/settings/del_cpu/',
+                toggle:'/api/haproxy/settings/toggle_cpu/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-resolvers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchResolvers',
-                get:'/api/haproxy/settings/getResolver/',
-                set:'/api/haproxy/settings/setResolver/',
-                add:'/api/haproxy/settings/addResolver/',
-                del:'/api/haproxy/settings/delResolver/',
-                toggle:'/api/haproxy/settings/toggleResolver/',
+            {   search:'/api/haproxy/settings/search_resolvers',
+                get:'/api/haproxy/settings/get_resolver/',
+                set:'/api/haproxy/settings/set_resolver/',
+                add:'/api/haproxy/settings/add_resolver/',
+                del:'/api/haproxy/settings/del_resolver/',
+                toggle:'/api/haproxy/settings/toggle_resolver/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
 
         $("#grid-mailers").UIBootgrid(
-            {   search:'/api/haproxy/settings/searchMailers',
-                get:'/api/haproxy/settings/getMailer/',
-                set:'/api/haproxy/settings/setMailer/',
-                add:'/api/haproxy/settings/addMailer/',
-                del:'/api/haproxy/settings/delMailer/',
-                toggle:'/api/haproxy/settings/toggleMailer/',
+            {   search:'/api/haproxy/settings/search_mailers',
+                get:'/api/haproxy/settings/get_mailer/',
+                set:'/api/haproxy/settings/set_mailer/',
+                add:'/api/haproxy/settings/add_mailer/',
+                del:'/api/haproxy/settings/del_mailer/',
+                toggle:'/api/haproxy/settings/toggle_mailer/',
                 options: {
-                    rowCount:[10,25,50,100,500,1000]
                 }
             }
         );
@@ -228,7 +227,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogAcl').on('shown.bs.modal', function (e) {
             $("#acl\\.expression").change(function(){
-                var service_id = 'table_' + $(this).val();
+                const service_id = 'table_' + $(this).val();
                 $(".expression_table").hide();
                 $("."+service_id).show();
             });
@@ -238,7 +237,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogAction').on('shown.bs.modal', function (e) {
             $("#action\\.type").change(function(){
-                var service_id = 'table_' + $(this).val();
+                const service_id = 'table_' + $(this).val();
                 $(".type_table").hide();
                 $("."+service_id).show();
             });
@@ -248,21 +247,21 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogBackend').on('shown.bs.modal', function (e) {
             $("#backend\\.mode").change(function(){
-                var service_id = 'table_' + $(this).val();
+                const service_id = 'table_' + $(this).val();
                 $(".mode_table").hide();
                 $("."+service_id).show();
             });
             $("#backend\\.mode").change();
 
             $("#backend\\.healthCheckEnabled").change(function(){
-                var service_id = 'table_healthcheck_' + $(this).is(':checked');
+                const service_id = 'table_healthcheck_' + $(this).is(':checked');
                 $(".healthcheck_table").hide();
                 $("."+service_id).show();
             });
             $("#backend\\.healthCheckEnabled").change();
 
             $("#backend\\.persistence").change(function(){
-                var persistence_id = 'table_persistence_' + $(this).val();
+                const persistence_id = 'table_persistence_' + $(this).val();
                 $(".persistence_table").hide();
                 $("."+persistence_id).show();
             });
@@ -272,7 +271,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogFrontend').on('shown.bs.modal', function (e) {
             $("#frontend\\.mode").change(function(){
-                var service_id = 'table_' + $(this).val();
+                const service_id = 'table_' + $(this).val();
                 $(".mode_table").hide();
                 $("."+service_id).show();
             });
@@ -280,7 +279,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             // show/hide SSL offloading
             $("#frontend\\.ssl_enabled").change(function(){
-                var service_id = 'table_ssl_' + $(this).is(':checked');
+                const service_id = 'table_ssl_' + $(this).is(':checked');
                 $(".table_ssl").hide();
                 $("."+service_id).show();
             });
@@ -288,7 +287,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
             // show/hide advanced SSL settings
             $("#frontend\\.ssl_advancedEnabled").change(function(){
-                var service_id = 'table_ssl_advanced_' + $(this).is(':checked');
+                const service_id = 'table_ssl_advanced_' + $(this).is(':checked');
                 $(".table_ssl_advanced").hide();
                 $("."+service_id).show();
             });
@@ -298,9 +297,8 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogHealthcheck').on('shown.bs.modal', function (e) {
             $("#healthcheck\\.type").change(function(){
-                var service_id = 'table_' + $(this).val();
+                const service_id = 'table_' + $(this).val();
                 $(".type_table").hide();
-                // $(".table_"+$(this).val()).show();
                 $("."+service_id).show();
             });
             $("#healthcheck\\.type").change();
@@ -309,7 +307,7 @@ POSSIBILITY OF SUCH DAMAGE.
         // hook into on-show event for dialog to extend layout.
         $('#DialogServer').on('shown.bs.modal', function (e) {
             $("#server\\.type").change(function(){
-                var service_id = 'table_server_type_' + $(this).val();
+                const service_id = 'table_server_type_' + $(this).val();
                 $(".table_server_type").hide();
                 $("."+service_id).show();
             });
@@ -323,89 +321,75 @@ POSSIBILITY OF SUCH DAMAGE.
         // reconfigure haproxy to activate changes
         $('[id*="reconfigureAct"]').each(function(){
             $(this).click(function(){
-
-            // set progress animation
-            $('[id*="reconfigureAct_progress"]').each(function(){
-                $(this).addClass("fa fa-spinner fa-pulse");
-            });
-            // first run syntax check to catch critical errors
-            ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
-                // show warning in case of critical errors
-                if (data['result'].indexOf('ALERT') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('HAProxy configtest found critical errors') }}",
-                        message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details or review the changes in the %sConfiguration Diff%s.')|format('<a href=\"/ui/haproxy/export#diff\">','</a>') }}",
-                        buttons: [{
-                            icon: 'fa fa-trash-o',
-                            label: '{{ lang._('Abort') }}',
-                            action: function(dlg){
-                                // when done, disable progress animation
-                                $('[id*="reconfigureAct_progress"]').each(function(){
-                                    $(this).removeClass("fa fa-spinner fa-pulse");
-                                });
-                                dlg.close();
-                            }
-                        }]
-                    });
-                } else {
-                    ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                        if (status != "success" || data['status'] != 'ok') {
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
-                                message: data['status'],
-                                draggable: true
-                            });
-                        }
-                        // when done, disable progress animation
-                        $('[id*="reconfigureAct_progress"]').each(function(){
-                            $(this).removeClass("fa fa-spinner fa-pulse");
+                // set progress animation
+                $('[id*="reconfigureAct_progress"]').addClass("fa fa-spinner fa-pulse");
+                // first run syntax check to catch critical errors
+                ajaxCall("/api/haproxy/service/configtest", {}, function(data, status) {
+                    // show warning in case of critical errors
+                    if (data['result'].indexOf('ALERT') > -1) {
+                        $('[id*="reconfigureAct_progress"]').removeClass("fa fa-spinner fa-pulse");
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: "{{ lang._('HAProxy configtest found critical errors') }}",
+                            message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Run syntax check for further details or review the changes in the %sConfiguration Diff%s.')|format('<a href=\"/ui/haproxy/export#diff\">','</a>') }}",
+                            draggable: true
                         });
-                    });
-                }
-            });
+                    } else {
+                        ajaxCall("/api/haproxy/service/reconfigure", {}, function(data, status) {
+                            if (status != "success" || data['status'] != 'ok') {
+                                BootstrapDialog.show({
+                                    type: BootstrapDialog.TYPE_WARNING,
+                                    title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                    message: data['status'],
+                                    draggable: true
+                                });
+                            } else {
+                                // reload page to hide pending changes reminder
+                                setTimeout(function () {
+                                    window.location.reload(true);
+                                }, 300);
+                            }
+                            // when done, disable progress animation
+                            $('[id*="reconfigureAct_progress"]').removeClass("fa fa-spinner fa-pulse");
+                        });
+                    }
+                });
             });
         });
 
         // test configuration file
         $('[id*="configtestAct"]').each(function(){
             $(this).click(function(){
+                // set progress animation
+                $('[id*="configtestAct_progress"]').addClass("fa fa-spinner fa-pulse");
 
-            // set progress animation
-            $('[id*="configtestAct_progress"]').each(function(){
-                $(this).addClass("fa fa-spinner fa-pulse");
-            });
+                ajaxCall("/api/haproxy/service/configtest", {}, function(data, status) {
+                    // when done, disable progress animation
+                    $('[id*="configtestAct_progress"]').removeClass("fa fa-spinner fa-pulse");
 
-            ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
-                // when done, disable progress animation
-                $('[id*="configtestAct_progress"]').each(function(){
-                    $(this).removeClass("fa fa-spinner fa-pulse");
+                    if (data['result'].indexOf('ALERT') > -1) {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: "{{ lang._('HAProxy configtest found critical errors') }}",
+                            message: data['result'],
+                            draggable: true
+                        });
+                    } else if (data['result'].indexOf('WARNING') > -1) {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_WARNING,
+                            title: "{{ lang._('HAProxy configtest found minor errors') }}",
+                            message: data['result'],
+                            draggable: true
+                        });
+                    } else {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_WARNING,
+                            title: "{{ lang._('HAProxy configtest result') }}",
+                            message: "{{ lang._('Your HAProxy config contains no errors.') }}",
+                            draggable: true
+                        });
+                    }
                 });
-
-                if (data['result'].indexOf('ALERT') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('HAProxy configtest found critical errors') }}",
-                        message: data['result'],
-                        draggable: true
-                    });
-                } else if (data['result'].indexOf('WARNING') > -1) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy configtest found minor errors') }}",
-                        message: data['result'],
-                        draggable: true
-                    });
-                } else {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy configtest result') }}",
-                        message: "{{ lang._('Your HAProxy config contains no errors.') }}",
-                        draggable: true
-                    });
-                }
-            });
             });
         });
 
@@ -413,36 +397,40 @@ POSSIBILITY OF SUCH DAMAGE.
         $('[id*="saveAndTestAct"]').each(function(){
             $(this).click(function(){
                 // extract the form id from the button id
-                var frm_id = "frm_" + $(this).attr("id").split('_')[1]
+                const frm_id = "frm_" + $(this).attr("id").split('_')[1];
 
                 // save data for this tab
-                saveFormToEndpoint(url="/api/haproxy/settings/set",formid=frm_id,callback_ok=function(){
+                saveFormToEndpoint("/api/haproxy/settings/set", frm_id, function(){
                     // set progress animation
-                    $('[id*="saveAndTestAct_progress"]').each(function(){
-                        $(this).addClass("fa fa-spinner fa-pulse");
-                    });
+                    $('[id*="saveAndTestAct_progress"]').addClass("fa fa-spinner fa-pulse");
 
                     // on correct save, perform config test
-                    ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                    ajaxCall("/api/haproxy/service/configtest", {}, function(data, status) {
                         if (data['result'].indexOf('ALERT') > -1) {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
-                                title: "{{ lang._('HAProxy config contains critical errors') }}",
+                                title: "{{ lang._('HAProxy configtest found critical errors') }}",
                                 message: data['result'],
                                 draggable: true
                             });
                         } else if (data['result'].indexOf('WARNING') > -1) {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('HAProxy config contains minor errors') }}",
+                                title: "{{ lang._('HAProxy configtest found minor errors') }}",
                                 message: data['result'],
                                 draggable: true
                             });
+                        } else {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_WARNING,
+                                title: "{{ lang._('HAProxy configtest result') }}",
+                                message: "{{ lang._('Your HAProxy config contains no errors.') }}",
+                                draggable: true
+                            });
                         }
+
                         // when done, disable progress animation
-                        $('[id*="saveAndTestAct_progress"]').each(function(){
-                            $(this).removeClass("fa fa-spinner fa-pulse");
-                        });
+                        $('[id*="saveAndTestAct_progress"]').removeClass("fa fa-spinner fa-pulse");
                     });
                 });
             });
@@ -452,57 +440,36 @@ POSSIBILITY OF SUCH DAMAGE.
         $('[id*="saveAndReconfigureAct"]').each(function(){
             $(this).click(function(){
                 // extract the form id from the button id
-                var frm_id = "frm_" + $(this).attr("id").split('_')[1]
+                const frm_id = "frm_" + $(this).attr("id").split('_')[1];
 
                 // save data for this tab
-                saveFormToEndpoint(url="/api/haproxy/settings/set",formid=frm_id,callback_ok=function(){
+                saveFormToEndpoint("/api/haproxy/settings/set", frm_id, function(){
                     // set progress animation
-                    $('[id*="saveAndReconfigureAct_progress"]').each(function(){
-                        $(this).addClass("fa fa-spinner fa-pulse");
-                    });
+                    $('[id*="saveAndReconfigureAct_progress"]').addClass("fa fa-spinner fa-pulse");
 
                     // on correct save, perform config test
-                    ajaxCall(url="/api/haproxy/service/configtest", sendData={}, callback=function(data,status) {
+                    ajaxCall("/api/haproxy/service/configtest", {}, function(data, status) {
                         // show warning in case of critical errors
                         if (data['result'].indexOf('ALERT') > -1) {
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_DANGER,
-                                title: "{{ lang._('HAProxy config contains critical errors') }}",
-                                message: "{{ lang._('The HAProxy service may not be able to start due to critical errors. Try anyway?') }}",
-                                buttons: [{
-                                    label: '{{ lang._('Continue') }}',
-                                    cssClass: 'btn-primary',
-                                    action: function(dlg){
-                                        ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
-                                            if (status != "success" || data['status'] != 'ok') {
-                                                BootstrapDialog.show({
-                                                    type: BootstrapDialog.TYPE_WARNING,
-                                                    title: "{{ lang._('Error reconfiguring HAProxy') }}",
-                                                    message: data['status'],
-                                                    draggable: true
-                                                });
-                                            }
-                                        });
-                                        // when done, disable progress animation
-                                        $('[id*="saveAndReconfigureAct_progress"]').each(function(){
-                                            $(this).removeClass("fa fa-spinner fa-pulse");
-                                        });
-                                        dlg.close();
-                                    }
-                                }, {
-                                    icon: 'fa fa-trash-o',
-                                    label: '{{ lang._('Abort') }}',
-                                    action: function(dlg){
-                                        // when done, disable progress animation
-                                        $('[id*="saveAndReconfigureAct_progress"]').each(function(){
-                                            $(this).removeClass("fa fa-spinner fa-pulse");
-                                        });
-                                        dlg.close();
-                                    }
-                                }]
-                            });
+                            $('[id*="saveAndReconfigureAct_progress"]').removeClass("fa fa-spinner fa-pulse");
+                            stdDialogConfirm(
+                                "{{ lang._('HAProxy config contains critical errors') }}",
+                                "{{ lang._('The HAProxy service may not be able to start due to critical errors. Try anyway?') }}",
+                                "{{ lang._('Continue') }}", "{{ lang._('Abort') }}", function() {
+                                    ajaxCall("/api/haproxy/service/reconfigure", {}, function(data, status) {
+                                        if (status != "success" || data['status'] != 'ok') {
+                                            BootstrapDialog.show({
+                                                type: BootstrapDialog.TYPE_WARNING,
+                                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                                message: data['status'],
+                                                draggable: true
+                                            });
+                                        }
+                                    });
+                                }
+                            );
                         } else {
-                            ajaxCall(url="/api/haproxy/service/reconfigure", sendData={}, callback=function(data,status) {
+                            ajaxCall("/api/haproxy/service/reconfigure", {}, function(data, status) {
                                 if (status != "success" || data['status'] != 'ok') {
                                     BootstrapDialog.show({
                                         type: BootstrapDialog.TYPE_WARNING,
@@ -510,22 +477,55 @@ POSSIBILITY OF SUCH DAMAGE.
                                         message: data['status'],
                                         draggable: true
                                     });
+                                } else {
+                                    // reload page to hide pending changes reminder
+                                    setTimeout(function () {
+                                        window.location.reload(true);
+                                    }, 300);
                                 }
                                 // when done, disable progress animation
-                                $('[id*="saveAndReconfigureAct_progress"]').each(function(){
-                                    $(this).removeClass("fa fa-spinner fa-pulse");
-                                });
+                                $('[id*="saveAndReconfigureAct_progress"]').removeClass("fa fa-spinner fa-pulse");
                             });
                         }
-                    //});
                     });
 
                 });
             });
         });
 
+        /***********************************************************************
+         * UI tricks
+         **********************************************************************/
+
+        // show reminder when config has pending changes
+        function pending_changes_reminder() {
+            ajaxCall("/api/haproxy/export/diff/", {}, function(data, status) {
+                if (data['response'] && data['response'].trim()) {
+                    $("#haproxyPendingReminder").show();
+                } else {
+                    $("#haproxyPendingReminder").hide();
+                }
+            });
+        }
+        pending_changes_reminder();
+
+        // show hint after every config change
+        const hint_msg = "{{ lang._('After changing settings, please remember to test and apply them with the buttons below.') }}";
+        $('[id*="haproxyChangeMessage"]').append(hint_msg);
+
+        // show or hide the correct buttons depending on which tab is shown
+        // NOTE: This does not work on already shown tabs, so this event must
+        // fire first.
+        $('.nav-tabs a').on('show.bs.tab', function (e) {
+            if (/^\#general/.test(e.target.hash)) {
+              $("#haproxyCommonButtons").hide();
+            } else {
+              $("#haproxyCommonButtons").show();
+            }
+        });
+
         // update history on tab state and implement navigation
-        if(window.location.hash != "") {
+        if (window.location.hash != "") {
             $('a[href="' + window.location.hash + '"]').click()
         }
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -535,6 +535,12 @@ POSSIBILITY OF SUCH DAMAGE.
     });
 
 </script>
+
+<style>
+    textarea {
+        white-space: pre;
+    }
+</style>
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     {# manually add tabs #}
@@ -625,6 +631,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_haproxy-advanced-introduction">{{ lang._('Introduction') }}</a></li>
             {% endif %}
             <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
+            <li><a data-toggle="tab" href="#fcgis">{{ lang._('FastCGI Applications') }}</a></li>
             <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
             <li><a data-toggle="tab" href="#mapfiles">{{ lang._('Map Files') }}</a></li>
             <li><a data-toggle="tab" href="#cpus">{{ lang._('CPU Affinity Rules') }}</a></li>
@@ -647,7 +654,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Lastly, enable HAProxy using the %sService%s settings page.') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
-            <p>{{ lang._('Further information is available in our %sHAProxy plugin documentation%s and of course in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="https://docs.opnsense.org/manual/how-tos/haproxy.html" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._('Further information is available in the %sofficial HAProxy documentation%s. Be sure to report bugs and request features on our %sGitHub issue page%s. Code contributions are also very welcome!') | format('<a href="http://docs.haproxy.org/3.2/configuration.html" target="_blank">', '</a>', '<a href="https://github.com/opnsense/plugins/issues/" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -689,7 +696,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#7" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %sACL feature%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/3.2/configuration.html#7" target="_blank">', '</a>') }}</p>
             <p>{{ lang._('Note that it is possible to directly add options to the HAProxy configuration by using the "option pass-through", a setting that is available for several configuration items. It allows you to implement configurations that are currently not officially supported by this plugin. It is strongly discouraged to rely on this feature. Please report missing features on our GitHub page!') | format('<b>', '</b>') }}</p>
             <br/>
         </div>
@@ -704,7 +711,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://docs.haproxy.org/3.2/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -722,7 +729,7 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._("%sCache:%s HAProxy's cache which was designed to perform cache on small objects (favicon, css, etc.). This is a minimalist low-maintenance cache which runs in RAM.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sPeers:%s Configure a communication channel between two HAProxy instances. This will propagate entries of any data-types in stick-tables between these HAProxy instances over TCP connections in a multi-master fashion. Useful when aiming for a seamless failover in a HA setup.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#10" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#3.5" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sStatistics%s, %sCache%s and %sPeers%s features.") | format('<a href="http://docs.haproxy.org/3.2/configuration.html#stats%20enable" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.2/configuration.html#10" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.2/configuration.html#3.5" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -733,19 +740,20 @@ POSSIBILITY OF SUCH DAMAGE.
             <p>{{ lang._("Most of the time these features are not required, but in certain situations they will be handy:") }}</p>
             <ul>
               <li>{{ lang._("%sError Messages:%s Return a custom message instead of errors generated by HAProxy. Useful to overwrite HAProxy's internal error messages. The message must represent the full HTTP response and include required HTTP headers.") | format('<b>', '</b>') }}</li>
+              <li>{{ lang._("%sFastCGI Applications:%s HAProxy can be configured to send requests to FastCGI applications. After configuring a FastCGI application, it needs to be enabled in a %sBackend Pool%s.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sLua scripts:%s Include your own Lua code/scripts to extend HAProxy's functionality. The Lua code can be used in certain %sRules%s, for example.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sMap Files:%s A map allows to map a data in input to an other one on output. For example, this makes it possible to map a large number of domains to backend pools without using the GUI. Map files need to be used in %sRules%s, otherwise they are ignored.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sCPU Affinity Rules:%s This feature makes it possible to bind HAProxy's processes/threads to a specific CPU (or a CPU set). Furthermore it is possible to select CPU Affinity Rules in %sPublic Services%s to restrict them to a certain set of processes/threads/CPUs.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sResolvers:%s This feature allows in-depth configuration of how HAProxy handles name resolution and interacts with name resolvers (DNS). Each resolver configuration can be used in %sBackend Pools%s to apply individual name resolution configurations.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._("%sE-Mail Alerts:%s It is possible to send email alerts when the state of servers changes. Each configuration can be used in %sBackend Pools%s to send e-mail alerts to the configured recipient.") | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
-            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#process" target="_blank">', '</a>','<a href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more details visit HAProxy's official documentation regarding the %sError Messages%s, %sLua Script%s and the %sMap Files%s features. More information on HAProxy's CPU Affinity is also available %shere%s, %shere%s and %shere%s. A detailed explanation of the resolvers feature can be found %shere%s.") | format('<a href="http://docs.haproxy.org/3.2/configuration.html#4-errorfile" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.2/configuration.html#lua-load" target="_blank">', '</a>', '<a href="http://docs.haproxy.org/3.2/configuration.html#map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.2/configuration.html#cpu-map" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.2/configuration.html#bind-process" target="_blank">', '</a>' ,'<a href="http://docs.haproxy.org/3.2/configuration.html#process" target="_blank">', '</a>','<a href="http://docs.haproxy.org/3.2/configuration.html#5.3.2" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
 
     <div id="frontends" class="tab-pane fade">
-        <table id="grid-frontends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFrontend">
+        <table id="grid-frontends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFrontend" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -768,17 +776,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-frontends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-frontends" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="backends" class="tab-pane fade">
-        <table id="grid-backends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogBackend">
+        <table id="grid-backends" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogBackend" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -801,23 +802,17 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-backends" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-backends" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="servers" class="tab-pane fade">
-        <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer">
+        <table id="grid-servers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogServer" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="serverid" data-type="number"  data-visible="false">{{ lang._('Server ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Server Name') }}</th>
                 <th data-column-id="type" data-type="string">{{ lang._('Type') }}</th>
+                <th data-column-id="mode" data-type="string">{{ lang._('Mode') }}</th>
                 <th data-column-id="address" data-type="string">{{ lang._('Server Address') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Server Port') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
@@ -837,17 +832,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-servers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-servers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="healthchecks" class="tab-pane fade">
-        <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck">
+        <table id="grid-healthchecks" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogHealthcheck" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="healthcheckid" data-type="number"  data-visible="false">{{ lang._('Health Monitor ID') }}</th>
@@ -869,19 +857,13 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-healthchecks" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-healthchecks" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="actions" class="tab-pane fade">
-        <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction">
+        <table id="grid-actions" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAction" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
+                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="actionid" data-type="number"  data-visible="false">{{ lang._('Rule ID') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Rule Name') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
@@ -901,17 +883,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-actions" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-actions" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="acls" class="tab-pane fade">
-        <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl">
+        <table id="grid-acls" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAcl" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="aclid" data-type="number"  data-visible="false">{{ lang._('Condition ID') }}</th>
@@ -933,17 +908,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-acls" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-acls" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="users" class="tab-pane fade">
-        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser">
+        <table id="grid-users" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogUser" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -966,17 +934,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-users" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-users" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="groups" class="tab-pane fade">
-        <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup">
+        <table id="grid-groups" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogGroup" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -999,17 +960,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-groups" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-groups" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="luas" class="tab-pane fade">
-        <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua">
+        <table id="grid-luas" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogLua" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -1032,17 +986,35 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-luas" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-luas" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
+    </div>
+
+    <div id="fcgis" class="tab-pane fade">
+        <table id="grid-fcgis" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogFcgi" data-editAlert="haproxyChangeMessage">
+            <thead>
+            <tr>
+                <th data-column-id="fcgiid" data-type="number"  data-visible="false">{{ lang._('FastCGI ID') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('FastCGI Application Name') }}</th>
+                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
 
     <div id="errorfiles" class="tab-pane fade">
-        <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile">
+        <table id="grid-errorfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogErrorfile" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="errorfileid" data-type="number"  data-visible="false">{{ lang._('Error Message ID') }}</th>
@@ -1064,17 +1036,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-errorfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-errorfiles" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="mapfiles" class="tab-pane fade">
-        <table id="grid-mapfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMapfile">
+        <table id="grid-mapfiles" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMapfile" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="mapfileid" data-type="number"  data-visible="false">{{ lang._('Map File ID') }}</th>
@@ -1096,23 +1061,15 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-mapfiles" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-mapfiles" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="cpus" class="tab-pane fade">
-        <table id="grid-cpus" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCpu">
+        <table id="grid-cpus" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCpu" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="cpuid" data-type="number"  data-visible="false">{{ lang._('CPU Rule ID') }}</th>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                 <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                <th data-column-id="process_id" data-type="string">{{ lang._('Process ID') }}</th>
                 <th data-column-id="thread_id" data-type="string">{{ lang._('Thread ID') }}</th>
                 <th data-column-id="cpu_id" data-type="string">{{ lang._('CPU ID') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
@@ -1131,17 +1088,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-cpus" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-cpus" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="resolvers" class="tab-pane fade">
-        <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver">
+        <table id="grid-resolvers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogResolver" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="resolverid" data-type="number"  data-visible="false">{{ lang._('Resolver ID') }}</th>
@@ -1164,17 +1114,10 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-resolvers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-resolvers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <div id="mailers" class="tab-pane fade">
-        <table id="grid-mailers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMailer">
+        <table id="grid-mailers" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogMailer" data-editAlert="haproxyChangeMessage">
             <thead>
             <tr>
                 <th data-column-id="mailerid" data-type="number"  data-visible="false">{{ lang._('Mailer ID') }}</th>
@@ -1198,13 +1141,6 @@ POSSIBILITY OF SUCH DAMAGE.
             </tr>
             </tfoot>
         </table>
-        <div class="col-md-12">
-            <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-mailers" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
-            <button class="btn btn-primary" id="configtestAct-mailers" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
-            <br/>
-            <br/>
-        </div>
     </div>
 
     <!-- subtabs for general "Settings" tab below -->
@@ -1284,6 +1220,20 @@ POSSIBILITY OF SUCH DAMAGE.
             </div>
         </div>
     </div>
+
+    <!-- buttons for all grid pages -->
+    <div class="col-md-12" id="haproxyCommonButtons" style="display: none">
+        <div id="haproxyPendingReminder" class="alert alert-warning" style="display: none" role="alert">
+            {{ lang._("There are pending configuration changes that must be applied in order for them to take effect. To review them visit the %sConfig Diff%s page.") | format('<a href="/ui/haproxy/export#diff" class="alert-link" target="_blank">', '</a>') }}
+        </div>
+        <div id="haproxyChangeMessage" class="alert alert-info" style="display: none" role="alert">
+        </div>
+        <hr/>
+        <button class="btn btn-primary" id="reconfigureAct-common" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+        <button class="btn btn-primary" id="configtestAct-common" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button>
+        <br/><br/>
+    </div>
+
 </div>
 
 {# include dialogs #}
@@ -1297,6 +1247,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogGroup,'id':'DialogGroup','label':lang._('Edit Group')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogErrorfile,'id':'DialogErrorfile','label':lang._('Edit Error Message')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogFcgi,'id':'DialogFcgi','label':lang._('Edit FastCGI Application')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogMapfile,'id':'DialogMapfile','label':lang._('Edit Map File')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCpu,'id':'DialogCpu','label':lang._('Edit CPU Affinity Rule')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogResolver,'id':'DialogResolver','label':lang._('Edit Resolver')])}}

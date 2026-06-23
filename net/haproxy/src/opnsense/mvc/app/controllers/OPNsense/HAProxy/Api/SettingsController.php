@@ -1,7 +1,7 @@
 <?php
 
 /**
- *    Copyright (C) 2016-2021 Frank Wall
+ *    Copyright (C) 2016-2026 Frank Wall
  *    Copyright (C) 2015 Deciso B.V.
  *
  *    All rights reserved.
@@ -133,7 +133,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchServersAction()
     {
-        return $this->searchBase('servers.server', array('enabled', 'name', 'type', 'address', 'port', 'description'), 'name');
+        return $this->searchBase('servers.server', array('enabled', 'name', 'type', 'mode', 'address', 'port', 'description'), 'name');
     }
 
     public function getHealthcheckAction($uuid = null)
@@ -206,9 +206,14 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->delBase('actions.action', $uuid);
     }
 
+    public function toggleActionAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('actions.action', $uuid);
+    }
+
     public function searchActionsAction()
     {
-        return $this->searchBase('actions.action', array('name', 'description'), 'name');
+        return $this->searchBase('actions.action', array('enabled', 'name', 'description'), 'name');
     }
 
     public function getLuaAction($uuid = null)
@@ -239,6 +244,31 @@ class SettingsController extends ApiMutableModelControllerBase
     public function searchLuasAction()
     {
         return $this->searchBase('luas.lua', array('enabled', 'name', 'description'), 'name');
+    }
+
+    public function getFcgiAction($uuid = null)
+    {
+        return $this->getBase('fcgi', 'fcgis.fcgi', $uuid);
+    }
+
+    public function setFcgiAction($uuid)
+    {
+        return $this->setBase('fcgi', 'fcgis.fcgi', $uuid);
+    }
+
+    public function addFcgiAction()
+    {
+        return $this->addBase('fcgi', 'fcgis.fcgi');
+    }
+
+    public function delFcgiAction($uuid)
+    {
+        return $this->delBase('fcgis.fcgi', $uuid);
+    }
+
+    public function searchFcgisAction()
+    {
+        return $this->searchBase('fcgis.fcgi', array('name', 'description'), 'name');
     }
 
     public function getErrorfileAction($uuid = null)
@@ -318,7 +348,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchCpusAction()
     {
-        return $this->searchBase('cpus.cpu', array('enabled', 'name', 'process_id', 'thread_id', 'cpu_id'), 'name');
+        return $this->searchBase('cpus.cpu', array('enabled', 'name', 'thread_id', 'cpu_id'), 'name');
     }
 
     public function getGroupAction($uuid = null)

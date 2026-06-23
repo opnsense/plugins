@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# The configuration file used in reconfigure (i.e. settings.json) may eventually
+# have credentials, so we need to restrict its permissions. We do so by pre-creating
+# the directory, and the template package will use its permissions while creating the file.
+# If we do that in setup.sh, the file already exists with bad permissions.
+
+# shellcheck disable=SC2174
+mkdir -p -m 0700 /usr/local/etc/crowdsec/opnsense

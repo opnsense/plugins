@@ -47,7 +47,6 @@ class ValidationsController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('validation', 'validations.validation', $uuid);
     }
 
@@ -73,6 +72,6 @@ class ValidationsController extends ApiMutableModelControllerBase
 
     public function searchAction()
     {
-        return $this->searchBase('validations.validation', array('enabled', 'name', 'description'), 'name');
+        return $this->searchBase('validations.validation', array('enabled', 'name', 'method', 'description'), 'name');
     }
 }

@@ -27,4 +27,16 @@
         <type>text</type>
         <help><![CDATA[Define the maximum size of the objects to be cached. Must not be greater than an half of the maximum size of the cache. If not set, it equals to a 256th of the cache size. All objects with sizes larger than this value will not be cached.]]></help>
     </field>
+    <field>
+        <id>haproxy.general.cache.processVary</id>
+        <label>Process vary enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable or disable the processing of the Vary header. When disabled, a response containing such a header will never be cached.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.cache.maxSecondaryEntries</id>
+        <label>Maximum Number of secondary entries</label>
+        <type>text</type>
+        <help><![CDATA[To add this cache parameter Vary support needs to be enabled. Define the maximum number of simultaneous secondary entries with the same primary key in the cache. Its default value is 10 and should be passed a strictly positive integer.]]></help>
+    </field>
 </form>

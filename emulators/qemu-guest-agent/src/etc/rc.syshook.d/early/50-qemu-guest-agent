@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if kldstat -qn virtio_console.ko; then
+  echo "qemu-guest-agent: virtio_console already loaded."
+elif kldload -q virtio_console.ko; then
+  echo "qemu-guest-agent: successfully loaded virtio_console."
+else
+  echo "qemu-guest-agent: failed to load virtio_console."
+fi

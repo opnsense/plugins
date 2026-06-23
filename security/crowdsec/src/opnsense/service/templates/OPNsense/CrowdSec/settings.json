@@ -1,0 +1,3 @@
+{% if helpers.exists('OPNsense.crowdsec.general') -%}
+    {{ OPNsense.crowdsec.general | tojson }}
+{%- endif %}

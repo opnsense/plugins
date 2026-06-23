@@ -1,0 +1,120 @@
+{#
+ # Copyright (c) 2014-2018 Deciso B.V.
+ # Copyright (c) 2022 agh1467 <agh1467@protonmail.com>
+ # All rights reserved.
+ #
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #
+ # 1.  Redistributions of source code must retain the above copyright notice,
+ #     this list of conditions and the following disclaimer.
+ #
+ # 2.  Redistributions in binary form must reproduce the above copyright notice,
+ #     this list of conditions and the following disclaimer in the documentation
+ #     and/or other materials provided with the distribution.
+ #
+ # THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ # AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ # AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ # OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ # INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ # POSSIBILITY OF SUCH DAMAGE.
+ #}
+
+{#- /usr/local/etc/sslh.conf -#}
+{% set plugin_name = 'sslh' %}
+{# Prevent configd reload from erroring out if node doesn't exist #}
+{%  if OPNsense[plugin_name] is defined %}
+{%      set cfg = OPNsense[plugin_name] %}
+################################################################################
+#                                                                              #
+#       sslh configuration file for v1.21c                                     #
+#                                                                              #
+################################################################################
+
+{# ------------ Static options, should remain unchanged by the user. -------- #}
+{# standard location for pid files #}
+pidfile:"/var/run/sslh.pid";
+{# Run as nobody for security reasons. #}
+user: "nobody";
+
+{# ------------ Dynamic options, user configurable. -------------------------- #}
+{%      if cfg['verbose'] is defined %}
+verbose:{{ '1' if (cfg['verbose'] == '1') else '0' }};
+{%      endif -%}
+
+{%      if cfg['numeric'] is defined %}
+numeric:{{ 'true' if (cfg['numeric'] == '1') else 'false' }};
+{%      endif -%}
+
+{%      if cfg['timeout'] is defined %}
+timeout:{{ cfg['timeout'] }};
+{%      endif -%}
+
+{%      if cfg['on_timeout'] is defined %}
+on_timeout:"{{ cfg['on_timeout'] }}";
+{%      endif -%}
+
+{%      if cfg['listen_addresses'] is defined %}
+{%          set listen_list = [] %}
+{#          # listen_addresses is comma delimited string, split() to iterate through. #}
+{%          for for_listen in cfg['listen_addresses'].split(',') %}
+{#              # Need to further split the listen address by hostname:port #}
+{%              set listen_hostname, separator, listen_port = for_listen.rpartition(':') %}
+{%              if listen_hostname != '' and listen_port != '' %}
+{%                  do listen_list.append('    { host: "'~listen_hostname~'"; port: "'~listen_port~'" }') %}
+{%              endif %}
+{%          endfor %}
+{%          if listen_list != [] -%}{# Don't put this setting unless we have listen addreses to put. #}
+listen:
+(
+{{ listen_list|join(",\n") }}
+);
+{%          endif %}
+{%      endif %}
+
+{# All of the protocols #}
+protocols:
+(
+{%      if cfg['ssh_target'] is defined %}
+{%          set hostname, separator, port = cfg['ssh_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "ssh";     service: "ssh"; host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+{%      if cfg['openvpn_target'] is defined %}
+{%          set hostname, separator, port = cfg['openvpn_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "openvpn";                 host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+{%      if cfg['xmpp_target'] is defined %}
+{%          set hostname, separator, port = cfg['xmpp_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "xmpp";                    host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+{%      if cfg['http_target'] is defined %}
+{%          set hostname, separator, port = cfg['http_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "http";                    host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+{%      if cfg['tls_target'] is defined %}
+{%          set hostname, separator, port = cfg['tls_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "tls";                     host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+{%      if cfg['anyprot_target'] is defined %}
+{%          set hostname, separator, port = cfg['anyprot_target'].rpartition(':') %}
+{%          if hostname != '' and port != '' %}
+     { name: "anyprot";                 host: "{{ hostname }}"; port: "{{ port }}"; },
+{%          endif %}
+{%      endif %}
+);
+{%  endif %}

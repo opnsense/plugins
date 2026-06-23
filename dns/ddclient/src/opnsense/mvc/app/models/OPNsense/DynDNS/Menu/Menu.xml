@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <DynamicDNS VisibleName="Dynamic DNS" cssClass="fa fa-tags fa-fw">
+            <Settings order="10" url="/ui/dyndns/"/>
+            <log order="100" VisibleName="Log File" url="/ui/diagnostics/log/core/ddclient"/>
+        </DynamicDNS>
+    </Services>
+</menu>

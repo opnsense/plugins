@@ -12,6 +12,75 @@ WWW: https://www.influxdata.com/time-series-platform/telegraf/
 Plugin Changelog
 ================
 
+1.12.15
+
+* Add custom header support for OpenTelemetry output
+* Quote OpenTelemetry service_address in config
+
+1.12.14
+
+* Add name_prefix in influxdb config
+
+1.12.13
+
+* Implement memory_saving_mode formerly named enable_file_download (contributed by Konstantinos Spartalis)
+
+1.12.12
+
+* Fix for mixed ping plugin config (contributed by Alex Baulé)
+* Fix incompatibility with obsolete dns_lookup setting
+
+1.12.11
+
+* Add OpenTelemetry output
+
+1.12.10
+
+* Fix MQTT output and additional UI cleanup (contributed by Pierre Christen)
+
+1.12.9
+
+* Add MQTT output
+
+1.12.8
+
+* bug: fix InfluxDB v2 template to remove erroneous `timeout` value (issue #3265, contributed by Gavin Chappell)
+
+1.12.7
+
+* Add Influx v2 flush timeout
+
+1.12.6
+
+* Add apcupsd input
+
+1.12.5
+
+* Add support for basic HTTP Authentication agains Elasticsearch (contributed by psychogun)
+* Add internet speed input plugin (contributed by rare-magma)
+* Allow to specify ping count (Kacper Michajlow)
+
+1.12.4
+
+* Add 5 second timeout to unbound input
+
+1.12.3
+
+* Add insecure_skip_verify as an option for Influx v2 output
+
+1.12.2
+
+* Add insecure_skip_verify as an option for Influx v1 output
+
+1.12.1
+
+* Rename "Wheel Group" to "Run as Root" and set user permissions
+
+1.12.0
+
+* Allow to start telegraf with wheel group permissions
+* Add Unbound input
+
 1.11.0
 
 * Set telegraf.d as additional config include
@@ -34,8 +103,8 @@ Plugin Changelog
 
 1.8.1
 
-* Fix 'flush interval' templating by @Jontron123
-* Add ability to disable TLS for Graphite by @primemaster
+* Fix 'flush interval' templating (contributed by Jontron123)
+* Add ability to disable TLS for Graphite (contributed by primemaster)
 
 1.8.0
 

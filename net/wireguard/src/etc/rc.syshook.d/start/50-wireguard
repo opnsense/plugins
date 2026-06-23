@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# reconfigure routing for wireguard
-/usr/local/etc/rc.routing_configure

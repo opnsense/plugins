@@ -4,6 +4,7 @@
       <patterns>
          <pattern>ui/bind/*</pattern>
          <pattern>api/bind/*</pattern>
+         <pattern>api/diagnostics/log/named/*</pattern>
       </patterns>
    </page-services-bind>
 </acl>

@@ -4,11 +4,11 @@
     <version>1.0.2</version>
     <items>
         <enable_rspamd type="BooleanField">
-            <default>0</default>
+            <Default>0</Default>
             <Required>Y</Required>
         </enable_rspamd>
         <default_action type="OptionField">
-            <default>accept</default>
+            <Default>accept</Default>
             <Required>Y</Required>
             <OptionValues>
                 <accept>accept</accept>

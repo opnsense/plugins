@@ -1,0 +1,104 @@
+<model>
+    <mount>//OPNsense/netbird/settings</mount>
+    <description>NetBird settings</description>
+    <version>1.2.0</version>
+    <items>
+        <general>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+            <wireguardPort type="IntegerField">
+                <Default>51820</Default>
+                <Required>Y</Required>
+                <minimum>1</minimum>
+                <maximum>65535</maximum>
+                <ValidationMessage>Please specify a valid port.</ValidationMessage>
+            </wireguardPort>
+            <ipmapping type="TextField">
+                <MaskPerItem>Y</MaskPerItem>
+                <Mask>/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}(?:\/(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|[a-zA-Z][a-zA-Z0-9_.-]*))?$/u</Mask>
+            </ipmapping>
+        </general>
+        <firewall>
+            <allowConfig type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </allowConfig>
+            <blockInboundConnection type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </blockInboundConnection>
+        </firewall>
+        <ssh>
+            <enable type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable>
+            <enableRoot type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRoot>
+            <enableSFTP type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableSFTP>
+            <enableLocalPortForwarding type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableLocalPortForwarding>
+            <enableRemotePortForwarding type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRemotePortForwarding>
+            <enableAuth type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enableAuth>
+        </ssh>
+        <dns>
+            <enable type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enable>
+        </dns>
+        <routing>
+            <accessLan type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </accessLan>
+            <acceptClientRoutes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </acceptClientRoutes>
+            <acceptServerRoutes type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </acceptServerRoutes>
+        </routing>
+        <postquantum>
+            <enableRosenpass type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enableRosenpass>
+            <rosenpassPermissive type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </rosenpassPermissive>
+        </postquantum>
+        <syslog>
+            <logLevel type="OptionField">
+                <Required>Y</Required>
+                <Default>info</Default>
+                <OptionValues>
+                    <fatal>fatal</fatal>
+                    <error>error</error>
+                    <warn>warn</warn>
+                    <info>info</info>
+                    <debug>debug</debug>
+                    <trace>trace</trace>
+                </OptionValues>
+            </logLevel>
+        </syslog>
+    </items>
+</model>

@@ -55,6 +55,13 @@
     <help>You can enter a publicly visible (obfuscated) email address into this field to allow other users to notify you if there are issues with your relay.</help>
   </field>
   <field>
+    <id>relay.family</id>
+    <label>Family</label>
+    <type>text</type>
+    <help>Fingerprints of other relays controlled or administered by the same group or organization. Do not list any bridge relay as it would compromise its concealment.</help>
+    <advanced>true</advanced>
+  </field>
+  <field>
     <id>relay.bandwithrate</id>
     <label>Bandwith Rate</label>
     <type>text</type>

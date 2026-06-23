@@ -1,0 +1,2 @@
+proxy_policies.conf:/usr/local/etc/squid/proxy_policies.conf
+10-opnproxy-ext.auth.conf:/usr/local/etc/squid/auth/10-opnproxy-ext.auth.conf

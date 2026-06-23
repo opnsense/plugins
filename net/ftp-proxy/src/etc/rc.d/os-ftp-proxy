@@ -1,8 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
-
 # PROVIDE: os-ftp-proxy
 # REQUIRE: DAEMON pf
 # KEYWORD: shutdown

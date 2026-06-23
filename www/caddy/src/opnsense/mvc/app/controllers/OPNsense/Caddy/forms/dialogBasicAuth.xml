@@ -1,0 +1,23 @@
+<form>
+    <field>
+        <id>basicauth.basicauthuser</id>
+        <label>User</label>
+        <type>text</type>
+        <help>Enter a username. Afterwards, select it in a "Domain" or "Subdomain" to restrict access with Basic Auth.</help>
+    </field>
+    <field>
+        <id>basicauth.basicauthpass</id>
+        <label>Password</label>
+        <type>text</type>
+        <help>Enter a password. It will be hashed with bcrypt. It can only be set and changed but will not be visible anymore.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>basicauth.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Enter a description for this user.</help>
+    </field>
+</form>

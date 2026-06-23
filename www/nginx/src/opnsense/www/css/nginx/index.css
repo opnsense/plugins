@@ -1,0 +1,88 @@
+/*
+* Copyright (C) 2023 A. Kulikov <kulikov.a@gmail.com>
+* Copyright (C) 2017-2018 Fabian Franz
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*   this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the distribution.
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+* INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+* AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+* OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+* SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#frm_sni_hostname_mapdlg .col-md-4,
+#frm_ipacl_dlg .col-md-4 {
+    width: 50%;
+}
+#frm_sni_hostname_mapdlg td > input[type="text"],
+#frm_ipacl_dlg td > input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+}
+#frm_sni_hostname_mapdlg .col-md-5,
+#frm_ipacl_dlg .col-md-5 {
+    width: 25%;
+}
+#row_snihostname\.data .row,
+#row_ipacl\.data .row {
+    padding-top: 5px;
+}
+#row_snihostname\.data .row div,
+#row_ipacl\.data .row div {
+    padding: 0;
+}
+#sni_hostname_mapdlg .bootstrap-select,
+#frm_ipacl_dlg .bootstrap-select {
+    width: 100% !important;
+}
+#nginx_conf_container {
+    overflow-x: auto;
+}
+.ngx_conf_table {
+    white-space: pre-wrap;
+    color: #333333;
+    background-color: #f5f5f5;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.ngx_conf_table_body {
+    display: grid;
+    height: 400px;
+    overflow-y: auto;
+    font-family: ui-monospace,monospace;
+    font-size: 13px;
+}
+.l-number {
+    position: relative;
+    width: 1%;
+    min-width: 50px;
+    padding-right: 20px;
+    padding-left: 1px;
+    text-align: right;
+    white-space: nowrap;
+    vertical-align: top;
+    user-select: none;
+    filter: brightness(2.0);
+    filter: contrast(0.3);
+}
+.placeholdertd {
+    padding: 10px;
+}
+#nginx_config_copy {
+    cursor: pointer;
+}

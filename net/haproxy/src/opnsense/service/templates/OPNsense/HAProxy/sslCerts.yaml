@@ -8,14 +8,14 @@
 {# ################## #}
 {%  macro getCA(refId) -%}
 {%    set result = '{}' %}
-{%    for data in helpers.getNodeByTag('ca') if data.refid == refId %}
+{%    for data in helpers.toList('ca') if data.refid == refId %}
 {{      data.crt -}}
 {%    else %}
 {{     "{}" }}
 {%    endfor %}
 {%- endmacro %}
 {%  macro getCert(refId, indent=4) -%}
-{%    for data in helpers.getNodeByTag('cert') if data.refid == refId %}
+{%    for data in helpers.toList('cert') if data.refid == refId %}
 {%      if data.caref %}
 {%        do data.update({'ca': getCA(data.caref)}) %}
 {%      else %}
@@ -53,7 +53,7 @@ frontends:
       {{ cert_refid }}:
         path: {{ cert_template % cert_refid }}
         default: {{ "True" if frontend.ssl_default_certificate == cert_refid else "False" }}
-{{      getCert(cert_refid) | indent( width=8, indentfirst=True) -}}
+{{      getCert(cert_refid) | indent( width=8, first=True) -}}
 {%    endfor %}
 {%  endfor %}
 {% else %}

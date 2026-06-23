@@ -4,6 +4,10 @@
 server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.serverlist.split(','))) + "'" }}]
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.disabled_serverlist') and OPNsense.dnscryptproxy.general.disabled_serverlist != '' %}
+disabled_server_names = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.disabled_serverlist.split(','))) + "'" }}]
+{%   endif %}
+
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.listen_addresses') and OPNsense.dnscryptproxy.general.listen_addresses != '' %}
 listen_addresses = [{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.listen_addresses.split(','))) + "'" }}]
 {%   else %}
@@ -34,6 +38,12 @@ dnscrypt_servers = false
 doh_servers = true
 {%   else %}
 doh_servers = false
+{%   endif %}
+
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.odoh_servers') and OPNsense.dnscryptproxy.general.odoh_servers == '1' %}
+odoh_servers = true
+{%   else %}
+odoh_servers = false
 {%   endif %}
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.require_dnssec') and OPNsense.dnscryptproxy.general.require_dnssec == '1' %}
@@ -85,7 +95,7 @@ tls_disable_session_tickets = true
 tls_disable_session_tickets = false
 {%   endif %}
 
-fallback_resolver = '{{ OPNsense.dnscryptproxy.general.fallback_resolver }}'
+bootstrap_resolvers = ['{{ OPNsense.dnscryptproxy.general.fallback_resolver.split(',') | join("','") }}']
 
 {%   if helpers.exists('OPNsense.dnscryptproxy.general.ignore_system_dns') and OPNsense.dnscryptproxy.general.ignore_system_dns == '1' %}
 ignore_system_dns = true
@@ -118,6 +128,7 @@ cache_neg_max_ttl = {{ OPNsense.dnscryptproxy.general.cache_neg_max_ttl }}
 cache = false
 {%   endif %}
 
+{%   if helpers.exists('OPNsense.dnscryptproxy.general.query_logs') and OPNsense.dnscryptproxy.general.query_logs == '1' %}
 [query_log]
   file = '/var/log/dnscrypt-proxy/query.log'
   format = 'tsv'
@@ -125,26 +136,63 @@ cache = false
 [nx_log]
   file = '/var/log/dnscrypt-proxy/nx.log'
   format = 'tsv'
+{%   endif %}
 
-[whitelist]
-  whitelist_file = 'whitelist.txt'
+[allowed_names]
+  allowed_names_file = 'whitelist.txt'
   log_file = '/var/log/dnscrypt-proxy/whitelisted.log'
   log_format = 'tsv'
 
 {% if helpers.exists('OPNsense.dnscryptproxy.dnsbl.enabled') and OPNsense.dnscryptproxy.dnsbl.enabled == '1' %}
-[blacklist]
-  blacklist_file = 'blacklist.txt'
+[blocked_names]
+  blocked_names_file = 'blacklist.txt'
   log_file = '/var/log/dnscrypt-proxy/blocked.log'
   log_format = 'tsv'
 {% endif %}
 
 [sources]
   [sources.'public-resolvers']
-  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
   cache_file = 'public-resolvers.md'
   minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
   refresh_delay = 72
   prefix = ''
+
+  ## Anonymized DNS relays
+
+  [sources.'relays']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/relays.md']
+  cache_file = 'relays.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
+
+  ## Oblivious DoH servers
+
+  [sources.'odoh-servers']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-servers.md', 'https://download.dnscrypt.info/resolvers-list/v3/odoh-servers.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/odoh-servers.md']
+  cache_file = 'odoh-servers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
+
+  ## Oblivious DoH relays
+
+  [sources.'odoh-relays']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/odoh-relays.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/odoh-relays.md']
+  cache_file = 'odoh-relays.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
+
+[anonymized_dns]
+
+{% if helpers.exists('OPNsense.dnscryptproxy.general.relaylist') and OPNsense.dnscryptproxy.general.relaylist != '' %}
+ routes = [
+    { server_name='*', via=[{{ "'" + ("','".join(OPNsense.dnscryptproxy.general.relaylist.split(','))) + "'" }}] }
+ ]
+{% endif %}
+
 
 [static]
 {% if helpers.exists('OPNsense.dnscryptproxy.server.servers.server') %}

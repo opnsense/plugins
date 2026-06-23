@@ -1,5 +1,5 @@
 <menu>
    <Services>
-      <MDNSRepeater VisibleName="MDNS Repeater" cssClass="fa fa-bolt fa-fw" url="/ui/mdnsrepeater"/>
+      <MDNSRepeater VisibleName="mDNS Repeater" cssClass="fa fa-forward fa-fw" url="/ui/mdnsrepeater"/>
    </Services>
 </menu>

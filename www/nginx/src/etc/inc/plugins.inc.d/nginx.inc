@@ -26,6 +26,21 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
+/**
+ *  register syslog facilities
+ * @return array
+ */
+function nginx_syslog()
+{
+    $syslogconf = array();
+
+    $syslogconf['nginx'] = array(
+        'facility' => array('nginx'),
+    );
+
+    return $syslogconf;
+}
+
 function nginx_cron()
 {
     return array(

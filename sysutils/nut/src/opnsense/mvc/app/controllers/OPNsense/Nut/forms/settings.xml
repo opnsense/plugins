@@ -5,7 +5,7 @@
                 <id>nut.general.enable</id>
                 <label>Enable Nut</label>
                 <type>checkbox</type>
-                <help>Enable or disable the nut service.</help>
+                <help>Enable or disable the nut service. If enabled, the system will shutdown when the UPS emits a low battery warning.</help>
             </field>
             <field>
                 <id>nut.general.mode</id>
@@ -156,6 +156,12 @@
                 <label>IP Address</label>
                 <type>text</type>
                 <help>Set the IP address of the remote NUT server.</help>
+            </field>
+            <field>
+                <id>nut.netclient.port</id>
+                <label>Port</label>
+                <type>text</type>
+                <help>Set the TCP port of the remote NUT server.</help>
             </field>
             <field>
                 <id>nut.netclient.user</id>

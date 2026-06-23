@@ -2,7 +2,8 @@
 
 /*
 
-    Copyright (C) 2018 Fabian Franz
+    Copyright (C) 2018-2020 Fabian Franz
+    Copyright (C) 2020 Manuel Faux
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -29,21 +30,11 @@
 
 namespace OPNsense\Nginx;
 
-class ErrorLogParser
+class ErrorLogParser extends LogParserBase
 {
-    private $file_name;
-    private $lines;
-    private $result;
-
     private const LogLineRegex = '/(\S+) (\S+) \[([\d\sa-z\:\-\/\+\#]+)\] ([\S:]+): (.+)/i';
 
-    function __construct($file_name)
-    {
-        $this->file_name = $file_name;
-        $this->lines = file($this->file_name);
-        $this->result = array_map([$this, 'parse_line'], $this->lines);
-    }
-    private function parse_line($line)
+    protected function parse_line($line)
     {
         $container = new ErrorLogLine();
         if (preg_match(self::LogLineRegex, $line, $data)) {
@@ -54,10 +45,5 @@ class ErrorLogParser
             $container->message = $data[5];
         }
         return $container;
-    }
-
-    public function get_result()
-    {
-        return $this->result;
     }
 }

@@ -1,0 +1,9 @@
+<menu>
+    <Security order="65" cssClass="fa fa-shield">
+        <QFeeds VisibleName="Q-Feeds Connect" cssClass="fa fa-heartbeat fa-fw">
+            <Settings order="10" url="/ui/q_feeds/#settings"/>
+            <Feeds order="20" url="/ui/q_feeds/#feeds"/>
+            <Events order="30" url="/ui/q_feeds/#events"/>
+        </QFeeds>
+    </Security>
+</menu>

@@ -1,0 +1,25 @@
+#!/bin/sh
+if [ -f /etc/rc.conf.d/frr ]; then
+    . /etc/rc.conf.d/frr
+fi
+
+if [ "$frr_enable" == "YES" ] && (`echo "$frr_daemons" | /usr/bin/grep -F -q -w "ospf6d"`) &&
+        (`echo "$frr_carp_demote" | /usr/bin/grep -F -q -w "ospf6d"`)  ; then
+    # OSPF enabled
+    OSPF_NEIGHBOR=`echo "show ipv6 ospf6 neighbor" | /usr/local/bin/vtysh 2>&1` IFS=
+    if [ "$?" -eq 0 ]; then
+        # running, check if we can find any neighbors
+        IFS=
+        neighbors_count=`echo $OSPF_NEIGHBOR |  grep "Full/" | wc -l`
+        unset IFS
+        if [ "$neighbors_count" -eq 0 ]; then
+            # no neighbors in state Full/* found
+            exit 2
+        else
+            exit 0
+        fi
+    else
+        # not running
+        exit 1
+    fi
+fi

@@ -37,12 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
          *************************************************************************************************************/
 
         $("#grid-leases").UIBootgrid(
-            {   'search':'/api/freeradius/lease/searchLease',
-                'get':'/api/freeradius/lease/getLease/',
-                'set':'/api/freeradius/lease/setLease/',
-                'add':'/api/freeradius/lease/addLease/',
-                'del':'/api/freeradius/lease/delLease/',
-                'toggle':'/api/freeradius/lease/toggleLease/'
+            {   'search':'/api/freeradius/lease/search_lease',
+                'get':'/api/freeradius/lease/get_lease/',
+                'set':'/api/freeradius/lease/set_lease/',
+                'add':'/api/freeradius/lease/add_lease/',
+                'del':'/api/freeradius/lease/del_lease/',
+                'toggle':'/api/freeradius/lease/toggle_lease/'
             }
         );
 

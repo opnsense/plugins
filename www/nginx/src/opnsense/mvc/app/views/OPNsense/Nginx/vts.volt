@@ -108,6 +108,10 @@
             filter:"filterZones",
             upstream:"upstreamZones",
             cache:"cacheZones"
+        },
+        classes: {
+            table: "table table-condensed table-hover table-striped",
+            div: "panel"
         }
     };
 
@@ -274,23 +278,21 @@
             aHe('strong', it.sharedZones.name), byteFormat(it.sharedZones.maxSize), byteFormat(it.sharedZones.usedSize),
             it.sharedZones.usedNode]);
         body = aHe('tbody', aHe('tr', bodys[0]));
-        o = aHe('h2', vtsStatusVars.titles.main) + aHe('table', `${head}${body}`);
-        o = aHe(`div id="${vtsStatusVars.ids.main}"`, o);
+        o = aHe('h2', vtsStatusVars.titles.main) + aHe(`table class="${vtsStatusVars.classes.table}"`, `${head}${body}`);
+        o = aHe(`div id="${vtsStatusVars.ids.main}" class="${vtsStatusVars.classes.div}"`, o);
         return o;
     }
     function templateServerZone(filter, group, id, cache) {
-        let n = 0, s, o = '';
+        let s, o = '';
         for(const name in filter) {
             if (filter.hasOwnProperty(name)) {
                 const zone = filter[name];
                 const uniq = `${id}.${group}.${name}`;
-                let clas = '';
                 let flag = '';
                 let responseCount = 0;
                 let responseTotal = 0;
                 let cacheCount = 0;
                 let cacheTotal = 0;
-                clas = (n++ % 2) ? 'odd' : '';
                 flag = (group.indexOf("country") !== -1 && name.length === 2)
                     ? `<img class="flag flag-${name.toLowerCase()}" alt="flag ${name.toLowerCase()}" />`
                     : '';
@@ -322,7 +324,7 @@
                     }
                     s += aHe('td', cacheTotal);
                 }
-                o += aHe(`tr class="${clas}"`, s);
+                o += aHe('tr', s);
             }
         }
         return o;
@@ -334,10 +336,9 @@
         while (n < filter.length) {
             const peer = filter[n];
             const uniq = `${id}.${group}.${peer.server}`;
-            let clas = '';
             let responseCount = 0;
             let responseTotal = 0;
-            clas = (n++ % 2) ? 'odd' : '';
+            n++;
             s = aHe('th', peer.server) +
                 aHe('td', [formatAvailability(peer.backup, peer.down), formatTime(peer.responseMsec),
                     peer.weight, peer.maxFails, peer.failTimeout,
@@ -358,22 +359,19 @@
                 byteFormat(aPs.getValue(`${uniq}.outBytes`, peer.outBytes)),
                 byteFormat(aPs.getValue(`${uniq}.inBytes`, peer.inBytes))
             ]);
-            o += aHe(`tr class="${clas}"`, s);
+            o += aHe('tr', s);
         }
         return o;
     }
     function templateCacheZone(filter, group, id) {
-        let n = 0;
         let s;
         let o = '';
         for(const name in filter) {
             if (filter.hasOwnProperty(name)) {
                 const zone = filter[name];
                 const uniq = `${id}.${group}.${name}`;
-                let clas = '';
                 let cacheCount = 0;
                 let cacheTotal = 0;
-                clas = (n++ % 2) ? 'odd' : '';
                 s = aHe('th', name) +
                     aHe('td', [byteFormat(zone.maxSize),
                         byteFormat(zone.usedSize),
@@ -390,7 +388,7 @@
                     }
                 }
                 s += aHe('td', cacheTotal);
-                o += aHe(`tr class="${clas}"`, s);
+                o += aHe('tr', s);
             }
         }
         return o;
@@ -414,7 +412,7 @@
         head = templateServerHeader(cache);
         bodys[0] = templateServerZone(it.serverZones, 'server', vtsStatusVars.ids.server, cache);
         body = aHe('tbody', bodys[0]);
-        out += aHe(`div id="${vtsStatusVars.ids.server}"`, aHe('h2', vtsStatusVars.titles.server) + aHe('table', head + body));
+        out += aHe(`div id="${vtsStatusVars.ids.server}" class="${vtsStatusVars.classes.div}"`, aHe('h2', vtsStatusVars.titles.server) + aHe(`table class="${vtsStatusVars.classes.table}"`, head + body));
         /* filterZones */
         if (vtsStatusVars.ids.filter in it) {
             tmp = '';
@@ -424,7 +422,7 @@
                     head = templateServerHeader(cache);
                     bodys[0] = templateServerZone(filter, group, vtsStatusVars.ids.filter, cache);
                     body = aHe('tbody', bodys[0]);
-                    tmp += aHe('h3', group) + aHe('table', head + body);
+                    tmp += aHe('h3', group) + aHe(`table class="${vtsStatusVars.classes.table}"`, head + body);
                 }
             }
             out += aHe(`div id="${vtsStatusVars.ids.filter}"`, aHe('h2', vtsStatusVars.titles.filter) + tmp);
@@ -444,10 +442,10 @@
                             group = g2.get('description');
                         }
                     }
-                    tmp += aHe('h3', group) + aHe('table', head + body);
+                    tmp += aHe('h3', group) + aHe(`table class="${vtsStatusVars.classes.table}"`, head + body);
                 }
             }
-            out += aHe(`div id="${vtsStatusVars.ids.upstream}"`, aHe('h2', vtsStatusVars.titles.upstream) + tmp);
+            out += aHe(`div id="${vtsStatusVars.ids.upstream}" class="${vtsStatusVars.classes.div}"`, aHe('h2', vtsStatusVars.titles.upstream) + tmp);
         }
         /* cacheZones */
         if (vtsStatusVars.ids.cache in it) {
@@ -455,7 +453,7 @@
             bodys[0] = templateCacheZone(it.cacheZones, 'cache', vtsStatusVars.ids.cache);
             body = aHe('tbody', bodys[0]);
             out += aHe(`div id="${vtsStatusVars.ids.cache}"`,
-                aHe('h2', vtsStatusVars.titles.cache) + aHe('table', head + body));
+                aHe('h2', vtsStatusVars.titles.cache) + aHe(`table class="${vtsStatusVars.classes.table}"`, head + body));
         }
         return out;
     }

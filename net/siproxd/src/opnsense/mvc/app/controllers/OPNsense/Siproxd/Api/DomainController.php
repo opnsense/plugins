@@ -77,7 +77,6 @@ class DomainController extends ApiMutableModelControllerBase
 
     public function searchDomainAction()
     {
-        $this->sessionClose();
         $mdlDomain = $this->getModel();
         $grid = new UIModelGrid($mdlDomain->domains->domain);
         return $grid->fetchBindRequest(

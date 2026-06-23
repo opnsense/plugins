@@ -8,8 +8,8 @@ if [ -z "${DIR}" ]; then
 	DIR=.
 fi
 
-REV=$(make -C ${DIR} -v PLUGIN_REVISION)
-REV=$(expr ${REV} \+ 1)
+REV=$(${MAKE} -C ${DIR} -v PLUGIN_REVISION)
+REV=$((REV + 1))
 
 grep -v ^PLUGIN_REVISION ${DIR}/Makefile > ${DIR}/Makefile.tmp
 sed -e "s/^\(PLUGIN_VERSION.*\)/\1%PLUGIN_REVISION=	${REV}/g" \

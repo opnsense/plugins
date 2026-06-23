@@ -30,6 +30,12 @@
         <help>This will activate the SONMP Protocol by Nortel.</help>
     </field>
     <field>
+        <id>general.agentx</id>
+        <label>Enable AgentX SNMP Integration</label>
+        <type>checkbox</type>
+        <help>This will enable AgentX support, which can then be queried via SNMP.</help>
+    </field>
+    <field>
         <id>general.interface</id>
         <label>Interface Configuration</label>
         <type>text</type>

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2024 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * All rights reserved.
  *
@@ -50,7 +50,7 @@ class LeValidationFactory
         $model = new \OPNsense\AcmeClient\AcmeClient();
         $obj = $model->getNodeByReference(self::CONFIG_PATH . '.' . $uuid);
         if ($obj == null) {
-            LeUtils::log_error("challenge type not found: ${uuid}");
+            LeUtils::log_error("challenge type not found: {$uuid}");
             return null;
         }
 
@@ -61,6 +61,9 @@ class LeValidationFactory
                 break;
             case 'http01':
                 $search_name = "http_" . $obj->http_service;
+                break;
+            case 'tlsalpn01':
+                $search_name = "tlsalpn_" . $obj->tlsalpn_service;
                 break;
         }
 
@@ -84,7 +87,7 @@ class LeValidationFactory
                 }
             }
         }
-        LeUtils::log_error("challenge type not supported: " . (string)$search_name . " (${uuid})");
+        LeUtils::log_error("challenge type not supported: " . (string)$search_name . " ({$uuid})");
         return null;
     }
 }

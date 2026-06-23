@@ -1,0 +1,140 @@
+<form>
+    <field>
+        <id>homeserver.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the homeserver setting.</help>
+    </field>
+    <field>
+        <id>homeserver.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name of Home Server.</help>
+    </field>
+    <field>
+        <id>homeserver.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Set type of auth.</help>
+    </field>
+    <field>
+        <id>homeserver.addresstype</id>
+        <label>Address Type</label>
+        <type>dropdown</type>
+        <help>Set type of address</help>
+    </field>
+    <field>
+        <id>homeserver.ipaddr</id>
+        <label>IP Address</label>
+        <type>text</type>
+        <help>Set the ip address.</help>
+    </field>
+    <field>
+        <id>homeserver.ipaddr6</id>
+        <label>IP Address v6</label>
+        <type>text</type>
+        <help>Set the ip v6 address.</help>
+    </field>
+    <field>
+        <id>homeserver.virtualserver</id>
+        <label>Virtual Server</label>
+        <type>text</type>
+        <help>Set the virtual server address.</help>
+    </field>
+    <field>
+        <id>homeserver.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Set the port</help>
+    </field>
+    <field>
+        <id>homeserver.proto</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Set the protocol</help>
+    </field>
+    <field>
+        <id>homeserver.secret</id>
+        <label>Secret</label>
+        <type>password</type>
+        <help>Set the secret</help>
+    </field>
+    <field>
+        <id>homeserver.sourceip</id>
+        <label>Source IP Address</label>
+        <type>text</type>
+        <help>Source IP Address</help>
+    </field>
+    <field>
+        <id>homeserver.response_window</id>
+        <label>Response Window</label>
+        <type>text</type>
+        <help>Response Window from 5 to 60</help>
+    </field>
+    <field>
+        <id>homeserver.no_response_fail</id>
+        <label>No Response Fail</label>
+        <type>checkbox</type>
+        <help>No Response Fail</help>
+    </field>
+    <field>
+        <id>homeserver.zombieperiod</id>
+        <label>Zombie Period</label>
+        <type>text</type>
+        <help>Zombie Period from 20 to 120</help>
+    </field>
+    <field>
+        <id>homeserver.reviveinterval</id>
+        <label>Revive Interval</label>
+        <type>text</type>
+        <help>Revive interval from 60 to 3600</help>
+    </field>
+    <field>
+        <id>homeserver.statuscheck</id>
+        <label>Status Check</label>
+        <type>dropdown</type>
+        <help>Status Check</help>
+    </field>
+    <field>
+        <id>homeserver.checkinterval</id>
+        <label>Check Interval</label>
+        <type>text</type>
+        <help>Check Interval from 6 to 120</help>
+    </field>
+    <field>
+        <id>homeserver.numanswersalive</id>
+        <label>Num answers to alive</label>
+        <type>text</type>
+        <help>number of status checks in a row that the home server needs to respond to before it is marked alive. From 3 to 10</help>
+    </field>
+    <field>
+        <id>homeserver.max_outstanding</id>
+        <label>Max Outstanding</label>
+        <type>text</type>
+        <help>Limit the total number of outstanding packets to the home server.</help>
+    </field>
+    <field>
+        <id>homeserver.limit_maxconnections</id>
+        <label>Limit Max Connections</label>
+        <type>text</type>
+        <help>Limit the number of TCP connections to the home server. Setting this to 0 means "no limit".</help>
+    </field>
+    <field>
+        <id>homeserver.limit_maxrequests</id>
+        <label>Limit Max Requests</label>
+        <type>text</type>
+        <help>Limit the total number of requests sent over one TCP connection. Setting this to 0 means "no limit".</help>
+    </field>
+    <field>
+        <id>homeserver.limit_lifetime</id>
+        <label>Limit lifetime</label>
+        <type>text</type>
+        <help>The lifetime, in seconds, of a TCP connection. Setting this to 0 means "forever".</help>
+    </field>
+    <field>
+        <id>homeserver.limit_idletimeout</id>
+        <label>Limit Idle Timeout</label>
+        <type>text</type>
+        <help>The idle timeout, in seconds, of a TCP connection. Setting this to 0 means "no timeout".</help>
+    </field>
+</form>

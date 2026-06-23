@@ -15,7 +15,7 @@
     <id>exitpolicy.network</id>
     <label>Network</label>
     <type>text</type>
-    <help>Network on which this ACL is applied. Enter 'any' to use wildcard adressing.</help>
+    <help>Network on which this ACL is applied. Enter 'any' to use wildcard addressing.</help>
   </field>
   <field>
     <id>exitpolicy.startport</id>

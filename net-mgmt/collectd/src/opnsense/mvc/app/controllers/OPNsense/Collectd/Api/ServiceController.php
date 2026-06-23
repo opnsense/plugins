@@ -46,8 +46,6 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("collectd start");
             return array("response" => $response);
@@ -63,8 +61,6 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("collectd stop");
             return array("response" => $response);
@@ -80,8 +76,6 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("collectd restart");
             return array("response" => $response);
@@ -124,9 +118,6 @@ class ServiceController extends ApiControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $mdlGeneral = new General();
             $backend = new Backend();
 

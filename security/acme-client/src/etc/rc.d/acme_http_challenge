@@ -1,7 +1,5 @@
 #!/bin/sh
 #
-# $FreeBSD$
-#
 # PROVIDE: acme_http_challenge
 # REQUIRE: DAEMON
 # KEYWORD: shutdown

@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Tinc</mount>
-    <version>1.0.3</version>
+    <version>1.0.5</version>
     <description>
         OPNsense Tinc VPN
     </description>
@@ -13,12 +13,12 @@
                 </id>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z]){1,50}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z]){1,50}$/u</Mask>
                     <ValidationMessage>The name should contain only alphanumeric characters.</ValidationMessage>
                 </name>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z\_]){1,1024}$/u</Mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extaddress type="HostnameField">
@@ -29,7 +29,7 @@
                 </extaddress>
                 <extport type="IntegerField">
                     <Required>Y</Required>
-                    <default>655</default>
+                    <Default>655</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
@@ -55,11 +55,19 @@
                 </subnet>
                 <pingtimeout type="IntegerField">
                     <Required>Y</Required>
-                    <default>5</default>
+                    <Default>5</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Ping timeout must be between 1...65535</ValidationMessage>
                 </pingtimeout>
+                <StrictSubnets type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </StrictSubnets>
+                <disablesubnetroutes type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </disablesubnetroutes>
                 <privkey type="TextField">
                     <Required>Y</Required>
                 </privkey>
@@ -68,35 +76,33 @@
                 </pubkey>
                 <cipher type="JsonKeyValueStoreField">
                     <Required>Y</Required>
-                    <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
-                    <default>aes-256-cbc</default>
+                    <Default>aes-256-cbc</Default>
                 </cipher>
                 <mode type="OptionField">
-                  <Required>Y</Required>
-                  <default>router</default>
-                  <OptionValues>
-                      <router>router</router>
-                      <switch>switch</switch>
-                  </OptionValues>
-                  <Constraints>
-                      <check001>
-                          <reference>subnet.check001</reference>
-                      </check001>
-                  </Constraints>
+                    <Required>Y</Required>
+                    <Default>router</Default>
+                    <OptionValues>
+                        <router>router</router>
+                        <switch>switch</switch>
+                    </OptionValues>
+                    <Constraints>
+                        <check001>
+                            <reference>subnet.check001</reference>
+                        </check001>
+                    </Constraints>
                 </mode>
                 <PMTUDiscovery type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </PMTUDiscovery>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <debuglevel type="OptionField">
                     <Required>Y</Required>
-                    <default>ip</default>
+                    <Default>ip</Default>
                     <OptionValues>
                         <d0>[0] start/stop, serious errors</d0>
                         <d1>[1] +all connections</d1>
@@ -124,12 +130,12 @@
                 </network>
                 <hostname type="TextField">
                     <Required>Y</Required>
-                    <mask>/^([0-9a-zA-Z\_]){1,1024}$/u</mask>
+                    <Mask>/^([0-9a-zA-Z\_]){1,1024}$/u</Mask>
                     <ValidationMessage>Please specify a valid hostname.</ValidationMessage>
                 </hostname>
                 <extport type="IntegerField">
                     <Required>Y</Required>
-                    <default>655</default>
+                    <Default>655</Default>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                     <ValidationMessage>Port number must be between 1...65535</ValidationMessage>
@@ -160,13 +166,11 @@
                 </pubkey>
                 <cipher type="JsonKeyValueStoreField">
                     <Required>Y</Required>
-                    <Multiple>N</Multiple>
                     <ConfigdPopulateAct>tinc list ciphers</ConfigdPopulateAct>
-                    <SourceFile>/tmp/tinc_current_cipher_options.index</SourceFile>
-                    <default>aes-256-cbc</default>
+                    <Default>aes-256-cbc</Default>
                 </cipher>
                 <connectTo type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                     <Constraints>
                         <check001>
@@ -175,7 +179,7 @@
                     </Constraints>
                 </connectTo>
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
             </host>

@@ -11,6 +11,7 @@
   },
   "scripts": {
     "webpack-cli": "webpack-cli",
-    "build": "webpack-cli --config webpack.conf.js"
+    "build": "webpack-cli --config webpack.conf.js",
+    "build-dev": "webpack-cli --config webpack.conf.js --mode development"
   }
 }

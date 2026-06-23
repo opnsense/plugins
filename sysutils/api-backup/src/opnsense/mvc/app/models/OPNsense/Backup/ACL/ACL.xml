@@ -1,8 +1,0 @@
-<acl>
-  <page-Backup>
-    <name>Backup API</name>
-    <patterns>
-      <pattern>api/backup/*</pattern>
-    </patterns>
-  </page-Backup>
-</acl>

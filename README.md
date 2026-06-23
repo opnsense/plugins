@@ -35,38 +35,45 @@ devel/debug -- Debugging Tools
 devel/grid_example -- A sample framework application
 devel/helloworld -- A sample framework application
 dns/bind -- BIND domain name service
+dns/ddclient -- Dynamic DNS client
 dns/dnscrypt-proxy -- Flexible DNS proxy supporting DNSCrypt and DoH
-dns/dyndns -- Dynamic DNS Support
 dns/rfc2136 -- RFC-2136 Support
 emulators/qemu-guest-agent -- QEMU Guest Agent for OPNsense
-mail/fetchmail -- Remote-mail retrieval utility (development only)
+ftp/tftp -- TFTP server
 mail/postfix -- SMTP mail relay
 mail/rspamd -- Protect your network from spam
-misc/theme-cicada -- The cicada theme - dark grey
+misc/theme-advanced -- Theme based on AdvancedTomato GUI
+misc/theme-cicada -- The cicada theme - dark grey onyx
+misc/theme-flexcolor -- Theme with 3 different color schemes: black as default, light and dark-light
 misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
-misc/theme-vicuna -- The vicuna theme - dark anthrazit
+misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
-net/firewall -- Firewall API supplemental package
+net/cloudflared -- Cloudflare Tunnel integration
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
-net/igmp-proxy -- IGMP-Proxy Service
+net/igmp-proxy -- IGMP-Proxy Service (not maintained)
+net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
+net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
+net/ndproxy -- End of life: please use os-ndp-proxy-go (pending removal)
 net/ntopng -- Traffic Analysis and Flow Collection
-net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport (development only)
+net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
+net/realtek-re -- Realtek re(4) vendor driver
 net/relayd -- Relayd Load Balancer
 net/shadowsocks -- Secure socks5 proxy
 net/siproxd -- Siproxd is a proxy daemon for the SIP protocol
+net/sslh -- sslh configuration front-end
 net/tayga -- Tayga NAT64
-net/udpbroadcastrelay -- Control ubpbroadcastrelay processes
-net/upnp -- Universal Plug and Play Service
-net/vnstat -- vnStat is a console-based network traffic monitor
-net/wireguard -- WireGuard VPN service
-net/wol -- Wake on LAN Service
-net/zerotier -- Virtual Networks That Just Work
+net/turnserver -- The coturn STUN/TURN Server
+net/udpbroadcastrelay -- Control udpbroadcastrelay processes
+net/upnp -- UPnP IGD & PCP/NAT-PMP Service
+net/vnstat -- Network traffic monitor
+net/wol -- Wake on LAN Service (not maintained)
+net/zerotier -- Virtual Networks That Just Work (not maintained)
 net-mgmt/collectd -- Collect system and application performance metrics periodically
 net-mgmt/lldpd -- LLDP allows you to know exactly on which port is a server
 net-mgmt/net-snmp -- Net-SNMP is a daemon for the SNMP protocol
@@ -74,43 +81,54 @@ net-mgmt/netdata -- Real-time performance monitoring
 net-mgmt/nrpe -- Execute nagios plugins
 net-mgmt/telegraf -- Agent for collecting metrics and data
 net-mgmt/zabbix-agent -- Zabbix monitoring agent
-net-mgmt/zabbix-proxy -- Zabbix Proxy enables decentralized monitoring
-net-mgmt/zabbix5-proxy -- Zabbix Proxy enables decentralized monitoring
-security/acme-client -- Let's Encrypt client
+net-mgmt/zabbix-proxy -- Zabbix monitoring proxy
+security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
+security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
-security/intrusion-detection-content-et-open -- IDS Proofpoint ET open ruleset complementary subset for ET Pro Telemetry edition
+security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
-security/intrusion-detection-content-pt-open -- IDS PT Research ruleset (only for non-commercial use)
+security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
 security/intrusion-detection-content-snort-vrt -- IDS Snort VRT ruleset (needs registration or subscription)
 security/maltrail -- Malicious traffic detection system
+security/netbird -- Peer-to-peer VPN that seamlessly connects your devices
 security/openconnect -- OpenConnect Client
-security/softether -- Cross-platform Multi-protocol VPN Program (development only)
+security/openvpn-legacy -- OpenVPN legacy support
+security/q-feeds-connector -- Connector for Q-Feeds threat intel
+security/strongswan-legacy -- IPsec legacy support
 security/stunnel -- Stunnel TLS proxy
+security/tailscale -- VPN mesh securely connecting clients using WireGuard
 security/tinc -- Tinc VPN
 security/tor -- The Onion Router
-sysutils/api-backup -- Provide the functionality to download the config.xml
-sysutils/apuled -- PC Engine APU LED control (development only)
-sysutils/boot-delay -- Apply a persistent 10 second boot delay
-sysutils/dmidecode -- Display hardware information on the dashboard
+security/wazuh-agent -- Agent for the open source security platform Wazuh
+sysutils/apcupsd -- APCUPSD - APC UPS daemon
+sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
+sysutils/cpu-microcode -- CPU microcode updates
+sysutils/dec-hw -- Deciso hardware specific information
+sysutils/dmidecode -- Display hardware information on the dashboard (not maintained)
+sysutils/gdrive-backup -- Backup configurations using Google Drive
 sysutils/git-backup -- Track config changes using git
 sysutils/hw-probe -- Collect hardware diagnostics
-sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices
+sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
+sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
-sysutils/puppet-agent -- Manage Puppet Agent (development only)
-sysutils/smart -- SMART tools
+sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/sftp-backup -- Backup configurations using SFTP
+sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor repository for Sensei (Next Generation Firewall Extensions)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor - Enterprise SASE & SSE platform (NGFW, SWG, CASB, ZTNA, SD-WAN)
+www/OPNProxy -- OPNsense proxy additions (not maintained)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache
+www/caddy -- Modern Reverse Proxy with Automatic HTTPS, Dynamic DNS and Layer4 Routing
 www/nginx -- Nginx HTTP server and reverse proxy
-www/web-proxy-sso -- Kerberos authentication module
-www/web-proxy-useracl -- Group and user ACL for the web proxy
+www/squid -- Squid is a caching proxy for the web (not maintained)
+www/web-proxy-sso -- Kerberos authentication module (not maintained)
 ```
 
 A brief description of how to use the plugins repository
@@ -135,9 +153,8 @@ The make targets for the root directory:
 * clean:	remove all changes and unknown files
 * lint:		run syntax checks
 * list:		print a list of all plugin directories with comments
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes
 
 The make targets for any plugin directory:
 
@@ -148,6 +165,5 @@ The make targets for any plugin directory:
 * package:	creates a package
 * upgrade:	upgrades existing package
 * remove:	remove known files from target directory
-* style-fix:	apply style fixes
 * style:	run style checks
-* sweep:	apply whitespace fixes
+* sweep:	apply style fixes

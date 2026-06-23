@@ -1,8 +1,0 @@
-<form>
-    <field>
-        <id>routing.isis.general.Enabled</id>
-        <label>enable</label>
-        <type>checkbox</type>
-        <help>This will activate the isis service.</help>
-    </field>
-</form>

@@ -1,13 +1,16 @@
 PLUGIN_NAME=		zabbix-proxy
-PLUGIN_VERSION=		1.5
-PLUGIN_COMMENT=		Zabbix Proxy enables decentralized monitoring
+PLUGIN_VERSION=		1.17
+PLUGIN_COMMENT=		Zabbix monitoring proxy
 PLUGIN_MAINTAINER=	m.muenz@gmail.com
-PLUGIN_VARIANTS=	zabbix5 zabbix4
+PLUGIN_VARIANTS=	zabbix7 zabbix74 zabbix6
 
-zabbix5_NAME=		zabbix5-proxy
-zabbix5_DEPENDS=	zabbix5-proxy
+zabbix7_NAME=		zabbix7-proxy
+zabbix7_DEPENDS=	zabbix7-proxy
 
-zabbix4_NAME=		zabbix4-proxy
-zabbix4_DEPENDS=	zabbix4-proxy
+zabbix74_NAME=		zabbix74-proxy
+zabbix74_DEPENDS=	zabbix74-proxy
+
+zabbix6_NAME=		zabbix6-proxy
+zabbix6_DEPENDS=	zabbix6-proxy
 
 .include "../../Mk/plugins.mk"

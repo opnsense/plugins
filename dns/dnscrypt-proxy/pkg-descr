@@ -1,9 +1,45 @@
 A flexible DNS proxy, with support for modern encrypted DNS protocols
 such as DNSCrypt v2 and DNS-over-HTTPS.
 
-
 Plugin Changelog
 ================
+
+1.16
+
+* Fix ODoH servers not working (contributed by Pascal Herget)
+* Fix bootstrap_resolvers with multiple comma-separated servers (contributed by Andrei Hodorog)
+
+1.15
+
+* Update plugin for dnscrypt-proxy 2.1 (contributed by Adrian Fedoreanu and Michael Muenz)
+
+1.14
+
+* Fix display of the config with more than one disabled server in GUI (contributed by Evgeny Grin (karlson2k))
+
+1.13
+
+* Add necessary hooks to allow the plugin to be used as a standalone core DNS server
+* Changed default listening addresses to 0.0.0.0 for new users
+* Prevent using a port being used by another DNS service
+
+1.12
+
+* Support specifying relays for anonymous DNS
+
+1.11
+
+* Fix DNSBL update due to FreeBSD13 upgrade (sed syntax)
+* Fix "manual disable of specific servers" when more than one server is specified (contributed by Evgeny Grin (karlson2k))
+
+1.10
+
+* Add option to enable/disable local query logs
+* Add manual disable of specific servers
+
+1.9
+
+* Fix logging due to Phalcon4 update
 
 1.8
 

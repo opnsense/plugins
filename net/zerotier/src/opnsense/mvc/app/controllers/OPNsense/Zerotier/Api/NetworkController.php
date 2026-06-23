@@ -39,13 +39,11 @@ use OPNsense\Zerotier\Zerotier;
 
 class NetworkController extends ApiMutableModelControllerBase
 {
-
     protected static $internalModelName = 'Zerotier';
     protected static $internalModelClass = '\OPNsense\Zerotier\Zerotier';
 
     public function searchAction()
     {
-        $this->sessionClose();
         $mdlZerotier = $this->getModel();
         $grid = new UIModelGrid($mdlZerotier->networks->network);
         return $grid->fetchBindRequest(

@@ -1,0 +1,9 @@
+<acl>
+    <page-firewall-qfeeds>
+        <name>Services: QFeeds</name>
+        <patterns>
+            <pattern>ui/q_feeds/*</pattern>
+            <pattern>api/q_feeds/*</pattern>
+        </patterns>
+    </page-firewall-qfeeds>
+</acl>

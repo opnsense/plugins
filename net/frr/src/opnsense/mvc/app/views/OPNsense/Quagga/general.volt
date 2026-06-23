@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2017 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2025 by Deciso B.V.
 This file is Copyright © 2017 by Fabian Franz
 All rights reserved.
 
@@ -26,32 +26,36 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 #}
-<div class="content-box" style="padding-bottom: 1.5em;">
-    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
-    <div class="col-md-12">
-        <hr />
-        <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_progress"></i></button>
-    </div>
-</div>
 
 <script>
     $( document ).ready(function() {
-        var data_get_map = {'frm_general_settings':"/api/quagga/general/get"};
-        mapDataToFormUI(data_get_map).done(function(data){
+        mapDataToFormUI({'frm_general_settings':"/api/quagga/general/get"}).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
+            updateServiceControlUI('quagga');
         });
-        updateServiceControlUI('quagga');
 
-        // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint(url="/api/quagga/general/set", formid='frm_general_settings',callback_ok=function(){
-                $("#saveAct_progress").addClass("fa fa-spinner fa-pulse");
-                ajaxCall(url="/api/quagga/service/reconfigure", sendData={}, callback=function(data,status) {
-                    updateServiceControlUI('quagga');
-                    $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
-                });
-            }, true);
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint("/api/quagga/general/set", 'frm_general_settings', function () { dfObj.resolve(); }, true, function () { dfObj.reject(); });
+                return dfObj;
+            },
+            onAction: function(data, status) {
+                updateServiceControlUI('quagga');
+            }
         });
     });
 </script>
+
+<div class="content-box" style="padding-bottom: 1.5em;">
+    {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_general_settings'])}}
+</div>
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/quagga/service/reconfigure',
+        'data_service_widget': 'quagga',
+        'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
+    }
+) }}

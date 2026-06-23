@@ -63,6 +63,8 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->ipacl = $this->getForm("ipacl");
         $this->view->errorpage = $this->getForm("errorpage");
         $this->view->tls_fingerprint = $this->getForm("tls_fingerprint");
+        $this->view->resolver = $this->getForm("resolver");
+        $this->view->proxy_cache_valid = $this->getForm("proxy_cache_valid");
         $this->view->syslog_target = $this->getForm("syslog_target");
         $nginx = new Nginx();
         $this->view->show_naxsi_download_button =
@@ -72,17 +74,9 @@ class IndexController extends \OPNsense\Base\IndexController
     }
 
     /**
-     * show the nginx logs page /ui/nginx/index/logs
-     */
-    public function logsAction()
-    {
-        $this->view->pick('OPNsense/Nginx/logs');
-    }
-
-    /**
      * show the nginx TLS handshakes page /ui/nginx/index/tls_handshakes
      */
-    public function tls_handshakesAction()
+    public function tlsHandshakesAction()
     {
         $this->view->pick('OPNsense/Nginx/tls_handshakes');
     }

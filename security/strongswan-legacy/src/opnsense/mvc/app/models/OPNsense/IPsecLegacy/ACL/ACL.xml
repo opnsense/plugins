@@ -1,0 +1,28 @@
+<acl>
+    <page-vpn-ipsec>
+        <name>VPN: IPsec: Tunnels [legacy]</name>
+        <patterns>
+            <pattern>ui/ipsec/tunnels</pattern>
+            <pattern>api/ipsec/tunnel/*</pattern>
+            <pattern>api/ipsec/legacy_subsystem/*</pattern>
+        </patterns>
+    </page-vpn-ipsec>
+    <page-vpn-ipsec-editphase1>
+        <name>VPN: IPsec: Edit Phase 1</name>
+        <patterns>
+            <pattern>vpn_ipsec_phase1.php*</pattern>
+        </patterns>
+    </page-vpn-ipsec-editphase1>
+    <page-vpn-ipsec-editphase2>
+        <name>VPN: IPsec: Edit Phase 2</name>
+        <patterns>
+            <pattern>vpn_ipsec_phase2.php*</pattern>
+        </patterns>
+    </page-vpn-ipsec-editphase2>
+    <page-vpn-ipsec-mobile>
+        <name>VPN: IPsec: Mobile [legacy]</name>
+        <patterns>
+            <pattern>vpn_ipsec_mobile.php*</pattern>
+        </patterns>
+    </page-vpn-ipsec-mobile>
+</acl>

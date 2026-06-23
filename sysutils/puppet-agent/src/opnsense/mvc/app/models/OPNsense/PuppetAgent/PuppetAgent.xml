@@ -1,24 +1,39 @@
 <model>
     <mount>//OPNsense/puppetagent</mount>
-    <description>
-        Manage Puppet Agent service
-    </description>
+    <version>1.1.0</version>
+    <description>Manage Puppet Agent service</description>
     <items>
-        <!-- container -->
         <general>
-            <!-- fields -->
             <Enabled type="BooleanField">
-                <default>0</default>
+                <Default>0</Default>
                 <Required>Y</Required>
             </Enabled>
             <FQDN type="HostnameField">
+                <Default>puppet</Default>
                 <Required>Y</Required>
             </FQDN>
             <Environment type="TextField">
+                <Default>production</Default>
                 <Required>Y</Required>
-                <mask>/^.{1,100}$/u</mask>
+                <Mask>/^.{1,100}$/u</Mask>
                 <ValidationMessage>Should be a string between 1 and 100 characters.</ValidationMessage>
             </Environment>
+            <RunInterval type="TextField">
+                <Default>30m</Default>
+                <Mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</Mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
+                <Required>Y</Required>
+            </RunInterval>
+            <RunTimeout type="TextField">
+                <Default>1h</Default>
+                <Mask>/^([0-9]{1,8}(?:s|m|h|d|y)?)/u</Mask>
+                <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "y", "d", "h", "m" or "s".</ValidationMessage>
+                <Required>Y</Required>
+            </RunTimeout>
+            <UseCacheOnFailure type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </UseCacheOnFailure>
         </general>
     </items>
 </model>

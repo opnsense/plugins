@@ -1,0 +1,11 @@
+<model>
+    <mount>//OPNsense/tailscale/authentication</mount>
+    <description>Tailscale authentication settings</description>
+    <items>
+        <loginServer type="UrlField">
+            <Default>https://controlplane.tailscale.com</Default>
+            <Required>Y</Required>
+        </loginServer>
+        <preAuthKey type="TextField"/>
+    </items>
+</model>

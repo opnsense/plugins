@@ -1,0 +1,23 @@
+{% if helpers.exists('OPNsense.apcupsd.general.Enabled') and OPNsense.apcupsd.general.Enabled == "1" %}
+apcupsd_enable="YES"
+{% else %}
+apcupsd_enable="NO"
+{% endif %}
+
+# Hook to post start/restart commands waiting for the pid file for max 3 seconds
+# this prevents the status command to erroneously report the service as stopped
+# since apcupsd detaches before the pid file creation
+
+start_postcmd="${name}_post_start_restart"
+restart_postcmd="${name}_post_start_restart"
+
+apcupsd_post_start_restart()
+{
+    if [ -n "$pidfile" ]; then
+        i=0
+        while [ ! -f "$pidfile" ] && [ "$i" -le 5 ]; do
+          i=$(( i + 1 ))
+          sleep 0.5
+        done
+    fi
+}

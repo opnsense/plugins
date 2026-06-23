@@ -35,17 +35,17 @@ class ServicesController extends ApiMutableModelControllerBase
     protected static $internalModelName = 'stunnel';
     protected static $internalModelClass = 'OPNsense\Stunnel\Stunnel';
 
-    protected function save()
+    protected function save($validateFullModel = false, $disable_validation = false)
     {
         // hook service enable status on enabled tunnels
         $this->getModel()->general->enabled = "0";
-        foreach ($this->getModel()->services->service->__items as $service) {
+        foreach ($this->getModel()->services->service->iterateItems() as $service) {
             if ((string)$service->enabled == "1") {
                 $this->getModel()->general->enabled = "1";
                 break;
             }
         }
-        return parent::save();
+        return parent::save($validateFullModel, $disable_validation);
     }
 
     public function searchItemAction()

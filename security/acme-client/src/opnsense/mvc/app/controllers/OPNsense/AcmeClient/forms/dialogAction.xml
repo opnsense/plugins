@@ -26,24 +26,7 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_upload_highwinds</style>
-    </field>
-    <field>
-        <id>action.highwinds_account_hash</id>
-        <label>Account Hash</label>
-        <type>text</type>
-        <help>Account hash for Highwinds API.</help>
-    </field>
-    <field>
-        <id>action.highwinds_access_token</id>
-        <label>Access Token</label>
-        <type>text</type>
-        <help>Access token for Highwinds API.</help>
-    </field>
-    <field>
-        <label>Required Parameters</label>
-        <type>header</type>
-        <style>method_table method_table_upload_sftp</style>
+        <style>method_table method_table_configd_upload_sftp</style>
     </field>
     <field>
         <id>action.sftp_host</id>
@@ -84,6 +67,12 @@
         <help>Path on the SFTP server to change to after login.
               The path can be absolute or relative to home and must exist.
               Leave blank to not change path after login.</help>
+    </field>
+    <field>
+        <id>action.sftp_modtime</id>
+        <label>Preserve Modification Time</label>
+        <type>checkbox</type>
+        <help>Preserves modification times from the source file. Note that this is not supported by all SFTP servers and may cause the upload to fail, e.g. on VMware</help>
     </field>
     <field>
         <id>action.sftp_chmod</id>
@@ -145,13 +134,385 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
-        <style>method_table method_table_configd</style>
+        <style>method_table method_table_configd_remote_ssh</style>
     </field>
     <field>
-        <id>action.configd</id>
+        <id>action.remote_ssh_host</id>
+        <label>SSH Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the SSH server.</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_port</id>
+        <label>SSH Port</label>
+        <type>text</type>
+        <help>SSH server port. Leave blank to use default "22".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.remote_ssh_key</id>
+        <label>Host Key</label>
+        <type>text</type>
+        <help>SSH server host key, formatted as in 'known_hosts'.
+              Leave blank to auto accept host key on first connect (not as secure as specifying it).</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the SSH server.</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_identity_type</id>
+        <label>Identity Type</label>
+        <type>dropdown</type>
+        <help>The type of identify to present to the SSH server for authorization. Select 'none' to use default "ECDSA".</help>
+    </field>
+    <field>
+        <id>action.remote_ssh_command</id>
+        <label>Command</label>
+        <type>text</type>
+        <help>The command to execute on the SSH server.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_configd_generic</style>
+    </field>
+    <field>
+        <id>action.configd_generic_command</id>
         <label>System Command</label>
         <type>dropdown</type>
         <help>Select a pre-defined system command which should be run.</help>
-        <style>table_optional table_optional_configd</style>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_synology_dsm</style>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_hostname</id>
+        <label>Synology Hostname</label>
+        <type>text</type>
+        <help>Hostname of IP address of the Synology DSM, i.e. synology.example.com or 192.168.0.1.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_port</id>
+        <label>Synology Port</label>
+        <type>text</type>
+        <help>Port that will be used when connecting to Synology DSM.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_scheme</id>
+        <label>Scheme</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to Synology DSM.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Username to login, must be an administrator.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_deviceid</id>
+        <label>Device ID</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then the device ID has to be provided so that no OTP is required when running the automation.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_devicename</id>
+        <label>Device Name</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then the device name has to be provided so that no OTP is required when running the automation.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_otpcode</id>
+        <label>OTP Code</label>
+        <type>text</type>
+        <help>If Synology DSM has OTP enabled, then a OTP may be required.</help>
+    </field>
+    <field>
+        <id>action.acme_synology_dsm_create</id>
+        <label>Create certificates</label>
+        <type>checkbox</type>
+        <help>This option ensures that a new certificate is created in Synology DSM if it does not exist yet. If unchecked only existing certificates will be updated.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_fritzbox</style>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_url</id>
+        <label>FRITZ!Box URL</label>
+        <type>text</type>
+        <help>URL of the router, i.e. https://fritzbox.example.com.</help>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.acme_fritzbox_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_panos</style>
+    </field>
+    <field>
+        <id>action.acme_panos_username</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>action.acme_panos_password</id>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_panos_host</id>
+        <label>Host</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_proxmoxve</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_user</id>
+        <label>Proxmox VE user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_server</id>
+        <label>Proxmox VE server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox ve node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_port</id>
+        <label>Proxmox VE server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8006.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_nodename</id>
+        <label>Proxmox VE node name</label>
+        <type>text</type>
+        <help>The name of the node we will be connecting to.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_realm</id>
+        <label>Proxmox VE realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenid</id>
+        <label>Proxmox VE token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxve_tokenkey</id>
+        <label>Proxmox VE token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_proxmoxbs</style>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_user</id>
+        <label>Proxmox BS user</label>
+        <type>text</type>
+        <help>The user who owns the API key. Defaults to root.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_server</id>
+        <label>Proxmox BS server</label>
+        <type>text</type>
+        <help>The hostname of the proxmox BS node.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_port</id>
+        <label>Proxmox BS server port</label>
+        <type>text</type>
+        <help>The port number the management interface is on. Defaults to 8007.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_realm</id>
+        <label>Proxmox BS realm</label>
+        <type>text</type>
+        <help>The authentication realm the user authenticates with. Defaults to pam.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenid</id>
+        <label>Proxmox BS token name</label>
+        <type>text</type>
+        <help>The name of the API token created for the user account. Defaults to acme.</help>
+    </field>
+    <field>
+        <id>action.acme_proxmoxbs_tokenkey</id>
+        <label>Proxmox BS token key</label>
+        <type>text</type>
+        <help>The API token. Required.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_truenas</style>
+    </field>
+    <field>
+        <id>action.acme_truenas_apikey</id>
+        <label>TrueNAS API key</label>
+        <type>text</type>
+        <help>API key generated in the TrueNAS web UI.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_hostname</id>
+        <label>TrueNAS hostname</label>
+        <type>text</type>
+        <help>Hostname or IP address of TrueNAS Server.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_scheme</id>
+        <label>TrueNAS scheme</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to TrueNAS Core Server.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_truenas_ws</style>
+    </field>
+    <field>
+        <id>action.acme_truenas_ws_apikey</id>
+        <label>TrueNAS API key</label>
+        <type>text</type>
+        <help>API key generated in the TrueNAS web UI.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_ws_hostname</id>
+        <label>TrueNAS hostname</label>
+        <type>text</type>
+        <help>Hostname or IP address of TrueNAS Server.</help>
+    </field>
+    <field>
+        <id>action.acme_truenas_ws_protocol</id>
+        <label>TrueNAS protocol</label>
+        <type>dropdown</type>
+        <help>Connection scheme that will be used when uploading certificates to TrueNAS Server.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_ruckus</style>
+    </field>
+    <field>
+        <id>action.acme_ruckus_host</id>
+        <label>Ruckus Host</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_user</id>
+        <label>Ruckus User</label>
+        <type>text</type>
+    </field>
+
+    <field>
+        <id>action.acme_ruckus_pass</id>
+        <label>Ruckus Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_unifi</style>
+    </field>
+    <field>
+        <id>action.acme_unifi_keystore</id>
+        <label>Unifi keystore file</label>
+        <type>text</type>
+        <help>Path to the Unifi keystore file in the local filesystem, i.e. /usr/local/share/java/unifi/data/keystore.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_vault</style>
+    </field>
+    <field>
+        <id>action.acme_vault_url</id>
+        <label>Vault URL</label>
+        <type>text</type>
+        <help>URL of the Vault, i.e. http://vault.example.com:8200.</help>
+    </field>
+    <field>
+        <id>action.acme_vault_prefix</id>
+        <label>Vault Prefix</label>
+        <type>text</type>
+        <help>This specifies the prefix path in Vault. If you select KV v2 you need to add .../data/... between the secret-mount-path and the path. Example: v1 prefix path: secret/acme, v2 prefix path: secret/data/acme.</help>
+    </field>
+    <field>
+        <id>action.acme_vault_token</id>
+        <label>Vault Token</label>
+        <type>password</type>
+        <help>This specifies the Vault token to authenticate with.</help>
+    </field>
+    <field>
+        <id>action.acme_vault_kvv2</id>
+        <label>Use KV v2</label>
+        <type>checkbox</type>
+        <help>If checked version 2 of the kv store will be used, otherwise version 1. If you use v2 please consider the comment in the field "Vault Prefix".</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_zyxel_gs1900</style>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_host</id>
+        <label>Switch Host</label>
+        <type>text</type>
+        <help>Hostname or IP adress of a Zyxel GS1900 series switch.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_user</id>
+        <label>Switch Admin User</label>
+        <type>text</type>
+        <help>A user configured as an adminstrator. Defaults to admin.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_password</id>
+        <label>Switch Admin Password</label>
+        <label>Password</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_insecure</id>
+        <label>Skip Certificate Validation</label>
+        <type>checkbox</type>
+        <help>If checked the deployment will be run in insecure mode and will skip certificate validation when connecting to the switch.</help>
+    </field>
+    <field>
+        <id>action.acme_zyxel_gs1900_reboot</id>
+        <label>Restart Switch</label>
+        <type>checkbox</type>
+        <help>If checked the switch will be rebooted once the certificate has been successfully installed.</help>
     </field>
 </form>

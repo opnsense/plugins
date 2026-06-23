@@ -1,31 +1,30 @@
 <?php
 
-/**
- *    Copyright (C) 2018 EURO-LOG AG
- *    Copyright (c) 2021 Deciso B.V.
- *    All rights reserved.
+/*
+ * Copyright (C) 2018 EURO-LOG AG
+ * Copyright (c) 2021 Deciso B.V.
+ * All rights reserved.
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Relayd\Api;
@@ -41,7 +40,6 @@ use OPNsense\Base\UIModelGrid;
  */
 class SettingsController extends ApiMutableModelControllerBase
 {
-
     protected static $internalModelName = 'relayd';
     protected static $internalModelClass = '\OPNsense\Relayd\Relayd';
 
@@ -99,7 +97,7 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function setAction($nodeType = null, $uuid = null)
     {
-        $result = array('result' => 'failed', 'validations' => array());
+        $result = array('result' => 'failed', 'validations' => []);
         if ($this->request->isPost() && $this->request->hasPost('relayd') && $nodeType != null) {
             $this->validateNodeType($nodeType);
             if ($nodeType == 'general') {
@@ -112,93 +110,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 }
             }
             if ($node != null) {
-                $relaydInfo = $this->request->getPost('relayd');
-
-                // perform plugin specific validations
-                if ($nodeType == 'virtualserver') {
-                    // preset defaults for validations
-                    if (empty($relaydInfo[$nodeType]['type'])) {
-                        $relaydInfo[$nodeType]['type'] = $node->type->__toString();
-                    }
-                    if (empty($relaydInfo[$nodeType]['transport_tablemode'])) {
-                        $relaydInfo[$nodeType]['transport_tablemode'] = $node->transport_tablemode->__toString();
-                    }
-                    if (empty($relaydInfo[$nodeType]['backuptransport_tablemode'])) {
-                        $relaydInfo[$nodeType]['backuptransport_tablemode'] =
-                        $node->backuptransport_tablemode->__toString();
-                    }
-
-                    if ($relaydInfo[$nodeType]['type'] == 'redirect') {
-                        if (
-                            $relaydInfo[$nodeType]['transport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['transport_tablemode'] != 'roundrobin'
-                        ) {
-                                $result['validations']['relayd.virtualserver.transport_tablemode'] = sprintf(
-                                    gettext('Scheduler "%s" not supported for redirects.'),
-                                    $relaydInfo[$nodeType]['transport_tablemode']
-                                );
-                        }
-                        if (
-                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'least-states' &&
-                            $relaydInfo[$nodeType]['backuptransport_tablemode'] != 'roundrobin'
-                        ) {
-                                $result['validations']['relayd.virtualserver.backuptransport_tablemode'] = sprintf(
-                                    gettext('Scheduler "%s" not supported for redirects.'),
-                                    $relaydInfo[$nodeType]['backuptransport_tablemode']
-                                );
-                        }
-                        if (
-                            $relaydInfo[$nodeType]['transport_type'] == 'route' &&
-                            empty($relaydInfo[$nodeType]['routing_interface'])
-                        ) {
-                                $result['validations']['relayd.virtualserver.routing_interface'] =
-                                    gettext('Routing interface cannot be empty');
-                        }
-                    }
-                    if ($relaydInfo[$nodeType]['type'] == 'relay') {
-                        if ($relaydInfo[$nodeType]['transport_tablemode'] == 'least-states') {
-                            $result['validations']['relayd.virtualserver.transport_tablemode'] = sprintf(
-                                gettext('Scheduler "%s" not supported for relays.'),
-                                $relaydInfo[$nodeType]['transport_tablemode']
-                            );
-                        }
-                        if ($relaydInfo[$nodeType]['backuptransport_tablemode'] == 'least-states') {
-                            $result['validations']['relayd.virtualserver.backuptransport_tablemode'] = sprintf(
-                                gettext('Scheduler "%s" not supported for relays.'),
-                                $relaydInfo[$nodeType]['backuptransport_tablemode']
-                            );
-                        }
-                    }
-                } elseif ($nodeType == 'tablecheck') {
-                    switch ($relaydInfo[$nodeType]['type']) {
-                        case 'send':
-                            if (empty($relaydInfo[$nodeType]['expect'])) {
-                                $result['validations']['relayd.tablecheck.expect'] =
-                                gettext('Expect Pattern cannot be empty.');
-                            }
-                            break;
-                        case 'script':
-                            if (empty($relaydInfo[$nodeType]['path'])) {
-                                $result['validations']['relayd.tablecheck.path'] =
-                                gettext('Script path cannot be empty.');
-                            }
-                            break;
-                        case 'http':
-                            if (empty($relaydInfo[$nodeType]['path'])) {
-                                $result['validations']['relayd.tablecheck.path'] =
-                                gettext('Path cannot be empty.');
-                            }
-                            if (empty($relaydInfo[$nodeType]['code']) && empty($relaydInfo[$nodeType]['digest'])) {
-                                $result['validations']['relayd.tablecheck.code'] =
-                                gettext('Provide one of Response Code or Message Digest.');
-                                $result['validations']['relayd.tablecheck.digest'] =
-                                gettext('Provide one of Response Code or Message Digest.');
-                            }
-                            break;
-                    }
-                }
-
-                $node->setNodes($relaydInfo[$nodeType]);
+                $node->setNodes($this->request->getPost('relayd')[$nodeType]);
                 $valMsgs = $this->getModel()->performValidation();
                 foreach ($valMsgs as $field => $msg) {
                     $fieldnm = str_replace($node->__reference, "relayd." . $nodeType, $msg->getField());
@@ -232,7 +144,7 @@ class SettingsController extends ApiMutableModelControllerBase
             if ($uuid != null) {
                 $node = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid);
                 if ($node != null) {
-                    $nodeName = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid . '.name')->__toString();
+                    $nodeName = $this->getModel()->getNodeByReference($nodeType . '.' . $uuid . '.name')->getValue();
                     if ($this->getModel()->$nodeType->del($uuid) == true) {
                         // delete relations
                         switch ($nodeType) {
@@ -311,7 +223,7 @@ class SettingsController extends ApiMutableModelControllerBase
      * @param string $uuid id to toggled
      * @param string|null $enabled set enabled by default
      * @return array status
-     * @throws \Phalcon\Validation\Exception when field validations fail
+     * @throws \OPNsense\Base\ValidationException when field validations fail
      * @throws \ReflectionException when not bound to model
      */
     public function toggleAction($nodeType, $uuid, $enabled = null)
@@ -327,26 +239,25 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     public function searchAction($nodeType = null)
     {
-        $this->sessionClose();
         if ($this->request->isPost() && $nodeType != null) {
             $this->validateNodeType($nodeType);
             $grid = new UIModelGrid($this->getModel()->$nodeType);
-            $fields = array();
+            $fields = [];
             switch ($nodeType) {
                 case 'host':
-                    $fields = array('enabled', 'name', 'address');
+                    $fields = ['enabled', 'name', 'address'];
                     break;
                 case 'tablecheck':
-                    $fields = array('name', 'type');
+                    $fields = ['name', 'type'];
                     break;
                 case 'table':
-                    $fields = array('enabled', 'name');
+                    $fields = ['enabled', 'name'];
                     break;
                 case 'protocol':
-                    $fields = array('name', 'type');
+                    $fields = ['name', 'type'];
                     break;
                 case 'virtualserver':
-                    $fields = array('enabled', 'name', 'type');
+                    $fields = ['enabled', 'name', 'type', 'listen_address', 'listen_startport', 'listen_endport'];
                     break;
             }
             $result = $grid->fetchBindRequest($this->request, $fields);
@@ -391,13 +302,13 @@ class SettingsController extends ApiMutableModelControllerBase
                 if ($fieldUuid == $relUuid) {
                     $refField = $nodeType . '.' . $nodeUuid . '.' . $nodeField;
                     $relNode = $this->getModel()->getNodeByReference($refField);
-                    $nodeRels = str_replace($relUuid, '', $relNode->__toString());
+                    $nodeRels = str_replace($relUuid, '', $relNode->getValue());
                     $nodeRels = str_replace(',,', ',', $nodeRels);
                     $nodeRels = rtrim($nodeRels, ',');
                     $nodeRels = ltrim($nodeRels, ',');
                     $this->getModel()->setNodeByReference($refField, $nodeRels);
-                    if ($relNode->isEmptyAndRequired()) {
-                        $nodeName = $this->getModel()->getNodeByReference("{$nodeType}.{$nodeUuid}.name")->__toString();
+                    if ($relNode->isRequired() && !$relNode->isSet()) {
+                        $nodeName = $this->getModel()->getNodeByReference("{$nodeType}.{$nodeUuid}.name")->getValue();
                         throw new \Exception("Cannot delete $relNodeType '$relNodeName' from $nodeType '$nodeName'");
                     }
                 }

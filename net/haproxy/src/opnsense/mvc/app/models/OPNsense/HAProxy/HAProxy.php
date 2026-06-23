@@ -138,19 +138,19 @@ class HAProxy extends BaseModel
     /**
      * create a new ACL
      * @param string $name
-     * @param string $description
      * @param string $expression
+     * @param string $description
      * @param string $negate
      * @param hash $parameters
      * @return string
      */
-    public function newAcl($name, $description = "", $expression, $negate = "0", $parameters = array())
+    public function newAcl($name, $expression, $description = "", $negate = "0", $parameters = array())
     {
         $acl = $this->acls->acl->Add();
         $uuid = $acl->getAttributes()['uuid'];
         $acl->name = $name;
-        $acl->description = $description;
         $acl->expression = $expression;
+        $acl->description = $description;
         $acl->negate = $negate;
         foreach ($parameters as $key => $value) {
             $acl->$key = $value;
@@ -161,11 +161,11 @@ class HAProxy extends BaseModel
     /**
      * create a new action
      * @param string $name
-     * @param string $description
      * @param string $testType
+     * @param string $type
+     * @param string $description
      * @param string $linkedAcls
      * @param string $operator
-     * @param string $type
      * @param string $useBackend
      * @param string $useServer
      * @param string $actionName
@@ -173,16 +173,16 @@ class HAProxy extends BaseModel
      * @param string $actionValue
      * @return string
      */
-    public function newAction($name, $description = "", $testType, $linkedAcls = "", $operator = "and", $type, $parameters = array())
+    public function newAction($name, $testType, $type, $description = "", $linkedAcls = "", $operator = "and", $parameters = array())
     {
         $action = $this->actions->action->Add();
         $uuid = $action->getAttributes()['uuid'];
         $action->name = $name;
-        $action->description = $description;
         $action->testType = $testType;
+        $action->type = $type;
+        $action->description = $description;
         $action->linkedAcls = $linkedAcls;
         $action->operator = $operator;
-        $action->type = $type;
         foreach ($parameters as $key => $value) {
             $action->$key = $value;
         }
@@ -192,24 +192,24 @@ class HAProxy extends BaseModel
     /**
      * create a new server
      * @param string $name
-     * @param string $description
      * @param string $address
      * @param string $port
      * @param string $mode
+     * @param string $description
      * @param string $ssl
      * @param string $sslVerify
      * @param string $weight
      * @return string
      */
-    public function newServer($name, $description = "", $address, $port, $mode, $ssl = "0", $sslVerify = "1", $weight = "")
+    public function newServer($name, $address, $port, $mode, $description = "", $ssl = "0", $sslVerify = "1", $weight = "")
     {
         $srv = $this->servers->server->Add();
         $uuid = $srv->getAttributes()['uuid'];
         $srv->name = $name;
-        $srv->description = $description;
         $srv->address = $address;
         $srv->port = $port;
         $srv->mode = $mode;
+        $srv->description = $description;
         $srv->ssl = $ssl;
         $srv->sslVerify = $sslVerify;
         $srv->weight = $weight;
@@ -218,24 +218,24 @@ class HAProxy extends BaseModel
 
     /**
      * create a new backend
-     * @param string $enabled
      * @param string $name
-     * @param string $description
      * @param string $mode
      * @param string $algorithm
+     * @param string $enabled
+     * @param string $description
      * @param string $linkedServers
      * @param string $linkedActions
      * @return string
      */
-    public function newBackend($enabled = "0", $name, $description = "", $mode, $algorithm, $linkedServers = "", $linkedActions = "")
+    public function newBackend($name, $mode, $algorithm, $enabled = "0", $description = "", $linkedServers = "", $linkedActions = "")
     {
         $backend = $this->backends->backend->Add();
         $uuid = $backend->getAttributes()['uuid'];
-        $backend->enabled = $enabled;
         $backend->name = $name;
-        $backend->description = $description;
         $backend->mode = $mode;
         $backend->algorithm = $algorithm;
+        $backend->enabled = $enabled;
+        $backend->description = $description;
         $backend->linkedServers = $linkedServers;
         $backend->linkedActions = $linkedActions;
         return $uuid;
@@ -269,7 +269,7 @@ class HAProxy extends BaseModel
                 return $acl_uuid;
             } else {
                 // Extend existing string.
-                $linkedAcls .= ",${acl_uuid}";
+                $linkedAcls .= ",{$acl_uuid}";
             }
         } else {
             $linkedAcls = $acl_uuid;
@@ -309,7 +309,7 @@ class HAProxy extends BaseModel
                 return $server_uuid;
             } else {
                 // Extend existing string.
-                $linkedServers .= ",${server_uuid}";
+                $linkedServers .= ",{$server_uuid}";
             }
         } else {
             $linkedServers = $server_uuid;
@@ -349,7 +349,7 @@ class HAProxy extends BaseModel
                 return $action_uuid;
             } else {
                 // Extend existing string.
-                $linkedActions .= ",${action_uuid}";
+                $linkedActions .= ",{$action_uuid}";
             }
         } else {
             $linkedActions = $action_uuid;

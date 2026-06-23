@@ -1,0 +1,40 @@
+<form>
+  <field>
+    <id>route.enabled</id>
+    <label>Enabled</label>
+    <type>checkbox</type>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
+  </field>
+  <field>
+    <id>route.network</id>
+    <label>Network</label>
+    <type>text</type>
+    <help>Defines the target for the static route, in CIDR notation.</help>
+  </field>
+  <field>
+    <id>route.gateway</id>
+    <label>Gateway</label>
+    <type>text</type>
+    <help>Optional gateway IP address for this route.</help>
+  </field>
+  <field>
+    <id>route.interfacename</id>
+    <label>Interface</label>
+    <type>dropdown</type>
+    <help>Select an interface where this settings apply to.</help>
+  </field>
+  <field>
+    <id>route.bfd</id>
+    <label>BFD</label>
+    <type>checkbox</type>
+    <help>Mark the route as dependent on the BFD neighbor session with the next hop.</help>
+    <grid_view>
+      <type>boolean</type>
+      <formatter>boolean</formatter>
+    </grid_view>
+  </field>
+</form>

@@ -44,26 +44,26 @@ class M1_6_0 extends BaseModelMigration
         foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
             $account_id = (string)$account->id;
             $account_dir = $dir . $account_id;
-            $new_account_dir = "${dir}${account_id}_${env}";
+            $new_account_dir = "{$dir}{$account_id}_{$env}";
 
             // Check if account directory exists
             // Accounts that haven't been used yet don't need to be migrated.
             if (is_dir($account_dir)) {
                 // Check if account configuration can be found.
-                $account_file = "${account_dir}/account.conf";
+                $account_file = "{$account_dir}/account.conf";
                 if (is_file($account_file)) {
                     // Parse config file and modify path information
                     $account_conf = parse_ini_file($account_file);
                     foreach ($account_conf as $key => $value) {
                         switch ($key) {
                             case 'ACCOUNT_KEY_PATH':
-                                $account_conf[$key] = "${new_account_dir}/account.key";
+                                $account_conf[$key] = "{$new_account_dir}/account.key";
                                 break;
                             case 'ACCOUNT_JSON_PATH':
-                                $account_conf[$key] = "${new_account_dir}/account.json";
+                                $account_conf[$key] = "{$new_account_dir}/account.json";
                                 break;
                             case 'CA_CONF':
-                                $account_conf[$key] = "${new_account_dir}/ca.conf";
+                                $account_conf[$key] = "{$new_account_dir}/ca.conf";
                                 break;
                         }
                     }
@@ -71,11 +71,11 @@ class M1_6_0 extends BaseModelMigration
                     // Convert array back to ini file format
                     $new_account_conf = array();
                     foreach ($account_conf as $key => $value) {
-                        $new_account_conf[] = "${key}='${value}'";
+                        $new_account_conf[] = "{$key}='{$value}'";
                     }
 
                     // Write changes back to file
-                    file_put_contents($account_file, implode("\r\n", $new_account_conf) . "\n");
+                    file_put_contents($account_file, implode("\n", $new_account_conf) . "\n");
                     chmod($account_file, 0600);
 
                     // Finally, rename account directory

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2025 Franco Fichtner <franco@opnsense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -34,22 +34,29 @@ PKG=		true
 .endif
 GIT!=		which git || echo true
 
+SCRIPTSDIR=	${PLUGINSDIR}/Scripts
+TEMPLATESDIR=	${PLUGINSDIR}/Templates
+
 GITVERSION=	${SCRIPTSDIR}/version.sh
 
 _PLUGIN_ARCH!=	uname -p
 PLUGIN_ARCH?=	${_PLUGIN_ARCH}
 
-OPENSSL?=	${LOCALBASE}/bin/openssl
+VERSIONBIN=	${LOCALBASE}/sbin/opnsense-version
 
-.if ! defined(PLUGIN_FLAVOUR)
-.if exists(${OPENSSL})
-_PLUGIN_FLAVOUR!=	${OPENSSL} version
-PLUGIN_FLAVOUR?=	${_PLUGIN_FLAVOUR:[1]}
+.if exists(${VERSIONBIN})
+_PLUGIN_ABI!=	${VERSIONBIN} -a
+PLUGIN_ABIS?=	${_PLUGIN_ABI}
 .else
-.warning "Detected 'Base' flavour is not currently supported"
-PLUGIN_FLAVOUR?=	Base
+PLUGIN_ABIS?=	26.1
 .endif
-.endif
+
+PLUGIN_ABI?=	${PLUGIN_ABIS:[1]}
+
+PLUGIN_MAINS=	master main
+PLUGIN_MAIN?=	${PLUGIN_MAINS:[1]}
+PLUGIN_STABLE?=	stable/${PLUGIN_ABI}
+PLUGIN_UPSTREAM?=community
 
 PHPBIN=		${LOCALBASE}/bin/php
 
@@ -65,18 +72,21 @@ _PLUGIN_PYTHON!=${PYTHONLINK} -V
 PLUGIN_PYTHON?=	${_PLUGIN_PYTHON:[2]:S/./ /g:[1..2]:tW:S/ //}
 .endif
 
-PLUGIN_ABI?=	21.1
-PLUGIN_PHP?=	73
-PLUGIN_PYTHON?=	37
+.for REPLACEMENT in ABI PHP PYTHON
+. if empty(PLUGIN_${REPLACEMENT})
+.  warning Cannot build without PLUGIN_${REPLACEMENT} set
+. endif
+.endfor
 
 REPLACEMENTS=	PLUGIN_ABI \
 		PLUGIN_ARCH \
-		PLUGIN_FLAVOUR \
+		PLUGIN_CONFLICTS \
 		PLUGIN_HASH \
 		PLUGIN_MAINTAINER \
 		PLUGIN_NAME \
 		PLUGIN_PKGNAME \
 		PLUGIN_PKGVERSION \
+		PLUGIN_TIER \
 		PLUGIN_VARIANT \
 		PLUGIN_WWW
 
@@ -86,58 +96,8 @@ SED_REPLACE=	# empty
 SED_REPLACE+=	-e "s=%%${REPLACEMENT}%%=${${REPLACEMENT}}=g"
 .endfor
 
-ARGS=	diff mfc
-
-# handle argument expansion for required targets
-.for TARGET in ${.TARGETS}
-_TARGET=		${TARGET:C/\-.*//}
-.if ${_TARGET} != ${TARGET}
-.for ARGUMENT in ${ARGS}
-.if ${_TARGET} == ${ARGUMENT}
-${_TARGET}_ARGS+=	${TARGET:C/^[^\-]*(\-|\$)//:S/,/ /g}
-${TARGET}: ${_TARGET}
-.endif
-.endfor
-${_TARGET}_ARG=		${${_TARGET}_ARGS:[0]}
-.endif
-.endfor
-
-ensure-stable:
-	@if ! git show-ref --verify --quiet refs/heads/stable/${PLUGIN_ABI}; then \
-		git update-ref refs/heads/stable/${PLUGIN_ABI} refs/remotes/origin/stable/${PLUGIN_ABI}; \
-		git config branch.stable/${PLUGIN_ABI}.merge refs/heads/stable/${PLUGIN_ABI}; \
-		git config branch.stable/${PLUGIN_ABI}.remote origin; \
-	fi
-
-diff: ensure-stable
-	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${diff_ARGS:[1]}
-
-mfc: ensure-stable
-.for MFC in ${mfc_ARGS}
-.if exists(${MFC})
-	@git diff --stat -p stable/${PLUGIN_ABI} ${.CURDIR}/${MFC} > /tmp/mfc.diff
-	@git checkout stable/${PLUGIN_ABI}
-	@git apply /tmp/mfc.diff
-	@git add ${.CURDIR}
-	@if ! git diff --quiet HEAD; then \
-		git commit -m "${MFC}: sync with master"; \
-	fi
-.else
-	@git checkout stable/${PLUGIN_ABI}
-	@if ! git cherry-pick -x ${MFC}; then \
-		git cherry-pick --abort; \
-	fi
-.endif
-	@git checkout master
-.endfor
-
-stable:
-	@git checkout stable/${PLUGIN_ABI}
-
-master:
-	@git checkout master
-
-rebase:
-	@git checkout stable/${PLUGIN_ABI}
-	@git rebase -i
-	@git checkout master
+WRKDIR?=	${.CURDIR}/work
+MFCDIR?=	/tmp/mfc.dir
+PKGDIR?=	${WRKDIR}/pkg
+WRKSRC?=	${WRKDIR}/src
+TESTDIR?=	${.CURDIR}/src/opnsense/mvc/tests

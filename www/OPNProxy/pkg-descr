@@ -1,0 +1,9 @@
+OPNsense proxy additions to support more fine grained access management
+
+1.0.5
+
+* Prepare for community release
+
+1.0.4:
+
+* Remove ident support as by default it is denied anyway nowadays

@@ -43,7 +43,6 @@ class KeyController extends ApiMutableModelControllerBase
     }
     public function getKeyAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('key', 'keys.key', $uuid);
     }
     public function addKeyAction()

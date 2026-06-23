@@ -1,8 +1,0 @@
-<form>
-    <field>
-        <id>general.enabled</id>
-        <label>Enable SoftEther</label>
-        <type>checkbox</type>
-        <help>This will activate SoftEther vpnserver process.</help>
-    </field>
-</form>

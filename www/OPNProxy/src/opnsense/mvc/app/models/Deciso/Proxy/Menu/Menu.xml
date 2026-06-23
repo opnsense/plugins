@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <SquidWebProxy>
+            <ACL VisibleName="Access control" order="15" url="/ui/proxy/acl">
+            </ACL>
+        </SquidWebProxy>
+    </Services>
+</menu>

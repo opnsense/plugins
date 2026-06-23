@@ -6,15 +6,13 @@
         <whitelists>
             <whitelist type="ArrayField">
                 <enabled type="BooleanField">
-                    <default>1</default>
+                    <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
                 </name>
-                <description type="TextField">
-                    <Required>N</Required>
-                </description>
+                <description type="TextField"/>
             </whitelist>
         </whitelists>
     </items>

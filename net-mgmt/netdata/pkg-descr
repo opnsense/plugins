@@ -12,6 +12,10 @@ WWW: https://github.com/netdata/netdata
 Plugin Changelog
 ================
 
+1.2
+
+* Remove MFS support for /var/log
+
 1.1
 
 * Allow listening to IPv6 address

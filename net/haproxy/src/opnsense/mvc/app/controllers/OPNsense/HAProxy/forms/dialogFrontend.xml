@@ -23,7 +23,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
+        <help><![CDATA[Configure listen addresses for this Public Service, i.e. 127.0.0.1:8080 or www.example.com:443 or unix@socket-name. Add quic4@ or quic6@ to enable QUIC for IPv4/IPv6, e.g. quic4@www.example.com:443. Use TAB key to complete typing a listen address.]]></help>
         <hint>Enter address:port here. Finish with TAB.</hint>
     </field>
     <field>
@@ -203,13 +203,34 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <sortable>true</sortable>
-        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled.]]></help>
+        <help><![CDATA[When using the TLS ALPN extension, HAProxy advertises the specified protocol list as supported on top of ALPN. SSL offloading must be enabled. Note that HTTP/3 will only be added to QUIC-compatible Listening Addresses.]]></help>
     </field>
     <field>
         <id>frontend.forwardFor</id>
-        <label>X-Forwarded-For header</label>
+        <label>X-Forwarded-For (deprecated)</label>
         <type>checkbox</type>
-        <help><![CDATA[Enable insertion of the X-Forwarded-For header to requests sent to servers.]]></help>
+        <help><![CDATA[This option is deprecated and should no longer be used. A new option is available in backend pool settings.]]></help>
+    </field>
+    <field>
+        <id>frontend.prometheus_enabled</id>
+        <label>Prometheus Enabled</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable HAProxy's Prometheus exporter.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.prometheus_path</id>
+        <label>Prometheus Path</label>
+        <type>text</type>
+        <help><![CDATA[The path where the Prometheus exporter can be accessed.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.connectionBehaviour</id>
+        <label>Connection Mode</label>
+        <type>dropdown</type>
+        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"httpclose"</b> configures HAProxy to close connections with the server and the client as soon as the request and the response are received. It will also check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side.]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>Basic Authentication</label>
@@ -242,7 +263,7 @@
     </field>
     <field>
         <id>frontend.tuning_maxConnections</id>
-        <label>Max. Connections</label>
+        <label>Maximum Connections</label>
         <type>text</type>
         <help><![CDATA[Set the maximum number of concurrent connections for this Public Service.]]></help>
     </field>
@@ -274,6 +295,13 @@
         <allownew>true</allownew>
         <help><![CDATA[Choose CPU affinity rules that should be applied to this Public Service.]]></help>
         <hint>Choose CPU affinity rules.</hint>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.tuning_shards</id>
+        <label>Shards</label>
+        <type>text</type>
+        <help><![CDATA[This option automatically creates the specified number of listeners for every IP:port combination and evenly distributes them among available threads. This can sometimes be useful when using very large thread counts where the in-kernel locking on a single socket starts to cause a significant overhead.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -315,35 +343,33 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Stickiness table</label>
+        <label>Stick-table</label>
         <type>header</type>
     </field>
     <field>
         <id>frontend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for further information.]]></help>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. Note that this stick-table cannot be used for session persistence, it is only used to store additional per-connection data (select below). See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#11.1">HAProxy documentation</a> for further information.]]></help>
         <hint>Choose a stick-table type.</hint>
     </field>
     <field>
         <id>frontend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#11.1">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>frontend.stickiness_expire</id>
         <label>Expiration time</label>
         <type>text</type>
         <help><![CDATA[Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds). This configures the maximum duration of an entry in the stick-table since it was last created, refreshed or matched. The maximum duration is slightly above 24 days.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>frontend.stickiness_size</id>
-        <label>Size</label>
+        <label>Table size</label>
         <type>text</type>
         <help><![CDATA[Enter a number followed by one of the supported suffixes "k", "m", "g". This configures the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately 50 bytes per entry, plus the size of a string if any.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>frontend.stickiness_counter</id>
@@ -356,7 +382,7 @@
         <id>frontend.stickiness_counter_key</id>
         <label>Sticky counter key</label>
         <type>text</type>
-        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/2.2/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[It describes what elements of the incoming request or connection will be analyzed, extracted, combined, and used to select which table entry to update the counters. Defaults to "src" to track elements of the source IP. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#tcp-request connection">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -364,34 +390,6 @@
         <label>Max. data length</label>
         <type>text</type>
         <help><![CDATA[Specify the maximum length for a value in the stick-table. If the value is larger than this value it will be truncated before being stored. Depending on the stick-table type this repesents either characters or bytes.]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>frontend.stickiness_connRatePeriod</id>
-        <label>Connection rate period</label>
-        <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming connection rate over that period, in connections per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>frontend.stickiness_sessRatePeriod</id>
-        <label>Session rate period</label>
-        <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>frontend.stickiness_httpReqRatePeriod</id>
-        <label>HTTP request rate period</label>
-        <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>frontend.stickiness_httpErrRatePeriod</id>
-        <label>HTTP error rate period</label>
-        <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -409,15 +407,71 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <label>Advanced settings</label>
-        <type>header</type>
+        <id>frontend.stickiness_connRatePeriod</id>
+        <label>Connection rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming connection rate over that period, in connections per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
     </field>
     <field>
-        <id>frontend.connectionBehaviour</id>
-        <label>Type</label>
-        <type>dropdown</type>
-        <help><![CDATA[By default HAProxy operates in <b>keep-alive</b> mode with regards to persistent connections. Option <b>"http-tunnel"</b> disables any HTTP processing past the first request and the first response. Option <b>"httpclose"</b> configures HAProxy to work in HTTP tunnel mode and check if a "Connection: close" header is already set in each direction, and will add one if missing. Option <b>"http-server-close"</b> enables HTTP connection-close mode on the server side while keeping the ability to support HTTP keep-alive and pipelining on the client side. With Option <b>"forceclose"</b> HAProxy will actively close the outgoing server channel as soon as the server has finished to respond and release some resources earlier.]]></help>
+        <id>frontend.stickiness_glitchRatePeriod</id>
+        <label>Glitch rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average front glitches rate over that period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_gpcElements</id>
+        <label>GPC elements</label>
+        <type>text</type>
+        <help><![CDATA[The number of array elements that will be used for the General Purpose Counter. This is limited to a maximum of 100 elements, ranging from 0 to 99.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_gpcRatePeriod</id>
+        <label>GPC rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. Most of the time it will be used to measure the frequency of occurrence of certain events. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_gptElements</id>
+        <label>GPT elements</label>
+        <type>text</type>
+        <help><![CDATA[The number of array elements that will be used for the General Purpose Tag. This is limited to a maximum of 100 elements, ranging from 0 to 99.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_httpReqRatePeriod</id>
+        <label>HTTP request rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_httpErrRatePeriod</id>
+        <label>HTTP error rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP request error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_httpFailRatePeriod</id>
+        <label>HTTP fail rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP response fail error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>frontend.stickiness_sessRatePeriod</id>
+        <label>Session rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Advanced settings</label>
+        <type>header</type>
     </field>
     <field>
         <id>frontend.customOptions</id>

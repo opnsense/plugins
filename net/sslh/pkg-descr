@@ -1,0 +1,18 @@
+Manage SSLH, the SSL/SHH multiplexer via the OPNsense web UI.
+
+SSLH is a service which accepts HTTPS, SSH, OpenVPN, tinc and XMPP connections on the same port.
+This makes it possible to connect to any of these servers on port 443 while
+still serving HTTPS on that port.
+
+SSLH Project Home Page: https://www.rutschle.net/tech/sslh
+SSLH FAQ: https://www.rutschle.net/tech/sslh/doc/FAQ.html
+
+Changelog
+
+================
+
+1.0
+
+* Includes setting listen addresses, and protocol targets
+* Includes some other advanced settings
+* Service start/stop/restart control

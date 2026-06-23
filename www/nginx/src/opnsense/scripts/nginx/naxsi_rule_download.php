@@ -51,7 +51,6 @@ function download_rules()
     $response = curl_exec($curl);
     $err = curl_error($curl);
     $info = curl_getinfo($curl);
-    curl_close($curl);
     if ($info['http_code'] != 200 || $err) {
         syslog(LOG_ERR, 'Cannot download NAXSI core rules');
         syslog(LOG_ERR, json_encode($info));
@@ -81,7 +80,7 @@ function parse_rules($data)
             }
             $tmp = trim($matches[1]);
             $parsed[$tmp] = [];
-        } elseif (preg_match('/\S+ "(str|rx):([^\"]+)" "msg:([^\\"]*)" "mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches)) {
+        } elseif (preg_match('/\S+ "(str|rx):(.+)" "msg:([^\\"]*)" +"mz:([^\"]*)" "s:([^\"]*):(\d+)" id:(\d+);/', $line, $matches)) {
             $parsed[$tmp][] = prepare_values(array_combine($description, $matches));
         }
     }
@@ -100,8 +99,13 @@ function save_to_model($data)
         $policy->action = 'BLOCK';
         // create new values for policy
         $rule_list = [];
+        $dis_rules = [];
         foreach ($rules as $rule) {
             $rule_mdl = $model->naxsi_rule->Add();
+            // exclude commented rules from policy
+            if (str_starts_with($rule['rule'], '#')) {
+                $dis_rules[] = (string)$rule_mdl->getAttributes()["uuid"];
+            }
             $rule_mdl->description = $rule['message'];
             $rule_mdl->message = $rule['message'];
             $rule_mdl->ruletype = 'main';
@@ -160,20 +164,12 @@ function save_to_model($data)
             }
             $rule_list[] = $rule_mdl->getAttributes()["uuid"];
         }
-        $policy->naxsi_rules = implode(',', $rule_list);
+        $policy->naxsi_rules = implode(',', array_diff($rule_list, $dis_rules));
     }
-
-    $val_result = $model->performValidation(false);
-    if (count($val_result) !== 0) {
-        print_r($val_result);
-        exit(1);
-    }
-
-    $model->serializeToConfig();
+    // skip validation on serialization. possible warnings and errors will still end up in the syslog
+    $model->serializeToConfig(false, true);
     Config::getInstance()->save();
 }
 
-
-#$data =  parse_rules(file('./naxsi_core.rules'));
 $data = parse_rules(explode("\n", download_rules()));
 save_to_model($data);

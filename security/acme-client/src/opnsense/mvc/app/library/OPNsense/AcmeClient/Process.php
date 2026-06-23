@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2025 Frank Wall
  * Copyright (C) 2019 Juergen Kellerer
  * All rights reserved.
  *
@@ -27,6 +28,8 @@
  */
 
 namespace OPNsense\AcmeClient;
+
+use OPNsense\AcmeClient\LeUtils;
 
 /**
  * Utility class to execute shell processes and handle their IO.
@@ -64,7 +67,7 @@ class Process
             register_shutdown_function(function () use (&$open_processes) {
                 foreach ($open_processes as $handle) {
                     if (is_resource($handle)) {
-                        Utils::log()->error("Terminating process: " . json_encode(proc_get_status($handle)));
+                        LeUtils::log_error("Terminating process: " . json_encode(proc_get_status($handle)));
                         @proc_terminate($handle);
                     }
                 }
@@ -102,7 +105,7 @@ class Process
 
             self::manageOpenedProcess($this->handle);
         } else {
-            Utils::log()->error("Failed opening '$cmd' in '$cwd'");
+            LeUtils::log_error("Failed opening '$cmd' in '$cwd'");
         }
     }
 
@@ -115,21 +118,49 @@ class Process
         }
     }
 
-    public function get($timeout = 5, $max_length = 8192, $ending = PHP_EOL)
+    private $linesBuffer = [];
+
+    private function nextBufferedLine()
     {
-        $readables = array_filter($this->outputs, function ($stream) {
-            return is_resource($stream) && !feof($stream);
-        });
+        return empty($this->linesBuffer)
+            ? false
+            : array_shift($this->linesBuffer);
+    }
 
-        $micros = intval(($timeout - floor($timeout)) * 1000000);
-        $can_read = !empty($readables) && stream_select($readables, $w = [], $e = [], $timeout, $micros);
-        $stream = array_reduce(($can_read ? $readables : []), function ($a, $b) {
-            return is_resource($a) && !feof($a) ? $a : $b;
-        }, null);
+    /**
+     * Returns one line from stdout or stdin as it gets available. May return 'false' when no line became available
+     * within the specified $timeout or when another stream events occurred that returned no new content.
+     * @param $timeout float timeout in seconds
+     * @param $max_length int max length of a single line
+     * @return false|string One line of stdout/err (merged) or false when no new line exists.
+     */
+    public function get($timeout = 5, $max_length = 64 * 1024)
+    {
+        if (($line = $this->nextBufferedLine()) !== false) {
+            return $line;
+        }
 
-        return is_resource($stream)
-            ? stream_get_line($stream, $max_length, $ending)
-            : false;
+        $readables = array_filter($this->outputs, fn($stream) => is_resource($stream) && !feof($stream));
+        $micros = intval(($timeout - floor($timeout)) * 1000000) + 100;
+        $timeout = floor($timeout);
+        $__ = null;
+
+        $can_read = !empty($readables)
+            && stream_select($readables, $__, $__, $timeout, $micros) !== false;
+
+        if ($can_read) {
+            foreach ($readables as $stream) {
+                $content = fread($stream, $max_length);
+                if ($content !== false) {
+                    array_push($this->linesBuffer, ...preg_split('/\r\n|\n|\r/', $content));
+                    if (empty($this->linesBuffer[-1])) {
+                        array_pop($this->linesBuffer); // remove trailing empty newline
+                    }
+                }
+            }
+        }
+
+        return $this->nextBufferedLine();
     }
 
     public function put($data, $append = PHP_EOL)
@@ -153,7 +184,7 @@ class Process
     {
         // Read up-to 10k remaining lines from STDOUT/ERR to release locks before closing.
         for ($i = 0; ($line = $this->get(0)) && $i < 10000; $i++) {
-            Utils::log()->error("WARN: process: $line");
+            LeUtils::log_error("WARN: process: $line");
         }
 
         if ($this->isRunning()) {

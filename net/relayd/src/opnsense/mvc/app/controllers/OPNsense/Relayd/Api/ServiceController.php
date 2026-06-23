@@ -71,7 +71,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             $result['status'] = 'ok';
-            $this->sessionClose();
 
             $backend = new Backend();
 
@@ -96,7 +95,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             if ($this->lock()) {
-                $this->sessionClose();
                 $result['function'] = "reconfigure";
                 $result['status'] = 'failed';
                 $backend = new Backend();

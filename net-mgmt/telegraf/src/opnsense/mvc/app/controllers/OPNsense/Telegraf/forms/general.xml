@@ -6,6 +6,12 @@
         <help>This will activate the telegraf agent.</help>
     </field>
     <field>
+        <id>general.wheelgroup</id>
+        <label>Run as Root</label>
+        <type>checkbox</type>
+        <help>This will start the process with wheel group and root user permission. Please use this with care, currently only needed for Unbound and Suricata.</help>
+    </field>
+    <field>
         <id>general.interval</id>
         <label>Interval</label>
         <type>text</type>

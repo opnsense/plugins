@@ -5,6 +5,11 @@ ProxyMode=1
 {% else %}
 ProxyMode=0
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.remotecommands') and OPNsense.zabbixproxy.general.remotecommands == '1' %}
+EnableRemoteCommands=1
+{% else %}
+EnableRemoteCommands=0
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.server') and OPNsense.zabbixproxy.general.server != '' %}
 Server={{ OPNsense.zabbixproxy.general.server }}
 {% endif %}
@@ -20,9 +25,23 @@ ListenPort={{ OPNsense.zabbixproxy.general.listenport }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.sourceip') and OPNsense.zabbixproxy.general.sourceip != '' %}
 SourceIP={{ OPNsense.zabbixproxy.general.sourceip }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.listenbacklog') and OPNsense.zabbixproxy.general.listenbacklog != '' %}
+ListenBacklog={{ OPNsense.zabbixproxy.general.listenbacklog }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.syslogEnable') and OPNsense.zabbixproxy.general.syslogEnable == '1' %}
+LogType=system
+{% else %}
+LogType=file
 LogFile=/var/log/zabbix/zabbix_proxy.log
+{% if helpers.exists('OPNsense.zabbixproxy.general.logFileSize') %}
+LogFileSize={{OPNsense.zabbixproxy.general.logFileSize}}
+{% endif %}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.debugLevel') %}
+DebugLevel={{OPNsense.zabbixproxy.general.debugLevel|replace("val_", "")}}
+{% endif %}
 PidFile=/var/run/zabbix/zabbix_proxy.pid
-DBName=/var/db/zabbix/zabbix_proxy.db
+DBName=/var/db/zabbix/%%PLUGIN_VARIANT%%_proxy.db
 {% if helpers.exists('OPNsense.zabbixproxy.general.proxyofflinebuffer') and OPNsense.zabbixproxy.general.proxyofflinebuffer != '' %}
 ProxyOfflineBuffer={{ OPNsense.zabbixproxy.general.proxyofflinebuffer }}
 {% endif %}
@@ -40,6 +59,12 @@ StartIPMIPollers={{ OPNsense.zabbixproxy.general.startipmipollers }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.startpollersunreachable') and OPNsense.zabbixproxy.general.startpollersunreachable != '' %}
 StartPollersUnreachable={{ OPNsense.zabbixproxy.general.startpollersunreachable }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.startagentpollers') and OPNsense.zabbixproxy.general.startagentpollers != '' %}
+StartAgentPollers={{ OPNsense.zabbixproxy.general.startagentpollers }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller') and OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller != '' %}
+MaxConcurrentChecksPerPoller={{ OPNsense.zabbixproxy.general.maxconcurrentchecksperpoller }}
 {% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.starttrappers') and OPNsense.zabbixproxy.general.starttrappers != '' %}
 StartTrappers={{ OPNsense.zabbixproxy.general.starttrappers }}
@@ -68,8 +93,23 @@ HistoryCacheSize={{ OPNsense.zabbixproxy.general.historycachesize }}
 {% if helpers.exists('OPNsense.zabbixproxy.general.historyindexcachesize') and OPNsense.zabbixproxy.general.historyindexcachesize != '' %}
 HistoryIndexCacheSize={{ OPNsense.zabbixproxy.general.historyindexcachesize }}
 {% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarecachesize') and OPNsense.zabbixproxy.general.vmwarecachesize != '' %}
+VMwareCacheSize={{ OPNsense.zabbixproxy.general.vmwarecachesize }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwarefrequency') and OPNsense.zabbixproxy.general.vmwarefrequency != '' %}
+VMwareFrequency={{ OPNsense.zabbixproxy.general.vmwarefrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwareperffrequency') and OPNsense.zabbixproxy.general.vmwareperffrequency != '' %}
+VMwarePerfFrequency={{ OPNsense.zabbixproxy.general.vmwareperffrequency }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.vmwaretimeout') and OPNsense.zabbixproxy.general.vmwaretimeout != '' %}
+VMwareTimeout={{ OPNsense.zabbixproxy.general.vmwaretimeout }}
+{% endif %}
 {% if helpers.exists('OPNsense.zabbixproxy.general.timeout') and OPNsense.zabbixproxy.general.timeout != '' %}
 Timeout={{ OPNsense.zabbixproxy.general.timeout }}
+{% endif %}
+{% if helpers.exists('OPNsense.zabbixproxy.general.statsip') and OPNsense.zabbixproxy.general.statsip != '' %}
+StatsAllowedIP={{ OPNsense.zabbixproxy.general.statsip }}
 {% endif %}
 FpingLocation=/usr/local/sbin/fping
 Fping6Location=/usr/local/sbin/fping6

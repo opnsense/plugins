@@ -1,7 +1,6 @@
 <menu>
     <Services>
-      <!-- using LE prefix for proper sorting -->
-      <LEAcmeClient VisibleName="Let's Encrypt" cssClass="fa fa-certificate fa-fw">
+      <AcmeClient VisibleName="ACME Client" cssClass="fa fa-certificate fa-fw">
           <Settings order="10" url="/ui/acmeclient">
               <General url="/ui/acmeclient#general-settings"/>
           </Settings>
@@ -13,6 +12,6 @@
               <SystemLog VisibleName="System Log" order="10" url="/ui/acmeclient/logs"/>
               <AcmeLog VisibleName="Acme Log" order="20" url="/ui/diagnostics/log/core/acmeclient"/>
           </Logs>
-      </LEAcmeClient>
+      </AcmeClient>
     </Services>
 </menu>

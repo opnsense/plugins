@@ -18,16 +18,46 @@
         <help>Description for this account.</help>
     </field>
     <field>
+        <label>NOTE: Settings below must not be changed after account registration.</label>
+        <type>header</type>
+    </field>
+    <field>
         <id>account.email</id>
         <label>E-Mail Address</label>
         <type>text</type>
         <help>Optional e-mail address for this account.</help>
     </field>
     <field>
-        <id>account.certificateAuthority</id>
-        <label>Certificate Authority</label>
+        <id>account.ca</id>
+        <label>ACME CA</label>
         <type>dropdown</type>
-        <help><![CDATA[Select the certificate authority for this account.]]></help>
-        <advanced>true</advanced>
+        <help><![CDATA[The ACME CA that should be used for this account and all associated certificates. Note that some of them offer paid services and may require a subscription. Check the <a href="https://github.com/acmesh-official/acme.sh/wiki/Server" target="_blank">acme.sh documentation</a> for a list of supported CAs.]]></help>
+    </field>
+    <field>
+        <label>CA Options</label>
+        <type>header</type>
+        <style>ca_options ca_options_custom</style>
+    </field>
+    <field>
+        <id>account.custom_ca</id>
+        <label>Custom CA URL</label>
+        <type>text</type>
+        <help><![CDATA[The HTTPS URL of the custom ACME CA that should be used for this account and all associated certificates. If using your own CA, make sure the Root CA is added to OPNsense's trust store. For example: https://acme-v02.api.letsencrypt.org/directory or https://ca.internal/acme/directory]]></help>
+    </field>
+    <field>
+        <label>Optional EAB Credentials</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>account.eab_kid</id>
+        <label>Key Identifier</label>
+        <type>text</type>
+        <help><![CDATA[An optional value provided by the CA when using ACME External Account Binding (EAB).]]></help>
+    </field>
+    <field>
+        <id>account.eab_hmac</id>
+        <label>HMAC Key</label>
+        <type>password</type>
+        <help><![CDATA[An optional value provided by the CA when using ACME External Account Binding (EAB).]]></help>
     </field>
 </form>

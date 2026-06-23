@@ -1,0 +1,2 @@
+#!/bin/sh
+rm /usr/local/etc/squid/auth/10-opnproxy-ext.auth.conf

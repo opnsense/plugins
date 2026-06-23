@@ -50,8 +50,6 @@ class ServiceController extends ApiControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-start");
             return array("response" => $response);
@@ -67,8 +65,6 @@ class ServiceController extends ApiControllerBase
     public function stopAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-stop");
             return array("response" => $response);
@@ -84,8 +80,6 @@ class ServiceController extends ApiControllerBase
     public function restartAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
             $backend = new Backend();
             $response = $backend->configdRun("acmeclient http-restart");
             return array("response" => $response);
@@ -128,9 +122,6 @@ class ServiceController extends ApiControllerBase
     public function reconfigureAction()
     {
         if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
             $force_restart = false;
 
             $mdlAcme = new AcmeClient();
@@ -148,9 +139,6 @@ class ServiceController extends ApiControllerBase
 
             // generate template
             $backend->configdRun('template reload OPNsense/AcmeClient');
-
-            // now setup the environment
-            $backend->configdRun("acmeclient setup");
 
             // (res)start daemon
             if ($mdlAcme->settings->enabled->__toString() == 1) {
@@ -177,8 +165,6 @@ class ServiceController extends ApiControllerBase
         $backend = new Backend();
         // first generate template based on current configuration
         $backend->configdRun('template reload OPNsense/AcmeClient');
-        // now setup the environment
-        $backend->configdRun("acmeclient setup");
         // finally run the syntax check
         $response = $backend->configdRun("acmeclient configtest");
         return array("result" => $response);
@@ -192,8 +178,6 @@ class ServiceController extends ApiControllerBase
     public function signallcertsAction()
     {
         $backend = new Backend();
-        // first setup the environment
-        $backend->configdRun("acmeclient setup");
         // run the command
         $response = $backend->configdRun("acmeclient sign-all-certs");
         return array("result" => $response);
@@ -215,7 +199,7 @@ class ServiceController extends ApiControllerBase
         }
         // reset account states
         foreach ($model->getNodeByReference('accounts.account')->iterateItems() as $account) {
-            $account->lastUpdate = null;
+            $account->statusLastUpdate = null;
         }
         // reset acme.sh data
         $backend = new Backend();

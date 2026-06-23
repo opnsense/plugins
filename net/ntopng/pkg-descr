@@ -8,6 +8,10 @@ and on Windows as well.
 Plugin Changelog
 ================
 
+1.3
+
+* Change interface selection to multiselect
+
 1.2
 
 * Changed data directory to avoid warning

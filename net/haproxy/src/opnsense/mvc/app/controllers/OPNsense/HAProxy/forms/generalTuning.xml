@@ -11,13 +11,6 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>haproxy.general.tuning.nbproc</id>
-        <label>HAProxy processes (DEPRECATED)</label>
-        <type>text</type>
-        <help><![CDATA[Number of HAProxy processes to start.<br/><div class="text-info"><b>WARNING:</b> This option is deprecated and will be removed in a future version of HAProxy, threads should be used instead.</div>]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
         <id>haproxy.general.tuning.nbthread</id>
         <label>HAProxy threads</label>
         <type>text</type>
@@ -27,7 +20,13 @@
         <id>haproxy.general.tuning.maxConnections</id>
         <label>Maximum connections</label>
         <type>text</type>
-        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> HAProxy will not be able to allocate enough memory if you set this value too high. Consider raising the settings for kern.maxfiles and kern.maxfilesperproc if you need to specify a non-default value.</div>]]></help>
+        <help><![CDATA[Sets the maximum number of concurrent connections per HAProxy process.<br/><div class="text-info"><b>NOTE:</b> Consider raising the settings for kern.maxfiles and kern.maxfilesperproc in <a target="_blank" href="/system_advanced_sysctl.php">System: Settings: Tunables</a>, otherwise HAProxy will fail to open the specified number of connections.</div>]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.resolversPrefer</id>
+        <label>DNS prefer IP family</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option allows to choose which IP family is preferred when resolving DNS names. This is useful when IPv6 or IPv4 is not available. It solves a common issue with OCSP updates.]]></help>
     </field>
     <field>
         <id>haproxy.general.tuning.sslServerVerify</id>
@@ -46,13 +45,6 @@
         <label>Buffer size</label>
         <type>text</type>
         <help><![CDATA[Change the buffer size (in bytes). Lower values allow more sessions to coexist in the same amount of RAM, and higher values allow some applications with very large cookies to work. The default value is 16384. <br/><div class="text-info"><b>NOTE:</b> It is strongly recommended not to change this from the default value, as very low values will break some services such as statistics, and values larger than default size will increase memory usage, possibly causing the system to run out of memory.</div>]]></help>
-        <advanced>true</advanced>
-    </field>
-    <field>
-        <id>haproxy.general.tuning.checkBufferSize</id>
-        <label>Health check buffer size</label>
-        <type>text</type>
-        <help><![CDATA[Change the check buffer size (in bytes). Higher values may help find string or regex patterns in very large pages, though doing so may imply more memory and CPU usage. The default value is 16384.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -80,6 +72,28 @@
         <type>textbox</type>
         <help><![CDATA[These lines will be added to the global settings of to the HAProxy configuration file.<br/><div class="text-info"><b>NOTE:</b> The syntax will not be checked, use at your own risk!</div>]]></help>
         <advanced>true</advanced>
+    </field>
+    <field>
+        <label>SSL settings</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateEnabled</id>
+        <label>Automatic OCSP updates</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable automatic OCSP response updates. Each OCSP response will be updated at least once an hour, and even more frequently if a given OCSP response has an expire date earlier than this one hour limit.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateMinDelay</id>
+        <label>Minimum OCSP Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets the minimum interval (in seconds) between two automatic updates of the same OCSP response.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.ocspUpdateMaxDelay</id>
+        <label>Maximum OCSP Interval</label>
+        <type>text</type>
+        <help><![CDATA[Sets the maximum interval (in seconds) between two automatic updates of the same OCSP response.]]></help>
     </field>
     <field>
         <label>SSL default settings</label>
@@ -123,5 +137,45 @@
         <allownew>true</allownew>
         <sortable>true</sortable>
         <help><![CDATA[Used to enforce or disable certain SSL options.]]></help>
+    </field>
+    <field>
+        <label>HTTP/2 Performance</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSize</id>
+        <label>Initial window size</label>
+        <type>text</type>
+        <help><![CDATA[Sets the default value for the HTTP/2 initial window size, on both incoming and outgoing connections. The default value is 65536.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSizeOutgoing</id>
+        <label>Initial window size (outgoing)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 initial window size for outgoing connections, which is the number of bytes the server can respond to before waiting for an acknowledgment from HAProxy.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_initialWindowSizeIncoming</id>
+        <label>Initial window size (incoming)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 initial window size for incoming connections, which is the number of bytes the client can upload before waiting for an acknowledgment from HAProxy.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreams</id>
+        <label>Max concurrent streams</label>
+        <type>text</type>
+        <help><![CDATA[Sets the default HTTP/2 maximum number of concurrent streams per connection (i.e. the number of outstanding requests on a single connection). The default value is 100.]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreamsOutgoing</id>
+        <label>Max concurrent streams (outgoing)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 maximum number of concurrent streams per outgoing connection (i.e. the number of outstanding requests on a single connection to a server).]]></help>
+    </field>
+    <field>
+        <id>haproxy.general.tuning.h2_maxConcurrentStreamsIncoming</id>
+        <label>Max concurrent streams (incoming)</label>
+        <type>text</type>
+        <help><![CDATA[Sets the HTTP/2 maximum number of concurrent streams per incoming connection (i.e. the number of outstanding requests on a single connection from a client).]]></help>
     </field>
 </form>

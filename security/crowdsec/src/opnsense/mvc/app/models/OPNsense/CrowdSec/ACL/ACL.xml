@@ -1,0 +1,9 @@
+<acl>
+    <page-user-crowdsec>
+        <name>CrowdSec</name>
+        <patterns>
+            <pattern>ui/crowdsec/*</pattern>
+            <pattern>api/crowdsec/*</pattern>
+        </patterns>
+    </page-user-crowdsec>
+</acl>

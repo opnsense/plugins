@@ -36,6 +36,14 @@
       </help>
    </field>
    <field>
+      <id>relayd.virtualserver.listen_proto</id>
+      <label>Listen IP Protocol</label>
+      <type>dropdown</type>
+      <help><![CDATA[
+         Specify an IP protocol for the listener.]]>
+      </help>
+   </field>
+   <field>
       <id>relayd.virtualserver.listen_startport</id>
       <label>Listen Port</label>
       <type>text</type>

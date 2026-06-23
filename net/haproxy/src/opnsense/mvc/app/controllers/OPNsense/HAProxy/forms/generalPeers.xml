@@ -10,14 +10,14 @@
         <help><![CDATA[Enable or disable HAProxy peers. This will propagate entries of any data-types in stick-tables between several HAProxy instances over TCP connections in a multi-master fashion.]]></help>
     </field>
     <field>
-        <label>Peer 1 (this host)</label>
+        <label>Peer 1</label>
         <type>header</type>
     </field>
     <field>
         <id>haproxy.general.peers.name1</id>
         <label>Peer name (FQDN)</label>
         <type>text</type>
-        <help><![CDATA[The name of the peer. This is usually the full hostname to make it possible for HAProxy to recognize the local peer. If HAProxy is unable to find the local peer it will fail to start.]]></help>
+        <help><![CDATA[The name of the peer. This is usually the fully qualified domain name. If the name matches the <a href="/system_general.php">system hostname</a>, then this peer is automatically configured as local peer.]]></help>
     </field>
     <field>
         <id>haproxy.general.peers.listen1</id>
@@ -32,14 +32,14 @@
         <help><![CDATA[The TCP port that should be used for connections to this peer. It must not be used by any other service.]]></help>
     </field>
     <field>
-        <label>Peer 2 (remote host)</label>
+        <label>Peer 2</label>
         <type>header</type>
     </field>
     <field>
         <id>haproxy.general.peers.name2</id>
         <label>Peer name (FQDN)</label>
         <type>text</type>
-        <help><![CDATA[The name of the peer. This is usually the full hostname to make it possible for HAProxy to recognize the local peer. If HAProxy is unable to find the local peer it will fail to start.]]></help>
+        <help><![CDATA[The name of the peer. This is usually the fully qualified domain name. If the name matches the <a href="/system_general.php">system hostname</a>, then this peer is automatically configured as local peer.]]></help>
     </field>
     <field>
         <id>haproxy.general.peers.listen2</id>

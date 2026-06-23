@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2015-2017 Deciso B.V.
+ * Copyright (C) 2015-2025 Deciso B.V.
  * Copyright (C) 2017 Fabian Franz
  * All rights reserved.
  *
@@ -29,121 +29,22 @@
 
 namespace OPNsense\Quagga\Api;
 
-use OPNsense\Base\ApiControllerBase;
-use OPNsense\Core\Backend;
-use OPNsense\Quagga\General;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 
 /**
  * Class ServiceController
  * @package OPNsense\Quagga
  */
-class ServiceController extends ApiControllerBase
+class ServiceController extends ApiMutableServiceControllerBase
 {
-    /**
-     * start quagga service and reload filter rules to pass OSPF
-     * before the bogon filter kills the routing protocol packets
-     * @return array
-     */
-    public function startAction()
+    protected static $internalServiceClass = '\OPNsense\Quagga\General';
+    protected static $internalServiceTemplate = 'OPNsense/Quagga';
+    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceName = 'quagga';
+
+    protected function reconfigureForceRestart()
     {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun('quagga start');
-            $backend->configdRun('filter reload');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-
-    /**
-     * stop quagga service
-     * @return array
-     */
-    public function stopAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun('quagga stop');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-
-    /**
-     * restart quagga service
-     * @return array
-     */
-    public function restartAction()
-    {
-        if ($this->request->isPost()) {
-            $backend = new Backend();
-            $response = $backend->configdRun('quagga restart');
-            $backend->configdRun('filter reload');
-            return array('response' => $response);
-        } else {
-            return array('response' => array());
-        }
-    }
-
-    /**
-     * retrieve status of quagga
-     * @return array
-     * @throws \Exception
-     */
-    public function statusAction()
-    {
-        $backend = new Backend();
-        $mdlGeneral = new General();
-        $response = $backend->configdRun('quagga status');
-
-        if (strpos($response, 'not running') > 0) {
-            if ($mdlGeneral->enabled->__toString() == 1) {
-                $status = 'stopped';
-            } else {
-                $status = 'disabled';
-            }
-        } elseif (strpos($response, 'is running') > 0) {
-            $status = 'running';
-        } elseif ($mdlGeneral->enabled->__toString() == 0) {
-            $status = 'disabled';
-        } else {
-            $status = 'unknown';
-        }
-
-
-        return array('status' => $status);
-    }
-
-    /**
-     * reconfigure quagga, generate config and reload
-     */
-    public function reconfigureAction()
-    {
-        if ($this->request->isPost()) {
-            // close session for long running action
-            $this->sessionClose();
-
-            $mdlGeneral = new General();
-            $backend = new Backend();
-
-            $runStatus = $this->statusAction();
-
-            // stop quagga if it is running or not
-            $this->stopAction();
-
-            // generate template
-            $backend->configdRun('template reload OPNsense/Quagga');
-
-            // (res)start daemon
-            if ($mdlGeneral->enabled->__toString() == 1) {
-                $this->startAction();
-            }
-
-            return array('status' => 'ok');
-        } else {
-            return array('status' => 'failed');
-        }
+        // frr can reload using frr-reload and frr8-pythontools
+        return 0;
     }
 }

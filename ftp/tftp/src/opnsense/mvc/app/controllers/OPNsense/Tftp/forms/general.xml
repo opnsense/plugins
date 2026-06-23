@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable TFTP daemon.</help>
+    </field>
+    <field>
+        <id>general.listen</id>
+        <label>Listen Address</label>
+        <type>text</type>
+        <help>Set the IP addresses to listen to.</help>
+    </field>
+</form>

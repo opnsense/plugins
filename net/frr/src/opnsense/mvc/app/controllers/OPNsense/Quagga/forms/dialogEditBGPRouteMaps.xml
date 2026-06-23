@@ -3,60 +3,61 @@
     <id>routemap.enabled</id>
     <label>Enabled</label>
     <type>checkbox</type>
-    <help>Enable / Disable</help>
+    <grid_view>
+      <width>6em</width>
+      <type>boolean</type>
+      <formatter>rowtoggle</formatter>
+    </grid_view>
   </field>
   <field>
     <id>routemap.description</id>
     <label>Description</label>
     <type>text</type>
-    <help>Add an optional description for this route-map.</help>
+    <help>Optional description for the route-map.</help>
   </field>
   <field>
     <id>routemap.name</id>
     <label>Name</label>
     <type>text</type>
-    <help>Route-map name to match and set your patterns, it will be enabled via the neigbor configuration.</help>
+    <help>Name of the route-map, used in neighbor configuration.</help>
   </field>
   <field>
     <id>routemap.action</id>
     <label>Action</label>
-    <type>select_multiple</type>
+    <type>dropdown</type>
     <help>Set permit for match or deny to negate the rule.</help>
   </field>
   <field>
     <id>routemap.id</id>
     <label>ID</label>
     <type>text</type>
-    <help>Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position</help>
+    <help>Route-map ID (1-65535). Sorting is managed automatically.</help>
   </field>
   <field>
     <id>routemap.match</id>
     <label>AS-Path List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the AS-Path List.</help>
+    <help>Select the AS-Path List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>routemap.match2</id>
     <label>Prefix List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Prefix List.</help>
+    <help>Select the Prefix List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
   <field>
     <id>routemap.match3</id>
     <label>Community List</label>
     <type>select_multiple</type>
-    <style>tokenize</style>
     <allownew>true</allownew>
-    <help>Select the Community List.</help>
+    <help>Select the Community List. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
   </field>
     <field>
     <id>routemap.set</id>
     <label>Set</label>
     <type>text</type>
-    <help>Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)</help>
+    <help>Free text field for setting attributes, e.g., “local-preference 300” or “community 1:1”.</help>
   </field>
 </form>

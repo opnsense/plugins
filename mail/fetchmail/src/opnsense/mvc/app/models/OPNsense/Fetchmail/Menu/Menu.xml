@@ -1,8 +1,0 @@
-<menu>
-  <Services>
-    <Fetchmail cssClass="fa fa-envelope fa-fw">
-      <General url="/ui/fetchmail/general/index" order="10"/>
-      <Mailbox url="/ui/fetchmail/mailbox/index" order="20"/>
-    </Fetchmail>
-  </Services>
-</menu>

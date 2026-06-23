@@ -48,7 +48,6 @@ class CertificatesController extends ApiMutableModelControllerBase
 
     public function getAction($uuid = null)
     {
-        $this->sessionClose();
         return $this->getBase('certificate', 'certificates.certificate', $uuid);
     }
 
@@ -104,7 +103,7 @@ class CertificatesController extends ApiMutableModelControllerBase
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient sign-cert ${uuid}");
+                    $response = $backend->configdRun("acmeclient sign-cert {$uuid}");
                     return array("response" => $response);
                 }
             }
@@ -125,7 +124,7 @@ class CertificatesController extends ApiMutableModelControllerBase
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient remove-key ${uuid}");
+                $response = $backend->configdRun("acmeclient remove-key {$uuid}");
             }
         }
         return $result;
@@ -146,7 +145,7 @@ class CertificatesController extends ApiMutableModelControllerBase
                 $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
                 if ($node != null) {
                     $backend = new Backend();
-                    $response = $backend->configdRun("acmeclient revoke-cert ${uuid}");
+                    $response = $backend->configdRun("acmeclient revoke-cert {$uuid}");
                     return array("response" => $response);
                 }
             }
@@ -167,7 +166,26 @@ class CertificatesController extends ApiMutableModelControllerBase
             $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
             if ($node != null) {
                 $backend = new Backend();
-                $response = $backend->configdRun("acmeclient run-automation ${uuid}");
+                $response = $backend->configdRun("acmeclient run-automation {$uuid}");
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * (re-) import the certificate by uuid
+     * @param $uuid item unique id
+     * @return array status
+     */
+    public function importAction($uuid)
+    {
+        $result = array("result" => "failed");
+        $mdlAcme = new AcmeClient();
+        if ($uuid != null) {
+            $node = $mdlAcme->getNodeByReference('certificates.certificate.' . $uuid);
+            if ($node != null) {
+                $backend = new Backend();
+                $response = $backend->configdRun("acmeclient import {$uuid}");
             }
         }
         return $result;

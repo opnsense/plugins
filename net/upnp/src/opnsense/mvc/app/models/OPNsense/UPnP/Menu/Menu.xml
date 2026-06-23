@@ -1,10 +1,11 @@
 <menu>
     <Services>
-        <UPnP VisibleName="Universal Plug and Play" cssClass="fa fa-plug fa-fw">
-            <Settings url="/services_upnp.php">
+        <UPnP VisibleName="UPnP IGD &amp; PCP" cssClass="fa fa-plug fa-fw">
+            <Settings order="10" url="/services_upnp.php">
                 <Edit url="/services_upnp.php?*" visibility="hidden"/>
             </Settings>
-            <Status url="/status_upnp.php"/>
+            <ActiveMaps VisibleName="Active Maps" order="20" url="/status_upnp.php"/>
+            <LogFile VisibleName="Log File" order="30" url="/ui/diagnostics/log/core/miniupnpd"/>
         </UPnP>
     </Services>
 </menu>

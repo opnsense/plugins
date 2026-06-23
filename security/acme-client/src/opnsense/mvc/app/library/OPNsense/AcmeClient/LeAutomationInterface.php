@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020 Frank Wall
+ * Copyright (C) 2020-2021 Frank Wall
  * Copyright (C) 2018 Deciso B.V.
  * All rights reserved.
  *
@@ -30,7 +30,7 @@
 namespace OPNsense\AcmeClient;
 
 /**
- * Interface for Let's Encrypt automations
+ * Interface for ACME Client automations
  * @package OPNsense\AcmeClient
  */
 interface LeAutomationInterface

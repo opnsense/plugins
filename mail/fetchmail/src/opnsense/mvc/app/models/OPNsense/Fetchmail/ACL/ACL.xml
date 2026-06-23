@@ -1,9 +1,0 @@
-<acl>
-    <page-services-fetchmail>
-        <name>Services: Fetchmail</name>
-        <patterns>
-            <pattern>ui/fetchmail/*</pattern>
-            <pattern>api/fetchmail/*</pattern>
-        </patterns>
-    </page-services-fetchmail>
-</acl>

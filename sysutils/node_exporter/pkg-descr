@@ -7,6 +7,10 @@ WWW: https://github.com/prometheus/node_exporter
 Changelog
 ---------
 
+1.2
+
+* Allow setting IPv6 addresses as ListenAddress
+
 1.1
 
 * Allow to toggle the "zfs" collector

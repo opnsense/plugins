@@ -1,6 +1,0 @@
-{% if helpers.exists('OPNsense.shadowsocks.general.enabled') and OPNsense.shadowsocks.general.enabled == '1' %}
-shadowsocks_libev_enable="YES"
-shadowsocks_libev_flags=""
-{% else %}
-shadowsocks_libev_enable="NO"
-{% endif %}
