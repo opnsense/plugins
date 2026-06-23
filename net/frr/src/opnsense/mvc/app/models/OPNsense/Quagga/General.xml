@@ -7,6 +7,7 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <manual_config type="BooleanField"/>
         <profile type="OptionField">
             <Required>Y</Required>
             <Default>traditional</Default>

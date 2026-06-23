@@ -1,4 +1,3 @@
-frr:/etc/rc.conf.d/frr
 frr.conf:/usr/local/etc/frr/frr.conf
 vtysh.conf:/usr/local/etc/frr/vtysh.conf
 ospf6d_carp.conf:/usr/local/etc/frr/ospf6d_carp.conf

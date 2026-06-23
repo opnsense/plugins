@@ -6,6 +6,12 @@
         <help>This will activate the routing service. Without enabling it globally, none of the individual services will run.</help>
     </field>
     <field>
+        <id>general.manual_config</id>
+        <label>Manual config</label>
+        <type>checkbox</type>
+        <help>Disable configuration file generation and manage the file (/usr/local/etc/frr/frr.conf) manually.</help>
+    </field>
+    <field>
         <id>general.profile</id>
         <label>Profile</label>
         <type>dropdown</type>
