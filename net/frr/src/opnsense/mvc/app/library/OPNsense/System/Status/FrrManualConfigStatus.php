@@ -53,7 +53,7 @@ class FrrManualConfigStatus extends AbstractStatus
 
     public function collectStatus()
     {
-        if (!(new General())->$model->manual_config->isEmpty()) {
+        if (!(new General())->manual_config->isEmpty()) {
             $this->internalMessage = gettext(
                 'Configuration file generation is disabled. Settings configured in the GUI may no longer affect the active FRR configuration.'
             );
