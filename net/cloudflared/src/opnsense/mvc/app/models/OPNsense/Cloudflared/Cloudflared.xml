@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Cloudflared</mount>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <description>Cloudflare Tunnel settings</description>
     <items>
         <general>
