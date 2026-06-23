@@ -41,13 +41,7 @@ class FrrManualConfigStatus extends AbstractStatus
         $this->internalIsBanner = true;
         $this->internalTitle = gettext('FRR manual configuration');
         $this->internalScope = [
-            '/ui/quagga/general',
-            '/ui/quagga/bgp',
-            '/ui/quagga/ospf',
-            '/ui/quagga/ospf6',
-            '/ui/quagga/rip',
-            '/ui/quagga/bfd',
-            '/ui/quagga/static_routes'
+            '/ui/quagga/*'
         ];
     }
 
@@ -55,7 +49,7 @@ class FrrManualConfigStatus extends AbstractStatus
     {
         if (!(new General())->manual_config->isEmpty()) {
             $this->internalMessage = gettext(
-                'Configuration file generation is disabled. Settings configured in the GUI may no longer affect the active FRR configuration.'
+                'Manual config is enabled. Settings configured in the GUI may no longer affect the active FRR configuration.'
             );
             $this->internalStatus = SystemStatusCode::NOTICE;
         }

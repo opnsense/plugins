@@ -39,7 +39,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = '\OPNsense\Quagga\General';
     // We intentionally only reload this template to allow manual_config for the templates
-    protected static $internalServiceTemplate = 'OPNsense/Quagga/rc.conf.d';
+    protected static $internalServiceTemplate = 'OPNsense/Quagga/rc_conf_d';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'quagga';
 

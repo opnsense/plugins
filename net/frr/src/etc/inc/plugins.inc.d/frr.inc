@@ -50,10 +50,10 @@ function frr_configure()
 function frr_configure_do($verbose = false)
 {
     $model = new \OPNsense\Quagga\General();
-    if (!$model->enabled->isEmpty() || !$model->manual_config-isEmpty()) {
+    if (!$model->manual_config->isEmpty()) {
         return;
     }
-    //(new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Quagga']);
+    (new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Quagga']);
 }
 
 function frr_firewall($fw)
