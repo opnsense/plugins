@@ -1,0 +1,5 @@
+<menu>
+    <VPN>
+        <Xproxy order="50" url="/ui/xproxy/" VisibleName="Xproxy" cssClass="fa fa-shield fa-fw"/>
+    </VPN>
+</menu>
