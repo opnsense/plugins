@@ -45,6 +45,30 @@ POSSIBILITY OF SUCH DAMAGE.
                 updateServiceControlUI('quagga');
             }
         });
+
+        /* Manual configuration, hide all config elements except manual_config fields */
+        $("#general\\.manual_config").change(function() {
+            let manual_config = $(this).is(':checked');
+
+            if (manual_config) {
+                if (!$("#show_advanced_frm_general_settings").hasClass('fa-toggle-on')) {
+                    /* enforce advanced mode so the user notices the checkbox */
+                    $("#show_advanced_frm_general_settings").click();
+                }
+
+                $("#frm_general_settings").find('tr').each(function() {
+                    if ($(this).find('.manual_config').length == 0) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+            } else {
+                $("#frm_general_settings").find('tr').show();
+            }
+
+            $('.selectpicker').selectpicker('refresh');
+        });
     });
 </script>
 

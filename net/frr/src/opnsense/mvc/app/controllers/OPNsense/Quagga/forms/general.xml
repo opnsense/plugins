@@ -3,12 +3,15 @@
         <id>general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
+        <style>manual_config</style>
         <help>This will activate the routing service. Without enabling it globally, none of the individual services will run.</help>
     </field>
     <field>
         <id>general.manual_config</id>
         <label>Manual config</label>
         <type>checkbox</type>
+        <style>manual_config</style>
+        <advanced>true</advanced>
         <help>Disable configuration file generation and manage the file (/usr/local/etc/frr/frr.conf) manually.</help>
     </field>
     <field>
@@ -22,12 +25,14 @@
         <id>general.enablecarp</id>
         <label>Enable CARP Failover</label>
         <type>checkbox</type>
+        <style>manual_config</style>
         <help>This will activate the routing service only on the master device. The backup device will stop the service completely.</help>
     </field>
     <field>
         <id>general.enablesnmp</id>
         <label>Enable SNMP AgentX Support</label>
         <type>checkbox</type>
+        <style>manual_config</style>
         <help>This will activate support for Net-SNMP AgentX.</help>
     </field>
     <field>
@@ -46,6 +51,7 @@
         <id>general.fwrules</id>
         <label>Firewall rules</label>
         <type>checkbox</type>
+        <style>manual_config</style>
         <help>Enable automatically created firewall rules, when additional policies are needed, disable this and define your own custom policies in the Firewall section.</help>
     </field>
 </form>
