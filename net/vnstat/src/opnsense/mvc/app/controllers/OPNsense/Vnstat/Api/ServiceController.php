@@ -32,6 +32,7 @@ namespace OPNsense\Vnstat\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Vnstat\General;
 
 /**
@@ -87,6 +88,44 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("vnstat yearly");
         return array("response" => $response);
+    }
+
+    /**
+     * list vnstat-tracked interfaces that are also configured in OPNsense
+     * @return array
+     */
+    public function interfaceListAction()
+    {
+        $response = trim((new Backend())->configdRun("vnstat dbiflist"));
+        if (empty($response)) {
+            return ["interfaces" => []];
+        }
+        $vnstatIfaces = array_values(array_filter(array_map('trim', explode("\n", $response))));
+
+        $opnsenseIfaces = [];
+        foreach (Config::getInstance()->object()->interfaces->children() as $node) {
+            $opnsenseIfaces[] = (string)$node->if;
+        }
+
+        $interfaces = array_values(array_intersect($vnstatIfaces, $opnsenseIfaces));
+        return ["interfaces" => $interfaces];
+    }
+
+    /**
+     * retrieve vnstat data as structured JSON for a specific interface
+     * @return array
+     */
+    public function getJsonDataAction()
+    {
+        $iface = $this->request->get('iface');
+        if (empty($iface)) {
+            return ["status" => "failed"];
+        }
+        $response = json_decode((new Backend())->configdpRun('vnstat json', [$iface]), true);
+        if ($response === null) {
+            return ["status" => "failed"];
+        }
+        return $response;
     }
 
     /**
