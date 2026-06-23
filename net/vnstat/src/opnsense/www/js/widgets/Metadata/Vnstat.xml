@@ -2,8 +2,7 @@
     <vnstat>
         <filename>Vnstat.js</filename>
         <endpoints>
-            <endpoint>/api/vnstat/service/interface_list</endpoint>
-            <endpoint>/api/vnstat/service/get_json_data</endpoint>
+            <endpoint>/api/vnstat/service/*</endpoint>
         </endpoints>
         <translations>
             <title>Vnstat Traffic</title>

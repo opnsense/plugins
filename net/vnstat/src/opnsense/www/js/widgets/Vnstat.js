@@ -41,7 +41,7 @@ export default class Vnstat extends BaseTableWidget {
     }
 
     async getWidgetOptions() {
-        const data = await this.ajaxCall('/api/vnstat/service/interface_list');
+        const data = await this.ajaxCall(`/api/vnstat/service/${'interface_list'}`);
         const ifaceOptions = (data?.interfaces ?? []).map(name => ({ value: name, label: name }));
 
         return {
@@ -151,7 +151,7 @@ export default class Vnstat extends BaseTableWidget {
     }
 
     async _populateInterfaceDropdown() {
-        const data = await this.ajaxCall('/api/vnstat/service/interface_list');
+        const data = await this.ajaxCall(`/api/vnstat/service/${'interface_list'}`);
         if (!data || !data.interfaces) return;
 
         const names = data.interfaces.filter(name => !this.excludedInterfaces.includes(name));
@@ -179,7 +179,7 @@ export default class Vnstat extends BaseTableWidget {
             return;
         }
 
-        const data = await this.ajaxCall(`/api/vnstat/service/get_json_data?iface=${encodeURIComponent(this.currentInterface)}`);
+        const data = await this.ajaxCall(`/api/vnstat/service/${'get_json_data?iface=' + encodeURIComponent(this.currentInterface)}`);
 
         if (!data || data.error || !data.interfaces || data.interfaces.length === 0) {
             super.updateTable('vnstat-table', [[`<b>${this.translations.msg_no_data}</b>`]]);

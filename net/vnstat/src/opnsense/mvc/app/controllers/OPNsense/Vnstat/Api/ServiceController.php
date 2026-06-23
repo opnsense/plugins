@@ -1,39 +1,35 @@
 <?php
 
-/**
- *    Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+/*
+ * Copyright (C) 2018 Michael Muenz <m.muenz@gmail.com>
+ * All rights reserved.
  *
- *    All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
- *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Vnstat\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
-use OPNsense\Core\Config;
-use OPNsense\Vnstat\General;
 
 /**
  * Class ServiceController
@@ -88,44 +84,6 @@ class ServiceController extends ApiMutableServiceControllerBase
         $backend = new Backend();
         $response = $backend->configdRun("vnstat yearly");
         return array("response" => $response);
-    }
-
-    /**
-     * list vnstat-tracked interfaces that are also configured in OPNsense
-     * @return array
-     */
-    public function interfaceListAction()
-    {
-        $response = trim((new Backend())->configdRun("vnstat dbiflist"));
-        if (empty($response)) {
-            return ["interfaces" => []];
-        }
-        $vnstatIfaces = array_values(array_filter(array_map('trim', explode("\n", $response))));
-
-        $opnsenseIfaces = [];
-        foreach (Config::getInstance()->object()->interfaces->children() as $node) {
-            $opnsenseIfaces[] = (string)$node->if;
-        }
-
-        $interfaces = array_values(array_intersect($vnstatIfaces, $opnsenseIfaces));
-        return ["interfaces" => $interfaces];
-    }
-
-    /**
-     * retrieve vnstat data as structured JSON for a specific interface
-     * @return array
-     */
-    public function getJsonDataAction()
-    {
-        $iface = $this->request->get('iface');
-        if (empty($iface)) {
-            return ["status" => "failed"];
-        }
-        $response = json_decode((new Backend())->configdpRun('vnstat json', [$iface]), true);
-        if ($response === null) {
-            return ["status" => "failed"];
-        }
-        return $response;
     }
 
     /**
