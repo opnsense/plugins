@@ -7,10 +7,17 @@ makes it applicable to a wide variety of use cases including connecting
 hosts/VMs/containers to the network, advertising network services, LAN
 switching and routing, Internet access routers, and Internet peering.
 
-WWW: https://frrouting.org/
 
 Plugin Changelog
 ================
+
+1.53
+
+* BGP: improve visibility in ModelRelationFields and enable internalModelUseSafeDelete
+* BGP: add BFD strict mode for BGP neighbors (contributed by r3m8)
+* Diagnostics: do not mismatch on vtysh command escape
+* OSPF: improve many to one relationship between prefix lists and route maps, allow multiple selection
+* OSPF/OSPF6: more visibility and safety for ModelRelationField references
 
 1.52
 
