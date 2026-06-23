@@ -49,7 +49,7 @@ class FrrManualConfigStatus extends AbstractStatus
     {
         if (!(new General())->manual_config->isEmpty()) {
             $this->internalMessage = gettext(
-                'Manual config is enabled. Settings configured in the GUI may no longer affect the active FRR configuration.'
+                'Manual FRR configuration is enabled. Configuration file generation is disabled. Settings configured here may no longer affect the active FRR configuration.'
             );
             $this->internalStatus = SystemStatusCode::NOTICE;
         }
