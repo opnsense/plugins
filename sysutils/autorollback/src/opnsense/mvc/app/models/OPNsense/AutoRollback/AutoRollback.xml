@@ -1,0 +1,89 @@
+<model>
+    <mount>//OPNsense/autorollback</mount>
+    <version>1.0.0</version>
+    <description>Auto Rollback configuration</description>
+    <items>
+        <general>
+            <!-- Master enable/disable for the entire plugin -->
+            <Enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </Enabled>
+
+            <!-- Safe Mode Settings -->
+            <SafeModeTimeout type="IntegerField">
+                <Default>120</Default>
+                <MinimumValue>30</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Timeout must be between 30 and 3600 seconds.</ValidationMessage>
+            </SafeModeTimeout>
+
+            <!-- What to do when rolling back -->
+            <RollbackMethod type="OptionField">
+                <Default>reboot</Default>
+                <OptionValues>
+                    <reboot>Full reboot (most reliable, recommended)</reboot>
+                    <reload>Service reload (faster, may miss kernel tunables)</reload>
+                </OptionValues>
+            </RollbackMethod>
+
+            <!-- Connectivity Watchdog Settings -->
+            <WatchdogEnabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </WatchdogEnabled>
+
+            <!-- Grace period after config change before watchdog checks begin (seconds) -->
+            <WatchdogGracePeriod type="IntegerField">
+                <Default>60</Default>
+                <MinimumValue>15</MinimumValue>
+                <MaximumValue>600</MaximumValue>
+                <ValidationMessage>Grace period must be between 15 and 600 seconds.</ValidationMessage>
+            </WatchdogGracePeriod>
+
+            <!-- Number of consecutive failed checks before rollback -->
+            <WatchdogFailThreshold type="IntegerField">
+                <Default>3</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>10</MaximumValue>
+                <ValidationMessage>Fail threshold must be between 1 and 10.</ValidationMessage>
+            </WatchdogFailThreshold>
+
+            <!-- Health check command - the command to run for connectivity verification -->
+            <WatchdogCheckCommand type="TextField">
+                <Default>ping -c 1 -W 3 -t 5 %gateway%</Default>
+                <Required>Y</Required>
+                <Mask>/^.{1,512}$/</Mask>
+                <ValidationMessage>Check command must be 1-512 characters.</ValidationMessage>
+            </WatchdogCheckCommand>
+
+            <!-- Expected response pattern (regex) for the check command -->
+            <WatchdogCheckPattern type="TextField">
+                <Default>1 packets received</Default>
+                <Required>Y</Required>
+                <Mask>/^.{1,256}$/</Mask>
+                <ValidationMessage>Check pattern must be 1-256 characters.</ValidationMessage>
+            </WatchdogCheckPattern>
+
+            <!-- Secondary check command (optional - e.g., DNS resolution) -->
+            <WatchdogCheckCommand2 type="TextField">
+                <Default></Default>
+                <Required>N</Required>
+                <Mask>/^.{0,512}$/</Mask>
+            </WatchdogCheckCommand2>
+
+            <!-- Secondary check pattern -->
+            <WatchdogCheckPattern2 type="TextField">
+                <Default></Default>
+                <Required>N</Required>
+                <Mask>/^.{0,256}$/</Mask>
+            </WatchdogCheckPattern2>
+
+            <!-- Notification: log rollback events to syslog -->
+            <LogRollbacks type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </LogRollbacks>
+        </general>
+    </items>
+</model>
