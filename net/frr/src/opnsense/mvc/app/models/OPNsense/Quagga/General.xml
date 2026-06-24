@@ -8,7 +8,6 @@
             <Required>Y</Required>
         </enabled>
         <daemons type=".\EnableDaemonField" volatile="true">
-            <Required>N</Required>
             <Multiple>Y</Multiple>
             <OptionValues>
                 <bfd/>
