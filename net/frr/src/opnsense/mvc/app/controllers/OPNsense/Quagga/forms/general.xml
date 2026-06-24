@@ -7,6 +7,13 @@
         <help>This will activate the routing service. Without enabling it globally, none of the individual services will run.</help>
     </field>
     <field>
+        <id>general.daemons</id>
+        <label>Enabled daemons</label>
+        <type>select_multiple</type>
+        <style>manual_config selectpicker</style>
+        <help>Shows which FRR daemons are enabled by the individual daemon pages. This remains relevant when manual configuration is enabled because the rc.d service wrapper is still generated.</help>
+    </field>
+    <field>
         <id>general.manual_config</id>
         <label>Manual config</label>
         <type>checkbox</type>
