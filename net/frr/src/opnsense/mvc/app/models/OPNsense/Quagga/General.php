@@ -35,17 +35,17 @@ use OPNsense\Quagga\FieldTypes\EnableDaemonField;
 
 class General extends BaseModel
 {
-   public function serializeToConfig($validateFullModel = false, $disable_validation = false)
-   {
-      $result = parent::serializeToConfig($validateFullModel, $disable_validation);
-      $config = Config::getInstance()->object();
-      $enabledSections = $this->daemons->getValues();
+    public function serializeToConfig($validateFullModel = false, $disable_validation = false)
+    {
+        $result = parent::serializeToConfig($validateFullModel, $disable_validation);
+        $config = Config::getInstance()->object();
+        $enabledSections = $this->daemons->getValues();
 
-      foreach (EnableDaemonField::CONFIG_SECTIONS as $section) {
-         $config->OPNsense->quagga->{$section}->enabled =
+        foreach (EnableDaemonField::CONFIG_SECTIONS as $section) {
+            $config->OPNsense->quagga->{$section}->enabled =
                in_array($section, $enabledSections, true) ? '1' : '0';
-      }
+        }
 
-      return $result;
-   }
+        return $result;
+    }
 }
